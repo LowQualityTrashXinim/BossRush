@@ -1,0 +1,29 @@
+FasterTerraria is a mod that make boss drop a custom treasure chest within the mod
+The aim of this mod is make player progression become much faster and allow player to only build arena to fight boss as soon as possible
+Another aim of this mod is allow player to replay this mod endlessly without feeling every playthrough feel like the same play through
+
+This mod have been designed so that player can play the mod without grinding, and is designed to be play with other mod or play at your own pace
+Any plan that force player to play a certain way is never consider nor to be in the mod, this mod allow player to play however they want to
+
+If player want to play the way as the mod intended then here are ground rule for it :
+-Only use item that given to player by Treasure Chest
+-Avoid building house for NPC (digging hole to keep npc in place is allow)
+-Enable Synergy Mode on (so that player can get synergy weapons and accessories)
+-Build arena using the amount platform that is given to player from Treasure Chest
+-Fight boss as soon as you done building arena for boss
+-Only fight or refight the boss with the amount of spawner that is given to player
+-Enraged boss is intended to be fight like normal boss progression, fighting it with better gear than it is not intended
+
+Planning :
+-add more synergy energy weapon
+-possible end mod boss
+-rework loot drop depend on future feedback ( only take more feedback after synergy update out )
+-Add spawner for mini boss
+
+No discord link, if there are any problem with the mod, i will probably find it out in later update but feel free to use this mod in any playthrough or modpack with condition of crediting me as LowQualityTrash
+
+Message for people want to support : Please report any issue or any problem you have with the mod at discord tag:LowQualityTrash-#2090
+it should be working in multiplayer, if it not do tell me, the normal/journey mode will definitely have issue with TreasureChest drop rate, i haven't able to fix it cause i haven't test it out
+so i recommend playing in expert mode
+
+Message for people want to make addon : Send me a message at discord tag:LowQualityTrash-#2090 and i will give you source code
