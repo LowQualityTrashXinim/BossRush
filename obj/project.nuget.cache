@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "pEBkHPl9UfY8jV+uI6HN94BjuNygzGa86qVKmoHstXhfrv/JVOktdXZMefxyjMNIAySxzOBz4VzV5IptprQqCA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\lelwh\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\BossRush\\BossRush.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lelwh\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+  ],
+  "logs": []
+}

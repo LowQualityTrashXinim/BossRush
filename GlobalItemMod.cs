@@ -1,0 +1,75 @@
+﻿using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using BossRush.ExtraItem;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Accessories;
+using BossRush.BuffAndDebuff;
+using BossRush.Accessories.EnragedBossAccessories.EvilEye;
+
+namespace BossRush
+{
+    class GlobalItemMod : GlobalItem
+    {
+        public override void UpdateAccessory(Item item, Player player, bool hideVisual)
+        {
+            if(item.type == ItemID.EoCShield)
+            {
+                player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
+            }
+        }
+        public override void AddRecipes()
+        {
+            //QoL convert
+            Recipe recipe = Recipe.Create(ItemID.FallenStar,5);
+            recipe.AddIngredient(ItemID.ManaCrystal);
+            recipe.Register();
+
+            //enraged covert to normal
+            Recipe KingSlimeEnraged = Recipe.Create(ItemID.SlimeCrown);
+            KingSlimeEnraged.AddIngredient(ModContent.ItemType<KingSlimeCall>());
+
+            Recipe EoCEnraged = Recipe.Create(ItemID.SuspiciousLookingEye);
+            EoCEnraged.AddIngredient(ModContent.ItemType<BloodyEye>());
+
+            Recipe EoWEnraged = Recipe.Create(ItemID.WormFood);
+            EoWEnraged.AddIngredient(ModContent.ItemType<WormFeast>());
+
+            Recipe BoWEnraged = Recipe.Create(ItemID.BloodySpine);
+            BoWEnraged.AddIngredient(ModContent.ItemType<AttackOnTheMind>());
+
+            KingSlimeEnraged.Register();
+            EoCEnraged.Register();
+            EoWEnraged.Register();
+            BoWEnraged.Register();
+        }
+
+        public override bool? UseItem(Item item, Player player)
+        {
+            if(ModContent.GetInstance<BossRushModConfig>().Enraged && player.whoAmI == Main.myPlayer && item.type == ItemID.SuspiciousLookingEye)
+            {
+                player.GetModPlayer<ModdedPlayer>().EoCEnraged = true;
+                int type = NPCID.EyeofCthulhu;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    // If the player is not in multiplayer, spawn directly
+                    for (int i = 0; i < 2; i++)
+                    {
+                        NPC.SpawnOnPlayer(player.whoAmI, type);
+                    }
+                    Main.bloodMoon = true;
+                }
+                else
+                {
+                    // If the player is in multiplayer, request a spawn
+                    // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
+                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                }
+                return true;
+            }
+            return default;
+        }
+    }
+}
