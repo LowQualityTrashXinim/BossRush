@@ -19,10 +19,6 @@ namespace BossRush
         private float spreadModify = 1;
         public float SpreadModify1 { get => spreadModify; set => spreadModify = value; }
 
-        public float ModifiedProjAmount()
-        {
-            return NumOfProjectile += 5;
-        }
     }
 
     public abstract class WeaponTemplate : ModItem
@@ -57,6 +53,10 @@ namespace BossRush
     abstract class GlobalWeaponModify : GlobalItem
     {
         protected WeaponDataStoreValue WeaponData;
+        public float ModifiedProjAmount()
+        {
+            return WeaponData.NumOfProjectile += 5;
+        }
         public float ModifySpread(float TakeFloat) => WeaponData.SpreadModify <= 0 ? 0 : TakeFloat += WeaponData.SpreadModify;
 
         public Vector2 RotateRandom(float ToRadians)
@@ -185,7 +185,7 @@ namespace BossRush
             {
                 PositionOFFSET(position, velocity, 25);
                 WeaponData.NumOfProjectile += Main.rand.Next(2, 5);
-                for (int i = 0; i < WeaponData.ModifiedProjAmount(); i++)
+                for (int i = 0; i < ModifiedProjAmount(); i++)
                 {
                     Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(18), 35, 0.04f), type, damage, knockback, player.whoAmI);
                 }
@@ -195,7 +195,7 @@ namespace BossRush
             {
                 PositionOFFSET(position, velocity, 25);
                 WeaponData.NumOfProjectile += 5;
-                for (int i = 0; i < WeaponData.ModifiedProjAmount(); i++)
+                for (int i = 0; i < ModifiedProjAmount(); i++)
                 {
                     Projectile.NewProjectile(source, position, RotateRandom(65), type, damage, knockback, player.whoAmI);
                 }
@@ -205,7 +205,7 @@ namespace BossRush
             {
                 PositionOFFSET(position, velocity, 35);
                 WeaponData.NumOfProjectile += Main.rand.Next(2, 5);
-                for (int i = 0; i < WeaponData.ModifiedProjAmount(); i++)
+                for (int i = 0; i < ModifiedProjAmount(); i++)
                 {
                     Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(30), 10, 0.5f), type, damage, knockback, player.whoAmI);
                 }
@@ -215,7 +215,7 @@ namespace BossRush
             {
                 PositionOFFSET(position, velocity, 35);
                 WeaponData.NumOfProjectile += 3;
-                for (int i = 0; i < WeaponData.ModifiedProjAmount(); i++)
+                for (int i = 0; i < ModifiedProjAmount(); i++)
                 {
                     Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(15), 5, 0.5f), type, damage, knockback, player.whoAmI);
                 }
@@ -226,7 +226,7 @@ namespace BossRush
             {
                 PositionOFFSET(position, velocity, 35);
                 WeaponData.NumOfProjectile += 5;
-                for (int i = 0; i < WeaponData.ModifiedProjAmount(); i++)
+                for (int i = 0; i < ModifiedProjAmount(); i++)
                 {
                     Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(18), 3, 0.76f), type, damage, knockback, player.whoAmI);
                 }
