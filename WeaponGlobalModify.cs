@@ -18,9 +18,7 @@ namespace BossRush
 
         private float spreadModify = 1;
         public float SpreadModify1 { get => spreadModify; set => spreadModify = value; }
-
     }
-
     public abstract class WeaponTemplate : ModItem
     {
         protected WeaponDataStoreValue WeaponData;
