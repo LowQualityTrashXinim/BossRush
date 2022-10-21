@@ -41,8 +41,8 @@ namespace BossRush.Weapon.RangeSynergyWeapon.RectangleShotgun
             {
                 position += muzzleOffset;
             }
-            WeaponData.NumOfProjectile = 5;
-            for (int i = 0; i < WeaponData.NumOfProjectile; i++)
+            NumOfProjectile = 5;
+            for (int i = 0; i < NumOfProjectile; i++)
             {
                 Vector2 Rotate = RotateCode(30,i);
                 Projectile.NewProjectile(source, position, Rotate, ModContent.ProjectileType<SquareBullet>(), damage, knockback, player.whoAmI);

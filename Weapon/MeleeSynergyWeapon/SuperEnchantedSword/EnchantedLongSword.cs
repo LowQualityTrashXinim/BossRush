@@ -35,8 +35,8 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.SuperEnchantedSword
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            WeaponData.NumOfProjectile = 5;
-            for (int i = 0; i < WeaponData.NumOfProjectile; i++)
+            NumOfProjectile = 5;
+            for (int i = 0; i < NumOfProjectile; i++)
             {
                 Vector2 rotate = RotateCode(20, i);
                 Projectile.NewProjectile(source, position, rotate, ProjectileID.EnchantedBeam, damage, knockback, player.whoAmI);

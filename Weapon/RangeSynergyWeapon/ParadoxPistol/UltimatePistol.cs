@@ -104,7 +104,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                     for (int i = 0; i < 5; i++)
                     {
                         int[] Arrow2 = new int[] { ProjectileID.WoodenArrowFriendly, ProjectileID.FireArrow, ProjectileID.FrostburnArrow, ProjectileID.FrostArrow, ProjectileID.BeeArrow, ProjectileID.BoneArrow, ProjectileID.JestersArrow, ProjectileID.UnholyArrow, ProjectileID.HellfireArrow, ProjectileID.IchorArrow, ProjectileID.CursedArrow, ProjectileID.HolyArrow, ProjectileID.VenomArrow, ProjectileID.ShadowFlameArrow, ProjectileID.ChlorophyteArrow, ProjectileID.MoonlordArrow };
-                        WeaponData.NumOfProjectile = 5;
+                        NumOfProjectile = 5;
                         Vector2 Newspeed = RotateCode(10, i);
                         for (int a = 0; a < Arrow2.Length; a++)
                         {
@@ -124,7 +124,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                     for (int c = 0; c < Bullet2.Length; c++)
                     {
                         float speedMultiplier = 0.4f + c * 0.05f;
-                        WeaponData.NumOfProjectile = c+6;
+                        NumOfProjectile = c+6;
                         for (int i = 0; i < c + 6; i++)
                         {
                             Vector2 Newspeed = RotateCode(60,i);
@@ -135,7 +135,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                 //Shuriken
                 if (Counter == 3)
                 {
-                    WeaponData.NumOfProjectile = 10;
+                    NumOfProjectile = 10;
                     for (int i = 0; i < 10; i++)
                     {
                         Vector2 NewSpeed = RotateCode(60, i);
@@ -145,7 +145,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                 //Boomerang
                 if (Counter == 4)
                 {
-                    WeaponData.NumOfProjectile = 11;
+                    NumOfProjectile = 11;
                     for (int i = 0; i < 11; i++)
                     {
                         Vector2 NewSpeed = RotateCode(80,i);
@@ -253,7 +253,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                 //ColorFireBall	
                 if (Counter == 6)
                 {
-                    WeaponData.NumOfProjectile = 36;
+                    NumOfProjectile = 36;
                     Projectile.NewProjectile(source, position.X, position.Y, speedX, speedY, ProjectileID.BallofFire, damage, knockback, player.whoAmI);
                     Projectile.NewProjectile(source, position.X, position.Y, speedX, speedY, ProjectileID.CursedFlameFriendly, damage, knockback, player.whoAmI);
                     Projectile.NewProjectile(source, position.X, position.Y, speedX, speedY, ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
@@ -267,7 +267,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                 //WaterBolt+WaterSpray
                 if (Counter == 7)
                 {
-                    WeaponData.NumOfProjectile = 7;
+                    NumOfProjectile = 7;
                     for (int i = 0; i < 7; i++)
                     {
                         Vector2 NewSpeed = RotateCode(14, i);
@@ -278,7 +278,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol
                 //Grenade
                 if (Counter == 8)
                 {
-                    WeaponData.NumOfProjectile = 25;
+                    NumOfProjectile = 25;
                     for (int i = 0; i < 25; i++)
                     {
                         int Grenade2 = Main.rand.Next(new int[] { ProjectileID.ExplosiveBunny, ProjectileID.BouncyGrenade, ProjectileID.PartyGirlGrenade, ProjectileID.Grenade, ProjectileID.GrenadeI, ProjectileID.Beenade, ProjectileID.StickyGrenade, ProjectileID.MolotovCocktail });
