@@ -28,5 +28,13 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
                 Main.dust[dustnumber].noGravity = true;
             }
         }
+        public override void Kill(int timeLeft)
+        {
+            for(int i = 0; i < 25; i++)
+            {
+                Vector2 RandomSpread = Main.rand.NextVector2Circular(3f, 3f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, RandomSpread.X, RandomSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+            }
+        }
     }
 }
