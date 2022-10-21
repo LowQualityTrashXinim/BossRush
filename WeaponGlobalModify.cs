@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush
 {
-    public abstract class WeaponDataStoreValue : ModPlayer
+    public abstract class WeaponTemplate : ModItem
     {
         private float numOfProjectile = 1;
         private Vector2 vec2ToRotate;
@@ -18,26 +18,22 @@ namespace BossRush
 
         private float spreadModify = 1;
         public float SpreadModify1 { get => spreadModify; set => spreadModify = value; }
-    }
-    public abstract class WeaponTemplate : ModItem
-    {
-        protected WeaponDataStoreValue WeaponData;
-        public float ModifySpread(float TakeFloat) => WeaponData.SpreadModify <= 0 ? 0 : TakeFloat += WeaponData.SpreadModify;
+        public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat += SpreadModify;
 
         public Vector2 RotateRandom(float ToRadians)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
-            return WeaponData.Vec2ToRotate.RotatedByRandom(rotation);
+            return Vec2ToRotate.RotatedByRandom(rotation);
         }
 
         public Vector2 RotateCode(float ToRadians, float time = 0)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
-            if (WeaponData.NumOfProjectile > 1)
+            if (NumOfProjectile > 1)
             {
-                return WeaponData.Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, time / (WeaponData.NumOfProjectile - 1f)));
+                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, time / (NumOfProjectile - 1f)));
             }
-            return WeaponData.Vec2ToRotate;
+            return Vec2ToRotate;
         }
 
         public Vector2 RandomSpread(Vector2 ToRotateAgain, int Spread, float additionalMultiplier = 1)
@@ -50,27 +46,30 @@ namespace BossRush
 
     abstract class GlobalWeaponModify : GlobalItem
     {
-        protected WeaponDataStoreValue WeaponData;
+        private float NumOfProjectile = 1;
+        private Vector2 Vec2ToRotate = Vector2.Zero;
+        private float SpreadModify = 1;
+
         public float ModifiedProjAmount(float NumAmount)
         {
             return NumAmount += 5;
         }
-        public float ModifySpread(float TakeFloat) => WeaponData.SpreadModify <= 0 ? 0 : TakeFloat += WeaponData.SpreadModify;
+        public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat += SpreadModify;
 
         public Vector2 RotateRandom(float ToRadians)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
-            return WeaponData.Vec2ToRotate.RotatedByRandom(rotation);
+            return Vec2ToRotate.RotatedByRandom(rotation);
         }
 
         public Vector2 RotateCode(float ToRadians, float time = 0)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
-            if (WeaponData.NumOfProjectile > 1)
+            if (NumOfProjectile > 1)
             {
-                return WeaponData.Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, time / (WeaponData.NumOfProjectile - 1f)));
+                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, time / (NumOfProjectile - 1f)));
             }
-            return WeaponData.Vec2ToRotate;
+            return Vec2ToRotate;
         }
 
         public Vector2 PositionOFFSET(Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
@@ -92,7 +91,7 @@ namespace BossRush
 
         public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, int type, int damage, float knockback, float SpreadAmount = 0, float AdditionalSpread = 1, float AdditionalMultiplier = 1)
         {
-            for (int i = 0; i < ModifiedProjAmount(WeaponData.NumOfProjectile); i++)
+            for (int i = 0; i < ModifiedProjAmount(NumOfProjectile); i++)
             {
                 Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier), type, damage, knockback, player.whoAmI);
             }
@@ -203,28 +202,28 @@ namespace BossRush
             if (item.type == ItemID.Boomstick && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 25);
-                WeaponData.NumOfProjectile += Main.rand.Next(2, 5);
+                NumOfProjectile += Main.rand.Next(2, 5);
                 GlobalRandomSpreadFiring(player, source, position, type, damage, knockback, 18, 35, .04f);
                 return false;
             }
             if (item.type == ItemID.QuadBarrelShotgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 25);
-                WeaponData.NumOfProjectile += 5;
+                NumOfProjectile += 5;
                 GlobalRandomSpreadFiring(player, source, position, type, damage, knockback, 65);
                 return false;
             }
             if (item.type == ItemID.Shotgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                WeaponData.NumOfProjectile += Main.rand.Next(2, 5);
+                NumOfProjectile += Main.rand.Next(2, 5);
                 GlobalRandomSpreadFiring(player, source, position, type, damage, knockback, 30, 10, .5f);
                 return false;
             }
             if (item.type == ItemID.OnyxBlaster && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                WeaponData.NumOfProjectile += 3;
+                NumOfProjectile += 3;
                 GlobalRandomSpreadFiring(player, source, position, type, damage, knockback, 15, 5, .5f);
                 Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 2, knockback, player.whoAmI);
                 return false;
@@ -232,7 +231,7 @@ namespace BossRush
             if (item.type == ItemID.TacticalShotgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                WeaponData.NumOfProjectile += 5;
+                NumOfProjectile += 5;
                 GlobalRandomSpreadFiring(player, source, position, type, damage, knockback, 18, 3, .076f);
                 return false;
             }
