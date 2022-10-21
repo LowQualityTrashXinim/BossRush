@@ -42,15 +42,15 @@ namespace BossRush
         }
     }
 
-    public class GlobalWeaponModify : GlobalItem
+    abstract class GlobalWeaponModify : GlobalItem
     {
-        public static float NumOfProjectile = 0;
-        public static Vector2 Vec2ToRotate = Vector2.Zero;
-        public static float SpreadModify = 1;
+        protected float NumOfProjectile = 1;
+        protected Vector2 Vec2ToRotate = Vector2.Zero;
+        protected float SpreadModify = 1;
 
         public float ModifiedProjAmount(float NumAmount)
         {
-            return NumAmount += 2;
+            return NumAmount += 5;
         }
         public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat += SpreadModify;
 
@@ -87,155 +87,154 @@ namespace BossRush
             return ToRotateAgain;
         }
 
-        public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source,ref Vector2 position,ref Vector2 velocity,ref int type,ref int damage,ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1, bool ItemISaShotgun = false)
+        public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity,int type, int damage, float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1)
         {
             Vec2ToRotate = velocity;
-            if (!ItemISaShotgun)
-            {
-                velocity = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
-            }
             for (int i = 0; i < ModifiedProjAmount(NumOfProjectile); i++)
             {
                 Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier), type, damage, knockback, player.whoAmI);
             }
-            NumOfProjectile = 0;
         }
-
-        public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vec2ToRotate = velocity;
-            var source = new EntitySource_ItemUse_WithAmmo(player,item,item.ammo);
             if (item.type == ItemID.RedRyder && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 20);
-                GlobalRandomSpreadFiring(player, source, ref position,ref velocity, ref type, ref damage, ref knockback, 6);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity,type, damage, knockback, 4);
+                return false;
             }
             if (item.type == ItemID.Minishark && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 10);
-                GlobalRandomSpreadFiring(player, source, ref position,ref velocity, ref type, ref damage, ref knockback, 10);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 10);
+                return false;
             }
             if (item.type == ItemID.Gatligator && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 20);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 35, 10);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 35, 10);
+                return false;
             }
             if (item.type == ItemID.Handgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 10);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 15);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 15);
+                return false;
             }
             if (item.type == ItemID.PhoenixBlaster && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 10);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 10);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 10);
+                return false;
             }
             if (item.type == ItemID.Musket && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 20);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 5);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 5);
+                return false;
             }
             if (item.type == ItemID.TheUndertaker && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 5);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 12);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 12);
+                return false;
             }
             if (item.type == ItemID.FlintlockPistol && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 5);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 25);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 25);
+                return false;
             }
             if (item.type == ItemID.Revolver && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 5);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 15);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 15);
+                return false;
             }
             if (item.type == ItemID.ClockworkAssaultRifle && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 15);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 19);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 19);
+                return false;
             }
             if (item.type == ItemID.Megashark && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 25);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 8);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 8);
+                return false;
             }
             if (item.type == ItemID.Uzi && AppliesToEntity(item, false))
             {
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 14);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 14);
+                return false;
             }
             if (item.type == ItemID.VenusMagnum && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 25);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 14);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 14);
+                return false;
             }
             if (item.type == ItemID.SniperRifle && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 2);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 2);
+                return false;
             }
             if (item.type == ItemID.ChainGun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 33);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 33);
+                return false;
             }
             if (item.type == ItemID.VortexBeater && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 20);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 20);
+                return false;
             }
             if (item.type == ItemID.SDMG && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 4);
-
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 4);
+                return false;
             }
             if (item.type == ItemID.Boomstick && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 25);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 18, 35, .04f, true);
-
+                NumOfProjectile += Main.rand.Next(2, 5);
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 18, 35, .04f);
+                return false;
             }
             if (item.type == ItemID.QuadBarrelShotgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 25);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 65,default, default,true);
-
+                NumOfProjectile += 5;
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 65);
+                return false;
             }
             if (item.type == ItemID.Shotgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 30, 10, .5f,true);
-
+                NumOfProjectile += Main.rand.Next(2, 5);
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 30, 10, .5f);
+                return false;
             }
             if (item.type == ItemID.OnyxBlaster && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 15,default,default,true);
-
+                NumOfProjectile += 3;
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 15, 5, .5f);
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 2, knockback, player.whoAmI);
+                return false;
             }
             if (item.type == ItemID.TacticalShotgun && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 35);
-                GlobalRandomSpreadFiring(player, source,ref position,ref velocity, ref type, ref damage, ref knockback, 18, 3, .076f,true);
-
+                NumOfProjectile += 5;
+                GlobalRandomSpreadFiring(player, source, position, velocity, type, damage, knockback, 18, 3, .076f);
+                return false;
             }
+            return true;
         }
     }
 }
