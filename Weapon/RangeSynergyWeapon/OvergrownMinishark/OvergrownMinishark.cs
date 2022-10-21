@@ -38,6 +38,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.OvergrownMinishark
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
+            Vec2ToRotate = velocity;
             Vector2 offset = velocity.SafeNormalize(Vector2.UnitX) * 40;
             if (Collision.CanHit(position, 0, 0, position * offset, 0, 0))
             {

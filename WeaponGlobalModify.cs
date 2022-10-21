@@ -10,11 +10,9 @@ namespace BossRush
     {
         private float numOfProjectile = 1;
         private Vector2 vec2ToRotate;
-        private bool rotateByRandom;
         public float SpreadModify { get => SpreadModify1; set => SpreadModify1 = value; }
         public float NumOfProjectile { get => numOfProjectile; set => numOfProjectile = value; }
         public Vector2 Vec2ToRotate { get => vec2ToRotate; set => vec2ToRotate = value; }
-        public bool RotateByRandom { get => rotateByRandom; set => rotateByRandom = value; }
 
         private float spreadModify = 1;
         public float SpreadModify1 { get => spreadModify; set => spreadModify = value; }
@@ -46,9 +44,9 @@ namespace BossRush
 
     abstract class GlobalWeaponModify : GlobalItem
     {
-        private float NumOfProjectile = 1;
-        private Vector2 Vec2ToRotate = Vector2.Zero;
-        private float SpreadModify = 1;
+        protected float NumOfProjectile = 1;
+        protected Vector2 Vec2ToRotate = Vector2.Zero;
+        protected float SpreadModify = 1;
 
         public float ModifiedProjAmount(float NumAmount)
         {
@@ -98,6 +96,7 @@ namespace BossRush
         }
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            Vec2ToRotate = velocity;
             if (item.type == ItemID.RedRyder && AppliesToEntity(item, false))
             {
                 position = PositionOFFSET(position, velocity, 20);

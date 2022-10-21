@@ -44,6 +44,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.Merciless
         int count = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            Vec2ToRotate = velocity;
             if (type == ProjectileID.Bullet)
             {
                 type = ProjectileID.ExplosiveBullet;

@@ -38,6 +38,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.Deagle
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
+            Vec2ToRotate = velocity;
             if (player.velocity != Vector2.Zero)
             {
                 velocity = RotateRandom(120);
