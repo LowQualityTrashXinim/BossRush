@@ -50,7 +50,7 @@ namespace BossRush
 
         public float ModifiedProjAmount(float NumAmount)
         {
-            return NumAmount += 2;
+            return NumAmount;
         }
         public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat += SpreadModify;
 
@@ -59,7 +59,11 @@ namespace BossRush
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
             return Vec2ToRotate.RotatedByRandom(rotation);
         }
-
+        public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
+        {
+            int ChanceNotToConsume = weapon.useTime;
+            return !Main.rand.NextBool(ChanceNotToConsume);
+        }
         public Vector2 RotateCode(float ToRadians, float time = 0)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
@@ -119,7 +123,7 @@ namespace BossRush
                         break;
                     case ItemID.Gatligator:
                         position = PositionOFFSET(position, velocity, 20);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 35, 10);
+                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 30, 3);
                         break;
                     case ItemID.Handgun:
                         position = PositionOFFSET(position, velocity, 10);
