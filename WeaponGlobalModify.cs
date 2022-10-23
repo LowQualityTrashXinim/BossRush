@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace BossRush
 {
@@ -61,8 +62,8 @@ namespace BossRush
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
         {
-            int ChanceNotToConsume = weapon.useTime;
-            return !Main.rand.NextBool(ChanceNotToConsume);
+            float ChanceNotToConsume = weapon.useTime <= 20 && weapon.useTime >= 8 ? weapon.useTime * .65f : weapon.useTime;
+            return Main.rand.NextFloat() < 1/ChanceNotToConsume;
         }
         public Vector2 RotateCode(float ToRadians, float time = 0)
         {
