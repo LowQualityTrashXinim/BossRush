@@ -188,12 +188,13 @@ namespace BossRush
             List<Item> items = new List<Item>();
             items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>()));
             items.Add(new Item(ModContent.ItemType<LunchBox>()));
+            items.Add(new Item(ModContent.ItemType<GitGudToggle>()));
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
+                items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
                 items.Add(new Item(ModContent.ItemType<Note1>()));
             }
-            items.Add(new Item(ModContent.ItemType<GitGudToggle>()));
             if(ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
             {
                 items.Add(new Item (ItemID.RedPotion, 10));
@@ -228,7 +229,10 @@ namespace BossRush
             {
                 items.Add(new Item(ItemID.LifeCrystal, 3));
                 items.Add(new Item(ItemID.ManaCrystal, 3));
-                items.Add(new Item(Main.rand.Next(new int[] { ModContent.ItemType<EnchantedCopperSword>(), ModContent.ItemType<CopperKatana>(), ModContent.ItemType<AmethystBow>(), ModContent.ItemType<AmethystSwotaff>() })));
+                if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
+                {
+                    items.Add(new Item(Main.rand.Next(new int[] { ModContent.ItemType<EnchantedCopperSword>(), ModContent.ItemType<CopperKatana>(), ModContent.ItemType<AmethystBow>(), ModContent.ItemType<AmethystSwotaff>() })));
+                }
             }
             return items;
         }

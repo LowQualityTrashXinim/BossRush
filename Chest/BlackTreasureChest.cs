@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Accessories;
 using BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol;
+using System.Collections.Generic;
 
 namespace BossRush.Chest
 {
@@ -12,7 +13,7 @@ namespace BossRush.Chest
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("? Treasure chest");
-            Tooltip.SetDefault("Right click to open chest to get the following items\n?????\nGood Luck !");
+            Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
         }
         public override void SetDefaults()
         {
@@ -21,9 +22,14 @@ namespace BossRush.Chest
             Item.rare = 11;
         }
 
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            tooltips.Add(new TooltipLine(Mod, "SynergyOnly", "Is limited to synergy mode only"));
+        }
+
         public override bool CanRightClick()
         {
-            return true;
+            return ModContent.GetInstance<BossRushModConfig>().SynergyMode;
         }
 
         public override void RightClick(Player player)
@@ -72,11 +78,11 @@ namespace BossRush.Chest
                         break;
                 }
             }
-            if (Main.rand.NextBool(25) && ModContent.GetInstance<BossRushModConfig>().SynergyMode)
+            if (Main.rand.NextBool(25) && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<UltimatePistol>());
             }
-            if (Main.rand.NextBool(1000) && ModContent.GetInstance<BossRushModConfig>().SynergyMode)
+            if (Main.rand.NextBool(1000) && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<UnlimitedProgress>());
             }

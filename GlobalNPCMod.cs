@@ -455,7 +455,6 @@ namespace BossRush
                     npc.Size += new Vector2(200, 200);
                     npc.lifeMax += 1500;
                 }
-                npc.damage *= 2;
                 npc.knockBackResist = 0;
                 npc.trapImmune = true;
                 npc.lavaImmune = true;
