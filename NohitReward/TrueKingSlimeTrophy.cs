@@ -1,35 +1,11 @@
-﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace BossRush.NohitReward
 {
-    internal class TrueKingSlimeTrophy : ModItem
+    internal class TrueKingSlimeTrophy : BaseNoHit
     {
-        public const int HP = 50;
-        public override void SetStaticDefaults()
-        {
-            Tooltip.SetDefault("\"Overcoming a small challenge, tho sadly not place-able\"\nReward for not getting hit\nIncrease max HP by 50\nCan only be used once");
-        }
-        public override void SetDefaults()
-        {
-            Item.CloneDefaults(ItemID.LifeCrystal);
-            Item.value = Item.sellPrice(platinum: 5, gold: 0, silver: 0, copper:0);
-        }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            foreach (TooltipLine line in tooltips)
-            {
-                if(line.Name == "ItemName") line.OverrideColor = Main.DiscoColor;
-            }
-        }
-
-        public override bool CanUseItem(Player player)
-        {
-            return player.GetModPlayer<KingSlimeNoHit>().KS0hit < 1;
-        }
         public override bool? UseItem(Player player)
         {
             player.statLifeMax2 += HP;
@@ -41,6 +17,10 @@ namespace BossRush.NohitReward
             player.GetModPlayer<KingSlimeNoHit>().KS0hit++;
             return true;
         }
+        public override bool CanUseItem(Player player)
+        {
+            return player.GetModPlayer<KingSlimeNoHit>().KS0hit < 1;
+        }
     }
 
     class KingSlimeNoHit : ModPlayer
@@ -48,7 +28,7 @@ namespace BossRush.NohitReward
         public int KS0hit = 0;
         public override void ResetEffects()
         {
-            Player.statLifeMax2 += KS0hit * TrueKingSlimeTrophy.HP;
+            Player.statLifeMax2 += KS0hit * BaseNoHit.HP;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

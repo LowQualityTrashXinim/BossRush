@@ -6,30 +6,8 @@ using Terraria.ModLoader.IO;
 
 namespace BossRush.NohitReward
 {
-    internal class TrueEyeOfCthulhuTrophy : ModItem
+    internal class TrueEyeOfCthulhuTrophy : BaseNoHit
     {
-        public const int HP = 50;
-        public override void SetStaticDefaults()
-        {
-            Tooltip.SetDefault("\"Overcoming a small challenge, tho sadly not place-able\"\nReward for not getting hit\nIncrease max HP by 50\nCan only be used once");
-        }
-        public override void SetDefaults()
-        {
-            Item.CloneDefaults(ItemID.LifeCrystal);
-            Item.value = Item.sellPrice(platinum: 5, gold: 0, silver: 0, copper:0);
-        }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            foreach (TooltipLine line in tooltips)
-            {
-                if(line.Name == "ItemName") line.OverrideColor = Main.DiscoColor;
-            }
-        }
-
-        public override bool CanUseItem(Player player)
-        {
-            return player.GetModPlayer<EoCNoHit>().EoC0hit < 1;
-        }
         public override bool? UseItem(Player player)
         {
             player.statLifeMax2 += HP;
@@ -41,6 +19,10 @@ namespace BossRush.NohitReward
             player.GetModPlayer<EoCNoHit>().EoC0hit++;
             return true;
         }
+        public override bool CanUseItem(Player player)
+        {
+            return player.GetModPlayer<EoCNoHit>().EoC0hit < 1;
+        }
     }
 
     class EoCNoHit : ModPlayer
@@ -48,7 +30,7 @@ namespace BossRush.NohitReward
         public int EoC0hit = 0;
         public override void ResetEffects()
         {
-            Player.statLifeMax2 += EoC0hit * TrueEyeOfCthulhuTrophy.HP;
+            Player.statLifeMax2 += EoC0hit * BaseNoHit.HP;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
@@ -58,9 +40,6 @@ namespace BossRush.NohitReward
             packet.Write(EoC0hit);
             packet.Send(toWho, fromWho);
         }
-
-        // NOTE: The tag instance provided here is always empty by default.
-        // Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
         public override void SaveData(TagCompound tag)
         {
             tag["EoCnoHit"] = EoC0hit;
