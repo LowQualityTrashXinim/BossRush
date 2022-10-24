@@ -42,7 +42,9 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
                 if (Projectile.ai[1] >= 20)
                 {
                     if (Projectile.ai[1] == 20) { Projectile.velocity = -Projectile.velocity; }
-                    if (Projectile.ai[1] <= 50) { Projectile.velocity += Projectile.velocity * 0.1f; }
+                    if (Projectile.ai[1] <= 50) {
+                        Projectile.damage++;
+                        Projectile.velocity += Projectile.velocity * 0.1f; }
                 }
             }
         }
@@ -54,10 +56,10 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
                 if (Main.projectile[i].type == Projectile.type)
                 {
                     float ProjectileDis = Vector2.Distance(CurrentPos, Main.projectile[i].Center);
-                    if(ProjectileDis <= 20)
+                    if(ProjectileDis <= 35)
                     {
                         count++;
-                        if (count >= 2)
+                        if (count >= 3)
                         {
                             Projectile.Kill();
                             return;

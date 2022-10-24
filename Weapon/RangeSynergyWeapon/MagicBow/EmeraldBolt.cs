@@ -46,7 +46,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
                 Vector2 Rotate = Vector2.One.RotatedBy(MathHelper.ToRadians(120 * i + ToRandom * 30)) * 20f;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<EmeraldGemP>(), Projectile.damage, 0, Projectile.owner);
             }
-            Projectile.damage -= 1;
             target.immune[Projectile.owner] = 3;
         }
 
