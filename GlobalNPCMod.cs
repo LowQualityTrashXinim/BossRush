@@ -153,7 +153,15 @@ namespace BossRush
                 npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalWorm));
                 npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalSkull));
                 npcLoot.Add(ItemDropRule.Common(ItemID.QueenSlimeCrystal));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BleedingWorm>()));
                 //Expert mode drop
+                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
+            }
+
+            if(npc.type == NPCID.BloodNautilus)
+            {
+                ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodTreasureChest>()));
+                npcLoot.Add(ExpertVSnormal);
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
             }
 
