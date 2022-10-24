@@ -212,15 +212,15 @@ namespace BossRush.Chest
             {
                 return 1;
             }
-            else if (chooser >= meleeChance && chooser <= rangeChance)
+            else if (chooser >= meleeChance && chooser < rangeChance)
             {
                 return 2;
             }
-            else if (chooser >= rangeChance && chooser <= magicChance)
+            else if (chooser >= rangeChance && chooser < magicChance)
             {
                 return 3;
             }
-            else if (chooser >= magicChance && chooser <= summonChance)
+            else if (chooser >= magicChance && chooser < summonChance)
             {
                 return 4;
             }
@@ -288,7 +288,6 @@ namespace BossRush.Chest
                     DropItemRange.Clear();
                     DropItemMagic.Clear();
                     DropItemSummon.Clear();
-                    DropItemMisc.Clear();
                 }
                 DropItemMelee.AddRange(MeleeHM);
                 DropItemRange.AddRange(RangeHM);
@@ -430,9 +429,9 @@ namespace BossRush.Chest
                 ReturnWeapon = ModContent.ItemType<RainbowTreasureChest>();
             }
         }
-        public List<int> DropArrowAmmo = new List<int>();
-        public List<int> DropBulletAmmo = new List<int>();
-        public List<int> DropDartAmmo = new List<int>();
+        List<int> DropArrowAmmo = new List<int>();
+        List<int> DropBulletAmmo = new List<int>();
+        List<int> DropDartAmmo = new List<int>();
 
         int[] defaultArrow = new int[] { ItemID.WoodenArrow, ItemID.FlamingArrow, ItemID.FrostburnArrow, ItemID.JestersArrow, ItemID.UnholyArrow, ItemID.BoneArrow, ItemID.HellfireArrow };
         int[] ArrowHM = new int[] { ItemID.HolyArrow, ItemID.CursedArrow, ItemID.IchorArrow };
@@ -544,7 +543,7 @@ namespace BossRush.Chest
             }
         }
 
-        public List<int> Accessories = new List<int>();
+        List<int> Accessories = new List<int>();
 
         int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
         int[] T1MovementAccessory = new int[] { ItemID.Aglet,ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
@@ -614,7 +613,8 @@ namespace BossRush.Chest
             {
                 if(PriorityAnhkShield)
                 {
-                    Accessories.Clear();Accessories.AddRange(AnhkCharm);
+                    Accessories.Clear();
+                    Accessories.AddRange(AnhkCharm);
                 }
             }
             Accessory = Main.rand.NextFromCollection(Accessories);

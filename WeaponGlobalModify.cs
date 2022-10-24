@@ -92,6 +92,7 @@ namespace BossRush
             return ToRotateAgain;
         }
 
+
         public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1, bool ItemISaShotgun = false)
         {
             Vec2ToRotate = velocity;
@@ -112,96 +113,126 @@ namespace BossRush
             var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
             if (AppliesToEntity(item, false))
             {
+                float OffSetPost = 0;
+                float SpreadAmount = 0;
+                float AdditionalSpread = 0;
+                float AdditionalMulti = 1;
+                bool ShotguntType = false;
                 switch (item.type)
                 {
                     case ItemID.RedRyder:
-                        position = PositionOFFSET(position, velocity, 20);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 6);
+                        OffSetPost = 20;
+                        SpreadAmount = 6;
                         break;
                     case ItemID.Minishark:
-                        position = PositionOFFSET(position, velocity, 10);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 10);
+                        OffSetPost = 10;
+                        SpreadAmount = 10;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.Gatligator:
-                        position = PositionOFFSET(position, velocity, 20);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 30, 3);
+                        OffSetPost = 20;
+                        SpreadAmount = 30;
+                        AdditionalSpread = 3;
                         break;
                     case ItemID.Handgun:
-                        position = PositionOFFSET(position, velocity, 10);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 15);
+                        OffSetPost = 10;
+                        SpreadAmount = 15;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.PhoenixBlaster:
-                        position = PositionOFFSET(position, velocity, 10);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 10);
+                        OffSetPost = 10;
+                        SpreadAmount = 12;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.Musket:
-                        position = PositionOFFSET(position, velocity, 20);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 5);
+                        OffSetPost = 35;
+                        SpreadAmount = 5;
                         break;
                     case ItemID.TheUndertaker:
-                        position = PositionOFFSET(position, velocity, 5);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 12);
+                        OffSetPost = 20;
+                        SpreadAmount = 12;
                         break;
                     case ItemID.FlintlockPistol:
-                        position = PositionOFFSET(position, velocity, 5);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 25);
+                        OffSetPost = 10;
+                        SpreadAmount = 25;
+                        AdditionalSpread = 4;
                         break;
                     case ItemID.Revolver:
-                        position = PositionOFFSET(position, velocity, 5);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 15);
+                        OffSetPost = 10;
+                        SpreadAmount = 17;
                         break;
                     case ItemID.ClockworkAssaultRifle:
-                        position = PositionOFFSET(position, velocity, 15);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 19);
+                        OffSetPost = 15;
+                        SpreadAmount = 19;
+                        AdditionalSpread = 1;
                         break;
                     case ItemID.Megashark:
-                        position = PositionOFFSET(position, velocity, 25);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 8);
+                        OffSetPost = 30;
+                        SpreadAmount = 9;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.Uzi:
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 14);
+                        SpreadAmount = 14;
+                        AdditionalSpread = 1;
                         break;
                     case ItemID.VenusMagnum:
-                        position = PositionOFFSET(position, velocity, 25);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 14);
+                        OffSetPost = 25;
+                        SpreadAmount = 14;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.SniperRifle:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 2);
+                        OffSetPost = 35;
+                        SpreadAmount = 2;
                         break;
                     case ItemID.ChainGun:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 33);
+                        OffSetPost = 35;
+                        SpreadAmount = 33;
+                        AdditionalSpread = 3;
                         break;
                     case ItemID.VortexBeater:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 20);
+                        OffSetPost = 35;
+                        SpreadAmount = 20;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.SDMG:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 4);
+                        OffSetPost = 35;
+                        SpreadAmount = 4;
+                        AdditionalSpread = 2;
                         break;
                     case ItemID.Boomstick:
-                        position = PositionOFFSET(position, velocity, 25);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 18, 35, .04f, true);
+                        OffSetPost = 25;
+                        SpreadAmount = 18;
+                        AdditionalSpread = 35;
+                        AdditionalMulti = .4f;
+                        ShotguntType = true;
                         break;
                     case ItemID.QuadBarrelShotgun:
-                        position = PositionOFFSET(position, velocity, 25);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 65, default, default, true);
+                        OffSetPost = 25;
+                        SpreadAmount = 65;
+                        ShotguntType = true;
                         break;
                     case ItemID.Shotgun:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 30, 10, .5f, true);
+                        OffSetPost = 35;
+                        SpreadAmount = 24;
+                        AdditionalSpread = 6;
+                        AdditionalMulti = .5f;
+                        ShotguntType = true;
                         break;
                     case ItemID.OnyxBlaster:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 15, default, default, true);
+                        OffSetPost = 35;
+                        SpreadAmount = 15;
+                        ShotguntType = true;
                         break;
                     case ItemID.TacticalShotgun:
-                        position = PositionOFFSET(position, velocity, 35);
-                        GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, 18, 3, .076f, true);
+                        OffSetPost = 35;
+                        SpreadAmount = 18;
+                        AdditionalSpread = 3;
+                        AdditionalMulti = .76f;
+                        ShotguntType = true;
                         break;
                 }
+                position = PositionOFFSET(position, velocity, OffSetPost);
+                GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, SpreadAmount, AdditionalSpread, AdditionalMulti, ShotguntType);
             }
         }
     }

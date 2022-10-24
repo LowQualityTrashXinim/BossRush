@@ -41,17 +41,14 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.SuperShortSword
         }
         public override void HoldItem(Player player)
         {
+            int[] ArrayOfWeaponProjectile = new int[] { ModContent.ProjectileType<SpeCopper>(), ModContent.ProjectileType<SpeTin>(), ModContent.ProjectileType<SpeIron>(), ModContent.ProjectileType<SpeLead>(), ModContent.ProjectileType<SpeSilver>(), ModContent.ProjectileType<SpeTungsten>(), ModContent.ProjectileType<SpeGold>(), ModContent.ProjectileType<SpePlatinum>() }; 
             player.AddBuff(ModContent.BuffType<SuperShortSwordPower>(), 2);
             if (player.ownedProjectileCounts[ModContent.ProjectileType<SpeCopper>()] < 1)
             {
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeCopper>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeTin>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeIron>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeLead>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeSilver>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeTungsten>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpeGold>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<SuperShortSword>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SpePlatinum>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
+                for (int i = 0; i < ArrayOfWeaponProjectile.Length; i++)
+                {
+                    Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, new Vector2(0, 0), ArrayOfWeaponProjectile[i], (int)(Item.damage * 0.25f), 0, player.whoAmI);
+                }
             }
         }
         public override void AddRecipes()

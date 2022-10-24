@@ -2,6 +2,8 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Accessories
 {
@@ -10,7 +12,7 @@ namespace BossRush.Accessories
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Made for people who complain their sword isn't special" +
-                "\nIncrease melee speed by 5%" +
+                "\nIncrease melee speed by 25%" +
                 "\nRlease a sword slash upon swing");
         }
         public override void SetDefaults()
@@ -49,10 +51,8 @@ namespace BossRush.Accessories
         {
             if (Player.HeldItem.DamageType == DamageClass.Melee && Player.HeldItem.useStyle == ItemUseStyleID.Swing && SwordSlash && Main.mouseLeft && Player.ItemAnimationJustStarted)
             {
-                Vector2 DistanceFromProjToAim = Main.MouseWorld - Player.Center;
-                Vector2 DirectionFromProjToAim = DistanceFromProjToAim.SafeNormalize(Vector2.UnitX);
-                Vector2 speed = DirectionFromProjToAim * 12f;
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed, ModContent.ProjectileType<SwordSlash>(), 40, 2f, Player.whoAmI);
+                Vector2 speed = Player.direction == 1 ? new Vector2(5,0) : new Vector2(-5, 0);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed , ModContent.ProjectileType<SwordSlash>(), (int)(Player.HeldItem.damage * .75f), 2f, Player.whoAmI);
             }
         }
     }
@@ -66,13 +66,41 @@ namespace BossRush.Accessories
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.timeLeft = 50;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 360;
+            Projectile.light = 0.5f;
+            Projectile.extraUpdates = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
         public override void AI()
         {
             Projectile.alpha += 255/50;
-            Projectile.scale -= 0.02f;
+            Projectile.scale += 0.03f;
+            Projectile.Size += new Vector2(0.05f,0.05f);
             Projectile.rotation = Projectile.velocity.ToRotation();
+            if (Projectile.alpha >= 255)
+            {
+                Projectile.Kill();
+            }
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[Projectile.owner] = 4;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+
+            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            for (int k = 0; k < Projectile.oldPos.Length; k++)
+            {
+                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + origin + new Vector2(Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)(Projectile.oldPos.Length));
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, origin, Projectile.scale - k*0.02f, SpriteEffects.None, 0);
+            }
+            return true;
         }
     }
 }
