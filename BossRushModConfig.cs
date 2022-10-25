@@ -10,7 +10,7 @@ namespace BossRush
         [Label("Enable Challenge Mode ( On World Generation )")]
         [Tooltip("The intended way to play the mod\n" +
             "it is recommend to enable this if you want to experience what the mod have to offer along with Synergy Mode\n" +
-            "Disable it for more vanilla QoL feel of the mod to offer and to prevent world gen conflict")]
+            "Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict")]
         [DefaultValue(true)]
         public bool EnableChallengeMode { get; set; }
 
@@ -24,7 +24,7 @@ namespace BossRush
         [Label("Enable Easy Mode ( On Making Character )")]
         [Tooltip("Grant you a small starter boost for those who are casual\n" +
             "Give you 3 Mana Crystal and Life Crystal\n" +
-            "1 random starter weapon that this mod have to offer")]
+            "1 random starter weapon that this mod have to offer if synergy mode is enable")]
         [DefaultValue(true)]
         public bool EasyMode { get; set; }
 

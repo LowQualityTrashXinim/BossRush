@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Accessories
 {
@@ -17,6 +18,14 @@ namespace BossRush.Accessories
                 "\nHave 6s cool down before you able to parry again" +
                 "\nDuring parry period, you gain 10% damage" +
                 "\nOnly work if weapon is a sword");
+        }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            Player player = Main.LocalPlayer;
+            if (player.GetModPlayer<ParryPlayer>().Parry)
+            {
+                tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()} Increase parry duration and increase wind slash speed]"));
+            }
         }
         public override void SetDefaults()
         {
@@ -52,7 +61,7 @@ namespace BossRush.Accessories
         {
             if (!Player.HasBuff(ModContent.BuffType<Parried>()) && Player.HeldItem.DamageType == DamageClass.Melee && Player.ItemAnimationActive && Player.HeldItem.useStyle == ItemUseStyleID.Swing && !Player.HasBuff(ModContent.BuffType<CoolDownParried>()) && Parry)
             {
-                Player.AddBuff(ModContent.BuffType<Parried>(), 120);
+                Player.AddBuff(ModContent.BuffType<Parried>(), Player.GetModPlayer<SwordPlayer>().SwordSlash ? 240 : 120);
             }
             if (Player.HasBuff(ModContent.BuffType<Parried>()))
             {

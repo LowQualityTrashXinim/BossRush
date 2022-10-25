@@ -4,6 +4,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using System.Collections.Generic;
 
 namespace BossRush.Accessories
 {
@@ -14,6 +15,14 @@ namespace BossRush.Accessories
             Tooltip.SetDefault("Made for people who complain their sword isn't special" +
                 "\nIncrease melee speed by 25%" +
                 "\nRlease a sword slash upon swing");
+        }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            Player player = Main.LocalPlayer;
+            if(player.GetModPlayer<ParryPlayer>().Parry)
+            {
+                tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<ParryScabbard>()} Increase parry duration and increase wind slash speed]"));
+            }
         }
         public override void SetDefaults()
         {
@@ -51,7 +60,7 @@ namespace BossRush.Accessories
         {
             if (Player.HeldItem.DamageType == DamageClass.Melee && Player.HeldItem.useStyle == ItemUseStyleID.Swing && SwordSlash && Main.mouseLeft && Player.ItemAnimationJustStarted)
             {
-                Vector2 speed = Player.direction == 1 ? new Vector2(5,0) : new Vector2(-5, 0);
+                Vector2 speed = Player.direction == 1 ? new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? 15 : 5,0) : new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? -15 : -5, 0);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed , ModContent.ProjectileType<SwordSlash>(), (int)(Player.HeldItem.damage * .75f), 2f, Player.whoAmI);
             }
         }
