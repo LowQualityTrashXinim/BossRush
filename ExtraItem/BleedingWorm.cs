@@ -1,14 +1,14 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 using Terraria.Audio;
 
 namespace BossRush.ExtraItem
 {
 	public class BleedingWorm : ModItem
 	{
-		public override void SetStaticDefaults()
+        public override string Texture => "BossRush/MissingTexture";
+        public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("BleedingWorm");
 			Tooltip.SetDefault("Actract a certain monster from ocean");
@@ -31,7 +31,7 @@ namespace BossRush.ExtraItem
 
 		public override bool CanUseItem(Player player)
 		{
-			return true;
+			return Main.bloodMoon;
 		}
 
 		public override bool? UseItem(Player player)

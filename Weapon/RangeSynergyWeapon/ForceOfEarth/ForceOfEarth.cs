@@ -33,19 +33,25 @@ namespace BossRush.Weapon.RangeSynergyWeapon.ForceOfEarth
             Item.crit = 12;
             Item.value = Item.buyPrice(platinum: 5);
         }
+        int[] ArrayOfProjectile = new int[] {
+            ModContent.ProjectileType<CopperBowP>(),
+            ModContent.ProjectileType<TinBowP>(),
+            ModContent.ProjectileType<IronBowP>(),
+            ModContent.ProjectileType<LeadBowP>(),
+            ModContent.ProjectileType<SilverBowP>(),
+            ModContent.ProjectileType<TungstenBowP>(),
+            ModContent.ProjectileType<GoldBowP>(),
+            ModContent.ProjectileType<PlatinumBowP>()
+        };
         public override void HoldItem(Player player)
         {
             player.AddBuff(ModContent.BuffType<EarthPower>(), 2);
             if (player.ownedProjectileCounts[ModContent.ProjectileType<CopperBowP>()] < 1)
             {
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<CopperBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<TinBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<IronBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<LeadBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<SilverBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<TungstenBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<GoldBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
-                Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<ForceOfEarth>()), 0), player.Center, new Vector2(0, 0), ModContent.ProjectileType<PlatinumBowP>(), (int)(Item.damage * 0.25f), 0, player.whoAmI);
+                for (int i = 0; i < ArrayOfProjectile.Length; i++)
+                {
+                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, new Vector2(0, 0), ArrayOfProjectile[i], (int)(Item.damage * 0.25f), 0, player.whoAmI);
+                }
             }
         }
 
