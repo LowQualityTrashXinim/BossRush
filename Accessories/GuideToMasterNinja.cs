@@ -4,6 +4,8 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Accessories
 {
@@ -56,6 +58,10 @@ namespace BossRush.Accessories
             {
                 tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.BoneDagger}] Attack now inflict OnFire! and BoneDagger is added into bag, +5 damage"));
             }
+            if (player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja)
+            {
+                tooltips.Add(new TooltipLine(Mod, "FinalMaster", $"[i:{ModContent.ItemType<GuideToMasterNinja2>()}] You summon a ring of shuriken and knife"));
+            }
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -80,6 +86,79 @@ namespace BossRush.Accessories
                 .Register();
         }
     }
+    public class ThrowingKnifeCustom : ModProjectile
+    {
+        public override string Texture => "Terraria/Images/Item_"+ItemID.ThrowingKnife;
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.tileCollide = false;
+            Projectile.friendly = true;
+            Projectile.penetrate = 1;
+            Projectile.DamageType = DamageClass.Ranged;
+        }
+        public void Behavior(Player player, float offSet, int Counter, float Distance = 100)
+        {
+            Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
+            Vector2 NewCenter = player.Center + Rotate.RotatedBy(Counter * 0.1f) * Distance;
+            Projectile.Center = NewCenter;
+            if (Counter == 0)
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    Vector2 randomSpeed = Main.rand.NextVector2Circular(1, 1);
+                    Dust.NewDust(NewCenter, 0, 0, DustID.Smoke, randomSpeed.X, randomSpeed.Y, 0, default, Main.rand.NextFloat(2f, 2.5f));
+                }
+            }
+        }
+        int Counter = 0;
+        int Multiplier = 1;
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            Projectile.timeLeft = 2;
+            if (player.dead || !player.active)
+            {
+                Projectile.Kill();
+            }
+            if (Projectile.ai[0] == 0)
+            {
+                Projectile.ai[0]++;
+                switch (Projectile.velocity.X)
+                {
+                    case 1:
+                        Multiplier = 1;
+                        break;
+                    case 2:
+                        Multiplier = 2;
+                        break;
+                    case 3:
+                        Multiplier = 3;
+                        break;
+                    case 4:
+                        Multiplier = 4;
+                        break;
+                    case 5:
+                        Multiplier = 5;
+                        break;
+                    case 6:
+                        Multiplier = 6;
+                        break;
+                    case 7:
+                        Multiplier = 7;
+                        break;
+                    case 8:
+                        Multiplier = 8;
+                        break;
+                }
+                Projectile.velocity = Vector2.Zero;
+            }
+            Behavior(player,45 * Multiplier, Counter);
+            if (Counter == -MathHelper.TwoPi * 100 - 1) { Counter = -1; }
+            Counter--;
+        }
+    }
     public class WeebMasterPlayer : ModPlayer
     {
         public bool GuidetoMasterNinja;
@@ -88,6 +167,7 @@ namespace BossRush.Accessories
         //GuidetoMasterNinja
         int GTMNcount = 0;
         int GTMNlimitCount = 15;
+        int TimerForUltimate = 0;
         public override void ResetEffects()
         {
             GuidetoMasterNinja = false;
@@ -98,6 +178,34 @@ namespace BossRush.Accessories
             if (Player.head == 22 && Player.body == 14 && Player.legs == 14)
             {
                 NinjaWeeb = true;
+            }
+        }
+        public override void PostUpdate()
+        {
+            if (Player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja)
+            {
+                if (TimerForUltimate >= 40)
+                {
+                    if (Player.ownedProjectileCounts[ModContent.ProjectileType<ThrowingKnifeCustom>()] < 1)
+                    {
+                        for (int i = 0; i < 8; i++)
+                        {
+                            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, new Vector2(1 + i, 1 + i), ModContent.ProjectileType<ThrowingKnifeCustom>(), 30, 2f, Player.whoAmI);
+                        }
+                    }
+                    else
+                    {
+                        TimerForUltimate = 0;
+                    }
+                }
+                else 
+                {
+                    if (Player.ownedProjectileCounts[ModContent.ProjectileType<ThrowingKnifeCustom>()] > 0)
+                    {
+                        TimerForUltimate = 0;
+                    }
+                    TimerForUltimate++;
+                }
             }
         }
 
