@@ -13,7 +13,8 @@ namespace BossRush.Accessories
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("To Master the ninja technique, you must master the way of the weeb first\nshuriken will be thrown when you shoot a enemy 20 times\nIncrease movement speed by 150%\nIncrease crits chance by 5%");
+            DisplayName.SetDefault("Guide To Ninja Mastery I");
+            Tooltip.SetDefault("Part I out of II of a beloved series.\nTo master the way of a ninja, you must first master the way of a weeb.\n5% increased critical strike chance\n150% increased movement speed\nThrows a shuriken every time an enemy gets hit 20 times.");
         }
 
         public override void SetDefaults()
