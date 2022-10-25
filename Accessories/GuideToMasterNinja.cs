@@ -182,7 +182,7 @@ namespace BossRush.Accessories
         }
         public override void PostUpdate()
         {
-            if (Player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja)
+            if (Player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja && Player.GetModPlayer<WeebMasterPlayer>().GuidetoMasterNinja)
             {
                 if (TimerForUltimate >= 40)
                 {

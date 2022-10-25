@@ -143,13 +143,12 @@ namespace BossRush.Accessories
         {
             if(GuidetoMasterNinja && item.type == ItemID.Katana)
             {
-                item.Size += new Vector2(50,50);
-                item.scale += .5f;
+                scale += .5f;
             }
         }
         public override void PostUpdate()
         {
-            if(Player.GetModPlayer<WeebMasterPlayer>().GuidetoMasterNinja)
+            if(Player.GetModPlayer<WeebMasterPlayer>().GuidetoMasterNinja && Player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja)
             {
                 if (TimerForUltimate >= 40)
                 {
