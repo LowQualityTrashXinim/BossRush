@@ -34,6 +34,10 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
             }
 
             Player player = Main.player[Projectile.owner];
+            if(player.dead || !player.active)
+            {
+                Projectile.Kill();
+            }
             SearchForTargets(out bool fountTarget, out float distance, out Vector2 Target);
             count++;
             if (count < 30)

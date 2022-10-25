@@ -11,7 +11,7 @@ namespace BossRush.Accessories
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("To Master the ninja technique, you must master the way of the weeb first\nshuriken will be thrown when you shoot a enemy 20 times\nIncrease movement speed by 25%\nIncrease crits chance by 5%");
+            Tooltip.SetDefault("To Master the ninja technique, you must master the way of the weeb first\nshuriken will be thrown when you shoot a enemy 20 times\nIncrease movement speed by 150%\nIncrease crits chance by 5%");
         }
 
         public override void SetDefaults()
@@ -61,12 +61,12 @@ namespace BossRush.Accessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<WeebMasterPlayer>().GuidetoMasterNinja = true;
-            player.moveSpeed *= 1.25f;
+            player.moveSpeed *= 1.5f;
             player.GetCritChance(DamageClass.Generic) += 5;
             if(player.head == 22 && player.body == 14 && player.legs == 14)
             {
-                player.GetAttackSpeed(DamageClass.Melee) += 1.15f;
-                player.GetDamage(DamageClass.Melee) += 1.25f;
+                player.GetAttackSpeed(DamageClass.Melee) += .15f;
+                player.GetDamage(DamageClass.Melee) += .25f;
             }
         }
         public override void AddRecipes()

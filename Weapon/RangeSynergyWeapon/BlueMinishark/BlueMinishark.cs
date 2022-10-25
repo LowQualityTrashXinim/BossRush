@@ -62,12 +62,5 @@ namespace BossRush.Weapon.RangeSynergyWeapon.BlueMinishark
         {
             return new Vector2(-2f, -2f);
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.Minishark, 2)
-                .Register();
-        }
     }
 }

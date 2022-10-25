@@ -24,7 +24,7 @@ namespace BossRush.Accessories
             Player player = Main.LocalPlayer;
             if (player.GetModPlayer<ParryPlayer>().Parry)
             {
-                tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()} Increase parry duration and increase wind slash speed]"));
+                tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()}] Increase parry duration and increase wind slash speed"));
             }
         }
         public override void SetDefaults()
