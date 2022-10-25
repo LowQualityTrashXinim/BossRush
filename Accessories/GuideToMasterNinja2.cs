@@ -12,10 +12,11 @@ namespace BossRush.Accessories
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Guide To Master Ninja 2");
-            Tooltip.SetDefault("The final chapeter and possibly the prequel, they just really add in another I into the book" +
-                "\nGain jump speed and jump height by 150%" +
-                "\nMelee attack speed increase by 10%");
+            DisplayName.SetDefault("Guide To Ninja Mastery II");
+            Tooltip.SetDefault("Part II out of II of a series treasured by weebs all across the globe!" +
+                "\nDid they really just add another 'I' onto the book cover and call it a day?" +
+                "\n10% increased attack speed" +
+                "\n150% increased jump height and jump speed");
         }
 
         public override void SetDefaults()
