@@ -466,7 +466,19 @@ namespace BossRush
             {
                 Player player = Main.LocalPlayer;
                 player.GetModPlayer<GamblePlayer>().Roll++;
+                if(ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
+                {
+                    player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser = Main.rand.Next(9);
+                    player.GetModPlayer<ExtraChallengePlayer>().BossSlayedCount++;
+                }
             }
         }
+    }
+    public abstract class ExtraChallengePlayer : ModPlayer
+    {
+        public int ChallengeChooser = 0;
+        public int BossSlayedCount = 0;
+        public bool WASDChallenge = false;
+        public bool OnlyUseOneClass = false;
     }
 }

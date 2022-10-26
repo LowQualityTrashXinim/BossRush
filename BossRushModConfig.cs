@@ -43,6 +43,13 @@ namespace BossRush
         [DefaultValue(false)]
         public bool YouLikeToHurtYourself { get; set; }
 
+        [Label("ExtraChallange(W.I.P)")]
+        [Tooltip("The first time you kill a boss, you will get a challenge added into your game, this is irrevertible" +
+            "\nThe next time you kill a boss, the current challenge will be swap for a random challenge" +
+            "\nThese mode offer no real reward or benefit, only activate if you are bored and want extra challenge")]
+        [ReloadRequired]
+        [DefaultValue(false)]
+        public bool ExtraChallenge { get; set; }
     }
 }
 
