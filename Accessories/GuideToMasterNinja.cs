@@ -2,10 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace BossRush.Accessories
 {
@@ -32,7 +29,7 @@ namespace BossRush.Accessories
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player  = Main.player[Main.myPlayer];
-            if(player.GetModPlayer<WeebMasterPlayer>().NinjaWeeb)
+            if(player.GetModPlayer<BaseBookContent>().NinjaWeeb)
             {
                 tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.NinjaHood}][i:{ItemID.NinjaShirt}][i:{ItemID.NinjaPants}]Increase thrown damage by 20%, Melee attack is faster by 15% and increase melee damage by 25%"));
             }
@@ -63,7 +60,7 @@ namespace BossRush.Accessories
             {
                 tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.BoneDagger}] Attack now inflict OnFire! and BoneDagger is added into bag, +5 damage"));
             }
-            if (player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja)
+            if (player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja)
             {
                 tooltips.Add(new TooltipLine(Mod, "FinalMaster", $"[i:{ModContent.ItemType<GuideToMasterNinja2>()}] You summon a ring of shuriken and knife"));
             }
@@ -71,7 +68,7 @@ namespace BossRush.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<WeebMasterPlayer>().GuidetoMasterNinja = true;
+            player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja = true;
             player.moveSpeed *= 1.5f;
             player.GetCritChance(DamageClass.Generic) += 5;
             if(player.head == 22 && player.body == 14 && player.legs == 14)
@@ -96,14 +93,14 @@ namespace BossRush.Accessories
         public override string Texture => "Terraria/Images/Item_"+ItemID.ThrowingKnife;
         public override void SetDefaults()
         {
-            Projectile.width = 10;
-            Projectile.height = 10;
+            Projectile.width = 20;
+            Projectile.height = 20;
             Projectile.tileCollide = false;
             Projectile.friendly = true;
-            Projectile.penetrate = 1;
+            Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
         }
-        public void Behavior(Player player, float offSet, int Counter, float Distance = 100)
+        public void Behavior(Player player, float offSet, int Counter, float Distance = 125)
         {
             Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
             Vector2 NewCenter = player.Center + Rotate.RotatedBy(Counter * 0.1f) * Distance;
@@ -129,7 +126,6 @@ namespace BossRush.Accessories
             }
             if (Projectile.ai[0] == 0)
             {
-                Projectile.ai[0]++;
                 switch (Projectile.velocity.X)
                 {
                     case 1:
@@ -159,136 +155,14 @@ namespace BossRush.Accessories
                 }
                 Projectile.velocity = Vector2.Zero;
             }
+            if(Projectile.ai[0] >= 60)
+            {
+                Projectile.penetrate = 1;
+            }
+            Projectile.ai[0]++;
             Behavior(player,45 * Multiplier, Counter);
             if (Counter == -MathHelper.TwoPi * 100 - 1) { Counter = -1; }
             Counter--;
-        }
-    }
-    public class WeebMasterPlayer : ModPlayer
-    {
-        public bool GuidetoMasterNinja;
-        public bool NinjaWeeb;
-        //counter for accessory
-        //GuidetoMasterNinja
-        int GTMNcount = 0;
-        int GTMNlimitCount = 15;
-        int TimerForUltimate = 0;
-        public override void ResetEffects()
-        {
-            GuidetoMasterNinja = false;
-            NinjaWeeb = false;
-        }
-        public override void UpdateEquips()
-        {
-            if (Player.head == 22 && Player.body == 14 && Player.legs == 14)
-            {
-                NinjaWeeb = true;
-            }
-        }
-        public override void PostUpdate()
-        {
-            if (Player.GetModPlayer<WeebMasterPlayer2>().GuidetoMasterNinja && Player.GetModPlayer<WeebMasterPlayer>().GuidetoMasterNinja)
-            {
-                if (TimerForUltimate >= 40)
-                {
-                    if (Player.ownedProjectileCounts[ModContent.ProjectileType<ThrowingKnifeCustom>()] < 1)
-                    {
-                        for (int i = 0; i < 8; i++)
-                        {
-                            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, new Vector2(1 + i, 1 + i), ModContent.ProjectileType<ThrowingKnifeCustom>(), 30, 2f, Player.whoAmI);
-                        }
-                    }
-                    else
-                    {
-                        TimerForUltimate = 0;
-                    }
-                }
-                else 
-                {
-                    if (Player.ownedProjectileCounts[ModContent.ProjectileType<ThrowingKnifeCustom>()] > 0)
-                    {
-                        TimerForUltimate = 0;
-                    }
-                    TimerForUltimate++;
-                }
-            }
-        }
-
-        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            List<int> GTMNcontain = new List<int>();
-
-            if (GuidetoMasterNinja)
-            {
-                //Independant damage
-                int StaticDamage = 10;
-                if (NinjaWeeb)
-                {
-                    StaticDamage = (int)(StaticDamage * 1.2f);
-                }
-                if (Player.HasItem(ItemID.ThrowingKnife) && Player.HasItem(ItemID.PoisonedKnife) && Player.HasItem(ItemID.FrostDaggerfish) && Player.HasItem(ItemID.BoneDagger))
-                {
-                    GTMNcount++;
-                }
-                if (Player.HasItem(ItemID.ThrowingKnife))
-                {
-                    StaticDamage += 5;
-                }
-                if (Player.HasItem(ItemID.PoisonedKnife))
-                {
-                    StaticDamage += 5;
-                }
-                if (Player.HasItem(ItemID.FrostDaggerfish))
-                {
-                    StaticDamage += 5;
-                }
-                if (Player.HasItem(ItemID.BoneDagger))
-                {
-                    StaticDamage += 5;
-                }
-                GTMNcount++;
-                if (GTMNcount >= GTMNlimitCount)
-                {
-                    Vector2 Aimto = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX);
-
-                    EntitySource_ItemUse entity = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<GuideToMasterNinja>()));
-                    //The actual secret here
-                    GTMNcontain.Clear();
-                    GTMNcontain.Add(ProjectileID.Shuriken);
-                    if (Player.HasItem(ItemID.PoisonedKnife))
-                    {
-                        GTMNcontain.Add(ProjectileID.PoisonedKnife);
-                    }
-                    if (Player.HasItem(ItemID.ThrowingKnife))
-                    {
-                        GTMNcontain.Add(ProjectileID.ThrowingKnife);
-                    }
-                    if (Player.HasItem(ItemID.FrostDaggerfish))
-                    {
-                        GTMNcontain.Add(ProjectileID.FrostDaggerfish);
-                    }
-                    if (Player.HasItem(ItemID.BoneDagger))
-                    {
-                        GTMNcontain.Add(ProjectileID.BoneDagger);
-                    }
-                    Projectile.NewProjectile(entity, Player.Center, Aimto * 20, Main.rand.NextFromCollection(GTMNcontain), StaticDamage, 1f, Player.whoAmI);
-                    GTMNcount = 0;
-                }
-            }
-        }
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
-        {
-            if (GuidetoMasterNinja)
-            {
-                if (Player.HasItem(ItemID.FrostDaggerfish))
-                {
-                    target.AddBuff(BuffID.Frostburn, 150);
-                }
-                if (Player.HasItem(ItemID.BoneDagger))
-                {
-                    target.AddBuff(BuffID.OnFire, 150);
-                }
-            }
         }
     }
 }
