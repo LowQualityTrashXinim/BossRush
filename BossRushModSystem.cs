@@ -177,52 +177,5 @@ namespace BossRush
             });
             RecipeGroup.RegisterGroup("OreBroadSword", OreBroadSword);
         }
-        public bool WASDdisable;
-        public bool OnlyUseOneClass;
-        public bool Spawnratex3;
-        public bool BoulderRain;
-        public bool EnemyStronger;
-        public bool Hellfirerain;
-        public bool BadDebuff;
-        public bool Closecombatfight;
-        int count = 0;
-        public override void PostUpdateWorld()
-        {
-            if (ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
-            {
-                Player player = Main.LocalPlayer;
-                if (count == 0)
-                {
-                    switch (player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser)
-                    {
-                        case 1:
-                            WASDdisable = true;
-                            break;
-                        case 2:
-                            OnlyUseOneClass = true;
-                            break;
-                        case 3:
-                            Spawnratex3 = true;
-                            break;
-                        case 4:
-                            BoulderRain = true;
-                            break;
-                        case 5:
-                            EnemyStronger = true;
-                            break;
-                        case 6:
-                            Hellfirerain = true;
-                            break;
-                        case 7:
-                            BadDebuff = true;
-                            break;
-                        case 8:
-                            Closecombatfight = true;
-                            break;
-                    }
-                    count++;
-                }
-            }
-        }
     }
 }
