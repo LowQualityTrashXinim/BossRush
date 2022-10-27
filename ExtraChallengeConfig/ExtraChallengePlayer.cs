@@ -9,12 +9,11 @@ namespace BossRush.ExtraChallengeConfig
         public int ChallengeChooser = 0;
         public int ClassChooser = 0;
         public int BossSlayedCount = 0;
-        public bool WASDChallenge = false;//Todo : figure out how to do this
         public bool OnlyUseOneClass = false;
         public bool Badbuff = false;
         public bool spawnRatex3 = false;
         public bool strongerEnemy = false;
-
+        public bool BatJungleANDCave = false;
         public override void PostUpdate()
         {
             if(Badbuff)
