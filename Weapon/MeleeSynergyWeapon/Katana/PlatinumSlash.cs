@@ -21,26 +21,22 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             Projectile.light = 0.5f;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100; // The length of old position to be recorded
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            Projectile.scale = 0.5f;
+            Projectile.Size -= new Vector2(10, 10);
         }
         public override void AI()
         {
             Player player = Main.LocalPlayer;
             int MaxAnimation = player.itemAnimationMax;
-            if (Projectile.timeLeft > MaxAnimation * 6)
+            if (Projectile.timeLeft > MaxAnimation*3)
             {
-                Projectile.timeLeft = MaxAnimation * 6;
-            }
-            Projectile.scale -= MaxAnimation / 255;
-            Projectile.alpha += MaxAnimation / 255;
-            if (Projectile.alpha >= 255)
-            {
-                Projectile.Kill();
+                Projectile.timeLeft = MaxAnimation*3;
             }
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            target.immune[Projectile.owner] = 2;
+            target.immune[Projectile.owner] = 5;
         }
 
         public override bool PreDraw(ref Color lightColor)

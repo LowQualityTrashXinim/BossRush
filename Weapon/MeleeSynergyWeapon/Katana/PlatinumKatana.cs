@@ -1,8 +1,7 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 
 namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
 {
@@ -23,7 +22,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             Item.useTime = 20;
             Item.useAnimation = 20;
 
-            Item.shoot = ModContent.ProjectileType<PlatinumSlash>();
+            Item.shoot = ModContent.ProjectileType<KatanaSlash>();
             Item.DamageType = DamageClass.Melee;
             Item.shootSpeed = 3;
             Item.rare = 1;
@@ -33,14 +32,18 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             Item.noUseGraphic = true;
             Item.value = Item.buyPrice(gold: 50);
         }
-
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        int count = 0;
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * -75f;
-            position += muzzleOffset;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-            return false;
+            if(count%2 == 0)
+            {
+                type = ModContent.ProjectileType<KatanaSlash>();
+            }
+            else
+            {
+                type= ModContent.ProjectileType<KatanaSlashUpsideDown>();
+            }
+            count++;
         }
         public override void AddRecipes()
         {
