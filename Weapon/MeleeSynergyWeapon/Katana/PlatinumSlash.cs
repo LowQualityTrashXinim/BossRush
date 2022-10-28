@@ -26,17 +26,15 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
         {
             Player player = Main.LocalPlayer;
             int MaxAnimation = player.itemAnimationMax;
-            if(Projectile.timeLeft > MaxAnimation)
+            if (Projectile.timeLeft > MaxAnimation * 6)
             {
-                Projectile.timeLeft = MaxAnimation;
+                Projectile.timeLeft = MaxAnimation * 6;
             }
-            if (Projectile.scale != 0)
+            Projectile.scale -= MaxAnimation / 255;
+            Projectile.alpha += MaxAnimation / 255;
+            if (Projectile.alpha >= 255)
             {
-                Projectile.scale -= 0.01f;
-            }
-            if (Projectile.Opacity != 0)
-            {
-                Projectile.Opacity -= 1;
+                Projectile.Kill();
             }
         }
 

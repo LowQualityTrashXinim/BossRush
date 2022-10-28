@@ -20,12 +20,12 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
 
             Item.damage = 43;
             Item.knockBack = 4f;
-            Item.useTime = 10;
-            Item.useAnimation = 10;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
 
             Item.shoot = ModContent.ProjectileType<PlatinumSlash>();
             Item.DamageType = DamageClass.Melee;
-            Item.shootSpeed = 5;
+            Item.shootSpeed = 3;
             Item.rare = 1;
             Item.useStyle = 1;
             Item.noMelee = true;
@@ -37,7 +37,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * -200f;
+            Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * -75f;
             position += muzzleOffset;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
