@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Weapon.RangeSynergyWeapon.LongerMusket
+namespace BossRush.Weapon.BasicWeapon
 {
     internal class LongerMusket : ModItem
     {
@@ -36,14 +36,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.LongerMusket
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-13, 0);
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-            .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-            .AddIngredient(ItemID.Musket, 2)
-            .Register();
         }
     }
 }

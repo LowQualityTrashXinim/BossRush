@@ -20,12 +20,9 @@ using BossRush.Weapon.MeleeSynergyWeapon.SuperEnchantedSword;
 using BossRush.Weapon.MeleeSynergyWeapon.SuperShortSword;
 using BossRush.Weapon.MeleeSynergyWeapon.YinYang;
 using BossRush.Weapon.RangeSynergyWeapon.BloodyShot;
-using BossRush.Weapon.RangeSynergyWeapon.BlueMinishark;
 using BossRush.Weapon.RangeSynergyWeapon.Bowmarang;
 using BossRush.Weapon.RangeSynergyWeapon.HeartPistol;
-using BossRush.Weapon.RangeSynergyWeapon.HuntingRifle;
 using BossRush.Weapon.RangeSynergyWeapon.KnifeRevolver;
-using BossRush.Weapon.RangeSynergyWeapon.LongerMusket;
 using BossRush.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Weapon.RangeSynergyWeapon.Merciless;
 using BossRush.Weapon.RangeSynergyWeapon.NatureSelection;
@@ -35,7 +32,6 @@ using BossRush.Weapon.RangeSynergyWeapon.PaintRifle;
 using BossRush.Weapon.RangeSynergyWeapon.QuadDemonBlaster;
 using BossRush.Weapon.RangeSynergyWeapon.RectangleShotgun;
 using BossRush.Weapon.RangeSynergyWeapon.RifleShotgun;
-using BossRush.Weapon.RangeSynergyWeapon.SingleBarrelMinishark;
 using BossRush.Weapon.RangeSynergyWeapon.SkullRevolver;
 using BossRush.Weapon.RangeSynergyWeapon.SnowballRifle;
 using BossRush.Weapon.RangeSynergyWeapon.SnowballShotgunCannon;
@@ -70,29 +66,18 @@ namespace BossRush
                 ModContent.ItemType<EnchantedSilverSword>(),
                 ModContent.ItemType<EnchantedTinSword>(),
                 ModContent.ItemType<EnchantedTungstenSword>(),
-                ModContent.ItemType<CopperKatana>(),
-                ModContent.ItemType<GoldKatana>(),
-                ModContent.ItemType<IronKatana>(),
-                ModContent.ItemType<LeadKatana>(),
                 ModContent.ItemType<PlatinumKatana>(),
-                ModContent.ItemType<SilverKatana>(),
-                ModContent.ItemType<TinKatana>(),
-                ModContent.ItemType<TungstenKatana>(),
                 ModContent.ItemType<BloodStar>(),
                 ModContent.ItemType<BurningPassion>(),
                 ModContent.ItemType<FlamingWoodSword>(),
                 ModContent.ItemType<FrostSwordFish>(),
                 ModContent.ItemType<ShadowTrick>(),
                 //Range
-                ModContent.ItemType<BlueMinishark>(),
                 ModContent.ItemType<ChaosMiniShark>(),
-                ModContent.ItemType<SingleBarrelMinishark>(),
                 ModContent.ItemType<DeathBySpark>(),
                 ModContent.ItemType<BloodyShot>(),
                 ModContent.ItemType<QuadDemonBlaster>(),
                 ModContent.ItemType<HeartPistol>(),
-                ModContent.ItemType<LongerMusket>(),
-                ModContent.ItemType<HuntingRifle>(),
                 ModContent.ItemType<RectangleShotgun>(),
                 ModContent.ItemType<RifleShotgun>(),
                 ModContent.ItemType<SkullRevolver>(),

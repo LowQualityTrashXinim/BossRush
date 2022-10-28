@@ -46,7 +46,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.KnifeRevolver
 			{
 				Projectile.timeLeft = duration;
 			}
-			
 			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
 			float halfDuration = duration * 0.5f;
 			float progress;

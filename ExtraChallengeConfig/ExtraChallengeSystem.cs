@@ -62,11 +62,11 @@ namespace BossRush.ExtraChallengeConfig
                             break;
                         case 5:
                             player.GetModPlayer<ExtraChallengePlayer>().strongerEnemy = true;
-                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Enemy get extra defense"), Colors.RarityDarkRed);
+                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Enemy get stronger"), Colors.RarityDarkRed);
                             break;
                         case 6:
                             Hellfirerain = true; //done
-                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Hell fire rain"), Colors.RarityDarkRed);
+                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Hell fire arrow rain"), Colors.RarityDarkRed);
                             break;
                         case 7:
                             player.GetModPlayer<ExtraChallengePlayer>().Badbuff = true;
@@ -90,6 +90,7 @@ namespace BossRush.ExtraChallengeConfig
                             Vector2 spawn = new Vector2(Main.rand.Next(-1000, 1000) + player.Center.X, -1000 + player.Center.Y);
                             int projectile = Projectile.NewProjectile(null, spawn, Vector2.Zero, ProjectileID.Boulder, 400, 10f, Main.myPlayer, 0f, 0f);
                             Main.projectile[projectile].hostile = true;
+                            Main.projectile[projectile].friendly = false;
                             BoulderRainCountTime = 0;
                         }
                         else
@@ -109,6 +110,7 @@ namespace BossRush.ExtraChallengeConfig
                                 Vector2 spawn = new Vector2(Main.rand.Next(-1500, 1500) + player.Center.X, -1000 + player.Center.Y);
                                 int projectile = Projectile.NewProjectile(null, spawn, Vector2.Zero, ProjectileID.HellfireArrow, 10, 1f, Main.myPlayer, 0f, 0f);
                                 Main.projectile[projectile].hostile = true;
+                                Main.projectile[projectile].friendly = false;
                                 HellFireRainCount = 0;
                             }
                         }
@@ -129,6 +131,7 @@ namespace BossRush.ExtraChallengeConfig
                                 Vector2 spawn = new Vector2(player.Center.X, -1000 + player.Center.Y);
                                 int projectile = Projectile.NewProjectile(null, spawn, Vector2.Zero, ProjectileID.CannonballHostile, 10000, 1f, Main.myPlayer, 0f, 0f);
                                 Main.projectile[projectile].hostile = true;
+                                Main.projectile[projectile].friendly = false;
                                 Main.projectile[projectile].tileCollide = false;
                                 Main.projectile[projectile].timeLeft = 200;
                                 Main.projectile[projectile].light = 1f;

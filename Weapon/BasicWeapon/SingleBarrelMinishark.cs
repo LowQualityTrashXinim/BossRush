@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
-namespace BossRush.Weapon.RangeSynergyWeapon.SingleBarrelMinishark
+namespace BossRush.Weapon.BasicWeapon
 {
     internal class SingleBarrelMinishark : ModItem
     {
@@ -54,15 +54,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.SingleBarrelMinishark
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, -2f);
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.Minishark)
-                .AddIngredient(ItemID.Musket)
-                .Register();
-
         }
     }
 }

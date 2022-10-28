@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Weapon.RangeSynergyWeapon.HuntingRifle
+namespace BossRush.Weapon.BasicWeapon
 {
     internal class HuntingRifle : ModItem
     {
@@ -52,15 +52,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.HuntingRifle
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-13, 0);
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-            .AddIngredient(ItemID.Musket, 1)
-            .AddIngredient(ItemID.QuadBarrelShotgun, 1)
-            .Register();
         }
     }
 }

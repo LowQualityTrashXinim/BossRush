@@ -10,6 +10,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
     {
         public override void SetStaticDefaults()
         {
+            DisplayName.SetDefault("Enhanced Katana");
             Tooltip.SetDefault("The best katana there is, yet");
         }
         public override void SetDefaults()
@@ -17,10 +18,10 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             Item.width = 50;
             Item.height = 52;
 
-            Item.damage = 34;
+            Item.damage = 43;
             Item.knockBack = 4f;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 10;
+            Item.useAnimation = 10;
 
             Item.shoot = ModContent.ProjectileType<PlatinumSlash>();
             Item.DamageType = DamageClass.Melee;
@@ -46,7 +47,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.Katana)
-                .AddIngredient(ItemID.PlatinumBroadsword)
+                .AddRecipeGroup("OreBroadSword")
                 .Register();
         }
     }

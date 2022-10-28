@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Weapon.RangeSynergyWeapon.BlueMinishark
+namespace BossRush.Weapon.BasicWeapon
 {
     internal class BlueMinishark : ModItem
     {

@@ -17,7 +17,6 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             Projectile.friendly = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 150;
             Projectile.extraUpdates = 6;
             Projectile.light = 0.5f;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100; // The length of old position to be recorded
@@ -25,13 +24,19 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
         }
         public override void AI()
         {
+            Player player = Main.LocalPlayer;
+            int MaxAnimation = player.itemAnimationMax;
+            if(Projectile.timeLeft > MaxAnimation)
+            {
+                Projectile.timeLeft = MaxAnimation;
+            }
             if (Projectile.scale != 0)
             {
                 Projectile.scale -= 0.01f;
             }
-            if (Projectile.alpha != 225)
+            if (Projectile.Opacity != 0)
             {
-                Projectile.alpha += 1;
+                Projectile.Opacity -= 1;
             }
         }
 
