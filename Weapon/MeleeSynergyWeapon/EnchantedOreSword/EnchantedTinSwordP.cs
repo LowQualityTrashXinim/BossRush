@@ -1,12 +1,14 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 
 namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    class EnchantedTinSwordP : ModProjectile
+    internal class EnchantedTinSwordP : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Item_" + ItemID.TinShortsword;
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;

@@ -18,7 +18,7 @@ namespace BossRush.Note
                 "\nThese synergy item is a solution to the problem we having as it introduce more stuff and fun stuff you can use" +
                 "\nWith some of it can be use to increase power of certain class or player power overall, all of these stuff are unbalance" +
                 "\nThe decision for making weapon to be unbalance as it is intended to be come across randomly by pure chance with some worse than other" +
-                "\nThe item can be craft from this can be found in the chest and is intended that way, some example like" + $"[i:{ModContent.ItemType<SynergyEnergy>()}] + [i:{ItemID.CopperShortsword}] + [i:{ItemID.CopperBroadsword}] = [i:{ModContent.ItemType<EnchantedCopperSword>()}]" +
+                "\nThe item can be craft from this can be found in the chest and is intended that way, some example like" + $"[i:{ModContent.ItemType<SynergyEnergy>()}] + [i:{ItemID.CopperShortsword}] + [i:{ItemID.PlatinumBroadsword}] = [i:{ModContent.ItemType<EnchantedSilverSword>()}]" +
                 "\nMost synergy item are design with a unique or fun little idea that promote a more vary playstyle, some synergy weapon have lower dps than other" +
                 "\nbut it is up to you and decide if it worth to get a better dps weapon than what you have or play the chance game and get a better synergy item" +
                 "\nThe way you get synergy weapon is by fighting optional boss that don't matter to normal game progress like" + $"[i:{ItemID.Abeemination}]" +

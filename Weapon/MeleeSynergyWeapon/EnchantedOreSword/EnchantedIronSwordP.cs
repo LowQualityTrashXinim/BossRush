@@ -1,11 +1,13 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    class EnchantedIronSwordP : ModProjectile
+    internal class EnchantedIronSwordP : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Item_" + ItemID.IronShortsword;
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;

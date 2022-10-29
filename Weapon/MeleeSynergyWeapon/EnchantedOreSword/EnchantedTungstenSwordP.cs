@@ -1,11 +1,13 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    class EnchantedTungstenSwordP : ModProjectile
+    internal class EnchantedTungstenSwordP : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Item_" + ItemID.TungstenShortsword;
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;

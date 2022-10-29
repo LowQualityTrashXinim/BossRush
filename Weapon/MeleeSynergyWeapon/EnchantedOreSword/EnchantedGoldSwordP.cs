@@ -1,11 +1,13 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    class EnchantedGoldSwordP : ModProjectile
+    internal class EnchantedGoldSwordP : ModProjectile
     {
+        public override string Texture => "Terraria/Images/Item_" + ItemID.GoldShortsword;
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;
@@ -25,23 +27,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 
         public override void AI()
         {
-            Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX) * 3;
-            if (Projectile.velocity.X > 15)
-            {
-                Projectile.velocity.X = 15;
-            }
-            else if (Projectile.velocity.X < -15)
-            {
-                Projectile.velocity.X = -15;
-            }
-            if (Projectile.velocity.Y > 15)
-            {
-                Projectile.velocity.Y = 15;
-            }
-            else if (Projectile.velocity.Y < -15)
-            {
-                Projectile.velocity.Y = -15;
-            }
+            Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             Projectile.alpha += 2;
             if (Projectile.alpha >= 235)

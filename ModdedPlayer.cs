@@ -231,7 +231,7 @@ namespace BossRush
                 items.Add(new Item(ItemID.ManaCrystal, 3));
                 if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
                 {
-                    items.Add(new Item(Main.rand.Next(new int[] { ModContent.ItemType<EnchantedCopperSword>(), ModContent.ItemType<AmethystBow>(), ModContent.ItemType<AmethystSwotaff>() })));
+                    items.Add(new Item(Main.rand.Next(new int[] { ModContent.ItemType<AmethystBow>(), ModContent.ItemType<AmethystSwotaff>() })));
                 }
             }
             return items;
