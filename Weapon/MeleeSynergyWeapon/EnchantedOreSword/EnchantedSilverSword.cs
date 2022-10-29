@@ -31,7 +31,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
         }
-        int count = 0;
+        int count = -1;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             int[] RandomShortSword = new int[] {   
@@ -53,7 +53,8 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             }
             Vector2 Above = Vector2.Zero;
             Vector2 AimTo = Vector2.Zero;
-            switch(count)
+            float Rotation;
+            switch (count)
             {
                 case 0:
                     Projectile.NewProjectile(source, position, velocity, RandomShortSword[count], damage, knockback, player.whoAmI);
@@ -62,27 +63,32 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword
                     Projectile.NewProjectile(source, position, velocity, RandomShortSword[count], damage, knockback, player.whoAmI);
                     break;
                 case 2:
+                    Rotation = MathHelper.ToRadians(180);
                     for (int i = 0; i < 8; i++)
                     {
-                        float Rotation = MathHelper.ToRadians(180);
                         Vector2 RotateSurround = velocity.RotatedBy(MathHelper.Lerp(-Rotation, Rotation, i / 8f));
                         Projectile.NewProjectile(source, position, RotateSurround, RandomShortSword[count], damage, knockback, player.whoAmI);
                     }
                     break;
                 case 3:
-                    Above = Main.MouseWorld + Main.rand.NextVector2Circular(100f,100f);
+                    Above = Main.MouseWorld + velocity.SafeNormalize(Vector2.UnitX) * 250f;
                     AimTo = (player.Center - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
-                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage, knockback, player.whoAmI);
+                    Rotation = MathHelper.ToRadians(15);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Vector2 RotateSurround = AimTo.RotatedBy(MathHelper.Lerp(-Rotation, Rotation, i / 5f));
+                        Projectile.NewProjectile(source, Above, RotateSurround, RandomShortSword[count], damage, knockback, player.whoAmI);
+                    }
                     break;
                 case 4:
                     Above = new Vector2(Main.MouseWorld.X + Main.rand.Next(-300, 300), player.Center.Y - 700);
                     AimTo = (Main.MouseWorld - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed * 3;
-                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage*3, knockback, player.whoAmI);
                     break;
                 case 5:
                     Above = new Vector2(Main.MouseWorld.X + Main.rand.Next(-300, 300), player.Center.Y + 700);
                     AimTo = (Main.MouseWorld - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed * 3;
-                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage*3, knockback, player.whoAmI);
                     break;
                 case 6:
                     Projectile.NewProjectile(source, position, velocity, RandomShortSword[count], damage, knockback, player.whoAmI);

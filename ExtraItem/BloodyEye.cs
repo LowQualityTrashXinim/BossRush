@@ -47,14 +47,20 @@ namespace BossRush.ExtraItem
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
                     // If the player is not in multiplayer, spawn directly
+                    for (int i = 0; i < 2; i++)
+                    {
 					NPC.SpawnOnPlayer(player.whoAmI, type);
+                    }
 					Main.bloodMoon = true;
 				}
 				else
 				{
-					// If the player is in multiplayer, request a spawn
-					// This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
+                    // If the player is in multiplayer, request a spawn
+                    // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
+                    for (int i = 0; i < 2; i++)
+                    {
 					NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    }
 				}
 			}
 			return true;

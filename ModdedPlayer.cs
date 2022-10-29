@@ -15,8 +15,6 @@ using BossRush.Note;
 using System.Collections.Generic;
 using BossRush.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Weapon.MagicSynergyWeapon.Swotaff;
-using BossRush.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
-using BossRush.Weapon.MeleeSynergyWeapon.Katana;
 using BossRush.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 
