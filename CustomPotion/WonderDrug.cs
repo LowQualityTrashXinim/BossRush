@@ -153,9 +153,6 @@ namespace BossRush.CustomPotion
 			packet.Write(DrugDealer);
 			packet.Send(toWho, fromWho);
 		}
-
-		// NOTE: The tag instance provided here is always empty by default.
-		// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
 		public override void SaveData(TagCompound tag)
 		{
 			tag["Drug"] = DrugDealer;

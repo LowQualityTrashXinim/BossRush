@@ -185,5 +185,13 @@ namespace BossRush.Weapon.RangeSynergyWeapon.IceStorm
             float? Modify = SpeedMultiplier <= 3 ? 1f : SpeedMultiplier -2f;
             SpeedMultiplier = Modify.Value;
         }
+
+        public override void PostUpdate()
+        {
+            if(Player.HeldItem.type != ModContent.ItemType<IceStorm>())
+            {
+                SpeedMultiplier = 1;
+            }
+        }
     }
 }

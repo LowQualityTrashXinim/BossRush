@@ -11,7 +11,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.QuadDemonBlaster
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Quad Demon Blaster");
-            Tooltip.SetDefault("Now with extra large spread! Good for 'accidentally' killing Voodoo Demons.");
+            Tooltip.SetDefault("Can get hot real fast");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
@@ -23,7 +23,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.QuadDemonBlaster
             Item.width = 46;
 
             Item.useAmmo = AmmoID.Bullet;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = 3;
 
@@ -32,8 +32,12 @@ namespace BossRush.Weapon.RangeSynergyWeapon.QuadDemonBlaster
             Item.shoot = ProjectileID.Bullet;
             Item.reuseDelay = 15;
             Item.DamageType = DamageClass.Ranged;
-            Item.autoReuse = false;
+            Item.autoReuse = true;
             Item.noMelee = true;
+        }
+        public override void HoldItem(Player player)
+        {
+            player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier -= (player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier == 1 ? 0 : .25f);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -43,14 +47,18 @@ namespace BossRush.Weapon.RangeSynergyWeapon.QuadDemonBlaster
                 position += muzzleOffset;
             }
             float ProjNum = 10;
-            float Rotation = MathHelper.ToRadians(30);
+            float Rotation = MathHelper.ToRadians(player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier);
             for (int i = 0; i < ProjNum; i++)
             {
-                Vector2 Rotate = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(Rotation, -Rotation, i / (ProjNum - 1)));
+                Vector2 Rotate = velocity.RotatedBy(MathHelper.Lerp(Rotation, -Rotation, i / (ProjNum - 1)));
                 float RandomSpeadx = Main.rand.NextFloat(0.5f, 1f);
                 float RandomSpeady = Main.rand.NextFloat(0.5f, 1f);
-                Projectile.NewProjectile(source, position.X, position.Y, Rotate.X * RandomSpeadx, Rotate.Y * RandomSpeady, type, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position.X, position.Y, 
+                    Rotate.X * (player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier == 1 ? 1 : RandomSpeadx), 
+                    Rotate.Y * (player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier == 1 ? 1 : RandomSpeady), 
+                    type, damage, knockback, player.whoAmI);
             }
+            player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier += (player.GetModPlayer<QuadDemonBlasterPlayer>().SpeedMultiplier < 45 ? 10 : 1);
             return true;
         }
 
@@ -67,5 +75,9 @@ namespace BossRush.Weapon.RangeSynergyWeapon.QuadDemonBlaster
                 .AddIngredient(ItemID.PhoenixBlaster)
                 .Register();
         }
+    }
+    public class QuadDemonBlasterPlayer : ModPlayer
+    {
+        public float SpeedMultiplier = 1;
     }
 }
