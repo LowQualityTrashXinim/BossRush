@@ -10,7 +10,7 @@ namespace BossRush
     public abstract class WeaponTemplate : ModItem
     {
         private float numOfProjectile = 1;
-        private Vector2 vec2ToRotate;
+        protected Vector2 vec2ToRotate;
         public float SpreadModify { get => SpreadModify1; set => SpreadModify1 = value; }
         public float NumOfProjectile { get => numOfProjectile; set => numOfProjectile = value; }
         public Vector2 Vec2ToRotate { get => vec2ToRotate; set => vec2ToRotate = value; }
@@ -34,7 +34,15 @@ namespace BossRush
             }
             return Vec2ToRotate;
         }
-
+        public Vector2 PositionOFFSET(Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
+        {
+            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.UnitX) * offSetBy;
+            if (Collision.CanHitLine(position, 0, 0, position + OFFSET, 0, 0))
+            {
+                return position += OFFSET;
+            }
+            return position;
+        }
         public Vector2 RandomSpread(Vector2 ToRotateAgain, int Spread, float additionalMultiplier = 1)
         {
             ToRotateAgain.X += (Main.rand.Next(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
