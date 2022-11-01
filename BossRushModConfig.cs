@@ -8,9 +8,11 @@ namespace BossRush
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         [Label("Enable Challenge Mode ( On World Generation )")]
-        [Tooltip("The intended way to play the mod\n" +
-            "it is recommend to enable this if you want to experience what the mod have to offer along with Synergy Mode\n" +
-            "Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict")]
+        [Tooltip("The intended way to play the mod" +
+            "\nWARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD" +
+            "\nTHIS WILL MESS WITH YOUR WORLD GEN" +
+            "\nit is recommend to enable this if you want to experience what the mod have to offer along with Synergy Mode" +
+            "\nDisable it for more vanilla QoL feel of the mod and to prevent world gen conflict")]
         [DefaultValue(true)]
         public bool EnableChallengeMode { get; set; }
 
