@@ -30,17 +30,16 @@ namespace BossRush.Chest
             }
             int Accessory = Main.rand.Next(new int[] { ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.BandofRegeneration, ItemID.BandofStarpower, ItemID.CelestialMagnet, ItemID.NaturesGift, ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.Shackle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon });
             player.QuickSpawnItem(entitySource, Accessory);
-            ChestLootDrop IceChest = new ChestLootDrop(player);
             for (int i = 0; i < 12; i++)
             {
-                IceChest.GetWeapon(out int weapon, out int specialAmount);
-                IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             for (int i = 0; i < 5; i++)
             {
-                IceChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, 3);
             }
         }

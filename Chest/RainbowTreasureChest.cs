@@ -83,10 +83,9 @@ namespace BossRush.Chest
             int randomAmount = Main.rand.Next(10, 25);
             for (int i = 0; i < randomAmount; i++)
             {
-                ChestLootDrop rainbowChest = new ChestLootDrop(player);
-                rainbowChest.AddLoot(false, true);
-                rainbowChest.GetWeapon(out int Weapon, out int specialAmount);
-                rainbowChest.AmmoForWeapon(out int Ammo, out int Amount, Weapon, 10);
+                ModContent.GetInstance<ChestLootDrop>().AddLoot(false, true);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int Weapon, out int specialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int Ammo, out int Amount, Weapon, 10);
                 player.QuickSpawnItem(entitySource, Weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, Ammo, Amount);
                 if (Main.rand.NextBool(10))

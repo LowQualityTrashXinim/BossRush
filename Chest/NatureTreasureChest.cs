@@ -66,23 +66,22 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.SpectrePants);
                     break;
             }
-            ChestLootDrop NatureChest = new ChestLootDrop(player);
-            NatureChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                NatureChest.GetWeapon(out int weapon, out int specialAmount, true, NatureChest.RNGManage(25, 25, 25, 25, 0));
-                NatureChest.AmmoForWeapon(out int ammo, out int num, weapon, 2.5f);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount, true, ModContent.GetInstance<ChestLootDrop>().RNGManage(25, 25, 25, 25, 0));
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon, 2.5f);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             for (int i = 0; i < 3; i++)
             {
-                NatureChest.GetAccessory(out int Accessory, true, true, true, false);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             for (int i = 0; i < amount2; i++)
             {
-                NatureChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);

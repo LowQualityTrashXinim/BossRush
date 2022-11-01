@@ -40,7 +40,6 @@ namespace BossRush.Weapon.BasicWeapon
             }
             if (player.velocity == Vector2.Zero)
             {
-                damage = (int)(damage * 1.25f);
                 Item.useTime = 4;
                 Item.useAnimation = 4;
             }

@@ -46,24 +46,24 @@ namespace BossRush.Chest
                     break;
             }
             ChestLootDrop CrystalChest = new ChestLootDrop(player);
-            CrystalChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                CrystalChest.GetWeapon(out int weapon, out int specialAmount);
-                CrystalChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);   
             }
             for (int i = 0; i < 3; i++)
             {
-                CrystalChest.GetAccessory(out int Accessory2, true, true, true, false,true);
-                CrystalChest.GetAccessory(out int Accessory, true, true, true, false);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory2, true, true, true, false,true);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false);
                 player.QuickSpawnItem(entitySource, Accessory);
                 player.QuickSpawnItem(entitySource, Accessory2);
             }
             for (int i = 0; i < amount2; i++)
             {
-                CrystalChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             if (Main.rand.NextBool(5))

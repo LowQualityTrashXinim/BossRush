@@ -49,20 +49,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.MoltenGreaves);
                     break;
             }
-            ChestLootDrop GoldChest = new ChestLootDrop(player);
-            GoldChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                GoldChest.GetWeapon(out int weapon, out int specialAmount);
-                GoldChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            GoldChest.GetAccessory(out int Accessory);
+            ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory);
             player.QuickSpawnItem(entitySource, Accessory);
             for (int i = 0; i < amount2; i++)
             {
-                GoldChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             switch (Main.rand.Next(2))

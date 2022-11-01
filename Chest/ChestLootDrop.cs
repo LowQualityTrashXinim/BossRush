@@ -558,7 +558,7 @@ namespace BossRush.Chest
         int[] AnhkCharm = new int[] {ItemID.AdhesiveBandage,ItemID.Bezoar,ItemID.Vitamins,ItemID.ArmorPolish,ItemID.Blindfold,ItemID.PocketMirror,ItemID.Nazar,ItemID.Megaphone,ItemID.FastClock,ItemID.TrifoldMap };
         int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles};
 
-        public void GetAccessory(out int Accessory, bool MovementAcc = true, bool CombatAcc = true, bool HealthManaAcc = true, bool AllowPreHMAcc = true, bool PriorityAnhkShield = false ,int Tier = 0)
+        public void GetAccessory(out int Accessory, bool MovementAcc = true, bool CombatAcc = true, bool HealthManaAcc = true, bool AllowPreHMAcc = true, bool PriorityAnhkShield = false)
         {
             if (MovementAcc)
             {

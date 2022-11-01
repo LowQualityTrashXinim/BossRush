@@ -131,26 +131,25 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.SpiderGreaves);
                     break;
             }
-            ChestLootDrop Shadow = new ChestLootDrop(player);
-            Shadow.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                Shadow.GetWeapon(out int weapon, out int specialAmount);
-                Shadow.AmmoForWeapon(out int ammo, out int num, weapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon,specialAmount);
                 player.QuickSpawnItem(entitySource, ammo,num);
             }
             for (int i = 0; i < 4; i++)
             {
-                Shadow.GetAccessory(out int Accessory2,false,true,true,false);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory2,false,true,true,false);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory);
                 player.QuickSpawnItem(entitySource, Accessory2);
-                Shadow.GetAccessory(out int Accessory);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
 
             for (int i = 0; i < amount2; i++)
             {
-                Shadow.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.MythrilAnvil);

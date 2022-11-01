@@ -28,17 +28,16 @@ namespace BossRush.Chest
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            ChestLootDrop WoodChest = new ChestLootDrop(player);
-            WoodChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                WoodChest.GetWeapon(out int ReturnWeapon,out int SpecialAmount);
-                WoodChest.AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int ReturnWeapon,out int SpecialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
                 player.QuickSpawnItem(entitySource, ReturnWeapon,SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo,num);
             }
 
-            WoodChest.GetWeapon(out int ReturnWeaponMelee, out _, default, 1);
+            ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int ReturnWeaponMelee, out _, default, 1);
             player.QuickSpawnItem(entitySource, ReturnWeaponMelee);
             bool other = false;
             for (int i = 0; i < 2; i++)
@@ -47,12 +46,12 @@ namespace BossRush.Chest
                 {
                     other = true;
                 }
-                WoodChest.GetAccessory(out int accessory,true,other,other);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int accessory,true,other,other);
                 player.QuickSpawnItem(entitySource, accessory);
             }
             for (int i = 0; i < amount2; i++)
             {
-                WoodChest.GetPotion(out int potion, true);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion, true);
                 player.QuickSpawnItem(entitySource, potion , amount3);
             }
             int RandomNumber = Main.rand.Next(7);

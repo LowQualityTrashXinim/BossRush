@@ -54,20 +54,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource, ItemID.ObsidianPants);
                     break;
             }
-            ChestLootDrop EvilChest = new ChestLootDrop(player);
-            EvilChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                EvilChest.GetWeapon(out int ReturnWeapon, out int SpecialAmount);
-                EvilChest.AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int ReturnWeapon, out int SpecialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
                 player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            EvilChest.GetAccessory(out int Accessory);
+            ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory);
             player.QuickSpawnItem(entitySource, Accessory);
             for (int i = 0; i < amount2; i++)
             {
-                EvilChest.GetPotion(out int Potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int Potion);
                 player.QuickSpawnItem(entitySource, Potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);

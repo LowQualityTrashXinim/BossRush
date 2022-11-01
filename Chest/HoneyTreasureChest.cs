@@ -53,19 +53,18 @@ namespace BossRush.Chest
                         break;
                 }
             }
-            ChestLootDrop HoneyCHest = new ChestLootDrop(player);
             if (NPC.downedBoss3)
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    HoneyCHest.GetWeapon(out int weapon, out int specialAmount);
-                    HoneyCHest.AmmoForWeapon(out int ammo, out int num, weapon);
+                    ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
+                    ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                     player.QuickSpawnItem(entitySource, weapon, specialAmount);
                     player.QuickSpawnItem(entitySource, ammo, num);
                 }
             }
             player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
-            HoneyCHest.GetPotion(out int potion);
+            ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
             player.QuickSpawnItem(entitySource, potion, 3);
             player.QuickSpawnItem(entitySource,ItemID.ManaCrystal);
         }

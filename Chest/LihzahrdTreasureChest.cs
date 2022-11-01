@@ -32,19 +32,17 @@ namespace BossRush.Chest
             }
             int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
             player.QuickSpawnItem(entitySource, wing);
-
-            ChestLootDrop LihzahrdChest = new ChestLootDrop(player);
-            LihzahrdChest.GetAmount(out int amount, out int _, out int _, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int _, out int _, player);
             for (int i = 0; i < amount; i++)
             {
-                LihzahrdChest.GetWeapon(out int weapon, out int specialAmount, true, LihzahrdChest.RNGManage( 25, 25, 25, 25, 0));
-                LihzahrdChest.AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount, true, ModContent.GetInstance<ChestLootDrop>().RNGManage( 25, 25, 25, 25, 0));
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             for (int i = 0; i < 3; i++)
             {
-                LihzahrdChest.GetAccessory(out int Accessory, true, true, true, false, false);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);

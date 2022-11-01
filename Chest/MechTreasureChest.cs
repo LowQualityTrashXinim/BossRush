@@ -28,19 +28,17 @@ namespace BossRush.Chest
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.ButterflyWings, ItemID.FlameWings,ItemID.FrozenWings,ItemID.SteampunkWings,ItemID.Jetpack});
             player.QuickSpawnItem(entitySource,wing);
-
-            ChestLootDrop MechChest = new ChestLootDrop(player);
-            MechChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                MechChest.GetWeapon(out int weapon, out int specialAmount);
-                MechChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource,ammo, num);
             }
             for (int i = 0; i < 3; i++)
             {
-                MechChest.GetAccessory(out int Accessory, true, true, true, false, false);
+                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             if(NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
@@ -49,7 +47,7 @@ namespace BossRush.Chest
             }
             for (int i = 0; i < amount2; i++)
             {
-                MechChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource,ModContent.ItemType<PlanteraEssence>());

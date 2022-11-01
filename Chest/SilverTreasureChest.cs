@@ -63,20 +63,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource, ItemID.PumpkinLeggings);
                     break;
             }
-            ChestLootDrop SilverChest = new ChestLootDrop(player);
-            SilverChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                SilverChest.GetWeapon(out int weapon, out int specialamount);
-                SilverChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialamount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialamount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            SilverChest.GetAccessory(out int accessory);
+            ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int accessory);
             player.QuickSpawnItem(entitySource, accessory);
             for (int i = 0; i < amount2; i++)
             {
-                SilverChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 999);

@@ -60,20 +60,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource, ItemID.JunglePants);
                     break;
             }
-            ChestLootDrop StoneChest = new ChestLootDrop(player);
-            StoneChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                StoneChest.GetWeapon(out int ReturnWeapon, out int SpecialAmount);
-                StoneChest.AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
+                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int ReturnWeapon, out int SpecialAmount);
+                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
                 player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            StoneChest.GetAccessory(out int Accessory);
+            ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory);
             player.QuickSpawnItem(entitySource, Accessory);
             for (int i = 0; i < amount2; i++)
             {
-                StoneChest.GetPotion(out int potion);
+                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             if(Main.rand.NextBool(5))
