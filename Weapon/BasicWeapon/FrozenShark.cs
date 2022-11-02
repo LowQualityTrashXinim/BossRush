@@ -34,12 +34,12 @@ namespace BossRush.Weapon.BasicWeapon
         {
             Vec2ToRotate = velocity;
             position = PositionOFFSET(position, velocity, 50);
-            velocity = RotateRandom(5);
+            velocity = RotateRandom(9);
         }
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-2f, -2f);
+            return new Vector2(-2f, -3f);
         }
 
         public override void AddRecipes()

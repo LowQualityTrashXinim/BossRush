@@ -38,7 +38,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            target.immune[Projectile.owner] = 0;
+            target.immune[Projectile.owner] = 4;
         }
     }
 }
