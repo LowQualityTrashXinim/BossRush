@@ -25,6 +25,7 @@ namespace BossRush.Chest
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
+            ChestLootDrop Chest = new ChestLootDrop(player);
             for (int i = 0; i < 2; i++)
             {
                 int Accessory = Main.rand.Next(new int[] { ItemID.MasterNinjaGear, ItemID.FireGauntlet, ItemID.NecromanticScroll, ItemID.CelestialEmblem, ItemID.CelestialShell, ItemID.AvengerEmblem, ItemID.CharmofMyths, ItemID.DestroyerEmblem, ItemID.SniperScope, ItemID.StarCloak, ItemID.StarVeil, ItemID.CelestialCuffs });
@@ -32,17 +33,17 @@ namespace BossRush.Chest
             }
             int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
             player.QuickSpawnItem(entitySource, wing);
-            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int _, out int _, player);
+            Chest.GetAmount(out int amount, out int _, out int _, player);
             for (int i = 0; i < amount; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount, true, ModContent.GetInstance<ChestLootDrop>().RNGManage( 25, 25, 25, 25, 0));
-                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
+                Chest.GetWeapon(out int weapon, out int specialAmount, true, Chest.RNGManage( 25, 25, 25, 25, 0));
+                Chest.AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             for (int i = 0; i < 3; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false, false);
+                Chest.GetAccessory(out int Accessory, true, true, true, false, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);

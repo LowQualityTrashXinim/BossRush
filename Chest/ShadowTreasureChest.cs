@@ -23,6 +23,7 @@ namespace BossRush.Chest
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
+            ChestLootDrop IceChest = new ChestLootDrop(player);
             int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings,ItemID.LeafWings,ItemID.FairyWings,ItemID.HarpyWings });
             player.QuickSpawnItem(entitySource,wing);
             int RandomNumber = Main.rand.Next(7);
@@ -131,25 +132,25 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.SpiderGreaves);
                     break;
             }
-            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
+            IceChest.GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
-                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
+                IceChest.GetWeapon(out int weapon, out int specialAmount);
+                IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon,specialAmount);
                 player.QuickSpawnItem(entitySource, ammo,num);
             }
             for (int i = 0; i < 4; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory2,false,true,true,false);
-                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory);
+                IceChest.GetAccessory(out int Accessory2,false,true,true,false);
+                IceChest.GetAccessory(out int Accessory);
                 player.QuickSpawnItem(entitySource, Accessory2);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
 
             for (int i = 0; i < amount2; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
+                IceChest.GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.MythrilAnvil);

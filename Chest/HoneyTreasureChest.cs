@@ -26,6 +26,7 @@ namespace BossRush.Chest
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
+            ChestLootDrop IceChest = new ChestLootDrop(player);
             for (int i = 0; i < 3; i++)
             {
                 switch (Main.rand.Next(30))
@@ -57,14 +58,14 @@ namespace BossRush.Chest
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
-                    ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
+                    IceChest.GetWeapon(out int weapon, out int specialAmount);
+                    IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
                     player.QuickSpawnItem(entitySource, weapon, specialAmount);
                     player.QuickSpawnItem(entitySource, ammo, num);
                 }
             }
             player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
-            ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
+            IceChest.GetPotion(out int potion);
             player.QuickSpawnItem(entitySource, potion, 3);
             player.QuickSpawnItem(entitySource,ItemID.ManaCrystal);
         }

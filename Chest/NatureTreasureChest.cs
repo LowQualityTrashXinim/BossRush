@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,6 +26,7 @@ namespace BossRush.Chest
             int wing = Main.rand.Next(new int[] { ItemID.BoneWings,ItemID.BatWings,ItemID.MothronWings,ItemID.ButterflyWings,ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings,ItemID.FestiveWings,ItemID.SpookyWings,ItemID.TatteredFairyWings });
             player.QuickSpawnItem(entitySource, wing);
             int RandomNumber = Main.rand.Next(5); int Random2 = Main.rand.Next(3);
+            ChestLootDrop Chest = new ChestLootDrop(player);
             switch (RandomNumber)
             {
                 case 0:
@@ -66,22 +66,22 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.SpectrePants);
                     break;
             }
-            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
+            Chest.GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount, true, ModContent.GetInstance<ChestLootDrop>().RNGManage(25, 25, 25, 25, 0));
-                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon, 2.5f);
+                Chest.GetWeapon(out int weapon, out int specialAmount, true, Chest.RNGManage(25, 25, 25, 25, 0));
+                Chest.AmmoForWeapon(out int ammo, out int num, weapon, 2.5f);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             for (int i = 0; i < 3; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false);
+                Chest.GetAccessory(out int Accessory, true, true, true, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             for (int i = 0; i < amount2; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
+                Chest.GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);

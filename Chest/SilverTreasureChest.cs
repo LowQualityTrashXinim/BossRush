@@ -25,6 +25,7 @@ namespace BossRush.Chest
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
+            ChestLootDrop IceChest = new ChestLootDrop(player);
             int RandomNumber = Main.rand.Next(6);
             switch (RandomNumber)
             {
@@ -63,19 +64,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource, ItemID.PumpkinLeggings);
                     break;
             }
-            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
+            IceChest.GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialamount);
-                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
+                IceChest.GetWeapon(out int weapon, out int specialamount);
+                IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialamount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int accessory);
+            IceChest.GetAccessory(out int accessory);
             player.QuickSpawnItem(entitySource, accessory);
             for (int i = 0; i < amount2; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
+                IceChest.GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 999);

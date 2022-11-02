@@ -28,17 +28,18 @@ namespace BossRush.Chest
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.ButterflyWings, ItemID.FlameWings,ItemID.FrozenWings,ItemID.SteampunkWings,ItemID.Jetpack});
             player.QuickSpawnItem(entitySource,wing);
-            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
+            ChestLootDrop Chest = new ChestLootDrop(player);
+            Chest.GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
-                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
+                Chest.GetWeapon(out int weapon, out int specialAmount);
+                Chest.AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource,ammo, num);
             }
             for (int i = 0; i < 3; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory, true, true, true, false, false);
+                Chest.GetAccessory(out int Accessory, true, true, true, false, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             if(NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
@@ -47,7 +48,7 @@ namespace BossRush.Chest
             }
             for (int i = 0; i < amount2; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
+                Chest.GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource,ModContent.ItemType<PlanteraEssence>());

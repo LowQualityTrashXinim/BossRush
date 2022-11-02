@@ -30,6 +30,7 @@ namespace BossRush.Chest
                 int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace, ItemID.WaspGun });
                 player.QuickSpawnItem(entitySource, OneRareBeeItem);
             }
+            ChestLootDrop IceChest = new ChestLootDrop(player);
             int RandomNumber = Main.rand.Next(3);
             switch (RandomNumber)
             {
@@ -49,19 +50,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.MoltenGreaves);
                     break;
             }
-            ModContent.GetInstance<ChestLootDrop>().GetAmount(out int amount, out int amount2, out int amount3, player);
+            IceChest.GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetWeapon(out int weapon, out int specialAmount);
-                ModContent.GetInstance<ChestLootDrop>().AmmoForWeapon(out int ammo, out int num, weapon);
+                IceChest.GetWeapon(out int weapon, out int specialAmount);
+                IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            ModContent.GetInstance<ChestLootDrop>().GetAccessory(out int Accessory);
+            IceChest.GetAccessory(out int Accessory);
             player.QuickSpawnItem(entitySource, Accessory);
             for (int i = 0; i < amount2; i++)
             {
-                ModContent.GetInstance<ChestLootDrop>().GetPotion(out int potion);
+                IceChest.GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             switch (Main.rand.Next(2))
