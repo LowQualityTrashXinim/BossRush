@@ -4,10 +4,11 @@ using Terraria.ModLoader;
 using BossRush.Accessories;
 using BossRush.CustomPotion;
 using BossRush.Artifact;
+using System.Collections.Generic;
 
 namespace BossRush.Chest
 {
-    class WoodenTreasureChest : ModItem
+    class WoodenTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -24,21 +25,22 @@ namespace BossRush.Chest
         {
             return true;
         }
-
+        public override List<int> FlagNumber()
+        {
+            return new List<int> {1};
+        }
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            ChestLootDrop IceChest = new ChestLootDrop(player);
-            IceChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                IceChest.GetWeapon(out int ReturnWeapon,out int SpecialAmount);
-                IceChest.AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
-                player.QuickSpawnItem(entitySource, ReturnWeapon,SpecialAmount);
-                player.QuickSpawnItem(entitySource, ammo,num);
+                GetWeapon(player, out int ReturnWeapon, out int SpecialAmount);
+                AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
+                player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+                player.QuickSpawnItem(entitySource, ammo, num);
             }
-
-            IceChest.GetWeapon(out int ReturnWeaponMelee, out _, default, 1);
+            GetWeapon(player,out int ReturnWeaponMelee, out _, 1);
             player.QuickSpawnItem(entitySource, ReturnWeaponMelee);
             bool other = false;
             for (int i = 0; i < 2; i++)
@@ -47,12 +49,12 @@ namespace BossRush.Chest
                 {
                     other = true;
                 }
-                IceChest.GetAccessory(out int accessory,true,other,other);
+                GetAccessory(out int accessory,true,other,other);
                 player.QuickSpawnItem(entitySource, accessory);
             }
             for (int i = 0; i < amount2; i++)
             {
-                IceChest.GetPotion(out int potion, true);
+                GetPotion(out int potion, true);
                 player.QuickSpawnItem(entitySource, potion , amount3);
             }
             int RandomNumber = Main.rand.Next(7);
