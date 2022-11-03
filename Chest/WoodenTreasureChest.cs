@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Accessories;
 using BossRush.CustomPotion;
-using BossRush.Artifact;
 using System.Collections.Generic;
 
 namespace BossRush.Chest
@@ -27,7 +26,7 @@ namespace BossRush.Chest
         }
         public override List<int> FlagNumber()
         {
-            return new List<int> {1};
+            return new List<int> {0};
         }
         public override void RightClick(Player player)
         {

@@ -1,9 +1,9 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
+using System.Collections.Generic;
 
 namespace BossRush.Chest
 {
-    internal class BloodTreasureChest : ModItem
+    internal class BloodTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -19,24 +19,24 @@ namespace BossRush.Chest
         {
             return true;
         }
+        public override List<int> FlagNumber() => new List<int>() {0, 1, 2, 3, 4, 5, 6 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            ChestLootDrop IceChest = new ChestLootDrop(player);
-            IceChest.GetAmount(out int Amount1, out int Amount2, out int Amount3, player);
+            GetAmount(out int Amount1, out int Amount2, out int Amount3, player);
             for (int i = 0; i < Amount1; i++)
             {
-                IceChest.GetWeapon(out int weapon, out int specialAmount);
-                IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                GetWeapon(player,out int weapon, out int specialAmount);
+                AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             for (int i = 0; i < Amount2; i++)
             {
-                IceChest.GetPotion(out int potion);
+                GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, Amount3);
             }
-            IceChest.GetAccessory(out int Accessories);
+            GetAccessory(out int Accessories);
             player.QuickSpawnItem(entitySource, Accessories);
         }
     }

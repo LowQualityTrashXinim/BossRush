@@ -1,11 +1,10 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 
 namespace BossRush.Chest
 {
-    class CrystalTreasureChest : ModItem
+    class CrystalTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -21,7 +20,7 @@ namespace BossRush.Chest
         {
             return true;
         }
-
+        public override List<int> FlagNumber() => new List<int>() {1,2,3,4,5,6,7 };
         public override void RightClick(Player player)
         { 
             var entitySource = player.GetSource_OpenItem(Type);
@@ -45,25 +44,24 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource, ItemID.CrystalNinjaLeggings);
                     break;
             }
-            ChestLootDrop CrystalChest = new ChestLootDrop(player);
-            CrystalChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                CrystalChest.GetWeapon(out int weapon, out int specialAmount);
-                CrystalChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                GetWeapon(player,out int weapon, out int specialAmount);
+                AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);   
             }
             for (int i = 0; i < 3; i++)
             {
-                CrystalChest.GetAccessory(out int Accessory2, true, true, true, false,true);
-                CrystalChest.GetAccessory(out int Accessory, true, true, true, false);
+                GetAccessory(out int Accessory2, true, true, true, false,true);
+                GetAccessory(out int Accessory, true, true, true, false);
                 player.QuickSpawnItem(entitySource, Accessory);
                 player.QuickSpawnItem(entitySource, Accessory2);
             }
             for (int i = 0; i < amount2; i++)
             {
-                CrystalChest.GetPotion(out int potion);
+                GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             if (Main.rand.NextBool(5))

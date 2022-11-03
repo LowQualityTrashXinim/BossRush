@@ -147,7 +147,7 @@ namespace BossRush.Chest
                 }
             }
         }
-        public void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
+        protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
         {
             amountForWeapon = 4;
             amountForPotionType = 2;
@@ -191,7 +191,7 @@ namespace BossRush.Chest
             }
         }
 
-        public int RNGManage(int meleeChance = 25, int rangeChance = 25, int magicChance = 25, int summonChance = 10, int specialChance = 15)
+        protected int RNGManage(int meleeChance = 25, int rangeChance = 25, int magicChance = 25, int summonChance = 10, int specialChance = 15)
         {
             rangeChance += meleeChance;
             magicChance += rangeChance;
@@ -220,7 +220,7 @@ namespace BossRush.Chest
             }
             return 0;
         }
-        public void AddLoot(List<int> FlagNumber)
+        protected void AddLoot(List<int> FlagNumber)
         {
             DropItemMelee.Clear();
             DropItemRange.Clear();
@@ -333,10 +333,25 @@ namespace BossRush.Chest
                 }
             }
         }
-        public virtual List<int> FlagNumber()
-        {
-            return new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-        }
+        /// <summary>
+        ///      Allow user to return a list of number that contain different data to insert into chest <br/>
+        ///      0 : Pre Boss <br/>
+        ///      1 : Post EoC <br/>
+        ///      2 : Post Evil boss <br/>
+        ///      3 : Post Skeletron <br/>
+        ///      4 : Post Queen bee <br/>
+        ///      5 : Post Deerclop <br/>
+        ///      6 : Post WoF <br/>
+        ///      7 : Post Queen slime <br/>
+        ///      8 : 1 mech boss loot <br/>
+        ///      9 : Post all mech <br/>
+        ///      10 : Post Plantera <br/>
+        ///      11 : Post Golem <br/>
+        ///      12 : Pre lunatic cultist ( EoL, Duke Fishron ) <br/>
+        ///      13 : Post lunatic cultist <br/>
+        ///      14 : Post Moon lord <br/>
+        /// </summary>
+        public virtual List<int> FlagNumber() => new List<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
         public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0)
         {
             specialAmount = 1;

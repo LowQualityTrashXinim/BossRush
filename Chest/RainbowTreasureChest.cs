@@ -3,10 +3,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Accessories;
 using BossRush.Weapon.RangeSynergyWeapon.ParadoxPistol;
+using System.Collections.Generic;
 
 namespace BossRush.Chest
 {
-    internal class RainbowTreasureChest : ModItem
+    internal class RainbowTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -24,7 +25,6 @@ namespace BossRush.Chest
         {
             return true;
         }
-
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
@@ -81,12 +81,10 @@ namespace BossRush.Chest
             }
 
             int randomAmount = Main.rand.Next(10, 25);
-            ChestLootDrop Chest = new ChestLootDrop(player);
             for (int i = 0; i < randomAmount; i++)
             {
-                Chest.AddLoot(false, true);
-                Chest.GetWeapon(out int Weapon, out int specialAmount);
-                Chest.AmmoForWeapon(out int Ammo, out int Amount, Weapon, 10);
+                GetWeapon(player,out int Weapon, out int specialAmount);
+                AmmoForWeapon(out int Ammo, out int Amount, Weapon, 10);
                 player.QuickSpawnItem(entitySource, Weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, Ammo, Amount);
                 if (Main.rand.NextBool(10))

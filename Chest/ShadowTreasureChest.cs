@@ -1,10 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using System.Collections.Generic;
 
 namespace BossRush.Chest
 {
-    class ShadowTreasureChest : ModItem
+    class ShadowTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -20,10 +20,10 @@ namespace BossRush.Chest
         {
             return true;
         }
+        public override List<int> FlagNumber() => new List<int>() {0, 1, 2, 3 ,4 ,5, 6};
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            ChestLootDrop IceChest = new ChestLootDrop(player);
             int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings,ItemID.LeafWings,ItemID.FairyWings,ItemID.HarpyWings });
             player.QuickSpawnItem(entitySource,wing);
             int RandomNumber = Main.rand.Next(7);
@@ -132,25 +132,25 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource,ItemID.SpiderGreaves);
                     break;
             }
-            IceChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                IceChest.GetWeapon(out int weapon, out int specialAmount);
-                IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                GetWeapon(player,out int weapon, out int specialAmount);
+                AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon,specialAmount);
                 player.QuickSpawnItem(entitySource, ammo,num);
             }
             for (int i = 0; i < 4; i++)
             {
-                IceChest.GetAccessory(out int Accessory2,false,true,true,false);
-                IceChest.GetAccessory(out int Accessory);
+                GetAccessory(out int Accessory2,false,true,true,false);
+                GetAccessory(out int Accessory);
                 player.QuickSpawnItem(entitySource, Accessory2);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
 
             for (int i = 0; i < amount2; i++)
             {
-                IceChest.GetPotion(out int potion);
+                GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.MythrilAnvil);

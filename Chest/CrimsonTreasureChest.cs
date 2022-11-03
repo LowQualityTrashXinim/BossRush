@@ -2,10 +2,11 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.ExtraItem;
+using System.Collections.Generic;
 
 namespace BossRush.Chest
 {
-    class CrimsonTreasureChest : ModItem
+    class CrimsonTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -22,11 +23,10 @@ namespace BossRush.Chest
         {
             return true;
         }
-
+        public override List<int> FlagNumber() => new List<int>() {0,1,2 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            ChestLootDrop IceChest = new ChestLootDrop(player);
             switch (Main.rand.Next(5))
             {
                 case 0:
@@ -55,20 +55,19 @@ namespace BossRush.Chest
                     player.QuickSpawnItem(entitySource, ItemID.ObsidianPants);
                     break;
             }
-            ChestLootDrop EvilChest = new ChestLootDrop(player);
-            IceChest.GetAmount(out int amount, out int amount2, out int amount3, player);
+            GetAmount(out int amount, out int amount2, out int amount3, player);
             for (int i = 0; i < amount; i++)
             {
-                IceChest.GetWeapon(out int ReturnWeapon, out int SpecialAmount);
-                IceChest.AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
+                GetWeapon(player,out int ReturnWeapon, out int SpecialAmount);
+                AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
                 player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            IceChest.GetAccessory(out int Accessory);
+            GetAccessory(out int Accessory);
             player.QuickSpawnItem(entitySource, Accessory);
             for (int i = 0; i < amount2; i++)
             {
-                IceChest.GetPotion(out int potion);
+                GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);

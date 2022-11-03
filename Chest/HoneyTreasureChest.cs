@@ -1,11 +1,11 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 
 namespace BossRush.Chest
 {
-    class HoneyTreasureChest : ModItem
+    class HoneyTreasureChest : ChestLootDrop
     { 
         public override void SetStaticDefaults()
         {
@@ -22,11 +22,10 @@ namespace BossRush.Chest
         {
             return true;
         }
-
+        public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            ChestLootDrop IceChest = new ChestLootDrop(player);
             for (int i = 0; i < 3; i++)
             {
                 switch (Main.rand.Next(30))
@@ -58,14 +57,14 @@ namespace BossRush.Chest
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    IceChest.GetWeapon(out int weapon, out int specialAmount);
-                    IceChest.AmmoForWeapon(out int ammo, out int num, weapon);
+                    GetWeapon(player,out int weapon, out int specialAmount);
+                    AmmoForWeapon(out int ammo, out int num, weapon);
                     player.QuickSpawnItem(entitySource, weapon, specialAmount);
                     player.QuickSpawnItem(entitySource, ammo, num);
                 }
             }
             player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
-            IceChest.GetPotion(out int potion);
+            GetPotion(out int potion);
             player.QuickSpawnItem(entitySource, potion, 3);
             player.QuickSpawnItem(entitySource,ItemID.ManaCrystal);
         }
