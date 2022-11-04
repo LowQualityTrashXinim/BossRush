@@ -57,10 +57,20 @@ namespace BossRush
         public static Vector2 Vec2ToRotate = Vector2.Zero;
         public static float SpreadModify = 1;
 
+        /// <summary>
+        /// Modify the ammount of projectile to be shoot
+        /// </summary>
+        /// <param name="NumAmount">the original amount</param>
+        /// <returns></returns>
         public float ModifiedProjAmount(float NumAmount)
         {
             return NumAmount;
         }
+        /// <summary>
+        /// Modify the spread of a weapon
+        /// </summary>
+        /// <param name="TakeFloat">the amount to be change</param>
+        /// <returns></returns>
         public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat += SpreadModify;
 
         public Vector2 RotateRandom(float ToRadians)

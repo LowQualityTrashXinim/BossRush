@@ -459,7 +459,7 @@ namespace BossRush.Chest
         int[] DartHM = new int[] { ItemID.IchorDart,ItemID.CursedDart, ItemID.CrystalDart };
 
         /// <summary>
-        /// Return ammo of weapon accordingly to weapon
+        /// Return ammo of weapon accordingly to weapon parameter
         /// </summary>
         /// <param name="Ammo">Return ammo type accordingly to weapon type</param>
         /// <param name="Amount">Return the ammount of ammo</param>
@@ -653,6 +653,11 @@ namespace BossRush.Chest
         List<int> DropItemPotion = new List<int>();
         int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
         int[] MovementPotion = new int[] { ItemID.SwiftnessPotion,ItemID.FeatherfallPotion,ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
+        /// <summary>
+        /// Return random potion
+        /// </summary>
+        /// <param name="Potion">Return potion type</param>
+        /// <param name="AllowMovementPotion">Allow potion that enhance movement to be drop</param>
         public void GetPotion(out int Potion, bool AllowMovementPotion = false)
         {
             if(AllowMovementPotion)
