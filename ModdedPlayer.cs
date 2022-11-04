@@ -184,6 +184,7 @@ namespace BossRush
             items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>()));
             items.Add(new Item(ModContent.ItemType<LunchBox>()));
             items.Add(new Item(ModContent.ItemType<GitGudToggle>()));
+            items.Add(new Item(ModContent.ItemType<BrokenToken>()));
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
@@ -193,7 +194,6 @@ namespace BossRush
             if(ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
             {
                 items.Add(new Item (ItemID.RedPotion, 10));
-                items.Add(new Item(ModContent.ItemType<BrokenToken>()));
             }
             if (Player.name == "LQTXinim") 
             {
@@ -219,6 +219,7 @@ namespace BossRush
                 items.Add(new Item(ItemID.NinjaShirt));
                 items.Add(new Item(ItemID.NinjaPants));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja>()));
+                items.Add(new Item(ModContent.ItemType<GuideToMasterNinja2>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
             {
