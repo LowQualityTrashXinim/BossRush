@@ -126,41 +126,27 @@ namespace BossRush.Chest
             //Change
             if (multiplier)
             {
-                if (amountToModify > 0)
-                {
-                    return (int)(amountToModify * ValueToModify);
-                }
-                else
-                {
-                    return 0;
-                }
+                return amountModifier > 0 ? (int)(amountToModify * ValueToModify) : 0;
             }
             else
             {
-                if ((ValueToModify + amountToModify) > 0)
-                {
-                    return (int)(amountToModify + ValueToModify);
-                }
-                else
-                {
-                    return 0;
-                }
+                return (ValueToModify + amountToModify) > 0 ? (int)(amountToModify + ValueToModify) : 0;
             }
         }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
         {
-            amountForWeapon = 4;
-            amountForPotionType = 2;
+            amountForWeapon = 2;
+            amountForPotionType = 1;
             amountForPotionNum = 2;
             if (Main.getGoodWorld)
             {
-                amountForWeapon = 2;
+                amountForWeapon = 1;
                 amountForPotionType = 1;
                 amountForPotionNum = 1;
             }
             if (Main.hardMode)
             {
-                amountForWeapon += 2;
+                amountForWeapon += 1;
                 amountForPotionType += 1;
                 amountForPotionNum += 1;
             }
