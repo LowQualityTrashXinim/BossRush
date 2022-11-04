@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace BossRush.Chest
 {
@@ -9,7 +8,7 @@ namespace BossRush.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Right click to open chest to get the following items\n5 weapons from pre boss to post golem\n2 of random combat/movement accessories\nhead to dungeon to end the run or fight duke fishron, EoL 5 time lol\nGood Luck !");
+            Tooltip.SetDefault("Good Luck !");
         }
         public override void SetDefaults()
         {
