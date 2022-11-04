@@ -32,7 +32,7 @@ namespace BossRush.Chest
             }
             int Accessory = Main.rand.Next(new int[] { ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.BandofRegeneration, ItemID.BandofStarpower, ItemID.CelestialMagnet, ItemID.NaturesGift, ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.Shackle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon });
             player.QuickSpawnItem(entitySource, Accessory);
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 5; i++)
             {
                 GetWeapon(player,out int weapon, out int specialAmount);
                 AmmoForWeapon(out int ammo, out int num, weapon);

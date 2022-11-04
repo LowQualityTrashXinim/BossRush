@@ -55,7 +55,7 @@ namespace BossRush.Chest
             }
             if (NPC.downedBoss3)
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     GetWeapon(player,out int weapon, out int specialAmount);
                     AmmoForWeapon(out int ammo, out int num, weapon);
