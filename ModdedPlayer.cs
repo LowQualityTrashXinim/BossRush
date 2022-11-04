@@ -55,21 +55,18 @@ namespace BossRush
             HowManyBossIsAlive = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].boss && Main.npc[i].active)
+                if (LookingForBoss())
                 {
-                    if (LookingForBoss())
+                    // What happen when boss is alive
+                    HowManyBossIsAlive++;
+                    if (ArtifactCount == 1 && ForceArtifact)
                     {
-                        // What happen when boss is alive
-                        HowManyBossIsAlive++;
-                        if (ArtifactCount == 1 && ForceArtifact)
-                        {
-                            ArtifactAllowance = true;
-                        }
-                        else
-                        {
-                            ArtifactAllowance = false;
-                            ForceArtifact = false;
-                        }
+                        ArtifactAllowance = true;
+                    }
+                    else
+                    {
+                        ArtifactAllowance = false;
+                        ForceArtifact = false;
                     }
                 }
                 else // What happen when boss is inactive
