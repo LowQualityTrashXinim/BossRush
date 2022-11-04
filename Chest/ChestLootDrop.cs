@@ -220,7 +220,43 @@ namespace BossRush.Chest
             }
             return 0;
         }
-        protected void AddLoot(List<int> FlagNumber)
+
+        /// <summary>
+        /// Allow for safely add extra loot, this will be called After all the loot is added
+        /// </summary>
+        protected virtual List<int> SafePostAddLootMelee()
+        {
+            return new List<int> { };
+        }
+        /// <summary>
+        /// Allow for safely add extra loot, this will be called After all the loot is added
+        /// </summary>
+        protected virtual List<int> SafePostAddLootRange()
+        {
+            return new List<int> { };
+        }
+        /// <summary>
+        /// Allow for safely add extra loot, this will be called After all the loot is added
+        /// </summary>
+        protected virtual List<int> SafePostAddLootMagic()
+        {
+            return new List<int> { };
+        }
+        /// <summary>
+        /// Allow for safely add extra loot, this will be called After all the loot is added
+        /// </summary>
+        protected virtual List<int> SafePostAddLootSummon()
+        {
+            return new List<int> { };
+        }
+        /// <summary>
+        /// Allow for safely add extra loot, this will be called After all the loot is added
+        /// </summary>
+        protected virtual List<int> SafePostAddLootMisc()
+        {
+            return new List<int> { };
+        }
+        private void AddLoot(List<int> FlagNumber)
         {
             DropItemMelee.Clear();
             DropItemRange.Clear();
@@ -331,6 +367,11 @@ namespace BossRush.Chest
                         DropItemSummon.Add(ItemID.MoonlordTurretStaff);
                         break;
                 }
+                DropItemMelee.AddRange(SafePostAddLootMelee());
+                DropItemRange.AddRange(SafePostAddLootRange());
+                DropItemMagic.AddRange(SafePostAddLootMagic());
+                DropItemSummon.AddRange(SafePostAddLootSummon());
+                DropItemMisc.AddRange(SafePostAddLootMisc());
             }
         }
         /// <summary>
@@ -352,6 +393,20 @@ namespace BossRush.Chest
         ///      14 : Post Moon lord <br/>
         /// </summary>
         public virtual List<int> FlagNumber() => new List<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+        /// <summary>
+        /// Return a random weapon and if the weapon consumable then return many ammount
+        /// </summary>
+        /// <param name="player">Player player</param>
+        /// <param name="ReturnWeapon">Weapon get return</param>
+        /// <param name="specialAmount">Ammount of that weapon get return</param>
+        /// <param name="rng">Set the rng number to return a specific type of weapon
+        /// <br/>1 : Melee weapon
+        /// <br/>2 : Range weapon
+        /// <br/>3 : Magic weapon
+        /// <br/> 4 : Summon weapon
+        /// <br/>5 : Misc weapon
+        /// <br/> 6 : Drug
+        /// <br/> 7 : Rainbow Chest</param>
         public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0)
         {
             specialAmount = 1;
@@ -416,6 +471,14 @@ namespace BossRush.Chest
 
         int[] defaultDart = new int[] { ItemID.PoisonDart,ItemID.Seed };
         int[] DartHM = new int[] { ItemID.IchorDart,ItemID.CursedDart, ItemID.CrystalDart };
+
+        /// <summary>
+        /// Return ammo of weapon accordingly to weapon
+        /// </summary>
+        /// <param name="Ammo">Return ammo type accordingly to weapon type</param>
+        /// <param name="Amount">Return the ammount of ammo</param>
+        /// <param name="weapon">Weapon need to be checked</param>
+        /// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
         public void AmmoForWeapon(out int Ammo, out int Amount, int weapon,float AmountModifier = 1)
         {
             Amount = (int)(200 * AmountModifier);
@@ -531,7 +594,15 @@ namespace BossRush.Chest
 
         int[] AnhkCharm = new int[] {ItemID.AdhesiveBandage,ItemID.Bezoar,ItemID.Vitamins,ItemID.ArmorPolish,ItemID.Blindfold,ItemID.PocketMirror,ItemID.Nazar,ItemID.Megaphone,ItemID.FastClock,ItemID.TrifoldMap };
         int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles};
-
+        /// <summary>
+        /// Return a random accessory 
+        /// </summary>
+        /// <param name="Accessory">Return a accessory</param>
+        /// <param name="MovementAcc">allow for movement accessory to be include</param>
+        /// <param name="CombatAcc">allow for accessory that combat oriented to be include</param>
+        /// <param name="HealthManaAcc">allow for accessory that increase survivability to be include</param>
+        /// <param name="AllowPreHMAcc">W.I.P</param>
+        /// <param name="PriorityAnhkShield">only drop AnhkShield material</param>
         public void GetAccessory(out int Accessory, bool MovementAcc = true, bool CombatAcc = true, bool HealthManaAcc = true, bool AllowPreHMAcc = true, bool PriorityAnhkShield = false)
         {
             if (MovementAcc)

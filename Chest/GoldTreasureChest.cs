@@ -69,7 +69,7 @@ namespace BossRush.Chest
             switch (Main.rand.Next(2))
             {
                 case 0:
-                    player.QuickSpawnItem(entitySource, ItemID.ObsidianPlatform, 2997);
+                    player.QuickSpawnItem(entitySource, ItemID.ObsidianPlatform, 3996);
                     break;
                 case 1:
                     player.QuickSpawnItem(entitySource, ItemID.WaterWalkingPotion, 10);
