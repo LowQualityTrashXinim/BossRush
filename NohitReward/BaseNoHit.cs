@@ -25,16 +25,5 @@ namespace BossRush.NohitReward
                 if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
             }
         }
-        public override bool? UseItem(Player player)
-        {
-            player.statLifeMax2 += HP;
-            player.statLife += HP;
-            if (Main.myPlayer == player.whoAmI)
-            {
-                player.HealEffect(HP);
-            }
-            player.GetModPlayer<KingSlimeNoHit>().KS0hit++;
-            return true;
-        }
     }
 }
