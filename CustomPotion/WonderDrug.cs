@@ -10,7 +10,7 @@ namespace BossRush.CustomPotion
 		//HP
 		public const int DrugHP = 20;
 		public const int DrugHP2 = 10;
-		public const int DrugHP3 = -5;
+		public const int DrugHP3 = 0;
 		public const int DrugHP4 = -10;
 		//def
 		public const int DrugDef1 = 5;
