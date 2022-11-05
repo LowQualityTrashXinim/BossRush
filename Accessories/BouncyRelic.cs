@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
@@ -40,21 +39,27 @@ namespace BossRush.Accessories
     {
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
-            Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<PlayerRelic>().Bouncy)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                projectile.tileCollide = true;
-                Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-                if (projectile.velocity.X != oldVelocity.X)
+                if (Main.myPlayer == projectile.owner)
                 {
-                    projectile.velocity.X = -oldVelocity.X;
+                    Player player = Main.player[projectile.owner];
+                    if (player.GetModPlayer<PlayerRelic>().Bouncy)
+                    {
+                        projectile.tileCollide = true;
+                        Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+                        if (projectile.velocity.X != oldVelocity.X)
+                        {
+                            projectile.velocity.X = -oldVelocity.X;
+                        }
+                        if (projectile.velocity.Y != oldVelocity.Y)
+                        {
+                            projectile.velocity.Y = -oldVelocity.Y;
+                        }
+                        projectile.damage = (int)(projectile.damage * 1.2);
+                        return false;
+                    }
                 }
-                if (projectile.velocity.Y != oldVelocity.Y)
-                {
-                    projectile.velocity.Y = -oldVelocity.Y;
-                }
-                projectile.damage = (int)(projectile.damage*1.2);
-                return false;
             }
             return true;
         }

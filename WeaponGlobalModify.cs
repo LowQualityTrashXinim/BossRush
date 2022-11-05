@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace BossRush
 {
@@ -73,6 +72,11 @@ namespace BossRush
         /// <returns></returns>
         public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat += SpreadModify;
 
+        /// <summary>
+        /// Return a random vector that got rotate randomly
+        /// </summary>
+        /// <param name="ToRadians">Rotate radius</param>
+        /// <returns></returns>
         public Vector2 RotateRandom(float ToRadians)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
@@ -80,9 +84,16 @@ namespace BossRush
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
         {
-            float ChanceNotToConsume = weapon.useTime <= 20 && weapon.useTime >= 8 ? weapon.useTime * .65f : weapon.useTime;
+            float ChanceNotToConsume = weapon.useTime <= 20 && weapon.useTime >= 7 ? weapon.useTime * .35f : weapon.useTime < 7 ? weapon.useTime * 1.4f : weapon.useTime;
             return Main.rand.NextFloat() < 1/ChanceNotToConsume;
         }
+
+        /// <summary>
+        /// Return a Vector that got evenly distribute
+        /// </summary>
+        /// <param name="ToRadians">The radius that it get distribute</param>
+        /// <param name="time">the current progress</param>
+        /// <returns></returns>
         public Vector2 RotateCode(float ToRadians, float time = 0)
         {
             float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
@@ -92,7 +103,13 @@ namespace BossRush
             }
             return Vec2ToRotate;
         }
-
+        /// <summary>
+        /// Return a position Vector that got offset
+        /// </summary>
+        /// <param name="position">Original position</param>
+        /// <param name="ProjectileVelocity">Current projectile velocity </param>
+        /// <param name="offSetBy">Offset amount</param>
+        /// <returns></returns>
         public Vector2 PositionOFFSET(Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
             Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.UnitX) * offSetBy;
@@ -102,7 +119,13 @@ namespace BossRush
             }
             return position;
         }
-
+        /// <summary>
+        /// Return a vector that got its X parameter and Y parameter change randomely
+        /// </summary>
+        /// <param name="ToRotateAgain">The original Vector</param>
+        /// <param name="Spread">Value to change speed</param>
+        /// <param name="additionalMultiplier">Multiplier for final speed change</param>
+        /// <returns></returns>
         public Vector2 RandomSpread(Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {
             ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
@@ -110,7 +133,23 @@ namespace BossRush
             return ToRotateAgain;
         }
 
-
+        /// <summary>
+        /// Method that make the item currently in use can be shoot by many amount at a random spread
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        /// <param name="velocity"></param>
+        /// <param name="type"></param>
+        /// <param name="damage"></param>
+        /// <param name="knockback"></param>
+        /// <param name="SpreadAmount">Rotation radius</param>
+        /// <param name="AdditionalSpread">Addition X and Y modifier</param>
+        /// <param name="AdditionalMultiplier">Multiplier for final speed change</param>
+        /// <param name="ItemISaShotgun">
+        /// Set true if the Item is a shotgun to make it don't change the angle it aim at <br/>
+        /// Set false if the Item is not a shotgun to make it emulate recoil<br/>
+        /// </param>
         public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1, bool ItemISaShotgun = false)
         {
             Vec2ToRotate = velocity;
