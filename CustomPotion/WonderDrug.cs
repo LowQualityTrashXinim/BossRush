@@ -133,14 +133,7 @@ namespace BossRush.CustomPotion
 					Player.lifeRegen += DrugDealer * WonderDrug.DrugRegen;
 					Player.lifeRegenCount += DrugDealer * WonderDrug.DrugRegen;
 					Player.lifeRegenTime += DrugDealer * WonderDrug.DrugRegen;
-					if(DrugDealer < 20)
-                    {
-					Player.accRunSpeed += DrugDealer * WonderDrug.DrugSpeed1;
-                    }
-                    else
-                    {
-						Player.accRunSpeed += 20 * WonderDrug.DrugSpeed1;
-					}
+					Player.accRunSpeed += DrugDealer < 20 ? DrugDealer * WonderDrug.DrugSpeed1 : (20 + DrugDealer * .5f)  * WonderDrug.DrugSpeed1;
 					break;
             }
 		}
