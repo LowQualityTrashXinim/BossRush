@@ -67,7 +67,7 @@ namespace BossRush
             if (System.Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CorruptedTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(),ModContent.ItemType<TrueEaterOfWorldTrophy>()));
                 npcLoot.Add(noHit);
                 //Expert mode drop
                 IsABoss.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<CorruptedTreasureChest>()));
@@ -82,7 +82,7 @@ namespace BossRush
             if (npc.type == NPCID.BrainofCthulhu)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TrueBrainOfCthulhuTrophy>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonTreasureChest>()));
