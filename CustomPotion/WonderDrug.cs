@@ -93,8 +93,6 @@ namespace BossRush.CustomPotion
 
 		public override void ResetEffects()
 		{
-            // Increasing health in the ResetEffects hook in particular is important so it shows up properly in the player select menu
-            // and so that life regeneration properly scales with the bonus health
             switch (DrugDealer)
             {
 				case 0:
@@ -133,7 +131,7 @@ namespace BossRush.CustomPotion
 					Player.lifeRegen += DrugDealer * WonderDrug.DrugRegen;
 					Player.lifeRegenCount += DrugDealer * WonderDrug.DrugRegen;
 					Player.lifeRegenTime += DrugDealer * WonderDrug.DrugRegen;
-					Player.accRunSpeed += DrugDealer < 20 ? DrugDealer * WonderDrug.DrugSpeed1 : (20 + DrugDealer * .5f)  * WonderDrug.DrugSpeed1;
+					Player.accRunSpeed += DrugDealer < 20 ? DrugDealer * WonderDrug.DrugSpeed1 : (20 + (DrugDealer - 20) * .5f)  * WonderDrug.DrugSpeed1;
 					break;
             }
 		}
