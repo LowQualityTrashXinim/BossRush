@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Terraria.WorldBuilding;
 using Terraria;
+using Terraria.ID;
 using Terraria.IO;
 
 namespace BossRush
@@ -28,6 +29,20 @@ namespace BossRush
                 return "A force of pain block you from cheesing\nokay, with the stupid cringe edgy line out of the way, you must play on Master difficulty world";
             }
             return base.WorldCanBePlayedRejectionMessage(playerData, worldData);
+        }
+        public override void OnWorldLoad()
+        {
+            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+                    if (npc.type == NPCID.OldMan)
+                    {
+                        npc.active = false;
+                    }
+                }
+            }
         }
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {
