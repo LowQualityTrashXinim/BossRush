@@ -55,7 +55,7 @@ namespace BossRush
             HowManyBossIsAlive = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (LookingForBoss())
+                if (Main.npc[i].boss && Main.npc[i].active)
                 {
                     // What happen when boss is alive
                     HowManyBossIsAlive++;
