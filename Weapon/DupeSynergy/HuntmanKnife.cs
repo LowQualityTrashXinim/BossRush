@@ -41,14 +41,6 @@ namespace BossRush.Weapon.DupeSynergy
             }
             return true;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddRecipeGroup("OreShortSword",2)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .Register();
-        }
     }
 
     internal class AdditionalKnife : ModProjectile

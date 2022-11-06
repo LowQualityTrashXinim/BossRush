@@ -43,8 +43,8 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             target.immune[Projectile.owner] = 8;
-            Vector2 PosRand = Projectile.position + Main.rand.NextVector2CircularEdge(150, 150);
-            Vector2 toTarget = (target.Center - PosRand).SafeNormalize(Vector2.UnitX) * 5;
+            Vector2 PosRand = Projectile.position + Main.rand.NextVector2CircularEdge(450, 450);
+            Vector2 toTarget = (target.Center - PosRand).SafeNormalize(Vector2.UnitX) * 10;
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), PosRand, toTarget, ModContent.ProjectileType<PlatinumSlash>(), damage, knockback, Projectile.owner);
         }
     }

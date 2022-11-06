@@ -19,8 +19,8 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             Projectile.penetrate = -1;
             Projectile.extraUpdates = 6;
             Projectile.light = 0.5f;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100; // The length of old position to be recorded
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 150; // The length of old position to be recorded
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
             Projectile.scale = 0.5f;
             Projectile.Size -= new Vector2(10, 10);
         }
@@ -28,9 +28,27 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
         {
             Player player = Main.LocalPlayer;
             int MaxAnimation = player.itemAnimationMax;
-            if (Projectile.timeLeft > MaxAnimation*3)
+            if (Projectile.timeLeft > MaxAnimation*4)
             {
-                Projectile.timeLeft = MaxAnimation*3;
+                Projectile.timeLeft = MaxAnimation*4;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                Vector2 RandomSpread = Main.rand.NextVector2Circular(1f, 1f);
+                int dustnumber = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond, RandomSpread.X, RandomSpread.Y, 0, default, Main.rand.NextFloat(.75f, 1f));
+                Main.dust[dustnumber].noGravity = true;
+            }
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                for (int l = 0; l < 10; l++)
+                {
+                Vector2 RandomSpread = Main.rand.NextVector2CircularEdge(1f, 1f) * 10 / i + Projectile.velocity * 1 / i;
+                int dustnumber = Dust.NewDust(Projectile.Center, Projectile.width / 2, Projectile.height / 2, DustID.GemDiamond, -RandomSpread.X, -RandomSpread.Y, 0, default, Main.rand.NextFloat(.75f, 1f));
+                Main.dust[dustnumber].noGravity = true;
+                }
             }
         }
 
@@ -50,7 +68,7 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.Katana
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k * 0.01f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k * .006f, SpriteEffects.None, 0);
             }
             return true;
         }
