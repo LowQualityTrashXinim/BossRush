@@ -16,13 +16,13 @@ namespace BossRush.Weapon.RangeSynergyWeapon.Gunmerang
         {
             Item.width = 34;
             Item.height = 26;
-            Item.damage = 24;
+            Item.damage = 34;
 
             Item.DamageType = DamageClass.Ranged;
             Item.useStyle = ItemUseStyleID.Shoot;
 
             Item.shoot = ProjectileID.Bullet;
-            Item.shootSpeed = 12;
+            Item.shootSpeed = 14;
 
             Item.useTime = 20;
             Item.useAnimation = 20;
@@ -90,7 +90,7 @@ namespace BossRush.Weapon.RangeSynergyWeapon.Gunmerang
 
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-2,-1);
+            return new Vector2(-2,1);
         }
         public override void AddRecipes()
         {
