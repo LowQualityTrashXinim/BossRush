@@ -48,108 +48,77 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
-            if (RicochetOff(out int activeInList))
+            if (RicochetOff(out Vector2 pos2))
             {
-                if (activeInList != -1 || activeInList < count.Count)
+                Projectile.netUpdate = true;
+                Projectile.damage += 50;
+                Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
+                for (int i = 0; i < 50; i++)
                 {
-                    Projectile.netUpdate = true;
-                    Projectile.damage += 50;
-                    Projectile.velocity = (count[activeInList].Position - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
-                }
-                for (int i = 0; i < 75; i++)
-                {
-                    Vector2 ReverseVelSpread = -Projectile.velocity*2 + Main.rand.NextVector2Circular(5f,5f);
+                    Vector2 ReverseVelSpread = -Projectile.velocity * 2 + Main.rand.NextVector2Circular(5f, 5f);
                     int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, ReverseVelSpread.X, ReverseVelSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
                     Main.dust[dustnumber].noGravity = true;
                 }
             }
-
-        }
-
-        List<CountProjectile> count = new List<CountProjectile>();
-
-        public override void Kill(int timeLeft)
-        {
-            count.Clear();
         }
 
         public bool CheckActive(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            float Distance = 1500f;
-            if (projectileThatNeedtoCheck.type == ModContent.ProjectileType<DiamondGemP>())
+            float Distance = 500f;
+            if (projectileThatNeedtoCheck.type == ModContent.ProjectileType<DiamondGemP>() && projectileThatNeedtoCheck.active && projectileThatNeedtoCheck.velocity == Vector2.Zero)
             {
-                if (Vector2.Distance(player.Center, projectileThatNeedtoCheck.Center) < Distance && projectileThatNeedtoCheck.active)
+                if (Vector2.Distance(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
                     return true;
                 }
             }
             return false;
         }
-
-        public bool RicochetOff(out int ActiveinList)
+        public List<Vector2> GetListOfActiveProj(out bool Check)
         {
+            List<Vector2> list = new List<Vector2>();
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<DiamondGemP>() && Main.projectile[i].velocity == Vector2.Zero && Main.projectile[i].active)
+                if(CheckActive(Main.projectile[i]))
                 {
-                    CountProjectile countPro = new CountProjectile(Main.projectile[i].Center);
-                    countPro.ProjectileHolder = Main.projectile[i];
-                    if (GetCountProjectile(count, Main.projectile[i].Center) && CheckActive(Main.projectile[i]))
+                    list.Add(Main.projectile[i].Center);
+                }
+            }
+            if(list.Count <= 1)
+            {
+                Check = false;
+            }
+            else
+            {
+                Check = true;
+            }
+            return list;
+        }
+        public bool RicochetOff(out Vector2 Pos2)
+        {
+            List<Vector2> list = GetListOfActiveProj(out bool Check);
+            if (Check)
+            {
+                Vector2 Pos1 = Vector2.Zero;
+                foreach (Vector2 pos in list)
+                {
+                    float Distance = Vector2.Distance(Projectile.Center, pos);
+                    if (Distance <= 15)
                     {
-                        count.Add(countPro);
-                    }
-                    else if(!CheckActive(countPro.ProjectileHolder))
-                    {
-                        count.Clear();
-                    }
-                    for (int l = 0; l < count.Count; l++)
-                    {
-                        float Distance = Vector2.Distance(Projectile.Center, count[l].Position);
-                        if (Distance <= 15 && !count[l].Deactivate)
+                        Pos1 = pos;
+                        do
                         {
-                            for (int a = 0; a < count.Count; a++)
-                            {
-                                if (count[a].Deactivate)
-                                {
-                                    foreach (var item in count)
-                                    {
-                                        item.Deactivate = false;
-                                    }
-                                }
-                            }
-                            int preventLoopInfinite = 0;
-                            count[l].Deactivate = true;
-                            do
-                            {
-                                ActiveinList = Main.rand.Next(count.Count);
-                                preventLoopInfinite++;
-                            }
-                            while (count[ActiveinList].Deactivate || preventLoopInfinite <= 50);
-                            return true;
+                            Pos2 = Main.rand.Next(list);
                         }
+                        while (Pos2 == Pos1);
+                        return true;
                     }
                 }
             }
-            ActiveinList = -1;
+            Pos2 = Vector2.Zero;
             return false;
         }
-
-        public bool GetCountProjectile(List<CountProjectile> list, Vector2 position)
-        {
-            if (list.Count > 0)
-            {
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (list[i].Position.Equals(position))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -164,17 +133,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.MagicBow
                 Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k * 0.01f, SpriteEffects.None, 0);
             }
             return true;
-        }
-    }
-    public class CountProjectile
-    {
-        public Vector2 Position;
-        public bool Deactivate = false;
-        public Projectile ProjectileHolder;
-
-        public CountProjectile(Vector2 position)
-        {
-            Position = position;
         }
     }
 }
