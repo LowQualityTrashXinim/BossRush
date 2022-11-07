@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Weapon.RangeSynergyWeapon.BloodyShot
 {
@@ -53,18 +52,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.BloodyShot
                 .AddIngredient(ItemID.Handgun)
                 .AddIngredient(ItemID.BloodRainBow)
                 .Register();
-        }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            tooltips.Add(new TooltipLine(Mod, "Synergy", "Synergy Weapon"));
-            foreach (TooltipLine line in tooltips)
-            {
-                if (line.Text == "Synergy Weapon" && line.Name == "Synergy")
-                {
-                    line.OverrideColor = Main.DiscoColor;
-                }
-            }
         }
     }
 }

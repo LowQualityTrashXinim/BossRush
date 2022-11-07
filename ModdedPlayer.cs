@@ -184,9 +184,9 @@ namespace BossRush
             items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>()));
             items.Add(new Item(ModContent.ItemType<LunchBox>()));
             items.Add(new Item(ModContent.ItemType<GitGudToggle>()));
-            items.Add(new Item(ModContent.ItemType<BrokenToken>()));
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
+                items.Add(new Item(ModContent.ItemType<BrokenToken>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
                 items.Add(new Item(ModContent.ItemType<Note1>()));
@@ -231,18 +231,6 @@ namespace BossRush
                 }
             }
             return items;
-        }
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
-        {
-            //BurningPassionItem
-            if (Player.ItemAnimationActive && Player.HeldItem.type == ModContent.ItemType<BurningPassion>() && Player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] > 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
         public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
         {

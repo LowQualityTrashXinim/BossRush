@@ -84,5 +84,17 @@ namespace BossRush.Weapon.MeleeSynergyWeapon.BurningPassion
 				}
 			}
 		}
-    }
+		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+		{
+			//BurningPassionItem
+			if (Player.ItemAnimationActive && Player.HeldItem.type == ModContent.ItemType<BurningPassion>() && Player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] > 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+	}
 }
