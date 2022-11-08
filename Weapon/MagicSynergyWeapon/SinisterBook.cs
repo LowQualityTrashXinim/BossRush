@@ -39,7 +39,11 @@ namespace BossRush.Weapon.MagicSynergyWeapon
         }
         public override void AddRecipes()
         {
-            base.AddRecipes();
+            CreateRecipe()
+                .AddIngredient(ItemID.BookofSkulls)
+                .AddIngredient(ItemID.WaterBolt)
+                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                .Register();
         }
     }
 }
