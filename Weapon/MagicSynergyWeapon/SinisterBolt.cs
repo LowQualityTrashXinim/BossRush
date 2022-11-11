@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
@@ -23,21 +24,28 @@ namespace BossRush.Weapon.MagicSynergyWeapon
             ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
         Vector2 MousePosFixed;
+        bool DirectionFace;
         int count = 0;
         int CountMain = 0;
+        int CountCount = 0;
+        bool CheckRotation;
         public override void AI()
         {
-            Vector2 RandomFollowVel = Main.rand.NextVector2CircularEdge(1f, 1f) + Projectile.velocity;
-            int dustnumber = Dust.NewDust(Projectile.Center, Projectile.width/2, Projectile.height/2, DustID.GemDiamond, RandomFollowVel.X, RandomFollowVel.Y, 0, default, Main.rand.NextFloat(0.75f, 1f));
-            Main.dust[dustnumber].noGravity = true;
+            Player player = Main.player[Projectile.owner];
             if (CountMain == 0)
             {
                 MousePosFixed = Main.MouseWorld;
+                DirectionFace = player.direction == 1;
             }
             CountMain++;
+            if(CountMain == 10)
+            {
+                CheckRotation = Projectile.velocity.Y < 0;
+            }
+            if (CountMain > 10) Projectile.velocity = !DirectionFace ? CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f));
             if (CountMain >= 60)
             {
-                if ((Projectile.velocity.X > 1 || Projectile.velocity.X < -1 || Projectile.velocity.Y > 1 || Projectile.velocity.Y < -1 )&& count == 0)
+                if (Math.Round(Projectile.velocity.X, 2) != 0 && Math.Round(Projectile.velocity.Y,2) != 0 && count == 0)
                 {
                     Projectile.velocity -= Projectile.velocity * 0.01f;
                 }
@@ -45,10 +53,11 @@ namespace BossRush.Weapon.MagicSynergyWeapon
                 {
                     count++;
                 }
-                if (count >= 150)
+                if (count >= 12)
                 {
-                    Projectile.velocity = (MousePosFixed - Projectile.Center).SafeNormalize(Vector2.UnitX) * (1 + CountMain * 0.02f);
-                    if (Vector2.Distance(MousePosFixed, Projectile.Center) <= 10)
+                    CountCount++;
+                    Projectile.velocity = (MousePosFixed - Projectile.Center).SafeNormalize(Vector2.UnitX) * CountCount/30f;
+                    if (Vector2.Distance(MousePosFixed, Projectile.Center) <= 5)
                     {
                         Projectile.Kill();
                     }
