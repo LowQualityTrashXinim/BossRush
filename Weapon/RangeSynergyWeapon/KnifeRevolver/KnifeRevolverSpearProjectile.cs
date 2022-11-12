@@ -1,15 +1,13 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
     internal class KnifeRevolverSpearProjectile : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-			Main.projFrames[Projectile.type] = 2;
-		}
         protected virtual float HoldoutRangeMin => 30f;
 		protected virtual float HoldoutRangeMax => 46f;
 
@@ -36,7 +34,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.KnifeRevolver
 		public override bool PreAI()
 		{
 			Player player = Main.player[Projectile.owner];
-			SelectFrame(player);
 			Projectile.Center = player.Center;
 			int duration = player.itemAnimationMax;
 			DrawOffsetX = -30;
@@ -61,8 +58,19 @@ namespace BossRush.Weapon.RangeSynergyWeapon.KnifeRevolver
 			Projectile.rotation = Projectile.velocity.ToRotation() + (player.direction != 1 ? MathHelper.Pi : 0);
 			return false;
 		}
+		public override bool PreDraw(ref Color lightColor)
+		{
+			Main.instance.LoadProjectile(Projectile.type);
+			Player player = Main.player[Projectile.owner];
+			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+			Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+			Vector2 drawPos = (Projectile.Center - Main.screenPosition) + new Vector2(0f, Projectile.gfxOffY);
+			SpriteEffects sprite = player.direction != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			Main.EntitySpriteDraw(texture, drawPos, null, Color.White, Projectile.rotation, origin, Projectile.scale, sprite, 0);
+			return false;
+		}
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
 			Player player = Main.player[Projectile.owner];
 			if(!player.GetModPlayer<KnifeRevolverPlayer>().SpecialShotReady)
@@ -71,17 +79,6 @@ namespace BossRush.Weapon.RangeSynergyWeapon.KnifeRevolver
 
 			}
         }
-		public void SelectFrame(Player player)
-		{
-			if (player.direction == 1)
-			{
-				Projectile.frame = 1;
-			}
-			else
-			{
-				Projectile.frame = 0;
-			}
-		}
 	}
 
 	public class KnifeRevolverPlayer : ModPlayer
