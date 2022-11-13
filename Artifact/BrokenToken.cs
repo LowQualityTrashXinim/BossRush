@@ -10,7 +10,6 @@ namespace BossRush.Artifact
             DisplayName.SetDefault("Broken Artifact");
             Tooltip.SetDefault("A far cry from it's former glory, maybe you can make something with this");
         }
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetDefaults()
         {
             Item.width = 32;
