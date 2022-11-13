@@ -3,11 +3,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Artifact
 {
-    internal class BrokenToken : ModItem
+    internal class BrokenArtifact : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Broken Artifact");
             Tooltip.SetDefault("A far cry from it's former glory, maybe you can make something with this");
         }
         public override void SetDefaults()
