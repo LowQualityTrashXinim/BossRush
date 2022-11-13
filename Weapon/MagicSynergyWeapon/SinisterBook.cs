@@ -8,7 +8,6 @@ namespace BossRush.Weapon.MagicSynergyWeapon
 {
     internal class SinisterBook : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetDefaults()
         {
             Item.width = 10;
