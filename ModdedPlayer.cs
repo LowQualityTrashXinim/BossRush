@@ -186,7 +186,7 @@ namespace BossRush
             items.Add(new Item(ModContent.ItemType<GitGudToggle>()));
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                items.Add(new Item(ModContent.ItemType<BrokenToken>()));
+                items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
                 items.Add(new Item(ModContent.ItemType<Note1>()));

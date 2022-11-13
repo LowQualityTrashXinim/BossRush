@@ -20,7 +20,7 @@ namespace BossRush.Artifact
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<BrokenToken>())
+                .AddIngredient(ModContent.ItemType<BrokenArtifact>())
                 .Register();
         }
     }
