@@ -9,6 +9,7 @@ namespace BossRush
 	{
 		internal enum MessageType : byte
 		{
+			SkillIssuePlayer,
 			DrugSyncPlayer,
 			KingSlimeNoHit,
 			EoCNoHit,

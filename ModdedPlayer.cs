@@ -11,12 +11,11 @@ using BossRush.ExtraItem;
 using BossRush.Accessories;
 using BossRush.Artifact;
 using BossRush.Note;
-//Microsoft stuff
-using System.Collections.Generic;
-using BossRush.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Weapon.MagicSynergyWeapon.Swotaff;
 using BossRush.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Weapon.RangeSynergyWeapon.OvergrownMinishark;
+//Microsoft stuff
+using System.Collections.Generic;
 
 namespace BossRush
 {
@@ -198,6 +197,10 @@ namespace BossRush
             if (Player.name == "LQTXinim") 
             {
                 items.Add(new Item(ModContent.ItemType<RainbowTreasureChest>()));
+            }
+            if(Player.name.ToLower().Trim() == "skillissue")
+            {
+                items.Add(new Item(ModContent.ItemType<SkillIssuedArtifact>()));
             }
             if(Player.name == "ImNotGud")
             {
