@@ -67,5 +67,12 @@ namespace BossRush.Artifact
 				player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue++;
             }
         }
+        public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+        {
+            if(player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer)
+            {
+                spawnRate = 20;
+            }
+        }
     }
 }
