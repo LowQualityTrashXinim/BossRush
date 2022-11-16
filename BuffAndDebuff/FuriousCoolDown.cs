@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Accessories;
+using BossRush.Items.Accessories;
 
 namespace BossRush.BuffAndDebuff
 {

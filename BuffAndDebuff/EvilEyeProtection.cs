@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
 
 namespace BossRush.BuffAndDebuff
 {

@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using Terraria;
-using BossRush.CustomPotion;
 using Terraria.ModLoader.Utilities;
+using BossRush.Items.CustomPotion;
 
 namespace BossRush
 {
-	partial class BossRushNetCodeHandle
+    partial class BossRushNetCodeHandle
 	{
 		internal enum MessageType : byte
 		{

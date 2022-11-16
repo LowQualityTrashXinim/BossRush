@@ -4,18 +4,18 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 //general BossRush stuff
-using BossRush.Chest;
 using BossRush.BuffAndDebuff;
-using BossRush.CustomPotion;
-using BossRush.ExtraItem;
-using BossRush.Accessories;
-using BossRush.Artifact;
-using BossRush.Note;
-using BossRush.Weapon.MagicSynergyWeapon.Swotaff;
-using BossRush.Weapon.RangeSynergyWeapon.MagicBow;
-using BossRush.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 //Microsoft stuff
 using System.Collections.Generic;
+using BossRush.Items.ExtraItem;
+using BossRush.Items.Chest;
+using BossRush.Items.Note;
+using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
+using BossRush.Items.Artifact;
+using BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff;
+using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
+using BossRush.Items.Accessories;
+using BossRush.Items.CustomPotion;
 
 namespace BossRush
 {
