@@ -89,6 +89,12 @@ namespace BossRush
     {
         public static float NumOfProjectile = 0;
         public static Vector2 Vec2ToRotate = Vector2.Zero;
+        /// <summary>
+        /// Use this to change how much should weapon spread be modify
+        /// For global modify use multiplication
+        /// For general modify use addictive
+        /// Do not use SpreadModify = 0 as it will fuck the other stuff
+        /// </summary>
         public static float SpreadModify = 1;
 
         /// <summary>

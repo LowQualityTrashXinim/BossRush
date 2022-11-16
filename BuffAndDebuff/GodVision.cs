@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using BossRush;
 
 namespace BossRush.BuffAndDebuff
 {
@@ -17,6 +18,8 @@ namespace BossRush.BuffAndDebuff
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetCritChance(DamageClass.Generic) += 70;
+            GlobalWeaponModify.SpreadModify *= 0;
+
         }
     }
 }
