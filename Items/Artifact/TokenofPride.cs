@@ -3,14 +3,15 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Artifact
 {
-    internal class TokenofGreed : ModItem
+    internal class TokenofPride : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Token of Greed");
-            Tooltip.SetDefault("Greed lower your weapon damage globally inexchange for more item" +
-                "\n\"Greed is satified by just having, care not for weapon quality\"");
+            DisplayName.SetDefault("Token of Pride");
+            Tooltip.SetDefault("Increase weapon damage exchange for half of the reward\n" +
+                "\"Pride of having the skill to use, care little for reward\"");
         }
+        public override string Texture => "BossRush/MissingTexture";
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -24,15 +25,15 @@ namespace BossRush.Items.Artifact
                 .Register();
         }
     }
-    public class GreedyPlayer : ModPlayer
+    public class QualityPlayer : ModPlayer
     {
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
             if (Player.GetModPlayer<ModdedPlayer>().ArtifactCount <= 1)
             {
-                if (Player.HasItem(ModContent.ItemType<TokenofGreed>()))
+                if (Player.HasItem(ModContent.ItemType<TokenofPride>()))
                 {
-                    damage -= .4f;
+                    damage += .35f;
                 }
             }
         }

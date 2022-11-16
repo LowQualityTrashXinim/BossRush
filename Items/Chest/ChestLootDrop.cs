@@ -121,7 +121,7 @@ namespace BossRush.Items.Chest
             {
                 if (player.HasItem(ModContent.ItemType<TokenofGreed>())) { amountToModify += 4; }
                 if (ModContent.GetInstance<BossRushModConfig>().EasyMode) { amountToModify += 2; }
-                if (player.HasItem(ModContent.ItemType<TokenofQuality>())) { amountToModify = 0.5f; multiplier = true; }
+                if (player.HasItem(ModContent.ItemType<TokenofPride>())) { amountToModify = 0.5f; multiplier = true; }
             }
             //Change
             if (multiplier)

@@ -3,10 +3,10 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-//general BossRush stuff
-using BossRush.BuffAndDebuff;
 //Microsoft stuff
 using System.Collections.Generic;
+//general BossRush stuff
+using BossRush.BuffAndDebuff;
 using BossRush.Items.ExtraItem;
 using BossRush.Items.Chest;
 using BossRush.Items.Note;
@@ -31,8 +31,13 @@ namespace BossRush
         //ArtifactList
         public bool ArtifactAllowance = false;
         public bool ForceArtifact = true;
-        int ArtifactCount = 0;
-        int[] ArtifactList = new int[]{ModContent.ItemType<TokenofGreed>(), ModContent.ItemType<TokenofQuality>()};
+        public int ArtifactCount = 0;
+        int[] ArtifactList = new int[]{
+            ModContent.ItemType<TokenofGreed>(),
+            ModContent.ItemType<TokenofPride>(),
+            ModContent.ItemType<SkillIssuedArtifact>(),
+            ModContent.ItemType<GodDice>(), 
+            ModContent.ItemType<VampirismCrystal>() };
         //NoHiter
         public bool gitGud = false;
         public int HowManyBossIsAlive;
@@ -151,21 +156,7 @@ namespace BossRush
         {
             if(Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee)
             {
-                scale *= 1.3f;
-            }
-        }
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
-        {
-            if (ArtifactCount <= 1)
-            {
-                if (Player.HasItem(ModContent.ItemType<TokenofGreed>()))
-                {
-                    damage *= 0.6f;
-                }
-                if (Player.HasItem(ModContent.ItemType<TokenofQuality>()))
-                {
-                    damage *= 1.35f;
-                }
+                scale += .3f;
             }
         }
 
