@@ -10,7 +10,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("so it is just a better staff but with a sword as tip ?");
+            Tooltip.SetDefault("so it is just a better staff but with a sword as tip ?\\\\Todo : make alt attack");
             Item.staff[Item.type] = true;
         }
 

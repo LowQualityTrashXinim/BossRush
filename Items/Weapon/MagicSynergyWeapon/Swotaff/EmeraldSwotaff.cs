@@ -10,7 +10,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Genius idea");
+            Tooltip.SetDefault("Genius idea\\\\Todo : make alt attack");
             Item.staff[Item.type] = true;
         }
 

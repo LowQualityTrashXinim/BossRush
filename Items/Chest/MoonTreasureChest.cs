@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Weapon;
+using BossRush.Items.Weapon;
 
 namespace BossRush.Items.Chest
 {

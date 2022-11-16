@@ -10,7 +10,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     public class TopazSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/MagicSynergyWeapon/Swotaff/TopazSwotaff";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/Swotaff/TopazSwotaff";
         public override void SetDefaults()
         {
             Projectile.width = 60;

@@ -10,7 +10,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
 {
     internal class SharpBoomerangP : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/RangeSynergyWeapon/SharpBoomerang";
+        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/SharpBoomerang";
 
         public override void SetDefaults()
         {

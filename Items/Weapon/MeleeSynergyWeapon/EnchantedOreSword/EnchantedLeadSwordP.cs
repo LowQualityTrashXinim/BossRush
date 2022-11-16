@@ -9,7 +9,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
     internal class EnchantedLeadSwordP : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Item_" + ItemID.LeadShortsword;
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;

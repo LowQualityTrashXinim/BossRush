@@ -7,7 +7,7 @@ namespace BossRush.Items.CustomPotion
 {
     internal class TankPotion : ModItem
     {
-        public override string Texture => "BossRush/CustomPotion/MissingTexturePotion";
+        public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("You are hard as a rock, but your movement is as sloppy as a rock");

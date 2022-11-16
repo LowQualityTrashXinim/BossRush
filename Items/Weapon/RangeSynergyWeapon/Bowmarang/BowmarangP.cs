@@ -9,7 +9,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Bowmarang
 {
     public class BowmarangP : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/RangeSynergyWeapon/Bowmarang/Bowmarang";
+        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/Bowmarang/Bowmarang";
         public override void SetDefaults()
         {
             Projectile.width = 32;

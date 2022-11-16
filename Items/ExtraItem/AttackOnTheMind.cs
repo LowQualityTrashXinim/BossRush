@@ -8,7 +8,7 @@ namespace BossRush.Items.ExtraItem
 {
     public class AttackOnTheMind : ModItem
     {
-        public override string Texture => "BossRush/ExtraItem/MissingTexture";
+        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Caution : Using this may collapse your mind");

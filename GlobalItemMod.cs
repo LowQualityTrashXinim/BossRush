@@ -3,8 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Accessories;
 using BossRush.BuffAndDebuff;
+using BossRush.Items.Accessories;
 using BossRush.Items.ExtraItem;
 using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
 

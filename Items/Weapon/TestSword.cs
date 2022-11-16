@@ -5,7 +5,7 @@ namespace BossRush.Items.Weapon
 {
     internal class TestSword : ModItem
     {
-        public override string Texture => "BossRush/Weapon/TestProjectileRotate";
+        public override string Texture => "BossRush/Items/Weapon/TestProjectileRotate";
         public override void SetDefaults()
         {
             Item.noUseGraphic = true;

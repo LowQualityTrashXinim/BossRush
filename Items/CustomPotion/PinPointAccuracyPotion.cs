@@ -7,7 +7,7 @@ namespace BossRush.Items.CustomPotion
 {
     internal class PinPointAccuracyPotion : ModItem
     {
-        public override string Texture => "BossRush/CustomPotion/MissingTexturePotion";
+        public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Increase your crits ability\nGetting hit will instantly cancel the buff");

@@ -9,7 +9,7 @@ namespace BossRush.Items.Weapon.DupeSynergy
 {
     internal class ComboConceptSword : ModItem
     {
-        public override string Texture => "BossRush/Weapon/DupeSynergy/GenericDupeSword";
+        public override string Texture => "BossRush/Items/Weapon/DupeSynergy/GenericDupeSword";
         public override void SetDefaults()
         {
             Item.width = 44;

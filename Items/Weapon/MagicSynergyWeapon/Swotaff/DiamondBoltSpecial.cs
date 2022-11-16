@@ -6,7 +6,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class DiamondBoltSpecial : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/MagicSynergyWeapon/Swotaff/DiamondOrb";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/Swotaff/DiamondOrb";
         public override void SetDefaults()
         {
             Projectile.width = 30;

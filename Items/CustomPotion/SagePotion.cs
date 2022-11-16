@@ -7,7 +7,7 @@ namespace BossRush.Items.CustomPotion
 {
     internal class SagePotion : ModItem
     {
-        public override string Texture => "BossRush/CustomPotion/MissingTexturePotion";
+        public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Decrease other ability in exchange for Mana regen");

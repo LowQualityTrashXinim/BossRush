@@ -7,7 +7,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 {
     public class UltimatePistolMinion : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/RangeSynergyWeapon/ParadoxPistol/UltimatePistol";
+        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/ParadoxPistol/UltimatePistol";
         public override void SetDefaults()
         {
             Projectile.width = 39;

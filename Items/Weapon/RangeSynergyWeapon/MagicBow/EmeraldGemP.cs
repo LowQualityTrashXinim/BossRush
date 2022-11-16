@@ -86,7 +86,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
     }
     public class SmallEmerald : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/RangeSynergyWeapon/MagicBow/EmeraldGemP";
+        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/MagicBow/EmeraldGemP";
         public override void SetDefaults()
         {
             Projectile.width = 14;

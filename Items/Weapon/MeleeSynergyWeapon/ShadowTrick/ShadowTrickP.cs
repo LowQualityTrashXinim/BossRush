@@ -57,7 +57,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.ShadowTrick
     }
     internal class ShadowTrickP2 : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/MeleeSynergyWeapon/ShadowTrick/ShadowTrickP";
+        public override string Texture => "BossRush/Items/Weapon/MeleeSynergyWeapon/ShadowTrick/ShadowTrickP";
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 3f;

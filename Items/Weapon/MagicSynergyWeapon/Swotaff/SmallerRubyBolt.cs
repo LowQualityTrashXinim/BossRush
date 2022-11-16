@@ -6,7 +6,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class SmallerRubyBolt : ModProjectile
     {
-        public override string Texture => "BossRush/Weapon/MagicSynergyWeapon/Swotaff/GiantRubyBolt";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/Swotaff/GiantRubyBolt";
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 2;
