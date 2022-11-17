@@ -32,10 +32,11 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.FrozenSwordFish
             Player player = Main.player[Projectile.owner];
             if (Projectile.timeLeft == 499)
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 50; i++)
                 {
-                    Vector2 Circle = Main.rand.NextVector2CircularEdge(5f, 5f);
-                    Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceRod, Circle.X, Circle.Y, 0, default, Main.rand.NextFloat(0.5f, 1.5f));
+                    Vector2 Circle = Main.rand.NextVector2CircularEdge(7f, 7f);
+                    int dust = Dust.NewDust(Projectile.Center, 0,0, DustID.IceRod, Circle.X, Circle.Y, 0, Color.Aqua, 1.5f);
+                    Main.dust[dust].noGravity = true;
                 }
             }
             Projectile.ai[0] += 1f;
@@ -54,15 +55,16 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.FrozenSwordFish
                     Projectile.penetrate = 1;
                     Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 7.5f;
                     count++;
-                    if (count >= 40)
+                    if (count >= 30)
                     {
-                        Projectile.NewProjectile(new EntitySource_ItemUse(player, player.HeldItem), Projectile.Center, Projectile.velocity * 1.75f, ProjectileID.IceBolt, (int)(Projectile.damage * 0.75f), Projectile.knockBack * 0.65f, player.whoAmI);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 2.25f, ProjectileID.IceBolt, (int)(Projectile.damage * 0.75f), Projectile.knockBack * 0.65f, player.whoAmI);
                         count = 0;
                     }
                 }
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
-                    Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceTorch, Main.rand.Next(-5, 5) + Projectile.velocity.X * -0.25f, Main.rand.Next(-5, 5) + Projectile.velocity.Y * -0.25f, 0, default, Main.rand.NextFloat(0.5f, 1.2f));
+                    int dust = Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceTorch, Main.rand.Next(-5, 5) + Projectile.velocity.X * -0.25f, Main.rand.Next(-5, 5) + Projectile.velocity.Y * -0.25f, 0, default, Main.rand.NextFloat(0.5f, 1.2f));
+                    Main.dust[dust].noGravity = true;
                 }
             }
             else
@@ -73,10 +75,10 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.FrozenSwordFish
 
         public override void Kill(int timeLeft)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
                 Vector2 Circle = Main.rand.NextVector2CircularEdge(5f, 5f);
-                Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceRod, Circle.X, Circle.Y, 0, default, Main.rand.NextFloat(2, 2.5f));
+                Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceRod, Circle.X, Circle.Y, 0, Color.Aqua, Main.rand.NextFloat(1, 1.25f));
             }
         }
 
