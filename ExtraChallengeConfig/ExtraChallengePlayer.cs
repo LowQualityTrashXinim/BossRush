@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.ExtraChallengeConfig
 {
@@ -57,6 +58,24 @@ namespace BossRush.ExtraChallengeConfig
                 }
             }
             return true;
+        }
+
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)BossRushNetCodeHandle.MessageType.ExtraChallenge);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(ChallengeChooser);
+            packet.Send(toWho, fromWho);
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag["ExtraChallenge"] = ChallengeChooser;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            ChallengeChooser = (int)tag["ExtraChallenge"];
         }
     }
 }

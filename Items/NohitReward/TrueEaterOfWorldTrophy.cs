@@ -34,7 +34,7 @@ namespace BossRush.Items.NohitReward
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.EoCNoHit);
+            packet.Write((byte)BossRushNetCodeHandle.MessageType.EoWNoHit);
             packet.Write((byte)Player.whoAmI);
             packet.Write(EoW0Hit);
             packet.Send(toWho, fromWho);

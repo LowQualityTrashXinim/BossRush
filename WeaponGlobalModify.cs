@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
@@ -126,7 +127,7 @@ namespace BossRush
         public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
         {
             float ChanceNotToConsume = weapon.useTime <= 20 && weapon.useTime >= 7 ? weapon.useTime * .35f : weapon.useTime < 7 ? weapon.useTime * 1.4f : weapon.useTime;
-            return Main.rand.NextFloat() < 1/ChanceNotToConsume;
+            return Math.Round(Main.rand.NextFloat(),2) < 1/Math.Round(ChanceNotToConsume,2);
         }
 
         /// <summary>

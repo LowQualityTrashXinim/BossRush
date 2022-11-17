@@ -60,7 +60,29 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
         int[] Fang = new int[] { ProjectileID.PoisonFang, ProjectileID.VenomFang };
         int JungleTemple = Main.rand.Next(new int[] { ProjectileID.BoulderStaffOfEarth, ProjectileID.HeatRay, ProjectileID.Stynger });
         int[] UltimateProjPack = new int[] { ProjectileID.IceSickle, ProjectileID.DeathSickle, ProjectileID.DemonScythe, ProjectileID.UnholyTridentFriendly, ProjectileID.MoonlordArrow, ProjectileID.ShadowFlameArrow, ProjectileID.BeeArrow, ProjectileID.ChlorophyteArrow, ProjectileID.Hellwing, ProjectileID.VenomArrow, ProjectileID.IchorArrow, ProjectileID.FrostburnArrow, ProjectileID.FrostArrow, ProjectileID.BoneArrow, ProjectileID.CursedArrow, ProjectileID.HolyArrow, ProjectileID.HellfireArrow, ProjectileID.JestersArrow, ProjectileID.UnholyArrow, ProjectileID.FireArrow, ProjectileID.WoodenArrowFriendly, ProjectileID.MoonlordBullet, ProjectileID.BulletHighVelocity, ProjectileID.IchorBullet, ProjectileID.PartyBullet, ProjectileID.VenomBullet, ProjectileID.ExplosiveBullet, ProjectileID.NanoBullet, ProjectileID.ChlorophyteBullet, ProjectileID.CursedBullet, ProjectileID.GoldenBullet, ProjectileID.MeteorShot, ProjectileID.CrystalBullet, ProjectileID.FruitcakeChakram, ProjectileID.BloodyMachete, ProjectileID.Bananarang, ProjectileID.PaladinsHammerFriendly, ProjectileID.PossessedHatchet, ProjectileID.LightDisc, ProjectileID.Flamarang, ProjectileID.ThornChakram, ProjectileID.IceBoomerang, ProjectileID.WoodenBoomerang, ProjectileID.EnchantedBoomerang, ProjectileID.Starfury, ProjectileID.HallowStar, ProjectileID.StarWrath, ProjectileID.FallingStar, ProjectileID.BallofFire, ProjectileID.CursedFlameFriendly, ProjectileID.BallofFrost, ProjectileID.BouncyGrenade, ProjectileID.Grenade, ProjectileID.GrenadeI, ProjectileID.Beenade, ProjectileID.StickyGrenade, ProjectileID.MolotovCocktail, ProjectileID.PartyGirlGrenade, ProjectileID.ThrowingKnife, ProjectileID.PoisonedKnife, ProjectileID.MagicDagger, ProjectileID.VampireKnife, ProjectileID.ShadowFlameKnife, ProjectileID.QuarterNote, ProjectileID.EighthNote, ProjectileID.TiedEighthNote, ProjectileID.AmethystBolt, ProjectileID.TopazBolt, ProjectileID.SapphireBolt, ProjectileID.EmeraldBolt, ProjectileID.RubyBolt, ProjectileID.DiamondBolt, ProjectileID.IceBolt, ProjectileID.AmberBolt, ProjectileID.InfernoFriendlyBolt, ProjectileID.PulseBolt, ProjectileID.BlackBolt, ProjectileID.SwordBeam, ProjectileID.FrostBoltSword, ProjectileID.TerraBeam, ProjectileID.LightBeam, ProjectileID.NightBeam, ProjectileID.EnchantedBeam, ProjectileID.InfluxWaver, ProjectileID.CrystalDart, ProjectileID.CursedDart, ProjectileID.IchorDart, ProjectileID.GiantBee, ProjectileID.Wasp, ProjectileID.Bee, ProjectileID.CopperCoin, ProjectileID.SilverCoin, ProjectileID.GoldCoin, ProjectileID.PlatinumCoin, ProjectileID.JackOLantern, ProjectileID.CandyCorn, ProjectileID.Bat, ProjectileID.RottenEgg, ProjectileID.Stake };
-
+        private void NewProj(float rotation, float CustomTime,Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            float SpeedMultiplier;
+            switch (type)
+            {
+                case ProjectileID.WoodenArrowFriendly://Shoot out custom multiple even spread
+                case ProjectileID.Bullet:
+                case ProjectileID.Shuriken: //Shoot out 1 even spread 
+                case ProjectileID.WoodenBoomerang:
+                    int[] array = type == ProjectileID.WoodenArrowFriendly ? Arrow : type == ProjectileID.WoodenBoomerang ? Boomerang : Bullet;
+                    for (int i = 0; i < NumOfProjectile; i++)
+                    {
+                        velocity = RotateCode(rotation, i);
+                        for (int l = 0; l < CustomTime; l++)
+                        {
+                            int projType = type == ProjectileID.Shuriken ? ProjectileID.Shuriken : array[l];
+                            SpeedMultiplier = .99f + l * 0.1f;
+                            Projectile.NewProjectile(source, position, velocity * SpeedMultiplier, projType, damage, knockback, player.whoAmI);
+                        }
+                    }
+                    break;
+            }
+        }
         //type = Main.rand.Next(new int[] { ProjectileID.Flare, ProjectileID.PoisonDartBlowgun, ProjectileID.GoldenShowerFriendly, ProjectileID.ShadowBeamFriendly, ProjectileID.LostSoulFriendly, ProjectileID.EatersBite, ProjectileID.Flairon, ProjectileID.MiniSharkron, ProjectileID.NailFriendly, ProjectileID.Meowmere, ProjectileID.JavelinFriendly, ProjectileID.ToxicFlask, ProjectileID.ToxicBubble, ProjectileID.ClothiersCurse, ProjectileID.PainterPaintball, ProjectileID.VortexBeaterRocket, ProjectileID.NebulaArcanum, ProjectileID.TowerDamageBolt, ProjectileID.NebulaBlaze1, ProjectileID.NebulaBlaze2, ProjectileID.Daybreak, ProjectileID.LunarFlare, ProjectileID.SandnadoFriendly, ProjectileID.SkyFracture, ProjectileID.SpiritFlame, ProjectileID.DD2FlameBurstTowerT1Shot, ProjectileID.DD2FlameBurstTowerT2Shot, ProjectileID.DD2FlameBurstTowerT3Shot, ProjectileID.Ale, ProjectileID.DD2BallistraProj, ProjectileID.MonkStaffT2Ghast, ProjectileID.DD2ApprenticeStorm, ProjectileID.DD2PhoenixBowShot, ProjectileID.MonkStaffT3_AltShot, ProjectileID.ApprenticeStaffT3Shot, ProjectileID.DD2BetsyArrow, ProjectileID.BookStaffShot });
         //Todo : try and make a global function for just Projectile.NewProjectile
         //use ProjectileID to choose what behavoir to do
@@ -78,51 +100,33 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
             {
                 Counter += 1;
                 float SpeedMultiplier;
+                float rotation = 0;
+                float cusTime = 1;
                 switch (Counter)
                 {
                     case 1://Arrow
-                        NumOfProjectile = 5;
-                        for (int i = 0; i < NumOfProjectile; i++)
-                        {
-                            velocity = RotateCode(10, i);
-                            for (int a = 0; a < Arrow.Length; a++)
-                            {
-                                SpeedMultiplier = 0.5f + a * 0.1f;
-                                Projectile.NewProjectile(source, position, velocity * SpeedMultiplier, Arrow[a], damage, knockback, player.whoAmI);
-                            }
-                        }
+                        cusTime = Arrow.Length;
+                        rotation = 15;
+                        NumOfProjectile = 10;
+                        type = ProjectileID.WoodenArrowFriendly;
                         break;
                     case 2://BulletHell
-                        for (int i = 0; i < Bullet.Length; i++)
-                        {
-                            Projectile.NewProjectile(source, position, velocity, Bullet[i], damage, knockback, player.whoAmI);
-                        }
-                        for (int c = 0; c < Bullet.Length; c++)
-                        {
-                            SpeedMultiplier = 0.4f + c * 0.05f;
-                            NumOfProjectile = c + 6;
-                            for (int i = 0; i < c + 6; i++)
-                            {
-                                velocity = RotateCode(60, i);
-                                Projectile.NewProjectile(source, position, velocity * SpeedMultiplier, Bullet[c], damage, knockback, player.whoAmI);
-                            }
-                        }
+                        cusTime = Bullet.Length;
+                        rotation = 30;
+                        NumOfProjectile = 12;
+                        type = ProjectileID.Bullet;
                         break;
                     case 3://Shuriken
+                        rotation = 60;
                         NumOfProjectile = 10;
-                        for (int i = 0; i < NumOfProjectile; i++)
-                        {
-                            velocity = RotateCode(60, i);
-                            Projectile.NewProjectile(source, position, velocity, ProjectileID.Shuriken, damage, knockback, player.whoAmI);
-                        }
+                        cusTime = 1;
+                        type = ProjectileID.Shuriken;
                         break;
                     case 4://Boomerang
+                        rotation = 80;
                         NumOfProjectile = 11;
-                        for (int i = 0; i < Boomerang.Length; i++)
-                        {
-                            velocity = RotateCode(80, i);
-                            Projectile.NewProjectile(source, position, velocity, Boomerang[i], damage, knockback, player.whoAmI);
-                        }
+                        cusTime = 1;
+                        type = ProjectileID.WoodenBoomerang;
                         break;
                     case 5://Star
                         Projectile.NewProjectile(source, position, velocity, ProjectileID.Starfury, damage, knockback, player.whoAmI);
@@ -515,6 +519,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         }
                         break;
                 }
+                NewProj(rotation, cusTime, player, source, position, velocity, type, damage, knockback);
                 //Reset Counter
                 if (Counter > 34)
                 {

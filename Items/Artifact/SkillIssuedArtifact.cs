@@ -53,7 +53,7 @@ namespace BossRush.Items.Artifact
 
         public override void LoadData(TagCompound tag)
         {
-            SkillIssue = (int)tag["Drug"];
+            SkillIssue = (int)tag["SkillIssue"];
         }
     }
 

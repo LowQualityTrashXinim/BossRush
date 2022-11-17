@@ -2,6 +2,9 @@
 using Terraria;
 using Terraria.ModLoader.Utilities;
 using BossRush.Items.CustomPotion;
+using BossRush.Items.Artifact;
+using BossRush.Items.NohitReward;
+using BossRush.ExtraChallengeConfig;
 
 namespace BossRush
 {
@@ -13,7 +16,10 @@ namespace BossRush
 			DrugSyncPlayer,
 			KingSlimeNoHit,
 			EoCNoHit,
-			GambleAddiction
+			EoWNoHit,
+			BoCNoHit,
+			GambleAddiction,
+			ExtraChallenge
 		}
 		public void HandlePacket(BinaryReader reader, int whoAmI)
 		{
@@ -21,11 +27,63 @@ namespace BossRush
 
 			if (msgType == MessageType.DrugSyncPlayer)
 			{
-				// This message syncs ExamplePlayer.exampleLifeFruits
 				byte playernumber = reader.ReadByte();
 				WonderDrugPlayer DrugDealing = Main.player[playernumber].GetModPlayer<WonderDrugPlayer>();
 				DrugDealing.DrugDealer = reader.ReadInt32();
-				// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
+			}
+			if (msgType == MessageType.EoWNoHit)
+			{
+				byte playernumber = reader.ReadByte();
+				EoWNoHit EoW = Main.player[playernumber].GetModPlayer<EoWNoHit>();
+				EoW.EoW0Hit = reader.ReadInt32();
+			}
+			if (msgType == MessageType.BoCNoHit)
+			{
+				byte playernumber = reader.ReadByte();
+				BoCNoHit BoC = Main.player[playernumber].GetModPlayer<BoCNoHit>();
+				BoC.BoC0Hit = reader.ReadInt32();
+			}
+			if (msgType == MessageType.SkillIssuePlayer)
+			{
+				// This message syncs ExamplePlayer.exampleLifeFruits
+				byte playernumber = reader.ReadByte();
+				SkillIssuedArtifactPlayer SkillISsue = Main.player[playernumber].GetModPlayer<SkillIssuedArtifactPlayer>();
+				SkillISsue.SkillIssue= reader.ReadInt32();
+			}
+			if (msgType == MessageType.EoCNoHit)
+			{
+				// This message syncs ExamplePlayer.exampleLifeFruits
+				byte playernumber = reader.ReadByte();
+				EoCNoHit EOC = Main.player[playernumber].GetModPlayer<EoCNoHit>();
+				EOC.EoC0hit = reader.ReadInt32();
+			}
+			if (msgType == MessageType.KingSlimeNoHit)
+			{
+				// This message syncs ExamplePlayer.exampleLifeFruits
+				byte playernumber = reader.ReadByte();
+				KingSlimeNoHit KSNOHIT = Main.player[playernumber].GetModPlayer<KingSlimeNoHit>();
+				KSNOHIT.KS0hit = reader.ReadInt32();
+			}
+			if (msgType == MessageType.GambleAddiction)
+			{
+				// This message syncs ExamplePlayer.exampleLifeFruits
+				byte playernumber = reader.ReadByte();
+				GamblePlayer gamble = Main.player[playernumber].GetModPlayer<GamblePlayer>();
+				gamble.GambleDamage = reader.ReadInt32();
+				gamble.GambleDef = reader.ReadInt32();
+				gamble.GambleSpeed = reader.ReadInt32();
+				gamble.GambleHP = reader.ReadInt32();
+				gamble.GambleLifeRegen = reader.ReadInt32();
+				gamble.GambleMana = reader.ReadInt32();
+				gamble.GambleManaRegen = reader.ReadInt32();
+				gamble.GambleMinionSlot = reader.ReadInt32();
+				gamble.GambleCrit = reader.ReadInt32();
+			}
+			if(msgType == MessageType.ExtraChallenge)
+            {
+				byte playernumber = reader.ReadByte();
+				ExtraChallengePlayer extraChallenge = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
+				extraChallenge.ChallengeChooser = reader.ReadInt32();
 			}
 		}
 	}
