@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.IO;
 
-namespace BossRush
+namespace BossRush.ChallengeMode
 {
     internal class BossRushWorldGen : ModSystem
     {
@@ -15,7 +15,7 @@ namespace BossRush
             {
                 return false;
             }
-            else if(worldFileData.GameMode == 3 && ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && worldFileData.ForTheWorthy)
+            else if (worldFileData.GameMode == 3 && ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && worldFileData.ForTheWorthy)
             {
                 return true;
             }
@@ -24,7 +24,7 @@ namespace BossRush
 
         public override string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData)
         {
-            if(ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && worldData.GameMode != 3 && !worldData.ForTheWorthy)
+            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && worldData.GameMode != 3 && !worldData.ForTheWorthy)
             {
                 return "A force of pain block you from cheesing\nokay, with the stupid cringe edgy line out of the way, you must play on Master difficulty world";
             }
@@ -46,7 +46,7 @@ namespace BossRush
         }
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
         {
-            if(ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
+            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
             {
                 Main.getGoodWorld = true;
             }

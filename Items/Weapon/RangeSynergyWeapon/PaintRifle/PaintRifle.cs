@@ -1,15 +1,19 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
 {
-    internal class PaintRifle : ModItem
+    internal class PaintRifle : WeaponTemplate
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Now come with mega mode");
+            Tooltip.SetDefault("\"Mega mode included\"" +
+                "\nIt have literal screw as a way to activate mega mode");
         }
         public override void SetDefaults()
         {
@@ -17,36 +21,51 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
             Item.height = 40;
             Item.rare = 3;
 
-            Item.damage = 20;
+            Item.damage = 25;
             Item.crit = 7;
             Item.knockBack = 2f;
 
-            Item.useTime = 2;
-            Item.useAnimation = 8;
-            Item.reuseDelay = 12;
+            Item.useTime = 5;
+            Item.useAnimation = 20;
+            Item.reuseDelay = 9;
             Item.useStyle = ItemUseStyleID.Shoot;
 
             Item.autoReuse = true;
             Item.noMelee = true;
+            Item.UseSound = SoundID.Item5;
             Item.DamageType = DamageClass.Ranged;
             Item.value = Item.sellPrice(silver: 1000);
 
             Item.shoot = ProjectileID.PainterPaintball;
-            Item.shootSpeed = 17;
-            Item.scale -= 0.25f;
+            Item.shootSpeed = 23;
+            Item.scale -= 0.35f;
         }
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-33, 0);
+            return new Vector2(-33, 2);
+        }
+
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            velocity = velocity.RotatedByRandom(MathHelper.ToRadians(5));
-            Vector2 offset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 30f;
-            if (Collision.CanHit(position, 0, 0, offset * offset, 0, 0))
+            position = PositionOFFSET(position, velocity, 30);
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Vec2ToRotate = velocity;
+            if (player.altFunctionUse == 2)
             {
-                position += offset;
+                for (int i = 0; i < 3; i++)
+                {
+                    velocity = RandomSpread(RotateRandom(24),3,1.2f);
+                    Projectile.NewProjectile(Item.GetSource_FromThis(), position, velocity, type, (int)(damage*.7f), knockback, player.whoAmI);
+                }
+                return false;
             }
+            return true;
         }
         public override void AddRecipes()
         {
