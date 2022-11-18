@@ -23,7 +23,15 @@ namespace BossRush.Items.Chest
         {
             return true;
         }
-        public override List<int> FlagNumber() => new List<int>() { 6, 7, 8, NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 ? 9 : 8 };
+        public override List<int> FlagNumber()
+        {
+            List<int> list = new List<int>() {6,7,8 };
+            if(NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+            {
+                list.Add(9);
+            }
+            return list;
+        }
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);

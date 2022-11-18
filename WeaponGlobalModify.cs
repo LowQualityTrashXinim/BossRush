@@ -225,7 +225,7 @@ namespace BossRush
                         break;
                     case ItemID.Minishark:
                         OffSetPost = 10;
-                        SpreadAmount = 10;
+                        SpreadAmount = 7;
                         AdditionalSpread = 2;
                         break;
                     case ItemID.Gatligator:
