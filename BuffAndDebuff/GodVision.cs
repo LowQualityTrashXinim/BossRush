@@ -18,8 +18,7 @@ namespace BossRush.BuffAndDebuff
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetCritChance(DamageClass.Generic) += 70;
-            GlobalWeaponModify.SpreadModify *= 0;
-
+            GlobalWeaponModify.SpreadModify = 0;
         }
     }
 }
