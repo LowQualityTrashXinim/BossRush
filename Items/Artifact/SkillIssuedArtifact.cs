@@ -34,9 +34,9 @@ namespace BossRush.Items.Artifact
         public override void ResetEffects()
         {
             SkillIssuePlayer = false;
-            Player.GetDamage(DamageClass.Generic) += SkillIssue * 0.01f;
+            Player.GetDamage(DamageClass.Generic) *= SkillIssue * 0.01f + 1;
             Player.statLifeMax2 += (int)(SkillIssue * 0.05f);
-            Player.thorns += SkillIssue * 0.01f;
+            Player.thorns *= SkillIssue * 0.01f + 1;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

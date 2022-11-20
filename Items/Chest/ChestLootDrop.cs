@@ -244,11 +244,6 @@ namespace BossRush.Items.Chest
         }
         private void AddLoot(List<int> FlagNumber)
         {
-            DropItemMelee.Clear();
-            DropItemRange.Clear();
-            DropItemMagic.Clear();
-            DropItemSummon.Clear();
-            DropItemMisc.Clear();
             for (int i = 0; i < FlagNumber.Count; i++)
             {
                 switch (FlagNumber[i])
@@ -353,11 +348,14 @@ namespace BossRush.Items.Chest
                         DropItemSummon.Add(ItemID.MoonlordTurretStaff);
                         break;
                 }
-                DropItemMelee.AddRange(SafePostAddLootMelee());
-                DropItemRange.AddRange(SafePostAddLootRange());
-                DropItemMagic.AddRange(SafePostAddLootMagic());
-                DropItemSummon.AddRange(SafePostAddLootSummon());
-                DropItemMisc.AddRange(SafePostAddLootMisc());
+                if (SafePostAddLootMelee().Count > 0 && SafePostAddLootRange().Count > 0 && SafePostAddLootMagic().Count > 0 && SafePostAddLootSummon().Count > 0 && SafePostAddLootMisc().Count > 0)
+                {
+                    DropItemMelee.AddRange(SafePostAddLootMelee());
+                    DropItemRange.AddRange(SafePostAddLootRange());
+                    DropItemMagic.AddRange(SafePostAddLootMagic());
+                    DropItemSummon.AddRange(SafePostAddLootSummon());
+                    DropItemMisc.AddRange(SafePostAddLootMisc());
+                }
             }
         }
         /// <summary>
