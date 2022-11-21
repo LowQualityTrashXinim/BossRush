@@ -60,8 +60,6 @@ namespace BossRush.ChallengeMode
                 tasks.RemoveAt(FloatIsland);
                 int FloatIslandHouse = tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Island Houses"));
                 tasks.RemoveAt(FloatIslandHouse);
-                int Dungeon = tasks.FindIndex(GenPass => GenPass.Name.Equals("Dungeon"));
-                tasks.RemoveAt(Dungeon);
                 int LifeCrystal = tasks.FindIndex(GenPass => GenPass.Name.Equals("Life Crystals"));
                 tasks.RemoveAt(LifeCrystal);
                 int Shines = tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies"));

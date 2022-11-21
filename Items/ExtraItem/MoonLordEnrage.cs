@@ -13,7 +13,6 @@ namespace BossRush.Items.ExtraItem
             DisplayName.SetDefault("MoonLordFullPower");
             Tooltip.SetDefault("Be fear, be scare");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.MoonLordCore] = true;
             NPCID.Sets.MPAllowedEnemies[NPCID.MoonLordFreeEye] = true;
         }
@@ -46,13 +45,12 @@ namespace BossRush.Items.ExtraItem
 
                 int type = NPCID.MoonLordCore;
                 int type2 = NPCID.MoonLordFreeEye;
-                int amount = 3;
                 player.GetModPlayer<ModdedPlayer>().MoonLordEnraged = true;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     // If the player is not in multiplayer, spawn directly
                     NPC.SpawnOnPlayer(player.whoAmI, type);
-                    for (int i = 0; i < amount; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         NPC.SpawnOnPlayer(player.whoAmI, type2);
                     }
@@ -68,7 +66,6 @@ namespace BossRush.Items.ExtraItem
                     }
                 }
             }
-
             return true;
         }
     }

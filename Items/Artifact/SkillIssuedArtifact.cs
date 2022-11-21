@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -11,7 +12,7 @@ namespace BossRush.Items.Artifact
         {
             DisplayName.SetDefault("Infinite Growth");
             Tooltip.SetDefault("\"with this, nothing is impossible, even with skill issue person\"" +
-            "\nFor each monster kill, you will get 0.05 % increase toward Max HP and 0.01% boost toward damage and thorn" +
+            "\nFor each monster kill, you will get 0.5 % increase toward Max HP and 0.01% boost toward damage and thorn" +
             "\nTo further increase progress, by default this accessory will make monster spawn increase by CRAZY amount" +
             "\nCapped at 10 million kill so your game don't break, you can thx me for that");
         }
@@ -21,6 +22,12 @@ namespace BossRush.Items.Artifact
             Item.height = 80;
             Item.accessory = true;
             Item.rare = ItemRarityID.Expert;
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            Player player = Main.LocalPlayer;
+            tooltips.Add(new TooltipLine(Mod, "SkillIssue", "Total Mobs kill : " + player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue));
         }
         public override void UpdateEquip(Player player)
         {
@@ -35,7 +42,7 @@ namespace BossRush.Items.Artifact
         {
             SkillIssuePlayer = false;
             Player.GetDamage(DamageClass.Generic) *= SkillIssue * 0.01f + 1;
-            Player.statLifeMax2 += (int)(SkillIssue * 0.05f);
+            Player.statLifeMax2 += (int)(SkillIssue * 0.5f);
             Player.thorns *= SkillIssue * 0.01f + 1;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)

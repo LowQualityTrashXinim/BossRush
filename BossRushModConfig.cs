@@ -12,7 +12,11 @@ namespace BossRush
             "\nWARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD" +
             "\nTHIS WILL MESS WITH YOUR WORLD GEN" +
             "\nit is recommend to enable this if you want to experience what the mod have to offer along with Synergy Mode" +
-            "\nDisable it for more vanilla QoL feel of the mod and to prevent world gen conflict")]
+            "\nDisable it for more vanilla QoL feel of the mod and to prevent world gen conflict" +
+            "\nWhat this mode do :" +
+            "\n-Pot drop nothing" +
+            "\n-NPC sell nothing" +
+            "\n-World gen change so you could easily build arena and chest gone")]
         [DefaultValue(true)]
         public bool EnableChallengeMode { get; set; }
 
