@@ -39,10 +39,14 @@ namespace BossRush
             Recipe BoWEnraged = Recipe.Create(ItemID.BloodySpine);
             BoWEnraged.AddIngredient(ModContent.ItemType<AttackOnTheMind>());
 
+            Recipe MoonLordEnraged = Recipe.Create(ItemID.CelestialSigil);
+            MoonLordEnraged.AddIngredient(ModContent.ItemType<MoonLordEnrage>());
+
             KingSlimeEnraged.Register();
             EoCEnraged.Register();
             EoWEnraged.Register();
             BoWEnraged.Register();
+            MoonLordEnraged.Register();
         }
 
         public override bool? UseItem(Item item, Player player)
