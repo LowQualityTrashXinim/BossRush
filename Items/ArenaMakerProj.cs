@@ -13,7 +13,7 @@ namespace BossRush.Items
         {
             Projectile.width = 1;
             Projectile.height = 1;
-            Projectile.timeLeft = 1;
+            Projectile.timeLeft = 2;
             Projectile.friendly = true;
             Projectile.aiStyle = 16;
             Projectile.penetrate = -1;

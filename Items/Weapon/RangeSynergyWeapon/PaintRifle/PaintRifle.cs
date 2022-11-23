@@ -34,8 +34,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
             Item.DamageType = DamageClass.Ranged;
             Item.value = Item.sellPrice(silver: 1000);
 
-            Item.shoot = ProjectileID.PainterPaintball;
-            Item.shootSpeed = 23;
+            Item.shoot = ModContent.ProjectileType<CustomPaintProj>();
+            Item.shootSpeed = 7;
             Item.scale -= 0.35f;
         }
         public override Vector2? HoldoutOffset()
@@ -49,16 +49,17 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            position = PositionOFFSET(position, velocity, 30);
+            position = PositionOFFSET(position, velocity, 42);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            type = ModContent.ProjectileType<CustomPaintProj>();
             Vec2ToRotate = velocity;
             if (player.altFunctionUse == 2)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    velocity = RandomSpread(RotateRandom(24),3,1.2f);
+                    velocity = RandomSpread(RotateRandom(20),3,1.2f);
                     Projectile.NewProjectile(Item.GetSource_FromThis(), position, velocity, type, (int)(damage*.7f), knockback, player.whoAmI);
                 }
                 return false;
