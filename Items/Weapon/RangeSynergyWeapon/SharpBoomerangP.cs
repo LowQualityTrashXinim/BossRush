@@ -30,8 +30,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         {
             Player player = Main.player[Projectile.owner];
             float distance = 60;
-            Vector2 newMove = player.Center - Projectile.Center;
-            float distanceTo = (float)Math.Sqrt(newMove.X * newMove.X + newMove.Y * newMove.Y);
+            float distanceTo = Vector2.Distance(player.Center, Projectile.Center);
             Projectile.rotation += MathHelper.ToRadians(60);
             if (Projectile.timeLeft < 3 || distanceTo > 300)
             {
@@ -42,10 +41,14 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                     Projectile.knockBack = 0;
                     Projectile.velocity = SafeGoBack * 40f;
                 }
+                else
+                {
+                    Projectile.velocity += SafeGoBack * 5f;
+                }
                 Projectile.timeLeft = 2;
-                Projectile.velocity += SafeGoBack * 5f;
+                Projectile.tileCollide = false;
 
-                if (distanceTo < distance)
+                if (distanceTo < distance || distanceTo > 1750)
                 {
                     Projectile.Kill();
                 }
