@@ -133,7 +133,7 @@ namespace BossRush
                     return true;
                 }
             }
-            return Math.Round(Main.rand.NextFloat(),2) < 1/Math.Round(ChanceNotToConsume,2);
+            return Math.Round(Main.rand.NextFloat(),2) > 1/Math.Round(ChanceNotToConsume,2);
         }
         /// <summary>
         /// Return a Vector that got evenly distribute
@@ -206,8 +206,8 @@ namespace BossRush
             }
             for (int i = 0; i < ModifiedProjAmount(NumOfProjectile); i++)
             {
-                Vector2 finalRotate = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
-                Projectile.NewProjectile(source, position, finalRotate, type, damage, knockback, player.whoAmI);
+                velocity = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             }
             NumOfProjectile = 0;
         }

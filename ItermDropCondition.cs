@@ -8,10 +8,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged;
+                return info.player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged;
             }
             return false;
         }
@@ -23,15 +22,14 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
+                return info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
             }
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription() => "Can only when all boss is dead";
+        public string GetConditionDescription() => "Can drop only when all boss is dead";
     }
     public class ChallengeModeException : IItemDropRuleCondition
     {
@@ -63,10 +61,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.GetModPlayer<ModdedPlayer>().EoCEnraged && player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
+                return info.player.GetModPlayer<ModdedPlayer>().EoCEnraged && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
             }
             return false;
         }
@@ -79,10 +76,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.GetModPlayer<ModdedPlayer>().BrainFuck;
+                return info.player.GetModPlayer<ModdedPlayer>().BrainFuck;
             }
             return false;
         }
@@ -93,10 +89,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged;
+                return info.player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged;
             }
             return false;
         }
@@ -107,10 +102,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return !player.ZoneJungle;
+                return !info.player.ZoneJungle;
             }
             return false;
         }
@@ -121,10 +115,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return !player.ZoneBeach;
+                return !info.player.ZoneBeach;
             }
             return false;
         }
@@ -135,10 +128,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.ZoneRockLayerHeight && player.ZoneSnow;
+                return info.player.ZoneRockLayerHeight && info.player.ZoneSnow;
             }
             return false;
         }
@@ -149,10 +141,9 @@ namespace BossRush
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            Player player = Main.player[Main.myPlayer];
             if (!info.IsInSimulation)
             {
-                return player.GetModPlayer<ModdedPlayer>().gitGud;
+                return info.player.GetModPlayer<ModdedPlayer>().amountoftimegothit == 0;
             }
             return false;
         }

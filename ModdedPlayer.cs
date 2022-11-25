@@ -29,8 +29,18 @@ namespace BossRush
         public bool QueenBeeEnraged;
         public bool MoonLordEnraged;
         //ArtifactList
+        /// <summary>
+        /// This bool is to check if artifact can be active, use mostly to change the value of item can be drop from chest
+        /// </summary>
         public bool ArtifactAllowance = false;
+        /// <summary>
+        /// This bool is to check whenever if player remove artifact mid fight in boss and then get it back in the game
+        /// <br/>Useful to make a artifact that modify player damage
+        /// </summary>
         public bool ForceArtifact = true;
+        /// <summary>
+        /// This is to see if player have more artifact than they need, useful if you want artifact to not contradict each other
+        /// </summary>
         public int ArtifactCount = 0;
         int[] ArtifactList = new int[]{
             ModContent.ItemType<TokenofGreed>(),
@@ -40,7 +50,7 @@ namespace BossRush
             ModContent.ItemType<VampirismCrystal>() };
         //NoHiter
         public bool gitGud = false;
-        public int HowManyBossIsAlive;
+        public int HowManyBossIsAlive = 0;
 
         public static bool LookingForBoss()
         {
@@ -73,9 +83,10 @@ namespace BossRush
                         ForceArtifact = false;
                     }
                 }
-                else // What happen when boss is inactive
+                else if (i == Main.maxNPCs -1 && HowManyBossIsAlive == 0) // What happen when boss is inactive
                 {
                     ForceArtifact = true;
+                    amountoftimegothit = 0;
                 }
             }
             ArtifactCount = 0;
@@ -197,7 +208,7 @@ namespace BossRush
             {
                 items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>(),10));
             }
-            if(Player.name.Contains("DrugAddict"))
+            if(Player.name.ToLower().Trim() == "drugaddict")
             {
                 items.Add(new Item(ModContent.ItemType<WonderDrug>(), 99));
             }
@@ -226,6 +237,7 @@ namespace BossRush
             }
             return items;
         }
+        public int amountoftimegothit = 0;
         public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
         {
             if (LookingForBoss())
@@ -234,6 +246,10 @@ namespace BossRush
                 {
                     Player.KillMe(new PlayerDeathReason(), 99999, 0);
                     return;
+                }
+                else
+                {
+                    amountoftimegothit++;
                 }
             }
             if(Player.HasBuff(ModContent.BuffType<GodVision>()))
