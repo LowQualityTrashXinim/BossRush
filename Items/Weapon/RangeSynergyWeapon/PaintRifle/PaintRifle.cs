@@ -51,18 +51,51 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
         {
             position = PositionOFFSET(position, velocity, 42);
         }
+
+        public static int r = Main.rand.Next(256);
+        public static int b = Main.rand.Next(256);
+        public static int g = Main.rand.Next(256);
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            r = 0; b = 0; g = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                int randChooser = Main.rand.Next(3);
+                switch (randChooser)
+                {
+                    case 0:
+                        r = 255;
+                        break;
+                    case 1:
+                        b = 255;
+                        break;
+                    case 2:
+                        g = 255;
+                        break;
+                }
+            }
             type = ModContent.ProjectileType<CustomPaintProj>();
             Vec2ToRotate = velocity;
             if (player.altFunctionUse == 2)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    velocity = RandomSpread(RotateRandom(20),3,1.2f);
-                    Projectile.NewProjectile(Item.GetSource_FromThis(), position, velocity, type, (int)(damage*.7f), knockback, player.whoAmI);
+                    velocity = RandomSpread(RotateRandom(15),2,1.2f);
+                    Projectile.NewProjectile(source, position, velocity, type, (int)(damage*.7f), knockback, player.whoAmI);
+                    for (int l = 0; l < 15; l++)
+                    {
+                        Vector2 spread = RandomSpread(RotateRandom(35), 3, .2f) + player.velocity;
+                        int dust = Dust.NewDust(position, 0, 0, DustID.Paint, spread.X, spread.Y, 0, new Color(r, g, b), Main.rand.NextFloat(1.2f, 1.45f));
+                        Main.dust[dust].noGravity = true;
+                    }
                 }
                 return false;
+            }
+            for (int i = 0; i < 15; i++)
+            {
+                Vector2 spread = RandomSpread(RotateRandom(35),3,.2f) + player.velocity;
+                int dust = Dust.NewDust(position, 0, 0, DustID.Paint, spread.X, spread.Y,0,new Color(r,g,b),Main.rand.NextFloat(1f,1.45f));
+                Main.dust[dust].noGravity = true;
             }
             return true;
         }

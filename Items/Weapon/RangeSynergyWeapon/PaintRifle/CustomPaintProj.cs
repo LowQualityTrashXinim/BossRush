@@ -18,10 +18,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
             Projectile.extraUpdates = 3;
             Projectile.friendly = true;
         }
-        int r = Main.rand.Next(256); int b = Main.rand.Next(256); int g = Main.rand.Next(256);
         public override void AI()
         {
-            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Paint, 0, 0, 0, new Color(r, g, b),1f);
+            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Paint, 0, 0, 0, new Color(PaintRifle.r, PaintRifle.g, PaintRifle.b),1f);
             Main.dust[dust].noGravity = true;
             Projectile.ai[0]++;
             if(Projectile.ai[0] >= 30)
@@ -30,6 +29,16 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
                 {
                     Projectile.velocity.Y += 0.05f;
                 }
+            }
+        }
+
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                Vector2 randCircle = Main.rand.NextVector2Circular(6, 6);
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Paint, randCircle.X, randCircle.Y, 0, new Color(PaintRifle.r, PaintRifle.g, PaintRifle.b), Main.rand.NextFloat(1,1.2f));
+                Main.dust[dust].noGravity = true;
             }
         }
     }
