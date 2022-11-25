@@ -52,7 +52,7 @@ namespace BossRush
         public bool gitGud = false;
         public int HowManyBossIsAlive = 0;
 
-        public static bool LookingForBoss()
+        public bool LookingForBoss()
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {

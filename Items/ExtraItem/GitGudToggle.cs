@@ -14,9 +14,9 @@ namespace BossRush.Items.ExtraItem
         public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Confident Mode");
-            Tooltip.SetDefault("Make every boss when you fight instant kill you\nShow me how confident you are on beating boss with given item");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+            DisplayName.SetDefault("Cursed Skill Gem");
+            Tooltip.SetDefault("Make every boss when you fight instant kill you\n" +
+                "\"Make for people want to prove their skill to the god\"");
         }
 
         public override void SetDefaults()
@@ -33,24 +33,7 @@ namespace BossRush.Items.ExtraItem
 
         public override bool CanUseItem(Player player)
         {
-            return !NPC.AnyNPCs(NPCID.KingSlime)
-                && !NPC.AnyNPCs(NPCID.EyeofCthulhu)
-                && !NPC.AnyNPCs(NPCID.BrainofCthulhu)
-                && !NPC.AnyNPCs(NPCID.EaterofWorldsHead)
-                && !NPC.AnyNPCs(NPCID.SkeletronHead)
-                && !NPC.AnyNPCs(NPCID.QueenBee)
-                && !NPC.AnyNPCs(NPCID.WallofFlesh)
-                && !NPC.AnyNPCs(NPCID.QueenSlimeBoss)
-                && !NPC.AnyNPCs(NPCID.Spazmatism)
-                && !NPC.AnyNPCs(NPCID.Retinazer)
-                && !NPC.AnyNPCs(NPCID.TheDestroyer)
-                && !NPC.AnyNPCs(NPCID.SkeletronPrime)
-                && !NPC.AnyNPCs(NPCID.Plantera)
-                && !NPC.AnyNPCs(NPCID.Golem)
-                && !NPC.AnyNPCs(NPCID.CultistBoss)
-                && !NPC.AnyNPCs(NPCID.HallowBoss)
-                && !NPC.AnyNPCs(NPCID.DukeFishron)
-                && !NPC.AnyNPCs(NPCID.MoonLordCore);
+            return player.GetModPlayer<ModdedPlayer>().LookingForBoss();
         }
         int count = 0;
         public override bool? UseItem(Player player)
