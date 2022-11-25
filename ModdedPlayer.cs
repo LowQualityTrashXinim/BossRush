@@ -35,7 +35,7 @@ namespace BossRush
         public bool ArtifactAllowance = false;
         /// <summary>
         /// This bool is to check whenever if player remove artifact mid fight in boss and then get it back in the game
-        /// <br/>Useful to make a artifact that modify player damage
+        /// <br/>Useful to prevent confliction between 2 artifacts that modify player damage
         /// </summary>
         public bool ForceArtifact = true;
         /// <summary>

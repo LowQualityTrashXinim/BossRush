@@ -34,6 +34,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.FlameingWoodSword
 
             Item.shoot = ProjectileID.WandOfSparkingSpark;
             Item.shootSpeed = 6;
+
+            Item.UseSound = SoundID.Item1;
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {

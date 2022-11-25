@@ -31,6 +31,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperEnchantedSword
             Item.useStyle = ItemUseStyleID.Swing;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
+
+            Item.UseSound = SoundID.Item1;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

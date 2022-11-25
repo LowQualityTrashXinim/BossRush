@@ -36,6 +36,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             Item.useTurn = false;
             Item.rare = 2;
             Item.value = Item.buyPrice(gold: 50);
+
+            Item.UseSound = SoundID.Item8;
         }
         int i = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

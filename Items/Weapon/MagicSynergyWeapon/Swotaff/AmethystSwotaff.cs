@@ -37,6 +37,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             Item.autoReuse = true;
             Item.useTurn = false;
             Item.rare = 2;
+
+            Item.UseSound = SoundID.Item8;
         }
 
         int i = 0;

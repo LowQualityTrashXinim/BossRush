@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
@@ -15,7 +16,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         public override void SetDefaults()
         {
             Item.DamageType = DamageClass.Melee;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
 
             Item.height = 50;
             Item.width = 50;
@@ -23,13 +24,16 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             Item.useTime = 26;
             Item.useAnimation = 26;
 
-            Item.damage = 25;
+            Item.damage = 22;
             Item.knockBack = 6f;
 
             Item.shoot = ModContent.ProjectileType<EnchantedSilverSwordP>();
             Item.shootSpeed = 15f;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
+            Item.rare = ItemRarityID.Blue;
+
+            Item.UseSound = SoundID.Item1;
         }
         int count = -1;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

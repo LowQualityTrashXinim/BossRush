@@ -28,6 +28,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
             Item.DamageType = DamageClass.Melee;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
+
+            Item.UseSound = SoundID.Item1;
         }
 
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)

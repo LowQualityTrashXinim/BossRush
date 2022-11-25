@@ -28,6 +28,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.BloodStar
             Item.useStyle = ItemUseStyleID.Swing;
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = 3;
+
+            Item.UseSound = SoundID.Item1;
         }
 
         int count = 0;

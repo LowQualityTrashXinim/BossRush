@@ -34,6 +34,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Item.knockBack = 4f;
             Item.shootSpeed = 2.4f;
             Item.value = Item.buyPrice(platinum: 5);
+
+            Item.UseSound = SoundID.Item1;
         }
         public override bool CanUseItem(Player player)
         {

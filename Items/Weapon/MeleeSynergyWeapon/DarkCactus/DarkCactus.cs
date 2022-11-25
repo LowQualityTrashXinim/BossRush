@@ -1,8 +1,8 @@
 ﻿using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 {
@@ -30,6 +30,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.DarkCactus
             Item.autoReuse = false;
             Item.rare = 2;
             Item.value = Item.buyPrice(gold: 50);
+
+            Item.UseSound = SoundID.Item1;
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {

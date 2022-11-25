@@ -34,6 +34,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.FrozenSwordFish
             Item.useTurn = false;
 
             Item.scale += 0.25f;
+
+            Item.UseSound = SoundID.Item1;
         }
 
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)

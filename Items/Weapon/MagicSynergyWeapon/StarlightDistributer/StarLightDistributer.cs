@@ -33,6 +33,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.StarlightDistributer
             Item.autoReuse = true;
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
+
+            Item.UseSound = SoundID.Item12;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
