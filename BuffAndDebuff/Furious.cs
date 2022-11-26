@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using BossRush.Items.Accessories;
 
@@ -9,7 +9,10 @@ namespace BossRush.BuffAndDebuff
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Furious");
-            Description.SetDefault("Let them know your fury");
+            Description.SetDefault("150% increased damage" +
+            "\n100% decreased life regeneration" +
+            "\nIncreases critical chance by 50%" +
+            "\nDecreases defense by 10000");
             Main.debuff[Type] = true; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }
