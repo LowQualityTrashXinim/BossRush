@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
@@ -10,7 +10,12 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Lower other ability in exchange to lead more minion");
+            DisplayName.SetDefault("The Commander's Exilir");
+            Tooltip.SetDefault("Increases your max number of minions by 5" +
+            "\n50% increased minion speed" +
+            "\n25% increased whip speed"
+            "\n90% decreased melee, ranged and magic damage" +
+            "\n'A must for CEOs in the making!'");
         }
         public override void SetDefaults()
         {
