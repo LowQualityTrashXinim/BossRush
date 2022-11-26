@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
@@ -10,7 +10,11 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your crits ability\nGetting hit will instantly cancel the buff");
+            DisplayName.SetDefault("The Sniper's Exilir");
+            Tooltip.SetDefault("Increases critical chance by 70%" +
+            "100% decreased weapon spread" +
+            "Removes the buff upon getting hit" +
+            "\n'Aim Assist is bought separately!'";
         }
         public override void SetDefaults()
         {
