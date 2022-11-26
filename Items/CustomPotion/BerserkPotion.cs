@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
@@ -10,7 +10,7 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Berserker's Elixir");
+            DisplayName.SetDefault("The Berserker's Elixir");
             Tooltip.SetDefault("50% increased melee damage" +
             "\n90% decreased ranged, magic and summon damage" +
             "\n'Smells like bloodshed...'");
