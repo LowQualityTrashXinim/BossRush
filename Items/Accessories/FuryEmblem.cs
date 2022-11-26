@@ -9,7 +9,11 @@ namespace BossRush.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Your rage is what make battle turn tide\nIncrease 5% damage and crits\nIncrease HP by 25%\nGrant a buff upon getting hit that increase 50% damage and crits\nBut shatter your defense and cut your life regen\nThe buff will reset its time when you got hit again");
+            Tooltip.SetDefault("25% increased max life" +
+            "\n5% increased damage and critical chance" +
+            "\nGrants a buff upon getting hit" +
+            "\nRevokes the buff upon getting hit again" +
+            "\n'May your rage shatter the depths of reality.'");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
