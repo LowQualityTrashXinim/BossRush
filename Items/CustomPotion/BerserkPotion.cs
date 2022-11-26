@@ -12,7 +12,7 @@ namespace BossRush.Items.CustomPotion
         {
             DisplayName.SetDefault("Berserker's Elixir");
             Tooltip.SetDefault("50% increased melee damage" +
-            "\n90% decreased non-melee damage" +
+            "\n90% decreased ranged, magic and summon damage" +
             "\n'Smells like bloodshed...'");
         }
         public override void SetDefaults()
