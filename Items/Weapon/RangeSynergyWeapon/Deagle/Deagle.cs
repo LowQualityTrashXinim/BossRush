@@ -34,6 +34,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
             Item.rare = 3;
             Item.value = Item.sellPrice(silver: 1000);
             Item.scale -= 0.25f;
+
+            Item.UseSound = SoundID.Item38;
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
