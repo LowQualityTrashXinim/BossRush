@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using BossRush.Items.Artifact;
 
@@ -9,8 +9,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("SecondChance");
-            Description.SetDefault("You have survive a fatal attack, so don't get hit a 2nd time");
+            DisplayName.SetDefault("The Vampire's Protection");
+            Description.SetDefault("A vampire a night keeps the grim reaper out of sight.");
             Main.debuff[Type] = true; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = false;
         }
