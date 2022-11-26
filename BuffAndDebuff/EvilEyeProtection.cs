@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ModLoader;
 using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
 
@@ -9,8 +9,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Evil Eye Protection");
-            Description.SetDefault("live to see for another day");
+            DisplayName.SetDefault("The Eye's Gaze");
+            Description.SetDefault("The everwatching presence's protection is overflowing within you...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }
