@@ -8,18 +8,15 @@ using BossRush.Items.Weapon.RangeSynergyWeapon.SnowballShotgunCannon;
 using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.ShadowTrick;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
-using BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.FlameingWoodSword;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.YinYang;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.Katana;
-using BossRush.Items.Weapon.MagicSynergyWeapon.ZapRifle;
 using BossRush.Items.Weapon.SummonerSynergyWeapon.StickySlime;
 using BossRush.Items.Weapon.RangeSynergyWeapon.Bowmarang;
 using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 using BossRush.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
 using BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver;
-using BossRush.Items.Weapon.MagicSynergyWeapon.StarlightDistributer;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.SuperEnchantedSword;
 using BossRush.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun;
@@ -39,6 +36,7 @@ using BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle;
 using BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using BossRush.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.FrozenSwordFish;
+using BossRush.Items.Weapon.MagicSynergyWeapon;
 
 namespace BossRush
 {

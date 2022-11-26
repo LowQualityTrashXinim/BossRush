@@ -4,13 +4,13 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class AmethystSwotaff : ModItem
+    internal class DiamondSwotaff : ModItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("You know, if this is all what it do\nthen it would be pretty disappointing\nluckily, you can yeet the thing");
+            Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
             Item.staff[Item.type] = true;
         }
 
@@ -19,19 +19,19 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             Item.width = 60;
             Item.height = 58;
 
-            Item.damage = 27;
+            Item.damage = 37;
             Item.crit = 10;
             Item.knockBack = 3f;
 
-            Item.useTime = 2;
-            Item.useAnimation = 20;
+            Item.useTime = 1;
+            Item.useAnimation = 10;
             Item.reuseDelay = 20;
 
             Item.shootSpeed = 7;
             Item.mana = 20;
 
             Item.value = Item.buyPrice(gold: 50);
-            Item.shoot = ProjectileID.AmethystBolt;
+            Item.shoot = ProjectileID.DiamondBolt;
             Item.DamageType = DamageClass.Magic;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
@@ -48,24 +48,18 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             if (player.altFunctionUse == 2)
             {
-                mult = 2.5f;
+                mult = 8.5f;
             }
-        }
-
-        public override bool CanUseItem(Player player)
-        {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<AmethystSwotaffP>()] < 1;
         }
 
         public override bool AltFunctionUse(Player player)
         {
-            return true;
+            return player.ownedProjectileCounts[ModContent.ProjectileType<DiamondOrb>()] < 1;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse != 2)
             {
-                Item.noUseGraphic = false;
                 i++;
                 float rotation = MathHelper.ToRadians(30);
                 if (countChange == 0)
@@ -98,8 +92,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             {
                 if (player.ItemAnimationJustStarted)
                 {
-                    Item.noUseGraphic = true;
-                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<AmethystSwotaffP>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity * 5, ModContent.ProjectileType<DiamondOrb>(), damage, knockback, player.whoAmI);
                 }
                 return false;
             }
@@ -114,8 +107,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.CopperBroadsword)
-                .AddIngredient(ItemID.AmethystStaff)
+                .AddIngredient(ItemID.DiamondStaff)
+                .AddIngredient(ItemID.PlatinumBroadsword)
                 .Register();
         }
     }

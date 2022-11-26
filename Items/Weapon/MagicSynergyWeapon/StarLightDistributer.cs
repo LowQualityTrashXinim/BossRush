@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.StarlightDistributer
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
     internal class StarLightDistributer : ModItem
     {

@@ -6,11 +6,11 @@ using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    public class TopazSwotaffP : ModProjectile
+    public class AmethystSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/Swotaff/TopazSwotaff";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/AmethystSwotaff";
         public override void SetDefaults()
         {
             Projectile.width = 60;
@@ -25,16 +25,15 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            EntitySource_ItemUse source = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<TopazSwotaff>()));
             Projectile.rotation += 0.25f;
             float offSetRotate = Projectile.rotation - MathHelper.PiOver4;
             if (Projectile.velocity.X < 0)
             {
-                Projectile.NewProjectile(source, Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.TopazBolt, (int)(Projectile.damage * 0.5f), Projectile.knockBack * 0.5f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.AmethystBolt, (int)(Projectile.damage * 0.5f), Projectile.knockBack * 0.5f, Projectile.owner);
             }
             if (Projectile.velocity.X > 0)
             {
-                Projectile.NewProjectile(source, Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.TopazBolt, (int)(Projectile.damage * 0.5f), Projectile.knockBack * 0.5f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.AmethystBolt, (int)(Projectile.damage * 0.5f), Projectile.knockBack * 0.5f, Projectile.owner);
             }
 
             if (Projectile.timeLeft < 10)

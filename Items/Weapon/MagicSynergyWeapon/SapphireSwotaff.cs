@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
     internal class SapphireSwotaff : ModItem
     {

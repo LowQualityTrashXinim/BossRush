@@ -4,13 +4,13 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class DiamondSwotaff : ModItem
+    internal class RubySwotaff : ModItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
+            Tooltip.SetDefault("Really Fancy Sword and staff");
             Item.staff[Item.type] = true;
         }
 
@@ -19,7 +19,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             Item.width = 60;
             Item.height = 58;
 
-            Item.damage = 37;
+            Item.damage = 32;
             Item.crit = 10;
             Item.knockBack = 3f;
 
@@ -31,7 +31,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             Item.mana = 20;
 
             Item.value = Item.buyPrice(gold: 50);
-            Item.shoot = ProjectileID.DiamondBolt;
+            Item.shoot = ProjectileID.RubyBolt;
             Item.DamageType = DamageClass.Magic;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
@@ -48,13 +48,12 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             if (player.altFunctionUse == 2)
             {
-                mult = 8.5f;
+                mult = 7.5f;
             }
         }
-
         public override bool AltFunctionUse(Player player)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<DiamondOrb>()] < 1;
+            return player.ownedProjectileCounts[ModContent.ProjectileType<GiantRubyBolt>()] < 1;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -92,7 +91,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             {
                 if (player.ItemAnimationJustStarted)
                 {
-                    Projectile.NewProjectile(source, position, velocity * 5, ModContent.ProjectileType<DiamondOrb>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity * 5, ModContent.ProjectileType<GiantRubyBolt>(), damage, knockback, player.whoAmI);
                 }
                 return false;
             }
@@ -107,8 +106,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.DiamondStaff)
-                .AddIngredient(ItemID.PlatinumBroadsword)
+                .AddIngredient(ItemID.RubyStaff)
+                .AddIngredient(ItemID.GoldBroadsword)
                 .Register();
         }
     }

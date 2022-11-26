@@ -25,6 +25,7 @@ namespace BossRush.Items.Accessories
         public override void UpdateEquip(Player player)
         {
             player.GetModPlayer<PlayerRelic>().Bouncy = true;
+            GlobalWeaponModify.ModifiedProjAmount(1);
         }
     }
     public class PlayerRelic : ModPlayer

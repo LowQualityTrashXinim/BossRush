@@ -2,11 +2,11 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
     internal class SmallerRubyBolt : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/Swotaff/GiantRubyBolt";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/GiantRubyBolt";
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 2;

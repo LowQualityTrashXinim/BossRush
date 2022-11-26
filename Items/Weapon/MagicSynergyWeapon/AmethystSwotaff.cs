@@ -4,13 +4,13 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class TopazSwotaff : ModItem
+    internal class AmethystSwotaff : ModItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("the sword is quite useless if you ask me");
+            Tooltip.SetDefault("You know, if this is all what it do\nthen it would be pretty disappointing\nluckily, you can yeet the thing");
             Item.staff[Item.type] = true;
         }
 
@@ -28,14 +28,15 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
             Item.reuseDelay = 20;
 
             Item.shootSpeed = 7;
-            Item.mana = 10;
+            Item.mana = 20;
 
-            Item.shoot = ProjectileID.TopazBolt;
+            Item.value = Item.buyPrice(gold: 50);
+            Item.shoot = ProjectileID.AmethystBolt;
+            Item.DamageType = DamageClass.Magic;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.useTurn = false;
             Item.rare = 2;
-            Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item8;
         }
@@ -60,7 +61,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             return true;
         }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse != 2)
@@ -92,7 +92,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
                 }
             }
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (player.altFunctionUse == 2)
@@ -100,7 +99,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
                 if (player.ItemAnimationJustStarted)
                 {
                     Item.noUseGraphic = true;
-                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<TopazSwotaffP>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<AmethystSwotaffP>(), damage, knockback, player.whoAmI);
                 }
                 return false;
             }
@@ -115,8 +114,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.TinBroadsword)
-                .AddIngredient(ItemID.TopazStaff)
+                .AddIngredient(ItemID.CopperBroadsword)
+                .AddIngredient(ItemID.AmethystStaff)
                 .Register();
         }
     }

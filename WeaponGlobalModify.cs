@@ -102,9 +102,9 @@ namespace BossRush
         /// </summary>
         /// <param name="TakeNumAmount">the original amount</param>
         /// <returns></returns>
-        public float ModifiedProjAmount(float TakeNumAmount)
+        public static float ModifiedProjAmount(float TakeNumAmount)
         {
-            return TakeNumAmount;
+            return NumOfProjectile + TakeNumAmount;
         }
         /// <summary>
         /// Modify the spread of a weapon
@@ -197,17 +197,20 @@ namespace BossRush
         /// Set true if the Item is a shotgun to make it don't change the angle it aim at <br/>
         /// Set false if the Item is not a shotgun to make it emulate recoil<br/>
         /// </param>
-        public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1, bool ItemISaShotgun = false)
+        public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1)
         {
             Vec2ToRotate = velocity;
-            if (!ItemISaShotgun)
+            if (ModifiedProjAmount(NumOfProjectile) <= 1)
             {
                 velocity = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
             }
-            for (int i = 0; i < ModifiedProjAmount(NumOfProjectile); i++)
+            else
             {
-                velocity = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
-                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+                for (int i = 0; i < ModifiedProjAmount(NumOfProjectile); i++)
+                {
+                    Vector2 velocity2 = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
+                    Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
+                }
             }
             NumOfProjectile = 0;
         }
@@ -273,7 +276,6 @@ namespace BossRush
                 float SpreadAmount = 0;
                 float AdditionalSpread = 0;
                 float AdditionalMulti = 1;
-                bool ShotguntType = false;
                 switch (item.type)
                 {
                     case ItemID.RedRyder:
@@ -376,14 +378,12 @@ namespace BossRush
                         SpreadAmount = 18;
                         AdditionalSpread = 4;
                         AdditionalMulti = .4f;
-                        ShotguntType = true;
                         NumOfProjectile += Main.rand.Next(4, 6);
                         break;
                     case ItemID.QuadBarrelShotgun:
                         OffSetPost = 25;
                         SpreadAmount = 45;
                         AdditionalSpread = 6;
-                        ShotguntType = true;
                         NumOfProjectile += 6;
                         break;
                     case ItemID.Shotgun:
@@ -391,14 +391,12 @@ namespace BossRush
                         SpreadAmount = 24;
                         AdditionalSpread = 6;
                         AdditionalMulti = .5f;
-                        ShotguntType = true;
                         NumOfProjectile += Main.rand.Next(4, 6);
                         break;
                     case ItemID.OnyxBlaster:
                         OffSetPost = 35;
                         SpreadAmount = 15;
                         AdditionalSpread = 6;
-                        ShotguntType = true;
                         NumOfProjectile += Main.rand.Next(4, 6);
                         break;
                     case ItemID.TacticalShotgun:
@@ -406,12 +404,11 @@ namespace BossRush
                         SpreadAmount = 18;
                         AdditionalSpread = 3;
                         AdditionalMulti = .76f;
-                        ShotguntType = true;
                         NumOfProjectile += 6;
                         break;
                 }
                 position = PositionOFFSET(position, velocity, OffSetPost);
-                GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, SpreadAmount, AdditionalSpread, AdditionalMulti, ShotguntType);
+                GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, SpreadAmount, AdditionalSpread, AdditionalMulti);
                 SpreadModify = 1;
             }
         }

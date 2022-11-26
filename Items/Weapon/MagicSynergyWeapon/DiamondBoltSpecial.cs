@@ -2,11 +2,11 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon.Swotaff
+namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
     internal class DiamondBoltSpecial : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/Swotaff/DiamondOrb";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/DiamondOrb";
         public override void SetDefaults()
         {
             Projectile.width = 30;
