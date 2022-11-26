@@ -12,8 +12,8 @@ namespace BossRush.Items.CustomPotion
         {
             DisplayName.SetDefault("The Commander's Exilir");
             Tooltip.SetDefault("Increases your max number of minions by 5" +
-            "\n50% increased minion speed" +
-            "\n25% increased whip speed"
+            "\n50% increased minion attack speed" +
+            "\n25% increased whip range"
             "\n90% decreased melee, ranged and magic damage" +
             "\n'A must for CEOs in the making!'");
         }
