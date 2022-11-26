@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/EmptyBuff";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Absolute Stun");
-            Description.SetDefault("Presence of world eating worm make you feel weak");
+            DisplayName.SetDefault("Petrified");
+            Description.SetDefault("The might of gods weakens your very soul...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)
