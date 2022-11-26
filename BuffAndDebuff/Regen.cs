@@ -7,8 +7,8 @@ namespace BossRush.BuffAndDebuff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Regen");
-            Description.SetDefault("Regen pure out of love");
+            DisplayName.SetDefault("Romantic Regeneration");
+            Description.SetDefault("The Power of Love is by your side!");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }
