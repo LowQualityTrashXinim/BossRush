@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Leadership");
-            Description.SetDefault("You can command a entire army");
+            DisplayName.SetDefault("The Commander's Patience");
+            Description.SetDefault("Fighting alongside a horde has never been easier!");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }
