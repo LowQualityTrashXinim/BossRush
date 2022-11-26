@@ -9,7 +9,7 @@ namespace BossRush.BuffAndDebuff
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Petrified");
-            Description.SetDefault("The might of gods weakens your very soul...");
+            Description.SetDefault("The gaze of the gods weakens your very soul...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)
