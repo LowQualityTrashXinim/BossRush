@@ -9,7 +9,7 @@ namespace BossRush.BuffAndDebuff
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Double Trouble");
-            Description.SetDefault("Even Ctulhu's other eye wants you gone...");
+            Description.SetDefault("They are watching your every move...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)
