@@ -10,7 +10,10 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your melee ability\nDecrease damage of everything else by 90%");
+            DisplayName.SetDefault("Berserker's Elixir");
+            Tooltip.SetDefault("50% increased melee damage" +
+            "\n90% decreased non-melee damage" +
+            "\n'Smells like bloodshed...'");
         }
         public override void SetDefaults()
         {
