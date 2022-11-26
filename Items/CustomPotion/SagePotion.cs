@@ -12,7 +12,7 @@ namespace BossRush.Items.CustomPotion
         {
             DisplayName.SetDefault("The Sage's Exilir");
             Tooltip.SetDefault("Increases maximum mana by 50" +
-            "\n600% increased mana regeneration" +
+            "\n400% increased mana regeneration" +
             "\n45% decreased mana cost" +
             "\n90% decreased melee, ranged and summon damage") +
             "\n'Side effects include becoming an explosive hazard.'";
