@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Parry");
-            Description.SetDefault("Successfully blocking a attack grant you strenght");
+            DisplayName.SetDefault("Parried!");
+            Description.SetDefault("10% increased damage");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }
@@ -29,8 +29,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("CoolDownParry");
-            Description.SetDefault("The impact is a bit great");
+            DisplayName.SetDefault("Parrying Numbness");
+            Description.SetDefault("You might want to rest for a while...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }
