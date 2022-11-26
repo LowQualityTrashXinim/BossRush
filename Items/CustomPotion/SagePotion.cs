@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
@@ -10,7 +10,12 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Decrease other ability in exchange for Mana regen");
+            DisplayName.SetDefault("The Sage's Exilir");
+            Tooltip.SetDefault("Increases maximum mana by 50" +
+            "\n600% increased mana regeneration" +
+            "\n45% decreased mana cost" +
+            "\n90% decreased melee, ranged and summon damage") +
+            "\n'Side effects include becoming an explosive hazard.'";
         }
         public override void SetDefaults()
         {
