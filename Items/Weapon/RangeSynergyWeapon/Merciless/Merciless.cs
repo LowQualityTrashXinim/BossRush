@@ -36,6 +36,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
             Item.shoot = ProjectileID.Bullet;
             Item.shootSpeed = 8;
             Item.scale -= 0.15f;
+
+            Item.UseSound = SoundID.Item38;
         }
         public override Vector2? HoldoutOffset()
         {
@@ -56,12 +58,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
             }
             for (int i = 0; i < 10; i++)
             {
-                Vector2 velocityRotate = RandomSpread(RotateRandom(20), 10, 0.55f);
+                Vector2 velocityRotate = RandomSpread(RotateRandom(20), 3, 0.55f);
                 Projectile.NewProjectile(source, position, velocityRotate, type, damage, knockback, player.whoAmI);
             }
             if (count == 0)
             {
-                Projectile.NewProjectile(source, position, velocity * 2.5f, ProjectileID.CannonballFriendly, damage * 4, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity * 1.5f, ProjectileID.CannonballFriendly, damage * 4, knockback, player.whoAmI);
                 count++;
             }
             else

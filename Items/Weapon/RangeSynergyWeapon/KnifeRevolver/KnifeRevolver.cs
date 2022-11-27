@@ -36,6 +36,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Item.value = Item.buyPrice(gold: 50);
             Item.DamageType = DamageClass.Ranged;
             Item.useStyle = ItemUseStyleID.Shoot;
+
+            Item.UseSound = SoundID.Item40;
         }
         public override Vector2? HoldoutOffset()
         {

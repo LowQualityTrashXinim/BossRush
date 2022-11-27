@@ -32,6 +32,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
             Item.knockBack = 3;
             Item.crit = 12;
             Item.value = Item.buyPrice(platinum: 5);
+
+            Item.UseSound = SoundID.Item5;
         }
         int[] ArrayOfProjectile = new int[] {
             ModContent.ProjectileType<CopperBowP>(),

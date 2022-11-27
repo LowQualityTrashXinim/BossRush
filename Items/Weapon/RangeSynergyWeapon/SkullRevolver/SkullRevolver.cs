@@ -35,6 +35,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SkullRevolver
 
             Item.height = 26;
             Item.width = 52;
+
+            Item.UseSound = SoundID.Item41;
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

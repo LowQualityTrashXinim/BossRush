@@ -32,6 +32,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
             Item.useAmmo = AmmoID.Flare;
             Item.rare = 3;
             Item.DamageType = DamageClass.Ranged;
+
+            Item.UseSound = SoundID.Item11;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

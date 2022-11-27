@@ -33,6 +33,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RifleShotgun
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;
             Item.noMelee = true;
+
+            Item.UseSound = SoundID.Item38;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

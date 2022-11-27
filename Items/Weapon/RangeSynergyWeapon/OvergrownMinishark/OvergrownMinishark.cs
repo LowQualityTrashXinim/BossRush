@@ -31,6 +31,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;
             Item.noMelee = true;
+
+            Item.UseSound = SoundID.Item11;
         }
         public override Vector2? HoldoutOffset()
         {

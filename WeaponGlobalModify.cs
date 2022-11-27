@@ -4,7 +4,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-
 namespace BossRush
 {
     public abstract class WeaponTemplate : ModItem
@@ -86,10 +85,19 @@ namespace BossRush
         }
     }
 
+    public class GlobalHandleSystem : ModSystem
+    {
+        public override void PostUpdateItems()
+        {
+            GlobalWeaponModify.NumOfProModify = 0;
+        }
+    }
+
     public class GlobalWeaponModify : GlobalItem
     {
-        public static float NumOfProjectile = 0;
-        public static Vector2 Vec2ToRotate = Vector2.Zero;
+        public static float NumOfProModify = 0;
+        public float NumOfProjectile = 0;
+        public Vector2 Vec2ToRotate = Vector2.Zero;
         /// <summary>
         /// Use this to change how much weapon spread should be modify
         /// For global modify use multiplication
@@ -102,9 +110,9 @@ namespace BossRush
         /// </summary>
         /// <param name="TakeNumAmount">the original amount</param>
         /// <returns></returns>
-        public static float ModifiedProjAmount(float TakeNumAmount)
+        private float ModifiedProjAmount(float TakeNumAmount)
         {
-            return NumOfProjectile + TakeNumAmount;
+            return NumOfProModify + TakeNumAmount;
         }
         /// <summary>
         /// Modify the spread of a weapon
@@ -200,19 +208,18 @@ namespace BossRush
         public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1)
         {
             Vec2ToRotate = velocity;
-            if (ModifiedProjAmount(NumOfProjectile) <= 1)
+            float ProjectileAmount = ModifiedProjAmount(NumOfProjectile);
+            if (ProjectileAmount == 1)
             {
                 velocity = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+                return;
             }
-            else
+            for (int i = 0; i < ProjectileAmount; i++)
             {
-                for (int i = 0; i < ModifiedProjAmount(NumOfProjectile); i++)
-                {
-                    Vector2 velocity2 = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
-                    Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
-                }
+                Vector2 velocity2 = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
+                Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
             }
-            NumOfProjectile = 0;
         }
         int[] GunType = { 
             ItemID.RedRyder,
@@ -285,7 +292,7 @@ namespace BossRush
                         break;
                     case ItemID.Minishark:
                         NumOfProjectile = 1;
-                        OffSetPost = 10;
+                        OffSetPost = 20;
                         SpreadAmount = 7;
                         AdditionalSpread = 2;
                         break;
@@ -410,6 +417,7 @@ namespace BossRush
                 position = PositionOFFSET(position, velocity, OffSetPost);
                 GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, SpreadAmount, AdditionalSpread, AdditionalMulti);
                 SpreadModify = 1;
+                NumOfProjectile = 0;
             }
         }
     }

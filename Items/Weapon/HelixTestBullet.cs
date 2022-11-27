@@ -49,13 +49,5 @@ namespace BossRush.Items.Weapon
         {
             return new Vector2(-19, 4);
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.Shotgun)
-                .AddIngredient(ItemID.ClockworkAssaultRifle)
-                .Register();
-        }
     }
 }

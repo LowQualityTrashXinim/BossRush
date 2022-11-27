@@ -6,7 +6,11 @@ namespace BossRush.Items.Accessories
 {
     internal class BouncyRelic : ModItem
     {
+
         public override string Texture => "BossRush/MissingTexture";
+
+        public int ModifyAmountBullet => 1;
+
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("\"A small ancient power accidentally left from a old god, said to be cursed because of jealousy from the new god\"" +
@@ -25,7 +29,7 @@ namespace BossRush.Items.Accessories
         public override void UpdateEquip(Player player)
         {
             player.GetModPlayer<PlayerRelic>().Bouncy = true;
-            GlobalWeaponModify.ModifiedProjAmount(1);
+            GlobalWeaponModify.NumOfProModify += 1;
         }
     }
     public class PlayerRelic : ModPlayer

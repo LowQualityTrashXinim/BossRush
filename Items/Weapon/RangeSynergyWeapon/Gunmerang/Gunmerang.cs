@@ -31,6 +31,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Gunmerang
             Item.noMelee = true;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(platinum: 5);
+
+            Item.UseSound = SoundID.Item11;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

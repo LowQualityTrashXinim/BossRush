@@ -34,6 +34,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;
             Item.noMelee = true;
+
+            Item.UseSound = SoundID.Item41;
         }
         public override void HoldItem(Player player)
         {

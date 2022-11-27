@@ -36,6 +36,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballRifle
             Item.useAnimation = 5;
 
             Item.useStyle = 5;
+
+            Item.UseSound = SoundID.Item11;
         }
         public override bool CanConsumeAmmo(Item ammo, Player player)
         {

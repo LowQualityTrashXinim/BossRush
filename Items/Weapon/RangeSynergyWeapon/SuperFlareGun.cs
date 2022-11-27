@@ -33,6 +33,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
 
             Item.shoot = ModContent.ProjectileType<SuperFlareP>();
             Item.shootSpeed = 20;
+
+            Item.UseSound = SoundID.Item11;
         }
         public override Vector2? HoldoutOffset()
         {

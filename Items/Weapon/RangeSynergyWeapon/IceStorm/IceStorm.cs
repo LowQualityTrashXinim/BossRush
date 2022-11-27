@@ -37,6 +37,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             Item.noMelee = true;
             Item.value = Item.buyPrice(gold: 50);
             Item.scale = 0.7f;
+
+            Item.UseSound = SoundID.Item5;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

@@ -32,6 +32,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
             Item.rare = 4;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(platinum: 5);
+
+            Item.UseSound = SoundID.Item11;
         }
 
         public override bool CanConsumeAmmo(Item ammo, Player player)
