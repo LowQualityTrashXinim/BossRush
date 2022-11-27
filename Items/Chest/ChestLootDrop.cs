@@ -135,7 +135,7 @@ namespace BossRush.Items.Chest
         }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
         {
-            amountForWeapon = 2;
+            amountForWeapon = 3;
             amountForPotionType = 1;
             amountForPotionNum = 2;
             if (Main.getGoodWorld)
