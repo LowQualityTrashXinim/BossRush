@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.ID;
-using System;
+using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Items.Artifact
 {
@@ -11,15 +12,17 @@ namespace BossRush.Items.Artifact
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Give you a roll for each boss kill\n\"Unmei Goddess shall decide your journey\"");
+            Tooltip.SetDefault("Give you a roll for each boss kill" +
+                "\n\"The dice that goddess uses decide mere mortal fate\"");
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetDefaults()
         {
             Item.useTime = 10;
             Item.useAnimation = 10;
-            Item.width = 32;
-            Item.height = 32;
+            Item.width = 60;
+            Item.height = 73;
             Item.rare = 9;
             Item.useStyle = ItemUseStyleID.HoldUp;
         }
