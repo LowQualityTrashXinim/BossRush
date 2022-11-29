@@ -1,8 +1,5 @@
-FasterTerraria is a mod that make boss drop a custom treasure chest within the mod
-Can you defeat the boss as fast as possible with random given weapons, armor, potions, accessories and ect ?
-If you think you can, play this mod with intended way to play, well that is if you have courage to do so
-
-____THE INTENDED WAY TO PLAY :____(W.I.P)(Not compatible with multiplayer at all)
+(IMPORTANT)____THE INTENDED WAY TO PLAY :____(W.I.P)(Not compatible with multiplayer at all)
+-Enable Hardcode mode on character selection (EXTREMELY RECOMMEND)
 -Enable Challenge Mode ( in the mod config )
 -Enable Synergy Mode ( in the mod config )
 -Recommend play this mod in expert or in higher difficulty
@@ -10,9 +7,12 @@ ____THE INTENDED WAY TO PLAY :____(W.I.P)(Not compatible with multiplayer at all
 -Enraged boss is intended to be fight like normal boss progression, fighting it with better gear than it is not intended
 (Optional)Enable easy mode if you are new to the mod with normal mode(Optional)
 
+FasterTerraria is a mod that make boss drop a custom treasure chest within the mod in rouge like manner
+It is unsure that a player can consistently this mod, but it do feature no hit reward for those daring enough
+As far as this mod goes, anything is possible as long you are good enough, this mod shall test your skill to the fullist
+
 If fighting boss at extreme inconsitently fast progression isn't your type then you can play this mod like a QoL mod
-This mod have been designed so that player can play the mod without grinding
-And is designed to be play with other mod or play at your own pace
+This mod have been designed so that player can play the mod without grinding much and to be play with other mod or at your own pace
 ____THE CONFIG REQUIRE FOR IT TO PLAY LIKE Qol MOD :____
 -Disable Challenge Mode
 -Disable Synergy Mode
@@ -22,7 +22,7 @@ ____THE CONFIG REQUIRE FOR IT TO PLAY LIKE Qol MOD :____
 
 Planning :
 -rework loot drop depend on future feedback ( only take more feedback after synergy update out )
--add more synergy energy weapon
+-add more synergy energy weapon ( top priority )
 -possible end mod boss
 -Add spawner for mini boss
 
