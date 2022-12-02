@@ -41,6 +41,8 @@ namespace BossRush.Items.Chest
                 GetPotion(out int potion);
                 player.QuickSpawnItem(entitySource, potion, potionNum);
             }
+            GetAccessory(out int accessory);
+            player.QuickSpawnItem(entitySource, accessory);
         }
     }
 

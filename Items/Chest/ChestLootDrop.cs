@@ -348,14 +348,11 @@ namespace BossRush.Items.Chest
                         DropItemSummon.Add(ItemID.MoonlordTurretStaff);
                         break;
                 }
-                if (SafePostAddLootMelee().Count > 0 && SafePostAddLootRange().Count > 0 && SafePostAddLootMagic().Count > 0 && SafePostAddLootSummon().Count > 0 && SafePostAddLootMisc().Count > 0)
-                {
-                    DropItemMelee.AddRange(SafePostAddLootMelee());
-                    DropItemRange.AddRange(SafePostAddLootRange());
-                    DropItemMagic.AddRange(SafePostAddLootMagic());
-                    DropItemSummon.AddRange(SafePostAddLootSummon());
-                    DropItemMisc.AddRange(SafePostAddLootMisc());
-                }
+                if (SafePostAddLootMelee().Count > 0) DropItemMelee.AddRange(SafePostAddLootMelee());
+                if(SafePostAddLootRange().Count > 0) DropItemRange.AddRange(SafePostAddLootRange());
+                if(SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
+                if(SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
+                if(SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
             }
         }
         /// <summary>
@@ -567,7 +564,7 @@ namespace BossRush.Items.Chest
         List<int> Accessories = new List<int>();
 
         int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
-        int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
+        int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots,ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
         int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
 
         int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };

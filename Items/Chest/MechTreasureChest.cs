@@ -38,6 +38,30 @@ namespace BossRush.Items.Chest
             int wing = Main.rand.Next(new int[] { ItemID.ButterflyWings, ItemID.FlameWings, ItemID.FrozenWings, ItemID.SteampunkWings, ItemID.Jetpack });
             player.QuickSpawnItem(entitySource, wing);
             GetAmount(out int amount, out int amount2, out int amount3, player);
+            if(NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+            {
+                int randChooser = Main.rand.Next(4);
+                switch (randChooser)
+                {
+                    case 0:
+                        player.QuickSpawnItem(entitySource,ItemID.ChlorophyteHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
+                        break;
+                    case 1:
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophyteHeadgear);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
+                        break;
+                    case 2:
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophyteMask);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
+                        break;
+                    default:
+                        break;
+                }
+            }
             for (int i = 0; i < amount; i++)
             {
                 GetWeapon(player, out int weapon, out int specialAmount, RNGManage(25, 25, 25, 25, 0));
