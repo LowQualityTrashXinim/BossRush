@@ -78,13 +78,6 @@ namespace BossRush.Items.Artifact
             player.GetModPlayer<GamblePlayer>().GambleCrit = Main.rand.Next(0, 100);
             return true;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<BrokenArtifact>())
-                .Register();
-        }
     }
     class GamblePlayer : ModPlayer
     {

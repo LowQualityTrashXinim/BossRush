@@ -200,6 +200,10 @@ namespace BossRush
             {
                 items.Add(new Item(ModContent.ItemType<RainbowTreasureChest>()));
             }
+            if(Player.name == "FeelingLucky")
+            {
+                items.Add(new Item(ModContent.ItemType<GodDice>()));
+            }
             if(Player.name.ToLower().Trim() == "skillissue")
             {
                 items.Add(new Item(ModContent.ItemType<SkillIssuedArtifact>()));
