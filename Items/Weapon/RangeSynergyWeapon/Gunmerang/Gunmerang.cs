@@ -3,10 +3,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Gunmerang
 {
-    internal class Gunmerang : ModItem
+    internal class Gunmerang : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -66,28 +67,32 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Gunmerang
         int count = 0;
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             count++;
-            type = ProjectileID.WoodenBoomerang;
             if (player.HasItem(ItemID.EnchantedBoomerang) && count == 3)
             {
-                type = ProjectileID.EnchantedBoomerang;
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.EnchantedBoomerang, damage, knockback, player.whoAmI);
             }
             else if (player.HasItem(ItemID.Shroomerang) && count == 5)
             {
-                type = ProjectileID.Shroomerang;
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.Shroomerang, damage, knockback, player.whoAmI);
             }
             else if (player.HasItem(ItemID.IceBoomerang) && count == 7)
             {
-                type = ProjectileID.IceBoomerang;
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.IceBoomerang, damage, knockback, player.whoAmI);
             }
             else if (player.HasItem(ItemID.Flamarang) && count == 10)
             {
-                type = ProjectileID.Flamarang;
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.Flamarang, damage, knockback, player.whoAmI);
             }
             if (count >= 10)
             {
                 count = 0;
             }
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 
         public override Vector2? HoldoutOffset()

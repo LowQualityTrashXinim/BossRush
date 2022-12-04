@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.BloodyShot
 {
-    internal class BloodyShot : ModItem
+    internal class BloodyShot : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

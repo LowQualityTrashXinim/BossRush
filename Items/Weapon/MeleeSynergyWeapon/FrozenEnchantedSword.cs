@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    public class FrozenEnchantedSword : ModItem
+    public class FrozenEnchantedSword : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

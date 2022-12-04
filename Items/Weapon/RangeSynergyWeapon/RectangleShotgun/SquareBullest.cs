@@ -15,12 +15,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
             Projectile.height = 18;
             Projectile.alpha = 0;
             Projectile.light = 0.7f;
-            Projectile.timeLeft = 150;
+            Projectile.timeLeft = 10;
         }
 
         public override void AI()
         {
-            if (Projectile.timeLeft % 15 == 0)
+            if (Projectile.timeLeft % 10 == 0)
             {
                 Projectile.damage -= 1;
             }

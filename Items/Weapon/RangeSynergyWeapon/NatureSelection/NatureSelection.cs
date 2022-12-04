@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection
 {
-    internal class NatureSelection : ModItem
+    internal class NatureSelection : ModItem, ISynergyItem
     {
         static int counter = 0;
         public override void SetStaticDefaults()

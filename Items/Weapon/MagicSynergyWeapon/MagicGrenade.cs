@@ -4,9 +4,14 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class MagicGrenade : ModItem
+    internal class MagicGrenade : ModItem, ISynergyItem
     {
         public override string Texture => "BossRush/MissingTexture";
+
+        public override void SetStaticDefaults()
+        {
+            Tooltip.SetDefault("TODO:ADD SPECIAL HERE");
+        }
         public override void SetDefaults()
         {
             Item.width = 10;

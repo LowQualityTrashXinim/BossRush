@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class ManaStarFury : ModItem,IModSynergyItem
+    internal class ManaStarFury : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

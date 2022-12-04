@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class EnchantedLongSword : WeaponTemplate
+    internal class EnchantedLongSword : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

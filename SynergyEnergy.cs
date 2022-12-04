@@ -26,5 +26,12 @@ namespace BossRush
             player.GetDamage(DamageClass.Generic).Flat += 5;
             player.accRunSpeed += 0.1f;
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddRecipeGroup("Synergy Item")
+                .Register();
+        }
     }
 }

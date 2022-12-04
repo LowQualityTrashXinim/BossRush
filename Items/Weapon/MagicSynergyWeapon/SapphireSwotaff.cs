@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class SapphireSwotaff : ModItem
+    internal class SapphireSwotaff : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

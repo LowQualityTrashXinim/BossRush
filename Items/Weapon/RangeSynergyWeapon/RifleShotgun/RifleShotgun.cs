@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.RifleShotgun
 {
-    class RifleShotgun : ModItem
+    class RifleShotgun : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

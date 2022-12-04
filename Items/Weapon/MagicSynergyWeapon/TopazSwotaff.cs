@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class TopazSwotaff : ModItem
+    internal class TopazSwotaff : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

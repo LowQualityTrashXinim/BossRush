@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
-    internal class TopazBow : ModItem
+    internal class TopazBow : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

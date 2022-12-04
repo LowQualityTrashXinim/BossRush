@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class EverlastingCold : ModItem
+    internal class EverlastingCold : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

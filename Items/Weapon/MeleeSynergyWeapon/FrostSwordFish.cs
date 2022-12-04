@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class FrostSwordFish : ModItem
+    internal class FrostSwordFish : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

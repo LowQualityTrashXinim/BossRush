@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class EnchantedStarfury : ModItem
+    internal class EnchantedStarfury : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

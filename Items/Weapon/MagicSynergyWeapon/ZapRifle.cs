@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class ZapRifle : ModItem
+    internal class ZapRifle : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballShotgunCannon
 {
-    class SnowballShotgunCannon : ModItem
+    class SnowballShotgunCannon : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

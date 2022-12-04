@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class PlatinumKatana : ModItem
+    internal class PlatinumKatana : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

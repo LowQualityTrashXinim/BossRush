@@ -4,7 +4,7 @@ using Terraria.ID;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Bowmarang
 {
-    internal class Bowmarang : ModItem
+    internal class Bowmarang : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

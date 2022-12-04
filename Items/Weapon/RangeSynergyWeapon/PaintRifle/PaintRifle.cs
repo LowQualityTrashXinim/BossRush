@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
 {
-    internal class PaintRifle : WeaponTemplate
+    internal class PaintRifle : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

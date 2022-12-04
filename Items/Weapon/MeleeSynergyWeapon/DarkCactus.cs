@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class DarkCactus : ModItem
+    internal class DarkCactus : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

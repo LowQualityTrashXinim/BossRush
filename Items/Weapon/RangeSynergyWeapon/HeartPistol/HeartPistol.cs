@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol
 {
-    internal class HeartPistol : ModItem
+    internal class HeartPistol : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

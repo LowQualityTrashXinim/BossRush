@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Items.ExtraItem;
@@ -16,20 +15,9 @@ namespace BossRush
                 player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
             }
         }
+
         public override void AddRecipes()
         {
-            //foreach (var item in Main.recipe)
-            //{
-            //    if (item.Mod is BossRush)
-            //    {
-            //        Recipe recipeSynergy = Recipe.Create(ModContent.ItemType<SynergyEnergy>());
-            //        if (item.HasIngredient(ModContent.ItemType<SynergyEnergy>()))
-            //        {
-            //            recipeSynergy.AddIngredient(item.createItem.type);
-            //            recipeSynergy.Register();
-            //        }
-            //    }
-            //}
             //QoL convert
             Recipe recipe = Recipe.Create(ItemID.FallenStar,5);
             recipe.AddIngredient(ItemID.ManaCrystal);

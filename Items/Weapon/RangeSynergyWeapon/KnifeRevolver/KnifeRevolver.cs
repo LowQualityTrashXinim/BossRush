@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
-    internal class KnifeRevolver : ModItem
+    internal class KnifeRevolver : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

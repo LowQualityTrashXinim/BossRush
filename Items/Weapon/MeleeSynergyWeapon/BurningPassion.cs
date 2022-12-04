@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    class BurningPassion : ModItem
+    class BurningPassion : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

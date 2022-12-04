@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
 {
-    internal class Deagle : WeaponTemplate
+    internal class Deagle : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

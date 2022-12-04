@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class SinisterBook : ModItem
+    internal class SinisterBook : ModItem, ISynergyItem
     {
         public override void SetDefaults()
         {

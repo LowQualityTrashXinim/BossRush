@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
-    internal class IceStorm : WeaponTemplate
+    internal class IceStorm : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

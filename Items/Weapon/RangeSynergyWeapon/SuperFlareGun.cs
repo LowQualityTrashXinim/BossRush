@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon
 {
-    internal class SuperFlareGun : ModItem
+    internal class SuperFlareGun : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

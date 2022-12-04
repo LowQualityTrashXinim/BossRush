@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class StarLightDistributer : ModItem
+    internal class StarLightDistributer : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

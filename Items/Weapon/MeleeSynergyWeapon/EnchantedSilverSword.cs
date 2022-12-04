@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    class EnchantedSilverSword : ModItem
+    class EnchantedSilverSword : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

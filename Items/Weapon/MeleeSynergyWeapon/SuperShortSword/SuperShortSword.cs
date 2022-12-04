@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 {
-    class SuperShortSword : ModItem
+    class SuperShortSword : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

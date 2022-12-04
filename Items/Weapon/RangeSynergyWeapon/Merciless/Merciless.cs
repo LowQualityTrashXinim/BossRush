@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
 {
-    internal class Merciless : WeaponTemplate
+    internal class Merciless : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

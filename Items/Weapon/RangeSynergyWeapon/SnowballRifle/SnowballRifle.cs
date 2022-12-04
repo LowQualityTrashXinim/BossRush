@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballRifle
 {
-    class SnowballRifle : ModItem
+    class SnowballRifle : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

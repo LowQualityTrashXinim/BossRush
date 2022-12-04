@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
 {
-    internal class DeathBySpark : ModItem
+    internal class DeathBySpark : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

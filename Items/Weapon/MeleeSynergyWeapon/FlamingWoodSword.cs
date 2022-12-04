@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class FlamingWoodSword : ModItem
+    internal class FlamingWoodSword : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -19,7 +19,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             Item.height = 36;
             Item.rare = 2;
 
-            Item.damage = 16;
+            Item.damage = 36;
             Item.crit = 5;
             Item.knockBack = 1f;
 
@@ -84,6 +84,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             CreateRecipe()
                 .AddRecipeGroup("Wood Sword")
                 .AddIngredient(ItemID.WandofSparking)
+                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

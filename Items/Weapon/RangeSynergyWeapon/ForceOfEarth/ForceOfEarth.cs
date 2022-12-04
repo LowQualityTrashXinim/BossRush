@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
 {
-    internal class ForceOfEarth : ModItem
+    internal class ForceOfEarth : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

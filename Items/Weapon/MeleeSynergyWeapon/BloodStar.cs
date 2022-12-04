@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class BloodStar : ModItem
+    internal class BloodStar : ModItem, ISynergyItem
     {
         public override void SetDefaults()
         {

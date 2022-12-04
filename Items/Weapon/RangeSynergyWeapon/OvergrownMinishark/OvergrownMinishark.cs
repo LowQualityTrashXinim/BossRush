@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 {
-    internal class OvergrownMinishark : WeaponTemplate
+    internal class OvergrownMinishark : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

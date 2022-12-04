@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
 {
-    class QuadDemonBlaster : ModItem
+    class QuadDemonBlaster : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

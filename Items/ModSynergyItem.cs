@@ -1,7 +1,7 @@
 ﻿namespace BossRush.Items
 {
-    interface IModSynergyItem
+    interface ISynergyItem
     {
-
+        
     }
 }

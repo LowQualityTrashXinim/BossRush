@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 {
-    class RectangleShotgun : WeaponTemplate
+    class RectangleShotgun : WeaponTemplate, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -17,18 +17,18 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
         {
             Item.damage = 25;
             Item.knockBack = 4f;
-            Item.shootSpeed = 1f;
             Item.height = 12;
             Item.width = 74;
 
             Item.useAmmo = AmmoID.Bullet;
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = 4;
 
             Item.useTime = 10;
-            Item.shoot = ModContent.ProjectileType<SquareBullet>();
             Item.useAnimation = 20;
+            Item.shoot = ModContent.ProjectileType<SquareBullet>();
+            Item.shootSpeed = 30f;
             Item.reuseDelay = 30;
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;
