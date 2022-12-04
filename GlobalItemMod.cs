@@ -1,10 +1,7 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using BossRush.BuffAndDebuff;
-using BossRush.Items.Accessories;
 using BossRush.Items.ExtraItem;
 using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
 
@@ -21,6 +18,18 @@ namespace BossRush
         }
         public override void AddRecipes()
         {
+            //foreach (var item in Main.recipe)
+            //{
+            //    if (item.Mod is BossRush)
+            //    {
+            //        Recipe recipeSynergy = Recipe.Create(ModContent.ItemType<SynergyEnergy>());
+            //        if (item.HasIngredient(ModContent.ItemType<SynergyEnergy>()))
+            //        {
+            //            recipeSynergy.AddIngredient(item.createItem.type);
+            //            recipeSynergy.Register();
+            //        }
+            //    }
+            //}
             //QoL convert
             Recipe recipe = Recipe.Create(ItemID.FallenStar,5);
             recipe.AddIngredient(ItemID.ManaCrystal);
