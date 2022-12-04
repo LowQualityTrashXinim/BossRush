@@ -16,7 +16,8 @@ namespace BossRush.Items.Accessories.EnragedBossAccessories.CorruptedFlesh
                 "\nIncrease damage by 10%" +
                 "\nIncrease movement speed by 15%" +
                 "\nIncrease melee speed by 10%" +
-                "\nYou shoot out tiny eater for each shot");
+                "\nYou shoot out tiny eater for each shot" +
+                "\nUpon getting hit, you will shoot out mini eater");
         }
         public override void SetDefaults()
         {
@@ -46,11 +47,7 @@ namespace BossRush.Items.Accessories.EnragedBossAccessories.CorruptedFlesh
             if (CorruptedPower && item.type != ModContent.ItemType<GodDice>()) Projectile.NewProjectile(source, Player.Center, Main.rand.NextVector2CircularEdge(10, 10), ProjectileID.TinyEater, damage, knockback, Player.whoAmI);
             return true;
         }
-        public override void OnHitByProjectile(Projectile proj, int damage, bool crit)
-        {
-            CreateProjectile();
-        }
-        public override void OnHitByNPC(NPC npc, int damage, bool crit)
+        public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
         {
             CreateProjectile();
         }

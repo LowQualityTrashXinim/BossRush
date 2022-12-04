@@ -162,7 +162,7 @@ namespace BossRush
             {
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodTreasureChest>()));
                 npcLoot.Add(ExpertVSnormal);
-                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
+                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BloodTreasureChest>()));
             }
 
             if (npc.type == NPCID.QueenSlimeBoss)

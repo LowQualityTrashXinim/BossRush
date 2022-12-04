@@ -26,9 +26,9 @@ Planning :
 -possible end mod boss
 -Add spawner for mini boss
 
-No discord link, if there are any problem with the mod, i will probably find it out in later update but feel free to use this mod in any playthrough or modpack with condition of crediting me as LowQualityTrash
+feel free to use this mod in any playthrough or modpack with condition of crediting me as LowQualityTrash
 
 Message for people want to support : Please report any issue or any problem you have with the mod at discord tag:LowQualityTrash-#2090
 Multiplayer is not yet supported, please wait for future update
 
-Message for people want to make addon : Send me a message at discord tag:LowQualityTrash-#2090 and i will give you source code
+Message for people want to make addon : Send me a message at discord tag:LowQualityTrash-#2090

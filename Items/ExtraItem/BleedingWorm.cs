@@ -31,7 +31,7 @@ namespace BossRush.Items.ExtraItem
 
         public override bool CanUseItem(Player player)
         {
-            return Main.bloodMoon;
+            return !Main.dayTime;
         }
 
         public override bool? UseItem(Player player)
@@ -39,11 +39,11 @@ namespace BossRush.Items.ExtraItem
             if (player.whoAmI == Main.myPlayer)
             {
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
-
+                Main.bloodMoon = true;
                 int type = NPCID.BloodNautilus;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    NPC.SpawnOnPlayer(player.whoAmI, type);
+                    NPC.SpawnBoss((int)player.Center.X, (int)player.Center.Y - 400, type, player.whoAmI);
                 }
                 else
                 {

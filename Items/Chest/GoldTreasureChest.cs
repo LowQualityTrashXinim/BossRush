@@ -77,8 +77,6 @@ namespace BossRush.Items.Chest
                     player.QuickSpawnItem(entitySource, ItemID.GravitationPotion, 10);
                     break;
             }
-            player.QuickSpawnItem(entitySource, ItemID.LifeCrystal, 5);
-            player.QuickSpawnItem(entitySource, ItemID.ManaCrystal, 5);
             player.QuickSpawnItem(entitySource, ItemID.StickyDynamite, 200);
             player.QuickSpawnItem(entitySource, ItemID.CalmingPotion, 10);
             player.QuickSpawnItem(entitySource, ItemID.DemonConch);
