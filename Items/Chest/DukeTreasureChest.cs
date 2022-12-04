@@ -2,8 +2,8 @@
 using Terraria.ModLoader;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
 using BossRush.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.SuperEnchantedSword;
 using BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection;
+using BossRush.Items.Weapon.MeleeSynergyWeapon;
 
 namespace BossRush.Items.Chest
 {

@@ -6,28 +6,18 @@ using Terraria.Localization;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
 using BossRush.Items.Weapon.RangeSynergyWeapon.SnowballShotgunCannon;
 using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.ShadowTrick;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.EverlastingCold;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.FlameingWoodSword;
 using BossRush.Items.Weapon.MeleeSynergyWeapon.YinYang;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.Katana;
 using BossRush.Items.Weapon.SummonerSynergyWeapon.StickySlime;
 using BossRush.Items.Weapon.RangeSynergyWeapon.Bowmarang;
 using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 using BossRush.Items.Weapon.RangeSynergyWeapon.SkullRevolver;
 using BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.SuperEnchantedSword;
 using BossRush.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun;
 using BossRush.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
 using BossRush.Items.Weapon.RangeSynergyWeapon.RifleShotgun;
 using BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.ManaStarfury;
 using BossRush.Items.Weapon.RangeSynergyWeapon.Merciless;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.BloodStar;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark;
 using BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 using BossRush.Items.Weapon.RangeSynergyWeapon.SnowballRifle;
@@ -35,8 +25,8 @@ using BossRush.Items.Accessories;
 using BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle;
 using BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using BossRush.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster;
-using BossRush.Items.Weapon.MeleeSynergyWeapon.FrozenSwordFish;
 using BossRush.Items.Weapon.MagicSynergyWeapon;
+using BossRush.Items.Weapon.MeleeSynergyWeapon;
 
 namespace BossRush
 {
