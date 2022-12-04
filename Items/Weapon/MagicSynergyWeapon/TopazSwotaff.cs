@@ -30,6 +30,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Item.shootSpeed = 7;
             Item.mana = 30;
 
+            Item.DamageType = DamageClass.Magic;
             Item.shoot = ProjectileID.TopazBolt;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;

@@ -19,14 +19,14 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Item.width = 60;
             Item.height = 58;
 
-            Item.damage = 20;
+            Item.damage = 15;
             Item.crit = 10;
             Item.knockBack = 3f;
             Item.useTime = 2;
             Item.useAnimation = 20;
             Item.reuseDelay = 20;
             Item.shoot = ProjectileID.SapphireBolt;
-            Item.shootSpeed = 7;
+            Item.shootSpeed = 5;
             Item.mana = 10;
 
             Item.DamageType = DamageClass.Magic;
