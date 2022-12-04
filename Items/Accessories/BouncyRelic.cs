@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Items.Accessories
 {
-    internal class BouncyRelic : ModItem
+    internal class BouncyRelic : ModItem, ISynergyItem
     {
 
         public override string Texture => "BossRush/MissingTexture";

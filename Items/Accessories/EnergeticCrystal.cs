@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Accessories
 {
-    class EnergeticCrystal : ModItem
+    class EnergeticCrystal : ModItem, ISynergyItem
     {
         public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Items.Accessories
 {
-    internal class SwordScabbard : ModItem
+    internal class SwordScabbard : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

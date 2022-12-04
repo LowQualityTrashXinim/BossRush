@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Items.Accessories
 {
-    internal class ParryScabbard : ModItem
+    internal class ParryScabbard : ModItem, ISynergyItem
     {
         public override string Texture => "BossRush/MissingTexture";
 
