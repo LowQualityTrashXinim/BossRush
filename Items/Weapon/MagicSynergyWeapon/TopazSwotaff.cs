@@ -19,16 +19,16 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Item.width = 60;
             Item.height = 58;
 
-            Item.damage = 27;
+            Item.damage = 20;
             Item.crit = 10;
             Item.knockBack = 3f;
 
-            Item.useTime = 2;
-            Item.useAnimation = 20;
+            Item.useTime = 4;
+            Item.useAnimation = 40;
             Item.reuseDelay = 20;
 
             Item.shootSpeed = 7;
-            Item.mana = 10;
+            Item.mana = 30;
 
             Item.shoot = ProjectileID.TopazBolt;
             Item.useStyle = ItemUseStyleID.Shoot;
