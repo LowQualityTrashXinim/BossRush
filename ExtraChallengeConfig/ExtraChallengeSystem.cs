@@ -74,7 +74,7 @@ namespace BossRush.ExtraChallengeConfig
                             break;
                         case 8:
                             player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave = true;
-                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Jungle bat and Cave bat spawn"), Colors.RarityDarkRed);
+                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Bat start to spawn"), Colors.RarityDarkRed);
                             break;
                     }
                     NumberToCompare = player.GetModPlayer<ExtraChallengePlayer>().BossSlayedCount;
