@@ -58,7 +58,7 @@ namespace BossRush.Items.Accessories
         }
         public override void PostUpdate()
         {
-            if (Player.HeldItem.DamageType == DamageClass.Melee && Player.HeldItem.useStyle == ItemUseStyleID.Swing && SwordSlash && Main.mouseLeft && Player.ItemAnimationJustStarted)
+            if (Player.HeldItem.DamageType == DamageClass.Melee && Player.HeldItem.useStyle == ItemUseStyleID.Swing && SwordSlash && Main.mouseLeft && Player.ItemAnimationJustStarted && Player.ItemAnimationActive)
             {
                 Vector2 speed = Player.direction == 1 ? new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? 15 : 5, 0) : new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? -15 : -5, 0);
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed, ModContent.ProjectileType<SwordSlash>(), (int)(Player.HeldItem.damage * .75f), 2f, Player.whoAmI);
