@@ -12,8 +12,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Projectile.width = 30;
             Projectile.height = 30;
             Projectile.timeLeft = 70;
-            Projectile.tileCollide = true;
-            Projectile.penetrate = 1;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.alpha = 255;
@@ -40,6 +40,10 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 count = 0;
             }
             count++;
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[Projectile.owner] = 1;
         }
     }
 }

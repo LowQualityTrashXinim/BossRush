@@ -40,23 +40,40 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Item.UseSound = SoundID.Item8;
         }
         int i = 0;
+
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 50f;
-            if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
+            if (player.altFunctionUse == 2)
             {
-                position += muzzleOffset;
+                if (player.ItemAnimationJustStarted)
+                {
+                    Item.noUseGraphic = true;
+                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<EmeraldSwotaffP>(), damage * 8, knockback, player.whoAmI);
+                }
             }
-            float rotation = MathHelper.ToRadians(20);
-            Vector2 Rotate = velocity.RotatedBy(MathHelper.Lerp(0f, rotation, i / 9f));
-            Vector2 Rotate2 = velocity.RotatedBy(MathHelper.Lerp(0f, -rotation, i / 9f));
-
-            Projectile.NewProjectile(source, position, Rotate, type, damage, knockback, player.whoAmI);
-            Projectile.NewProjectile(source, position, Rotate2, type, damage, knockback, player.whoAmI);
-            i++;
-            if (i > 9)
+            else
             {
-                i = 0;
+                Item.noUseGraphic = false;
+                Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 50f;
+                if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
+                {
+                    position += muzzleOffset;
+                }
+                float rotation = MathHelper.ToRadians(20);
+                Vector2 Rotate = velocity.RotatedBy(MathHelper.Lerp(0f, rotation, i / 9f));
+                Vector2 Rotate2 = velocity.RotatedBy(MathHelper.Lerp(0f, -rotation, i / 9f));
+
+                Projectile.NewProjectile(source, position, Rotate, type, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, Rotate2, type, damage, knockback, player.whoAmI);
+                i++;
+                if (i > 9)
+                {
+                    i = 0;
+                }
             }
             return false;
         }
@@ -69,6 +86,39 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 .AddIngredient(ItemID.TungstenBroadsword)
                 .AddIngredient(ItemID.EmeraldStaff)
                 .Register();
+        }
+    }
+    public class EmeraldSwotaffP : ModProjectile
+    {
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/EmeraldSwotaff";
+        public override void SetDefaults()
+        {
+            Projectile.height = 29;
+            Projectile.width = 30;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = true;
+            Projectile.timeLeft = 900;
+            Projectile.DamageType = DamageClass.Magic;
+        }
+
+        public override void AI()
+        {
+            Projectile.ai[0]++;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            if (Projectile.ai[0] >= 20)
+            {
+                if (Projectile.velocity.Y <= 16)
+                {
+                    Projectile.velocity.Y += .2f;
+                }
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                Vector2 Velocity180 = Projectile.velocity.RotatedBy(MathHelper.ToRadians(90) + MathHelper.Pi * i);
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity180 * .5f, ProjectileID.EmeraldBolt, (int)(Projectile.damage * .3f), Projectile.knockBack, Projectile.owner);
+                Main.projectile[proj].timeLeft = 30;
+            }
         }
     }
 }

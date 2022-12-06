@@ -69,8 +69,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                         count += 2f;
                         for (int i = 0; i < 4; i++)
                         {
-                            Projectile.NewProjectile(source, Projectile.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(count + i * 90)) * 5, ModContent.ProjectileType<SmallerRubyBolt>(), (int)(Projectile.damage * 0.35f), Projectile.knockBack * 0.5f, Projectile.owner);
-                            Projectile.NewProjectile(source, Projectile.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(-count + i * 90)) * 5, ModContent.ProjectileType<SmallerRubyBolt>(), (int)(Projectile.damage * 0.35f), Projectile.knockBack * 0.5f, Projectile.owner);
+                            Projectile.NewProjectile(source, Projectile.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(count + i * 90)) * 5, ModContent.ProjectileType<SmallerRubyBolt>(), (int)(Projectile.damage * 0.35f),0, Projectile.owner);
+                            Projectile.NewProjectile(source, Projectile.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(-count + i * 90)) * 5, ModContent.ProjectileType<SmallerRubyBolt>(), (int)(Projectile.damage * 0.35f), 0, Projectile.owner);
                         }
                     }
                     counttime++;

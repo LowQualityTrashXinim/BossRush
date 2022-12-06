@@ -6,25 +6,19 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
     internal class SmallerRubyBolt : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/GiantRubyBolt";
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Projectile.type] = 2;
-        }
         public override void SetDefaults()
         {
             Projectile.width = 30;
             Projectile.height = 30;
             Projectile.timeLeft = 50;
-            Projectile.tileCollide = true;
-            Projectile.penetrate = 1;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Magic;
         }
         int count = 0;
         public override void AI()
         {
-            SelectFrame();
             Projectile.alpha += 5;
             Projectile.scale -= 0.015f;
             if (count >= 3)
@@ -38,17 +32,9 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             }
             count++;
         }
-        public void SelectFrame()
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            if (++Projectile.frameCounter >= 10)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame += 1;
-                if (Projectile.frame >= Main.projFrames[Projectile.type])
-                {
-                    Projectile.frame = 0;
-                }
-            }
+            target.immune[Projectile.owner] = 1;
         }
     }
 }
