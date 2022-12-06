@@ -177,7 +177,7 @@ namespace BossRush.Items.Chest
             }
         }
 
-        protected int RNGManage(int meleeChance = 25, int rangeChance = 25, int magicChance = 25, int summonChance = 10, int specialChance = 15)
+        protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             rangeChance += meleeChance;
             magicChance += rangeChance;

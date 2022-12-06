@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.BasicWeapon
 {
@@ -35,6 +36,15 @@ namespace BossRush.Items.Weapon.BasicWeapon
             Vec2ToRotate = velocity;
             position = PositionOFFSET(position, velocity, 50);
             velocity = RotateRandom(9);
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (Main.rand.NextBool(5))
+            {
+                Projectile.NewProjectile(source, position, RotateRandom(3), type, damage, knockback, player.whoAmI);
+            }
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 
         public override Vector2? HoldoutOffset()
