@@ -41,6 +41,14 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
         }
         int i = 0;
 
+        public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                mult = 5.75f;
+            }
+        }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
@@ -52,7 +60,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 if (player.ItemAnimationJustStarted)
                 {
                     Item.noUseGraphic = true;
-                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<EmeraldSwotaffP>(), damage * 8, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<EmeraldSwotaffP>(), damage * 2, knockback, player.whoAmI);
                 }
             }
             else
@@ -115,9 +123,9 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             }
             for (int i = 0; i < 2; i++)
             {
-                Vector2 Velocity180 = Projectile.velocity.RotatedBy(MathHelper.ToRadians(90) + MathHelper.Pi * i);
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity180 * .5f, ProjectileID.EmeraldBolt, (int)(Projectile.damage * .3f), Projectile.knockBack, Projectile.owner);
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * .45f, ProjectileID.EmeraldBolt, (int)(Projectile.damage * .3f), 0, Projectile.owner);
                 Main.projectile[proj].timeLeft = 30;
+                Main.projectile[proj].penetrate = 1;
             }
         }
     }

@@ -17,9 +17,9 @@ namespace BossRush.Items.Weapon.BasicWeapon
             Item.width = 64;
             Item.height = 20;
 
-            Item.damage = 10;
+            Item.damage = 16;
             Item.knockBack = 1f;
-            Item.shootSpeed = 10;
+            Item.shootSpeed = 12;
             Item.useTime = 9;
             Item.useAnimation = 9;
 
