@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 using BossRush.Items.Accessories;
 using BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 
@@ -20,7 +19,6 @@ namespace BossRush.Items.Chest
             Item.height = 30;
             Item.rare = 11;
         }
-
         public override bool CanRightClick()
         {
             return true;

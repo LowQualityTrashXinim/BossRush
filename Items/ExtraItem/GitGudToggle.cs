@@ -46,7 +46,7 @@ namespace BossRush.Items.ExtraItem
                     if (count == 0)
                     {
                         player.GetModPlayer<ModdedPlayer>().gitGud = true;
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Git Gud Time"), Colors.RarityDarkRed);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun"), Colors.RarityDarkRed);
                         count++;
                     }
                     else
