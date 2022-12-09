@@ -89,107 +89,15 @@ namespace BossRush
     {
         public override void PostUpdateItems()
         {
-            GlobalWeaponModify.NumOfProModify = 0;
+            BossRushWeaponCustomUtils.NumOfProModify = 0;
         }
     }
 
     public class GlobalWeaponModify : GlobalItem
     {
-        public static float NumOfProModify = 0;
-        public float NumOfProjectile = 0;
-        public Vector2 Vec2ToRotate = Vector2.Zero;
         /// <summary>
-        /// Use this to change how much weapon spread should be modify
-        /// For global modify use multiplication
-        /// For general modify use addictive
-        /// Do not use SpreadModify = 0 as it will fuck the other stuff
-        /// </summary>
-        public static float SpreadModify = 1;
-        /// <summary>
-        /// Modify the ammount of projectile to be shoot
-        /// </summary>
-        /// <param name="TakeNumAmount">the original amount</param>
-        /// <returns></returns>
-        private float ModifiedProjAmount(float TakeNumAmount)
-        {
-            return NumOfProModify + TakeNumAmount;
-        }
-        /// <summary>
-        /// Modify the spread of a weapon
-        /// </summary>
-        /// <param name="TakeFloat">the amount to be change</param>
-        /// <returns></returns>
-        public static float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat * SpreadModify;
-
-        /// <summary>
-        /// Return a random vector that got rotate randomly
-        /// </summary>
-        /// <param name="ToRadians">Rotate radius</param>
-        /// <returns></returns>
-        public Vector2 RotateRandom(float ToRadians)
-        {
-            float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
-            return Vec2ToRotate.RotatedByRandom(rotation);
-        }
-        public override bool CanConsumeAmmo(Item weapon, Item ammo, Player player)
-        {
-            float ChanceNotToConsume = weapon.useTime <= 20 && weapon.useTime >= 7 ? weapon.useTime * .35f : weapon.useTime < 7 ? weapon.useTime * 1.4f : weapon.useTime;
-            for (int i = 0; i < SpecialGunType.Length; i++)
-            {
-                if(weapon.type == SpecialGunType[i])
-                {
-                    return true;
-                }
-            }
-            return Math.Round(Main.rand.NextFloat(),2) > 1/Math.Round(ChanceNotToConsume,2);
-        }
-        /// <summary>
-        /// Return a Vector that got evenly distribute
-        /// </summary>
-        /// <param name="ToRadians">The radius that it get distribute</param>
-        /// <param name="time">the current progress</param>
-        /// <returns></returns>
-        public Vector2 RotateCode(float ToRadians, float time = 0)
-        {
-            float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
-            if (NumOfProjectile > 1)
-            {
-                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, time / (NumOfProjectile - 1f)));
-            }
-            return Vec2ToRotate;
-        }
-        /// <summary>
-        /// Return a position Vector that got offset
-        /// </summary>
-        /// <param name="position">Original position</param>
-        /// <param name="ProjectileVelocity">Current projectile velocity </param>
-        /// <param name="offSetBy">Offset amount</param>
-        /// <returns></returns>
-        public Vector2 PositionOFFSET(Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
-        {
-            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.UnitX) * offSetBy;
-            if (Collision.CanHitLine(position, 0, 0, position + OFFSET, 0, 0))
-            {
-                return position += OFFSET;
-            }
-            return position;
-        }
-        /// <summary>
-        /// Return a vector that got its X parameter and Y parameter change randomely
-        /// </summary>
-        /// <param name="ToRotateAgain">The original Vector</param>
-        /// <param name="Spread">Value to change speed</param>
-        /// <param name="additionalMultiplier">Multiplier for final speed change</param>
-        /// <returns></returns>
-        public Vector2 RandomSpread(Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
-        {
-            ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
-            ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
-            return ToRotateAgain;
-        }
-
-        /// <summary>
-        /// Method that make the item currently in use can be shoot by many amount at a random spread
+        /// Method that make the item currently in use can be shoot by many amount at a random spread<br/>
+        /// It is better to use this method if you want to make your weapon affected by spread
         /// </summary>
         /// <param name="player"></param>
         /// <param name="source"></param>
@@ -205,21 +113,33 @@ namespace BossRush
         /// Set true if the Item is a shotgun to make it don't change the angle it aim at <br/>
         /// Set false if the Item is not a shotgun to make it emulate recoil<br/>
         /// </param>
-        public void GlobalRandomSpreadFiring(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback, float SpreadAmount = 0, float AdditionalSpread = 0, float AdditionalMultiplier = 1)
+        public void GlobalRandomSpreadFiring(
+            Player player, 
+            EntitySource_ItemUse_WithAmmo source, 
+            ref Vector2 position, 
+            ref Vector2 velocity, 
+            ref int type, 
+            ref int damage, 
+            ref float knockback,
+            int NumOfProjectile = 1,
+            float SpreadAmount = 0, 
+            float AdditionalSpread = 0, 
+            float AdditionalMultiplier = 1)
         {
-            Vec2ToRotate = velocity;
-            float ProjectileAmount = ModifiedProjAmount(NumOfProjectile);
+            float ProjectileAmount = BossRushWeaponCustomUtils.ModifiedProjAmount(NumOfProjectile);
             if (ProjectileAmount == 1)
             {
-                velocity = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
+                velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
                 return;
             }
             for (int i = 0; i < ProjectileAmount; i++)
             {
-                Vector2 velocity2 = RandomSpread(RotateRandom(SpreadAmount), AdditionalSpread, AdditionalMultiplier);
+                Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
                 Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
             }
+            BossRushWeaponCustomUtils.SpreadModify = 1;
+            BossRushWeaponCustomUtils.NumOfProjectile = 1;
         }
         int[] GunType = { 
             ItemID.RedRyder,
@@ -275,7 +195,6 @@ namespace BossRush
 
         public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vec2ToRotate = velocity;
             var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
             if (AppliesToEntity(item, false))
             {
@@ -283,6 +202,7 @@ namespace BossRush
                 float SpreadAmount = 0;
                 float AdditionalSpread = 0;
                 float AdditionalMulti = 1;
+                int NumOfProjectile = 0;
                 switch (item.type)
                 {
                     case ItemID.RedRyder:
@@ -414,10 +334,8 @@ namespace BossRush
                         NumOfProjectile += 6;
                         break;
                 }
-                position = PositionOFFSET(position, velocity, OffSetPost);
-                GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, SpreadAmount, AdditionalSpread, AdditionalMulti);
-                SpreadModify = 1;
-                NumOfProjectile = 0;
+                position = position.PositionOFFSET(velocity, OffSetPost);
+                GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
             }
         }
     }
