@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush
 {
-    public static class BossRushWeaponCustomUtils
+    public static class BossRushWeaponSpreadUtils
     {
         /// <summary>
         /// Use this to change how much weapon spread should be modify

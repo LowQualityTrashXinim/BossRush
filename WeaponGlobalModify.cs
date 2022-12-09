@@ -89,7 +89,7 @@ namespace BossRush
     {
         public override void PostUpdateItems()
         {
-            BossRushWeaponCustomUtils.NumOfProModify = 0;
+            BossRushWeaponSpreadUtils.NumOfProModify = 0;
         }
     }
 
@@ -126,7 +126,7 @@ namespace BossRush
             float AdditionalSpread = 0, 
             float AdditionalMultiplier = 1)
         {
-            float ProjectileAmount = BossRushWeaponCustomUtils.ModifiedProjAmount(NumOfProjectile);
+            float ProjectileAmount = BossRushWeaponSpreadUtils.ModifiedProjAmount(NumOfProjectile);
             if (ProjectileAmount == 1)
             {
                 velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
@@ -334,8 +334,8 @@ namespace BossRush
                 }
                 position = position.PositionOFFSET(velocity, OffSetPost);
                 GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
-                BossRushWeaponCustomUtils.SpreadModify = 1;
-                BossRushWeaponCustomUtils.NumOfProjectile = 1;
+                BossRushWeaponSpreadUtils.SpreadModify = 1;
+                BossRushWeaponSpreadUtils.NumOfProjectile = 1;
             }
         }
     }
