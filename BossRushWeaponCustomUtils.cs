@@ -35,7 +35,7 @@ namespace BossRush
         /// </summary>
         /// <param name="TakeFloat">the amount to be change</param>
         /// <returns></returns>
-        public static float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat * SpreadModify;
+        private static float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat * SpreadModify;
 
         /// <summary>
         /// Return a Vector that got evenly distribute

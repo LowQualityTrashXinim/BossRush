@@ -138,8 +138,6 @@ namespace BossRush
                 Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
                 Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
             }
-            BossRushWeaponCustomUtils.SpreadModify = 1;
-            BossRushWeaponCustomUtils.NumOfProjectile = 1;
         }
         int[] GunType = { 
             ItemID.RedRyder,
@@ -336,6 +334,8 @@ namespace BossRush
                 }
                 position = position.PositionOFFSET(velocity, OffSetPost);
                 GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
+                BossRushWeaponCustomUtils.SpreadModify = 1;
+                BossRushWeaponCustomUtils.NumOfProjectile = 1;
             }
         }
     }
