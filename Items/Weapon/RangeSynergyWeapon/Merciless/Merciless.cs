@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
 {
-    internal class Merciless : WeaponTemplate, ISynergyItem
+    internal class Merciless : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -46,7 +46,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
         int count = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vec2ToRotate = velocity;
             if (type == ProjectileID.Bullet)
             {
                 type = ProjectileID.ExplosiveBullet;
@@ -58,7 +57,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
             }
             for (int i = 0; i < 10; i++)
             {
-                Vector2 velocityRotate = RandomSpread(RotateRandom(20), 3, 0.55f);
+                Vector2 velocityRotate = velocity.RotateRandom(20).RandomSpread(3, 0.55f);
                 Projectile.NewProjectile(source, position, velocityRotate, type, damage, knockback, player.whoAmI);
             }
             if (count == 0)

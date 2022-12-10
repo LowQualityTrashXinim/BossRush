@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
-    internal class IceStorm : WeaponTemplate, ISynergyItem
+    internal class IceStorm : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -78,7 +78,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         int count = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vec2ToRotate = velocity;
             if (Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 8)
             {
                 if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 2)
@@ -102,7 +101,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                 {
                     ToRa = projectile2 * 3;
                 }
-                Projectile.NewProjectile(source, position, RotateRandom(ToRa) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
             }
             if (player.HasItem(ItemID.SnowballCannon))
             {
@@ -114,13 +113,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                     {
                         ToRa = projectile4 * 7;
                     }
-                    Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(ToRa), 7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
                 }
             }
             int projectile = (int)player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 5;
             for (int i = 0; i < projectile; i++)
             {
-                Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(5), 4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.RotateRandom(5).RandomSpread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
             }
             if (player.HasItem(ItemID.FlowerofFrost))
             {
@@ -132,7 +131,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                     {
                         ToRa = projectile5 * 5;
                     }
-                    Projectile.NewProjectile(source, position, RandomSpread(RotateRandom(ToRa), 12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
                 }
             }
             float projectile3 = player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 7f;

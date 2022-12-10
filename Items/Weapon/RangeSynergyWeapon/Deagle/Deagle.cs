@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
 {
-    internal class Deagle : WeaponTemplate, ISynergyItem
+    internal class Deagle : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -40,10 +40,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vec2ToRotate = velocity;
             if (player.velocity != Vector2.Zero)
             {
-                velocity = RotateRandom(120);
+                velocity = velocity.RotateRandom(120);
             }
             else
             {

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 {
-    internal class OvergrownMinishark : WeaponTemplate, ISynergyItem
+    internal class OvergrownMinishark : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -40,13 +40,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vec2ToRotate = velocity;
             Vector2 offset = velocity.SafeNormalize(Vector2.UnitX) * 40;
             if (Collision.CanHit(position, 0, 0, position * offset, 0, 0))
             {
                 position += offset;
             }
-            velocity = RotateRandom(7);
+            velocity = velocity.RotateRandom(7);
         }
         public override void AddRecipes()
         {

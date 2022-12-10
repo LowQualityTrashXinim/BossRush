@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
-    internal class EnchantedLongSword : WeaponTemplate, ISynergyItem
+    internal class EnchantedLongSword : ModItem,ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -37,11 +37,10 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vec2ToRotate = velocity;
-            NumOfProjectile = 5;
-            for (int i = 0; i < NumOfProjectile; i++)
+            BossRushWeaponSpreadUtils.NumOfProjectile = 5;
+            for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
             {
-                Vector2 rotate = RotateCode(20, i);
+                Vector2 rotate = velocity.RotateCode(20, i);
                 Projectile.NewProjectile(source, position, rotate, ProjectileID.EnchantedBeam, damage, knockback, player.whoAmI);
             }
             return false;

@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.BasicWeapon
 {
-    internal class FrozenShark : WeaponTemplate
+    internal class FrozenShark : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -33,16 +33,15 @@ namespace BossRush.Items.Weapon.BasicWeapon
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vec2ToRotate = velocity;
-            position = PositionOFFSET(position, velocity, 50);
-            velocity = RotateRandom(9);
+            position = position.PositionOFFSET(velocity, 50);
+            velocity = velocity.RotateRandom(9);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (Main.rand.NextBool(5))
             {
-                Projectile.NewProjectile(source, position, RotateRandom(3), type, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.RotateRandom(3), type, damage, knockback, player.whoAmI);
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
