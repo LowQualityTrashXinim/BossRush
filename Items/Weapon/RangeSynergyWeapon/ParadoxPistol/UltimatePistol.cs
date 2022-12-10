@@ -203,29 +203,29 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         break;
                     case 10://MusicalNote
                         SpeedMultiplier = 1f;
-                        NumOfProjectile = 15;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 15;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
                             int MusicNote2 = Main.rand.Next(new int[] { ProjectileID.QuarterNote, ProjectileID.EighthNote, ProjectileID.TiedEighthNote });
-                            velocity = RandomSpread(RotateCode(40, i), 0, 7) * SpeedMultiplier;
+                            velocity = velocity.RotateCode(40,i).RandomSpread(0, 7) * SpeedMultiplier;
                             Projectile.NewProjectile(source, position, velocity, MusicNote2, damage, knockback, player.whoAmI);
                             SpeedMultiplier -= 0.05f;
                         }
                         break;
                     case 11://Magicalbolt
-                        NumOfProjectile = 16;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 16;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(32, i);
+                            velocity = velocity.RotateCode(32, i);
                             int[] MagicalBoltv2 = new int[] { ProjectileID.AmethystBolt, ProjectileID.TopazBolt, ProjectileID.SapphireBolt, ProjectileID.EmeraldBolt, ProjectileID.RubyBolt, ProjectileID.DiamondBolt, ProjectileID.IceBolt, ProjectileID.AmberBolt };
                             Projectile.NewProjectile(source, position, velocity, MagicalBoltv2[i % 8], damage, knockback, player.whoAmI);
                         }
                         break;
                     case 12://knife
-                        NumOfProjectile = 12;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 12;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(40, i);
+                            velocity = velocity.RotateCode(40, i);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.ThrowingKnife, damage, knockback, player.whoAmI);
                             Projectile.NewProjectile(source, position, velocity * 1.15f, ProjectileID.PoisonedKnife, damage, knockback, player.whoAmI);
                             Projectile.NewProjectile(source, position, velocity * 1.25f, ProjectileID.MagicDagger, damage, knockback, player.whoAmI);
@@ -234,10 +234,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         }
                         break;
                     case 13://dart
-                        NumOfProjectile = 5;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 5;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(60, i);
+                            velocity = velocity.RotateCode(60, i);
                             Projectile.NewProjectile(source, position, velocity * 1.5f, ProjectileID.CrystalDart, damage, knockback, player.whoAmI);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.CursedDart, damage, knockback, player.whoAmI);
                             Projectile.NewProjectile(source, position, velocity * 2f, ProjectileID.IchorDart, damage, knockback, player.whoAmI);
@@ -246,30 +246,30 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                     case 14://bee
                         for (int a = 0; a < 20; a++)
                         {
-                            velocity = RandomSpread(velocity, 0, Main.rand.NextFloat(0.4f, 1.25f));
+                            velocity = velocity.RandomSpread( 0, Main.rand.NextFloat(0.4f, 1.25f));
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.Bee, damage, knockback, player.whoAmI);
-                            if (a < 14) { velocity = RandomSpread(velocity, 0, Main.rand.NextFloat(0.5f, 1.35f)); }
+                            if (a < 14) { velocity = velocity.RandomSpread( 0, Main.rand.NextFloat(0.5f, 1.35f)); }
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.Bee, damage, knockback, player.whoAmI);
-                            if (a < 10) { velocity = RandomSpread(velocity, 0, Main.rand.NextFloat(0.6f, 1.45f)); }
+                            if (a < 10) { velocity = velocity.RandomSpread(0, Main.rand.NextFloat(0.6f, 1.45f)); }
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.Bee, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 15://coin
-                        NumOfProjectile = 5;
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 5;
                         for (int i = 0; i < Coin.Length; i++)
                         {
-                            for (int l = 0; l < NumOfProjectile; l++)
+                            for (int l = 0; l < BossRushWeaponSpreadUtils.NumOfProjectile; l++)
                             {
-                                velocity = RotateCode(5, l);
+                                velocity = velocity.RotateCode(5, l);
                                 Projectile.NewProjectile(source, position, velocity * .5f * i, Coin[i], damage, knockback, player.whoAmI);
                             }
                         }
                         break;
                     case 16://CrystalStorm
-                        NumOfProjectile = 45;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 45;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RandomSpread(RotateRandom(40), 7, 1.5f);
+                            velocity = velocity.RotateRandom(40).RandomSpread( 7, 1.5f);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.CrystalStorm, damage, knockback, player.whoAmI);
                             if (i < 20)
                             {
@@ -291,20 +291,20 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                             Projectile.NewProjectile(source, position, velocity * DelaySpeed, ProjectileID.RottenEgg, damage, knockback, player.whoAmI);
                             if (i < 20)
                             {
-                                NumOfProjectile = 20;
-                                velocity = RandomSpread(RotateCode(20, i), 7, .9f);
+                                BossRushWeaponSpreadUtils.NumOfProjectile = 20;
+                                velocity = velocity.RotateCode(20,i).RandomSpread( 7, .9f);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.CandyCorn, damage, knockback, player.whoAmI);
                             }
                             if (i < 14)
                             {
-                                NumOfProjectile = 14;
-                                velocity = RandomSpread(RotateCode(25, i), 6);
+                                BossRushWeaponSpreadUtils.NumOfProjectile = 14;
+                                velocity = velocity.RotateCode(25,i).RandomSpread(6);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.Bat, damage, knockback, player.whoAmI);
                             }
                             if (i < 5)
                             {
-                                NumOfProjectile = 5;
-                                velocity = RandomSpread(RotateCode(25, i), 4);
+                                BossRushWeaponSpreadUtils.NumOfProjectile = 5;
+                                velocity = velocity.RotateCode(25,i).RandomSpread(4);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.JackOLantern, damage, knockback, player.whoAmI);
                             }
                         }
@@ -314,13 +314,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         {
                             if (i < 36)
                             {
-                                NumOfProjectile = 36;
-                                velocity = RotateCode(360, i);
+                                BossRushWeaponSpreadUtils.NumOfProjectile = 36;
+                                velocity = velocity.RotateCode(360, i);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.IceSickle, damage, knockback, player.whoAmI);
                             }
                             if (i < 20)
                             {
-                                velocity = RandomSpread(RotateRandom(40), 7);
+                                velocity = velocity.RotateRandom(40).RandomSpread( 7);
                                 Projectile.NewProjectile(source, position, velocity * 1.5f, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
                             }
                             Vector2 SkyPosition = new Vector2(Main.MouseWorld.X + Main.rand.Next(-75, 75), Main.MouseWorld.Y - 600 + Main.rand.Next(-100, 100));
@@ -329,24 +329,24 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         }
                         break;
                     case 20://alienShooter
-                        NumOfProjectile = 36;
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 36;
                         for (int i = 0; i < 36; i++)
                         {
-                            velocity = RotateCode(360, i);
+                            velocity = velocity.RotateCode(360, i);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.ChargedBlasterOrb, damage, knockback, player.whoAmI);
                             if (i < 20)
                             {
-                                velocity = RandomSpread(RotateRandom(25), 15, 1.5f);
+                                velocity = velocity.RotateRandom(25).RandomSpread( 15, 1.5f);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.LaserMachinegunLaser, damage, knockback, player.whoAmI);
                             }
                             if (i < 10)
                             {
-                                velocity = RandomSpread(RotateRandom(17), 11);
+                                velocity = velocity.RotateRandom(17).RandomSpread( 11);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.ElectrosphereMissile, damage, knockback, player.whoAmI);
                             }
                             if (i < 15)
                             {
-                                velocity = RandomSpread(RotateRandom(15), 9);
+                                velocity = velocity.RotateRandom(15).RandomSpread( 9);
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.Xenopopper, damage, knockback, player.whoAmI);
                             }
                         }
@@ -354,35 +354,35 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                     case 21://DesertFossil
                         for (int i = 0; i < 20; i++)
                         {
-                            velocity = RandomSpread(RotateRandom(35), 5);
+                            velocity = velocity.RotateRandom(35).RandomSpread(5);
                             Projectile.NewProjectile(source, position, velocity, DesertFossil[i % 2], damage, knockback, player.whoAmI);
                         }
                         break;
                     case 22://PulseBolt
-                        NumOfProjectile = 8;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 8;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(48, i);
+                            velocity = velocity.RotateCode(48, i);
                             Projectile.NewProjectile(source, position, velocity * 0.45f, ProjectileID.PulseBolt, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 23://InfernoFriendlyBolt
-                        NumOfProjectile = 10;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 10;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(40, i);
+                            velocity = velocity.RotateCode(40, i);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.InfernoFriendlyBolt, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 24://BlackBolt or OnyxBlaster + bullet
-                        NumOfProjectile = 10;
-                        for (int i = 0; i < NumOfProjectile * 3; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 10;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile * 3; i++)
                         {
-                            velocity = RandomSpread(RotateRandom(30), 0, Main.rand.NextFloat(0.3f, 1.1f));
+                            velocity = velocity.RotateRandom(30).RandomSpread(0, Main.rand.NextFloat(0.3f, 1.1f));
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.Bullet, damage, knockback);
                             if (i < 10)
                             {
-                                velocity = RotateCode(30, i);
+                                velocity = velocity.RotateCode(30, i);
                                 Projectile.NewProjectile(source, position, velocity * 3, ProjectileID.BlackBolt, (int)(damage * 2f), knockback, player.whoAmI);
                             }
                         }
@@ -391,7 +391,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         Projectile.NewProjectile(source, position, velocity, ProjectileID.NorthPoleWeapon, damage, knockback, player.whoAmI);
                         for (int i = 0; i < 35; i++)
                         {
-                            velocity = RandomSpread(RotateRandom(50), 0, Main.rand.NextFloat(0.3f, 1.5f));
+                            velocity = velocity.RotateRandom(50).RandomSpread(0, Main.rand.NextFloat(0.3f, 1.5f));
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.PineNeedleFriendly, damage, knockback, player.whoAmI);
                             if (i < 20)
                             {
@@ -400,40 +400,40 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                             }
                             if (i < 17)
                             {
-                                velocity = RandomSpread(RotateRandom(40), 0, Main.rand.NextFloat(0.6f, 1.4f));
+                                velocity = velocity.RotateRandom(40).RandomSpread( 0, Main.rand.NextFloat(0.6f, 1.4f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.FrostDaggerfish, damage, knockback, player.whoAmI);
                             }
                             if (i < 15)
                             {
-                                velocity = RandomSpread(RotateRandom(30), 0, Main.rand.NextFloat(.65f, 1.35f));
+                                velocity = velocity.RotateRandom(30).RandomSpread(0, Main.rand.NextFloat(.65f, 1.35f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
                             }
                             if (i < 6)
                             {
-                                velocity = RandomSpread(RotateRandom(20), 0, Main.rand.NextFloat(.8f, 1.3f));
+                                velocity = velocity.RotateRandom(20).RandomSpread( 0, Main.rand.NextFloat(.8f, 1.3f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.OrnamentFriendly, damage, knockback, player.whoAmI);
                             }
                             if (i < 5)
                             {
-                                velocity = RandomSpread(RotateRandom(9), 0, Main.rand.NextFloat(.84f, 1.25f));
+                                velocity = velocity.RotateRandom(9).RandomSpread( 0, Main.rand.NextFloat(.84f, 1.25f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.FrostBlastFriendly, damage, knockback, player.whoAmI);
                             }
                             if (i < 4)
                             {
-                                velocity = RandomSpread(RotateRandom(8), 0, Main.rand.NextFloat(0.89f, 1.17f));
+                                velocity = velocity.RotateRandom(8).RandomSpread( 0, Main.rand.NextFloat(0.89f, 1.17f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.FrostBoltStaff, damage, knockback, player.whoAmI);
-                                velocity = RandomSpread(RotateRandom(15), 0, Main.rand.NextFloat(0.91f, 1.1f));
+                                velocity = velocity.RotateRandom(15).RandomSpread( 0, Main.rand.NextFloat(0.91f, 1.1f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.IceSickle, damage, knockback, player.whoAmI);
-                                velocity = RandomSpread(RotateRandom(6), 0, Main.rand.NextFloat(0.95f, 1.1f));
+                                velocity = velocity.RotateRandom(6).RandomSpread( 0, Main.rand.NextFloat(0.95f, 1.1f));
                                 Projectile.NewProjectile(source, position, velocity, ProjectileID.RocketSnowmanI, damage, knockback, player.whoAmI);
                             }
                         }
                         break;
                     case 26://DevilPack
-                        NumOfProjectile = 36;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 36;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(360, i);
+                            velocity = velocity.RotateCode(360, i);
                             for (int l = 0; l < DevilPack.Length; l++)
                             {
                                 Projectile.NewProjectile(source, position, velocity * (.5f + l * .25f), DevilPack[l], damage, knockback, player.whoAmI);
@@ -443,9 +443,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                     case 27://CannonballFriendly+GoldenBullet
                         for (int i = 0; i < 30; i++)
                         {
-                            velocity = RandomSpread(RotateRandom(40), 1, Main.rand.NextFloat(.4f, 1f));
+                            velocity = velocity.RotateRandom(40).RandomSpread( 1, Main.rand.NextFloat(.4f, 1f));
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.GoldenBullet, damage, knockback, player.whoAmI);
-                            if (i < 10) { velocity = RandomSpread(RotateRandom(20), 1, Main.rand.NextFloat(.9f, 1.6f)); }
+                            if (i < 10) { velocity = velocity.RotateRandom(20).RandomSpread( 1, Main.rand.NextFloat(.9f, 1.6f)); }
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.CannonballFriendly, damage, knockback, player.whoAmI);
                         }
                         break;
@@ -453,57 +453,57 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         for (int i = 0; i < 80; i++)
                         {
                             int Nature2 = Main.rand.Next(new int[] { ProjectileID.Leaf, ProjectileID.FlowerPetal, ProjectileID.SporeCloud, ProjectileID.ChlorophyteOrb, ProjectileID.FlowerPowPetal, ProjectileID.CrystalLeafShot });
-                            velocity = RandomSpread(RotateRandom(40), 0, Main.rand.NextFloat(.5f, 1.2f));
+                            velocity = velocity.RotateRandom(40).RandomSpread( 0, Main.rand.NextFloat(.5f, 1.2f));
                             Projectile.NewProjectile(source, position, velocity, Nature2, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 29://Rocket package
-                        NumOfProjectile = 30;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 30;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
                             int Rocket = Main.rand.Next(new int[] { ProjectileID.RocketI, ProjectileID.ElectrosphereMissile, ProjectileID.RocketSnowmanI });
-                            velocity = RotateCode(40, i);
+                            velocity = velocity.RotateCode(40, i);
                             Projectile.NewProjectile(source, position, velocity, Rocket, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 30://Fang
-                        NumOfProjectile = 10;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 10;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
                             int Chooser = i % 2;
-                            velocity = RotateCode(60, i);
+                            velocity = velocity.RotateCode(60, i);
                             Projectile.NewProjectile(source, position, velocity * 0.5f, Fang[Chooser], damage, knockback, player.whoAmI);
                         }
                         break;
                     case 31://ProjectileID.VortexBeaterRocket
-                        NumOfProjectile = 15;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 15;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(30, i);
+                            velocity = velocity.RotateCode(30, i);
                             Projectile.NewProjectile(source, position, velocity * 0.5f, ProjectileID.VortexBeaterRocket, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 32://JungleTemple
                         Projectile.NewProjectile(source, position, velocity, ProjectileID.BoulderStaffOfEarth, damage * 10, knockback, player.whoAmI);
-                        NumOfProjectile = 10;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 10;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(40, i);
+                            velocity = velocity.RotateCode(40, i);
                             Projectile.NewProjectile(source, position, velocity * 0.75f, ProjectileID.Stynger, damage, knockback, player.whoAmI);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.HeatRay, damage, knockback, player.whoAmI);
                         }
                         break;
                     case 33://ProjectileID.EaterBite
-                        NumOfProjectile = 18;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 18;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(360, i);
+                            velocity = velocity.RotateCode(360, i);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.EatersBite, damage, knockback, player.whoAmI);
                         }
-                        NumOfProjectile = 6;
-                        for (int i = 0; i < NumOfProjectile; i++)
+                        BossRushWeaponSpreadUtils.NumOfProjectile = 6;
+                        for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
                         {
-                            velocity = RotateCode(24, i);
+                            velocity = velocity.RotateCode(24, i);
                             Projectile.NewProjectile(source, position, velocity, ProjectileID.EatersBite, damage, knockback, player.whoAmI);
                         }
                         break;

@@ -11,6 +11,8 @@ namespace BossRush
         public override void PostUpdateItems()
         {
             BossRushWeaponSpreadUtils.NumOfProModify = 0;
+            BossRushWeaponSpreadUtils.SpreadModify = 1;
+            BossRushWeaponSpreadUtils.NumOfProjectile = 1;
         }
     }
 
@@ -255,8 +257,6 @@ namespace BossRush
                 }
                 position = position.PositionOFFSET(velocity, OffSetPost);
                 GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
-                BossRushWeaponSpreadUtils.SpreadModify = 1;
-                BossRushWeaponSpreadUtils.NumOfProjectile = 1;
             }
         }
     }

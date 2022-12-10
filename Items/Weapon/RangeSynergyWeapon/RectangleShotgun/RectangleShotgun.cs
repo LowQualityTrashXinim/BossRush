@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 {
-    class RectangleShotgun : WeaponTemplate, ISynergyItem
+    class RectangleShotgun : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -38,16 +38,15 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vec2ToRotate = velocity;
             Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 50f;
             if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
             {
                 position += muzzleOffset;
             }
-            NumOfProjectile = 5;
-            for (int i = 0; i < NumOfProjectile; i++)
+            BossRushWeaponSpreadUtils.NumOfProjectile = 5;
+            for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
             {
-                Vector2 Rotate = RotateCode(30, i);
+                Vector2 Rotate = velocity.RotateCode(30, i);
                 Projectile.NewProjectile(source, position, Rotate, ModContent.ProjectileType<SquareBullet>(), damage, knockback, player.whoAmI);
             }
             return false;
