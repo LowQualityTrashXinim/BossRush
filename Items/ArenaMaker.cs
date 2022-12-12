@@ -40,12 +40,5 @@ namespace BossRush.Items
             Projectile.NewProjectile(source, position, Vector2.Zero, type, 0, 0, player.whoAmI);
             return false;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.WoodPlatform, 300)
-                .Register();
-        }
     }
 }
