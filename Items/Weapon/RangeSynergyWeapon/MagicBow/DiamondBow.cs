@@ -17,15 +17,15 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.width = 18;
             Item.height = 32;
 
-            Item.damage = 100;
+            Item.damage = 30;
             Item.crit = 10;
             Item.knockBack = 1f;
 
-            Item.useTime = 90;
-            Item.useAnimation = 90;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.reuseDelay = 10;
 
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.noMelee = true;

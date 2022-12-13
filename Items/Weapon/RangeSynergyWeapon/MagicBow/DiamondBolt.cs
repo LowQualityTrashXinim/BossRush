@@ -33,7 +33,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] < 1)
             {
                 int num = Main.rand.Next(9);
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     Vector2 Rotate = Projectile.velocity.RotatedBy(MathHelper.ToRadians(90 * i + 10 * num)) * Main.rand.NextFloat(1.5f, 3f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
@@ -51,9 +51,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (RicochetOff(out Vector2 pos2))
             {
                 Projectile.netUpdate = true;
-                Projectile.damage += 50;
+                Projectile.damage += 3;
                 Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i < 35; i++)
                 {
                     Vector2 ReverseVelSpread = -Projectile.velocity * 2 + Main.rand.NextVector2Circular(5f, 5f);
                     int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, ReverseVelSpread.X, ReverseVelSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
@@ -62,11 +62,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
         }
 
-        public bool CheckActive(Projectile projectileThatNeedtoCheck)
+        public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            float Distance = 500f;
-            if (projectileThatNeedtoCheck.type == ModContent.ProjectileType<DiamondGemP>() && projectileThatNeedtoCheck.active && projectileThatNeedtoCheck.velocity == Vector2.Zero)
+            float Distance = 1500f;
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && projectileThatNeedtoCheck.velocity == Vector2.Zero)
             {
                 if (Vector2.Distance(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
@@ -78,11 +78,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public List<Vector2> GetListOfActiveProj(out bool Check)
         {
             List<Vector2> list = new List<Vector2>();
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            foreach (var proj in Main.projectile)
             {
-                if (CheckActive(Main.projectile[i]))
+                if (proj.ModProjectile is DiamondGemP && CheckActiveAndCon(proj))
                 {
-                    list.Add(Main.projectile[i].Center);
+                    list.Add(proj.Center);
                 }
             }
             if (list.Count <= 1)
@@ -100,7 +100,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             List<Vector2> list = GetListOfActiveProj(out bool Check);
             if (Check)
             {
-                Vector2 Pos1 = Vector2.Zero;
+                Vector2 Pos1;
                 foreach (Vector2 pos in list)
                 {
                     float Distance = Vector2.Distance(Projectile.Center, pos);
@@ -124,7 +124,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            // Redraw the projectile with the color not influenced by light
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
