@@ -18,7 +18,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         int count = 0;
         int setAi = 0;
-        int seperateCount = 0;
         float speedextra = .1f;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
@@ -26,12 +25,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void AI()
         {
-            seperateCount++;
-            if (seperateCount >= 5)
+            if (Main.rand.NextBool(10))
             {
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, Terraria.ID.DustID.GemSapphire, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
-                seperateCount = 0;
             }
 
             Player player = Main.player[Projectile.owner];
@@ -45,55 +42,45 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             {
                 Projectile.velocity -= Projectile.velocity * 0.06f;
             }
-            if (count >= 30 && setAi != 1)
+            if (count >= 30)
             {
-                
-                Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * speedextra;
-                if(speedextra <= 10f)speedextra += .1f;
-                if (Vector2.Distance(Projectile.Center, player.Center) <= 20)
+                if (setAi != 1)
                 {
-                    setAi = 1;
-                    Projectile.netUpdate = true;
-                    if (player.statLife <= player.statLifeMax /3)
+                    Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * speedextra;
+                    if (speedextra <= 10f) speedextra += .1f;
+                    if (player.statLife <= player.statLifeMax / 3)
                     {
+                        Projectile.netUpdate = true;
                         player.Heal(1);
-                        int manaheal = 10;
-                        player.statMana += manaheal;
+                        player.statMana += 10;
                         if (player.statMana > player.statManaMax2) player.statMana = player.statManaMax2;
-                        player.ManaEffect(manaheal);
+                        player.ManaEffect(10);
                         Projectile.Kill();
+                    }
+                    else
+                    {
+                        setAi = 1;
+                        Projectile.netUpdate = true;
+                    }
+                }
+                else
+                {
+                    if (distance >= 20f && fountTarget)
+                    {
+                        Projectile.velocity += (Target - Projectile.Center).SafeNormalize(Vector2.UnitX) * 3f;
+                        Projectile.penetrate = 1;
+                        if (count % 70 == 0)
+                        {
+                            Projectile.velocity = (Target - Projectile.Center).SafeNormalize(Vector2.UnitX) * 5f;
+                        }
+                    }
+                    else if (!fountTarget)
+                    {
+                        Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 1.5f;
                     }
                 }
             }
-            if (setAi == 1 && distance >= 20f && fountTarget)
-            {
-                Projectile.velocity += (Target - Projectile.Center).SafeNormalize(Vector2.UnitX) * 3f;
-                Projectile.penetrate = 1;
-                if (count % 70 == 0)
-                {
-                    Projectile.velocity = (Target - Projectile.Center).SafeNormalize(Vector2.UnitX) * 5f;
-                }
-            }
-            else if (setAi == 1 && !fountTarget)
-            {
-                Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 1.5f;
-            }
-            if (Projectile.velocity.X > 15)
-            {
-                Projectile.velocity.X = 15;
-            }
-            else if (Projectile.velocity.X < -15)
-            {
-                Projectile.velocity.X = -15;
-            }
-            if (Projectile.velocity.Y > 15)
-            {
-                Projectile.velocity.Y = 15;
-            }
-            else if (Projectile.velocity.Y < -15)
-            {
-                Projectile.velocity.Y = -15;
-            }
+            Projectile.velocity = Projectile.velocity.limitedVelocity(15);
         }
         public override void Kill(int timeLeft)
         {

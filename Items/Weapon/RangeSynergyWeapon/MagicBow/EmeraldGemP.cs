@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -24,7 +25,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Main.dust[dustnumber].noGravity = true;
             float RotateAccordinglyToVel = Projectile.velocity.SafeNormalize(Vector2.UnitX).ToRotation();
             Projectile.rotation += MathHelper.ToRadians(10 + RotateAccordinglyToVel);
-            if (Projectile.timeLeft >= 10) { CheckProjectilecollide(Projectile.Center); }
             if (Projectile.velocity.X < 1 && Projectile.velocity.X > -1 && Projectile.velocity.Y < 1 && Projectile.velocity.Y > -1)
             {
                 count++;
@@ -38,12 +38,17 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             if (count != 0)
             {
+                CheckProjectilecollide(Projectile.Center);
                 Projectile.ai[1]++;
                 if (Projectile.ai[1] >= 20)
                 {
                     if (Projectile.ai[1] == 20) { Projectile.velocity = -Projectile.velocity; }
                     if (Projectile.ai[1] <= 50)
                     {
+                        if (Projectile.ai[1] == 50)
+                        {
+                            Projectile.velocity = new Vector2((float)Math.Round(Projectile.velocity.X, 2), (float)Math.Round(Projectile.velocity.Y, 2));
+                        }
                         Projectile.damage++;
                         Projectile.velocity += Projectile.velocity * 0.1f;
                     }
@@ -53,15 +58,15 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public void CheckProjectilecollide(Vector2 CurrentPos)
         {
             int count = 0;
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            foreach (Projectile proj in Main.projectile)
             {
-                if (Main.projectile[i].type == Projectile.type)
+                if (proj.ModProjectile is EmeraldGemP && proj.active)
                 {
-                    float ProjectileDis = Vector2.Distance(CurrentPos, Main.projectile[i].Center);
+                    float ProjectileDis = Vector2.Distance(CurrentPos, proj.Center);
                     if (ProjectileDis <= 35)
                     {
                         count++;
-                        if (count >= 3)
+                        if (count >= 2)
                         {
                             Projectile.Kill();
                             return;
