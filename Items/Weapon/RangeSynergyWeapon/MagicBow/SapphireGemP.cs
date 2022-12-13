@@ -46,23 +46,19 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             if (count >= 30 && setAi != 1)
             {
-                Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 3f;
-                if (Vector2.Distance(Projectile.Center, player.Center) <= 100)
+                Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 10f;
+                if (Vector2.Distance(Projectile.Center, player.Center) <= 20)
                 {
-                    Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 10f;
-                    if (Vector2.Distance(Projectile.Center, player.Center) <= 20)
+                    setAi = 1;
+                    Projectile.netUpdate = true;
+                    if (Main.rand.NextBool(5))
                     {
-                        setAi = 1;
-                        Projectile.netUpdate = true;
-                        if (Main.rand.NextBool(5))
-                        {
-                            player.Heal(5);
-                            int manaheal = 10;
-                            player.statMana += manaheal;
-                            if (player.statMana > player.statManaMax2) player.statMana = player.statManaMax2;
-                            player.ManaEffect(manaheal);
-                            Projectile.Kill();
-                        }
+                        player.Heal(5);
+                        int manaheal = 10;
+                        player.statMana += manaheal;
+                        if (player.statMana > player.statManaMax2) player.statMana = player.statManaMax2;
+                        player.ManaEffect(manaheal);
+                        Projectile.Kill();
                     }
                 }
             }
@@ -114,10 +110,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 
             if (!foundTarget)
             {
-                for (int i = 0; i < Main.maxNPCs; i++)
+                foreach (var npc in Main.npc)
                 {
-                    NPC npc = Main.npc[i];
-                    if (npc.CanBeChasedBy())
+                    if (npc.CanBeChasedBy() && npc.active)
                     {
                         float between = Vector2.Distance(npc.Center, Projectile.Center);
                         bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
