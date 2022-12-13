@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -24,7 +25,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (Projectile.ai[0] >= 20)
             {
                 Projectile.velocity -= Projectile.velocity * 0.1f;
-                if (Projectile.velocity.X < 1 && Projectile.velocity.X > -1 && Projectile.velocity.Y < 1 && Projectile.velocity.Y > -1 || count == 1)
+                if ((Math.Abs(Projectile.velocity.X) < 1 && Math.Abs(Projectile.velocity.Y) < 1) || count == 1)
                 {
                     if (CheckNearByProjectile() && count == 0)
                     {
@@ -54,11 +55,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public bool CheckNearByProjectile(bool CheckItSelf = true)
         {
             int count = 0;
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            foreach (Projectile proj in Main.projectile)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<RubyGemP>() && CheckItSelf)
+                if (proj.ModProjectile is RubyGemP && CheckItSelf)
                 {
-                    float Distance = Vector2.Distance(Projectile.Center, Main.projectile[i].Center);
+                    float Distance = Vector2.Distance(Projectile.Center, proj.Center);
                     if (Distance <= 30)
                     {
                         count++;
@@ -68,9 +69,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                         }
                     }
                 }
-                if (Main.projectile[i].type == ModContent.ProjectileType<RubyBolt>())
+                if (proj.ModProjectile is RubyBolt)
                 {
-                    float Distance = Vector2.Distance(Projectile.Center, Main.projectile[i].Center);
+                    float Distance = Vector2.Distance(Projectile.Center, proj.Center);
                     if (Distance <= 30)
                     {
                         return true;
