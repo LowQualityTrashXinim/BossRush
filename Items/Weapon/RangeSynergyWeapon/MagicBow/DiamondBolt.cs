@@ -35,7 +35,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                 int num = Main.rand.Next(9);
                 for (int i = 0; i < 6; i++)
                 {
-                    Vector2 Rotate = Projectile.velocity.RotatedBy(MathHelper.ToRadians(90 * i + 10 * num)) * Main.rand.NextFloat(1.5f, 3f);
+                    Vector2 Rotate = Projectile.velocity.RotatedBy(MathHelper.ToRadians(60 * i + 10 * num)) * Main.rand.NextFloat(1.5f, 3f);
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
                 }
             }

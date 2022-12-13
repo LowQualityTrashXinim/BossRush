@@ -19,6 +19,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         int count = 0;
         int setAi = 0;
         int seperateCount = 0;
+        float speedextra = .1f;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             target.immune[Projectile.owner] = 3;
@@ -46,14 +47,16 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             if (count >= 30 && setAi != 1)
             {
-                Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 10f;
+                
+                Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * speedextra;
+                if(speedextra <= 10f)speedextra += .1f;
                 if (Vector2.Distance(Projectile.Center, player.Center) <= 20)
                 {
                     setAi = 1;
                     Projectile.netUpdate = true;
-                    if (Main.rand.NextBool(5))
+                    if (player.statLife <= player.statLifeMax /3)
                     {
-                        player.Heal(5);
+                        player.Heal(1);
                         int manaheal = 10;
                         player.statMana += manaheal;
                         if (player.statMana > player.statManaMax2) player.statMana = player.statManaMax2;
