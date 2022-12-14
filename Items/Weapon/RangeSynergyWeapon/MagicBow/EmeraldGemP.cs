@@ -58,11 +58,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public void CheckProjectilecollide(Vector2 CurrentPos)
         {
             int count = 0;
-            foreach (Projectile proj in Main.projectile)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (proj.ModProjectile is EmeraldGemP && proj.active)
+                if (Main.projectile[i].ModProjectile is EmeraldGemP && Main.projectile[i].active)
                 {
-                    float ProjectileDis = Vector2.Distance(CurrentPos, proj.Center);
+                    float ProjectileDis = Vector2.Distance(CurrentPos, Main.projectile[i].Center);
                     if (ProjectileDis <= 35)
                     {
                         count++;

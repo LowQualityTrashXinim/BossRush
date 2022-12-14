@@ -100,8 +100,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 
             if (!foundTarget)
             {
-                foreach (var npc in Main.npc)
+                for (int i = 0; i < Main.maxNPCs; i++)
                 {
+                    NPC npc = Main.npc[i];
                     if (npc.CanBeChasedBy() && npc.active)
                     {
                         float between = Vector2.Distance(npc.Center, Projectile.Center);

@@ -36,11 +36,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
 
             Item.shoot = ModContent.ProjectileType<CustomPaintProj>();
             Item.shootSpeed = 7;
-            Item.scale -= 0.35f;
+            Item.scale -= 0.25f;
         }
         public override Vector2? HoldoutOffset()
         {
-            return new Vector2(-33, 2);
+            return new Vector2(-33, 3.5f);
         }
 
         public override bool AltFunctionUse(Player player)

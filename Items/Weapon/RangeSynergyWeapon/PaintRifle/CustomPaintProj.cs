@@ -23,7 +23,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
             int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Paint, 0, 0, 0, new Color(PaintRifle.r, PaintRifle.g, PaintRifle.b),1f);
             Main.dust[dust].noGravity = true;
             Projectile.ai[0]++;
-            if(Projectile.ai[0] >= 30)
+            if(Projectile.ai[0] >= 90)
             {
                 if (Projectile.velocity.Y <= 6)
                 {

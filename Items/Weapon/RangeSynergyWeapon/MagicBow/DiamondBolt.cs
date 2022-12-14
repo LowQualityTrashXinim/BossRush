@@ -78,11 +78,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public List<Vector2> GetListOfActiveProj(out bool Check)
         {
             List<Vector2> list = new List<Vector2>();
-            foreach (var proj in Main.projectile)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (proj.ModProjectile is DiamondGemP && CheckActiveAndCon(proj))
+                if (Main.projectile[i].ModProjectile is DiamondGemP && CheckActiveAndCon(Main.projectile[i]))
                 {
-                    list.Add(proj.Center);
+                    list.Add(Main.projectile[i].Center);
                 }
             }
             if (list.Count <= 1)

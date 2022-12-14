@@ -55,11 +55,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public bool CheckNearByProjectile(bool CheckItSelf = true)
         {
             int count = 0;
-            foreach (Projectile proj in Main.projectile)
+            for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (proj.ModProjectile is RubyGemP && CheckItSelf)
+                if (Main.projectile[i].ModProjectile is RubyGemP && CheckItSelf)
                 {
-                    float Distance = Vector2.Distance(Projectile.Center, proj.Center);
+                    float Distance = Vector2.Distance(Projectile.Center, Main.projectile[i].Center);
                     if (Distance <= 30)
                     {
                         count++;
@@ -69,9 +69,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                         }
                     }
                 }
-                if (proj.ModProjectile is RubyBolt)
+                if (Main.projectile[i].ModProjectile is RubyBolt)
                 {
-                    float Distance = Vector2.Distance(Projectile.Center, proj.Center);
+                    float Distance = Vector2.Distance(Projectile.Center, Main.projectile[i].Center);
                     if (Distance <= 30)
                     {
                         return true;
