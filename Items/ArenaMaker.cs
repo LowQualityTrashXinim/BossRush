@@ -30,14 +30,10 @@ namespace BossRush.Items
 
             Item.shoot = ModContent.ProjectileType<ArenaMakerProj>();
             Item.shootSpeed = 0;
-
-            Item.consumable = true;
-            Item.maxStack = 99;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            position = Main.MouseWorld;
-            Projectile.NewProjectile(source, position, Vector2.Zero, type, 0, 0, player.whoAmI);
+            Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, 0, 0, player.whoAmI);
             return false;
         }
     }
