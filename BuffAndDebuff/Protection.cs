@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Protection");
-            Description.SetDefault("Absolute defense, shit damage and movement speed");
+            DisplayName.SetDefault("The Titan's Protection");
+            Description.SetDefault("This newfound aegis is almost... suffocating...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

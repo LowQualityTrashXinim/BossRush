@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("God vision");
-            Description.SetDefault("Ultimate accuracy, let just hope you don't get disturb");
+            DisplayName.SetDefault("The Sniper's Vision");
+            Description.SetDefault("Let's just hope you don't snap out of it...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

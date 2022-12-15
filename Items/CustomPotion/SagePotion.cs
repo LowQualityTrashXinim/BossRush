@@ -10,7 +10,8 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Decrease other ability in exchange for Mana regen");
+            DisplayName.SetDefault("The Sage's Exilir");
+            Tooltip.SetDefault("Side effects include becoming an explosive hazard");
         }
         public override void SetDefaults()
         {

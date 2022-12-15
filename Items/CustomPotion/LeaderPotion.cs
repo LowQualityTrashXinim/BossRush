@@ -10,7 +10,8 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Lower other ability in exchange to lead more minion");
+            DisplayName.SetDefault("The Commander's Exilir");
+            Tooltip.SetDefault("'A must for CEOs in the making!'");
         }
         public override void SetDefaults()
         {

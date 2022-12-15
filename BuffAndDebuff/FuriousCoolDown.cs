@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("CoolDown");
-            Description.SetDefault("You are burn out");
+            DisplayName.SetDefault("Burnt Out");
+            Description.SetDefault("Too much fury is bound to exhaust you eventually...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

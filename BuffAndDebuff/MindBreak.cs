@@ -9,8 +9,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Evil Presence");
-            Description.SetDefault("They are watching you");
+            DisplayName.SetDefault("Mind Shatter");
+            Description.SetDefault("You can no longer tell left from right...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)

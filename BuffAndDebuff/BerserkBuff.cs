@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Berserk");
-            Description.SetDefault("you lose ability to think clearly");
+            DisplayName.SetDefault("Berserker's Frenzy");
+            Description.SetDefault("You lose ability to think clearly...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

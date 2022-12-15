@@ -10,7 +10,8 @@ namespace BossRush.Items.CustomPotion
         public override string Texture => "BossRush/MissingTexturePotion";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your crits ability\nGetting hit will instantly cancel the buff");
+            DisplayName.SetDefault("The Sniper's Exilir");
+            Tooltip.SetDefault("'Aim Assist is bought separately!'");
         }
         public override void SetDefaults()
         {

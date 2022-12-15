@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Sage Magic");
-            Description.SetDefault("You are more efficient with your magic");
+            DisplayName.SetDefault("The Sage's Overflow");
+            Description.SetDefault("You feel as though the mana within you is is about to burst...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

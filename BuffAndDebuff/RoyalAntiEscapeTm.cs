@@ -8,8 +8,8 @@ namespace BossRush.BuffAndDebuff
         public override string Texture => "BossRush/BuffAndDebuff/Regen";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Royal Poison Honey");
-            Description.SetDefault("Use to trap thief");
+            DisplayName.SetDefault("Royal Sticky Formula");
+            Description.SetDefault("Turns escaping into a sticky situation...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)
