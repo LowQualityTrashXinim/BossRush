@@ -7,7 +7,7 @@ using Terraria.IO;
 
 namespace BossRush.ChallengeMode
 {
-    internal class BossRushWorldGen : ModSystem
+    internal class ChallengeModeWorldGen : ModSystem
     {
         public override bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData)
         {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.ChallengeMode
 {
-    internal class BossRushTileGlobal : GlobalTile
+    internal class ChallengeModeTileGlobal : GlobalTile
     {
         int[] pots = new int[] { TileID.Pots, TileID.PotsSuspended, TileID.PottedCrystalPlants, TileID.PottedLavaPlants, TileID.PottedLavaPlantTendrils, TileID.PottedPlants1, TileID.PottedPlants2 };
         public override bool Drop(int i, int j, int type)
