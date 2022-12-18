@@ -13,7 +13,8 @@ namespace BossRush.Items
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Create a basic arena that 300 block wide" +
-                "\nWill spawn at the middle of the mouse");
+                "\nWill spawn at the middle of the mouse" +
+                "\nUnconsumeable and spawn infinite");
         }
         public override void SetDefaults()
         {
@@ -35,6 +36,14 @@ namespace BossRush.Items
         {
             Projectile.NewProjectile(source, Main.MouseWorld, Vector2.Zero, type, 0, 0, player.whoAmI);
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.WoodPlatform,999)
+                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                .Register();
         }
     }
 }

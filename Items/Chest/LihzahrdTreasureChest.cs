@@ -43,7 +43,7 @@ namespace BossRush.Items.Chest
             }
             for (int i = 0; i < 3; i++)
             {
-                GetAccessory(out int Accessory, true, true, true, false, false);
+                GetAccessory(out int Accessory, true, true, true, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);

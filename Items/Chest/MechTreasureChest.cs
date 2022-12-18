@@ -69,9 +69,9 @@ namespace BossRush.Items.Chest
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
-                GetAccessory(out int Accessory, true, true, true, false, false);
+                GetAccessory(out int Accessory, true, true, true, false);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
             if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)

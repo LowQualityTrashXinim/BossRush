@@ -140,11 +140,9 @@ namespace BossRush.Items.Chest
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
-                GetAccessory(out int Accessory2, false, true, true, false);
                 GetAccessory(out int Accessory);
-                player.QuickSpawnItem(entitySource, Accessory2);
                 player.QuickSpawnItem(entitySource, Accessory);
             }
 

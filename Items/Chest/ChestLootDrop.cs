@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Items.Artifact;
 using BossRush.Items.CustomPotion;
+using System;
 
 namespace BossRush.Items.Chest
 {
@@ -126,7 +127,7 @@ namespace BossRush.Items.Chest
             //Change
             if (multiplier)
             {
-                return amountModifier > 0 ? (int)(amountToModify * ValueToModify) : 0;
+                return amountToModify > 0 ? (int)(amountToModify * ValueToModify) : 0;
             }
             else
             {
@@ -349,10 +350,10 @@ namespace BossRush.Items.Chest
                         break;
                 }
                 if (SafePostAddLootMelee().Count > 0) DropItemMelee.AddRange(SafePostAddLootMelee());
-                if(SafePostAddLootRange().Count > 0) DropItemRange.AddRange(SafePostAddLootRange());
-                if(SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
-                if(SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
-                if(SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
+                if (SafePostAddLootRange().Count > 0) DropItemRange.AddRange(SafePostAddLootRange());
+                if (SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
+                if (SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
+                if (SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
             }
         }
         /// <summary>
@@ -564,7 +565,7 @@ namespace BossRush.Items.Chest
         List<int> Accessories = new List<int>();
 
         int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
-        int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots,ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
+        int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
         int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
 
         int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };
@@ -584,56 +585,26 @@ namespace BossRush.Items.Chest
         /// <param name="HealthManaAcc">allow for accessory that increase survivability to be include</param>
         /// <param name="AllowPreHMAcc">W.I.P</param>
         /// <param name="PriorityAnhkShield">only drop AnhkShield material</param>
-        public void GetAccessory(out int Accessory, bool MovementAcc = true, bool CombatAcc = true, bool HealthManaAcc = true, bool AllowPreHMAcc = true, bool PriorityAnhkShield = false)
+        public void GetAccessory(out int Accessory, bool MovementAcc = true, bool CombatAcc = true, bool HealthManaAcc = true, bool PriorityAnhkShield = false)
         {
             if (MovementAcc)
             {
-                if (AllowPreHMAcc)
-                {
-                    Accessories.AddRange(T1MovementAccessory);
-                    if (NPC.downedBoss2)
-                    {
-                        Accessories.AddRange(PostEvilMovementAccessory);
-                    }
-                }
+                Accessories.AddRange(T1MovementAccessory);
+                if (NPC.downedBoss2) Accessories.AddRange(PostEvilMovementAccessory);
             }
             if (CombatAcc)
             {
-                if (AllowPreHMAcc)
-                {
-                    Accessories.AddRange(T1CombatAccessory);
-                    if (NPC.downedBoss2)
-                    {
-                        Accessories.AddRange(PostEvilCombatAccessory);
-                    }
-                    if (NPC.downedBoss3)
-                    {
-                        Accessories.Add(ItemID.CobaltShield);
-                    }
-                    if (NPC.downedQueenBee)
-                    {
-                        Accessories.AddRange(QueenBeeCombatAccessory);
-                    }
-                }
-                if (Main.hardMode)
-                {
-                    Accessories.AddRange(HMAccessory);
-                }
+                Accessories.AddRange(T1CombatAccessory);
+                if (NPC.downedBoss2) Accessories.AddRange(PostEvilCombatAccessory);
+                if (NPC.downedBoss3) Accessories.Add(ItemID.CobaltShield);
+                if (NPC.downedQueenBee) Accessories.AddRange(QueenBeeCombatAccessory);
+                if (Main.hardMode) Accessories.AddRange(HMAccessory);
             }
             if (HealthManaAcc)
             {
-                if (AllowPreHMAcc)
-                {
-                    Accessories.AddRange(T1HealthAndManaAccessory);
-                    if (NPC.downedBoss2)
-                    {
-                        Accessories.AddRange(PostEvilHealthManaAccessory);
-                    }
-                }
-                if (Main.hardMode)
-                {
-                    Accessories.Add(ItemID.PhilosophersStone);
-                }
+                Accessories.AddRange(T1HealthAndManaAccessory);
+                if (NPC.downedBoss2) Accessories.AddRange(PostEvilHealthManaAccessory);
+                if (Main.hardMode) Accessories.Add(ItemID.PhilosophersStone);
             }
             if (Main.hardMode)
             {

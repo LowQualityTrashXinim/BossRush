@@ -107,14 +107,9 @@ namespace BossRush.Items.Chest
                 int RandomModdedBuff = Main.rand.Next(new int[] { ModContent.ItemType<BerserkPotion>(), ModContent.ItemType<PinPointAccuracyPotion>(), ModContent.ItemType<SagePotion>(), ModContent.ItemType<LeaderPotion>(), ModContent.ItemType<TankPotion>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<BuilderTreasureChest>());
             player.QuickSpawnItem(entitySource, ItemID.SlimeCrown);
             player.QuickSpawnItem(entitySource, ItemID.GrapplingHook);
-            player.QuickSpawnItem(entitySource, ItemID.Rope, 100);
-            player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 900);
-            player.QuickSpawnItem(entitySource, ItemID.BuilderPotion, 10);
-            player.QuickSpawnItem(entitySource, ItemID.ArchitectGizmoPack);
-            player.QuickSpawnItem(entitySource, ItemID.Toolbox);
-            player.QuickSpawnItem(entitySource, ItemID.Chest, 15);
             player.QuickSpawnItem(entitySource, ItemID.LesserHealingPotion, 5);
         }
     }
