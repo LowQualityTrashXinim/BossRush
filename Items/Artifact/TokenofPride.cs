@@ -33,7 +33,7 @@ namespace BossRush.Items.Artifact
             {
                 if (Player.HasItem(ModContent.ItemType<TokenofPride>()))
                 {
-                    damage += .35f;
+                    damage += .45f;
                 }
             }
         }

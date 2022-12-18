@@ -60,6 +60,10 @@ namespace BossRush
                 {
                     return true;
                 }
+                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody || Main.npc[i].type == NPCID.EaterofWorldsHead || Main.npc[i].type == NPCID.EaterofWorldsTail ) && Main.npc[i].active)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -278,9 +282,8 @@ namespace BossRush
                 }
                 Player.QuickSpawnItem(null, ItemID.SlimeCrown);
                 KingSlimeEnraged = false;
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
+           else if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 if (EoCEnraged)
                 {
@@ -288,9 +291,8 @@ namespace BossRush
                 }
                 Player.QuickSpawnItem(null, ItemID.SuspiciousLookingEye);
                 EoCEnraged = false;
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
+            else if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
             {
                 if (BrainFuck)
                 {
@@ -298,9 +300,8 @@ namespace BossRush
                 }
                 Player.QuickSpawnItem(null, ItemID.BloodySpine);
                 BrainFuck = false;
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+            else if (NPC.AnyNPCs(NPCID.EaterofWorldsHead))
             {
                 if (EaterOfWorldEnraged)
                 {
@@ -308,14 +309,12 @@ namespace BossRush
                 }
                 Player.QuickSpawnItem(null, ItemID.WormFood);
                 EaterOfWorldEnraged = false;
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.SkeletronHead))
+            else if (NPC.AnyNPCs(NPCID.SkeletronHead))
             {
                 Player.QuickSpawnItem(null, ModContent.ItemType<CursedDoll>());
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.QueenBee))
+            else if (NPC.AnyNPCs(NPCID.QueenBee))
             {
                 if (QueenBeeEnraged)
                 {
@@ -323,54 +322,44 @@ namespace BossRush
                 }
                 Player.QuickSpawnItem(null, ItemID.Abeemination);
                 QueenBeeEnraged = false;
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.WallofFlesh))
+            else if (NPC.AnyNPCs(NPCID.WallofFlesh))
             {
                 Player.QuickSpawnItem(null, ItemID.GuideVoodooDoll);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.QueenSlimeBoss))
+            else if (NPC.AnyNPCs(NPCID.QueenSlimeBoss))
             {
                 Player.QuickSpawnItem(null, ItemID.QueenSlimeCrystal);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.Spazmatism) || NPC.AnyNPCs(NPCID.Retinazer))
+            else if (NPC.AnyNPCs(NPCID.Spazmatism) || NPC.AnyNPCs(NPCID.Retinazer))
             {
                 Player.QuickSpawnItem(null, ItemID.MechanicalEye);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.TheDestroyer))
+            else if (NPC.AnyNPCs(NPCID.TheDestroyer))
             {
                 Player.QuickSpawnItem(null, ItemID.MechanicalWorm);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.SkeletronPrime))
+            else if (NPC.AnyNPCs(NPCID.SkeletronPrime))
             {
                 Player.QuickSpawnItem(null, ItemID.MechanicalSkull);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.Plantera))
+            else if (NPC.AnyNPCs(NPCID.Plantera))
             {
                 Player.QuickSpawnItem(null, ModContent.ItemType<PlanteraSpawn>());
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.Golem))
+            else if (NPC.AnyNPCs(NPCID.Golem))
             {
                 Player.QuickSpawnItem(null, ItemID.LihzahrdPowerCell);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.DukeFishron))
+            else if (NPC.AnyNPCs(NPCID.DukeFishron))
             {
                 Player.QuickSpawnItem(null, ItemID.TruffleWorm);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.HallowBoss))
+            else if (NPC.AnyNPCs(NPCID.HallowBoss))
             {
                 Player.QuickSpawnItem(null, ItemID.EmpressButterfly);
-                return;
             }
-            if (NPC.AnyNPCs(NPCID.MoonLordCore))
+            else if (NPC.AnyNPCs(NPCID.MoonLordCore))
             {
                 Player.QuickSpawnItem(null, ItemID.CelestialSigil);
                 MoonLordEnraged = false;

@@ -32,7 +32,7 @@ namespace BossRush.Items.Artifact
             {
                 if (Player.HasItem(ModContent.ItemType<TokenofGreed>()))
                 {
-                    damage -= .4f;
+                    damage -= .35f;
                 }
             }
         }

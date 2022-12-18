@@ -45,28 +45,24 @@ namespace BossRush
 			}
 			if (msgType == MessageType.SkillIssuePlayer)
 			{
-				// This message syncs ExamplePlayer.exampleLifeFruits
 				byte playernumber = reader.ReadByte();
 				SkillIssuedArtifactPlayer SkillISsue = Main.player[playernumber].GetModPlayer<SkillIssuedArtifactPlayer>();
 				SkillISsue.SkillIssue= reader.ReadInt32();
 			}
 			if (msgType == MessageType.EoCNoHit)
 			{
-				// This message syncs ExamplePlayer.exampleLifeFruits
 				byte playernumber = reader.ReadByte();
 				EoCNoHit EOC = Main.player[playernumber].GetModPlayer<EoCNoHit>();
 				EOC.EoC0hit = reader.ReadInt32();
 			}
 			if (msgType == MessageType.KingSlimeNoHit)
 			{
-				// This message syncs ExamplePlayer.exampleLifeFruits
 				byte playernumber = reader.ReadByte();
 				KingSlimeNoHit KSNOHIT = Main.player[playernumber].GetModPlayer<KingSlimeNoHit>();
 				KSNOHIT.KS0hit = reader.ReadInt32();
 			}
 			if (msgType == MessageType.GambleAddiction)
 			{
-				// This message syncs ExamplePlayer.exampleLifeFruits
 				byte playernumber = reader.ReadByte();
 				GamblePlayer gamble = Main.player[playernumber].GetModPlayer<GamblePlayer>();
 				gamble.GambleDamage = reader.ReadInt32();

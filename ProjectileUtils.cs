@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace BossRush
 {
@@ -6,10 +7,8 @@ namespace BossRush
     {
         public static Vector2 limitedVelocity(this Vector2 velocity, float limited)
         {
-            if (velocity.X > limited) velocity.X = limited;
-            if (velocity.Y < -limited) velocity.X = -limited;
-            if (velocity.Y > limited) velocity.Y = limited;
-            if (velocity.Y < -limited) velocity.Y = -limited;
+            velocity.X = Math.Clamp(velocity.X,-limited,limited);
+            velocity.Y = Math.Clamp(velocity.Y, -limited, limited);
             return velocity;
         }
     }
