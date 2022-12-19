@@ -3,12 +3,12 @@ using System;
 
 namespace BossRush
 {
-    public static class ProjectileUtils
+    public static class BossRushUtils
     {
         public static Vector2 limitedVelocity(this Vector2 velocity, float limited)
         {
-            velocity.X = Math.Clamp(velocity.X,-limited,limited);
-            velocity.Y = Math.Clamp(velocity.Y, -limited, limited);
+            Vector2 limit = new Vector2(limited,limited);
+            velocity = Vector2.Clamp(velocity,-limit,limit);
             return velocity;
         }
     }

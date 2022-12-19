@@ -46,7 +46,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                 ModContent.ProjectileType<EnchantedSilverSwordP>(),
                 ModContent.ProjectileType<EnchantedTungstenSwordP>(),
                 ModContent.ProjectileType<EnchantedGoldSwordP>(),
-                ModContent.ProjectileType<EnchantedPlatinumSwordP>(), };
+                ModContent.ProjectileType<EnchantedPlatinumSwordP>() };
             if (count < RandomShortSword.Length - 1)
             {
                 count++;
@@ -55,8 +55,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             {
                 count = 0;
             }
-            Vector2 Above = Vector2.Zero;
-            Vector2 AimTo = Vector2.Zero;
+            Vector2 Above;
+            Vector2 AimTo;
             float Rotation;
             switch (count)
             {

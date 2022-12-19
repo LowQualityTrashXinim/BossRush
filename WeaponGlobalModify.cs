@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
@@ -15,7 +14,6 @@ namespace BossRush
             BossRushWeaponSpreadUtils.NumOfProjectile = 1;
         }
     }
-
     public class GlobalWeaponModify : GlobalItem
     {
         /// <summary>
@@ -79,14 +77,6 @@ namespace BossRush
             ItemID.SniperRifle,
             ItemID.ChainGun,
             ItemID.SDMG,
-            ItemID.Boomstick,
-            ItemID.QuadBarrelShotgun,
-            ItemID.Shotgun,
-            ItemID.OnyxBlaster,
-            ItemID.TacticalShotgun
-        };
-
-        int[] SpecialGunType = {
             ItemID.Boomstick,
             ItemID.QuadBarrelShotgun,
             ItemID.Shotgun,
