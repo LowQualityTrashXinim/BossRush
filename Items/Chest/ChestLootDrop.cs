@@ -142,7 +142,7 @@ namespace BossRush.Items.Chest
             amountForPotionNum = 2;
             if (Main.getGoodWorld)
             {
-                amountForWeapon = 1;
+                amountForWeapon = 2;
                 amountForPotionType = 1;
                 amountForPotionNum = 1;
             }
@@ -579,18 +579,30 @@ namespace BossRush.Items.Chest
         ///      8 : Anhk shield sub acc (not include the shield itself)<br/>
         ///      9 : Hardmode acc<br/>
         ///      10 : PhilosophersStone<br/>
-        ///      11 : Post Golem <br/>
-        ///      12 : Pre lunatic cultist ( EoL, Duke Fishron ) <br/>
-        ///      13 : Post lunatic cultist <br/>
-        ///      14 : Post Moon lord <br/>
         /// </summary>
-        protected virtual List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        public virtual List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      
+        /// <summary>
+        ///      Allow user to return a list of number that contain different data to insert into chest <br/>
+        ///      0 : Tier 1 Combat acc <br/>
+        ///      1 : Tier 1 Health and Mana acc<br/>
+        ///      2 : Tier 1 Movement acc<br/>
+        ///      3 : Post evil Combat acc<br/>
+        ///      4 : Post evil Health and Mana acc<br/>
+        ///      5 : Post evil Movement acc<br/>
+        ///      6 : Queen bee acc<br/>
+        ///      7 : Cobalt Shield<br/>
+        ///      8 : Anhk shield sub acc (not include the shield itself)<br/>
+        ///      9 : Hardmode acc<br/>
+        ///      10 : PhilosophersStone<br/>
+        /// </summary>
+        public virtual List<int> FlagNumAcc(List<int> listofNum) => listofNum;
 
         /// <summary>
         /// Allow for safely add in a list of accessory that specific to a situation
         /// </summary>
         /// <returns></returns>
-        protected virtual List<int> SafePostAddAcc() => new List<int>() { };
+        public virtual List<int> SafePostAddAcc() => new List<int>() { };
 
         private void addAcc(List<int> flag)
         {
@@ -650,20 +662,20 @@ namespace BossRush.Items.Chest
         /// <summary>
         /// Return random potion
         /// </summary>
-        /// <param name="Potion">Return potion type</param>
-        /// <param name="AllowMovementPotion">Allow potion that enhance movement to be drop</param>
-        public int GetPotion(bool AllowMovementPotion = false)
+        /// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
+        public int GetPotion(bool MovementPotionOnly = false)
         {
-            if (AllowMovementPotion)
-            {
-                DropItemPotion.AddRange(MovementPotion);
-            }
             DropItemPotion.AddRange(NonMovementPotion);
             if (Main.hardMode)
             {
                 DropItemPotion.Add(ItemID.LifeforcePotion);
                 DropItemPotion.Add(ItemID.InfernoPotion);
             }
+            if (MovementPotionOnly)
+            {
+                DropItemPotion.Clear();
+            }
+            DropItemPotion.AddRange(MovementPotion);
             return Main.rand.NextFromCollection(DropItemPotion);
         }
     }

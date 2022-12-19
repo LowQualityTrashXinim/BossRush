@@ -24,6 +24,7 @@ namespace BossRush.Items.Chest
             return true;
         }
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2 };
+        public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
@@ -63,12 +64,10 @@ namespace BossRush.Items.Chest
                 player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            GetAccessory(out int Accessory);
-            player.QuickSpawnItem(entitySource, Accessory);
+            player.QuickSpawnItem(entitySource, GetAccessory());
             for (int i = 0; i < amount2; i++)
-            {
-                GetPotion(out int Potion);
-                player.QuickSpawnItem(entitySource, Potion, amount3);
+            { 
+                player.QuickSpawnItem(entitySource, GetPotion(), amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
             player.QuickSpawnItem(entitySource, ItemID.Hellforge);

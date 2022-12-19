@@ -23,6 +23,15 @@ namespace BossRush.Items.Chest
             return true;
         }
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 3 };
+        public override List<int> FlagNumAcc()
+        {
+            List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5, 7};
+            if(NPC.downedQueenBee)
+            {
+                list.Add(6);
+            }
+            return list;
+        }
 
         public override void RightClick(Player player)
         {
@@ -59,12 +68,10 @@ namespace BossRush.Items.Chest
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            GetAccessory(out int Accessory);
-            player.QuickSpawnItem(entitySource, Accessory);
+            player.QuickSpawnItem(entitySource, GetAccessory());
             for (int i = 0; i < amount2; i++)
             {
-                GetPotion(out int potion);
-                player.QuickSpawnItem(entitySource, potion, amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(), amount3);
             }
             switch (Main.rand.Next(2))
             {

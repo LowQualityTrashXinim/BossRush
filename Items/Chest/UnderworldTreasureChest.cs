@@ -27,6 +27,7 @@ namespace BossRush.Items.Chest
         {
             return new List<int> { 0 };
         }
+        public override List<int> FlagNumAcc() => new List<int>() { 0, 1, 2 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
@@ -38,11 +39,9 @@ namespace BossRush.Items.Chest
             }
             for (int i = 0; i < potionTypeAmount; i++)
             {
-                GetPotion(out int potion);
-                player.QuickSpawnItem(entitySource, potion, potionNum);
+                player.QuickSpawnItem(entitySource, GetPotion(), potionNum);
             }
-            GetAccessory(out int accessory);
-            player.QuickSpawnItem(entitySource, accessory);
+            player.QuickSpawnItem(entitySource, GetAccessory());
         }
     }
 

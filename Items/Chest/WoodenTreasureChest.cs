@@ -28,6 +28,7 @@ namespace BossRush.Items.Chest
         {
             return new List<int> { 0 };
         }
+        public override List<int> FlagNumAcc() => new List<int> { 0,1,2 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
@@ -41,20 +42,17 @@ namespace BossRush.Items.Chest
             }
             GetWeapon(player, out int ReturnWeaponMelee, out _, 1);
             player.QuickSpawnItem(entitySource, ReturnWeaponMelee);
-            bool other = false;
             for (int i = 0; i < 2; i++)
             {
                 if (i == 1)
                 {
-                    other = true;
+                    FlagNumAcc(new List<int> {0});
                 }
-                GetAccessory(out int accessory, true, other, other);
-                player.QuickSpawnItem(entitySource, accessory);
+                player.QuickSpawnItem(entitySource, GetAccessory());
             }
             for (int i = 0; i < amount2; i++)
             {
-                GetPotion(out int potion, true);
-                player.QuickSpawnItem(entitySource, potion, amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(true), amount3);
             }
             int RandomNumber = Main.rand.Next(7);
             switch (RandomNumber)

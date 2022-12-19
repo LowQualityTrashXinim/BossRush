@@ -21,6 +21,7 @@ namespace BossRush.Items.Chest
             return true;
         }
         public override List<int> FlagNumber() => new List<int> { 6, 7, 8, 9, 10 };
+        public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
@@ -76,13 +77,11 @@ namespace BossRush.Items.Chest
             }
             for (int i = 0; i < 3; i++)
             {
-                GetAccessory(out int Accessory, true, true, true, false);
-                player.QuickSpawnItem(entitySource, Accessory);
+                player.QuickSpawnItem(entitySource, GetAccessory());
             }
             for (int i = 0; i < amount2; i++)
             {
-                GetPotion(out int potion);
-                player.QuickSpawnItem(entitySource, potion, amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(), amount3);
             }
             player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
             player.QuickSpawnItem(entitySource, ItemID.NaughtyPresent);

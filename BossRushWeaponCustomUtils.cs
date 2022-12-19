@@ -10,15 +10,18 @@ namespace BossRush
         /// For global modify use multiplication
         /// For general modify use addictive
         /// Do not use SpreadModify = 0 as it will fuck the other stuff
+        /// Best practice for this is to use + operator as it is what i use
+        /// Using * is for globally and very hard to balance
         /// </summary>
         public static float SpreadModify;
         /// <summary>
         /// This is use to set how many projectile you can shoot in actual weapon class
+        /// Do not use NumOfProjectile = 0 as it will make gun unable to shoot
         /// </summary>
         public static int NumOfProjectile = 1;
         /// <summary>
         /// This is to modify the amount of projectiles you gonna shoot from weapon that got assigned with NumOfProjectile<br/>
-        /// This is the safe way to modify the amount of projectile you can modify
+        /// This is the safe way to modify the amount of projectile you can modify, do keep in mind to not go below -1 as it is very dangerous
         /// </summary>
         public static float NumOfProModify = 0;
         /// <summary>

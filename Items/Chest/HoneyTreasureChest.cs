@@ -71,8 +71,7 @@ namespace BossRush.Items.Chest
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
             player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
-            GetPotion(out int potion);
-            player.QuickSpawnItem(entitySource, potion, 3);
+            player.QuickSpawnItem(entitySource, GetPotion(), 3);
         }
     }
 }

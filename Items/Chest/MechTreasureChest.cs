@@ -25,26 +25,27 @@ namespace BossRush.Items.Chest
         }
         public override List<int> FlagNumber()
         {
-            List<int> list = new List<int>() {6,7,8 };
-            if(NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+            List<int> list = new List<int>() { 6, 7, 8 };
+            if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
                 list.Add(9);
             }
             return list;
         }
+        public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.ButterflyWings, ItemID.FlameWings, ItemID.FrozenWings, ItemID.SteampunkWings, ItemID.Jetpack });
             player.QuickSpawnItem(entitySource, wing);
             GetAmount(out int amount, out int amount2, out int amount3, player);
-            if(NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+            if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
                 int randChooser = Main.rand.Next(4);
                 switch (randChooser)
                 {
                     case 0:
-                        player.QuickSpawnItem(entitySource,ItemID.ChlorophyteHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.ChlorophyteHelmet);
                         player.QuickSpawnItem(entitySource, ItemID.ChlorophytePlateMail);
                         player.QuickSpawnItem(entitySource, ItemID.ChlorophyteGreaves);
                         break;
@@ -71,8 +72,7 @@ namespace BossRush.Items.Chest
             }
             for (int i = 0; i < 2; i++)
             {
-                GetAccessory(out int Accessory, true, true, true, false);
-                player.QuickSpawnItem(entitySource, Accessory);
+                player.QuickSpawnItem(entitySource, GetAccessory());
             }
             if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
@@ -80,8 +80,7 @@ namespace BossRush.Items.Chest
             }
             for (int i = 0; i < amount2; i++)
             {
-                GetPotion(out int potion);
-                player.QuickSpawnItem(entitySource, potion, amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(), amount3);
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<PlanteraEssence>());
             player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
