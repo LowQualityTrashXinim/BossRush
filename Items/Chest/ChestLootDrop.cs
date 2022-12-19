@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using BossRush.Items.Artifact;
 using BossRush.Items.CustomPotion;
 using System;
+using IL.Terraria.DataStructures;
 
 namespace BossRush.Items.Chest
 {
@@ -127,7 +128,7 @@ namespace BossRush.Items.Chest
             //Change
             if (multiplier)
             {
-                return amountToModify > 0 ? (int)(amountToModify * ValueToModify) : 0;
+                return amountToModify > 0 ? (int)Math.Ceiling(amountToModify * ValueToModify) : 0;
             }
             else
             {
@@ -211,38 +212,28 @@ namespace BossRush.Items.Chest
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
-        protected virtual List<int> SafePostAddLootMelee()
-        {
-            return new List<int> { };
-        }
+        protected virtual List<int> SafePostAddLootMelee() => new List<int> { };
+        
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
-        protected virtual List<int> SafePostAddLootRange()
-        {
-            return new List<int> { };
-        }
+        protected virtual List<int> SafePostAddLootRange() => new List<int> { };
+        
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
-        protected virtual List<int> SafePostAddLootMagic()
-        {
-            return new List<int> { };
-        }
+        protected virtual List<int> SafePostAddLootMagic() => new List<int> { };
+        
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
-        protected virtual List<int> SafePostAddLootSummon()
-        {
-            return new List<int> { };
-        }
+        protected virtual List<int> SafePostAddLootSummon() => new List<int> { };
+        
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
-        protected virtual List<int> SafePostAddLootMisc()
-        {
-            return new List<int> { };
-        }
+        protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
+        
         private void AddLoot(List<int> FlagNumber)
         {
             for (int i = 0; i < FlagNumber.Count; i++)
@@ -408,8 +399,7 @@ namespace BossRush.Items.Chest
             //adding stuff here
             if (rng < 6 && rng > 0)
             {
-                List<int> list = FlagNumber();
-                AddLoot(list);
+                AddLoot(FlagNumber());
             }
             //actual choosing item
             switch (rng)
@@ -577,44 +567,82 @@ namespace BossRush.Items.Chest
         int[] AnhkCharm = new int[] { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
         int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
         /// <summary>
+        ///      Allow user to return a list of number that contain different data to insert into chest <br/>
+        ///      0 : Tier 1 Combat acc <br/>
+        ///      1 : Tier 1 Health and Mana acc<br/>
+        ///      2 : Tier 1 Movement acc<br/>
+        ///      3 : Post evil Combat acc<br/>
+        ///      4 : Post evil Health and Mana acc<br/>
+        ///      5 : Post evil Movement acc<br/>
+        ///      6 : Queen bee acc<br/>
+        ///      7 : Cobalt Shield<br/>
+        ///      8 : Anhk shield sub acc (not include the shield itself)<br/>
+        ///      9 : Hardmode acc<br/>
+        ///      10 : PhilosophersStone<br/>
+        ///      11 : Post Golem <br/>
+        ///      12 : Pre lunatic cultist ( EoL, Duke Fishron ) <br/>
+        ///      13 : Post lunatic cultist <br/>
+        ///      14 : Post Moon lord <br/>
+        /// </summary>
+        protected virtual List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+        /// <summary>
+        /// Allow for safely add in a list of accessory that specific to a situation
+        /// </summary>
+        /// <returns></returns>
+        protected virtual List<int> SafePostAddAcc() => new List<int>() { };
+
+        private void addAcc(List<int> flag)
+        {
+            for (int i = 0; i < flag.Count; i++)
+            {
+                switch (flag[i])
+                {
+                    case 0:
+                        Accessories.AddRange(T1CombatAccessory);
+                        break;
+                    case 1:
+                        Accessories.AddRange(T1HealthAndManaAccessory);
+                        break;
+                    case 2:
+                        Accessories.AddRange(T1MovementAccessory);
+                        break;
+                    case 3:
+                        Accessories.AddRange(PostEvilCombatAccessory);
+                        break;
+                    case 4:
+                        Accessories.AddRange(PostEvilHealthManaAccessory);
+                        break;
+                    case 5:
+                        Accessories.AddRange(PostEvilMovementAccessory);
+                        break;
+                    case 6:
+                        Accessories.AddRange(QueenBeeCombatAccessory);
+                        break;
+                    case 7:
+                        Accessories.Add(ItemID.CobaltShield);
+                        break;
+                    case 8:
+                        Accessories.AddRange(AnhkCharm);
+                        break;
+                    case 9:
+                        Accessories.AddRange(HMAccessory);
+                        break;
+                    case 10:
+                        Accessories.Add(ItemID.PhilosophersStone);
+                        break;
+                }
+                Accessories.AddRange(SafePostAddAcc());
+            }
+        }
+
+        /// <summary>
         /// Return a random accessory 
         /// </summary>
-        /// <param name="Accessory">Return a accessory</param>
-        /// <param name="MovementAcc">allow for movement accessory to be include</param>
-        /// <param name="CombatAcc">allow for accessory that combat oriented to be include</param>
-        /// <param name="HealthManaAcc">allow for accessory that increase survivability to be include</param>
-        /// <param name="AllowPreHMAcc">W.I.P</param>
-        /// <param name="PriorityAnhkShield">only drop AnhkShield material</param>
-        public void GetAccessory(out int Accessory, bool MovementAcc = true, bool CombatAcc = true, bool HealthManaAcc = true, bool PriorityAnhkShield = false)
+        public int GetAccessory()
         {
-            if (MovementAcc)
-            {
-                Accessories.AddRange(T1MovementAccessory);
-                if (NPC.downedBoss2) Accessories.AddRange(PostEvilMovementAccessory);
-            }
-            if (CombatAcc)
-            {
-                Accessories.AddRange(T1CombatAccessory);
-                if (NPC.downedBoss2) Accessories.AddRange(PostEvilCombatAccessory);
-                if (NPC.downedBoss3) Accessories.Add(ItemID.CobaltShield);
-                if (NPC.downedQueenBee) Accessories.AddRange(QueenBeeCombatAccessory);
-                if (Main.hardMode) Accessories.AddRange(HMAccessory);
-            }
-            if (HealthManaAcc)
-            {
-                Accessories.AddRange(T1HealthAndManaAccessory);
-                if (NPC.downedBoss2) Accessories.AddRange(PostEvilHealthManaAccessory);
-                if (Main.hardMode) Accessories.Add(ItemID.PhilosophersStone);
-            }
-            if (Main.hardMode)
-            {
-                if (PriorityAnhkShield)
-                {
-                    Accessories.Clear();
-                    Accessories.AddRange(AnhkCharm);
-                }
-            }
-            Accessory = Main.rand.NextFromCollection(Accessories);
+            addAcc(FlagNumAcc());
+            return Main.rand.NextFromCollection(Accessories);
         }
         List<int> DropItemPotion = new List<int>();
         int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
@@ -624,7 +652,7 @@ namespace BossRush.Items.Chest
         /// </summary>
         /// <param name="Potion">Return potion type</param>
         /// <param name="AllowMovementPotion">Allow potion that enhance movement to be drop</param>
-        public void GetPotion(out int Potion, bool AllowMovementPotion = false)
+        public int GetPotion(bool AllowMovementPotion = false)
         {
             if (AllowMovementPotion)
             {
@@ -636,7 +664,7 @@ namespace BossRush.Items.Chest
                 DropItemPotion.Add(ItemID.LifeforcePotion);
                 DropItemPotion.Add(ItemID.InfernoPotion);
             }
-            Potion = Main.rand.NextFromCollection(DropItemPotion);
+            return Main.rand.NextFromCollection(DropItemPotion);
         }
     }
 }

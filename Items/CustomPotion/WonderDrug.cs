@@ -25,8 +25,7 @@ namespace BossRush.Items.CustomPotion
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("WonderDrug");
-            Tooltip.SetDefault("Minor improvements (or downgrades) to certain stats" +
-            "\n'Questionaby legal...'");
+            Tooltip.SetDefault("\"Surprisingly Legal\"");
         }
 
         public override void SetDefaults()
@@ -81,6 +80,13 @@ namespace BossRush.Items.CustomPotion
             }
             player.GetModPlayer<WonderDrugPlayer>().DrugDealer++;
             return true;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Vitamins)
+                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                .Register();
         }
     }
 

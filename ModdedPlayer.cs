@@ -46,7 +46,7 @@ namespace BossRush
             ModContent.ItemType<TokenofGreed>(),
             ModContent.ItemType<TokenofPride>(),
             ModContent.ItemType<SkillIssuedArtifact>(),
-            ModContent.ItemType<GodDice>(), 
+            ModContent.ItemType<GodDice>(),
             ModContent.ItemType<VampirismCrystal>() };
         //NoHiter
         public bool gitGud = false;
@@ -60,7 +60,7 @@ namespace BossRush
                 {
                     return true;
                 }
-                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody || Main.npc[i].type == NPCID.EaterofWorldsHead || Main.npc[i].type == NPCID.EaterofWorldsTail ) && Main.npc[i].active)
+                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody || Main.npc[i].type == NPCID.EaterofWorldsHead || Main.npc[i].type == NPCID.EaterofWorldsTail) && Main.npc[i].active)
                 {
                     return true;
                 }
@@ -87,7 +87,7 @@ namespace BossRush
                         ForceArtifact = false;
                     }
                 }
-                else if (i == Main.maxNPCs -1 && HowManyBossIsAlive == 0) // What happen when boss is inactive
+                else if (i == Main.maxNPCs - 1 && HowManyBossIsAlive == 0) // What happen when boss is inactive
                 {
                     ForceArtifact = true;
                     amountoftimegothit = 0;
@@ -169,7 +169,7 @@ namespace BossRush
 
         public override void ModifyItemScale(Item item, ref float scale)
         {
-            if(Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee)
+            if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee)
             {
                 scale += .3f;
             }
@@ -177,7 +177,7 @@ namespace BossRush
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
-            if(Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>())
+            if (Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>())
             {
                 target.AddBuff(BuffID.Poisoned, 60);
             }
@@ -185,10 +185,11 @@ namespace BossRush
 
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
-            List<Item> items = new List<Item>();
-            items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>()));
-            items.Add(new Item(ModContent.ItemType<LunchBox>()));
-            items.Add(new Item(ModContent.ItemType<GitGudToggle>()));
+            List<Item> items = new List<Item>() {
+            new Item(ModContent.ItemType<WoodenTreasureChest>()),
+            new Item(ModContent.ItemType<LunchBox>()),
+            new Item(ModContent.ItemType<GitGudToggle>())
+            };
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
@@ -196,31 +197,31 @@ namespace BossRush
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
                 items.Add(new Item(ModContent.ItemType<Note1>()));
             }
-            if(ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
+            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
             {
-                items.Add(new Item (ItemID.RedPotion, 10));
+                items.Add(new Item(ItemID.RedPotion, 10));
             }
-            if (Player.name == "LQTXinim") 
+            if (Player.name == "LQTXinim")
             {
                 items.Add(new Item(ModContent.ItemType<RainbowTreasureChest>()));
             }
-            if(Player.name == "FeelingLucky")
+            if (Player.name == "FeelingLucky")
             {
                 items.Add(new Item(ModContent.ItemType<GodDice>()));
             }
-            if(Player.name.ToLower().Trim() == "skillissue")
+            if (Player.name.ToLower().Trim() == "skillissue")
             {
                 items.Add(new Item(ModContent.ItemType<SkillIssuedArtifact>()));
             }
-            if(Player.name == "ImNotGud")
+            if (Player.name == "ImNotGud")
             {
-                items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>(),10));
+                items.Add(new Item(ModContent.ItemType<WoodenTreasureChest>(), 10));
             }
-            if(Player.name.ToLower().Trim() == "drugaddict")
+            if (Player.name.ToLower().Trim() == "drugaddict")
             {
                 items.Add(new Item(ModContent.ItemType<WonderDrug>(), 99));
             }
-            if(Player.name.Contains("Ninja"))
+            if (Player.name.Contains("Ninja"))
             {
                 items.Add(new Item(ItemID.Katana));
                 items.Add(new Item(ItemID.Shuriken, 100));
@@ -243,6 +244,10 @@ namespace BossRush
                     items.Add(new Item(Main.rand.Next(new int[] { ModContent.ItemType<AmethystBow>(), ModContent.ItemType<AmethystSwotaff>() })));
                 }
             }
+            if (Main.rand.NextBool(10))
+            {
+                items.Add(new Item(ModContent.ItemType<WonderDrug>()));
+            }
             return items;
         }
         public int amountoftimegothit = 0;
@@ -260,7 +265,7 @@ namespace BossRush
                     amountoftimegothit++;
                 }
             }
-            if(Player.HasBuff(ModContent.BuffType<GodVision>()))
+            if (Player.HasBuff(ModContent.BuffType<GodVision>()))
             {
                 Player.ClearBuff(ModContent.BuffType<GodVision>());
             }
@@ -283,7 +288,7 @@ namespace BossRush
                 Player.QuickSpawnItem(null, ItemID.SlimeCrown);
                 KingSlimeEnraged = false;
             }
-           else if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            else if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 if (EoCEnraged)
                 {
