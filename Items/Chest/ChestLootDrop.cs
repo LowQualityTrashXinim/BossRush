@@ -435,14 +435,14 @@ namespace BossRush.Items.Chest
         List<int> DropBulletAmmo = new List<int>();
         List<int> DropDartAmmo = new List<int>();
 
-        int[] defaultArrow = new int[] { ItemID.WoodenArrow, ItemID.FlamingArrow, ItemID.FrostburnArrow, ItemID.JestersArrow, ItemID.UnholyArrow, ItemID.BoneArrow, ItemID.HellfireArrow };
-        int[] ArrowHM = new int[] { ItemID.HolyArrow, ItemID.CursedArrow, ItemID.IchorArrow };
+        readonly int[] defaultArrow = new int[] { ItemID.WoodenArrow, ItemID.FlamingArrow, ItemID.FrostburnArrow, ItemID.JestersArrow, ItemID.UnholyArrow, ItemID.BoneArrow, ItemID.HellfireArrow };
+        readonly int[] ArrowHM = new int[] { ItemID.HolyArrow, ItemID.CursedArrow, ItemID.IchorArrow };
 
-        int[] defaultBullet = new int[] { ItemID.MusketBall, ItemID.SilverBullet, ItemID.TungstenBullet };
-        int[] BulletHM = new int[] { ItemID.CursedBullet, ItemID.IchorBullet, ItemID.GoldenBullet, ItemID.CrystalBullet, ItemID.HighVelocityBullet, ItemID.PartyBullet, ItemID.ExplodingBullet };
+        readonly int[] defaultBullet = new int[] { ItemID.MusketBall, ItemID.SilverBullet, ItemID.TungstenBullet };
+        readonly int[] BulletHM = new int[] { ItemID.CursedBullet, ItemID.IchorBullet, ItemID.GoldenBullet, ItemID.CrystalBullet, ItemID.HighVelocityBullet, ItemID.PartyBullet, ItemID.ExplodingBullet };
 
-        int[] defaultDart = new int[] { ItemID.PoisonDart, ItemID.Seed };
-        int[] DartHM = new int[] { ItemID.IchorDart, ItemID.CursedDart, ItemID.CrystalDart };
+        readonly int[] defaultDart = new int[] { ItemID.PoisonDart, ItemID.Seed };
+        readonly int[] DartHM = new int[] { ItemID.IchorDart, ItemID.CursedDart, ItemID.CrystalDart };
 
         /// <summary>
         /// Return ammo of weapon accordingly to weapon parameter
@@ -554,18 +554,18 @@ namespace BossRush.Items.Chest
 
         List<int> Accessories = new List<int>();
 
-        int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
-        int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
-        int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
+        readonly int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
+        readonly int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
+        readonly int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
 
-        int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };
-        int[] PostEvilMovementAccessory = new int[] { ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots };
-        int[] PostEvilHealthManaAccessory = new int[] { ItemID.BandofStarpower, ItemID.CelestialMagnet };
+        readonly int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };
+        readonly int[] PostEvilMovementAccessory = new int[] { ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots };
+        readonly int[] PostEvilHealthManaAccessory = new int[] { ItemID.BandofStarpower, ItemID.CelestialMagnet };
 
-        int[] QueenBeeCombatAccessory = new int[] { ItemID.PygmyNecklace, ItemID.HoneyComb };
+        readonly int[] QueenBeeCombatAccessory = new int[] { ItemID.PygmyNecklace, ItemID.HoneyComb };
 
-        int[] AnhkCharm = new int[] { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
-        int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
+        readonly int[] AnhkCharm = new int[] { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
+        readonly int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
         /// <summary>
         ///      Allow user to return a list of number that contain different data to insert into chest <br/>
         ///      0 : Tier 1 Combat acc <br/>
@@ -580,7 +580,7 @@ namespace BossRush.Items.Chest
         ///      9 : Hardmode acc<br/>
         ///      10 : PhilosophersStone<br/>
         /// </summary>
-        public virtual List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        public virtual List<int> FlagNumAcc() => new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       
         /// <summary>
         ///      Allow user to return a list of number that contain different data to insert into chest <br/>
@@ -644,7 +644,7 @@ namespace BossRush.Items.Chest
                         Accessories.Add(ItemID.PhilosophersStone);
                         break;
                 }
-                Accessories.AddRange(SafePostAddAcc());
+                if(SafePostAddAcc().Count > 0)Accessories.AddRange(SafePostAddAcc());
             }
         }
 
@@ -657,8 +657,8 @@ namespace BossRush.Items.Chest
             return Main.rand.NextFromCollection(Accessories);
         }
         List<int> DropItemPotion = new List<int>();
-        int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
-        int[] MovementPotion = new int[] { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
+        readonly int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
+        readonly int[] MovementPotion = new int[] { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
         /// <summary>
         /// Return random potion
         /// </summary>

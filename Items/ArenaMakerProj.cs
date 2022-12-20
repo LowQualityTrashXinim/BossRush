@@ -11,12 +11,12 @@ namespace BossRush.Items
         public override string Texture => "BossRush/MissingTexture";
         public override void SetDefaults()
         {
-            Projectile.width = 1;
-            Projectile.height = 1;
-            Projectile.timeLeft = 2;
+            Projectile.width = 20;
+            Projectile.height = 36;
             Projectile.friendly = true;
             Projectile.aiStyle = 16;
             Projectile.penetrate = -1;
+            Projectile.timeLeft = 1;
         }
         public override bool? CanDamage()
         {
@@ -25,18 +25,18 @@ namespace BossRush.Items
         public override void Kill(int timeLeft)
         {
             Vector2 position = Projectile.Center;
-            const int length = 150;
+            const int length = 300;
             bool goLeft = Projectile.Center.X < Main.player[Projectile.owner].Center.X;
-            int min = goLeft ? -length : length;
-            int max = goLeft ? length : -length;
+            int min = goLeft ? -length : 0;
+            int max = goLeft ? 0 : length;
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 return;
             }
             for (int x = min; x <= max; x++)
             {
-                int xPos = (int)(x + position.X/16.0f);
-                int yPos = (int)(position.Y / 16.0f);
+                int xPos = (int)(x + position.X/16f);
+                int yPos = (int)(position.Y / 16f);
                 if (xPos < 0 || xPos >= Main.maxTilesX || yPos < 0 || yPos >= Main.maxTilesY)
                     continue;
 
@@ -47,7 +47,7 @@ namespace BossRush.Items
 
                 WorldGen.PlaceTile(xPos, yPos, TileID.Platforms);
                 if (Main.netMode == NetmodeID.Server)
-                    NetMessage.SendTileSquare(-1, xPos, yPos, 1);
+                    NetMessage.SendTileSquare (-1, xPos, yPos, 1);
 
             }
         }

@@ -21,8 +21,8 @@ namespace BossRush.Items
             Item.width = 30;
             Item.height = 30;
             
-            Item.useTime = 99;
-            Item.useAnimation = 99;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
 
             Item.rare = ItemRarityID.White;
             Item.useStyle = ItemUseStyleID.Swing;

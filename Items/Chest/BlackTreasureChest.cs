@@ -53,7 +53,6 @@ namespace BossRush.Items.Chest
                 int ran1 = Main.rand.Next(10);
                 switch (ran1)
                 {
-
                     case 0:
                         player.QuickSpawnItem(entitySource, ModContent.ItemType<DukeTreasureChest>());
                         break;
