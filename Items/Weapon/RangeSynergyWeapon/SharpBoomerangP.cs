@@ -32,7 +32,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             float distance = 60;
             float distanceTo = Vector2.Distance(player.Center, Projectile.Center);
             Projectile.rotation += MathHelper.ToRadians(60);
-            if (Projectile.timeLeft < 3 || distanceTo > 300)
+            if (Projectile.timeLeft < 3 || distanceTo > 200)
             {
                 Vector2 GoBack = player.Center - Projectile.Center;
                 Vector2 SafeGoBack = GoBack.SafeNormalize(Vector2.UnitY);

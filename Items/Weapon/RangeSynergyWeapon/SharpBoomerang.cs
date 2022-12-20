@@ -28,11 +28,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.autoReuse = false;
-            Item.rare = 3;
+            Item.rare = ItemRarityID.Orange;
             Item.scale = 0.75f;
 
             Item.shoot = ModContent.ProjectileType<SharpBoomerangP>();
-            Item.shootSpeed = 60;
+            Item.shootSpeed = 40;
         }
         public override bool CanUseItem(Player player)
         {
