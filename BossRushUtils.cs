@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush
 {
