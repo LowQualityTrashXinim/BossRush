@@ -32,15 +32,16 @@ namespace BossRush.ChallengeMode
         }
         public override void OnWorldLoad()
         {
-            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                for (int i = 0; i < Main.maxNPCs; i++)
+                return;
+            }
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (npc.type == NPCID.OldMan)
                 {
-                    NPC npc = Main.npc[i];
-                    if (npc.type == NPCID.OldMan)
-                    {
-                        npc.active = false;
-                    }
+                    npc.active = false;
                 }
             }
         }

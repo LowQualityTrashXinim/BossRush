@@ -35,16 +35,16 @@ namespace BossRush
         /// Set false if the Item is not a shotgun to make it emulate recoil<br/>
         /// </param>
         public void GlobalRandomSpreadFiring(
-            Player player, 
-            EntitySource_ItemUse_WithAmmo source, 
-            ref Vector2 position, 
-            ref Vector2 velocity, 
-            ref int type, 
-            ref int damage, 
+            Player player,
+            EntitySource_ItemUse_WithAmmo source,
+            ref Vector2 position,
+            ref Vector2 velocity,
+            ref int type,
+            ref int damage,
             ref float knockback,
             int NumOfProjectile = 1,
-            float SpreadAmount = 0, 
-            float AdditionalSpread = 0, 
+            float SpreadAmount = 0,
+            float AdditionalSpread = 0,
             float AdditionalMultiplier = 1)
         {
             float ProjectileAmount = BossRushWeaponSpreadUtils.ModifiedProjAmount(NumOfProjectile);
@@ -60,7 +60,7 @@ namespace BossRush
                 Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
             }
         }
-        int[] GunType = { 
+        int[] GunType = {
             ItemID.RedRyder,
             ItemID.Minishark,
             ItemID.Gatligator,
@@ -86,22 +86,22 @@ namespace BossRush
         public override bool InstancePerEntity => true;
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if(item.type == ItemID.VortexBeater)
+            if (item.type == ItemID.VortexBeater)
             {
                 return true;
             }
+            if (item.type == ItemID.OnyxBlaster)
+            {
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
+            }
             for (int i = 0; i < GunType.Length; i++)
             {
-                if (player.HeldItem.type == GunType[i] && AppliesToEntity(item, true))
-                { 
-                    if (item.type == ItemID.OnyxBlaster)
-                    {
-                        Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
-                    }
+                if (item.type == GunType[i] && AppliesToEntity(item, true))
+                {
                     return false;
                 }
             }
-            return base.Shoot(item,player,source,position,velocity,type,damage,knockback);
+            return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
         }
 
         public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

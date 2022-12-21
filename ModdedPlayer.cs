@@ -60,12 +60,29 @@ namespace BossRush
                 {
                     return true;
                 }
-                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody || Main.npc[i].type == NPCID.EaterofWorldsHead || Main.npc[i].type == NPCID.EaterofWorldsTail) && Main.npc[i].active)
+                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody 
+                    || Main.npc[i].type == NPCID.EaterofWorldsHead 
+                    || Main.npc[i].type == NPCID.EaterofWorldsTail) 
+                    && Main.npc[i].active)
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        private void ArtifactHandle()
+        {
+            HowManyBossIsAlive++;
+            if (ArtifactCount == 1 && ForceArtifact)
+            {
+                ArtifactAllowance = true;
+            }
+            else
+            {
+                ArtifactAllowance = false;
+                ForceArtifact = false;
+            }
         }
 
         public override void PostUpdate()
@@ -76,16 +93,7 @@ namespace BossRush
                 if (Main.npc[i].boss && Main.npc[i].active)
                 {
                     // What happen when boss is alive
-                    HowManyBossIsAlive++;
-                    if (ArtifactCount == 1 && ForceArtifact)
-                    {
-                        ArtifactAllowance = true;
-                    }
-                    else
-                    {
-                        ArtifactAllowance = false;
-                        ForceArtifact = false;
-                    }
+                    ArtifactHandle();
                 }
                 else if (i == Main.maxNPCs - 1 && HowManyBossIsAlive == 0) // What happen when boss is inactive
                 {

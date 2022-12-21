@@ -162,21 +162,15 @@ namespace BossRush.Items.Chest
             {
                 return 7;
             }
-            if (player.GetModPlayer<WonderDrugPlayer>().DrugDealer > 0)
-            {
-                if (Main.rand.Next(100 + player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 5) <= player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 10)
-                {
-                    return 6;
-                }
-                else
-                {
-                    return rng;
-                }
-            }
-            else
+            if (player.GetModPlayer<WonderDrugPlayer>().DrugDealer <= 0)
             {
                 return rng;
             }
+            if (Main.rand.Next(100 + player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 5) <= player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 10)
+            {
+                return 6;
+            }
+            return rng;
         }
 
         protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
@@ -213,27 +207,27 @@ namespace BossRush.Items.Chest
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootMelee() => new List<int> { };
-        
+
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootRange() => new List<int> { };
-        
+
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootMagic() => new List<int> { };
-        
+
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootSummon() => new List<int> { };
-        
+
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
-        
+
         private void AddLoot(List<int> FlagNumber)
         {
             for (int i = 0; i < FlagNumber.Count; i++)
@@ -581,7 +575,7 @@ namespace BossRush.Items.Chest
         ///      10 : PhilosophersStone<br/>
         /// </summary>
         public virtual List<int> FlagNumAcc() => new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-      
+
         /// <summary>
         ///      Allow user to return a list of number that contain different data to insert into chest <br/>
         ///      0 : Tier 1 Combat acc <br/>
@@ -644,7 +638,7 @@ namespace BossRush.Items.Chest
                         Accessories.Add(ItemID.PhilosophersStone);
                         break;
                 }
-                if(SafePostAddAcc().Count > 0)Accessories.AddRange(SafePostAddAcc());
+                if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
             }
         }
 

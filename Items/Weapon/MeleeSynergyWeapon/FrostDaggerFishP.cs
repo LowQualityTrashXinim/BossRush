@@ -40,37 +40,45 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                 }
             }
             Projectile.ai[0] += 1f;
-            if (Projectile.ai[0] > 30)
-            {
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45f);
-                Projectile.netUpdate = true;
-                float distance = 900;
-                NPC closestNPC = FindClosestNPC(distance);
-                if (closestNPC == null)
-                {
-                    Projectile.velocity.Y += 0.3f;
-                }
-                else
-                {
-                    Projectile.penetrate = 1;
-                    Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 7.5f;
-                    count++;
-                    if (count >= 30)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 2.25f, ProjectileID.IceBolt, (int)(Projectile.damage * 0.75f), Projectile.knockBack * 0.65f, player.whoAmI);
-                        count = 0;
-                    }
-                }
-                for (int i = 0; i < 2; i++)
-                {
-                    int dust = Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceTorch, Main.rand.Next(-5, 5) + Projectile.velocity.X * -0.25f, Main.rand.Next(-5, 5) + Projectile.velocity.Y * -0.25f, 0, default, Main.rand.NextFloat(0.5f, 1.2f));
-                    Main.dust[dust].noGravity = true;
-                }
-            }
-            else
+            if (Projectile.ai[0] <= 30)
             {
                 Projectile.rotation += MathHelper.ToRadians(495 / 30);
+                return;
             }
+            Projectile.netUpdate = true;
+
+            for (int i = 0; i < 2; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 
+                    (int)(Projectile.width * 0.5f), 
+                    (int)(Projectile.height * 0.5f), 
+                    DustID.IceTorch, 
+                    Main.rand.Next(-5, 5) + Projectile.velocity.X * -0.25f, 
+                    Main.rand.Next(-5, 5) + Projectile.velocity.Y * -0.25f, 
+                    0, default, Main.rand.NextFloat(0.5f, 1.2f));
+                Main.dust[dust].noGravity = true;
+            }
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45f);
+            NPC closestNPC = FindClosestNPC(900);
+            if (closestNPC == null)
+            {
+                Projectile.velocity.Y += 0.3f;
+                return;
+            }
+            Projectile.penetrate = 1;
+            Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 7.5f;
+            if (count >= 30)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), 
+                    Projectile.Center, 
+                    Projectile.velocity * 2.25f, 
+                    ProjectileID.IceBolt, 
+                    (int)(Projectile.damage * 0.75f), 
+                    Projectile.knockBack * 0.65f, 
+                    player.whoAmI);
+                count = 0;
+            }
+            count++;
         }
 
         public override void Kill(int timeLeft)

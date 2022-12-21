@@ -23,8 +23,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             Item.crit = 5;
             Item.knockBack = 1f;
 
-            Item.useTime = 5;
-            Item.useAnimation = 50;
+            Item.useTime = 4;
+            Item.useAnimation = 40;
 
             Item.DamageType = DamageClass.Melee;
             Item.useStyle = ItemUseStyleID.Swing;
