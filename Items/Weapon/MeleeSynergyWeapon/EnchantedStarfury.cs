@@ -52,4 +52,34 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                 .Register();
         }
     }
+    class StarDupProjectile : ModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.CloneDefaults(ProjectileID.Starfury);
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 50;
+        }
+        int timer = 0;
+        Vector2 localOriginalvelocity;
+        public override void AI()
+        {
+            if(timer == 0)
+            {
+                localOriginalvelocity = Projectile.velocity;
+            }
+            if(timer <= 20)
+            {
+                Projectile.velocity -= Projectile.velocity * .1f;
+                timer++;
+                return;
+            }
+            else
+            {
+                Projectile.velocity += Projectile.velocity + localOriginalvelocity * .1f;
+            }
+
+        }
+    }
 }

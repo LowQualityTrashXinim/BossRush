@@ -7,7 +7,7 @@ namespace BossRush.Items.Note
 {
     internal class Note2 : ModItem
     {
-        public override string Texture => "BossRush/Items/Note/Note1";
+        public override string Texture => "BossRush/Items/Note/Note";
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Note 02");

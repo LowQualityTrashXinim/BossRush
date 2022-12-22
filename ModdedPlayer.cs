@@ -174,7 +174,6 @@ namespace BossRush
                 QueenBeeEnraged = false;
             }
         }
-
         public override void ModifyItemScale(Item item, ref float scale)
         {
             if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee)
