@@ -38,17 +38,16 @@ namespace BossRush
             return false;
         }
 
-        public static void DrawTrail(Projectile projectile, Color lightColor)
+        public static void DrawTrail(Projectile projectile, Color lightColor, float scale = 0)
         {
             Main.instance.LoadProjectile(projectile.type);
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-
             Vector2 origin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
             for (int k = 0; k < projectile.oldPos.Length; k++)
             {
-                Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(projectile.gfxOffY);
+                Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
                 Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * scale, SpriteEffects.None, 0);
             }
         }
     }

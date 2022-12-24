@@ -38,11 +38,11 @@ namespace BossRush.Items.Weapon.DupeSynergy
         {
             if (Main.mouseLeft)
             {
-                player.GetModPlayer<ComboPlayer>().a++;
+                player.GetModPlayer<ComboPlayer>().m1Counter++;
             }
             if (Main.mouseRight)
             {
-                player.GetModPlayer<ComboPlayer>().b++;
+                player.GetModPlayer<ComboPlayer>().m2Counter++;
             }
             switch (player.GetModPlayer<ComboPlayer>().ReturnComboType())
             {
@@ -66,28 +66,40 @@ namespace BossRush.Items.Weapon.DupeSynergy
     }
     public class ComboPlayer : ModPlayer
     {
-        public int a = 0;
-        public int b = 0;
+        public int m1Counter = 0;
+        public int m2Counter = 0;
 
         public int ReturnComboType()
         {
-            if (a - b == 2)
+            if (m1Counter == 1 && m2Counter == 0)
             {
-                a = 0;
-                b = 0;
+                m1Counter = 0;
+                m2Counter = 0;
                 return 1;
             }
-            if (b - a == 2)
+            if (m1Counter == 0 && m2Counter == 1)
             {
-                a = 0;
-                b = 0;
+                m1Counter = 0;
+                m2Counter = 0;
                 return 2;
             }
-            if (a - b == 1 && a != b)
+            if (m1Counter == 1 && m2Counter == 1)
             {
-                a = 0;
-                b = 0;
-                return a > b ? 3 : 4;
+                m1Counter = 0;
+                m2Counter = 0;
+                return 3;
+            }
+            if (m1Counter == 2 && m2Counter == 0)
+            {
+                m1Counter = 0;
+                m2Counter = 0;
+                return 4;
+            }
+            if (m1Counter == 0 && m2Counter == 2)
+            {
+                m1Counter = 0;
+                m2Counter = 0;
+                return 5;
             }
             return 0;
         }

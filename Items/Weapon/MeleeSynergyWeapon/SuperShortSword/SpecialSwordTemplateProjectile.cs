@@ -33,7 +33,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
             Projectile.Center = player.Center + Rotate.RotatedBy(Counter * 0.05f) * Distance;
         }
-
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             target.immune[Projectile.owner] = 5;

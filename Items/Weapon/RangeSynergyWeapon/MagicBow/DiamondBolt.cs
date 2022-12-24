@@ -61,14 +61,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                 }
             }
         }
-
+        float Distance = 2250000;
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            float Distance = 1500f;
             if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && projectileThatNeedtoCheck.velocity == Vector2.Zero)
             {
-                if (Vector2.Distance(player.Center, projectileThatNeedtoCheck.Center) < Distance)
+                if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
                     return true;
                 }
@@ -80,19 +79,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             List<Vector2> list = new List<Vector2>();
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.projectile[i].ModProjectile is DiamondGemP && CheckActiveAndCon(Main.projectile[i]))
+                if (CheckActiveAndCon(Main.projectile[i]))
                 {
                     list.Add(Main.projectile[i].Center);
                 }
             }
-            if (list.Count <= 1)
-            {
-                Check = false;
-            }
-            else
-            {
-                Check = true;
-            }
+            Check = list.Count > 1;
             return list;
         }
         public bool RicochetOff(out Vector2 Pos2)
@@ -101,36 +93,24 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (Check)
             {
                 Vector2 Pos1;
-                foreach (Vector2 pos in list)
+                do
                 {
-                    float Distance = Vector2.Distance(Projectile.Center, pos);
-                    if (Distance <= 15)
-                    {
-                        Pos1 = pos;
-                        do
-                        {
-                            Pos2 = Main.rand.Next(list);
-                        }
-                        while (Pos2 == Pos1);
-                        return true;
-                    }
+                    Pos1 = Main.rand.Next(list);
                 }
+                while (Vector2.DistanceSquared(Projectile.Center, Pos1) > 255f);
+                do
+                {
+                    Pos2 = Main.rand.Next(list);
+                }
+                while (Pos2 == Pos1);
+                return true;
             }
             Pos2 = Vector2.Zero;
             return false;
         }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k * 0.01f, SpriteEffects.None, 0);
-            }
+            BossRushUtils.DrawTrail(Projectile, lightColor, 0.01f);
             return true;
         }
     }

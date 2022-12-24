@@ -41,7 +41,6 @@ namespace BossRush.Items.Weapon
             if (Projectile.ai[0] == 10)
             {
                 Projectile.ai[0] = 0;
-                rotate = 0;
                 count++;
             }
             if (count > 2)
