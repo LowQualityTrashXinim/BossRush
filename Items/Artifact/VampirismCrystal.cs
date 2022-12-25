@@ -24,7 +24,7 @@ namespace BossRush.Items.Artifact
         public override void UpdateEquip(Player player)
         {
             player.GetModPlayer<VampirePlayer>().VampireLifeSuck = true;
-            player.statLifeMax2 -= (int)(player.statLifeMax * 0.4f);
+            player.statLifeMax2 -= (int)(player.statLifeMax * 0.55f);
         }
 
         public override void AddRecipes()
