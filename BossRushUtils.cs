@@ -11,9 +11,16 @@ namespace BossRush
     {
         public static Vector2 limitedVelocity(this Vector2 velocity, float limited)
         {
-            Vector2 limit = new Vector2(limited,limited);
-            velocity = Vector2.Clamp(velocity,-limit,limit);
+            velocity.X = Math.Clamp(velocity.X, -limited, limited);
+            velocity.Y = Math.Clamp(velocity.Y, -limited, limited);
             return velocity;
+        }
+
+        public static bool reachedLimited(this Vector2 velocity, float limited)
+        {
+            if (Math.Abs(Math.Clamp(velocity.X, -limited, limited)) >= limited) return true;
+            if (Math.Abs(Math.Clamp(velocity.Y, -limited, limited)) >= limited) return true;
+            return false;
         }
 
         public static bool LookForHostileNPC(this Vector2 position,float distance)
