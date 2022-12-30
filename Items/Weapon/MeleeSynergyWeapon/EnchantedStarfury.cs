@@ -39,11 +39,18 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             BossRushWeaponSpreadUtils.NumOfProjectile = 5;
             for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
             {
-                Vector2 rotate = velocity.RotateCode(player.direction == 1 ? -20 : 20, i);
-
-                Projectile.NewProjectile(source, position, rotate,
-                    switchProj % 2 == 0 ? ModContent.ProjectileType<EnchantedSwordProjectile>() : ModContent.ProjectileType<StarProjectile>(),
-                    damage, knockback, player.whoAmI, i);
+                if (switchProj % 2 == 0)
+                {
+                    Vector2 rotate = velocity.RotateCode(player.direction == 1 ? -40 : 40, i);
+                    Projectile.NewProjectile(source, position, rotate * .5f, ModContent.ProjectileType<EnchantedSwordProjectile>(), damage, knockback, player.whoAmI, i);
+                }
+                else
+                {
+                    Vector2 customPos = new Vector2(position.X + Main.rand.Next(-100,100), position.Y - 900 + Main.rand.Next(-200,200));
+                    Vector2 aimSpread = Main.MouseWorld + Main.rand.NextVector2Circular(200f,200f);
+                    Vector2 velocityTo = (aimSpread - customPos).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
+                    Projectile.NewProjectile(source, customPos, velocityTo, ProjectileID.StarCannonStar, damage * 3, knockback, player.whoAmI, i);
+                }
             }
             switchProj++;
             return false;
@@ -62,10 +69,10 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
     {
         public override void SetDefaults()
         {
-            Projectile.width = 56;
-            Projectile.height = 56;
+            Projectile.width = 28;
+            Projectile.height = 28;
             Projectile.penetrate = 1;
-            Projectile.scale = .65f;
+            Projectile.light = 1f;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
             Projectile.DamageType = DamageClass.Melee;
@@ -74,6 +81,9 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         Vector2 localOriginalvelocity;
         public override void AI()
         {
+            int dustPar = Main.rand.Next(new int[] {DustID.TintableDustLighted, DustID.YellowStarDust, 57, 58});
+            int dust = Dust.NewDust(Projectile.Center,0,0, dustPar, 0,0,0,default,Main.rand.NextFloat(.9f, 1.1f));
+            Main.dust[dust].noGravity = true;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             if (timer == 0)
             {
@@ -90,58 +100,16 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                 if (!Projectile.velocity.reachedLimited(20)) Projectile.velocity += localOriginalvelocity;
             }
         }
-    }
 
-    class StarProjectile : ModProjectile
-    {
-        public override string Texture => "BossRush/VanillaSprite/WhiteStar";
-        public override void SetDefaults()
+        public override void Kill(int timeLeft)
         {
-            Projectile.width = 22;
-            Projectile.height = 24;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = true;
-            Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Melee;
-        }
-        int timer = 0;
-        Vector2 localOriginalvelocity;
-        public override void AI()
-        {
-            Projectile.rotation += MathHelper.ToRadians(10);
-            if (timer == 0)
+            for (int i = 0; i < 40; i++)
             {
-                localOriginalvelocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
+                int dustPar = Main.rand.Next(new int[] { DustID.TintableDustLighted, DustID.YellowStarDust, 57, 58 });
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, dustPar, 0, 0, 0, default, Main.rand.NextFloat(1, 1.5f));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(10f, 10f);
             }
-            if (timer <= 20 + Projectile.ai[0] * 2)
-            {
-                Projectile.velocity -= Projectile.velocity * .1f;
-                timer++;
-                Projectile.timeLeft = 120;
-            }
-            else
-            {
-                if (!Projectile.velocity.reachedLimited(20)) Projectile.velocity += localOriginalvelocity;
-            }
-        }
-
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color(255, 0, 255, 200);
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
-            if (Projectile.velocity.X != oldVelocity.X)
-            {
-                Projectile.velocity.X = -oldVelocity.X;
-            }
-            if (Projectile.velocity.Y != oldVelocity.Y)
-            {
-                Projectile.velocity.Y = -oldVelocity.Y;
-            }
-            return false;
         }
     }
 }
