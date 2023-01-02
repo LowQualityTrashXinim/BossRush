@@ -6,13 +6,13 @@ using BossRush.BuffAndDebuff;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 //EnragedStuff
-using BossRush.Items.ExtraItem;
 using BossRush.Items.Chest;
 using BossRush.Items.NohitReward;
 using BossRush.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 using BossRush.Items.Artifact;
 using BossRush.Items.Note;
 using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Items.Spawner;
 
 namespace BossRush
 {

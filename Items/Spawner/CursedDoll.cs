@@ -4,15 +4,17 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.Audio;
 
-namespace BossRush.Items.ExtraItem
+namespace BossRush.Items.Spawner
 {
-    public class PocketPortal : ModItem
+    public class CursedDoll : ModItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Portal to another world !");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            NPCID.Sets.MPAllowedEnemies[NPCID.DD2Bartender] = true;
+            DisplayName.SetDefault("Cursed totem");
+            Tooltip.SetDefault("Spawn skeletron");
+            ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
+            NPCID.Sets.MPAllowedEnemies[NPCID.SkeletronHead] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.SkeletronHand] = true;
         }
 
         public override void SetDefaults()
@@ -41,12 +43,11 @@ namespace BossRush.Items.ExtraItem
                 // (explicitely excluded serverside here)
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
 
-                int type = NPCID.DD2Bartender;
-
+                int type = NPCID.SkeletronHead;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     // If the player is not in multiplayer, spawn directly
-                    NPC.SpawnOnPlayer(player.whoAmI, type);
+                    NPC.SpawnBoss((int)player.Center.X, (int)player.Center.Y - 400, type, player.whoAmI);
                 }
                 else
                 {

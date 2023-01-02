@@ -4,16 +4,19 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.Audio;
 
-namespace BossRush.Items.ExtraItem
+namespace BossRush.Items.Spawner
 {
-    public class PlanteraSpawn : ModItem
+    public class WormFeast : ModItem
     {
+        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Spawn Plantera, as for how 3 essence become a pot, i have no clue");
+            Tooltip.SetDefault("Caution : Using this will gather unwanted attention");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsHead] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsBody] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsTail] = true;
         }
 
         public override void SetDefaults()
@@ -31,7 +34,7 @@ namespace BossRush.Items.ExtraItem
 
         public override bool CanUseItem(Player player)
         {
-            return Main.hardMode && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 && !NPC.AnyNPCs(NPCID.Plantera);
+            return true;
         }
 
         public override bool? UseItem(Player player)
@@ -41,30 +44,26 @@ namespace BossRush.Items.ExtraItem
                 // If the player using the item is the client
                 // (explicitely excluded serverside here)
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
-
-                int type = NPCID.Plantera;
-
+                player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged = true;
+                int type = NPCID.EaterofWorldsHead;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    // If the player is not in multiplayer, spawn directly
                     NPC.SpawnOnPlayer(player.whoAmI, type);
                 }
                 else
                 {
-                    // If the player is in multiplayer, request a spawn
-                    // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
                     NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
                 }
             }
-
             return true;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ModContent.ItemType<PlanteraEssence>(), 3)
-            .Register();
+                .AddIngredient(ItemID.WormFood)
+                .AddIngredient(ModContent.ItemType<PowerEnergy>())
+                .Register();
         }
     }
 }
+

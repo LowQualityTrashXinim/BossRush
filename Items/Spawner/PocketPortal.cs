@@ -4,19 +4,15 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.Audio;
 
-namespace BossRush.Items.ExtraItem
+namespace BossRush.Items.Spawner
 {
-    public class RoyalWax : ModItem
+    public class PocketPortal : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Royal Wax");
-            Tooltip.SetDefault("Stolen from royal treasure");
-            ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
+            Tooltip.SetDefault("Portal to another world !");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            NPCID.Sets.MPAllowedEnemies[NPCID.SkeletronHead] = true;
-            NPCID.Sets.MPAllowedEnemies[NPCID.SkeletronHand] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.DD2Bartender] = true;
         }
 
         public override void SetDefaults()
@@ -45,8 +41,8 @@ namespace BossRush.Items.ExtraItem
                 // (explicitely excluded serverside here)
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
 
-                int type = NPCID.QueenBee;
-                player.GetModPlayer<ModdedPlayer>().QueenBeeEnraged = true;
+                int type = NPCID.DD2Bartender;
+
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     // If the player is not in multiplayer, spawn directly

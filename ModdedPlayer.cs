@@ -7,7 +7,6 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 //general BossRush stuff
 using BossRush.BuffAndDebuff;
-using BossRush.Items.ExtraItem;
 using BossRush.Items.Chest;
 using BossRush.Items.Note;
 using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
@@ -16,6 +15,7 @@ using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Items.Accessories;
 using BossRush.Items.CustomPotion;
 using BossRush.Items.Weapon.MagicSynergyWeapon;
+using BossRush.Items.Spawner;
 
 namespace BossRush
 {

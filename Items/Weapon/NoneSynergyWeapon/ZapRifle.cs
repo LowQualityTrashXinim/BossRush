@@ -59,7 +59,6 @@ namespace BossRush.Items.Weapon.NoneSynergyWeapon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.RedRyder)
                 .AddIngredient(ItemID.ThunderSpear)
                 .Register();

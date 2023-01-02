@@ -4,23 +4,22 @@ using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.Audio;
 
-namespace BossRush.Items.ExtraItem
+namespace BossRush.Items.Spawner
 {
-    public class KingSlimeCall : ModItem
+    public class BloodyEye : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("King's Scepter");
-            Tooltip.SetDefault("something feel slimy about this");
+            Tooltip.SetDefault("WHAT DID YOU SHOW TO THE EYE OF CTHULHU");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            NPCID.Sets.MPAllowedEnemies[NPCID.KingSlime] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.EyeofCthulhu] = true;
         }
 
         public override void SetDefaults()
         {
-            Item.height = 78;
-            Item.width = 66;
+            Item.height = 55;
+            Item.width = 53;
             Item.maxStack = 999;
             Item.value = 100;
             Item.rare = ItemRarityID.Blue;
@@ -32,40 +31,45 @@ namespace BossRush.Items.ExtraItem
 
         public override bool CanUseItem(Player player)
         {
-            return true;
+            return !Main.dayTime;
         }
 
         public override bool? UseItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
             {
-                player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged = true;
+                player.GetModPlayer<ModdedPlayer>().EoCEnraged = true;
                 // If the player using the item is the client
                 // (explicitely excluded serverside here)
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
 
-                int type = NPCID.KingSlime;
+                int type = NPCID.EyeofCthulhu;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     // If the player is not in multiplayer, spawn directly
-                    NPC.SpawnOnPlayer(player.whoAmI, type);
-                    Main.StartSlimeRain();
+                    for (int i = 0; i < 2; i++)
+                    {
+                        NPC.SpawnOnPlayer(player.whoAmI, type);
+                    }
+                    Main.bloodMoon = true;
                 }
                 else
                 {
                     // If the player is in multiplayer, request a spawn
                     // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
-                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    }
                 }
             }
-
             return true;
-        }
 
+        }
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.SlimeCrown)
+                .AddIngredient(ItemID.SuspiciousLookingEye)
                 .AddIngredient(ModContent.ItemType<PowerEnergy>())
                 .Register();
         }

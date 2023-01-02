@@ -1,8 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Items.ExtraItem;
 using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Items.Spawner;
 
 namespace BossRush
 {

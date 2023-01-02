@@ -1,22 +1,19 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 using Terraria.Audio;
 
-namespace BossRush.Items.ExtraItem
+namespace BossRush.Items.Spawner
 {
-    public class WormFeast : ModItem
+    public class BleedingWorm : ModItem
     {
         public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Caution : Using this will gather unwanted attention");
+            DisplayName.SetDefault("BleedingWorm");
+            Tooltip.SetDefault("Actract a certain monster from ocean");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsHead] = true;
-            NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsBody] = true;
-            NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsTail] = true;
+            NPCID.Sets.MPAllowedEnemies[NPCID.BloodNautilus] = true;
         }
 
         public override void SetDefaults()
@@ -25,7 +22,7 @@ namespace BossRush.Items.ExtraItem
             Item.width = 53;
             Item.maxStack = 999;
             Item.value = 100;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.LightRed;
             Item.useAnimation = 30;
             Item.useTime = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
@@ -34,35 +31,27 @@ namespace BossRush.Items.ExtraItem
 
         public override bool CanUseItem(Player player)
         {
-            return true;
+            return !Main.dayTime;
         }
 
         public override bool? UseItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
             {
-                // If the player using the item is the client
-                // (explicitely excluded serverside here)
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
-                player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged = true;
-                int type = NPCID.EaterofWorldsHead;
+                Main.bloodMoon = true;
+                int type = NPCID.BloodNautilus;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    NPC.SpawnOnPlayer(player.whoAmI, type);
+                    NPC.SpawnBoss((int)player.Center.X, (int)player.Center.Y - 400, type, player.whoAmI);
                 }
                 else
                 {
                     NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
                 }
             }
+
             return true;
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.WormFood)
-                .AddIngredient(ModContent.ItemType<PowerEnergy>())
-                .Register();
         }
     }
 }

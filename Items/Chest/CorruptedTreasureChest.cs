@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using BossRush.Items.ExtraItem;
+using BossRush.Items.Spawner;
 
 namespace BossRush.Items.Chest
 {

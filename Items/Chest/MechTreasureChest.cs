@@ -1,4 +1,4 @@
-﻿using BossRush.Items.ExtraItem;
+﻿using BossRush.Items.Spawner;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

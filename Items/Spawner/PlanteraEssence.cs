@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.ExtraItem
+namespace BossRush.Items.Spawner
 {
     class PlanteraEssence : ModItem
     {
