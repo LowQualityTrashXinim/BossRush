@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.MeleeSynergyWeapon
+namespace BossRush.Items.Weapon.NoneSynergyWeapon
 {
     internal class EnchantedLongSword : ModItem, ISynergyItem
     {
@@ -40,20 +40,12 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             BossRushWeaponSpreadUtils.NumOfProjectile = 5;
             for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
             {
-                Vector2 rotate = velocity.RotateCode(20,i);
+                Vector2 rotate = velocity.RotateCode(20, i);
 
-                Projectile.NewProjectile(source, position, rotate, ProjectileID.EnchantedBeam ,damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, rotate, ProjectileID.EnchantedBeam, damage, knockback, player.whoAmI);
             }
             switchProj++;
             return false;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.EnchantedSword, 2)
-                .Register();
         }
     }
 }

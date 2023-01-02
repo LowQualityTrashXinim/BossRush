@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon
+namespace BossRush.Items.Weapon.NoneSynergyWeapon
 {
     internal class ZapRifle : ModItem, ISynergyItem
     {

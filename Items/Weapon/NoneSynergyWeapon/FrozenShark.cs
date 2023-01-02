@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Items.Weapon.BasicWeapon
+namespace BossRush.Items.Weapon.NoneSynergyWeapon
 {
     internal class FrozenShark : ModItem
     {

@@ -21,7 +21,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 
             Item.damage = 32;
             Item.knockBack = 4f;
-            Item.useTime = 80;
+            Item.useTime = 60;
             Item.useAnimation = 20;
             Item.rare = 4;
             Item.shoot = ProjectileID.EnchantedBeam;
