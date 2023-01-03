@@ -34,6 +34,10 @@ namespace BossRush.Items.Weapon
 
         public override void AddRecipes()
         {
+            CreateRecipe()
+                .AddIngredient(ItemID.StickyDynamite, 99)
+                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                .Register();
         }
     }
 
