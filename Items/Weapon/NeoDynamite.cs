@@ -69,7 +69,20 @@ namespace BossRush.Items.Weapon
         {
             if (Main.tile[i, j] != null)
             {
-                if (Main.tileDungeon[(int)Main.tile[i, j].TileType] || Main.tile[i, j].TileType == 88 || Main.tile[i, j].TileType == 21 || Main.tile[i, j].TileType == 26 || Main.tile[i, j].TileType == 107 || Main.tile[i, j].TileType == 108 || Main.tile[i, j].TileType == 111 || Main.tile[i, j].TileType == 226 || Main.tile[i, j].TileType == 237 || Main.tile[i, j].TileType == 221 || Main.tile[i, j].TileType == 222 || Main.tile[i, j].TileType == 223 || Main.tile[i, j].TileType == 211 || Main.tile[i, j].TileType == 404)
+                if (Main.tileDungeon[Main.tile[i, j].TileType] 
+                    || Main.tile[i, j].TileType == 88 
+                    || Main.tile[i, j].TileType == 21 
+                    || Main.tile[i, j].TileType == 26 
+                    || Main.tile[i, j].TileType == 107 
+                    || Main.tile[i, j].TileType == 108 
+                    || Main.tile[i, j].TileType == 111 
+                    || Main.tile[i, j].TileType == 226 
+                    || Main.tile[i, j].TileType == 237 
+                    || Main.tile[i, j].TileType == 221 
+                    || Main.tile[i, j].TileType == 222 
+                    || Main.tile[i, j].TileType == 223 
+                    || Main.tile[i, j].TileType == 211 
+                    || Main.tile[i, j].TileType == 404)
                 {
                     return false;
                 }
