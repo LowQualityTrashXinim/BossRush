@@ -29,7 +29,6 @@ namespace BossRush.Items.Accessories
                 .AddIngredient(ItemID.BuilderPotion)
                 .AddIngredient(ItemID.Toolbox)
                 .AddIngredient(ItemID.ArchitectGizmoPack)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

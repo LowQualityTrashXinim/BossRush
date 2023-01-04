@@ -7,23 +7,23 @@ namespace BossRush.Items.Weapon
 {
     internal class NeoDynamite : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Neo Dynamite");
+            Tooltip.SetDefault("How you aren't running out of this is beyond me");
         }
 
         public override void SetDefaults()
         {
-            Item.width = 8;
-            Item.height = 28;
+            Item.width = 18;
+            Item.height = 56;
 
             Item.useAnimation = 20;
             Item.useTime = 20;
 
             Item.shoot = ModContent.ProjectileType<NeoDynamiteExplosion>();
             Item.shootSpeed = 15f;
-            
+
             Item.UseSound = SoundID.Item1;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.noUseGraphic = true;
@@ -36,29 +36,41 @@ namespace BossRush.Items.Weapon
         {
             CreateRecipe()
                 .AddIngredient(ItemID.StickyDynamite, 99)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }
 
     class NeoDynamiteExplosion : ModProjectile
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => "BossRush/Items/Weapon/NeoDynamite";
         public override void SetDefaults()
         {
-            Projectile.width = 15;
-            Projectile.height = 15;
+            Projectile.width = 14;
+            Projectile.height = 14;
+            DrawOffsetX = -2;
+            DrawOriginOffsetY = -22;
+            Projectile.penetrate = -2;
             Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            DrawOffsetX = 5;
-            DrawOriginOffsetY = 5;
-
-            Projectile.damage = 500;
-            Projectile.knockBack = 10f;
             Projectile.tileCollide = true;
         }
 
-        int explosionRadius = 9;
+        int explosionRadius = 14;
+
+        public override void AI()
+        {
+            Projectile.rotation += MathHelper.ToRadians(20);
+            Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() *23;
+            Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 23;
+            for (int i = 0; i < 3; i++)
+            {
+                int dust = Dust.NewDust(Head, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(2f, 2f);
+                int dust2 = Dust.NewDust(End, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                Main.dust[dust2].noGravity = true;
+                Main.dust[dust2].velocity = Main.rand.NextVector2CircularEdge(2f, 2f);
+            }
+        }
 
         public bool cankillWalls(int i, int j, double distance)
         {
@@ -73,19 +85,19 @@ namespace BossRush.Items.Weapon
         {
             if (Main.tile[i, j] != null)
             {
-                if (Main.tileDungeon[Main.tile[i, j].TileType] 
-                    || Main.tile[i, j].TileType == 88 
-                    || Main.tile[i, j].TileType == 21 
-                    || Main.tile[i, j].TileType == 26 
-                    || Main.tile[i, j].TileType == 107 
-                    || Main.tile[i, j].TileType == 108 
-                    || Main.tile[i, j].TileType == 111 
-                    || Main.tile[i, j].TileType == 226 
-                    || Main.tile[i, j].TileType == 237 
-                    || Main.tile[i, j].TileType == 221 
-                    || Main.tile[i, j].TileType == 222 
-                    || Main.tile[i, j].TileType == 223 
-                    || Main.tile[i, j].TileType == 211 
+                if (Main.tileDungeon[Main.tile[i, j].TileType]
+                    || Main.tile[i, j].TileType == 88
+                    || Main.tile[i, j].TileType == 21
+                    || Main.tile[i, j].TileType == 26
+                    || Main.tile[i, j].TileType == 107
+                    || Main.tile[i, j].TileType == 108
+                    || Main.tile[i, j].TileType == 111
+                    || Main.tile[i, j].TileType == 226
+                    || Main.tile[i, j].TileType == 237
+                    || Main.tile[i, j].TileType == 221
+                    || Main.tile[i, j].TileType == 222
+                    || Main.tile[i, j].TileType == 223
+                    || Main.tile[i, j].TileType == 211
                     || Main.tile[i, j].TileType == 404)
                 {
                     return false;
@@ -118,11 +130,27 @@ namespace BossRush.Items.Weapon
                     }
                 }
             }
+        }
 
+        public void SpawnExplosiveDust()
+        {
+            for (int i = 0; i < 200; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 226, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(23f, 18f);
+            }
+            for (int i = 0; i < 200; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(1.35f, 1.5f));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(19f, 19f);
+            }
         }
 
         public override void Kill(int timeLeft)
         {
+            SpawnExplosiveDust();
             int minTileX = Projectile.position.X > 0 ? (int)(Projectile.position.X / 16f - explosionRadius) : 0;
             int maxTileX = Projectile.position.X < Main.maxTilesX ? (int)(Projectile.position.X / 16f + explosionRadius) : Main.maxTilesX;
             int minTileY = Projectile.position.Y > 0 ? (int)(Projectile.position.Y / 16f - explosionRadius) : 0;
@@ -141,7 +169,7 @@ namespace BossRush.Items.Weapon
                             WorldGen.KillTile(i, j, false, false, false);
                             if (Main.tile[i, j] != null && Main.netMode != NetmodeID.SinglePlayer)
                             {
-                                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, (float)i, (float)j, 0f, 0, 0, 0);
+                                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j, 0f, 0, 0, 0);
                             }
                         }
                         if (canKillTiles(i, j))

@@ -42,7 +42,6 @@ namespace BossRush.Items
         {
             CreateRecipe()
                 .AddIngredient(ItemID.WoodPlatform,999)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }
