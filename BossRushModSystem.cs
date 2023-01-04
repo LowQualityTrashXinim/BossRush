@@ -72,6 +72,19 @@ namespace BossRush
                 ItemID.PlatinumBroadsword,
             });
             RecipeGroup.RegisterGroup("OreBroadSword", OreBroadSword);
+
+            RecipeGroup OreBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.CopperBow)}", new int[]
+{
+                ItemID.CopperBow,
+                ItemID.TinBow,
+                ItemID.IronBow,
+                ItemID.LeadBow,
+                ItemID.SilverBow,
+                ItemID.TungstenBow,
+                ItemID.GoldBow,
+                ItemID.PlatinumBow,
+});
+            RecipeGroup.RegisterGroup("OreBow", OreBow);
         }
     }
 }
