@@ -50,6 +50,7 @@ namespace BossRush.Items.Weapon
             DrawOffsetX = -2;
             DrawOriginOffsetY = -22;
             Projectile.penetrate = -2;
+            Projectile.scale = .5f;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
         }
@@ -59,8 +60,8 @@ namespace BossRush.Items.Weapon
         public override void AI()
         {
             Projectile.rotation += MathHelper.ToRadians(20);
-            Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() *23;
-            Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 23;
+            Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() *11;
+            Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 11;
             for (int i = 0; i < 3; i++)
             {
                 int dust = Dust.NewDust(Head, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
