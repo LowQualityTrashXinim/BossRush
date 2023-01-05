@@ -28,7 +28,6 @@ namespace BossRush
         public bool EaterOfWorldEnraged;
         public bool QueenBeeEnraged;
         public bool MoonLordEnraged;
-        //ArtifactList
         /// <summary>
         /// This bool is to check if artifact can be active, use mostly to change the value of item can be drop from chest
         /// </summary>
@@ -42,6 +41,7 @@ namespace BossRush
         /// This is to see if player have more artifact than they need, useful if you want artifact to not contradict each other
         /// </summary>
         public int ArtifactCount = 0;
+        //ArtifactList
         int[] ArtifactList = new int[]{
             ModContent.ItemType<TokenofGreed>(),
             ModContent.ItemType<TokenofPride>(),
@@ -90,7 +90,11 @@ namespace BossRush
             HowManyBossIsAlive = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].boss && Main.npc[i].active)
+                if ((Main.npc[i].boss || 
+                    (Main.npc[i].type == NPCID.EaterofWorldsBody
+                    || Main.npc[i].type == NPCID.EaterofWorldsHead
+                    || Main.npc[i].type == NPCID.EaterofWorldsTail)) 
+                    && Main.npc[i].active)
                 {
                     // What happen when boss is alive
                     ArtifactHandle();

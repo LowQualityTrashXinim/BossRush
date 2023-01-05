@@ -143,7 +143,8 @@ namespace BossRush
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ModdedPlayer>().amountoftimegothit == 0;
+                return info.player.GetModPlayer<ModdedPlayer>().amountoftimegothit == 0
+                    || info.player.GetModPlayer<ModdedPlayer>().gitGud;
             }
             return false;
         }
