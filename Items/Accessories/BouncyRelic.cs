@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
@@ -6,7 +7,6 @@ namespace BossRush.Items.Accessories
 {
     internal class BouncyRelic : ModItem, ISynergyItem
     {
-
         public override string Texture => "BossRush/MissingTexture";
 
         public int ModifyAmountBullet => 1;
@@ -29,7 +29,14 @@ namespace BossRush.Items.Accessories
         public override void UpdateEquip(Player player)
         {
             player.GetModPlayer<PlayerRelic>().Bouncy = true;
-            BossRushWeaponSpreadUtils.NumOfProModify += 1;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.SlimeCrown)
+                .AddIngredient(ItemID.KingSlimeMask)
+                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                .Register();
         }
     }
     public class PlayerRelic : ModPlayer
