@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 {
@@ -27,8 +26,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Item.width = 68;
 
 
-            Item.useTime = 14;
-            Item.useAnimation = 14;
+            Item.useTime = 24;
+            Item.useAnimation = 24;
 
             Item.damage = 112;
             Item.knockBack = 4f;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
@@ -25,55 +26,49 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Projectile.tileCollide = false;
             Projectile.friendly = true;
         }
-
-        public float movementFactor // Change this value to alter how fast the spear moves
-        {
-            get => Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             target.immune[Projectile.owner] = 5;
         }
 
-        // It appears that for this AI, only the ai0 field is used!
-        public override void AI()
+
+        protected virtual float HoldoutRangeMin => 56f;
+        protected virtual float HoldoutRangeMax => 102f;
+        public override bool PreAI()
         {
-            Player projOwner = Main.player[Projectile.owner];
-            Vector2 ownerMountedCenter = projOwner.RotatedRelativePoint(projOwner.MountedCenter, true);
-            Projectile.direction = projOwner.direction;
-            projOwner.heldProj = Projectile.whoAmI;
-            projOwner.itemTime = projOwner.itemAnimation;
-            Projectile.position.X = ownerMountedCenter.X - Projectile.width / 2;
-            Projectile.position.Y = ownerMountedCenter.Y - Projectile.height / 2;
-            if (!projOwner.frozen)
+            Player player = Main.player[Projectile.owner]; 
+            int duration = player.itemAnimationMax; 
+
+            player.heldProj = Projectile.whoAmI; 
+
+            if (Projectile.timeLeft > duration)
             {
-                if (movementFactor == 0f)
-                {
-                    movementFactor = 10f; // Make sure the spear moves forward when initially thrown out
-                    Projectile.netUpdate = true; // Make sure to netUpdate this spear
-                }
-                if (projOwner.itemAnimation < projOwner.itemAnimationMax / 3f) // Somewhere along the item animation, make sure the spear moves back
-                {
-                    movementFactor -= 1.7f;
-                }
-                else // Otherwise, increase the movement factor
-                {
-                    movementFactor += 3.1f;
-                }
+                Projectile.timeLeft = duration;
             }
-            // Change the spear position based off of the velocity and the movementFactor
-            Projectile.position += Projectile.velocity * movementFactor;
-            // When we reach the end of the animation, we can kill the spear projectile
-            if (projOwner.itemAnimation == 0)
+
+            Projectile.velocity = Vector2.Normalize(Projectile.velocity);
+
+            float halfDuration = duration * 0.5f;
+            float progress;
+
+            if (Projectile.timeLeft < halfDuration)
             {
-                Projectile.Kill();
+                progress = Projectile.timeLeft / halfDuration;
             }
+            else
+            {
+                progress = (duration - Projectile.timeLeft) / halfDuration;
+            }
+
+            Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
+
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(135f);
             if (Projectile.spriteDirection == -1)
             {
                 Projectile.rotation -= MathHelper.ToRadians(90);
             }
+            return false;
         }
+        
     }
 }
