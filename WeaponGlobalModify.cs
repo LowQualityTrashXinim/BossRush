@@ -10,9 +10,9 @@ namespace BossRush
     {
         public override void PostUpdateItems()
         {
-            BossRushWeaponSpreadUtils.NumOfProModify = 0;
-            BossRushWeaponSpreadUtils.SpreadModify = 1;
-            BossRushWeaponSpreadUtils.NumOfProjectile = 1;
+            RangeWeaponOverhaul.NumOfProModify = 0;
+            RangeWeaponOverhaul.SpreadModify = 1;
+            RangeWeaponOverhaul.NumOfProjectile = 1;
         }
     }
     public class GlobalWeaponModify : GlobalItem
@@ -48,7 +48,7 @@ namespace BossRush
             float AdditionalSpread = 0,
             float AdditionalMultiplier = 1)
         {
-            float ProjectileAmount = BossRushWeaponSpreadUtils.ModifiedProjAmount(NumOfProjectile);
+            float ProjectileAmount = RangeWeaponOverhaul.ModifiedProjAmount(NumOfProjectile);
             if (ProjectileAmount == 1)
             {
                 velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);

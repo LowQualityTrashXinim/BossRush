@@ -27,7 +27,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Item.width = 68;
 
 
-            Item.useTime = 8;
+            Item.useTime = 14;
             Item.useAnimation = 14;
 
             Item.damage = 112;
@@ -43,13 +43,20 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         }
         public override void HoldItem(Player player)
         {
-            int[] ArrayOfWeaponProjectile = new int[] { ModContent.ProjectileType<SpeCopper>(), ModContent.ProjectileType<SpeTin>(), ModContent.ProjectileType<SpeIron>(), ModContent.ProjectileType<SpeLead>(), ModContent.ProjectileType<SpeSilver>(), ModContent.ProjectileType<SpeTungsten>(), ModContent.ProjectileType<SpeGold>(), ModContent.ProjectileType<SpePlatinum>() };
             player.AddBuff(ModContent.BuffType<SuperShortSwordPower>(), 2);
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<SpeCopper>()] < 1)
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<SuperShortSwordOrbitShortSword>()] < 1)
             {
-                for (int i = 0; i < ArrayOfWeaponProjectile.Length; i++)
+                for (int i = 0; i < 8; i++)
                 {
-                    Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, new Vector2(0, 0), ArrayOfWeaponProjectile[i], (int)(Item.damage * 0.25f), 0, player.whoAmI);
+                    Projectile.NewProjectile(
+                        player.GetSource_FromThis(),
+                        player.Center, 
+                        Vector2.Zero, 
+                        ModContent.ProjectileType<SuperShortSwordOrbitShortSword>(), 
+                        (int)(Item.damage * 0.25f), 
+                        0, 
+                        player.whoAmI,
+                        i);
                 }
             }
         }

@@ -37,11 +37,9 @@ namespace BossRush.Items.Weapon.NoneSynergyWeapon
         int switchProj = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            BossRushWeaponSpreadUtils.NumOfProjectile = 5;
-            for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
+            for (int i = 0; i < 5; i++)
             {
-                Vector2 rotate = velocity.RotateCode(20, i);
-
+                Vector2 rotate = velocity.Vector2DistributeEvenly(5, 20, i);
                 Projectile.NewProjectile(source, position, rotate, ProjectileID.EnchantedBeam, damage, knockback, player.whoAmI);
             }
             switchProj++;

@@ -36,12 +36,11 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         int switchProj = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            BossRushWeaponSpreadUtils.NumOfProjectile = 5;
-            for (int i = 0; i < BossRushWeaponSpreadUtils.NumOfProjectile; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (switchProj % 2 == 0)
                 {
-                    Vector2 rotate = velocity.RotateCode(player.direction == 1 ? -40 : 40, i);
+                    Vector2 rotate = velocity.Vector2DistributeEvenly(5,player.direction == 1 ? -40 : 40, i);
                     Projectile.NewProjectile(source, position, rotate * .5f, ModContent.ProjectileType<EnchantedSwordProjectile>(), damage, knockback, player.whoAmI, i);
                 }
                 else

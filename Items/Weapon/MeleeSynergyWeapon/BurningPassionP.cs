@@ -7,11 +7,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
     public class BurningPassionP : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Burning");
-        }
-
         public override void SetDefaults()
         {
             Projectile.width = 30;

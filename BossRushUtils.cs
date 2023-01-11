@@ -23,6 +23,15 @@ namespace BossRush
             return false;
         }
 
+        public static Vector2 Vector2DistributeEvenly(this Vector2 Vec2ToRotate, float ProjectileAmount, float rotation, int i)
+        {
+            if (ProjectileAmount > 1)
+            {
+                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, i / (ProjectileAmount - 1f)));
+            }
+            return Vec2ToRotate;
+        }
+
         public static bool LookForHostileNPC(this Vector2 position,float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
@@ -45,7 +54,7 @@ namespace BossRush
             return false;
         }
 
-        public static void DrawTrail(Projectile projectile, Color lightColor, float scale = 0)
+        public static void DrawTrail(Projectile projectile, Color lightColor, float ScaleAccordinglyToLength = 0)
         {
             Main.instance.LoadProjectile(projectile.type);
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
@@ -54,7 +63,7 @@ namespace BossRush
             {
                 Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
                 Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ScaleAccordinglyToLength, SpriteEffects.None, 0);
             }
         }
     }
