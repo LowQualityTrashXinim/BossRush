@@ -166,23 +166,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 }
                 count++;
             }
-
-            if (Projectile.velocity.X > 20)
-            {
-                Projectile.velocity.X = 20;
-            }
-            else if (Projectile.velocity.X < -20)
-            {
-                Projectile.velocity.X = -20;
-            }
-            if (Projectile.velocity.Y > 20)
-            {
-                Projectile.velocity.Y = 20;
-            }
-            else if (Projectile.velocity.Y < -20)
-            {
-                Projectile.velocity.Y = -20;
-            }
+            Projectile.velocity = Projectile.velocity.limitedVelocity(20);
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
