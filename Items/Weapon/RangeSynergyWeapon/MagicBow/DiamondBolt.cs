@@ -93,17 +93,20 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (Check)
             {
                 Vector2 Pos1;
-                do
+                foreach (Vector2 pos in list)
                 {
-                    Pos1 = Main.rand.Next(list);
+                    float Distance = Vector2.Distance(Projectile.Center, pos);
+                    if (Distance <= 15)
+                    {
+                        Pos1 = pos;
+                        do
+                        {
+                            Pos2 = Main.rand.Next(list);
+                        }
+                        while (Pos2 == Pos1);
+                        return true;
+                    }
                 }
-                while (Vector2.DistanceSquared(Projectile.Center, Pos1) > 255f);
-                do
-                {
-                    Pos2 = Main.rand.Next(list);
-                }
-                while (Pos2 == Pos1);
-                return true;
             }
             Pos2 = Vector2.Zero;
             return false;
