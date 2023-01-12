@@ -6,30 +6,9 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 {
     internal class SuperShortSwordOrbitShortSword : ModProjectile
     {
-        public override string Texture => getTexture();
-        private string getTexture()
+        public override void SetStaticDefaults()
         {
-            string body = "BossRush/Items/Weapon/MeleeSynergyWeapon/SuperShortSword/";
-            switch (Projectile.ai[0])
-            {
-                case 0:
-                    return body + "SpeCopper";
-                case 1:
-                    return body + "SpeTin";
-                case 2:
-                    return body + "SpeIron";
-                case 3:
-                    return body + "SpeLead";
-                case 4:
-                    return body + "SpeSilver";
-                case 5:
-                    return body + "SpeTungsten";
-                case 6:
-                    return body + "SpeGold";
-                case 7:
-                    return body + "SpePlatinum";
-            }
-            return "BossRush/MissingTexture";
+            Main.projFrames[Projectile.type] = 8;
         }
         public override void SetDefaults()
         {
@@ -51,7 +30,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         int timer = 999;
         public override bool PreAI()
         {
-            if(player.ItemAnimationJustStarted)
+            Projectile.frame = (int)Projectile.ai[0];
+            if (player.ItemAnimationJustStarted)
             {
                 FixedMousePosition = Main.MouseWorld;
                 FixedProjectilePos = Projectile.Center;

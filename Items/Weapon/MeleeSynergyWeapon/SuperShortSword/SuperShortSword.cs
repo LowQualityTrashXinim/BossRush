@@ -55,7 +55,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
                         (int)(Item.damage * 0.25f), 
                         0, 
                         player.whoAmI,
-                        i);
+                        i,i);
                 }
             }
         }

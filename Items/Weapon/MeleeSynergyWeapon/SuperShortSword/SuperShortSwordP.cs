@@ -32,7 +32,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         }
 
 
-        protected virtual float HoldoutRangeMin => 56f;
+        protected virtual float HoldoutRangeMin => 76f;
         protected virtual float HoldoutRangeMax => 102f;
         public override bool PreAI()
         {
