@@ -12,7 +12,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.width = 18;
             Projectile.height = 16;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 3000;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.penetrate = -1;

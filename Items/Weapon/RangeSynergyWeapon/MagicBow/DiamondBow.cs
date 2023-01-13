@@ -21,8 +21,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.crit = 10;
             Item.knockBack = 1f;
 
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 14;
+            Item.useAnimation = 14;
             Item.reuseDelay = 10;
 
             Item.rare = ItemRarityID.Green;
@@ -33,7 +33,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.mana = 5;
 
             Item.shoot = ModContent.ProjectileType<DiamondBolt>();
-            Item.shootSpeed = 4f;
+            Item.shootSpeed = 10f;
             Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item75;
