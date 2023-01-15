@@ -56,6 +56,12 @@ namespace BossRush
         [ReloadRequired]
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }
+
+        [Label("DisableWeaponOverhaul(W.I.P)")]
+        [Tooltip("Disable the mod overhaul on weapon")]
+        [ReloadRequired]
+        [DefaultValue(false)]
+        public bool DisableWeaponOverhaul { get; set; }
     }
 }
 

@@ -27,7 +27,8 @@ namespace BossRush
         {
             if (ProjectileAmount > 1)
             {
-                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, i / (ProjectileAmount - 1f)));
+                rotation = MathHelper.ToRadians(rotation);
+                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation *.5f, rotation *-.5f, i / (ProjectileAmount - 1f)));
             }
             return Vec2ToRotate;
         }
