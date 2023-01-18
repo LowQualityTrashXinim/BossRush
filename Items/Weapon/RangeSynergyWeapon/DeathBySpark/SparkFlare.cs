@@ -33,8 +33,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
             }
             Player player = Main.player[Projectile.owner];
             Vector2 OppositeVelocity = Projectile.rotation.ToRotationVector2() * -2.5f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, OppositeVelocity, ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 0.45f), Projectile.owner, player.whoAmI);
-
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, OppositeVelocity + Main.rand.NextVector2Circular(1f, 1f), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 0.45f), Projectile.owner, player.whoAmI);
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
@@ -44,18 +43,14 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
+            if (!hittile)
+            {
+                Projectile.position += Projectile.velocity;
+            }
             hittile = true;
-            Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
-            if (Projectile.velocity.X != oldVelocity.X)
-            {
-                Projectile.velocity.X = 0;
-                Projectile.velocity.Y = 0;
-            }
-            if (Projectile.velocity.Y != oldVelocity.Y)
-            {
-                Projectile.velocity.X = 0;
-                Projectile.velocity.Y = 0;
-            }
+            Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
+            Projectile.velocity.X = 0;
+            Projectile.velocity.Y = 0;
             return false;
         }
     }
