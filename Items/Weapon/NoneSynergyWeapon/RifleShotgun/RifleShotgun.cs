@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.RangeSynergyWeapon.RifleShotgun
+namespace BossRush.Items.Weapon.NoneSynergyWeapon.RifleShotgun
 {
     class RifleShotgun : ModItem, ISynergyItem
     {
