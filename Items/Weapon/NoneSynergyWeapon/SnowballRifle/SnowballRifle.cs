@@ -4,9 +4,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballRifle
+namespace BossRush.Items.Weapon.NoneSynergyWeapon.SnowballRifle
 {
-    class SnowballRifle : ModItem, ISynergyItem
+    class SnowballRifle : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -63,7 +63,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballRifle
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.Minishark)
             .AddIngredient(ItemID.SnowballCannon)
             .Register();

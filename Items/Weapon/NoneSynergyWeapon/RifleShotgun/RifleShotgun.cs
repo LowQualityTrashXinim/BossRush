@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.NoneSynergyWeapon.RifleShotgun
 {
-    class RifleShotgun : ModItem, ISynergyItem
+    class RifleShotgun : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -63,7 +63,6 @@ namespace BossRush.Items.Weapon.NoneSynergyWeapon.RifleShotgun
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.Shotgun)
                 .AddIngredient(ItemID.ClockworkAssaultRifle)
                 .Register();

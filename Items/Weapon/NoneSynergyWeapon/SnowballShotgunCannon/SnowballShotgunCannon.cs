@@ -4,9 +4,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballShotgunCannon
+namespace BossRush.Items.Weapon.NoneSynergyWeapon.SnowballShotgunCannon
 {
-    class SnowballShotgunCannon : ModItem, ISynergyItem
+    class SnowballShotgunCannon : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -67,7 +67,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SnowballShotgunCannon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.Boomstick)
             .AddIngredient(ItemID.SnowballCannon)
             .Register();
