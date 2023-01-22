@@ -7,7 +7,7 @@ using Terraria.Localization;
 using System.Collections.Generic;
 using Terraria.Chat;
 
-namespace BossRush.Items.Spawner
+namespace BossRush.Items.Artifact
 {
     public class GitGudToggle : ModItem
     {
