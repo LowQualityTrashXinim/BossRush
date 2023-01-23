@@ -45,7 +45,7 @@ namespace BossRush
             return false;
         }
         private static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance) => Vector2.DistanceSquared(pos1, pos2) <= maxDistance;
-        public static void DrawTrail(Projectile projectile, Color lightColor, float ScaleAccordinglyToLength = 0)
+        public static void DrawTrail(this Projectile projectile, Color lightColor, float ScaleAccordinglyToLength = 0)
         {
             Main.instance.LoadProjectile(projectile.type);
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;

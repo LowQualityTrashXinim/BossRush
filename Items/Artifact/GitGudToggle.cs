@@ -1,10 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 using Terraria.Audio;
 using Terraria.Localization;
-using System.Collections.Generic;
 using Terraria.Chat;
 
 namespace BossRush.Items.Artifact

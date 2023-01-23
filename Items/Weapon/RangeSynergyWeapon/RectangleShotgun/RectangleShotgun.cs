@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
@@ -10,12 +9,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("is it a shotgun or a rifle ?");
+            Tooltip.SetDefault("What the holy of this ?");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
         {
-            Item.damage = 25;
+            Item.damage = 75;
             Item.knockBack = 4f;
             Item.height = 12;
             Item.width = 74;
@@ -26,9 +25,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
             Item.rare = 4;
 
             Item.useTime = 10;
-            Item.useAnimation = 20;
-            Item.shoot = ModContent.ProjectileType<SquareBullet>();
-            Item.shootSpeed = 30f;
+            Item.useAnimation = 10;
+            Item.shoot = ModContent.ProjectileType<RectangleBullet>();
+            Item.shootSpeed = 1f;
             Item.reuseDelay = 30;
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;
@@ -36,22 +35,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 
             Item.UseSound = SoundID.Item38;
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 40f;
-            if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
-            {
-                position += muzzleOffset;
-            }
-            RangeWeaponOverhaul.NumOfProjectile = 5;
-            for (int i = 0; i < RangeWeaponOverhaul.NumOfProjectile; i++)
-            {
-                Vector2 Rotate = velocity.RotateCode(30, i);
-                Projectile.NewProjectile(source, position, Rotate, ModContent.ProjectileType<SquareBullet>(), damage, knockback, player.whoAmI);
-            }
-            return false;
+            type = ModContent.ProjectileType<RectangleBullet>();
+            position = position.PositionOFFSET(velocity, 40);
+            velocity *= .1f;
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-19, 0);
