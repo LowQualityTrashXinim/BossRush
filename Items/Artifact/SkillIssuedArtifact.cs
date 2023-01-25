@@ -11,8 +11,8 @@ namespace BossRush.Items.Artifact
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Infinite Growth");
-            Tooltip.SetDefault("\"with this, nothing is impossible, even with skill issue person\"" +
-            "\nFor each monster kill, you will get 0.5 % increase toward Max HP and 0.01% boost toward damage and thorn" +
+            Tooltip.SetDefault("\"with this, nothing is impossible, even with skill issue\"" +
+            "\nFor each monster kill, your MaxHP will increase by 1 and 0.01% boost toward damage and thorn" +
             "\nTo further increase progress, by default this accessory will make monster spawn increase by CRAZY amount" +
             "\nCapped at 10 million kill so your game don't break, you can thx me for that");
         }
@@ -69,7 +69,7 @@ namespace BossRush.Items.Artifact
         public override void OnKill(NPC npc)
         {
             Player player = Main.LocalPlayer;
-            if (player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer && player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue <= 10000000)
+            if (player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer && player.name.ToLower().Trim().Contains("skillissue") && player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue <= 10000000)
             {
                 player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue++;
             }
@@ -78,7 +78,8 @@ namespace BossRush.Items.Artifact
         {
             if (player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer)
             {
-                spawnRate = 10;
+                spawnRate = 2;
+                maxSpawns = 400;
             }
         }
     }
