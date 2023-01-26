@@ -60,9 +60,9 @@ namespace BossRush
                 {
                     return true;
                 }
-                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody 
-                    || Main.npc[i].type == NPCID.EaterofWorldsHead 
-                    || Main.npc[i].type == NPCID.EaterofWorldsTail) 
+                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody
+                    || Main.npc[i].type == NPCID.EaterofWorldsHead
+                    || Main.npc[i].type == NPCID.EaterofWorldsTail)
                     && Main.npc[i].active)
                 {
                     return true;
@@ -90,10 +90,10 @@ namespace BossRush
             HowManyBossIsAlive = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if ((Main.npc[i].boss || 
+                if ((Main.npc[i].boss ||
                     (Main.npc[i].type == NPCID.EaterofWorldsBody
                     || Main.npc[i].type == NPCID.EaterofWorldsHead
-                    || Main.npc[i].type == NPCID.EaterofWorldsTail)) 
+                    || Main.npc[i].type == NPCID.EaterofWorldsTail))
                     && Main.npc[i].active)
                 {
                     // What happen when boss is alive
@@ -220,7 +220,7 @@ namespace BossRush
             {
                 items.Add(new Item(ModContent.ItemType<GodDice>()));
             }
-            if (Player.name.ToLower().Trim() == "skillissue")
+            if (Player.name.ToLower().Trim().Contains("skillissue"))
             {
                 items.Add(new Item(ModContent.ItemType<SkillIssuedArtifact>()));
             }
@@ -268,7 +268,7 @@ namespace BossRush
             {
                 if (gitGud)
                 {
-                    Player.KillMe(new PlayerDeathReason(), 99999, 0);
+                    Player.KillMe(new PlayerDeathReason(), 9999999, hitDirection);
                     return;
                 }
                 else
