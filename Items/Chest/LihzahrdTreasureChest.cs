@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Items.CustomPotion;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Items.Chest
 {
@@ -47,6 +49,16 @@ namespace BossRush.Items.Chest
                 player.QuickSpawnItem(entitySource, GetAccessory());
             }
             player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);
+            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                int RandomModdedBuff = Main.rand.Next(new int[] {
+                    ModContent.ItemType<BerserkPotion>(),
+                    ModContent.ItemType<PinPointAccuracyPotion>(),
+                    ModContent.ItemType<SagePotion>(),
+                    ModContent.ItemType<LeaderPotion>(),
+                    ModContent.ItemType<TankPotion>() });
+                player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
+            }
         }
     }
 }
