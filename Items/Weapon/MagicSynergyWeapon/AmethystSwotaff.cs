@@ -7,7 +7,7 @@ using System;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
-    internal class AmethystSwotaff : ModItem,ISynergyItem
+    internal class AmethystSwotaff : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
