@@ -16,6 +16,7 @@ using BossRush.Items.Accessories;
 using BossRush.Items.CustomPotion;
 using BossRush.Items.Weapon.MagicSynergyWeapon;
 using BossRush.Items.Spawner;
+using BossRush.Items.Toggle;
 
 namespace BossRush
 {

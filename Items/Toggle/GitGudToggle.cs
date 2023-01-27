@@ -5,7 +5,7 @@ using Terraria.Audio;
 using Terraria.Localization;
 using Terraria.Chat;
 
-namespace BossRush.Items.Artifact
+namespace BossRush.Items.Toggle
 {
     public class GitGudToggle : ModItem
     {
