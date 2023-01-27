@@ -1,9 +1,11 @@
-﻿using Terraria;
+﻿using BossRush.Items.NohitReward;
+using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Items.Toggle
 {
@@ -50,6 +52,23 @@ namespace BossRush.Items.Toggle
     }
     public class OverhaulWeaponPlayer : ModPlayer
     {
-        public bool OverhaulWeapon = true;
+        public bool OverhaulWeapon = false;
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)BossRushNetCodeHandle.MessageType.WeaponOverhaul);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(OverhaulWeapon);
+            packet.Send(toWho, fromWho);
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag["WeaponOverhaul"] = OverhaulWeapon;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            OverhaulWeapon = (bool)tag["WeaponOverhaul"];
+        }
     }
 }

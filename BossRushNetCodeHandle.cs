@@ -5,6 +5,7 @@ using BossRush.Items.CustomPotion;
 using BossRush.Items.Artifact;
 using BossRush.Items.NohitReward;
 using BossRush.ExtraChallengeConfig;
+using BossRush.Items.Toggle;
 
 namespace BossRush
 {
@@ -19,7 +20,8 @@ namespace BossRush
 			EoWNoHit,
 			BoCNoHit,
 			GambleAddiction,
-			ExtraChallenge
+            WeaponOverhaul,
+            ExtraChallenge
 		}
 		public void HandlePacket(BinaryReader reader, int whoAmI)
 		{
@@ -30,18 +32,6 @@ namespace BossRush
 				byte playernumber = reader.ReadByte();
 				WonderDrugPlayer DrugDealing = Main.player[playernumber].GetModPlayer<WonderDrugPlayer>();
 				DrugDealing.DrugDealer = reader.ReadInt32();
-			}
-			if (msgType == MessageType.EoWNoHit)
-			{
-				byte playernumber = reader.ReadByte();
-				EoWNoHit EoW = Main.player[playernumber].GetModPlayer<EoWNoHit>();
-				EoW.EoW0Hit = reader.ReadInt32();
-			}
-			if (msgType == MessageType.BoCNoHit)
-			{
-				byte playernumber = reader.ReadByte();
-				BoCNoHit BoC = Main.player[playernumber].GetModPlayer<BoCNoHit>();
-				BoC.BoC0Hit = reader.ReadInt32();
 			}
 			if (msgType == MessageType.SkillIssuePlayer)
 			{
@@ -61,7 +51,19 @@ namespace BossRush
 				KingSlimeNoHit KSNOHIT = Main.player[playernumber].GetModPlayer<KingSlimeNoHit>();
 				KSNOHIT.KS0hit = reader.ReadInt32();
 			}
-			if (msgType == MessageType.GambleAddiction)
+            if (msgType == MessageType.EoWNoHit)
+            {
+                byte playernumber = reader.ReadByte();
+                EoWNoHit EoW = Main.player[playernumber].GetModPlayer<EoWNoHit>();
+                EoW.EoW0Hit = reader.ReadInt32();
+            }
+            if (msgType == MessageType.BoCNoHit)
+            {
+                byte playernumber = reader.ReadByte();
+                BoCNoHit BoC = Main.player[playernumber].GetModPlayer<BoCNoHit>();
+                BoC.BoC0Hit = reader.ReadInt32();
+            }
+            if (msgType == MessageType.GambleAddiction)
 			{
 				byte playernumber = reader.ReadByte();
 				GamblePlayer gamble = Main.player[playernumber].GetModPlayer<GamblePlayer>();
@@ -81,6 +83,12 @@ namespace BossRush
 				ExtraChallengePlayer extraChallenge = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
 				extraChallenge.ChallengeChooser = reader.ReadInt32();
 			}
-		}
+            if (msgType == MessageType.WeaponOverhaul)
+            {
+                byte playernumber = reader.ReadByte();
+                OverhaulWeaponPlayer WeaponOverhaul = Main.player[playernumber].GetModPlayer<OverhaulWeaponPlayer>();
+                WeaponOverhaul.OverhaulWeapon = reader.ReadBoolean();
+            }
+        }
 	}
 }
