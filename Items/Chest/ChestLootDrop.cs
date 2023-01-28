@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using BossRush.Items.Artifact;
 using BossRush.Items.CustomPotion;
 using System;
-using IL.Terraria.DataStructures;
 
 namespace BossRush.Items.Chest
 {

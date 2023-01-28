@@ -3,6 +3,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Mono.Cecil;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush
 {
@@ -15,6 +17,10 @@ namespace BossRush
 
         public override void SetDefaults(Item item)
         {
+            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            {
+                return;
+            }
             #region Vanilla Fixes
             if (item.type == ItemID.FieryGreatsword)
             {
@@ -110,7 +116,7 @@ namespace BossRush
         {
             if (item.useStyle == CustomUsestyleID.Swipe)
             {
-                return base.CanShoot(item, player) && player.GetModPlayer<OnyxiaPlayer>().useStyleData == player.direction;
+                return base.CanShoot(item, player) && player.GetModPlayer<MeleeOverhaulPlayer>().useStyleData == player.direction;
             }
             return base.CanShoot(item, player);
         }
@@ -120,7 +126,7 @@ namespace BossRush
             {
                 if (player.ItemAnimationJustStarted)
                 {
-                    OnyxiaPlayer modPlayer = player.GetModPlayer<OnyxiaPlayer>();
+                    MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                     modPlayer.useStyleData = Math.Abs(modPlayer.useStyleData) != 1 ? Main.rand.Next(new int[] { -1, 1 }) : modPlayer.useStyleData * -1;
                     modPlayer.data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
                     player.direction = ((Vector2)modPlayer.data).X > 0 ? 1 : -1;
@@ -180,7 +186,7 @@ namespace BossRush
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
                 //Get the modplayer responsible for handling this custom usestyle
-                OnyxiaPlayer modPlayer = player.GetModPlayer<OnyxiaPlayer>();
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 
                 //Easing function
                 float percentDone = MathHelper.Clamp(((player.itemAnimationMax * .225f) / ((float)player.itemAnimation) - .225f), 0f, 1f);
@@ -234,7 +240,7 @@ namespace BossRush
                 //Helper method
                 (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
 
-                if (player.GetModPlayer<OnyxiaPlayer>().isItemDelay || player.ItemAnimationJustStarted)
+                if (player.GetModPlayer<MeleeOverhaulPlayer>().isItemDelay || player.ItemAnimationJustStarted)
                 {
                     noHitbox = true;
                 }
@@ -266,7 +272,7 @@ namespace BossRush
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
                 //Get the modplayer responsible for handling this custom usestyle
-                OnyxiaPlayer modPlayer = player.GetModPlayer<OnyxiaPlayer>();
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 
                 //Easing function
                 float percentDone = MathHelper.Clamp(((player.itemAnimationMax * .2f) / ((float)player.itemAnimation) - .2f), 0f, 1f);
@@ -282,5 +288,11 @@ namespace BossRush
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
+    }
+    public class MeleeOverhaulPlayer : ModPlayer
+    {
+        public float useStyleData;
+        public bool isItemDelay;
+        public object data;
     }
 }
