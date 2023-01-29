@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using rail;
+using static BossRush.MeleeWeaponOverhaul;
 
 namespace BossRush
 {
@@ -71,6 +71,7 @@ namespace BossRush
                 case ItemID.SilverBroadsword:
                 case ItemID.LeadBroadsword:
                 case ItemID.GoldBroadsword:
+                case ItemID.Katana:
 
                 case ItemID.Bladetongue:
                 case ItemID.BeamSword:
@@ -97,6 +98,7 @@ namespace BossRush
 
                 case ItemID.Meowmere:
                     item.useStyle = CustomUsestyleID.Swipe;
+                    item.useTurn = false;
                     break;
                 #endregion
                 default:
@@ -104,33 +106,19 @@ namespace BossRush
             }
             base.SetDefaults(item);
         }
-        public override bool CanShoot(Item item, Player player)
-        {
-            return base.CanShoot(item, player);
-        }
-        public override bool? UseItem(Item Item, Player player)
-        {
-            if (Item.useStyle == CustomUsestyleID.Swipe)
-            {
-                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                if (player.ItemAnimationJustStarted && modPlayer.delaytimer == 0)
-                {
-                    modPlayer.delaytimer = player.itemAnimationMax + (int)(player.itemAnimationMax * .34f);
-                    modPlayer.data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                    return true;
-                }
-            }
-            return base.UseItem(Item, player);
-        }
         public override bool CanUseItem(Item item, Player player)
         {
-            return item.useStyle == CustomUsestyleID.Swipe 
-                && player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
+            if (item.useStyle != CustomUsestyleID.Swipe)
+            {
+                return base.CanUseItem(item, player);
+            }
+            return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
         }
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
+                Item.noUseGraphic = false;
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 UpWardSwipeStyle(player, modPlayer);
             }
@@ -181,7 +169,7 @@ namespace BossRush
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
-        private void UpWardSwipeStyle(Player player,  MeleeOverhaulPlayer modPlayer)
+        private void UpWardSwipeStyle(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             float baseAngle = modPlayer.data.ToRotation();
@@ -203,8 +191,18 @@ namespace BossRush
         public int delaytimer = 0;
         public override void PostUpdate()
         {
+            if (Player.HeldItem.useStyle == CustomUsestyleID.Swipe)
+            {
+                Player.HeldItem.noUseGraphic = true;
+                if (Player.ItemAnimationJustStarted && delaytimer == 0)
+                {
+                    delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
+                    data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
+                }
+
+            }
             delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
-            if(Player.ItemAnimationActive)
+            if (Player.ItemAnimationActive)
             {
                 Player.direction = data.X > 0 ? 1 : -1;
             }
