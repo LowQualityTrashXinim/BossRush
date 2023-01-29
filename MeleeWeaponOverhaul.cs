@@ -191,6 +191,7 @@ namespace BossRush
         public int delaytimer = 0;
         public override void PostUpdate()
         {
+            delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
             if (Player.HeldItem.useStyle == CustomUsestyleID.Swipe)
             {
                 Player.HeldItem.noUseGraphic = true;
@@ -199,12 +200,10 @@ namespace BossRush
                     delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
                     data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
                 }
-
-            }
-            delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
-            if (Player.ItemAnimationActive)
-            {
-                Player.direction = data.X > 0 ? 1 : -1;
+                if (Player.ItemAnimationActive)
+                {
+                    Player.direction = data.X > 0 ? 1 : -1;
+                }
             }
         }
     }
