@@ -144,7 +144,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.AmethystBolt, (int)(Projectile.damage * 0.67f), Projectile.knockBack * 0.5f, Projectile.owner);
                 Main.projectile[proj].timeLeft = 30;
             }
-
             if (Projectile.timeLeft < 10)
             {
                 Vector2 GoBack = player.Center - Projectile.position;

@@ -20,7 +20,6 @@ namespace BossRush
 			EoWNoHit,
 			BoCNoHit,
 			GambleAddiction,
-            WeaponOverhaul,
             ExtraChallenge
 		}
 		public void HandlePacket(BinaryReader reader, int whoAmI)
@@ -83,12 +82,6 @@ namespace BossRush
 				ExtraChallengePlayer extraChallenge = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
 				extraChallenge.ChallengeChooser = reader.ReadInt32();
 			}
-            if (msgType == MessageType.WeaponOverhaul)
-            {
-                byte playernumber = reader.ReadByte();
-                OverhaulWeaponPlayer WeaponOverhaul = Main.player[playernumber].GetModPlayer<OverhaulWeaponPlayer>();
-                WeaponOverhaul.OverhaulWeapon = reader.ReadBoolean();
-            }
         }
 	}
 }

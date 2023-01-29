@@ -1,10 +1,8 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
+using rail;
 
 namespace BossRush
 {
@@ -99,154 +97,59 @@ namespace BossRush
 
                 case ItemID.Meowmere:
                     item.useStyle = CustomUsestyleID.Swipe;
-                    item.reuseDelay = item.useAnimation / 3;
                     break;
                 #endregion
                 default:
                     break;
             }
-            if (item.useStyle == CustomUsestyleID.Swipe)
-            {
-                if (item.reuseDelay < 2)
-                    item.reuseDelay = 2; //Minumum of 2 reuseDelay
-            }
             base.SetDefaults(item);
         }
         public override bool CanShoot(Item item, Player player)
         {
-            if (item.useStyle == CustomUsestyleID.Swipe)
-            {
-                return base.CanShoot(item, player) && player.GetModPlayer<MeleeOverhaulPlayer>().useStyleData == player.direction;
-            }
             return base.CanShoot(item, player);
         }
         public override bool? UseItem(Item Item, Player player)
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
-                if (player.ItemAnimationJustStarted)
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+                if (player.ItemAnimationJustStarted && modPlayer.delaytimer == 0)
                 {
-                    MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                    modPlayer.useStyleData = Math.Abs(modPlayer.useStyleData) != 1 ? Main.rand.Next(new int[] { -1, 1 }) : modPlayer.useStyleData * -1;
+                    modPlayer.delaytimer = player.itemAnimationMax + (int)(player.itemAnimationMax * .34f);
                     modPlayer.data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                    player.direction = ((Vector2)modPlayer.data).X > 0 ? 1 : -1;
-
-                    #region GhostItem Fix
-                    //Easing function
-                    float percentDone = MathHelper.Clamp(((player.itemAnimationMax * .225f) / ((float)player.itemAnimation) - .225f), 0f, 1f);
-                    if (modPlayer.isItemDelay)
-                        percentDone = 1f;
-
-                    //This value represets the angle that the item will be swung at.
-                    float angle = MathHelper.Clamp(player.GetAdjustedItemScale(Item) * (Item.width * Item.height) * .0056f * Item.useAnimation, 30f, 450f);
-                    angle = MathHelper.ToRadians(angle); //Convert to radians
-
-                    //Run various calculations:
-                    //1 ... Get the baseline rotation (player -> cursor)
-                    if (modPlayer.data == null)
-                        modPlayer.data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                    float baseAngle = ((Vector2)(modPlayer.data)).ToRotation();
-                    player.direction = ((Vector2)modPlayer.data).X > 0 ? 1 : -1;
-
-                    //2 ... Get the start and end rotational values
-                    float start = baseAngle + (modPlayer.useStyleData * (angle * .5f));
-                    float end = baseAngle - (modPlayer.useStyleData * (angle * .5f));
-
-                    //3 ... Given the previous 2 values, and the percent way through the animation...
-                    //Get the current rotational value
-                    float currentAngle = MathHelper.Lerp(start, end, percentDone);
-
-                    //4 ... Finally, apply these maths to the item rotation and player arm
-                    player.itemRotation = currentAngle;
-                    if (player.direction > 0)
-                    {
-                        player.itemRotation += MathHelper.PiOver4;
-                    }
-                    else
-                    {
-                        player.itemRotation += MathHelper.PiOver4 * 3f;
-                    }
-
-                    player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
-
-                    //5 ... Move the back arm, so it does not look like the player's other arm is completely still
-                    player.compositeBackArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Quarter, 3 * MathHelper.PiOver2);
-
-                    //6 ... Show item at correct location
-                    float distance = (player.itemWidth * player.itemHeight) * .00625f;
-                    player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * distance;
-                    #endregion
                     return true;
                 }
             }
             return base.UseItem(Item, player);
         }
+        public override bool CanUseItem(Item item, Player player)
+        {
+            return item.useStyle == CustomUsestyleID.Swipe 
+                && player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
+        }
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
-                //Get the modplayer responsible for handling this custom usestyle
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-
-                //Easing function
-                float percentDone = MathHelper.Clamp(((player.itemAnimationMax * .225f) / ((float)player.itemAnimation) - .225f), 0f, 1f);
-                if (modPlayer.isItemDelay)
-                    percentDone = 1f;
-
-                //This value represets the angle that the item will be swung at.
-                float angle = MathHelper.Clamp(player.GetAdjustedItemScale(Item) * (Item.width * Item.height) * .0056f * Item.useAnimation, 30f, 450f);
-                angle = MathHelper.ToRadians(angle); //Convert to radians
-
-                //Run various calculations:
-                //1 ... Get the baseline rotation (player -> cursor)
-                if (modPlayer.data == null)
-                    modPlayer.data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                float baseAngle = ((Vector2)(modPlayer.data)).ToRotation();
-                player.direction = ((Vector2)modPlayer.data).X > 0 ? 1 : -1;
-
-                //2 ... Get the start and end rotational values
-                float start = baseAngle + (modPlayer.useStyleData * (angle * .5f));
-                float end = baseAngle - (modPlayer.useStyleData * (angle * .5f));
-
-                //3 ... Given the previous 2 values, and the percent way through the animation...
-                //Get the current rotational value
-                float currentAngle = MathHelper.Lerp(start, end, percentDone);
-
-                //4 ... Finally, apply these maths to the item rotation and player arm
-                player.itemRotation = currentAngle;
-                if (player.direction > 0)
-                {
-                    player.itemRotation += MathHelper.PiOver4;
-                }
-                else
-                {
-                    player.itemRotation += MathHelper.PiOver4 * 3f;
-                }
-
-                player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
-
-                //5 ... Move the back arm, so it does not look like the player's other arm is completely still
-                player.compositeBackArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Quarter, 3 * MathHelper.PiOver2);
-
-                //6 ... Show item at correct location
-                float distance = (player.itemWidth * player.itemHeight) * .00625f;
-                player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * distance;
+                UpWardSwipeStyle(player, modPlayer);
             }
         }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
+            //this remain untouch cause idk what in the hell should i change here
             if (item.useStyle == CustomUsestyleID.Swipe)
             {
                 //Helper method
                 (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
 
-                if (player.GetModPlayer<MeleeOverhaulPlayer>().isItemDelay || player.ItemAnimationJustStarted)
+                if (player.ItemAnimationJustStarted)
                 {
                     noHitbox = true;
                 }
 
                 //Get the direction of the weapon, and the distance from the player to the hilt
-                float distance = (player.itemWidth * player.itemHeight) * .00625f;
+                float distance = player.itemWidth * player.itemHeight * .00625f;
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
 
                 //Use afforementioned direction, and get the distance from the player to the tip of the weapon
@@ -271,28 +174,40 @@ namespace BossRush
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
-                //Get the modplayer responsible for handling this custom usestyle
-                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-
-                //Easing function
-                float percentDone = MathHelper.Clamp(((player.itemAnimationMax * .2f) / ((float)player.itemAnimation) - .2f), 0f, 1f);
-                if (modPlayer.isItemDelay)
-                    percentDone = 1f;
-
-                //Get a multiplier based on the swing progress
+                float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
                 float mult = MathHelper.Lerp(.85f, 1.2f, percentDone);
-
-                //Apply multiplier to the relevant fields, and floor it
                 damage = (int)(damage * mult);
                 knockBack *= mult;
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
+        private void UpWardSwipeStyle(Player player,  MeleeOverhaulPlayer modPlayer)
+        {
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            float baseAngle = modPlayer.data.ToRotation();
+            float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
+            float start = baseAngle + angle;
+            float end = baseAngle - angle;
+            float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+            player.itemRotation = currentAngle;
+            player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+            float distance = (player.itemWidth * player.itemHeight) * .00625f;
+            player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * distance;
+        }
     }
     public class MeleeOverhaulPlayer : ModPlayer
     {
-        public float useStyleData;
-        public bool isItemDelay;
-        public object data;
+        public int useStyleData = -1;
+        public Vector2 data;
+        public int delaytimer = 0;
+        public override void PostUpdate()
+        {
+            delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
+            if(Player.ItemAnimationActive)
+            {
+                Player.direction = data.X > 0 ? 1 : -1;
+            }
+        }
     }
 }
