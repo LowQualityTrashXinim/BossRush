@@ -46,6 +46,10 @@ namespace BossRush
                 item.width = 50;
                 item.height = 58;
             }
+            if(item.type == ItemID.Starfury)
+            {
+                item.width = item.height = 42;
+            }
             #endregion
             switch (item.type)
             {
@@ -76,6 +80,7 @@ namespace BossRush
 
                 case ItemID.Bladetongue:
                 case ItemID.BeamSword:
+                case ItemID.Starfury:
                 case ItemID.PurplePhasesaber:
                 case ItemID.BluePhasesaber:
                 case ItemID.GreenPhasesaber:
@@ -121,7 +126,7 @@ namespace BossRush
             {
                 Item.noUseGraphic = false;
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                UpWardSwipeStyle(player, modPlayer);
+                SwipeAttack(player, modPlayer);
             }
         }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
@@ -170,13 +175,14 @@ namespace BossRush
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
-        private void UpWardSwipeStyle(Player player, MeleeOverhaulPlayer modPlayer)
+        private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
+            int VerticleDirectionSwipe = modPlayer.count%2 == 1 ? -1 : 1;
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
-            float start = baseAngle + angle;
-            float end = baseAngle - angle;
+            float start = baseAngle + angle * VerticleDirectionSwipe;
+            float end = baseAngle - angle * VerticleDirectionSwipe;
             float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
             player.itemRotation = currentAngle;
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
@@ -190,6 +196,7 @@ namespace BossRush
         public int useStyleData = -1;
         public Vector2 data;
         public int delaytimer = 0;
+        public int count = 1;
         public override void PostUpdate()
         {
             delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
@@ -200,6 +207,7 @@ namespace BossRush
                 {
                     delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
                     data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
+                    count++;
                 }
                 if (Player.ItemAnimationActive)
                 {
