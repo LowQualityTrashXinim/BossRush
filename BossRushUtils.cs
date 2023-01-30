@@ -28,12 +28,12 @@ namespace BossRush
             if (ProjectileAmount > 1)
             {
                 rotation = MathHelper.ToRadians(rotation);
-                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation *.5f, rotation *-.5f, i / (ProjectileAmount - 1f)));
+                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
             }
             return Vec2ToRotate;
         }
 
-        public static bool LookForHostileNPC(this Vector2 position,float distance)
+        public static bool LookForHostileNPC(this Vector2 position, float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
