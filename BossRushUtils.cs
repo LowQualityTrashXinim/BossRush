@@ -44,6 +44,13 @@ namespace BossRush
             }
             return false;
         }
+        public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
+        public static float OutExpo(float t) => 1 - InExpo(1 - t);
+        public static float InOutExpo(float t)
+        {
+            if (t < 0.5) return InExpo(t * 2) / 2;
+            return 1 - InExpo((1 - t) * 2) / 2;
+        }
         private static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance) => Vector2.DistanceSquared(pos1, pos2) <= maxDistance;
         public static void DrawTrail(this Projectile projectile, Color lightColor, float ScaleAccordinglyToLength = 0)
         {
