@@ -120,14 +120,36 @@ namespace BossRush
             }
             return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
         }
+        public override float UseSpeedMultiplier(Item item, Player player)
+        {
+            float useTimeMultiplierOnCombo = 1;
+            if (item.useStyle == CustomUsestyleID.Swipe)
+            {
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+                if (modPlayer.count == 1)
+                {
+                    useTimeMultiplierOnCombo -= .5f;
+                }
+            }
+            return useTimeMultiplierOnCombo;
+        }
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 Item.noUseGraphic = false;
+                if (modPlayer.count == 2)
+                {
+                    CircleSwingAttack(player, modPlayer);
+                    return;
+                }
                 SwipeAttack(player, modPlayer);
             }
+        }
+        public override bool? CanHitNPC(Item item, Player player, NPC target)
+        {
+            return base.CanHitNPC(item, player, target);
         }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
@@ -177,12 +199,26 @@ namespace BossRush
         }
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
-            int VerticleDirectionSwipe = modPlayer.count % 2 == 1 ? -1 : 1;
+            int VerticleDirectionSwipe = modPlayer.count == 0 ? -1 : 1;
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
             float start = baseAngle + angle * VerticleDirectionSwipe;
             float end = baseAngle - angle * VerticleDirectionSwipe;
+            float currentAngle = MathHelper.SmoothStep(start, end, BossRushUtils.InExpo(percentDone));
+            player.itemRotation = currentAngle;
+            player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+            float distance = (player.itemWidth * player.itemHeight) * .00625f;
+            player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * distance;
+        }
+
+        private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
+        {
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            float baseAngle = modPlayer.data.ToRotation();
+            float start = baseAngle + MathHelper.PiOver2 * player.direction;
+            float end = baseAngle - (MathHelper.TwoPi + MathHelper.PiOver2) * player.direction;
             float currentAngle = MathHelper.SmoothStep(start, end, BossRushUtils.InExpo(percentDone));
             player.itemRotation = currentAngle;
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
@@ -208,6 +244,10 @@ namespace BossRush
                     delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
                     data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
                     count++;
+                    if (count >= 3)
+                    {
+                        count = 0;
+                    }
                 }
                 if (Player.ItemAnimationActive)
                 {
