@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using BossRush.Items.Toggle;
 
 namespace BossRush
 {
@@ -189,10 +188,10 @@ namespace BossRush
                 {
                     return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
                 }
-                if (!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
-                {
-                    return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-                }
+                //if (!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
+                //{
+                //    return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+                //}
                 if (item.type == ItemID.VortexBeater)
                 {
                     return true;
@@ -217,8 +216,12 @@ namespace BossRush
                 {
                     return;
                 }
+                //if(!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
+                //{
+                //    return;
+                //}
                 var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
-                if (AppliesToEntity(item, false) && (player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon))
+                if (AppliesToEntity(item, false))
                 {
                     float OffSetPost = 0;
                     float SpreadAmount = 0;
