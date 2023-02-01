@@ -8,6 +8,8 @@ using BossRush.Items.Accessories;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using System.Collections.Generic;
+using BossRush.Items.Weapon;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BossRush
 {
@@ -137,10 +139,6 @@ namespace BossRush
             }
             return useTimeMultiplierOnCombo;
         }
-        public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit)
-        {
-            target.immune[player.whoAmI] = 0;
-        }
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
@@ -160,14 +158,6 @@ namespace BossRush
             //this remain untouch cause idk what in the hell should i change here
             if (item.useStyle == CustomUsestyleID.Swipe)
             {
-                //Helper method
-                (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
-
-                if (player.ItemAnimationJustStarted)
-                {
-                    noHitbox = true;
-                }
-
                 //Get the direction of the weapon, and the distance from the player to the hilt
                 float distance = player.itemWidth * player.itemHeight * .00625f;
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
@@ -189,8 +179,13 @@ namespace BossRush
                 //Create the new bounds of the hitbox
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
                 player.GetModPlayer<MeleeOverhaulPlayer>().SwordHitBox = hitbox;
+                int damage = player.GetModPlayer<MeleeOverhaulPlayer>().count == 2 ? (int)(player.HeldItem.damage * 1.5f) : player.HeldItem.damage;
+                int proj = Projectile.NewProjectile(item.GetSource_ItemUse(item), player.itemLocation, player.GetModPlayer<MeleeOverhaulPlayer>().data, ModContent.ProjectileType<GhostHitBox2>(), damage, player.HeldItem.knockBack, player.whoAmI);
+                Main.projectile[proj].Hitbox = hitbox;
             }
         }
+
+        private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
             if (Item.useStyle == CustomUsestyleID.Swipe)
@@ -200,10 +195,13 @@ namespace BossRush
                 float mult = MathHelper.Lerp(.85f, 1.2f, percentDone);
                 damage = (int)(damage * mult);
                 knockBack *= mult;
+                modPlayer.critReference = crit;
                 if (modPlayer.count == 2)
                 {
                     damage = (int)(damage * 1.5f);
                 }
+                int proj = Projectile.NewProjectile(Item.GetSource_ItemUse(Item), player.itemLocation, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), damage, knockBack, player.whoAmI);
+                Main.projectile[proj].Hitbox = modPlayer.SwordHitBox;
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
@@ -241,39 +239,9 @@ namespace BossRush
     {
         public Vector2 data;
         public int delaytimer = 0;
-        public int count = 0;
+        public int count = -1;
         public Rectangle SwordHitBox;
-        bool alreadyintersect = false;
-        List<NPC> npcThatgotHIT;
-        int[] WhoAreYou;
-        private void MeleeHit()
-        {
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                if (Main.npc[i].Hitbox.Intersects(SwordHitBox) && CanAttack(Main.npc[i]))
-                {
-                    Main.npc[i].StrikeNPC(Player.HeldItem.damage, Player.HeldItem.knockBack, Player.direction);
-                    npcThatgotHIT.Add(Main.npc[i]);
-                }
-
-            }
-        }
-
-        private void DeleteOffList()
-        {
-            if (npcThatgotHIT.Count < 1)
-            {
-                return;
-            }
-            for (int i = 0; i < npcThatgotHIT.Count; i++)
-            {
-                if (!npcThatgotHIT[i].Hitbox.Intersects(SwordHitBox))
-                {
-                    npcThatgotHIT.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
+        public bool critReference;
         private bool CanAttack(NPC npc)
         {
             if (!npc.active || npc.immune[Player.whoAmI] != 0)
@@ -282,9 +250,11 @@ namespace BossRush
             }
             return false;
         }
+        int iframeCounter = 0;
         public override void PostUpdate()
         {
             delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
+            iframeCounter -= iframeCounter > 0 ? 1 : 0;
             if (Player.HeldItem.useStyle != CustomUsestyleID.Swipe)
             {
                 return;
@@ -308,9 +278,11 @@ namespace BossRush
                 for (int i = 0; i < Main.maxNPCs; i++)
                 {
                     NPC npc = Main.npc[i];
-                    if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc))
+                    if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && npc.immune[Player.whoAmI] > 0 && iframeCounter == 0 && count == 2)
                     {
-                        Projectile.NewProjectile(Player.GetSource_ItemUse(item), npc.Center, Vector2.Zero, ProjectileID.BeeArrow, item.damage, item.knockBack, Player.whoAmI);
+                        npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
+                        iframeCounter = (int)(Player.itemAnimationMax * .333f);
+                        Player.dpsDamage += (int)(item.damage * 1.5f);
                     }
                 }
             }
