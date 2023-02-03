@@ -38,5 +38,9 @@ namespace BossRush.Items.Weapon
             Projectile.timeLeft = 1;
             Projectile.alpha = 255;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+        }
     }
 }

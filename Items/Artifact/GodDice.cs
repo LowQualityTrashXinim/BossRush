@@ -55,7 +55,7 @@ namespace BossRush.Items.Artifact
             {
                 player.GetModPlayer<GamblePlayer>().Roll++;
                 player.GetModPlayer<GamblePlayer>().GambleDamage = 1;
-                player.GetModPlayer<GamblePlayer>().GambleDef = 1;
+                player.GetModPlayer<GamblePlayer>().GambleDef = 0;
                 player.GetModPlayer<GamblePlayer>().GambleSpeed = 1;
                 player.GetModPlayer<GamblePlayer>().GambleHP = 1;
                 player.GetModPlayer<GamblePlayer>().GambleLifeRegen = 1;
@@ -82,7 +82,7 @@ namespace BossRush.Items.Artifact
     class GamblePlayer : ModPlayer
     {
         public float GambleDamage = 1;
-        public float GambleDef = 1;
+        public float GambleDef = 0;
         public float GambleSpeed = 1;
         public float GambleHP = 1;
         public float GambleLifeRegen = 1;

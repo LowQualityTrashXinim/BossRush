@@ -3,13 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using static BossRush.MeleeWeaponOverhaul;
-using Microsoft.Xna.Framework.Graphics;
-using BossRush.Items.Accessories;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using System.Collections.Generic;
 using BossRush.Items.Weapon;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BossRush
 {
@@ -60,11 +54,13 @@ namespace BossRush
             switch (item.type)
             {
                 #region CustomUsestyleID.Swipe
+                //WoodSword
                 case ItemID.PearlwoodSword:
                 case ItemID.BorealWoodSword:
                 case ItemID.PalmWoodSword:
                 case ItemID.ShadewoodSword:
                 case ItemID.EbonwoodSword:
+                //PreHMSword
                 case ItemID.BladeofGrass:
                 case ItemID.FieryGreatsword:
                 case ItemID.LightsBane:
@@ -83,7 +79,7 @@ namespace BossRush
                 case ItemID.LeadBroadsword:
                 case ItemID.GoldBroadsword:
                 case ItemID.Katana:
-
+                //preHMSaber
                 case ItemID.Bladetongue:
                 case ItemID.BeamSword:
                 case ItemID.Starfury:
@@ -237,11 +233,6 @@ namespace BossRush
     }
     public class MeleeOverhaulPlayer : ModPlayer
     {
-        public Vector2 data;
-        public int delaytimer = 0;
-        public int count = -1;
-        public Rectangle SwordHitBox;
-        public bool critReference;
         private bool CanAttack(NPC npc)
         {
             if (!npc.active || npc.immune[Player.whoAmI] != 0)
@@ -250,7 +241,12 @@ namespace BossRush
             }
             return false;
         }
+        public Vector2 data;
+        public int count = -1;
+        public Rectangle SwordHitBox;
+        public bool critReference;
         int iframeCounter = 0;
+        public int delaytimer = 0;
         public override void PostUpdate()
         {
             delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
