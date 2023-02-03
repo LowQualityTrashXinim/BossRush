@@ -127,6 +127,10 @@ namespace BossRush
             float useTimeMultiplierOnCombo = 1;
             if (item.useStyle == CustomUsestyleID.Swipe)
             {
+                if(player.altFunctionUse == 2)
+                {
+                    return useTimeMultiplierOnCombo;
+                }
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 if (modPlayer.count == 1)
                 {
@@ -141,6 +145,11 @@ namespace BossRush
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 Item.noUseGraphic = false;
+                if (player.altFunctionUse == 2)
+                {
+                    StrongThurst(player, Item, modPlayer);
+                    return;
+                }
                 if (modPlayer.count == 2)
                 {
                     CircleSwingAttack(player, modPlayer);
@@ -180,7 +189,14 @@ namespace BossRush
                 Main.projectile[proj].Hitbox = hitbox;
             }
         }
-
+        public override bool AltFunctionUse(Item item, Player player)
+        {
+            if (item.useStyle == CustomUsestyleID.Swipe)
+            {
+                return true;
+            }
+            return base.AltFunctionUse(item, player);
+        }
         private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
@@ -201,6 +217,25 @@ namespace BossRush
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
+        private void StrongThurst(Player player, Item item, MeleeOverhaulPlayer modPlayer)
+        {
+            float percentDone = player.itemAnimation / (player.itemAnimationMax * .33f);
+            if (player.itemAnimation >= player.itemAnimationMax * .33f)
+            {
+                percentDone -= 1;
+                modPlayer.CountAmountOfThrustDid = 2;
+            }
+            if (player.itemAnimation >= player.itemAnimationMax * .66f)
+            {
+                percentDone -= 1;
+                modPlayer.CountAmountOfThrustDid = 3;
+            }
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * item.height * .25f, modPlayer.data * -.6f, BossRushUtils.InExpo(percentDone));
+            player.itemRotation = modPlayer.data.ToRotation() + MathHelper.ToRadians(modPlayer.RotateThurst);
+            player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, modPlayer.data.ToRotation() - MathHelper.PiOver2);
+            player.itemLocation = player.MountedCenter + poke.RotatedBy(MathHelper.ToRadians(modPlayer.RotateThurst));
+        }
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             int VerticleDirectionSwipe = modPlayer.count == 0 ? -1 : 1;
@@ -216,7 +251,6 @@ namespace BossRush
             float distance = (player.itemWidth * player.itemHeight) * .00625f;
             player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * distance;
         }
-
         private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
@@ -247,6 +281,21 @@ namespace BossRush
         public bool critReference;
         int iframeCounter = 0;
         public int delaytimer = 0;
+        public int CountAmountOfThrustDid = 1;
+        int previousNumOfThrust = 1;
+        public float RotateThurst = 0;
+        public override void PreUpdate()
+        {
+            if (CountAmountOfThrustDid != previousNumOfThrust)
+            {
+                RotateThurst = Main.rand.NextFloat(-15,15);
+                previousNumOfThrust = CountAmountOfThrustDid;
+            }
+            if(CountAmountOfThrustDid == 3 && !Player.ItemAnimationActive)
+            {
+                CountAmountOfThrustDid = 1;
+            }
+        }
         public override void PostUpdate()
         {
             delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
