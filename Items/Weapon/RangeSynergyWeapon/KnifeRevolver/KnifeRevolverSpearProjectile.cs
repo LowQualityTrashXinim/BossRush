@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
@@ -84,7 +85,22 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
     public class KnifeRevolverPlayer : ModPlayer
     {
         public bool SpecialShotReady = false;
-
+        public override void PreUpdate()
+        {
+            Item item = Player.HeldItem;
+            if (item.type != ModContent.ItemType<KnifeRevolver>())
+            {
+                return;
+            }
+            if(Main.mouseRight)
+            {
+                item.UseSound = SoundID.Item1;
+            }
+            else
+            {
+                item.UseSound = SoundID.Item40;
+            }
+        }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (SpecialShotReady && Player.HeldItem.type == ModContent.ItemType<KnifeRevolver>() && Player.altFunctionUse != 2)

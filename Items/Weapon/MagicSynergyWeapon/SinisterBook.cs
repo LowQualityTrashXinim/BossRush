@@ -34,6 +34,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            position = position.PositionOFFSET(velocity, 30);
             for (int i = 0; i < Main.rand.Next(2, 4); i++)
             {
                 velocity = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.NextBool(2) ? Main.rand.Next(40, 90) : -Main.rand.Next(40, 90)));

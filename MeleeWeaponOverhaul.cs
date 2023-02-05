@@ -1,9 +1,13 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using static BossRush.MeleeWeaponOverhaul;
+using Terraria.GameContent;
 using BossRush.Items.Weapon;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using static BossRush.MeleeWeaponOverhaul;
+using System.Drawing.Imaging;
+using System;
 
 namespace BossRush
 {
@@ -61,12 +65,13 @@ namespace BossRush
                 case ItemID.ShadewoodSword:
                 case ItemID.EbonwoodSword:
                 //PreHMSword
-                case ItemID.BladeofGrass:
-                case ItemID.FieryGreatsword:
-                case ItemID.LightsBane:
-                case ItemID.EnchantedSword:
                 case ItemID.BeeKeeper:
-                case ItemID.Muramasa:
+                case ItemID.TinBroadsword:
+                case ItemID.SilverBroadsword:
+                case ItemID.LeadBroadsword:
+                case ItemID.GoldBroadsword:
+                case ItemID.Katana:
+                //LightSaber
                 case ItemID.PurplePhaseblade:
                 case ItemID.BluePhaseblade:
                 case ItemID.GreenPhaseblade:
@@ -74,15 +79,7 @@ namespace BossRush
                 case ItemID.OrangePhaseblade:
                 case ItemID.RedPhaseblade:
                 case ItemID.WhitePhaseblade:
-                case ItemID.TinBroadsword:
-                case ItemID.SilverBroadsword:
-                case ItemID.LeadBroadsword:
-                case ItemID.GoldBroadsword:
-                case ItemID.Katana:
-                //preHMSaber
-                case ItemID.Bladetongue:
-                case ItemID.BeamSword:
-                case ItemID.Starfury:
+
                 case ItemID.PurplePhasesaber:
                 case ItemID.BluePhasesaber:
                 case ItemID.GreenPhasesaber:
@@ -90,10 +87,20 @@ namespace BossRush
                 case ItemID.OrangePhasesaber:
                 case ItemID.RedPhasesaber:
                 case ItemID.WhitePhasesaber:
-
+                //PreHMNightEdge
+                case ItemID.NightsEdge:
+                case ItemID.BladeofGrass:
+                case ItemID.FieryGreatsword:
+                case ItemID.LightsBane:
+                case ItemID.Muramasa:
+                //HardmodeSword
                 case ItemID.CobaltSword:
                 case ItemID.MythrilSword:
                 case ItemID.TitaniumSword:
+                //Sword That shoot projectile
+                case ItemID.BeamSword:
+                case ItemID.EnchantedSword:
+                case ItemID.Starfury:
 
                 case ItemID.Excalibur:
                 case ItemID.TrueExcalibur:
@@ -101,6 +108,7 @@ namespace BossRush
 
                 case ItemID.TerraBlade:
                 case ItemID.TheHorsemansBlade:
+                case ItemID.Bladetongue:
 
                 case ItemID.InfluxWaver:
 
@@ -113,50 +121,6 @@ namespace BossRush
                     break;
             }
             base.SetDefaults(item);
-        }
-        public override bool CanUseItem(Item item, Player player)
-        {
-            if (item.useStyle != CustomUsestyleID.Swipe)
-            {
-                return base.CanUseItem(item, player);
-            }
-            return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
-        }
-        public override float UseSpeedMultiplier(Item item, Player player)
-        {
-            float useTimeMultiplierOnCombo = 1;
-            if (item.useStyle == CustomUsestyleID.Swipe)
-            {
-                if(player.altFunctionUse == 2)
-                {
-                    return useTimeMultiplierOnCombo;
-                }
-                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                if (modPlayer.count == 1)
-                {
-                    useTimeMultiplierOnCombo -= .5f;
-                }
-            }
-            return useTimeMultiplierOnCombo;
-        }
-        public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
-        {
-            if (Item.useStyle == CustomUsestyleID.Swipe)
-            {
-                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                Item.noUseGraphic = false;
-                if (player.altFunctionUse == 2)
-                {
-                    StrongThurst(player, Item, modPlayer);
-                    return;
-                }
-                if (modPlayer.count == 2)
-                {
-                    CircleSwingAttack(player, modPlayer);
-                    return;
-                }
-                SwipeAttack(player, modPlayer);
-            }
         }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
@@ -189,6 +153,50 @@ namespace BossRush
                 Main.projectile[proj].Hitbox = hitbox;
             }
         }
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (item.useStyle != CustomUsestyleID.Swipe)
+            {
+                return base.CanUseItem(item, player);
+            }
+            return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
+        }
+        public override float UseSpeedMultiplier(Item item, Player player)
+        {
+            float useTimeMultiplierOnCombo = 1;
+            if (item.useStyle == CustomUsestyleID.Swipe)
+            {
+                if (player.altFunctionUse == 2)
+                {
+                    return useTimeMultiplierOnCombo;
+                }
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+                if (modPlayer.count == 1)
+                {
+                    useTimeMultiplierOnCombo -= .5f;
+                }
+            }
+            return useTimeMultiplierOnCombo;
+        }
+        public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
+        {
+            if (Item.useStyle == CustomUsestyleID.Swipe)
+            {
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+                Item.noUseGraphic = false;
+                if (player.altFunctionUse == 2)
+                {
+                    FastThurst(player, Item, modPlayer);
+                    return;
+                }
+                if (modPlayer.count == 2)
+                {
+                    CircleSwingAttack(player, modPlayer);
+                    return;
+                }
+                SwipeAttack(player, modPlayer);
+            }
+        }
         public override bool AltFunctionUse(Item item, Player player)
         {
             if (item.useStyle == CustomUsestyleID.Swipe)
@@ -217,7 +225,16 @@ namespace BossRush
             }
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
-        private void StrongThurst(Player player, Item item, MeleeOverhaulPlayer modPlayer)
+        private void StrongThrust(Player player, Item item, MeleeOverhaulPlayer modPlayer)
+        {
+            float percentDone = player.itemAnimation / player.itemAnimationMax;
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * item.height * .25f, modPlayer.data * -item.height * .5f, percentDone);
+            player.itemRotation = modPlayer.data.ToRotation();
+            player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, modPlayer.data.ToRotation() - MathHelper.PiOver2);
+            player.itemLocation = player.MountedCenter + poke;
+        }
+        private void FastThurst(Player player, Item item, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (player.itemAnimationMax * .33f);
             if (player.itemAnimation >= player.itemAnimationMax * .33f)
@@ -230,11 +247,11 @@ namespace BossRush
                 percentDone -= 1;
                 modPlayer.CountAmountOfThrustDid = 3;
             }
-            Vector2 poke = Vector2.SmoothStep(modPlayer.data * item.height * .25f, modPlayer.data * -.6f, BossRushUtils.InExpo(percentDone));
-            player.itemRotation = modPlayer.data.ToRotation() + MathHelper.ToRadians(modPlayer.RotateThurst);
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * item.height * .25f, modPlayer.data * -item.height * .5f, percentDone);
+            player.itemRotation = modPlayer.data.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, modPlayer.data.ToRotation() - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + poke.RotatedBy(MathHelper.ToRadians(modPlayer.RotateThurst));
+            player.itemLocation = player.MountedCenter + poke;
         }
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
@@ -280,20 +297,57 @@ namespace BossRush
         public Rectangle SwordHitBox;
         public bool critReference;
         int iframeCounter = 0;
-        public int delaytimer = 0;
+        public int delaytimer = 10;
         public int CountAmountOfThrustDid = 1;
         int previousNumOfThrust = 1;
         public float RotateThurst = 0;
+        public int oldHeldItem;
         public override void PreUpdate()
         {
             if (CountAmountOfThrustDid != previousNumOfThrust)
             {
-                RotateThurst = Main.rand.NextFloat(-15,15);
+                RotateThurst = Main.rand.NextFloat(-15, 15);
                 previousNumOfThrust = CountAmountOfThrustDid;
             }
-            if(CountAmountOfThrustDid == 3 && !Player.ItemAnimationActive)
+            if (CountAmountOfThrustDid == 3 && !Player.ItemAnimationActive)
             {
                 CountAmountOfThrustDid = 1;
+            }
+        }
+        private void ComboHandleSystem()
+        {
+            if(Player.HeldItem.type != oldHeldItem)
+            {
+                count = -1;
+                return;
+            }
+            if (Player.altFunctionUse == 2)
+            {
+                count = -1;
+                return;
+            }
+            count++;
+            if (count >= 3)
+            {
+                count = 0;
+            }
+        }
+        private void SpinAttackExtraHit()
+        {
+            if(count != 2)
+            {
+                return;
+            }
+            Item item = Player.HeldItem;
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && npc.immune[Player.whoAmI] > 0 && iframeCounter == 0)
+                {
+                    npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
+                    iframeCounter = (int)(Player.itemAnimationMax * .333f);
+                    Player.dpsDamage += (int)(item.damage * 1.5f);
+                }
             }
         }
         public override void PostUpdate()
@@ -305,32 +359,18 @@ namespace BossRush
                 return;
             }
             Player.HeldItem.noUseGraphic = true;
-            if (Player.ItemAnimationJustStarted && delaytimer == 0)
+            if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
             {
                 delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
                 data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
-                count++;
-                if (count >= 3)
-                {
-                    count = 0;
-                }
+                ComboHandleSystem();
             }
             if (Player.ItemAnimationActive)
             {
                 Player.direction = data.X > 0 ? 1 : -1;
-                Item item = Player.HeldItem;
-                //MeleeHit();
-                for (int i = 0; i < Main.maxNPCs; i++)
-                {
-                    NPC npc = Main.npc[i];
-                    if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && npc.immune[Player.whoAmI] > 0 && iframeCounter == 0 && count == 2)
-                    {
-                        npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
-                        iframeCounter = (int)(Player.itemAnimationMax * .333f);
-                        Player.dpsDamage += (int)(item.damage * 1.5f);
-                    }
-                }
+                SpinAttackExtraHit();
             }
+            oldHeldItem = Player.HeldItem.type;
         }
     }
 }

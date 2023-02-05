@@ -17,12 +17,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
             Item.width = 34;
             Item.height = 24;
 
-            Item.damage = 50;
+            Item.damage = 24;
             Item.knockBack = 1f;
             Item.value = Item.buyPrice(gold: 50);
             Item.shootSpeed = 12;
-            Item.useTime = 50;
-            Item.useAnimation = 50;
+            Item.useTime = 100;
+            Item.useAnimation = 100;
 
             Item.autoReuse = false;
             Item.noMelee = true;
