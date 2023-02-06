@@ -25,52 +25,49 @@ namespace BossRush
                 return;
             }
             #region Vanilla Fixes
-            if (item.type == ItemID.FieryGreatsword)
+            switch(item.type)
             {
-                item.width = 54;
-                item.height = 54;
-            }
-            if (item.type == ItemID.Frostbrand)
-            {
-                item.width = 46;
-                item.height = 50;
-            }
-            if (item.type == ItemID.CactusSword)
-            {
-                item.width = 48;
-                item.height = 48;
-            }
-            if (item.type == ItemID.TerraBlade)
-            {
-                item.width = 46;
-                item.height = 54;
-            }
-            if (item.type == ItemID.Meowmere)
-            {
-                item.width = 50;
-                item.height = 58;
-            }
-            if (item.type == ItemID.Starfury)
-            {
-                item.width = item.height = 42;
+                case ItemID.FieryGreatsword:
+                    item.width = 54;
+                    item.height = 54;
+                    break;
+                case ItemID.Frostbrand:
+                    item.width = 46;
+                    item.height = 50;
+                    break;
+                case ItemID.CactusSword:
+                    item.width = 48;
+                    item.height = 48;
+                    break;
+                case ItemID.TerraBlade:
+                    item.width = 46;
+                    item.height = 54;
+                    break;
+                case ItemID.Meowmere:
+                    item.width = 50;
+                    item.height = 58;
+                    break;
+                case ItemID.Starfury:
+                    item.width = item.height = 42;
+                    break;
             }
             #endregion
             switch (item.type)
             {
                 #region CustomUsestyleID.Swipe
+                //Sword that have even end
                 //WoodSword
                 case ItemID.PearlwoodSword:
                 case ItemID.BorealWoodSword:
                 case ItemID.PalmWoodSword:
                 case ItemID.ShadewoodSword:
                 case ItemID.EbonwoodSword:
-                //PreHMSword
+                //OrebroadSword
                 case ItemID.BeeKeeper:
                 case ItemID.TinBroadsword:
                 case ItemID.SilverBroadsword:
                 case ItemID.LeadBroadsword:
                 case ItemID.GoldBroadsword:
-                case ItemID.Katana:
                 //LightSaber
                 case ItemID.PurplePhaseblade:
                 case ItemID.BluePhaseblade:
@@ -87,7 +84,7 @@ namespace BossRush
                 case ItemID.OrangePhasesaber:
                 case ItemID.RedPhasesaber:
                 case ItemID.WhitePhasesaber:
-                //PreHMNightEdge
+                //Misc PreHM sword
                 case ItemID.NightsEdge:
                 case ItemID.BladeofGrass:
                 case ItemID.FieryGreatsword:
@@ -113,6 +110,9 @@ namespace BossRush
                 case ItemID.InfluxWaver:
 
                 case ItemID.Meowmere:
+                //Sword that don't have even end
+                //Pre HM sword
+                case ItemID.Katana:
                     item.useStyle = CustomUsestyleID.Swipe;
                     item.useTurn = false;
                     break;
