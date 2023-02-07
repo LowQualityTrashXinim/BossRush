@@ -1,13 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
 using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using static BossRush.MeleeWeaponOverhaul;
-using System.Drawing.Imaging;
-using System;
 
 namespace BossRush
 {
@@ -15,7 +11,7 @@ namespace BossRush
     {
         public class CustomUsestyleID
         {
-            public const int Swipe = 16;
+            public const int Swipe = 999;
         }
 
         public override void SetDefaults(Item item)
