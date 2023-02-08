@@ -11,16 +11,25 @@ namespace BossRush
     {
         public static Vector2 limitedVelocity(this Vector2 velocity, float limited)
         {
-            velocity.X = Math.Clamp(velocity.X, -limited, limited);
-            velocity.Y = Math.Clamp(velocity.Y, -limited, limited);
+            velocity.getAbsoluteVectorNormalized(limited, out float X, out float Y);
+            velocity.X = Math.Clamp(velocity.X, -X, X);
+            velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
             return velocity;
         }
 
         public static bool reachedLimited(this Vector2 velocity, float limited)
         {
-            if (Math.Abs(Math.Clamp(velocity.X, -limited, limited)) >= limited) return true;
-            if (Math.Abs(Math.Clamp(velocity.Y, -limited, limited)) >= limited) return true;
+            velocity.getAbsoluteVectorNormalized(limited, out float X, out float Y);
+            if (Math.Abs(velocity.X) >= X) return true;
+            if (Math.Abs(velocity.Y) >= Y) return true;
             return false;
+        }
+
+        private static void getAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
+        {
+            Vector2 newVelocity = velocity.SafeNormalize(Vector2.One) * limit;
+            X = Math.Abs(newVelocity.X);
+            Y = Math.Abs(newVelocity.Y);
         }
 
         public static Vector2 Vector2DistributeEvenly(this Vector2 Vec2ToRotate, float ProjectileAmount, float rotation, int i)
@@ -55,7 +64,7 @@ namespace BossRush
         public static float OutSine(float t) => (float)Math.Sin(t * MathHelper.PiOver2);
         public static float InOutSine(float t) => (float)(Math.Cos(t * Math.PI) - 1) * -.5f;
         private static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance) => Vector2.DistanceSquared(pos1, pos2) <= maxDistance;
-        public static void DrawTrail(this Projectile projectile, Color lightColor, float ScaleAccordinglyToLength = 0)
+        public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0)
         {
             Main.instance.LoadProjectile(projectile.type);
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
@@ -64,7 +73,21 @@ namespace BossRush
             {
                 Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
                 Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ScaleAccordinglyToLength, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
+            }
+        }
+
+        public static void DrawTrail(this Projectile projectile, Color lightColor, int ScaleAccordinglyToLength, int uselessvalue = 0)
+        {
+            float scaleDown = 1 / ScaleAccordinglyToLength;
+            Main.instance.LoadProjectile(projectile.type);
+            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
+            for (int k = 0; k < projectile.oldPos.Length; k++)
+            {
+                Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
+                Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * scaleDown, SpriteEffects.None, 0);
             }
         }
     }

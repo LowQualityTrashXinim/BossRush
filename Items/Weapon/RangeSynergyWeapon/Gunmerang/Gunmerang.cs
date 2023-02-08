@@ -93,7 +93,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Gunmerang
             {
                 count = 0;
             }
-            return false;
+            return true;
         }
 
         public override Vector2? HoldoutOffset()

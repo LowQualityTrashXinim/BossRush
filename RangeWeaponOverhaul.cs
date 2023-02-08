@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 namespace BossRush
 {
     /// <summary>
-    /// This is for specific range only
+    /// This is for specific gun that deal range damage only
     /// </summary>
     public static class RangeWeaponOverhaul
     {
