@@ -67,22 +67,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Projectile.localNPCHitCooldown = 100;
         }
         int ExtraUpdaterReCounter = 0;
-        //public override bool PreAI()
-        //{
-        //    ExtraUpdaterReCounter -= ExtraUpdaterReCounter > 0 ? 1 : 0;
-        //    if (ExtraUpdaterReCounter == 0)
-        //    {
-        //        ExtraUpdaterReCounter = 6;
-        //        return true;
-        //    }
-        //    return false;
-        //}
         float speedMultiplier = 1;
         int AlphaAdditionalCounter = 255;
         public override void AI()
         {
             ExtraUpdateRecounter();
             Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
+            Projectile.rotation += MathHelper.ToRadians(10);
         }
 
         public void ExtraUpdateRecounter()
