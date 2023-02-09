@@ -50,6 +50,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
     }
     class MoonStarProjectile : ModProjectile
     {
+        int originDamage;
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 46;
@@ -61,7 +62,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Projectile.extraUpdates = 6;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.timeLeft = 3000;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 100;
@@ -73,7 +74,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         {
             ExtraUpdateRecounter();
             Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
-            Projectile.rotation += MathHelper.ToRadians(10);
+            Projectile.rotation += MathHelper.ToRadians(.5f);
         }
 
         public void ExtraUpdateRecounter()
@@ -81,6 +82,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             ExtraUpdaterReCounter -= ExtraUpdaterReCounter > 0 ? 1 : 0;
             if (ExtraUpdaterReCounter == 0)
             {
+                Projectile.damage += (int)((Projectile.velocity.X + Projectile.velocity.Y) * .5f);
                 ExtraUpdaterReCounter = 6;
                 speedMultiplier += .01f;
                 Projectile.alpha++;
@@ -103,8 +105,26 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             {
                 Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin + halfTexture) + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(new Color(0, 0, 255, Math.Abs(AlphaAdditionalCounter) / k));
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, origin, Projectile.scale - (k - 1) * 0.01f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .01f, SpriteEffects.None, 0);
             }
+            for (int k = 1; k < (int)(Projectile.oldPos.Length * .5f) + 1; k++)
+            {
+                Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin - halfTexture) + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(new Color(255, 255, 255, Math.Abs(AlphaAdditionalCounter) / k));
+                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
+            }
+
+            Texture2D thisProjectiletexture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 thisProjectileorigin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
+            Vector2 thisProjectiledrawPos = Projectile.position - Main.screenPosition + thisProjectileorigin + new Vector2(0f, Projectile.gfxOffY);
+            Color thisProjectilecolor = Projectile.GetAlpha(lightColor);
+            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, thisProjectilecolor, -Projectile.rotation, thisProjectileorigin, Projectile.scale, SpriteEffects.None, 0);
+
+            Color largerProjectilecolor = Projectile.GetAlpha(new Color(255,255,255,20));
+
+            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, largerProjectilecolor, -Projectile.rotation, thisProjectileorigin, Projectile.scale * 2, SpriteEffects.None, 0);
+
+
             return base.PreDraw(ref lightColor);
         }
     }
