@@ -4,21 +4,22 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon
+namespace BossRush.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
 {
-    internal class RubySwotaff : ModItem, ISynergyItem
+    internal class DiamondSwotaff : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Really Fancy Sword and staff");
+            Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
             Item.staff[Item.type] = true;
         }
+
         public override void SetDefaults()
         {
             Item.width = 60;
             Item.height = 58;
 
-            Item.damage = 32;
+            Item.damage = 37;
             Item.crit = 10;
             Item.knockBack = 3f;
 
@@ -30,7 +31,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Item.mana = 20;
 
             Item.value = Item.buyPrice(gold: 50);
-            Item.shoot = ProjectileID.RubyBolt;
+            Item.shoot = ProjectileID.DiamondBolt;
             Item.DamageType = DamageClass.Magic;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
@@ -39,18 +40,21 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
 
             Item.UseSound = SoundID.Item8;
         }
+
         int i = 0;
         int countChange = 0;
+
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
         {
             if (player.altFunctionUse == 2)
             {
-                mult = 7.5f;
+                mult = 8.5f;
             }
         }
+
         public override bool AltFunctionUse(Player player)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<GiantRubyBolt>()] < 1;
+            return player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -88,7 +92,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             {
                 if (player.ItemAnimationJustStarted)
                 {
-                    Projectile.NewProjectile(source, position, velocity * 5, ModContent.ProjectileType<GiantRubyBolt>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity * 5, ModContent.ProjectileType<DiamondSwotaffOrb>(), damage, knockback, player.whoAmI);
                 }
                 return false;
             }
@@ -98,126 +102,108 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             }
 
         }
+
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.RubyStaff)
-                .AddIngredient(ItemID.GoldBroadsword)
+                .AddIngredient(ItemID.DiamondStaff)
+                .AddIngredient(ItemID.PlatinumBroadsword)
                 .Register();
         }
     }
-    internal class GiantRubyBolt : ModProjectile
+    internal class DiamondSwotaffOrb : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Projectile.type] = 2;
-        }
-
+        float rotateto = 0;
         public override void SetDefaults()
         {
             Projectile.width = 30;
             Projectile.height = 30;
+            Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
-            Projectile.timeLeft = 300;
             Projectile.DamageType = DamageClass.Magic;
+            Projectile.timeLeft = 400;
         }
-        float count = 0;
-        int counttime = 0;
-        int permaCount = 0;
         public override void AI()
         {
-            SelectFrame();
             Player player = Main.player[Projectile.owner];
-            Projectile.velocity -= Projectile.velocity * 0.1f;
-            EntitySource_ItemUse source = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<RubySwotaff>()));
+            if (Projectile.velocity != Vector2.Zero)
+            {
+                Projectile.velocity -= Projectile.velocity * 0.05f;
+            }
             if (Projectile.velocity.X < 1 && Projectile.velocity.X > -1 && Projectile.velocity.Y < 1 && Projectile.velocity.Y > -1)
             {
-                Projectile.velocity = Vector2.Zero;
                 for (int i = 0; i < 30; i++)
                 {
                     Vector2 Rotate = Main.rand.NextVector2CircularEdge(5f, 5f);
-                    int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, Rotate.X, Rotate.Y, 100, default, Main.rand.NextFloat(0.75f, 2f));
+                    int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Rotate.X, Rotate.Y, 100, default, Main.rand.NextFloat(0.75f, 2f));
                     Main.dust[dustnumber].noGravity = true;
                 }
-            }
-            if (Projectile.velocity == Vector2.Zero)
-            {
-                if (permaCount == 0)
-                {
-                    for (int i = 0; i < 150; i++)
-                    {
-                        Vector2 Rotate = Main.rand.NextVector2CircularEdge(20f, 20f);
-                        int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, Rotate.X, Rotate.Y, default, default, Main.rand.NextFloat(1.5f, 2.5f));
-                        Main.dust[dustnumber].noGravity = true;
-                        permaCount++;
-                    }
-                }
+                var source = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<DiamondSwotaff>()));
+                Projectile.velocity = Vector2.Zero;
                 Projectile.ai[0]++;
-                if (Projectile.ai[0] >= 10)
+                if (Projectile.ai[0] >= 30)
                 {
                     Projectile.netUpdate = true;
-                    for (int i = 0; i < 12; i++)
+                    for (int i = 0; i < 10; i++)
                     {
-                        Vector2 Rotate = Main.rand.NextVector2Circular(5f, 5f);
-                        int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, Rotate.X, Rotate.Y, 100, default, Main.rand.NextFloat(0.75f, 2f));
+                        Vector2 RandomRotatePos = Projectile.Center + Main.rand.NextVector2CircularEdge(330f, 330f);
+                        Vector2 velocityCustom = (Projectile.Center - RandomRotatePos).SafeNormalize(Vector2.UnitX) * 17;
+                        int dustnumber = Dust.NewDust(RandomRotatePos, 0, 0, DustID.GemDiamond, velocityCustom.X, velocityCustom.Y, default, default, Main.rand.NextFloat(1.5f, 2.5f));
                         Main.dust[dustnumber].noGravity = true;
                     }
-                    if (counttime == 0)
+                    for (int i = 0; i < 25; i++)
                     {
-                        count += 2f;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            Projectile.NewProjectile(source, Projectile.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(count + i * 90)) * 5, ModContent.ProjectileType<SmallerRubyBolt>(), (int)(Projectile.damage * 0.35f), 0, Projectile.owner);
-                            Projectile.NewProjectile(source, Projectile.Center, Vector2.One.RotatedBy(MathHelper.ToRadians(-count + i * 90)) * 5, ModContent.ProjectileType<SmallerRubyBolt>(), (int)(Projectile.damage * 0.35f), 0, Projectile.owner);
-                        }
+                        Vector2 RandomRotatePos = Projectile.Center + Main.rand.NextVector2CircularEdge(330f, 330f);
+                        int dustnumber = Dust.NewDust(RandomRotatePos, 0, 0, DustID.GemDiamond, 0, 0, default, default, Main.rand.NextFloat(1.5f, 2.5f));
+                        Main.dust[dustnumber].noGravity = true;
                     }
-                    counttime++;
-                    if (counttime >= 1)
-                    {
-                        counttime = 0;
-                    }
-                }
-            }
-        }
-
-        public void SelectFrame()
-        {
-            if (++Projectile.frameCounter >= 10)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame += 1;
-                if (Projectile.frame >= Main.projFrames[Projectile.type])
-                {
-                    Projectile.frame = 0;
+                    Vector2 newPos = Projectile.Center + (Projectile.Center + Vector2.One).SafeNormalize(Vector2.UnitX) * 300;
+                    Vector2 newVelo = (Projectile.Center - newPos.RotatedBy(MathHelper.ToRadians(rotateto), Projectile.Center)).SafeNormalize(Vector2.UnitX);
+                    Vector2 newVelo2 = (Projectile.Center - newPos.RotatedBy(MathHelper.ToRadians(rotateto + 90), Projectile.Center)).SafeNormalize(Vector2.UnitX);
+                    Vector2 newVelo3 = (Projectile.Center - newPos.RotatedBy(MathHelper.ToRadians(rotateto + 180), Projectile.Center)).SafeNormalize(Vector2.UnitX);
+                    Vector2 newVelo4 = (Projectile.Center - newPos.RotatedBy(MathHelper.ToRadians(rotateto + 270), Projectile.Center)).SafeNormalize(Vector2.UnitX);
+                    Projectile.NewProjectile(source, newPos.RotatedBy(MathHelper.ToRadians(rotateto), Projectile.Center), newVelo * 5, ModContent.ProjectileType<DiamondBoltSpecial>(), (int)(Projectile.damage * 0.35), 0, Projectile.owner);
+                    Projectile.NewProjectile(source, newPos.RotatedBy(MathHelper.ToRadians(rotateto + 90), Projectile.Center), newVelo2 * 5, ModContent.ProjectileType<DiamondBoltSpecial>(), (int)(Projectile.damage * 0.35), 0, Projectile.owner);
+                    Projectile.NewProjectile(source, newPos.RotatedBy(MathHelper.ToRadians(rotateto + 180), Projectile.Center), newVelo3 * 5, ModContent.ProjectileType<DiamondBoltSpecial>(), (int)(Projectile.damage * 0.35), 0, Projectile.owner);
+                    Projectile.NewProjectile(source, newPos.RotatedBy(MathHelper.ToRadians(rotateto + 270), Projectile.Center), newVelo4 * 5, ModContent.ProjectileType<DiamondBoltSpecial>(), (int)(Projectile.damage * 0.35), 0, Projectile.owner);
+                    rotateto += 5;
                 }
             }
         }
     }
-    internal class SmallerRubyBolt : ModProjectile
+    internal class DiamondBoltSpecial : ModProjectile
     {
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/DiamondSwotaffOrb";
         public override void SetDefaults()
         {
             Projectile.width = 30;
             Projectile.height = 30;
-            Projectile.timeLeft = 50;
+            Projectile.timeLeft = 70;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Magic;
+            Projectile.alpha = 255;
         }
         int count = 0;
         public override void AI()
         {
-            Projectile.alpha += 5;
-            Projectile.scale -= 0.015f;
+            if (Projectile.timeLeft > 55)
+            {
+                Projectile.alpha -= 10;
+            }
+            else
+            {
+                Projectile.alpha += 5;
+                Projectile.scale -= 0.025f;
+            }
             if (count >= 3)
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, -Projectile.velocity.X + Main.rand.Next(-5, 5), -Projectile.velocity.Y + Main.rand.Next(-5, 5), 100, default, Projectile.scale);
+                    int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, 0, 0, 100, default, Projectile.scale);
                     Main.dust[dustnumber].noGravity = true;
                 }
                 count = 0;

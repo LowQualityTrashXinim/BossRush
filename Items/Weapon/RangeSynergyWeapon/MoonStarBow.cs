@@ -20,7 +20,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Item.width = 18;
             Item.height = 32;
 
-            Item.damage = 40;
+            Item.damage = 63;
             Item.knockBack = 1f;
 
             Item.useTime = 20;
@@ -42,7 +42,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             position.Y += Main.rand.Next(-900, -800);
-            position.X += Main.rand.Next(-100, 100);
+            position.X += Main.rand.Next(-300, 300);
             velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
@@ -59,7 +59,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
     }
     class MoonStarProjectile : ModProjectile
     {
-        int originDamage;
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 46;
@@ -77,7 +76,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Projectile.localNPCHitCooldown = 100;
         }
         int ExtraUpdaterReCounter = 0;
-        float speedMultiplier = 1;
+        float speedMultiplier = 2;
         int AlphaAdditionalCounter = 255;
         int counter = 0;
         public override bool PreAI()

@@ -5,13 +5,13 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon
+namespace BossRush.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
 {
-    internal class AmethystSwotaff : ModItem, ISynergyItem
+    internal class TopazSwotaff : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("You know, if this is all what it do\nthen it would be pretty disappointing\nluckily, you can yeet the thing");
+            Tooltip.SetDefault("the sword is quite useless if you ask me");
             Item.staff[Item.type] = true;
         }
 
@@ -31,13 +31,13 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             Item.shootSpeed = 7;
             Item.mana = 30;
 
-            Item.value = Item.buyPrice(gold: 50);
-            Item.shoot = ProjectileID.AmethystBolt;
             Item.DamageType = DamageClass.Magic;
+            Item.shoot = ProjectileID.TopazBolt;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.useTurn = false;
             Item.rare = 2;
+            Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item8;
         }
@@ -55,13 +55,14 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
 
         public override bool CanUseItem(Player player)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<AmethystSwotaffP>()] < 1;
+            return player.ownedProjectileCounts[ModContent.ProjectileType<TopazSwotaffP>()] < 1;
         }
 
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse != 2)
@@ -93,6 +94,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 }
             }
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (player.altFunctionUse == 2)
@@ -100,7 +102,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
                 if (player.ItemAnimationJustStarted)
                 {
                     Item.noUseGraphic = true;
-                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<AmethystSwotaffP>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<TopazSwotaffP>(), damage, knockback, player.whoAmI);
                 }
                 return false;
             }
@@ -115,14 +117,14 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
         {
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.CopperBroadsword)
-                .AddIngredient(ItemID.AmethystStaff)
+                .AddIngredient(ItemID.TinBroadsword)
+                .AddIngredient(ItemID.TopazStaff)
                 .Register();
         }
     }
-    public class AmethystSwotaffP : ModProjectile
+    public class TopazSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/AmethystSwotaff";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/TopazSwotaff";
         public override void SetDefaults()
         {
             Projectile.width = 60;
@@ -141,9 +143,10 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
             float offSetRotate = Projectile.rotation - MathHelper.PiOver4;
             if (Projectile.velocity.X != 0)
             {
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.AmethystBolt, (int)(Projectile.damage * 0.67f), Projectile.knockBack * 0.5f, Projectile.owner);
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + offSetRotate.ToRotationVector2() * 30, Projectile.rotation.ToRotationVector2() * 9, ProjectileID.TopazBolt, (int)(Projectile.damage * 0.67f), Projectile.knockBack * 0.5f, Projectile.owner);
                 Main.projectile[proj].timeLeft = 30;
             }
+
             if (Projectile.timeLeft < 10)
             {
                 Vector2 GoBack = player.Center - Projectile.position;

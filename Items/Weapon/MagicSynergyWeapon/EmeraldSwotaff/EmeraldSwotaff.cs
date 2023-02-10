@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Items.Weapon.MagicSynergyWeapon
+namespace BossRush.Items.Weapon.MagicSynergyWeapon.EmeraldSwotaff
 {
     internal class EmeraldSwotaff : ModItem, ISynergyItem
     {
