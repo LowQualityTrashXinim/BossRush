@@ -53,6 +53,20 @@ namespace BossRush
             }
             return false;
         }
+
+        public static bool LookForClosestHostileNPC(this Vector2 position, out NPC npc, float distance)
+        {
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                if (Main.npc[i].active && CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance))
+                {
+                    npc = Main.npc[i];
+                    return true;
+                }
+            }
+            npc = null;
+            return false;
+        }
         public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
         public static float OutExpo(float t) => 1 - InExpo(1 - t);
         public static float InOutExpo(float t)
