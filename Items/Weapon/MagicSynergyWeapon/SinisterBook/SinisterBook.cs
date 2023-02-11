@@ -121,15 +121,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.SinisterBook
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(Projectile.gfxOffY);
-                Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale - k * 0.05f, SpriteEffects.None, 0);
-            }
+            Projectile.DrawTrail(lightColor, .5f);
             return true;
         }
     }

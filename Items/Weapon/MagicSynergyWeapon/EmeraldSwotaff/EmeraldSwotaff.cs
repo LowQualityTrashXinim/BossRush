@@ -98,7 +98,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.EmeraldSwotaff
     }
     public class EmeraldSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/EmeraldSwotaff";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/EmeraldSwotaff/EmeraldSwotaff";
         public override void SetDefaults()
         {
             Projectile.height = 29;

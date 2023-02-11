@@ -114,7 +114,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.SapphireSwotaff
 
     public class SapphireSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/SapphireSwotaff";
+        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/SapphireSwotaff/SapphireSwotaff";
         public override void SetDefaults()
         {
             Projectile.height = 29;
