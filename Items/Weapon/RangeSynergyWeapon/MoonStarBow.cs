@@ -221,13 +221,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             for (int i = 0; i < 80; i++)
             {
                 Vector2 vec = Main.rand.NextVector2Unit(MathHelper.PiOver4, MathHelper.PiOver2) * Main.rand.NextFloat(3, 5) * -1f;
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 226, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 226, 0, 0, 0, Color.Blue, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = vec.RotatedBy(MathHelper.ToRadians(90 * (i % 4)));
             }
             for (int i = 0; i < 50; i++)
             {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(1.35f, 1.5f));
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, Color.Blue, Main.rand.NextFloat(1.35f, 1.5f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(7f, 7f);
             }
