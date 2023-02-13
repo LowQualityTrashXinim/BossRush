@@ -67,10 +67,12 @@ namespace BossRush.Items.Weapon
             {
                 int dust = Dust.NewDust(Head, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(2f, 2f);
+                Main.dust[dust].velocity = Vector2.Zero;
+                Main.dust[dust].fadeIn = 2f;
                 int dust2 = Dust.NewDust(End, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust2].noGravity = true;
-                Main.dust[dust2].velocity = Main.rand.NextVector2CircularEdge(2f, 2f);
+                Main.dust[dust2].velocity = Vector2.Zero;
+                Main.dust[dust2].fadeIn = 2f;
             }
         }
 

@@ -9,7 +9,7 @@ namespace BossRush
 {
     internal class MeleeWeaponOverhaul : GlobalItem
     {
-        public class CustomUsestyleID
+        public class BossRushUseStyle
         {
             public const int Swipe = 999;
         }
@@ -50,7 +50,7 @@ namespace BossRush
             #endregion
             switch (item.type)
             {
-                #region CustomUsestyleID.Swipe
+                #region BossRushUseStyle.Swipe
                 //Sword that have even end
                 //WoodSword
                 case ItemID.PearlwoodSword:
@@ -109,7 +109,7 @@ namespace BossRush
                 //Sword that don't have even end
                 //Pre HM sword
                 case ItemID.Katana:
-                    item.useStyle = CustomUsestyleID.Swipe;
+                    item.useStyle = BossRushUseStyle.Swipe;
                     item.useTurn = false;
                     break;
                 #endregion
@@ -121,7 +121,7 @@ namespace BossRush
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
             //this remain untouch cause idk what in the hell should i change here
-            if (item.useStyle == CustomUsestyleID.Swipe)
+            if (item.useStyle == BossRushUseStyle.Swipe)
             {
                 //Get the direction of the weapon, and the distance from the player to the hilt
                 float distance = player.itemWidth * player.itemHeight * .00625f;
@@ -151,7 +151,7 @@ namespace BossRush
         }
         public override bool CanUseItem(Item item, Player player)
         {
-            if (item.useStyle != CustomUsestyleID.Swipe)
+            if (item.useStyle != BossRushUseStyle.Swipe)
             {
                 return base.CanUseItem(item, player);
             }
@@ -160,7 +160,7 @@ namespace BossRush
         public override float UseSpeedMultiplier(Item item, Player player)
         {
             float useTimeMultiplierOnCombo = 1;
-            if (item.useStyle == CustomUsestyleID.Swipe)
+            if (item.useStyle == BossRushUseStyle.Swipe)
             {
                 if (player.altFunctionUse == 2)
                 {
@@ -176,7 +176,7 @@ namespace BossRush
         }
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
-            if (Item.useStyle == CustomUsestyleID.Swipe)
+            if (Item.useStyle == BossRushUseStyle.Swipe)
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 Item.noUseGraphic = false;
@@ -195,7 +195,7 @@ namespace BossRush
         }
         public override bool AltFunctionUse(Item item, Player player)
         {
-            if (item.useStyle == CustomUsestyleID.Swipe)
+            if (item.useStyle == BossRushUseStyle.Swipe)
             {
                 return true;
             }
@@ -204,7 +204,7 @@ namespace BossRush
         private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
-            if (Item.useStyle == CustomUsestyleID.Swipe)
+            if (Item.useStyle == BossRushUseStyle.Swipe)
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
@@ -350,7 +350,7 @@ namespace BossRush
         {
             delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
             iframeCounter -= iframeCounter > 0 ? 1 : 0;
-            if (Player.HeldItem.useStyle != CustomUsestyleID.Swipe)
+            if (Player.HeldItem.useStyle != BossRushUseStyle.Swipe)
             {
                 return;
             }
