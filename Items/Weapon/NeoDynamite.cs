@@ -23,7 +23,7 @@ namespace BossRush.Items.Weapon
             Item.useTime = 20;
 
             Item.shoot = ModContent.ProjectileType<NeoDynamiteExplosion>();
-            Item.shootSpeed = 15f;
+            Item.shootSpeed = 11f;
 
             Item.UseSound = SoundID.Item1;
             Item.useStyle = ItemUseStyleID.Swing;
@@ -68,11 +68,11 @@ namespace BossRush.Items.Weapon
                 int dust = Dust.NewDust(Head, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Vector2.Zero;
-                Main.dust[dust].fadeIn = 2f;
+                Main.dust[dust].fadeIn = 1f;
                 int dust2 = Dust.NewDust(End, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust2].noGravity = true;
                 Main.dust[dust2].velocity = Vector2.Zero;
-                Main.dust[dust2].fadeIn = 2f;
+                Main.dust[dust2].fadeIn = 1f;
             }
         }
 
