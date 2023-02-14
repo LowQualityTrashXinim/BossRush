@@ -2,6 +2,9 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace BossRush.Items.Weapon
 {
@@ -61,18 +64,22 @@ namespace BossRush.Items.Weapon
         public override void AI()
         {
             Projectile.rotation += MathHelper.ToRadians(20);
-            Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() *11;
-            Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 11;
+            Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
+            Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
             for (int i = 0; i < 3; i++)
             {
-                int dust = Dust.NewDust(Head, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                int dust = Dust.NewDust(Head, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Vector2.Zero;
                 Main.dust[dust].fadeIn = 1f;
-                int dust2 = Dust.NewDust(End, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                int dust2 = Dust.NewDust(End, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust2].noGravity = true;
                 Main.dust[dust2].velocity = Vector2.Zero;
                 Main.dust[dust2].fadeIn = 1f;
+                int dust3 = Dust.NewDust(Projectile.Center, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                Main.dust[dust3].noGravity = true;
+                Main.dust[dust3].velocity = Main.rand.NextVector2Circular(3f, 3f) - Projectile.velocity;
+                Main.dust[dust3].fadeIn = 1f;
             }
         }
 
@@ -183,6 +190,25 @@ namespace BossRush.Items.Weapon
                     }
                 }
             }
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("BossRush/Items/Weapon/NeoDynamiteGlowMask", AssetRequestMode.ImmediateLoad).Value;
+            Main.EntitySpriteDraw(
+                texture,
+                new Vector2
+                (
+                    Projectile.position.X - Main.screenPosition.X + Projectile.width * 0.5f + 2,
+                    Projectile.position.Y - Main.screenPosition.Y + Projectile.height - texture.Height * 0.5f + 2f + 22
+                ),
+                null,
+                Color.White,
+                Projectile.rotation,
+                texture.Size() * 0.5f,
+                Projectile.scale,
+                SpriteEffects.None,
+                0
+            );
         }
     }
 }
