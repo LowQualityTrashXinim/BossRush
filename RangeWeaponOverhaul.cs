@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using System.Reflection.Metadata;
 
 namespace BossRush
 {
@@ -103,6 +104,30 @@ namespace BossRush
             ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
             return ToRotateAgain;
         }
+
+        public static int[] GunType = {
+            ItemID.RedRyder,
+            ItemID.Minishark,
+            ItemID.Gatligator,
+            ItemID.Handgun,
+            ItemID.PhoenixBlaster,
+            ItemID.Musket,
+            ItemID.TheUndertaker,
+            ItemID.FlintlockPistol,
+            ItemID.Revolver,
+            ItemID.ClockworkAssaultRifle,
+            ItemID.Megashark,
+            ItemID.Uzi,
+            ItemID.VenusMagnum,
+            ItemID.SniperRifle,
+            ItemID.ChainGun,
+            ItemID.SDMG,
+            ItemID.Boomstick,
+            ItemID.QuadBarrelShotgun,
+            ItemID.Shotgun,
+            ItemID.OnyxBlaster,
+            ItemID.TacticalShotgun
+        };
     }
     public class RangeVanillaWeaponModifier
     {
@@ -158,30 +183,6 @@ namespace BossRush
                     Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
                 }
             }
-            int[] GunType = {
-            ItemID.RedRyder,
-            ItemID.Minishark,
-            ItemID.Gatligator,
-            ItemID.Handgun,
-            ItemID.PhoenixBlaster,
-            ItemID.Musket,
-            ItemID.TheUndertaker,
-            ItemID.FlintlockPistol,
-            ItemID.Revolver,
-            ItemID.ClockworkAssaultRifle,
-            ItemID.Megashark,
-            ItemID.Uzi,
-            ItemID.VenusMagnum,
-            ItemID.SniperRifle,
-            ItemID.ChainGun,
-            ItemID.SDMG,
-            ItemID.Boomstick,
-            ItemID.QuadBarrelShotgun,
-            ItemID.Shotgun,
-            ItemID.OnyxBlaster,
-            ItemID.TacticalShotgun
-        };
-            public override bool InstancePerEntity => true;
             public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
             {
                 if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
@@ -200,9 +201,9 @@ namespace BossRush
                 {
                     Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
                 }
-                for (int i = 0; i < GunType.Length; i++)
+                for (int i = 0; i < RangeWeaponOverhaul.GunType.Length; i++)
                 {
-                    if (item.type == GunType[i] && AppliesToEntity(item, true))
+                    if (item.type == RangeWeaponOverhaul.GunType[i] && AppliesToEntity(item, true))
                     {
                         return false;
                     }
@@ -212,7 +213,7 @@ namespace BossRush
 
             public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
             {
-                if(ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+                if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
                 {
                     return;
                 }
