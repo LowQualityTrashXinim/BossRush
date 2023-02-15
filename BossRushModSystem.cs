@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using System.Collections.Generic;
 using BossRush.Items;
+using System.Linq;
 
 namespace BossRush
 {
@@ -85,6 +86,16 @@ namespace BossRush
                 ItemID.PlatinumBow,
 });
             RecipeGroup.RegisterGroup("OreBow", OreBow);
+        }
+        public override void PostAddRecipes()
+        {
+            for (int i = 0; i < Main.recipe.Length; i++)
+            {
+                if (Main.recipe[i].HasResult(ItemID.FlamingArrow))
+                {
+                    Main.recipe[i].DisableRecipe();
+                }
+            }
         }
     }
 }

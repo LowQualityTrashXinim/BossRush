@@ -19,6 +19,7 @@ namespace BossRush.Items.Chest
         {
             var entitySource = player.GetSource_OpenItem(Type);
             player.QuickSpawnItem(entitySource, ItemID.Rope, 100);
+            player.QuickSpawnItem(entitySource, ItemID.Torch, 999);
             player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 300);
             player.QuickSpawnItem(entitySource, ItemID.BuilderPotion, 10);
             player.QuickSpawnItem(entitySource, ItemID.ArchitectGizmoPack);

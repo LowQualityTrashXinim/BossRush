@@ -22,7 +22,6 @@ namespace BossRush.ExtraChallengeConfig
                 Player.AddBuff(BuffID.Darkness, 10);
                 Player.AddBuff(BuffID.Confused, 10);
                 Player.AddBuff(BuffID.Weak, 10);
-                Player.AddBuff(BuffID.Silenced, 10);
                 Player.AddBuff(BuffID.ManaSickness, 10);
                 Player.AddBuff(BuffID.BrokenArmor, 10);
                 Player.AddBuff(BuffID.Bleeding, 10);

@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using System.Reflection.Metadata;
 
 namespace BossRush
 {
@@ -128,6 +127,47 @@ namespace BossRush
             ItemID.OnyxBlaster,
             ItemID.TacticalShotgun
         };
+        /// <summary>
+        /// Method that make the item currently in use can be shoot by many amount at a random spread<br/>
+        /// It is better to use this method if you want to make your weapon affected by spread in ModifyShootStats
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="source"></param>
+        /// <param name="position"></param>
+        /// <param name="velocity"></param>
+        /// <param name="type"></param>
+        /// <param name="damage"></param>
+        /// <param name="knockback"></param>
+        /// <param name="SpreadAmount">Rotation radius</param>
+        /// <param name="AdditionalSpread">Addition X and Y modifier</param>
+        /// <param name="AdditionalMultiplier">Multiplier for final speed change</param>
+        /// </param>
+        public static void NewGunShotProjectile(
+            Player player,
+            EntitySource_ItemUse_WithAmmo source,
+            ref Vector2 position,
+            ref Vector2 velocity,
+            ref int type,
+            ref int damage,
+            ref float knockback,
+            int NumOfProjectile = 1,
+            float SpreadAmount = 0,
+            float AdditionalSpread = 0,
+            float AdditionalMultiplier = 1)
+        {
+            int ProjectileAmount = (int)ModifiedProjAmount(NumOfProjectile);
+            if (ProjectileAmount == 1)
+            {
+                velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+                return;
+            }
+            for (int i = 0; i < ProjectileAmount; i++)
+            {
+                Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
+                Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
+            }
+        }
     }
     public class RangeVanillaWeaponModifier
     {
@@ -142,47 +182,6 @@ namespace BossRush
         }
         public class GlobalWeaponModify : GlobalItem
         {
-            /// <summary>
-            /// Method that make the item currently in use can be shoot by many amount at a random spread<br/>
-            /// It is better to use this method if you want to make your weapon affected by spread
-            /// </summary>
-            /// <param name="player"></param>
-            /// <param name="source"></param>
-            /// <param name="position"></param>
-            /// <param name="velocity"></param>
-            /// <param name="type"></param>
-            /// <param name="damage"></param>
-            /// <param name="knockback"></param>
-            /// <param name="SpreadAmount">Rotation radius</param>
-            /// <param name="AdditionalSpread">Addition X and Y modifier</param>
-            /// <param name="AdditionalMultiplier">Multiplier for final speed change</param>
-            /// </param>
-            public void GlobalRandomSpreadFiring(
-                Player player,
-                EntitySource_ItemUse_WithAmmo source,
-                ref Vector2 position,
-                ref Vector2 velocity,
-                ref int type,
-                ref int damage,
-                ref float knockback,
-                int NumOfProjectile = 1,
-                float SpreadAmount = 0,
-                float AdditionalSpread = 0,
-                float AdditionalMultiplier = 1)
-            {
-                int ProjectileAmount = (int)RangeWeaponOverhaul.ModifiedProjAmount(NumOfProjectile);
-                if (ProjectileAmount == 1)
-                {
-                    velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
-                    Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-                    return;
-                }
-                for (int i = 0; i < ProjectileAmount; i++)
-                {
-                    Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
-                    Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
-                }
-            }
             public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
             {
                 if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
@@ -361,7 +360,7 @@ namespace BossRush
                             break;
                     }
                     position = position.PositionOFFSET(velocity, OffSetPost);
-                    GlobalRandomSpreadFiring(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
+                    RangeWeaponOverhaul.NewGunShotProjectile(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
                 }
             }
         }
