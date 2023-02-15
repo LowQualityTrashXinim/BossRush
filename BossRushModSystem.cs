@@ -1,11 +1,9 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using System.Collections.Generic;
 using BossRush.Items;
-using System.Linq;
 
 namespace BossRush
 {
@@ -89,6 +87,10 @@ namespace BossRush
         }
         public override void PostAddRecipes()
         {
+            if(!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
             for (int i = 0; i < Main.recipe.Length; i++)
             {
                 if (Main.recipe[i].HasResult(ItemID.FlamingArrow))

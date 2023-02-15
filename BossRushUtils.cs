@@ -25,7 +25,7 @@ namespace BossRush
             return false;
         }
 
-        private static void getAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
+        public static void getAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
         {
             Vector2 newVelocity = velocity.SafeNormalize(Vector2.One) * limit;
             X = Math.Abs(newVelocity.X);

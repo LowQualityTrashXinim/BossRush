@@ -13,6 +13,7 @@ namespace BossRush
         {
             public const int Swipe = 999;
             public const int Poke = 998;
+            public const int GenericSwingDownImprove = 990;
         }
 
         public override void SetDefaults(Item item)
