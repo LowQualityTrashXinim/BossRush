@@ -11,7 +11,9 @@ namespace BossRush.Items.Artifact
         public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Unpure, relentess crystal\nAttack heal player but reduce max life by 40%\nYou can survive 1 fatal attack ( 1m30s cooldown )");
+            Tooltip.SetDefault("Unpure, relentess crystal" +
+                "\nAttack heal player but reduce max life by 55%" +
+                "\nYou can survive 1 fatal attack ( 1m30s cooldown )");
         }
         public override void SetDefaults()
         {

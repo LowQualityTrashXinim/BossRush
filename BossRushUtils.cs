@@ -77,6 +77,17 @@ namespace BossRush
         public static float InSine(float t) => (float)-Math.Cos(t * MathHelper.PiOver2);
         public static float OutSine(float t) => (float)Math.Sin(t * MathHelper.PiOver2);
         public static float InOutSine(float t) => (float)(Math.Cos(t * Math.PI) - 1) * -.5f;
+        public static float InBack(float t)
+        {
+            float s = 1.70158f;
+            return t * t * ((s + 1) * t - s);
+        }
+        public static float OutBack(float t) => 1 - InBack(1 - t);
+        public static float InOutBack(float t)
+        {
+            if (t < 0.5) return InBack(t * 2) *.5f;
+            return 1 - InBack((1 - t) * 2) *.5f;
+        }
         private static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance) => Vector2.DistanceSquared(pos1, pos2) <= maxDistance;
         public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0)
         {
