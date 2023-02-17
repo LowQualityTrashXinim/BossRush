@@ -78,21 +78,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         int count = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 8)
-            {
-                if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 2)
-                {
-                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.1f;
-                }
-                if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 6)
-                {
-                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.1f;
-                }
-                else
-                {
-                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.02f;
-                }
-            }
+            ChargeUpHandle(player);
             int projectile2 = 1 + (int)player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 5;
             for (int i = 0; i < projectile2; i++)
             {
@@ -103,36 +89,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                 }
                 Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
             }
-            if (player.HasItem(ItemID.SnowballCannon))
-            {
-                int projectile4 = (int)player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 2;
-                for (int i = 0; i < projectile4; i++)
-                {
-                    float ToRa = 0;
-                    if (projectile4 != 1)
-                    {
-                        ToRa = projectile4 * 7;
-                    }
-                    Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
-                }
-            }
             int projectile = (int)player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 5;
             for (int i = 0; i < projectile; i++)
             {
                 Projectile.NewProjectile(source, position, velocity.RotateRandom(5).RandomSpread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
-            }
-            if (player.HasItem(ItemID.FlowerofFrost))
-            {
-                int projectile5 = (int)player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 6;
-                for (int i = 0; i < projectile5; i++)
-                {
-                    float ToRa = 0;
-                    if (projectile5 != 1)
-                    {
-                        ToRa = projectile5 * 5;
-                    }
-                    Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
-                }
             }
             float projectile3 = player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 7f;
             if (projectile3 >= 1)
@@ -169,6 +129,25 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                 count = 0;
             }
             return false;
+        }
+
+        private void ChargeUpHandle(Player player)
+        {
+            if (Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 8)
+            {
+                if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 2)
+                {
+                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.1f;
+                }
+                if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 6)
+                {
+                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.1f;
+                }
+                else
+                {
+                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.02f;
+                }
+            }
         }
         public override void AddRecipes()
         {

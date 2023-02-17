@@ -8,17 +8,18 @@ namespace BossRush.Items.Artifact
 {
     internal class VampirismCrystal : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Unpure, relentess crystal" +
                 "\nAttack heal player but reduce max life by 55%" +
                 "\nYou can survive 1 fatal attack ( 1m30s cooldown )");
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(10, 7));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
         public override void SetDefaults()
         {
-            Item.width = 1;
-            Item.height = 1;
+            Item.width = 32;
+            Item.height = 58;
             Item.accessory = true;
             Item.rare = 9;
         }

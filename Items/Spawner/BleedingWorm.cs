@@ -2,18 +2,20 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Spawner
 {
     public class BleedingWorm : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("BleedingWorm");
             Tooltip.SetDefault("Actract a certain monster from ocean");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             NPCID.Sets.MPAllowedEnemies[NPCID.BloodNautilus] = true;
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
 
         public override void SetDefaults()

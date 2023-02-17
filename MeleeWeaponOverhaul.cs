@@ -135,8 +135,11 @@ namespace BossRush
                     break;
                 #endregion
                 default:
-                    item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
-                    item.useTurn = false;
+                    if (item.useStyle == ItemUseStyleID.Swing)
+                    {
+                        item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
+                        item.useTurn = false;
+                    }
                     break;
             }
             base.SetDefaults(item);
