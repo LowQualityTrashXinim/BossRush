@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
-using System.Net;
+using System;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
@@ -48,11 +48,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             Player player = Main.player[Main.myPlayer];
             if (player.HasItem(ItemID.SnowballCannon))
             {
-                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and a certain minion now follow you"));
+                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself"));
             }
             if (player.HasItem(ItemID.FlowerofFrost))
             {
-                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost"));
+                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost and summon itself"));
             }
             if (player.HasItem(ItemID.BlizzardStaff))
             {
@@ -161,8 +161,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         public float SpeedMultiplier = 1;
         public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
         {
-            float? Modify = SpeedMultiplier <= 3 ? 1f : SpeedMultiplier - 2f;
-            SpeedMultiplier = Modify.Value;
+            float Modify = SpeedMultiplier <= 3 ? 1f : SpeedMultiplier - 2f;
+            SpeedMultiplier = Modify;
         }
 
         public override void PostUpdate()
@@ -179,8 +179,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         public override string Texture => "BossRush/VanillaSprite/Snowball_Cannon";
         public override void SetDefaults()
         {
-            Projectile.width = 26;
-            Projectile.height = 50;
+            Projectile.height = 26;
+            Projectile.width = 50;
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
@@ -195,12 +195,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (player.active && player.HeldItem.type == ModContent.ItemType<IceStorm>())
+            if (player.active && player.HeldItem.type == ModContent.ItemType<IceStorm>() && player.HasItem(ItemID.SnowballCannon))
             {
                 Projectile.timeLeft = 2;
             }
             Projectile.IdleFloatMovement(player, out Vector2 vec, out float dis);
-            Projectile.MoveToIdle(vec, dis, 20, 90);
+            Projectile.MoveToIdle(vec, dis, 10, 10);
             Projectile.rotation = (Projectile.Center - Main.MouseWorld).ToRotation();
             Projectile.spriteDirection = Projectile.Center.X < Main.MouseWorld.X ? 1 : -1;
             Projectile.rotation += Projectile.spriteDirection == -1 ? 0 : MathHelper.Pi;
@@ -210,10 +210,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                 Projectile.spriteDirection = Projectile.Center.X < npc.Center.X ? 1 : -1;
                 Projectile.rotation = velocityToNpc.ToRotation();
                 Projectile.rotation += Projectile.spriteDirection == 1 ? 0 : MathHelper.Pi;
-                if (timer == 0)
+                if (timer <= 0)
                 {
-                    timer = 20;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center - new Vector2(0, 10), velocityToNpc * 20f, ProjectileID.SnowBallFriendly, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    timer = (int)(20 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocityToNpc * 20f, ProjectileID.SnowBallFriendly, Projectile.damage, Projectile.knockBack, Projectile.owner);
                     return;
                 }
             }
@@ -240,25 +240,30 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         int timer = 0;
         public override void AI()
         {
+            Dust.NewDust(Projectile.Center, 0, 0, DustID.Frost, 0, 0, 0, default, Main.rand.NextFloat(.5f,.75f));
             Player player = Main.player[Projectile.owner];
-            if (player.active && player.HeldItem.type == ModContent.ItemType<IceStorm>())
+            if (player.active && player.HeldItem.type == ModContent.ItemType<IceStorm>() && player.HasItem(ItemID.FlowerofFrost))
             {
                 Projectile.timeLeft = 2;
             }
             Vector2 positionToIdle = player.Center + new Vector2(0, -50);
-            
-            Projectile.MoveToIdle(Projectile.NormalizedVectoDis(positionToIdle), Projectile.NormalizedVectoDis(positionToIdle).Length(), 20, 90);
+            Vector2 VelocityRaw = positionToIdle - Projectile.Center;
+            Projectile.rotation = -MathHelper.PiOver4;
+            Projectile.MoveToIdle(VelocityRaw, 11, 10, true);
+            Projectile.ResetMinion(positionToIdle, 1500);
             if (player.Center.LookForHostileNPC(out NPC npc, 500) && npc != null)
             {
-                if (timer == 0)
+                if (timer <= 0)
                 {
-                    timer = 20;
-                    Projectile.NewProjectile(
+                    Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                    timer = (int)(30 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
+                    int proj = Projectile.NewProjectile(
                         Projectile.GetSource_FromThis(), 
                         Projectile.Center - new Vector2(0,20), 
-                        Main.rand.NextVector2Unit(-MathHelper.PiOver2 - MathHelper.PiOver4, MathHelper.PiOver4) * 15f, 
+                        velocityToNpc * 9, 
                         ProjectileID.BallofFrost, 
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Main.projectile[proj].timeLeft = 150;
                     return;
                 }
             }

@@ -5,7 +5,6 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using static Humanizer.In;
 
 namespace BossRush
 {
@@ -24,11 +23,11 @@ namespace BossRush
         public static void IdleFloatMovement(this Projectile projectile, Player player, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, int index = 0)
         {
             Vector2 idlePosition = player.Center;
-            float minionPositionOffsetX = (10 + index * 40) * -player.direction;
+            float minionPositionOffsetX = (30 + index * 40) * -player.direction;
             idlePosition.X += minionPositionOffsetX;
             vectorToIdlePosition = idlePosition - projectile.Center;
             distanceToIdlePosition = vectorToIdlePosition.Length();
-            projectile.ResetMinion(player.Center, 2000f);
+            projectile.ResetMinion(player.Center, 1500);
             float overlapVelocity = 0.04f;
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
@@ -58,12 +57,6 @@ namespace BossRush
                 }
             }
         }
-
-        public static Vector2 NormalizedVectoDis(this Projectile projectile, Vector2 idlePosition)
-        {
-            return (idlePosition - projectile.Center).SafeNormalize(Vector2.Zero);
-        }
-
         public static void MoveToIdle(this Projectile projectile, Vector2 vectorToIdlePosition, float distanceToIdlePosition, float speed, float inertia)
         {
             if (distanceToIdlePosition > 20f)
@@ -76,6 +69,25 @@ namespace BossRush
                 projectile.velocity = (projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
             }
             else if (projectile.velocity == Vector2.Zero)
+            {
+                // If there is a case where it's not moving at all, give it a little "poke"
+                projectile.velocity.X = -0.15f;
+                projectile.velocity.Y = -0.05f;
+            }
+        }
+        public static void MoveToIdle(this Projectile projectile, Vector2 vectorToIdlePosition, float speed, float inertia, bool disablepoke = false)
+        {
+            float disToIdle = vectorToIdlePosition.LengthSquared();
+            if (disToIdle > 20 * 20)
+            {
+                // The immediate range around the player (when it passively floats about)
+
+                // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
+                vectorToIdlePosition.Normalize();
+                vectorToIdlePosition *= speed;
+                projectile.velocity = (projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
+            }
+            else if (projectile.velocity == Vector2.Zero && !disablepoke)
             {
                 // If there is a case where it's not moving at all, give it a little "poke"
                 projectile.velocity.X = -0.15f;
