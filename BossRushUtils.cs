@@ -1,13 +1,13 @@
 ﻿using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace BossRush
 {
-    public static class BossRushUtils
+    public static partial class BossRushUtils
     {
         public static Vector2 limitedVelocity(this Vector2 velocity, float limited)
         {
@@ -54,11 +54,11 @@ namespace BossRush
             return false;
         }
 
-        public static bool LookForClosestHostileNPC(this Vector2 position, out NPC npc, float distance)
+        public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active && CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance))
+                if (Main.npc[i].active && CompareSquareFloatValue(position, Main.npc[i].Center, distance))
                 {
                     npc = Main.npc[i];
                     return true;
@@ -66,6 +66,30 @@ namespace BossRush
             }
             npc = null;
             return false;
+        }
+        public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance)
+        {
+            List<NPC> localNPC = new List<NPC>();
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npcLocal = Main.npc[i];
+                if (npcLocal.active && CompareSquareFloatValue(position, npcLocal.Center, distance))
+                {
+                    localNPC.Add(npcLocal);
+                }
+            }
+            npc = localNPC;
+        }
+        public static Vector2 NextVector2RotatedByRandom(this Vector2 Vec2ToRotate, float ToRadians)
+        {
+            float rotation = MathHelper.ToRadians(ToRadians);
+            return Vec2ToRotate.RotatedByRandom(rotation);
+        }
+        public static Vector2 NextVector2Square(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
+        {
+            ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
+            ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
+            return ToRotateAgain;
         }
         public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
         public static float OutExpo(float t) => 1 - InExpo(1 - t);
@@ -88,7 +112,27 @@ namespace BossRush
             if (t < 0.5) return InBack(t * 2) *.5f;
             return 1 - InBack((1 - t) * 2) *.5f;
         }
-        private static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance) => Vector2.DistanceSquared(pos1, pos2) <= maxDistance;
+        /// <summary>
+        /// Calculate square length of Vector2 and check if it is smaller than square max distance
+        /// </summary>
+        /// <param name="pos1"></param>
+        /// <param name="pos2"></param>
+        /// <param name="maxDistance"></param>
+        /// <returns>
+        /// Return true if length of Vector2 smaller than max distance<br/>
+        /// Return false if length of Vector2 greater than max distance
+        /// </returns>
+        public static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance)
+        {
+            double value1X = pos1.X, 
+                value1Y = pos1.Y ,
+                value2X = pos2.X,
+                value2Y = pos2.Y,
+                DistanceX = value1X - value2X,
+                DistanceY = value1Y - value2Y,
+                maxDistanceDouble = maxDistance * maxDistance;
+            return (DistanceX * DistanceX + DistanceY * DistanceY) < maxDistanceDouble;
+        }
         public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0)
         {
             Main.instance.LoadProjectile(projectile.type);

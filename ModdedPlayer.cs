@@ -200,7 +200,7 @@ namespace BossRush
             List<Item> items = new List<Item>() {
             new Item(ModContent.ItemType<WoodenTreasureChest>()),
             new Item(ModContent.ItemType<LunchBox>()),
-            new Item(ModContent.ItemType<GitGudToggle>())
+            new Item(ModContent.ItemType<CursedSkull>())
             };
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {

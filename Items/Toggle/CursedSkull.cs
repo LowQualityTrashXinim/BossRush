@@ -1,37 +1,51 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.Audio;
-using Terraria.Localization;
 using Terraria.Chat;
+using Terraria.Audio;
+using Terraria.ModLoader;
+using Terraria.Localization;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Items.Toggle
 {
-    public class GitGudToggle : ModItem
+    public class CursedSkull : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Cursed Skill Gem");
             Tooltip.SetDefault("Make every boss when you fight instant kill you\n" +
-                "\"Make for people want to prove their skill to the god\"");
+                "\"The only way to showcase their skill for god acknowledgement\"");
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
 
         public override void SetDefaults()
         {
-            Item.height = 55;
-            Item.width = 53;
-            Item.maxStack = 999;
-            Item.value = 100;
-            Item.rare = ItemRarityID.Blue;
+            Item.height = 60;
+            Item.width = 56;
+            Item.value = 0;
+            Item.rare = ItemRarityID.Purple;
             Item.useAnimation = 30;
             Item.useTime = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
         }
 
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            tooltips.Add(new TooltipLine(Mod, "ChallengeGod", "A gift from God of challenge"+$"[i:{ModContent.ItemType<CursedSkull>()}]"));
+            foreach (TooltipLine line2 in tooltips)
+            {
+                if (line2.Name == "ChallengeGod")
+                {
+                    line2.OverrideColor = BossRushModSystem.ChallangeGodColor;
+                }
+            }
+        }
+
         public override bool CanUseItem(Player player)
         {
-            return player.GetModPlayer<ModdedPlayer>().LookingForBoss();
+            return !player.GetModPlayer<ModdedPlayer>().LookingForBoss();
         }
         int count = 0;
         public override bool? UseItem(Player player)
