@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BossRush
 {
@@ -274,33 +275,35 @@ namespace BossRush
         }
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
         {
-            float percentDone = player.itemAnimation / player.itemAnimationMax;
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             Poke(player, modPlayer, percentDone);
         }
         private void FastThurst(Player player, MeleeOverhaulPlayer modPlayer)
         {
-            float percentDone = player.itemAnimation / player.itemAnimationMax * .33333f;
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax * .33333f;
+            float firstThrust = player.itemAnimationMax/3f;
+            float secondThrust = player.itemAnimationMax*2/3f;
             modPlayer.CountAmountOfThrustDid = 1;
-            if (player.itemAnimation >= player.itemAnimationMax * .33333f)
+            if (player.itemAnimation >= firstThrust)
             {
                 modPlayer.CountAmountOfThrustDid = 2;
                 --percentDone;
             }
-            if (player.itemAnimation >= player.itemAnimationMax * .66666f)
+            if (player.itemAnimation >= secondThrust)
             {
                 modPlayer.CountAmountOfThrustDid = 3;
                 --percentDone;
             }
-            percentDone = MathHelper.Clamp(percentDone, 0, 1);
+            percentDone = MathHelper.Clamp(percentDone, 0f, 1f);
             Poke(player, modPlayer, percentDone);
         }
         private void Poke(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
-            Vector2 poke = Vector2.Lerp(modPlayer.data, modPlayer.data, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data* 20f, modPlayer.data, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + poke + poke.SafeNormalize(Vector2.Zero) * PLAYERARMLENGTH;
+            player.itemLocation = player.MountedCenter + poke;
         }
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct)
         {

@@ -126,7 +126,7 @@ namespace BossRush.Items
                 Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
             }
         }
-        private void HasBlizzardStaff(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
+        private void HasBlizzardStaff(Player player, EntitySource_ItemUse_WithAmmo source, int damage, float knockback)
         {
             if(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier < 8)
             {
@@ -154,7 +154,7 @@ namespace BossRush.Items
             }
             if (player.HasItem(ItemID.BlizzardStaff))
             {
-                HasBlizzardStaff(player, source, position, velocity, damage, knockback);
+                HasBlizzardStaff(player, source, damage, knockback);
             }
         }
     }

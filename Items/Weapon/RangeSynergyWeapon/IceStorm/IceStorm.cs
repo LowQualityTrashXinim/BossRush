@@ -173,7 +173,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             }
         }
     }
-
     class IceStormSnowBallCannonMinion : ModProjectile
     {
         public override string Texture => "BossRush/VanillaSprite/Snowball_Cannon";
@@ -240,7 +239,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         int timer = 0;
         public override void AI()
         {
-            Dust.NewDust(Projectile.Center, 0, 0, DustID.Frost, 0, 0, 0, default, Main.rand.NextFloat(.5f,.75f));
+            Dust.NewDust(Projectile.Center, 0, 0, DustID.Frost, 0, 0, 0, default, Main.rand.NextFloat(.5f, .75f));
             Player player = Main.player[Projectile.owner];
             if (player.active && player.HeldItem.type == ModContent.ItemType<IceStorm>() && player.HasItem(ItemID.FlowerofFrost))
             {
@@ -258,10 +257,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                     Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                     timer = (int)(30 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
                     int proj = Projectile.NewProjectile(
-                        Projectile.GetSource_FromThis(), 
-                        Projectile.Center - new Vector2(0,20), 
-                        velocityToNpc * 9, 
-                        ProjectileID.BallofFrost, 
+                        Projectile.GetSource_FromThis(),
+                        Projectile.Center - new Vector2(0, 20),
+                        velocityToNpc * 9,
+                        ProjectileID.BallofFrost,
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
                     Main.projectile[proj].timeLeft = 150;
                     return;
