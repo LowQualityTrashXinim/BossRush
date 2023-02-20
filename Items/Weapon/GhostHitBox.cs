@@ -37,6 +37,7 @@ namespace BossRush.Items.Weapon
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 1;
             Projectile.alpha = 255;
+            Projectile.DamageType = DamageClass.Melee;
         }
         public override void OnSpawn(IEntitySource source)
         {

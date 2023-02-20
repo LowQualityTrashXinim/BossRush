@@ -4,7 +4,8 @@ using Terraria.ModLoader;
 using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Terraria.Chat;
+using Terraria.Localization;
 
 namespace BossRush
 {
@@ -150,25 +151,17 @@ namespace BossRush
             //this remain untouch cause idk what in the hell should i change here
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
             {
-                //Get the direction of the weapon, and the distance from the player to the hilt
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
-
-                //Use afforementioned direction, and get the distance from the player to the tip of the weapon
                 float length = (item.width + item.height) * player.GetAdjustedItemScale(item);
                 Vector2 endPos = handPos;
-
-                //Use values obtained above to construct an approximation of the two most important points
                 handPos *= PLAYERARMLENGTH;
                 endPos *= length;
                 handPos += player.MountedCenter;
                 endPos += player.MountedCenter;
-
-                //Use helper method to get coordinates and size for the rectangle
                 (int X1, int X2) XVals = Order(handPos.X, endPos.X);
                 (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
-
-                //Create the new bounds of the hitbox
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
+
                 player.GetModPlayer<MeleeOverhaulPlayer>().SwordHitBox = hitbox;
                 int damage = player.GetModPlayer<MeleeOverhaulPlayer>().count == 2 ? (int)(player.HeldItem.damage * 1.5f) : player.HeldItem.damage;
                 int proj = Projectile.NewProjectile(item.GetSource_ItemUse(item), player.itemLocation, player.GetModPlayer<MeleeOverhaulPlayer>().data, ModContent.ProjectileType<GhostHitBox2>(), damage, player.HeldItem.knockBack, player.whoAmI);
@@ -197,6 +190,10 @@ namespace BossRush
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
+                if (modPlayer.count == 0)
+                {
+                    useTimeMultiplierOnCombo -= .5f;
+                }
                 if (modPlayer.count == 1)
                 {
                     useTimeMultiplierOnCombo -= .25f;
@@ -231,7 +228,7 @@ namespace BossRush
                             SwipeAttack(player, modPlayer, 1);
                             break;
                         case 1:
-                            FastThurst(player, modPlayer);
+                            WideSwingAttack(player, modPlayer);
                             break;
                         case 2:
                             StrongThrust(player, modPlayer);
@@ -245,6 +242,12 @@ namespace BossRush
                     break;
             }
         }
+        /// <summary>
+        /// Use to order 2 values from smallest to biggest
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
         private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
@@ -263,9 +266,15 @@ namespace BossRush
                     }
                     break;
                 case BossRushUseStyle.Poke:
-                    if (modPlayer.count == 2)
+                    if (modPlayer.count == 1)
                     {
                         damage = (int)(damage * 1.75f);
+                        break;
+                    }
+                    if (modPlayer.count == 2)
+                    {
+                        damage = (int)(damage * 1.25f);
+                        break;
                     }
                     break;
             }
@@ -281,8 +290,8 @@ namespace BossRush
         private void FastThurst(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax * .33333f;
-            float firstThrust = player.itemAnimationMax/3f;
-            float secondThrust = player.itemAnimationMax*2/3f;
+            float firstThrust = player.itemAnimationMax / 3f;
+            float secondThrust = player.itemAnimationMax * 2 / 3f;
             modPlayer.CountAmountOfThrustDid = 1;
             if (player.itemAnimation >= firstThrust)
             {
@@ -299,15 +308,26 @@ namespace BossRush
         }
         private void Poke(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
-            Vector2 poke = Vector2.SmoothStep(modPlayer.data* 20f, modPlayer.data, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + poke;
+            player.itemLocation = player.MountedCenter + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
+        }
+        private void WideSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
+        {
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            percentDone = BossRushUtils.InOutBack(percentDone);
+            float baseAngle = modPlayer.data.ToRotation();
+            float angle = MathHelper.ToRadians(baseAngle + 125) * player.direction;
+            float start = baseAngle + angle;
+            float end = baseAngle - angle;
+            Swipe(start, end, percentDone, player);
         }
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            percentDone = BossRushUtils.InExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
             float start = baseAngle + angle * direct;
@@ -317,6 +337,7 @@ namespace BossRush
         private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            percentDone = BossRushUtils.InExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float start = baseAngle + MathHelper.PiOver2 * player.direction;
             float end = baseAngle - (MathHelper.TwoPi + MathHelper.PiOver2) * player.direction;
@@ -324,7 +345,7 @@ namespace BossRush
         }
         private void Swipe(float start, float end, float percentDone, Player player)
         {
-            float currentAngle = MathHelper.SmoothStep(start, end, BossRushUtils.InExpo(percentDone));
+            float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
             player.itemRotation = currentAngle;
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
@@ -387,10 +408,6 @@ namespace BossRush
         }
         private void SpinAttackExtraHit()
         {
-            if (count != 2)
-            {
-                return;
-            }
             Item item = Player.HeldItem;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -425,7 +442,7 @@ namespace BossRush
             if (Player.ItemAnimationActive)
             {
                 Player.direction = data.X > 0 ? 1 : -1;
-                if (item.useStyle == BossRushUseStyle.Swipe)
+                if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
                 {
                     SpinAttackExtraHit();
                 }
