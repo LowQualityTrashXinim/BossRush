@@ -3,9 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
-using System;
-using Terraria.Chat;
-using Terraria.Localization;
 
 namespace BossRush
 {
@@ -137,11 +134,6 @@ namespace BossRush
                     break;
                 #endregion
                 default:
-                    if (item.useStyle == ItemUseStyleID.Swing)
-                    {
-                        item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
-                        item.useTurn = false;
-                    }
                     break;
             }
             base.SetDefaults(item);
@@ -151,6 +143,7 @@ namespace BossRush
             //this remain untouch cause idk what in the hell should i change here
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
             {
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
                 float length = (item.width + item.height) * player.GetAdjustedItemScale(item);
                 Vector2 endPos = handPos;
@@ -162,11 +155,41 @@ namespace BossRush
                 (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
 
-                player.GetModPlayer<MeleeOverhaulPlayer>().SwordHitBox = hitbox;
-                int damage = player.GetModPlayer<MeleeOverhaulPlayer>().count == 2 ? (int)(player.HeldItem.damage * 1.5f) : player.HeldItem.damage;
-                int proj = Projectile.NewProjectile(item.GetSource_ItemUse(item), player.itemLocation, player.GetModPlayer<MeleeOverhaulPlayer>().data, ModContent.ProjectileType<GhostHitBox2>(), damage, player.HeldItem.knockBack, player.whoAmI);
-                Main.projectile[proj].Hitbox = hitbox;
+                modPlayer.SwordHitBox = hitbox;
+                int damage = player.GetWeaponDamage(item);
+                int proj = Projectile.NewProjectile(
+                    item.GetSource_ItemUse(item), 
+                    player.itemLocation, 
+                    modPlayer.data, 
+                    ModContent.ProjectileType<GhostHitBox2>(), 
+                    damage, 
+                    player.HeldItem.knockBack, 
+                    player.whoAmI);
+                Projectile projectile = Main.projectile[proj];
+                projectile.Hitbox = hitbox;
+                projectile.damage = DamageHandleSystem(modPlayer, projectile.damage);
             }
+        }
+
+        private int DamageHandleSystem(MeleeOverhaulPlayer modPlayer, int damage)
+        {
+            Item item = modPlayer.Player.HeldItem;
+            if (item.useStyle == BossRushUseStyle.Swipe && modPlayer.count == 2)
+            {
+                return (int)(damage * 1.5f);
+            }
+            if (item.useStyle == BossRushUseStyle.Poke)
+            {
+                if (modPlayer.count == 1)
+                {
+                    return (int)(damage * 1.75f);
+                }
+                if (modPlayer.count == 2)
+                {
+                    return (int)(damage * 1.25f);
+                }
+            }
+            return damage;
         }
         public override bool CanUseItem(Item item, Player player)
         {
@@ -204,7 +227,6 @@ namespace BossRush
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-            Item.noUseGraphic = false;
             switch (Item.useStyle)
             {
                 case BossRushUseStyle.Swipe:
@@ -220,6 +242,7 @@ namespace BossRush
                             CircleSwingAttack(player, modPlayer);
                             break;
                     }
+                    Item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.Poke:
                     switch (modPlayer.count)
@@ -234,9 +257,11 @@ namespace BossRush
                             StrongThrust(player, modPlayer);
                             break;
                     }
+                    Item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.GenericSwingDownImprove:
                     SwipeAttack(player, modPlayer, 1);
+                    Item.noUseGraphic = false;
                     break;
                 default:
                     break;
@@ -257,27 +282,7 @@ namespace BossRush
             damage = (int)(damage * mult);
             knockBack *= mult;
             modPlayer.critReference = crit;
-            switch (Item.useStyle)
-            {
-                case BossRushUseStyle.Swipe:
-                    if (modPlayer.count == 2)
-                    {
-                        damage = (int)(damage * 1.5f);
-                    }
-                    break;
-                case BossRushUseStyle.Poke:
-                    if (modPlayer.count == 1)
-                    {
-                        damage = (int)(damage * 1.75f);
-                        break;
-                    }
-                    if (modPlayer.count == 2)
-                    {
-                        damage = (int)(damage * 1.25f);
-                        break;
-                    }
-                    break;
-            }
+            damage = DamageHandleSystem(modPlayer, damage);
             int proj = Projectile.NewProjectile(Item.GetSource_ItemUse(Item), player.itemLocation, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), damage, knockBack, player.whoAmI);
             Main.projectile[proj].Hitbox = modPlayer.SwordHitBox;
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
@@ -392,7 +397,7 @@ namespace BossRush
         }
         private bool CanAttack(NPC npc)
         {
-            if (!npc.active || npc.immune[Player.whoAmI] != 0)
+            if (!npc.active || npc.immune[Player.whoAmI] > 0)
             {
                 return true;
             }
@@ -412,7 +417,7 @@ namespace BossRush
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
-                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && npc.immune[Player.whoAmI] > 0 && iframeCounter == 0)
+                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && iframeCounter == 0)
                 {
                     npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
                     iframeCounter = (int)(Player.itemAnimationMax * .333f);
