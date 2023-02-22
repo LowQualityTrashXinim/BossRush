@@ -287,6 +287,10 @@ namespace BossRush
         }
         public override void SetDefaults(NPC npc)
         {
+            if(!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
             if (npc.boss)
             {
                 npc.lavaImmune = true;
