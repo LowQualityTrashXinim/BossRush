@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
+using System.Reflection;
+using System;
 
 namespace BossRush
 {
@@ -158,16 +160,24 @@ namespace BossRush
                 modPlayer.SwordHitBox = hitbox;
                 int damage = player.GetWeaponDamage(item);
                 int proj = Projectile.NewProjectile(
-                    item.GetSource_ItemUse(item), 
-                    player.itemLocation, 
-                    modPlayer.data, 
-                    ModContent.ProjectileType<GhostHitBox2>(), 
-                    damage, 
-                    player.HeldItem.knockBack, 
+                    item.GetSource_ItemUse(item),
+                    player.itemLocation,
+                    modPlayer.data,
+                    ModContent.ProjectileType<GhostHitBox2>(),
+                    damage,
+                    player.HeldItem.knockBack,
                     player.whoAmI);
                 Projectile projectile = Main.projectile[proj];
                 projectile.Hitbox = hitbox;
                 projectile.damage = DamageHandleSystem(modPlayer, projectile.damage);
+                try
+                {
+                    typeof(Player).GetMethod("ItemCheck_MeleeHitNPCs", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(player, new object[] { item, hitbox, item.OriginalDamage, item.knockBack });
+                }
+                catch (MissingMethodException)
+                {
+                    return;
+                }
             }
         }
 

@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Items.Weapon.NoneSynergyWeapon;
+using BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
@@ -89,7 +90,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ModContent.ItemType<FrozenEnchantedSword>())
                 .AddIngredient(ModContent.ItemType<EnchantedStarfury>())
-                .AddIngredient(ModContent.ItemType<EnchantedLongSword>())
                 .AddIngredient(ItemID.SuperStarCannon)
                 .Register();
         }
