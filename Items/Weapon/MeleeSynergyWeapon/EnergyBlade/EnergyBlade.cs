@@ -47,7 +47,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
                 player.whoAmI);
             Projectile projectile = Main.projectile[proj];
             projectile.DamageType = DamageClass.Melee;
-            projectile.timeLeft = 5;
             projectile.Hitbox = hitbox;
             noHitbox = true;
         }

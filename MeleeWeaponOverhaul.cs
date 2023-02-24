@@ -54,6 +54,13 @@ namespace BossRush
                 case ItemID.Starfury:
                     item.width = item.height = 42;
                     break;
+                case ItemID.BatBat:
+                    item.width = item.height = 52;
+                    break;
+                case ItemID.TentacleSpike:
+                    item.width = 48;
+                    item.height = 40;
+                    break;
             }
             #endregion
             switch (item.type)
@@ -134,6 +141,11 @@ namespace BossRush
                     item.useStyle = BossRushUseStyle.Poke;
                     item.useTurn = false;
                     break;
+                case ItemID.BatBat:
+                case ItemID.TentacleSpike:
+                    item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
+                    item.useTurn = false;
+                    break;
                 #endregion
                 default:
                     break;
@@ -147,7 +159,7 @@ namespace BossRush
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
-                float length = (item.width + item.height) * player.GetAdjustedItemScale(item);
+                float length = new Vector2(item.width, item.height).Length() * player.GetAdjustedItemScale(item);
                 Vector2 endPos = handPos;
                 handPos *= PLAYERARMLENGTH;
                 endPos *= length;
@@ -158,26 +170,18 @@ namespace BossRush
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
 
                 modPlayer.SwordHitBox = hitbox;
-                int damage = player.GetWeaponDamage(item);
-                int proj = Projectile.NewProjectile(
-                    item.GetSource_ItemUse(item),
-                    player.itemLocation,
-                    modPlayer.data,
-                    ModContent.ProjectileType<GhostHitBox2>(),
-                    damage,
-                    player.HeldItem.knockBack,
-                    player.whoAmI);
-                Projectile projectile = Main.projectile[proj];
-                projectile.Hitbox = hitbox;
-                projectile.damage = DamageHandleSystem(modPlayer, projectile.damage);
-                try
-                {
-                    typeof(Player).GetMethod("ItemCheck_MeleeHitNPCs", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(player, new object[] { item, hitbox, item.OriginalDamage, item.knockBack });
-                }
-                catch (MissingMethodException)
-                {
-                    return;
-                }
+                //int damage = player.GetWeaponDamage(item);
+                //int proj = Projectile.NewProjectile(
+                //    item.GetSource_ItemUse(item),
+                //    player.itemLocation,
+                //    modPlayer.data,
+                //    ModContent.ProjectileType<GhostHitBox2>(),
+                //    damage,
+                //    player.HeldItem.knockBack,
+                //    player.whoAmI);
+                //Projectile projectile = Main.projectile[proj];
+                //projectile.Hitbox = hitbox;
+                //projectile.damage = DamageHandleSystem(modPlayer, projectile.damage);
             }
         }
 
@@ -293,8 +297,8 @@ namespace BossRush
             knockBack *= mult;
             modPlayer.critReference = crit;
             damage = DamageHandleSystem(modPlayer, damage);
-            int proj = Projectile.NewProjectile(Item.GetSource_ItemUse(Item), player.itemLocation, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), damage, knockBack, player.whoAmI);
-            Main.projectile[proj].Hitbox = modPlayer.SwordHitBox;
+            //int proj = Projectile.NewProjectile(Item.GetSource_ItemUse(Item), player.itemLocation, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), damage, knockBack, player.whoAmI);
+            //Main.projectile[proj].Hitbox = modPlayer.SwordHitBox;
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
@@ -424,11 +428,13 @@ namespace BossRush
         private void SpinAttackExtraHit()
         {
             Item item = Player.HeldItem;
+            NPC npclaststrike = null;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
-                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && iframeCounter == 0)
+                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && (iframeCounter == 0 || (npclaststrike != null && npclaststrike != npc)))
                 {
+                    npclaststrike = npc;
                     npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
                     iframeCounter = (int)(Player.itemAnimationMax * .333f);
                     Player.dpsDamage += (int)(item.damage * 1.5f);
@@ -463,6 +469,7 @@ namespace BossRush
                 }
             }
             oldHeldItem = item.type;
+            Player.attackCD = 0;
         }
     }
 }
