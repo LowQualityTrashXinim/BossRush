@@ -5,6 +5,7 @@ using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System.Reflection;
 using System;
+using Terraria.DataStructures;
 
 namespace BossRush
 {
@@ -60,6 +61,10 @@ namespace BossRush
                 case ItemID.TentacleSpike:
                     item.width = 48;
                     item.height = 40;
+                    break;
+                case ItemID.NightsEdge:
+                    item.width = 50;
+                    item.height = 54;
                     break;
             }
             #endregion
@@ -152,6 +157,13 @@ namespace BossRush
             }
             base.SetDefaults(item);
         }
+        /// <summary>
+        /// Use to order 2 values from smallest to biggest
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
             //this remain untouch cause idk what in the hell should i change here
@@ -163,6 +175,11 @@ namespace BossRush
                 Vector2 endPos = handPos;
                 handPos *= PLAYERARMLENGTH;
                 endPos *= length;
+                if (modPlayer.count == 2 && item.useStyle == BossRushUseStyle.Poke)
+                {
+                    handPos.Y += 20;
+                    endPos.Y -= handPos.Y;
+                }
                 handPos += player.MountedCenter;
                 endPos += player.MountedCenter;
                 (int X1, int X2) XVals = Order(handPos.X, endPos.X);
@@ -281,13 +298,6 @@ namespace BossRush
                     break;
             }
         }
-        /// <summary>
-        /// Use to order 2 values from smallest to biggest
-        /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <returns></returns>
-        private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
@@ -304,7 +314,7 @@ namespace BossRush
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            Poke(player, modPlayer, percentDone);
+            Poke2(player, modPlayer, percentDone);
         }
         private void FastThurst(Player player, MeleeOverhaulPlayer modPlayer)
         {
@@ -324,6 +334,16 @@ namespace BossRush
             }
             percentDone = MathHelper.Clamp(percentDone, 0f, 1f);
             Poke(player, modPlayer, percentDone);
+        }
+        private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
+        {
+            int direction = modPlayer.data.X > 0 ? 1 : -1;
+            Vector2 toThrust = Vector2.UnitX * direction;
+            Vector2 poke = Vector2.SmoothStep(toThrust * 30f, toThrust, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
+            player.itemRotation = poke.ToRotation();
+            player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
+            player.itemLocation = player.MountedCenter + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
         }
         private void Poke(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
@@ -384,30 +404,70 @@ namespace BossRush
         public float RotateThurst;
         public override void PreUpdate()
         {
-            if (Player.HeldItem.type != oldHeldItem)
+            Item item = Player.HeldItem;
+            if (item.type != oldHeldItem)
             {
                 count = -1;
             }
-            if (Player.HeldItem.useStyle == BossRushUseStyle.Poke && count == 1)
+            //if (item.useStyle == BossRushUseStyle.Poke && count == 1)
+            //{
+            //    switch (CountAmountOfThrustDid)
+            //    {
+            //        case 1:
+            //            RotateThurst = MathH.ToRadByFiveTeen;
+            //            break;
+            //        case 2:
+            //            RotateThurst = 0;
+            //            break;
+            //        case 3:
+            //            RotateThurst = MathHelper.TwoPi - MathH.ToRadByFiveTeen;
+            //            break;
+            //    }
+            //}
+            //else
+            //{
+            //    RotateThurst = 0;
+            //}
+            //useStyle system handle
+            delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
+            iframeCounter -= iframeCounter > 0 ? 1 : 0;
+            if (item.useStyle != BossRushUseStyle.Swipe &&
+                item.useStyle != BossRushUseStyle.Poke &&
+                item.useStyle != BossRushUseStyle.GenericSwingDownImprove
+                )
             {
-                switch (CountAmountOfThrustDid)
+                return;
+            }
+            if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
+            {
+                delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
+                ComboHandleSystem();
+                if (item.useStyle == BossRushUseStyle.Poke && count == 2)
                 {
-                    case 1:
-                        RotateThurst = MathH.ToRadByFiveTeen;
-                        break;
-                    case 2:
-                        RotateThurst = 0;
-                        break;
-                    case 3:
-                        RotateThurst = MathHelper.TwoPi - MathH.ToRadByFiveTeen;
-                        break;
+                    Player.velocity.X += data.SafeNormalize(Vector2.Zero).X * 25f;
+                    Player.velocity.Y = 0;
+                }
+            }
+            if (Player.ItemAnimationActive)
+            {
+                if (item.useStyle == BossRushUseStyle.Poke && count == 2)
+                {
+                    CanPlayerBeDamage = false;
+                    Player.gravity = 0;
+                }
+                if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
+                {
+                    SpinAttackExtraHit();
                 }
             }
             else
             {
-                RotateThurst = 0;
+                if (delaytimer != 0 && count == 2 && item.useStyle == BossRushUseStyle.Poke)
+                {
+                    Player.velocity *= .1f;
+                }
+                CanPlayerBeDamage = true;
             }
-
         }
         private bool CanAttack(NPC npc)
         {
@@ -441,10 +501,9 @@ namespace BossRush
                 }
             }
         }
+        bool CanPlayerBeDamage = true;
         public override void PostUpdate()
         {
-            delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
-            iframeCounter -= iframeCounter > 0 ? 1 : 0;
             Item item = Player.HeldItem;
             if (item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
@@ -453,23 +512,22 @@ namespace BossRush
             {
                 return;
             }
-            Player.HeldItem.noUseGraphic = true;
             if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
             {
-                delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
                 data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
-                ComboHandleSystem();
+                oldHeldItem = item.type;
             }
             if (Player.ItemAnimationActive)
             {
                 Player.direction = data.X > 0 ? 1 : -1;
-                if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
-                {
-                    SpinAttackExtraHit();
-                }
             }
-            oldHeldItem = item.type;
+            Player.HeldItem.noUseGraphic = true;
             Player.attackCD = 0;
+        }
+
+        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        {
+            return CanPlayerBeDamage;
         }
     }
 }

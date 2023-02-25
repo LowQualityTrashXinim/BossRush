@@ -4,7 +4,6 @@ using Terraria.Chat;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 

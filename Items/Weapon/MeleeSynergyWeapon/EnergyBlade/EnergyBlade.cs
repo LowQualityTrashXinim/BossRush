@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
 {
@@ -34,23 +34,22 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
 
             Item.UseSound = SoundID.Item1;
         }
-        public override void UseItemHitbox(Player player, ref Rectangle hitbox, ref bool noHitbox)
-        {
-            Vector2 direction = Main.MouseWorld.X - player.Center.X > 0 ? Vector2.UnitX : -Vector2.UnitX; 
-            int proj = Projectile.NewProjectile(
-                Item.GetSource_ItemUse(Item),
-                player.itemLocation,
-                direction,
-                ModContent.ProjectileType<GhostHitBox>(),
-                player.GetWeaponDamage(Item),
-                player.HeldItem.knockBack,
-                player.whoAmI);
-            Projectile projectile = Main.projectile[proj];
-            projectile.DamageType = DamageClass.Melee;
-            projectile.Hitbox = hitbox;
-            noHitbox = true;
-        }
-
+        //public override void UseItemHitbox(Player player, ref Rectangle hitbox, ref bool noHitbox)
+        //{
+        //    Vector2 direction = Main.MouseWorld.X - player.Center.X > 0 ? Vector2.UnitX : -Vector2.UnitX; 
+        //    int proj = Projectile.NewProjectile(
+        //        Item.GetSource_ItemUse(Item),
+        //        player.itemLocation,
+        //        direction,
+        //        ModContent.ProjectileType<GhostHitBox>(),
+        //        player.GetWeaponDamage(Item),
+        //        player.HeldItem.knockBack,
+        //        player.whoAmI);
+        //    Projectile projectile = Main.projectile[proj];
+        //    projectile.DamageType = DamageClass.Melee;
+        //    projectile.Hitbox = hitbox;
+        //    noHitbox = true;
+        //}
         public override void AddRecipes()
         {
             CreateRecipe()
