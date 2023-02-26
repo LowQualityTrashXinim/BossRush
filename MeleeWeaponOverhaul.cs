@@ -185,7 +185,6 @@ namespace BossRush
                 (int X1, int X2) XVals = Order(handPos.X, endPos.X);
                 (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
-
                 modPlayer.SwordHitBox = hitbox;
                 //int damage = player.GetWeaponDamage(item);
                 //int proj = Projectile.NewProjectile(
@@ -301,11 +300,11 @@ namespace BossRush
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            float mult = MathHelper.Lerp(.85f, 1.2f, percentDone);
-            damage = (int)(damage * mult);
-            knockBack *= mult;
             modPlayer.critReference = crit;
+            if (crit)
+            {
+                damage += (int)(damage * .5f);
+            }
             damage = DamageHandleSystem(modPlayer, damage);
             //int proj = Projectile.NewProjectile(Item.GetSource_ItemUse(Item), player.itemLocation, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), damage, knockBack, player.whoAmI);
             //Main.projectile[proj].Hitbox = modPlayer.SwordHitBox;
@@ -479,7 +478,7 @@ namespace BossRush
         }
         private void ComboHandleSystem()
         {
-            count++;
+            ++count;
             if (count >= 3)
             {
                 count = 0;

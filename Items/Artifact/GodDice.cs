@@ -43,7 +43,7 @@ namespace BossRush.Items.Artifact
         }
         public override bool CanUseItem(Player player)
         {
-            return player.GetModPlayer<GamblePlayer>().Roll > 0 || player.name.Contains("Test") || player.name.Contains("Debug");
+            return player.GetModPlayer<GamblePlayer>().Roll > 0 || player.name.Contains("Test") || player.name.Contains("Debug") || player.name == "LowQualityTrashXinim";
         }
         public override bool AltFunctionUse(Player player)
         {
@@ -51,7 +51,7 @@ namespace BossRush.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
-            if ((player.name.Contains("Test") || player.name.Contains("Debug")) && player.altFunctionUse == 2)
+            if ((player.name.Contains("Test") || player.name.Contains("Debug") || player.name == "LowQualityTrashXinim") && player.altFunctionUse == 2)
             {
                 player.GetModPlayer<GamblePlayer>().Roll++;
                 player.GetModPlayer<GamblePlayer>().GambleDamage = 1;
