@@ -22,10 +22,14 @@ namespace BossRush
     internal class MeleeWeaponOverhaul : GlobalItem
     {
 
-        const float PLAYERARMLENGTH = 12f;
+        public const float PLAYERARMLENGTH = 12f;
         public override void SetDefaults(Item item)
         {
             if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            {
+                return;
+            }
+            if (item.noMelee)
             {
                 return;
             }
@@ -257,6 +261,10 @@ namespace BossRush
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+            if (Item.noMelee)
+            {
+                return;
+            }
             switch (Item.useStyle)
             {
                 case BossRushUseStyle.Swipe:
@@ -401,6 +409,14 @@ namespace BossRush
         public int CountAmountOfThrustDid = 1;
         public int oldHeldItem;
         public float RotateThurst;
+        private bool CanUseGraphic(Item item)
+        {
+            if (item.noUseGraphic)
+            {
+                return true;
+            }
+            return false;
+        }
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
@@ -432,7 +448,8 @@ namespace BossRush
             iframeCounter -= iframeCounter > 0 ? 1 : 0;
             if (item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
-                item.useStyle != BossRushUseStyle.GenericSwingDownImprove
+                item.useStyle != BossRushUseStyle.GenericSwingDownImprove &&
+                !item.noMelee
                 )
             {
                 return;
@@ -506,7 +523,8 @@ namespace BossRush
             Item item = Player.HeldItem;
             if (item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
-                item.useStyle != BossRushUseStyle.GenericSwingDownImprove
+                item.useStyle != BossRushUseStyle.GenericSwingDownImprove &&
+                !item.noMelee
                 )
             {
                 return;
@@ -520,7 +538,7 @@ namespace BossRush
             {
                 Player.direction = data.X > 0 ? 1 : -1;
             }
-            Player.HeldItem.noUseGraphic = true;
+            item.noUseGraphic = true;
             Player.attackCD = 0;
         }
 

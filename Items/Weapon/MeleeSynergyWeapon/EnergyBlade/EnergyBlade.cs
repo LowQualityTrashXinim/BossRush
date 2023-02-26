@@ -15,7 +15,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
-
         public override void SetDefaults()
         {
             Item.height = 62;
@@ -26,36 +25,89 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Item.useTime = 30;
             Item.useAnimation = 15;
 
+            Item.shoot = ModContent.ProjectileType<EnergyBladeProjectile>();
+            Item.shootSpeed = 0;
+
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
             Item.rare = ItemRarityID.Orange;
             Item.DamageType = DamageClass.Melee;
             Item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
+            Item.useTurn = false;
 
             Item.UseSound = SoundID.Item1;
         }
-        //public override void UseItemHitbox(Player player, ref Rectangle hitbox, ref bool noHitbox)
-        //{
-        //    Vector2 direction = Main.MouseWorld.X - player.Center.X > 0 ? Vector2.UnitX : -Vector2.UnitX; 
-        //    int proj = Projectile.NewProjectile(
-        //        Item.GetSource_ItemUse(Item),
-        //        player.itemLocation,
-        //        direction,
-        //        ModContent.ProjectileType<GhostHitBox>(),
-        //        player.GetWeaponDamage(Item),
-        //        player.HeldItem.knockBack,
-        //        player.whoAmI);
-        //    Projectile projectile = Main.projectile[proj];
-        //    projectile.DamageType = DamageClass.Melee;
-        //    projectile.Hitbox = hitbox;
-        //    noHitbox = true;
-        //}
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient(ItemID.EnchantedSword, 2)
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
+        }
+    }
+    public class EnergyBladeProjectile : ModProjectile
+    {
+        public override string Texture => "BossRush/Items/Weapon/MeleeSynergyWeapon/EnergyBlade/EnergyBlade";
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 8;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = 64;
+            Projectile.height = 62;
+            Projectile.penetrate = -1;
+            Projectile.wet = false;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Melee;
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[Projectile.owner] = 0;
+        }
+        public override void AI()
+        {
+            frameCounter();
+            Player player = Main.player[Projectile.owner];
+            if (Projectile.timeLeft > player.itemAnimationMax)
+            {
+                Projectile.timeLeft = player.itemAnimationMax;
+            }
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            percentDone = BossRushUtils.InExpo(percentDone);
+            Projectile.spriteDirection = player.GetModPlayer<MeleeOverhaulPlayer>().data.X > 0 ? 1 : -1;
+            float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().data.ToRotation();
+            float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
+            float start = baseAngle + angle;
+            float end = baseAngle - angle;
+            float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+            Projectile.rotation = currentAngle;
+            Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            Projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+        }
+        public void frameCounter()
+        {
+            if (++Projectile.frameCounter >= 3)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame += 1;
+                if (Projectile.frame >= Main.projFrames[Projectile.type])
+                {
+                    Projectile.frame = 0;
+                }
+            }
         }
     }
 }
