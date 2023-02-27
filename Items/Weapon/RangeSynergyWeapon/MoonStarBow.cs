@@ -45,6 +45,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             position.X += Main.rand.Next(-300, 300);
             velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+            for (int i = 0; i < 3; i++)
+            {
+                Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100f, 100f), velocity * .5f, ModContent.ProjectileType<MoonStarProjectileSmaller>(), (int)(damage * .5f), knockback, player.whoAmI);
+            }
             return false;
         }
         public override void AddRecipes()
@@ -78,154 +82,155 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         int ExtraUpdaterReCounter = 0;
         float speedMultiplier = 2;
         int AlphaAdditionalCounter = 255;
-        int counter = 0;
-        public override bool PreAI()
-        {
-            float multiscale = Projectile.ai[1] == 1 ? .5f : 1;
-            Projectile.scale = multiscale;
-            return base.PreAI();
-        }
         public override void AI()
         {
             ExtraUpdateRecounter();
-            if (Projectile.ai[1] == 1)
-            {
-                AttackHomeIn();
-                return;
-            }
             Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
             Projectile.rotation += MathHelper.ToRadians(.5f);
-        }
-        public override bool? CanHitNPC(NPC target)
-        {
-            if (Projectile.ai[1] == 1)
-            {
-                if (counter >= 15)
-                {
-                    return true;
-                }
-                return false;
-            }
-            return base.CanHitNPC(target);
         }
         private void ExtraUpdateRecounter()
         {
             ExtraUpdaterReCounter -= ExtraUpdaterReCounter > 0 ? 1 : 0;
             if (ExtraUpdaterReCounter == 0)
             {
-                counter++;
-                if (Projectile.ai[1] == 1)
-                {
-                    Projectile.penetrate = 1;
-                }
-                if (Projectile.ai[1] == 0)
-                {
-                    Projectile.damage += (int)(Math.Abs(Projectile.velocity.X + Projectile.velocity.Y) * .35f);
-                    Projectile.alpha++;
-                    AlphaAdditionalCounter -= AlphaAdditionalCounter > 0 ? -2 : 0;
-                    if (Projectile.alpha >= 255) Projectile.Kill();
-                }
+                Projectile.damage += (int)(Math.Abs(Projectile.velocity.X + Projectile.velocity.Y) * .35f);
+                Projectile.alpha++;
+                AlphaAdditionalCounter -= AlphaAdditionalCounter > 0 ? -2 : 0;
+                if (Projectile.alpha >= 255) Projectile.Kill();
                 ExtraUpdaterReCounter = 6;
                 speedMultiplier += .01f;
-            }
-        }
-        bool alreadygotBelow = false;
-        private void AttackHomeIn()
-        {
-            if (counter < 15)
-            {
-                if (Math.Abs(Projectile.velocity.X) > .1f && Math.Abs(Projectile.velocity.Y) > .1f)
-                {
-                    Projectile.velocity -= Projectile.velocity * .005f;
-                    speedMultiplier = 0;
-                }
-                return;
-            }
-            if (Math.Abs(Projectile.velocity.X) > .1f && Math.Abs(Projectile.velocity.Y) > .1f && !alreadygotBelow)
-            {
-                Projectile.velocity -= Projectile.velocity * .005f;
-                speedMultiplier = 0;
-            }
-            else
-            {
-                NPC npc = Main.npc[(int)Projectile.ai[0]];
-                if (!npc.active)
-                {
-                    return;
-                }
-                Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
-                alreadygotBelow = true;
-            }
-        }
-        bool hitEnemyAlready = false;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-            if (Projectile.ai[1] == 0 && !hitEnemyAlready)
-            {
-                Projectile.NewProjectile(
-                    Projectile.GetSource_FromThis(),
-                    Projectile.Center,
-                    Main.rand.NextVector2CircularEdge(3f, 3f),
-                    ModContent.ProjectileType<MoonStarProjectile>(),
-                    20, 1f,
-                    Projectile.owner, target.whoAmI, 1);
-                hitEnemyAlready = true;
             }
         }
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[ModContent.ProjectileType<MoonStarProjectileTrail>()].Value;
-            if (Projectile.ai[1] == 0)
+            Vector2 origin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
+            Vector2 FullOrigin = origin * 2f;
+            Vector2 threehalfOrigin = origin * .5f;
+            Vector2 halfTexture = new Vector2(texture.Width, texture.Height) * .5f * .5f;
+            for (int k = 1; k < Projectile.oldPos.Length + 1; k++)
             {
-                Vector2 origin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
-                Vector2 FullOrigin = origin * 2f;
-                Vector2 threehalfOrigin = origin * .5f;
-                Vector2 halfTexture = new Vector2(texture.Width, texture.Height) * .5f * .5f;
-                for (int k = 1; k < Projectile.oldPos.Length + 1; k++)
-                {
-                    Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin + halfTexture) + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(new Color(0, 0, 255, Math.Abs(AlphaAdditionalCounter) / k));
-                    Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .01f, SpriteEffects.None, 0);
-                }
-                for (int k = 1; k < (int)(Projectile.oldPos.Length * .5f) + 1; k++)
-                {
-                    Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin - halfTexture) + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(new Color(255, 255, 255, Math.Abs(AlphaAdditionalCounter) / k));
-                    Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
-                }
-                Texture2D thisProjectiletexture = TextureAssets.Projectile[Projectile.type].Value;
-                Vector2 thisProjectileorigin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
-                Vector2 thisProjectiledrawPos = Projectile.position - Main.screenPosition + thisProjectileorigin + new Vector2(0f, Projectile.gfxOffY);
-                Color thisProjectilecolor = Projectile.GetAlpha(lightColor);
-                Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, thisProjectilecolor, -Projectile.rotation, thisProjectileorigin, Projectile.scale, SpriteEffects.None, 0);
-
-                Color largerProjectilecolor = Projectile.GetAlpha(new Color(255, 255, 255, 20));
-                Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, largerProjectilecolor, -Projectile.rotation, thisProjectileorigin, Projectile.scale * 2, SpriteEffects.None, 0);
+                Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin + halfTexture) + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(new Color(0, 0, 255, Math.Abs(AlphaAdditionalCounter) / k));
+                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .01f, SpriteEffects.None, 0);
             }
-            else
+            for (int k = 1; k < (int)(Projectile.oldPos.Length * .5f) + 1; k++)
             {
-                Vector2 origin = new Vector2(Projectile.width * .5f, Projectile.height * .5f);
-                Vector2 offsetOriginbyQuad = origin * .33f;
-                for (int k = 1; k < Projectile.oldPos.Length + 1; k++)
+                Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + (FullOrigin - threehalfOrigin - halfTexture) + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(new Color(255, 255, 255, Math.Abs(AlphaAdditionalCounter) / k));
+                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
+            }
+            Texture2D thisProjectiletexture = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 thisProjectiledrawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+            Color thisProjectilecolor = Projectile.GetAlpha(lightColor);
+            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, thisProjectilecolor, -Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            Color largerProjectilecolor = Projectile.GetAlpha(new Color(255, 255, 255, 20));
+            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, largerProjectilecolor, -Projectile.rotation, origin, Projectile.scale * 2, SpriteEffects.None, 0);
+            return base.PreDraw(ref lightColor);
+        }
+        public override void Kill(int timeLeft)
+        {
+            Vector2 Rotate;
+            float randomRotation = Main.rand.NextFloat(90);
+            for (int i = 0; i < 25; i++)
+            {
+                Rotate = Main.rand.NextVector2CircularEdge(5.5f, 5.5f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1f, 2.5f));
+                Main.dust[dustnumber].noGravity = true;
+            }
+            for (int i = 0; i < 15; i++)
+            {
+                Rotate = Main.rand.NextVector2CircularEdge(3f,3f);
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
+                Main.dust[dustnumber].noGravity = true;
+            }
+            for (int i = 0; i < 100; i++)
+            {
+
+                if (i % 2 == 0)
                 {
-                    Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + offsetOriginbyQuad + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(new Color(0, 0, 255, Math.Abs(AlphaAdditionalCounter) / k));
-                    Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .01f, SpriteEffects.None, 0);
+                    Rotate = Main.rand.NextVector2CircularEdge(.5f, 10f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
                 }
+                else
+                {
+                    Rotate = Main.rand.NextVector2CircularEdge(10f, .5f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
+                }
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
+                Main.dust[dustnumber].noGravity = true;
+            }
+        }
+    }
+    class MoonStarProjectileSmaller : ModProjectile
+    {
+        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/MoonStarProjectile";
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 46;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.wet = false;
+            Projectile.penetrate = 1;
+            Projectile.light = .5f;
+            Projectile.extraUpdates = 6;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.timeLeft = 1500;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+        }
+        int ExtraUpdaterReCounter = 0;
+        float speedMultiplier = 2;
+        public override void AI()
+        {
+            Projectile.scale = .5f;
+            ExtraUpdateRecounter();
+            AttackHomeIn();
+        }
+        private void AttackHomeIn()
+        {
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, 150))
+            {
+                if (npc == null && !npc.active)
+                {
+                    return;
+                }
+                speedMultiplier = Projectile.velocity.Length();
+                Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
+            }
+        }
+        private void ExtraUpdateRecounter()
+        {
+            ExtraUpdaterReCounter -= ExtraUpdaterReCounter > 0 ? 1 : 0;
+            if (ExtraUpdaterReCounter == 0)
+            {
+                ExtraUpdaterReCounter = 6;
+                speedMultiplier += .01f;
+            }
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = TextureAssets.Projectile[ModContent.ProjectileType<MoonStarProjectileTrail>()].Value;
+            Vector2 origin = new Vector2(Projectile.width * .5f, Projectile.height * .5f);
+            Vector2 offsetOriginbyQuad = origin * .33f;
+            for (int k = 1; k < Projectile.oldPos.Length + 1; k++)
+            {
+                Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + offsetOriginbyQuad + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(new Color(0, 0, 255, 255 / k));
+                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .01f, SpriteEffects.None, 0);
             }
             return base.PreDraw(ref lightColor);
         }
         public override void Kill(int timeLeft)
         {
-            for (int i = 0; i < 80; i++)
+            for (int i = 0; i < 30; i++)
             {
                 Vector2 vec = Main.rand.NextVector2Unit(MathHelper.PiOver4, MathHelper.PiOver2) * Main.rand.NextFloat(3, 5) * -1f;
                 int dust = Dust.NewDust(Projectile.Center, 0, 0, 226, 0, 0, 0, Color.Blue, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = vec.RotatedBy(MathHelper.ToRadians(90 * (i % 4)));
             }
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, Color.Blue, Main.rand.NextFloat(1.35f, 1.5f));
                 Main.dust[dust].noGravity = true;

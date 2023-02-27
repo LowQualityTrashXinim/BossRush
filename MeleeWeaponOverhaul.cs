@@ -236,6 +236,11 @@ namespace BossRush
         }
         public override float UseSpeedMultiplier(Item item, Player player)
         {
+            if (item.useStyle != BossRushUseStyle.Swipe
+                && item.useStyle == BossRushUseStyle.Poke)
+            {
+                return base.UseAnimationMultiplier(item, player);
+            }
             float useTimeMultiplierOnCombo = 1;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             if (item.useStyle == BossRushUseStyle.Swipe)
@@ -449,7 +454,7 @@ namespace BossRush
             if (item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
                 item.useStyle != BossRushUseStyle.GenericSwingDownImprove &&
-                !item.noMelee
+                item.noMelee
                 )
             {
                 return;
@@ -524,7 +529,7 @@ namespace BossRush
             if (item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
                 item.useStyle != BossRushUseStyle.GenericSwingDownImprove &&
-                !item.noMelee
+                item.noMelee
                 )
             {
                 return;
