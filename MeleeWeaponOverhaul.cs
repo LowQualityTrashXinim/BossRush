@@ -29,7 +29,7 @@ namespace BossRush
             {
                 return;
             }
-            if (item.noMelee)
+            if (item.noMelee || item.noUseGraphic)
             {
                 return;
             }
