@@ -29,7 +29,7 @@ namespace BossRush
             {
                 return;
             }
-            if (item.noMelee || item.noUseGraphic)
+            if (item.noMelee)
             {
                 return;
             }
@@ -237,7 +237,7 @@ namespace BossRush
         public override float UseSpeedMultiplier(Item item, Player player)
         {
             if (item.useStyle != BossRushUseStyle.Swipe
-                && item.useStyle == BossRushUseStyle.Poke)
+                && item.useStyle != BossRushUseStyle.Poke)
             {
                 return base.UseAnimationMultiplier(item, player);
             }
@@ -414,14 +414,6 @@ namespace BossRush
         public int CountAmountOfThrustDid = 1;
         public int oldHeldItem;
         public float RotateThurst;
-        private bool CanUseGraphic(Item item)
-        {
-            if (item.noUseGraphic)
-            {
-                return true;
-            }
-            return false;
-        }
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
@@ -468,6 +460,10 @@ namespace BossRush
                     Player.velocity.X += data.SafeNormalize(Vector2.Zero).X * 25f;
                     Player.velocity.Y = 0;
                 }
+                if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
+                {
+                    Player.velocity.X += data.SafeNormalize(Vector2.Zero).X * 15f;
+                }
             }
             if (Player.ItemAnimationActive)
             {
@@ -478,7 +474,8 @@ namespace BossRush
                 }
                 if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
                 {
-                    SpinAttackExtraHit();
+                    CanPlayerBeDamage = false;
+                    SpinAttackExtraHit(item);
                 }
             }
             else
@@ -506,9 +503,8 @@ namespace BossRush
                 count = 0;
             }
         }
-        private void SpinAttackExtraHit()
+        private void SpinAttackExtraHit(Item item)
         {
-            Item item = Player.HeldItem;
             NPC npclaststrike = null;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -517,7 +513,7 @@ namespace BossRush
                 {
                     npclaststrike = npc;
                     npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
-                    iframeCounter = (int)(Player.itemAnimationMax * .333f);
+                    iframeCounter = (int)(Player.itemAnimationMax * .25f);
                     Player.dpsDamage += (int)(item.damage * 1.5f);
                 }
             }
@@ -526,9 +522,9 @@ namespace BossRush
         public override void PostUpdate()
         {
             Item item = Player.HeldItem;
-            if (item.useStyle != BossRushUseStyle.Swipe &&
+            if ((item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
-                item.useStyle != BossRushUseStyle.GenericSwingDownImprove &&
+                item.useStyle != BossRushUseStyle.GenericSwingDownImprove) ||
                 item.noMelee
                 )
             {

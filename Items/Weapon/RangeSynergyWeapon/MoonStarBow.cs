@@ -141,7 +141,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             }
             for (int i = 0; i < 15; i++)
             {
-                Rotate = Main.rand.NextVector2CircularEdge(3f,3f);
+                Rotate = Main.rand.NextVector2CircularEdge(3f, 3f);
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
@@ -186,6 +186,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             ExtraUpdateRecounter();
             AttackHomeIn();
         }
+        int changedirection = Main.rand.Next(new int[] { 1, -1 });
         private void AttackHomeIn()
         {
             if (Projectile.Center.LookForHostileNPC(out NPC npc, 150))
@@ -197,7 +198,16 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                 speedMultiplier = Projectile.velocity.Length();
                 Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
             }
+            else
+            {
+                if (count >= 12)
+                {
+                    float rand = MathHelper.ToRadians(Main.rand.NextFloat(1, 5)) * changedirection * .1666f;
+                    Projectile.velocity = Projectile.velocity.RotatedBy(rand);
+                }
+            }
         }
+        int count = 0;
         private void ExtraUpdateRecounter()
         {
             ExtraUpdaterReCounter -= ExtraUpdaterReCounter > 0 ? 1 : 0;
@@ -205,6 +215,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             {
                 ExtraUpdaterReCounter = 6;
                 speedMultiplier += .01f;
+                count++;
+                if (count % 20 == 0)
+                {
+                    changedirection *= -1;
+                }
             }
         }
         public override bool PreDraw(ref Color lightColor)
