@@ -19,7 +19,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
             Item.width = 60;
             Item.height = 58;
 
-            Item.damage = 37;
+            Item.damage = 17;
             Item.crit = 10;
             Item.knockBack = 3f;
 

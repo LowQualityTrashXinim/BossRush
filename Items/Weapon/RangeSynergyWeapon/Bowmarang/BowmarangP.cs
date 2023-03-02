@@ -36,19 +36,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Bowmarang
                 {
                     Projectile.NewProjectile(source, Projectile.Center + offSetRotate.ToRotationVector2(), aimto * 9, ProjectileID.WoodenArrowFriendly, Projectile.damage, Projectile.knockBack * 0.5f, Projectile.owner);
                 }
-                if (count2 == 30)
-                {
-                    float rotation = MathHelper.ToRadians(180);
-                    for (int i = 0; i < 10; i++)
-                    {
-                        Vector2 rotate = Vector2.One.RotatedBy(MathHelper.Lerp(rotation, -rotation, i / 10f));
-                        int FieryArrow = Main.rand.Next(new int[] { ProjectileID.FrostburnArrow, ProjectileID.FireArrow });
-                        Projectile.NewProjectile(source, Projectile.Center, rotate * 4, FieryArrow, Projectile.damage, Projectile.knockBack * 0.5f, Projectile.owner);
-                    }
-                    count2 = 0;
-                }
             }
-            count2++;
 
             if (Projectile.timeLeft < 3)
             {

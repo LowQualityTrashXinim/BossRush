@@ -17,8 +17,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         {
             Item.damage = 40;
             Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = 28;
             Item.useAnimation = 28;
-            Item.useTime = 40;
             Item.shootSpeed = 3.7f;
             Item.knockBack = 6.5f;
             Item.width = 74;
@@ -72,7 +72,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             {
                 if (!Player.ItemAnimationActive && check == 0)
                 {
-                    Player.velocity -= Player.velocity * 0.75f;
+                    Player.velocity *= .25f;
                     check++;
                 }
                 else if (Player.ItemAnimationActive && Main.mouseRight)

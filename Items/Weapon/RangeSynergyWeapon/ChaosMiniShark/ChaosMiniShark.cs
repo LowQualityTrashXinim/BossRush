@@ -11,18 +11,18 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
         int counter = 0;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("not my best work that for sure\nHave 80% of not consuming ammo");
+            Tooltip.SetDefault("not my best work that for sure\nHave 43% of not consuming ammo");
         }
         public override void SetDefaults()
         {
             Item.width = 72;
             Item.height = 32;
 
-            Item.damage = 35;
+            Item.damage = 24;
             Item.knockBack = 2f;
             Item.shootSpeed = 10;
-            Item.useTime = 5;
-            Item.useAnimation = 5;
+            Item.useTime = 6;
+            Item.useAnimation = 6;
 
             Item.noMelee = true;
             Item.useAmmo = AmmoID.Bullet;
@@ -38,7 +38,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
 
         public override bool CanConsumeAmmo(Item ammo, Player player)
         {
-            return Main.rand.NextFloat() >= 0.8f;
+            return Main.rand.NextFloat() >= 0.43f;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

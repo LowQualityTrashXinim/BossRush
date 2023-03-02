@@ -24,7 +24,7 @@ namespace BossRush.Items
         }
         public override void HoldItem(Item item, Player player)
         {
-            if(PreHoldItem(item,player))
+            if (PreHoldItem(item, player))
             {
                 NormalHoldItem(item, player);
             }
@@ -44,7 +44,7 @@ namespace BossRush.Items
         }
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if(PreShoot(item, player, source, position, velocity, type, damage, knockback));
+            if (PreShoot(item, player, source, position, velocity, type, damage, knockback)) ;
             {
                 ShootNormal(item, player, source, position, velocity, type, damage, knockback);
             }
@@ -56,47 +56,43 @@ namespace BossRush.Items
     {
         public override void ShootNormal(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if(item.type == ModContent.ItemType<IceStorm>())
+            if (item.type == ModContent.ItemType<IceStorm>())
             {
                 IceStormSynergy(player, source, position, velocity, damage, knockback);
             }
         }
-        public override bool PreHoldItem(Item item, Player player)
-        {
-            if(item.type == ModContent.ItemType<IceStorm>())
-            {
-                return true;
-            }
-            return false;
-        }
         public override void NormalHoldItem(Item item, Player player)
         {
-            if (player.HasItem(ItemID.SnowballCannon))
+            if (item.type == ModContent.ItemType<IceStorm>())
             {
-                if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormSnowBallCannonMinion>()] < 1)
+
+                if (player.HasItem(ItemID.SnowballCannon))
                 {
-                    Projectile.NewProjectile(
-                        item.GetSource_FromThis(),
-                        player.Center, 
-                        Vector2.Zero, 
-                        ModContent.ProjectileType<IceStormSnowBallCannonMinion>(), 
-                        player.GetWeaponDamage(item), 
-                        player.GetWeaponKnockback(item), 
-                        player.whoAmI);
+                    if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormSnowBallCannonMinion>()] < 1)
+                    {
+                        Projectile.NewProjectile(
+                            item.GetSource_FromThis(),
+                            player.Center,
+                            Vector2.Zero,
+                            ModContent.ProjectileType<IceStormSnowBallCannonMinion>(),
+                            player.GetWeaponDamage(item),
+                            player.GetWeaponKnockback(item),
+                            player.whoAmI);
+                    }
                 }
-            }
-            if (player.HasItem(ItemID.FlowerofFrost))
-            {
-                if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormFrostFlowerMinion>()] < 1)
+                if (player.HasItem(ItemID.FlowerofFrost))
                 {
-                    Projectile.NewProjectile(
-                        item.GetSource_FromThis(),
-                        player.Center,
-                        Vector2.Zero,
-                        ModContent.ProjectileType<IceStormFrostFlowerMinion>(),
-                        player.GetWeaponDamage(item),
-                        player.GetWeaponKnockback(item),
-                        player.whoAmI);
+                    if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormFrostFlowerMinion>()] < 1)
+                    {
+                        Projectile.NewProjectile(
+                            item.GetSource_FromThis(),
+                            player.Center,
+                            Vector2.Zero,
+                            ModContent.ProjectileType<IceStormFrostFlowerMinion>(),
+                            player.GetWeaponDamage(item),
+                            player.GetWeaponKnockback(item),
+                            player.whoAmI);
+                    }
                 }
             }
         }
@@ -128,7 +124,7 @@ namespace BossRush.Items
         }
         private void HasBlizzardStaff(Player player, EntitySource_ItemUse_WithAmmo source, int damage, float knockback)
         {
-            if(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier < 8)
+            if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier < 8)
             {
                 return;
             }

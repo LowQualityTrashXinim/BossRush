@@ -18,8 +18,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
             Item.height = 30;
 
             Item.damage = 70;
-            Item.useTime = 17;
-            Item.useAnimation = 17;
+            Item.useTime = 21;
+            Item.useAnimation = 21;
             Item.knockBack = 2;
 
             Item.DamageType = DamageClass.Ranged;

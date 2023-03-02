@@ -27,7 +27,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.SapphireSwotaff
             Item.reuseDelay = 20;
             Item.shoot = ProjectileID.SapphireBolt;
             Item.shootSpeed = 5;
-            Item.mana = 10;
+            Item.mana = 18;
 
             Item.DamageType = DamageClass.Magic;
             Item.useStyle = ItemUseStyleID.Shoot;

@@ -24,7 +24,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.EmeraldSwotaff
             Item.knockBack = 3f;
             Item.useTime = 2;
             Item.useAnimation = 20;
-            Item.reuseDelay = 20;
+            Item.reuseDelay = 30;
 
             Item.shoot = ProjectileID.EmeraldBolt;
             Item.shootSpeed = 7;

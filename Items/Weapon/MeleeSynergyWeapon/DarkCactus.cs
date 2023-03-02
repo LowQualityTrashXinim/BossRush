@@ -17,9 +17,9 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             Item.width = 58;
             Item.height = 78;
 
-            Item.damage = 27;
+            Item.damage = 29;
             Item.knockBack = 4f;
-            Item.useTime = 80;
+            Item.useTime = 60;
             Item.useAnimation = 20;
 
             Item.shoot = ModContent.ProjectileType<CactusBall>();
@@ -61,7 +61,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             // prevent heal from applying when damaging critters or target dummy
             if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)
             {
-                int healAmount = 2;
+                int healAmount = Main.rand.Next(1, 7);
 
                 player.statLife += healAmount;
                 // this part here prevents health from going above max

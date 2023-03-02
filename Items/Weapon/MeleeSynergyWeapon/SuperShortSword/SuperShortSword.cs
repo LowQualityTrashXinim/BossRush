@@ -26,10 +26,10 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Item.width = 68;
 
 
-            Item.useTime = 24;
-            Item.useAnimation = 24;
+            Item.useTime = 36;
+            Item.useAnimation = 36;
 
-            Item.damage = 112;
+            Item.damage = 93;
             Item.knockBack = 4f;
             Item.shootSpeed = 2.4f;
             Item.value = Item.buyPrice(platinum: 5);

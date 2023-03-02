@@ -21,7 +21,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             Item.width = 100;
             Item.height = 100;
 
-            Item.damage = 250;
+            Item.damage = 150;
             Item.crit = 30;
             Item.knockBack = 7f;
             Item.useTime = 15;

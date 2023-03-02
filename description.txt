@@ -1,3 +1,7 @@
+Roguelike Terraria is a mod that make boss drop a custom treasure chest within the mod in rogue-like manner, providing new and fast gameplay experience for player, we also introduced a lot of new items,
+mechanic/system and a lot of secret for you player can enjoy
+As far as this mod goes, anything is possible as long you are good enough, this mod shall test your skill to the fullist
+
 (IMPORTANT)____THE INTENDED WAY TO PLAY :____(W.I.P)(Not compatible with multiplayer at all)
 -Enable Hardcode mode on character selection (EXTREMELY RECOMMEND)
 -Enable Challenge Mode ( in the mod config )
@@ -6,29 +10,17 @@
 -Try to fight boss as soon as possible
 -Enraged boss is intended to be fight like normal boss progression, fighting it with better gear than it is not intended
 (Optional)Enable easy mode if you are new to the mod with normal mode(Optional)
-
-FasterTerraria is a mod that make boss drop a custom treasure chest within the mod in rouge like manner
-It is unsure that a player can consistently this mod, but it do feature no hit reward for those daring enough
-As far as this mod goes, anything is possible as long you are good enough, this mod shall test your skill to the fullist
-Even the no hitter shall die ( here rule for no hitter if you care )
-{
-+Enable cursed skill gem
-+Potions and foods are ban
-+Play in master mode or FTW difficulty
-+Play the intended way with modification to the intended rule being no synergy item
-+Play the entire run full (meaning playing from King Slime to Moonlord)
-+No hit rule doesn't applied whenever you aren't fighting boss
-+Good luck
-}
+(Optional)Enable weapon overhaul for best mod experience (W.I.P and isn't compatible with any mod that change melee)(Optional)
 
 If fighting boss at extreme inconsitently fast progression isn't your type then you can play this mod like a QoL mod
-This mod have been designed so that player can play the mod without grinding much and to be play with other mod or at your own pace
-____THE CONFIG REQUIRE FOR IT TO PLAY LIKE Qol MOD :____
+This mod has been designed so that player can play the mod without grinding much and to be play with other mod or at your own pace
+____THE CONFIG REQUIRE FOR IT TO PLAY LIKE QOL MOD :____
 -Disable Challenge Mode
 -Disable Synergy Mode
 -Enable Easy Mode (for extra life and mana crystal)
 -Disable Enraged
 -Disable YouLikeToHurtYourself
+-Enable DisableWeaponOverhaul
 
 Planning :
 -rework loot drop depend on future feedback ( only take more feedback after synergy update out )
@@ -38,7 +30,5 @@ Planning :
 
 feel free to use this mod in any playthrough or modpack with condition of crediting me as LowQualityTrash
 
-Message for people want to support : Please report any issue or any problem you have with the mod at discord tag:LowQualityTrash-#2090
 Multiplayer is not yet supported, please wait for future update
-
-Message for people want to make addon : Send me a message at discord tag:LowQualityTrash-#2090
+As for people want to support or chat to me, idk why you want to but you can join my discord server : https://discord.gg/YqN5z5WVaS

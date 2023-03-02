@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Reflection;
 using System;
 using Terraria.DataStructures;
+using BossRush.Items.Weapon.DupeSynergy;
 
 namespace BossRush
 {
@@ -120,7 +121,14 @@ namespace BossRush
                 //HardmodeSword
                 case ItemID.CobaltSword:
                 case ItemID.MythrilSword:
+                case ItemID.AdamantiteSword:
+                case ItemID.PalladiumSword:
+                case ItemID.OrichalcumSword:
                 case ItemID.TitaniumSword:
+                case ItemID.Excalibur:
+                case ItemID.TheHorsemansBlade:
+                case ItemID.Bladetongue:
+                case ItemID.DD2SquireDemonSword:
                 //Sword That shoot projectile
                 case ItemID.BeamSword:
                 case ItemID.EnchantedSword:
@@ -128,35 +136,40 @@ namespace BossRush
                 case ItemID.InfluxWaver:
                 case ItemID.ChlorophyteClaymore:
                 case ItemID.TrueExcalibur:
-                //Plantera Sword
-                case ItemID.Excalibur:
-                case ItemID.TheHorsemansBlade:
-                case ItemID.Bladetongue:
                     item.useStyle = BossRushUseStyle.Swipe;
                     item.useTurn = false;
                     break;
                 //Poke Sword
                 //Pre HM Sword
                 case ItemID.DyeTradersScimitar:
-                case ItemID.ZombieArm:
                 case ItemID.CandyCaneSword:
                 case ItemID.Muramasa:
                 case ItemID.BloodButcherer:
                 case ItemID.NightsEdge:
+                case ItemID.Katana:
                 //HM sword
+                case ItemID.BreakerBlade:
+                case ItemID.Frostbrand:
+                case ItemID.Cutlass:
+                case ItemID.Seedler:
+                case ItemID.DD2SquireBetsySword:
                 case ItemID.TerraBlade:
                 case ItemID.Meowmere:
-                case ItemID.Katana:
+                case ItemID.StarWrath:
                     item.useStyle = BossRushUseStyle.Poke;
                     item.useTurn = false;
                     break;
+                case ItemID.ZombieArm:
                 case ItemID.BatBat:
                 case ItemID.TentacleSpike:
+                case ItemID.SlapHand:
                     item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
                     item.useTurn = false;
                     break;
                 #endregion
                 default:
+                    item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
+                    item.useTurn = false;
                     break;
             }
             base.SetDefaults(item);
@@ -204,7 +217,6 @@ namespace BossRush
                 //projectile.damage = DamageHandleSystem(modPlayer, projectile.damage);
             }
         }
-
         private int DamageHandleSystem(MeleeOverhaulPlayer modPlayer, int damage)
         {
             Item item = modPlayer.Player.HeldItem;
@@ -245,18 +257,18 @@ namespace BossRush
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             if (item.useStyle == BossRushUseStyle.Swipe)
             {
-                if (modPlayer.count == 1)
+                if (modPlayer.count == 2)
                 {
                     useTimeMultiplierOnCombo -= .5f;
                 }
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
-                if (modPlayer.count == 0)
+                if (modPlayer.count == 1)
                 {
                     useTimeMultiplierOnCombo -= .5f;
                 }
-                if (modPlayer.count == 1)
+                if (modPlayer.count == 2)
                 {
                     useTimeMultiplierOnCombo -= .25f;
                 }
@@ -406,20 +418,21 @@ namespace BossRush
     public class MeleeOverhaulPlayer : ModPlayer
     {
         public Vector2 data;
-        public int count = -1;
+        public int count = 0;
         public Rectangle SwordHitBox;
         public bool critReference;
         int iframeCounter = 0;
         public int delaytimer = 10;
         public int CountAmountOfThrustDid = 1;
         public int oldHeldItem;
+        public int CountDownToResetCombo = 0;
         public float RotateThurst;
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
             if (item.type != oldHeldItem)
             {
-                count = -1;
+                count = 0;
             }
             //if (item.useStyle == BossRushUseStyle.Poke && count == 1)
             //{
@@ -441,7 +454,8 @@ namespace BossRush
             //    RotateThurst = 0;
             //}
             //useStyle system handle
-            delaytimer = delaytimer > 0 ? delaytimer - 1 : 0;
+            delaytimer -= delaytimer > 0 ? 1 : 0;
+            CountDownToResetCombo -= CountDownToResetCombo > 0 ? 1 : 0;
             iframeCounter -= iframeCounter > 0 ? 1 : 0;
             if (item.useStyle != BossRushUseStyle.Swipe &&
                 item.useStyle != BossRushUseStyle.Poke &&
@@ -451,40 +465,63 @@ namespace BossRush
             {
                 return;
             }
-            if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
+            if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
-                delaytimer = Player.itemAnimationMax + (int)(Player.itemAnimationMax * .34f);
-                ComboHandleSystem();
-                if (item.useStyle == BossRushUseStyle.Poke && count == 2)
-                {
-                    Player.velocity.X += data.SafeNormalize(Vector2.Zero).X * 25f;
-                    Player.velocity.Y = 0;
-                }
-                if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
-                {
-                    Player.velocity.X += data.SafeNormalize(Vector2.Zero).X * 15f;
-                }
+                delaytimer = (int)(Player.itemAnimationMax * 1.34f);
+                CountDownToResetCombo = (int)(Player.itemAnimationMax * 2.25f);
+                ExecuteSpecialComboOnStart(item);
             }
             if (Player.ItemAnimationActive)
             {
-                if (item.useStyle == BossRushUseStyle.Poke && count == 2)
-                {
-                    CanPlayerBeDamage = false;
-                    Player.gravity = 0;
-                }
-                if (item.useStyle == BossRushUseStyle.Swipe && count == 2)
-                {
-                    CanPlayerBeDamage = false;
-                    SpinAttackExtraHit(item);
-                }
+                ExecuteSpecialComboOnActive(item);
             }
             else
             {
-                if (delaytimer != 0 && count == 2 && item.useStyle == BossRushUseStyle.Poke)
+                if (AlreadyHitNPC)
+                {
+                    ++count;
+                }
+                if (delaytimer != 0 && count == 3 && item.useStyle == BossRushUseStyle.Poke)
                 {
                     Player.velocity *= .1f;
                 }
+                ComboHandleSystem();
+                AlreadyHitNPC = false;
                 CanPlayerBeDamage = true;
+            }
+        }
+        private void ExecuteSpecialComboOnActive(Item item)
+        {
+            if (count != 2)
+            {
+                return;
+            }
+            CanPlayerBeDamage = false;
+            switch (item.useStyle)
+            {
+                case BossRushUseStyle.Poke:
+                    Player.gravity = 0;
+                    break;
+                case BossRushUseStyle.Swipe:
+                    SpinAttackExtraHit(item);
+                    break;
+            }
+        }
+        private void ExecuteSpecialComboOnStart(Item item)
+        {
+            if (count != 2)
+            {
+                return;
+            }
+            switch (item.useStyle)
+            {
+                case BossRushUseStyle.Poke:
+                    Player.velocity.X += Vector2.UnitX.SafeNormalize(Vector2.Zero).X * 25f * Player.direction;
+                    Player.velocity.Y = 0;
+                    break;
+                case BossRushUseStyle.Swipe:
+                    Player.velocity.X += Vector2.UnitX.SafeNormalize(Vector2.Zero).X * 15f * Player.direction;
+                    break;
             }
         }
         private bool CanAttack(NPC npc)
@@ -497,8 +534,7 @@ namespace BossRush
         }
         private void ComboHandleSystem()
         {
-            ++count;
-            if (count >= 3)
+            if (count >= 3 || CountDownToResetCombo == 0)
             {
                 count = 0;
             }
@@ -542,7 +578,14 @@ namespace BossRush
             item.noUseGraphic = true;
             Player.attackCD = 0;
         }
-
+        bool AlreadyHitNPC = false;
+        public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+        {
+            if (!AlreadyHitNPC)
+            {
+                AlreadyHitNPC = true;
+            }
+        }
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
         {
             return CanPlayerBeDamage;

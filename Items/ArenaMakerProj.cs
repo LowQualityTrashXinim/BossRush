@@ -35,8 +35,8 @@ namespace BossRush.Items
             }
             for (int x = min; x <= max; x++)
             {
-                int xPos = (int)(x + position.X/16f);
-                int yPos = (int)(position.Y / 16f);
+                int xPos = (int)(x + position.X * .0625f);
+                int yPos = (int)(position.Y * .0625f);
                 if (xPos < 0 || xPos >= Main.maxTilesX || yPos < 0 || yPos >= Main.maxTilesY)
                     continue;
 
@@ -47,7 +47,7 @@ namespace BossRush.Items
 
                 WorldGen.PlaceTile(xPos, yPos, TileID.Platforms);
                 if (Main.netMode == NetmodeID.Server)
-                    NetMessage.SendTileSquare (-1, xPos, yPos, 1);
+                    NetMessage.SendTileSquare(-1, xPos, yPos, 1);
 
             }
         }

@@ -42,7 +42,9 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                     int RandomProjectile = Main.rand.Next(new int[] { ProjectileID.FrostBlastFriendly, ProjectileID.IceBolt });
                     Vector2 GetPostDirect1 = new Vector2(player.Center.X + Main.rand.Next(-1000, -300), player.Center.Y - Main.rand.Next(300, 700));
                     Vector2 GoTo = (new Vector2(Main.MouseWorld.X + Main.rand.Next(-200, 200), Main.MouseWorld.Y + Main.rand.Next(-200, 200)) - GetPostDirect1).SafeNormalize(Vector2.UnitX);
-                    Projectile.NewProjectile(source, GetPostDirect1, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
+                    int proj = Projectile.NewProjectile(source, GetPostDirect1, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
+                    Main.projectile[proj].tileCollide = false;
+                    Main.projectile[proj].timeLeft = 200;
                 }
             }
             else
@@ -52,7 +54,9 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                     int RandomProjectile = Main.rand.Next(new int[] { ProjectileID.FrostBlastFriendly, ProjectileID.IceBolt });
                     Vector2 GetPostDirect2 = new Vector2(player.Center.X + Main.rand.Next(300, 1000), player.Center.Y - Main.rand.Next(300, 700));
                     Vector2 GoTo = (new Vector2(Main.MouseWorld.X + Main.rand.Next(-200, 200), Main.MouseWorld.Y + Main.rand.Next(-200, 200)) - GetPostDirect2).SafeNormalize(Vector2.UnitX);
-                    Projectile.NewProjectile(source, GetPostDirect2, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
+                    int proj = Projectile.NewProjectile(source, GetPostDirect2, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
+                    Main.projectile[proj].tileCollide = false;
+                    Main.projectile[proj].timeLeft = 200;
                 }
             }
         }
