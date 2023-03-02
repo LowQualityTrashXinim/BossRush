@@ -30,7 +30,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.autoReuse = true;
             Item.noMelee = true;
             Item.DamageType = DamageClass.Ranged;
-            Item.mana = 5;
+            Item.mana = 12;
 
             Item.shoot = ModContent.ProjectileType<DiamondBolt>();
             Item.shootSpeed = 10f;

@@ -17,18 +17,18 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.width = 18;
             Item.height = 32;
 
-            Item.damage = 26;
+            Item.damage = 17;
             Item.knockBack = 1f;
 
-            Item.useTime = 18;
-            Item.useAnimation = 18;
+            Item.useTime = 28;
+            Item.useAnimation = 28;
 
             Item.rare = 2;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.noMelee = true;
             Item.DamageType = DamageClass.Ranged;
-            Item.mana = 5;
+            Item.mana = 12;
 
             Item.shoot = ModContent.ProjectileType<EmeraldBolt>();
             Item.shootSpeed = 6f;

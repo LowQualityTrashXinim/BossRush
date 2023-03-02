@@ -31,5 +31,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
             Vector2 safeAimto = aimto.SafeNormalize(Vector2.UnitX);
             Projectile.rotation = safeAimto.ToRotation();
         }
+        public override bool? CanDamage()
+        {
+            return false;
+        }
     }
 }

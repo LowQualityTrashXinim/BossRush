@@ -11,13 +11,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol
         {
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = true;
-            Projectile.penetrate = 1;
             Projectile.friendly = true;
+            Projectile.penetrate = 1;
             Projectile.width = 22;
             Projectile.height = 22;
             Projectile.alpha = 0;
-            Projectile.light = 0.65f;
-            Projectile.timeLeft = 90;
+            Projectile.light = 0.1f;
+            Projectile.timeLeft = 45;
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
@@ -26,7 +26,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol
             Player player = Main.player[Projectile.owner];
             if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)
             {
-                int healAmount = Main.rand.Next(1, 5);
+                int healAmount = Main.rand.Next(1, 3);
 
                 player.statLife += healAmount;
                 // this part here prevents health from going above max
@@ -43,16 +43,31 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol
         public override void Kill(int timeLeft)
         {
             Projectile.position += new Vector2(11, 11);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, -5, 0, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, -5, -2.5f, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, -2.5f, -5, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, -2.5f, 2.5f, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, 5, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 0, -2.5f, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 5, 0, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 5, -2.5f, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 2.5f, -5f, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position.X, Projectile.position.Y, 2.5f, 2.5f, ModContent.ProjectileType<smallerHeart>(), (int)(Projectile.damage * 0.5f), Projectile.knockBack, Projectile.owner);
+            int projectileType = ModContent.ProjectileType<smallerHeart>();
+            int damage = (int)(Projectile.damage * 0.5f);
+            float knockback = Projectile.knockBack;
+            Vector2 leftsideofheartshape1 = new Vector2(-5, 0);
+            Vector2 leftsideofheartshape2 = new Vector2(-5, -2.5f);
+            Vector2 leftsideofheartshape3 = new Vector2(-2.5f, -5);
+            Vector2 leftsideofheartshape4 = new Vector2(-2.5f, 2.5f);
+            Vector2 bottomheartshape = new Vector2(0, 5);
+            Vector2 topheartshape = new Vector2(0, -2.5f);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, bottomheartshape, projectileType, damage, knockback, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, topheartshape, projectileType, damage, knockback, Projectile.owner);
+            for (int i = 0; i < 2; i++)
+            {
+                if(i == 1)
+                {
+                    leftsideofheartshape1.X = -leftsideofheartshape1.X;
+                    leftsideofheartshape2.X = -leftsideofheartshape2.X;
+                    leftsideofheartshape3.X = -leftsideofheartshape3.X;
+                    leftsideofheartshape4.X = -leftsideofheartshape4.X;
+                }
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape1, projectileType, damage, knockback, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape2, projectileType, damage, knockback, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape3, projectileType, damage, knockback, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape4, projectileType, damage, knockback, Projectile.owner);
+            }
 
         }
     }

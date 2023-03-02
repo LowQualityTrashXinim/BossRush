@@ -17,22 +17,22 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.width = 18;
             Item.height = 32;
 
-            Item.damage = 20;
+            Item.damage = 15;
             Item.knockBack = 1f;
+            Item.mana = 12;
 
             Item.useTime = 20;
             Item.useAnimation = 20;
 
-            Item.rare = 2;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
             Item.noMelee = true;
+            Item.autoReuse = true;
+            Item.rare = 2;
+            Item.value = Item.buyPrice(gold: 50);
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.DamageType = DamageClass.Ranged;
-            Item.mana = 5;
 
             Item.shoot = ModContent.ProjectileType<AmethystBolt>();
             Item.shootSpeed = 5f;
-            Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item75;
         }

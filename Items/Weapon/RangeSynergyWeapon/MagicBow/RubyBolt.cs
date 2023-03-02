@@ -20,7 +20,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.tileCollide = true;
             Projectile.extraUpdates = 6;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50; // The length of old position to be recorded
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
             Projectile.light = 1f;
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
@@ -79,18 +79,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Redraw the projectile with the color not influenced by light
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k * 0.02f, SpriteEffects.None, 0);
-            }
-
+            Projectile.DrawTrail(lightColor);
             return true;
         }
     }

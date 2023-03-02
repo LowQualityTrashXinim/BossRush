@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
@@ -17,13 +16,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Item.width = 84;
             Item.height = 24;
 
-            Item.damage = 35;
+            Item.damage = 21;
             Item.crit = 10;
             Item.knockBack = 3f;
             Item.scale = 0.85f;
 
-            Item.useTime = 10;
-            Item.useAnimation = 10;
+            Item.useTime = 30;
+            Item.useAnimation = 30;
 
             Item.shootSpeed = 10;
 
@@ -56,16 +55,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             return player.ownedProjectileCounts[ModContent.ProjectileType<KnifeRevolverSpearProjectile>()] < 1;
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            return base.Shoot(player, source, position, velocity, type, damage, knockback);
-        }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (Main.mouseRight)
             {
                 type = ModContent.ProjectileType<KnifeRevolverSpearProjectile>();
+                damage *= 2;
                 Item.noUseGraphic = true;
             }
             else

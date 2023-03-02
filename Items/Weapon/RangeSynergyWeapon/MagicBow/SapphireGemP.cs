@@ -30,7 +30,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, Terraria.ID.DustID.GemSapphire, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
-
             Player player = Main.player[Projectile.owner];
             if (player.dead || !player.active)
             {
@@ -51,10 +50,16 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                     if (player.statLife <= player.statLifeMax / 3)
                     {
                         Projectile.netUpdate = true;
-                        player.Heal(1);
+                        if (Main.rand.NextBool())
+                        {
+                            player.Heal(1);
+                        }
+                        else
+                        {
                         player.statMana += 10;
                         if (player.statMana > player.statManaMax2) player.statMana = player.statManaMax2;
                         player.ManaEffect(10);
+                        }
                         Projectile.Kill();
                     }
                     else

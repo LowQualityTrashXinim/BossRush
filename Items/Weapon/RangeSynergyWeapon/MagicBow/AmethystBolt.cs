@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -17,11 +16,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.height = 20;
             Projectile.friendly = true;
             Projectile.penetrate = 10;
-            Projectile.timeLeft = 100;
+            Projectile.timeLeft = 60;
             Projectile.tileCollide = true;
             Projectile.extraUpdates = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50; // The length of old position to be recorded
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
             Projectile.light = 1f;
         }
 
@@ -47,12 +46,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             {
                 speedMultipler += 3.5f;
             }
-            var Source = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<AmethystBow>()));
+            int damage = (int)(Projectile.damage * 1.25f);
             for (int i = 0; i < 5; i++)
             {
                 Vector2 RandomCircular = Main.rand.NextVector2Circular(5 + speedMultipler, 5 + speedMultipler);
-                Vector2 TemporaryVector = RandomCircular + -oldVelocity * speedMultipler;
-                Projectile.NewProjectile(Source, Projectile.Center, TemporaryVector, ModContent.ProjectileType<AmethystGemP>(), Projectile.damage, 0, Projectile.owner);
+                Vector2 TemporaryVector = RandomCircular - oldVelocity * speedMultipler;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, TemporaryVector, ModContent.ProjectileType<AmethystGemP>(), damage, 0, Projectile.owner);
             }
             return true;
         }

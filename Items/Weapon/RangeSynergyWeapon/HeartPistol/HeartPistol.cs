@@ -22,7 +22,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol
             Item.autoReuse = false;
             Item.rare = 3;
 
-            Item.damage = 17;
+            Item.damage = 20;
             Item.knockBack = 3f;
             Item.useTime = 20;
             Item.useAnimation = 20;

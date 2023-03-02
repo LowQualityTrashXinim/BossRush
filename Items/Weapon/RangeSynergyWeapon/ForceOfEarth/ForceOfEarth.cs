@@ -28,7 +28,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
             Item.shootSpeed = 20;
             Item.useTime = 20;
             Item.useAnimation = 20;
-            Item.damage = 32;
+            Item.damage = 22;
             Item.knockBack = 3;
             Item.crit = 12;
             Item.value = Item.buyPrice(platinum: 5);

@@ -17,12 +17,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.width = 18;
             Item.height = 32;
 
-            Item.damage = 30;
+            Item.damage = 17;
             Item.crit = 10;
             Item.knockBack = 1f;
 
-            Item.useTime = 10;
-            Item.useAnimation = 10;
+            Item.useTime = 30;
+            Item.useAnimation = 30;
             Item.reuseDelay = 10;
 
             Item.rare = 2;
@@ -30,7 +30,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.autoReuse = true;
             Item.noMelee = true;
             Item.DamageType = DamageClass.Ranged;
-            Item.mana = 5;
+            Item.mana = 12;
 
             Item.shoot = ModContent.ProjectileType<RubyBolt>();
             Item.shootSpeed = 4f;

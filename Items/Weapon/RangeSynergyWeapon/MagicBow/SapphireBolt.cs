@@ -20,16 +20,19 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.tileCollide = true;
             Projectile.extraUpdates = 6;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50; // The length of old position to be recorded
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
             Projectile.light = 1f;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 20;
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             for (int i = 0; i < 20; i++)
             {
                 Vector2 RandomCircular = Main.rand.NextVector2Circular(10f, 10f);
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire, RandomCircular.X, RandomCircular.Y, 0, default, Main.rand.NextFloat(1.5f, 2.25f));
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire, 0, 0, 0, default, Main.rand.NextFloat(1.5f, 2.25f));
                 Main.dust[dustnumber].noGravity = true;
+                Main.dust[dustnumber].velocity = RandomCircular;
             }
             Projectile.damage += 5;
             Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
@@ -55,7 +58,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             Player player = Main.player[Projectile.owner];
-            target.immune[Projectile.owner] = 1;
             for (int i = 0; i < 60; i++)
             {
                 Vector2 RandomCircular = Main.rand.NextVector2Circular(10f, 10f);
@@ -75,17 +77,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            // Redraw the projectile with the color not influenced by light
-            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k * 0.02f, SpriteEffects.None, 0);
-            }
+            Projectile.DrawTrail(lightColor);
             return true;
         }
     }

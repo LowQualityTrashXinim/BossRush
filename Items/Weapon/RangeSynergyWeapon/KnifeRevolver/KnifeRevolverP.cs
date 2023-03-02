@@ -9,6 +9,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
     internal class KnifeRevolverP : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 2;
@@ -18,20 +23,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Projectile.tileCollide = true;
             Projectile.ignoreWater = true;
             Projectile.extraUpdates = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-
-            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = 0; k < Projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(Projectile.gfxOffY);
-                Main.EntitySpriteDraw(texture, drawPos, null, Color.LightYellow, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            }
+            Projectile.DrawTrail(Color.White);
             return true;
         }
         public override void Kill(int timeLeft)

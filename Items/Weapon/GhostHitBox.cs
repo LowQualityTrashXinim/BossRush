@@ -44,23 +44,5 @@ namespace BossRush.Items.Weapon
             Projectile.alpha = 255;
             Projectile.DamageType = DamageClass.Melee;
         }
-        //public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-        //{
-        //    Player player = Main.player[Projectile.owner];
-        //    Item item = player.HeldItem;
-        //    try
-        //    {
-        //        typeof(Player).GetMethod("ItemCheck_MeleeHitNPCs", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(player, new object[] { item, Projectile.Hitbox, item.OriginalDamage, item.knockBack });
-        //    }
-        //    catch (MissingMethodException)
-        //    {
-        //        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("something went wrong"), Colors.RarityNormal);
-        //        return;
-        //    }
-        //}
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-        }
     }
 }

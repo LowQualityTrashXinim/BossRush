@@ -29,8 +29,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             Item.shoot = ProjectileID.FrostArrow;
             Item.shootSpeed = 10f;
 
-            Item.useTime = 50;
-            Item.useAnimation = 50;
+            Item.useTime = 75;
+            Item.useAnimation = 75;
 
             Item.rare = 3;
             Item.useAmmo = AmmoID.Arrow;
@@ -68,7 +68,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         }
         public override bool CanConsumeAmmo(Item ammo, Player player)
         {
-            return Main.rand.NextFloat() >= 0.7f;
+            return Main.rand.NextFloat() >= 0.2f;
         }
         public override Vector2? HoldoutOffset()
         {

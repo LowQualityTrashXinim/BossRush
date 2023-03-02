@@ -20,15 +20,15 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.damage = 21;
             Item.knockBack = 1f;
 
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 40;
+            Item.useAnimation = 40;
 
             Item.rare = 2;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.noMelee = true;
             Item.DamageType = DamageClass.Ranged;
-            Item.mana = 5;
+            Item.mana = 12;
 
             Item.shoot = ModContent.ProjectileType<TopazBolt>();
             Item.shootSpeed = 5f;

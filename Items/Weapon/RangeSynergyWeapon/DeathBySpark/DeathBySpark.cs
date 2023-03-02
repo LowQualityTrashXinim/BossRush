@@ -17,7 +17,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
             Item.width = 34;
             Item.height = 24;
 
-            Item.damage = 24;
+            Item.damage = 12;
             Item.knockBack = 1f;
             Item.value = Item.buyPrice(gold: 50);
             Item.shootSpeed = 12;
@@ -38,7 +38,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SparkFlare>(), damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SparkFlare>(), (int)(damage * .25f), knockback, player.whoAmI);
             return false;
         }
 

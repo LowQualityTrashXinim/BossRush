@@ -30,7 +30,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                     if (CheckNearByProjectile() && count == 0)
                     {
                         Projectile.penetrate = 1;
-                        Projectile.damage *= 5;
                         count++;
                         Projectile.timeLeft = 900;
                     }
