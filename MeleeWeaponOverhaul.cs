@@ -135,6 +135,8 @@ namespace BossRush
                 case ItemID.Starfury:
                 case ItemID.InfluxWaver:
                 case ItemID.ChlorophyteClaymore:
+                case ItemID.ChlorophyteSaber:
+                case ItemID.ChristmasTreeSword:
                 case ItemID.TrueExcalibur:
                     item.useStyle = BossRushUseStyle.Swipe;
                     item.useTurn = false;
@@ -147,13 +149,17 @@ namespace BossRush
                 case ItemID.BloodButcherer:
                 case ItemID.NightsEdge:
                 case ItemID.Katana:
+                case ItemID.FalconBlade:
+                case ItemID.BoneSword:
                 //HM sword
+                case ItemID.IceBlade:
                 case ItemID.BreakerBlade:
                 case ItemID.Frostbrand:
                 case ItemID.Cutlass:
                 case ItemID.Seedler:
-                case ItemID.DD2SquireBetsySword:
+                case ItemID.TrueNightsEdge:
                 case ItemID.TerraBlade:
+                case ItemID.DD2SquireBetsySword:
                 case ItemID.Meowmere:
                 case ItemID.StarWrath:
                     item.useStyle = BossRushUseStyle.Poke;
@@ -163,13 +169,14 @@ namespace BossRush
                 case ItemID.BatBat:
                 case ItemID.TentacleSpike:
                 case ItemID.SlapHand:
+                case ItemID.Keybrand:
+                case ItemID.LucyTheAxe:
+                case ItemID.AntlionClaw:
                     item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
                     item.useTurn = false;
                     break;
                 #endregion
                 default:
-                    item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
-                    item.useTurn = false;
                     break;
             }
             base.SetDefaults(item);
@@ -190,9 +197,8 @@ namespace BossRush
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
                 float length = new Vector2(item.width, item.height).Length() * player.GetAdjustedItemScale(item);
                 Vector2 endPos = handPos;
-                handPos *= PLAYERARMLENGTH;
-                endPos *= length;
-                if (modPlayer.count == 2 && item.useStyle == BossRushUseStyle.Poke)
+                endPos *= length + PLAYERARMLENGTH;
+                if (modPlayer.ComboNumber == 2 && item.useStyle == BossRushUseStyle.Poke)
                 {
                     handPos.Y += 20;
                     endPos.Y -= handPos.Y;
@@ -203,34 +209,22 @@ namespace BossRush
                 (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
                 modPlayer.SwordHitBox = hitbox;
-                //int damage = player.GetWeaponDamage(item);
-                //int proj = Projectile.NewProjectile(
-                //    item.GetSource_ItemUse(item),
-                //    player.itemLocation,
-                //    modPlayer.data,
-                //    ModContent.ProjectileType<GhostHitBox2>(),
-                //    damage,
-                //    player.HeldItem.knockBack,
-                //    player.whoAmI);
-                //Projectile projectile = Main.projectile[proj];
-                //projectile.Hitbox = hitbox;
-                //projectile.damage = DamageHandleSystem(modPlayer, projectile.damage);
             }
         }
         private int DamageHandleSystem(MeleeOverhaulPlayer modPlayer, int damage)
         {
             Item item = modPlayer.Player.HeldItem;
-            if (item.useStyle == BossRushUseStyle.Swipe && modPlayer.count == 2)
+            if (item.useStyle == BossRushUseStyle.Swipe && modPlayer.ComboNumber == 2)
             {
                 return (int)(damage * 1.5f);
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
-                if (modPlayer.count == 1)
+                if (modPlayer.ComboNumber == 1)
                 {
                     return (int)(damage * 1.75f);
                 }
-                if (modPlayer.count == 2)
+                if (modPlayer.ComboNumber == 2)
                 {
                     return (int)(damage * 1.25f);
                 }
@@ -257,18 +251,18 @@ namespace BossRush
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             if (item.useStyle == BossRushUseStyle.Swipe)
             {
-                if (modPlayer.count == 2)
+                if (modPlayer.ComboNumber == 2)
                 {
                     useTimeMultiplierOnCombo -= .5f;
                 }
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
-                if (modPlayer.count == 1)
+                if (modPlayer.ComboNumber == 1)
                 {
                     useTimeMultiplierOnCombo -= .5f;
                 }
-                if (modPlayer.count == 2)
+                if (modPlayer.ComboNumber == 2)
                 {
                     useTimeMultiplierOnCombo -= .25f;
                 }
@@ -285,7 +279,7 @@ namespace BossRush
             switch (Item.useStyle)
             {
                 case BossRushUseStyle.Swipe:
-                    switch (modPlayer.count)
+                    switch (modPlayer.ComboNumber)
                     {
                         case 0:
                             SwipeAttack(player, modPlayer, 1);
@@ -300,7 +294,7 @@ namespace BossRush
                     Item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.Poke:
-                    switch (modPlayer.count)
+                    switch (modPlayer.ComboNumber)
                     {
                         case 0:
                             SwipeAttack(player, modPlayer, 1);
@@ -363,7 +357,7 @@ namespace BossRush
         {
             int direction = modPlayer.data.X > 0 ? 1 : -1;
             Vector2 toThrust = Vector2.UnitX * direction;
-            Vector2 poke = Vector2.SmoothStep(toThrust * 30f, toThrust, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
+            Vector2 poke = Vector2.SmoothStep(toThrust * 30f, toThrust, percentDone);
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
@@ -418,7 +412,7 @@ namespace BossRush
     public class MeleeOverhaulPlayer : ModPlayer
     {
         public Vector2 data;
-        public int count = 0;
+        public int ComboNumber = 0;
         public Rectangle SwordHitBox;
         public bool critReference;
         int iframeCounter = 0;
@@ -432,7 +426,7 @@ namespace BossRush
             Item item = Player.HeldItem;
             if (item.type != oldHeldItem)
             {
-                count = 0;
+                ComboNumber = 0;
             }
             //if (item.useStyle == BossRushUseStyle.Poke && count == 1)
             //{
@@ -479,9 +473,9 @@ namespace BossRush
             {
                 if (AlreadyHitNPC)
                 {
-                    ++count;
+                    ++ComboNumber;
                 }
-                if (delaytimer != 0 && count == 3 && item.useStyle == BossRushUseStyle.Poke)
+                if (delaytimer != 0 && ComboNumber == 3 && item.useStyle == BossRushUseStyle.Poke)
                 {
                     Player.velocity *= .1f;
                 }
@@ -492,7 +486,7 @@ namespace BossRush
         }
         private void ExecuteSpecialComboOnActive(Item item)
         {
-            if (count != 2)
+            if (ComboNumber != 2)
             {
                 return;
             }
@@ -509,7 +503,7 @@ namespace BossRush
         }
         private void ExecuteSpecialComboOnStart(Item item)
         {
-            if (count != 2)
+            if (ComboNumber != 2)
             {
                 return;
             }
@@ -534,9 +528,9 @@ namespace BossRush
         }
         private void ComboHandleSystem()
         {
-            if (count >= 3 || CountDownToResetCombo == 0)
+            if (ComboNumber >= 3 || CountDownToResetCombo == 0)
             {
-                count = 0;
+                ComboNumber = 0;
             }
         }
         private void SpinAttackExtraHit(Item item)
