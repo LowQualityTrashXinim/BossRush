@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace BossRush.Items.CustomPotion
+namespace BossRush.Items.Potion
 {
     internal class WonderDrug : ModItem
     {
@@ -78,7 +78,7 @@ namespace BossRush.Items.CustomPotion
                     }
                     break;
             }
-            player.GetModPlayer<WonderDrugPlayer>().DrugDealer++;
+            ++player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
             return true;
         }
         public override void AddRecipes()
@@ -92,7 +92,7 @@ namespace BossRush.Items.CustomPotion
 
     public class WonderDrugPlayer : ModPlayer
     {
-        public int DrugDealer;
+        public int DrugDealer = 0;
         //Damage
         public const int DrugDamage = 10;
         public const int DrugDamage2 = 5;

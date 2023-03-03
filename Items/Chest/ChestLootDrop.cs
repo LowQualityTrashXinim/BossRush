@@ -3,8 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Items.Artifact;
-using BossRush.Items.CustomPotion;
 using System;
+using BossRush.Items.Potion;
 
 namespace BossRush.Items.Chest
 {
@@ -161,13 +161,12 @@ namespace BossRush.Items.Chest
             {
                 return 7;
             }
-            if (player.GetModPlayer<WonderDrugPlayer>().DrugDealer <= 0)
+            if (player.GetModPlayer<WonderDrugPlayer>().DrugDealer > 0)
             {
-                return rng;
-            }
-            if (Main.rand.Next(100 + player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 5) <= player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 10)
-            {
-                return 6;
+                if (Main.rand.Next(100 + player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 5) <= player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 10)
+                {
+                    return 6;
+                }
             }
             return rng;
         }

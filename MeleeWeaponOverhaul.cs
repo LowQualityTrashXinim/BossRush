@@ -1,12 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Items.Weapon;
 using Microsoft.Xna.Framework;
-using System.Reflection;
-using System;
 using Terraria.DataStructures;
-using BossRush.Items.Weapon.DupeSynergy;
 
 namespace BossRush
 {
@@ -325,8 +321,6 @@ namespace BossRush
                 damage += (int)(damage * .5f);
             }
             damage = DamageHandleSystem(modPlayer, damage);
-            //int proj = Projectile.NewProjectile(Item.GetSource_ItemUse(Item), player.itemLocation, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), damage, knockBack, player.whoAmI);
-            //Main.projectile[proj].Hitbox = modPlayer.SwordHitBox;
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
@@ -494,6 +488,10 @@ namespace BossRush
             switch (item.useStyle)
             {
                 case BossRushUseStyle.Poke:
+                    if (Player.mount.Active)
+                    {
+                        break;
+                    }
                     Player.gravity = 0;
                     break;
                 case BossRushUseStyle.Swipe:
@@ -503,6 +501,10 @@ namespace BossRush
         }
         private void ExecuteSpecialComboOnStart(Item item)
         {
+            if(Player.mount.Active)
+            {
+                return;
+            }
             if (ComboNumber != 2)
             {
                 return;

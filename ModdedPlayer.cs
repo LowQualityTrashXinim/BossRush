@@ -13,10 +13,10 @@ using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 using BossRush.Items.Artifact;
 using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Items.Accessories;
-using BossRush.Items.CustomPotion;
 using BossRush.Items.Spawner;
 using BossRush.Items.Toggle;
 using BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
+using BossRush.Items.Potion;
 
 namespace BossRush
 {

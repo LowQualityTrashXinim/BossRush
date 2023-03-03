@@ -13,7 +13,7 @@ namespace BossRush.Items.Accessories
             DisplayName.SetDefault("Guide To Ninja Mastery II");
             Tooltip.SetDefault("Part II out of II of a series treasured by weebs all across the globe!" +
                 "\nDid they really just add another 'I' onto the book cover and call it a day?" +
-                "\n10% increased attack speed" +
+                "\n10% increase melee attack speed" +
                 "\n150% increased jump height and jump speed");
         }
 

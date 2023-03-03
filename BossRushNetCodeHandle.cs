@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using Terraria;
 using Terraria.ModLoader.Utilities;
-using BossRush.Items.CustomPotion;
 using BossRush.Items.Artifact;
 using BossRush.Items.NohitReward;
 using BossRush.ExtraChallengeConfig;
 using BossRush.Items.Toggle;
+using BossRush.Items.Potion;
 
 namespace BossRush
 {

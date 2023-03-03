@@ -1,11 +1,15 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Artifact
+namespace BossRush.Items.aDebugItem
 {
     internal class totalcritacc : ModItem
     {
         public override string Texture => "BossRush/MissingTexture";
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("100% crit");
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();

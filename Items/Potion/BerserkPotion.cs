@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
 
-namespace BossRush.Items.CustomPotion
+namespace BossRush.Items.Potion
 {
     internal class BerserkPotion : ModItem
     {
