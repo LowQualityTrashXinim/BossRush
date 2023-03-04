@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm;
 using System.ComponentModel.Design;
 using BossRush.Items.Accessories;
+using System.Linq;
 
 namespace BossRush.Items
 {
@@ -172,16 +173,16 @@ namespace BossRush.Items
     #region Guide to Master Ninja synergy
     class GuideToMasterNinjaSynergy : SynergyBehaviorHandlePlayer
     {
-        public bool GuidetoMasterNinja;
-        public bool GuidetoMasterNinja2;
+        public bool GuidetoMasterNinjaBook;
+        public bool GuidetoMasterNinjaBook2;
         public bool NinjaWeeb;
         int GTMNcount = 0;
         int GTMNlimitCount = 15;
         int TimerForUltimate = 0;
         public override void SynergyReset()
         {
-            GuidetoMasterNinja = false;
-            GuidetoMasterNinja2 = false;
+            GuidetoMasterNinjaBook = false;
+            GuidetoMasterNinjaBook2 = false;
             NinjaWeeb = false;
         }
         public override void UpdateEquips()
@@ -189,11 +190,12 @@ namespace BossRush.Items
             if (Player.head == 22 && Player.body == 14 && Player.legs == 14)
             {
                 NinjaWeeb = true;
+                Player.GetAttackSpeed(DamageClass.Melee) += .15f;
             }
         }
         public override void PostUpdate()
         {
-            if (GuidetoMasterNinja && GuidetoMasterNinja2)
+            if (GuidetoMasterNinjaBook && GuidetoMasterNinjaBook2)
             {
                 SpawnNinjaProjectile();
             }
@@ -228,7 +230,7 @@ namespace BossRush.Items
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (GuidetoMasterNinja)
+            if (GuidetoMasterNinjaBook)
             {
                 ThrowNinjaProjectile();
             }
@@ -236,107 +238,115 @@ namespace BossRush.Items
         private void ThrowNinjaProjectile()
         {
             int[] GTMNcontain = new int[] { ProjectileID.Shuriken, ProjectileID.ThrowingKnife, ProjectileID.PoisonedKnife, ProjectileID.FrostDaggerfish, ProjectileID.BoneDagger };
-            if (Player.HasItem(ItemID.ThrowingKnife) && Player.HasItem(ItemID.PoisonedKnife) && Player.HasItem(ItemID.FrostDaggerfish) && Player.HasItem(ItemID.BoneDagger))
+            if (Player.HasItem(ItemID.ThrowingKnife) &&
+                Player.HasItem(ItemID.PoisonedKnife) &&
+                Player.HasItem(ItemID.FrostDaggerfish) &&
+                Player.HasItem(ItemID.BoneDagger))
             {
                 GTMNcount++;
             }
             GTMNcount++;
-            if (GTMNcount >= GTMNlimitCount)
+            if (GTMNcount < GTMNlimitCount)
             {
-                int StaticDamage = 10;
-                if (NinjaWeeb)
-                {
-                    StaticDamage = (int)(StaticDamage * 1.2f);
-                }
-                if (Player.HasItem(ItemID.ThrowingKnife))
-                {
-                    StaticDamage += 5;
-                }
-                if (Player.HasItem(ItemID.PoisonedKnife))
-                {
-                    StaticDamage += 5;
-                }
-                if (Player.HasItem(ItemID.FrostDaggerfish))
-                {
-                    StaticDamage += 5;
-                }
-                if (Player.HasItem(ItemID.BoneDagger))
-                {
-                    StaticDamage += 5;
-                }
-                Vector2 Aimto = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX);
-                int proj = Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Aimto * 20, Main.rand.Next(GTMNcontain), StaticDamage, 1f, Player.whoAmI);
-                Main.projectile[proj].penetrate = 1;
-                GTMNcount = 0;
+                return;
             }
+            int StaticDamage = 5;
+            for (int i = 0; i < GTMNcontain.Length; i++)
+            {
+                if (Player.HasItem(GTMNcontain[i]))
+                {
+                    StaticDamage += 5;
+                }
+            }
+            if (NinjaWeeb)
+            {
+                StaticDamage = (int)(StaticDamage * 1.2f);
+            }
+            Vector2 Aimto = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX);
+            int proj = Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Aimto * 20, Main.rand.Next(GTMNcontain), StaticDamage, 1f, Player.whoAmI);
+            Main.projectile[proj].penetrate = 1;
+            GTMNcount = 0;
+
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
-            if (GuidetoMasterNinja)
+            if (GuidetoMasterNinjaBook)
             {
-                if (Player.HasItem(ItemID.FrostDaggerfish))
-                {
-                    target.AddBuff(BuffID.Frostburn, 150);
-                }
+                FirstBookOnHitEffect(target);
+            }
+            if (GuidetoMasterNinjaBook2)
+            {
+                SecondBookOnHitEffect(target, damage, knockback);
+            }
+        }
+        private void FirstBookOnHitEffect(NPC target)
+        {
+            if (Player.HasItem(ItemID.FrostDaggerfish))
+            {
+                target.AddBuff(BuffID.Frostburn, 150);
+            }
+            if (Player.HasItem(ItemID.BoneDagger))
+            {
+                target.AddBuff(BuffID.OnFire, 150);
+            }
+        }
+        private void SecondBookOnHitEffect(NPC target, int damage, float knockback)
+        {
+            List<int> NinjaBag = new List<int>();
+            int[] RandomThrow = new int[] { ProjectileID.Shuriken, ProjectileID.ThrowingKnife, ProjectileID.PoisonedKnife };
+            if ((Player.HasItem(ItemID.Shuriken) || Player.HasItem(ItemID.ThrowingKnife) || Player.HasItem(ItemID.PoisonedKnife)) && Main.rand.NextBool(10))
+            {
+                NinjaBag.AddRange(RandomThrow);
                 if (Player.HasItem(ItemID.BoneDagger))
                 {
-                    target.AddBuff(BuffID.OnFire, 150);
+                    NinjaBag.Add(ProjectileID.BoneDagger);
                 }
-            }
-            if (GuidetoMasterNinja2)
-            {
-                List<int> NinjaBag = new List<int>();
-                int[] RandomThrow = new int[] { ProjectileID.Shuriken, ProjectileID.ThrowingKnife, ProjectileID.PoisonedKnife };
-                if ((Player.HasItem(ItemID.Shuriken) || Player.HasItem(ItemID.ThrowingKnife) || Player.HasItem(ItemID.PoisonedKnife)) && Main.rand.NextBool(10))
+                if (Player.HasItem(ItemID.FrostDaggerfish))
                 {
-                    NinjaBag.AddRange(RandomThrow);
-                    if (Player.HasItem(ItemID.BoneDagger))
-                    {
-                        NinjaBag.Add(ProjectileID.BoneDagger);
-                    }
-                    if (Player.HasItem(ItemID.FrostDaggerfish))
-                    {
-                        NinjaBag.Add(ProjectileID.FrostDaggerfish);
-                    }
-                    Vector2 SpawnProjPos = target.Center + new Vector2(0, -200);
-                    for (int i = 0; i < 12; i++)
-                    {
-                        Vector2 randomSpeed = Main.rand.NextVector2Circular(1, 1);
-                        Dust.NewDust(SpawnProjPos, 0, 0, DustID.Smoke, randomSpeed.X, randomSpeed.Y, 0, default, Main.rand.NextFloat(2f, 3.5f));
-                    }
-                    int proj1 = Projectile.NewProjectile(Player.GetSource_FromThis(), SpawnProjPos, Vector2.Zero, Main.rand.NextFromCollection(NinjaBag), damage, knockback, Player.whoAmI);
-                    Main.projectile[proj1].penetrate = 1;
+                    NinjaBag.Add(ProjectileID.FrostDaggerfish);
                 }
+                Vector2 SpawnProjPos = target.Center + new Vector2(0, -200);
+                for (int i = 0; i < 12; i++)
+                {
+                    Vector2 randomSpeed = Main.rand.NextVector2Circular(1, 1);
+                    Dust.NewDust(SpawnProjPos, 0, 0, DustID.Smoke, randomSpeed.X, randomSpeed.Y, 0, default, Main.rand.NextFloat(2f, 3.5f));
+                }
+                int proj1 = Projectile.NewProjectile(Player.GetSource_FromThis(), SpawnProjPos, Vector2.Zero, Main.rand.NextFromCollection(NinjaBag), damage, knockback, Player.whoAmI);
+                Main.projectile[proj1].penetrate = 1;
             }
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {
-            if (GuidetoMasterNinja2 && item.type == ItemID.Katana)
+            if (GuidetoMasterNinjaBook2 && item.type == ItemID.Katana)
             {
                 scale += .5f;
             }
         }
-
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if (GuidetoMasterNinja2)
+            if (GuidetoMasterNinjaBook && NinjaWeeb && item.type == ItemID.Katana)
             {
-                if (item.type == ItemID.Shuriken || item.type == ItemID.ThrowingKnife || item.type == ItemID.PoisonedKnife)
+                damage += .25f;
+            }
+            if (!GuidetoMasterNinjaBook2)
+            {
+                return;
+            }
+            if (item.type == ItemID.Shuriken || item.type == ItemID.ThrowingKnife || item.type == ItemID.PoisonedKnife)
+            {
+                damage += .5f;
+                if (Player.HasItem(ItemID.BoneDagger))
                 {
-                    damage += .5f;
-                    if (Player.HasItem(ItemID.BoneDagger))
-                    {
-                        damage += .1f;
-                    }
-                    if (Player.HasItem(ItemID.FrostDaggerfish))
-                    {
-                        damage += .1f;
-                    }
+                    damage += .1f;
                 }
-                if (item.type == ItemID.Katana)
+                if (Player.HasItem(ItemID.FrostDaggerfish))
                 {
-                    damage += .5f;
+                    damage += .1f;
                 }
+            }
+            if (item.type == ItemID.Katana)
+            {
+                damage += .5f;
             }
         }
     }
