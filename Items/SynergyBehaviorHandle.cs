@@ -160,15 +160,6 @@ namespace BossRush.Items
     //GOOD FUCKING LUCK FUTURE BRO
     abstract class SynergyBehaviorHandlePlayer : ModPlayer
     {
-        public bool CanReset = true;
-        public override void ResetEffects()
-        {
-            if (CanReset)
-            {
-                SynergyReset();
-            }
-        }
-        public virtual void SynergyReset() { }
     }
     #region Guide to Master Ninja synergy
     class GuideToMasterNinjaSynergy : SynergyBehaviorHandlePlayer
@@ -179,7 +170,7 @@ namespace BossRush.Items
         int GTMNcount = 0;
         int GTMNlimitCount = 15;
         int TimerForUltimate = 0;
-        public override void SynergyReset()
+        public override void ResetEffects()
         {
             GuidetoMasterNinjaBook = false;
             GuidetoMasterNinjaBook2 = false;
@@ -191,6 +182,10 @@ namespace BossRush.Items
             {
                 NinjaWeeb = true;
                 Player.GetAttackSpeed(DamageClass.Melee) += .15f;
+            }
+            if(GuidetoMasterNinjaBook2)
+            {
+                Player.GetAttackSpeed(DamageClass.Melee) += .35f;
             }
         }
         public override void PostUpdate()

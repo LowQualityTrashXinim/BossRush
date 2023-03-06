@@ -55,10 +55,6 @@ namespace BossRush.Items.Accessories
             player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja2 = true;
             player.jumpSpeedBoost += 1.5f;
             player.GetAttackSpeed(DamageClass.Melee) += .1f;
-            if (player.HeldItem.type == ItemID.Katana)
-            {
-                player.GetAttackSpeed(DamageClass.Melee) += .35f;
-            }
         }
         public override void AddRecipes()
         {
