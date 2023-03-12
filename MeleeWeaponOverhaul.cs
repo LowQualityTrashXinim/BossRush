@@ -408,8 +408,6 @@ namespace BossRush
         public Vector2 data;
         public int ComboNumber = 0;
         public Rectangle SwordHitBox;
-        public bool critReference;
-        int iframeCounter = 0;
         public int delaytimer = 10;
         public int CountAmountOfThrustDid = 1;
         public int oldHeldItem;
@@ -480,7 +478,7 @@ namespace BossRush
         }
         private void ExecuteSpecialComboOnActive(Item item)
         {
-            if (ComboNumber != 2)
+            if (ComboConditionChecking())
             {
                 return;
             }
@@ -488,24 +486,29 @@ namespace BossRush
             switch (item.useStyle)
             {
                 case BossRushUseStyle.Poke:
-                    if (Player.mount.Active)
-                    {
-                        break;
-                    }
                     Player.gravity = 0;
                     break;
-                case BossRushUseStyle.Swipe:
-                    SpinAttackExtraHit(item);
-                    break;
+                //case BossRushUseStyle.Swipe:
+                //    SpinAttackExtraHit(item);
+                //    break;
             }
         }
+        private bool IsWallBossAlive()
+        {
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (npc.type == NPCID.WallofFlesh)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool ComboConditionChecking() => Player.mount.Active | IsWallBossAlive() | ComboNumber != 2;
         private void ExecuteSpecialComboOnStart(Item item)
         {
-            if(Player.mount.Active)
-            {
-                return;
-            }
-            if (ComboNumber != 2)
+            if(ComboConditionChecking())
             {
                 return;
             }
@@ -535,6 +538,8 @@ namespace BossRush
                 ComboNumber = 0;
             }
         }
+        public bool critReference;
+        int iframeCounter = 0;
         private void SpinAttackExtraHit(Item item)
         {
             NPC npclaststrike = null;
