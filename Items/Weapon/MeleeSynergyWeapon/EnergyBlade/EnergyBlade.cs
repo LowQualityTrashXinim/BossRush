@@ -32,7 +32,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Item.noUseGraphic = true;
             Item.rare = ItemRarityID.Orange;
             Item.DamageType = DamageClass.Melee;
-            Item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
             Item.useTurn = false;
@@ -46,13 +46,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
-        }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.EnchantedSword, 2)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .Register();
         }
     }
     public class EnergyBladeProjectile : ModProjectile

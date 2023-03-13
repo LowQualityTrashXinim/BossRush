@@ -390,7 +390,6 @@ namespace BossRush.Items.Chest
         public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0)
         {
             specialAmount = 1;
-            ReturnWeapon = 0;
             if (rng == 0)
             {
                 if (meleeChance + rangeChance + magicChance + summonChance + specialChance >= 1)
@@ -409,34 +408,35 @@ namespace BossRush.Items.Chest
                 AddLoot(FlagNumber());
             }
             //actual choosing item
+            ReturnWeapon = ChooseWeapon(rng);
+        }
+
+        public int ChooseWeapon(int rng)
+        {
             switch (rng)
             {
                 case 0:
-                    ReturnWeapon = ItemID.None;
-                    break;
+                    return ItemID.None;
                 case 1:
-                    ReturnWeapon = Main.rand.NextFromCollection(DropItemMelee);
-                    break;
+                    return Main.rand.NextFromCollection(DropItemMelee);
                 case 2:
-                    ReturnWeapon = Main.rand.NextFromCollection(DropItemRange);
-                    break;
+                    return Main.rand.NextFromCollection(DropItemRange);
                 case 3:
-                    ReturnWeapon = Main.rand.NextFromCollection(DropItemMagic);
-                    break;
+                    return Main.rand.NextFromCollection(DropItemMagic);
                 case 4:
-                    ReturnWeapon = Main.rand.NextFromCollection(DropItemSummon);
-                    break;
+                    return Main.rand.NextFromCollection(DropItemSummon);
                 case 5:
-                    ReturnWeapon = Main.rand.NextFromCollection(DropItemMisc);
-                    specialAmount += 199;
-                    break;
+                    if (DropItemMisc.Count < 1)
+                    {
+                        return ChooseWeapon(Main.rand.Next(1, 5));
+                    }
+                    return Main.rand.NextFromCollection(DropItemMisc);
                 case 6:
-                    ReturnWeapon = ModContent.ItemType<WonderDrug>();
-                    break;
+                    return ModContent.ItemType<WonderDrug>();
                 case 7:
-                    ReturnWeapon = ModContent.ItemType<RainbowTreasureChest>();
-                    break;
+                    return ModContent.ItemType<RainbowTreasureChest>();
             }
+            return ItemID.None;
         }
 
         List<int> DropArrowAmmo = new List<int>();
@@ -708,6 +708,10 @@ namespace BossRush.Items.Chest
         }
         public static List<int> SetUpRNGTier(this List<int> FlagNum)
         {
+            if(FlagNum.Count < 2)
+            {
+                return FlagNum;
+            }
             List<int> FlagNumNew = new List<int> { FlagNum[0] };
             float GetOnePercentChance = 100 / (float)FlagNum.Count;
             for (int i = 1; i < FlagNum.Count; ++i)
@@ -726,9 +730,9 @@ namespace BossRush.Items.Chest
             List<int> listofIndexWhereDupe = new List<int>();
             for (int i = 0; i < flag.Count; ++i)
             {
-                for (int l = i; l < flag.Count; ++l)
+                for (int l = i + 1; l < flag.Count; ++l)
                 {
-                    if (listArray[i] == flag[l] && i != l)
+                    if (listArray[i] == flag[l])
                     {
                         listofIndexWhereDupe.Add(i);
                     }

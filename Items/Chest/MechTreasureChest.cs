@@ -28,7 +28,10 @@ namespace BossRush.Items.Chest
             List<int> list = new List<int>() { 7, 8, 9 };
             if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
+                list.RemoveAt(1);
+                list.RemoveAt(0);
                 list.Add(10);
+                list.Add(11);
             }
             return list;
         }
