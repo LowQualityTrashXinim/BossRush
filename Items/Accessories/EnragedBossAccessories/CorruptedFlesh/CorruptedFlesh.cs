@@ -4,12 +4,13 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Items.Artifact;
+using BossRush.Texture;
 
 namespace BossRush.Items.Accessories.EnragedBossAccessories.CorruptedFlesh
 {
     internal class CorruptedFlesh : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Isn't this is just rotten flesh but even more rotten ?" +

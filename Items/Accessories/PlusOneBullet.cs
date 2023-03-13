@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -6,7 +7,7 @@ namespace BossRush.Items.Accessories
 {
     internal class PlusOneBullet : ModItem, ISynergyItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Extra gun Barrel");

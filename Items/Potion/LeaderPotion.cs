@@ -2,12 +2,13 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
+using BossRush.Texture;
 
 namespace BossRush.Items.Potion
 {
     internal class LeaderPotion : ModItem
     {
-        public override string Texture => "BossRush/MissingTexturePotion";
+        public override string Texture => ItemTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Commander's Exilir");

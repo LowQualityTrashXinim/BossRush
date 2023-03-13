@@ -2,12 +2,13 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Texture;
 
 namespace BossRush.Items.Accessories
 {
     internal class BouncyRelic : ModItem, ISynergyItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
 
         public int ModifyAmountBullet => 1;
 

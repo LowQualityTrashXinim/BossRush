@@ -25,10 +25,10 @@ namespace BossRush.Items.Chest
         }
         public override List<int> FlagNumber()
         {
-            List<int> list = new List<int>() { 6, 7, 8 };
+            List<int> list = new List<int>() { 7, 8, 9 };
             if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
-                list.Add(9);
+                list.Add(10);
             }
             return list;
         }

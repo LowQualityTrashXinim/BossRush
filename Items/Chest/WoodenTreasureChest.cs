@@ -24,11 +24,9 @@ namespace BossRush.Items.Chest
         {
             return true;
         }
-        public override List<int> FlagNumber()
-        {
-            return new List<int> { 0 };
-        }
-        public override List<int> FlagNumAcc() => new List<int> { 0,1,2 };
+        public override List<int> FlagNumber() => new List<int> { 0, 1, 2 };
+
+        public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
@@ -46,7 +44,7 @@ namespace BossRush.Items.Chest
             {
                 if (i == 1)
                 {
-                    FlagNumAcc(new List<int> {0});
+                    FlagNumAcc(new List<int> { 0 });
                 }
                 player.QuickSpawnItem(entitySource, GetAccessory());
             }
@@ -102,11 +100,11 @@ namespace BossRush.Items.Chest
             }
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                int RandomModdedBuff = Main.rand.Next(new int[] { 
-                    ModContent.ItemType<BerserkPotion>(), 
-                    ModContent.ItemType<PinPointAccuracyPotion>(), 
-                    ModContent.ItemType<SagePotion>(), 
-                    ModContent.ItemType<LeaderPotion>(), 
+                int RandomModdedBuff = Main.rand.Next(new int[] {
+                    ModContent.ItemType<BerserkPotion>(),
+                    ModContent.ItemType<PinPointAccuracyPotion>(),
+                    ModContent.ItemType<SagePotion>(),
+                    ModContent.ItemType<LeaderPotion>(),
                     ModContent.ItemType<TankPotion>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }

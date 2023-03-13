@@ -21,7 +21,7 @@ namespace BossRush.Items.Chest
         {
             return true;
         }
-        public override List<int> FlagNumber() => new List<int> { 0, 1 };
+        public override List<int> FlagNumber() => new List<int> { 0, 1, 2, 3 };
         public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
         public override void RightClick(Player player)
         {

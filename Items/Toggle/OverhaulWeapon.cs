@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.ID;
@@ -10,7 +11,7 @@ namespace BossRush.Items.Toggle
 {
     internal class OverhaulWeapon : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("World's gift");

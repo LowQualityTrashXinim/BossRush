@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -6,7 +7,7 @@ namespace BossRush.Items.Accessories
 {
     class EnergeticCrystal : ModItem, ISynergyItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Do not take it out of context\nIncrease both health and mana by 50\nIncrease regen mana and health rate by 5");

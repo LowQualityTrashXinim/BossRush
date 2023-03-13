@@ -4,12 +4,13 @@ using Terraria.ModLoader;
 using BossRush.BuffAndDebuff;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Texture;
 
 namespace BossRush.Items.Accessories
 {
     internal class ParryScabbard : ModItem, ISynergyItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
 
         public override void SetStaticDefaults()
         {

@@ -158,8 +158,13 @@ namespace BossRush.Items
         }
     }
     //GOOD FUCKING LUCK FUTURE BRO
+    // Don't worry bro, i got the better system now
     abstract class SynergyBehaviorHandlePlayer : ModPlayer
     {
+    }
+    abstract class SynergyModItem : ModItem
+    {
+
     }
     #region Guide to Master Ninja synergy
     class GuideToMasterNinjaSynergy : SynergyBehaviorHandlePlayer

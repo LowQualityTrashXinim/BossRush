@@ -2,12 +2,13 @@
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using BossRush.Texture;
 
 namespace BossRush.Items.Accessories.EnragedBossAccessories.KingSlimeDelight
 {
     internal class KingSlimeDelight : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Truely slime-da-ful" +
@@ -28,7 +29,7 @@ namespace BossRush.Items.Accessories.EnragedBossAccessories.KingSlimeDelight
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.jumpSpeedBoost += 2.5f;
-            player.accRunSpeed *= 1.1f;
+            player.accRunSpeed += .1f;
             player.statDefense += 5;
             player.GetModPlayer<KingSlimePowerPlayer>().KingSlimePower = true;
         }

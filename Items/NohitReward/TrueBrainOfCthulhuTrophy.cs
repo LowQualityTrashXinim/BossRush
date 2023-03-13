@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -6,7 +7,7 @@ namespace BossRush.Items.NohitReward
 {
     internal class TrueBrainOfCthulhuTrophy : BaseNoHit
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override bool? UseItem(Player player)
         {
             player.statLifeMax2 += HP;

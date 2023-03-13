@@ -3,12 +3,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.Audio;
+using BossRush.Texture;
 
 namespace BossRush.Items.Spawner
 {
     public class WormFeast : ModItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Caution : Using this will gather unwanted attention");

@@ -3,12 +3,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using BossRush.Texture;
 
 namespace BossRush.Items.Weapon.SummonerSynergyWeapon.StickySlime
 {
     internal class StickyFlower : ModItem, ISynergyItem
     {
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Quite a sticky ghost");

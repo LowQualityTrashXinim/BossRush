@@ -32,7 +32,7 @@ namespace BossRush.Items.Chest
         {
             return NPC.downedBoss3;
         }
-        public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4 };
+        public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4, 5 };
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);

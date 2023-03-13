@@ -2,13 +2,14 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Texture;
 
 namespace BossRush.Items
 {
     internal class ArenaMakerProj : ModProjectile
     {
         //This should be breaking a lot, i can't bother to make it stable as for now
-        public override string Texture => "BossRush/MissingTexture";
+        public override string Texture => ItemTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Projectile.width = 20;
