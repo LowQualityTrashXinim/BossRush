@@ -35,7 +35,7 @@ namespace BossRush.Items.Potion
 
         public override bool CanUseItem(Player player)
         {
-            return player.statLife >= 100;
+            return player.statLife > 100;
         }
 
         public override bool? UseItem(Player player)
