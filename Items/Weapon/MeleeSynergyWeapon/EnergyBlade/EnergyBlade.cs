@@ -77,9 +77,10 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             {
                 Projectile.timeLeft = player.itemAnimationMax;
             }
+            player.heldProj = Projectile.whoAmI;
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             percentDone = BossRushUtils.InExpo(percentDone);
-            Projectile.spriteDirection = player.GetModPlayer<MeleeOverhaulPlayer>().data.X > 0 ? 1 : -1;
+            Projectile.spriteDirection = player.direction;
             float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
             float start = baseAngle + angle;

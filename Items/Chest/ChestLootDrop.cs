@@ -18,96 +18,6 @@ namespace BossRush.Items.Chest
         private List<int> DropItemSummon = new List<int>();
         private List<int> DropItemMisc = new List<int>();
 
-        readonly int[] MeleePreBoss = {
-            ItemID.CopperShortsword, ItemID.TinShortsword, ItemID.IronShortsword, ItemID.LeadShortsword,
-            ItemID.SilverShortsword, ItemID.TungstenShortsword, ItemID.GoldShortsword, ItemID.PlatinumShortsword,
-            ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.CactusSword,
-            ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,
-            ItemID.LeadBroadsword, ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword,
-        };
-        readonly int[] RangePreBoss = {
-                ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow,
-                ItemID.CopperBow, ItemID.TinBow, ItemID.IronBow, ItemID.LeadBow, ItemID.SilverBow,ItemID.TungstenBow, ItemID.GoldBow, ItemID.PlatinumBow,
-        };
-        readonly int[] MagicPreBoss = { ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff, ItemID.RubyStaff, ItemID.DiamondStaff };
-        readonly int[] SummonPreBoss = { ItemID.BabyBirdStaff, ItemID.SlimeStaff, ItemID.FlinxStaff };
-        readonly int[] SpecialPreBoss = { ItemID.Shuriken, ItemID.ThrowingKnife, ItemID.PoisonedKnife, ItemID.RottenEgg, ItemID.StarAnise, };
-
-        readonly int[] MeleePreEoC = {
-                ItemID.BladedGlove, ItemID.ZombieArm, ItemID.AntlionClaw, ItemID.StylistKilLaKillScissorsIWish, ItemID.Ruler, ItemID.Umbrella,
-                ItemID.TragicUmbrella, ItemID.BreathingReed, ItemID.Gladius, ItemID.BoneSword, ItemID.BatBat, ItemID.TentacleSpike,
-                ItemID.CandyCaneSword, ItemID.Katana, ItemID.IceBlade, ItemID.LightsBane, ItemID.BloodButcherer, ItemID.Starfury, ItemID.EnchantedSword,
-                ItemID.PurpleClubberfish, ItemID.FalconBlade, ItemID.BladeofGrass, ItemID.WoodYoyo, ItemID.Rally, ItemID.CorruptYoyo, ItemID.CrimsonYoyo,
-                ItemID.JungleYoyo, ItemID.Spear, ItemID.Trident, ItemID.ThunderSpear, ItemID.TheRottedFork, ItemID.Swordfish, ItemID.WoodenBoomerang,
-                ItemID.EnchantedBoomerang, ItemID.FruitcakeChakram, ItemID.BloodyMachete, ItemID.Shroomerang, ItemID.IceBoomerang, ItemID.ThornChakram,
-                ItemID.ChainKnife, ItemID.Mace, ItemID.FlamingMace, ItemID.BallOHurt,ItemID.Terragrim, ItemID.DyeTradersScimitar
-            };
-        readonly int[] RangePreEoC = {
-                ItemID.RedRyder, ItemID.FlintlockPistol,ItemID.Musket, ItemID.TheUndertaker, ItemID.Revolver, ItemID.Minishark, ItemID.Boomstick,
-                ItemID.Sandgun, ItemID.FlareGun, ItemID.Blowpipe, ItemID.SnowballCannon, ItemID.PainterPaintballGun
-        };
-        readonly int[] MagicPreEoC = {
-                ItemID.WandofSparking,ItemID.ThunderStaff, ItemID.AmberStaff
-        };
-        readonly int[] SummonerPreEoC = {
-                ItemID.AbigailsFlower, ItemID.VampireFrogStaff,
-                ItemID.BlandWhip, ItemID.ThornWhip
-        };
-        readonly int[] Special = { ItemID.MolotovCocktail,ItemID.FrostDaggerfish, ItemID.Javelin, ItemID.BoneJavelin, ItemID.BoneDagger, ItemID.Grenade, ItemID.StickyGrenade, ItemID.BouncyGrenade,ItemID.PartyGirlGrenade
-        };
-        readonly int[] MeleeEvilBoss = {
-            ItemID.FieryGreatsword, ItemID.PurplePhaseblade, ItemID.YellowPhaseblade, ItemID.BluePhaseblade, ItemID.GreenPhaseblade, ItemID.RedPhaseblade, ItemID.WhitePhaseblade,
-            ItemID.OrangePhaseblade, ItemID.Flamarang, ItemID.TheMeatball
-        };
-        readonly int[] MagicEvilBoss = { ItemID.Vilethorn, ItemID.CrimsonRod, ItemID.DemonScythe, ItemID.SpaceGun, ItemID.ImpStaff };
-        readonly int[] MeleeSkel = { ItemID.Muramasa, ItemID.NightsEdge, ItemID.Valor, ItemID.Cascade, ItemID.DarkLance, ItemID.CombatWrench, ItemID.BlueMoon, ItemID.Sunfury };
-        readonly int[] RangeSkele = { ItemID.HellwingBow, ItemID.QuadBarrelShotgun, ItemID.Handgun, ItemID.PhoenixBlaster };
-        readonly int[] MagicSkele = { ItemID.MagicMissile, ItemID.AquaScepter, ItemID.FlowerofFire, ItemID.Flamelash, ItemID.WaterBolt, ItemID.BookofSkulls };
-        readonly int[] SummonSkele = { ItemID.DD2LightningAuraT1Popper, ItemID.DD2FlameburstTowerT1Popper, ItemID.DD2ExplosiveTrapT1Popper, ItemID.DD2BallistraTowerT1Popper, ItemID.BoneWhip };
-
-        readonly int[] MeleeHM = {
-            ItemID.PearlwoodSword, ItemID.TaxCollectorsStickOfDoom, ItemID.SlapHand, ItemID.CobaltSword, ItemID.PalladiumSword, ItemID.MythrilSword,
-            ItemID.OrichalcumSword, ItemID.AdamantiteSword, ItemID.TitaniumSword, ItemID.BreakerBlade, ItemID.IceSickle, ItemID.Cutlass, ItemID.Frostbrand,
-            ItemID.BeamSword, ItemID.FetidBaghnakhs, ItemID.Bladetongue, ItemID.HamBat, ItemID.FormatC, ItemID.Gradient, ItemID.Chik, ItemID.HelFire,
-            ItemID.Amarok, ItemID.CobaltNaginata, ItemID.PalladiumPike, ItemID.MythrilHalberd, ItemID.OrichalcumHalberd, ItemID.AdamantiteGlaive,
-            ItemID.TitaniumTrident, ItemID.FlyingKnife, ItemID.BouncingShield, ItemID.Bananarang, ItemID.Anchor, ItemID.KOCannon, ItemID.DripplerFlail,
-            ItemID.ChainGuillotines, ItemID.DaoofPow, ItemID.JoustingLance, ItemID.ShadowFlameKnife,ItemID.ObsidianSwordfish
-        };
-        readonly int[] RangeHM = {
-            ItemID.PearlwoodBow, ItemID.Marrow, ItemID.IceBow,ItemID.DaedalusStormbow, ItemID.ShadowFlameBow, ItemID.CobaltRepeater, ItemID.PalladiumRepeater, ItemID.MythrilRepeater, ItemID.OrichalcumRepeater,
-            ItemID.AdamantiteRepeater, ItemID.TitaniumRepeater, ItemID.ClockworkAssaultRifle, ItemID.Gatligator, ItemID.Shotgun, ItemID.OnyxBlaster, ItemID.OnyxBlaster,
-            ItemID.CoinGun, ItemID.Uzi, ItemID.Toxikarp, ItemID.DartPistol, ItemID.DartRifle
-        };
-        readonly int[] MagicHM = {
-            ItemID.SkyFracture, ItemID.CrystalSerpent, ItemID.FlowerofFrost,ItemID.FrostStaff, ItemID.CrystalVileShard, ItemID.SoulDrain, ItemID.MeteorStaff, ItemID.PoisonStaff, ItemID.LaserRifle, ItemID.ZapinatorOrange,
-            ItemID.CursedFlames, ItemID.GoldenShower, ItemID.CrystalStorm, ItemID.IceRod, ItemID.ClingerStaff, ItemID.NimbusRod, ItemID.MagicDagger, ItemID.MedusaHead,
-            ItemID.SpiritFlame, ItemID.SharpTears
-        };
-        readonly int[] SummonHM = { ItemID.SpiderStaff, ItemID.PirateStaff, ItemID.SanguineStaff, ItemID.QueenSpiderStaff, ItemID.FireWhip, ItemID.CoolWhip };
-
-        readonly int[] MeleeQS = { ItemID.RedsYoyo, ItemID.ValkyrieYoyo, ItemID.Arkhalis };
-        readonly int[] MeleeMech = { ItemID.Code2, ItemID.Yelets, ItemID.MushroomSpear };
-
-        readonly int[] MeleePostAllMechs = { ItemID.TrueExcalibur, ItemID.ChlorophyteSaber, ItemID.DeathSickle, ItemID.ChlorophyteClaymore, ItemID.TrueNightsEdge, ItemID.ChlorophytePartisan, ItemID.DD2SquireDemonSword, ItemID.MonkStaffT2, ItemID.MonkStaffT1 };
-        readonly int[] RangePostAllMech = { ItemID.ChlorophyteShotbow, ItemID.Megashark, ItemID.Flamethrower };
-        readonly int[] MagicPostAllMech = { ItemID.VenomStaff, ItemID.BookStaff, ItemID.RainbowRod, ItemID.MagicalHarp };
-        readonly int[] SummonPostAllMech = { ItemID.OpticStaff, ItemID.DD2LightningAuraT2Popper, ItemID.DD2FlameburstTowerT2Popper, ItemID.DD2ExplosiveTrapT2Popper, ItemID.DD2BallistraTowerT2Popper };
-
-        readonly int[] MeleePostPlant = { ItemID.ChristmasTreeSword, ItemID.NorthPole, ItemID.PsychoKnife, ItemID.Keybrand, ItemID.Seedler, ItemID.TerraBlade, ItemID.PaladinsHammer, ItemID.FlowerPow, ItemID.ScourgeoftheCorruptor, ItemID.Kraken, ItemID.TheEyeOfCthulhu, ItemID.ShadowJoustingLance, ItemID.VampireKnives, ItemID.TheHorsemansBlade };
-        readonly int[] RangePostPlant = { ItemID.ChainGun, ItemID.SnowmanCannon, ItemID.EldMelter, ItemID.PulseBow, ItemID.VenusMagnum, ItemID.TacticalShotgun, ItemID.SniperRifle, ItemID.GrenadeLauncher, ItemID.ProximityMineLauncher, ItemID.RocketLauncher, ItemID.NailGun, ItemID.PiranhaGun, ItemID.JackOLanternLauncher, ItemID.StakeLauncher, ItemID.CandyCornRifle };
-        readonly int[] MagicPostPlant = { ItemID.InfernoFork, ItemID.SpectreStaff, ItemID.PrincessWeapon, ItemID.WaspGun, ItemID.LeafBlower, ItemID.BatScepter, ItemID.BlizzardStaff, ItemID.Razorpine, ItemID.RainbowGun, ItemID.ToxicFlask, ItemID.NettleBurst };
-        readonly int[] SummonPostPlant = { ItemID.RavenStaff, ItemID.DeadlySphereStaff, ItemID.PygmyStaff, ItemID.StormTigerStaff, ItemID.StaffoftheFrostHydra, ItemID.MaceWhip, ItemID.ScytheWhip };
-
-        readonly int[] MeleePostGolem = { ItemID.PossessedHatchet, ItemID.GolemFist, ItemID.DD2SquireBetsySword, ItemID.MonkStaffT3, ItemID.InfluxWaver };
-        readonly int[] RangePostGolem = { ItemID.Stynger, ItemID.FireworksLauncher, ItemID.DD2BetsyBow, ItemID.ElectrosphereLauncher, ItemID.Xenopopper };
-        readonly int[] MagicPostGolem = { ItemID.StaffofEarth, ItemID.HeatRay, ItemID.ApprenticeStaffT3, ItemID.ChargedBlasterCannon, ItemID.LaserMachinegun };
-        readonly int[] SummonPostGolem = { ItemID.DD2BallistraTowerT3Popper, ItemID.DD2LightningAuraT3Popper, ItemID.DD2FlameburstTowerT3Popper, ItemID.DD2ExplosiveTrapT3Popper, ItemID.XenoStaff };
-
-        readonly int[] MeleePreLuna = { ItemID.Flairon, ItemID.PiercingStarlight };
-        readonly int[] RangePreLuna = { ItemID.Tsunami, ItemID.FairyQueenRangedItem };
-        readonly int[] MagicPreLuna = { ItemID.RazorbladeTyphoon, ItemID.BubbleGun, ItemID.FairyQueenMagicItem, ItemID.SparkleGuitar };
-        readonly int[] SummonPreLuna = { ItemID.TempestStaff, ItemID.RainbowWhip };
-
         int meleeChance;
         int rangeChance;
         int magicChance;
@@ -240,37 +150,37 @@ namespace BossRush.Items.Chest
                 switch (FlagNumber[i])
                 {
                     case 0://PreBoss
-                        DropItemMelee.AddRange(MeleePreBoss);
-                        DropItemRange.AddRange(RangePreBoss);
-                        DropItemMagic.AddRange(MagicPreBoss);
-                        DropItemSummon.AddRange(SummonPreBoss);
-                        DropItemMisc.AddRange(SpecialPreBoss);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
+                        DropItemRange.AddRange(TerrariaArrayID.RangePreBoss);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
+                        DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
                         break;
                     case 1://PreEoC
-                        DropItemMelee.AddRange(MeleePreEoC);
-                        DropItemRange.AddRange(RangePreEoC);
-                        DropItemMagic.AddRange(MagicPreEoC);
-                        DropItemSummon.AddRange(SummonerPreEoC);
-                        DropItemMisc.AddRange(Special);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
+                        DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
+                        DropItemMisc.AddRange(TerrariaArrayID.Special);
                         break;
                     case 2://EoC
                         DropItemMelee.Add(ItemID.Code1);
                         DropItemMagic.Add(ItemID.ZapinatorGray);
                         break;
                     case 3://Evil boss
-                        DropItemMelee.AddRange(MeleeEvilBoss);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
                         DropItemRange.Add(ItemID.MoltenFury);
                         DropItemRange.Add(ItemID.StarCannon);
                         DropItemRange.Add(ItemID.AleThrowingGlove);
                         DropItemRange.Add(ItemID.Harpoon);
-                        DropItemMagic.AddRange(MagicEvilBoss);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
                         DropItemSummon.Add(ItemID.ImpStaff);
                         break;
                     case 4://Skeletron
-                        DropItemMelee.AddRange(MeleeSkel);
-                        DropItemRange.AddRange(RangeSkele);
-                        DropItemMagic.AddRange(MagicSkele);
-                        DropItemSummon.AddRange(SummonSkele);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
+                        DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
                         break;
                     case 5://Queen bee
                         DropItemMelee.Add(ItemID.BeeKeeper);
@@ -285,44 +195,44 @@ namespace BossRush.Items.Chest
                         DropItemSummon.Add(ItemID.HoundiusShootius);
                         break;
                     case 7://Wall of flesh
-                        DropItemMelee.AddRange(MeleeHM);
-                        DropItemRange.AddRange(RangeHM);
-                        DropItemMagic.AddRange(MagicHM);
-                        DropItemSummon.AddRange(SummonHM);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
+                        DropItemRange.AddRange(TerrariaArrayID.RangeHM);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
                         break;
                     case 8://Queen slime
-                        DropItemMelee.AddRange(MeleeQS);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
                         DropItemSummon.Add(ItemID.Smolstar);
                         break;
                     case 9://First mech
-                        DropItemMelee.AddRange(MeleeMech);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
                         DropItemRange.Add(ItemID.SuperStarCannon);
                         DropItemRange.Add(ItemID.DD2PhoenixBow);
                         DropItemMagic.Add(ItemID.UnholyTrident);
                         break;
                     case 10://All three mech
-                        DropItemMelee.AddRange(MeleePostAllMechs);
-                        DropItemRange.AddRange(RangePostAllMech);
-                        DropItemMagic.AddRange(MagicPostAllMech);
-                        DropItemSummon.AddRange(SummonPostAllMech);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
+                        DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
                         break;
                     case 11://Plantera
-                        DropItemMelee.AddRange(MeleePostPlant);
-                        DropItemRange.AddRange(RangePostPlant);
-                        DropItemMagic.AddRange(MagicPostPlant);
-                        DropItemSummon.AddRange(SummonPostPlant);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
+                        DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
                         break;
                     case 12://Golem
-                        DropItemMelee.AddRange(MeleePostGolem);
-                        DropItemRange.AddRange(RangePostGolem);
-                        DropItemMagic.AddRange(MagicPostGolem);
-                        DropItemSummon.AddRange(SummonPostGolem);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
+                        DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
                         break;
                     case 13://Pre lunatic (Duke fishron, EoL, ect)
-                        DropItemMelee.AddRange(MeleePreLuna);
-                        DropItemRange.AddRange(RangePreLuna);
-                        DropItemMagic.AddRange(MagicPreLuna);
-                        DropItemSummon.AddRange(SummonPreLuna);
+                        DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
+                        DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
+                        DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
+                        DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
                         break;
                     case 14://Lunatic Cultist
                         DropItemMelee.Add(ItemID.DayBreak);
@@ -372,7 +282,7 @@ namespace BossRush.Items.Chest
         ///      14 : Post lunatic cultist <br/>
         ///      15 : Post Moon lord <br/>
         /// </summary>
-        public virtual List<int> FlagNumber() =>new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+        public virtual List<int> FlagNumber() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         /// <summary>
         /// Return a random weapon and if the weapon consumable then return many ammount
         /// </summary>
@@ -443,15 +353,6 @@ namespace BossRush.Items.Chest
         List<int> DropBulletAmmo = new List<int>();
         List<int> DropDartAmmo = new List<int>();
 
-        readonly int[] defaultArrow = { ItemID.WoodenArrow, ItemID.FlamingArrow, ItemID.FrostburnArrow, ItemID.JestersArrow, ItemID.UnholyArrow, ItemID.BoneArrow, ItemID.HellfireArrow };
-        readonly int[] ArrowHM = { ItemID.HolyArrow, ItemID.CursedArrow, ItemID.IchorArrow };
-
-        readonly int[] defaultBullet = { ItemID.MusketBall, ItemID.SilverBullet, ItemID.TungstenBullet };
-        readonly int[] BulletHM = { ItemID.CursedBullet, ItemID.IchorBullet, ItemID.GoldenBullet, ItemID.CrystalBullet, ItemID.HighVelocityBullet, ItemID.PartyBullet, ItemID.ExplodingBullet };
-
-        readonly int[] defaultDart = { ItemID.PoisonDart, ItemID.Seed };
-        readonly int[] DartHM = { ItemID.IchorDart, ItemID.CursedDart, ItemID.CrystalDart };
-
         /// <summary>
         /// Return ammo of weapon accordingly to weapon parameter
         /// </summary>
@@ -468,15 +369,15 @@ namespace BossRush.Items.Chest
             DropBulletAmmo.Clear();
             DropDartAmmo.Clear();
 
-            DropArrowAmmo.AddRange(defaultArrow);
-            DropBulletAmmo.AddRange(defaultBullet);
-            DropDartAmmo.AddRange(defaultDart);
+            DropArrowAmmo.AddRange(TerrariaArrayID.defaultArrow);
+            DropBulletAmmo.AddRange(TerrariaArrayID.defaultBullet);
+            DropDartAmmo.AddRange(TerrariaArrayID.defaultDart);
 
             if (Main.hardMode)
             {
-                DropArrowAmmo.AddRange(ArrowHM);
-                DropBulletAmmo.AddRange(BulletHM);
-                DropDartAmmo.AddRange(DartHM);
+                DropArrowAmmo.AddRange(TerrariaArrayID.ArrowHM);
+                DropBulletAmmo.AddRange(TerrariaArrayID.BulletHM);
+                DropDartAmmo.AddRange(TerrariaArrayID.DartHM);
             }
             if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
@@ -561,19 +462,6 @@ namespace BossRush.Items.Chest
         }
 
         List<int> Accessories = new List<int>();
-
-        readonly int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
-        readonly int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
-        readonly int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
-
-        readonly int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };
-        readonly int[] PostEvilMovementAccessory = new int[] { ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots };
-        readonly int[] PostEvilHealthManaAccessory = new int[] { ItemID.BandofStarpower, ItemID.CelestialMagnet };
-
-        readonly int[] QueenBeeCombatAccessory = new int[] { ItemID.PygmyNecklace, ItemID.HoneyComb };
-
-        readonly int[] AnhkCharm = new int[] { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
-        readonly int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
         /// <summary>
         ///      Allow user to return a list of number that contain different data to insert into chest <br/>
         ///      0 : Tier 1 Combat acc <br/>
@@ -619,34 +507,34 @@ namespace BossRush.Items.Chest
                 switch (flag[i])
                 {
                     case 0:
-                        Accessories.AddRange(T1CombatAccessory);
+                        Accessories.AddRange(TerrariaArrayID.T1CombatAccessory);
                         break;
                     case 1:
-                        Accessories.AddRange(T1HealthAndManaAccessory);
+                        Accessories.AddRange(TerrariaArrayID.T1HealthAndManaAccessory);
                         break;
                     case 2:
-                        Accessories.AddRange(T1MovementAccessory);
+                        Accessories.AddRange(TerrariaArrayID.T1MovementAccessory);
                         break;
                     case 3:
-                        Accessories.AddRange(PostEvilCombatAccessory);
+                        Accessories.AddRange(TerrariaArrayID.PostEvilCombatAccessory);
                         break;
                     case 4:
-                        Accessories.AddRange(PostEvilHealthManaAccessory);
+                        Accessories.AddRange(TerrariaArrayID.PostEvilHealthManaAccessory);
                         break;
                     case 5:
-                        Accessories.AddRange(PostEvilMovementAccessory);
+                        Accessories.AddRange(TerrariaArrayID.PostEvilMovementAccessory);
                         break;
                     case 6:
-                        Accessories.AddRange(QueenBeeCombatAccessory);
+                        Accessories.AddRange(TerrariaArrayID.QueenBeeCombatAccessory);
                         break;
                     case 7:
                         Accessories.Add(ItemID.CobaltShield);
                         break;
                     case 8:
-                        Accessories.AddRange(AnhkCharm);
+                        Accessories.AddRange(TerrariaArrayID.AnhkCharm);
                         break;
                     case 9:
-                        Accessories.AddRange(HMAccessory);
+                        Accessories.AddRange(TerrariaArrayID.HMAccessory);
                         break;
                     case 10:
                         Accessories.Add(ItemID.PhilosophersStone);
@@ -665,15 +553,13 @@ namespace BossRush.Items.Chest
             return Main.rand.NextFromCollection(Accessories);
         }
         List<int> DropItemPotion = new List<int>();
-        readonly int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
-        readonly int[] MovementPotion = new int[] { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
         /// <summary>
         /// Return random potion
         /// </summary>
         /// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
         public int GetPotion(bool MovementPotionOnly = false)
         {
-            DropItemPotion.AddRange(NonMovementPotion);
+            DropItemPotion.AddRange(TerrariaArrayID.NonMovementPotion);
             if (Main.hardMode)
             {
                 DropItemPotion.Add(ItemID.LifeforcePotion);
@@ -683,7 +569,7 @@ namespace BossRush.Items.Chest
             {
                 DropItemPotion.Clear();
             }
-            DropItemPotion.AddRange(MovementPotion);
+            DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
             return Main.rand.NextFromCollection(DropItemPotion);
         }
     }
@@ -708,7 +594,7 @@ namespace BossRush.Items.Chest
         }
         public static List<int> SetUpRNGTier(this List<int> FlagNum)
         {
-            if(FlagNum.Count < 2)
+            if (FlagNum.Count < 2)
             {
                 return FlagNum;
             }
@@ -744,5 +630,122 @@ namespace BossRush.Items.Chest
             }
             return listArray;
         }
+    }
+    public static class TerrariaArrayID
+    {
+        public readonly static int[] MeleePreBoss = {
+            ItemID.CopperShortsword, ItemID.TinShortsword, ItemID.IronShortsword, ItemID.LeadShortsword,
+            ItemID.SilverShortsword, ItemID.TungstenShortsword, ItemID.GoldShortsword, ItemID.PlatinumShortsword,
+            ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.CactusSword,
+            ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,
+            ItemID.LeadBroadsword, ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword,
+        };
+        public readonly static int[] RangePreBoss = {
+                ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow,
+                ItemID.CopperBow, ItemID.TinBow, ItemID.IronBow, ItemID.LeadBow, ItemID.SilverBow,ItemID.TungstenBow, ItemID.GoldBow, ItemID.PlatinumBow,
+        };
+        public readonly static int[] MagicPreBoss = { ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff, ItemID.RubyStaff, ItemID.DiamondStaff };
+        public readonly static int[] SummonPreBoss = { ItemID.BabyBirdStaff, ItemID.SlimeStaff, ItemID.FlinxStaff };
+        public readonly static int[] SpecialPreBoss = { ItemID.Shuriken, ItemID.ThrowingKnife, ItemID.PoisonedKnife, ItemID.RottenEgg, ItemID.StarAnise, };
+
+        public readonly static int[] MeleePreEoC = {
+                ItemID.BladedGlove, ItemID.ZombieArm, ItemID.AntlionClaw, ItemID.StylistKilLaKillScissorsIWish, ItemID.Ruler, ItemID.Umbrella,
+                ItemID.TragicUmbrella, ItemID.BreathingReed, ItemID.Gladius, ItemID.BoneSword, ItemID.BatBat, ItemID.TentacleSpike,
+                ItemID.CandyCaneSword, ItemID.Katana, ItemID.IceBlade, ItemID.LightsBane, ItemID.BloodButcherer, ItemID.Starfury, ItemID.EnchantedSword,
+                ItemID.PurpleClubberfish, ItemID.FalconBlade, ItemID.BladeofGrass, ItemID.WoodYoyo, ItemID.Rally, ItemID.CorruptYoyo, ItemID.CrimsonYoyo,
+                ItemID.JungleYoyo, ItemID.Spear, ItemID.Trident, ItemID.ThunderSpear, ItemID.TheRottedFork, ItemID.Swordfish, ItemID.WoodenBoomerang,
+                ItemID.EnchantedBoomerang, ItemID.FruitcakeChakram, ItemID.BloodyMachete, ItemID.Shroomerang, ItemID.IceBoomerang, ItemID.ThornChakram,
+                ItemID.ChainKnife, ItemID.Mace, ItemID.FlamingMace, ItemID.BallOHurt,ItemID.Terragrim, ItemID.DyeTradersScimitar
+            };
+        public readonly static int[] RangePreEoC = {
+                ItemID.RedRyder, ItemID.FlintlockPistol,ItemID.Musket, ItemID.TheUndertaker, ItemID.Revolver, ItemID.Minishark, ItemID.Boomstick,
+                ItemID.Sandgun, ItemID.FlareGun, ItemID.Blowpipe, ItemID.SnowballCannon, ItemID.PainterPaintballGun
+        };
+        public readonly static int[] MagicPreEoC = {
+                ItemID.WandofSparking,ItemID.ThunderStaff, ItemID.AmberStaff
+        };
+        public readonly static int[] SummonerPreEoC = {
+                ItemID.AbigailsFlower, ItemID.VampireFrogStaff,
+                ItemID.BlandWhip, ItemID.ThornWhip
+        };
+        public readonly static int[] Special = { ItemID.MolotovCocktail,ItemID.FrostDaggerfish, ItemID.Javelin, ItemID.BoneJavelin, ItemID.BoneDagger, ItemID.Grenade, ItemID.StickyGrenade, ItemID.BouncyGrenade,ItemID.PartyGirlGrenade
+        };
+        public readonly static int[] MeleeEvilBoss = {
+            ItemID.FieryGreatsword, ItemID.PurplePhaseblade, ItemID.YellowPhaseblade, ItemID.BluePhaseblade, ItemID.GreenPhaseblade, ItemID.RedPhaseblade, ItemID.WhitePhaseblade,
+            ItemID.OrangePhaseblade, ItemID.Flamarang, ItemID.TheMeatball
+        };
+        public readonly static int[] MagicEvilBoss = { ItemID.Vilethorn, ItemID.CrimsonRod, ItemID.DemonScythe, ItemID.SpaceGun, ItemID.ImpStaff };
+        public readonly static int[] MeleeSkel = { ItemID.Muramasa, ItemID.NightsEdge, ItemID.Valor, ItemID.Cascade, ItemID.DarkLance, ItemID.CombatWrench, ItemID.BlueMoon, ItemID.Sunfury };
+        public readonly static int[] RangeSkele = { ItemID.HellwingBow, ItemID.QuadBarrelShotgun, ItemID.Handgun, ItemID.PhoenixBlaster };
+        public readonly static int[] MagicSkele = { ItemID.MagicMissile, ItemID.AquaScepter, ItemID.FlowerofFire, ItemID.Flamelash, ItemID.WaterBolt, ItemID.BookofSkulls };
+        public readonly static int[] SummonSkele = { ItemID.DD2LightningAuraT1Popper, ItemID.DD2FlameburstTowerT1Popper, ItemID.DD2ExplosiveTrapT1Popper, ItemID.DD2BallistraTowerT1Popper, ItemID.BoneWhip };
+
+        public readonly static int[] MeleeHM = {
+            ItemID.PearlwoodSword, ItemID.TaxCollectorsStickOfDoom, ItemID.SlapHand, ItemID.CobaltSword, ItemID.PalladiumSword, ItemID.MythrilSword,
+            ItemID.OrichalcumSword, ItemID.AdamantiteSword, ItemID.TitaniumSword, ItemID.BreakerBlade, ItemID.IceSickle, ItemID.Cutlass, ItemID.Frostbrand,
+            ItemID.BeamSword, ItemID.FetidBaghnakhs, ItemID.Bladetongue, ItemID.HamBat, ItemID.FormatC, ItemID.Gradient, ItemID.Chik, ItemID.HelFire,
+            ItemID.Amarok, ItemID.CobaltNaginata, ItemID.PalladiumPike, ItemID.MythrilHalberd, ItemID.OrichalcumHalberd, ItemID.AdamantiteGlaive,
+            ItemID.TitaniumTrident, ItemID.FlyingKnife, ItemID.BouncingShield, ItemID.Bananarang, ItemID.Anchor, ItemID.KOCannon, ItemID.DripplerFlail,
+            ItemID.ChainGuillotines, ItemID.DaoofPow, ItemID.JoustingLance, ItemID.ShadowFlameKnife,ItemID.ObsidianSwordfish
+        };
+        public readonly static int[] RangeHM = {
+            ItemID.PearlwoodBow, ItemID.Marrow, ItemID.IceBow,ItemID.DaedalusStormbow, ItemID.ShadowFlameBow, ItemID.CobaltRepeater, ItemID.PalladiumRepeater, ItemID.MythrilRepeater, ItemID.OrichalcumRepeater,
+            ItemID.AdamantiteRepeater, ItemID.TitaniumRepeater, ItemID.ClockworkAssaultRifle, ItemID.Gatligator, ItemID.Shotgun, ItemID.OnyxBlaster, ItemID.OnyxBlaster,
+            ItemID.CoinGun, ItemID.Uzi, ItemID.Toxikarp, ItemID.DartPistol, ItemID.DartRifle
+        };
+        public readonly static int[] MagicHM = {
+            ItemID.SkyFracture, ItemID.CrystalSerpent, ItemID.FlowerofFrost,ItemID.FrostStaff, ItemID.CrystalVileShard, ItemID.SoulDrain, ItemID.MeteorStaff, ItemID.PoisonStaff, ItemID.LaserRifle, ItemID.ZapinatorOrange,
+            ItemID.CursedFlames, ItemID.GoldenShower, ItemID.CrystalStorm, ItemID.IceRod, ItemID.ClingerStaff, ItemID.NimbusRod, ItemID.MagicDagger, ItemID.MedusaHead,
+            ItemID.SpiritFlame, ItemID.SharpTears
+        };
+        public readonly static int[] SummonHM = { ItemID.SpiderStaff, ItemID.PirateStaff, ItemID.SanguineStaff, ItemID.QueenSpiderStaff, ItemID.FireWhip, ItemID.CoolWhip };
+
+        public readonly static int[] MeleeQS = { ItemID.RedsYoyo, ItemID.ValkyrieYoyo, ItemID.Arkhalis };
+        public readonly static int[] MeleeMech = { ItemID.Code2, ItemID.Yelets, ItemID.MushroomSpear };
+
+        public readonly static int[] MeleePostAllMechs = { ItemID.TrueExcalibur, ItemID.ChlorophyteSaber, ItemID.DeathSickle, ItemID.ChlorophyteClaymore, ItemID.TrueNightsEdge, ItemID.ChlorophytePartisan, ItemID.DD2SquireDemonSword, ItemID.MonkStaffT2, ItemID.MonkStaffT1 };
+        public readonly static int[] RangePostAllMech = { ItemID.ChlorophyteShotbow, ItemID.Megashark, ItemID.Flamethrower };
+        public readonly static int[] MagicPostAllMech = { ItemID.VenomStaff, ItemID.BookStaff, ItemID.RainbowRod, ItemID.MagicalHarp };
+        public readonly static int[] SummonPostAllMech = { ItemID.OpticStaff, ItemID.DD2LightningAuraT2Popper, ItemID.DD2FlameburstTowerT2Popper, ItemID.DD2ExplosiveTrapT2Popper, ItemID.DD2BallistraTowerT2Popper };
+
+        public readonly static int[] MeleePostPlant = { ItemID.ChristmasTreeSword, ItemID.NorthPole, ItemID.PsychoKnife, ItemID.Keybrand, ItemID.Seedler, ItemID.TerraBlade, ItemID.PaladinsHammer, ItemID.FlowerPow, ItemID.ScourgeoftheCorruptor, ItemID.Kraken, ItemID.TheEyeOfCthulhu, ItemID.ShadowJoustingLance, ItemID.VampireKnives, ItemID.TheHorsemansBlade };
+        public readonly static int[] RangePostPlant = { ItemID.ChainGun, ItemID.SnowmanCannon, ItemID.EldMelter, ItemID.PulseBow, ItemID.VenusMagnum, ItemID.TacticalShotgun, ItemID.SniperRifle, ItemID.GrenadeLauncher, ItemID.ProximityMineLauncher, ItemID.RocketLauncher, ItemID.NailGun, ItemID.PiranhaGun, ItemID.JackOLanternLauncher, ItemID.StakeLauncher, ItemID.CandyCornRifle };
+        public readonly static int[] MagicPostPlant = { ItemID.InfernoFork, ItemID.SpectreStaff, ItemID.PrincessWeapon, ItemID.WaspGun, ItemID.LeafBlower, ItemID.BatScepter, ItemID.BlizzardStaff, ItemID.Razorpine, ItemID.RainbowGun, ItemID.ToxicFlask, ItemID.NettleBurst };
+        public readonly static int[] SummonPostPlant = { ItemID.RavenStaff, ItemID.DeadlySphereStaff, ItemID.PygmyStaff, ItemID.StormTigerStaff, ItemID.StaffoftheFrostHydra, ItemID.MaceWhip, ItemID.ScytheWhip };
+
+        public readonly static int[] MeleePostGolem = { ItemID.PossessedHatchet, ItemID.GolemFist, ItemID.DD2SquireBetsySword, ItemID.MonkStaffT3, ItemID.InfluxWaver };
+        public readonly static int[] RangePostGolem = { ItemID.Stynger, ItemID.FireworksLauncher, ItemID.DD2BetsyBow, ItemID.ElectrosphereLauncher, ItemID.Xenopopper };
+        public readonly static int[] MagicPostGolem = { ItemID.StaffofEarth, ItemID.HeatRay, ItemID.ApprenticeStaffT3, ItemID.ChargedBlasterCannon, ItemID.LaserMachinegun };
+        public readonly static int[] SummonPostGolem = { ItemID.DD2BallistraTowerT3Popper, ItemID.DD2LightningAuraT3Popper, ItemID.DD2FlameburstTowerT3Popper, ItemID.DD2ExplosiveTrapT3Popper, ItemID.XenoStaff };
+
+        public readonly static int[] MeleePreLuna = { ItemID.Flairon, ItemID.PiercingStarlight };
+        public readonly static int[] RangePreLuna = { ItemID.Tsunami, ItemID.FairyQueenRangedItem };
+        public readonly static int[] MagicPreLuna = { ItemID.RazorbladeTyphoon, ItemID.BubbleGun, ItemID.FairyQueenMagicItem, ItemID.SparkleGuitar };
+        public readonly static int[] SummonPreLuna = { ItemID.TempestStaff, ItemID.RainbowWhip };
+
+        public readonly static int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
+        public readonly static int[] MovementPotion = new int[] { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
+
+        public readonly static int[] defaultArrow = { ItemID.WoodenArrow, ItemID.FlamingArrow, ItemID.FrostburnArrow, ItemID.JestersArrow, ItemID.UnholyArrow, ItemID.BoneArrow, ItemID.HellfireArrow };
+        public readonly static int[] ArrowHM = { ItemID.HolyArrow, ItemID.CursedArrow, ItemID.IchorArrow };
+
+        public readonly static int[] defaultBullet = { ItemID.MusketBall, ItemID.SilverBullet, ItemID.TungstenBullet };
+        public readonly static int[] BulletHM = { ItemID.CursedBullet, ItemID.IchorBullet, ItemID.GoldenBullet, ItemID.CrystalBullet, ItemID.HighVelocityBullet, ItemID.PartyBullet, ItemID.ExplodingBullet };
+
+        public readonly static int[] defaultDart = { ItemID.PoisonDart, ItemID.Seed };
+        public readonly static int[] DartHM = { ItemID.IchorDart, ItemID.CursedDart, ItemID.CrystalDart };
+
+        public readonly static int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
+        public readonly static int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
+        public readonly static int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
+
+        public readonly static int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };
+        public readonly static int[] PostEvilMovementAccessory = new int[] { ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots };
+        public readonly static int[] PostEvilHealthManaAccessory = new int[] { ItemID.BandofStarpower, ItemID.CelestialMagnet };
+
+        public readonly static int[] QueenBeeCombatAccessory = new int[] { ItemID.PygmyNecklace, ItemID.HoneyComb };
+
+        public readonly static int[] AnhkCharm = new int[] { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
+        public readonly static int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
     }
 }
