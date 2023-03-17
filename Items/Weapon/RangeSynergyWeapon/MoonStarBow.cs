@@ -66,9 +66,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 46;
+            Projectile.wet = false;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
-            Projectile.wet = false;
             Projectile.penetrate = -1;
             Projectile.light = 1f;
             Projectile.extraUpdates = 6;
@@ -122,12 +122,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                 Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
             }
             Texture2D thisProjectiletexture = TextureAssets.Projectile[Projectile.type].Value;
+            Color fullwhite = Projectile.GetAlpha(new Color(255, 255, 255));
             Vector2 thisProjectiledrawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-            Color thisProjectilecolor = Projectile.GetAlpha(lightColor);
-            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, thisProjectilecolor, -Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            Color largerProjectilecolor = Projectile.GetAlpha(new Color(255, 255, 255, 20));
-            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, largerProjectilecolor, -Projectile.rotation, origin, Projectile.scale * 2, SpriteEffects.None, 0);
-            return base.PreDraw(ref lightColor);
+            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, -Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
         }
         public override void Kill(int timeLeft)
         {
@@ -167,9 +166,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 46;
+            Projectile.wet = false;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
-            Projectile.wet = false;
             Projectile.penetrate = 1;
             Projectile.light = .5f;
             Projectile.extraUpdates = 6;
@@ -234,7 +233,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                 Color color = Projectile.GetAlpha(new Color(0, 0, 255, 255 / k));
                 Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .01f, SpriteEffects.None, 0);
             }
-            return base.PreDraw(ref lightColor);
+            Texture2D textureThis = TextureAssets.Projectile[Projectile.type].Value;
+            Vector2 drawPosThis = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+            Main.EntitySpriteDraw(textureThis, drawPosThis, null, Projectile.GetAlpha(new Color(255,255,255)), 0, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
         }
         public override void Kill(int timeLeft)
         {

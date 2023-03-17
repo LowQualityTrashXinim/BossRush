@@ -21,8 +21,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.knockBack = 1f;
             Item.mana = 12;
 
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 45;
+            Item.useAnimation = 45;
 
             Item.noMelee = true;
             Item.autoReuse = true;

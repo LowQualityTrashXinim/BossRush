@@ -18,11 +18,11 @@ namespace BossRush.Items.Chest
         private List<int> DropItemSummon = new List<int>();
         private List<int> DropItemMisc = new List<int>();
 
-        int meleeChance;
-        int rangeChance;
-        int magicChance;
-        int summonChance;
-        int specialChance;
+        private int meleeChance;
+        private int rangeChance;
+        private int magicChance;
+        private int summonChance;
+        private int specialChance;
 
         int amountModifier = 0;
 
@@ -318,10 +318,10 @@ namespace BossRush.Items.Chest
                 AddLoot(FlagNumber());
             }
             //actual choosing item
-            ReturnWeapon = ChooseWeapon(rng);
+            ReturnWeapon = ChooseWeapon(rng, player);
         }
 
-        public int ChooseWeapon(int rng)
+        public int ChooseWeapon(int rng, Player player)
         {
             switch (rng)
             {
@@ -338,7 +338,8 @@ namespace BossRush.Items.Chest
                 case 5:
                     if (DropItemMisc.Count < 1)
                     {
-                        return ChooseWeapon(Main.rand.Next(1, 5));
+                        int rngM = ModifyRNG(Main.rand.Next(1,5), player);
+                        return ChooseWeapon(rngM, player);
                     }
                     return Main.rand.NextFromCollection(DropItemMisc);
                 case 6:
