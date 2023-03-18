@@ -87,7 +87,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             {
                 if (Projectile.ai[0] == 51)
                 {
-                    int RandomDust = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemAmber, DustID.GemAmethyst, DustID.GemEmerald, DustID.GemRuby, DustID.GemSapphire, DustID.GemTopaz });
+                    int RandomDust = Main.rand.Next();
                     for (int i = 0; i < 55; i++)
                     {
                         Vector2 Rotate = Main.rand.NextVector2CircularEdge(10f, 10f);

@@ -724,8 +724,8 @@ namespace BossRush.Items.Chest
         public readonly static int[] MagicPreLuna = { ItemID.RazorbladeTyphoon, ItemID.BubbleGun, ItemID.FairyQueenMagicItem, ItemID.SparkleGuitar };
         public readonly static int[] SummonPreLuna = { ItemID.TempestStaff, ItemID.RainbowWhip };
 
-        public readonly static int[] NonMovementPotion = new int[] { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
-        public readonly static int[] MovementPotion = new int[] { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
+        public readonly static int[] NonMovementPotion = { ItemID.ArcheryPotion, ItemID.AmmoReservationPotion, ItemID.EndurancePotion, ItemID.HeartreachPotion, ItemID.IronskinPotion, ItemID.MagicPowerPotion, ItemID.RagePotion, ItemID.SummoningPotion, ItemID.WrathPotion, ItemID.RegenerationPotion, ItemID.TitanPotion, ItemID.ThornsPotion, ItemID.ManaRegenerationPotion };
+        public readonly static int[] MovementPotion = { ItemID.SwiftnessPotion, ItemID.FeatherfallPotion, ItemID.GravitationPotion, ItemID.WaterWalkingPotion };
 
         public readonly static int[] defaultArrow = { ItemID.WoodenArrow, ItemID.FlamingArrow, ItemID.FrostburnArrow, ItemID.JestersArrow, ItemID.UnholyArrow, ItemID.BoneArrow, ItemID.HellfireArrow };
         public readonly static int[] ArrowHM = { ItemID.HolyArrow, ItemID.CursedArrow, ItemID.IchorArrow };
@@ -736,17 +736,20 @@ namespace BossRush.Items.Chest
         public readonly static int[] defaultDart = { ItemID.PoisonDart, ItemID.Seed };
         public readonly static int[] DartHM = { ItemID.IchorDart, ItemID.CursedDart, ItemID.CrystalDart };
 
-        public readonly static int[] T1CombatAccessory = new int[] { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
-        public readonly static int[] T1MovementAccessory = new int[] { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
-        public readonly static int[] T1HealthAndManaAccessory = new int[] { ItemID.BandofRegeneration, ItemID.NaturesGift };
+        public readonly static int[] T1CombatAccessory = { ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight };
+        public readonly static int[] T1MovementAccessory =  { ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon };
+        public readonly static int[] T1HealthAndManaAccessory = { ItemID.BandofRegeneration, ItemID.NaturesGift };
 
-        public readonly static int[] PostEvilCombatAccessory = new int[] { ItemID.MagmaStone, ItemID.ObsidianRose };
-        public readonly static int[] PostEvilMovementAccessory = new int[] { ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots };
-        public readonly static int[] PostEvilHealthManaAccessory = new int[] { ItemID.BandofStarpower, ItemID.CelestialMagnet };
+        public readonly static int[] PostEvilCombatAccessory = { ItemID.MagmaStone, ItemID.ObsidianRose };
+        public readonly static int[] PostEvilMovementAccessory =  { ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots };
+        public readonly static int[] PostEvilHealthManaAccessory = { ItemID.BandofStarpower, ItemID.CelestialMagnet };
 
-        public readonly static int[] QueenBeeCombatAccessory = new int[] { ItemID.PygmyNecklace, ItemID.HoneyComb };
+        public readonly static int[] QueenBeeCombatAccessory = { ItemID.PygmyNecklace, ItemID.HoneyComb };
 
-        public readonly static int[] AnhkCharm = new int[] { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
-        public readonly static int[] HMAccessory = new int[] { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
+        public readonly static int[] AnhkCharm = { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
+        public readonly static int[] HMAccessory = { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
+
+        public readonly static int[] DustGem = { DustID.GemDiamond, DustID.GemAmber, DustID.GemAmethyst, DustID.GemEmerald, DustID.GemRuby, DustID.GemSapphire, DustID.GemTopaz }
     }
+}
 }

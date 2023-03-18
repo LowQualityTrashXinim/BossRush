@@ -135,13 +135,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             for (int i = 0; i < 25; i++)
             {
                 Rotate = Main.rand.NextVector2CircularEdge(5.5f, 5.5f);
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1f, 2.5f));
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Vortex, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1f, 2.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
             for (int i = 0; i < 15; i++)
             {
                 Rotate = Main.rand.NextVector2CircularEdge(3f, 3f);
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Vortex, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
             for (int i = 0; i < 100; i++)
@@ -155,7 +155,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                 {
                     Rotate = Main.rand.NextVector2CircularEdge(10f, .5f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
                 }
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, 229, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Vortex, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
         }
@@ -243,13 +243,13 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             for (int i = 0; i < 30; i++)
             {
                 Vector2 vec = Main.rand.NextVector2Unit(MathHelper.PiOver4, MathHelper.PiOver2) * Main.rand.NextFloat(3, 5) * -1f;
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 226, 0, 0, 0, Color.Blue, Main.rand.NextFloat(.9f, 1.1f));
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Electric, 0, 0, 0, Color.Blue, Main.rand.NextFloat(.9f, 1.1f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = vec.RotatedBy(MathHelper.ToRadians(90 * (i % 4)));
             }
             for (int i = 0; i < 10; i++)
             {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, Color.Blue, Main.rand.NextFloat(1.35f, 1.5f));
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Vortex, 0, 0, 0, Color.Blue, Main.rand.NextFloat(1.35f, 1.5f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(7f, 7f);
             }
