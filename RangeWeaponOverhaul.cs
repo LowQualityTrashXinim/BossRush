@@ -19,7 +19,7 @@ namespace BossRush
         /// Best practice for this is to use + operator as it is what i use
         /// Using * is for globally and very hard to balance
         /// </summary>
-        public static float SpreadModify;
+        public static float SpreadModify = 1;
         /// <summary>
         /// This is use to set how many projectile you can shoot in actual weapon class<br/>
         /// Do not use NumOfProjectile = 0 as it will make gun unable to shoot<br/>
@@ -54,12 +54,14 @@ namespace BossRush
         /// <param name="ToRadians">The radius that it get distribute</param>
         /// <param name="time">the current progress</param>
         /// <returns></returns>
-        public static Vector2 RotateCode(this Vector2 Vec2ToRotate, float ToRadians, float time = 0)
+        public static Vector2 RotateCode(this Vector2 Vec2ToRotate, float ToRadians, float i = 0)
         {
-            float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
+            float modifyradian = ModifySpread(ToRadians);
+            float rotation = MathHelper.ToRadians(modifyradian) * .5f;
             if (NumOfProjectile > 1)
             {
-                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation / 2f, -rotation / 2f, time / (NumOfProjectile - 1f)));
+                float RotateValue = MathHelper.Lerp(-rotation , rotation , i / (float)NumOfProjectile);
+                return Vec2ToRotate.RotatedBy(RotateValue);
             }
             return Vec2ToRotate;
         }
@@ -169,199 +171,196 @@ namespace BossRush
             }
         }
     }
-    public class RangeVanillaWeaponModifier
+    public class GlobalHandleSystem : ModSystem
     {
-        public class GlobalHandleSystem : ModSystem
+        public override void PostUpdateItems()
         {
-            public override void PostUpdateItems()
-            {
-                RangeWeaponOverhaul.NumOfProModify = 0;
-                RangeWeaponOverhaul.SpreadModify = 1;
-                RangeWeaponOverhaul.NumOfProjectile = 1;
-            }
+            RangeWeaponOverhaul.NumOfProModify = 0;
+            RangeWeaponOverhaul.SpreadModify = 1;
+            RangeWeaponOverhaul.NumOfProjectile = 1;
         }
-        public class GlobalWeaponModify : GlobalItem
+    }
+    public class GlobalWeaponModify : GlobalItem
+    {
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
             {
-                if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
-                {
-                    return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-                }
-                //if (!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
-                //{
-                //    return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-                //}
-                if (item.type == ItemID.VortexBeater)
-                {
-                    return true;
-                }
-                if (item.type == ItemID.OnyxBlaster)
-                {
-                    Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
-                }
-                for (int i = 0; i < RangeWeaponOverhaul.GunType.Length; i++)
-                {
-                    if (item.type == RangeWeaponOverhaul.GunType[i] && AppliesToEntity(item, true))
-                    {
-                        return false;
-                    }
-                }
                 return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
             }
-
-            public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+            //if (!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
+            //{
+            //    return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+            //}
+            if (item.type == ItemID.VortexBeater)
             {
-                if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+                return true;
+            }
+            if (item.type == ItemID.OnyxBlaster)
+            {
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
+            }
+            for (int i = 0; i < RangeWeaponOverhaul.GunType.Length; i++)
+            {
+                if (item.type == RangeWeaponOverhaul.GunType[i] && AppliesToEntity(item, true))
                 {
-                    return;
+                    return false;
                 }
-                //if(!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
-                //{
-                //    return;
-                //}
-                var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
-                if (AppliesToEntity(item, false))
+            }
+            return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+        }
+
+        public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            {
+                return;
+            }
+            //if(!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
+            //{
+            //    return;
+            //}
+            var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
+            if (AppliesToEntity(item, false))
+            {
+                float OffSetPost = 0;
+                float SpreadAmount = 0;
+                float AdditionalSpread = 0;
+                float AdditionalMulti = 1;
+                int NumOfProjectile = 0;
+                switch (item.type)
                 {
-                    float OffSetPost = 0;
-                    float SpreadAmount = 0;
-                    float AdditionalSpread = 0;
-                    float AdditionalMulti = 1;
-                    int NumOfProjectile = 0;
-                    switch (item.type)
-                    {
-                        case ItemID.RedRyder:
-                            NumOfProjectile = 1;
-                            OffSetPost = 20;
-                            SpreadAmount = 6;
-                            break;
-                        case ItemID.Minishark:
-                            NumOfProjectile = 1;
-                            OffSetPost = 20;
-                            SpreadAmount = 7;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.Gatligator:
-                            NumOfProjectile = 1;
-                            OffSetPost = 20;
-                            SpreadAmount = 30;
-                            AdditionalSpread = 3;
-                            break;
-                        case ItemID.Handgun:
-                            NumOfProjectile = 1;
-                            OffSetPost = 10;
-                            SpreadAmount = 15;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.PhoenixBlaster:
-                            NumOfProjectile = 1;
-                            OffSetPost = 10;
-                            SpreadAmount = 12;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.Musket:
-                            NumOfProjectile = 1;
-                            OffSetPost = 35;
-                            SpreadAmount = 5;
-                            break;
-                        case ItemID.TheUndertaker:
-                            NumOfProjectile = 1;
-                            OffSetPost = 20;
-                            SpreadAmount = 12;
-                            break;
-                        case ItemID.FlintlockPistol:
-                            NumOfProjectile = 1;
-                            OffSetPost = 10;
-                            SpreadAmount = 25;
-                            AdditionalSpread = 4;
-                            break;
-                        case ItemID.Revolver:
-                            NumOfProjectile = 1;
-                            OffSetPost = 10;
-                            SpreadAmount = 17;
-                            break;
-                        case ItemID.ClockworkAssaultRifle:
-                            NumOfProjectile = 1;
-                            OffSetPost = 15;
-                            SpreadAmount = 19;
-                            AdditionalSpread = 1;
-                            break;
-                        case ItemID.Megashark:
-                            NumOfProjectile = 1;
-                            OffSetPost = 30;
-                            SpreadAmount = 9;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.Uzi:
-                            NumOfProjectile = 1;
-                            SpreadAmount = 14;
-                            AdditionalSpread = 1;
-                            break;
-                        case ItemID.VenusMagnum:
-                            NumOfProjectile = 1;
-                            OffSetPost = 25;
-                            SpreadAmount = 14;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.SniperRifle:
-                            NumOfProjectile = 1;
-                            OffSetPost = 35;
-                            SpreadAmount = 2;
-                            break;
-                        case ItemID.ChainGun:
-                            NumOfProjectile = 1;
-                            OffSetPost = 35;
-                            SpreadAmount = 33;
-                            AdditionalSpread = 3;
-                            break;
-                        case ItemID.VortexBeater:
-                            OffSetPost = 35;
-                            SpreadAmount = 20;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.SDMG:
-                            NumOfProjectile = 1;
-                            OffSetPost = 35;
-                            SpreadAmount = 4;
-                            AdditionalSpread = 2;
-                            break;
-                        case ItemID.Boomstick:
-                            OffSetPost = 25;
-                            SpreadAmount = 18;
-                            AdditionalSpread = 4;
-                            AdditionalMulti = .4f;
-                            NumOfProjectile += Main.rand.Next(4, 6);
-                            break;
-                        case ItemID.QuadBarrelShotgun:
-                            OffSetPost = 25;
-                            SpreadAmount = 45;
-                            AdditionalSpread = 6;
-                            NumOfProjectile += 6;
-                            break;
-                        case ItemID.Shotgun:
-                            OffSetPost = 35;
-                            SpreadAmount = 24;
-                            AdditionalSpread = 6;
-                            AdditionalMulti = .5f;
-                            NumOfProjectile += Main.rand.Next(4, 6);
-                            break;
-                        case ItemID.OnyxBlaster:
-                            OffSetPost = 35;
-                            SpreadAmount = 15;
-                            AdditionalSpread = 6;
-                            NumOfProjectile += Main.rand.Next(4, 6);
-                            break;
-                        case ItemID.TacticalShotgun:
-                            OffSetPost = 35;
-                            SpreadAmount = 18;
-                            AdditionalSpread = 3;
-                            AdditionalMulti = .76f;
-                            NumOfProjectile += 6;
-                            break;
-                    }
-                    position = position.PositionOFFSET(velocity, OffSetPost);
-                    RangeWeaponOverhaul.NewGunShotProjectile(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
+                    case ItemID.RedRyder:
+                        NumOfProjectile = 1;
+                        OffSetPost = 20;
+                        SpreadAmount = 6;
+                        break;
+                    case ItemID.Minishark:
+                        NumOfProjectile = 1;
+                        OffSetPost = 20;
+                        SpreadAmount = 7;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.Gatligator:
+                        NumOfProjectile = 1;
+                        OffSetPost = 20;
+                        SpreadAmount = 30;
+                        AdditionalSpread = 3;
+                        break;
+                    case ItemID.Handgun:
+                        NumOfProjectile = 1;
+                        OffSetPost = 10;
+                        SpreadAmount = 15;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.PhoenixBlaster:
+                        NumOfProjectile = 1;
+                        OffSetPost = 10;
+                        SpreadAmount = 12;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.Musket:
+                        NumOfProjectile = 1;
+                        OffSetPost = 35;
+                        SpreadAmount = 5;
+                        break;
+                    case ItemID.TheUndertaker:
+                        NumOfProjectile = 1;
+                        OffSetPost = 20;
+                        SpreadAmount = 12;
+                        break;
+                    case ItemID.FlintlockPistol:
+                        NumOfProjectile = 1;
+                        OffSetPost = 10;
+                        SpreadAmount = 25;
+                        AdditionalSpread = 4;
+                        break;
+                    case ItemID.Revolver:
+                        NumOfProjectile = 1;
+                        OffSetPost = 10;
+                        SpreadAmount = 17;
+                        break;
+                    case ItemID.ClockworkAssaultRifle:
+                        NumOfProjectile = 1;
+                        OffSetPost = 15;
+                        SpreadAmount = 19;
+                        AdditionalSpread = 1;
+                        break;
+                    case ItemID.Megashark:
+                        NumOfProjectile = 1;
+                        OffSetPost = 30;
+                        SpreadAmount = 9;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.Uzi:
+                        NumOfProjectile = 1;
+                        SpreadAmount = 14;
+                        AdditionalSpread = 1;
+                        break;
+                    case ItemID.VenusMagnum:
+                        NumOfProjectile = 1;
+                        OffSetPost = 25;
+                        SpreadAmount = 14;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.SniperRifle:
+                        NumOfProjectile = 1;
+                        OffSetPost = 35;
+                        SpreadAmount = 2;
+                        break;
+                    case ItemID.ChainGun:
+                        NumOfProjectile = 1;
+                        OffSetPost = 35;
+                        SpreadAmount = 33;
+                        AdditionalSpread = 3;
+                        break;
+                    case ItemID.VortexBeater:
+                        OffSetPost = 35;
+                        SpreadAmount = 20;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.SDMG:
+                        NumOfProjectile = 1;
+                        OffSetPost = 35;
+                        SpreadAmount = 4;
+                        AdditionalSpread = 2;
+                        break;
+                    case ItemID.Boomstick:
+                        OffSetPost = 25;
+                        SpreadAmount = 18;
+                        AdditionalSpread = 4;
+                        AdditionalMulti = .4f;
+                        NumOfProjectile += Main.rand.Next(4, 6);
+                        break;
+                    case ItemID.QuadBarrelShotgun:
+                        OffSetPost = 25;
+                        SpreadAmount = 45;
+                        AdditionalSpread = 6;
+                        NumOfProjectile += 6;
+                        break;
+                    case ItemID.Shotgun:
+                        OffSetPost = 35;
+                        SpreadAmount = 24;
+                        AdditionalSpread = 6;
+                        AdditionalMulti = .5f;
+                        NumOfProjectile += Main.rand.Next(4, 6);
+                        break;
+                    case ItemID.OnyxBlaster:
+                        OffSetPost = 35;
+                        SpreadAmount = 15;
+                        AdditionalSpread = 6;
+                        NumOfProjectile += Main.rand.Next(4, 6);
+                        break;
+                    case ItemID.TacticalShotgun:
+                        OffSetPost = 35;
+                        SpreadAmount = 18;
+                        AdditionalSpread = 3;
+                        AdditionalMulti = .76f;
+                        NumOfProjectile += 6;
+                        break;
                 }
+                position = position.PositionOFFSET(velocity, OffSetPost);
+                RangeWeaponOverhaul.NewGunShotProjectile(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
             }
         }
     }

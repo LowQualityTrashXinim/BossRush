@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
 {
@@ -55,7 +56,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
                 }
             }
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-5, 2);
