@@ -6,7 +6,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 {
     public abstract class BaseSlash : ModProjectile
     {
-        protected virtual float HoldoutRangeMax => 30f;
+        protected virtual float HoldoutRangeMax => 50f;
         protected virtual float HoldoutRangeMin => 10f;
         public override void SetDefaults()
         {
@@ -30,7 +30,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
             Projectile.velocity = Vector2.Normalize(Projectile.velocity);
-            float halfDuration = duration / 2;
+            float halfDuration = duration *.5f;
             float progress = (duration - Projectile.timeLeft) / halfDuration;
             Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
             if (Projectile.ai[0] >= 5)
