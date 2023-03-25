@@ -130,12 +130,12 @@ namespace BossRush
         {
             if (!info.IsInSimulation)
             {
-                return info.player.ZoneRockLayerHeight && info.player.ZoneSnow;
+                return Main.raining && !Main.dayTime && info.player.ZoneSnow;
             }
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription()=> "Drop if player in underground snow biome";
+        public string GetConditionDescription()=> "Drop if player is fighting in snow biome, in night and is snowing";
     }
     public class GitGudMode : IItemDropRuleCondition
     {
