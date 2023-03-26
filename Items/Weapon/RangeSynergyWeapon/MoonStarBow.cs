@@ -20,11 +20,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Item.width = 18;
             Item.height = 32;
 
-            Item.damage = 63;
+            Item.damage = 33;
             Item.knockBack = 1f;
 
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 10;
+            Item.useAnimation = 10;
 
             Item.noMelee = true;
             Item.autoReuse = true;
@@ -39,15 +39,21 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Item.scale = .5f;
             Item.UseSound = SoundID.Item75;
         }
+        int count = 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            count++;
             position.Y += Main.rand.Next(-900, -800);
             position.X += Main.rand.Next(-300, 300);
             velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+            if (count >= 5)
+            {
+                Projectile.NewProjectile(source, position, velocity, type, damage * 2, knockback, player.whoAmI);
+                count = 0;
+            }
             for (int i = 0; i < 3; i++)
             {
-                Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100f, 100f), velocity * .5f, ModContent.ProjectileType<MoonStarProjectileSmaller>(), (int)(damage * .5f), knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100f, 200f), velocity * .5f, ModContent.ProjectileType<MoonStarProjectileSmaller>(), damage, knockback, player.whoAmI);
             }
             return false;
         }
@@ -69,7 +75,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Projectile.wet = false;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 1;
             Projectile.light = 1f;
             Projectile.extraUpdates = 6;
             Projectile.DamageType = DamageClass.Ranged;
@@ -235,7 +241,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             }
             Texture2D textureThis = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 drawPosThis = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-            Main.EntitySpriteDraw(textureThis, drawPosThis, null, Projectile.GetAlpha(new Color(255,255,255)), 0, origin, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(textureThis, drawPosThis, null, Projectile.GetAlpha(new Color(255, 255, 255)), 0, origin, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
         public override void Kill(int timeLeft)
