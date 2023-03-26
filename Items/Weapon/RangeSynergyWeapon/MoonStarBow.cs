@@ -172,14 +172,14 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 46;
+            Projectile.light = .5f;
+            Projectile.penetrate = 1;
+            Projectile.timeLeft = 1500;
+            Projectile.DamageType = DamageClass.Ranged;
             Projectile.wet = false;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
-            Projectile.penetrate = 1;
-            Projectile.light = .5f;
             Projectile.extraUpdates = 6;
-            Projectile.DamageType = DamageClass.Ranged;
-            Projectile.timeLeft = 1500;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }

@@ -53,18 +53,19 @@ namespace BossRush
         public bool gitGud = false;
         public int HowManyBossIsAlive = 0;
 
-        public bool LookingForBoss()
+        public bool LookingForBossVanilla()
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].boss && Main.npc[i].active)
+                NPC npc = Main.npc[i];
+                if (npc.boss && npc.active)
                 {
                     return true;
                 }
-                else if ((Main.npc[i].type == NPCID.EaterofWorldsBody
-                    || Main.npc[i].type == NPCID.EaterofWorldsHead
-                    || Main.npc[i].type == NPCID.EaterofWorldsTail)
-                    && Main.npc[i].active)
+                else if ((npc.type == NPCID.EaterofWorldsBody
+                    || npc.type == NPCID.EaterofWorldsHead
+                    || npc.type == NPCID.EaterofWorldsTail)
+                    && npc.active)
                 {
                     return true;
                 }
@@ -91,11 +92,12 @@ namespace BossRush
             HowManyBossIsAlive = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if ((Main.npc[i].boss ||
-                    (Main.npc[i].type == NPCID.EaterofWorldsBody
-                    || Main.npc[i].type == NPCID.EaterofWorldsHead
-                    || Main.npc[i].type == NPCID.EaterofWorldsTail))
-                    && Main.npc[i].active)
+                NPC npc = Main.npc[i];
+                if ((npc.boss ||
+                    (npc.type == NPCID.EaterofWorldsBody
+                    || npc.type == NPCID.EaterofWorldsHead
+                    || npc.type == NPCID.EaterofWorldsTail))
+                    && npc.active)
                 {
                     // What happen when boss is alive
                     ArtifactHandle();
@@ -111,9 +113,9 @@ namespace BossRush
             {
                 if (Player.HasItem(ArtifactList[i])) ArtifactCount++;
             }
-
+            BossRushModConfig configSetting = ModContent.GetInstance<BossRushModConfig>();
             //Enraged here
-            if ((MoonLordEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.MoonLordCore))
+            if ((MoonLordEnraged || configSetting.Enraged) && NPC.AnyNPCs(NPCID.MoonLordCore))
             {
                 Player.AddBuff(ModContent.BuffType<MoonLordWrath>(), 5);
                 Player.AddBuff(BuffID.PotionSickness, 5);
@@ -123,7 +125,7 @@ namespace BossRush
                 MoonLordEnraged = false;
             }
 
-            if ((KingSlimeEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
+            if ((KingSlimeEnraged || configSetting.Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
             {
                 Player.AddBuff(BuffID.Slimed, 5);
                 Player.AddBuff(ModContent.BuffType<KingSlimeRage>(), 5);
@@ -133,7 +135,7 @@ namespace BossRush
                 KingSlimeEnraged = false;
             }
 
-            if ((EoCEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            if ((EoCEnraged || configSetting.Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 Player.AddBuff(BuffID.Blackout, 5);
                 Player.AddBuff(BuffID.Darkness, 5);
@@ -144,7 +146,7 @@ namespace BossRush
                 EoCEnraged = false;
             }
 
-            if ((BrainFuck || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu))
+            if ((BrainFuck || configSetting.Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu))
             {
                 Player.AddBuff(ModContent.BuffType<MindBreak>(), 5);
             }
@@ -153,7 +155,10 @@ namespace BossRush
                 BrainFuck = false;
             }
 
-            if ((EaterOfWorldEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && (NPC.AnyNPCs(NPCID.EaterofWorldsHead) || NPC.AnyNPCs(NPCID.EaterofWorldsBody) || NPC.AnyNPCs(NPCID.EaterofWorldsTail)))
+            if ((EaterOfWorldEnraged || configSetting.Enraged) && 
+                (NPC.AnyNPCs(NPCID.EaterofWorldsHead) 
+                || NPC.AnyNPCs(NPCID.EaterofWorldsBody) 
+                || NPC.AnyNPCs(NPCID.EaterofWorldsTail)))
             {
                 if (Player.ZoneOverworldHeight)
                 {
@@ -177,6 +182,15 @@ namespace BossRush
             if (!NPC.AnyNPCs(NPCID.QueenBee))
             {
                 QueenBeeEnraged = false;
+            }
+            if(!LookingForBossVanilla())
+            {
+                KingSlimeEnraged = false;
+                EoCEnraged = false;
+                BrainFuck = false;
+                EaterOfWorldEnraged = false;
+                QueenBeeEnraged = false;
+                MoonLordEnraged = false;
             }
         }
         public override void ModifyItemScale(Item item, ref float scale)
@@ -265,7 +279,7 @@ namespace BossRush
         public int amountoftimegothit = 0;
         public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
         {
-            if (LookingForBoss())
+            if (LookingForBossVanilla())
             {
                 if (gitGud)
                 {
