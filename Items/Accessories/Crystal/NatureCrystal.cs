@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework;
 using BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.Crystal
 {
     class NatureCrystal : ModItem
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("A Mana and a Life Crystal, not much to say tbh\nIncrease health and mana by 30");
+            Tooltip.SetDefault("A Mana and a Life Crystal, not much to say tbh\nIncrease health and mana by 40");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()
@@ -26,8 +26,8 @@ namespace BossRush.Items.Accessories
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.statLifeMax2 += 30;
-            player.statManaMax2 += 30;
+            player.statLifeMax2 += 40;
+            player.statManaMax2 += 40;
             if (player.HeldItem.type == ModContent.ItemType<NatureSelection>()) player.GetModPlayer<NatureSelectionPlayer>().PowerUP = true;
         }
 
@@ -43,6 +43,7 @@ namespace BossRush.Items.Accessories
         public override void AddRecipes()
         {
             CreateRecipe()
+           .AddIngredient(ModContent.ItemType<SynergyEnergy>())
            .AddIngredient(ItemID.LifeCrystal, 1)
            .AddIngredient(ItemID.ManaCrystal, 1)
            .Register();

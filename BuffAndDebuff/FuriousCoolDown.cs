@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Items.Accessories;
+using BossRush.Items.Accessories.FuryEmblem;
 
 namespace BossRush.BuffAndDebuff
 {

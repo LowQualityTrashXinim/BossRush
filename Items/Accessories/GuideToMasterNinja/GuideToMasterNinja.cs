@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.GuideToMasterNinja
 {
     internal class GuideToMasterNinja : ModItem, ISynergyItem
     {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.GuideToMasterNinja
 {
     internal class GuideToMasterNinja2 : ModItem, ISynergyItem
     {
@@ -30,7 +30,7 @@ namespace BossRush.Items.Accessories
             Player player = Main.player[Main.myPlayer];
             if (player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja2 && (player.HasItem(ItemID.Shuriken) || player.HasItem(ItemID.ThrowingKnife) || player.HasItem(ItemID.PoisonedKnife)))
             {
-                tooltips.Add(new TooltipLine(Mod, "Weeb2", $"[i:{ ItemID.Shuriken }][i:{ ItemID.ThrowingKnife}][i:{ ItemID.PoisonedKnife}] Increase damage by 50% and have a chance to spawn itself ontop of the enemy"));
+                tooltips.Add(new TooltipLine(Mod, "Weeb2", $"[i:{ItemID.Shuriken}][i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}] Increase damage by 50% and have a chance to spawn itself ontop of the enemy"));
                 if (player.HasItem(ItemID.BoneDagger))
                 {
                     tooltips.Add(new TooltipLine(Mod, "BoneDaggerGTMN2", $"[i:{ItemID.BoneDagger}] Shuriken gain 10% damage increase"));

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.GuideToMasterNinja
 {
     internal class BaseBookContent : ModPlayer
     {

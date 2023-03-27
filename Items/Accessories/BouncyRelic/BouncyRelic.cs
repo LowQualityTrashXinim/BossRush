@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Texture;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.BouncyRelic
 {
     internal class BouncyRelic : ModItem, ISynergyItem
     {

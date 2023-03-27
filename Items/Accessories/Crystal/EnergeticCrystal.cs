@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.Crystal
 {
     class EnergeticCrystal : ModItem, ISynergyItem
     {

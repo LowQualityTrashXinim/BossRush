@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm;
 using System.ComponentModel.Design;
-using BossRush.Items.Accessories;
 using System.Linq;
+using BossRush.Items.Accessories.GuideToMasterNinja;
 
 namespace BossRush.Items
 {

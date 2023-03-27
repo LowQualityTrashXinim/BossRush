@@ -12,11 +12,11 @@ using BossRush.Items.Note;
 using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 using BossRush.Items.Artifact;
 using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
-using BossRush.Items.Accessories;
 using BossRush.Items.Spawner;
 using BossRush.Items.Toggle;
 using BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
 using BossRush.Items.Potion;
+using BossRush.Items.Accessories.GuideToMasterNinja;
 
 namespace BossRush
 {

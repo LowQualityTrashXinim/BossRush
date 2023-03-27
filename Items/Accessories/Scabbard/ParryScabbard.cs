@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Texture;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.Scabbard
 {
     internal class ParryScabbard : ModItem, ISynergyItem
     {

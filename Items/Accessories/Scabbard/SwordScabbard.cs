@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System.Collections.Generic;
 
-namespace BossRush.Items.Accessories
+namespace BossRush.Items.Accessories.Scabbard
 {
     internal class SwordScabbard : ModItem, ISynergyItem
     {
