@@ -1,6 +1,6 @@
-﻿using Terraria;
+﻿using System.Security.Principal;
+using Terraria;
 using Terraria.ModLoader;
-using UtfUnknown.Core.Analyzers.Chinese;
 
 namespace BossRush
 {
@@ -60,7 +60,30 @@ namespace BossRush
             item.shoot = shoot;
             item.shootSpeed = shootSpeed;
             item.useAmmo = useAmmo;
+            item.noMelee = true;
             item.DamageType = DamageClass.Ranged;
+        }
+
+        public static void BossRushDefaultMagic
+            (this Item item,
+            int width,
+            int height,
+            int damage,
+            int knockback,
+            int useTime,
+            int useAnimation,
+            int useStyle,
+            int shoot,
+            float shootSpeed,
+            int manaCost,
+            bool autoReuse
+            )
+        {
+            item.BossRushSetDefault(width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
+            item.shoot = shoot;
+            item.shootSpeed = shootSpeed;
+            item.mana = manaCost;
+            item.DamageType = DamageClass.Magic;
         }
     }
 }

@@ -15,15 +15,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(
-                66, 
-                66, 
-                32, 
-                4f, 
-                60, 
-                20, 
-                ItemUseStyleID.Swing,
-                true);
+            Item.BossRushSetDefaultMelee(66, 66, 32, 4f, 60, 20, ItemUseStyleID.Swing, true);
             Item.shoot = ProjectileID.EnchantedBeam;
             Item.shootSpeed = 20f;
 
@@ -38,13 +30,13 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             {
                 if (switchProj % 2 == 0)
                 {
-                    Vector2 rotate = velocity.Vector2DistributeEvenly(5,player.direction == 1 ? -40 : 40, i);
+                    Vector2 rotate = velocity.Vector2DistributeEvenly(5, player.direction == 1 ? -40 : 40, i);
                     Projectile.NewProjectile(source, position, rotate * .5f, ModContent.ProjectileType<EnchantedSwordProjectile>(), damage, knockback, player.whoAmI, i);
                 }
                 else
                 {
-                    Vector2 customPos = new Vector2(position.X + Main.rand.Next(-100,100), position.Y - 900 + Main.rand.Next(-200,200));
-                    Vector2 aimSpread = Main.MouseWorld + Main.rand.NextVector2Circular(200f,200f);
+                    Vector2 customPos = new Vector2(position.X + Main.rand.Next(-100, 100), position.Y - 900 + Main.rand.Next(-200, 200));
+                    Vector2 aimSpread = Main.MouseWorld + Main.rand.NextVector2Circular(200f, 200f);
                     Vector2 velocityTo = (aimSpread - customPos).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
                     Projectile.NewProjectile(source, customPos, velocityTo, ProjectileID.StarCannonStar, damage * 3, knockback, player.whoAmI, i);
                 }
@@ -78,8 +70,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         Vector2 localOriginalvelocity;
         public override void AI()
         {
-            int dustPar = Main.rand.Next(new int[] {DustID.TintableDustLighted, DustID.YellowStarDust, 57, 58});
-            int dust = Dust.NewDust(Projectile.Center,0,0, dustPar, 0,0,0,default,Main.rand.NextFloat(.9f, 1.1f));
+            int dustPar = Main.rand.Next(new int[] { DustID.TintableDustLighted, DustID.YellowStarDust, 57, 58 });
+            int dust = Dust.NewDust(Projectile.Center, 0, 0, dustPar, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
             Main.dust[dust].noGravity = true;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             if (timer == 0)

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Texture;
 
-namespace BossRush.Items
+namespace BossRush.Items.BuilderItem
 {
     internal class ArenaMakerProj : ModProjectile
     {

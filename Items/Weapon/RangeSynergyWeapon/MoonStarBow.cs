@@ -18,25 +18,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.width = 18;
-            Item.height = 32;
-
-            Item.damage = 33;
-            Item.knockBack = 1f;
-
-            Item.useTime = 10;
-            Item.useAnimation = 10;
-
-            Item.noMelee = true;
-            Item.autoReuse = true;
+            Item.BossRushDefaultRange(18, 32, 33, 1f, 7, 7, ItemUseStyleID.Shoot, ModContent.ProjectileType<MoonStarProjectile>(), 5f, true);
             Item.rare = ItemRarityID.LightRed;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
-
-            Item.shoot = ModContent.ProjectileType<MoonStarProjectile>();
-            Item.shootSpeed = 5f;
             Item.value = Item.buyPrice(gold: 50);
-
             Item.scale = .5f;
             Item.UseSound = SoundID.Item75;
         }

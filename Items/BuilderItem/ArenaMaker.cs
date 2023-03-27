@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Texture;
 
-namespace BossRush.Items
+namespace BossRush.Items.BuilderItem
 {
     internal class ArenaMaker : ModItem
     {
@@ -21,7 +21,7 @@ namespace BossRush.Items
         {
             Item.width = 30;
             Item.height = 30;
-            
+
             Item.useTime = 20;
             Item.useAnimation = 20;
 
@@ -42,7 +42,7 @@ namespace BossRush.Items
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.WoodPlatform,999)
+                .AddIngredient(ItemID.WoodPlatform, 999)
                 .Register();
         }
     }

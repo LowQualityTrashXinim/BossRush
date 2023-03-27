@@ -68,7 +68,13 @@ namespace BossRush.Items.Artifact
     {
         public override void OnKill(NPC npc)
         {
-            Player player = Main.LocalPlayer;
+            int playerKill = npc.lastInteraction;
+            if (!Main.player[playerKill].active || Main.player[playerKill].dead)
+            {
+                return;
+            }
+            Player player = Main.player[playerKill];
+
             if (player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer && player.name.ToLower().Trim().Contains("skillissue") && player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue <= 10000000)
             {
                 player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue++;
