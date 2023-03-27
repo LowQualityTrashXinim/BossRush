@@ -14,27 +14,22 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.width = 92;
-            Item.height = 92;
+            Item.BossRushSetDefaultMelee(
+                92,
+                92,
+                100,
+                5f,
+                20,
+                20,
+                ItemUseStyleID.Swing,
+                true);
             Item.rare = 6;
-
-            Item.damage = 100;
-            Item.knockBack = 3;
-
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.DamageType = DamageClass.Melee;
-            Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
-
             Item.UseSound = SoundID.Item1;
         }
 
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
-            EntitySource_ItemUse source = new EntitySource_ItemUse(player, Item);
             if (player.direction == 1)
             {
                 for (int i = 0; i < 20; i++)
@@ -42,7 +37,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                     int RandomProjectile = Main.rand.Next(new int[] { ProjectileID.FrostBlastFriendly, ProjectileID.IceBolt });
                     Vector2 GetPostDirect1 = new Vector2(player.Center.X + Main.rand.Next(-1000, -300), player.Center.Y - Main.rand.Next(300, 700));
                     Vector2 GoTo = (new Vector2(Main.MouseWorld.X + Main.rand.Next(-200, 200), Main.MouseWorld.Y + Main.rand.Next(-200, 200)) - GetPostDirect1).SafeNormalize(Vector2.UnitX);
-                    int proj = Projectile.NewProjectile(source, GetPostDirect1, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
+                    int proj = Projectile.NewProjectile(Item.GetSource_FromThis(), GetPostDirect1, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
                     Main.projectile[proj].tileCollide = false;
                     Main.projectile[proj].timeLeft = 200;
                 }
@@ -54,7 +49,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
                     int RandomProjectile = Main.rand.Next(new int[] { ProjectileID.FrostBlastFriendly, ProjectileID.IceBolt });
                     Vector2 GetPostDirect2 = new Vector2(player.Center.X + Main.rand.Next(300, 1000), player.Center.Y - Main.rand.Next(300, 700));
                     Vector2 GoTo = (new Vector2(Main.MouseWorld.X + Main.rand.Next(-200, 200), Main.MouseWorld.Y + Main.rand.Next(-200, 200)) - GetPostDirect2).SafeNormalize(Vector2.UnitX);
-                    int proj = Projectile.NewProjectile(source, GetPostDirect2, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
+                    int proj = Projectile.NewProjectile(Item.GetSource_FromThis(), GetPostDirect2, GoTo * 20, RandomProjectile, (int)(damage * 0.65f), knockBack, player.whoAmI);
                     Main.projectile[proj].tileCollide = false;
                     Main.projectile[proj].timeLeft = 200;
                 }
