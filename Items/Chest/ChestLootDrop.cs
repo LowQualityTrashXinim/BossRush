@@ -22,11 +22,11 @@ namespace BossRush.Items.Chest
         private int summonChance;
         private int specialChance;
 
-        int amountModifier = 0;
 
-        private int ModifyGetAmount(int ValueToModify, float amountToModify, Player player, bool multiplier = false)
+        private int ModifyGetAmount(int ValueToModify, Player player, bool multiplier = false)
         {
             //Modifier
+            float amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
             if (player.GetModPlayer<ModdedPlayer>().ArtifactAllowance)
             {
                 if (player.HasItem(ModContent.ItemType<TokenofGreed>())) { amountToModify += 4; }
@@ -60,9 +60,9 @@ namespace BossRush.Items.Chest
                 amountForPotionType += 1;
                 amountForPotionNum += 1;
             }
-            amountForWeapon = ModifyGetAmount(amountForWeapon, amountModifier, player);
-            amountForPotionType = ModifyGetAmount(amountForPotionType, amountModifier, player);
-            amountForPotionNum = ModifyGetAmount(amountForPotionNum, amountModifier, player);
+            amountForWeapon = ModifyGetAmount(amountForWeapon, player);
+            amountForPotionType = ModifyGetAmount(amountForPotionType, player);
+            amountForPotionNum = ModifyGetAmount(amountForPotionNum, player);
         }
         private int ModifyRNG(int rng, Player player)
         {
@@ -570,6 +570,15 @@ namespace BossRush.Items.Chest
             }
             DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
             return Main.rand.NextFromCollection(DropItemPotion);
+        }
+    }
+    public class ChestLootDropPlayer : ModPlayer
+    {
+        public float amountModifier = 0;
+        public override void ResetEffects()
+        {
+            amountModifier = 0;
+            base.ResetEffects();
         }
     }
     static class ChestLootDropUtils

@@ -113,6 +113,5 @@ namespace BossRush.Items.Accessories
                 player.GetCritChance(DamageClass.Generic) += 20;
             }
         }
-
     }
 }

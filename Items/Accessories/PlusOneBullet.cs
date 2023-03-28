@@ -11,7 +11,7 @@ namespace BossRush.Items.Accessories
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Extra gun Barrel");
-            Tooltip.SetDefault("\"why have more gun when you can tape this into your gun ?\"" +
+            Tooltip.SetDefault("\"why have more gun when you can tape extra barrel into your gun ?\"" +
                 "\nIncrease amount of bullet you shoot by 1" +
                 "\nIncrease weapon spread amount by 35%");
         }
