@@ -11,29 +11,14 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection
         static int counter = 0;
         public override void SetStaticDefaults()
         {
+            DisplayName.SetDefault("Natural Selection");
             Tooltip.SetDefault("Mother of all bows");
         }
         public override void SetDefaults()
         {
-            Item.useAmmo = AmmoID.Arrow;
-            Item.shoot = ProjectileID.WoodenArrowFriendly;
-            Item.DamageType = DamageClass.Ranged;
-            Item.autoReuse = true;
-
-            Item.width = 32;
-            Item.height = 66;
-
+            Item.BossRushDefaultRange(32, 66, 40, 3f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 20, true, AmmoID.Arrow);
             Item.rare = 2;
             Item.value = Item.buyPrice(platinum: 5);
-
-            Item.noMelee = true;
-            Item.shootSpeed = 20f;
-            Item.damage = 40;
-            Item.knockBack = 3f;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-            Item.useStyle = ItemUseStyleID.Shoot;
-
             Item.UseSound = SoundID.Item5;
         }
 
@@ -42,34 +27,30 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection
             Vector2 RotatePos = Main.rand.NextVector2Circular(75f, 75f) * 2 + position;
             Vector2 AimPos = Main.MouseWorld - RotatePos;
             Vector2 safeAim = AimPos.SafeNormalize(Vector2.UnitX) * Main.rand.Next(14, 21);
-
+            int bowType = 0;
             switch (counter)
             {
                 case 0:
-                    Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-                    Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), ModContent.ProjectileType<WoodBowP>(), damage, knockback, player.whoAmI);
+                    bowType = ModContent.ProjectileType<WoodBowP>();
                     break;
                 case 1:
-                    Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-                    Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), ModContent.ProjectileType<BorealWoodBowP>(), damage, knockback, player.whoAmI);
+                    bowType = ModContent.ProjectileType<BorealWoodBowP>();
                     break;
                 case 2:
-                    Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-                    Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), ModContent.ProjectileType<RichMahoganyBowP>(), damage, knockback, player.whoAmI);
+                    bowType = ModContent.ProjectileType<RichMahoganyBowP>();
                     break;
                 case 3:
-                    Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-                    Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), ModContent.ProjectileType<PalmWoodBowP>(), damage, knockback, player.whoAmI);
+                    bowType = ModContent.ProjectileType<PalmWoodBowP>();
                     break;
                 case 4:
-                    Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-                    Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), ModContent.ProjectileType<EbonwoodBowP>(), damage, knockback, player.whoAmI);
+                    bowType = ModContent.ProjectileType<EbonwoodBowP>();
                     break;
                 case 5:
-                    Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-                    Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), ModContent.ProjectileType<ShadewoodBowP>(), damage, knockback, player.whoAmI);
+                    bowType = ModContent.ProjectileType<ShadewoodBowP>();
                     break;
             }
+            Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), bowType, damage, knockback, player.whoAmI);
             counter++;
             if (counter > 5)
             {
