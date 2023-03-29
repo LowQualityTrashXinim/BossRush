@@ -1,5 +1,5 @@
-﻿using System.Security.Principal;
-using Terraria;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush
@@ -85,5 +85,9 @@ namespace BossRush
             item.mana = manaCost;
             item.DamageType = DamageClass.Magic;
         }
+        public static bool CheckUseStyleMelee(this Item item) => item.useStyle == ItemUseStyleID.Swing
+            || item.useStyle == BossRushUseStyle.GenericSwingDownImprove
+            || item.useStyle == BossRushUseStyle.Swipe
+            || item.useStyle == BossRushUseStyle.Poke;
     }
 }

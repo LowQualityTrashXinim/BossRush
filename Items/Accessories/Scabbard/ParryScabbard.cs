@@ -23,7 +23,7 @@ namespace BossRush.Items.Accessories.Scabbard
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.LocalPlayer;
-            if (player.GetModPlayer<ParryPlayer>().Parry)
+            if (player.GetModPlayer<SwordPlayer>().SwordSlash)
             {
                 tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()}] Increase parry duration and increase wind slash speed"));
             }
@@ -60,9 +60,16 @@ namespace BossRush.Items.Accessories.Scabbard
         }
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
         {
-            if (!Player.HasBuff(ModContent.BuffType<Parried>()) && Player.HeldItem.DamageType == DamageClass.Melee && Player.ItemAnimationActive && Player.HeldItem.useStyle == ItemUseStyleID.Swing && !Player.HasBuff(ModContent.BuffType<CoolDownParried>()) && Parry)
+            Item item = Player.HeldItem;
+            if (!Player.HasBuff(ModContent.BuffType<Parried>())
+                && item.DamageType == DamageClass.Melee
+                && Player.ItemAnimationActive
+                && item.CheckUseStyleMelee()
+                && !Player.HasBuff(ModContent.BuffType<CoolDownParried>())
+                && Parry)
             {
-                Player.AddBuff(ModContent.BuffType<Parried>(), Player.GetModPlayer<SwordPlayer>().SwordSlash ? 240 : 120);
+                int duration = Player.GetModPlayer<SwordPlayer>().SwordSlash ? 240 : 120;
+                Player.AddBuff(ModContent.BuffType<Parried>(), duration);
             }
             if (Player.HasBuff(ModContent.BuffType<Parried>()))
             {
