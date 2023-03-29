@@ -298,6 +298,7 @@ namespace BossRush.Items.Chest
         public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0)
         {
             specialAmount = 1;
+            ReturnWeapon = ItemID.None;
             if (rng == 0)
             {
                 if (meleeChance + rangeChance + magicChance + summonChance + specialChance >= 1)
@@ -316,36 +317,45 @@ namespace BossRush.Items.Chest
                 AddLoot(FlagNumber());
             }
             //actual choosing item
-            ReturnWeapon = ChooseWeapon(rng, player);
+            ChooseWeapon(rng, player,ref ReturnWeapon,ref specialAmount);
         }
 
-        public int ChooseWeapon(int rng, Player player)
+        public void ChooseWeapon(int rng, Player player,ref int weapon, ref int amount)
         {
             switch (rng)
             {
                 case 0:
-                    return ItemID.None;
+                    weapon = ItemID.None;
+                    break;
                 case 1:
-                    return Main.rand.NextFromCollection(DropItemMelee);
+                    weapon = Main.rand.NextFromCollection(DropItemMelee);
+                    break;
                 case 2:
-                    return Main.rand.NextFromCollection(DropItemRange);
+                    weapon = Main.rand.NextFromCollection(DropItemRange);
+                    break;
                 case 3:
-                    return Main.rand.NextFromCollection(DropItemMagic);
+                    weapon = Main.rand.NextFromCollection(DropItemMagic);
+                    break;
                 case 4:
-                    return Main.rand.NextFromCollection(DropItemSummon);
+                    weapon = Main.rand.NextFromCollection(DropItemSummon);
+                    break;
                 case 5:
                     if (DropItemMisc.Count < 1)
                     {
                         int rngM = ModifyRNG(Main.rand.Next(1, 5), player);
-                        return ChooseWeapon(rngM, player);
+                        ChooseWeapon(rngM, player, ref weapon,ref amount);
+                        break;
                     }
-                    return Main.rand.NextFromCollection(DropItemMisc);
+                    amount += 199;
+                    weapon = Main.rand.NextFromCollection(DropItemMisc);
+                    break;
                 case 6:
-                    return ModContent.ItemType<WonderDrug>();
+                    weapon = ModContent.ItemType<WonderDrug>();
+                    break;
                 case 7:
-                    return ModContent.ItemType<RainbowTreasureChest>();
+                    weapon = ModContent.ItemType<RainbowTreasureChest>();
+                    break;
             }
-            return ItemID.None;
         }
 
         List<int> DropArrowAmmo = new List<int>();

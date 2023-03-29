@@ -29,7 +29,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
             Item.DamageType = DamageClass.Melee;
             Item.shootSpeed = 3;
             Item.rare = 1;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.noMelee = true;
             Item.autoReuse = true;
             Item.noUseGraphic = true;
@@ -105,7 +105,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
             Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
             SpriteEffects spriteEffects = Projectile.ai[0] % 2 == 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
             Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-            Projectile.DrawTrail(lightColor, spriteEffects);
             return false;
         }
     }
