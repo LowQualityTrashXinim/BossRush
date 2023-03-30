@@ -136,14 +136,10 @@ namespace BossRush.Items.Chest
         protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
         private void AddLoot(List<int> FlagNumber)
         {
-            if (FlagNumber.Count > 1)
-            {
-                FlagNumber = FlagNumber.OrderFromSmallest();
-            }
             List<int> RNGchooseWhichTierToGet = FlagNumber.SetUpRNGTier();
-            List<int> newList = RNGchooseWhichTierToGet.RemoveDupeInArray();
-            newList = newList.OrderFromSmallest();
-            for (int i = 0; i < newList.Count; ++i)
+            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInArray();
+            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.OrderFromSmallest();
+            for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
             {
                 switch (FlagNumber[i])
                 {
@@ -589,64 +585,6 @@ namespace BossRush.Items.Chest
         {
             amountModifier = 0;
             base.ResetEffects();
-        }
-    }
-    static class ChestLootDropUtils
-    {
-        public static List<int> OrderFromSmallest(this List<int> flag)
-        {
-            List<int> finalflag = flag;
-            for (int i = 0; i < flag.Count; ++i)
-            {
-                for (int l = i + 1; l < flag.Count; ++l)
-                {
-                    if (flag[i] > flag[l])
-                    {
-                        int CurrentIndexNum = finalflag[i];
-                        finalflag[i] = flag[l];
-                        finalflag[l] = CurrentIndexNum;
-                    }
-                }
-            }
-            return finalflag;
-        }
-        public static List<int> SetUpRNGTier(this List<int> FlagNum)
-        {
-            if (FlagNum.Count < 2)
-            {
-                return FlagNum;
-            }
-            List<int> FlagNumNew = new List<int> { FlagNum[0] };
-            float GetOnePercentChance = 100 / (float)FlagNum.Count;
-            for (int i = 1; i < FlagNum.Count; ++i)
-            {
-                if (Main.rand.Next(101) < GetOnePercentChance * i)
-                {
-                    FlagNumNew.Add(FlagNum[FlagNum.Count - i]);
-                }
-            }
-            return FlagNumNew;
-        }
-        public static List<int> RemoveDupeInArray(this List<int> flag)
-        {
-            List<int> listArray = new List<int>();
-            listArray.AddRange(flag);
-            List<int> listofIndexWhereDupe = new List<int>();
-            for (int i = 0; i < flag.Count; ++i)
-            {
-                for (int l = i + 1; l < flag.Count; ++l)
-                {
-                    if (listArray[i] == flag[l])
-                    {
-                        listofIndexWhereDupe.Add(i);
-                    }
-                }
-            }
-            for (int i = listofIndexWhereDupe.Count - 1; i > -1; --i)
-            {
-                listArray.RemoveAt(listofIndexWhereDupe[i]);
-            }
-            return listArray;
         }
     }
 }
