@@ -9,7 +9,7 @@ namespace BossRush
         {
             Tooltip.SetDefault("the possibility is only limited to our own mind" +
                 "\nDue to how overpowering this energy is, equiping it will" +
-                "\nIncrease speed by 35%");
+                "\nIncrease speed by 15%");
         }
         public override void SetDefaults()
         {
@@ -22,7 +22,7 @@ namespace BossRush
 
         public override void UpdateEquip(Player player)
         {
-            player.accRunSpeed += 0.35f;
+            player.accRunSpeed += 0.15f;
         }
 
         public override void AddRecipes()
