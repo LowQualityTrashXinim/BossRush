@@ -9,7 +9,7 @@ namespace BossRush.Items.Spawner
 {
     public class WormFeast : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Caution : Using this will gather unwanted attention");

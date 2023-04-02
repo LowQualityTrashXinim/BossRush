@@ -8,7 +8,7 @@ namespace BossRush.Items.Potion
 {
     internal class PinPointAccuracyPotion : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTUREPOTION;
+        public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Sniper's Exilir");

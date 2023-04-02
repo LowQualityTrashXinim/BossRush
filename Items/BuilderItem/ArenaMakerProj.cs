@@ -9,7 +9,7 @@ namespace BossRush.Items.BuilderItem
     internal class ArenaMakerProj : ModProjectile
     {
         //This should be breaking a lot, i can't bother to make it stable as for now
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Projectile.width = 20;

@@ -8,7 +8,7 @@ namespace BossRush.Items.aDebugItem
 {
     internal class ResetWonderDrug : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Real Vitamin");

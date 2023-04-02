@@ -9,7 +9,7 @@ namespace BossRush.Items.Weapon.SummonerSynergyWeapon.StickySlime
 {
     internal class StickyFlower : ModItem, ISynergyItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Quite a sticky ghost");

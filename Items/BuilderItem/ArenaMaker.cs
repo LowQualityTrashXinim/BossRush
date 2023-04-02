@@ -9,7 +9,7 @@ namespace BossRush.Items.BuilderItem
 {
     internal class ArenaMaker : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
         public override void SetStaticDefaults()
         {

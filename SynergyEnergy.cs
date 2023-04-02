@@ -9,7 +9,11 @@ namespace BossRush
         {
             Tooltip.SetDefault("the possibility is only limited to our own mind" +
                 "\nDue to how overpowering this energy is, equiping it will" +
-                "\nIncrease speed by 15%");
+                "\nIncrease speed by 10%" +
+                "\nIncrease jump speed by 10%" +
+                "\nIncrease damage flat by 5" +
+                "\nIncrease max mana by 20" +
+                "\nIncrease health regen by 1");
         }
         public override void SetDefaults()
         {
@@ -22,7 +26,11 @@ namespace BossRush
 
         public override void UpdateEquip(Player player)
         {
-            player.accRunSpeed += 0.15f;
+            player.accRunSpeed += 0.1f;
+            player.jumpSpeedBoost += .1f;
+            player.statManaMax2 += 20;
+            player.lifeRegen += 1;
+            player.GetDamage(DamageClass.Generic).Flat += 5f;
         }
 
         public override void AddRecipes()

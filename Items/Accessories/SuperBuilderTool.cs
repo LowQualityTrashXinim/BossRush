@@ -7,7 +7,7 @@ namespace BossRush.Items.Accessories
 {
     internal class SuperBuilderTool : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Hope this will make your building much quicker");

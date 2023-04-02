@@ -8,7 +8,7 @@ namespace BossRush.Items.Potion
 {
     internal class SagePotion : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTUREPOTION;
+        public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Sage's Exilir");

@@ -110,7 +110,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
-            Player player = Main.player[Projectile.owner];
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);

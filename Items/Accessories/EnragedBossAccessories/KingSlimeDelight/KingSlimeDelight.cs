@@ -8,7 +8,7 @@ namespace BossRush.Items.Accessories.EnragedBossAccessories.KingSlimeDelight
 {
     internal class KingSlimeDelight : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Truely slime-da-ful" +

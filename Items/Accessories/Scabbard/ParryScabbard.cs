@@ -10,7 +10,7 @@ namespace BossRush.Items.Accessories.Scabbard
 {
     internal class ParryScabbard : ModItem, ISynergyItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
         public override void SetStaticDefaults()
         {

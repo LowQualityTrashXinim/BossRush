@@ -4,6 +4,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Terraria.Utilities;
 
 namespace BossRush
 {
@@ -16,6 +17,44 @@ namespace BossRush
             velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
             return velocity;
         }
+        /// <summary>
+        /// Take a bool and return a int number base on true or false
+        /// </summary>
+        /// <param name="Num"></param>
+        /// <returns>Return 1 if true
+        /// <br/>Otherwise return 0</returns>
+        public static int BoolZero(this bool Num) => Num ? 1 : 0;
+        public static int BoolOne(this bool Num) => Num ? 1 : -1;
+        public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, float RectangleWidthHalf, float RectangleHeightHalf)
+        {
+            float X = r.NextFloat(-RectangleWidthHalf, RectangleWidthHalf);
+            float Y = r.NextFloat(-RectangleHeightHalf, RectangleHeightHalf);
+            bool Randomdecider = r.NextBool();
+            Vector2 RandomPointOnEdge = new Vector2(X * Randomdecider.BoolZero(), Y * (!Randomdecider).BoolZero());
+            if (RandomPointOnEdge.X == 0)
+            {
+                RandomPointOnEdge.X = RectangleWidthHalf;
+            }
+            else
+            {
+                RandomPointOnEdge.Y = RectangleHeightHalf;
+            }
+            return RandomPointOnEdge * r.NextBool().BoolOne();
+        }
+        public static bool Vector2WithinRectangle(this Vector2 position, float X, float Y, Vector2 Center)
+        {
+            Vector2 positionNeedCheck1 = new Vector2(Center.X + X, Center.Y + Y);
+            Vector2 positionNeedCheck2 = new Vector2(Center.X - X, Center.Y - Y);
+            if (position.X < positionNeedCheck1.X && position.X > positionNeedCheck2.X && position.Y < positionNeedCheck1.Y && position.Y > positionNeedCheck2.Y)
+            { return true; }//higher = -Y, lower = Y
+            return false;
+        }
+        public static bool Vector2TouchLine(float pos1, float pos2, float CenterY)
+        {
+            if (pos1 < (CenterY + pos2) && pos1 > (CenterY - pos2))
+            { return true; }//higher = -Y, lower = Y
+            return false;
+        }
 
         public static bool reachedLimited(this Vector2 velocity, float limited)
         {
@@ -27,7 +66,7 @@ namespace BossRush
 
         public static void getAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
         {
-            Vector2 newVelocity = velocity.SafeNormalize(Vector2.One) * limit;
+            Vector2 newVelocity = velocity.SafeNormalize(Vector2.Zero) * limit;
             X = Math.Abs(newVelocity.X);
             Y = Math.Abs(newVelocity.Y);
         }
@@ -109,8 +148,8 @@ namespace BossRush
         public static float OutBack(float t) => 1 - InBack(1 - t);
         public static float InOutBack(float t)
         {
-            if (t < 0.5) return InBack(t * 2) *.5f;
-            return 1 - InBack((1 - t) * 2) *.5f;
+            if (t < 0.5) return InBack(t * 2) * .5f;
+            return 1 - InBack((1 - t) * 2) * .5f;
         }
         /// <summary>
         /// Calculate square length of Vector2 and check if it is smaller than square max distance
@@ -124,8 +163,8 @@ namespace BossRush
         /// </returns>
         public static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance)
         {
-            double value1X = pos1.X, 
-                value1Y = pos1.Y ,
+            double value1X = pos1.X,
+                value1Y = pos1.Y,
                 value2X = pos2.X,
                 value2Y = pos2.Y,
                 DistanceX = value1X - value2X,

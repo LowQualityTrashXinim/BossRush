@@ -69,7 +69,7 @@ namespace BossRush
             int width,
             int height,
             int damage,
-            int knockback,
+            float knockback,
             int useTime,
             int useAnimation,
             int useStyle,

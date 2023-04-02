@@ -7,7 +7,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon
 {
     internal class MagicGrenade : ModItem, ISynergyItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
         public override void SetStaticDefaults()
         {

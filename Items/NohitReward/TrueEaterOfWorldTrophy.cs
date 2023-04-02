@@ -7,7 +7,7 @@ namespace BossRush.Items.NohitReward
 {
     internal class TrueEaterOfWorldTrophy : BaseNoHit
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override bool? UseItem(Player player)
         {
             player.statLifeMax2 += HP;

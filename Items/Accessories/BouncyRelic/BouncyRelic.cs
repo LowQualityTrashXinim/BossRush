@@ -8,7 +8,7 @@ namespace BossRush.Items.Accessories.BouncyRelic
 {
     internal class BouncyRelic : ModItem, ISynergyItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
         public int ModifyAmountBullet => 1;
 

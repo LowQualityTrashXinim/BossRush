@@ -7,7 +7,7 @@ namespace BossRush.Items.Accessories
 {
     internal class PlusOneBullet : ModItem, ISynergyItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Extra gun Barrel");

@@ -11,7 +11,7 @@ namespace BossRush.Items.Toggle
 {
     internal class OverhaulWeapon : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("World's gift");

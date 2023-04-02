@@ -9,7 +9,7 @@ namespace BossRush.Items.Spawner
 {
     public class RoyalWax : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Royal Wax");

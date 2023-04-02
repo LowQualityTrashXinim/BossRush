@@ -10,7 +10,7 @@ namespace BossRush.Items.Accessories.EnragedBossAccessories.CorruptedFlesh
 {
     internal class CorruptedFlesh : ModItem
     {
-        public override string Texture => ItemTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Isn't this is just rotten flesh but even more rotten ?" +
