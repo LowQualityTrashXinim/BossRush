@@ -14,25 +14,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
         }
         public override void SetDefaults()
         {
-            Item.width = 26;
-            Item.height = 74;
+            Item.BossRushDefaultRange(26, 74, 22, 3, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 20, true, AmmoID.Arrow);
             Item.rare = 3;
-
-            Item.autoReuse = true;
-            Item.DamageType = DamageClass.Ranged;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true;
-            Item.useAmmo = AmmoID.Arrow;
-            Item.shoot = ProjectileID.WoodenArrowFriendly;
-
-            Item.shootSpeed = 20;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-            Item.damage = 22;
-            Item.knockBack = 3;
             Item.crit = 12;
             Item.value = Item.buyPrice(platinum: 5);
-
             Item.UseSound = SoundID.Item5;
         }
         int[] ArrayOfProjectile = new int[] {

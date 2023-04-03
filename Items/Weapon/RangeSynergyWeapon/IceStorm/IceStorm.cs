@@ -1,12 +1,10 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using System;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
