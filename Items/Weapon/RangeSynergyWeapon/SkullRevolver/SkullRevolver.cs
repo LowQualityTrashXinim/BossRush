@@ -15,27 +15,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SkullRevolver
         }
         public override void SetDefaults()
         {
-            Item.DamageType = DamageClass.Ranged;
-            Item.useAmmo = AmmoID.Bullet;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.shoot = ProjectileID.Bullet;
-            Item.autoReuse = false;
-            Item.noMelee = true;
+            Item.BossRushDefaultRange(26, 52, 45, 3f, 2, 12, ItemUseStyleID.Shoot, ProjectileID.Bullet, 20f, false, AmmoID.Bullet);
             Item.rare = 3;
             Item.UseSound = SoundID.Item11;
-
-            Item.damage = 45;
             Item.crit = 15;
-            Item.knockBack = 3f;
-            Item.useTime = 2;
-            Item.useAnimation = 12;
             Item.reuseDelay = 37;
-            Item.shootSpeed = 20;
             Item.value = Item.buyPrice(gold: 50);
-
-            Item.height = 26;
-            Item.width = 52;
-
             Item.UseSound = SoundID.Item41;
         }
 

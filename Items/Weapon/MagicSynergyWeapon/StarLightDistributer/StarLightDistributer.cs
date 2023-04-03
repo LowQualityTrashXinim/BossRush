@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 {
@@ -16,24 +16,9 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
         }
         public override void SetDefaults()
         {
-            Item.width = 45;
-            Item.height = 24;
-
-            Item.damage = 16;
-            Item.knockBack = 2f;
-            Item.useTime = 16;
-            Item.useAnimation = 16;
-            Item.mana = 8;
-            Item.shootSpeed = 10;
-
-            Item.noMelee = true;
-            Item.shoot = ProjectileID.GreenLaser;
-            Item.DamageType = DamageClass.Magic;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
+            Item.BossRushDefaultMagic(45, 24, 16, 2f, 16, 16, ItemUseStyleID.Shoot, ProjectileID.GreenLaser, 1, 8, true);
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
-
             Item.UseSound = SoundID.Item12;
         }
 

@@ -83,6 +83,7 @@ namespace BossRush
             item.shoot = shoot;
             item.shootSpeed = shootSpeed;
             item.mana = manaCost;
+            item.noMelee = true;
             item.DamageType = DamageClass.Magic;
         }
         public static bool CheckUseStyleMelee(this Item item) => item.useStyle == ItemUseStyleID.Swing

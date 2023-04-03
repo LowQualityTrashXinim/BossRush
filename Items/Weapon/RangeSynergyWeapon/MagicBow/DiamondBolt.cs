@@ -47,11 +47,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
                 }
             }
         }
-        float Distance = 2250000;
+        private readonly float Distance = 2250000;
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && !projectileThatNeedtoCheck.velocity.reachedLimited(2))
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && !projectileThatNeedtoCheck.velocity.ReachedLimited(2))
             {
                 if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {

@@ -10,9 +10,9 @@ namespace BossRush
 {
     public static partial class BossRushUtils
     {
-        public static Vector2 limitedVelocity(this Vector2 velocity, float limited)
+        public static Vector2 LimitedVelocity(this Vector2 velocity, float limited)
         {
-            velocity.getAbsoluteVectorNormalized(limited, out float X, out float Y);
+            velocity.GetAbsoluteVectorNormalized(limited, out float X, out float Y);
             velocity.X = Math.Clamp(velocity.X, -X, X);
             velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
             return velocity;
@@ -56,15 +56,15 @@ namespace BossRush
             return false;
         }
 
-        public static bool reachedLimited(this Vector2 velocity, float limited)
+        public static bool ReachedLimited(this Vector2 velocity, float limited)
         {
-            velocity.getAbsoluteVectorNormalized(limited, out float X, out float Y);
+            velocity.GetAbsoluteVectorNormalized(limited, out float X, out float Y);
             if (Math.Abs(velocity.X) >= X) return true;
             if (Math.Abs(velocity.Y) >= Y) return true;
             return false;
         }
 
-        public static void getAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
+        public static void GetAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
         {
             Vector2 newVelocity = velocity.SafeNormalize(Vector2.Zero) * limit;
             X = Math.Abs(newVelocity.X);
@@ -124,7 +124,12 @@ namespace BossRush
             float rotation = MathHelper.ToRadians(ToRadians);
             return Vec2ToRotate.RotatedByRandom(rotation);
         }
-        public static Vector2 NextVector2Square(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
+        public static void FallingVector2(ref Vector2 position, ref Vector2 velocity, Player player, float X, float Y, float speed)
+        {
+            position += new Vector2(X, Y);
+            velocity = (position - player.Center).SafeNormalize(Vector2.Zero) * speed;
+        }
+        public static Vector2 NextVector2Spread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {
             ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
             ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
@@ -226,7 +231,7 @@ namespace BossRush
             {
                 if (Main.rand.Next(101) < GetOnePercentChance * i)
                 {
-                    FlagNumNew.Add(FlagNum[FlagNum.Count - i]);
+                    FlagNumNew.Add(FlagNum[^i]);
                 }
             }
             return FlagNumNew;

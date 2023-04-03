@@ -6,7 +6,7 @@ namespace BossRush.Items.Artifact
 {
     internal class TokenofPride : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushTexture.TOKENOFPRIDE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Token of Pride");

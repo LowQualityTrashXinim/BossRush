@@ -29,7 +29,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         public override void AI()
         {
             Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
-            Projectile.velocity = Projectile.velocity.limitedVelocity(10);
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             Projectile.alpha += 2;
             if (Projectile.alpha >= 235)

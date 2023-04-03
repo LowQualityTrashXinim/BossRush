@@ -168,7 +168,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
                 }
                 count++;
             }
-            Projectile.velocity = Projectile.velocity.limitedVelocity(20);
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

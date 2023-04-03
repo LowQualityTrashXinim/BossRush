@@ -15,32 +15,15 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("An Ice Queen's most reliable defense" +
-                "\nHave 75% chance to not consume ammo");
+                "\nHave 20% chance to not consume ammo");
         }
         public override void SetDefaults()
         {
-            Item.width = 42;
-            Item.height = 98;
-
-            Item.damage = 50;
-            Item.knockBack = 1f;
+            Item.BossRushDefaultRange(42, 98, 50, 1f, 75, 75, ItemUseStyleID.Shoot, ProjectileID.FrostArrow, 10f, true, AmmoID.Arrow);
             Item.crit = 5;
-
-            Item.shoot = ProjectileID.FrostArrow;
-            Item.shootSpeed = 10f;
-
-            Item.useTime = 75;
-            Item.useAnimation = 75;
-
             Item.rare = 3;
-            Item.useAmmo = AmmoID.Arrow;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.DamageType = DamageClass.Ranged;
-            Item.autoReuse = true;
-            Item.noMelee = true;
             Item.value = Item.buyPrice(gold: 50);
             Item.scale = 0.7f;
-
             Item.UseSound = SoundID.Item5;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -61,6 +44,34 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         }
         public override void HoldItem(Player player)
         {
+            if (player.HasItem(ItemID.SnowballCannon))
+            {
+                if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormSnowBallCannonMinion>()] < 1)
+                {
+                    Projectile.NewProjectile(
+                        Item.GetSource_FromThis(),
+                        player.Center,
+                        Vector2.Zero,
+                        ModContent.ProjectileType<IceStormSnowBallCannonMinion>(),
+                        Item.damage,
+                        Item.knockBack,
+                        player.whoAmI);
+                }
+            }
+            if (player.HasItem(ItemID.FlowerofFrost))
+            {
+                if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormFrostFlowerMinion>()] < 1)
+                {
+                    Projectile.NewProjectile(
+                        Item.GetSource_FromThis(),
+                        player.Center,
+                        Vector2.Zero,
+                        ModContent.ProjectileType<IceStormFrostFlowerMinion>(),
+                        Item.damage,
+                        Item.knockBack,
+                        player.whoAmI);
+                }
+            }
             if (!Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier >= 1)
             {
                 player.GetModPlayer<IceStormPlayer>().SpeedMultiplier -= 0.025f;
@@ -82,6 +93,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             ChargeUpHandle(player);
+            IceStormSynergy(player, source, position, velocity, damage, knockback);
             int projectile2 = 1 + (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .2f);
             for (int i = 0; i < projectile2; ++i)
             {
@@ -95,7 +107,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             int projectile = (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .2f);
             for (int i = 0; i < projectile; i++)
             {
-                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(5).NextVector2Square(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(5).NextVector2Spread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
             }
             float projectile3 = player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 7f;
             if (projectile3 >= 1)
@@ -145,6 +157,63 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                 Main.dust[dustNum].noLight = false;
                 Main.dust[dustNum].noLightEmittence = false;
                 Main.dust[dustNum].velocity = circular;
+            }
+        }
+        private void IceStormSynergy(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
+        {
+            if (player.HasItem(ItemID.SnowballCannon))
+            {
+                HasSnowBall(player, source, position, velocity, damage, knockback);
+            }
+            if (player.HasItem(ItemID.FlowerofFrost))
+            {
+                HasFrostFlower(player, source, position, velocity, damage, knockback);
+            }
+            if (player.HasItem(ItemID.BlizzardStaff))
+            {
+                HasBlizzardStaff(player, source, damage, knockback);
+            }
+        }
+        private void HasSnowBall(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
+        {
+            int projectile4 = (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .5f);
+            for (int i = 0; i < projectile4; i++)
+            {
+                float ToRa = 0;
+                if (projectile4 != 1)
+                {
+                    ToRa = projectile4 * 7;
+                }
+                Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
+            }
+        }
+        private void HasFrostFlower(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
+        {
+            int projectile5 = (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .1666667f);
+            for (int i = 0; i < projectile5; i++)
+            {
+                float ToRa = 0;
+                if (projectile5 != 1)
+                {
+                    ToRa = projectile5 * 5;
+                }
+                Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
+            }
+        }
+        private void HasBlizzardStaff(Player player, EntitySource_ItemUse_WithAmmo source, int damage, float knockback)
+        {
+            if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier < 8)
+            {
+                return;
+            }
+            Vector2 SkyPos = new Vector2(player.Center.X, player.Center.Y - 800);
+            Vector2 SkyVelocity = (Main.MouseWorld - SkyPos).SafeNormalize(Vector2.UnitX);
+            for (int i = 0; i < 5; i++)
+            {
+                SkyPos += Main.rand.NextVector2Circular(200, 200);
+                int FinalCharge = Projectile.NewProjectile(source, SkyPos, SkyVelocity * 30, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
+                Main.projectile[FinalCharge].tileCollide = false;
+                Main.projectile[FinalCharge].timeLeft = 100;
             }
         }
         public override void AddRecipes()

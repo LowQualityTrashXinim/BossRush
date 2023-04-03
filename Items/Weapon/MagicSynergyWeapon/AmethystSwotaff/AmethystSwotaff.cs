@@ -17,28 +17,12 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
 
         public override void SetDefaults()
         {
-            Item.width = 60;
-            Item.height = 58;
-
-            Item.damage = 20;
+            Item.BossRushDefaultMagic(60, 58, 20, 3f, 4, 20, ItemUseStyleID.Shoot, ProjectileID.AmethystBolt, 7, 30, false);
             Item.crit = 10;
-            Item.knockBack = 3f;
-
-            Item.useTime = 4;
-            Item.useAnimation = 40;
             Item.reuseDelay = 20;
-
-            Item.shootSpeed = 7;
-            Item.mana = 30;
-
             Item.value = Item.buyPrice(gold: 50);
-            Item.shoot = ProjectileID.AmethystBolt;
-            Item.DamageType = DamageClass.Magic;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
             Item.useTurn = false;
             Item.rare = 2;
-
             Item.UseSound = SoundID.Item8;
         }
 
@@ -165,7 +149,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
                 }
                 count++;
             }
-            Projectile.velocity = Projectile.velocity.limitedVelocity(20);
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

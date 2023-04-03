@@ -86,7 +86,7 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             }
             else
             {
-                if (!Projectile.velocity.reachedLimited(20)) Projectile.velocity += localOriginalvelocity;
+                if (!Projectile.velocity.ReachedLimited(20)) Projectile.velocity += localOriginalvelocity;
             }
         }
 
