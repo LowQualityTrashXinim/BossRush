@@ -82,16 +82,6 @@ namespace BossRush.Items.Weapon
                 Main.dust[dust3].fadeIn = 1f;
             }
         }
-
-        public bool cankillWalls(int i, int j, double distance)
-        {
-            if (distance < explosionRadius * explosionRadius && Main.tile[i, j] != null && Main.tile[i, j].WallType == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
         public bool canKillTiles(int i, int j)
         {
             if (Main.tile[i, j] != null)
@@ -131,7 +121,10 @@ namespace BossRush.Items.Weapon
             {
                 for (int y = j - 1; y <= j + 1; y++)
                 {
-                    if (Main.tile[x, y] != null && Main.tile[x, y].WallType > 0 && cankillWalls(i, j, distanceToTile) && WallLoader.CanExplode(x, y, Main.tile[x, y].WallType))
+                    if (Main.tile[x, y] != null 
+                        && distanceToTile < (explosionRadius * explosionRadius)
+                        && Main.tile[x, y].WallType > 0 
+                        && WallLoader.CanExplode(x, y, Main.tile[x, y].WallType))
                     {
                         WorldGen.KillWall(x, y, false);
                         if (Main.tile[x, y].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer)
@@ -171,9 +164,9 @@ namespace BossRush.Items.Weapon
             {
                 for (int j = minTileY; j <= maxTileY; j++)
                 {
-                    Vector2 diff = new Vector2(i - Projectile.position.X / 16f, j - Projectile.position.Y / 16f);
+                    Vector2 diff = new Vector2(i - Projectile.position.X / 16, j - Projectile.position.Y / 16);
                     double distanceToTile = diff.LengthSquared();
-                    if (distanceToTile < explosionRadius * explosionRadius)
+                    if (distanceToTile < (explosionRadius * explosionRadius))
                     {
                         if (canKillTiles(i, j))
                         {

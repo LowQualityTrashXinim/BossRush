@@ -492,7 +492,7 @@ namespace BossRush
                 damage += (int)(damage * .5f);
             }
             damage = DamageHandleSystem(modPlayer, damage);
-            modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.25f);
+            modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
@@ -625,7 +625,7 @@ namespace BossRush
             }
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
-                delaytimer = (int)(Player.itemAnimationMax * 1.34f);
+                delaytimer = (int)(Player.itemAnimationMax * 1.2f);
                 ExecuteSpecialComboOnStart(item);
             }
             if (Player.ItemAnimationActive)
