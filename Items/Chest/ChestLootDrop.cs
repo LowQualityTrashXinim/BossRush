@@ -22,7 +22,6 @@ namespace BossRush.Items.Chest
         private int summonChance;
         private int specialChance;
 
-
         private int ModifyGetAmount(int ValueToModify, Player player, bool multiplier = false)
         {
             //Modifier

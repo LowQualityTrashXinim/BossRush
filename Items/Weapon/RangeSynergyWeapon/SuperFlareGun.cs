@@ -13,27 +13,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.width = 68;
-            Item.height = 38;
+            Item.BossRushDefaultRange(68, 38, 20, 2f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<SuperFlareP>(), 20, false, AmmoID.Flare);
             Item.rare = 4;
-
-            Item.damage = 20;
             Item.crit = 5;
-            Item.knockBack = 2f;
-
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-
-            Item.DamageType = DamageClass.Ranged;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true;
-            Item.autoReuse = false;
-            Item.useAmmo = AmmoID.Flare;
             Item.scale = 0.75f;
-
-            Item.shoot = ModContent.ProjectileType<SuperFlareP>();
-            Item.shootSpeed = 20;
-
             Item.UseSound = SoundID.Item11;
         }
         public override Vector2? HoldoutOffset()

@@ -24,6 +24,7 @@ namespace BossRush.Items.Accessories
             player.tileSpeed += 10;
             player.pickSpeed *= .1f;
             player.blockRange += 10;
+            player.wallSpeed += 10;
         }
         public override void AddRecipes()
         {

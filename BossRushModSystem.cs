@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Items;
 using Microsoft.Xna.Framework;
 using System;
+using System.Linq;
 
 namespace BossRush
 {
@@ -76,7 +77,7 @@ namespace BossRush
             RecipeGroup.RegisterGroup("OreBroadSword", OreBroadSword);
 
             RecipeGroup OreBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.CopperBow)}", new int[]
-{
+            {
                 ItemID.CopperBow,
                 ItemID.TinBow,
                 ItemID.IronBow,
@@ -85,7 +86,7 @@ namespace BossRush
                 ItemID.TungstenBow,
                 ItemID.GoldBow,
                 ItemID.PlatinumBow,
-});
+            });
             RecipeGroup.RegisterGroup("OreBow", OreBow);
         }
         public override void PostAddRecipes()
@@ -96,7 +97,8 @@ namespace BossRush
             }
             for (int i = 0; i < Main.recipe.Length; i++)
             {
-                if (Main.recipe[i].HasResult(ItemID.FlamingArrow))
+                if (Main.recipe[i].HasResult(ItemID.FlamingArrow) 
+                    || Main.recipe[i].HasResult(ItemID.FrostburnArrow) )
                 {
                     Main.recipe[i].DisableRecipe();
                 }
@@ -107,6 +109,7 @@ namespace BossRush
         int ColorStyle = 0;
         public override void PostUpdateEverything()
         {
+            //Pulsing Purple
             if (ColorStyle != 1)
             {
                 if (ChallengeR < 255)

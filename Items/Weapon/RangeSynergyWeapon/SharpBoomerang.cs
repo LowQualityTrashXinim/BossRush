@@ -12,27 +12,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.width = 38;
-            Item.height = 72;
-
-            Item.damage = 30;
-            Item.knockBack = 5f;
+            Item.BossRushDefaultRange(38, 72, 30, 5f, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
             Item.crit = 6;
-
-            Item.useAnimation = 30;
-            Item.useTime = 30;
-
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.DamageType = DamageClass.Ranged;
-            Item.value = Item.buyPrice(platinum: 5);
-            Item.noMelee = true;
-            Item.noUseGraphic = true;
-            Item.autoReuse = false;
-            Item.rare = ItemRarityID.Orange;
             Item.scale = 0.75f;
-
-            Item.shoot = ModContent.ProjectileType<SharpBoomerangP>();
-            Item.shootSpeed = 40;
+            Item.noUseGraphic = true;
+            Item.rare = ItemRarityID.Orange;
+            Item.value = Item.buyPrice(platinum: 5);
         }
         public override bool CanUseItem(Player player)
         {

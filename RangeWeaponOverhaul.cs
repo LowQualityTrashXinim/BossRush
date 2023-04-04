@@ -12,11 +12,11 @@ namespace BossRush
     public static class RangeWeaponOverhaul
     {
         /// <summary>
-        /// Use this to change how much weapon spread should be modify
-        /// For global modify use multiplication
-        /// For general modify use addictive
-        /// Do not use SpreadModify = 0 as it will fuck the other stuff
-        /// Best practice for this is to use + operator as it is what i use
+        /// Use this to change how much weapon spread should be modify<br/>
+        /// -For global modify use multiplication<br/>
+        /// -For general modify use addictive<br/>
+        /// Do not use SpreadModify = 0 as it will fuck the other stuff<br/>
+        /// Best practice for this is to use + operator as it is what i use<br/>
         /// Using * is for globally and very hard to balance
         /// </summary>
         public static float SpreadModify = 1;

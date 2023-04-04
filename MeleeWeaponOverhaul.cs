@@ -585,8 +585,10 @@ namespace BossRush
         public int oldHeldItem;
         public int CountDownToResetCombo = 0;
         public float RotateThurst;
+        public int MouseXPosDirection = 1;
         public override void PreUpdate()
         {
+            MouseXPosDirection = (Main.MouseWorld.X - Player.Center.X) > 0 ? 1 : -1;
             Item item = Player.HeldItem;
             if (item.type != oldHeldItem)
             {
@@ -676,7 +678,13 @@ namespace BossRush
             }
             return false;
         }
-        private bool ComboConditionChecking() => Player.mount.Active | IsWallBossAlive() | ComboNumber != 2;
+        private bool ComboConditionChecking() =>
+            Player.mount.Active
+            || IsWallBossAlive()
+            || ComboNumber != 2
+            || (Player.velocity.X > 0 && MouseXPosDirection < 0)
+            || (Player.velocity.X < 0 && MouseXPosDirection > 0)
+            || Player.velocity == Vector2.Zero;
         private void ExecuteSpecialComboOnStart(Item item)
         {
             if (ComboConditionChecking())

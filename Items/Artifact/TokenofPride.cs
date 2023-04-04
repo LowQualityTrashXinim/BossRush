@@ -1,5 +1,7 @@
 ﻿using BossRush.Texture;
 using Terraria;
+using Terraria.ID;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace BossRush.Items.Artifact
@@ -12,6 +14,8 @@ namespace BossRush.Items.Artifact
             DisplayName.SetDefault("Token of Pride");
             Tooltip.SetDefault("Increase weapon damage exchange for half of the reward\n" +
                 "\"Pride of having the skill to use, care little for reward\"");
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 6));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
         public override void SetDefaults()
         {
