@@ -1,10 +1,10 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace BossRush.Items.Weapon
 {
@@ -121,9 +121,9 @@ namespace BossRush.Items.Weapon
             {
                 for (int y = j - 1; y <= j + 1; y++)
                 {
-                    if (Main.tile[x, y] != null 
+                    if (Main.tile[x, y] != null
                         && distanceToTile < (explosionRadius * explosionRadius)
-                        && Main.tile[x, y].WallType > 0 
+                        && Main.tile[x, y].WallType > 0
                         && WallLoader.CanExplode(x, y, Main.tile[x, y].WallType))
                     {
                         WorldGen.KillWall(x, y, false);
@@ -138,15 +138,21 @@ namespace BossRush.Items.Weapon
 
         public void SpawnExplosiveDust()
         {
+            int count;
+            float rngRotate = Main.rand.NextFloat(180);
             for (int i = 0; i < 200; i++)
             {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 226, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+                count = i / 100;
+                float ToRotation = MathHelper.ToRadians(90 * count + rngRotate);
+                Vector2 circle = Main.rand.NextVector2CircularEdge(4f, 22.5f).RotatedBy(ToRotation);
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.2f));
                 Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2Circular(23f, 18f);
+                Main.dust[dust].fadeIn = 1.5f;
+                Main.dust[dust].velocity = circle;
             }
             for (int i = 0; i < 200; i++)
             {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(1.35f, 1.5f));
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(19f, 19f);
             }
