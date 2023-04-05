@@ -53,6 +53,8 @@ namespace BossRush.ChallengeMode
             }
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
+                int SpiderCave = tasks.FindIndex(GenPass => GenPass.Name.Equals("Spider Caves"));
+                tasks.RemoveAt(SpiderCave);
                 int BigAssTree = tasks.FindIndex(GenPass => GenPass.Name.Equals("Living Trees"));
                 tasks.RemoveAt(BigAssTree);
                 int BigAssTreeWall = tasks.FindIndex(GenPass => GenPass.Name.Equals("Wood Tree Walls"));

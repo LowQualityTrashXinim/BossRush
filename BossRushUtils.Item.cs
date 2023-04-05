@@ -6,7 +6,6 @@ namespace BossRush
 {
     public partial class BossRushUtils
     {
-
         public static void BossRushSetDefault(this Item item,
             int width,
             int height,
