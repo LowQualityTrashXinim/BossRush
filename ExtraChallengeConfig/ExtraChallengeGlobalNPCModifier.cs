@@ -53,7 +53,12 @@ namespace BossRush.ExtraChallengeConfig
         {
             if (npc.boss)
             {
-                Player player = Main.LocalPlayer;
+                int playerIndex = npc.lastInteraction;
+                if (!Main.player[playerIndex].active || Main.player[playerIndex].dead)
+                {
+                    playerIndex = npc.FindClosestPlayer();
+                }
+                Player player = Main.player[playerIndex];
                 if (ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
                 {
                     player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser = Main.rand.Next(9);

@@ -468,7 +468,12 @@ namespace BossRush
         {
             if(npc.boss)
             {
-                Player player = Main.LocalPlayer;
+                int playerIndex = npc.lastInteraction;
+                if (!Main.player[playerIndex].active || Main.player[playerIndex].dead)
+                {
+                    playerIndex = npc.FindClosestPlayer();
+                }
+                Player player = Main.player[playerIndex];
                 player.GetModPlayer<GamblePlayer>().Roll++;
             }
         }

@@ -4,6 +4,7 @@ namespace BossRush.Items
 {
     public static class TerrariaArrayID
     {
+        //Pre boss and Pre EoC is the same PreBoss
         public readonly static int[] MeleePreBoss = {
             ItemID.CopperShortsword, ItemID.TinShortsword, ItemID.IronShortsword, ItemID.LeadShortsword,
             ItemID.SilverShortsword, ItemID.TungstenShortsword, ItemID.GoldShortsword, ItemID.PlatinumShortsword,

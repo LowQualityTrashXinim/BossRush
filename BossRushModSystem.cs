@@ -97,17 +97,24 @@ namespace BossRush
             }
             for (int i = 0; i < Main.recipe.Length; i++)
             {
-                if (Main.recipe[i].HasResult(ItemID.FlamingArrow) 
-                    || Main.recipe[i].HasResult(ItemID.FrostburnArrow) )
+                if (Main.recipe[i].HasResult(ItemID.FlamingArrow) ||
+                    Main.recipe[i].HasResult(ItemID.FrostburnArrow))
                 {
                     Main.recipe[i].DisableRecipe();
                 }
             }
         }
-        static int ChallengeR = 100, ChallengeB = 100;
-        public static Color ChallangeGodColor => new Color(ChallengeR, 0, ChallengeB);
-        int ColorStyle = 0;
+
         public override void PostUpdateEverything()
+        {
+            ChallengeGodColorAnimation();
+            YellowPulseYellowWhiteAnimation();
+        }
+
+        public static Color ChallangeGodColor => new Color(ChallengeR, 0, ChallengeB);
+        static int ChallengeR = 100, ChallengeB = 100;
+        int ColorStyle = 0;
+        private void ChallengeGodColorAnimation()
         {
             //Pulsing Purple
             if (ColorStyle != 1)
@@ -132,6 +139,40 @@ namespace BossRush
                 else
                 {
                     ColorStyle = 0;
+                }
+            }
+        }
+
+        public static Color YellowPulseYellowWhite => new Color(YWRed, YWGreen, YWBlue);
+        static int YWRed = 150, YWGreen = 150, YWBlue = 0;
+        int ColorSwitch = 0;
+        private void YellowPulseYellowWhiteAnimation()
+        {
+            //Pulsing Yellow
+            if (ColorSwitch != 1)
+            {
+                if (YWRed < 255)
+                {//default value 100, 100, 0
+                    Math.Clamp(++YWRed, 150, 255);
+                    Math.Clamp(++YWGreen, 150, 255);
+                    Math.Clamp(++YWBlue, 0, 255);
+                }
+                else
+                {
+                    ColorSwitch = 1;
+                }
+            }
+            else
+            {
+                if (YWRed > 150)
+                {
+                    Math.Clamp(--YWRed, 150, 255);
+                    Math.Clamp(--YWGreen, 150, 255);
+                    Math.Clamp(--YWBlue, 0, 255);
+                }
+                else
+                {
+                    ColorSwitch = 0;
                 }
             }
         }

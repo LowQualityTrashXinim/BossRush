@@ -359,9 +359,18 @@ namespace BossRush
                         NumOfProjectile += 6;
                         break;
                 }
+                RangerWeaponOverhaulPlayerDataHandle modplayer = player.GetModPlayer<RangerWeaponOverhaulPlayerDataHandle>();
+                modplayer.SpreadAmount = SpreadAmount;
+                modplayer.AdditionalSpread = AdditionalSpread;
+                modplayer.AdditionalMultiSpread = AdditionalMulti;
+                modplayer.NumOfProjectile = NumOfProjectile;
                 position = position.PositionOFFSET(velocity, OffSetPost);
                 RangeWeaponOverhaul.NewGunShotProjectile(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
             }
         }
+    }
+    class RangerWeaponOverhaulPlayerDataHandle : ModPlayer
+    {
+        public float SpreadAmount = 0, AdditionalSpread = 0, AdditionalMultiSpread = 0, NumOfProjectile = 1;
     }
 }
