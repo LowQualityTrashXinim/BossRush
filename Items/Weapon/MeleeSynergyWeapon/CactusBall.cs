@@ -58,8 +58,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             float projectileNum = 6;
             for (int i = 0; i < projectileNum; i++)
             {
-                Vector2 rotation = new Vector2(5, 5).RotatedBy(MathHelper.Lerp(rotate, -rotate, i / (projectileNum - 1)));
-                Projectile.NewProjectile(null, Projectile.position, rotation, ProjectileID.TentacleSpike, (int)(Projectile.damage * 0.5f), Projectile.knockBack * 0.5f, Projectile.owner);
+                Vector2 rotation = new Vector2(5, 5).RotatedBy(MathHelper.Lerp(rotate, -rotate, i / (projectileNum - 1)) + Projectile.rotation);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, rotation, ProjectileID.TentacleSpike, (int)(Projectile.damage * 0.5f), Projectile.knockBack * 0.5f, Projectile.owner);
             }
         }
     }

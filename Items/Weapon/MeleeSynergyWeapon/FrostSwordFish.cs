@@ -16,25 +16,13 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 
         public override void SetDefaults()
         {
-            Item.width = 60;
-            Item.height = 64;
+            Item.BossRushSetDefaultMelee(60, 64, 37, 1f, 18, 18, BossRushUseStyle.Swipe, true);
+
             Item.rare = 2;
-
-            Item.damage = 37;
             Item.crit = 5;
-            Item.knockBack = 1f;
-
-            Item.useTime = 18;
-            Item.useAnimation = 18;
-
-            Item.DamageType = DamageClass.Melee;
-            Item.useStyle = ItemUseStyleID.Swing;
             Item.value = Item.buyPrice(gold: 50);
-            Item.autoReuse = true;
             Item.useTurn = false;
-
             Item.scale += 0.25f;
-
             Item.UseSound = SoundID.Item1;
         }
 
