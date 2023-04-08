@@ -59,7 +59,7 @@ namespace BossRush.Items.Accessories.Scabbard
         public override void PostUpdate()
         {
             if (Player.HeldItem.DamageType == DamageClass.Melee
-                && Player.HeldItem.CheckUseStyleMelee()
+                && Player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
                 && SwordSlash 
                 && Main.mouseLeft 
                 && Player.ItemAnimationJustStarted 

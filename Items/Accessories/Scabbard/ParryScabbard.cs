@@ -64,7 +64,7 @@ namespace BossRush.Items.Accessories.Scabbard
             if (!Player.HasBuff(ModContent.BuffType<Parried>())
                 && item.DamageType == DamageClass.Melee
                 && Player.ItemAnimationActive
-                && item.CheckUseStyleMelee()
+                && item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
                 && !Player.HasBuff(ModContent.BuffType<CoolDownParried>())
                 && Parry)
             {

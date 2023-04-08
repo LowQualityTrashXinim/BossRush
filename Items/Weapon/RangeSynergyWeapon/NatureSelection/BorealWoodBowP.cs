@@ -2,9 +2,26 @@
 {
     internal class BorealWoodBowP : BaseBowTemplate
     {
-        public override void AI()
-        {
-            Behavior();
-        }
+
+    }
+    internal class EbonwoodBowP : BaseBowTemplate
+    {
+
+    }
+    internal class PalmWoodBowP : BaseBowTemplate
+    {
+
+    }
+    internal class RichMahoganyBowP : BaseBowTemplate
+    {
+
+    }
+    internal class ShadewoodBowP : BaseBowTemplate
+    {
+
+    }
+    internal class WoodBowP : BaseBowTemplate
+    {
+
     }
 }

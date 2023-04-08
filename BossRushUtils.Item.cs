@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using log4net.Filter;
+using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -85,9 +87,28 @@ namespace BossRush
             item.noMelee = true;
             item.DamageType = DamageClass.Magic;
         }
-        public static bool CheckUseStyleMelee(this Item item) => item.useStyle == ItemUseStyleID.Swing
-            || item.useStyle == BossRushUseStyle.GenericSwingDownImprove
-            || item.useStyle == BossRushUseStyle.Swipe
-            || item.useStyle == BossRushUseStyle.Poke;
+        public enum MeleeStyle
+        {
+            CheckVanillaSwingWithModded,
+            CheckOnlyModded
+        }
+        public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck)
+        {
+            switch (WhatToCheck)
+            {
+                case MeleeStyle.CheckVanillaSwingWithModded:
+                    return item.useStyle == ItemUseStyleID.Swing
+                        || item.useStyle == BossRushUseStyle.GenericSwingDownImprove
+                        || item.useStyle == BossRushUseStyle.Swipe
+                        || item.useStyle == BossRushUseStyle.Poke;
+                case MeleeStyle.CheckOnlyModded:
+                    return item.useStyle == BossRushUseStyle.GenericSwingDownImprove
+                        || item.useStyle == BossRushUseStyle.Swipe
+                        || item.useStyle == BossRushUseStyle.Poke;
+                default:
+                    Console.WriteLine("Fail to know what to check !");
+                    return false;
+            }
+        }
     }
 }

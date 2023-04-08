@@ -222,7 +222,7 @@ namespace BossRush
                     item.height = 40;
                     break;
                 case ItemID.DD2SquireBetsySword:
-                    item.width = 66;item.height = 66;
+                    item.width = 66; item.height = 66;
                     break;
                 case ItemID.PurpleClubberfish:
                     item.width = item.height = 50;
@@ -357,7 +357,6 @@ namespace BossRush
         private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
-            //this remain untouch cause idk what in the hell should i change here
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
@@ -485,14 +484,17 @@ namespace BossRush
         }
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
-            MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-            modPlayer.critReference = crit;
-            if (crit)
+            if (Item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
             {
-                damage += (int)(damage * .5f);
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+                modPlayer.critReference = crit;
+                if (crit)
+                {
+                    damage += (int)(damage * .5f);
+                }
+                damage = DamageHandleSystem(modPlayer, damage);
+                modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             }
-            damage = DamageHandleSystem(modPlayer, damage);
-            modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
         }
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
@@ -588,7 +590,6 @@ namespace BossRush
         public int MouseXPosDirection = 1;
         public override void PreUpdate()
         {
-            MouseXPosDirection = (Main.MouseWorld.X - Player.Center.X) > 0 ? 1 : -1;
             Item item = Player.HeldItem;
             if (item.type != oldHeldItem)
             {
@@ -617,14 +618,13 @@ namespace BossRush
             delaytimer -= delaytimer > 0 ? 1 : 0;
             CountDownToResetCombo -= CountDownToResetCombo > 0 ? 1 : 0;
             iframeCounter -= iframeCounter > 0 ? 1 : 0;
-            if (item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke &&
-                item.useStyle != BossRushUseStyle.GenericSwingDownImprove &&
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
                 item.noMelee
                 )
             {
                 return;
             }
+            MouseXPosDirection = (Main.MouseWorld.X - Player.Center.X) > 0 ? 1 : -1;
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
                 delaytimer = (int)(Player.itemAnimationMax * 1.2f);
@@ -682,8 +682,8 @@ namespace BossRush
             Player.mount.Active
             || IsWallBossAlive()
             || ComboNumber != 2
-            || (Player.velocity.X > 0 && MouseXPosDirection < 0)
-            || (Player.velocity.X < 0 && MouseXPosDirection > 0)
+            || (Player.velocity.X > 2 && MouseXPosDirection == -1)
+            || (Player.velocity.X < -2 && MouseXPosDirection == 1)
             || Player.velocity == Vector2.Zero;
         private void ExecuteSpecialComboOnStart(Item item)
         {
@@ -728,9 +728,10 @@ namespace BossRush
                 if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && (iframeCounter == 0 || (npclaststrike != null && npclaststrike != npc)))
                 {
                     npclaststrike = npc;
-                    npc.StrikeNPC((int)(item.damage * 1.5f), item.knockBack, Player.direction, critReference);
+                    int damage = (int)(item.damage * 1.5f);
+                    npc.StrikeNPC(damage, item.knockBack, Player.direction, critReference);
                     iframeCounter = (int)(Player.itemAnimationMax * .25f);
-                    Player.dpsDamage += (int)(item.damage * 1.5f);
+                    Player.dpsDamage += damage;
                 }
             }
         }
@@ -738,9 +739,7 @@ namespace BossRush
         public override void PostUpdate()
         {
             Item item = Player.HeldItem;
-            if ((item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke &&
-                item.useStyle != BossRushUseStyle.GenericSwingDownImprove) ||
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
                 item.noMelee
                 )
             {

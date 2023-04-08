@@ -17,8 +17,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection
             Projectile.width = 16;
             Projectile.height = 32;
         }
-
-        public void Behavior()
+        public override void AI()
         {
             Vector2 AimPos = Main.MouseWorld - Projectile.position;
             Vector2 safeAim = AimPos.SafeNormalize(Vector2.UnitX);

@@ -26,7 +26,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Player player = Main.player[Main.myPlayer];
+            Player player = Main.LocalPlayer;
             if (player.HasItem(ItemID.SnowballCannon))
             {
                 tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself"));

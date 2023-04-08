@@ -67,7 +67,7 @@ namespace BossRush
             if (System.Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(),ModContent.ItemType<TrueEaterOfWorldTrophy>()));
+                noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<TrueEaterOfWorldTrophy>()));
                 npcLoot.Add(noHit);
                 //Expert mode drop
                 IsABoss.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<CorruptedTreasureChest>()));
@@ -158,7 +158,7 @@ namespace BossRush
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
             }
 
-            if(npc.type == NPCID.BloodNautilus)
+            if (npc.type == NPCID.BloodNautilus)
             {
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodTreasureChest>()));
                 npcLoot.Add(ExpertVSnormal);
@@ -287,7 +287,7 @@ namespace BossRush
         }
         public override void SetDefaults(NPC npc)
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;
             }
@@ -439,8 +439,7 @@ namespace BossRush
         }
         public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
         {
-            Player player = Main.LocalPlayer;
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && player.name.Contains("Masochist"))
+            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && PlayerNameContain("Masochist"))
             {
                 if (npc.boss && npc.type == NPCID.EyeofCthulhu)
                 {
@@ -464,9 +463,20 @@ namespace BossRush
                 npc.lavaImmune = true;
             }
         }
+        private bool PlayerNameContain(string contain)
+        {
+            for (int i = 0; i < Main.player.Length; i++)
+            {
+                if (Main.player[i].name.Contains(contain))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public override void OnKill(NPC npc)
         {
-            if(npc.boss)
+            if (npc.boss)
             {
                 int playerIndex = npc.lastInteraction;
                 if (!Main.player[playerIndex].active || Main.player[playerIndex].dead)
