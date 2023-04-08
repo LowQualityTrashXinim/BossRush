@@ -13,7 +13,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("? Pistol");
-            Tooltip.SetDefault("it can't decide what it want to be, so it decide to become everything\nShoot out many thing\nAlt click to shoot down a copy of itself onto the screen");
+            Tooltip.SetDefault("it can't decide what it want to be, so it decide to become everything" +
+                "\nShoot out many thing" +
+                "\nAlt click to shoot down a copy of itself onto the screen");
         }
 
         public override void SetDefaults()
@@ -39,27 +41,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
         {
             return true;
         }
-        int[] Arrow = new int[] { ProjectileID.MoonlordArrow, ProjectileID.ShadowFlameArrow, ProjectileID.BeeArrow, ProjectileID.ChlorophyteArrow, ProjectileID.VenomArrow, ProjectileID.IchorArrow, ProjectileID.FrostburnArrow, ProjectileID.FrostArrow, ProjectileID.BoneArrow, ProjectileID.CursedArrow, ProjectileID.HolyArrow, ProjectileID.HellfireArrow, ProjectileID.JestersArrow, ProjectileID.UnholyArrow, ProjectileID.FireArrow, ProjectileID.WoodenArrowFriendly };
-        int[] Bullet = new int[] { ProjectileID.MoonlordBullet, ProjectileID.BulletHighVelocity, ProjectileID.IchorBullet, ProjectileID.PartyBullet, ProjectileID.VenomBullet, ProjectileID.ExplosiveBullet, ProjectileID.NanoBullet, ProjectileID.ChlorophyteBullet, ProjectileID.CursedBullet, ProjectileID.GoldenBullet, ProjectileID.MeteorShot, ProjectileID.CrystalBullet };
-        int[] Boomerang = new int[] { ProjectileID.FruitcakeChakram, ProjectileID.BloodyMachete, ProjectileID.Bananarang, ProjectileID.PaladinsHammerFriendly, ProjectileID.PossessedHatchet, ProjectileID.LightDisc, ProjectileID.Flamarang, ProjectileID.ThornChakram, ProjectileID.IceBoomerang, ProjectileID.WoodenBoomerang, ProjectileID.EnchantedBoomerang };
-        int Star = Main.rand.Next(new int[] { ProjectileID.Starfury, ProjectileID.HallowStar, ProjectileID.StarWrath, ProjectileID.FallingStar });
-        int BallofMagic = Main.rand.Next(new int[] { ProjectileID.BallofFire, ProjectileID.CursedFlameFriendly, ProjectileID.BallofFrost });
-        int Grenade = Main.rand.Next(new int[] { ProjectileID.ExplosiveBunny, ProjectileID.BouncyGrenade, ProjectileID.Grenade, ProjectileID.GrenadeI, ProjectileID.Beenade, ProjectileID.StickyGrenade, ProjectileID.MolotovCocktail, ProjectileID.PartyGirlGrenade });
-        int ThrowingKnife = Main.rand.Next(new int[] { ProjectileID.ThrowingKnife, ProjectileID.PoisonedKnife, ProjectileID.MagicDagger, ProjectileID.VampireKnife, ProjectileID.ShadowFlameKnife });
-        int MusicNote = Main.rand.Next(new int[] { ProjectileID.QuarterNote, ProjectileID.EighthNote, ProjectileID.TiedEighthNote });
-        int MagicalBolt = Main.rand.Next(new int[] { ProjectileID.AmethystBolt, ProjectileID.TopazBolt, ProjectileID.SapphireBolt, ProjectileID.EmeraldBolt, ProjectileID.RubyBolt, ProjectileID.DiamondBolt, ProjectileID.IceBolt, ProjectileID.AmberBolt });
-        int SwordBeam = Main.rand.Next(new int[] { ProjectileID.SwordBeam, ProjectileID.FrostBoltSword, ProjectileID.TerraBeam, ProjectileID.LightBeam, ProjectileID.NightBeam, ProjectileID.EnchantedBeam, ProjectileID.InfluxWaver });
-        int Dart = Main.rand.Next(new int[] { ProjectileID.CrystalDart, ProjectileID.CursedDart, ProjectileID.IchorDart });
-        int[] Coin = new int[] { ProjectileID.CopperCoin, ProjectileID.SilverCoin, ProjectileID.GoldCoin, ProjectileID.PlatinumCoin };
-        int HalloweenPack = Main.rand.Next(new int[] { ProjectileID.JackOLantern, ProjectileID.CandyCorn, ProjectileID.Bat, ProjectileID.RottenEgg, ProjectileID.Stake });
-        int[] DesertFossil = new int[] { ProjectileID.BoneDagger, ProjectileID.BoneJavelin };
-        int HappyChristmasMF = Main.rand.Next(new int[] { ProjectileID.SnowBallFriendly, ProjectileID.FrostBlastFriendly, ProjectileID.OrnamentFriendly, ProjectileID.PineNeedleFriendly, ProjectileID.RocketSnowmanI, ProjectileID.NorthPoleSnowflake, ProjectileID.NorthPoleWeapon, ProjectileID.IceSickle, ProjectileID.FrostBoltStaff, ProjectileID.FrostDaggerfish });
-        int[] DevilPack = new int[] { ProjectileID.DemonScythe, ProjectileID.UnholyTridentFriendly, ProjectileID.DeathSickle };
-        int Nature = Main.rand.Next(new int[] { ProjectileID.Leaf, ProjectileID.FlowerPetal, ProjectileID.CrystalLeafShot, ProjectileID.SporeCloud, ProjectileID.ChlorophyteOrb, ProjectileID.FlowerPowPetal });
-        int alienShooter = Main.rand.Next(new int[] { ProjectileID.ScutlixLaserFriendly, ProjectileID.LaserMachinegunLaser, ProjectileID.ElectrosphereMissile, ProjectileID.Xenopopper, ProjectileID.ChargedBlasterOrb });
-        int[] Fang = new int[] { ProjectileID.PoisonFang, ProjectileID.VenomFang };
-        int JungleTemple = Main.rand.Next(new int[] { ProjectileID.BoulderStaffOfEarth, ProjectileID.HeatRay, ProjectileID.Stynger });
-        int[] UltimateProjPack = new int[] { ProjectileID.IceSickle, ProjectileID.DeathSickle, ProjectileID.DemonScythe, ProjectileID.UnholyTridentFriendly, ProjectileID.MoonlordArrow, ProjectileID.ShadowFlameArrow, ProjectileID.BeeArrow, ProjectileID.ChlorophyteArrow, ProjectileID.Hellwing, ProjectileID.VenomArrow, ProjectileID.IchorArrow, ProjectileID.FrostburnArrow, ProjectileID.FrostArrow, ProjectileID.BoneArrow, ProjectileID.CursedArrow, ProjectileID.HolyArrow, ProjectileID.HellfireArrow, ProjectileID.JestersArrow, ProjectileID.UnholyArrow, ProjectileID.FireArrow, ProjectileID.WoodenArrowFriendly, ProjectileID.MoonlordBullet, ProjectileID.BulletHighVelocity, ProjectileID.IchorBullet, ProjectileID.PartyBullet, ProjectileID.VenomBullet, ProjectileID.ExplosiveBullet, ProjectileID.NanoBullet, ProjectileID.ChlorophyteBullet, ProjectileID.CursedBullet, ProjectileID.GoldenBullet, ProjectileID.MeteorShot, ProjectileID.CrystalBullet, ProjectileID.FruitcakeChakram, ProjectileID.BloodyMachete, ProjectileID.Bananarang, ProjectileID.PaladinsHammerFriendly, ProjectileID.PossessedHatchet, ProjectileID.LightDisc, ProjectileID.Flamarang, ProjectileID.ThornChakram, ProjectileID.IceBoomerang, ProjectileID.WoodenBoomerang, ProjectileID.EnchantedBoomerang, ProjectileID.Starfury, ProjectileID.HallowStar, ProjectileID.StarWrath, ProjectileID.FallingStar, ProjectileID.BallofFire, ProjectileID.CursedFlameFriendly, ProjectileID.BallofFrost, ProjectileID.BouncyGrenade, ProjectileID.Grenade, ProjectileID.GrenadeI, ProjectileID.Beenade, ProjectileID.StickyGrenade, ProjectileID.MolotovCocktail, ProjectileID.PartyGirlGrenade, ProjectileID.ThrowingKnife, ProjectileID.PoisonedKnife, ProjectileID.MagicDagger, ProjectileID.VampireKnife, ProjectileID.ShadowFlameKnife, ProjectileID.QuarterNote, ProjectileID.EighthNote, ProjectileID.TiedEighthNote, ProjectileID.AmethystBolt, ProjectileID.TopazBolt, ProjectileID.SapphireBolt, ProjectileID.EmeraldBolt, ProjectileID.RubyBolt, ProjectileID.DiamondBolt, ProjectileID.IceBolt, ProjectileID.AmberBolt, ProjectileID.InfernoFriendlyBolt, ProjectileID.PulseBolt, ProjectileID.BlackBolt, ProjectileID.SwordBeam, ProjectileID.FrostBoltSword, ProjectileID.TerraBeam, ProjectileID.LightBeam, ProjectileID.NightBeam, ProjectileID.EnchantedBeam, ProjectileID.InfluxWaver, ProjectileID.CrystalDart, ProjectileID.CursedDart, ProjectileID.IchorDart, ProjectileID.GiantBee, ProjectileID.Wasp, ProjectileID.Bee, ProjectileID.CopperCoin, ProjectileID.SilverCoin, ProjectileID.GoldCoin, ProjectileID.PlatinumCoin, ProjectileID.JackOLantern, ProjectileID.CandyCorn, ProjectileID.Bat, ProjectileID.RottenEgg, ProjectileID.Stake };
 
         //type = Main.rand.Next(new int[] { ProjectileID.Flare, ProjectileID.PoisonDartBlowgun, ProjectileID.GoldenShowerFriendly, ProjectileID.ShadowBeamFriendly, ProjectileID.LostSoulFriendly, ProjectileID.EatersBite, ProjectileID.Flairon, ProjectileID.MiniSharkron, ProjectileID.NailFriendly, ProjectileID.Meowmere, ProjectileID.JavelinFriendly, ProjectileID.ToxicFlask, ProjectileID.ToxicBubble, ProjectileID.ClothiersCurse, ProjectileID.PainterPaintball, ProjectileID.VortexBeaterRocket, ProjectileID.NebulaArcanum, ProjectileID.TowerDamageBolt, ProjectileID.NebulaBlaze1, ProjectileID.NebulaBlaze2, ProjectileID.Daybreak, ProjectileID.LunarFlare, ProjectileID.SandnadoFriendly, ProjectileID.SkyFracture, ProjectileID.SpiritFlame, ProjectileID.DD2FlameBurstTowerT1Shot, ProjectileID.DD2FlameBurstTowerT2Shot, ProjectileID.DD2FlameBurstTowerT3Shot, ProjectileID.Ale, ProjectileID.DD2BallistraProj, ProjectileID.MonkStaffT2Ghast, ProjectileID.DD2ApprenticeStorm, ProjectileID.DD2PhoenixBowShot, ProjectileID.MonkStaffT3_AltShot, ProjectileID.ApprenticeStaffT3Shot, ProjectileID.DD2BetsyArrow, ProjectileID.BookStaffShot });
         //Todo : try and make a global function for just Projectile.NewProjectile
@@ -85,26 +66,26 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         for (int i = 0; i < RangeWeaponOverhaul.NumOfProjectile; i++)
                         {
                             newVelocity = velocity.RotateCode(10, i);
-                            for (int a = Arrow.Length - 1; a >= 0; --a)
+                            for (int a = TerrariaArrayID.Arrow.Length - 1; a >= 0; --a)
                             {
                                 SpeedMultiplier = 0.5f + a * 0.15f;
-                                Projectile.NewProjectile(source, position, newVelocity * SpeedMultiplier, Arrow[a], damage, knockback, player.whoAmI);
+                                Projectile.NewProjectile(source, position, newVelocity * SpeedMultiplier, TerrariaArrayID.Arrow[a], damage, knockback, player.whoAmI);
                             }
                         }
                         break;
                     case 2://BulletHell
-                        for (int i = 0; i < Bullet.Length; i++)
+                        for (int i = 0; i < TerrariaArrayID.Bullet.Length; i++)
                         {
-                            Projectile.NewProjectile(source, position, velocity, Bullet[i], damage, knockback, player.whoAmI);
+                            Projectile.NewProjectile(source, position, velocity, TerrariaArrayID.Bullet[i], damage, knockback, player.whoAmI);
                         }
-                        for (int c = 0; c < Bullet.Length; c++)
+                        for (int c = 0; c < TerrariaArrayID.Bullet.Length; c++)
                         {
                             SpeedMultiplier = 0.4f + c * 0.05f;
                             RangeWeaponOverhaul.NumOfProjectile = c + 6;
                             for (int i = 0; i < RangeWeaponOverhaul.NumOfProjectile; i++)
                             {
                                 newVelocity = velocity.RotateCode(60, i);
-                                Projectile.NewProjectile(source, position, newVelocity * SpeedMultiplier, Bullet[c], damage, knockback, player.whoAmI);
+                                Projectile.NewProjectile(source, position, newVelocity * SpeedMultiplier, TerrariaArrayID.Bullet[c], damage, knockback, player.whoAmI);
                             }
                         }
                         break;
@@ -118,10 +99,10 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         break;
                     case 4://Boomerang
                         RangeWeaponOverhaul.NumOfProjectile = 11;
-                        for (int i = 0; i < Boomerang.Length; i++)
+                        for (int i = 0; i < TerrariaArrayID.Boomerang.Length; i++)
                         {
                             newVelocity = velocity.RotateCode(80, i);
-                            Projectile.NewProjectile(source, position, newVelocity, Boomerang[i], damage, knockback, player.whoAmI);
+                            Projectile.NewProjectile(source, position, newVelocity, TerrariaArrayID.Boomerang[i], damage, knockback, player.whoAmI);
                         }
                         break;
                     case 5://Star
@@ -257,12 +238,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         break;
                     case 15://coin
                         RangeWeaponOverhaul.NumOfProjectile = 5;
-                        for (int i = 0; i < Coin.Length; i++)
+                        for (int i = 0; i < TerrariaArrayID.Coin.Length; i++)
                         {
                             for (int l = 0; l < RangeWeaponOverhaul.NumOfProjectile; l++)
                             {
                                 newVelocity = velocity.RotateCode(5, l);
-                                Projectile.NewProjectile(source, position, newVelocity * .85f * i, Coin[i], damage, knockback, player.whoAmI);
+                                Projectile.NewProjectile(source, position, newVelocity * .85f * i, TerrariaArrayID.Coin[i], damage, knockback, player.whoAmI);
                             }
                         }
                         break;
@@ -356,7 +337,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         for (int i = 0; i < 20; i++)
                         {
                             newVelocity = velocity.RotateRandom(35).RandomSpread(5);
-                            Projectile.NewProjectile(source, position, newVelocity, DesertFossil[i % 2], damage, knockback, player.whoAmI);
+                            Projectile.NewProjectile(source, position, newVelocity, TerrariaArrayID.DesertFossil[i % 2], damage, knockback, player.whoAmI);
                         }
                         break;
                     case 22://PulseBolt
@@ -435,9 +416,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         for (int i = 0; i < RangeWeaponOverhaul.NumOfProjectile; i++)
                         {
                             newVelocity = velocity.RotateCode(360, i);
-                            for (int l = 0; l < DevilPack.Length; l++)
+                            for (int l = 0; l < TerrariaArrayID.DevilPack.Length; l++)
                             {
-                                Projectile.NewProjectile(source, position, newVelocity * (.5f + l * .25f), DevilPack[l], damage, knockback, player.whoAmI);
+                                Projectile.NewProjectile(source, position, newVelocity * (.5f + l * .25f), TerrariaArrayID.DevilPack[l], damage, knockback, player.whoAmI);
                             }
                         }
                         break;
@@ -473,7 +454,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         {
                             int Chooser = i % 2;
                             newVelocity = velocity.RotateCode(60, i);
-                            Projectile.NewProjectile(source, position, newVelocity * 0.5f, Fang[Chooser], damage, knockback, player.whoAmI);
+                            Projectile.NewProjectile(source, position, newVelocity * 0.5f, TerrariaArrayID.Fang[Chooser], damage, knockback, player.whoAmI);
                         }
                         break;
                     case 31://ProjectileID.VortexBeaterRocket
@@ -509,9 +490,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
                         }
                         break;
                     default://UltimateProjectilePack
-                        for (int i = 0; i < UltimateProjPack.Length; i++)
+                        for (int i = 0; i < TerrariaArrayID.UltimateProjPack.Length; i++)
                         {
-                            Projectile.NewProjectile(source, position, velocity, UltimateProjPack[i], damage, knockback, player.whoAmI);
+                            Projectile.NewProjectile(source, position, velocity, TerrariaArrayID.UltimateProjPack[i], damage, knockback, player.whoAmI);
                         }
                         break;
                 }

@@ -1,13 +1,11 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
+using BossRush.Items;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using BossRush.Items;
 using Microsoft.Xna.Framework;
-using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace BossRush
 {

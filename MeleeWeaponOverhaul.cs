@@ -661,9 +661,9 @@ namespace BossRush
                 case BossRushUseStyle.Poke:
                     Player.gravity = 0;
                     break;
-                    //case BossRushUseStyle.Swipe:
-                    //    SpinAttackExtraHit(item);
-                    //    break;
+                case BossRushUseStyle.Swipe:
+                    SpinAttackExtraHit(item);
+                    break;
             }
         }
         private bool IsWallBossAlive()
