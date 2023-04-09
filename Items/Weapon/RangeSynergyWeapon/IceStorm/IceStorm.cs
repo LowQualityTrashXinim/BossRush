@@ -279,7 +279,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                 if (timer <= 0)
                 {
                     timer = (int)(20 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocityToNpc * 20f, ProjectileID.SnowBallFriendly, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.PositionOFFSET(velocityToNpc, 45f), velocityToNpc * 20f, ProjectileID.SnowBallFriendly, Projectile.damage, Projectile.knockBack, Projectile.owner);
                     return;
                 }
             }
@@ -321,7 +321,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             {
                 if (timer <= 0)
                 {
-                    Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 velocityToNpc = Main.rand.NextVector2Unit(MathHelper.PiOver4 * .5f - MathHelper.PiOver4, MathHelper.PiOver4) * (6 + Main.rand.NextFloat(2f));
                     timer = (int)(30 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
                     int proj = Projectile.NewProjectile(
                         Projectile.GetSource_FromThis(),
@@ -329,7 +329,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
                         velocityToNpc * 9,
                         ProjectileID.BallofFrost,
                         Projectile.damage, Projectile.knockBack, Projectile.owner);
-                    Main.projectile[proj].timeLeft = 150;
+                    Main.projectile[proj].timeLeft = 250;
                     return;
                 }
             }
