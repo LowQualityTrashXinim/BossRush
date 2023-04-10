@@ -6,13 +6,13 @@ using BossRush.Items.Spawner;
 using BossRush.Items;
 using System.Collections.Generic;
 
-namespace BossRush
+namespace BossRush.Common.Global
 {
     class GlobalItemMod : GlobalItem
     {
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
-            if(item.type == ItemID.EoCShield)
+            if (item.type == ItemID.EoCShield)
             {
                 player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
             }
@@ -21,7 +21,7 @@ namespace BossRush
         public override void AddRecipes()
         {
             //QoL convert
-            Recipe recipe = Recipe.Create(ItemID.FallenStar,5);
+            Recipe recipe = Recipe.Create(ItemID.FallenStar, 5);
             recipe.AddIngredient(ItemID.ManaCrystal);
             recipe.Register();
 
@@ -50,7 +50,7 @@ namespace BossRush
 
         public override bool? UseItem(Item item, Player player)
         {
-            if(ModContent.GetInstance<BossRushModConfig>().Enraged && player.whoAmI == Main.myPlayer && item.type == ItemID.SuspiciousLookingEye)
+            if (ModContent.GetInstance<BossRushModConfig>().Enraged && player.whoAmI == Main.myPlayer && item.type == ItemID.SuspiciousLookingEye)
             {
                 player.GetModPlayer<ModdedPlayer>().EoCEnraged = true;
                 int type = NPCID.EyeofCthulhu;
@@ -72,6 +72,6 @@ namespace BossRush
             }
             return default;
         }
-        
+
     }
 }

@@ -18,7 +18,7 @@ using BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
 using BossRush.Items.Potion;
 using BossRush.Items.Accessories.GuideToMasterNinja;
 
-namespace BossRush
+namespace BossRush.Common
 {
     class ModdedPlayer : ModPlayer
     {
@@ -52,7 +52,6 @@ namespace BossRush
         //NoHiter
         public bool gitGud = false;
         public int HowManyBossIsAlive = 0;
-
         public bool LookingForBossVanilla()
         {
             for (int i = 0; i < Main.maxNPCs; i++)
@@ -94,9 +93,9 @@ namespace BossRush
             {
                 NPC npc = Main.npc[i];
                 if ((npc.boss ||
-                    (npc.type == NPCID.EaterofWorldsBody
+                    npc.type == NPCID.EaterofWorldsBody
                     || npc.type == NPCID.EaterofWorldsHead
-                    || npc.type == NPCID.EaterofWorldsTail))
+                    || npc.type == NPCID.EaterofWorldsTail)
                     && npc.active)
                 {
                     // What happen when boss is alive
@@ -155,9 +154,9 @@ namespace BossRush
                 BrainFuck = false;
             }
 
-            if ((EaterOfWorldEnraged || configSetting.Enraged) && 
-                (NPC.AnyNPCs(NPCID.EaterofWorldsHead) 
-                || NPC.AnyNPCs(NPCID.EaterofWorldsBody) 
+            if ((EaterOfWorldEnraged || configSetting.Enraged) &&
+                (NPC.AnyNPCs(NPCID.EaterofWorldsHead)
+                || NPC.AnyNPCs(NPCID.EaterofWorldsBody)
                 || NPC.AnyNPCs(NPCID.EaterofWorldsTail)))
             {
                 if (Player.ZoneOverworldHeight)
@@ -183,7 +182,7 @@ namespace BossRush
             {
                 QueenBeeEnraged = false;
             }
-            if(!LookingForBossVanilla())
+            if (!LookingForBossVanilla())
             {
                 KingSlimeEnraged = false;
                 EoCEnraged = false;

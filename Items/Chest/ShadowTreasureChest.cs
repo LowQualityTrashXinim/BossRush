@@ -3,6 +3,7 @@ using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using BossRush.Items.Potion;
+using BossRush.Common;
 
 namespace BossRush.Items.Chest
 {

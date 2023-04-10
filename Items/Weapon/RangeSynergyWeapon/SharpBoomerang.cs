@@ -13,7 +13,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(38, 72, 30, 5f, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
+            Item.BossRushDefaultRange(38, 72, 30, 5f, 90, 90, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
             Item.crit = 6;
             Item.scale = 0.75f;
             Item.noUseGraphic = true;

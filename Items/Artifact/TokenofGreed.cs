@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Common;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Items.Artifact

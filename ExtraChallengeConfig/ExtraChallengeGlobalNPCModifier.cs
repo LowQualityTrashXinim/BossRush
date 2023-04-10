@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common;
 
 namespace BossRush.ExtraChallengeConfig
 {

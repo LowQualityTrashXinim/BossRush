@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Items.Accessories;
 using BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
+using BossRush.Common;
 
 namespace BossRush.Items.Chest
 {

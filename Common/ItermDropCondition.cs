@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 
-namespace BossRush
+namespace BossRush.Common
 {
     public class KingSlimeEnraged : IItemDropRuleCondition
     {
@@ -55,7 +55,7 @@ namespace BossRush
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription()=>"Exclusive to Synergy mode";
+        public string GetConditionDescription() => "Exclusive to Synergy mode";
     }
     public class EoCEnraged : IItemDropRuleCondition
     {
@@ -70,7 +70,7 @@ namespace BossRush
 
         public bool CanShowItemDropInUI() => true;
 
-        public string GetConditionDescription()=>"Drops only if Eye of cthulhu is enraged";
+        public string GetConditionDescription() => "Drops only if Eye of cthulhu is enraged";
     }
     public class BoCEnraged : IItemDropRuleCondition
     {
@@ -83,7 +83,7 @@ namespace BossRush
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription()=> "Drops only if Brain of Cthulhu is enraged";
+        public string GetConditionDescription() => "Drops only if Brain of Cthulhu is enraged";
     }
     public class EoWEnraged : IItemDropRuleCondition
     {
@@ -135,7 +135,7 @@ namespace BossRush
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription()=> "Drop if player is fighting in snow biome, in night and is snowing";
+        public string GetConditionDescription() => "Drop if player is fighting in snow biome, in night and is snowing";
     }
     public class GitGudMode : IItemDropRuleCondition
     {

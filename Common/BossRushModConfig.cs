@@ -1,7 +1,7 @@
 ﻿using Terraria.ModLoader.Config;
 using System.ComponentModel;
 
-namespace BossRush
+namespace BossRush.Common
 {
     public class BossRushModConfig : ModConfig
     {
@@ -20,7 +20,8 @@ namespace BossRush
         [DefaultValue(true)]
         public bool EnableChallengeMode { get; set; }
 
-        [Label("Synergy Mode (W.I.P)")][ReloadRequired]
+        [Label("Synergy Mode (W.I.P)")]
+        [ReloadRequired]
         [Tooltip("Make bosses queen bee, deerclop, queen slime, duke fishron and empress of light drop synergy energy\n" +
             "Allow possibility of getting even stronger and possibly OP weapons/accessories\n" +
             "recommend enable after at least 3 playthroughs of the mod")]
@@ -34,7 +35,8 @@ namespace BossRush
         [DefaultValue(true)]
         public bool EasyMode { get; set; }
 
-        [Label("Enraged Mode (W.I.P)")][ReloadRequired]
+        [Label("Enraged Mode (W.I.P)")]
+        [ReloadRequired]
         [Tooltip("Will make every boss in the vanilla if there a special fight variant activate\n" +
             "won't drop the reward, will still require to spawn it manually using power energy to get reward\n" +
             "recommend for practicing")]

@@ -4,6 +4,7 @@ using Terraria.WorldBuilding;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
+using BossRush.Common;
 
 namespace BossRush.ChallengeMode
 {

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
+using BossRush.Common;
 
 namespace BossRush.Items.Artifact
 {

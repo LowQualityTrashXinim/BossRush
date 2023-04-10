@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush
+namespace BossRush.Common.Global
 {
     public class MathH
     {
@@ -624,7 +624,7 @@ namespace BossRush
             {
                 return;
             }
-            MouseXPosDirection = (Main.MouseWorld.X - Player.Center.X) > 0 ? 1 : -1;
+            MouseXPosDirection = Main.MouseWorld.X - Player.Center.X > 0 ? 1 : -1;
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
                 delaytimer = (int)(Player.itemAnimationMax * 1.2f);
@@ -682,8 +682,8 @@ namespace BossRush
             Player.mount.Active
             || IsWallBossAlive()
             || ComboNumber != 2
-            || (Player.velocity.X > 2 && MouseXPosDirection == -1)
-            || (Player.velocity.X < -2 && MouseXPosDirection == 1)
+            || Player.velocity.X > 2 && MouseXPosDirection == -1
+            || Player.velocity.X < -2 && MouseXPosDirection == 1
             || Player.velocity == Vector2.Zero;
         private void ExecuteSpecialComboOnStart(Item item)
         {
@@ -725,7 +725,7 @@ namespace BossRush
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
-                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && (iframeCounter == 0 || (npclaststrike != null && npclaststrike != npc)))
+                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && (iframeCounter == 0 || npclaststrike != null && npclaststrike != npc))
                 {
                     npclaststrike = npc;
                     int damage = (int)(item.damage * 1.5f);

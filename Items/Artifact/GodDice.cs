@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common;
 
 namespace BossRush.Items.Artifact
 {

@@ -5,7 +5,7 @@ using BossRush.Items.NohitReward;
 using BossRush.ExtraChallengeConfig;
 using BossRush.Items.Potion;
 
-namespace BossRush
+namespace BossRush.Common
 {
     partial class BossRushNetCodeHandle
     {

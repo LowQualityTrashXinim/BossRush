@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common;
+using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;

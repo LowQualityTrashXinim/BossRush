@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using BossRush.Common.Global;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon.SinisterBook
 {

@@ -7,7 +7,7 @@ using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace BossRush
+namespace BossRush.Common
 {
     internal class BossRushModSystem : ModSystem
     {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
-namespace BossRush
+namespace BossRush.Common.Global
 {
     /// <summary>
     /// This is for specific gun that deal range damage only
@@ -60,7 +60,7 @@ namespace BossRush
             float rotation = MathHelper.ToRadians(modifyradian) * .5f;
             if (NumOfProjectile > 1)
             {
-                float RotateValue = MathHelper.Lerp(-rotation , rotation , i / (float)NumOfProjectile);
+                float RotateValue = MathHelper.Lerp(-rotation, rotation, i / NumOfProjectile);
                 return Vec2ToRotate.RotatedBy(RotateValue);
             }
             return Vec2ToRotate;
@@ -101,8 +101,8 @@ namespace BossRush
         /// <returns></returns>
         public static Vector2 RandomSpread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {
-            ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
-            ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier) * ModifySpread(1);
+            ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier * ModifySpread(1);
+            ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier * ModifySpread(1);
             return ToRotateAgain;
         }
 

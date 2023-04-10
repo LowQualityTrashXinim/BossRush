@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria.Utilities;
+using System.Linq;
 
 namespace BossRush
 {
@@ -238,24 +239,8 @@ namespace BossRush
         }
         public static List<int> RemoveDupeInArray(this List<int> flag)
         {
-            List<int> listArray = new List<int>();
-            listArray.AddRange(flag);
-            List<int> listofIndexWhereDupe = new List<int>();
-            for (int i = 0; i < flag.Count; ++i)
-            {
-                for (int l = i + 1; l < flag.Count; ++l)
-                {
-                    if (listArray[i] == flag[l])
-                    {
-                        listofIndexWhereDupe.Add(i);
-                    }
-                }
-            }
-            for (int i = listofIndexWhereDupe.Count - 1; i > -1; --i)
-            {
-                listArray.RemoveAt(listofIndexWhereDupe[i]);
-            }
-            return listArray;
+            HashSet<int> HashsetRemoveDup = new HashSet<int>(flag);
+            return HashsetRemoveDup.ToList();
         }
     }
 }

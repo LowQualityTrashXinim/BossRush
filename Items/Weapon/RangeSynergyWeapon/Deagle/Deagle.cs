@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common.Global;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
 {

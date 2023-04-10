@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common;
 
 namespace BossRush.Items.Toggle
 {

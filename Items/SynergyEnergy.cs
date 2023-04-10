@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush
+namespace BossRush.Items
 {
     internal class SynergyEnergy : ModItem
     {

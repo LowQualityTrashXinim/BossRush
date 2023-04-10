@@ -1,4 +1,5 @@
-﻿using BossRush.Items.Potion;
+﻿using BossRush.Common;
+using BossRush.Items.Potion;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

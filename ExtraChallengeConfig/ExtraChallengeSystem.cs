@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
 using Terraria.Chat;
+using BossRush.Common;
 
 namespace BossRush.ExtraChallengeConfig
 {

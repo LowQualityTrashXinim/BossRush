@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush
+namespace BossRush.Items
 {
     internal class PowerEnergy : ModItem
     {
@@ -14,7 +14,7 @@ namespace BossRush
             Item.rare = 10;
             Item.width = 54;
             Item.height = 20;
-            Item.material = true;   
+            Item.material = true;
         }
     }
 }
