@@ -1,4 +1,5 @@
 ﻿using System;
+using BossRush.Common.Global;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

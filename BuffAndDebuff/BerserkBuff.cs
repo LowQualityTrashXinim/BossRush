@@ -1,11 +1,12 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.BuffAndDebuff
 {
     internal class BerserkBuff : ModBuff
     {
-        public override string Texture => "BossRush/BuffAndDebuff/Regen";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Berserker's Frenzy");

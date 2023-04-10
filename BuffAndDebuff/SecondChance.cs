@@ -1,12 +1,13 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using BossRush.Items.Artifact;
+using BossRush.Texture;
 
 namespace BossRush.BuffAndDebuff
 {
     internal class SecondChance : ModBuff
     {
-        public override string Texture => "BossRush/BuffAndDebuff/Regen";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SecondChance");

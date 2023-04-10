@@ -1,12 +1,13 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Texture;
 
 namespace BossRush.BuffAndDebuff
 {
     internal class EvilEyeProtection : ModBuff
     {
-        public override string Texture => "BossRush/BuffAndDebuff/Regen";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Evil Eye Protection");

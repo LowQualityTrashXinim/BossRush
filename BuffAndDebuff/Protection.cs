@@ -1,11 +1,12 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.BuffAndDebuff
 {
     internal class Protection : ModBuff
     {
-        public override string Texture => "BossRush/BuffAndDebuff/Regen";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Titan's Protection");

@@ -17,18 +17,19 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             Projectile.height = 72;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.DamageType = DamageClass.Ranged; 
+            Projectile.tileCollide = false;
         }
         int firstframe = 0;
         float MaxLengthX = 0;
         float MaxLengthY = 0;
         float MouseXPosDirection;
+        Player player;
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-
             if (firstframe == 0)
             {
+                player = Main.player[Projectile.owner];
                 MouseXPosDirection = (Main.MouseWorld.X - player.Center.X) > 0 ? 1 : -1;
                 MaxLengthX = (Main.MouseWorld - player.MountedCenter).Length();
                 MaxLengthY = MaxLengthX * .3333333f * -MouseXPosDirection;
@@ -40,6 +41,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             {
                 Projectile.timeLeft = duration;
             }
+            float timeleftcountbackward = (duration - Projectile.timeLeft);
             float HalfDuration = duration * 0.5f;
 
             float progressX;
@@ -49,12 +51,11 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             }
             else
             {
-                progressX = (duration - Projectile.timeLeft) / HalfDuration;
+                progressX = timeleftcountbackward / HalfDuration;
             }
 
             float FirstProgress = duration / 3f;
             float SecondProgress = FirstProgress * 2f;
-            float timeleftcountbackward = (duration - Projectile.timeLeft);
             float progressY = timeleftcountbackward / FirstProgress;
             if (timeleftcountbackward > FirstProgress)
             {
@@ -67,14 +68,9 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             progressY = Math.Clamp(progressY, -1, 1);
             float X = MathHelper.Lerp(0, MaxLengthX, BossRushUtils.OutExpo(progressX));
             float Y = MathHelper.Lerp(0, MaxLengthY, BossRushUtils.InOutSine(progressY));
-            Vector2 VelocityPosition = new Vector2(X,Y).RotatedBy(Projectile.velocity.ToRotation());
+            Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
             Projectile.Center = player.MountedCenter + VelocityPosition;
             Projectile.rotation += MathHelper.ToRadians(15);
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            return false;
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

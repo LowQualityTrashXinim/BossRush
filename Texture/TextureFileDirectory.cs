@@ -7,5 +7,6 @@ namespace BossRush.Texture
         public const string MISSINGTEXTURE = "BossRush/Texture/MissingTexture";
         public const string MISSINGTEXTUREPOTION = "BossRush/Texture/MissingTexturePotion";
         public const string TOKENOFPRIDE = "BossRush/Texture/Token_of_Pride";
+        public const string EMPTYBUFF = "BossRush/Texture/EmptyBuff";
     }
 }

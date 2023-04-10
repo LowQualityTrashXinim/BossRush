@@ -17,6 +17,7 @@ using BossRush.Items.Toggle;
 using BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
 using BossRush.Items.Potion;
 using BossRush.Items.Accessories.GuideToMasterNinja;
+using BossRush.Items;
 
 namespace BossRush.Common
 {

@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.Global;
+using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -6,7 +7,7 @@ namespace BossRush.BuffAndDebuff
 {
     internal class GodVision : ModBuff
     {
-        public override string Texture => "BossRush/BuffAndDebuff/Regen";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Sniper's Vision");

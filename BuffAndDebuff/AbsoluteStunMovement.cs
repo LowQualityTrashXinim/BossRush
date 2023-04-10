@@ -1,11 +1,12 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.BuffAndDebuff
 {
     internal class AbsoluteStunMovement : ModBuff
     {
-        public override string Texture => "BossRush/EmptyBuff";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Petrified");
