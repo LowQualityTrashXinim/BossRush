@@ -3,15 +3,14 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Common;
 
-namespace BossRush.ExtraChallengeConfig
+namespace BossRush.Common.ExtraChallenge
 {
     internal class ExtraChallengeGlobalNPCModifier : GlobalNPC
     {
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
-            if(player.GetModPlayer<ExtraChallengePlayer>().spawnRatex3)
+            if (player.GetModPlayer<ExtraChallengePlayer>().spawnRatex3)
             {
                 spawnRate = 30;
                 maxSpawns += 400;
@@ -19,9 +18,9 @@ namespace BossRush.ExtraChallengeConfig
         }
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
-            if(ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
+            if (ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
             {
-                if(spawnInfo.Player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave)
+                if (spawnInfo.Player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave)
                 {
                     pool.Add(NPCID.CaveBat, 1);
                     pool.Add(NPCID.JungleBat, 1);
@@ -34,7 +33,7 @@ namespace BossRush.ExtraChallengeConfig
             if (ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
             {
                 Player player = Main.LocalPlayer;
-                if(player.GetModPlayer<ExtraChallengePlayer>().strongerEnemy)
+                if (player.GetModPlayer<ExtraChallengePlayer>().strongerEnemy)
                 {
                     npc.defense += 50;
                     npc.defDefense += 50;
@@ -43,7 +42,7 @@ namespace BossRush.ExtraChallengeConfig
                     npc.life += 400;
                     npc.knockBackResist = 0;
                 }
-                if(player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave)
+                if (player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave)
                 {
                     npc.lifeMax += 1000;
                     npc.life += 1000;

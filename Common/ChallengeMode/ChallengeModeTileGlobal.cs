@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.ChallengeMode
+namespace BossRush.Common.ChallengeMode
 {
     internal class ChallengeModeTileGlobal : GlobalTile
     {

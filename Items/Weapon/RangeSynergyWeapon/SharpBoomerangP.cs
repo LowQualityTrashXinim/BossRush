@@ -12,13 +12,14 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
 
         public override void SetDefaults()
         {
-            Projectile.scale = 0.75f;
-            Projectile.width = 38;
-            Projectile.height = 72;
+            Projectile.width = 40;
+            Projectile.height = 40;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.DamageType = DamageClass.Ranged; 
+            Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
+            Projectile.scale = 0.50f;
+            DrawOriginOffsetY = -20;
         }
         int firstframe = 0;
         float MaxLengthX = 0;
@@ -63,14 +64,14 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             }
             if (timeleftcountbackward > SecondProgress)
             {
-                progressY = Math.Abs(progressY) - 4;
+                progressY = Math.Abs(progressY) - 3;
             }
             progressY = Math.Clamp(progressY, -1, 1);
-            float X = MathHelper.Lerp(0, MaxLengthX, BossRushUtils.OutExpo(progressX));
-            float Y = MathHelper.Lerp(0, MaxLengthY, BossRushUtils.InOutSine(progressY));
+            float X = MathHelper.Lerp(-10, MaxLengthX, BossRushUtils.InOutSine(progressX));
+            float Y = MathHelper.Lerp(0, MaxLengthY, progressY);
             Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
             Projectile.Center = player.MountedCenter + VelocityPosition;
-            Projectile.rotation += MathHelper.ToRadians(15);
+            Projectile.rotation += MathHelper.ToRadians(35);
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

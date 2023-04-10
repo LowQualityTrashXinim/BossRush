@@ -1,10 +1,9 @@
-﻿using BossRush.Common;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace BossRush.ExtraChallengeConfig
+namespace BossRush.Common.ExtraChallenge
 {
     public class ExtraChallengePlayer : ModPlayer
     {
@@ -18,7 +17,7 @@ namespace BossRush.ExtraChallengeConfig
         public bool BatJungleANDCave = false;
         public override void PostUpdate()
         {
-            if(Badbuff)
+            if (Badbuff)
             {
                 Player.AddBuff(BuffID.Darkness, 10);
                 Player.AddBuff(BuffID.Confused, 10);
@@ -34,8 +33,8 @@ namespace BossRush.ExtraChallengeConfig
 
         public override bool CanUseItem(Item item)
         {
-            if(OnlyUseOneClass)
-            {   
+            if (OnlyUseOneClass)
+            {
                 if (item.damage > 0)
                 {
                     if (item.DamageType == DamageClass.Melee && ClassChooser == 0)

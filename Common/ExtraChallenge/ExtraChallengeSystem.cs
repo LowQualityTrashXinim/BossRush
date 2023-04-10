@@ -4,9 +4,10 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
 using Terraria.Chat;
-using BossRush.Common;
+using BossRush.Common.Utils;
+using BossRush.Items.Spawner;
 
-namespace BossRush.ExtraChallengeConfig
+namespace BossRush.Common.ExtraChallenge
 {
     internal class ExtraChallengeSystem : ModSystem
     {
@@ -20,7 +21,7 @@ namespace BossRush.ExtraChallengeConfig
         public int BoulderRainCountTime = 0;
         public const int HellFireRainCoolDown = 30;
         public int HellFireRainCount = 0;
-        public const int DeadFromAboveCoolDown= 45;
+        public const int DeadFromAboveCoolDown = 45;
         public int DeadFromAboveCount = 0;
         public override void PostUpdateWorld()
         {
@@ -88,11 +89,7 @@ namespace BossRush.ExtraChallengeConfig
                     {
                         if (BoulderRainCooldown == BoulderRainCountTime)
                         {
-                            Vector2 spawn = new Vector2(Main.rand.Next(-1000, 1000) + player.Center.X, -1000 + player.Center.Y);
-                            int projectile = Projectile.NewProjectile(null, spawn, Vector2.Zero, ProjectileID.Boulder, 400, 10f, Main.myPlayer, 0f, 0f);
-                            Main.projectile[projectile].hostile = true;
-                            Main.projectile[projectile].friendly = false;
-                            BoulderRainCountTime = 0;
+                            HelperMethod.SpawnBoulder(player, 1000);
                         }
                         else
                         {
@@ -121,7 +118,7 @@ namespace BossRush.ExtraChallengeConfig
                         }
                     }
                 }
-                if(HostileProjectileOnTop)
+                if (HostileProjectileOnTop)
                 {
                     if (player.active)
                     {

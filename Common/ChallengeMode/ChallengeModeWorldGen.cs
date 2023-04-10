@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.IO;
 using BossRush.Common;
 
-namespace BossRush.ChallengeMode
+namespace BossRush.Common.ChallengeMode
 {
     internal class ChallengeModeWorldGen : ModSystem
     {

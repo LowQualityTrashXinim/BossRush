@@ -36,7 +36,6 @@ namespace BossRush.Common
         public bool EasyMode { get; set; }
 
         [Label("Enraged Mode (W.I.P)")]
-        [ReloadRequired]
         [Tooltip("Will make every boss in the vanilla if there a special fight variant activate\n" +
             "won't drop the reward, will still require to spawn it manually using power energy to get reward\n" +
             "recommend for practicing")]
@@ -54,14 +53,14 @@ namespace BossRush.Common
         [Label("ExtraChallange(W.I.P)")]
         [Tooltip("The first time you kill a boss, you will get a challenge added into your game, this is irrevertible" +
             "\nThe next time you kill a boss, the current challenge will be swap for a random challenge" +
-            "\nThese mode offer no real reward or benefit, only activate if you are bored and want extra challenge")]
+            "\nThese mode offer no real reward or benefit, only activate if you are bored and want extra challenge" +
+            "\nThis do not work with multiplayer world")]
         [ReloadRequired]
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }
 
         [Label("DisableWeaponOverhaul(W.I.P)")]
         [Tooltip("Disable the mod overhaul on weapon")]
-        [ReloadRequired]
         [DefaultValue(false)]
         public bool DisableWeaponOverhaul { get; set; }
     }

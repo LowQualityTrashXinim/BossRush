@@ -1,11 +1,12 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Items.Weapon.SummonerSynergyWeapon.StickySlime
 {
     public class StickyFriend : ModBuff
     {
-        public override string Texture => "BossRush/EmptyBuff";
+        public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("slimy ghost friend");

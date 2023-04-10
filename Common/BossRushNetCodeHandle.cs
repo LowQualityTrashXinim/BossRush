@@ -2,8 +2,8 @@
 using Terraria;
 using BossRush.Items.Artifact;
 using BossRush.Items.NohitReward;
-using BossRush.ExtraChallengeConfig;
 using BossRush.Items.Potion;
+using BossRush.Common.ExtraChallenge;
 
 namespace BossRush.Common
 {
