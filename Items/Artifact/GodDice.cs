@@ -99,8 +99,6 @@ namespace BossRush.Items.Artifact
             Player.accRunSpeed *= GambleSpeed;
             Player.statLifeMax2 = (int)(GambleHP * Player.statLifeMax);
             Player.lifeRegen = (int)(GambleLifeRegen * Player.lifeRegen);
-            Player.lifeRegenTime = (int)(GambleLifeRegen * Player.lifeRegenTime);
-            Player.lifeRegenCount = (int)(GambleLifeRegen * Player.lifeRegenCount);
             Player.statManaMax2 = (int)(GambleMana * Player.statManaMax);
             Player.manaRegenDelay = (int)(Player.manaRegenDelay * GambleManaRegen);
             Player.manaRegenDelayBonus = (int)(Player.manaRegenDelayBonus * GambleManaRegen);
@@ -110,6 +108,10 @@ namespace BossRush.Items.Artifact
             Player.maxMinions += GambleMinionSlot;
             Player.maxTurrets += GambleMinionSlot;
             Player.GetCritChance(DamageClass.Generic) += GambleCrit;
+        }
+        public override void NaturalLifeRegen(ref float regen)
+        {
+            regen *= GambleLifeRegen;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

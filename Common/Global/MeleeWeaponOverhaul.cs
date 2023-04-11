@@ -682,8 +682,8 @@ namespace BossRush.Common.Global
             Player.mount.Active
             || IsWallBossAlive()
             || ComboNumber != 2
-            || Player.velocity.X > 2 && MouseXPosDirection == -1
-            || Player.velocity.X < -2 && MouseXPosDirection == 1
+            || (Player.velocity.X > 2 && MouseXPosDirection == -1)
+            || (Player.velocity.X < -2 && MouseXPosDirection == 1)
             || Player.velocity == Vector2.Zero;
         private void ExecuteSpecialComboOnStart(Item item)
         {

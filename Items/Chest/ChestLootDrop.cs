@@ -137,7 +137,7 @@ namespace BossRush.Items.Chest
         private void AddLoot(List<int> FlagNumber)
         {
             List<int> RNGchooseWhichTierToGet = FlagNumber.SetUpRNGTier();
-            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInArray();
+            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInList();
             RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.OrderFromSmallest();
             for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
             {
@@ -397,9 +397,6 @@ namespace BossRush.Items.Chest
         }
         private static void AddLoot(List<int> FlagNumber, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon, List<int>DropItemMisc)
         {
-            List<int> RNGchooseWhichTierToGet = FlagNumber.SetUpRNGTier();
-            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInArray();
-            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.OrderFromSmallest();
             for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
             {
                 switch (FlagNumber[i])

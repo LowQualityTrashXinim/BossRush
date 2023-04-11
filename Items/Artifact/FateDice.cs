@@ -6,6 +6,7 @@ using BossRush.Items.Chest;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Texture;
+using System.Collections.Generic;
 
 namespace BossRush.Items.Artifact
 {
@@ -63,7 +64,7 @@ namespace BossRush.Items.Artifact
                     Player.AddBuff(BuffID.Obstructed, 300);
                     break;
                 case 2:
-                    HelperMethod.SpawnBoulder(Player,0, false);
+                    BossRushUtils.SpawnBoulderOnTopPlayer(Player,0, false);
                     break;
                 case 3:
                     Player.AddBuff(BuffID.Confused, 3000);
@@ -85,6 +86,11 @@ namespace BossRush.Items.Artifact
                     Item.NewItem(Player.GetSource_FromThis(), Player.Center + new Vector2(0,-900), Weapon, amount);
                     break;
                 case 10:
+                    BossRushUtils.LookForHostileNPC(Player.Center, out List<NPC> npc,2000);
+                    for (int i = 0; i < npc.Count; i++)
+                    {
+                        npc[i].StrikeNPC(1000, 0, 0);
+                    }
                     break;
                 case 11:
                     break;

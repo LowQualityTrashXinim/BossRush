@@ -33,7 +33,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                 player = Main.player[Projectile.owner];
                 MouseXPosDirection = (Main.MouseWorld.X - player.Center.X) > 0 ? 1 : -1;
                 MaxLengthX = (Main.MouseWorld - player.MountedCenter).Length();
-                MaxLengthY = MaxLengthX * .3333333f * -MouseXPosDirection;
+                MaxLengthY = MaxLengthX * .2f * -MouseXPosDirection;
                 firstframe++;
             }
 
@@ -67,7 +67,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
                 progressY = Math.Abs(progressY) - 3;
             }
             progressY = Math.Clamp(progressY, -1, 1);
-            float X = MathHelper.Lerp(-10, MaxLengthX, BossRushUtils.InOutSine(progressX));
+            float X = MathHelper.Lerp(-20, MaxLengthX, BossRushUtils.InOutSine(progressX));
             float Y = MathHelper.Lerp(0, MaxLengthY, progressY);
             Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
             Projectile.Center = player.MountedCenter + VelocityPosition;
