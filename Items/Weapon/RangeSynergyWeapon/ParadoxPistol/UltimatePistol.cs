@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Global;
+using BossRush.Common.Utils;
 
 namespace BossRush.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 {

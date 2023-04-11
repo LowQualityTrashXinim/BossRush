@@ -336,7 +336,7 @@ namespace BossRush.Common.Global
                 pool.Add(NPCID.PurpleEye, 0.75f);
                 pool.Add(NPCID.PurpleEye2, 0.75f);
                 pool.Add(NPCID.WanderingEye, 0.65f);
-                pool.Add(NPCID.EyeballFlyingFish, 0.65f);
+                pool.Add(NPCID.EyeballFlyingFish, 0.45f);
             }
             if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsBody) && spawnInfo.Player.ZoneOverworldHeight)
             {

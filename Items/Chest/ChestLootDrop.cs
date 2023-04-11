@@ -6,6 +6,7 @@ using BossRush.Items.Potion;
 using BossRush.Items.Artifact;
 using System.Collections.Generic;
 using BossRush.Common;
+using BossRush.Common.Utils;
 
 namespace BossRush.Items.Chest
 {

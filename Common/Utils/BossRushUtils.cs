@@ -1,11 +1,11 @@
 ﻿using System;
 using Terraria;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using System.Linq;
 using BossRush.Texture;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush
 {
@@ -20,8 +20,7 @@ namespace BossRush
             {
                 return BossRushTexture.MISSINGTEXTURE;
             }
-            string FullPath = NameSpace.Replace(".", "/") + "/" + type.Name;
-            return FullPath;
+            return NameSpace.Replace(".", "/") + "/" + type.Name;
         }
         public static string GetTheSameTextureAs<T>() where T : class
         {
@@ -31,8 +30,7 @@ namespace BossRush
             {
                 return BossRushTexture.MISSINGTEXTURE;
             }
-            string FullPath = NameSpace.Replace(".", "/") + "/" + type.Name;
-            return FullPath;
+            return NameSpace.Replace(".", "/") + "/" + type.Name;
         }
         public static bool LookForHostileNPC(this Vector2 position, float distance)
         {

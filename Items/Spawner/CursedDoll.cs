@@ -47,7 +47,7 @@ namespace BossRush.Items.Spawner
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     // If the player is not in multiplayer, spawn directly
-                    NPC.SpawnBoss((int)player.Center.X, (int)player.Center.Y - 400, type, player.whoAmI);
+                    NPC.SpawnBoss((int)player.Center.X, (int)player.Center.Y - 600, type, player.whoAmI);
                 }
                 else
                 {
