@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.RangeSynergyWeapon
+namespace BossRush.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
 {
     internal class SharpBoomerang : ModItem, ISynergyItem
     {

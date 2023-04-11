@@ -5,11 +5,35 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
+using BossRush.Texture;
 
 namespace BossRush
 {
     public static partial class BossRushUtils
     {
+        public static string GetTheSameTextureAsItem(int itemType)
+        {
+            Item item = new Item(itemType);
+            var type = item.ModItem.GetType();
+            string NameSpace = type.Namespace;
+            if(NameSpace == null)
+            {
+                return BossRushTexture.MISSINGTEXTURE;
+            }
+            string FullPath = NameSpace.Replace(".", "/") + "/" + type.Name;
+            return FullPath;
+        }
+        public static string GetTheSameTextureAs<T>() where T : class
+        {
+            var type = typeof(T);
+            string NameSpace = type.Namespace;
+            if (NameSpace == null)
+            {
+                return BossRushTexture.MISSINGTEXTURE;
+            }
+            string FullPath = NameSpace.Replace(".", "/") + "/" + type.Name;
+            return FullPath;
+        }
         public static bool LookForHostileNPC(this Vector2 position, float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
@@ -113,7 +137,6 @@ namespace BossRush
                 Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, spriteeffect, 0);
             }
         }
-
         public static List<int> OrderFromSmallest(this List<int> flag)
         {
             List<int> finalflag = flag;

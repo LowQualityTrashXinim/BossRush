@@ -4,11 +4,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Items.Weapon.RangeSynergyWeapon
+namespace BossRush.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
 {
     internal class SharpBoomerangP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/SharpBoomerang";
+        public override string Texture => BossRushUtils.GetTheSameTextureAsItem(ModContent.ItemType<SharpBoomerang>());
 
         public override void SetDefaults()
         {
@@ -31,7 +31,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             if (firstframe == 0)
             {
                 player = Main.player[Projectile.owner];
-                MouseXPosDirection = (Main.MouseWorld.X - player.Center.X) > 0 ? 1 : -1;
+                MouseXPosDirection = Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1;
                 MaxLengthX = (Main.MouseWorld - player.MountedCenter).Length();
                 MaxLengthY = MaxLengthX * .2f * -MouseXPosDirection;
                 firstframe++;
@@ -42,7 +42,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             {
                 Projectile.timeLeft = duration;
             }
-            float timeleftcountbackward = (duration - Projectile.timeLeft);
+            float timeleftcountbackward = duration - Projectile.timeLeft;
             float HalfDuration = duration * 0.5f;
 
             float progressX;

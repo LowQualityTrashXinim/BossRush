@@ -42,6 +42,7 @@ namespace BossRush.Items.Artifact
     {
         public bool FateDice;
         int RNGdecide;
+        int effectlasting = 0;
 
         bool CanCrit;
         public override void PostUpdate()
@@ -64,7 +65,7 @@ namespace BossRush.Items.Artifact
                     Player.AddBuff(BuffID.Obstructed, 300);
                     break;
                 case 2:
-                    BossRushUtils.SpawnBoulderOnTopPlayer(Player,0, false);
+                    BossRushUtils.SpawnBoulderOnTopPlayer(Player, 0, false);
                     break;
                 case 3:
                     Player.AddBuff(BuffID.Confused, 3000);
@@ -83,10 +84,10 @@ namespace BossRush.Items.Artifact
                     break;
                 case 9:
                     ChestLootDrop.GetWeapon(out int Weapon, out int amount);
-                    Item.NewItem(Player.GetSource_FromThis(), Player.Center + new Vector2(0,-900), Weapon, amount);
+                    Item.NewItem(Player.GetSource_FromThis(), Player.Center + new Vector2(0, -900), Weapon, amount);
                     break;
                 case 10:
-                    BossRushUtils.LookForHostileNPC(Player.Center, out List<NPC> npc,2000);
+                    BossRushUtils.LookForHostileNPC(Player.Center, out List<NPC> npc, 2000);
                     for (int i = 0; i < npc.Count; i++)
                     {
                         npc[i].StrikeNPC(1000, 0, 0);
@@ -108,7 +109,7 @@ namespace BossRush.Items.Artifact
         }
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
-            if(!FateDice)
+            if (!FateDice)
             {
                 return;
             }
