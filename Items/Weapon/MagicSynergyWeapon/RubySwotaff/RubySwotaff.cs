@@ -101,7 +101,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.RubySwotaff
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.RubyStaff)
                 .AddIngredient(ItemID.GoldBroadsword)
                 .Register();

@@ -53,7 +53,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
             CreateRecipe()
                 .AddIngredient(ItemID.Minishark)
                 .AddIngredient(ItemID.Vilethorn)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

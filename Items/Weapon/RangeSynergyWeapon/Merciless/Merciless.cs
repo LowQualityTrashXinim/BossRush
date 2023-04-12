@@ -77,7 +77,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Merciless
             CreateRecipe()
                 .AddIngredient(ItemID.Boomstick)
                 .AddIngredient(ItemID.QuadBarrelShotgun)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

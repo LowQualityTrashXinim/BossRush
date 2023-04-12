@@ -75,7 +75,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             CreateRecipe()
                 .AddIngredient(ItemID.Revolver)
                 .AddIngredient(ItemID.Gladius)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

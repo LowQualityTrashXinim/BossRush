@@ -48,7 +48,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.EnchantedSword)
                 .AddIngredient(ItemID.Starfury)
                 .Register();

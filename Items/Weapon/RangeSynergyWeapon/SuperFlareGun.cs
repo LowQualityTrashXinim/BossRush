@@ -37,7 +37,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
             CreateRecipe()
                 .AddIngredient(ItemID.FlareGun)
                 .AddIngredient(ItemID.MoltenFury)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

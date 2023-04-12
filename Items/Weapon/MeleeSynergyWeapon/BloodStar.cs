@@ -71,6 +71,13 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
 
             return false;
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Starfury)
+                .AddIngredient(ItemID.BloodRainBow)
+                .Register();
+        }
     }
     class PlayerCharge : ModPlayer
     {

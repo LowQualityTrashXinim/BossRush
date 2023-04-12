@@ -11,10 +11,9 @@ namespace BossRush
 {
     public static partial class BossRushUtils
     {
-        public static string GetTheSameTextureAsItem(int itemType)
+        public static string GetTheSameTextureAsItem<T>() where T : class
         {
-            Item item = new Item(itemType);
-            var type = item.ModItem.GetType();
+            var type = typeof(T);
             string NameSpace = type.Namespace;
             if(NameSpace == null)
             {

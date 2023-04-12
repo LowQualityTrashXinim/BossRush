@@ -59,7 +59,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         {
             CreateRecipe()
                 .AddIngredient(ItemID.Spear, 2)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

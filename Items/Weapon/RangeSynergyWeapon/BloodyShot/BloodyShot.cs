@@ -47,7 +47,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.BloodyShot
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.Handgun)
                 .AddIngredient(ItemID.BloodRainBow)
                 .Register();

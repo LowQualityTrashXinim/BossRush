@@ -4,9 +4,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items.Weapon.NoneSynergyWeapon
+namespace BossRush.Items.Weapon.MagicSynergyWeapon.ZapSnapper
 {
-    internal class ZapRifle : ModItem, ISynergyItem
+    internal class ZapSnapper : ModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {

@@ -72,7 +72,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.QuadBarrelShotgun)
                 .AddIngredient(ItemID.PhoenixBlaster)
                 .Register();

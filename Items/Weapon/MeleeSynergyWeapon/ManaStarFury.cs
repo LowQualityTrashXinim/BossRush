@@ -49,7 +49,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.Starfury)
                 .AddIngredient(ItemID.ManaCrystal)
                 .AddIngredient(ItemID.BandofStarpower)

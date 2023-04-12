@@ -105,7 +105,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Gunmerang
             CreateRecipe()
                 .AddIngredient(ItemID.WoodenBoomerang)
                 .AddIngredient(ItemID.FlintlockPistol)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

@@ -50,7 +50,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             CreateRecipe()
                 .AddIngredient(ItemID.IceBlade)
                 .AddIngredient(ItemID.FrostDaggerfish, 100)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

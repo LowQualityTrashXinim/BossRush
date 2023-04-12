@@ -106,7 +106,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddRecipeGroup("OreShortSword")
                 .AddRecipeGroup("OreBroadSword")
                 .Register();

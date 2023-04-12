@@ -62,7 +62,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.CopperShortsword, 1)
             .AddIngredient(ItemID.TinShortsword, 1)
             .AddIngredient(ItemID.IronShortsword, 1)

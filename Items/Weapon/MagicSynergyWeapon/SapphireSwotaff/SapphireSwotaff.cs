@@ -105,7 +105,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.SapphireSwotaff
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.SilverBroadsword)
                 .AddIngredient(ItemID.SapphireStaff)
                 .Register();
@@ -114,7 +113,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.SapphireSwotaff
 
     public class SapphireSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/SapphireSwotaff/SapphireSwotaff";
+        public override string Texture => BossRushUtils.GetTheSameTextureAsItem<SapphireSwotaff>();
         public override void SetDefaults()
         {
             Projectile.height = 29;

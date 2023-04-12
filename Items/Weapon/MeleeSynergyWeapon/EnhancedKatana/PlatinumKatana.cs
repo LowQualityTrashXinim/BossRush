@@ -47,7 +47,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.Katana)
                 .AddRecipeGroup("OreBroadSword")
                 .Register();

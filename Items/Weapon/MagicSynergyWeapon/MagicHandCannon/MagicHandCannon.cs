@@ -6,11 +6,12 @@ using BossRush.Texture;
 
 namespace BossRush.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 {
-    internal class MagicHandCannon : ModItem
+    internal class MagicHandCannon : ModItem, ISynergyItem
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(0, 0, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 20, 30, false);
+            Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 40, 30, false);
+            Item.scale = .75f;
         }
         public override void HoldItem(Player player)
         {
@@ -23,13 +24,24 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                 Main.dust[dust].velocity = Vector2.Zero;
             }
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Handgun)
+                .AddIngredient(ItemID.WaterBolt)
+                .AddIngredient(ItemID.ShadowFlameHexDoll)
+                .Register();
+        }
     }
     class MagicHandCannonProjectile : ModProjectile
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 4;
+        }
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 1;
+            Projectile.width = Projectile.height = 30;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
             Projectile.friendly = true;
@@ -44,6 +56,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
         bool isAlreadyOutY = false;
         public override void AI()
         {
+            SelectFrame();
             Player player = Main.player[Projectile.owner];
             if (!BossRushUtils.Vector2TouchLine(Projectile.Center.X, 400, player.Center.X))
             {
@@ -70,6 +83,22 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                 isAlreadyOutY = false;
             }
             Projectile.position += player.velocity;
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.AddBuff(BuffID.ShadowFlame, 90);
+        }
+        public void SelectFrame()
+        {
+            if (++Projectile.frameCounter >= 4)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame += 1;
+                if (Projectile.frame >= Main.projFrames[Projectile.type])
+                {
+                    Projectile.frame = 0;
+                }
+            }
         }
     }
 }

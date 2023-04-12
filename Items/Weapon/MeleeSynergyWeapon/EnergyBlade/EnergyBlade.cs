@@ -47,10 +47,16 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         {
             return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.EnchantedSword,2)
+                .Register();
+        }
     }
     public class EnergyBladeProjectile : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MeleeSynergyWeapon/EnergyBlade/EnergyBlade";
+        public override string Texture => BossRushUtils.GetTheSameTextureAsItem<EnergyBlade>();
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 8;

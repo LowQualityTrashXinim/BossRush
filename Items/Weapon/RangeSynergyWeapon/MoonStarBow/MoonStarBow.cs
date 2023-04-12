@@ -48,7 +48,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MoonStarBow
                 .AddIngredient(ItemID.MoonCharm)
                 .AddIngredient(ItemID.DaedalusStormbow)
                 .AddIngredient(ItemID.PulseBow)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

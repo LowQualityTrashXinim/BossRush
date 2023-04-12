@@ -52,7 +52,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.CactusSword)
                 .AddIngredient(ItemID.BatBat)
                 .Register();

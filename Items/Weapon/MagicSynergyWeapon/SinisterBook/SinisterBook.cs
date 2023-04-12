@@ -51,7 +51,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.SinisterBook
             CreateRecipe()
                 .AddIngredient(ItemID.BookofSkulls)
                 .AddIngredient(ItemID.WaterBolt)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

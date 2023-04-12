@@ -52,7 +52,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SkullRevolver
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.Revolver)
             .AddIngredient(ItemID.BookofSkulls)
             .Register();

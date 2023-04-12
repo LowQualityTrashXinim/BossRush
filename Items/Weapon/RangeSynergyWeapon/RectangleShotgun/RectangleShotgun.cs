@@ -50,7 +50,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.Boomstick, 2)
             .Register();
         }

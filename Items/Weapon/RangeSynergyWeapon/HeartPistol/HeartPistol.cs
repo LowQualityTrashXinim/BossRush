@@ -49,7 +49,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.HeartPistol
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.FlintlockPistol)
             .AddIngredient(ItemID.BandofRegeneration)
             .Register();

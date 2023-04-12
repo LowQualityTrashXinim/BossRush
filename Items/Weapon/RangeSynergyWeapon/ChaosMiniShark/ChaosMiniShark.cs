@@ -69,7 +69,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.Minishark)
                 .AddIngredient(ItemID.FlowerofFire)
                 .AddIngredient(ItemID.WaterBolt)

@@ -87,7 +87,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ModContent.ItemType<FrozenEnchantedSword>())
                 .AddIngredient(ModContent.ItemType<EnchantedStarfury>())
                 .AddIngredient(ItemID.SuperStarCannon)

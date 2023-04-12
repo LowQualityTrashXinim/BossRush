@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -29,7 +28,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
             CreateRecipe()
                 .AddIngredient(ItemID.WoodenBoomerang)
                 .AddRecipeGroup("OreShortSword")
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

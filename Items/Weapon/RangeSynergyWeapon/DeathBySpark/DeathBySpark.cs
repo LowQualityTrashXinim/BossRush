@@ -47,7 +47,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.DeathBySpark
             CreateRecipe()
                 .AddIngredient(ItemID.FlareGun)
                 .AddIngredient(ItemID.WandofSparking)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

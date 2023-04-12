@@ -42,7 +42,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             CreateRecipe()
                 .AddIngredient(ItemID.CorruptYoyo)
                 .AddIngredient(ItemID.BallOHurt)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

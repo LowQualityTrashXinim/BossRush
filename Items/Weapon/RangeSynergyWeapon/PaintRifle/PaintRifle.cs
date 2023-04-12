@@ -16,27 +16,12 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
         }
         public override void SetDefaults()
         {
-            Item.width = 114;
-            Item.height = 40;
+            Item.BossRushDefaultRange(114, 40, 36, 4f, 4, 16, ItemUseStyleID.Shoot, ModContent.ProjectileType<CustomPaintProj>(), 7, true);
             Item.rare = 3;
-
-            Item.damage = 25;
             Item.crit = 7;
-            Item.knockBack = 2f;
-
-            Item.useTime = 5;
-            Item.useAnimation = 20;
-            Item.reuseDelay = 9;
-            Item.useStyle = ItemUseStyleID.Shoot;
-
-            Item.autoReuse = true;
-            Item.noMelee = true;
+            Item.reuseDelay = 11;
             Item.UseSound = SoundID.Item5;
-            Item.DamageType = DamageClass.Ranged;
             Item.value = Item.sellPrice(silver: 1000);
-
-            Item.shoot = ModContent.ProjectileType<CustomPaintProj>();
-            Item.shootSpeed = 7;
             Item.scale -= 0.25f;
         }
         public override Vector2? HoldoutOffset()
@@ -102,8 +87,8 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.PaintRifle
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.PainterPaintballGun, 2)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                .AddIngredient(ItemID.PainterPaintballGun)
+                .AddIngredient(ItemID.ClockworkAssaultRifle)
                 .Register();
         }
     }

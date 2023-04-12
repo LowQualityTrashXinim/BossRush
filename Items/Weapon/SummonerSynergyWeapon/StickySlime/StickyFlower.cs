@@ -62,7 +62,6 @@ namespace BossRush.Items.Weapon.SummonerSynergyWeapon.StickySlime
             CreateRecipe()
                 .AddIngredient(ItemID.SlimeStaff)
                 .AddIngredient(ItemID.AbigailsFlower)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

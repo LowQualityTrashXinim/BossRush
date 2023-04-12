@@ -90,7 +90,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.EmeraldSwotaff
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.TungstenBroadsword)
                 .AddIngredient(ItemID.EmeraldStaff)
                 .Register();

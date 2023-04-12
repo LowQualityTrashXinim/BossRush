@@ -56,7 +56,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             CreateRecipe()
                 .AddRecipeGroup("Wood Sword")
                 .AddIngredient(ItemID.WandofSparking)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

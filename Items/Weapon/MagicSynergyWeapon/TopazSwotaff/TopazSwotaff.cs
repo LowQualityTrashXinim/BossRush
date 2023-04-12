@@ -116,7 +116,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.TinBroadsword)
                 .AddIngredient(ItemID.TopazStaff)
                 .Register();

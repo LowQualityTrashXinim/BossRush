@@ -54,7 +54,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.PlatinumBow)
                 .AddIngredient(ItemID.DiamondStaff)
                 .Register();

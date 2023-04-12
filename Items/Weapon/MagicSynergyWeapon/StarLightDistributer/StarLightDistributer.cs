@@ -90,7 +90,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.SpaceGun)
                 .AddIngredient(ItemID.ThunderStaff)
                 .Register();

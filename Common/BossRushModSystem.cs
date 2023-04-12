@@ -89,11 +89,23 @@ namespace BossRush.Common
         }
         public override void PostAddRecipes()
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+            if (!config.SynergyMode)
             {
                 return;
             }
-            for (int i = 0; i < Main.recipe.Length; i++)
+            foreach (Recipe recipe in Main.recipe)
+            {
+                if (recipe.createItem.ModItem is ISynergyItem)
+                {
+                    recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
+                }
+            }
+            if (!config.EnableChallengeMode)
+            {
+                return;
+            }
+            for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 if (Main.recipe[i].HasResult(ItemID.FlamingArrow) ||
                     Main.recipe[i].HasResult(ItemID.FrostburnArrow))

@@ -46,7 +46,6 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon
             CreateRecipe()
                 .AddIngredient(ItemID.IceBlade)
                 .AddIngredient(ItemID.Frostbrand)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

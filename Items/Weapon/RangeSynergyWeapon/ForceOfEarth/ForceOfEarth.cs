@@ -58,7 +58,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.CopperBow)
                 .AddIngredient(ItemID.TinBow)
                 .AddIngredient(ItemID.IronBow)

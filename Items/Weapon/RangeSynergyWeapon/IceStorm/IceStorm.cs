@@ -220,7 +220,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.IceStorm
             CreateRecipe()
                 .AddIngredient(ItemID.IceBlade)
                 .AddIngredient(ItemID.IceBow)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

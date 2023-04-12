@@ -67,7 +67,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.NatureSelection
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
             .AddIngredient(ItemID.WoodenBow, 1)
             .AddIngredient(ItemID.BorealWoodBow, 1)
             .AddIngredient(ItemID.RichMahoganyBow, 1)

@@ -98,7 +98,6 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .AddIngredient(ItemID.CopperBroadsword)
                 .AddIngredient(ItemID.AmethystStaff)
                 .Register();
@@ -106,7 +105,7 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
     }
     public class AmethystSwotaffP : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/MagicSynergyWeapon/AmethystSwotaff/AmethystSwotaff";
+        public override string Texture => BossRushUtils.GetTheSameTextureAsItem<AmethystSwotaff>();
         public override void SetDefaults()
         {
             Projectile.width = 60;

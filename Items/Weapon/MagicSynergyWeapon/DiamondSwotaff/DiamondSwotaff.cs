@@ -106,9 +106,8 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .AddIngredient(ItemID.DiamondStaff)
                 .AddIngredient(ItemID.PlatinumBroadsword)
+                .AddIngredient(ItemID.DiamondStaff)
                 .Register();
         }
     }

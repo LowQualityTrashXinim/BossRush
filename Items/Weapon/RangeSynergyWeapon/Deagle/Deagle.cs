@@ -57,7 +57,6 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.Deagle
             CreateRecipe()
                 .AddIngredient(ItemID.Handgun)
                 .AddIngredient(ItemID.Musket)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }
