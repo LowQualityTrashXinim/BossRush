@@ -96,15 +96,11 @@ namespace BossRush.Common
         public override void PostAddRecipes()
         {
             BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
-            SynergyRecipe(config);
+            SynergyRecipe();
             ChallengeModeRecipe(config);
         }
-        private static void SynergyRecipe(BossRushModConfig config)
+        private static void SynergyRecipe()
         {
-            if (!config.SynergyMode)
-            {
-                return;
-            }
             foreach (Recipe recipe in Main.recipe)
             {
                 if (recipe.createItem.ModItem is ISynergyItem)
@@ -130,10 +126,6 @@ namespace BossRush.Common
         }
         private static void ArtifactRecipe()
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().SynergyMode)
-            {
-                return;
-            }
             foreach (var itemSample in ContentSamples.ItemsByType)
             {
                 ModItem item = itemSample.Value.ModItem;
