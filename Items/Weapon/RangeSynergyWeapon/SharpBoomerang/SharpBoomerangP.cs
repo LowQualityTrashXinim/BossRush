@@ -8,7 +8,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
 {
     internal class SharpBoomerangP : ModProjectile
     {
-        public override string Texture => BossRushUtils.GetTheSameTextureAsItem(ModContent.ItemType<SharpBoomerang>());
+        public override string Texture => BossRushUtils.GetTheSameTextureAsItem<SharpBoomerang>();
 
         public override void SetDefaults()
         {

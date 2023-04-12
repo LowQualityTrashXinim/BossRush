@@ -437,11 +437,11 @@ namespace BossRush.Common.Global
         }
         public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
         {
-            MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             if (Item.noMelee)
             {
                 return;
             }
+            MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             switch (Item.useStyle)
             {
                 case BossRushUseStyle.Swipe:
@@ -484,6 +484,10 @@ namespace BossRush.Common.Global
         }
         public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
+            if(ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            {
+                return;
+            }
             if (Item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();

@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Items.Weapon.MeleeSynergyWeapon;
+using BossRush.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 
 namespace BossRush.Items.Note
 {

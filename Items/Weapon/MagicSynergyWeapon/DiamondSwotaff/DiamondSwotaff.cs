@@ -16,29 +16,13 @@ namespace BossRush.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
 
         public override void SetDefaults()
         {
-            Item.width = 60;
-            Item.height = 58;
-
-            Item.damage = 17;
-            Item.crit = 10;
-            Item.knockBack = 3f;
-
-            Item.useTime = 1;
-            Item.useAnimation = 10;
-            Item.reuseDelay = 20;
-
-            Item.shootSpeed = 7;
-            Item.mana = 20;
-
-            Item.value = Item.buyPrice(gold: 50);
-            Item.shoot = ProjectileID.DiamondBolt;
-            Item.DamageType = DamageClass.Magic;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
-            Item.useTurn = false;
+            Item.BossRushDefaultMagic(60, 58, 17, 3f, 1, 10, ItemUseStyleID.Shoot, ProjectileID.DiamondBolt, 7, 20, true);
             Item.rare = 2;
-
+            Item.crit = 10;
+            Item.reuseDelay = 20;
+            Item.useTurn = false;
             Item.UseSound = SoundID.Item8;
+            Item.value = Item.buyPrice(gold: 50);
         }
 
         int i = 0;

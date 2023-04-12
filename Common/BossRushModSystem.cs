@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using tModPorter;
 
 namespace BossRush.Common
 {
@@ -90,6 +91,11 @@ namespace BossRush.Common
         public override void PostAddRecipes()
         {
             BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+            SynergyRecipe(config);
+            ChallengeModeRecipe(config);
+        }
+        private static void SynergyRecipe(BossRushModConfig config)
+        {
             if (!config.SynergyMode)
             {
                 return;
@@ -101,6 +107,9 @@ namespace BossRush.Common
                     recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
                 }
             }
+        }
+        private static void ChallengeModeRecipe(BossRushModConfig config)
+        {
             if (!config.EnableChallengeMode)
             {
                 return;
