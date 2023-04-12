@@ -31,6 +31,7 @@ namespace BossRush.Items.Artifact
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 4;
+            player.GetModPlayer<FateDicePlayer>().FateDice = true;
         }
         public override void AddRecipes()
         {
@@ -41,7 +42,7 @@ namespace BossRush.Items.Artifact
     }
     class FateDicePlayer : ModPlayer
     {
-        public bool FateDice;
+        public bool FateDice = false;
         int RNGdecide;
         int effectlasting = 0;
 
@@ -50,6 +51,10 @@ namespace BossRush.Items.Artifact
         bool NPCdeal5TimeDamage = false;
         bool UnableToUseWeapon = false;
         bool ExtendingEffect = false;
+        public override void ResetEffects()
+        {
+            FateDice = false;
+        }
         public override void PreUpdate()
         {
             effectlasting -= effectlasting > 0 ? 1 : 0;

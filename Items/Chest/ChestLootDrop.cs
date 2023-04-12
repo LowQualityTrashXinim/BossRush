@@ -398,7 +398,7 @@ namespace BossRush.Items.Chest
         }
         private static void AddLoot(List<int> FlagNumber, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon, List<int>DropItemMisc)
         {
-            for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
+            for (int i = 0; i < FlagNumber.Count; ++i)
             {
                 switch (FlagNumber[i])
                 {

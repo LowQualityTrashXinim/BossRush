@@ -22,15 +22,19 @@ namespace BossRush
             }
             return NameSpace.Replace(".", "/") + "/" + type.Name;
         }
-        public static string GetTheSameTextureAs<T>() where T : class
+        public static string GetTheSameTextureAs<T>(string Name = "") where T : class
         {
             var type = typeof(T);
+            if(string.IsNullOrEmpty(Name))
+            {
+                Name = nameof(type);
+            }
             string NameSpace = type.Namespace;
             if (NameSpace == null)
             {
                 return BossRushTexture.MISSINGTEXTURE;
             }
-            return NameSpace.Replace(".", "/") + "/" + type.Name;
+            return NameSpace.Replace(".", "/") + "/" + Name;
         }
         public static bool LookForHostileNPC(this Vector2 position, float distance)
         {

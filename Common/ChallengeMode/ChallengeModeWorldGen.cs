@@ -5,6 +5,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.IO;
 using BossRush.Common;
+using System.Reflection.Emit;
+using Terraria.GameContent.Generation;
 
 namespace BossRush.Common.ChallengeMode
 {

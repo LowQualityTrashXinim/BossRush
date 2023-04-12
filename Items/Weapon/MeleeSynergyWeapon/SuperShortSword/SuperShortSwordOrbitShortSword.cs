@@ -24,8 +24,8 @@ namespace BossRush.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         }
         Player player => Main.player[Projectile.owner];
         Vector2 RotatePosition = Vector2.Zero;
-        Vector2 FixedMousePosition;
-        Vector2 FixedProjectilePos;
+        Vector2 FixedMousePosition = Vector2.Zero;
+        Vector2 FixedProjectilePos = Vector2.Zero;
         int Counter = 0;
         int timer = 999;
         public override bool PreAI()

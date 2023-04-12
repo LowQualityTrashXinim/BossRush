@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace BossRush.Items.Weapon.RangeSynergyWeapon
+namespace BossRush.Items.Weapon.RangeSynergyWeapon.MoonStarBow
 {
     internal class MoonStarBow : ModItem, ISynergyItem
     {
@@ -153,7 +153,7 @@ namespace BossRush.Items.Weapon.RangeSynergyWeapon
     }
     class MoonStarProjectileSmaller : ModProjectile
     {
-        public override string Texture => "BossRush/Items/Weapon/RangeSynergyWeapon/MoonStarProjectile";
+        public override string Texture => BossRushUtils.GetTheSameTextureAs<MoonStarBow>("MoonStarProjectile");
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 46;
