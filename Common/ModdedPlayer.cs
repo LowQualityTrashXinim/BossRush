@@ -6,18 +6,18 @@ using Terraria.DataStructures;
 //Microsoft stuff
 using System.Collections.Generic;
 //general BossRush stuff
-using BossRush.BuffAndDebuff;
-using BossRush.Items.Chest;
-using BossRush.Items.Note;
-using BossRush.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
-using BossRush.Items.Artifact;
-using BossRush.Items.Weapon.RangeSynergyWeapon.MagicBow;
-using BossRush.Items.Spawner;
-using BossRush.Items.Toggle;
-using BossRush.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
-using BossRush.Items.Potion;
-using BossRush.Items.Accessories.GuideToMasterNinja;
-using BossRush.Items;
+using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
+using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Note;
+using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
+using BossRush.Contents.Items;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Common
 {

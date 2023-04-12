@@ -1,10 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Items.Spawner;
-using BossRush.Items;
-using System.Collections.Generic;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 
 namespace BossRush.Common.Global
 {

@@ -1,19 +1,19 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.BuffAndDebuff;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 //EnragedStuff
-using BossRush.Items.Note;
-using BossRush.Items.Chest;
-using BossRush.Items.Spawner;
-using BossRush.Items.Artifact;
-using BossRush.Items.NohitReward;
-using BossRush.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using BossRush.Items;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
+using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.Note;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Common.Global
 {

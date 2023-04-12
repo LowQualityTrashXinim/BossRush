@@ -24,7 +24,7 @@ namespace BossRush.Common
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke)
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImprove", $"Sword can swing in all direction, on 3rd attack will do a special attack");
-                line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
+                line.OverrideColor = BossRushRecipe.YellowPulseYellowWhite;
                 tooltips.Add(line);
             }
             Player player = Main.LocalPlayer;

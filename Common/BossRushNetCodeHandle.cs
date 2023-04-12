@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using Terraria;
-using BossRush.Items.Artifact;
-using BossRush.Items.NohitReward;
-using BossRush.Items.Potion;
 using BossRush.Common.ExtraChallenge;
+using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.Potion;
 
 namespace BossRush.Common
 {

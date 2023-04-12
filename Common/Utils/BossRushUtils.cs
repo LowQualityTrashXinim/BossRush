@@ -11,7 +11,7 @@ namespace BossRush
 {
     public static partial class BossRushUtils
     {
-        public static string GetTheSameTextureAsItem<T>() where T : class
+        public static string GetTheSameTextureAsEntity<T>() where T : class
         {
             var type = typeof(T);
             string NameSpace = type.Namespace;
@@ -26,7 +26,7 @@ namespace BossRush
             var type = typeof(T);
             if(string.IsNullOrEmpty(Name))
             {
-                Name = nameof(type);
+                Name = type.Name;
             }
             string NameSpace = type.Namespace;
             if (NameSpace == null)
