@@ -50,6 +50,14 @@ namespace BossRush
             item.noMelee = true;
             item.DamageType = DamageClass.Magic;
         }
+
+        public static void BossRushDefaultMagic(Item item, int shoot, float shootSpeed, int manaCost)
+        {
+            item.shoot = shoot;
+            item.shootSpeed = shootSpeed;
+            item.mana = manaCost;
+            item.noMelee = true;
+        }
         public enum MeleeStyle
         {
             CheckVanillaSwingWithModded,
