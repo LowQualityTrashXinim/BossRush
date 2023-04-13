@@ -19,7 +19,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
         }
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(100, 100, 150, 7f, 19, 19, BossRushUseStyle.GenericSwingDownImprove, true);
+            BossRushUtils.BossRushSetDefault(Item, 100, 100, 150, 7f, 19, 19, BossRushUseStyle.GenericSwingDownImprove, true);
+            Item.DamageType = DamageClass.Melee;
             Item.crit = 30;
             Item.shoot = ProjectileID.EnchantedBeam;
             Item.shootSpeed = 20;

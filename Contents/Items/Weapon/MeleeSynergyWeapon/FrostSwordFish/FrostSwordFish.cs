@@ -16,7 +16,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
 
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(60, 64, 37, 1f, 18, 18, BossRushUseStyle.Swipe, true);
+            BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 1f, 18, 18, BossRushUseStyle.Swipe, true);
+            Item.DamageType = DamageClass.Melee;
 
             Item.rare = 2;
             Item.crit = 5;

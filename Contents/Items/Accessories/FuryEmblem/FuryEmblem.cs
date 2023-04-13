@@ -12,7 +12,8 @@ namespace BossRush.Contents.Items.Accessories.FuryEmblem
             Tooltip.SetDefault("Your rage is what make battle turn tide" +
                 "\nIncrease 5% damage and crits" +
                 "\nIncrease HP by 25%" +
-                "\nGrant a buff upon getting hit that increase 50% damage and crits\nBut shatter your defense and cut your life regen" +
+                "\nGrant a buff upon getting hit that increase 50% damage and crits" +
+                "\nBut shatter your defense and cut your life regen" +
                 "\nThe buff will reset its time when you got hit again");
             base.SetStaticDefaults();
         }

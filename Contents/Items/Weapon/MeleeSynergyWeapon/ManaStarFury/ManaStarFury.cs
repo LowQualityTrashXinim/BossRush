@@ -15,7 +15,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ManaStarFury
         }
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(34, 40, 35, 6f, 20, 20, ItemUseStyleID.Swing, true);
+            BossRushUtils.BossRushSetDefault(Item, 34, 40, 35, 6f, 20, 20, ItemUseStyleID.Swing, true);
+            Item.DamageType = DamageClass.Melee;
             Item.useTurn = true;
             Item.rare = 3;
             Item.shoot = ProjectileID.Starfury;

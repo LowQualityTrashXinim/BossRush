@@ -15,13 +15,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
 
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(74, 74, 40, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
+            BossRushUtils.BossRushSetDefault(Item, 74, 74, 40, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
+            BossRushUtils.BossRushSetDefaultSpear(Item, ModContent.ProjectileType<BurningPassionP>(), 3.7f);
+
             Item.rare = 3;
-            Item.noMelee = true;
-            Item.autoReuse = true;
-            Item.noUseGraphic = true;
-            Item.shootSpeed = 3.7f;
-            Item.shoot = ModContent.ProjectileType<BurningPassionP>();
+            Item.DamageType = DamageClass.Melee;
             Item.value = Item.sellPrice(silver: 1000);
         }
 

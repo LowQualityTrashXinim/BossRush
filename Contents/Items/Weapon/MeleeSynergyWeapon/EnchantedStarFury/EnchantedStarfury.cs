@@ -15,7 +15,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
         }
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(66, 66, 32, 4f, 60, 20, ItemUseStyleID.Swing, true);
+            BossRushUtils.BossRushSetDefault(Item, 66, 66, 32, 4f, 60, 20, ItemUseStyleID.Swing, true);
+            Item.DamageType = DamageClass.Melee;
             Item.shoot = ProjectileID.EnchantedBeam;
             Item.shootSpeed = 20f;
 

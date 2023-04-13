@@ -1,7 +1,6 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.DataStructures;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
@@ -14,16 +13,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
         }
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(
-                92,
-                92,
-                100,
-                5f,
-                20,
-                20,
-                ItemUseStyleID.Swing,
-                true);
-            Item.rare = 6;
+            BossRushUtils.BossRushSetDefault(Item, 92, 92, 100, 5f, 20, 20, ItemUseStyleID.Swing, true);
+            Item.DamageType = DamageClass.Melee;
+            Item.rare = ItemRarityID.LightPurple;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item1;
         }

@@ -8,15 +8,10 @@ namespace BossRush
 {
     public partial class BossRushUtils
     {
-        public static void BossRushSetDefault(this Item item,
-            int width,
-            int height,
-            int damage,
-            float knockback,
-            int useTime,
-            int useAnimation,
-            int useStyle,
-            bool autoReuse)
+        /// <summary>
+        /// Set your own DamageClass type
+        /// </summary>
+        public static void BossRushSetDefault(Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, bool autoReuse)
         {
             item.width = width;
             item.height = height;
@@ -27,37 +22,17 @@ namespace BossRush
             item.useStyle = useStyle;
             item.autoReuse = autoReuse;
         }
-        public static void BossRushSetDefaultMelee
-            (this Item item,
-            int width,
-            int height,
-            int damage,
-            float knockback,
-            int useTime,
-            int useAnimation,
-            int useStyle,
-            bool autoReuse
-            )
+        public static void BossRushSetDefaultSpear(Item item, int spearType, float shootSpeed)
         {
-            item.BossRushSetDefault(width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
-            item.DamageType = DamageClass.Melee;
+            item.noUseGraphic = true;
+            item.noMelee = true;
+            item.shootSpeed = shootSpeed;
+            item.shoot = spearType;
         }
-        public static void BossRushDefaultRange
-            (this Item item,
-            int width,
-            int height,
-            int damage,
-            float knockback,
-            int useTime,
-            int useAnimation,
-            int useStyle,
-            int shoot,
-            float shootSpeed,
-            bool autoReuse,
-            int useAmmo = 0
+        public static void BossRushDefaultRange(this Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, int shoot, float shootSpeed, bool autoReuse, int useAmmo = 0
         )
         {
-            item.BossRushSetDefault(width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
+            BossRushSetDefault(item, width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
             item.shoot = shoot;
             item.shootSpeed = shootSpeed;
             item.useAmmo = useAmmo;
@@ -65,22 +40,10 @@ namespace BossRush
             item.DamageType = DamageClass.Ranged;
         }
 
-        public static void BossRushDefaultMagic
-            (this Item item,
-            int width,
-            int height,
-            int damage,
-            float knockback,
-            int useTime,
-            int useAnimation,
-            int useStyle,
-            int shoot,
-            float shootSpeed,
-            int manaCost,
-            bool autoReuse
+        public static void BossRushDefaultMagic(this Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, int shoot, float shootSpeed, int manaCost, bool autoReuse
             )
         {
-            item.BossRushSetDefault(width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
+            BossRushSetDefault(item, width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
             item.shoot = shoot;
             item.shootSpeed = shootSpeed;
             item.mana = manaCost;

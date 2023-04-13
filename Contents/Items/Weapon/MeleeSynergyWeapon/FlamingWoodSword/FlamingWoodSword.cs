@@ -15,14 +15,16 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
 
         public override void SetDefaults()
         {
-            Item.BossRushSetDefaultMelee(32, 36, 36, 5f, 4, 40, ItemUseStyleID.Swing, false);
+            BossRushUtils.BossRushSetDefault(Item, 32, 36, 36, 5f, 4, 40, ItemUseStyleID.Swing, false);
+            Item.DamageType = DamageClass.Melee;
+
             Item.crit = 5;
-            Item.rare = 2;
-            Item.value = Item.buyPrice(gold: 50);
             Item.useTurn = false;
+            Item.UseSound = SoundID.Item1;
+            Item.rare = ItemRarityID.Green;
+            Item.value = Item.buyPrice(gold: 50);
             Item.shoot = ProjectileID.WandOfSparkingSpark;
             Item.shootSpeed = 6;
-            Item.UseSound = SoundID.Item1;
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
