@@ -144,7 +144,6 @@ namespace BossRush.Contents.Items.Potion
                     break;
             }
         }
-
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();

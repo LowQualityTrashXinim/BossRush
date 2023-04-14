@@ -31,7 +31,7 @@ namespace BossRush.Common
         [Label("Enable Easy Mode ( On Making Character )")]
         [Tooltip("Grant you a small starter boost for those who are casual\n" +
             "Give you 3 Mana Crystal and Life Crystal\n" +
-            "1 random starter weapon that this mod have to offer if synergy mode is enable")]
+            "Treasure Chest drop more stuff")]
         [DefaultValue(true)]
         public bool EasyMode { get; set; }
 
@@ -55,7 +55,6 @@ namespace BossRush.Common
             "\nThe next time you kill a boss, the current challenge will be swap for a random challenge" +
             "\nThese mode offer no real reward or benefit, only activate if you are bored and want extra challenge" +
             "\nThis do not work with multiplayer world")]
-        [ReloadRequired]
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }
 

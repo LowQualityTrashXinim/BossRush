@@ -4,6 +4,7 @@ using BossRush.Common.ExtraChallenge;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
+using BossRush.Common.Global;
 
 namespace BossRush.Common
 {
@@ -18,7 +19,8 @@ namespace BossRush.Common
             EoWNoHit,
             BoCNoHit,
             GambleAddiction,
-            ExtraChallenge
+            ExtraChallenge,
+            ArtifactRegister
         }
         public void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -65,6 +67,10 @@ namespace BossRush.Common
                 case MessageType.ExtraChallenge:
                     ExtraChallengePlayer extraChallenge = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
                     extraChallenge.ChallengeChooser = reader.ReadInt32();
+                    break;
+                case MessageType.ArtifactRegister:
+                    ArtifactPlayerHandleLogic artifact = Main.player[playernumber].GetModPlayer<ArtifactPlayerHandleLogic>();
+                    artifact.ArtifactCount = reader.ReadInt32();
                     break;
             }
         }

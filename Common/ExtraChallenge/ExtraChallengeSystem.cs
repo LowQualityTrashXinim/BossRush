@@ -86,6 +86,15 @@ namespace BossRush.Common.ExtraChallenge
                         Main.NewText("Annoying bat start to spawn", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Bat start to spawn"), Colors.RarityDarkRed);
                         break;
+                    default:
+                        if (player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser > 8)
+                        {
+                            player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser = 0;
+                            Main.NewText("We run into a problem where we run out of challenge, are you using a debug item ? For now we gonna reset it back to 0", Colors.RarityDarkRed);
+                            break;
+                        }
+                        Main.NewText("the dev is appear to be too lazy to implement a fix for this, grab Xinim and screenshot this message and explain how you encounter this ");
+                        break;
                 }
                 NumberToCompare = player.GetModPlayer<ExtraChallengePlayer>().BossSlayedCount;
                 count++;

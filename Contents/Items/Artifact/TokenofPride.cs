@@ -30,6 +30,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
             player.GetModPlayer<QualityPlayer>().TokenOfPride = true;
             return base.UseItem(player);
         }

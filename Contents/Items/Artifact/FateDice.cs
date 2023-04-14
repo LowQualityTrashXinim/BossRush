@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             DisplayName.SetDefault("Fate Decider");
             Tooltip.SetDefault("\"Replacement of god dice\"" +
-                "Passive : Increase amount weapon get drop from Treasure Chest by 4" +
+                "On Equip : Increase amount weapon get drop from Treasure Chest by 4" +
                 "\nEffect : Random effect may occur ...");
         }
         public override void SetDefaults()
@@ -45,10 +45,6 @@ namespace BossRush.Contents.Items.Artifact
         bool NPCdeal5TimeDamage = false;
         bool UnableToUseWeapon = false;
         bool ExtendingEffect = false;
-        public override void ResetEffects()
-        {
-            FateDice = false;
-        }
         public override void PreUpdate()
         {
             effectlasting -= effectlasting > 0 ? 1 : 0;

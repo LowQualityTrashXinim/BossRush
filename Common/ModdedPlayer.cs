@@ -222,10 +222,6 @@ namespace BossRush.Common
             {
                 items.Add(new Item(ItemID.LifeCrystal, 3));
                 items.Add(new Item(ItemID.ManaCrystal, 3));
-                if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
-                {
-                    items.Add(new Item(Main.rand.Next(new int[] { ModContent.ItemType<AmethystBow>(), ModContent.ItemType<AmethystSwotaff>() })));
-                }
             }
             if (Main.rand.NextBool(10))
             {
