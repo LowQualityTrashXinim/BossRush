@@ -45,6 +45,10 @@ namespace BossRush.Contents.Items.Artifact
         bool NPCdeal5TimeDamage = false;
         bool UnableToUseWeapon = false;
         bool ExtendingEffect = false;
+        public override void ResetEffects()
+        {
+            FateDice = false;
+        }
         public override void PreUpdate()
         {
             effectlasting -= effectlasting > 0 ? 1 : 0;
@@ -70,7 +74,7 @@ namespace BossRush.Contents.Items.Artifact
             }
             if (effectlasting == 0 & Main.rand.NextBool(100))
             {
-                RNGdecide = Main.rand.Next(16);
+                RNGdecide = Main.rand.Next(17);
             }
             switch (RNGdecide)
             {
@@ -88,11 +92,15 @@ namespace BossRush.Contents.Items.Artifact
                     effectlasting = 30;
                     break;
                 case 2:
-                    if (effectlasting % 10 == 0)
+                    if (effectlasting % 50 == 0)
                     {
                         BossRushUtils.SpawnBoulderOnTopPlayer(Player, 0, false);
                     }
-                    effectlasting = 400;
+                    if (effectlasting % 20 == 0)
+                    {
+                        BossRushUtils.SpawnHostileProjectileDirectlyOnPlayer(Player, 200, 50, true, Vector2.Zero, ProjectileID.HellfireArrow, 100, 10f);
+                    }
+                    effectlasting = 900;
                     break;
                 case 3:
                     Player.AddBuff(BuffID.Confused, 3000);
@@ -174,12 +182,129 @@ namespace BossRush.Contents.Items.Artifact
                     Effect16(effectlasting);
                     break;
                 default:
+                    Main.NewText("Unimplemented");
                     break;
             }
             if (Main.rand.NextBool(50) && !ExtendingEffect)
             {
                 ExtendingEffect = true;
                 effectlasting *= 5;
+            }
+            SpamTextToScare();
+        }
+        private void SpamTextToScare()
+        {
+            if (Main.rand.NextBool(150))
+            {
+                int RandomTextChooser = Main.rand.Next(11);
+                Color color = Color.White;
+                string TextString;
+                switch (RandomTextChooser)
+                {
+                    case 0:
+                        TextString = "You feel an evil presence watching you...";
+                        color = new Color(50, 255, 130);
+                        break;
+                    case 1:
+                        TextString = "You feel vibrations from deep below...";
+                        color = new Color(50, 255, 130);
+                        break;
+                    case 2:
+                        TextString = "This is going to be a terrible night...";
+                        color = new Color(50, 255, 130);
+                        break;
+                    case 3:
+                        TextString = "The air is getting colder around you...";
+                        color = new Color(50, 255, 130);
+                        break;
+                    case 4:
+                        TextString = "Pirates are approaching from the west!";
+                        color = new Color(175, 75, 255);
+                        break;
+                    case 5:
+                        TextString = RandomName() + " has joined.";
+                        break;
+                    case 6:
+                        TextString = RandomNameExit() + " has left";
+                        break;
+                    case 7:
+                        TextString = "The weather forecast that there will be boulder rain soon !";
+                        color = new Color(10, 10, 255);
+                        break;
+                    case 8:
+                        TextString = "I see you, we gonna be together forever, forever and more chopping tree " + $"[i:{ItemID.LucyTheAxe}]" + $"[i:{ItemID.Heart}]";
+                        color = new Color(100, 0, 0);
+                        break;
+                    case 9:
+                        TextString = "Rare life form detected that there is a furry near by !";
+                        color = new Color(10, 10, 255);
+                        break;
+                    case 10:
+                        TextString = "To give yourself a zenith, please write in chat : \\Player::give[i:Zenith][1]";
+                        color = new Color(10, 10, 255);
+                        break;
+                    default:
+                        TextString = "The weather forecast that there will be boulder rain soon";
+                        color = new Color(10, 10, 255);
+                        break;
+                }
+                Main.NewText(TextString, color);
+            }
+        }
+        private string RandomName()
+        {
+            switch (Main.rand.Next(10))
+            {
+                case 0:
+                    return "God";
+                case 1:
+                    return Player.name;
+                case 2:
+                    return "Your mom";
+                case 3:
+                    return "Red";
+                case 4:
+                    return "skillissue";
+                case 5:
+                    return "FBI";
+                case 6:
+                    return "Guide";
+                case 7:
+                    return "Sans";
+                case 8:
+                    return "LQTXinim";
+                case 9:
+                    return "drugaddict";
+                default:
+                    return "asgfgfagasdf";
+            }
+        }
+        private string RandomNameExit()
+        {
+            switch (Main.rand.Next(10))
+            {
+                case 0:
+                    return "Your lover";
+                case 1:
+                    return Player.name;
+                case 2:
+                    return "Your father";
+                case 3:
+                    return "Anime";
+                case 4:
+                    return "Luck";
+                case 5:
+                    return "LQTMinix";
+                case 6:
+                    return "Ninja";
+                case 7:
+                    return "Sans";
+                case 8:
+                    return "FeelingLucky";
+                case 9:
+                    return "ImNotGud";
+                default:
+                    return "asgfgfagasdf";
             }
         }
         private void Effect9()

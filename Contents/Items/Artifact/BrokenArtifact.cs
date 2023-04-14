@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -13,7 +14,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             Item.width = 32;
             Item.height = 32;
-            Item.rare = 0;
+            Item.rare = ItemRarityID.White;
             Item.material = true;
         }
     }

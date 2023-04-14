@@ -32,6 +32,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             Player player = Main.LocalPlayer;
             tooltips.Add(new TooltipLine(Mod, "SkillIssue", "Total Mobs kill : " + player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue));
+            tooltips.Add(new TooltipLine(Mod, "SkillIssueEffect", "Effect : NONE"));
             foreach (var item in tooltips)
             {
                 if(item.Name == "SkillIssue")

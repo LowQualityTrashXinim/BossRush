@@ -19,10 +19,19 @@ namespace BossRush.Common.Global
             {
                 if(item.consumable)
                 {
-                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount < 1;
+                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount < 1 && !NPC.downedSlimeKing;
                 }
             }
             return base.CanUseItem(item, player);
+        }
+        public override bool? UseItem(Item item, Player player)
+        {
+            if(item.ModItem is IArtifactItem && item.consumable)
+            {
+                player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
+                return true;
+            }
+            return base.UseItem(item, player);
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
@@ -30,11 +39,7 @@ namespace BossRush.Common.Global
             {
                 if (item.consumable)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Can only consume before you beat any boss and only 1 can be consume"));
-                }
-                if (item.accessory)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Once equipped, effect will never disappear and stay active"));
+                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Can only consume before you beat any boss and only 1 of artifact can be consume"));
                 }
             }
         }

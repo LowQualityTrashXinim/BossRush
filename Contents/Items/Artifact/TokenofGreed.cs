@@ -1,11 +1,11 @@
-﻿using BossRush.Common;
-using BossRush.Contents.Items.Chest;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Artifact
 {
-    internal class TokenofGreed : ModItem,IArtifactItem
+    internal class TokenofGreed : ModItem, IArtifactItem
     {
         public override void SetStaticDefaults()
         {
@@ -23,10 +23,10 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
             player.GetModPlayer<GreedyPlayer>().TokenOfGreed = true;
             return base.UseItem(player);
         }
-
     }
     public class GreedyPlayer : ModPlayer
     {
@@ -40,12 +40,9 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if (Player.GetModPlayer<ModdedPlayer>().ArtifactCount <= 1)
+            if (TokenOfGreed)
             {
-                if (TokenOfGreed)
-                {
-                    damage *= .65f;
-                }
+                damage *= .65f;
             }
         }
     }

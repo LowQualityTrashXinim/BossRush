@@ -1,11 +1,10 @@
-﻿using BossRush.Texture;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.DataStructures;
+using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Common;
-using BossRush.Contents.Items.Chest;
 using BossRush.Common.Global;
+using Terraria.DataStructures;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -48,12 +47,9 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if (Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount <= 1)
+            if (TokenOfPride)
             {
-                if (TokenOfPride)
-                {
-                    damage += .45f;
-                }
+                damage += .45f;
             }
         }
     }
