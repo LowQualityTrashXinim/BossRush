@@ -15,21 +15,9 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
         }
         public override void SetDefaults()
         {
-            Item.width = 64;
-            Item.height = 20;
+            BossRushUtils.BossRushDefaultRange(Item, 64, 20, 16, 1f, 9, 9, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);
 
-            Item.damage = 16;
-            Item.knockBack = 1f;
-            Item.shootSpeed = 12;
-            Item.useTime = 9;
-            Item.useAnimation = 9;
-
-            Item.noMelee = true;
-            Item.shoot = ProjectileID.IceBolt;
-            Item.DamageType = DamageClass.Ranged;
-            Item.useStyle = ItemUseStyleID.Shoot;
             Item.rare = 3;
-            Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -57,7 +45,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
             CreateRecipe()
                 .AddIngredient(ItemID.Minishark)
                 .AddIngredient(ItemID.IceBlade)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

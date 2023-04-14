@@ -362,8 +362,7 @@ namespace BossRush.Common.Global
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
                 float length = new Vector2(item.width, item.height).Length() * player.GetAdjustedItemScale(item);
-                Vector2 endPos = handPos;
-                endPos *= length + PLAYERARMLENGTH;
+                Vector2 endPos = handPos * (length + PLAYERARMLENGTH);
                 if (modPlayer.ComboNumber == 2 && item.useStyle == BossRushUseStyle.Poke)
                 {
                     handPos.Y += 20;

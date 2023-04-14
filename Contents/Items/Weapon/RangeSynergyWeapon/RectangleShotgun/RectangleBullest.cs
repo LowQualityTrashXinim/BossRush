@@ -28,7 +28,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
                 Projectile.rotation = Projectile.velocity.ToRotation();
                 count++;
             }
-            Projectile.velocity *= .98f;
+            Projectile.velocity *= .97f;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

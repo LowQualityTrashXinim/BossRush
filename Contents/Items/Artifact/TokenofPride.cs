@@ -4,6 +4,8 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using BossRush.Common;
+using BossRush.Contents.Items.Chest;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -13,8 +15,9 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Token of Pride");
-            Tooltip.SetDefault("Increase weapon damage exchange for half of the reward\n" +
-                "\"Pride of having the skill to use, care little for reward\"");
+            Tooltip.SetDefault("\"Pride of having the skill to use, care little for reward\"" +
+                "\nPositive Effect : Increase weapon damage by 45%" +
+                "\nNegative Effect : Halves your drop from treasure chest");
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 6));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
@@ -23,15 +26,30 @@ namespace BossRush.Contents.Items.Artifact
             Item.width = 32;
             Item.height = 32;
             Item.rare = 9;
+            Item.consumable = true;
+        }
+        public override bool? UseItem(Player player)
+        {
+            player.GetModPlayer<QualityPlayer>().TokenOfPride = true;
+            return base.UseItem(player);
         }
     }
     public class QualityPlayer : ModPlayer
     {
+        public bool TokenOfPride = false;
+        public override void PreUpdate()
+        {
+            if (TokenOfPride)
+            {
+                Player.GetModPlayer<ChestLootDropPlayer>().multiplier = true;
+                Player.GetModPlayer<ChestLootDropPlayer>().amountModifier = .5f;
+            }
+        }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if (Player.GetModPlayer<ModdedPlayer>().ArtifactCount <= 1)
+            if (Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount <= 1)
             {
-                if (Player.HasItem(ModContent.ItemType<TokenofPride>()))
+                if (TokenOfPride)
                 {
                     damage += .45f;
                 }

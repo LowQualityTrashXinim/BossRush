@@ -11,7 +11,7 @@ namespace BossRush
         /// <summary>
         /// Set your own DamageClass type
         /// </summary>
-        public static void BossRushSetDefault(Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, bool autoReuse)
+        public static void BossRushSetDefault(this Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, bool autoReuse)
         {
             item.width = width;
             item.height = height;

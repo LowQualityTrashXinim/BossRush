@@ -45,30 +45,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
         {
             if (player.HasItem(ItemID.SnowballCannon))
             {
-                if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormSnowBallCannonMinion>()] < 1)
+                int type = ModContent.ProjectileType<IceStormSnowBallCannonMinion>();
+                if (player.ownedProjectileCounts[type] < 1)
                 {
-                    Projectile.NewProjectile(
-                        Item.GetSource_FromThis(),
-                        player.Center,
-                        Vector2.Zero,
-                        ModContent.ProjectileType<IceStormSnowBallCannonMinion>(),
-                        Item.damage,
-                        Item.knockBack,
-                        player.whoAmI);
+                    Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
                 }
             }
             if (player.HasItem(ItemID.FlowerofFrost))
             {
-                if (player.ownedProjectileCounts[ModContent.ProjectileType<IceStormFrostFlowerMinion>()] < 1)
+                int type = ModContent.ProjectileType<IceStormFrostFlowerMinion>();
+                if (player.ownedProjectileCounts[type] < 1)
                 {
-                    Projectile.NewProjectile(
-                        Item.GetSource_FromThis(),
-                        player.Center,
-                        Vector2.Zero,
-                        ModContent.ProjectileType<IceStormFrostFlowerMinion>(),
-                        Item.damage,
-                        Item.knockBack,
-                        player.whoAmI);
+                    Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
                 }
             }
             if (!Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier >= 1)

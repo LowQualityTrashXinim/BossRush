@@ -42,7 +42,8 @@ namespace BossRush.Contents.Items.Weapon
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 1;
             Projectile.alpha = 255;
-            Projectile.DamageType = DamageClass.Melee;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10;
         }
     }
 }

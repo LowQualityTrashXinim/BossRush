@@ -17,9 +17,9 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Fate Decider");
-            Tooltip.SetDefault("Increase amount weapon get drop from Treasure Chest by 4" +
-                "\nRandom effect may occur ..." +
-                "\n\"Replacement of god dice\"");
+            Tooltip.SetDefault("\"Replacement of god dice\"" +
+                "Passive : Increase amount weapon get drop from Treasure Chest by 4" +
+                "\nEffect : Random effect may occur ...");
         }
         public override void SetDefaults()
         {

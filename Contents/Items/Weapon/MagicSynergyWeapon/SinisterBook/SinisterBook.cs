@@ -112,9 +112,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
         }
         public override void Kill(int timeLeft)
         {
-            for (int i = 0; i < 30; i++)
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);
+            for (int i = 0; i < 25; i++)
             {
-                Vector2 Rotate = Main.rand.NextVector2Circular(10f, 10f);
+                Vector2 Rotate = Main.rand.NextVector2Circular(9f, 9f);
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(0.75f, 1f));
                 Main.dust[dustnumber].noGravity = true;
             }

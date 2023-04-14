@@ -24,16 +24,11 @@ namespace BossRush.Contents.Items.Chest
         private int summonChance = 0;
         private int specialChance = 0;
 
-        private int ModifyGetAmount(int ValueToModify, Player player, bool multiplier = false)
+        private int ModifyGetAmount(int ValueToModify, Player player)
         {
             //Modifier
             float amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
-            if (player.GetModPlayer<ModdedPlayer>().ArtifactAllowance)
-            {
-                if (player.HasItem(ModContent.ItemType<TokenofGreed>())) { amountToModify += 4; }
-                if (ModContent.GetInstance<BossRushModConfig>().EasyMode) { amountToModify += 2; }
-                if (player.HasItem(ModContent.ItemType<TokenofPride>())) { amountToModify = 0.5f; multiplier = true; }
-            }
+            bool multiplier = player.GetModPlayer<ChestLootDropPlayer>().multiplier;
             //Change
             if (multiplier)
             {
@@ -54,6 +49,12 @@ namespace BossRush.Contents.Items.Chest
                 amountForWeapon = 2;
                 amountForPotionType = 1;
                 amountForPotionNum = 1;
+            }
+            if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
+            {
+                amountForWeapon += 2;
+                amountForPotionType += 2;
+                amountForPotionNum += 2;
             }
             if (Main.hardMode)
             {
@@ -808,9 +809,11 @@ namespace BossRush.Contents.Items.Chest
     public class ChestLootDropPlayer : ModPlayer
     {
         public float amountModifier = 0;
+        public bool multiplier = false;
         public override void ResetEffects()
         {
             amountModifier = 0;
+            multiplier = false;
             base.ResetEffects();
         }
     }

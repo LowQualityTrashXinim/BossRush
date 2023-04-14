@@ -50,7 +50,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.EnchantedSword, 2)
+                .AddIngredient(ItemID.EnchantedSword)
+                .AddIngredient(ItemID.Terragrim)
                 .Register();
         }
     }

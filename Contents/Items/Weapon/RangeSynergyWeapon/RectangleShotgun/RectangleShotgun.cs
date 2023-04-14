@@ -1,8 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using BossRush.Common.Global;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 {
@@ -28,7 +28,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.shoot = ModContent.ProjectileType<RectangleBullet>();
-            Item.shootSpeed = 10f;
+            Item.shootSpeed = 70f;
             Item.reuseDelay = 30;
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;

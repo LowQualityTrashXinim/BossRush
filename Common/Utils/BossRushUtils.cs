@@ -76,8 +76,8 @@ namespace BossRush
         public static float OutExpo(float t) => 1 - InExpo(1 - t);
         public static float InOutExpo(float t)
         {
-            if (t < 0.5) return InExpo(t * 2) / 2;
-            return 1 - InExpo((1 - t) * 2) / 2;
+            if (t < 0.5) return InExpo(t * 2) * .5f;
+            return 1 - InExpo((1 - t) * 2) * .5f;
         }
         public static float InSine(float t) => (float)-Math.Cos(t * MathHelper.PiOver2);
         public static float OutSine(float t) => (float)Math.Sin(t * MathHelper.PiOver2);

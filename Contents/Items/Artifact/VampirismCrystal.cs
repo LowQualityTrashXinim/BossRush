@@ -11,7 +11,8 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Unpure, relentess crystal" +
-                "\nAttack heal player but reduce max life by 55%" +
+                "\nPassive : Attack heal player " +
+                "\nEffect : reduce max life by 55%" +
                 "\nYou can survive 1 fatal attack ( 1m30s cooldown )");
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(10, 7));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;

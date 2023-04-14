@@ -41,7 +41,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
         {
             CreateRecipe()
                 .AddIngredient(ItemID.DaoofPow)
-                .AddIngredient(ItemID.WoodYoyo)
+                .AddIngredient(ItemID.Chik)
                 .Register();
         }
     }
