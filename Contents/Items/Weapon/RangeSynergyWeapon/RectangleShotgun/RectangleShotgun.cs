@@ -28,7 +28,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.shoot = ModContent.ProjectileType<RectangleBullet>();
-            Item.shootSpeed = 1f;
+            Item.shootSpeed = 10f;
             Item.reuseDelay = 30;
             Item.DamageType = DamageClass.Ranged;
             Item.autoReuse = true;
