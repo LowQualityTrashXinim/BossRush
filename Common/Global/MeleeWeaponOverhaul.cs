@@ -348,13 +348,6 @@ namespace BossRush.Common.Global
             }
             base.SetDefaults(item);
         }
-        /// <summary>
-        /// Use to order 2 values from smallest to biggest
-        /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="v2"></param>
-        /// <returns></returns>
-        private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)

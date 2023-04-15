@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
             Projectile.penetrate = -1;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = false;
-            Projectile.scale = 0.50f;
+            Projectile.scale = .5f;
         }
         int firstframe = 0;
         float MaxLengthX = 0;
