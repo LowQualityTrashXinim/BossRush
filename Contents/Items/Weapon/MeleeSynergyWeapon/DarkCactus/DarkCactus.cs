@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 
             Item.shoot = ModContent.ProjectileType<CactusBall>();
             Item.shootSpeed = 15;
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
             Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item1;

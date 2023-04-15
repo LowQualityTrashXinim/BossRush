@@ -363,9 +363,9 @@ namespace BossRush.Common.Global
                 }
                 handPos += player.MountedCenter;
                 endPos += player.MountedCenter;
-                (int X1, int X2) XVals = BossRushUtils.Order(handPos.X, endPos.X);
-                (int Y1, int Y2) YVals = BossRushUtils.Order(handPos.Y, endPos.Y);
-                hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
+                (int X1, int X2) = BossRushUtils.Order(handPos.X, endPos.X);
+                (int Y1, int Y2) = BossRushUtils.Order(handPos.Y, endPos.Y);
+                hitbox = new Rectangle(X1 - 2, Y1 - 2, X2 - X1 + 2, Y2 - Y1 + 2);
                 modPlayer.SwordHitBox = hitbox;
             }
         }

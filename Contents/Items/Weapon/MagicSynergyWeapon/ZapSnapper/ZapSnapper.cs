@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
             Item.autoReuse = true;
             Item.noMelee = true;
             Item.mana = 4;
-            Item.rare = 2;
+            Item.rare = ItemRarityID.Green;
             Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item9;

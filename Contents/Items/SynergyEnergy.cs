@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items
 {
@@ -17,7 +18,7 @@ namespace BossRush.Contents.Items
         }
         public override void SetDefaults()
         {
-            Item.rare = 10;
+            Item.rare = ItemRarityID.Red;
             Item.width = 54;
             Item.height = 20;
             Item.material = true;

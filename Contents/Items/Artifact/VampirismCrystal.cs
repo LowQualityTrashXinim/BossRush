@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Artifact
             Item.width = 32;
             Item.height = 58;
             Item.accessory = true;
-            Item.rare = 9;
+            Item.rare = ItemRarityID.Cyan;
         }
 
         public override void UpdateEquip(Player player)

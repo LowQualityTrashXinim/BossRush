@@ -104,7 +104,7 @@ namespace BossRush
         /// Return true if found and return NPC that is closest to player<br/>
         /// Return false if not found any NPC and NPC set to null
         /// </returns>
-        public static bool closestToPlayer(this Projectile projectile, Player player, float distance, out NPC npc)
+        public static bool ClosestToPlayer(this Projectile projectile, Player player, float distance, out NPC npc)
         {
             LookForHostileNPC(player.Center, out List<NPC> npclocal, distance);
             for (int i = 0; i < npclocal.Count; i++)
