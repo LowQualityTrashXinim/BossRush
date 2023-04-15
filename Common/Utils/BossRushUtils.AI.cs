@@ -32,9 +32,9 @@ namespace BossRush
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile other = Main.projectile[i];
-                if (i != projectile.whoAmI 
-                    && other.active 
-                    && other.owner == projectile.owner 
+                if (i != projectile.whoAmI
+                    && other.active
+                    && other.owner == projectile.owner
                     && Math.Abs(projectile.position.X - other.position.X) + Math.Abs(projectile.position.Y - other.position.Y) < projectile.width)
                 {
                     if (projectile.position.X < other.position.X)
@@ -104,7 +104,7 @@ namespace BossRush
         /// Return true if found and return NPC that is closest to player<br/>
         /// Return false if not found any NPC and NPC set to null
         /// </returns>
-        public static bool closestToPlayer(this Projectile projectile, Player player ,float distance, out NPC npc)
+        public static bool closestToPlayer(this Projectile projectile, Player player, float distance, out NPC npc)
         {
             LookForHostileNPC(player.Center, out List<NPC> npclocal, distance);
             for (int i = 0; i < npclocal.Count; i++)
@@ -128,6 +128,50 @@ namespace BossRush
         public static void MinionShootProjectileGeneric(this Projectile projectile, Vector2 velocity, int type)
         {
             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, velocity, type, projectile.damage, projectile.knockBack, projectile.owner);
+        }
+
+        public static void ProjectileSwordSwingAI(Projectile projectile,ref Vector2 DirectionToSwing, ref int firstFrame, int swing = 1)
+        {
+            Player player = Main.player[projectile.owner];
+            if (firstFrame == 0)
+            {
+                DirectionToSwing = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
+                firstFrame++;
+            }
+            if (projectile.timeLeft > player.itemAnimationMax)
+            {
+                projectile.timeLeft = player.itemAnimationMax;
+            }
+            player.heldProj = projectile.whoAmI;
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            if (swing == -1)
+            {
+                percentDone = (1 - percentDone);
+            }
+            percentDone = InExpo(Math.Clamp(percentDone, 0, 1));
+            projectile.spriteDirection = player.direction;
+            float baseAngle = DirectionToSwing.ToRotation();
+            float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
+            float start = baseAngle + angle;
+            float end = baseAngle - angle;
+            float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+            projectile.rotation = currentAngle;
+            projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
+            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+        }
+        public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Projectile projectile)
+        {
+            Player player = Main.player[projectile.owner];
+            Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
+            float length = new Vector2(projectile.width, projectile.height).Length() * player.GetAdjustedItemScale(player.HeldItem);
+            Vector2 endPos = handPos;
+            endPos *= length;
+            handPos += player.MountedCenter;
+            endPos += player.MountedCenter;
+            (int X1, int X2) XVals = Order(handPos.X, endPos.X);
+            (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
+            hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
         }
 
         public static int CoolDown(int timer) => timer > 0 ? --timer : 0;

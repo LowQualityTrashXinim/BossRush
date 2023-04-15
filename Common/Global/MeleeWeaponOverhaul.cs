@@ -370,8 +370,8 @@ namespace BossRush.Common.Global
                 }
                 handPos += player.MountedCenter;
                 endPos += player.MountedCenter;
-                (int X1, int X2) XVals = Order(handPos.X, endPos.X);
-                (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
+                (int X1, int X2) XVals = BossRushUtils.Order(handPos.X, endPos.X);
+                (int Y1, int Y2) YVals = BossRushUtils.Order(handPos.Y, endPos.Y);
                 hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
                 modPlayer.SwordHitBox = hitbox;
             }
@@ -627,7 +627,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            MouseXPosDirection = Main.MouseWorld.X - Player.Center.X > 0 ? 1 : -1;
+            MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
                 delaytimer = (int)(Player.itemAnimationMax * 1.2f);
@@ -685,8 +685,8 @@ namespace BossRush.Common.Global
             Player.mount.Active
             || IsWallBossAlive()
             || ComboNumber != 2
-            || (Player.velocity.X > 2 && MouseXPosDirection == -1)
-            || (Player.velocity.X < -2 && MouseXPosDirection == 1)
+            || (Player.velocity.X > -.15f && MouseXPosDirection == -1)
+            || (Player.velocity.X < .15f && MouseXPosDirection == 1)
             || Player.velocity == Vector2.Zero;
         private void ExecuteSpecialComboOnStart(Item item)
         {

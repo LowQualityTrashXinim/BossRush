@@ -35,6 +35,13 @@ namespace BossRush
             }
             return NameSpace.Replace(".", "/") + "/" + altName;
         }
+        /// <summary>
+        /// Use to order 2 values from smallest to biggest
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        public static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public static bool LookForHostileNPC(this Vector2 position, float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)

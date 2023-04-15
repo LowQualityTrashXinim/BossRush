@@ -43,12 +43,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
             {
                 position += muzzleOffset;
             }
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Vector2 newVec = velocity.RotatedByRandom(MathHelper.ToRadians(10));
-                Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
+                int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
+                Main.projectile[proj].DamageType = DamageClass.Magic;
             }
-            return true;
+            return false;
         }
 
         public override Vector2? HoldoutOffset()

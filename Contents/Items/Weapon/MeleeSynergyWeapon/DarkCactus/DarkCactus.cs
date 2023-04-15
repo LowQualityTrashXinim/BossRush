@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 {
@@ -13,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
         }
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 58, 78, 29, 5f, 60, 20, ItemUseStyleID.Swing, true);
+            BossRushUtils.BossRushSetDefault(Item, 58, 78, 29, 5f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);
             Item.DamageType = DamageClass.Melee;
 
             Item.shoot = ModContent.ProjectileType<CactusBall>();

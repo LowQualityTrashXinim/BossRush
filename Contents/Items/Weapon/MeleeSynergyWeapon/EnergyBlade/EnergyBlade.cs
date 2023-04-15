@@ -81,43 +81,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         public override void AI()
         {
             frameCounter();
-            Player player = Main.player[Projectile.owner];
-            if (FirstFrameOfAi == 0)
-            {
-                data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                FirstFrameOfAi++;
-            }
-            if (Projectile.timeLeft > player.itemAnimationMax)
-            {
-                Projectile.timeLeft = player.itemAnimationMax;
-            }
-            player.heldProj = Projectile.whoAmI;
-            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            percentDone = BossRushUtils.InExpo(percentDone);
-            Projectile.spriteDirection = player.direction;
-            float baseAngle = data.ToRotation();
-            float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
-            float start = baseAngle + angle;
-            float end = baseAngle - angle;
-            float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
-            Projectile.rotation = currentAngle;
-            Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
-            Projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
-            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+            BossRushUtils.ProjectileSwordSwingAI(Projectile,ref data, ref FirstFrameOfAi, 1);
         }
-        private static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
-            Player player = Main.player[Projectile.owner];
-            Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
-            float length = new Vector2(Projectile.width, Projectile.height).Length() * player.GetAdjustedItemScale(player.HeldItem);
-            Vector2 endPos = handPos;
-            endPos *= length;
-            handPos += player.MountedCenter;
-            endPos += player.MountedCenter;
-            (int X1, int X2) XVals = Order(handPos.X, endPos.X);
-            (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
-            hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
+            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Projectile);
         }
         public void frameCounter()
         {
