@@ -122,7 +122,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawTrail(lightColor, .5f);
+            Projectile.DrawTrail(lightColor, .05f);
             return true;
         }
     }

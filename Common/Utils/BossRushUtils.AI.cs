@@ -148,7 +148,7 @@ namespace BossRush
             {
                 percentDone = (1 - percentDone);
             }
-            percentDone = InExpo(Math.Clamp(percentDone, 0, 1));
+            percentDone = Math.Clamp(percentDone, 0, 1);
             projectile.spriteDirection = player.direction;
             float baseAngle = DirectionToSwing.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;

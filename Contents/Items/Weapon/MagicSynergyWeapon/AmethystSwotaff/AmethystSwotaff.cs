@@ -3,7 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using System.Runtime.CompilerServices;
+using System;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
 {
@@ -16,13 +17,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         }
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(60, 58, 20, 3f, 4, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<AmethystSwotaffP>(), 7, 10, false);
+            Item.BossRushDefaultMagic(60, 58, 20, 3f, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<AmethystSwotaffP>(), 7, 10, false);
             Item.crit = 10;
-            Item.reuseDelay = 20;
             Item.value = Item.buyPrice(gold: 50);
             Item.useTurn = false;
             Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item8;
+            Item.noUseGraphic = true;
         }
         public override bool CanUseItem(Player player)
         {
@@ -32,17 +33,21 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         {
             if (player.statMana <= player.GetManaCost(Item))
             {
-                CanShootProjectile = false;
+                CanShootProjectile = -1;
             }
             player.statMana += neededMana;
         }
-        bool CanShootProjectile = true;
+        int CanShootProjectile = 1;
         int countIndex = 1;
-        int time = 0;
+        int time = 1;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex);
-            if (CanShootProjectile)
+            if (player.statMana >= player.GetManaCost(Item))
+            {
+                CanShootProjectile = 1;
+            }
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex, CanShootProjectile);
+            if (CanShootProjectile == 1)
             {
                 Projectile.NewProjectile(source, position, velocity, ProjectileID.AmethystBolt, damage, knockback, player.whoAmI);
             }
@@ -62,10 +67,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             }
             return false;
         }
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -79,8 +80,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AmethystSwotaff>();
         public override void SetDefaults()
         {
-            Projectile.width = 60;
-            Projectile.height = 58;
+            Projectile.width = 70;
+            Projectile.height = 70;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
@@ -90,15 +91,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         int FirstFrame = 0;
         public override void AI()
         {
-            if (Projectile.ai[0] != 1 || Projectile.ai[0] != -1)
+            if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1)
             {
-                SpinAtCursorAI();
+                BossRushUtils.ProjectileSwordSwingAI(Projectile, ref PosToGo, ref FirstFrame, (int)Projectile.ai[0]);
                 return;
             }
-            BossRushUtils.ProjectileSwordSwingAI(Projectile, ref PosToGo, ref FirstFrame, (int)Projectile.ai[0]);
+            SpinAtCursorAI();
         }
         bool isAlreadyHeldDown = false;
-        int countdownBeforeReturn = 0;
+        bool isAlreadyReleased = false;
+        int countdownBeforeReturn = 100;
         int AbsoluteCountDown = 900;
         private void SpinAtCursorAI()
         {
@@ -109,37 +111,46 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
                 FirstFrame++;
             }
             Vector2 length = PosToGo - Projectile.Center;
-            Projectile.velocity = length.SafeNormalize(Vector2.Zero) * length.Length() + player.velocity;
-            if (Main.mouseRight && !isAlreadyHeldDown)
+            if (Main.mouseLeft && !isAlreadyHeldDown && !isAlreadyReleased)
             {
                 isAlreadyHeldDown = true;
             }
             if (isAlreadyHeldDown)
             {
-                countdownBeforeReturn = 100;
+                countdownBeforeReturn = 10;
             }
-            if (Main.mouseRightRelease && isAlreadyHeldDown)
+            if (!Main.mouseLeft && Main.mouseLeftRelease && isAlreadyHeldDown)
             {
                 isAlreadyHeldDown = false;
+                isAlreadyReleased = true;
             }
             countdownBeforeReturn -= countdownBeforeReturn > 0 ? 1 : 0;
             AbsoluteCountDown -= AbsoluteCountDown > 0 ? 1 : 0;
-            if ((countdownBeforeReturn <= 0 && !isAlreadyHeldDown) || AbsoluteCountDown <= 0)
+            if (countdownBeforeReturn <= 0 || AbsoluteCountDown <= 0)
             {
-                PosToGo = player.Center;
+                length = player.Center - Projectile.Center;
+                float distanceTo = length.Length();
+                if (distanceTo < 60)
+                {
+                    Projectile.Kill();
+                }
             }
-            Projectile.rotation += MathHelper.ToRadians(20);
-            SpawnDust();
-            Vector2 velocity = Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(5, 7), Main.rand.NextFloat(5, 7));
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .65f), Projectile.knockBack, Projectile.owner);
-        }
-        private void SpawnDust()
-        {
-            for (int i = 0; i < 3; i++)
+            Projectile.velocity = length.SafeNormalize(Vector2.Zero) * length.Length() + player.velocity;
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
+            Projectile.rotation += MathHelper.ToRadians(15);
+            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
+            Main.dust[dust].scale = Main.rand.NextFloat(.8f, 1.2f);
+            Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
+            Main.dust[dust].noGravity = true;
+            Vector2 velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * Main.rand.NextFloat(6, 9);
+            if (Projectile.ai[1] == 1)
             {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
-                Main.dust[dust].scale = Main.rand.NextFloat(.8f, 1.2f);
-                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .65f), Projectile.knockBack, Projectile.owner);
+                Main.projectile[proj].timeLeft = 30;
+            }
+            if ((Projectile.Center - player.Center).LengthSquared() > 1000 * 1000)
+            {
+                Projectile.Kill();
             }
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
