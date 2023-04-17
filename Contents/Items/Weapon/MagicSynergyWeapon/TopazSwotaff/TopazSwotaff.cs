@@ -52,17 +52,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
                 mult = 2.5f;
             }
         }
-
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[ModContent.ProjectileType<TopazSwotaffP>()] < 1;
         }
-
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse != 2)

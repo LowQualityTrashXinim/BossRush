@@ -1,12 +1,10 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
+using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
 {
