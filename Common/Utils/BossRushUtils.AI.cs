@@ -129,7 +129,13 @@ namespace BossRush
         {
             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, velocity, type, projectile.damage, projectile.knockBack, projectile.owner);
         }
-
+        /// <summary>
+        /// Create a custom field in projectile, or use a ISwingProjectileType
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="DirectionToSwing"></param>
+        /// <param name="firstFrame"></param>
+        /// <param name="swing"></param>
         public static void ProjectileSwordSwingAI(Projectile projectile, ref Vector2 DirectionToSwing, ref int firstFrame, int swing = 1)
         {
             Player player = Main.player[projectile.owner];
@@ -175,5 +181,10 @@ namespace BossRush
         }
 
         public static int CoolDown(int timer) => timer > 0 ? --timer : 0;
+    }
+    public interface SwingProjectileType
+    {
+        public Vector2 DirectionToSwing { get; set; }
+        public int firstframe { get; set; }
     }
 }

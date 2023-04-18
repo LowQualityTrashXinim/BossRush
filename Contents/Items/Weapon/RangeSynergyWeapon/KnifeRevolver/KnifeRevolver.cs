@@ -44,7 +44,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
         {
             return true;
         }
-
         public override bool CanConsumeAmmo(Item ammo, Player player)
         {
             return player.altFunctionUse != 2;

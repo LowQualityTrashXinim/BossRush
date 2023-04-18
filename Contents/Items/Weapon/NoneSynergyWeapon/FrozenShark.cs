@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
 {
