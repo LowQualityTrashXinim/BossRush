@@ -100,11 +100,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         bool isAlreadyHeldDown = false;
         bool isAlreadyReleased = false;
         int countdownBeforeReturn = 100;
-        int AbsoluteCountDown = 900;
-        const int ManaCost = 10;
+        int AbsoluteCountDown = 420;
+        int timeToSpin = 0;
         private void SpinAtCursorAI()
         {
             Player player = Main.player[Projectile.owner];
+            Item item = player.HeldItem;
             if (FirstFrame == 0)
             {
                 PosToGo = Main.MouseWorld;
@@ -126,7 +127,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             }
             countdownBeforeReturn -= countdownBeforeReturn > 0 ? 1 : 0;
             AbsoluteCountDown -= AbsoluteCountDown > 0 ? 1 : 0;
-            if (countdownBeforeReturn <= 0 || AbsoluteCountDown <= 0)
+            if (countdownBeforeReturn <= 0 || AbsoluteCountDown <= 0 || item.type != ModContent.ItemType<AmethystSwotaff>())
             {
                 length = player.Center - Projectile.Center;
                 float distanceTo = length.Length();
@@ -145,15 +146,20 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             Vector2 velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * Main.rand.NextFloat(6, 9);
             if (Projectile.ai[1] == 1)
             {
-                if(player.statMana >= ManaCost)
+                if (timeToSpin >= 24)
                 {
-                    player.statMana -= ManaCost;
+                    if (player.CheckMana(player.GetManaCost(player.HeldItem), true))
+                    {
+                        player.statMana -= player.GetManaCost(player.HeldItem);
+                    }
+                    else
+                    {
+                        Projectile.ai[1] = -1;
+                    }
+                    timeToSpin = 0;
                 }
-                else
-                {
-                    Projectile.ai[1] = 0;
-                }
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .65f), Projectile.knockBack, Projectile.owner);
+                timeToSpin++;
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .55f), Projectile.knockBack, Projectile.owner);
                 Main.projectile[proj].timeLeft = 30;
             }
             if ((Projectile.Center - player.Center).LengthSquared() > 1000 * 1000)
