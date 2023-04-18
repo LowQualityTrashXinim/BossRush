@@ -230,7 +230,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
     }
     class IceStormSnowBallCannonMinion : ModProjectile
     {
-        public override string Texture => "BossRush/VanillaSprite/Snowball_Cannon";
+        public override string Texture => "Terraria/Images/Item_" + ItemID.SnowballCannon;
         public override void SetDefaults()
         {
             Projectile.height = 26;
@@ -276,7 +276,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
     }
     class IceStormFrostFlowerMinion : ModProjectile
     {
-        public override string Texture => "BossRush/VanillaSprite/Flower_of_Frost";
+        public override string Texture => "Terraria/Images/Item_" + ItemID.FlowerofFrost;
         public override void SetDefaults()
         {
             Projectile.width = 28;

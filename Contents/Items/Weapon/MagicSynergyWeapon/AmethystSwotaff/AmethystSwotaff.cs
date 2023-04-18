@@ -1,10 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
-using System;
 using BossRush.Common.Global;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
 {
@@ -102,6 +101,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         bool isAlreadyReleased = false;
         int countdownBeforeReturn = 100;
         int AbsoluteCountDown = 900;
+        const int ManaCost = 10;
         private void SpinAtCursorAI()
         {
             Player player = Main.player[Projectile.owner];
@@ -145,6 +145,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             Vector2 velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * Main.rand.NextFloat(6, 9);
             if (Projectile.ai[1] == 1)
             {
+                if(player.statMana >= ManaCost)
+                {
+                    player.statMana -= ManaCost;
+                }
+                else
+                {
+                    Projectile.ai[1] = 0;
+                }
                 int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .65f), Projectile.knockBack, Projectile.owner);
                 Main.projectile[proj].timeLeft = 30;
             }

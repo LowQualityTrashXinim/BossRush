@@ -181,7 +181,7 @@ namespace BossRush
         }
         public static List<int> RemoveDupeInList(this List<int> flag)
         {
-            HashSet<int> HashsetRemoveDup = new HashSet<int>(flag);
+            HashSet<int> HashsetRemoveDup = new(flag);
             return HashsetRemoveDup.ToList();
         }
     }

@@ -66,6 +66,10 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
                 && Player.ItemAnimationActive)
             {
                 Vector2 speed = Player.direction == 1 ? new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? 15 : 5, 0) : new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? -15 : -5, 0);
+                if(Player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
+                {
+                    speed = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX) * 15f;
+                }
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed, ModContent.ProjectileType<SwordSlash>(), (int)(Player.HeldItem.damage * .75f), 2f, Player.whoAmI);
             }
         }
