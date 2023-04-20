@@ -14,25 +14,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         }
         public override void SetDefaults()
         {
-            Item.width = 54;
-            Item.height = 24;
+            Item.BossRushDefaultRange(54, 24, 24, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
 
-            Item.damage = 24;
-            Item.knockBack = 1f;
-            Item.useTime = 10;
-            Item.useAnimation = 10;
             Item.rare = 2;
-
-            Item.shoot = ProjectileID.Bullet;
-            Item.shootSpeed = 15;
-            Item.useAmmo = AmmoID.Bullet;
-
-            Item.useStyle = ItemUseStyleID.Shoot;
             Item.value = Item.sellPrice(gold: 50);
-            Item.DamageType = DamageClass.Ranged;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-
             Item.UseSound = SoundID.Item11;
         }
         public override Vector2? HoldoutOffset()
@@ -62,7 +47,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         {
             Item item = new Item(ModContent.ItemType<OvergrownMinishark>());
             float randomRotation = Main.rand.Next(90);
-            if (Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>() && !proj.minion && Main.rand.NextBool(10))
+            if (Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>() && !proj.minion && Main.rand.NextBool(10) && proj.type != ProjectileID.VilethornTip && proj.type != ProjectileID.VilethornBase)
             {
                 for (int i = 0; i < 6; i++)
                 {

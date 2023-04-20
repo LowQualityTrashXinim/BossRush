@@ -148,9 +148,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             {
                 if (timeToSpin >= 24)
                 {
-                    if (player.CheckMana(player.GetManaCost(player.HeldItem), true))
+                    if (player.CheckMana(player.GetManaCost(item), true))
                     {
-                        player.statMana -= player.GetManaCost(player.HeldItem);
+                        player.statMana -= player.GetManaCost(item);
                     }
                     else
                     {

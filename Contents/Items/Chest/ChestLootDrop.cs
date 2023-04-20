@@ -733,7 +733,7 @@ namespace BossRush.Contents.Items.Chest
         /// <returns></returns>
         public virtual List<int> SafePostAddAcc() => new List<int>() { };
 
-        private void addAcc(List<int> flag)
+        private void AddAcc(List<int> flag)
         {
             for (int i = 0; i < flag.Count; i++)
             {
@@ -782,7 +782,7 @@ namespace BossRush.Contents.Items.Chest
         /// </summary>
         public int GetAccessory()
         {
-            addAcc(FlagNumAcc());
+            AddAcc(FlagNumAcc());
             return Main.rand.NextFromCollection(Accessories);
         }
         List<int> DropItemPotion = new List<int>();
