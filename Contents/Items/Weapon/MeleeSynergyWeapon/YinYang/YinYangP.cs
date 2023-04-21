@@ -12,12 +12,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 25f;
-            ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
-            ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 12;
         }
 
         public override void SetDefaults()
         {
+            ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
+            ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 12;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.aiStyle = 99;
