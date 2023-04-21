@@ -31,14 +31,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
             Player player = Main.player[Projectile.owner];
             EntitySource_ItemUse entity = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<YinYang>()));
             charge++;
-            if (charge == 20 && player.yoyoGlove == false)
+            if (charge == 17 && player.yoyoGlove == false)
             {
                 Projectile.NewProjectile(entity, Projectile.position, Vector2.Zero, ModContent.ProjectileType<YinYangShockWave>(), 0, 0, player.whoAmI);
-                Projectile.damage = (int)(Projectile.damage * 3.5f);
+                Projectile.damage = (int)(Projectile.damage * 1.75f);
                 ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 24;
                 ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 600f;
             }
-            if (charge > 20 || player.yoyoGlove == true)
+            if (charge > 17 || player.yoyoGlove == true)
             {
                 Vector2 RotatePos = Main.rand.NextVector2CircularEdge(75f, 75f) * 5 + Projectile.position;
                 Vector2 RotatePos2 = Main.rand.NextVector2CircularEdge(75f, 75f) * 5 + Projectile.position;
@@ -46,16 +46,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
                 Vector2 Aimto2 = (target.Center - RotatePos2).SafeNormalize(Vector2.UnitX) * 3;
                 Projectile.NewProjectile(entity, RotatePos, Aimto, ModContent.ProjectileType<YinLight>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI);
                 Projectile.NewProjectile(entity, RotatePos2, Aimto2, ModContent.ProjectileType<YangDark>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI);
-            }
-        }
-
-        public override void PostAI()
-        {
-            Player player = Main.player[Projectile.owner];
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<YinYangP>()] < 1)
-            {
-                ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
-                ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 12;
             }
         }
     }
