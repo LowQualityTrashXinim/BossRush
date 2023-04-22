@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
@@ -25,28 +24,71 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
             Projectile.width = 24;
             Projectile.height = 24;
         }
+        int indexProjectile = 0;
+        Player player;
+        public override void AI()
+        {
+            if (Projectile.ai[0] == 0)
+            {
+                player = Main.player[Projectile.owner];
+                indexProjectile = player.ownedProjectileCounts[Projectile.type];
+            }
+            if(indexProjectile != 1)
+            {
+                return;
+            }
+        }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            Player player = Main.player[Projectile.owner];
-            EntitySource_ItemUse entity = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<YinYang>()));
             charge++;
             if (charge == 17 && player.yoyoGlove == false)
             {
-                Projectile.NewProjectile(entity, Projectile.position, Vector2.Zero, ModContent.ProjectileType<YinYangShockWave>(), 0, 0, player.whoAmI);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YinYangShockWave>(), 0, 0, player.whoAmI);
                 Projectile.damage = (int)(Projectile.damage * 1.75f);
                 ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 24;
                 ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 600f;
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YinLight>(), 0, 0, player.whoAmI, 1);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YangDark>(), 0, 0, player.whoAmI, 1);
             }
             if (charge > 17 || player.yoyoGlove == true)
             {
                 Vector2 RotatePos = Main.rand.NextVector2CircularEdge(75f, 75f) * 5 + Projectile.position;
-                Vector2 RotatePos2 = Main.rand.NextVector2CircularEdge(75f, 75f) * 5 + Projectile.position;
                 Vector2 Aimto = (target.Center - RotatePos).SafeNormalize(Vector2.UnitX) * 3;
-                Vector2 Aimto2 = (target.Center - RotatePos2).SafeNormalize(Vector2.UnitX) * 3;
-                Projectile.NewProjectile(entity, RotatePos, Aimto, ModContent.ProjectileType<YinLight>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI);
-                Projectile.NewProjectile(entity, RotatePos2, Aimto2, ModContent.ProjectileType<YangDark>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), RotatePos, Aimto, ModContent.ProjectileType<YinLight>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI);
+                RotatePos = Main.rand.NextVector2CircularEdge(75f, 75f) * 5 + Projectile.position;
+                Aimto = (target.Center - RotatePos).SafeNormalize(Vector2.UnitX) * 3;
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), RotatePos, Aimto, ModContent.ProjectileType<YangDark>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI);
             }
+        }
+    }
+
+    class BaseBoltProjectile : ModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.friendly = true;
+            Projectile.penetrate = 1;
+            Projectile.timeLeft = 200;
+            Projectile.tileCollide = false;
+            Projectile.extraUpdates = 6;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            Projectile.light = 1f;
+        }
+
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[Projectile.owner] = 2;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.DrawTrail(lightColor, .02f);
+            return true;
         }
     }
 }

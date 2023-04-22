@@ -52,8 +52,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark
             }
             hittile = true;
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
-            Projectile.velocity.X = 0;
-            Projectile.velocity.Y = 0;
+            Projectile.velocity = Vector2.Zero;
             return false;
         }
     }

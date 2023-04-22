@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.Utilities;
 using System;
+using System.Collections.Generic;
 
 namespace BossRush
 {
@@ -87,6 +88,24 @@ namespace BossRush
             ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
             ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
             return ToRotateAgain;
+        }
+        public static Vector2 Vector2SmallestInList(List<Vector2> flag)
+        {
+            List<Vector2> finalflag = flag;
+            for (int i = 0; i < flag.Count; )
+            {
+                for (int l = i + 1; l < flag.Count; ++l)
+                {
+                    if (flag[i].LengthSquared() > flag[l].LengthSquared())
+                    {
+                        Vector2 CurrentIndexNum = finalflag[i];
+                        finalflag[i] = flag[l];
+                        finalflag[l] = CurrentIndexNum;
+                    }
+                }
+                return finalflag[i];
+            }
+            return Vector2.Zero;
         }
     }
 }

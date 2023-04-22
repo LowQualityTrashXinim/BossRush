@@ -22,19 +22,22 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
         }
-        Player player => Main.player[Projectile.owner];
+        Player player;
         Vector2 RotatePosition = Vector2.Zero;
         Vector2 FixedMousePosition = Vector2.Zero;
         Vector2 FixedProjectilePos = Vector2.Zero;
         int Counter = 0;
         int timer = 999;
+        int firstframe = 0;
         public override bool PreAI()
         {
             Projectile.frame = (int)Projectile.ai[0];
-            if (player.ItemAnimationJustStarted)
+            if (firstframe == 0)
             {
+                player = Main.player[Projectile.owner];
                 FixedMousePosition = Main.MouseWorld;
                 FixedProjectilePos = Projectile.Center;
+                firstframe++;
             }
             if (player.ItemAnimationActive)
             {

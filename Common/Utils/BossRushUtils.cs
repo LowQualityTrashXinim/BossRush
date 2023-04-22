@@ -72,16 +72,19 @@ namespace BossRush
         }
         public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance)
         {
+            List<NPC> npcList = new List<NPC>();
+            List<Vector2> vector2List = new List<Vector2>();
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 if (Main.npc[i].active && CompareSquareFloatValue(position, Main.npc[i].Center, distance))
                 {
-                    npc = Main.npc[i];
-                    return true;
+                    npcList.Add(Main.npc[i]);
+                    vector2List.Add(Main.npc[i].position);
                 }
             }
-            npc = null;
-            return false;
+            Vector2 closestPos = Vector2SmallestInList(vector2List);
+            npc = npcList[vector2List.IndexOf(closestPos)];
+            return npc == null ? false : true;
         }
         public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance)
         {
