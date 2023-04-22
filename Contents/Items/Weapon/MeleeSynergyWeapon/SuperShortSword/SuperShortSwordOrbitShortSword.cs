@@ -66,7 +66,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             {
                 timer = 999;
             }
-            RotatePosition = getPosToReturn(player, 45 * Projectile.ai[0], Counter);
             return !player.ItemAnimationActive;
         }
         public override void AI()

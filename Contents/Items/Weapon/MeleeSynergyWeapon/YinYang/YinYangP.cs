@@ -7,7 +7,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
 {
     internal class YinYangP : ModProjectile
     {
-        int charge = 0;
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 25f;
@@ -24,18 +23,16 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
             Projectile.width = 24;
             Projectile.height = 24;
         }
-        int indexProjectile = 0;
         Player player;
+        int count = 0;
+        int charge = 0;
         public override void AI()
         {
-            if (Projectile.ai[0] == 0)
+            if (count == 0)
             {
                 player = Main.player[Projectile.owner];
-                indexProjectile = player.ownedProjectileCounts[Projectile.type];
-            }
-            if(indexProjectile != 1)
-            {
-                return;
+                Projectile.ai[1] = player.ownedProjectileCounts[Projectile.type];
+                count++;
             }
         }
 
@@ -48,8 +45,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
                 Projectile.damage = (int)(Projectile.damage * 1.75f);
                 ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 24;
                 ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 600f;
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YinLight>(), 0, 0, player.whoAmI, 1);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YangDark>(), 0, 0, player.whoAmI, 1);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YinLight>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI, Projectile.ai[1]);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<YangDark>(), (int)(Projectile.damage * 0.75f), 2f, player.whoAmI, Projectile.ai[1]);
             }
             if (charge > 17 || player.yoyoGlove == true)
             {
@@ -63,8 +60,26 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
         }
     }
 
-    class BaseBoltProjectile : ModProjectile
+    abstract class BaseBoltProjectile : ModProjectile
     {
+        protected Projectile GetYoyoMainProjectile()
+        {
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                if (Main.projectile[i].ModProjectile is YinYangP && Main.projectile[i].ai[1] == Projectile.ai[0])
+                {
+                    return Main.projectile[i];
+                }
+            }
+            return null;
+        }
+        public Vector2 getPosToReturn(float offSet, int Counter, float Distance = 50)
+        {
+            Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
+            Projectile proj = GetYoyoMainProjectile();
+            Vector2 ProjectileMainCenter = proj != null ? proj.Center : Vector2.Zero;
+            return ProjectileMainCenter + Rotate.RotatedBy(Counter * 0.05f) * Distance;
+        }
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;
