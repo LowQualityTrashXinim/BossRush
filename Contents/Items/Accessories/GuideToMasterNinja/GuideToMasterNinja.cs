@@ -84,13 +84,12 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                 .AddIngredient(ItemID.NinjaHood)
                 .AddIngredient(ItemID.NinjaShirt)
                 .AddIngredient(ItemID.NinjaPants)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }
     public class ThrowingKnifeCustom : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Item_" + ItemID.ThrowingKnife;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.ThrowingKnife);
         public override void SetDefaults()
         {
             Projectile.width = 20;

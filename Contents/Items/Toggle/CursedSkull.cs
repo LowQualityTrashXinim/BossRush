@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.Toggle
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("Make every boss when you fight instant kill you\n" +
-                "\"The only way to showcase their skill for god acknowledgement\"");
+                "\"The only way to make god acknowledge you\"");
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }

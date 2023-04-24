@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && !projectileThatNeedtoCheck.velocity.ReachedLimited(2))
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active)
             {
                 if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
@@ -82,7 +82,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 foreach (Vector2 pos in list)
                 {
                     float Distance = Vector2.Distance(Projectile.Center, pos);
-                    if (Distance <= 30)
+                    if (Distance <= 20)
                     {
                         Pos1 = pos;
                         do

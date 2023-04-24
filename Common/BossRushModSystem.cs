@@ -11,7 +11,7 @@ namespace BossRush.Common
         public override void PostUpdateEverything()
         {
             ChallengeGodColorAnimation();
-            YellowPulseYellowWhiteAnimation();
+            YellowPulseYellowWhiteAnimation(); 
             SynergyColorAnimation();
         }
 
@@ -81,33 +81,27 @@ namespace BossRush.Common
             }
         }
         public static Color SynergyColor => new Color(BWRed, BWGreen, BWBlue);
-        static int BWRed = 0, BWGreen = 150, BWBlue = 150;
+        static int BWRed = 50, BWGreen = 175, BWBlue = 175;
         int Switch3 = 0;
         private void SynergyColorAnimation()
         {
-            //Pulsing Yellow
+
             if (Switch3 != 1)
             {
-                if (BWBlue < 255)
-                {//default value 100, 100, 0
-                    Math.Clamp(++BWRed, 0, 255);
-                    Math.Clamp(++BWGreen, 150, 255);
-                    Math.Clamp(++BWBlue, 150, 255);
-                }
-                else
+                BWRed = Math.Clamp(BWRed + 4, 50, 225);
+                BWGreen = Math.Clamp(BWGreen + 1, 175, 225);
+                BWBlue = Math.Clamp(BWBlue + 1, 175, 225);
+                if (BWBlue >= 225)
                 {
                     Switch3 = 1;
                 }
             }
             else
             {
-                if (BWBlue > 150)
-                {
-                    Math.Clamp(--BWRed, 0, 255);
-                    Math.Clamp(--BWGreen, 150, 255);
-                    Math.Clamp(--BWBlue, 150, 255);
-                }
-                else
+                BWRed = Math.Clamp(BWRed - 4, 50, 225);
+                BWGreen = Math.Clamp(BWGreen - 1, 175, 225);
+                BWBlue = Math.Clamp(BWBlue - 1, 175, 225);
+                if (BWBlue <= 175)
                 {
                     Switch3 = 0;
                 }

@@ -12,7 +12,7 @@ namespace BossRush
     {
         public static Vector2 LimitedVelocity(this Vector2 velocity, float limited)
         {
-            velocity.GetAbsoluteVectorNormalized(limited, out float X, out float Y);
+            GetAbsoluteVectorNormalized(velocity, limited, out float X, out float Y);
             velocity.X = Math.Clamp(velocity.X, -X, X);
             velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
             return velocity;
@@ -58,12 +58,12 @@ namespace BossRush
 
         public static bool ReachedLimited(this Vector2 velocity, float limited)
         {
-            velocity.GetAbsoluteVectorNormalized(limited, out float X, out float Y);
+            GetAbsoluteVectorNormalized(velocity, limited, out float X, out float Y);
             if (Math.Abs(velocity.X) >= X) return true;
             if (Math.Abs(velocity.Y) >= Y) return true;
             return false;
         }
-        public static void GetAbsoluteVectorNormalized(this Vector2 velocity, float limit, out float X, out float Y)
+        public static void GetAbsoluteVectorNormalized(Vector2 velocity, float limit, out float X, out float Y)
         {
             Vector2 newVelocity = velocity.SafeNormalize(Vector2.Zero) * limit;
             X = Math.Abs(newVelocity.X);
@@ -92,7 +92,7 @@ namespace BossRush
         public static Vector2 Vector2SmallestInList(List<Vector2> flag)
         {
             List<Vector2> finalflag = flag;
-            for (int i = 0; i < flag.Count; )
+            for (int i = 0; i < flag.Count;)
             {
                 for (int l = i + 1; l < flag.Count; ++l)
                 {

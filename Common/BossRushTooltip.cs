@@ -1,10 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using BossRush.Common.Global;
 using BossRush.Contents.Items;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Common
 {
@@ -12,6 +12,12 @@ namespace BossRush.Common
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            if (item.ModItem is ISynergyItem)
+            {
+                TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
+                line.OverrideColor = BossRushModSystem.SynergyColor;
+                tooltips.Add(line);
+            }
             if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
             {
                 return;
@@ -26,12 +32,6 @@ namespace BossRush.Common
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImprove", "Sword can swing in all direction, on 3rd attack will do a special attack");
                 line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
-                tooltips.Add(line);
-            }
-            if(item.ModItem is ISynergyItem)
-            {
-                TooltipLine line = new TooltipLine(Mod, "Synergy Weapon", "Synergy Weapon");
-                line.OverrideColor = BossRushModSystem.SynergyColor;
                 tooltips.Add(line);
             }
         }

@@ -61,14 +61,13 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
             CreateRecipe()
                 .AddIngredient(ItemID.ThrowingKnife)
                 .AddIngredient(ItemID.Gi)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }
 
     public class ShurikenCustom : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Item_" + ItemID.Shuriken;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Shuriken);
         public override void SetDefaults()
         {
             Projectile.width = 20;
