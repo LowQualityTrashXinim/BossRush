@@ -1,9 +1,7 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.ID;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -50,11 +48,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         {
             for (int i = 0; i < 3; i++)
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
+                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire, 0, 0, 0, default, Main.rand.NextFloat(1f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
+                Main.dust[dustnumber].velocity = new Vector2(Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f));
             }
         }
-
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             Player player = Main.player[Projectile.owner];
@@ -72,7 +70,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             {
                 Projectile.damage += 5;
             }
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<SapphireGemP>()] < 20) Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2CircularEdge(40f, 40f), ModContent.ProjectileType<SapphireGemP>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<SapphireGemP>()] < 20)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Main.rand.NextVector2CircularEdge(40f, 40f), ModContent.ProjectileType<SapphireGemP>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,34 +13,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark
         }
         public override void SetDefaults()
         {
-            Item.width = 34;
-            Item.height = 24;
-
-            Item.damage = 12;
-            Item.knockBack = 1f;
-            Item.value = Item.buyPrice(gold: 50);
-            Item.shootSpeed = 12;
-            Item.useTime = 100;
-            Item.useAnimation = 100;
-
-            Item.autoReuse = false;
-            Item.noMelee = true;
-
-            Item.shoot = ModContent.ProjectileType<SparkFlare>();
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useAmmo = AmmoID.Flare;
+            Item.BossRushDefaultRange(34, 24, 15, 1f, 84, 84, ItemUseStyleID.Shoot, ModContent.ProjectileType<SparkFlare>(), 12, false, AmmoID.Flare);
             Item.rare = 3;
-            Item.DamageType = DamageClass.Ranged;
-
             Item.UseSound = SoundID.Item11;
+            Item.value = Item.buyPrice(gold: 50);
         }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SparkFlare>(), (int)(damage * .25f), knockback, player.whoAmI);
-            return false;
+            type = ModContent.ProjectileType<SparkFlare>();
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

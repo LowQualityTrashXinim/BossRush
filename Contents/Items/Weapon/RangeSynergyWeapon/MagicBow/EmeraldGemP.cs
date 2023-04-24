@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Specialized;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -42,13 +43,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 Projectile.ai[1]++;
                 if (Projectile.ai[1] >= 20)
                 {
-                    if (Projectile.ai[1] == 20) { Projectile.velocity = -Projectile.velocity; }
+                    if (Projectile.ai[1] == 20) { Projectile.velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero); }
                     if (Projectile.ai[1] <= 50)
                     {
-                        if (Projectile.ai[1] == 50)
-                        {
-                            Projectile.velocity = new Vector2((float)Math.Round(Projectile.velocity.X, 2), (float)Math.Round(Projectile.velocity.Y, 2));
-                        }
                         Projectile.damage++;
                         Projectile.velocity += Projectile.velocity * 0.1f;
                     }
@@ -60,26 +57,28 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             int count = 0;
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.projectile[i].ModProjectile is EmeraldGemP && Main.projectile[i].active)
+                if (Main.projectile[i].ModProjectile is not EmeraldGemP || !Main.projectile[i].active)
                 {
-                    float ProjectileDis = Vector2.Distance(CurrentPos, Main.projectile[i].Center);
-                    if (ProjectileDis <= 35)
-                    {
-                        count++;
-                        if (count >= 2)
-                        {
-                            Projectile.Kill();
-                            return;
-                        }
-                    }
+                    continue;
+                }
+                float ProjectileDis = Vector2.Distance(CurrentPos, Main.projectile[i].Center);
+                if (ProjectileDis > 35)
+                {
+                    continue;
+                }
+                count++;
+                if (count >= 2)
+                {
+                    Projectile.Kill();
+                    return;
                 }
             }
         }
         public override void Kill(int timeLeft)
         {
-            for (int l = 0; l < 4; l++)
+            for (int l = 0; l < 3; l++)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)), ModContent.ProjectileType<SmallEmerald>(), (int)(Projectile.damage * 0.5f), 1f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)), ModContent.ProjectileType<SmallEmerald>(), (int)(Projectile.damage * 0.65f), 1f, Projectile.owner);
             }
             for (int i = 0; i < 100; i++)
             {
@@ -100,7 +99,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = true;
-            Projectile.scale = 0.5f;
+            Projectile.scale = .65f;
             Projectile.timeLeft = 60;
         }
         public override void AI()

@@ -1,19 +1,20 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.ID;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
     internal class TopazGemP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Topaz);
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.width = 18;
             Projectile.height = 14;
             Projectile.friendly = true;
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 1;
             Projectile.light = 1f;
             Projectile.tileCollide = true;
             Projectile.timeLeft = 300;
@@ -26,8 +27,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         int bouncecount = 0;
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.penetrate = 1;
-
             if (bouncecount < 6)
             {
                 Projectile.netUpdate = true;

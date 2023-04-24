@@ -88,6 +88,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         }
         Vector2 PosToGo;
         int FirstFrame = 0;
+        bool isAlreadyHeldDown = false;
+        bool isAlreadyReleased = false;
+        int countdownBeforeReturn = 100;
+        int AbsoluteCountDown = 420;
+        int timeToSpin = 0;
         public override void AI()
         {
             if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1)
@@ -97,11 +102,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             }
             SpinAtCursorAI();
         }
-        bool isAlreadyHeldDown = false;
-        bool isAlreadyReleased = false;
-        int countdownBeforeReturn = 100;
-        int AbsoluteCountDown = 420;
-        int timeToSpin = 0;
         private void SpinAtCursorAI()
         {
             Player player = Main.player[Projectile.owner];

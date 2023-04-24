@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -14,26 +14,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void SetDefaults()
         {
-            Item.width = 18;
-            Item.height = 32;
-
-            Item.damage = 17;
-            Item.knockBack = 1f;
-
-            Item.useTime = 28;
-            Item.useAnimation = 28;
+            Item.BossRushDefaultRange(18, 32, 17, 1, 28, 28, ItemUseStyleID.Shoot, ModContent.ProjectileType<EmeraldBolt>(), 6f, true);
 
             Item.rare = 2;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Ranged;
             Item.mana = 12;
-
-            Item.shoot = ModContent.ProjectileType<EmeraldBolt>();
-            Item.shootSpeed = 6f;
             Item.value = Item.buyPrice(gold: 50);
-
             Item.UseSound = SoundID.Item75;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -41,8 +26,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             for (int i = 0; i < 20; i++)
             {
                 Vector2 CircularRan = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(20));
-                CircularRan.X += Main.rand.Next(-3, 3);
-                CircularRan.Y += Main.rand.Next(-3, 3);
+                CircularRan += Main.rand.NextVector2Circular(3, 3);
                 Dust.NewDustPerfect(position, DustID.GemEmerald, CircularRan, 100, default, 0.5f);
             }
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<EmeraldBolt>(), damage, knockback, player.whoAmI);

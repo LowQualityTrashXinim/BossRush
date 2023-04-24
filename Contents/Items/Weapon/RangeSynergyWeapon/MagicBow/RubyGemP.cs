@@ -8,6 +8,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
     internal class RubyGemP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Ruby);
         public override void SetDefaults()
         {
             Projectile.width = 14;

@@ -82,7 +82,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 foreach (Vector2 pos in list)
                 {
                     float Distance = Vector2.Distance(Projectile.Center, pos);
-                    if (Distance <= 15)
+                    if (Distance <= 30)
                     {
                         Pos1 = pos;
                         do

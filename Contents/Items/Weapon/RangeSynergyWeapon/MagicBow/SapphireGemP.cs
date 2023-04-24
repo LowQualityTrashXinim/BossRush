@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
@@ -6,6 +7,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
     internal class SapphireGemP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Sapphire);
         public override void SetDefaults()
         {
             Projectile.width = 18;

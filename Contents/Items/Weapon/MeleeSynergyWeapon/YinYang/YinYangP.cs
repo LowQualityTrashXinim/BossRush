@@ -11,7 +11,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
         {
             ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 25f;
         }
-
         public override void SetDefaults()
         {
             ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
@@ -25,7 +24,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
         }
         int charge = 0;
         int spawnCounter = 5;
-
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             charge++;
