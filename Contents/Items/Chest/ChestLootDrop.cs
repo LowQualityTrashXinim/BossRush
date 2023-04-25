@@ -361,6 +361,8 @@ namespace BossRush.Contents.Items.Chest
             {
                 rng = Main.rand.Next(1, 6);
             }
+            ReturnWeapon = 0;
+            Amount = 1;
             List<int> DropItemMelee = new List<int>();
             List<int> DropItemRange = new List<int>();
             List<int> DropItemMagic = new List<int>();
@@ -431,8 +433,6 @@ namespace BossRush.Contents.Items.Chest
             {
                 AddLoot(list, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon, DropItemMisc);
             }
-            ReturnWeapon = 0;
-            Amount = 0;
             ChooseWeapon(rng, ref ReturnWeapon, ref Amount, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon, DropItemMisc);
         }
         private static void AddLoot(List<int> FlagNumber, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon, List<int> DropItemMisc)

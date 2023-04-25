@@ -31,10 +31,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void Kill(int timeLeft)
         {
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Vector2 RandomSpread = Main.rand.NextVector2Circular(3f, 3f);
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, RandomSpread.X, RandomSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+                int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, RandomSpread.X, RandomSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+                Main.dust[dust].noGravity = true;
             }
         }
     }

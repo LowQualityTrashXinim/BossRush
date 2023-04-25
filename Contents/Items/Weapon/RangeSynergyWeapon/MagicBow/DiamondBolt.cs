@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -24,22 +25,27 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
+            Player player = Main.player[Projectile.owner];
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] < 25)
+            {
+                Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
+            }
         }
         public override void AI()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++)
             {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
+                int dustnumber = Dust.NewDust(Projectile.position, 0, 0, DustID.GemDiamond, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f));
                 Main.dust[dustnumber].noGravity = true;
+                Main.dust[dustnumber].fadeIn = 1f;
             }
             if (RicochetOff(out Vector2 pos2))
             {
                 Projectile.netUpdate = true;
                 Projectile.damage += 3;
                 Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
-                for (int i = 0; i < 25; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     Vector2 ReverseVelSpread = -Projectile.velocity * 2 + Main.rand.NextVector2Circular(5f, 5f);
                     int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, ReverseVelSpread.X, ReverseVelSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
@@ -51,7 +57,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active)
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active &&
+                projectileThatNeedtoCheck.velocity.X < 2 && projectileThatNeedtoCheck.velocity.X > -2 &&
+                projectileThatNeedtoCheck.velocity.Y < 2 && projectileThatNeedtoCheck.velocity.Y > -2)
             {
                 if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
@@ -79,19 +87,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (Check)
             {
                 Vector2 Pos1;
-                foreach (Vector2 pos in list)
+                foreach (Vector2 pos in list.Where(x => Vector2.Distance(Projectile.Center, x) <= 20))
                 {
-                    float Distance = Vector2.Distance(Projectile.Center, pos);
-                    if (Distance <= 20)
+                    Pos1 = pos;
+                    do
                     {
-                        Pos1 = pos;
-                        do
-                        {
-                            Pos2 = Main.rand.Next(list);
-                        }
-                        while (Pos2 == Pos1);
-                        return true;
+                        Pos2 = Main.rand.Next(list);
                     }
+                    while (Pos2 == Pos1);
+                    return true;
                 }
             }
             Pos2 = Vector2.Zero;

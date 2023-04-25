@@ -11,14 +11,14 @@ using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Artifact
 {
-    internal class FateDice : ModItem, IArtifactItem
+    internal class FateDecider : ModItem, IArtifactItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Fate Decider");
             Tooltip.SetDefault("\"Replacement of god dice\"" +
-                "On Equip : Increase amount weapon get drop from Treasure Chest by 4" +
+                "\nOn Equip : Increase amount weapon get drop from Treasure Chest by 4" +
                 "\nEffect : Random effect may occur ...");
         }
         public override void SetDefaults()
@@ -45,6 +45,7 @@ namespace BossRush.Contents.Items.Artifact
         bool NPCdeal5TimeDamage = false;
         bool UnableToUseWeapon = false;
         bool ExtendingEffect = false;
+        int OPEFFECT = 0;
         public override void ResetEffects()
         {
             FateDice = false;
@@ -52,7 +53,6 @@ namespace BossRush.Contents.Items.Artifact
         public override void PostUpdate()
         {
             effectlasting -= effectlasting > 0 ? 1 : 0;
-            Main.NewText("effectlasting : " + effectlasting);
             if (effectlasting <= 0)
             {
                 RNGdecide = -1;
@@ -61,12 +61,13 @@ namespace BossRush.Contents.Items.Artifact
                 NPCdeal5TimeDamage = false;
                 UnableToUseWeapon = false;
                 ExtendingEffect = false;
+                OPEFFECT = 0;
             }
             if (!FateDice)
             {
                 return;
             }
-            if (effectlasting <= 0 && Main.rand.NextBool(100))
+            if (effectlasting <= 0 && Main.rand.NextBool(600))
             {
                 RNGdecide = Main.rand.Next(17);
             }
@@ -93,12 +94,12 @@ namespace BossRush.Contents.Items.Artifact
                     }
                     if (effectlasting % 20 == 0)
                     {
-                        BossRushUtils.SpawnHostileProjectileDirectlyOnPlayer(Player, 200, 50, true, Vector2.Zero, ProjectileID.HellfireArrow, 100, 10f);
+                        BossRushUtils.SpawnHostileProjectileDirectlyOnPlayer(Player, 1000, 50, true, Vector2.Zero, ProjectileID.HellfireArrow, 100, 10f);
                     }
                     effectlasting = effectlasting > 0 ? effectlasting : 900;
                     break;
                 case 3:
-                    Player.AddBuff(BuffID.Confused, 3000);
+                    Player.AddBuff(BuffID.Confused, 600);
                     effectlasting = effectlasting > 0 ? effectlasting : 40;
                     break;
                 case 4:
@@ -167,13 +168,18 @@ namespace BossRush.Contents.Items.Artifact
                     break;
                 case 15:
                     effectlasting = effectlasting > 0 ? effectlasting : 30;
-                    Effect9();
-                    Effect10();
-                    Effect11();
-                    Effect12();
-                    Effect13();
-                    Effect14();
-                    Effect16(effectlasting);
+                    if (OPEFFECT == 0)
+                    {
+                        Effect9();
+                        Effect10();
+                        Effect11();
+                        Effect12();
+                        Effect13();
+                        Effect14();
+                        Effect16(effectlasting);
+                        OPEFFECT = 10;
+                    }
+                    OPEFFECT -= OPEFFECT > 0 ? 1 : 0;
                     break;
                 case 16:
                     effectlasting = effectlasting > 0 ? effectlasting : 600;
@@ -182,7 +188,7 @@ namespace BossRush.Contents.Items.Artifact
                 default:
                     break;
             }
-            if (Main.rand.NextBool(50) && !ExtendingEffect)
+            if (Main.rand.NextBool(300) && !ExtendingEffect)
             {
                 ExtendingEffect = true;
                 effectlasting *= 5;
@@ -306,7 +312,7 @@ namespace BossRush.Contents.Items.Artifact
         private void Effect9()
         {
             ChestLootDrop.GetWeapon(out int Weapon, out int amount);
-            Item.NewItem(Player.GetSource_FromThis(), Player.Center + new Vector2(0, -900), Weapon, amount);
+            Player.QuickSpawnItem(null, Weapon, amount);
         }
         private void Effect10()
         {
@@ -318,12 +324,9 @@ namespace BossRush.Contents.Items.Artifact
         }
         private void Effect11()
         {
-            for (int i = 0; i < 10; i++)
-            {
-                Vector2 position = new Vector2(Player.Center.X + Main.rand.NextFloat(-500, 500), Player.Center.Y - 1000);
-                Vector2 velocity = new Vector2(0, 20).RotatedBy(MathHelper.ToRadians(30));
-                Projectile.NewProjectile(Player.GetSource_FromThis(), position, velocity, ProjectileID.Meteor1, 100, 10, Player.whoAmI);
-            }
+            Vector2 position = new Vector2(Player.Center.X + Main.rand.NextFloat(-1000, 1000), Player.Center.Y - 1000);
+            Vector2 velocity = new Vector2(0, 20);
+            Projectile.NewProjectile(Player.GetSource_FromThis(), position, velocity, ProjectileID.StarWrath, Player.HeldItem.damage * 3, 10, Player.whoAmI);
         }
         private void Effect12()
         {
