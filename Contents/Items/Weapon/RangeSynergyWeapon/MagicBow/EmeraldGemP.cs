@@ -2,8 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Specialized;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -39,7 +37,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             if (count != 0)
             {
-                CheckProjectilecollide(Projectile.Center);
                 Projectile.ai[1]++;
                 if (Projectile.ai[1] >= 20)
                 {
@@ -52,37 +49,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 }
             }
         }
-        public void CheckProjectilecollide(Vector2 CurrentPos)
-        {
-            int count = 0;
-            for (int i = 0; i < Main.maxProjectiles; i++)
-            {
-                if (Main.projectile[i].ModProjectile is not EmeraldGemP || !Main.projectile[i].active)
-                {
-                    continue;
-                }
-                float ProjectileDis = Vector2.Distance(CurrentPos, Main.projectile[i].Center);
-                if (ProjectileDis > 35)
-                {
-                    continue;
-                }
-                count++;
-                if (count >= 2)
-                {
-                    Projectile.Kill();
-                    return;
-                }
-            }
-        }
         public override void Kill(int timeLeft)
         {
             for (int l = 0; l < 3; l++)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, -Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(30)), ModContent.ProjectileType<SmallEmerald>(), (int)(Projectile.damage * 0.65f), 1f, Projectile.owner);
             }
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 30; i++)
             {
-                Vector2 Ran = Main.rand.NextVector2CircularEdge(15f, 15f);
+                Vector2 Ran = Main.rand.NextVector2CircularEdge(5f, 5f);
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemEmerald, Ran.X, Ran.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }

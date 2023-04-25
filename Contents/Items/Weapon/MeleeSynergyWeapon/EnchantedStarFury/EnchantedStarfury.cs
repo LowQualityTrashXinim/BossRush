@@ -86,7 +86,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             }
             else
             {
-                if (!Projectile.velocity.ReachedLimited(20)) Projectile.velocity += localOriginalvelocity;
+                if (!Projectile.velocity.IsLimitReached(20)) Projectile.velocity += localOriginalvelocity;
             }
         }
 

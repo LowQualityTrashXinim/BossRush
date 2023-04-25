@@ -165,11 +165,6 @@ namespace BossRush
                 Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, spriteeffect, 0);
             }
         }
-        public static List<int> OrderFromSmallest(this List<int> flag)
-        {
-            flag.Sort();
-            return flag;
-        }
         public static List<int> SetUpRNGTier(this List<int> FlagNum)
         {
             if (FlagNum.Count < 2)
@@ -186,6 +181,11 @@ namespace BossRush
                 }
             }
             return FlagNumNew;
+        }
+        public static List<int> OrderFromSmallest(this List<int> flag)
+        {
+            flag.Sort();
+            return flag;
         }
         public static List<int> RemoveDupeInList(this List<int> flag)
         {

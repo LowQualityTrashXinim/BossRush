@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BossRush
 {
@@ -55,7 +56,16 @@ namespace BossRush
             { return true; }//higher = -Y, lower = Y
             return false;
         }
-
+        public static bool IsLimitReached(this Vector2 velocity, float limited)
+        {
+            if(velocity.X < limited && velocity.X > -limited &&
+                velocity.Y < limited && velocity.Y > -limited)
+            {
+                return false;
+            }
+            return true;
+        }
+        [Obsolete("Not working", true)]
         public static bool ReachedLimited(this Vector2 velocity, float limited)
         {
             GetAbsoluteVectorNormalized(velocity, limited, out float X, out float Y);

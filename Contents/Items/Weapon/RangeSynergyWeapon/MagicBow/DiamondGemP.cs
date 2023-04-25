@@ -17,7 +17,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.penetrate = -1;
         }
-        public int AAAA = 0;
         public override void AI()
         {
             if (Projectile.velocity != Vector2.Zero) { Projectile.velocity -= Projectile.velocity * 0.05f; Projectile.timeLeft = 120; }

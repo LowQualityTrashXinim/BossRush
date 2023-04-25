@@ -38,10 +38,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            float ToRandom = Main.rand.Next(3);
+            float ToRandom = Main.rand.Next(90);
             for (int i = 0; i < 3; i++)
             {
-                Vector2 Rotate = Vector2.One.RotatedBy(MathHelper.ToRadians(120 * i + ToRandom * 30)) * 20f;
+                Vector2 Rotate = Vector2.One.RotatedBy(MathHelper.ToRadians(120 * i + ToRandom)) * 20f;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<EmeraldGemP>(), Projectile.damage, 0, Projectile.owner);
             }
             target.immune[Projectile.owner] = 3;

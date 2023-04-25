@@ -57,9 +57,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active &&
-                projectileThatNeedtoCheck.velocity.X < 2 && projectileThatNeedtoCheck.velocity.X > -2 &&
-                projectileThatNeedtoCheck.velocity.Y < 2 && projectileThatNeedtoCheck.velocity.Y > -2)
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && !projectileThatNeedtoCheck.velocity.IsLimitReached(2))
             {
                 if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
