@@ -167,20 +167,8 @@ namespace BossRush
         }
         public static List<int> OrderFromSmallest(this List<int> flag)
         {
-            List<int> finalflag = flag;
-            for (int i = 0; i < flag.Count; ++i)
-            {
-                for (int l = i + 1; l < flag.Count; ++l)
-                {
-                    if (flag[i] > flag[l])
-                    {
-                        int CurrentIndexNum = finalflag[i];
-                        finalflag[i] = flag[l];
-                        finalflag[l] = CurrentIndexNum;
-                    }
-                }
-            }
-            return finalflag;
+            flag.Sort();
+            return flag;
         }
         public static List<int> SetUpRNGTier(this List<int> FlagNum)
         {

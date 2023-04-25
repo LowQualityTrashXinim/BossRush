@@ -37,7 +37,7 @@ namespace BossRush.Contents.Items.Artifact
     class FateDicePlayer : ModPlayer
     {
         public bool FateDice = false;
-        int RNGdecide;
+        int RNGdecide = -1;
         int effectlasting = 0;
 
         bool CanCrit = false;
@@ -49,14 +49,11 @@ namespace BossRush.Contents.Items.Artifact
         {
             FateDice = false;
         }
-        public override void PreUpdate()
+        public override void PostUpdate()
         {
             effectlasting -= effectlasting > 0 ? 1 : 0;
-            if (!FateDice)
-            {
-                return;
-            }
-            if (effectlasting == 0)
+            Main.NewText("effectlasting : " + effectlasting);
+            if (effectlasting <= 0)
             {
                 RNGdecide = -1;
                 CanCrit = false;
@@ -65,23 +62,21 @@ namespace BossRush.Contents.Items.Artifact
                 UnableToUseWeapon = false;
                 ExtendingEffect = false;
             }
-        }
-        public override void PostUpdate()
-        {
             if (!FateDice)
             {
                 return;
             }
-            if (effectlasting == 0 & Main.rand.NextBool(100))
+            if (effectlasting <= 0 && Main.rand.NextBool(100))
             {
                 RNGdecide = Main.rand.Next(17);
             }
+            SpamTextToScare();
             switch (RNGdecide)
             {
                 case 0:
                     Player.velocity = Vector2.Zero;
                     Player.AddBuff(BuffID.Frozen, 60);
-                    effectlasting = 5;
+                    effectlasting = effectlasting > 0 ? effectlasting : 5;
                     break;
                 case 1:
                     Player.AddBuff(BuffID.Weak, 300);
@@ -89,7 +84,7 @@ namespace BossRush.Contents.Items.Artifact
                     Player.AddBuff(BuffID.BrokenArmor, 300);
                     Player.AddBuff(BuffID.ManaSickness, 300);
                     Player.AddBuff(BuffID.Obstructed, 300);
-                    effectlasting = 30;
+                    effectlasting = effectlasting > 0 ? effectlasting : 30;
                     break;
                 case 2:
                     if (effectlasting % 50 == 0)
@@ -100,33 +95,36 @@ namespace BossRush.Contents.Items.Artifact
                     {
                         BossRushUtils.SpawnHostileProjectileDirectlyOnPlayer(Player, 200, 50, true, Vector2.Zero, ProjectileID.HellfireArrow, 100, 10f);
                     }
-                    effectlasting = 900;
+                    effectlasting = effectlasting > 0 ? effectlasting : 900;
                     break;
                 case 3:
                     Player.AddBuff(BuffID.Confused, 3000);
-                    effectlasting = 40;
+                    effectlasting = effectlasting > 0 ? effectlasting : 40;
                     break;
                 case 4:
                     NPCdeal5TimeDamage = true;
-                    effectlasting = 210;
+                    effectlasting = effectlasting > 0 ? effectlasting : 210;
                     break;
                 case 5:
                     if (effectlasting % 4 == 0)
                     {
                         NPC.SpawnOnPlayer(Player.whoAmI, Main.rand.Next(TerrariaArrayID.BAT));
                     }
-                    effectlasting = 100;
+                    effectlasting = effectlasting > 0 ? effectlasting : 100;
                     break;
                 case 6:
                     UnableToUseWeapon = true;
-                    effectlasting = 120;
+                    int dust = Dust.NewDust(Player.Center, 0, 0, DustID.Blood);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
+                    effectlasting = effectlasting > 0 ? effectlasting : 120;
                     break;
                 case 7:
                     for (int i = 0; i < Player.CountBuffs(); i++)
                     {
                         Player.DelBuff(i);
                     }
-                    effectlasting = 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 1;
                     break;
                 case 8:
                     if (Main.dayTime)
@@ -141,34 +139,34 @@ namespace BossRush.Contents.Items.Artifact
                         Main.bloodMoon = true;
                     }
                     RNGdecide = Main.rand.Next(8);
-                    effectlasting = 100;
+                    effectlasting = effectlasting > 0 ? effectlasting : 100;
                     break;
                 case 9:
                     Effect9();
-                    effectlasting = 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 1;
                     break;
                 case 10:
                     Effect10();
-                    effectlasting = 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 1;
                     break;
                 case 11:
                     Effect11();
-                    effectlasting = 300;
+                    effectlasting = effectlasting > 0 ? effectlasting : 300;
                     break;
                 case 12:
                     Effect12();
-                    effectlasting = 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 1;
                     break;
                 case 13:
                     Effect13();
-                    effectlasting = 180;
+                    effectlasting = effectlasting > 0 ? effectlasting : 180;
                     break;
                 case 14:
                     Effect14();
-                    effectlasting = 60;
+                    effectlasting = effectlasting > 0 ? effectlasting : 60;
                     break;
                 case 15:
-                    effectlasting = 30;
+                    effectlasting = effectlasting > 0 ? effectlasting : 30;
                     Effect9();
                     Effect10();
                     Effect11();
@@ -178,11 +176,10 @@ namespace BossRush.Contents.Items.Artifact
                     Effect16(effectlasting);
                     break;
                 case 16:
-                    effectlasting = 600;
+                    effectlasting = effectlasting > 0 ? effectlasting : 600;
                     Effect16(effectlasting);
                     break;
                 default:
-                    Main.NewText("Unimplemented");
                     break;
             }
             if (Main.rand.NextBool(50) && !ExtendingEffect)
@@ -190,11 +187,10 @@ namespace BossRush.Contents.Items.Artifact
                 ExtendingEffect = true;
                 effectlasting *= 5;
             }
-            SpamTextToScare();
         }
         private void SpamTextToScare()
         {
-            if (Main.rand.NextBool(150))
+            if (Main.rand.NextBool(750))
             {
                 int RandomTextChooser = Main.rand.Next(11);
                 Color color = Color.White;
@@ -232,7 +228,7 @@ namespace BossRush.Contents.Items.Artifact
                         color = new Color(10, 10, 255);
                         break;
                     case 8:
-                        TextString = "I see you, we gonna be together forever, forever and more chopping tree " + $"[i:{ItemID.LucyTheAxe}]" + $"[i:{ItemID.Heart}]";
+                        TextString = "I see you, we gonna be together forever, forever chopping tree " + $"[i:{ItemID.LucyTheAxe}]" + $"[i:{ItemID.Heart}]";
                         color = new Color(100, 0, 0);
                         break;
                     case 9:
@@ -326,7 +322,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 Vector2 position = new Vector2(Player.Center.X + Main.rand.NextFloat(-500, 500), Player.Center.Y - 1000);
                 Vector2 velocity = new Vector2(0, 20).RotatedBy(MathHelper.ToRadians(30));
-                Projectile.NewProjectile(Player.GetSource_FromThis(), position, velocity, ProjectileID.MeteorShot, 100, 10, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), position, velocity, ProjectileID.Meteor1, 100, 10, Player.whoAmI);
             }
         }
         private void Effect12()
