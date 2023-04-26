@@ -7,6 +7,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
     internal class EmeraldGemP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Emerald);
         public override void SetDefaults()
         {
             Projectile.width = 14;
@@ -65,7 +66,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
     }
     public class SmallEmerald : ModProjectile
     {
-        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<EmeraldGemP>();
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Emerald);
         public override void SetDefaults()
         {
             Projectile.width = 14;

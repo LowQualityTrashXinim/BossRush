@@ -1,9 +1,7 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.ID;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -39,15 +37,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 
         public override void AI()
         {
-            for (int i = 0; i < 3; i++)
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
-                Main.dust[dustnumber].noGravity = true;
-            }
+            int dustnumber = Dust.NewDust(Projectile.position, 0, 0, DustID.GemRuby, 0, 0, 0, default, Main.rand.NextFloat(1f, 1.5f));
+            Main.dust[dustnumber].noGravity = true;
+            Main.dust[dustnumber].velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) + Main.rand.NextVector2Circular(1, 1);
             if (CheckNearByProjectile())
             {
-                Projectile.damage += 3;
-                Projectile.velocity *= 1.05f;
+                Projectile.damage = (int)(Projectile.damage * 1.5f);
+                Projectile.velocity *= 1.25f;
             }
         }
 
@@ -55,10 +51,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         {
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.projectile[i].type == ModContent.ProjectileType<RubyGemP>())
+                if (Main.projectile[i].ModProjectile is RubyGemP && Main.projectile[i].active)
                 {
                     float Distance = Vector2.Distance(Projectile.Center, Main.projectile[i].Center);
-                    if (Distance <= 30)
+                    if (Distance <= 20)
                     {
                         return true;
                     }
@@ -66,20 +62,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             return false;
         }
-
         public override void Kill(int timeLeft)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 25; i++)
             {
-                Vector2 RandomCir = Main.rand.NextVector2Circular(10f, 10f);
-                int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, RandomCir.X, RandomCir.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+                Vector2 RandomCir = Main.rand.NextVector2Circular(3f, 3f);
+                int dustnumber = Dust.NewDust(Projectile.position, 0, 0, DustID.GemRuby, RandomCir.X, RandomCir.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
         }
-
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawTrail(lightColor);
+            Projectile.DrawTrail(Projectile.GetAlpha(lightColor), .02f);
             return true;
         }
     }

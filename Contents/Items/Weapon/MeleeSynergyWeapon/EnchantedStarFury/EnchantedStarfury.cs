@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 {
@@ -15,7 +16,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
         }
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 66, 66, 32, 4f, 60, 20, ItemUseStyleID.Swing, true);
+            BossRushUtils.BossRushSetDefault(Item, 66, 66, 32, 4f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);
             Item.DamageType = DamageClass.Melee;
             Item.shoot = ProjectileID.EnchantedBeam;
             Item.shootSpeed = 20f;

@@ -182,11 +182,6 @@ namespace BossRush
             }
             return FlagNumNew;
         }
-        public static List<int> OrderFromSmallest(this List<int> flag)
-        {
-            flag.Sort();
-            return flag;
-        }
         public static List<int> RemoveDupeInList(this List<int> flag)
         {
             HashSet<int> HashsetRemoveDup = new(flag);

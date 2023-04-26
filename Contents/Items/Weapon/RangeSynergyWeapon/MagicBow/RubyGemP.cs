@@ -40,12 +40,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                         {
                             Projectile.damage += 10;
                         }
-                        for (int i = 0; i < 3; i++)
-                        {
-                            Vector2 RandomCir = Main.rand.NextVector2Circular(5f, 5f);
-                            int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, RandomCir.X, RandomCir.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
-                            Main.dust[dustnumber].noGravity = true;
-                        }
+                        Vector2 RandomCir = Main.rand.NextVector2Circular(5f, 5f);
+                        int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemRuby, RandomCir.X, RandomCir.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+                        Main.dust[dustnumber].noGravity = true;
                         Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 3f;
                         Projectile.rotation = Projectile.velocity.ToRotation();
                     }

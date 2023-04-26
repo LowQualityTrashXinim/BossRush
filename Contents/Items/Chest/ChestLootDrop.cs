@@ -1,11 +1,10 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using System.Collections.Generic;
 using BossRush.Common;
+using Terraria.ModLoader;
 using BossRush.Common.Utils;
-using BossRush.Contents.Items.Artifact;
+using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
 
 namespace BossRush.Contents.Items.Chest
@@ -140,7 +139,7 @@ namespace BossRush.Contents.Items.Chest
         {
             List<int> RNGchooseWhichTierToGet = FlagNumber.SetUpRNGTier();
             RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInList();
-            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.OrderFromSmallest();
+            RNGchooseWhichTierToGet.Sort();
             for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
             {
                 switch (FlagNumber[i])
