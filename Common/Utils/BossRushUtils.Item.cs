@@ -22,6 +22,16 @@ namespace BossRush
             item.useStyle = useStyle;
             item.autoReuse = autoReuse;
         }
+        public static void BossRushDefaultToConsume(this Item item, int width, int height)
+        {
+            item.width = width;
+            item.height = height;
+            item.useTime = 30;
+            item.useAnimation = 30;
+            item.useStyle = ItemUseStyleID.HoldUp;
+            item.autoReuse = false;
+            item.consumable = true;
+        }
         public static void BossRushSetDefaultSpear(Item item, int spearType, float shootSpeed)
         {
             item.noUseGraphic = true;

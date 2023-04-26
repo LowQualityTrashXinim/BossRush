@@ -22,10 +22,8 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void SetDefaults()
         {
-            Item.width = 32;
-            Item.height = 32;
+            Item.BossRushDefaultToConsume(32, 32);
             Item.rare = 9;
-            Item.consumable = true;
         }
         public override bool? UseItem(Player player)
         {
@@ -37,7 +35,7 @@ namespace BossRush.Contents.Items.Artifact
     public class QualityPlayer : ModPlayer
     {
         public bool TokenOfPride = false;
-        public override void PreUpdate()
+        public override void PostUpdate()
         {
             if (TokenOfPride)
             {

@@ -1,10 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Artifact;
-using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Global
 {
@@ -19,7 +19,7 @@ namespace BossRush.Common.Global
             {
                 if(item.consumable)
                 {
-                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount < 1 && !NPC.downedSlimeKing;
+                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount < 1;
                 }
             }
             return base.CanUseItem(item, player);
@@ -39,7 +39,7 @@ namespace BossRush.Common.Global
             {
                 if (item.consumable)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Can only consume before you beat any boss and only 1 of artifact can be consume"));
+                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 of artifact can be consume"));
                 }
             }
         }

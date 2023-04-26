@@ -7,10 +7,14 @@ namespace BossRush.Contents.Items.aDebugItem
 {
     internal class DayTimeCycle : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FastClock);
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ItemIconPulse[Item.type] = true;
+        }
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 1, 1, 0, 0, 10, 10, ItemUseStyleID.HoldUp, false);
+            BossRushUtils.BossRushSetDefault(Item, 1, 1, 0, 0, 1, 1, ItemUseStyleID.HoldUp, false);
         }
         int count = 0;
         public override bool? UseItem(Player player)
