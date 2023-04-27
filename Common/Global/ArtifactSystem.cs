@@ -59,7 +59,6 @@ namespace BossRush.Common.Global
         {
             tag["ArtifactCount"] = ArtifactCount;
         }
-
         public override void LoadData(TagCompound tag)
         {
             ArtifactCount = (int)tag["ArtifactCount"];

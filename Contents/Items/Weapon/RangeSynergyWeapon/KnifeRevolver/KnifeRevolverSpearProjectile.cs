@@ -9,9 +9,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
     internal class KnifeRevolverSpearProjectile : ModProjectile
     {
-        protected virtual float HoldoutRangeMin => 30f;
-        protected virtual float HoldoutRangeMax => 46f;
-
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<KnifeRevolver>();
         public float CollisionWidth => 10f * Projectile.scale;
         public override void SetDefaults()
         {
@@ -23,7 +21,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Projectile.ownerHitCheck = true;
             Projectile.hide = true;
         }
-
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             Vector2 start = Projectile.Center;
@@ -31,7 +28,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             float collisionPoint = 0f;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, CollisionWidth, ref collisionPoint);
         }
-
         public override bool PreAI()
         {
             Player player = Main.player[Projectile.owner];
@@ -55,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             {
                 progress = (duration - Projectile.timeLeft) / halfDuration;
             }
-            Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
+            Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * 30, Projectile.velocity * 46, progress);
             Projectile.rotation = Projectile.velocity.ToRotation() + (player.direction != 1 ? MathHelper.Pi : 0);
             return false;
         }
@@ -70,7 +66,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Main.EntitySpriteDraw(texture, drawPos, null, Color.White, Projectile.rotation, origin, Projectile.scale, sprite, 0);
             return false;
         }
-
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             Player player = Main.player[Projectile.owner];
@@ -87,18 +82,17 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
         public bool SpecialShotReady = false;
         public override void PreUpdate()
         {
-            Item item = Player.HeldItem;
-            if (item.type != ModContent.ItemType<KnifeRevolver>())
+            if (Player.HeldItem.type != ModContent.ItemType<KnifeRevolver>())
             {
                 return;
             }
             if (Main.mouseRight)
             {
-                item.UseSound = SoundID.Item1;
+                Player.HeldItem.UseSound = SoundID.Item1;
             }
             else
             {
-                item.UseSound = SoundID.Item40;
+                Player.HeldItem.UseSound = SoundID.Item40;
             }
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

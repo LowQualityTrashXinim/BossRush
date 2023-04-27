@@ -1,10 +1,9 @@
 ﻿using Terraria;
+using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.ID;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Schema;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
