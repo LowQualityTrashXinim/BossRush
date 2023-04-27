@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -14,28 +14,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void SetDefaults()
         {
-            Item.width = 18;
-            Item.height = 32;
-
-            Item.damage = 30;
+            Item.BossRushDefaultRange(18, 32, 39, 1f, 14, 14, ItemUseStyleID.Shoot, ModContent.ProjectileType<DiamondBolt>(), 10, true);
             Item.crit = 10;
-            Item.knockBack = 1f;
-
-            Item.useTime = 14;
-            Item.useAnimation = 14;
             Item.reuseDelay = 10;
-
             Item.rare = ItemRarityID.Green;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Ranged;
             Item.mana = 12;
-
-            Item.shoot = ModContent.ProjectileType<DiamondBolt>();
-            Item.shootSpeed = 10f;
             Item.value = Item.buyPrice(gold: 50);
-
             Item.UseSound = SoundID.Item75;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -43,8 +27,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             for (int i = 0; i < 20; i++)
             {
                 Vector2 CircularRan = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(20));
-                CircularRan.X += Main.rand.Next(-3, 3);
-                CircularRan.Y += Main.rand.Next(-3, 3);
+                CircularRan += Main.rand.NextVector2Circular(3, 3);
                 Dust.NewDustPerfect(position, DustID.GemDiamond, CircularRan, 100, default, 0.5f);
             }
             Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<DiamondBolt>(), damage, knockback, player.whoAmI);

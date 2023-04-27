@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
@@ -25,12 +26,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            Player player = Main.player[Projectile.owner];
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] < 25)
-            {
-                Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
-            }
+            Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
+            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
         }
         public override void AI()
         {
@@ -57,7 +54,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && !projectileThatNeedtoCheck.velocity.IsLimitReached(2))
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && (!projectileThatNeedtoCheck.velocity.IsLimitReached(4) || player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] > 10))
             {
                 if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
                 {
@@ -66,14 +63,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             return false;
         }
-        public List<Vector2> GetListOfActiveProj(out bool Check)
+        public List<Projectile> GetListOfActiveProj(out bool Check)
         {
-            List<Vector2> list = new List<Vector2>();
+            List<Projectile> list = new List<Projectile>();
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 if (CheckActiveAndCon(Main.projectile[i]))
                 {
-                    list.Add(Main.projectile[i].Center);
+                    list.Add(Main.projectile[i]);
                 }
             }
             Check = list.Count > 1;
@@ -81,18 +78,19 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public bool RicochetOff(out Vector2 Pos2)
         {
-            List<Vector2> list = GetListOfActiveProj(out bool Check);
+            List<Projectile> list = GetListOfActiveProj(out bool Check);
             if (Check)
             {
                 Vector2 Pos1;
-                foreach (Vector2 pos in list.Where(x => Vector2.Distance(Projectile.Center, x) <= 20))
+                foreach (var pos in list.Where(x => Vector2.Distance(Projectile.Center, x.Center) <= 15))
                 {
-                    Pos1 = pos;
+                    Pos1 = pos.Center;
                     do
                     {
-                        Pos2 = Main.rand.Next(list);
+                        Pos2 = Main.rand.Next(list).Center;
                     }
                     while (Pos2 == Pos1);
+                    pos.Kill();
                     return true;
                 }
             }
