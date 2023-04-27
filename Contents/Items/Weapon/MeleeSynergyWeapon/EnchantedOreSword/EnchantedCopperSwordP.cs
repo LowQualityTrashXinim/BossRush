@@ -2,13 +2,12 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
     internal class EnchantedCopperSwordP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperShortsword);
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;

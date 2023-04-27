@@ -7,6 +7,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
     internal class AmethystGemP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Amethyst);
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Ranged;
@@ -30,7 +31,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Y * 5);
                 Projectile.velocity *= 0.95f;
             }
-            if (Projectile.velocity.X < 1 && Projectile.velocity.X > -1 && Projectile.velocity.Y < 1 && Projectile.velocity.Y > -1)
+            if (Projectile.velocity.IsLimitReached(1))
             {
                 Projectile.velocity = Vector2.Zero;
                 count++;
@@ -52,7 +53,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         {
             for (int i = 0; i < 15; i++)
             {
-                Vector2 RandomCircular = Main.rand.NextVector2Circular(10f, 10f);
+                Vector2 RandomCircular = Main.rand.NextVector2Circular(5.5f, 5.5f);
                 Vector2 newVelocity = new Vector2(RandomCircular.X, RandomCircular.Y);
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemAmethyst, newVelocity.X, newVelocity.Y, 0, default, Main.rand.NextFloat(1.75f, 2.25f));
                 Main.dust[dustnumber].noGravity = true;

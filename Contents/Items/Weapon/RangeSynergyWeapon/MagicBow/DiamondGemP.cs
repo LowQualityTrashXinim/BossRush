@@ -7,6 +7,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
     internal class DiamondGemP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Diamond);
         public override void SetDefaults()
         {
             Projectile.width = 18;

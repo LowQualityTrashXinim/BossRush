@@ -30,12 +30,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override void AI()
         {
-            for (int i = 0; i < 1; i++)
-            {
-                int dustnumber = Dust.NewDust(Projectile.position, 0, 0, DustID.GemDiamond, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f));
-                Main.dust[dustnumber].noGravity = true;
-                Main.dust[dustnumber].fadeIn = 1f;
-            }
+            int dustnumber = Dust.NewDust(Projectile.position, 0, 0, DustID.GemDiamond, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f));
+            Main.dust[dustnumber].noGravity = true;
+            Main.dust[dustnumber].fadeIn = 1f;
             if (RicochetOff(out Vector2 pos2))
             {
                 Projectile.netUpdate = true;
@@ -44,21 +41,20 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 for (int i = 0; i < 15; i++)
                 {
                     Vector2 ReverseVelSpread = -Projectile.velocity * 2 + Main.rand.NextVector2Circular(5f, 5f);
-                    int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, ReverseVelSpread.X, ReverseVelSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
-                    Main.dust[dustnumber].noGravity = true;
+                    int dustnumber2 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, ReverseVelSpread.X, ReverseVelSpread.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+                    Main.dust[dustnumber2].noGravity = true;
                 }
             }
         }
-        private readonly float Distance = 2250000;
         public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck)
         {
             Player player = Main.player[Projectile.owner];
-            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP && projectileThatNeedtoCheck.active && (!projectileThatNeedtoCheck.velocity.IsLimitReached(4) || player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] > 10))
+            if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP
+                && projectileThatNeedtoCheck.active
+                && (!projectileThatNeedtoCheck.velocity.IsLimitReached(4) || player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] > 10)
+                && Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < 2250000)
             {
-                if (Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < Distance)
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
         }
@@ -81,7 +77,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             if (Check)
             {
                 Vector2 Pos1;
-                foreach (var pos in list.Where(x => Vector2.Distance(Projectile.Center, x.Center) <= 15))
+                foreach (var pos in list.Where(x => Vector2.DistanceSquared(Projectile.Center, x.Center) <= 225))
                 {
                     Pos1 = pos.Center;
                     do

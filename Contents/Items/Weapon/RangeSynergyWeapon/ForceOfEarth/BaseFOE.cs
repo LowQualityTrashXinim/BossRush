@@ -16,7 +16,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
             Projectile.light = 0.5f;
             Projectile.DamageType = DamageClass.Ranged;
         }
-
+        public virtual float OffsetBehavior => 0;
+        public override void AI()
+        {
+            Behavior(OffsetBehavior);
+        }
         public void Behavior(float OFFSet, float position = 40)
         {
             Player player = Main.player[Projectile.owner];

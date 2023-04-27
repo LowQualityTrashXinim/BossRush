@@ -7,6 +7,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
     internal class EnchantedGoldSwordP : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldShortsword);
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;
