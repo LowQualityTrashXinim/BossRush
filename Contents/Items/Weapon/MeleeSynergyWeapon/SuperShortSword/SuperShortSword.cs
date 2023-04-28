@@ -25,7 +25,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Item.height = 68;
             Item.width = 68;
 
-
             Item.useTime = 36;
             Item.useAnimation = 36;
 

@@ -24,20 +24,18 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         }
         Player player;
         Vector2 RotatePosition = Vector2.Zero;
-        Vector2 FixedMousePosition = Vector2.Zero;
-        Vector2 FixedProjectilePos = Vector2.Zero;
+        Vector2 FixedMousePosition;
+        Vector2 FixedProjectilePos;
         int Counter = 0;
         int timer = 999;
-        int firstframe = 0;
         public override bool PreAI()
         {
+            player = Main.player[Projectile.owner];
             Projectile.frame = (int)Projectile.ai[0];
-            if (firstframe == 0)
+            if (player.ItemAnimationJustStarted)
             {
-                player = Main.player[Projectile.owner];
                 FixedMousePosition = Main.MouseWorld;
                 FixedProjectilePos = Projectile.Center;
-                firstframe++;
             }
             if (player.ItemAnimationActive)
             {
@@ -66,6 +64,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             {
                 timer = 999;
             }
+            RotatePosition = getPosToReturn(player, 45 * Projectile.ai[0], Counter);
             return !player.ItemAnimationActive;
         }
         public override void AI()
@@ -93,7 +92,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             Vector2 SafeDegree = (Main.MouseWorld - Projectile.position).SafeNormalize(Vector2.UnitX);
             if (!player.ItemAnimationActive) Projectile.rotation = SafeDegree.ToRotation() + MathHelper.PiOver4;
             Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(offSet));
-            return player.Center + Rotate.RotatedBy(Counter * 0.05f) * Distance;
+            return player.MountedCenter + Rotate.RotatedBy(Counter * 0.05f) * Distance;
         }
     }
 }
