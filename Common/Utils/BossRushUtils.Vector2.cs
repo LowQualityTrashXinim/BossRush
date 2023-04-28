@@ -101,19 +101,17 @@ namespace BossRush
         }
         public static Vector2 Vector2SmallestInList(List<Vector2> flag)
         {
-            List<Vector2> finalflag = flag;
             for (int i = 0; i < flag.Count;)
             {
+                Vector2 vector2 = flag[i];
                 for (int l = i + 1; l < flag.Count; ++l)
                 {
-                    if (flag[i].LengthSquared() > flag[l].LengthSquared())
+                    if (vector2.LengthSquared() > flag[l].LengthSquared())
                     {
-                        Vector2 CurrentIndexNum = finalflag[i];
-                        finalflag[i] = flag[l];
-                        finalflag[l] = CurrentIndexNum;
+                        vector2 = flag[l];
                     }
                 }
-                return finalflag[i];
+                return vector2;
             }
             return Vector2.Zero;
         }

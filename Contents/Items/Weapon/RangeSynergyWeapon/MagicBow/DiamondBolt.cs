@@ -37,7 +37,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             {
                 Projectile.netUpdate = true;
                 Projectile.damage += 3;
-                Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
+                if (pos2 != Vector2.Zero)
+                {
+                    Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
+                }
                 for (int i = 0; i < 15; i++)
                 {
                     Vector2 ReverseVelSpread = -Projectile.velocity * 2 + Main.rand.NextVector2Circular(5f, 5f);
@@ -89,12 +92,24 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                     return true;
                 }
             }
+            else
+            {
+                if (list.Count == 1)
+                {
+                    if (Vector2.DistanceSquared(Projectile.Center, list[0].Center) <= 225)
+                    {
+                        list[0].Kill();
+                        Pos2 = Projectile.Center.LookForHostileNPCPositionClosest(1000);
+                        return true;
+                    }
+                }
+            }
             Pos2 = Vector2.Zero;
             return false;
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawTrail(lightColor, 0.01f);
+            Projectile.DrawTrail(Projectile.GetAlpha(lightColor), 0.01f);
             return true;
         }
     }

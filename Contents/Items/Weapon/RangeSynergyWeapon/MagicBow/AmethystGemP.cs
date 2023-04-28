@@ -31,7 +31,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Y * 5);
                 Projectile.velocity *= 0.95f;
             }
-            if (Projectile.velocity.IsLimitReached(1))
+            if (!Projectile.velocity.IsLimitReached(1))
             {
                 Projectile.velocity = Vector2.Zero;
                 count++;

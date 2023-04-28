@@ -84,7 +84,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
             {
                 Counter--;
             }
-            RotatePosition = getPosToReturn(player, 45 * Projectile.ai[0], Counter);
             Projectile.Center = RotatePosition;
         }
         public Vector2 getPosToReturn(Player player, float offSet, int Counter, float Distance = 50)
