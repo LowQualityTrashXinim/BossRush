@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
 {
-    internal class BaseBookContent : ModPlayer
+    internal class PlayerNinjaBook : ModPlayer
     {
         public bool GuidetoMasterNinja;
         public bool GuidetoMasterNinja2;
@@ -100,9 +100,8 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                 GTMNcount++;
                 if (GTMNcount >= GTMNlimitCount)
                 {
-                    Vector2 Aimto = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX);
+                    Vector2 Aimto = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX) * 20;
 
-                    EntitySource_ItemUse entity = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<GuideToMasterNinja>()));
                     //The actual secret here
                     GTMNcontain.Clear();
                     GTMNcontain.Add(ProjectileID.Shuriken);
@@ -122,7 +121,7 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                     {
                         GTMNcontain.Add(ProjectileID.BoneDagger);
                     }
-                    int proj1 = Projectile.NewProjectile(entity, Player.Center, Aimto * 20, Main.rand.NextFromCollection(GTMNcontain), StaticDamage, 1f, Player.whoAmI);
+                    int proj1 = Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Aimto, Main.rand.NextFromCollection(GTMNcontain), StaticDamage, 1f, Player.whoAmI);
                     Main.projectile[proj1].penetrate = 1;
                     GTMNcount = 0;
                 }
@@ -175,21 +174,20 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                 scale += .5f;
             }
         }
-
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
             if (GuidetoMasterNinja2)
             {
                 if (item.type == ItemID.Shuriken || item.type == ItemID.ThrowingKnife || item.type == ItemID.PoisonedKnife)
                 {
-                    damage += .5f;
+                    damage.Flat += 5f;
                     if (Player.HasItem(ItemID.BoneDagger))
                     {
-                        damage += .1f;
+                        damage.Flat += 5f;
                     }
                     if (Player.HasItem(ItemID.FrostDaggerfish))
                     {
-                        damage += .1f;
+                        damage.Flat += 5f;
                     }
                 }
                 if (item.type == ItemID.Katana)

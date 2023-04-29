@@ -12,10 +12,11 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
         {
             DisplayName.SetDefault("Guide To Ninja Mastery I");
             Tooltip.SetDefault("Part I out of II of a beloved series.\n" +
-            "To master the way of a ninja, you must first master the way of a weeb." +
+            "\"To master the way of a ninja, you must first master the way of a weeb.\"" +
             "\n5% increased critical strike chance" +
-            "\n150% increased movement speed" +
-            "\nThrows a shuriken every time an enemy gets hit 20 times.");
+            "\n15% increased movement speed" +
+            "\nThrows a shuriken every time an enemy gets hit 20 times." +
+            "\nThe addition throwing deal static damage (fixed damage)");
         }
 
         public override void SetDefaults()
@@ -28,39 +29,39 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<BaseBookContent>().NinjaWeeb)
+            Player player = Main.LocalPlayer;
+            if (player.GetModPlayer<PlayerNinjaBook>().NinjaWeeb)
             {
                 tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.NinjaHood}][i:{ItemID.NinjaShirt}][i:{ItemID.NinjaPants}]Increase thrown damage by 20%, Melee attack is faster by 15% and increase melee damage by 25%"));
             }
             if (player.HasItem(ItemID.ThrowingKnife) && player.HasItem(ItemID.PoisonedKnife) && player.HasItem(ItemID.FrostDaggerfish) && player.HasItem(ItemID.BoneDagger))
             {
-                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}][i:{ItemID.FrostDaggerfish}][i:{ItemID.BoneDagger}] You can throw knife/dagger/shuriken faster"));
+                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}][i:{ItemID.FrostDaggerfish}][i:{ItemID.BoneDagger}] You can throw additional knife/dagger/shuriken faster"));
             }
             if (player.HasItem(ItemID.ThrowingKnife) && player.HasItem(ItemID.PoisonedKnife))
             {
-                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}] the 2 knife is added into bag, +10 damage"));
+                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}] You will sometime throw 1 of 2 knife, fixed damage +10"));
             }
             else if (player.HasItem(ItemID.ThrowingKnife) || player.HasItem(ItemID.PoisonedKnife))
             {
                 if (player.HasItem(ItemID.ThrowingKnife))
                 {
-                    tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.ThrowingKnife}]the knife is added into bag, +5 damage"));
+                    tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.ThrowingKnife}] You will sometime throw throwing knife, fixed damage +5"));
                 }
                 else
                 {
-                    tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.PoisonedKnife}]the knife is added into bag, +5 damage"));
+                    tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.PoisonedKnife}] You will sometime throw poisoned throwing knife, fixed damage +5"));
                 }
             }
             if (player.HasItem(ItemID.FrostDaggerfish))
             {
-                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.FrostDaggerfish}] Attack now inflict FrostBurn and FrostDaggerFish is added into bag, +5 damage"));
+                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.FrostDaggerfish}] Attack now inflict FrostBurn and you sometime throw FrostDaggerFish, fixed damage +5"));
             }
             if (player.HasItem(ItemID.BoneDagger))
             {
-                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.BoneDagger}] Attack now inflict OnFire! and BoneDagger is added into bag, +5 damage"));
+                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.BoneDagger}] Attack now inflict OnFire! and you sometime throw BoneDagger , fixed damage +5"));
             }
-            if (player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja)
+            if (player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja)
             {
                 tooltips.Add(new TooltipLine(Mod, "FinalMaster", $"[i:{ModContent.ItemType<GuideToMasterNinja2>()}] You summon a ring of shuriken and knife"));
             }
@@ -68,8 +69,8 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja = true;
-            player.moveSpeed *= 1.5f;
+            player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja = true;
+            player.moveSpeed += .15f;
             player.GetCritChance(DamageClass.Generic) += 5;
             if (player.head == 22 && player.body == 14 && player.legs == 14)
             {

@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BloodStar
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 34, 34, 37, 5f, 17, 51, ItemUseStyleID.Swing, false);
+            Item.BossRushSetDefault(34, 34, 37, 5f, 17, 17, ItemUseStyleID.Swing, false);
 
             Item.DamageType = DamageClass.Melee;
             Item.rare = 3;

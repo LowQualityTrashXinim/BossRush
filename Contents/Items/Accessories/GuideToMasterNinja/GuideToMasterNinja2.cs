@@ -11,10 +11,11 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Guide To Ninja Mastery II");
-            Tooltip.SetDefault("Part II out of II of a series treasured by weebs all across the globe!" +
-                "\nDid they really just add another 'I' onto the book cover and call it a day?" +
+            Tooltip.SetDefault("\"Part II out of II of a series treasured by weebs all across the globe!\"" +
+                "\nDid the dev really just add another 'I' onto the book cover and call it a day?" +
                 "\n10% increase melee attack speed" +
-                "\n150% increased jump height and jump speed");
+                "\n15% increased jump height and jump speed" +
+                "\nIncrease critical strike chance by 5%");
         }
 
         public override void SetDefaults()
@@ -27,24 +28,24 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja2 && (player.HasItem(ItemID.Shuriken) || player.HasItem(ItemID.ThrowingKnife) || player.HasItem(ItemID.PoisonedKnife)))
+            Player player = Main.LocalPlayer;
+            if (player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja2 && (player.HasItem(ItemID.Shuriken) || player.HasItem(ItemID.ThrowingKnife) || player.HasItem(ItemID.PoisonedKnife)))
             {
-                tooltips.Add(new TooltipLine(Mod, "Weeb2", $"[i:{ItemID.Shuriken}][i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}] Increase damage by 50% and have a chance to spawn itself ontop of the enemy"));
+                tooltips.Add(new TooltipLine(Mod, "Weeb2", $"[i:{ItemID.Shuriken}][i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}] Increase shuriken damage flat by 5 and have a chance to spawn itself ontop of the enemy"));
                 if (player.HasItem(ItemID.BoneDagger))
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BoneDaggerGTMN2", $"[i:{ItemID.BoneDagger}] Shuriken gain 10% damage increase"));
+                    tooltips.Add(new TooltipLine(Mod, "BoneDaggerGTMN2", $"[i:{ItemID.BoneDagger}] Shuriken gain 5 flat damage increase"));
                 }
                 if (player.HasItem(ItemID.FrostDaggerfish))
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BoneDaggerGTMN2", $"[i:{ItemID.FrostDaggerfish}] Shuriken gain 10% damage increase"));
+                    tooltips.Add(new TooltipLine(Mod, "BoneDaggerGTMN2", $"[i:{ItemID.FrostDaggerfish}] Shuriken gain 5 flat damage increase"));
                 }
             }
             if (player.HasItem(ItemID.Katana))
             {
                 tooltips.Add(new TooltipLine(Mod, "KatanaPower", $"[i:{ItemID.Katana}] Increase sword size and damage by 50% and melee speed by 35%"));
             }
-            if (player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja)
+            if (player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja)
             {
                 tooltips.Add(new TooltipLine(Mod, "FinalMaster", $"[i:{ModContent.ItemType<GuideToMasterNinja>()}] You summon a ring of shuriken and knife"));
             }
@@ -52,9 +53,10 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<BaseBookContent>().GuidetoMasterNinja2 = true;
-            player.jumpSpeedBoost += 1.5f;
+            player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja2 = true;
+            player.jumpSpeedBoost += .15f;
             player.GetAttackSpeed(DamageClass.Melee) += .1f;
+            player.GetCritChance(DamageClass.Generic) += .05f;
         }
         public override void AddRecipes()
         {
