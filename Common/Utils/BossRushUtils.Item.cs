@@ -26,8 +26,8 @@ namespace BossRush
         {
             item.width = width;
             item.height = height;
-            item.useTime = 30;
-            item.useAnimation = 30;
+            item.useTime = 15;
+            item.useAnimation = 15;
             item.useStyle = ItemUseStyleID.HoldUp;
             item.autoReuse = false;
             item.consumable = true;

@@ -84,10 +84,50 @@ namespace BossRush.Contents.Items.Chest
         protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
+            Main.NewText("THIS IS A DEBUG TEXT");
+            Main.NewText("BEFORE: Melee chance : " + meleeChance);
+            Main.NewText("BEFORE: Range chance : " + rangeChance);
+            Main.NewText("BEFORE: Magic chance : " + magicChance);
+            Main.NewText("BEFORE: Summon chance : " + summonChance);
             meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
-            rangeChance *= (int)(modPlayer.RangeChanceMutilplier * rangeChance);
-            magicChance *= (int)(modPlayer.MagicChanceMutilplier * magicChance);
-            summonChance *= (int)(modPlayer.SummonChanceMutilplier * summonChance);
+            rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
+            magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
+            summonChance = (int)(modPlayer.SummonChanceMutilplier * summonChance);
+            rangeChance += meleeChance;
+            magicChance += rangeChance;
+            summonChance += magicChance;
+            specialChance += summonChance;
+            int chooser = Main.rand.Next(specialChance);
+            Main.NewText("AFTER: Melee chance : " + meleeChance + " out of " + specialChance);
+            Main.NewText("AFTER: Range chance : " + (rangeChance - meleeChance) + " out of " + specialChance);
+            Main.NewText("AFTER: Magic chance : " + (magicChance - rangeChance)+ " out of " + specialChance);
+            Main.NewText("AFTER: Summon chance : " + (summonChance - magicChance) + " out of " + specialChance);
+            Main.NewText("SPECIAL WEAPON CHANCE (FIXED): " + (specialChance - summonChance) + " out of " + specialChance);
+            if (chooser <= meleeChance)
+            {
+                return 1;
+            }
+            else if (chooser > meleeChance && chooser <= rangeChance)
+            {
+                return 2;
+            }
+            else if (chooser > rangeChance && chooser <= magicChance)
+            {
+                return 3;
+            }
+            else if (chooser > magicChance && chooser <= summonChance)
+            {
+                return 4;
+            }
+            else if (chooser > summonChance && chooser <= specialChance)
+            {
+                return 5;
+            }
+            return 0;
+        }
+
+        protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
+        {
             rangeChance += meleeChance;
             magicChance += rangeChance;
             summonChance += magicChance;

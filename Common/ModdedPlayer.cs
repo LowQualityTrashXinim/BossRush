@@ -18,6 +18,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Common
 {
@@ -179,6 +180,7 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
                 items.Add(new Item(ModContent.ItemType<Note1>()));
+                items.Add(new Item(ModContent.ItemType<EmptyCard>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
             {
