@@ -81,8 +81,13 @@ namespace BossRush.Contents.Items.Chest
             return rng;
         }
 
-        protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
+        protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
+            ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
+            meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
+            rangeChance *= (int)(modPlayer.RangeChanceMutilplier * rangeChance);
+            magicChance *= (int)(modPlayer.MagicChanceMutilplier * magicChance);
+            summonChance *= (int)(modPlayer.SummonChanceMutilplier * summonChance);
             rangeChance += meleeChance;
             magicChance += rangeChance;
             summonChance += magicChance;
@@ -300,11 +305,11 @@ namespace BossRush.Contents.Items.Chest
             {
                 if (meleeChance + rangeChance + magicChance + summonChance + specialChance >= 1)
                 {
-                    rng = RNGManage(meleeChance, rangeChance, magicChance, summonChance, specialChance);
+                    rng = RNGManage(player, meleeChance, rangeChance, magicChance, summonChance, specialChance);
                 }
                 else
                 {
-                    rng = RNGManage();
+                    rng = RNGManage(player);
                 }
                 rng = ModifyRNG(rng, player);
             }
@@ -808,6 +813,11 @@ namespace BossRush.Contents.Items.Chest
     public class ChestLootDropPlayer : ModPlayer
     {
         public float amountModifier = 0;
+        public float MeleeChanceMutilplier = 1f;
+        public float RangeChanceMutilplier = 1f;
+        public float MagicChanceMutilplier = 1f;
+        public float SummonChanceMutilplier = 1f;
+
         public bool multiplier = false;
         public override void ResetEffects()
         {
