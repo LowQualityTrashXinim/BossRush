@@ -396,7 +396,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
             }
-            return CanBeHit;
+            return !CanBeHit;
         }
         public override void OnHurt(Player.HurtInfo info)
         {

@@ -9,10 +9,7 @@ namespace BossRush.Common.ChallengeMode
         {
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                for (int i = 0; i < shop.Entries.Count; i++)
-                {
-                    shop.GetEntry(i).Disable();
-                }
+                //Re add removing shop soon
             }
         }
     }

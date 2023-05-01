@@ -771,7 +771,13 @@ namespace BossRush.Common.Global
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
-            return CanPlayerBeDamage;
+            Item item = Player.HeldItem;
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
+                item.noMelee)
+            {
+                return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
+            }
+            return !CanPlayerBeDamage;
         }
     }
 }

@@ -78,10 +78,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
         }
     }
 }

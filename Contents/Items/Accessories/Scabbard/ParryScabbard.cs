@@ -76,7 +76,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
         {
             if (Player.HasBuff(ModContent.BuffType<Parried>()))
             {
-                return false;
+                return true;
             }
             return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
         }
