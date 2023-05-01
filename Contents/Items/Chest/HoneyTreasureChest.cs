@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Good luck !");
+            // Tooltip.SetDefault("Good luck !");
         }
         public override void SetDefaults()
         {

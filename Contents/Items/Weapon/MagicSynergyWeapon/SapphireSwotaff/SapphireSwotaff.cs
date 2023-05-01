@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SapphireSwotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("so it is just a better staff but with a sword as tip ?");
+            // Tooltip.SetDefault("so it is just a better staff but with a sword as tip ?");
             Item.staff[Item.type] = true;
         }
 

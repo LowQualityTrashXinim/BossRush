@@ -13,8 +13,8 @@ namespace BossRush.Contents.Items.Spawner
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Royal Wax");
-            Tooltip.SetDefault("Stolen from royal treasure");
+            // DisplayName.SetDefault("Royal Wax");
+            // Tooltip.SetDefault("Stolen from royal treasure");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.SkeletronHead] = true;
@@ -58,7 +58,7 @@ namespace BossRush.Contents.Items.Spawner
                 {
                     // If the player is in multiplayer, request a spawn
                     // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
-                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
             }
 

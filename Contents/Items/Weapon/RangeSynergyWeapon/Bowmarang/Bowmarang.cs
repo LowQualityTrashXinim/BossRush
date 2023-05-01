@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Really cursed invention");
+            // Tooltip.SetDefault("Really cursed invention");
         }
 
         public override void SetDefaults()

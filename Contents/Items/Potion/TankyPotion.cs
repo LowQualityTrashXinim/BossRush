@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Potion
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Titan's Exilir");
-            Tooltip.SetDefault("'Become hard as a rock and... strong as a feather?'");
+            // DisplayName.SetDefault("The Titan's Exilir");
+            // Tooltip.SetDefault("'Become hard as a rock and... strong as a feather?'");
         }
         public override void SetDefaults()
         {

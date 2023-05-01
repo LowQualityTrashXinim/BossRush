@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Accessories.Crystal
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("A Mana and a Life Crystal, not much to say tbh\nIncrease health and mana by 40");
+            // Tooltip.SetDefault("A Mana and a Life Crystal, not much to say tbh\nIncrease health and mana by 40");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

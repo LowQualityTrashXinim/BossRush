@@ -11,7 +11,7 @@ namespace BossRush.Contents.NPCs
         public override string Texture => "Terraria/Images/NPC_" + NPCID.MoonLordFreeEye;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("True Eye Of Cthulhu");
+            // DisplayName.SetDefault("True Eye Of Cthulhu");
             Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.MoonLordFreeEye];
         }
         public override void SetDefaults()

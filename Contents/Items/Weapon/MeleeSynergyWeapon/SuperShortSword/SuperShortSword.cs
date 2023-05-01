@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Super meaning better right ?");
+            // Tooltip.SetDefault("Super meaning better right ?");
         }
         public override void SetDefaults()
         {

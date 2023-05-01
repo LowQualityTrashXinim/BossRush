@@ -13,9 +13,9 @@ namespace BossRush.Contents.Items.BuilderItem
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Create a basic arena that 300 block wide" +
+            /* Tooltip.SetDefault("Create a basic arena that 300 block wide" +
                 "\nWill spawn at the middle of the mouse" +
-                "\nUnconsumeable and spawn infinite");
+                "\nUnconsumeable and spawn infinite"); */
         }
         public override void SetDefaults()
         {

@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("You certainly prove yourself to be something, here a gift");
+            // Tooltip.SetDefault("You certainly prove yourself to be something, here a gift");
         }
         public override void SetDefaults()
         {

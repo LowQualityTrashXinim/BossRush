@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("the sword is quite useless if you ask me");
+            // Tooltip.SetDefault("the sword is quite useless if you ask me");
             Item.staff[Item.type] = true;
         }
 
@@ -167,7 +167,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
             Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 6;
         }

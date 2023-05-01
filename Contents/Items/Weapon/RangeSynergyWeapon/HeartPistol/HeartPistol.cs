@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Gun of love");
+            // Tooltip.SetDefault("Gun of love");
         }
         public override void SetDefaults()
         {

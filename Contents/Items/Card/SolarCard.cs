@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Card
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your chance to get melee weapon from chest by 50% !");
+            // Tooltip.SetDefault("Increase your chance to get melee weapon from chest by 50% !");
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
@@ -28,7 +28,7 @@ namespace BossRush.Contents.Items.Card
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your chance to get range weapon from chest by 50% !");
+            // Tooltip.SetDefault("Increase your chance to get range weapon from chest by 50% !");
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
@@ -44,7 +44,7 @@ namespace BossRush.Contents.Items.Card
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your chance to get magic weapon from chest by 50% !");
+            // Tooltip.SetDefault("Increase your chance to get magic weapon from chest by 50% !");
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
@@ -60,7 +60,7 @@ namespace BossRush.Contents.Items.Card
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Increase your chance to get summoner weapon from chest by 50% !");
+            // Tooltip.SetDefault("Increase your chance to get summoner weapon from chest by 50% !");
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
@@ -76,8 +76,8 @@ namespace BossRush.Contents.Items.Card
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("For Debug purpose only !" +
-                "\n Reset all of the card that manipulate the chance from chest");
+            /* Tooltip.SetDefault("For Debug purpose only !" +
+                "\n Reset all of the card that manipulate the chance from chest"); */
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
@@ -98,7 +98,7 @@ namespace BossRush.Contents.Items.Card
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Empty card, you can fill something in it");
+            // Tooltip.SetDefault("Empty card, you can fill something in it");
         }
         public override bool CanBeCraft => false;
     }

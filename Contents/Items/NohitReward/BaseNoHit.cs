@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.NohitReward
         public const int HP = 50;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("\"Overcoming a small challenge, tho sadly not place-able\"\nReward for not getting hit\nIncrease max HP by 50\nCan only be uses once");
+            // Tooltip.SetDefault("\"Overcoming a small challenge, tho sadly not place-able\"\nReward for not getting hit\nIncrease max HP by 50\nCan only be uses once");
         }
         public override void SetDefaults()
         {

@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Accessories
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Hope this will make your building much quicker");
+            // Tooltip.SetDefault("Hope this will make your building much quicker");
         }
         public override void SetDefaults()
         {

@@ -8,8 +8,8 @@ namespace BossRush.Contents.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Untapped Potential");
-            Tooltip.SetDefault("To touch the limitless growth, you become stronger each time kill a boss, simply amazing");
+            // DisplayName.SetDefault("Untapped Potential");
+            // Tooltip.SetDefault("To touch the limitless growth, you become stronger each time kill a boss, simply amazing");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

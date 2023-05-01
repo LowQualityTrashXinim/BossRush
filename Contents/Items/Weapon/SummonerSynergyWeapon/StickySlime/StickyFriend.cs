@@ -9,8 +9,8 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("slimy ghost friend");
-            Description.SetDefault("Will tries his best");
+            // DisplayName.SetDefault("slimy ghost friend");
+            // Description.SetDefault("Will tries his best");
 
             Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
             Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff

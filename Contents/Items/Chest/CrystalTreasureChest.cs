@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Right click to open chest to get the following items\n1 Set of better random pre-mech armor\n2 Random accessory and a random wing\n5 random pre-mech weapons\n10 of 5 Random Buff Potions\nrare chance getting slime queen treasure bag\nGood Luck fighting mech!");
+            // Tooltip.SetDefault("Right click to open chest to get the following items\n1 Set of better random pre-mech armor\n2 Random accessory and a random wing\n5 random pre-mech weapons\n10 of 5 Random Buff Potions\nrare chance getting slime queen treasure bag\nGood Luck fighting mech!");
         }
         public override void SetDefaults()
         {

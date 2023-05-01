@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Just give FallenStar");
+            // Tooltip.SetDefault("Just give FallenStar");
         }
         public override void SetDefaults()
         {

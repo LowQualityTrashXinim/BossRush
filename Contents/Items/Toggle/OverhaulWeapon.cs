@@ -14,9 +14,9 @@ namespace BossRush.Contents.Items.Toggle
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("World's gift");
-            Tooltip.SetDefault("Change all existing weapon in the game" +
-                "\n-Range weapon now have spread and have chance to not consume ammo");
+            // DisplayName.SetDefault("World's gift");
+            /* Tooltip.SetDefault("Change all existing weapon in the game" +
+                "\n-Range weapon now have spread and have chance to not consume ammo"); */
         }
 
         public override void SetDefaults()

@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Let them know the shadow trick that they can't see");
+            // Tooltip.SetDefault("Let them know the shadow trick that they can't see");
             ItemID.Sets.Yoyo[Item.type] = true;
             ItemID.Sets.GamepadExtraRange[Item.type] = 15;
             ItemID.Sets.GamepadSmartQuickReach[Item.type] = true;

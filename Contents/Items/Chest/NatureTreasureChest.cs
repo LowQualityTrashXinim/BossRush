@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Right click to open chest");
+            // Tooltip.SetDefault("Right click to open chest");
         }
         public override void SetDefaults()
         {

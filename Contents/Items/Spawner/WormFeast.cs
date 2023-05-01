@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Spawner
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Caution : Using this will gather unwanted attention");
+            // Tooltip.SetDefault("Caution : Using this will gather unwanted attention");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsHead] = true;
@@ -54,7 +54,7 @@ namespace BossRush.Contents.Items.Spawner
                 }
                 else
                 {
-                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
             }
             return true;

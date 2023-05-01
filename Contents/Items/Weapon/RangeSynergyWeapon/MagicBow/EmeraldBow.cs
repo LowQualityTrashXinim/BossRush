@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("well at least it don't consume arrow");
+            // Tooltip.SetDefault("well at least it don't consume arrow");
         }
         public override void SetDefaults()
         {

@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Right click to open chest to get the following items\n1 Set of random pre-mech armor\n2 Random accessory and a random wing\n5 random pre-mech weapons\n10 of 5 Random Buff Potions\n1 Mech bosses and QueenSlime\nHardmode anvil and forge\nGood Luck!");
+            // Tooltip.SetDefault("Right click to open chest to get the following items\n1 Set of random pre-mech armor\n2 Random accessory and a random wing\n5 random pre-mech weapons\n10 of 5 Random Buff Potions\n1 Mech bosses and QueenSlime\nHardmode anvil and forge\nGood Luck!");
         }
         public override void SetDefaults()
         {

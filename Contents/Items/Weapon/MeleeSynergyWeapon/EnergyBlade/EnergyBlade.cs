@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("High energy vibration around the sword" +
-                "\nmaking it sharp enough to even slash through the strongest mental like it is nothing");
+            /* Tooltip.SetDefault("High energy vibration around the sword" +
+                "\nmaking it sharp enough to even slash through the strongest mental like it is nothing"); */
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
@@ -72,7 +72,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 0;
         }

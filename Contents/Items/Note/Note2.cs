@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Note
         public override string Texture => BossRushTexture.NOTE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Note 02");
-            Tooltip.SetDefault(
+            // DisplayName.SetDefault("Note 02");
+            /* Tooltip.SetDefault(
                 "Now that you got the basic gis of the mod, we will explain more about" + $"[i:{ModContent.ItemType<SynergyEnergy>()}]" +
                 "\nThis item is needed if you want to get better stuff in the mod, in development i found out player often die due to" +
                 "\nlack of dps and the gameplay loop is cool and all but it gotten boring quickly due to how \"balance\" terraria weapon is" +
@@ -24,7 +24,7 @@ namespace BossRush.Contents.Items.Note
                 "\nbut it is up to you and decide if it worth to get a better dps weapon than what you have or play the chance game and get a better synergy item" +
                 "\nThe way you get synergy weapon is by fighting optional boss that don't matter to normal game progress like" + $"[i:{ItemID.Abeemination}]" +
                 "\nYou could also revert the synergy item that you craft back into pure synergy energy form but will lose the item that you craft with it" +
-                "\nYou can disable the config in the mod to completely block synergy energy getting involved, we hope that you find that easy to understand");
+                "\nYou can disable the config in the mod to completely block synergy energy getting involved, we hope that you find that easy to understand"); */
         }
         public override void SetDefaults()
         {

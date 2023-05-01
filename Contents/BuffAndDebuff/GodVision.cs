@@ -10,8 +10,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Sniper's Vision");
-            Description.SetDefault("Let's just hope you don't snap out of it...");
+            // DisplayName.SetDefault("The Sniper's Vision");
+            // Description.SetDefault("Let's just hope you don't snap out of it...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

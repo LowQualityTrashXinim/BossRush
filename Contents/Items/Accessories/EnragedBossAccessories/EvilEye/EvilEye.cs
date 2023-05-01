@@ -12,13 +12,13 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("" +
+            /* Tooltip.SetDefault("" +
                 "Always watching, but now you know who is watching" +
                 "\nIncrease defense by 10" +
                 "\nIncrease 5% DR and damage when above 45% hp" +
                 "\nIncrease movment speed and increase damage by 25% when below 45% hp" +
                 "\nHeal 70% of player health when below 10% hp, have 2 min cooldown" +
-                "\nDoes something special to certain item");
+                "\nDoes something special to certain item"); */
         }
         public override void SetDefaults()
         {
@@ -92,7 +92,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
             }
         }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             if (EoCShieldUpgrade && EoCBless && Player.HeldItem.type == ItemID.TheEyeOfCthulhu && proj.type != ModContent.ProjectileType<EoCServant>() && proj.type != ModContent.ProjectileType<PhantasmalEye>())
             {
@@ -165,14 +165,13 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
             }
         }
 
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
             if (Player.statLife <= Player.statLifeMax2 * 0.1f && EyeProtection && EoCBless)
             {
                 Player.AddBuff(ModContent.BuffType<EvilEyeProtection>(), 7200);
                 Player.Heal((int)(Player.statLifeMax2 * 0.7f));
             }
-            return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
         }
     }
 }

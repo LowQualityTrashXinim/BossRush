@@ -9,8 +9,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Royal Sticky Formula");
-            Description.SetDefault("Turns escaping into a sticky situation...");
+            // DisplayName.SetDefault("Royal Sticky Formula");
+            // Description.SetDefault("Turns escaping into a sticky situation...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)

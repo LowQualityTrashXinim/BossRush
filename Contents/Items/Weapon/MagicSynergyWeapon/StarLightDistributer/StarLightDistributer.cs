@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("StarLight Distributer");
-            Tooltip.SetDefault("It is beautiful to look at");
+            // DisplayName.SetDefault("StarLight Distributer");
+            // Tooltip.SetDefault("It is beautiful to look at");
         }
         public override void SetDefaults()
         {

@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Potion
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Sage's Exilir");
-            Tooltip.SetDefault("Side effects include becoming an explosive hazard");
+            // DisplayName.SetDefault("The Sage's Exilir");
+            // Tooltip.SetDefault("Side effects include becoming an explosive hazard");
         }
         public override void SetDefaults()
         {

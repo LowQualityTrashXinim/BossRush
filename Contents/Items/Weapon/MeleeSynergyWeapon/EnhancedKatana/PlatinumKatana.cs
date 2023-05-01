@@ -12,8 +12,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Enhanced Katana");
-            Tooltip.SetDefault("The best katana there is, yet");
+            // DisplayName.SetDefault("Enhanced Katana");
+            // Tooltip.SetDefault("The best katana there is, yet");
         }
         public override void SetDefaults()
         {
@@ -91,7 +91,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 8;
         }

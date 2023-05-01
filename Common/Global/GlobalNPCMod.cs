@@ -404,7 +404,7 @@ namespace BossRush.Common.Global
             }
         }
 
-        public override void OnHitPlayer(NPC npc, Player target, int damage, bool crit)
+        public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
             if (npc.type == NPCID.KingSlime && target.GetModPlayer<ModdedPlayer>().KingSlimeEnraged)
             {
@@ -438,7 +438,7 @@ namespace BossRush.Common.Global
                 target.AddBuff(BuffID.Bleeding, 180);
             }
         }
-        public override void ScaleExpertStats(NPC npc, int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
             if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && PlayerNameContain("Masochist"))
             {

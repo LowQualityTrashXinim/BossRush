@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Beyond what we could imagine");
+            // Tooltip.SetDefault("Beyond what we could imagine");
         }
         public override void SetDefaults()
         {

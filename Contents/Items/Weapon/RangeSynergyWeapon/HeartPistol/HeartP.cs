@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
             Projectile.timeLeft = 45;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             // prevent heal from applying when damaging critters or target dummy
             Player player = Main.player[Projectile.owner];

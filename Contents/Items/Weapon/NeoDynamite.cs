@@ -12,9 +12,9 @@ namespace BossRush.Contents.Items.Weapon
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Neo Dynamite");
-            Tooltip.SetDefault("Mordern dynamite, never running out!" +
-                "\nThrow out a un-consumable dynamite that explode like normal dynamite on tile touch");
+            // DisplayName.SetDefault("Neo Dynamite");
+            /* Tooltip.SetDefault("Mordern dynamite, never running out!" +
+                "\nThrow out a un-consumable dynamite that explode like normal dynamite on tile touch"); */
         }
 
         public override void SetDefaults()

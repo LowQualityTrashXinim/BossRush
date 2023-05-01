@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Self defense at it finest");
+            // Tooltip.SetDefault("Self defense at it finest");
         }
         public override void SetDefaults()
         {

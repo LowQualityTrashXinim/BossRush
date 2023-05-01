@@ -1,6 +1,4 @@
-﻿using BossRush.Common;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.ChallengeMode
@@ -8,7 +6,7 @@ namespace BossRush.Common.ChallengeMode
     internal class ChallengeModeTileGlobal : GlobalTile
     {
         int[] pots = new int[] { TileID.Pots, TileID.PotsSuspended, TileID.PottedCrystalPlants, TileID.PottedLavaPlants, TileID.PottedLavaPlantTendrils, TileID.PottedPlants1, TileID.PottedPlants2 };
-        public override bool Drop(int i, int j, int type)
+        public override bool CanDrop(int i, int j, int type)
         {
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
@@ -17,7 +15,7 @@ namespace BossRush.Common.ChallengeMode
                     return type != a;
                 }
             }
-            return base.Drop(i, j, type);
+            return base.CanDrop(i, j, type);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace BossRush.Contents.Items.Note
         public override string Texture => BossRushTexture.NOTE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Note 01");
-            Tooltip.SetDefault(
+            // DisplayName.SetDefault("Note 01");
+            /* Tooltip.SetDefault(
                 "Hello, welcome to the mod, in this mod, you will be opening chest to get weapon to fight boss" +
                 "\nTo get you quick on the right track, let introduce you to basic mechanic to of the mod and what you should take note of" +
                 "\nChest usually contain weapon, accessories, armor, potion and some stuff you can build with with all of it is random" +
@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Note
                 "\nBut that doesn't mean you shouldn't prepare a arena to fight boss as it is intended for you to beat boss" +
                 "\nYou may notice the Power Energy thing to craft King Scepter" +
                 "\nAll i can say about it is that you will be fighting same boss but with some special add into the fight" +
-                "\nfor now, this is all i can cover, i will see you after King slime");
+                "\nfor now, this is all i can cover, i will see you after King slime"); */
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

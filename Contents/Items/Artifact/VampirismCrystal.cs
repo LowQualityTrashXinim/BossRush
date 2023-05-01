@@ -11,10 +11,10 @@ namespace BossRush.Contents.Items.Artifact
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Unpure, relentess crystal" +
+            /* Tooltip.SetDefault("Unpure, relentess crystal" +
                 "\nPassive : Attack heal player " +
                 "\nEffect : reduce max life by 65%" +
-                "\nYou can survive 1 fatal attack ( 3 minute cooldown )");
+                "\nYou can survive 1 fatal attack ( 3 minute cooldown )"); */
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(10, 7));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
@@ -55,12 +55,12 @@ namespace BossRush.Contents.Items.Artifact
             }
         }
 
-        public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
             LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
         }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             countRange++;
             if (countRange >= 3)

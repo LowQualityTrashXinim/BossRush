@@ -9,8 +9,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("KingSlimeRage");
-            Description.SetDefault("You can't run away from his excellency");
+            // DisplayName.SetDefault("KingSlimeRage");
+            // Description.SetDefault("You can't run away from his excellency");
             Main.debuff[Type] = true;
             Main.buffNoSave[Type] = true;
         }

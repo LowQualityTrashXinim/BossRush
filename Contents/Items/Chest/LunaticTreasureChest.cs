@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Let begin the Lunar Event !");
+            // Tooltip.SetDefault("Let begin the Lunar Event !");
         }
         public override void SetDefaults()
         {

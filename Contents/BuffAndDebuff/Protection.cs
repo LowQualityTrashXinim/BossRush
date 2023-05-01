@@ -9,8 +9,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Titan's Protection");
-            Description.SetDefault("This newfound aegis is almost... suffocating...");
+            // DisplayName.SetDefault("The Titan's Protection");
+            // Description.SetDefault("This newfound aegis is almost... suffocating...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("meant for killing small bird");
+            // Tooltip.SetDefault("meant for killing small bird");
         }
 
         public override void SetDefaults()

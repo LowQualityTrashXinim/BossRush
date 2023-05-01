@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Gunmerang
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Weird gun");
+            // Tooltip.SetDefault("Weird gun");
         }
         public override void SetDefaults()
         {

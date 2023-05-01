@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("let them witness the force of earth");
+            // Tooltip.SetDefault("let them witness the force of earth");
         }
         public override void SetDefaults()
         {

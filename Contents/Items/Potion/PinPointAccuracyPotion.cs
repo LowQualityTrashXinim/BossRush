@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Potion
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Sniper's Exilir");
-            Tooltip.SetDefault("'Aim Assist is bought separately!'");
+            // DisplayName.SetDefault("The Sniper's Exilir");
+            // Tooltip.SetDefault("'Aim Assist is bought separately!'");
         }
         public override void SetDefaults()
         {

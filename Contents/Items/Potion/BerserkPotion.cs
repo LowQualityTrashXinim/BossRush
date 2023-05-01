@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Potion
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Berserker's Elixir");
-            Tooltip.SetDefault("'Smells like bloodshed...'");
+            // DisplayName.SetDefault("Berserker's Elixir");
+            // Tooltip.SetDefault("'Smells like bloodshed...'");
         }
         public override void SetDefaults()
         {

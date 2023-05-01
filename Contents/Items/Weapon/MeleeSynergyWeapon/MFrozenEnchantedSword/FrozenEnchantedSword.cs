@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MFrozenEnchantedSwor
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("prove to work despite it is just a ice blade on top of enchanted sword in photoshop");
+            // Tooltip.SetDefault("prove to work despite it is just a ice blade on top of enchanted sword in photoshop");
         }
 
         public override void SetDefaults()

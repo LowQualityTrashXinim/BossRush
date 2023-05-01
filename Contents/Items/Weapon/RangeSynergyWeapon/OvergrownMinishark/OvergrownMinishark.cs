@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Seafood with a touch of nature\nShoot out poisonous bullet");
+            // Tooltip.SetDefault("Seafood with a touch of nature\nShoot out poisonous bullet");
         }
         public override void SetDefaults()
         {
@@ -43,7 +43,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
     }
     class OvergrownMinisharkPlayer : ModPlayer
     {
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             Item item = new Item(ModContent.ItemType<OvergrownMinishark>());
             float randomRotation = Main.rand.Next(90);
@@ -51,8 +51,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
             {
                 for (int i = 0; i < 6; i++)
                 {
-                    Projectile.NewProjectile(Player.GetSource_ItemUse_WithPotentialAmmo(item, item.useAmmo), proj.Center, proj.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)), ProjectileID.VilethornTip, damage, knockback, Player.whoAmI);
-                    Projectile.NewProjectile(Player.GetSource_ItemUse_WithPotentialAmmo(item, item.useAmmo), proj.Center, proj.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)), ProjectileID.VilethornBase, damage, knockback, Player.whoAmI);
+                    Projectile.NewProjectile(Player.GetSource_ItemUse_WithPotentialAmmo(item, item.useAmmo), proj.Center, proj.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)), ProjectileID.VilethornTip, hit.Damage, hit.Knockback, Player.whoAmI);
+                    Projectile.NewProjectile(Player.GetSource_ItemUse_WithPotentialAmmo(item, item.useAmmo), proj.Center, proj.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)), ProjectileID.VilethornBase, hit.Damage, hit.Knockback, Player.whoAmI);
                 }
             }
         }

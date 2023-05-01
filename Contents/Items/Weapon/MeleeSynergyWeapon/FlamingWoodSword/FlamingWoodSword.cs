@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Funny how a wooden sword got fire aspect enchantment");
+            // Tooltip.SetDefault("Funny how a wooden sword got fire aspect enchantment");
         }
 
         public override void SetDefaults()
@@ -26,7 +26,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
             Item.shoot = ProjectileID.WandOfSparkingSpark;
             Item.shootSpeed = 6;
         }
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 90);
         }

@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("What the holy of this ?");
+            // Tooltip.SetDefault("What the holy of this ?");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

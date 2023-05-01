@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("TODO:ADD SPECIAL HERE");
+            // Tooltip.SetDefault("TODO:ADD SPECIAL HERE");
         }
         public override void SetDefaults()
         {

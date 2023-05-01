@@ -14,10 +14,10 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("\"A small ancient power accidentally left from a old god, said to be cursed because of jealousy from the new god\"" +
+            /* Tooltip.SetDefault("\"A small ancient power accidentally left from a old god, said to be cursed because of jealousy from the new god\"" +
                 "\nMost projectile can bounce of tile" +
                 "\nBouncing off a tile increase damage by 20%" +
-                "\nBouncing off a tile will make the projectile disappear after 3s");
+                "\nBouncing off a tile will make the projectile disappear after 3s"); */
         }
         public override void SetDefaults()
         {

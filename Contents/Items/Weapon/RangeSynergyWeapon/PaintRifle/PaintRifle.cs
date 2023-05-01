@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("\"Mega mode included\"" +
-                "\nIt have literal screw as a way to activate mega mode");
+            /* Tooltip.SetDefault("\"Mega mode included\"" +
+                "\nIt have literal screw as a way to activate mega mode"); */
         }
         public override void SetDefaults()
         {

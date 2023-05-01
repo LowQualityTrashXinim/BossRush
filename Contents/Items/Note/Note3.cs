@@ -8,8 +8,8 @@ namespace BossRush.Contents.Items.Note
         public override string Texture => BossRushTexture.NOTE;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("" +
-                "Congrats");
+            /* Tooltip.SetDefault("" +
+                "Congrats"); */
         }
     }
 }

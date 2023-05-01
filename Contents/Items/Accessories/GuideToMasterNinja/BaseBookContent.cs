@@ -127,7 +127,7 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                 }
             }
         }
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             if (GuidetoMasterNinja)
             {
@@ -162,7 +162,7 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                         Vector2 randomSpeed = Main.rand.NextVector2Circular(1, 1);
                         Dust.NewDust(SpawnProjPos, 0, 0, DustID.Smoke, randomSpeed.X, randomSpeed.Y, 0, default, Main.rand.NextFloat(2f, 3.5f));
                     }
-                    int proj1 = Projectile.NewProjectile(Player.GetSource_FromThis(), SpawnProjPos, Vector2.Zero, Main.rand.NextFromCollection(NinjaBag), damage, knockback, Player.whoAmI);
+                    int proj1 = Projectile.NewProjectile(Player.GetSource_FromThis(), SpawnProjPos, Vector2.Zero, Main.rand.NextFromCollection(NinjaBag), hit.Damage, hit.Knockback, Player.whoAmI);
                     Main.projectile[proj1].penetrate = 1;
                 }
             }

@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Spawner
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Caution : Using this may collapse your mind");
+            // Tooltip.SetDefault("Caution : Using this may collapse your mind");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.BrainofCthulhu] = true;
@@ -58,10 +58,10 @@ namespace BossRush.Contents.Items.Spawner
                 }
                 else
                 {
-                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                     for (int i = 0; i < 30; i++)
                     {
-                        NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type2);
+                        NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type2);
                     }
                 }
             }

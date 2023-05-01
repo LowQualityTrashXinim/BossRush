@@ -11,8 +11,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
         static int counter = 0;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Natural Selection");
-            Tooltip.SetDefault("Mother of all bows");
+            // DisplayName.SetDefault("Natural Selection");
+            // Tooltip.SetDefault("Mother of all bows");
         }
         public override void SetDefaults()
         {

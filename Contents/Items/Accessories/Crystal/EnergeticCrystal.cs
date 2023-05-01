@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Accessories.Crystal
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Do not take it out of context\nIncrease both health and mana by 50\nIncrease regen mana and health rate by 5");
+            // Tooltip.SetDefault("Do not take it out of context\nIncrease both health and mana by 50\nIncrease regen mana and health rate by 5");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

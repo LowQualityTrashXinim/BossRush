@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("WHAT DID YOU SHOW TO THE EYE OF CTHULHU");
+            // Tooltip.SetDefault("WHAT DID YOU SHOW TO THE EYE OF CTHULHU");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.EyeofCthulhu] = true;
@@ -60,7 +60,7 @@ namespace BossRush.Contents.Items.Spawner
                     // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
                     for (int i = 0; i < 2; i++)
                     {
-                        NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                        NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                     }
                 }
             }

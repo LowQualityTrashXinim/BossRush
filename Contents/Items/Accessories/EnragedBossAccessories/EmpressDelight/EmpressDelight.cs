@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EmpressDeli
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Delightful\nMultiply damage by 2 only at day");
+            // Tooltip.SetDefault("Delightful\nMultiply damage by 2 only at day");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

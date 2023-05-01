@@ -48,7 +48,7 @@ namespace BossRush.Common.ChallengeMode
                 }
             }
         }
-        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
             {

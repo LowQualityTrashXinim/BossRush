@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("BleedingWorm");
-            Tooltip.SetDefault("Actract a certain monster from ocean");
+            // DisplayName.SetDefault("BleedingWorm");
+            // Tooltip.SetDefault("Actract a certain monster from ocean");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             NPCID.Sets.MPAllowedEnemies[NPCID.BloodNautilus] = true;
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));
@@ -49,7 +49,7 @@ namespace BossRush.Contents.Items.Spawner
                 }
                 else
                 {
-                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
             }
 

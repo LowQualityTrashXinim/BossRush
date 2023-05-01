@@ -13,8 +13,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("An Ice Queen's most reliable defense" +
-                "\nHave 20% chance to not consume ammo");
+            /* Tooltip.SetDefault("An Ice Queen's most reliable defense" +
+                "\nHave 20% chance to not consume ammo"); */
         }
         public override void SetDefaults()
         {
@@ -214,10 +214,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
     public class IceStormPlayer : ModPlayer
     {
         public float SpeedMultiplier = 1;
-        public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+        public override void PostHurt(Player.HurtInfo info)
         {
             float Modify = SpeedMultiplier <= 3 ? 1f : SpeedMultiplier - 2f;
             SpeedMultiplier = Modify;
+            base.PostHurt(info);
         }
 
         public override void PostUpdate()
@@ -230,7 +231,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
     }
     class IceStormSnowBallCannonMinion : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Item_" + ItemID.SnowballCannon;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SnowballCannon);
         public override void SetDefaults()
         {
             Projectile.height = 26;
@@ -276,7 +277,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
     }
     class IceStormFrostFlowerMinion : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Item_" + ItemID.FlowerofFrost;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FlowerofFrost);
         public override void SetDefaults()
         {
             Projectile.width = 28;
@@ -309,7 +310,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             {
                 if (timer <= 0)
                 {
-                    Vector2 velocityToNpc = (npc.Center - player.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f,8f);
+                    Vector2 velocityToNpc = (npc.Center - player.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 8f);
                     timer = (int)(30 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
                     int proj = Projectile.NewProjectile(
                         Projectile.GetSource_FromThis(),

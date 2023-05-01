@@ -10,8 +10,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Mind Shatter");
-            Description.SetDefault("You can no longer tell left from right...");
+            // DisplayName.SetDefault("Mind Shatter");
+            // Description.SetDefault("You can no longer tell left from right...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)

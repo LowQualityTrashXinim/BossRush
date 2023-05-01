@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.RifleShotgun
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("is it a shotgun or a rifle ?");
+            // Tooltip.SetDefault("is it a shotgun or a rifle ?");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

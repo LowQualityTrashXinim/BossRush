@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Rainbow Treasure chest");
-            Tooltip.SetDefault("Blessed");
+            // DisplayName.SetDefault("Rainbow Treasure chest");
+            // Tooltip.SetDefault("Blessed");
         }
         public override void SetDefaults()
         {

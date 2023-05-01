@@ -14,10 +14,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("? Pistol");
-            Tooltip.SetDefault("it can't decide what it want to be, so it decide to become everything" +
+            // DisplayName.SetDefault("? Pistol");
+            /* Tooltip.SetDefault("it can't decide what it want to be, so it decide to become everything" +
                 "\nShoot out many thing" +
-                "\nAlt click to shoot down a copy of itself onto the screen");
+                "\nAlt click to shoot down a copy of itself onto the screen"); */
         }
 
         public override void SetDefaults()

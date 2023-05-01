@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
         int counter = 0;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("not my best work that for sure\nHave 43% of not consuming ammo");
+            // Tooltip.SetDefault("not my best work that for sure\nHave 43% of not consuming ammo");
         }
         public override void SetDefaults()
         {

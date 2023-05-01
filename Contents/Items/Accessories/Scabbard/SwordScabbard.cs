@@ -12,9 +12,9 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Made for people who complain their sword isn't special" +
+            /* Tooltip.SetDefault("Made for people who complain their sword isn't special" +
                 "\nIncrease melee speed by 25%" +
-                "\nRlease a sword slash upon swing");
+                "\nRlease a sword slash upon swing"); */
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
@@ -102,7 +102,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
                 Projectile.Kill();
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 4;
         }

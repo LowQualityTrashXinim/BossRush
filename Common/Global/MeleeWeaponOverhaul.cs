@@ -474,24 +474,32 @@ namespace BossRush.Common.Global
                     break;
             }
         }
-        public override void ModifyHitNPC(Item Item, Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
+        public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if(ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
             {
                 return;
             }
-            if (Item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
+            if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                modPlayer.critReference = crit;
-                if (crit)
-                {
-                    damage += (int)(damage * .5f);
-                }
-                damage = DamageHandleSystem(modPlayer, damage);
+                modPlayer.critReference = hit.Crit;
+            }
+        }
+        public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
+        {
+            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            {
+                return;
+            }
+            if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
+            {
+                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+                modifiers.CritDamage.Base += modifiers.CritDamage.Base * .5f;
+                modifiers.FinalDamage.Base = DamageHandleSystem(modPlayer, player.GetWeaponDamage(item));
                 modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             }
-            base.ModifyHitNPC(Item, player, target, ref damage, ref knockBack, ref crit);
+            base.ModifyHitNPC(item, player, target, ref modifiers);
         }
         private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer)
         {
@@ -725,7 +733,7 @@ namespace BossRush.Common.Global
                 {
                     npclaststrike = npc;
                     int damage = (int)(item.damage * 1.5f);
-                    npc.StrikeNPC(damage, item.knockBack, Player.direction, critReference);
+                    npc.StrikeNPC(npc.CalculateHitInfo(damage, Player.direction, critReference, item.knockBack, DamageClass.Melee));
                     iframeCounter = (int)(Player.itemAnimationMax * .25f);
                     Player.dpsDamage += damage;
                 }
@@ -754,14 +762,14 @@ namespace BossRush.Common.Global
             Player.attackCD = 0;
         }
         bool AlreadyHitNPC = false;
-        public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+        public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
             if (!AlreadyHitNPC)
             {
                 AlreadyHitNPC = true;
             }
         }
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
             return CanPlayerBeDamage;
         }

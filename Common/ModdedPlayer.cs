@@ -159,7 +159,7 @@ namespace BossRush.Common
             }
         }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             if (Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>())
             {
@@ -232,13 +232,13 @@ namespace BossRush.Common
             return items;
         }
         public int amountoftimegothit = 0;
-        public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+        public override void OnHurt(Player.HurtInfo info)
         {
             if (LookingForBossVanilla())
             {
                 if (gitGud)
                 {
-                    Player.KillMe(new PlayerDeathReason(), 9999999, hitDirection);
+                    Player.KillMe(new PlayerDeathReason(), 9999999, info.HitDirection);
                     return;
                 }
                 else
@@ -251,7 +251,7 @@ namespace BossRush.Common
                 Player.ClearBuff(ModContent.BuffType<GodVision>());
             }
         }
-        public override void OnHitByNPC(NPC npc, int damage, bool crit)
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
             if (NPC.AnyNPCs(NPCID.BrainofCthulhu) && BrainFuck)
             {

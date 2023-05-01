@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("remarkable");
+            // Tooltip.SetDefault("remarkable");
         }
         public override void SetDefaults()
         {

@@ -9,8 +9,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Petrified");
-            Description.SetDefault("The might of gods weakens your very soul...");
+            // DisplayName.SetDefault("Petrified");
+            // Description.SetDefault("The might of gods weakens your very soul...");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)

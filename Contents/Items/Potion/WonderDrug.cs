@@ -25,8 +25,8 @@ namespace BossRush.Contents.Items.Potion
         public const float DrugSpeed1 = 0.20f;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("WonderDrug");
-            Tooltip.SetDefault("\"Surprisingly Legal\"");
+            // DisplayName.SetDefault("WonderDrug");
+            // Tooltip.SetDefault("\"Surprisingly Legal\"");
         }
 
         public override void SetDefaults()

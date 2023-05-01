@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Zap Rifle");
-            Tooltip.SetDefault("quite a zapping");
+            // DisplayName.SetDefault("Zap Rifle");
+            // Tooltip.SetDefault("quite a zapping");
         }
         public override void SetDefaults()
         {

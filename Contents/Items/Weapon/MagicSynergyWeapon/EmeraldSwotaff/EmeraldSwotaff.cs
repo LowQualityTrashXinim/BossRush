@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.EmeraldSwotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Genius idea\\\\Todo : make alt attack");
+            // Tooltip.SetDefault("Genius idea\\\\Todo : make alt attack");
             Item.staff[Item.type] = true;
         }
 

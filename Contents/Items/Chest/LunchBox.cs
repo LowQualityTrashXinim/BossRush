@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Made with love \n-From your mom and your crush " + $"[i:{58}]");
+            // Tooltip.SetDefault("Made with love \n-From your mom and your crush " + $"[i:{58}]");
         }
         public override void SetDefaults()
         {

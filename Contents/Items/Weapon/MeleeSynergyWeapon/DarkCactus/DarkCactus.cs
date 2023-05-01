@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("uhhhh, this make no sense at all");
+            // Tooltip.SetDefault("uhhhh, this make no sense at all");
         }
         public override void SetDefaults()
         {
@@ -24,14 +24,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 
             Item.UseSound = SoundID.Item1;
         }
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             for (int i = 0; i < 2; i++)
             {
                 Vector2 getPos2 = new Vector2(40 * player.direction + Main.rand.Next(-50, 50), -700) + player.Center;
                 Vector2 aimto2 = new Vector2(player.Center.X + 60 * player.direction, player.Center.Y) - getPos2;
                 Vector2 safeAim = aimto2.SafeNormalize(Vector2.UnitX) * 10f;
-                Projectile.NewProjectile(Item.GetSource_FromThis(), getPos2, safeAim, ProjectileID.Bat, (int)(damage * 0.75), knockBack, player.whoAmI);
+                Projectile.NewProjectile(Item.GetSource_FromThis(), getPos2, safeAim, ProjectileID.Bat, (int)(hit.Damage * 0.75), hit.Knockback, player.whoAmI);
             }
             // prevent heal from applying when damaging critters or target dummy
             if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)

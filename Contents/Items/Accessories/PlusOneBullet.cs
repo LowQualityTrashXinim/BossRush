@@ -11,10 +11,10 @@ namespace BossRush.Contents.Items.Accessories
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Extra gun Barrel");
-            Tooltip.SetDefault("\"why have more gun when you can tape extra barrel into your gun ?\"" +
+            // DisplayName.SetDefault("Extra gun Barrel");
+            /* Tooltip.SetDefault("\"why have more gun when you can tape extra barrel into your gun ?\"" +
                 "\nIncrease amount of bullet you shoot by 1" +
-                "\nIncrease weapon spread amount by 35%");
+                "\nIncrease weapon spread amount by 35%"); */
         }
         public override void SetDefaults()
         {

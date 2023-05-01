@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Quite a killer if you can aim");
+            // Tooltip.SetDefault("Quite a killer if you can aim");
         }
 
         public override void SetDefaults()

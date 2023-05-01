@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Functional surprisingly enough");
+            // Tooltip.SetDefault("Functional surprisingly enough");
         }
         public override void SetDefaults()
         {

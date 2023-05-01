@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
+            // Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
             Item.staff[Item.type] = true;
         }
 
@@ -193,7 +193,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
             }
             count++;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 1;
         }

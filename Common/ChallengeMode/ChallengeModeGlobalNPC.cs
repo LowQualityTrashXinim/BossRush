@@ -1,21 +1,18 @@
-﻿using BossRush.Common;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.ChallengeMode
 {
     internal class ChallengeModeGlobalNPC : GlobalNPC
     {
-        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        public override void ModifyShop(NPCShop shop)
         {
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                for (int i = 0; i < shop.item.Length; i++)
+                for (int i = 0; i < shop.Entries.Count; i++)
                 {
-                    shop.item[i].TurnToAir();
+                    shop.GetEntry(i).Disable();
                 }
-                nextSlot = 0;
             }
         }
     }

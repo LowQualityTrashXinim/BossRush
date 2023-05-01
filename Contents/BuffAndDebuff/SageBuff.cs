@@ -9,8 +9,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Sage's Overflow");
-            Description.SetDefault("You feel as though the mana within you is is about to burst...");
+            // DisplayName.SetDefault("The Sage's Overflow");
+            // Description.SetDefault("You feel as though the mana within you is is about to burst...");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

@@ -13,8 +13,8 @@ namespace BossRush.Contents.Items.Chest
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("? Treasure chest");
-            Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
+            // DisplayName.SetDefault("? Treasure chest");
+            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
         }
         public override void SetDefaults()
         {

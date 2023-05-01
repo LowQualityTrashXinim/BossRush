@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Absolute violence");
+            // Tooltip.SetDefault("Absolute violence");
         }
         public override void SetDefaults()
         {

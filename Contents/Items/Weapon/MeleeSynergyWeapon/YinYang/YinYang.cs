@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("The balance between 2 forces, i wonder what secret it hold");
+            // Tooltip.SetDefault("The balance between 2 forces, i wonder what secret it hold");
             ItemID.Sets.Yoyo[Item.type] = true;
             ItemID.Sets.GamepadExtraRange[Item.type] = 15;
             ItemID.Sets.GamepadSmartQuickReach[Item.type] = true;

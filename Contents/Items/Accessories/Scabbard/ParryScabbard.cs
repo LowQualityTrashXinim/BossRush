@@ -14,11 +14,11 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("\"Made for display of skill\"" +
+            /* Tooltip.SetDefault("\"Made for display of skill\"" +
                 "\nGetting hit during the attack swing will grant you 2s of immunity of damage" +
                 "\nHave 6s cool down before you able to parry again" +
                 "\nDuring parry period, you gain 10% damage" +
-                "\nOnly work if weapon is a sword");
+                "\nOnly work if weapon is a sword"); */
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
@@ -58,7 +58,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
         {
             Parry = false;
         }
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
         {
             Item item = Player.HeldItem;
             if (!Player.HasBuff(ModContent.BuffType<Parried>())
@@ -71,11 +71,14 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
                 int duration = Player.GetModPlayer<SwordPlayer>().SwordSlash ? 240 : 120;
                 Player.AddBuff(ModContent.BuffType<Parried>(), duration);
             }
+        }
+        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
+        {
             if (Player.HasBuff(ModContent.BuffType<Parried>()))
             {
                 return false;
             }
-            return true;
+            return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
         }
     }
 }

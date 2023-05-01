@@ -8,13 +8,13 @@ namespace BossRush.Contents.Items
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("the possibility is only limited to our own mind" +
+            /* Tooltip.SetDefault("the possibility is only limited to our own mind" +
                 "\nDue to how overpowering this energy is, equiping it will" +
                 "\nIncrease speed by 10%" +
                 "\nIncrease jump speed by 10%" +
                 "\nIncrease damage flat by 5" +
                 "\nIncrease max mana by 20" +
-                "\nIncrease health regen by 1");
+                "\nIncrease health regen by 1"); */
         }
         public override void SetDefaults()
         {

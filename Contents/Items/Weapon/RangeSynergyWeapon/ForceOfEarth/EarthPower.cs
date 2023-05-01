@@ -7,8 +7,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Power of Earth");
-            Description.SetDefault("Calm and study, yet stealthly and quite as a wind");
+            // DisplayName.SetDefault("Power of Earth");
+            // Description.SetDefault("Calm and study, yet stealthly and quite as a wind");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;

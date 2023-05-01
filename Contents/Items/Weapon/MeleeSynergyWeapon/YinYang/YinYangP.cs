@@ -24,7 +24,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
         }
         int charge = 0;
         int spawnCounter = 5;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             charge++;
             Player player = Main.player[Projectile.owner];

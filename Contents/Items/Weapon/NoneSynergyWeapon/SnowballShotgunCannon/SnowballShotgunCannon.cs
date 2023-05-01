@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.SnowballShotgunCannon
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Snowball Shotgun");
-            Tooltip.SetDefault("weirdly deadly");
+            // DisplayName.SetDefault("Snowball Shotgun");
+            // Tooltip.SetDefault("weirdly deadly");
         }
         public override void SetDefaults()
         {

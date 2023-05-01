@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ManaStarFury
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("don't actually give you more mana or consume mana when use");
+            // Tooltip.SetDefault("don't actually give you more mana or consume mana when use");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

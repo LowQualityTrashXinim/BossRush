@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -16,10 +17,10 @@ namespace BossRush.Contents.Items.Artifact
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Fate Decider");
-            Tooltip.SetDefault("\"Replacement of god dice\"" +
+            // DisplayName.SetDefault("Fate Decider");
+            /* Tooltip.SetDefault("\"Replacement of god dice\"" +
                 "\nOn Equip : Increase amount weapon get drop from Treasure Chest by 4" +
-                "\nEffect : Random effect may occur ...");
+                "\nEffect : Random effect may occur ..."); */
         }
         public override void SetDefaults()
         {
@@ -319,7 +320,8 @@ namespace BossRush.Contents.Items.Artifact
             Player.Center.LookForHostileNPC(out List<NPC> npc, 1000);
             for (int i = 0; i < npc.Count; i++)
             {
-                npc[i].StrikeNPC(1000, 0, 0);
+                npc[i].StrikeNPC(npc[i].CalculateHitInfo(1000,0));
+                NetMessage.SendStrikeNPC(npc[i], npc[i].CalculateHitInfo(1000, 0));
             }
         }
         private void Effect11()
@@ -364,7 +366,7 @@ namespace BossRush.Contents.Items.Artifact
             }
             return !UnableToUseWeapon;
         }
-        public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
             if (!FateDice)
             {
@@ -372,12 +374,11 @@ namespace BossRush.Contents.Items.Artifact
             }
             if (CanCrit)
             {
-                crit = true;
-                damage *= 5;
+                hit.Crit = true;
+                hit.Damage *= 5;
             }
-            base.OnHitNPC(item, target, damage, knockback, crit);
         }
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             if (!FateDice)
             {
@@ -385,26 +386,24 @@ namespace BossRush.Contents.Items.Artifact
             }
             if (CanCrit)
             {
-                crit = true;
-                damage *= 5;
+                hit.Crit = true;
+                hit.Damage *= 5;
             }
-            base.OnHitNPCWithProj(proj, target, damage, knockback, crit);
         }
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
             if (!FateDice)
             {
-                return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
+                return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
             }
             return CanBeHit;
         }
-        public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+        public override void OnHurt(Player.HurtInfo info)
         {
             if (FateDice & NPCdeal5TimeDamage)
             {
-                damage *= 5;
+                info.Damage *= 5;
             }
-            base.Hurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
         }
     }
 }

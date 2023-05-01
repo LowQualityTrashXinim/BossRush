@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.aDebugItem
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("100% crit");
+            // DisplayName.SetDefault("100% crit");
         }
         public override void SetDefaults()
         {

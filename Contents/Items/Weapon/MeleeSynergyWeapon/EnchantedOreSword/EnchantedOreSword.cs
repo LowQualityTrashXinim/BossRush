@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Enchanted Ore Sword");
-            Tooltip.SetDefault("Amalgamation of a sword");
+            // DisplayName.SetDefault("Enchanted Ore Sword");
+            // Tooltip.SetDefault("Amalgamation of a sword");
         }
         public override void SetDefaults()
         {

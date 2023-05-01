@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("A truely unthinkable");
+            // Tooltip.SetDefault("A truely unthinkable");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

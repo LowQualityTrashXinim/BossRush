@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Bullet can bleed");
+            // Tooltip.SetDefault("Bullet can bleed");
         }
         public override void SetDefaults()
         {

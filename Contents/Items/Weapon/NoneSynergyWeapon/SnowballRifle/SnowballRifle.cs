@@ -10,8 +10,8 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.SnowballRifle
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Snowball Rifle");
-            Tooltip.SetDefault("The legend, the legacy\nHave 67% to not consume ammo");
+            // DisplayName.SetDefault("Snowball Rifle");
+            // Tooltip.SetDefault("The legend, the legacy\nHave 67% to not consume ammo");
         }
         public override void SetDefaults()
         {

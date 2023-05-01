@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.RubySwotaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Really Fancy Sword and staff");
+            // Tooltip.SetDefault("Really Fancy Sword and staff");
             Item.staff[Item.type] = true;
         }
         public override void SetDefaults()
@@ -223,7 +223,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.RubySwotaff
             }
             count++;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 1;
         }

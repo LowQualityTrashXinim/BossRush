@@ -9,8 +9,8 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Commander's Patience");
-            Description.SetDefault("Fighting alongside a horde has never been easier!");
+            // DisplayName.SetDefault("The Commander's Patience");
+            // Description.SetDefault("Fighting alongside a horde has never been easier!");
             Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

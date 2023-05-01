@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("let hope those weird creature isn't present in this game");
+            // Tooltip.SetDefault("let hope those weird creature isn't present in this game");
         }
         public override void SetDefaults()
         {

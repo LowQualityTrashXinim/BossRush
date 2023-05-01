@@ -13,8 +13,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Moonlight's Fragment");
-            Tooltip.SetDefault("Make your wish !");
+            // DisplayName.SetDefault("Moonlight's Fragment");
+            // Tooltip.SetDefault("Make your wish !");
         }
         public override void SetDefaults()
         {

@@ -11,12 +11,12 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Truely slime-da-ful" +
+            /* Tooltip.SetDefault("Truely slime-da-ful" +
                 "\nIncrease player Jump speed" +
                 "\nIncrease movement speed by 10%" +
                 "\nIncrease defense by 5" +
                 "\nYou shoot out slime spike when enemy is in range" +
-                "\nShoot out slime spike when you shot a enemy");
+                "\nShoot out slime spike when you shot a enemy"); */
         }
         public override void SetDefaults()
         {

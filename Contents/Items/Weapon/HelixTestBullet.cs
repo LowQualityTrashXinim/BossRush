@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Very weird worm bullet");
+            // Tooltip.SetDefault("Very weird worm bullet");
             base.SetStaticDefaults();
         }
         public override void SetDefaults()

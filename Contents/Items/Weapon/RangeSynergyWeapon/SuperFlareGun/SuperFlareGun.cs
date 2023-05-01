@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("The better flare gun");
+            // Tooltip.SetDefault("The better flare gun");
         }
         public override void SetDefaults()
         {

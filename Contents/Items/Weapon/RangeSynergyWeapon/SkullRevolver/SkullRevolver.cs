@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver
         int counter = 0;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("gun of 87");
+            // Tooltip.SetDefault("gun of 87");
         }
         public override void SetDefaults()
         {

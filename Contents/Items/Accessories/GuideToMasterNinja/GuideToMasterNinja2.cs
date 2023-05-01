@@ -10,12 +10,12 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Guide To Ninja Mastery II");
-            Tooltip.SetDefault("\"Part II out of II of a series treasured by weebs all across the globe!\"" +
+            // DisplayName.SetDefault("Guide To Ninja Mastery II");
+            /* Tooltip.SetDefault("\"Part II out of II of a series treasured by weebs all across the globe!\"" +
                 "\nDid the dev really just add another 'I' onto the book cover and call it a day?" +
                 "\n10% increase melee attack speed" +
                 "\n15% increased jump height and jump speed" +
-                "\nIncrease critical strike chance by 5%");
+                "\nIncrease critical strike chance by 5%"); */
         }
 
         public override void SetDefaults()

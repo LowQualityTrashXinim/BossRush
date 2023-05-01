@@ -21,7 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
             Projectile.light = 1f;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
             float ToRandom = Main.rand.Next(3);
