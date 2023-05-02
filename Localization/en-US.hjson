@@ -138,16 +138,24 @@ Mods: {
 					Shoot out many thing
 					Alt click to shoot down a copy of itself onto the screen
 					'''
-				DisplayName: Ultimate Pistol
+				DisplayName: ? Pistol
 			}
 
 			PaintRifle: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					"Mega mode included"
+					It have a literal screw as a way to toggle mega mode
+					'''
 				DisplayName: Paint Rifle
 			}
 
 			OvergrownMinishark: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					"Seafood with a touch of nature"
+					Shoot out poisonous bullet that have a chance to explode into flower vilethorn
+					'''
 				DisplayName: Overgrown Minishark
 			}
 

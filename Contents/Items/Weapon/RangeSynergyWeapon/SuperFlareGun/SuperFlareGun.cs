@@ -7,10 +7,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 {
     internal class SuperFlareGun : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("The better flare gun");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(68, 38, 20, 2f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<SuperFlareP>(), 20, false, AmmoID.Flare);

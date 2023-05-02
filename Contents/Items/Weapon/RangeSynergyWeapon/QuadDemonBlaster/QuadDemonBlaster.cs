@@ -8,12 +8,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
 {
     class QuadDemonBlaster : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Quad Demon Blaster");
-            // Tooltip.SetDefault("Can get hot real fast");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             Item.damage = 39;

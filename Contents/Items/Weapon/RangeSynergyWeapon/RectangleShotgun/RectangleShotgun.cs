@@ -8,11 +8,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 {
     class RectangleShotgun : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("What the holy of this ?");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             Item.damage = 75;

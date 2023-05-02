@@ -20,7 +20,6 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
         public override void SetDefaults()
         {
             Item.damage = 30;
-            Item.knockBack = 3f;
             Item.mana = 10;
             Item.width = 32;
             Item.height = 32;

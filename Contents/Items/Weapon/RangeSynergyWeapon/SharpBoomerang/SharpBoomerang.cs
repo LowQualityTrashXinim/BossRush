@@ -6,10 +6,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
 {
     internal class SharpBoomerang : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("remarkable");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(38, 72, 30, 5f, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);

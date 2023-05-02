@@ -9,10 +9,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver
     internal class SkullRevolver : ModItem, ISynergyItem
     {
         int counter = 0;
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("gun of 87");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(26, 52, 45, 3f, 2, 12, ItemUseStyleID.Shoot, ProjectileID.Bullet, 20f, false, AmmoID.Bullet);

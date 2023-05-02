@@ -11,15 +11,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
     class UltimatePistol : ModItem
     {
         int Counter = 0;
-
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("? Pistol");
-            /* Tooltip.SetDefault("it can't decide what it want to be, so it decide to become everything" +
-                "\nShoot out many thing" +
-                "\nAlt click to shoot down a copy of itself onto the screen"); */
-        }
-
         public override void SetDefaults()
         {
             Item.damage = 400;

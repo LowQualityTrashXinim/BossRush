@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -41,18 +42,29 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 .Register();
         }
     }
-    class OvergrownMinisharkPlayer : ModPlayer
+    class OvergrownMinisharkProjectileModify : GlobalProjectile
     {
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            Item item = new Item(ModContent.ItemType<OvergrownMinishark>());
-            float randomRotation = Main.rand.Next(90);
-            if (Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>() && !proj.minion && Main.rand.NextBool(10) && proj.type != ProjectileID.VilethornTip && proj.type != ProjectileID.VilethornBase)
+            if (source is EntitySource_ItemUse_WithAmmo entity && entity.Item.ModItem is OvergrownMinishark)
             {
+                IsTruelyFromSource = true;
+            }
+        }
+        public override bool InstancePerEntity => true;
+        bool IsTruelyFromSource = false;
+        public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (IsTruelyFromSource && Main.rand.NextBool(10))
+            {
+                Player player = Main.player[projectile.owner];
+                float randomRotation = Main.rand.Next(90);
+                Vector2 velocity;
                 for (int i = 0; i < 6; i++)
                 {
-                    Projectile.NewProjectile(Player.GetSource_ItemUse_WithPotentialAmmo(item, item.useAmmo), proj.Center, proj.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)), ProjectileID.VilethornTip, hit.Damage, hit.Knockback, Player.whoAmI);
-                    Projectile.NewProjectile(Player.GetSource_ItemUse_WithPotentialAmmo(item, item.useAmmo), proj.Center, proj.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)), ProjectileID.VilethornBase, hit.Damage, hit.Knockback, Player.whoAmI);
+                    velocity = projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation));
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, hit.Damage, hit.Knockback, player.whoAmI);
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, hit.Damage, hit.Knockback, player.whoAmI);
                 }
             }
         }
