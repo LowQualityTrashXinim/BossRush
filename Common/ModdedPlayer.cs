@@ -158,15 +158,6 @@ namespace BossRush.Common
                 scale += .3f;
             }
         }
-
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
-        {
-            if (Player.HeldItem.type == ModContent.ItemType<OvergrownMinishark>())
-            {
-                target.AddBuff(BuffID.Poisoned, 60);
-            }
-        }
-
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
             List<Item> items = new List<Item>() {

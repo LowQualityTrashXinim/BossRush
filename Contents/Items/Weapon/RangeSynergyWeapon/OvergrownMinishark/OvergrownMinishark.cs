@@ -9,10 +9,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 {
     internal class OvergrownMinishark : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Seafood with a touch of nature\nShoot out poisonous bullet");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(54, 24, 24, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
@@ -55,16 +51,20 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         bool IsTruelyFromSource = false;
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (IsTruelyFromSource && Main.rand.NextBool(10))
+            if (!IsTruelyFromSource)
             {
-                Player player = Main.player[projectile.owner];
+                return;
+            }
+            target.AddBuff(BuffID.Poisoned, 420);
+            if(Main.rand.NextBool(10))
+            {
                 float randomRotation = Main.rand.Next(90);
                 Vector2 velocity;
                 for (int i = 0; i < 6; i++)
                 {
                     velocity = projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation));
-                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, hit.Damage, hit.Knockback, player.whoAmI);
-                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, hit.Damage, hit.Knockback, player.whoAmI);
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, hit.Damage, hit.Knockback, projectile.owner);
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, hit.Damage, hit.Knockback, projectile.owner);
                 }
             }
         }
