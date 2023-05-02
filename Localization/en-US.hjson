@@ -1,0 +1,992 @@
+Mods: {
+	BossRush: {
+		Projectiles: {
+			SuperFlareP.DisplayName: Super Flare
+			ExplodeProjectile.DisplayName: Explosion
+			SharpBoomerangP.DisplayName: Sharp Boomerang
+			RectangleBullet.DisplayName: Rectangle Bullet
+			UltimatePistolMinion.DisplayName: Ultimate Pistol Minion
+			CustomPaintProj.DisplayName: Custom Paint Proj
+			WoodBowP.DisplayName: Wood Bow P
+			ShadewoodBowP.DisplayName: Shadewood Bow P
+			RichMahoganyBowP.DisplayName: Rich Mahogany Bow P
+			PalmWoodBowP.DisplayName: Palm Wood Bow P
+			EbonwoodBowP.DisplayName: Ebonwood Bow P
+			BorealWoodBowP.DisplayName: Boreal Wood Bow P
+			MoonStarProjectileTrail.DisplayName: Moon Star Projectile Trail
+			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile Smaller
+			MoonStarProjectile.DisplayName: Moon Star Projectile
+			TopazGemP.DisplayName: Topaz Gem P
+			TopazBolt.DisplayName: Topaz Bolt
+			SmallEmerald.DisplayName: Small Emerald
+			SapphireGemP.DisplayName: Sapphire Gem P
+			SapphireBolt.DisplayName: Sapphire Bolt
+			RubyGemP.DisplayName: Ruby Gem P
+			RubyBolt.DisplayName: Ruby Bolt
+			EmeraldGemP.DisplayName: Emerald Gem P
+			EmeraldBolt.DisplayName: Emerald Bolt
+			DiamondGemP.DisplayName: Diamond Gem P
+			DiamondBolt.DisplayName: Diamond Bolt
+			AmethystGemP.DisplayName: Amethyst Gem P
+			AmethystBolt.DisplayName: Amethyst Bolt
+			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver Spear Projectile
+			KnifeRevolverP.DisplayName: Knife Revolver P
+			IceStormSnowBallCannonMinion.DisplayName: Ice Storm Snow Ball Cannon Minion
+			IceStormFrostFlowerMinion.DisplayName: Ice Storm Frost Flower Minion
+			smallerHeart.DisplayName: smaller Heart
+			HeartP.DisplayName: Heart P
+			TungstenBowP.DisplayName: Tungsten Bow P
+			TinBowP.DisplayName: Tin Bow P
+			SilverBowP.DisplayName: Silver Bow P
+			PlatinumBowP.DisplayName: Platinum Bow P
+			LeadBowP.DisplayName: Lead Bow P
+			IronBowP.DisplayName: Iron Bow P
+			GoldBowP.DisplayName: Gold Bow P
+			CopperBowP.DisplayName: Copper Bow P
+			SparkFlare.DisplayName: Spark Flare
+			BowmarangP.DisplayName: Bowmarang P
+			BloodBullet.DisplayName: Blood Bullet
+			NeoDynamiteExplosion.DisplayName: Neo Dynamite Explosion
+			YinYangShockWave.DisplayName: Yin Yang Shock Wave
+			YinYangP.DisplayName: Yin Yang P
+			YinLight.DisplayName: Yin Light
+			YangDark.DisplayName: Yang Dark
+			TrueEnchantedSwordBeam.DisplayName: True Enchanted Sword Beam
+			SuperShortSwordP.DisplayName: Super Short Sword P
+			SuperShortSwordOrbitShortSword.DisplayName: Super Short Sword Orbit Short Sword
+			ShadowTrickP2.DisplayName: Shadow Trick P2
+			ShadowTrickP.DisplayName: Shadow Trick P
+			ShadowSpike.DisplayName: Shadow Spike
+			FrostDaggerFishP.DisplayName: Frost Dagger Fish P
+			KatanaSlash.DisplayName: Katana Slash
+			EnergyBladeProjectile.DisplayName: Energy Blade Projectile
+			EnchantedSwordProjectile.DisplayName: Enchanted Sword Projectile
+			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword P
+			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword P
+			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword P
+			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword P
+			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword P
+			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword P
+			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword P
+			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword P
+			CactusBall.DisplayName: Cactus Ball
+			BurningPassionP.DisplayName: Burning Passion P
+			TopazSwotaffP.DisplayName: Topaz Swotaff P
+			SinisterBolt.DisplayName: Sinister Bolt
+			SapphireSwotaffP.DisplayName: Sapphire Swotaff P
+			SmallerRubyBolt.DisplayName: Smaller Ruby Bolt
+			GiantRubyBolt.DisplayName: Giant Ruby Bolt
+			PlasmaBlasterLaserProjectile.DisplayName: Plasma Blaster Laser Projectile
+			MagicHandCannonProjectile.DisplayName: Magic Hand Cannon Projectile
+			EmeraldSwotaffP.DisplayName: Emerald Swotaff P
+			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
+			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
+			AmethystSwotaffP.DisplayName: Amethyst Swotaff P
+			HelixFade.DisplayName: Helix Fade
+			HelixBullet.DisplayName: Helix Bullet
+			GhostHitBox2.DisplayName: Ghost Hit Box2
+			GhostHitBox.DisplayName: Ghost Hit Box
+			ArenaMakerProj.DisplayName: Arena Maker Proj
+			SwordSlash.DisplayName: Sword Slash
+			ThrowingKnifeCustom.DisplayName: Throwing Knife Custom
+			ShurikenCustom.DisplayName: Shuriken Custom
+			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
+			PhantasmalEyeAfterImage.DisplayName: Phantasmal Eye After Image
+			PhantasmalEye.DisplayName: Phantasmal Eye
+			EoCServant.DisplayName: Eo C Servant
+			GhostSlime.DisplayName: Ghost Slime
+			GooP.DisplayName: Goo P
+		}
+
+		NPCs.TrueEoC.DisplayName: True Eo C
+
+		Items: {
+			StickyFlower: {
+				Tooltip: ""
+				DisplayName: Sticky Flower
+			}
+
+			SuperFlareGun: {
+				Tooltip: The better flare gun
+				DisplayName: Super Flare Gun
+			}
+
+			SkullRevolver: {
+				Tooltip: The o'reliable
+				DisplayName: Skull Revolver
+			}
+
+			SharpBoomerang: {
+				Tooltip: Remarkable
+				DisplayName: Sharp Boomerang
+			}
+
+			RectangleShotgun: {
+				Tooltip: What in the holy of this gun ?
+				DisplayName: Rectangle Shotgun
+			}
+
+			QuadDemonBlaster: {
+				Tooltip: Can get hot real fast
+				DisplayName: Quad Demon Blaster
+			}
+
+			UltimatePistol: {
+				Tooltip:
+					'''
+					It can't decide what it want to be, so it decide to become everything
+					Shoot out many thing
+					Alt click to shoot down a copy of itself onto the screen
+					'''
+				DisplayName: Ultimate Pistol
+			}
+
+			PaintRifle: {
+				Tooltip: ""
+				DisplayName: Paint Rifle
+			}
+
+			OvergrownMinishark: {
+				Tooltip: ""
+				DisplayName: Overgrown Minishark
+			}
+
+			NatureSelection: {
+				Tooltip: ""
+				DisplayName: Nature Selection
+			}
+
+			MoonStarBow: {
+				Tooltip: ""
+				DisplayName: Moon Star Bow
+			}
+
+			Merciless: {
+				Tooltip: ""
+				DisplayName: Merciless
+			}
+
+			TopazBow: {
+				Tooltip: ""
+				DisplayName: Topaz Bow
+			}
+
+			SapphireBow: {
+				Tooltip: ""
+				DisplayName: Sapphire Bow
+			}
+
+			RubyBow: {
+				Tooltip: ""
+				DisplayName: Ruby Bow
+			}
+
+			EmeraldBow: {
+				Tooltip: ""
+				DisplayName: Emerald Bow
+			}
+
+			DiamondBow: {
+				Tooltip: ""
+				DisplayName: Diamond Bow
+			}
+
+			AmethystBow: {
+				Tooltip: ""
+				DisplayName: Amethyst Bow
+			}
+
+			KnifeRevolver: {
+				Tooltip: ""
+				DisplayName: Knife Revolver
+			}
+
+			IceStorm: {
+				Tooltip: ""
+				DisplayName: Ice Storm
+			}
+
+			HeartPistol: {
+				Tooltip: ""
+				DisplayName: Heart Pistol
+			}
+
+			Gunmerang: {
+				Tooltip: ""
+				DisplayName: Gunmerang
+			}
+
+			ForceOfEarth: {
+				Tooltip: ""
+				DisplayName: Force Of Earth
+			}
+
+			DeathBySpark: {
+				Tooltip: ""
+				DisplayName: Death By Spark
+			}
+
+			Deagle: {
+				Tooltip: ""
+				DisplayName: Deagle
+			}
+
+			ChaosMiniShark: {
+				Tooltip: ""
+				DisplayName: Chaos Mini Shark
+			}
+
+			Bowmarang: {
+				Tooltip: ""
+				DisplayName: Bowmarang
+			}
+
+			BloodyShot: {
+				Tooltip: ""
+				DisplayName: Bloody Shot
+			}
+
+			SnowballShotgunCannon: {
+				Tooltip: ""
+				DisplayName: Snowball Shotgun Cannon
+			}
+
+			SnowballRifle: {
+				Tooltip: ""
+				DisplayName: Snowball Rifle
+			}
+
+			SingleBarrelMinishark: {
+				Tooltip: ""
+				DisplayName: Single Barrel Minishark
+			}
+
+			RifleShotgun: {
+				Tooltip: ""
+				DisplayName: Rifle Shotgun
+			}
+
+			LongerMusket: {
+				Tooltip: ""
+				DisplayName: Longer Musket
+			}
+
+			HuntingRifle: {
+				Tooltip: ""
+				DisplayName: Hunting Rifle
+			}
+
+			FrozenShark: {
+				Tooltip: ""
+				DisplayName: Frozen Shark
+			}
+
+			NeoDynamite: {
+				Tooltip: ""
+				DisplayName: Neo Dynamite
+			}
+
+			YinYang: {
+				Tooltip: ""
+				DisplayName: Yin Yang
+			}
+
+			TrueEnchantedSword: {
+				Tooltip: ""
+				DisplayName: True Enchanted Sword
+			}
+
+			SuperShortSword: {
+				Tooltip: ""
+				DisplayName: Super Short Sword
+			}
+
+			ShadowTrick: {
+				Tooltip: ""
+				DisplayName: Shadow Trick
+			}
+
+			FrozenEnchantedSword: {
+				Tooltip: ""
+				DisplayName: Frozen Enchanted Sword
+			}
+
+			ManaStarFury: {
+				Tooltip: ""
+				DisplayName: Mana Star Fury
+			}
+
+			FrostSwordFish: {
+				Tooltip: ""
+				DisplayName: Frost Sword Fish
+			}
+
+			FlamingWoodSword: {
+				Tooltip: ""
+				DisplayName: Flaming Wood Sword
+			}
+
+			EverlastingCold: {
+				Tooltip: ""
+				DisplayName: Everlasting Cold
+			}
+
+			PlatinumKatana: {
+				Tooltip: ""
+				DisplayName: Platinum Katana
+			}
+
+			EnergyBlade: {
+				Tooltip: ""
+				DisplayName: Energy Blade
+			}
+
+			EnchantedStarfury: {
+				Tooltip: ""
+				DisplayName: Enchanted Starfury
+			}
+
+			EnchantedOreSword: {
+				Tooltip: ""
+				DisplayName: Enchanted Ore Sword
+			}
+
+			DarkCactus: {
+				Tooltip: ""
+				DisplayName: Dark Cactus
+			}
+
+			BurningPassion: {
+				Tooltip: ""
+				DisplayName: Burning Passion
+			}
+
+			BloodStar: {
+				Tooltip: ""
+				DisplayName: Blood Star
+			}
+
+			ZapSnapper: {
+				Tooltip: ""
+				DisplayName: Zap Snapper
+			}
+
+			TopazSwotaff: {
+				Tooltip: ""
+				DisplayName: Topaz Swotaff
+			}
+
+			StarLightDistributer: {
+				Tooltip: ""
+				DisplayName: Star Light Distributer
+			}
+
+			SinisterBook: {
+				Tooltip: ""
+				DisplayName: Sinister Book
+			}
+
+			SapphireSwotaff: {
+				Tooltip: ""
+				DisplayName: Sapphire Swotaff
+			}
+
+			RubySwotaff: {
+				Tooltip: ""
+				DisplayName: Ruby Swotaff
+			}
+
+			PlasmaBlaster: {
+				Tooltip: ""
+				DisplayName: Plasma Blaster
+			}
+
+			MagicHandCannon: {
+				Tooltip: ""
+				DisplayName: Magic Hand Cannon
+			}
+
+			MagicGrenade: {
+				Tooltip: ""
+				DisplayName: Magic Grenade
+			}
+
+			EmeraldSwotaff: {
+				Tooltip: ""
+				DisplayName: Emerald Swotaff
+			}
+
+			DiamondSwotaff: {
+				Tooltip: ""
+				DisplayName: Diamond Swotaff
+			}
+
+			AmethystSwotaff: {
+				Tooltip: ""
+				DisplayName: Amethyst Swotaff
+			}
+
+			HelixTestBullet: {
+				Tooltip: ""
+				DisplayName: Helix Test Bullet
+			}
+
+			ComboConceptSword: {
+				Tooltip: ""
+				DisplayName: Combo Concept Sword
+			}
+
+			OverhaulWeapon: {
+				Tooltip: ""
+				DisplayName: Overhaul Weapon
+			}
+
+			CursedSkull: {
+				Tooltip: ""
+				DisplayName: Cursed Skull
+			}
+
+			SynergyEnergy: {
+				Tooltip: ""
+				DisplayName: Synergy Energy
+			}
+
+			WormFeast: {
+				Tooltip: ""
+				DisplayName: Worm Feast
+			}
+
+			RoyalWax: {
+				Tooltip: ""
+				DisplayName: Royal Wax
+			}
+
+			PocketPortal: {
+				Tooltip: ""
+				DisplayName: Pocket Portal
+			}
+
+			PlanteraSpawn: {
+				Tooltip: ""
+				DisplayName: Plantera Spawn
+			}
+
+			PlanteraEssence: {
+				Tooltip: ""
+				DisplayName: Plantera Essence
+			}
+
+			MoonLordEnrage: {
+				Tooltip: ""
+				DisplayName: Moon Lord Enrage
+			}
+
+			KingSlimeCall: {
+				Tooltip: ""
+				DisplayName: King Slime Call
+			}
+
+			CursedDoll: {
+				Tooltip: ""
+				DisplayName: Cursed Doll
+			}
+
+			BloodyEye: {
+				Tooltip: ""
+				DisplayName: Bloody Eye
+			}
+
+			BleedingWorm: {
+				Tooltip: ""
+				DisplayName: Bleeding Worm
+			}
+
+			AttackOnTheMind: {
+				Tooltip: ""
+				DisplayName: Attack On The Mind
+			}
+
+			PowerEnergy: {
+				Tooltip: ""
+				DisplayName: Power Energy
+			}
+
+			WonderDrug: {
+				Tooltip: ""
+				DisplayName: Wonder Drug
+			}
+
+			TankPotion: {
+				Tooltip: ""
+				DisplayName: Tank Potion
+			}
+
+			SagePotion: {
+				Tooltip: ""
+				DisplayName: Sage Potion
+			}
+
+			PinPointAccuracyPotion: {
+				Tooltip: ""
+				DisplayName: Pin Point Accuracy Potion
+			}
+
+			LeaderPotion: {
+				Tooltip: ""
+				DisplayName: Leader Potion
+			}
+
+			BerserkPotion: {
+				Tooltip: ""
+				DisplayName: Berserk Potion
+			}
+
+			Note3: {
+				Tooltip: ""
+				DisplayName: Note3
+			}
+
+			Note2: {
+				Tooltip: ""
+				DisplayName: Note2
+			}
+
+			Note1: {
+				Tooltip: ""
+				DisplayName: Note1
+			}
+
+			TrueKingSlimeTrophy: {
+				Tooltip: ""
+				DisplayName: True King Slime Trophy
+			}
+
+			TrueEyeOfCthulhuTrophy: {
+				Tooltip: ""
+				DisplayName: True Eye Of Cthulhu Trophy
+			}
+
+			TrueEaterOfWorldTrophy: {
+				Tooltip: ""
+				DisplayName: True Eater Of World Trophy
+			}
+
+			TrueBrainOfCthulhuTrophy: {
+				Tooltip: ""
+				DisplayName: True Brain Of Cthulhu Trophy
+			}
+
+			WoodenTreasureChest: {
+				Tooltip: ""
+				DisplayName: Wooden Treasure Chest
+			}
+
+			UnderworldTreasureChest: {
+				Tooltip: ""
+				DisplayName: Underworld Treasure Chest
+			}
+
+			StoneTreasureChest: {
+				Tooltip: ""
+				DisplayName: Stone Treasure Chest
+			}
+
+			StarTreasureChest: {
+				Tooltip: ""
+				DisplayName: Star Treasure Chest
+			}
+
+			SilverTreasureChest: {
+				Tooltip: ""
+				DisplayName: Silver Treasure Chest
+			}
+
+			ShadowTreasureChest: {
+				Tooltip: ""
+				DisplayName: Shadow Treasure Chest
+			}
+
+			RainbowTreasureChest: {
+				Tooltip: ""
+				DisplayName: Rainbow Treasure Chest
+			}
+
+			NatureTreasureChest: {
+				Tooltip: ""
+				DisplayName: Nature Treasure Chest
+			}
+
+			MoonTreasureChest: {
+				Tooltip: ""
+				DisplayName: Moon Treasure Chest
+			}
+
+			MechTreasureChest: {
+				Tooltip: ""
+				DisplayName: Mech Treasure Chest
+			}
+
+			LunchBox: {
+				Tooltip: ""
+				DisplayName: Lunch Box
+			}
+
+			LunaticTreasureChest: {
+				Tooltip: ""
+				DisplayName: Lunatic Treasure Chest
+			}
+
+			LihzahrdTreasureChest: {
+				Tooltip: ""
+				DisplayName: Lihzahrd Treasure Chest
+			}
+
+			IceTreasureChest: {
+				Tooltip: ""
+				DisplayName: Ice Treasure Chest
+			}
+
+			HoneyTreasureChest: {
+				Tooltip: ""
+				DisplayName: Honey Treasure Chest
+			}
+
+			GoldTreasureChest: {
+				Tooltip: ""
+				DisplayName: Gold Treasure Chest
+			}
+
+			EmpressTreasureChest: {
+				Tooltip: ""
+				DisplayName: Empress Treasure Chest
+			}
+
+			DukeTreasureChest: {
+				Tooltip: ""
+				DisplayName: Duke Treasure Chest
+			}
+
+			DeerclopTreasureChest: {
+				Tooltip: ""
+				DisplayName: Deerclop Treasure Chest
+			}
+
+			CrystalTreasureChest: {
+				Tooltip: ""
+				DisplayName: Crystal Treasure Chest
+			}
+
+			CrimsonTreasureChest: {
+				Tooltip: ""
+				DisplayName: Crimson Treasure Chest
+			}
+
+			CorruptedTreasureChest: {
+				Tooltip: ""
+				DisplayName: Corrupted Treasure Chest
+			}
+
+			BuilderTreasureChest: {
+				Tooltip: ""
+				DisplayName: Builder Treasure Chest
+			}
+
+			BloodTreasureChest: {
+				Tooltip: ""
+				DisplayName: Blood Treasure Chest
+			}
+
+			BlackTreasureChest: {
+				Tooltip: ""
+				DisplayName: Black Treasure Chest
+			}
+
+			VortexCard: {
+				Tooltip: ""
+				DisplayName: Vortex Card
+			}
+
+			StarDustCard: {
+				Tooltip: ""
+				DisplayName: Star Dust Card
+			}
+
+			SolarCard: {
+				Tooltip: ""
+				DisplayName: Solar Card
+			}
+
+			ResetCard: {
+				Tooltip: ""
+				DisplayName: Reset Card
+			}
+
+			NebulaCard: {
+				Tooltip: ""
+				DisplayName: Nebula Card
+			}
+
+			EmptyCard: {
+				Tooltip: ""
+				DisplayName: Empty Card
+			}
+
+			ArenaMaker: {
+				Tooltip: ""
+				DisplayName: Arena Maker
+			}
+
+			VampirismCrystal: {
+				Tooltip: ""
+				DisplayName: Vampirism Crystal
+			}
+
+			TokenofPride: {
+				Tooltip: ""
+				DisplayName: Tokenof Pride
+			}
+
+			TokenofGreed: {
+				Tooltip: ""
+				DisplayName: Tokenof Greed
+			}
+
+			SkillIssuedArtifact: {
+				Tooltip: ""
+				DisplayName: Skill Issued Artifact
+			}
+
+			GodDice: {
+				Tooltip: ""
+				DisplayName: God Dice
+			}
+
+			FateDecider: {
+				Tooltip: ""
+				DisplayName: Fate Decider
+			}
+
+			BrokenArtifact: {
+				Tooltip: ""
+				DisplayName: Broken Artifact
+			}
+
+			totalcritacc: {
+				Tooltip: ""
+				DisplayName: totalcritacc
+			}
+
+			ResetWonderDrug: {
+				Tooltip: ""
+				DisplayName: Reset Wonder Drug
+			}
+
+			MoreItemChestDebug: {
+				Tooltip: ""
+				DisplayName: More Item Chest Debug
+			}
+
+			ExtraChallengeChanger: {
+				Tooltip: ""
+				DisplayName: Extra Challenge Changer
+			}
+
+			DayTimeCycle: {
+				Tooltip: ""
+				DisplayName: Day Time Cycle
+			}
+
+			ArtifactRemover: {
+				Tooltip: ""
+				DisplayName: Artifact Remover
+			}
+
+			UnlimitedProgress: {
+				Tooltip: ""
+				DisplayName: Unlimited Progress
+			}
+
+			SuperBuilderTool: {
+				Tooltip: ""
+				DisplayName: Super Builder Tool
+			}
+
+			SwordScabbard: {
+				Tooltip: ""
+				DisplayName: Sword Scabbard
+			}
+
+			ParryScabbard: {
+				Tooltip: ""
+				DisplayName: Parry Scabbard
+			}
+
+			PlusOneBullet: {
+				Tooltip: ""
+				DisplayName: Plus One Bullet
+			}
+
+			GuideToMasterNinja2: {
+				Tooltip: ""
+				DisplayName: Guide To Master Ninja2
+			}
+
+			GuideToMasterNinja: {
+				Tooltip: ""
+				DisplayName: Guide To Master Ninja
+			}
+
+			FuryEmblem: {
+				Tooltip: ""
+				DisplayName: Fury Emblem
+			}
+
+			KingSlimeDelight: {
+				Tooltip: ""
+				DisplayName: King Slime Delight
+			}
+
+			EvilEye: {
+				Tooltip: ""
+				DisplayName: Evil Eye
+			}
+
+			EmpressDelight: {
+				Tooltip: ""
+				DisplayName: Empress Delight
+			}
+
+			CorruptedFlesh: {
+				Tooltip: ""
+				DisplayName: Corrupted Flesh
+			}
+
+			NatureCrystal: {
+				Tooltip: ""
+				DisplayName: Nature Crystal
+			}
+
+			EnergeticCrystal: {
+				Tooltip: ""
+				DisplayName: Energetic Crystal
+			}
+
+			BouncyRelic: {
+				Tooltip: ""
+				DisplayName: Bouncy Relic
+			}
+		}
+
+		Buffs: {
+			StickyFriend: {
+				Description: Mods.BossRush.Buffs.StickyFriend.Description
+				DisplayName: Sticky Friend
+			}
+
+			EarthPower: {
+				Description: Mods.BossRush.Buffs.EarthPower.Description
+				DisplayName: Earth Power
+			}
+
+			SuperShortSwordPower: {
+				Description: Mods.BossRush.Buffs.SuperShortSwordPower.Description
+				DisplayName: Super Short Sword Power
+			}
+
+			SecondChance: {
+				Description: Mods.BossRush.Buffs.SecondChance.Description
+				DisplayName: Second Chance
+			}
+
+			SageBuff: {
+				Description: Mods.BossRush.Buffs.SageBuff.Description
+				DisplayName: Sage Buff
+			}
+
+			RoyalAntiEscapeTm: {
+				Description: Mods.BossRush.Buffs.RoyalAntiEscapeTm.Description
+				DisplayName: Royal Anti Escape Tm
+			}
+
+			Rotting: {
+				Description: Mods.BossRush.Buffs.Rotting.Description
+				DisplayName: Rotting
+			}
+
+			Regen: {
+				Description: Mods.BossRush.Buffs.Regen.Description
+				DisplayName: Regen
+			}
+
+			Protection: {
+				Description: Mods.BossRush.Buffs.Protection.Description
+				DisplayName: Protection
+			}
+
+			Parried: {
+				Description: Mods.BossRush.Buffs.Parried.Description
+				DisplayName: Parried
+			}
+
+			MoonLordWrath: {
+				Description: Mods.BossRush.Buffs.MoonLordWrath.Description
+				DisplayName: Moon Lord Wrath
+			}
+
+			MindBreak: {
+				Description: Mods.BossRush.Buffs.MindBreak.Description
+				DisplayName: Mind Break
+			}
+
+			LeaderShip: {
+				Description: Mods.BossRush.Buffs.LeaderShip.Description
+				DisplayName: Leader Ship
+			}
+
+			KingSlimeRage: {
+				Description: Mods.BossRush.Buffs.KingSlimeRage.Description
+				DisplayName: King Slime Rage
+			}
+
+			GodVision: {
+				Description: Mods.BossRush.Buffs.GodVision.Description
+				DisplayName: God Vision
+			}
+
+			FuriousCoolDown: {
+				Description: Mods.BossRush.Buffs.FuriousCoolDown.Description
+				DisplayName: Furious Cool Down
+			}
+
+			Furious: {
+				Description: Mods.BossRush.Buffs.Furious.Description
+				DisplayName: Furious
+			}
+
+			EvilPresence: {
+				Description: Mods.BossRush.Buffs.EvilPresence.Description
+				DisplayName: Evil Presence
+			}
+
+			EvilEyeProtection: {
+				Description: Mods.BossRush.Buffs.EvilEyeProtection.Description
+				DisplayName: Evil Eye Protection
+			}
+
+			CoolDownParried: {
+				Description: Mods.BossRush.Buffs.CoolDownParried.Description
+				DisplayName: Cool Down Parried
+			}
+
+			BerserkBuff: {
+				Description: Mods.BossRush.Buffs.BerserkBuff.Description
+				DisplayName: Berserk Buff
+			}
+
+			AbsoluteStunMovement: {
+				Description: Mods.BossRush.Buffs.AbsoluteStunMovement.Description
+				DisplayName: Absolute Stun Movement
+			}
+		}
+	}
+}
