@@ -8,10 +8,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 {
     internal class BloodyShot : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Bullet can bleed");
-        }
         public override void SetDefaults()
         {
             Item.scale = 0.7f;

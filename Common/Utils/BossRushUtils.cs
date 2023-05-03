@@ -208,18 +208,6 @@ namespace BossRush
                 Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
             }
         }
-        public static void DrawTrail(this Projectile projectile, Color lightColor, SpriteEffects spriteeffect, float ManualScaleAccordinglyToLength = 0)
-        {
-            Main.instance.LoadProjectile(projectile.type);
-            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
-            for (int k = 0; k < projectile.oldPos.Length; k++)
-            {
-                Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
-                Color color = projectile.GetAlpha(lightColor) * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, spriteeffect, 0);
-            }
-        }
         public static List<int> SetUpRNGTier(this List<int> FlagNum)
         {
             if (FlagNum.Count < 2)

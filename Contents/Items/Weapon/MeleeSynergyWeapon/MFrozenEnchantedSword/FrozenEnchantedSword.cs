@@ -8,11 +8,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MFrozenEnchantedSwor
 {
     public class FrozenEnchantedSword : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("prove to work despite it is just a ice blade on top of enchanted sword in photoshop");
-        }
-
         public override void SetDefaults()
         {
             Item.autoReuse = true;

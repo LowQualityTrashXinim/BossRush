@@ -12,11 +12,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
     internal class TrueEnchantedSword : ModItem, ISynergyItem
     {
         int count = 0;
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("The long await magical younger brother of StarWrath and True sword family");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 100, 100, 150, 7f, 19, 19, BossRushUseStyle.GenericSwingDownImprove, true);

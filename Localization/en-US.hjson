@@ -258,7 +258,7 @@ Mods: {
 			}
 
 			BloodyShot: {
-				Tooltip: ""
+				Tooltip: "Make them bleed"
 				DisplayName: Bloody Shot
 			}
 
@@ -298,32 +298,36 @@ Mods: {
 			}
 
 			NeoDynamite: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Mordern dynamite, never running out!"
+                Throw out a un-consumable dynamite that explode like normal dynamite on tile touch
+				'''
 				DisplayName: Neo Dynamite
 			}
 
 			YinYang: {
-				Tooltip: ""
+				Tooltip: "The balance between 2 forces, i wonder what secret it hold"
 				DisplayName: Yin Yang
 			}
 
 			TrueEnchantedSword: {
-				Tooltip: ""
+				Tooltip: "The long await magical younger brother of StarWrath and True sword family"
 				DisplayName: True Enchanted Sword
 			}
 
 			SuperShortSword: {
-				Tooltip: ""
+				Tooltip: "Super meaning better right ?"
 				DisplayName: Super Short Sword
 			}
 
 			ShadowTrick: {
-				Tooltip: ""
+				Tooltip: "Let them see the trick"
 				DisplayName: Shadow Trick
 			}
 
 			FrozenEnchantedSword: {
-				Tooltip: ""
+				Tooltip: "Prove to work despite it is just a ice blade on top of enchanted sword in photoshop"
 				DisplayName: Frozen Enchanted Sword
 			}
 

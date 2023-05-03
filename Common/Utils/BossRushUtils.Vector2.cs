@@ -95,8 +95,8 @@ namespace BossRush
         }
         public static Vector2 NextVector2Spread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {
-            ToRotateAgain.X += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
-            ToRotateAgain.Y += (Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier);
+            ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
+            ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
             return ToRotateAgain;
         }
         public static Vector2 Vector2SmallestInList(List<Vector2> flag)

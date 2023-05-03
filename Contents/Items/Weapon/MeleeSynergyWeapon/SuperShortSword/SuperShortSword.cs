@@ -7,10 +7,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 {
     class SuperShortSword : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Super meaning better right ?");
-        }
         public override void SetDefaults()
         {
             Item.DamageType = DamageClass.Melee;
