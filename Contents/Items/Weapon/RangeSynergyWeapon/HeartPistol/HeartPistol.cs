@@ -1,37 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
 {
     internal class HeartPistol : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Gun of love");
-        }
         public override void SetDefaults()
         {
-            Item.DamageType = DamageClass.Ranged;
-            Item.useAmmo = AmmoID.Bullet;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.shoot = ModContent.ProjectileType<HeartP>();
-            Item.noMelee = true;
-            Item.autoReuse = false;
+            Item.BossRushDefaultRange(26, 52, 20, 3f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<HeartP>(), 10, false, AmmoID.Bullet);
             Item.rare = 3;
-
-            Item.damage = 20;
-            Item.knockBack = 3f;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-            Item.shootSpeed = 10;
             Item.value = Item.buyPrice(gold: 50);
-
-            Item.height = 26;
-            Item.width = 52;
-
             Item.UseSound = SoundID.Item11;
         }
 

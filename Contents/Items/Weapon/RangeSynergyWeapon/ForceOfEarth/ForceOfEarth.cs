@@ -8,10 +8,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth
 {
     internal class ForceOfEarth : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("let them witness the force of earth");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(26, 74, 22, 3, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 20, true, AmmoID.Arrow);

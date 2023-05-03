@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark
 {
     internal class DeathBySpark : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("let hope those weird creature isn't present in this game");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(34, 24, 15, 1f, 84, 84, ItemUseStyleID.Shoot, ModContent.ProjectileType<SparkFlare>(), 12, false, AmmoID.Flare);

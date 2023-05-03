@@ -1,19 +1,13 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
+using Terraria.ModLoader;
 using BossRush.Common.Global;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
 {
     internal class Deagle : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Quite a killer if you can aim");
-        }
-
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(56, 30, 70, 5f, 21, 21, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);

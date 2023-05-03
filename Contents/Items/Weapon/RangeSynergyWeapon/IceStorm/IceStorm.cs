@@ -11,11 +11,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
     internal class IceStorm : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("An Ice Queen's most reliable defense" +
-                "\nHave 20% chance to not consume ammo"); */
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(42, 98, 50, 1f, 75, 75, ItemUseStyleID.Shoot, ProjectileID.FrostArrow, 10f, true, AmmoID.Arrow);

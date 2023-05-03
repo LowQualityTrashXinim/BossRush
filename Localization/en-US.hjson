@@ -205,47 +205,55 @@ Mods: {
 			}
 
 			KnifeRevolver: {
-				Tooltip: ""
+				Tooltip: "Self defense at it finest"
 				DisplayName: Knife Revolver
 			}
 
 			IceStorm: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Ice Queen's most reliable defense"
+				Have 20% chance to not consume ammo
+				'''
 				DisplayName: Ice Storm
 			}
 
 			HeartPistol: {
-				Tooltip: ""
+				Tooltip: "Suffocating love"
 				DisplayName: Heart Pistol
 			}
 
 			Gunmerang: {
-				Tooltip: ""
+				Tooltip: "Zelda gun"
 				DisplayName: Gunmerang
 			}
 
 			ForceOfEarth: {
-				Tooltip: ""
+				Tooltip: "Let them witness the force of earth"
 				DisplayName: Force Of Earth
 			}
 
 			DeathBySpark: {
-				Tooltip: ""
+				Tooltip: "Let them wish to never see the sun again"
 				DisplayName: Death By Spark
 			}
 
 			Deagle: {
-				Tooltip: ""
+				Tooltip: "Surprisingly accurated"
 				DisplayName: Deagle
 			}
 
 			ChaosMiniShark: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				Not my best work that for sure
+				Have 43% of not consuming ammo
+				'''
 				DisplayName: Chaos Mini Shark
 			}
 
 			Bowmarang: {
-				Tooltip: ""
+				Tooltip: "Innovation taken to another level"
 				DisplayName: Bowmarang
 			}
 

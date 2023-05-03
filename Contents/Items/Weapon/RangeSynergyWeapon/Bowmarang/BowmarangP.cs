@@ -58,6 +58,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
                 }
                 count++;
             }
+            count2++;
             if (Projectile.velocity.X > 20)
             {
                 Projectile.velocity.X = 20;

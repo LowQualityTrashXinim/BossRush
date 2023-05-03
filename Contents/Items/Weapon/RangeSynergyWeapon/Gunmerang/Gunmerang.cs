@@ -1,18 +1,14 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Gunmerang
 {
     internal class Gunmerang : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Weird gun");
-        }
         public override void SetDefaults()
         {
             Item.width = 34;

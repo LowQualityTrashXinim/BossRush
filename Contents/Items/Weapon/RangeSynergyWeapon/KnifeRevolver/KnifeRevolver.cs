@@ -7,10 +7,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
     internal class KnifeRevolver : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Self defense at it finest");
-        }
         public override void SetDefaults()
         {
             Item.width = 84;
