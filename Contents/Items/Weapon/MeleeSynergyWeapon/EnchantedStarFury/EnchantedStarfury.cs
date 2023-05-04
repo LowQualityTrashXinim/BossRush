@@ -52,6 +52,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
     }
     class EnchantedSwordProjectile : ModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.EnchantedBeam);
         public override void SetDefaults()
         {
             Projectile.width = 28;
@@ -85,7 +86,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
                 if (!Projectile.velocity.IsLimitReached(20)) Projectile.velocity += localOriginalvelocity;
             }
         }
-
         public override void Kill(int timeLeft)
         {
             for (int i = 0; i < 40; i++)

@@ -61,16 +61,11 @@ namespace BossRush
         {
             if (distanceToIdlePosition > 20f)
             {
-                // The immediate range around the player (when it passively floats about)
-
-                // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-                vectorToIdlePosition.Normalize();
-                vectorToIdlePosition *= speed;
+                vectorToIdlePosition = vectorToIdlePosition.SafeNormalize(Vector2.Zero) * speed;
                 projectile.velocity = (projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
             }
             else if (projectile.velocity == Vector2.Zero)
             {
-                // If there is a case where it's not moving at all, give it a little "poke"
                 projectile.velocity.X = -0.15f;
                 projectile.velocity.Y = -0.05f;
             }
@@ -80,16 +75,11 @@ namespace BossRush
             float disToIdle = vectorToIdlePosition.LengthSquared();
             if (disToIdle > 20 * 20)
             {
-                // The immediate range around the player (when it passively floats about)
-
-                // This is a simple movement formula using the two parameters and its desired direction to create a "homing" movement
-                vectorToIdlePosition.Normalize();
-                vectorToIdlePosition *= speed;
+                vectorToIdlePosition = vectorToIdlePosition.SafeNormalize(Vector2.Zero) * speed;
                 projectile.velocity = (projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
             }
             else if (projectile.velocity == Vector2.Zero && !disablepoke)
             {
-                // If there is a case where it's not moving at all, give it a little "poke"
                 projectile.velocity.X = -0.15f;
                 projectile.velocity.Y = -0.05f;
             }
