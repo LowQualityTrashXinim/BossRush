@@ -6,85 +6,85 @@ Mods: {
 			SharpBoomerangP.DisplayName: Sharp Boomerang
 			RectangleBullet.DisplayName: Rectangle Bullet
 			UltimatePistolMinion.DisplayName: Ultimate Pistol Minion
-			CustomPaintProj.DisplayName: Custom Paint Proj
-			WoodBowP.DisplayName: Wood Bow P
-			ShadewoodBowP.DisplayName: Shadewood Bow P
-			RichMahoganyBowP.DisplayName: Rich Mahogany Bow P
-			PalmWoodBowP.DisplayName: Palm Wood Bow P
-			EbonwoodBowP.DisplayName: Ebonwood Bow P
-			BorealWoodBowP.DisplayName: Boreal Wood Bow P
+			CustomPaintProj.DisplayName: Paint
+			WoodBowP.DisplayName: Wood Bow
+			ShadewoodBowP.DisplayName: Shadewood Bow
+			RichMahoganyBowP.DisplayName: Rich Mahogany Bow
+			PalmWoodBowP.DisplayName: Palm Wood Bow
+			EbonwoodBowP.DisplayName: Ebonwood Bow
+			BorealWoodBowP.DisplayName: Boreal Wood Bow
 			MoonStarProjectileTrail.DisplayName: Moon Star Projectile Trail
-			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile Smaller
+			MoonStarProjectileSmaller.DisplayName: Moon Star Projectile
 			MoonStarProjectile.DisplayName: Moon Star Projectile
-			TopazGemP.DisplayName: Topaz Gem P
+			TopazGemP.DisplayName: Topaz Gem
 			TopazBolt.DisplayName: Topaz Bolt
 			SmallEmerald.DisplayName: Small Emerald
-			SapphireGemP.DisplayName: Sapphire Gem P
+			SapphireGemP.DisplayName: Sapphire Gem
 			SapphireBolt.DisplayName: Sapphire Bolt
-			RubyGemP.DisplayName: Ruby Gem P
+			RubyGemP.DisplayName: Ruby Gem
 			RubyBolt.DisplayName: Ruby Bolt
-			EmeraldGemP.DisplayName: Emerald Gem P
+			EmeraldGemP.DisplayName: Emerald Gem
 			EmeraldBolt.DisplayName: Emerald Bolt
-			DiamondGemP.DisplayName: Diamond Gem P
+			DiamondGemP.DisplayName: Diamond Gem
 			DiamondBolt.DisplayName: Diamond Bolt
-			AmethystGemP.DisplayName: Amethyst Gem P
+			AmethystGemP.DisplayName: Amethyst Gem
 			AmethystBolt.DisplayName: Amethyst Bolt
-			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver Spear Projectile
-			KnifeRevolverP.DisplayName: Knife Revolver P
-			IceStormSnowBallCannonMinion.DisplayName: Ice Storm Snow Ball Cannon Minion
-			IceStormFrostFlowerMinion.DisplayName: Ice Storm Frost Flower Minion
-			smallerHeart.DisplayName: smaller Heart
-			HeartP.DisplayName: Heart P
-			TungstenBowP.DisplayName: Tungsten Bow P
-			TinBowP.DisplayName: Tin Bow P
-			SilverBowP.DisplayName: Silver Bow P
-			PlatinumBowP.DisplayName: Platinum Bow P
-			LeadBowP.DisplayName: Lead Bow P
-			IronBowP.DisplayName: Iron Bow P
-			GoldBowP.DisplayName: Gold Bow P
-			CopperBowP.DisplayName: Copper Bow P
+			KnifeRevolverSpearProjectile.DisplayName: Knife Revolver
+			KnifeRevolverP.DisplayName: Knife Revolver
+			IceStormSnowBallCannonMinion.DisplayName: Snow Ball Cannon
+			IceStormFrostFlowerMinion.DisplayName: Frost Flower
+			smallerHeart.DisplayName: Heart
+			HeartP.DisplayName: Heart
+			TungstenBowP.DisplayName: Tungsten Bow
+			TinBowP.DisplayName: Tin Bow
+			SilverBowP.DisplayName: Silver Bow
+			PlatinumBowP.DisplayName: Platinum Bow
+			LeadBowP.DisplayName: Lead Bow
+			IronBowP.DisplayName: Iron Bow
+			GoldBowP.DisplayName: Gold Bow
+			CopperBowP.DisplayName: Copper Bow
 			SparkFlare.DisplayName: Spark Flare
-			BowmarangP.DisplayName: Bowmarang P
+			BowmarangP.DisplayName: Bowmarang
 			BloodBullet.DisplayName: Blood Bullet
 			NeoDynamiteExplosion.DisplayName: Neo Dynamite Explosion
 			YinYangShockWave.DisplayName: Yin Yang Shock Wave
-			YinYangP.DisplayName: Yin Yang P
+			YinYangP.DisplayName: Yin Yang
 			YinLight.DisplayName: Yin Light
 			YangDark.DisplayName: Yang Dark
 			TrueEnchantedSwordBeam.DisplayName: True Enchanted Sword Beam
-			SuperShortSwordP.DisplayName: Super Short Sword P
-			SuperShortSwordOrbitShortSword.DisplayName: Super Short Sword Orbit Short Sword
-			ShadowTrickP2.DisplayName: Shadow Trick P2
-			ShadowTrickP.DisplayName: Shadow Trick P
+			SuperShortSwordP.DisplayName: Super Short Sword
+			SuperShortSwordOrbitShortSword.DisplayName: Short Sword
+			ShadowTrickP2.DisplayName: Shadow Trick
+			ShadowTrickP.DisplayName: Shadow Trick
 			ShadowSpike.DisplayName: Shadow Spike
-			FrostDaggerFishP.DisplayName: Frost Dagger Fish P
+			FrostDaggerFishP.DisplayName: Frost Dagger Fish
 			KatanaSlash.DisplayName: Katana Slash
 			EnergyBladeProjectile.DisplayName: Energy Blade Projectile
 			EnchantedSwordProjectile.DisplayName: Enchanted Sword Projectile
-			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword P
-			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword P
-			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword P
-			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword P
-			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword P
-			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword P
-			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword P
-			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword P
+			EnchantedTungstenSwordP.DisplayName: Enchanted Tungsten Sword
+			EnchantedTinSwordP.DisplayName: Enchanted Tin Sword
+			EnchantedSilverSwordP.DisplayName: Enchanted Silver Sword
+			EnchantedPlatinumSwordP.DisplayName: Enchanted Platinum Sword
+			EnchantedLeadSwordP.DisplayName: Enchanted Lead Sword
+			EnchantedIronSwordP.DisplayName: Enchanted Iron Sword
+			EnchantedGoldSwordP.DisplayName: Enchanted Gold Sword
+			EnchantedCopperSwordP.DisplayName: Enchanted Copper Sword
 			CactusBall.DisplayName: Cactus Ball
-			BurningPassionP.DisplayName: Burning Passion P
-			TopazSwotaffP.DisplayName: Topaz Swotaff P
+			BurningPassionP.DisplayName: Burning Passion
+			TopazSwotaffP.DisplayName: Topaz Swotaff
 			SinisterBolt.DisplayName: Sinister Bolt
-			SapphireSwotaffP.DisplayName: Sapphire Swotaff P
+			SapphireSwotaffP.DisplayName: Sapphire Swotaff
 			SmallerRubyBolt.DisplayName: Smaller Ruby Bolt
 			GiantRubyBolt.DisplayName: Giant Ruby Bolt
 			PlasmaBlasterLaserProjectile.DisplayName: Plasma Blaster Laser Projectile
 			MagicHandCannonProjectile.DisplayName: Magic Hand Cannon Projectile
-			EmeraldSwotaffP.DisplayName: Emerald Swotaff P
+			EmeraldSwotaffP.DisplayName: Emerald Swotaff
 			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
 			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
-			AmethystSwotaffP.DisplayName: Amethyst Swotaff P
+			AmethystSwotaffP.DisplayName: Amethyst Swotaff
 			HelixFade.DisplayName: Helix Fade
 			HelixBullet.DisplayName: Helix Bullet
-			GhostHitBox2.DisplayName: Ghost Hit Box2
+			GhostHitBox2.DisplayName: Ghost Hit Box
 			GhostHitBox.DisplayName: Ghost Hit Box
 			ArenaMakerProj.DisplayName: Arena Maker Proj
 			SwordSlash.DisplayName: Sword Slash
@@ -93,12 +93,12 @@ Mods: {
 			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
 			PhantasmalEyeAfterImage.DisplayName: Phantasmal Eye After Image
 			PhantasmalEye.DisplayName: Phantasmal Eye
-			EoCServant.DisplayName: Eo C Servant
+			EoCServant.DisplayName: EoC Servant
 			GhostSlime.DisplayName: Ghost Slime
-			GooP.DisplayName: Goo P
+			GooP.DisplayName: Goo
 		}
 
-		NPCs.TrueEoC.DisplayName: True Eo C
+		NPCs.TrueEoC.DisplayName: True EoC
 
 		Items: {
 			StickyFlower: {
@@ -205,60 +205,60 @@ Mods: {
 			}
 
 			KnifeRevolver: {
-				Tooltip: "Self defense at it finest"
+				Tooltip: Self defense at it finest
 				DisplayName: Knife Revolver
 			}
 
 			IceStorm: {
-				Tooltip: 
-				'''
-				"Ice Queen's most reliable defense"
-				Have 20% chance to not consume ammo
-				'''
+				Tooltip:
+					'''
+					"Ice Queen's most reliable defense"
+					Have 20% chance to not consume ammo
+					'''
 				DisplayName: Ice Storm
 			}
 
 			HeartPistol: {
-				Tooltip: "Suffocating love"
+				Tooltip: Suffocating love
 				DisplayName: Heart Pistol
 			}
 
 			Gunmerang: {
-				Tooltip: "Zelda gun"
+				Tooltip: Zelda gun
 				DisplayName: Gunmerang
 			}
 
 			ForceOfEarth: {
-				Tooltip: "Let them witness the force of earth"
+				Tooltip: Let them witness the force of earth
 				DisplayName: Force Of Earth
 			}
 
 			DeathBySpark: {
-				Tooltip: "Let them wish to never see the sun again"
+				Tooltip: Let them wish to never see the sun again
 				DisplayName: Death By Spark
 			}
 
 			Deagle: {
-				Tooltip: "Surprisingly accurated"
+				Tooltip: Surprisingly accurated
 				DisplayName: Deagle
 			}
 
 			ChaosMiniShark: {
-				Tooltip: 
-				'''
-				Not my best work that for sure
-				Have 43% of not consuming ammo
-				'''
+				Tooltip:
+					'''
+					Not my best work that for sure
+					Have 43% of not consuming ammo
+					'''
 				DisplayName: Chaos Mini Shark
 			}
 
 			Bowmarang: {
-				Tooltip: "Innovation taken to another level"
+				Tooltip: Innovation taken to another level
 				DisplayName: Bowmarang
 			}
 
 			BloodyShot: {
-				Tooltip: "Make them bleed"
+				Tooltip: Make them bleed
 				DisplayName: Bloody Shot
 			}
 
@@ -298,36 +298,36 @@ Mods: {
 			}
 
 			NeoDynamite: {
-				Tooltip: 
-				'''
-				"Mordern dynamite, never running out!"
-                Throw out a un-consumable dynamite that explode like normal dynamite on tile touch
-				'''
+				Tooltip:
+					'''
+					"Mordern dynamite, never running out!"
+					Throw out a un-consumable dynamite that explode like normal dynamite on tile touch
+					'''
 				DisplayName: Neo Dynamite
 			}
 
 			YinYang: {
-				Tooltip: "The balance between 2 forces, i wonder what secret it hold"
+				Tooltip: The balance between 2 forces, i wonder what secret it hold
 				DisplayName: Yin Yang
 			}
 
 			TrueEnchantedSword: {
-				Tooltip: "The long await magical younger brother of StarWrath and True sword family"
+				Tooltip: The long await magical younger brother of StarWrath and True sword family
 				DisplayName: True Enchanted Sword
 			}
 
 			SuperShortSword: {
-				Tooltip: "Super meaning better right ?"
+				Tooltip: Super meaning better right ?
 				DisplayName: Super Short Sword
 			}
 
 			ShadowTrick: {
-				Tooltip: "Let them see the trick"
+				Tooltip: Let them see the trick
 				DisplayName: Shadow Trick
 			}
 
 			FrozenEnchantedSword: {
-				Tooltip: "Prove to work despite it is just a ice blade on top of enchanted sword in photoshop"
+				Tooltip: Prove to work despite it is just a ice blade on top of enchanted sword in photoshop
 				DisplayName: Frozen Enchanted Sword
 			}
 
@@ -337,71 +337,71 @@ Mods: {
 			}
 
 			FrostSwordFish: {
-				Tooltip: "The cursed cold cousin"
+				Tooltip: The cursed cold cousin
 				DisplayName: Frost Sword Fish
 			}
 
 			FlamingWoodSword: {
-				Tooltip: "Funny how a wooden sword got fire aspect enchantment"
+				Tooltip: Funny how a wooden sword got fire aspect enchantment
 				DisplayName: Flaming Wood Sword
 			}
 
 			EverlastingCold: {
-				Tooltip: "This forever cold, so cold that it could sent the whole world back to ice age"
+				Tooltip: This forever cold, so cold that it could sent the whole world back to ice age
 				DisplayName: Everlasting Cold
 			}
 
 			PlatinumKatana: {
-				Tooltip: "The best katana there is, yet"
+				Tooltip: The best katana there is, yet
 				DisplayName: Enhanced Katana
 			}
 
 			EnergyBlade: {
-				Tooltip: 
-				'''
-				"High energy vibration around the sword"
-				"It is sharp enough to even slash through the strongest mental like it is nothing"
-				'''
+				Tooltip:
+					'''
+					"High energy vibration around the sword"
+					"It is sharp enough to even slash through the strongest mental like it is nothing"
+					'''
 				DisplayName: Energy Blade
 			}
 
 			EnchantedStarfury: {
-				Tooltip: "A truely unthinkable"
+				Tooltip: A truely unthinkable
 				DisplayName: Enchanted Starfury
 			}
 
 			EnchantedOreSword: {
-				Tooltip: "Amalgamation of a sword"
+				Tooltip: Amalgamation of a sword
 				DisplayName: Enchanted Ore Sword
 			}
 
 			DarkCactus: {
-				Tooltip: "Bat and Cactus, oh a wild love story"
+				Tooltip: Bat and Cactus, oh a wild love story
 				DisplayName: Dark Cactus
 			}
 
 			BurningPassion: {
-				Tooltip: "Brimsing with passion"
+				Tooltip: Brimsing with passion
 				DisplayName: Burning Passion
 			}
 
 			BloodStar: {
-				Tooltip: "W.I.P"
+				Tooltip: W.I.P
 				DisplayName: Blood Star
 			}
 
 			ZapSnapper: {
-				Tooltip: "quite a zapping"
+				Tooltip: quite a zapping
 				DisplayName: Zap Snapper
 			}
 
 			TopazSwotaff: {
-				Tooltip: "To Be In REWORK"
+				Tooltip: To Be In REWORK
 				DisplayName: Topaz Swotaff
 			}
 
 			StarLightDistributer: {
-				Tooltip: "It is beautiful to look at"
+				Tooltip: It is beautiful to look at
 				DisplayName: Star Light Distributer
 			}
 
@@ -446,12 +446,12 @@ Mods: {
 			}
 
 			AmethystSwotaff: {
-				Tooltip: 
-				'''
-				You know, if this is all what it do...
-				Then it would be pretty disappointing...
-				Luckily, you can yeet the thing
-				'''
+				Tooltip:
+					'''
+					You know, if this is all what it do...
+					Then it would be pretty disappointing...
+					Luckily, you can yeet the thing
+					'''
 				DisplayName: Amethyst Swotaff
 			}
 
@@ -471,45 +471,45 @@ Mods: {
 			}
 
 			CursedSkull: {
-				Tooltip: 
-				'''
-				Make every boss when you fight instant kill you
-                "The only way to make god acknowledge you"
-				'''
+				Tooltip:
+					'''
+					Make every boss when you fight instant kill you
+					            "The only way to make god acknowledge you"
+					'''
 				DisplayName: Cursed Skull
 			}
 
 			SynergyEnergy: {
-				Tooltip: 
-				'''
-				"the possibility is only limited to our own mind"
-                Due to how overpowering this energy is, equiping it will
-                Increase speed by 10%
-                Increase jump speed by 10%
-                Increase damage flat by 5
-                Increase max mana by 20
-                Increase health regen by 1
-				'''
+				Tooltip:
+					'''
+					"the possibility is only limited to our own mind"
+					Due to how overpowering this energy is, equiping it will
+					Increase speed by 10%
+					Increase jump speed by 10%
+					Increase damage flat by 5
+					Increase max mana by 20
+					Increase health regen by 1
+					'''
 				DisplayName: Synergy Energy
 			}
 
 			WormFeast: {
-				Tooltip: ""
+				Tooltip: "Caution : Using this will gather unwanted attention"
 				DisplayName: Worm Feast
 			}
 
 			RoyalWax: {
-				Tooltip: ""
+				Tooltip: "Stolen from royal treasure"
 				DisplayName: Royal Wax
 			}
 
 			PocketPortal: {
-				Tooltip: ""
+				Tooltip: "Portal to another world !"
 				DisplayName: Pocket Portal
 			}
 
 			PlanteraSpawn: {
-				Tooltip: ""
+				Tooltip: "Spawn Plantera, as for how 3 essence become a pot, i have no clue"
 				DisplayName: Plantera Spawn
 			}
 
@@ -519,32 +519,32 @@ Mods: {
 			}
 
 			MoonLordEnrage: {
-				Tooltip: ""
+				Tooltip: "Beyond help, do not"
 				DisplayName: Moon Lord Enrage
 			}
 
 			KingSlimeCall: {
-				Tooltip: ""
-				DisplayName: King Slime Call
+				Tooltip: "Something feel slimy"
+				DisplayName: King's Scepter
 			}
 
 			CursedDoll: {
-				Tooltip: ""
+				Tooltip: "NEED SPRITE REWORK"
 				DisplayName: Cursed Doll
 			}
 
 			BloodyEye: {
-				Tooltip: ""
+				Tooltip: "WHAT DID YOU SHOW TO THE EYE OF CTHULHU"
 				DisplayName: Bloody Eye
 			}
 
 			BleedingWorm: {
-				Tooltip: ""
+				Tooltip: "Attract a certain monster from ocean"
 				DisplayName: Bleeding Worm
 			}
 
 			AttackOnTheMind: {
-				Tooltip: ""
+				Tooltip: "Caution : Using this may collapse your mind"
 				DisplayName: Attack On The Mind
 			}
 
@@ -554,48 +554,77 @@ Mods: {
 			}
 
 			WonderDrug: {
-				Tooltip: ""
+				Tooltip: "Surprisingly Legal"
 				DisplayName: Wonder Drug
 			}
 
 			TankPotion: {
-				Tooltip: ""
-				DisplayName: Tank Potion
+				Tooltip: "Let your body be shield for the weak"
+				DisplayName: The Titan's Exilir
 			}
 
 			SagePotion: {
-				Tooltip: ""
-				DisplayName: Sage Potion
+				Tooltip: "Side effects include becoming an explosive hazard"
+				DisplayName: The Sage's Exilir
 			}
 
 			PinPointAccuracyPotion: {
-				Tooltip: ""
-				DisplayName: Pin Point Accuracy Potion
+				Tooltip: "High focus, stay alert"
+				DisplayName: The Sniper's Exilir
 			}
 
 			LeaderPotion: {
-				Tooltip: ""
-				DisplayName: Leader Potion
+				Tooltip: "Let your minion do your binding"
+				DisplayName: The Commander's Exilir
 			}
 
 			BerserkPotion: {
-				Tooltip: ""
-				DisplayName: Berserk Potion
+				Tooltip: "Let them see slaughter"
+				DisplayName: Berserker's Elixir
 			}
 
 			Note3: {
-				Tooltip: ""
+				Tooltip: "Congrats"
 				DisplayName: Note3
 			}
 
 			Note2: {
-				Tooltip: ""
-				DisplayName: Note2
+				Tooltip:
+				'''
+				Now that you got the basic gis of the mod, we will explain more about" + $"[i:{ModContent.ItemType<SynergyEnergy>()}]
+				This item is needed if you want to get better stuff in the mod, in development i found out player often die due to
+				lack of dps and the gameplay loop is cool and all but it gotten boring quickly due to how \"balance\" terraria weapon is
+				These synergy item is a solution to the problem we having as it introduce more stuff and fun stuff you can use
+				With some of it can be use to increase power of certain class or player power overall, all of these stuff are unbalance
+				The decision for making weapon to be unbalance as it is intended to be come across randomly by pure chance with some worse than other
+				The item can be craft from this can be found in the chest and is intended that way, some example like " + $"[i:{ModContent.ItemType<SynergyEnergy>()}] + [i:{ItemID.CopperShortsword}] + [i:{ItemID.PlatinumBroadsword}] = [i:{ModContent.ItemType<EnchantedOreSword>()}]
+				Most synergy item are design with a unique or fun little idea that promote a more vary playstyle, some synergy weapon have lower dps than other
+				but it is up to you and decide if it worth to get a better dps weapon than what you have or play the chance game and get a better synergy item
+				The way you get synergy weapon is by fighting optional boss that don't matter to normal game progress like" + $"[i:{ItemID.Abeemination}]
+				You could also revert the synergy item that you craft back into pure synergy energy form but will lose the item that you craft with it
+				You can disable the config in the mod to completely block synergy energy getting involved, we hope that you find that easy to understand
+				'''
+				DisplayName: Note 2
 			}
 
 			Note1: {
-				Tooltip: ""
-				DisplayName: Note1
+				Tooltip:
+				'''
+				Hello, welcome to the mod, in this mod, you will be opening chest to get weapon to fight boss
+                To get you quick on the right track, let introduce you to basic mechanic to of the mod and what you should take note of
+                Chest usually contain weapon, accessories, armor, potion and some stuff you can build with with all of it is random
+                Tho in later game, you won't get stuff to build with as it was deemed unneeded, chest item progress with your progress
+                To open the chest, you simply right click it like a herb bag or treasure bags and it will give you stuff to progress
+                This mod is best played in expert mode, you would see that you get a king slime spawner in wooden chest
+                Wooden chest will always drop you 1 KS spawner, boss themselves will drop the spawner for the next boss
+                If you die while fighting a boss (do not account for boss despawn) then you will get another shot at that boss
+                There are no timer nor any rush in this mod,tho it is best if you try to fight boss as soon as possible
+                But that doesn't mean you shouldn't prepare a arena to fight boss as it is intended for you to beat boss
+                You may notice the Power Energy thing to craft King Scepter
+                All i can say about it is that you will be fighting same boss but with some special add into the fight
+                for now, this is all i can cover, i will see you after King slime
+				'''
+				DisplayName: Note 1
 			}
 
 			TrueKingSlimeTrophy: {

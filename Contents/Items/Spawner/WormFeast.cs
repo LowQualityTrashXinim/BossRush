@@ -1,10 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.Audio;
+using BossRush.Common;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
-using Terraria.Audio;
-using BossRush.Texture;
-using BossRush.Common;
 
 namespace BossRush.Contents.Items.Spawner
 {
@@ -13,7 +13,6 @@ namespace BossRush.Contents.Items.Spawner
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("Caution : Using this will gather unwanted attention");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.EaterofWorldsHead] = true;

@@ -23,12 +23,6 @@ namespace BossRush.Contents.Items.Potion
         public int CountTimeConsume = 0;
         //Speed
         public const float DrugSpeed1 = 0.20f;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("WonderDrug");
-            // Tooltip.SetDefault("\"Surprisingly Legal\"");
-        }
-
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.LifeFruit);

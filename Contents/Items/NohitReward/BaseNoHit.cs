@@ -8,10 +8,6 @@ namespace BossRush.Contents.Items.NohitReward
     abstract class BaseNoHit : ModItem
     {
         public const int HP = 50;
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("\"Overcoming a small challenge, tho sadly not place-able\"\nReward for not getting hit\nIncrease max HP by 50\nCan only be uses once");
-        }
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.LifeCrystal);
@@ -20,6 +16,12 @@ namespace BossRush.Contents.Items.NohitReward
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+            tooltips.Add(new TooltipLine(Mod, "NoHitReward",
+                "Overcoming a small challenge, tho sadly not place-able \n" +
+                "Reward for not getting hit \n" +
+                "Increase max HP by 50 \n" +
+                "Can only be uses once \n"
+                ));
             foreach (TooltipLine line in tooltips)
             {
                 if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;

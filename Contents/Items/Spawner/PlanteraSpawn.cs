@@ -10,7 +10,6 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("Spawn Plantera, as for how 3 essence become a pot, i have no clue");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] = true;

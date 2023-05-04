@@ -11,8 +11,6 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("King's Scepter");
-            // Tooltip.SetDefault("something feel slimy about this");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.KingSlime] = true;
@@ -41,25 +39,19 @@ namespace BossRush.Contents.Items.Spawner
             if (player.whoAmI == Main.myPlayer)
             {
                 player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged = true;
-                // If the player using the item is the client
-                // (explicitely excluded serverside here)
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
 
                 int type = NPCID.KingSlime;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    // If the player is not in multiplayer, spawn directly
                     NPC.SpawnOnPlayer(player.whoAmI, type);
                     Main.StartSlimeRain();
                 }
                 else
                 {
-                    // If the player is in multiplayer, request a spawn
-                    // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in this class above
                     NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
             }
-
             return true;
         }
 

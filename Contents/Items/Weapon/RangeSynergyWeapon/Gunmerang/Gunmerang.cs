@@ -11,24 +11,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Gunmerang
     {
         public override void SetDefaults()
         {
-            Item.width = 34;
-            Item.height = 26;
-            Item.damage = 34;
-
-            Item.DamageType = DamageClass.Ranged;
-            Item.useStyle = ItemUseStyleID.Shoot;
-
-            Item.shoot = ProjectileID.Bullet;
-            Item.shootSpeed = 14;
-
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-
+            Item.BossRushDefaultRange(34, 26, 34, 1f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenBoomerang, 14, true);
             Item.rare = ItemRarityID.Blue;
-            Item.noMelee = true;
-            Item.autoReuse = true;
             Item.value = Item.buyPrice(platinum: 5);
-
             Item.UseSound = SoundID.Item11;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -65,7 +50,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Gunmerang
         {
             type = ProjectileID.WoodenBoomerang;
         }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             count++;
@@ -91,7 +75,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Gunmerang
             }
             return true;
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2, 1);

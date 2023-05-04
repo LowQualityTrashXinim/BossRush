@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 using Terraria.Audio;
 using BossRush.Common;
+using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 
 namespace BossRush.Contents.Items.Spawner
 {
@@ -11,7 +11,6 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("WHAT DID YOU SHOW TO THE EYE OF CTHULHU");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.EyeofCthulhu] = true;

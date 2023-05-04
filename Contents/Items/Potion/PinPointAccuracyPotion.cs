@@ -9,11 +9,6 @@ namespace BossRush.Contents.Items.Potion
     internal class PinPointAccuracyPotion : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("The Sniper's Exilir");
-            // Tooltip.SetDefault("'Aim Assist is bought separately!'");
-        }
         public override void SetDefaults()
         {
             Item.width = 20;

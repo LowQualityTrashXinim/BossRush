@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Audio;
+using Terraria.ModLoader;
 using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Spawner
@@ -10,8 +10,6 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("BleedingWorm");
-            // Tooltip.SetDefault("Actract a certain monster from ocean");
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
             NPCID.Sets.MPAllowedEnemies[NPCID.BloodNautilus] = true;
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));

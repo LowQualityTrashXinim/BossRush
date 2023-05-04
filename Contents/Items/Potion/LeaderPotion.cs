@@ -9,11 +9,6 @@ namespace BossRush.Contents.Items.Potion
     internal class LeaderPotion : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("The Commander's Exilir");
-            // Tooltip.SetDefault("'A must for CEOs in the making!'");
-        }
         public override void SetDefaults()
         {
             Item.width = 20;

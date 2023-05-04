@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 {
@@ -11,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(45, 24, 16, 2f, 16, 16, ItemUseStyleID.Shoot, ProjectileID.GreenLaser, 1, 8, true);
+            Item.BossRushDefaultMagic(45, 24, 16, 2f, 16, 16, ItemUseStyleID.Shoot, ProjectileID.GreenLaser, 10, 8, true);
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item12;
@@ -32,6 +33,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            position = position.PositionOFFSET(velocity, 30);
             float rotation = MathHelper.ToRadians(5);
             float num = 5;
             if (Main.dayTime)

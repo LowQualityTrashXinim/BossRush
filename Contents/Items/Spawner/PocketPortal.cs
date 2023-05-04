@@ -10,7 +10,6 @@ namespace BossRush.Contents.Items.Spawner
     {
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("Portal to another world !");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[NPCID.DD2Bartender] = true;
         }

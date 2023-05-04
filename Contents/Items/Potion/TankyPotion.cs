@@ -9,11 +9,6 @@ namespace BossRush.Contents.Items.Potion
     internal class TankPotion : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("The Titan's Exilir");
-            // Tooltip.SetDefault("'Become hard as a rock and... strong as a feather?'");
-        }
         public override void SetDefaults()
         {
             Item.width = 20;
