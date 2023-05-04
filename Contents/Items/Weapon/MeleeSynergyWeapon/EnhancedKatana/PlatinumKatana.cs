@@ -10,31 +10,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
 {
     internal class PlatinumKatana : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Enhanced Katana");
-            // Tooltip.SetDefault("The best katana there is, yet");
-        }
         public override void SetDefaults()
         {
-            Item.width = 50;
-            Item.height = 52;
-
-            Item.damage = 43;
-            Item.knockBack = 4f;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-
-            Item.shoot = ModContent.ProjectileType<KatanaSlash>();
-            Item.DamageType = DamageClass.Melee;
-            Item.shootSpeed = 3;
+            Item.BossRushSetDefault(50, 52, 43, 4, 20, 20, ItemUseStyleID.Swing, true);
+            Item.BossRushSetDefaultSpear(ModContent.ProjectileType<KatanaSlash>(), 3);
             Item.rare = 1;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.noMelee = true;
-            Item.autoReuse = true;
-            Item.noUseGraphic = true;
             Item.value = Item.buyPrice(gold: 50);
-
             Item.UseSound = SoundID.Item1;
         }
         int count = 0;

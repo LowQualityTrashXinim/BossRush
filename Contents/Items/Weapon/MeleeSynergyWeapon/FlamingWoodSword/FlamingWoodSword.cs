@@ -8,11 +8,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
 {
     internal class FlamingWoodSword : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Funny how a wooden sword got fire aspect enchantment");
-        }
-
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 32, 36, 36, 5f, 4, 40, ItemUseStyleID.Swing, false);

@@ -8,11 +8,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
     class EnchantedOreSword : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Enchanted Ore Sword");
-            // Tooltip.SetDefault("Amalgamation of a sword");
-        }
         public override void SetDefaults()
         {
             Item.DamageType = DamageClass.Melee;

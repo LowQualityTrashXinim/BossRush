@@ -11,7 +11,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
     {
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("You know, if this is all what it do\nthen it would be pretty disappointing\nluckily, you can yeet the thing");
             Item.staff[Item.type] = true;
         }
         public override void SetDefaults()

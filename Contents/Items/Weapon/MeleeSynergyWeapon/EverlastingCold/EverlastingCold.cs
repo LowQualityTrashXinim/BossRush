@@ -2,18 +2,15 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
 {
     internal class EverlastingCold : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("This forever cold, so cold that it could sent the whole world back to ice age");
-        }
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 92, 92, 100, 5f, 20, 20, ItemUseStyleID.Swing, true);
+            BossRushUtils.BossRushSetDefault(Item, 92, 92, 100, 5f, 20, 20, BossRushUseStyle.Swipe, true);
             Item.DamageType = DamageClass.Melee;
             Item.rare = ItemRarityID.LightPurple;
             Item.value = Item.buyPrice(gold: 50);
@@ -32,7 +29,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
                 Main.projectile[proj].timeLeft = 200;
             }
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

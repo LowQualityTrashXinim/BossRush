@@ -79,19 +79,19 @@ namespace BossRush
             X = Math.Abs(newVelocity.X);
             Y = Math.Abs(newVelocity.Y);
         }
-        public static Vector2 Vector2DistributeEvenly(this Vector2 Vec2ToRotate, float ProjectileAmount, float rotation, int i)
+        public static Vector2 Vector2DistributeEvenly(this Vector2 velocity, float ProjectileAmount, float rotation, int i)
         {
             if (ProjectileAmount > 1)
             {
                 rotation = MathHelper.ToRadians(rotation);
-                return Vec2ToRotate.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
+                return velocity.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
             }
-            return Vec2ToRotate;
+            return velocity;
         }
-        public static Vector2 NextVector2RotatedByRandom(this Vector2 Vec2ToRotate, float ToRadians)
+        public static Vector2 NextVector2RotatedByRandom(this Vector2 velocity, float ToRadians)
         {
             float rotation = MathHelper.ToRadians(ToRadians);
-            return Vec2ToRotate.RotatedByRandom(rotation);
+            return velocity.RotatedByRandom(rotation);
         }
         public static Vector2 NextVector2Spread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {

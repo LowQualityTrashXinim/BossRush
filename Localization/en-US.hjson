@@ -337,67 +337,71 @@ Mods: {
 			}
 
 			FrostSwordFish: {
-				Tooltip: ""
+				Tooltip: "The cursed cold cousin"
 				DisplayName: Frost Sword Fish
 			}
 
 			FlamingWoodSword: {
-				Tooltip: ""
+				Tooltip: "Funny how a wooden sword got fire aspect enchantment"
 				DisplayName: Flaming Wood Sword
 			}
 
 			EverlastingCold: {
-				Tooltip: ""
+				Tooltip: "This forever cold, so cold that it could sent the whole world back to ice age"
 				DisplayName: Everlasting Cold
 			}
 
 			PlatinumKatana: {
-				Tooltip: ""
-				DisplayName: Platinum Katana
+				Tooltip: "The best katana there is, yet"
+				DisplayName: Enhanced Katana
 			}
 
 			EnergyBlade: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"High energy vibration around the sword"
+				"It is sharp enough to even slash through the strongest mental like it is nothing"
+				'''
 				DisplayName: Energy Blade
 			}
 
 			EnchantedStarfury: {
-				Tooltip: ""
+				Tooltip: "A truely unthinkable"
 				DisplayName: Enchanted Starfury
 			}
 
 			EnchantedOreSword: {
-				Tooltip: ""
+				Tooltip: "Amalgamation of a sword"
 				DisplayName: Enchanted Ore Sword
 			}
 
 			DarkCactus: {
-				Tooltip: ""
+				Tooltip: "Bat and Cactus, oh a wild love story"
 				DisplayName: Dark Cactus
 			}
 
 			BurningPassion: {
-				Tooltip: ""
+				Tooltip: "Brimsing with passion"
 				DisplayName: Burning Passion
 			}
 
 			BloodStar: {
-				Tooltip: ""
+				Tooltip: "W.I.P"
 				DisplayName: Blood Star
 			}
 
 			ZapSnapper: {
-				Tooltip: ""
+				Tooltip: "quite a zapping"
 				DisplayName: Zap Snapper
 			}
 
 			TopazSwotaff: {
-				Tooltip: ""
+				Tooltip: "To Be In REWORK"
 				DisplayName: Topaz Swotaff
 			}
 
 			StarLightDistributer: {
-				Tooltip: ""
+				Tooltip: "It is beautiful to look at"
 				DisplayName: Star Light Distributer
 			}
 
@@ -442,7 +446,12 @@ Mods: {
 			}
 
 			AmethystSwotaff: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				You know, if this is all what it do...
+				Then it would be pretty disappointing...
+				Luckily, you can yeet the thing
+				'''
 				DisplayName: Amethyst Swotaff
 			}
 
@@ -462,12 +471,25 @@ Mods: {
 			}
 
 			CursedSkull: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				Make every boss when you fight instant kill you
+                "The only way to make god acknowledge you"
+				'''
 				DisplayName: Cursed Skull
 			}
 
 			SynergyEnergy: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"the possibility is only limited to our own mind"
+                Due to how overpowering this energy is, equiping it will
+                Increase speed by 10%
+                Increase jump speed by 10%
+                Increase damage flat by 5
+                Increase max mana by 20
+                Increase health regen by 1
+				'''
 				DisplayName: Synergy Energy
 			}
 

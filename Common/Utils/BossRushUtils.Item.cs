@@ -32,12 +32,13 @@ namespace BossRush
             item.autoReuse = false;
             item.consumable = true;
         }
-        public static void BossRushSetDefaultSpear(Item item, int spearType, float shootSpeed)
+        public static void BossRushSetDefaultSpear(this Item item, int spearType, float shootSpeed)
         {
             item.noUseGraphic = true;
             item.noMelee = true;
             item.shootSpeed = shootSpeed;
             item.shoot = spearType;
+            item.DamageType = DamageClass.Melee;
         }
         public static void BossRushDefaultRange(this Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, int shoot, float shootSpeed, bool autoReuse, int useAmmo = 0
         )

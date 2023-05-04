@@ -9,11 +9,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 {
     internal class EnchantedStarfury : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("A truely unthinkable");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 66, 66, 32, 4f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);

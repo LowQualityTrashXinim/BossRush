@@ -8,12 +8,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
 {
     internal class FrostSwordFish : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Frost SwordFish");
-            // Tooltip.SetDefault("The cursed cold cousin");
-        }
-
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 1f, 18, 18, BossRushUseStyle.Swipe, true);
@@ -26,7 +20,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
             Item.scale += 0.25f;
             Item.UseSound = SoundID.Item1;
         }
-
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             Vector2 pos;
@@ -38,13 +31,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
             Projectile.NewProjectile(Item.GetSource_FromThis(), pos, Vector2.Zero, ModContent.ProjectileType<FrostDaggerFishP>(), hit.Damage, hit.Knockback, player.whoAmI);
             target.AddBuff(BuffID.Frostburn, 180);
         }
-
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             Vector2 hitboxCenter = new Vector2(hitbox.X, hitbox.Y);
             Dust.NewDust(hitboxCenter, hitbox.Width, hitbox.Height, DustID.IceRod, 0, 0, 0, Color.Aqua, .75f);
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

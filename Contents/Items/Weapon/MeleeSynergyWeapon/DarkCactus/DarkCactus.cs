@@ -8,10 +8,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 {
     internal class DarkCactus : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("uhhhh, this make no sense at all");
-        }
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 58, 78, 29, 5f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);

@@ -8,21 +8,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
 {
     class BurningPassion : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Brimsing with passion");
-        }
-
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 74, 74, 40, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
-            BossRushUtils.BossRushSetDefaultSpear(Item, ModContent.ProjectileType<BurningPassionP>(), 3.7f);
-
+            Item.BossRushSetDefault(74, 74, 40, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
+            Item.BossRushSetDefaultSpear(ModContent.ProjectileType<BurningPassionP>(), 3.7f);
             Item.rare = 3;
-            Item.DamageType = DamageClass.Melee;
             Item.value = Item.sellPrice(silver: 1000);
         }
-
         public override bool AltFunctionUse(Player player)
         {
             return true;
