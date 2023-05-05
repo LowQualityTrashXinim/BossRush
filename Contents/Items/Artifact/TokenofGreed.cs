@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
             player.GetModPlayer<GreedyPlayer>().TokenOfGreed = true;
-            return base.UseItem(player);
+            return true;
         }
     }
     public class GreedyPlayer : ModPlayer

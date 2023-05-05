@@ -494,22 +494,22 @@ Mods: {
 			}
 
 			WormFeast: {
-				Tooltip: "Caution : Using this will gather unwanted attention"
+				Tooltip: Caution : Using this will gather unwanted attention
 				DisplayName: Worm Feast
 			}
 
 			RoyalWax: {
-				Tooltip: "Stolen from royal treasure"
+				Tooltip: Stolen from royal treasure
 				DisplayName: Royal Wax
 			}
 
 			PocketPortal: {
-				Tooltip: "Portal to another world !"
+				Tooltip: Portal to another world !
 				DisplayName: Pocket Portal
 			}
 
 			PlanteraSpawn: {
-				Tooltip: "Spawn Plantera, as for how 3 essence become a pot, i have no clue"
+				Tooltip: Spawn Plantera, as for how 3 essence become a pot, i have no clue
 				DisplayName: Plantera Spawn
 			}
 
@@ -519,32 +519,32 @@ Mods: {
 			}
 
 			MoonLordEnrage: {
-				Tooltip: "Beyond help, do not"
+				Tooltip: Beyond help, do not
 				DisplayName: Moon Lord Enrage
 			}
 
 			KingSlimeCall: {
-				Tooltip: "Something feel slimy"
+				Tooltip: Something feel slimy
 				DisplayName: King's Scepter
 			}
 
 			CursedDoll: {
-				Tooltip: "NEED SPRITE REWORK"
+				Tooltip: NEED SPRITE REWORK
 				DisplayName: Cursed Doll
 			}
 
 			BloodyEye: {
-				Tooltip: "WHAT DID YOU SHOW TO THE EYE OF CTHULHU"
+				Tooltip: WHAT DID YOU SHOW TO THE EYE OF CTHULHU
 				DisplayName: Bloody Eye
 			}
 
 			BleedingWorm: {
-				Tooltip: "Attract a certain monster from ocean"
+				Tooltip: Attract a certain monster from ocean
 				DisplayName: Bleeding Worm
 			}
 
 			AttackOnTheMind: {
-				Tooltip: "Caution : Using this may collapse your mind"
+				Tooltip: Caution : Using this may collapse your mind
 				DisplayName: Attack On The Mind
 			}
 
@@ -554,76 +554,62 @@ Mods: {
 			}
 
 			WonderDrug: {
-				Tooltip: "Surprisingly Legal"
+				Tooltip: Surprisingly Legal
 				DisplayName: Wonder Drug
 			}
 
 			TankPotion: {
-				Tooltip: "Let your body be shield for the weak"
+				Tooltip: Let your body be shield for the weak
 				DisplayName: The Titan's Exilir
 			}
 
 			SagePotion: {
-				Tooltip: "Side effects include becoming an explosive hazard"
+				Tooltip: Side effects include becoming an explosive hazard
 				DisplayName: The Sage's Exilir
 			}
 
 			PinPointAccuracyPotion: {
-				Tooltip: "High focus, stay alert"
+				Tooltip: High focus, stay alert
 				DisplayName: The Sniper's Exilir
 			}
 
 			LeaderPotion: {
-				Tooltip: "Let your minion do your binding"
+				Tooltip: Let your minion do your binding
 				DisplayName: The Commander's Exilir
 			}
 
 			BerserkPotion: {
-				Tooltip: "Let them see slaughter"
+				Tooltip: Let them see slaughter
 				DisplayName: Berserker's Elixir
 			}
 
 			Note3: {
-				Tooltip: "Congrats"
+				Tooltip: Congrats
 				DisplayName: Note3
 			}
 
 			Note2: {
-				Tooltip:
-				'''
-				Now that you got the basic gis of the mod, we will explain more about" + $"[i:{ModContent.ItemType<SynergyEnergy>()}]
-				This item is needed if you want to get better stuff in the mod, in development i found out player often die due to
-				lack of dps and the gameplay loop is cool and all but it gotten boring quickly due to how \"balance\" terraria weapon is
-				These synergy item is a solution to the problem we having as it introduce more stuff and fun stuff you can use
-				With some of it can be use to increase power of certain class or player power overall, all of these stuff are unbalance
-				The decision for making weapon to be unbalance as it is intended to be come across randomly by pure chance with some worse than other
-				The item can be craft from this can be found in the chest and is intended that way, some example like " + $"[i:{ModContent.ItemType<SynergyEnergy>()}] + [i:{ItemID.CopperShortsword}] + [i:{ItemID.PlatinumBroadsword}] = [i:{ModContent.ItemType<EnchantedOreSword>()}]
-				Most synergy item are design with a unique or fun little idea that promote a more vary playstyle, some synergy weapon have lower dps than other
-				but it is up to you and decide if it worth to get a better dps weapon than what you have or play the chance game and get a better synergy item
-				The way you get synergy weapon is by fighting optional boss that don't matter to normal game progress like" + $"[i:{ItemID.Abeemination}]
-				You could also revert the synergy item that you craft back into pure synergy energy form but will lose the item that you craft with it
-				You can disable the config in the mod to completely block synergy energy getting involved, we hope that you find that easy to understand
-				'''
 				DisplayName: Note 2
+				Tooltip: ""
 			}
 
 			Note1: {
 				Tooltip:
-				'''
-				Hello, welcome to the mod, in this mod, you will be opening chest to get weapon to fight boss
-                To get you quick on the right track, let introduce you to basic mechanic to of the mod and what you should take note of
-                Chest usually contain weapon, accessories, armor, potion and some stuff you can build with with all of it is random
-                Tho in later game, you won't get stuff to build with as it was deemed unneeded, chest item progress with your progress
-                To open the chest, you simply right click it like a herb bag or treasure bags and it will give you stuff to progress
-                This mod is best played in expert mode, you would see that you get a king slime spawner in wooden chest
-                Wooden chest will always drop you 1 KS spawner, boss themselves will drop the spawner for the next boss
-                If you die while fighting a boss (do not account for boss despawn) then you will get another shot at that boss
-                There are no timer nor any rush in this mod,tho it is best if you try to fight boss as soon as possible
-                But that doesn't mean you shouldn't prepare a arena to fight boss as it is intended for you to beat boss
-                You may notice the Power Energy thing to craft King Scepter
-                All i can say about it is that you will be fighting same boss but with some special add into the fight
-                for now, this is all i can cover, i will see you after King slime
-				'''
+					'''
+					Hello, welcome to the mod, in this mod, you will be opening chest to get weapon to fight boss
+					To get you quick on the right track, let introduce you to basic mechanic to of the mod and what you should take note of
+					Chest usually contain weapon, accessories, armor, potion and some stuff you can build with with all of it is random
+					Tho in later game, you won't get stuff to build with as it was deemed unneeded, chest item progress with your progress
+					To open the chest, you simply right click it like a herb bag or treasure bags and it will give you stuff to progress
+					This mod is best played in expert mode, you would see that you get a king slime spawner in wooden chest
+					Wooden chest will always drop you 1 KS spawner, boss themselves will drop the spawner for the next boss
+					If you die while fighting a boss (do not account for boss despawn) then you will get another shot at that boss
+					There are no timer nor any rush in this mod,tho it is best if you try to fight boss as soon as possible
+					But that doesn't mean you shouldn't prepare a arena to fight boss as it is intended for you to beat boss
+					You may notice the Power Energy thing to craft King Scepter
+					All i can say about it is that you will be fighting same boss but with some special add into the fight
+					for now, this is all i can cover, i will see you after King slime
+					'''
 				DisplayName: Note 1
 			}
 
@@ -773,32 +759,36 @@ Mods: {
 			}
 
 			VortexCard: {
-				Tooltip: ""
+				Tooltip: Increase your chance to get range weapon from chest by 50% !
 				DisplayName: Vortex Card
 			}
 
 			StarDustCard: {
-				Tooltip: ""
+				Tooltip: Increase your chance to get summoner weapon from chest by 50% !
 				DisplayName: Star Dust Card
 			}
 
 			SolarCard: {
-				Tooltip: ""
+				Tooltip: Increase your chance to get melee weapon from chest by 50% !
 				DisplayName: Solar Card
 			}
 
 			ResetCard: {
-				Tooltip: ""
+				Tooltip:
+					'''
+					For Debug purpose only !
+					            Reset all of the card that manipulate the chance from chest
+					'''
 				DisplayName: Reset Card
 			}
 
 			NebulaCard: {
-				Tooltip: ""
+				Tooltip: Increase your chance to get magic weapon from chest by 50% !
 				DisplayName: Nebula Card
 			}
 
 			EmptyCard: {
-				Tooltip: ""
+				Tooltip: Empty card, you can fill something in it
 				DisplayName: Empty Card
 			}
 

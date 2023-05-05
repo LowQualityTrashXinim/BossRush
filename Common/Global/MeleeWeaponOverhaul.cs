@@ -369,26 +369,6 @@ namespace BossRush.Common.Global
                 modPlayer.SwordHitBox = hitbox;
             }
         }
-        private int DamageHandleSystem(MeleeOverhaulPlayer modPlayer, int damage)
-        {
-            Item item = modPlayer.Player.HeldItem;
-            if (item.useStyle == BossRushUseStyle.Swipe && modPlayer.ComboNumber == 2)
-            {
-                return (int)(damage * 1.5f);
-            }
-            if (item.useStyle == BossRushUseStyle.Poke)
-            {
-                if (modPlayer.ComboNumber == 1)
-                {
-                    return (int)(damage * 1.75f);
-                }
-                if (modPlayer.ComboNumber == 2)
-                {
-                    return (int)(damage * 1.25f);
-                }
-            }
-            return damage;
-        }
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.useStyle != BossRushUseStyle.Swipe &&
@@ -496,7 +476,6 @@ namespace BossRush.Common.Global
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 modifiers.CritDamage.Base += modifiers.CritDamage.Base * .5f;
-                modifiers.FinalDamage.Base = DamageHandleSystem(modPlayer, player.GetWeaponDamage(item));
                 modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             }
             base.ModifyHitNPC(item, player, target, ref modifiers);
@@ -548,7 +527,7 @@ namespace BossRush.Common.Global
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             percentDone = BossRushUtils.InOutBack(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
-            float angle = MathHelper.ToRadians(baseAngle + 125) * player.direction;
+            float angle = MathHelper.ToRadians(baseAngle + 145) * player.direction;
             float start = baseAngle + angle;
             float end = baseAngle - angle;
             Swipe(start, end, percentDone, player);
@@ -558,7 +537,7 @@ namespace BossRush.Common.Global
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             percentDone = BossRushUtils.InExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
-            float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
+            float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
             float start = baseAngle + angle * direct;
             float end = baseAngle - angle * direct;
             Swipe(start, end, percentDone, player);
@@ -764,10 +743,35 @@ namespace BossRush.Common.Global
         bool AlreadyHitNPC = false;
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
+            if(!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
+            {
+                return;
+            }
+            modifiers.FinalDamage.Base += DamageHandleSystem(Player.GetWeaponDamage(item));
             if (!AlreadyHitNPC)
             {
                 AlreadyHitNPC = true;
             }
+        }
+        private float DamageHandleSystem(float damage)
+        {
+            Item item = Player.HeldItem;
+            if (item.useStyle == BossRushUseStyle.Swipe && ComboNumber == 2)
+            {
+                return damage * .5f;
+            }
+            if (item.useStyle == BossRushUseStyle.Poke)
+            {
+                if (ComboNumber == 1)
+                {
+                    return damage * .75f;
+                }
+                if (ComboNumber == 2)
+                {
+                    return damage * .25f;
+                }
+            }
+            return 0;
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {

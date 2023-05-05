@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
             player.GetModPlayer<QualityPlayer>().TokenOfPride = true;
-            return base.UseItem(player);
+            return true;
         }
     }
     public class QualityPlayer : ModPlayer
