@@ -44,7 +44,6 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
             CreateRecipe()
                 .AddRecipeGroup("Wood Sword")
                 .AddRecipeGroup("OreBroadSword")
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }
