@@ -1,17 +1,10 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories
 {
-    internal class UnlimitedProgress : ModItem
+    internal class EmblemofProgress : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Untapped Potential");
-            // Tooltip.SetDefault("To touch the limitless growth, you become stronger each time kill a boss, simply amazing");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;

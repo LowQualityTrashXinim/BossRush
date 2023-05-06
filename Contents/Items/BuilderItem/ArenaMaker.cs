@@ -10,13 +10,6 @@ namespace BossRush.Contents.Items.BuilderItem
     internal class ArenaMaker : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("Create a basic arena that 300 block wide" +
-                "\nWill spawn at the middle of the mouse" +
-                "\nUnconsumeable and spawn infinite"); */
-        }
         public override void SetDefaults()
         {
             Item.width = 30;

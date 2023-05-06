@@ -15,13 +15,6 @@ namespace BossRush.Contents.Items.Artifact
     internal class FateDecider : ModItem, IArtifactItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Fate Decider");
-            /* Tooltip.SetDefault("\"Replacement of god dice\"" +
-                "\nOn Equip : Increase amount weapon get drop from Treasure Chest by 4" +
-                "\nEffect : Random effect may occur ..."); */
-        }
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -31,7 +24,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 4;
+            player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 2;
             player.GetModPlayer<FateDicePlayer>().FateDice = true;
         }
     }
@@ -68,7 +61,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 return;
             }
-            if (effectlasting <= 0 && Main.rand.NextBool(600))
+            if (effectlasting <= 0 && Main.rand.NextBool(1000))
             {
                 RNGdecide = Main.rand.Next(17);
             }

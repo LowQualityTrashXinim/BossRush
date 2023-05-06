@@ -7,10 +7,6 @@ namespace BossRush.Contents.Items.aDebugItem
     internal class totalcritacc : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("100% crit");
-        }
         public override void SetDefaults()
         {
             base.SetDefaults();

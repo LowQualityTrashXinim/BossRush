@@ -5,10 +5,6 @@ namespace BossRush.Contents.Items
 {
     internal class PowerEnergy : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Beyond what we could imagine");
-        }
         public override void SetDefaults()
         {
             Item.rare = 10;

@@ -359,8 +359,8 @@ Mods: {
 			EnergyBlade: {
 				Tooltip:
 					'''
-					"High energy vibration around the sword"
-					"It is sharp enough to even slash through the strongest mental like it is nothing"
+					High energy vibration around the sword
+					It is sharp enough to even slash through the strongest mental like it is nothing
 					'''
 				DisplayName: Energy Blade
 			}
@@ -474,7 +474,7 @@ Mods: {
 				Tooltip:
 					'''
 					Make every boss when you fight instant kill you
-					            "The only way to make god acknowledge you"
+					"The only way to make god acknowledge you"
 					'''
 				DisplayName: Cursed Skull
 			}
@@ -549,7 +549,7 @@ Mods: {
 			}
 
 			PowerEnergy: {
-				Tooltip: ""
+				Tooltip: "Beyond what we could imagine"
 				DisplayName: Power Energy
 			}
 
@@ -777,7 +777,7 @@ Mods: {
 				Tooltip:
 					'''
 					For Debug purpose only !
-					            Reset all of the card that manipulate the chance from chest
+					Reset all of the card that manipulate the chance from chest
 					'''
 				DisplayName: Reset Card
 			}
@@ -793,53 +793,90 @@ Mods: {
 			}
 
 			ArenaMaker: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				Create a basic arena that 300 block wide
+				Will spawn at the either side of the player
+				Unconsumeable and spawn infinite
+				'''
 				DisplayName: Arena Maker
 			}
 
 			VampirismCrystal: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Unpure, relentess crystal"
+				Passive : Attack heal player
+				Effect : reduce max life by 65%
+				You can survive 1 fatal attack ( 3 minute cooldown )
+				'''
 				DisplayName: Vampirism Crystal
 			}
 
 			TokenofPride: {
-				Tooltip: ""
-				DisplayName: Tokenof Pride
+				Tooltip: 
+				'''
+				"Pride of having the skill to use, care little for reward"
+				Positive Effect : Increase weapon damage by 45%
+				Negative Effect : Halves your drop from treasure chest
+				'''
+				DisplayName: Token of pride
 			}
 
 			TokenofGreed: {
-				Tooltip: ""
-				DisplayName: Tokenof Greed
+				Tooltip: 
+				'''
+				"Greed is satified by just having, care not for weapon quality"
+				Positive Effect : Increase amount of drop by 4
+				Negative Effect : Decrease weapon damage globally by 35%
+				'''
+				DisplayName: Token of greed
 			}
 
 			SkillIssuedArtifact: {
-				Tooltip: ""
-				DisplayName: Skill Issued Artifact
+				Tooltip: 
+				'''
+				"with this, nothing is impossible, even with skill issue in blood stream"
+				For each monster kill, your MaxHP will increase by 0.5 and 0.01% boost toward damage and thorn ( Multiplicative )
+				To further increase progress, by default this accessory will make monster spawn increase by CRAZY amount
+				Capped at 10 million kill so your game don't break, you can thx me for that
+				Only work with people have skill issue live up to the name
+				'''
+				DisplayName: Infinite Growth
 			}
 
 			GodDice: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"The dice use by god to decide mortal fate"
+				Give you a roll for each boss kill
+				'''
 				DisplayName: God Dice
 			}
 
 			FateDecider: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Replacement of god dice"
+				On Equip : Increase amount weapon get drop from Treasure Chest by 2
+				Effect : Random effect may occur ...
+				'''
 				DisplayName: Fate Decider
 			}
 
 			BrokenArtifact: {
-				Tooltip: ""
+				Tooltip: "A far cry from it's former glory, maybe you can make something with this"
 				DisplayName: Broken Artifact
 			}
 
 			totalcritacc: {
-				Tooltip: ""
+				Tooltip: "100% crits"
 				DisplayName: totalcritacc
 			}
 
 			ResetWonderDrug: {
-				Tooltip: ""
-				DisplayName: Reset Wonder Drug
+				Tooltip: "Reset Wonder drug value back to normal"
+				DisplayName: Real Vitamin
 			}
 
 			MoreItemChestDebug: {
@@ -863,8 +900,8 @@ Mods: {
 			}
 
 			UnlimitedProgress: {
-				Tooltip: ""
-				DisplayName: Unlimited Progress
+				Tooltip: "You become stronger each time kill a boss, simply amazing"
+				DisplayName: Emblem of Progress
 			}
 
 			SuperBuilderTool: {
@@ -883,8 +920,13 @@ Mods: {
 			}
 
 			PlusOneBullet: {
-				Tooltip: ""
-				DisplayName: Plus One Bullet
+				Tooltip: 
+				'''
+				"why have more gun when you can tape extra barrel into your gun"
+				Increase amount of bullet you shoot by 1
+				Increase weapon spread amount by 35%
+				'''
+				DisplayName: Extra gun Barrel
 			}
 
 			GuideToMasterNinja2: {

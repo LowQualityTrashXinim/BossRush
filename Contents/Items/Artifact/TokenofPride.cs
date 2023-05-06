@@ -13,10 +13,6 @@ namespace BossRush.Contents.Items.Artifact
         public override string Texture => BossRushTexture.TOKENOFPRIDE;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Token of Pride");
-            /* Tooltip.SetDefault("\"Pride of having the skill to use, care little for reward\"" +
-                "\nPositive Effect : Increase weapon damage by 45%" +
-                "\nNegative Effect : Halves your drop from treasure chest"); */
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 6));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }

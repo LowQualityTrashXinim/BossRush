@@ -9,11 +9,6 @@ namespace BossRush.Contents.Items.aDebugItem
     internal class ResetWonderDrug : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Real Vitamin");
-            // Tooltip.SetDefault("Reset Wonder drug value back to normal");
-        }
         public override void SetDefaults()
         {
             Item.useStyle = ItemUseStyleID.DrinkLiquid;

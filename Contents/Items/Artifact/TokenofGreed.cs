@@ -7,13 +7,6 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class TokenofGreed : ModItem, IArtifactItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Token of Greed");
-            /* Tooltip.SetDefault("\"Greed is satified by just having, care not for weapon quality\"" +
-                "\nPositive Effect : Increase amount of drop by 4" +
-                "\nNegative Effect : Decrease weapon damage globally by 35%"); */
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);

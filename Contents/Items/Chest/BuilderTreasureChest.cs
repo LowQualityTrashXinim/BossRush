@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Contents.Items.Accessories;
+using BossRush.Texture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,9 +23,7 @@ namespace BossRush.Contents.Items.Chest
             player.QuickSpawnItem(entitySource, ItemID.Rope, 100);
             player.QuickSpawnItem(entitySource, ItemID.Torch, 999);
             player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 300);
-            player.QuickSpawnItem(entitySource, ItemID.BuilderPotion, 10);
-            player.QuickSpawnItem(entitySource, ItemID.ArchitectGizmoPack);
-            player.QuickSpawnItem(entitySource, ItemID.Toolbox);
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<SuperBuilderTool>());
             player.QuickSpawnItem(entitySource, ItemID.Chest, 15);
         }
     }

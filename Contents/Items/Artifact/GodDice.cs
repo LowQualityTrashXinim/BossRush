@@ -15,8 +15,6 @@ namespace BossRush.Contents.Items.Artifact
 
         public override void SetStaticDefaults()
         {
-            /* Tooltip.SetDefault("Give you a roll for each boss kill" +
-                "\n\"The dice that goddess uses decide mere mortal fate\""); */
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }

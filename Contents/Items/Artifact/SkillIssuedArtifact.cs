@@ -10,16 +10,6 @@ namespace BossRush.Contents.Items.Artifact
     internal class SkillIssuedArtifact : ModItem, IArtifactItem
     {
         public bool CanBeCraft => false;
-
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Infinite Growth");
-            /* Tooltip.SetDefault("\"with this, nothing is impossible, even with skill issue in blood stream\"" +
-            "\nFor each monster kill, your MaxHP will increase by 0.5 and 0.01% boost toward damage and thorn ( Multiplicative )" +
-            "\nTo further increase progress, by default this accessory will make monster spawn increase by CRAZY amount" +
-            "\nCapped at 10 million kill so your game don't break, you can thx me for that" +
-            "\nOnly work with people have skill issue live up to the name"); */
-        }
         public override void SetDefaults()
         {
             Item.width = 80;
