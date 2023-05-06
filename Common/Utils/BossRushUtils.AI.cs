@@ -120,7 +120,7 @@ namespace BossRush
             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, velocity, type, projectile.damage, projectile.knockBack, projectile.owner);
         }
         /// <summary>
-        /// Create a custom field in projectile, or use a ISwingProjectileType
+        /// Use ISwingProjectileType interface along with this method
         /// </summary>
         /// <param name="projectile"></param>
         /// <param name="DirectionToSwing"></param>
@@ -147,7 +147,7 @@ namespace BossRush
             percentDone = InExpo(Math.Clamp(percentDone, 0, 1));
             projectile.spriteDirection = player.direction;
             float baseAngle = DirectionToSwing.ToRotation();
-            float angle = MathHelper.ToRadians(baseAngle + 90) * player.direction;
+            float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
             float start = baseAngle + angle;
             float end = baseAngle - angle;
             float currentAngle = MathHelper.SmoothStep(start, end, percentDone);

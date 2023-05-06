@@ -160,17 +160,17 @@ Mods: {
 			}
 
 			NatureSelection: {
-				Tooltip: "Where it all begin"
+				Tooltip: Where it all begin
 				DisplayName: Natural Selection
 			}
 
 			MoonStarBow: {
-				Tooltip: "Make your wish !"
+				Tooltip: Make your wish !
 				DisplayName: Moonlight's Fragment
 			}
 
 			Merciless: {
-				Tooltip: "Absolute violence"
+				Tooltip: Absolute violence
 				DisplayName: Merciless
 			}
 

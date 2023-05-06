@@ -27,6 +27,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         {
             return player.ownedProjectileCounts[ModContent.ProjectileType<AmethystSwotaffP>()] < 1;
         }
+        public override void OnConsumeMana(Player player, int manaConsumed)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                player.statMana += manaConsumed;
+            }
+        }
         public override void OnMissingMana(Player player, int neededMana)
         {
             if (player.statMana <= player.GetManaCost(Item))
@@ -34,6 +41,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
                 CanShootProjectile = -1;
             }
             player.statMana += neededMana;
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            CanShootProjectile = -1;
+            return true;
         }
         int CanShootProjectile = 1;
         int countIndex = 1;
@@ -49,6 +61,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             {
                 Projectile.NewProjectile(source, position, velocity, ProjectileID.AmethystBolt, damage, knockback, player.whoAmI);
             }
+            if (player.altFunctionUse != 2)
+            {
+                SwingComboHandle();
+            }
+            return false;
+        }
+        private void SwingComboHandle()
+        {
             if (countIndex == 1)
             {
                 countIndex = -1;
@@ -63,7 +83,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
                 countIndex = 2;
                 time = 0;
             }
-            return false;
         }
         public override void AddRecipes()
         {
@@ -73,102 +92,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
                 .Register();
         }
     }
-    public class AmethystSwotaffP : ModProjectile
+    public class AmethystSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AmethystSwotaff>();
-        public override void SetDefaults()
-        {
-            Projectile.width = 70;
-            Projectile.height = 70;
-            Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
-        }
-        Vector2 PosToGo;
-        int FirstFrame = 0;
-        bool isAlreadyHeldDown = false;
-        bool isAlreadyReleased = false;
-        int countdownBeforeReturn = 100;
-        int AbsoluteCountDown = 420;
-        int timeToSpin = 0;
-        public override void AI()
-        {
-            if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1)
-            {
-                BossRushUtils.ProjectileSwordSwingAI(Projectile, ref PosToGo, ref FirstFrame, (int)Projectile.ai[0]);
-                return;
-            }
-            SpinAtCursorAI();
-        }
-        private void SpinAtCursorAI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Item item = player.HeldItem;
-            if (FirstFrame == 0)
-            {
-                PosToGo = Main.MouseWorld;
-                FirstFrame++;
-            }
-            Vector2 length = PosToGo - Projectile.Center;
-            if (Main.mouseLeft && !isAlreadyHeldDown && !isAlreadyReleased)
-            {
-                isAlreadyHeldDown = true;
-            }
-            if (isAlreadyHeldDown)
-            {
-                countdownBeforeReturn = 10;
-            }
-            if (!Main.mouseLeft && Main.mouseLeftRelease && isAlreadyHeldDown)
-            {
-                isAlreadyHeldDown = false;
-                isAlreadyReleased = true;
-            }
-            countdownBeforeReturn -= countdownBeforeReturn > 0 ? 1 : 0;
-            AbsoluteCountDown -= AbsoluteCountDown > 0 ? 1 : 0;
-            if (countdownBeforeReturn <= 0 || AbsoluteCountDown <= 0 || item.type != ModContent.ItemType<AmethystSwotaff>())
-            {
-                length = player.Center - Projectile.Center;
-                float distanceTo = length.Length();
-                if (distanceTo < 60)
-                {
-                    Projectile.Kill();
-                }
-            }
-            Projectile.velocity = length.SafeNormalize(Vector2.Zero) * length.Length() + player.velocity;
-            Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
-            Projectile.rotation += MathHelper.ToRadians(15);
-            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
-            Main.dust[dust].scale = Main.rand.NextFloat(.8f, 1.2f);
-            Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
-            Main.dust[dust].noGravity = true;
-            Vector2 velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * Main.rand.NextFloat(6, 9);
-            if (Projectile.ai[1] == 1)
-            {
-                if (timeToSpin >= 24)
-                {
-                    if (player.CheckMana(player.GetManaCost(item), true))
-                    {
-                        player.statMana -= player.GetManaCost(item);
-                    }
-                    else
-                    {
-                        Projectile.ai[1] = -1;
-                    }
-                    timeToSpin = 0;
-                }
-                timeToSpin++;
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .55f), Projectile.knockBack, Projectile.owner);
-                Main.projectile[proj].timeLeft = 30;
-            }
-            if ((Projectile.Center - player.Center).LengthSquared() > 1000 * 1000)
-            {
-                Projectile.Kill();
-            }
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            target.immune[Projectile.owner] = 6;
-        }
+        protected override int? AltAttackProjectileType() => 1;
     }
 }
