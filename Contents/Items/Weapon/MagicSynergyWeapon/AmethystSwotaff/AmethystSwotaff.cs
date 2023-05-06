@@ -52,7 +52,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         int time = 1;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (player.statMana >= player.GetManaCost(Item))
+            if (player.statMana >= player.GetManaCost(Item) && player.altFunctionUse != 2)
             {
                 CanShootProjectile = 1;
             }
@@ -69,18 +69,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         }
         private void SwingComboHandle()
         {
-            if (countIndex == 1)
-            {
-                countIndex = -1;
-            }
-            else
-            {
-                countIndex = 1;
-            }
+            countIndex = countIndex != 0 ? countIndex * -1 : 1;
             time++;
             if (time >= 3)
             {
-                countIndex = 2;
+                countIndex = 0;
                 time = 0;
             }
         }

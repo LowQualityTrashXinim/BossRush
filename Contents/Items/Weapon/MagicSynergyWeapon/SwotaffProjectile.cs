@@ -54,6 +54,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
+            if (Projectile.ai[0] == 0)
+            {
+                return;
+            }
             BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Projectile);
         }
         private void SpinAtCursorAI()
@@ -128,6 +132,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                 PosToGo = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
                 FirstFrame++;
             }
+            player.direction = PosToGo.X > 0 ? 1 : -1;
             float maxProgress = player.itemAnimationMax * 2f;
             if (Projectile.timeLeft > maxProgress)
             {
@@ -145,6 +150,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             Projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
+            SpawnDustTrailDelay();
+        }
+        private void SpawnDustTrailDelay()
+        {
+            int dust = Dust.NewDust(player.Center.PositionOFFSET(Projectile.rotation.ToRotationVector2(), 50), 0, 0, DustID.GemAmethyst);
+            Main.dust[dust].noGravity = true;
+            Main.dust[dust].scale = 0.1f;
+            Main.dust[dust].velocity = Projectile.rotation.ToRotationVector2() * 2f;
+            Main.dust[dust].fadeIn = 1.5f;
         }
     }
 }
