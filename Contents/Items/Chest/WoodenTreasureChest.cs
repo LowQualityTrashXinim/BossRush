@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Chest
             int SuperRare = Main.rand.Next(1000);
             if (SuperRare == 1 && ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<UnlimitedProgress>());
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
             }
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {

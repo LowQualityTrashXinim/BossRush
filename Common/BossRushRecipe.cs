@@ -89,10 +89,6 @@ namespace BossRush.Common
             });
             RecipeGroup.RegisterGroup("OreBow", OreBow);
         }
-        public override void AddRecipes()
-        {
-            ArtifactRecipe();
-        }
         public override void PostAddRecipes()
         {
             BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
@@ -121,29 +117,6 @@ namespace BossRush.Common
                     Main.recipe[i].HasResult(ItemID.FrostburnArrow))
                 {
                     Main.recipe[i].DisableRecipe();
-                }
-            }
-        }
-        private static void ArtifactRecipe()
-        {
-            foreach (var itemSample in ContentSamples.ItemsByType)
-            {
-                ModItem item = itemSample.Value.ModItem;
-                if (item is IArtifactItem)
-                {
-                    if(item is SkillIssuedArtifact)
-                    {
-                        item.CreateRecipe()
-                        .AddIngredient(ModContent.ItemType<BrokenArtifact>())
-                        .AddIngredient(ModContent.ItemType<PowerEnergy>())
-                        .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                        .AddIngredient(ModContent.ItemType<WoodenTreasureChest>())
-                        .Register();
-                        continue;
-                    }
-                    item.CreateRecipe()
-                        .AddIngredient(ModContent.ItemType<BrokenArtifact>())
-                        .Register();
                 }
             }
         }

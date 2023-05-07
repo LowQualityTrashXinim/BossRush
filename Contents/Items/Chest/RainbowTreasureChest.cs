@@ -100,7 +100,7 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<UltimatePistol>());
                     break;
                 case 2:
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<UnlimitedProgress>());
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
                     break;
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());

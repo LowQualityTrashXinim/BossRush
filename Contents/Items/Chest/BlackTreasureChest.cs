@@ -84,7 +84,7 @@ namespace BossRush.Contents.Items.Chest
             }
             if (Main.rand.NextBool(1000) && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<UnlimitedProgress>());
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
             }
             switch (Main.rand.Next(11))
             {

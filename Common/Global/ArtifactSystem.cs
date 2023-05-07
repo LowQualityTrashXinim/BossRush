@@ -5,11 +5,39 @@ using Terraria.ModLoader.IO;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Common.Global
 {
     internal class ArtifactSystem : ModSystem
     {
+        public override void AddRecipes()
+        {
+            ArtifactRecipe();
+        }
+        private static void ArtifactRecipe()
+        {
+            foreach (var itemSample in ContentSamples.ItemsByType)
+            {
+                ModItem item = itemSample.Value.ModItem;
+                if (item is IArtifactItem)
+                {
+                    if (item is SkillIssuedArtifact)
+                    {
+                        item.CreateRecipe()
+                        .AddIngredient(ModContent.ItemType<BrokenArtifact>())
+                        .AddIngredient(ModContent.ItemType<PowerEnergy>())
+                        .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+                        .AddIngredient(ModContent.ItemType<WoodenTreasureChest>())
+                        .Register();
+                        continue;
+                    }
+                    item.CreateRecipe()
+                        .AddIngredient(ModContent.ItemType<BrokenArtifact>())
+                        .Register();
+                }
+            }
+        }
     }
     class ArtifactGlobalItem : GlobalItem
     {
