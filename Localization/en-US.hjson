@@ -945,7 +945,15 @@ Mods: {
 			}
 
 			KingSlimeDelight: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Truely slime-da-ful"
+				Increase player Jump speed
+				Increase movement speed by 10%
+				Increase defense by 5
+				You shoot out slime spike when enemy is in range
+				You can shoot additional slime spike that deal 35% damage
+				'''
 				DisplayName: King Slime Delight
 			}
 
@@ -975,7 +983,13 @@ Mods: {
 			}
 
 			BouncyRelic: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"A small ancient power left from god, said to be cursed"
+				Most projectile can bounce of tile
+				Bouncing off a tile increase damage by 20%
+				Bouncing off a tile will make the projectile disappear after 3s
+				'''
 				DisplayName: Bouncy Relic
 			}
 

@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Texture;
 
@@ -9,15 +8,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
     internal class KingSlimeDelight : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("Truely slime-da-ful" +
-                "\nIncrease player Jump speed" +
-                "\nIncrease movement speed by 10%" +
-                "\nIncrease defense by 5" +
-                "\nYou shoot out slime spike when enemy is in range" +
-                "\nShoot out slime spike when you shot a enemy"); */
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;
@@ -49,43 +39,18 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
         {
             if (KingSlimePower)
             {
-                EntitySource_ItemUse entity = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<KingSlimeDelight>()));
-                bool foundTarget = false;
-                float distanceFromTarget = 500;
-                Vector2 targetCenter = Player.Center;
-
-                if (!foundTarget)
-                {
-                    for (int i = 0; i < Main.maxNPCs; i++)
-                    {
-                        NPC npc = Main.npc[i];
-                        if (npc.CanBeChasedBy())
-                        {
-                            float between = Vector2.Distance(npc.Center, Player.Center);
-                            bool inRange = between < distanceFromTarget;
-                            if (inRange && !foundTarget)
-                            {
-                                distanceFromTarget = between;
-                                targetCenter = npc.Center;
-                                foundTarget = true;
-                            }
-                        }
-                    }
-                }
-                if (foundTarget)
+                if (Player.Center.LookForHostileNPC(100f))
                 {
                     KSPcounter++;
                     if (KSPcounter == 100)
                     {
                         float rotation = MathHelper.ToRadians(180);
                         float ProjectileNum = 18;
-                        Vector2 DistanceFromProjToAim = targetCenter - Player.Center;
-                        Vector2 DirectionFromProjToAim = DistanceFromProjToAim.SafeNormalize(Vector2.UnitX);
-                        Vector2 speed = DirectionFromProjToAim * 8f;
+                        Vector2 DirectionFromProjToAim = Vector2.One.SafeNormalize(Vector2.UnitX) * 8f;
                         for (int i = 0; i < ProjectileNum; i++)
                         {
-                            Vector2 RotateSpeed = speed.RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (ProjectileNum - 1)));
-                            Projectile.NewProjectile(entity, Player.Center, RotateSpeed, ModContent.ProjectileType<FriendlySlimeProjectile>(), 25, 1f, Player.whoAmI);
+                            Vector2 RotateSpeed = DirectionFromProjToAim.RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (ProjectileNum - 1)));
+                            Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, RotateSpeed, ModContent.ProjectileType<FriendlySlimeProjectile>(), 25, 1f, Player.whoAmI);
                             KSPcounter = 0;
                         }
                     }
@@ -97,11 +62,10 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
         {
             if (KingSlimePower)
             {
-                EntitySource_ItemUse entity = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<KingSlimeDelight>()));
                 Vector2 DistanceFromProjToAim = Main.MouseWorld - Player.Center;
                 Vector2 DirectionFromProjToAim = DistanceFromProjToAim.SafeNormalize(Vector2.UnitX);
                 Vector2 speed = DirectionFromProjToAim * 20f;
-                Projectile.NewProjectile(entity, Player.Center, speed, ModContent.ProjectileType<FriendlySlimeProjectile>(), (int)(damage * 0.35f), 1f, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed, ModContent.ProjectileType<FriendlySlimeProjectile>(), (int)(damage * 0.35f), 1f, Player.whoAmI);
             }
         }
     }

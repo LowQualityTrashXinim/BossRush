@@ -19,8 +19,8 @@ namespace BossRush.Contents.Items.Artifact
         public override void UpdateEquip(Player player)
         {
             player.GetModPlayer<HeartOfEarthPlayer>().HeartOfEarth = true;
-            player.statLifeMax2 += 100;
             player.statLifeMax2 *= 2;
+            player.statLifeMax2 += 100;
         }
     }
     class HeartOfEarthPlayer : ModPlayer

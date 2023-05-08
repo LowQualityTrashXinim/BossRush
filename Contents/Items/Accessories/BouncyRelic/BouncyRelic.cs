@@ -9,16 +9,6 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
     internal class BouncyRelic : ModItem, ISynergyItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-
-        public int ModifyAmountBullet => 1;
-
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("\"A small ancient power accidentally left from a old god, said to be cursed because of jealousy from the new god\"" +
-                "\nMost projectile can bounce of tile" +
-                "\nBouncing off a tile increase damage by 20%" +
-                "\nBouncing off a tile will make the projectile disappear after 3s"); */
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;
@@ -34,8 +24,8 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.SlimeCrown)
-                .AddIngredient(ItemID.KingSlimeMask)
+                .AddIngredient(ItemID.KingSlimeTrophy)
+                .AddIngredient(ItemID.SlimeGun)
                 .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
