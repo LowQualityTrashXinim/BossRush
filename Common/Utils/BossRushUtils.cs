@@ -220,7 +220,7 @@ namespace BossRush
             {
                 if (Main.rand.Next(101) < GetOnePercentChance * i)
                 {
-                    FlagNumNew.Add(FlagNum[^i]);
+                    FlagNumNew.Add(FlagNum[^i]);//get element from the last of the list
                 }
             }
             return FlagNumNew;

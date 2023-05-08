@@ -17,12 +17,6 @@ namespace BossRush.Contents.Items.Chest
         private List<int> DropItemSummon = new List<int>();
         private List<int> DropItemMisc = new List<int>();
 
-        private int meleeChance = 0;
-        private int rangeChance = 0;
-        private int magicChance = 0;
-        private int summonChance = 0;
-        private int specialChance = 0;
-
         private int ModifyGetAmount(int ValueToModify, Player player)
         {
             //Modifier
@@ -84,11 +78,11 @@ namespace BossRush.Contents.Items.Chest
         protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
-            Main.NewText("THIS IS A DEBUG TEXT");
-            Main.NewText("BEFORE: Melee chance : " + meleeChance);
-            Main.NewText("BEFORE: Range chance : " + rangeChance);
-            Main.NewText("BEFORE: Magic chance : " + magicChance);
-            Main.NewText("BEFORE: Summon chance : " + summonChance);
+            //Main.NewText("THIS IS A DEBUG TEXT");
+            //Main.NewText("BEFORE: Melee chance : " + meleeChance);
+            //Main.NewText("BEFORE: Range chance : " + rangeChance);
+            //Main.NewText("BEFORE: Magic chance : " + magicChance);
+            //Main.NewText("BEFORE: Summon chance : " + summonChance);
             meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
             rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
             magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
@@ -98,11 +92,11 @@ namespace BossRush.Contents.Items.Chest
             summonChance += magicChance;
             specialChance += summonChance;
             int chooser = Main.rand.Next(specialChance);
-            Main.NewText("AFTER: Melee chance : " + meleeChance + " out of " + specialChance);
-            Main.NewText("AFTER: Range chance : " + (rangeChance - meleeChance) + " out of " + specialChance);
-            Main.NewText("AFTER: Magic chance : " + (magicChance - rangeChance)+ " out of " + specialChance);
-            Main.NewText("AFTER: Summon chance : " + (summonChance - magicChance) + " out of " + specialChance);
-            Main.NewText("SPECIAL WEAPON CHANCE (FIXED): " + (specialChance - summonChance) + " out of " + specialChance);
+            //Main.NewText("AFTER: Melee chance : " + meleeChance + " out of " + specialChance);
+            //Main.NewText("AFTER: Range chance : " + (rangeChance - meleeChance) + " out of " + specialChance);
+            //Main.NewText("AFTER: Magic chance : " + (magicChance - rangeChance) + " out of " + specialChance);
+            //Main.NewText("AFTER: Summon chance : " + (summonChance - magicChance) + " out of " + specialChance);
+            //Main.NewText("SPECIAL WEAPON CHANCE (FIXED): " + (specialChance - summonChance) + " out of " + specialChance);
             if (chooser <= meleeChance)
             {
                 return 1;
@@ -339,20 +333,14 @@ namespace BossRush.Contents.Items.Chest
         /// <br/> 7 : Rainbow Chest</param>
         public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0)
         {
+            ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
             specialAmount = 1;
             ReturnWeapon = ItemID.None;
             if (rng == 0)
             {
-                if (meleeChance + rangeChance + magicChance + summonChance + specialChance >= 1)
-                {
-                    rng = RNGManage(player, meleeChance, rangeChance, magicChance, summonChance, specialChance);
-                }
-                else
-                {
-                    rng = RNGManage(player);
-                }
-                rng = ModifyRNG(rng, player);
+                rng = RNGManage(player);
             }
+            rng = ModifyRNG(rng, player);
             //adding stuff here
             if (rng < 6 && rng > 0)
             {
