@@ -25,11 +25,7 @@ namespace BossRush.Contents.Items.aDebugItem
             //    }
             //}
             ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-            QualityPlayer qualityPlayer = player.GetModPlayer<QualityPlayer>();
-            GreedyPlayer greedyPlayer = player.GetModPlayer<GreedyPlayer>();
-            modplayer.ArtifactCount = 0;
-            qualityPlayer.TokenOfPride = false;
-            greedyPlayer.TokenOfGreed = false;
+            modplayer.ArtifactDefinedID = 0;
             return base.UseItem(player);
         }
     }

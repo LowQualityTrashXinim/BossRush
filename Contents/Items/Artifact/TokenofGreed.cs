@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
-using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -14,27 +13,8 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
-            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
-            player.GetModPlayer<GreedyPlayer>().TokenOfGreed = true;
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = 1;
             return true;
-        }
-    }
-    public class GreedyPlayer : ModPlayer
-    {
-        public bool TokenOfGreed = false;
-        public override void PostUpdate()
-        {
-            if (TokenOfGreed)
-            {
-                Player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 4;
-            }
-        }
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
-        {
-            if (TokenOfGreed)
-            {
-                damage *= .65f;
-            }
         }
     }
 }

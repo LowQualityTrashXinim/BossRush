@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -16,7 +17,7 @@ namespace BossRush.Contents.Items.Chest
         private List<int> DropItemMagic = new List<int>();
         private List<int> DropItemSummon = new List<int>();
         private List<int> DropItemMisc = new List<int>();
-
+        public virtual bool CanLootRNGbeRandomize() => true;
         private int ModifyGetAmount(int ValueToModify, Player player)
         {
             //Modifier
@@ -65,9 +66,10 @@ namespace BossRush.Contents.Items.Chest
             {
                 return 7;
             }
-            if (player.GetModPlayer<WonderDrugPlayer>().DrugDealer > 0)
+            int DrugValue = player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
+            if (DrugValue > 0)
             {
-                if (Main.rand.Next(100 + player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 5) <= player.GetModPlayer<WonderDrugPlayer>().DrugDealer * 10)
+                if (Main.rand.Next(100 + DrugValue * 5) <= DrugValue * 10)
                 {
                     return 6;
                 }
@@ -78,11 +80,11 @@ namespace BossRush.Contents.Items.Chest
         protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
-            //Main.NewText("THIS IS A DEBUG TEXT");
-            //Main.NewText("BEFORE: Melee chance : " + meleeChance);
-            //Main.NewText("BEFORE: Range chance : " + rangeChance);
-            //Main.NewText("BEFORE: Magic chance : " + magicChance);
-            //Main.NewText("BEFORE: Summon chance : " + summonChance);
+            Main.NewText("THIS IS A DEBUG TEXT");
+            Main.NewText("BEFORE: Melee chance : " + meleeChance);
+            Main.NewText("BEFORE: Range chance : " + rangeChance);
+            Main.NewText("BEFORE: Magic chance : " + magicChance);
+            Main.NewText("BEFORE: Summon chance : " + summonChance);
             meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
             rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
             magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
@@ -92,11 +94,11 @@ namespace BossRush.Contents.Items.Chest
             summonChance += magicChance;
             specialChance += summonChance;
             int chooser = Main.rand.Next(specialChance);
-            //Main.NewText("AFTER: Melee chance : " + meleeChance + " out of " + specialChance);
-            //Main.NewText("AFTER: Range chance : " + (rangeChance - meleeChance) + " out of " + specialChance);
-            //Main.NewText("AFTER: Magic chance : " + (magicChance - rangeChance) + " out of " + specialChance);
-            //Main.NewText("AFTER: Summon chance : " + (summonChance - magicChance) + " out of " + specialChance);
-            //Main.NewText("SPECIAL WEAPON CHANCE (FIXED): " + (specialChance - summonChance) + " out of " + specialChance);
+            Main.NewText("AFTER: Melee chance : " + meleeChance + " out of " + specialChance);
+            Main.NewText("AFTER: Range chance : " + (rangeChance - meleeChance) + " out of " + specialChance);
+            Main.NewText("AFTER: Magic chance : " + (magicChance - rangeChance) + " out of " + specialChance);
+            Main.NewText("AFTER: Summon chance : " + (summonChance - magicChance) + " out of " + specialChance);
+            Main.NewText("SPECIAL WEAPON CHANCE (FIXED): " + (specialChance - summonChance) + " out of " + specialChance);
             if (chooser <= meleeChance)
             {
                 return 1;
@@ -176,9 +178,13 @@ namespace BossRush.Contents.Items.Chest
         protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
         private void AddLoot(List<int> FlagNumber)
         {
-            List<int> RNGchooseWhichTierToGet = FlagNumber.SetUpRNGTier();
-            RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInList();
-            RNGchooseWhichTierToGet.Sort();
+            List<int> RNGchooseWhichTierToGet = FlagNumber;
+            if (CanLootRNGbeRandomize())
+            {
+                RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.SetUpRNGTier();
+                RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInList();
+                RNGchooseWhichTierToGet.Sort();
+            }
             for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
             {
                 switch (FlagNumber[i])
@@ -333,7 +339,6 @@ namespace BossRush.Contents.Items.Chest
         /// <br/> 7 : Rainbow Chest</param>
         public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0)
         {
-            ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
             specialAmount = 1;
             ReturnWeapon = ItemID.None;
             if (rng == 0)
@@ -347,10 +352,10 @@ namespace BossRush.Contents.Items.Chest
                 AddLoot(FlagNumber());
             }
             //actual choosing item
-            ChooseWeapon(rng, player, ref ReturnWeapon, ref specialAmount);
+            ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
         }
 
-        public void ChooseWeapon(int rng, Player player, ref int weapon, ref int amount)
+        public void ChooseWeapon(int rng, ref int weapon, ref int amount)
         {
             switch (rng)
             {
@@ -372,8 +377,7 @@ namespace BossRush.Contents.Items.Chest
                 case 5:
                     if (DropItemMisc.Count < 1)
                     {
-                        int rngM = ModifyRNG(Main.rand.Next(1, 5), player);
-                        ChooseWeapon(rngM, player, ref weapon, ref amount);
+                        ChooseWeapon(rng, ref weapon, ref amount);
                         break;
                     }
                     amount += 199;
@@ -852,6 +856,31 @@ namespace BossRush.Contents.Items.Chest
             amountModifier = 0;
             multiplier = false;
             base.ResetEffects();
+        }
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)BossRushNetCodeHandle.MessageType.ChanceMultiplayer);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(MeleeChanceMutilplier);
+            packet.Write(RangeChanceMutilplier);
+            packet.Write(MagicChanceMutilplier);
+            packet.Write(SummonChanceMutilplier);
+            packet.Send(toWho, fromWho);
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag["MeleeChanceMulti"] = MeleeChanceMutilplier;
+            tag["RangeChanceMulti"] = RangeChanceMutilplier;
+            tag["MagicChanceMulti"] = MagicChanceMutilplier;
+            tag["SummonChanceMulti"] = SummonChanceMutilplier;
+        }
+        public override void LoadData(TagCompound tag)
+        {
+            MeleeChanceMutilplier = (float)tag["MeleeChanceMulti"];
+            RangeChanceMutilplier = (float)tag["RangeChanceMulti"];
+            MagicChanceMutilplier = (float)tag["MagicChanceMulti"];
+            SummonChanceMutilplier = (float)tag["SummonChanceMulti"];
         }
     }
 }

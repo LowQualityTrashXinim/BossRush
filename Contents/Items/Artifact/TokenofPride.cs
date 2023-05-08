@@ -23,28 +23,8 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
-            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
-            player.GetModPlayer<QualityPlayer>().TokenOfPride = true;
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = 2;
             return true;
-        }
-    }
-    public class QualityPlayer : ModPlayer
-    {
-        public bool TokenOfPride = false;
-        public override void PostUpdate()
-        {
-            if (TokenOfPride)
-            {
-                Player.GetModPlayer<ChestLootDropPlayer>().multiplier = true;
-                Player.GetModPlayer<ChestLootDropPlayer>().amountModifier = .5f;
-            }
-        }
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
-        {
-            if (TokenOfPride)
-            {
-                damage += .45f;
-            }
         }
     }
 }

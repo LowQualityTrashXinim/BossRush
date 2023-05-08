@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -21,7 +20,8 @@ namespace BossRush.Contents.Items.Chest
         {
             return true;
         }
-        public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 5 };
+        public override bool CanLootRNGbeRandomize() => false;
+        public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
         public override List<int> FlagNumAcc()
         {
             List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5 };

@@ -5,6 +5,7 @@ using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Common
 {
@@ -20,7 +21,8 @@ namespace BossRush.Common
             BoCNoHit,
             GambleAddiction,
             ExtraChallenge,
-            ArtifactRegister
+            ArtifactRegister,
+            ChanceMultiplayer
         }
         public void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -54,13 +56,13 @@ namespace BossRush.Common
                     break;
                 case MessageType.GambleAddiction:
                     GamblePlayer gamble = Main.player[playernumber].GetModPlayer<GamblePlayer>();
-                    gamble.GambleDamage = reader.ReadInt32();
-                    gamble.GambleDef = reader.ReadInt32();
-                    gamble.GambleSpeed = reader.ReadInt32();
-                    gamble.GambleHP = reader.ReadInt32();
-                    gamble.GambleLifeRegen = reader.ReadInt32();
-                    gamble.GambleMana = reader.ReadInt32();
-                    gamble.GambleManaRegen = reader.ReadInt32();
+                    gamble.GambleDamage = reader.ReadSingle();
+                    gamble.GambleDef = reader.ReadSingle();
+                    gamble.GambleSpeed = reader.ReadSingle();
+                    gamble.GambleHP = reader.ReadSingle();
+                    gamble.GambleLifeRegen = reader.ReadSingle();
+                    gamble.GambleMana = reader.ReadSingle();
+                    gamble.GambleManaRegen = reader.ReadSingle();
                     gamble.GambleMinionSlot = reader.ReadInt32();
                     gamble.GambleCrit = reader.ReadInt32();
                     break;
@@ -70,7 +72,14 @@ namespace BossRush.Common
                     break;
                 case MessageType.ArtifactRegister:
                     ArtifactPlayerHandleLogic artifact = Main.player[playernumber].GetModPlayer<ArtifactPlayerHandleLogic>();
-                    artifact.ArtifactCount = reader.ReadInt32();
+                    artifact.ArtifactDefinedID = reader.ReadInt32();
+                    break;
+                case MessageType.ChanceMultiplayer:
+                    ChestLootDropPlayer chestplayer = Main.player[playernumber].GetModPlayer<ChestLootDropPlayer>();
+                    chestplayer.MeleeChanceMutilplier = reader.ReadSingle();
+                    chestplayer.RangeChanceMutilplier = reader.ReadSingle();
+                    chestplayer.MagicChanceMutilplier = reader.ReadSingle();
+                    chestplayer.SummonChanceMutilplier = reader.ReadSingle();
                     break;
             }
         }

@@ -43,23 +43,14 @@ namespace BossRush.Common.Global
     {
         public override bool CanUseItem(Item item, Player player)
         {
-            if(item.ModItem is IArtifactItem)
+            if (item.ModItem is IArtifactItem)
             {
-                if(item.consumable)
+                if (item.consumable)
                 {
-                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount < 1;
+                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID < 1;
                 }
             }
             return base.CanUseItem(item, player);
-        }
-        public override bool? UseItem(Item item, Player player)
-        {
-            if(item.ModItem is IArtifactItem && item.consumable)
-            {
-                player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactCount++;
-                return true;
-            }
-            return base.UseItem(item, player);
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
@@ -67,29 +58,75 @@ namespace BossRush.Common.Global
             {
                 if (item.consumable)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 of artifact can be consume"));
+                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 artifact can be consume"));
+                }
+                if(Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0)
+                {
+                    tooltips.Add(new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact"));
                 }
             }
         }
     }
     class ArtifactPlayerHandleLogic : ModPlayer
     {
-        public int ArtifactCount = 0;
+        public int ArtifactDefinedID = 0;
+        bool Greed = false;//ID = 1
+        bool Pride = false;//ID = 2
+        public override void ResetEffects()
+        {
+            Greed = ArtifactDefinedID == 1 ? true : false;
+            Pride = ArtifactDefinedID == 2 ? true : false;
+        }
+        public override void PreUpdate()
+        {
+            switch (ArtifactDefinedID)
+            {
+                case 1:
+                    Greed = true;
+                    break;
+                case 2:
+                    Pride = true;
+                    break;
+            }
+        }
+        public override void PostUpdate()
+        {
+            if (Greed)
+            {
+                Player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 4;
+            }
+            if (Pride)
+            {
+                Player.GetModPlayer<ChestLootDropPlayer>().multiplier = true;
+                Player.GetModPlayer<ChestLootDropPlayer>().amountModifier = .5f;
+            }
+        }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            if (Greed)
+            {
+                damage *= .65f;
+            }
+            if (Pride)
+            {
+                damage += .45f;
+            }
+        }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)BossRushNetCodeHandle.MessageType.ArtifactRegister);
             packet.Write((byte)Player.whoAmI);
-            packet.Write(ArtifactCount);
+            packet.Write(ArtifactDefinedID);
             packet.Send(toWho, fromWho);
         }
         public override void SaveData(TagCompound tag)
         {
-            tag["ArtifactCount"] = ArtifactCount;
+            tag["ArtifactDefinedID"] = ArtifactDefinedID;
         }
         public override void LoadData(TagCompound tag)
         {
-            ArtifactCount = (int)tag["ArtifactCount"];
+            ArtifactDefinedID = (int)tag["ArtifactDefinedID"];
         }
     }
 }

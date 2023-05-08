@@ -32,6 +32,7 @@ namespace BossRush.Contents.Items.Chest
         {
             return NPC.downedBoss3;
         }
+        public override bool CanLootRNGbeRandomize() => false;
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4, 5 };
         public override void RightClick(Player player)
         {
