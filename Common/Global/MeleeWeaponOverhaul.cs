@@ -22,6 +22,7 @@ namespace BossRush.Common.Global
         public const float PLAYERARMLENGTH = 12f;
         public override void SetDefaults(Item item)
         {
+            base.SetDefaults(item);
             if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
             {
                 return;
@@ -346,7 +347,6 @@ namespace BossRush.Common.Global
                 default:
                     break;
             }
-            base.SetDefaults(item);
         }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {

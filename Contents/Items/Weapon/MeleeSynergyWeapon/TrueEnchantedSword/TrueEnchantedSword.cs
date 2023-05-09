@@ -68,14 +68,5 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
             }
             return false;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<FrozenEnchantedSword>())
-                .AddIngredient(ModContent.ItemType<EnchantedStarfury>())
-                .AddIngredient(ItemID.SuperStarCannon)
-                .Register();
-        }
     }
 }
