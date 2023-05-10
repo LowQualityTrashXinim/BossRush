@@ -8,7 +8,6 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -19,6 +18,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             Item.width = 32;
             Item.height = 32;
+            Item.UseSound = SoundID.Roar;
             Item.rare = ItemRarityID.Cyan;
             Item.accessory = true;
         }

@@ -29,9 +29,11 @@ namespace BossRush.Contents.Items.NohitReward
     class EoCNoHit : ModPlayer
     {
         public int EoC0hit = 0;
-        public override void ResetEffects()
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
-            Player.statLifeMax2 += EoC0hit * BaseNoHit.HP;
+            health = StatModifier.Default;
+            mana = StatModifier.Default;
+            health.Base = EoC0hit * BaseNoHit.HP;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

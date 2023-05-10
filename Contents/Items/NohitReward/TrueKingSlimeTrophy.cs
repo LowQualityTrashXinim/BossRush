@@ -27,9 +27,11 @@ namespace BossRush.Contents.Items.NohitReward
     class KingSlimeNoHit : ModPlayer
     {
         public int KS0hit = 0;
-        public override void ResetEffects()
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
-            Player.statLifeMax2 += KS0hit * BaseNoHit.HP;
+            health = StatModifier.Default;
+            mana = StatModifier.Default;
+            health.Base = KS0hit * BaseNoHit.HP;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

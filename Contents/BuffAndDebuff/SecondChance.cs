@@ -15,13 +15,5 @@ namespace BossRush.Contents.BuffAndDebuff
             Main.debuff[Type] = true; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = false;
         }
-
-        public override void Update(Player player, ref int buffIndex)
-        {
-            if (player.buffTime[buffIndex] == 0)
-            {
-                player.GetModPlayer<VampirePlayer>().CoolDown = true;
-            }
-        }
     }
 }

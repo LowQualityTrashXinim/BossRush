@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
 
@@ -9,6 +10,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);
+            Item.UseSound = SoundID.Roar;
             Item.rare = 9;
         }
         public override bool? UseItem(Player player)

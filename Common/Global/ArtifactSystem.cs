@@ -6,6 +6,9 @@ using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.BuffAndDebuff;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.Global
 {
@@ -60,9 +63,11 @@ namespace BossRush.Common.Global
                 {
                     tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 artifact can be consume"));
                 }
-                if(Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0)
+                if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact"));
+                    TooltipLine line = new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact");
+                    line.OverrideColor = Color.DarkRed;
+                    tooltips.Add(line);
                 }
             }
         }
@@ -72,13 +77,19 @@ namespace BossRush.Common.Global
         public int ArtifactDefinedID = 0;
         bool Greed = false;//ID = 1
         bool Pride = false;//ID = 2
-        public override void ResetEffects()
-        {
-            Greed = ArtifactDefinedID == 1 ? true : false;
-            Pride = ArtifactDefinedID == 2 ? true : false;
-        }
+        bool Vampire = false;//ID = 3
+        bool Earth = false;
+        int EarthCD = 0;
+        int VampireMultiplier = 0;
+        int EarthMultiplier = 0;
         public override void PreUpdate()
         {
+            VampireMultiplier = 0;
+            EarthMultiplier = 0;
+            Greed = false;
+            Pride = false;
+            Vampire = false;
+            Earth = false;
             switch (ArtifactDefinedID)
             {
                 case 1:
@@ -87,6 +98,26 @@ namespace BossRush.Common.Global
                 case 2:
                     Pride = true;
                     break;
+                case 3:
+                    VampireMultiplier = 1;
+                    Vampire = true;
+                    break;
+                case 4:
+                    Earth = true;
+                    EarthMultiplier = 1;
+                    break;
+            }
+        }
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
+        {
+            base.ModifyMaxStats(out health, out mana);
+            if (Vampire)
+            {
+                health.Base = -(Player.statLifeMax * 0.65f);
+            }
+            if(Earth)
+            {
+                health.Base = 100 + Player.statLifeMax * 2;
             }
         }
         public override void PostUpdate()
@@ -100,6 +131,19 @@ namespace BossRush.Common.Global
                 Player.GetModPlayer<ChestLootDropPlayer>().multiplier = true;
                 Player.GetModPlayer<ChestLootDropPlayer>().amountModifier = .5f;
             }
+            if (Vampire)
+            {
+            }
+            if (Earth)
+            {
+                bool isOnCoolDown = EarthCD > 0;
+                EarthCD -= isOnCoolDown ? 1 : 0;
+                if (isOnCoolDown)
+                {
+                    int dust = Dust.NewDust(Player.Center, 0, 0, DustID.Blood);
+                    Main.dust[dust].velocity = -Vector2.UnitY * 2f + Main.rand.NextVector2Circular(2, 2);
+                }
+            }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
@@ -111,6 +155,72 @@ namespace BossRush.Common.Global
             {
                 damage += .45f;
             }
+        }
+        int countRange = 0;
+        private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1)
+        {
+            if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)
+            {
+                int HP = (int)(Main.rand.Next(rangeMin, rangeMax) * multiplier);
+                int HPsimulation = Player.statLife + HP;
+                if (HPsimulation < Player.statLifeMax2)
+                {
+                    Player.Heal(HP);
+                }
+                else
+                {
+                    Player.statLife = Player.statLifeMax2;
+                }
+            }
+        }
+        public override bool CanUseItem(Item item)
+        {
+            if (Earth)
+            {
+                return EarthCD <= 0;
+            }
+            return base.CanUseItem(item);
+        }
+        public override void OnHurt(Player.HurtInfo info)
+        {
+            if (Earth)
+            {
+                EarthCD = 300;
+            }
+        }
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (Vampire)
+            {
+                LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
+            }
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (Vampire)
+            {
+                if (proj.DamageType == DamageClass.Melee)
+                {
+                    LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
+                    return;
+                }
+                countRange++;
+                if (countRange >= 3)
+                {
+                    LifeSteal(target);
+                    countRange = 0;
+                }
+            }
+        }
+        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        {
+            if (!Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire)
+            {
+                Player.Heal(Player.statLifeMax2);
+                Player.AddBuff(ModContent.BuffType<SecondChance>(), 10800);
+                return false;
+            }
+            return true;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

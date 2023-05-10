@@ -4,7 +4,6 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
 using Terraria.DataStructures;
-using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -19,6 +18,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);
+            Item.UseSound = SoundID.Roar;
             Item.rare = 9;
         }
         public override bool? UseItem(Player player)

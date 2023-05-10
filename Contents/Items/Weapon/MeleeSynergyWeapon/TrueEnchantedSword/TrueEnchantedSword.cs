@@ -4,8 +4,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Global;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MFrozenEnchantedSword;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
 {
