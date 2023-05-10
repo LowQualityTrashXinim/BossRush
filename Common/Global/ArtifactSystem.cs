@@ -161,6 +161,10 @@ namespace BossRush.Common.Global
         int OPEFFECT = 0;
         private void FateDeciderEffect()
         {
+            if(Player.dead && !Player.active)
+            {
+                return;
+            }
             effectlasting -= effectlasting > 0 ? 1 : 0;
             if (effectlasting <= 0)
             {
@@ -444,10 +448,12 @@ namespace BossRush.Common.Global
         }
         private void Effect13()
         {
+            Dust.NewDust(Player.Center, 0, 0, DustID.Torch);
             CanCrit = true;
         }
         private void Effect14()
         {
+            Dust.NewDust(Player.Center, 0, 0, DustID.Smoke);
             CanBeHit = false;
         }
         private void Effect16(int effectlasting)

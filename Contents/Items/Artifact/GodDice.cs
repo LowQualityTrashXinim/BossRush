@@ -6,6 +6,7 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Common;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -52,6 +53,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = -1;
             if ((player.name.Contains("Test") || player.name.Contains("Debug") || player.name == "LowQualityTrashXinim") && player.altFunctionUse == 2)
             {
                 player.GetModPlayer<GamblePlayer>().Roll++;
