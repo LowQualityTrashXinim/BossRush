@@ -96,6 +96,7 @@ Mods: {
 			EoCServant.DisplayName: EoC Servant
 			GhostSlime.DisplayName: Ghost Slime
 			GooP.DisplayName: Goo
+			TowerDestructionProjectile.DisplayName: Tower Destruction Projectile
 		}
 
 		NPCs.TrueEoC.DisplayName: True EoC
@@ -1001,6 +1002,11 @@ Mods: {
 					Increase your max hp by 100% with additional 100 max hp
 					Getting hit will make you unable to use your weapon for 6s
 					'''
+			}
+
+			TowerDestruction: {
+				Tooltip: ""
+				DisplayName: Tower Destruction
 			}
 		}
 

@@ -1,14 +1,17 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.GameContent;
 
 namespace BossRush.Contents.Items.BuilderItem
 {
     internal class TowerDestruction : ModItem
     {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.width = 18;
@@ -37,7 +40,7 @@ namespace BossRush.Contents.Items.BuilderItem
     }
     class TowerDestructionProjectile : ModProjectile
     {
-        public override string Texture => BossRushUtils.GetTheSameTextureAs<NeoDynamite>();
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Projectile.width = 14;
@@ -49,11 +52,15 @@ namespace BossRush.Contents.Items.BuilderItem
             Projectile.friendly = true;
             Projectile.tileCollide = true;
         }
-
-        int explosionRadius = 14;
-
+        int firstframe = 0;
+        bool directionOfMoving;
         public override void AI()
         {
+            if (firstframe == 0)
+            {
+                directionOfMoving = Projectile.velocity.X > 0;
+                firstframe++;
+            }
             Projectile.rotation += MathHelper.ToRadians(20);
             //Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
             //Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
@@ -72,6 +79,56 @@ namespace BossRush.Contents.Items.BuilderItem
             //    Main.dust[dust3].velocity = Main.rand.NextVector2Circular(3f, 3f) - Projectile.velocity;
             //    Main.dust[dust3].fadeIn = 1f;
             //}
+        }
+        public void SpawnExplosiveDust()
+        {
+            int count;
+            float rngRotate = Main.rand.NextFloat(180);
+            for (int i = 0; i < 200; i++)
+            {
+                count = i / 100;
+                float ToRotation = MathHelper.ToRadians(90 * count + rngRotate);
+                Vector2 circle = Main.rand.NextVector2CircularEdge(4f, 22.5f).RotatedBy(ToRotation);
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.2f));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].fadeIn = 1.5f;
+                Main.dust[dust].velocity = circle;
+            }
+            for (int i = 0; i < 200; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, Type: DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(19f, 19f);
+            }
+        }
+        int explosionRadiusX = 100;
+        int explosionRadiusY = 10;
+        public override void Kill(int timeLeft)
+        {
+            //SpawnExplosiveDust();
+            float tileX = Projectile.position.X * .0625f; float tileY = Projectile.position.Y * .0625f;
+            int minX = directionOfMoving ? -3 : -explosionRadiusX;
+            int maxX = directionOfMoving ? explosionRadiusX : 3;
+            for (int x = minX; x < maxX; x++)
+            {
+                int xPos = (int)(x + tileX);
+                for (int y = -explosionRadiusY; y < explosionRadiusY; y++)
+                {
+                    int yPos = (int)(y + tileY);
+                    if (canKillTiles(xPos, yPos))
+                    {
+                        WorldGen.KillTile(xPos, yPos, false, false, false);
+                        if (Main.tile[xPos, yPos] != null && Main.netMode != NetmodeID.SinglePlayer)
+                        {
+                            NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, xPos, yPos, 0f, 0, 0, 0);
+                        }
+                    }
+                    if (canKillTiles(xPos, yPos))
+                    {
+                        killWall(xPos, yPos);
+                    }
+                }
+            }
         }
         public bool canKillTiles(int i, int j)
         {
@@ -105,15 +162,13 @@ namespace BossRush.Contents.Items.BuilderItem
             }
             return true;
         }
-
-        public void killWall(int i, int j, double distanceToTile)
+        public void killWall(int i, int j)
         {
             for (int x = i - 1; x <= i + 1; x++)
             {
                 for (int y = j - 1; y <= j + 1; y++)
                 {
                     if (Main.tile[x, y] != null
-                        && distanceToTile < explosionRadius * explosionRadius
                         && Main.tile[x, y].WallType > 0
                         && WallLoader.CanExplode(x, y, Main.tile[x, y].WallType))
                     {
@@ -121,61 +176,6 @@ namespace BossRush.Contents.Items.BuilderItem
                         if (Main.tile[x, y].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer)
                         {
                             NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, x, y, 0f, 0, 0, 0);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void SpawnExplosiveDust()
-        {
-            int count;
-            float rngRotate = Main.rand.NextFloat(180);
-            for (int i = 0; i < 200; i++)
-            {
-                count = i / 100;
-                float ToRotation = MathHelper.ToRadians(90 * count + rngRotate);
-                Vector2 circle = Main.rand.NextVector2CircularEdge(4f, 22.5f).RotatedBy(ToRotation);
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.2f));
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].fadeIn = 1.5f;
-                Main.dust[dust].velocity = circle;
-            }
-            for (int i = 0; i < 200; i++)
-            {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, Type: DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(19f, 19f);
-            }
-        }
-
-        public override void Kill(int timeLeft)
-        {
-            //SpawnExplosiveDust();
-            int minTileX = Projectile.position.X > 0 ? (int)(Projectile.position.X / 16f - explosionRadius) : 0;
-            int maxTileX = Projectile.position.X < Main.maxTilesX ? (int)(Projectile.position.X / 16f + explosionRadius) : Main.maxTilesX;
-            int minTileY = Projectile.position.Y > 0 ? (int)(Projectile.position.Y / 16f - explosionRadius) : 0;
-            int maxTileY = Projectile.position.Y < Main.maxTilesY ? (int)(Projectile.position.Y / 16f + explosionRadius) : Main.maxTilesY;
-
-            for (int i = minTileX; i <= maxTileX; i++)
-            {
-                for (int j = minTileY; j <= maxTileY; j++)
-                {
-                    Vector2 diff = new Vector2(i - Projectile.position.X / 16, j - Projectile.position.Y / 16);
-                    double distanceToTile = diff.LengthSquared();
-                    if (distanceToTile < explosionRadius * explosionRadius)
-                    {
-                        if (canKillTiles(i, j))
-                        {
-                            WorldGen.KillTile(i, j, false, false, false);
-                            if (Main.tile[i, j] != null && Main.netMode != NetmodeID.SinglePlayer)
-                            {
-                                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, i, j, 0f, 0, 0, 0);
-                            }
-                        }
-                        if (canKillTiles(i, j))
-                        {
-                            killWall(i, j, distanceToTile);
                         }
                     }
                 }
