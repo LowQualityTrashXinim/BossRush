@@ -8,16 +8,6 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
 {
     internal class GuideToMasterNinja2 : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Guide To Ninja Mastery II");
-            /* Tooltip.SetDefault("\"Part II out of II of a series treasured by weebs all across the globe!\"" +
-                "\nDid the dev really just add another 'I' onto the book cover and call it a day?" +
-                "\n10% increase melee attack speed" +
-                "\n15% increased jump height and jump speed" +
-                "\nIncrease critical strike chance by 5%"); */
-        }
-
         public override void SetDefaults()
         {
             Item.accessory = true;
@@ -50,7 +40,6 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
                 tooltips.Add(new TooltipLine(Mod, "FinalMaster", $"[i:{ModContent.ItemType<GuideToMasterNinja>()}] You summon a ring of shuriken and knife"));
             }
         }
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja2 = true;

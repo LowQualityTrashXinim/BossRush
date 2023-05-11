@@ -5,11 +5,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EmpressDeli
 {
     internal class EmpressDelight : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Delightful\nMultiply damage by 2 only at day");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;

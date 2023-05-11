@@ -26,8 +26,6 @@ namespace BossRush.Contents.Items.Accessories.Crystal
             player.statLifeMax2 += 50;
             player.statManaMax2 += 50;
             player.lifeRegen += 5;
-            player.lifeRegenTime += 5;
-            player.lifeRegenCount += 5;
             player.manaRegen += 5;
         }
 

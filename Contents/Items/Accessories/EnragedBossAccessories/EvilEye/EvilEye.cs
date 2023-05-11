@@ -10,16 +10,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
 {
     internal class EvilEye : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("" +
-                "Always watching, but now you know who is watching" +
-                "\nIncrease defense by 10" +
-                "\nIncrease 5% DR and damage when above 45% hp" +
-                "\nIncrease movment speed and increase damage by 25% when below 45% hp" +
-                "\nHeal 70% of player health when below 10% hp, have 2 min cooldown" +
-                "\nDoes something special to certain item"); */
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;
@@ -28,7 +18,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
             Item.rare = 7;
             Item.value = 10000000;
         }
-
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.player[Main.myPlayer];
@@ -77,7 +66,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
             EoCBless = false;
             EoCShieldUpgrade = false;
         }
-
         public override void UpdateEquips()
         {
             if (Player.velocity != Vector2.Zero && EoCBless)
@@ -91,7 +79,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
                 EoCCounter = 0;
             }
         }
-
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
             if (EoCShieldUpgrade && EoCBless && Player.HeldItem.type == ItemID.TheEyeOfCthulhu && proj.type != ModContent.ProjectileType<EoCServant>() && proj.type != ModContent.ProjectileType<PhantasmalEye>())
@@ -164,7 +151,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
                 damage *= DamageMultiplier;
             }
         }
-
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
             if (Player.statLife <= Player.statLifeMax2 * 0.1f && EyeProtection && EoCBless)

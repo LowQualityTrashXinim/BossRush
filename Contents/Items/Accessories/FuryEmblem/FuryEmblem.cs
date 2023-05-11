@@ -7,16 +7,6 @@ namespace BossRush.Contents.Items.Accessories.FuryEmblem
 {
     class FuryEmblem : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("Your rage is what make battle turn tide" +
-                "\nIncrease 5% damage and crits" +
-                "\nIncrease HP by 25%" +
-                "\nGrant a buff upon getting hit that increase 50% damage and crits" +
-                "\nBut shatter your defense and cut your life regen" +
-                "\nThe buff will reset its time when you got hit again"); */
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;
@@ -31,9 +21,7 @@ namespace BossRush.Contents.Items.Accessories.FuryEmblem
             player.GetCritChance<GenericDamageClass>() += 5;
             player.statLifeMax2 += (int)(player.statLifeMax2 * 0.25f);
             player.GetModPlayer<FuryPlayer>().Furious2 = true;
-
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

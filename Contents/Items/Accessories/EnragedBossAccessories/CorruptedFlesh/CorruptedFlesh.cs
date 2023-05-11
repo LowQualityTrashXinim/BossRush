@@ -11,15 +11,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.CorruptedFl
     internal class CorruptedFlesh : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("Isn't this is just rotten flesh but even more rotten ?" +
-                "\nIncrease damage by 10%" +
-                "\nIncrease movement speed by 15%" +
-                "\nIncrease melee speed by 10%" +
-                "\nYou shoot out tiny eater for each shot" +
-                "\nUpon getting hit, you will shoot out mini eater"); */
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;

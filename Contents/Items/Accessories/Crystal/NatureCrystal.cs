@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 
@@ -11,11 +11,6 @@ namespace BossRush.Contents.Items.Accessories.Crystal
 {
     class NatureCrystal : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("A Mana and a Life Crystal, not much to say tbh\nIncrease health and mana by 40");
-            base.SetStaticDefaults();
-        }
         public override void SetDefaults()
         {
             Item.accessory = true;

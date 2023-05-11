@@ -8,7 +8,6 @@ namespace BossRush.Contents.Items.BuilderItem
 {
     internal class ArenaMakerProj : ModProjectile
     {
-        //This should be breaking a lot, i can't bother to make it stable as for now
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
@@ -45,8 +44,14 @@ namespace BossRush.Contents.Items.BuilderItem
 
                 if (tile == null)
                     continue;
-
-                WorldGen.PlaceTile(xPos, yPos, TileID.Platforms);
+                if (Main.player[Projectile.owner].ZoneUnderworldHeight)
+                {
+                    WorldGen.PlaceTile(xPos, yPos, TileID.Platforms, false, false, -1, 13);
+                }
+                else
+                {
+                    WorldGen.PlaceTile(xPos, yPos, TileID.Platforms);
+                }
                 if (Main.netMode == NetmodeID.Server)
                     NetMessage.SendTileSquare(-1, xPos, yPos, 1);
 

@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.Items.Chest;
-using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -27,10 +26,6 @@ namespace BossRush.Contents.Items.Card
         {
 
         }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            tooltips.Add(new TooltipLine(Mod, "W.I.P", "RESET UPON EXITING THE WORLD\nTHIS IS ITEM IS IN TESTING"));
-        }
         public override void AddRecipes()
         {
             if(CanBeCraft)
@@ -41,7 +36,6 @@ namespace BossRush.Contents.Items.Card
             }
         }
     }
-
     class PlayerCardHandle : ModPlayer
     {
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();

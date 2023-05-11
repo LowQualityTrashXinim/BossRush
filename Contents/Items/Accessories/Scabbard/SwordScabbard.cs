@@ -1,21 +1,13 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard
 {
     internal class SwordScabbard : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("Made for people who complain their sword isn't special" +
-                "\nIncrease melee speed by 25%" +
-                "\nRlease a sword slash upon swing"); */
-        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.LocalPlayer;

@@ -1,9 +1,8 @@
 ﻿using Terraria;
-using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Texture;
 using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard
@@ -11,15 +10,6 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
     internal class ParryScabbard : ModItem, ISynergyItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-
-        public override void SetStaticDefaults()
-        {
-            /* Tooltip.SetDefault("\"Made for display of skill\"" +
-                "\nGetting hit during the attack swing will grant you 2s of immunity of damage" +
-                "\nHave 6s cool down before you able to parry again" +
-                "\nDuring parry period, you gain 10% damage" +
-                "\nOnly work if weapon is a sword"); */
-        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.LocalPlayer;

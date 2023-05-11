@@ -797,8 +797,9 @@ Mods: {
 				Tooltip:
 					'''
 					Create a basic arena that 300 block wide
-					Will spawn at the either side of the player
+					Will create at the either side of the player
 					Unconsumeable and spawn infinite
+					Create obsidian platform when use in underworld
 					'''
 				DisplayName: Arena Maker
 			}
@@ -901,22 +902,34 @@ Mods: {
 			}
 
 			EmblemofProgress: {
-				Tooltip: You become stronger each time kill a boss, simply amazing
+				Tooltip: "You become stronger each time kill a boss, simply amazing"
 				DisplayName: Emblem of Progress
 			}
 
 			SuperBuilderTool: {
-				Tooltip: ""
+				Tooltip: "Hope this will make your building much quicker"
 				DisplayName: Super Builder Tool
 			}
 
 			SwordScabbard: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Made for people who complain their sword isn't special"
+				Increase melee speed by 25%
+				Release a sword slash upon swing
+				'''
 				DisplayName: Sword Scabbard
 			}
 
 			ParryScabbard: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Made for display of skill"
+				Getting hit during the attack swing will grant you 2s of immunity of damage
+				Have 6s cool down before you able to parry again
+				During parry period, you gain 10% damage
+				Only work if weapon is a sword
+				'''
 				DisplayName: Parry Scabbard
 			}
 
@@ -931,17 +944,40 @@ Mods: {
 			}
 
 			GuideToMasterNinja2: {
-				Tooltip: ""
-				DisplayName: Guide To Master Ninja2
+				Tooltip: 
+				'''
+				"Part II out of II of a series treasured by weebs all across the globe!
+				Did the dev really just add another 'I' onto the book cover and call it a day?"
+				10% increase melee attack speed
+				15% increased jump height and jump speed
+				Increase critical strike chance by 5%
+				'''
+				DisplayName: Guide To Master Ninja II
 			}
 
 			GuideToMasterNinja: {
-				Tooltip: ""
-				DisplayName: Guide To Master Ninja
+				Tooltip: 
+				'''
+				"Part I out of II of a beloved series.
+				To master the way of a ninja, you must first master the way of a weeb."
+				5% increased critical strike chance
+				15% increased movement speed
+				Throws a shuriken every time an enemy gets hit 20 times.
+				The addition throwing deal static damage (fixed damage)
+				'''
+				DisplayName: Guide To Master Ninja I
 			}
 
 			FuryEmblem: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Your rage is what make battle turn tide"
+				Increase 5% damage and crits
+				Increase HP by 25%
+				Grant a buff upon getting hit that increase 50% damage and crits
+				But shatter your defense and cut your life regen
+				The buff will reset its time when you got hit again
+				'''
 				DisplayName: Fury Emblem
 			}
 
@@ -959,27 +995,50 @@ Mods: {
 			}
 
 			EvilEye: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Always watching, but now you know who is watching"
+				Increase defense by 10
+				Increase 5% DR and damage when above 45% hp
+				Increase movment speed and increase damage by 25% when below 45% hp
+				Heal 70% of player health when below 10% hp, have 2 min cooldown
+				'''
 				DisplayName: Evil Eye
 			}
 
 			EmpressDelight: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Delightful"
+				Multiply damage by 2 only at day
+				'''
 				DisplayName: Empress Delight
 			}
 
 			CorruptedFlesh: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"Isn't this is just rotten flesh but even more rotten ?"
+				Increase damage by 10%
+				Increase movement speed by 15%
+				Increase melee speed by 10%
+				You shoot out tiny eater for each shot
+				Upon getting hit, you will shoot out mini eater
+				'''
 				DisplayName: Corrupted Flesh
 			}
 
 			NatureCrystal: {
-				Tooltip: ""
+				Tooltip: 
+				'''
+				"A Mana and a Life Crystal, not much to say tbh"
+				Increase health and mana by 40
+				'''
 				DisplayName: Nature Crystal
 			}
 
 			EnergeticCrystal: {
-				Tooltip: ""
+				Tooltip: "TODO : REMOVE"
 				DisplayName: Energetic Crystal
 			}
 
