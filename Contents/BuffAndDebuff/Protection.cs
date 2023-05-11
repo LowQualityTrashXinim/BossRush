@@ -18,9 +18,10 @@ namespace BossRush.Contents.BuffAndDebuff
         public override void Update(Player player, ref int buffIndex)
         {
             player.endurance += 0.45f;
-            player.statDefense += 100;
+            player.statLifeMax2 += 400;
+            player.statDefense += 25;
 
-            player.GetDamage(DamageClass.Generic) *= 0.25f;
+            player.GetDamage(DamageClass.Generic) *= 0.45f;
 
             player.moveSpeed *= 0.5f;
             player.maxRunSpeed = 0.5f;

@@ -24,13 +24,11 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
             Item.rare = 3;
             Item.value = 10000000;
         }
-
         public override void UpdateEquip(Player player)
         {
             player.GetModPlayer<SwordPlayer>().SwordSlash = true;
             player.GetAttackSpeed(DamageClass.Melee) += 0.25f;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -57,9 +55,9 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
                 && Player.ItemAnimationActive)
             {
                 Vector2 speed = Player.direction == 1 ? new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? 15 : 5, 0) : new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? -15 : -5, 0);
-                if(Player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
+                if (Player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
                 {
-                    speed = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX) * 15f;
+                    speed = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.UnitX) * 5f;
                 }
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed, ModContent.ProjectileType<SwordSlash>(), (int)(Player.HeldItem.damage * .75f), 2f, Player.whoAmI);
             }
@@ -95,6 +93,10 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (Projectile.damage > 1)
+            {
+                Projectile.damage -= 1;
+            }
             target.immune[Projectile.owner] = 4;
         }
         public override bool PreDraw(ref Color lightColor)

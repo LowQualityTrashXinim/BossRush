@@ -9,8 +9,6 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Evil Presence");
-            // Description.SetDefault("They are watching you");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)

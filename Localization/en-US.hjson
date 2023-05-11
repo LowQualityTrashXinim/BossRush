@@ -902,34 +902,34 @@ Mods: {
 			}
 
 			EmblemofProgress: {
-				Tooltip: "You become stronger each time kill a boss, simply amazing"
+				Tooltip: You become stronger each time kill a boss, simply amazing
 				DisplayName: Emblem of Progress
 			}
 
 			SuperBuilderTool: {
-				Tooltip: "Hope this will make your building much quicker"
+				Tooltip: Hope this will make your building much quicker
 				DisplayName: Super Builder Tool
 			}
 
 			SwordScabbard: {
-				Tooltip: 
-				'''
-				"Made for people who complain their sword isn't special"
-				Increase melee speed by 25%
-				Release a sword slash upon swing
-				'''
+				Tooltip:
+					'''
+					"Made for people who complain their sword isn't special"
+					Increase melee speed by 25%
+					Release a sword slash upon swing
+					'''
 				DisplayName: Sword Scabbard
 			}
 
 			ParryScabbard: {
-				Tooltip: 
-				'''
-				"Made for display of skill"
-				Getting hit during the attack swing will grant you 2s of immunity of damage
-				Have 6s cool down before you able to parry again
-				During parry period, you gain 10% damage
-				Only work if weapon is a sword
-				'''
+				Tooltip:
+					'''
+					"Made for display of skill"
+					Getting hit during the attack swing will grant you 2s of immunity of damage
+					Have 6s cool down before you able to parry again
+					During parry period, you gain 10% damage
+					Only work if weapon is a sword
+					'''
 				DisplayName: Parry Scabbard
 			}
 
@@ -944,40 +944,40 @@ Mods: {
 			}
 
 			GuideToMasterNinja2: {
-				Tooltip: 
-				'''
-				"Part II out of II of a series treasured by weebs all across the globe!
-				Did the dev really just add another 'I' onto the book cover and call it a day?"
-				10% increase melee attack speed
-				15% increased jump height and jump speed
-				Increase critical strike chance by 5%
-				'''
+				Tooltip:
+					'''
+					"Part II out of II of a series treasured by weebs all across the globe!
+					Did the dev really just add another 'I' onto the book cover and call it a day?"
+					10% increase melee attack speed
+					15% increased jump height and jump speed
+					Increase critical strike chance by 5%
+					'''
 				DisplayName: Guide To Master Ninja II
 			}
 
 			GuideToMasterNinja: {
-				Tooltip: 
-				'''
-				"Part I out of II of a beloved series.
-				To master the way of a ninja, you must first master the way of a weeb."
-				5% increased critical strike chance
-				15% increased movement speed
-				Throws a shuriken every time an enemy gets hit 20 times.
-				The addition throwing deal static damage (fixed damage)
-				'''
+				Tooltip:
+					'''
+					"Part I out of II of a beloved series.
+					To master the way of a ninja, you must first master the way of a weeb."
+					5% increased critical strike chance
+					15% increased movement speed
+					Throws a shuriken every time an enemy gets hit 20 times.
+					The addition throwing deal static damage (fixed damage)
+					'''
 				DisplayName: Guide To Master Ninja I
 			}
 
 			FuryEmblem: {
-				Tooltip: 
-				'''
-				"Your rage is what make battle turn tide"
-				Increase 5% damage and crits
-				Increase HP by 25%
-				Grant a buff upon getting hit that increase 50% damage and crits
-				But shatter your defense and cut your life regen
-				The buff will reset its time when you got hit again
-				'''
+				Tooltip:
+					'''
+					"Your rage is what make battle turn tide"
+					Increase 5% damage and crits
+					Increase HP by 25%
+					Grant a buff upon getting hit that increase 50% damage and crits
+					But shatter your defense and cut your life regen
+					The buff will reset its time when you got hit again
+					'''
 				DisplayName: Fury Emblem
 			}
 
@@ -995,50 +995,50 @@ Mods: {
 			}
 
 			EvilEye: {
-				Tooltip: 
-				'''
-				"Always watching, but now you know who is watching"
-				Increase defense by 10
-				Increase 5% DR and damage when above 45% hp
-				Increase movment speed and increase damage by 25% when below 45% hp
-				Heal 70% of player health when below 10% hp, have 2 min cooldown
-				'''
+				Tooltip:
+					'''
+					"Always watching, but now you know who is watching"
+					Increase defense by 10
+					Increase 5% DR and damage when above 45% hp
+					Increase movment speed and increase damage by 25% when below 45% hp
+					Heal 70% of player health when below 10% hp, have 2 min cooldown
+					'''
 				DisplayName: Evil Eye
 			}
 
 			EmpressDelight: {
-				Tooltip: 
-				'''
-				"Delightful"
-				Multiply damage by 2 only at day
-				'''
+				Tooltip:
+					'''
+					"Delightful"
+					Multiply damage by 2 only at day
+					'''
 				DisplayName: Empress Delight
 			}
 
 			CorruptedFlesh: {
-				Tooltip: 
-				'''
-				"Isn't this is just rotten flesh but even more rotten ?"
-				Increase damage by 10%
-				Increase movement speed by 15%
-				Increase melee speed by 10%
-				You shoot out tiny eater for each shot
-				Upon getting hit, you will shoot out mini eater
-				'''
+				Tooltip:
+					'''
+					"Isn't this is just rotten flesh but even more rotten ?"
+					Increase damage by 10%
+					Increase movement speed by 15%
+					Increase melee speed by 10%
+					You shoot out tiny eater for each shot
+					Upon getting hit, you will shoot out mini eater
+					'''
 				DisplayName: Corrupted Flesh
 			}
 
 			NatureCrystal: {
-				Tooltip: 
-				'''
-				"A Mana and a Life Crystal, not much to say tbh"
-				Increase health and mana by 40
-				'''
+				Tooltip:
+					'''
+					"A Mana and a Life Crystal, not much to say tbh"
+					Increase health and mana by 40
+					'''
 				DisplayName: Nature Crystal
 			}
 
 			EnergeticCrystal: {
-				Tooltip: "TODO : REMOVE"
+				Tooltip: TODO : REMOVE
 				DisplayName: Energetic Crystal
 			}
 
@@ -1064,7 +1064,7 @@ Mods: {
 			}
 
 			TowerDestruction: {
-				Tooltip: ""
+				Tooltip: "The ultimate tower clearer"
 				DisplayName: Tower Destruction
 			}
 		}
@@ -1086,98 +1086,98 @@ Mods: {
 			}
 
 			SecondChance: {
-				Description: Mods.BossRush.Buffs.SecondChance.Description
+				Description: You had survived a fatal attack, so don't get hit a 2nd time
 				DisplayName: Second Chance
 			}
 
 			SageBuff: {
-				Description: Mods.BossRush.Buffs.SageBuff.Description
-				DisplayName: Sage Buff
+				Description: You feel as though the mana within you is is about to burst...
+				DisplayName: Mana Overflow
 			}
 
 			RoyalAntiEscapeTm: {
-				Description: Mods.BossRush.Buffs.RoyalAntiEscapeTm.Description
-				DisplayName: Royal Anti Escape Tm
+				Description: Turns escaping into a sticky situation...
+				DisplayName: "Royal Sticky Formula
 			}
 
 			Rotting: {
-				Description: Mods.BossRush.Buffs.Rotting.Description
+				Description: You feel your insides tear apart...
 				DisplayName: Rotting
 			}
 
 			Regen: {
-				Description: Mods.BossRush.Buffs.Regen.Description
+				Description: You are not suppose to get this, contact dev
 				DisplayName: Regen
 			}
 
 			Protection: {
-				Description: Mods.BossRush.Buffs.Protection.Description
-				DisplayName: Protection
+				Description: This newfound aegis is almost... suffocating...
+				DisplayName: The Titan's Protection
 			}
 
 			Parried: {
-				Description: Mods.BossRush.Buffs.Parried.Description
+				Description: Successfully blocking a attack grant you strenght
 				DisplayName: Parried
 			}
 
 			MoonLordWrath: {
-				Description: Mods.BossRush.Buffs.MoonLordWrath.Description
+				Description: You are at their mercy
 				DisplayName: Moon Lord Wrath
 			}
 
 			MindBreak: {
-				Description: Mods.BossRush.Buffs.MindBreak.Description
-				DisplayName: Mind Break
+				Description: You can no longer tell left from right...
+				DisplayName: Mind Shatter
 			}
 
 			LeaderShip: {
-				Description: Mods.BossRush.Buffs.LeaderShip.Description
-				DisplayName: Leader Ship
+				Description: Fighting alongside a horde has never been easier!
+				DisplayName: The Commander's Patience
 			}
 
 			KingSlimeRage: {
-				Description: Mods.BossRush.Buffs.KingSlimeRage.Description
+				Description: You can't run away from his excellency
 				DisplayName: King Slime Rage
 			}
 
 			GodVision: {
-				Description: Mods.BossRush.Buffs.GodVision.Description
-				DisplayName: God Vision
+				Description: Let's just hope you don't snap out of it...
+				DisplayName: The Sniper's Vision
 			}
 
 			FuriousCoolDown: {
-				Description: Mods.BossRush.Buffs.FuriousCoolDown.Description
-				DisplayName: Furious Cool Down
+				Description: Too much fury is bound to exhaust you eventually...
+				DisplayName: Burnt Out
 			}
 
 			Furious: {
-				Description: Mods.BossRush.Buffs.Furious.Description
+				Description: Let them know your fury
 				DisplayName: Furious
 			}
 
 			EvilPresence: {
-				Description: Mods.BossRush.Buffs.EvilPresence.Description
+				Description: They are watching you
 				DisplayName: Evil Presence
 			}
 
 			EvilEyeProtection: {
-				Description: Mods.BossRush.Buffs.EvilEyeProtection.Description
+				Description: live to see for another day
 				DisplayName: Evil Eye Protection
 			}
 
 			CoolDownParried: {
-				Description: Mods.BossRush.Buffs.CoolDownParried.Description
+				Description: The impact is a bit great
 				DisplayName: Cool Down Parried
 			}
 
 			BerserkBuff: {
-				Description: Mods.BossRush.Buffs.BerserkBuff.Description
-				DisplayName: Berserk Buff
+				Description: You lose ability to think clearly...
+				DisplayName: Berserker's Frenzy
 			}
 
 			AbsoluteStunMovement: {
-				Description: Mods.BossRush.Buffs.AbsoluteStunMovement.Description
-				DisplayName: Absolute Stun Movement
+				Description: The might of gods weakens your very soul...
+				DisplayName: Petrified
 			}
 		}
 	}

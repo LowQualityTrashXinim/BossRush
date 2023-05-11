@@ -8,8 +8,6 @@ namespace BossRush.Contents.BuffAndDebuff
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Furious");
-            // Description.SetDefault("Let them know your fury");
             Main.debuff[Type] = true; //Add this so the nurse doesn't remove the buff when healing
             Main.buffNoSave[Type] = true;
         }

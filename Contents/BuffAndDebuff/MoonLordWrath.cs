@@ -10,8 +10,6 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("Moon Lord Wrath");
-            // Description.SetDefault("Your are at their mercy");
             Main.debuff[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)

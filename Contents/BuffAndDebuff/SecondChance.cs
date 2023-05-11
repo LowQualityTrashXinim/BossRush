@@ -1,7 +1,6 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using BossRush.Texture;
-using BossRush.Contents.Items.Artifact;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.BuffAndDebuff
 {
@@ -10,9 +9,7 @@ namespace BossRush.Contents.BuffAndDebuff
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("SecondChance");
-            // Description.SetDefault("You had survived a fatal attack, so don't get hit a 2nd time");
-            Main.debuff[Type] = true; //Add this so the nurse doesn't remove the buff when healing
+            Main.debuff[Type] = true;
             Main.buffNoSave[Type] = false;
         }
     }
