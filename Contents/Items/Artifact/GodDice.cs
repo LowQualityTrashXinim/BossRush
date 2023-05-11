@@ -32,16 +32,17 @@ namespace BossRush.Contents.Items.Artifact
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.LocalPlayer;
-            tooltips.Add(new TooltipLine(Mod, "", "Damage Multiply : " + player.GetModPlayer<GamblePlayer>().GambleDamage + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Defense Multiply : " + player.GetModPlayer<GamblePlayer>().GambleDef + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Speed Multiply : " + player.GetModPlayer<GamblePlayer>().GambleSpeed + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "HP Multiply : " + player.GetModPlayer<GamblePlayer>().GambleHP + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "HP Regen Multiply : " + player.GetModPlayer<GamblePlayer>().GambleLifeRegen + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Mana Multiply : " + player.GetModPlayer<GamblePlayer>().GambleMana + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Mana Regen Multiply : " + player.GetModPlayer<GamblePlayer>().GambleManaRegen + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Extra minion : " + player.GetModPlayer<GamblePlayer>().GambleMinionSlot + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Crit chance : " + player.GetModPlayer<GamblePlayer>().GambleCrit + ""));
-            tooltips.Add(new TooltipLine(Mod, "", "Rerolls Available : " + player.GetModPlayer<GamblePlayer>().Roll + ""));
+            GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
+            tooltips.Add(new TooltipLine(Mod, "", "Damage Multiply : " + gamblePlayer.GambleDamage + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Defense Multiply : " + gamblePlayer.GambleDef + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Speed Multiply : " + gamblePlayer.GambleSpeed + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "HP Multiply : " + gamblePlayer.GambleHP + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "HP Regen Multiply : " + gamblePlayer.GambleLifeRegen + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Mana Multiply : " + gamblePlayer.GambleMana + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Mana Regen Multiply : " + gamblePlayer.GambleManaRegen + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Extra minion : " + gamblePlayer.GambleMinionSlot + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Crit chance : " + gamblePlayer.GambleCrit + ""));
+            tooltips.Add(new TooltipLine(Mod, "", "Rerolls Available : " + gamblePlayer.Roll + ""));
         }
         public override bool CanUseItem(Player player)
         {
@@ -54,31 +55,32 @@ namespace BossRush.Contents.Items.Artifact
         public override bool? UseItem(Player player)
         {
             player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = -1;
+            GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
             if ((player.name.Contains("Test") || player.name.Contains("Debug") || player.name == "LowQualityTrashXinim") && player.altFunctionUse == 2)
             {
-                player.GetModPlayer<GamblePlayer>().Roll++;
-                player.GetModPlayer<GamblePlayer>().GambleDamage = 1;
-                player.GetModPlayer<GamblePlayer>().GambleDef = 0;
-                player.GetModPlayer<GamblePlayer>().GambleSpeed = 1;
-                player.GetModPlayer<GamblePlayer>().GambleHP = 1;
-                player.GetModPlayer<GamblePlayer>().GambleLifeRegen = 1;
-                player.GetModPlayer<GamblePlayer>().GambleMana = 1;
-                player.GetModPlayer<GamblePlayer>().GambleManaRegen = 1;
-                player.GetModPlayer<GamblePlayer>().GambleMinionSlot = 0;
-                player.GetModPlayer<GamblePlayer>().GambleCrit = 0;
+                gamblePlayer.Roll++;
+                gamblePlayer.GambleDamage = 1;
+                gamblePlayer.GambleDef = 0;
+                gamblePlayer.GambleSpeed = 1;
+                gamblePlayer.GambleHP = 1;
+                gamblePlayer.GambleLifeRegen = 1;
+                gamblePlayer.GambleMana = 1;
+                gamblePlayer.GambleManaRegen = 1;
+                gamblePlayer.GambleMinionSlot = 0;
+                gamblePlayer.GambleCrit = 0;
                 return true;
             }
-            if (player.GetModPlayer<GamblePlayer>().Roll > 0) player.GetModPlayer<GamblePlayer>().Roll--;
+            if (gamblePlayer.Roll > 0) gamblePlayer.Roll--;
 
-            player.GetModPlayer<GamblePlayer>().GambleDamage = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            player.GetModPlayer<GamblePlayer>().GambleDef = Main.rand.Next(-100, 100);
-            player.GetModPlayer<GamblePlayer>().GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            player.GetModPlayer<GamblePlayer>().GambleHP = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            player.GetModPlayer<GamblePlayer>().GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            player.GetModPlayer<GamblePlayer>().GambleMana = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            player.GetModPlayer<GamblePlayer>().GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            player.GetModPlayer<GamblePlayer>().GambleMinionSlot = Main.rand.Next(0, 10);
-            player.GetModPlayer<GamblePlayer>().GambleCrit = Main.rand.Next(0, 100);
+            gamblePlayer.GambleDamage = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleDef = Main.rand.Next(-100, 100);
+            gamblePlayer.GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleHP = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleMana = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleMinionSlot = Main.rand.Next(0, 10);
+            gamblePlayer.GambleCrit = Main.rand.Next(0, 100);
             return true;
         }
     }

@@ -109,7 +109,6 @@ namespace BossRush.Common.Global
                 npcLoot.Add(EnragedQB);
                 //Expert drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<HoneyTreasureChest>()));
-                npcLoot.Add(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>()));
             }
 
             if (npc.type == NPCID.SkeletronHead)
@@ -139,7 +138,6 @@ namespace BossRush.Common.Global
                 npcLoot.Add(hateyoulol);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IceTreasureChest>()));
-                npcLoot.Add(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>()));
             }
 
             if (npc.type == NPCID.WallofFlesh)
@@ -241,7 +239,6 @@ namespace BossRush.Common.Global
                 npcLoot.Add(rule);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
-                npcLoot.Add(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>()));
             }
             if (npc.type == NPCID.DukeFishron)
             {
@@ -257,7 +254,6 @@ namespace BossRush.Common.Global
                 npcLoot.Add(rule);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
-                npcLoot.Add(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>()));
             }
             if (npc.type == NPCID.CultistBoss)
             {

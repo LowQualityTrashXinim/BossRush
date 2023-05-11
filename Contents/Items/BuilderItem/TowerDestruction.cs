@@ -1,14 +1,13 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
-namespace BossRush.Contents.Items.Weapon
+namespace BossRush.Contents.Items.BuilderItem
 {
-    internal class NeoDynamite : ModItem
+    internal class TowerDestruction : ModItem
     {
         public override void SetDefaults()
         {
@@ -18,7 +17,7 @@ namespace BossRush.Contents.Items.Weapon
             Item.useAnimation = 20;
             Item.useTime = 20;
 
-            Item.shoot = ModContent.ProjectileType<NeoDynamiteExplosion>();
+            Item.shoot = ModContent.ProjectileType<TowerDestructionProjectile>();
             Item.shootSpeed = 11f;
 
             Item.UseSound = SoundID.Item1;
@@ -36,8 +35,7 @@ namespace BossRush.Contents.Items.Weapon
                 .Register();
         }
     }
-
-    class NeoDynamiteExplosion : ModProjectile
+    class TowerDestructionProjectile : ModProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAs<NeoDynamite>();
         public override void SetDefaults()
@@ -57,23 +55,23 @@ namespace BossRush.Contents.Items.Weapon
         public override void AI()
         {
             Projectile.rotation += MathHelper.ToRadians(20);
-            Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
-            Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
-            for (int i = 0; i < 3; i++)
-            {
-                int dust = Dust.NewDust(Head, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Vector2.Zero;
-                Main.dust[dust].fadeIn = 1f;
-                int dust2 = Dust.NewDust(End, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
-                Main.dust[dust2].noGravity = true;
-                Main.dust[dust2].velocity = Vector2.Zero;
-                Main.dust[dust2].fadeIn = 1f;
-                int dust3 = Dust.NewDust(Projectile.Center, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
-                Main.dust[dust3].noGravity = true;
-                Main.dust[dust3].velocity = Main.rand.NextVector2Circular(3f, 3f) - Projectile.velocity;
-                Main.dust[dust3].fadeIn = 1f;
-            }
+            //Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
+            //Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    int dust = Dust.NewDust(Head, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+            //    Main.dust[dust].noGravity = true;
+            //    Main.dust[dust].velocity = Vector2.Zero;
+            //    Main.dust[dust].fadeIn = 1f;
+            //    int dust2 = Dust.NewDust(End, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+            //    Main.dust[dust2].noGravity = true;
+            //    Main.dust[dust2].velocity = Vector2.Zero;
+            //    Main.dust[dust2].fadeIn = 1f;
+            //    int dust3 = Dust.NewDust(Projectile.Center, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
+            //    Main.dust[dust3].noGravity = true;
+            //    Main.dust[dust3].velocity = Main.rand.NextVector2Circular(3f, 3f) - Projectile.velocity;
+            //    Main.dust[dust3].fadeIn = 1f;
+            //}
         }
         public bool canKillTiles(int i, int j)
         {
@@ -153,7 +151,7 @@ namespace BossRush.Contents.Items.Weapon
 
         public override void Kill(int timeLeft)
         {
-            SpawnExplosiveDust();
+            //SpawnExplosiveDust();
             int minTileX = Projectile.position.X > 0 ? (int)(Projectile.position.X / 16f - explosionRadius) : 0;
             int maxTileX = Projectile.position.X < Main.maxTilesX ? (int)(Projectile.position.X / 16f + explosionRadius) : Main.maxTilesX;
             int minTileY = Projectile.position.Y > 0 ? (int)(Projectile.position.Y / 16f - explosionRadius) : 0;
@@ -183,24 +181,24 @@ namespace BossRush.Contents.Items.Weapon
                 }
             }
         }
-        public override void PostDraw(Color lightColor)
-        {
-            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<NeoDynamite>("NeoDynamiteGlowMask"), AssetRequestMode.ImmediateLoad).Value;
-            Main.EntitySpriteDraw(
-                texture,
-                new Vector2
-                (
-                    Projectile.position.X - Main.screenPosition.X + Projectile.width * 0.5f + 2,
-                    Projectile.position.Y - Main.screenPosition.Y + Projectile.height - texture.Height * 0.5f + 2f + 22
-                ),
-                null,
-                Color.White,
-                Projectile.rotation,
-                texture.Size() * 0.5f,
-                Projectile.scale,
-                SpriteEffects.None,
-                0
-            );
-        }
+        //public override void PostDraw(Color lightColor)
+        //{
+        //    Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<NeoDynamite>("NeoDynamiteGlowMask"), AssetRequestMode.ImmediateLoad).Value;
+        //    Main.EntitySpriteDraw(
+        //        texture,
+        //        new Vector2
+        //        (
+        //            Projectile.position.X - Main.screenPosition.X + Projectile.width * 0.5f + 2,
+        //            Projectile.position.Y - Main.screenPosition.Y + Projectile.height - texture.Height * 0.5f + 2f + 22
+        //        ),
+        //        null,
+        //        Color.White,
+        //        Projectile.rotation,
+        //        texture.Size() * 0.5f,
+        //        Projectile.scale,
+        //        SpriteEffects.None,
+        //        0
+        //    );
+        //}
     }
 }

@@ -23,7 +23,6 @@ namespace BossRush.Contents.Items.Note
                 "\nThe item can be craft from this can be found in the chest and is intended that way, some example like " + $"[i:{ModContent.ItemType<SynergyEnergy>()}] + [i:{ItemID.CopperShortsword}] + [i:{ItemID.PlatinumBroadsword}] = [i:{ModContent.ItemType<EnchantedOreSword>()}]" +
                 "\nMost synergy item are design with a unique or fun little idea that promote a more vary playstyle, some synergy weapon have lower dps than other" +
                 "\nbut it is up to you and decide if it worth to get a better dps weapon than what you have or play the chance game and get a better synergy item" +
-                "\nThe way you get synergy weapon is by fighting optional boss that don't matter to normal game progress like" + $"[i:{ItemID.Abeemination}]" +
                 "\nYou could also revert the synergy item that you craft back into pure synergy energy form but will lose the item that you craft with it" +
                 "\nYou can disable the config in the mod to completely block synergy energy getting involved, we hope that you find that easy to understand"));
         }
