@@ -1064,7 +1064,7 @@ Mods: {
 			}
 
 			TowerDestruction: {
-				Tooltip: "The ultimate tower clearer"
+				Tooltip: The ultimate tower clearer
 				DisplayName: Tower Destruction
 			}
 		}
@@ -1097,7 +1097,7 @@ Mods: {
 
 			RoyalAntiEscapeTm: {
 				Description: Turns escaping into a sticky situation...
-				DisplayName: "Royal Sticky Formula
+				DisplayName: Royal Sticky Formula
 			}
 
 			Rotting: {
