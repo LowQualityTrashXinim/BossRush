@@ -39,5 +39,16 @@ namespace BossRush.Contents.Items.Card
     class PlayerCardHandle : ModPlayer
     {
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
+        public float DamageMultiply = 1;
+        public float MeleeDamageMultiply = 1;
+        public float RangeDamageMultiply = 1;
+        public float MagicDamageMultiply = 1;
+        public float SummonDamageMultiply = 1;
+        public int CritStrikeChance = 0;
+        public float CritDamage = 1;
+        public float ManaMaxMulti = 1;
+        public float HPMaxMulti = 1;
+        public float MovementMulti = 1;
+        public int DefenseBase = 0;
     }
 }
