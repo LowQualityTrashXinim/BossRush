@@ -20,10 +20,10 @@ namespace BossRush.Contents.Items.Chest
         {
             return true;
         }
-        public override List<int> FlagNumber() => new List<int>() { 4, 7, 8, 9 };
+        public override List<int> FlagNumber() => new List<int>() { 7, 8};
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
         public override void RightClick(Player player)
-        {
+         {
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings, ItemID.LeafWings, ItemID.FairyWings, ItemID.HarpyWings });
             player.QuickSpawnItem(entitySource, wing);
@@ -70,6 +70,5 @@ namespace BossRush.Contents.Items.Chest
                 player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
             }
         }
-
     }
 }

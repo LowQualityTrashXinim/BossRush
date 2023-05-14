@@ -116,7 +116,7 @@ namespace BossRush.Common.Global
             base.ModifyMaxStats(out health, out mana);
             if (Vampire)
             {
-                health.Base = -(Player.statLifeMax * 0.65f);
+                health.Base = -(Player.statLifeMax * 0.55f);
             }
             if (Earth)
             {
@@ -539,15 +539,10 @@ namespace BossRush.Common.Global
         {
             if (Vampire)
             {
-                if (proj.DamageType == DamageClass.Melee)
-                {
-                    LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
-                    return;
-                }
                 countRange++;
                 if (countRange >= 3)
                 {
-                    LifeSteal(target);
+                    LifeSteal(target,1,5);
                     countRange = 0;
                 }
             }

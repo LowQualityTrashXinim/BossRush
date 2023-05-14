@@ -357,38 +357,40 @@ namespace BossRush.Contents.Items.Chest
 
         public void ChooseWeapon(int rng, ref int weapon, ref int amount)
         {
+            weapon = ItemID.None;
+            amount = 1;
             switch (rng)
             {
                 case 0:
                     weapon = ItemID.None;
-                    break;
+                    return;
                 case 1:
                     weapon = Main.rand.NextFromCollection(DropItemMelee);
-                    break;
+                    return;
                 case 2:
                     weapon = Main.rand.NextFromCollection(DropItemRange);
-                    break;
+                    return;
                 case 3:
                     weapon = Main.rand.NextFromCollection(DropItemMagic);
-                    break;
+                    return;
                 case 4:
                     weapon = Main.rand.NextFromCollection(DropItemSummon);
-                    break;
+                    return;
                 case 5:
                     if (DropItemMisc.Count < 1)
                     {
-                        ChooseWeapon(rng, ref weapon, ref amount);
+                        ChooseWeapon(Main.rand.Next(1,5), ref weapon, ref amount);
                         break;
                     }
                     amount += 199;
                     weapon = Main.rand.NextFromCollection(DropItemMisc);
-                    break;
+                    return;
                 case 6:
                     weapon = ModContent.ItemType<WonderDrug>();
-                    break;
+                    return;
                 case 7:
                     weapon = ModContent.ItemType<RainbowTreasureChest>();
-                    break;
+                    return;
             }
         }
         public static void GetWeapon(out int ReturnWeapon, out int Amount, int rng = 0)

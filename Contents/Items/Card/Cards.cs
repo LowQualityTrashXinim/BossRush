@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Card
@@ -65,6 +66,20 @@ namespace BossRush.Contents.Items.Card
             modplayer.ChestLoot.MagicChanceMutilplier = 1f;
             modplayer.ChestLoot.SummonChanceMutilplier = 1f;
         }
+    }
+    internal class CopperCard : Card
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBar);
+        public override void PostCardSetDefault()
+        {
+            Item.rare = ItemRarityID.Red;
+        }
+        public override int Tier => 1;
+        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
+        {
+
+        }
+        public override bool CanBeCraft => false;
     }
     internal class EmptyCard : Card
     {

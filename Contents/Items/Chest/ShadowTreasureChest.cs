@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria.ModLoader;
 using BossRush.Common;
 using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Artifact;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -179,6 +180,8 @@ namespace BossRush.Contents.Items.Chest
                     ModContent.ItemType<TankPotion>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenArtifact>(), 1);
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<ArtifactRemover>(), 1);
         }
     }
 }

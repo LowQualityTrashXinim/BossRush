@@ -897,7 +897,7 @@ Mods: {
 			}
 
 			ArtifactRemover: {
-				Tooltip: ""
+				Tooltip: Remove the effect of artifact that you choose
 				DisplayName: Artifact Remover
 			}
 
@@ -1066,6 +1066,11 @@ Mods: {
 			TowerDestruction: {
 				Tooltip: The ultimate tower clearer
 				DisplayName: Tower Destruction
+			}
+
+			CopperCard: {
+				DisplayName: Copper Card
+				Tooltip: ""
 			}
 		}
 

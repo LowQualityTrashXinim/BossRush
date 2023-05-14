@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 58);
-            Item.UseSound = SoundID.Roar;
+            Item.UseSound = SoundID.Zombie105;
             Item.rare = ItemRarityID.Cyan;
         }
         public override bool? UseItem(Player player)
