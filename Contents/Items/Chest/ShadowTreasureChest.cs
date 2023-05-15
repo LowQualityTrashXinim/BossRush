@@ -149,7 +149,6 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, GetAccessory());
             }
-
             for (int i = 0; i < amount2; i++)
             {
                 player.QuickSpawnItem(entitySource, GetPotion(), amount3);
@@ -185,4 +184,3 @@ namespace BossRush.Contents.Items.Chest
         }
     }
 }
-
