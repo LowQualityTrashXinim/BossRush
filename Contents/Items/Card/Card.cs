@@ -5,6 +5,7 @@ using BossRush.Contents.Items.Chest;
 using System.Data.Common;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -27,15 +28,16 @@ namespace BossRush.Contents.Items.Card
         private int ChooseID;
         public override void OnSpawn(IEntitySource source)
         {
+            List<int> LookUpTable = new List<int>();
             switch (Tier)
             {
-                case 1:
-                    break;
-                case 2:
+                case 4:
                     break;
                 case 3:
                     break;
-                case 4:
+                case 2:
+                    break;
+                case 1:
                     break;
                 default:
                     break;
@@ -66,6 +68,29 @@ namespace BossRush.Contents.Items.Card
     class PlayerCardHandle : ModPlayer
     {
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
+        enum LookUpTable
+        {
+            MeleeDMG,
+            RangeDMG,
+            MagicDMG,
+            SummonDMG,
+            MovementSpeed,
+            MaxHP,
+            RegenHP,
+            MaxMana,
+            RegenMana,
+            Defense,
+            DamageUniverse,
+            CritChance,
+            CritDamage,
+            ChanceToNotConsumeAmmo,
+            DefenseEffectiveness,
+            ChestLootDropIncrease,
+            DamageReduction,
+            MaxMinion,
+            MaxSentry
+        }
+
         //Copper tier
         public float MeleeDamageMultiply = 0;
         public float RangeDamageMultiply = 0;
@@ -76,6 +101,7 @@ namespace BossRush.Contents.Items.Card
         public float HPMaxMulti = 0;
         public float LifeRegenMulti = 0;
         public float ManaMaxMulti = 0;
+        public float ManaRegenMulti = 0;
         public int DefenseBase = 0;
         //Silver Tier
         public float DamageMultiply = 0;
@@ -84,7 +110,6 @@ namespace BossRush.Contents.Items.Card
         /// Not implemented
         /// </summary>
         public float CritDamage = 1;
-        public float ManaRegenMulti = 0;
         /// <summary>
         /// Not implemented
         /// </summary>
