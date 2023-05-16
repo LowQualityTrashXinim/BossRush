@@ -31,12 +31,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
         {
             if (count == 0)
             {
-                rotate = player.direction == 1 ? MathHelper.ToRadians(470) : MathHelper.ToRadians(250);
+                rotate = player.direction == 1 ? -MathHelper.ToRadians(110) : MathHelper.ToRadians(290);
             }
             if (count < 10)
             {
                 rotate += MathHelper.ToRadians(14) * player.direction;
-                Vector2 staticRotate = new Vector2(Item.shootSpeed + player.velocity.X, 0).RotatedBy(rotate);
+                Vector2 staticRotate = new Vector2(Item.shootSpeed, 0).RotatedBy(rotate);
                 Projectile.NewProjectile(source, position, staticRotate, type, (int)(damage * 0.75f), knockback, player.whoAmI);
                 count++;
             }
