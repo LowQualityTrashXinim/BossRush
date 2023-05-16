@@ -79,6 +79,8 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
             Projectile.extraUpdates = 6;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 30;
         }
         public override void AI()
         {

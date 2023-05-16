@@ -73,17 +73,9 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, GetPotion(), amount3);
             }
-            switch (Main.rand.Next(2))
-            {
-                case 0:
-                    player.QuickSpawnItem(entitySource, ItemID.ObsidianPlatform, 3996);
-                    break;
-                case 1:
-                    player.QuickSpawnItem(entitySource, ItemID.WaterWalkingPotion, 10);
-                    player.QuickSpawnItem(entitySource, ItemID.FeatherfallPotion, 10);
-                    player.QuickSpawnItem(entitySource, ItemID.GravitationPotion, 10);
-                    break;
-            }
+            player.QuickSpawnItem(entitySource, ItemID.WaterWalkingPotion, 10);
+            player.QuickSpawnItem(entitySource, ItemID.FeatherfallPotion, 10);
+            player.QuickSpawnItem(entitySource, ItemID.GravitationPotion, 10);
             player.QuickSpawnItem(entitySource, ItemID.StickyDynamite, 200);
             player.QuickSpawnItem(entitySource, ItemID.CalmingPotion, 10);
             player.QuickSpawnItem(entitySource, ItemID.DemonConch);
