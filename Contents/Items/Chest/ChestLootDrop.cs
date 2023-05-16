@@ -4,9 +4,13 @@ using Terraria.ID;
 using BossRush.Common;
 using Terraria.ModLoader;
 using BossRush.Common.Utils;
+using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
-using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.CodeAnalysis;
+using Terraria.GameContent;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -80,11 +84,6 @@ namespace BossRush.Contents.Items.Chest
         protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
-            Main.NewText("THIS IS A DEBUG TEXT");
-            Main.NewText("BEFORE: Melee chance : " + meleeChance);
-            Main.NewText("BEFORE: Range chance : " + rangeChance);
-            Main.NewText("BEFORE: Magic chance : " + magicChance);
-            Main.NewText("BEFORE: Summon chance : " + summonChance);
             meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
             rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
             magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
@@ -94,11 +93,6 @@ namespace BossRush.Contents.Items.Chest
             summonChance += magicChance;
             specialChance += summonChance;
             int chooser = Main.rand.Next(specialChance);
-            Main.NewText("AFTER: Melee chance : " + meleeChance + " out of " + specialChance);
-            Main.NewText("AFTER: Range chance : " + (rangeChance - meleeChance) + " out of " + specialChance);
-            Main.NewText("AFTER: Magic chance : " + (magicChance - rangeChance) + " out of " + specialChance);
-            Main.NewText("AFTER: Summon chance : " + (summonChance - magicChance) + " out of " + specialChance);
-            Main.NewText("SPECIAL WEAPON CHANCE (FIXED): " + (specialChance - summonChance) + " out of " + specialChance);
             if (chooser <= meleeChance)
             {
                 return 1;
@@ -124,6 +118,11 @@ namespace BossRush.Contents.Items.Chest
 
         protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
+            ChestLootDropPlayer modPlayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+            meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
+            rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
+            magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
+            summonChance = (int)(modPlayer.SummonChanceMutilplier * summonChance);
             rangeChance += meleeChance;
             magicChance += rangeChance;
             summonChance += magicChance;
@@ -176,9 +175,9 @@ namespace BossRush.Contents.Items.Chest
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
-        private void AddLoot(List<int> FlagNumber)
+        private void AddLoot(List<int> flagNumber)
         {
-            List<int> RNGchooseWhichTierToGet = FlagNumber;
+            List<int> RNGchooseWhichTierToGet = flagNumber;
             if (CanLootRNGbeRandomize())
             {
                 RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.SetUpRNGTier();
@@ -187,7 +186,7 @@ namespace BossRush.Contents.Items.Chest
             }
             for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
             {
-                switch (FlagNumber[i])
+                switch (flagNumber[i])
                 {
                     case 0://PreBoss
                         DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
@@ -296,12 +295,12 @@ namespace BossRush.Contents.Items.Chest
                         DropItemSummon.Add(ItemID.MoonlordTurretStaff);
                         break;
                 }
-                if (SafePostAddLootMelee().Count > 0) DropItemMelee.AddRange(SafePostAddLootMelee());
-                if (SafePostAddLootRange().Count > 0) DropItemRange.AddRange(SafePostAddLootRange());
-                if (SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
-                if (SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
-                if (SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
             }
+            if (SafePostAddLootMelee().Count > 0) DropItemMelee.AddRange(SafePostAddLootMelee());
+            if (SafePostAddLootRange().Count > 0) DropItemRange.AddRange(SafePostAddLootRange());
+            if (SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
+            if (SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
+            if (SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
         }
         /// <summary>
         ///      Allow user to return a list of number that contain different data to insert into chest <br/>
@@ -379,7 +378,7 @@ namespace BossRush.Contents.Items.Chest
                 case 5:
                     if (DropItemMisc.Count < 1)
                     {
-                        ChooseWeapon(Main.rand.Next(1,5), ref weapon, ref amount);
+                        ChooseWeapon(Main.rand.Next(1, 5), ref weapon, ref amount);
                         break;
                     }
                     amount += 199;
@@ -842,6 +841,62 @@ namespace BossRush.Contents.Items.Chest
             }
             DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
             return Main.rand.NextFromCollection(DropItemPotion);
+        }
+        private int countX = 0;
+        private int countY = 0;
+        private float positionRotateX = 0;
+        private float positionRotateY = 0;
+
+        private void PositionHandle()
+        {
+            if (positionRotateX < 5 && countX == 1)
+            {
+                positionRotateX += .2f;
+            }
+            else
+            {
+                countX = -1;
+            }
+            if (positionRotateX > -5 && countX == -1)
+            {
+                positionRotateX -= .2f;
+            }
+            else
+            {
+                countX = 1;
+            }
+            if (positionRotateY < 5 && countY == 1)
+            {
+                positionRotateY += .2f;
+            }
+            else
+            {
+                countY = -1;
+            }
+            if (positionRotateY > -5 && countY == -1)
+            {
+                positionRotateY -= .2f;
+            }
+            else
+            {
+                countY = 1;
+            }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Color color = new Color(255, 255, 0, 50);
+            spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
     }
     public class ChestLootDropPlayer : ModPlayer
