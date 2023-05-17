@@ -580,7 +580,7 @@ Mods: {
 			}
 
 			BerserkPotion: {
-				Tooltip: Let them see slaughter
+				Tooltip: Let them witness the slaughter
 				DisplayName: Berserker's Elixir
 			}
 
@@ -760,17 +760,17 @@ Mods: {
 			}
 
 			VortexCard: {
-				Tooltip: Increase your chance to get range weapon from chest by 50% !
+				Tooltip: Increase your chance to get range weapon from chest by 50 !
 				DisplayName: Vortex Card
 			}
 
 			StarDustCard: {
-				Tooltip: Increase your chance to get summoner weapon from chest by 50% !
+				Tooltip: Increase your chance to get summoner weapon from chest by 50 !
 				DisplayName: Star Dust Card
 			}
 
 			SolarCard: {
-				Tooltip: Increase your chance to get melee weapon from chest by 50% !
+				Tooltip: Increase your chance to get melee weapon from chest by 50 !
 				DisplayName: Solar Card
 			}
 
@@ -784,7 +784,7 @@ Mods: {
 			}
 
 			NebulaCard: {
-				Tooltip: Increase your chance to get magic weapon from chest by 50% !
+				Tooltip: Increase your chance to get magic weapon from chest by 50 !
 				DisplayName: Nebula Card
 			}
 

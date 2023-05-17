@@ -9,6 +9,28 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card
 {
+    enum LookUpTable
+    {
+        MeleeDMG,
+        RangeDMG,
+        MagicDMG,
+        SummonDMG,
+        MovementSpeed,
+        MaxHP,
+        RegenHP,
+        MaxMana,
+        RegenMana,
+        Defense,
+        DamageUniverse,
+        CritChance,
+        CritDamage,
+        ChanceToNotConsumeAmmo,
+        DefenseEffectiveness,
+        ChestLootDropIncrease,
+        DamageReduction,
+        MaxMinion,
+        MaxSentry
+    }
     abstract class Card : ModItem
     {
         public override void SetDefaults()
@@ -28,19 +50,38 @@ namespace BossRush.Contents.Items.Card
         private int ChooseID;
         public override void OnSpawn(IEntitySource source)
         {
-            List<int> LookUpTable = new List<int>();
-            switch (Tier)
+            List<LookUpTable> list = new List<LookUpTable>();
+            if(Tier >= 4)
             {
-                case 4:
-                    break;
-                case 3:
-                    break;
-                case 2:
-                    break;
-                case 1:
-                    break;
-                default:
-                    break;
+
+            }
+            if(Tier >= 3)
+            {
+                list.Add(LookUpTable.MaxSentry);
+                list.Add(LookUpTable.MaxMinion);
+                list.Add(LookUpTable.DamageReduction);
+                list.Add(LookUpTable.ChestLootDropIncrease);
+            }
+            if(Tier >= 2)
+            {
+                list.Add(LookUpTable.DefenseEffectiveness);
+                list.Add(LookUpTable.ChanceToNotConsumeAmmo);
+                list.Add(LookUpTable.CritDamage);
+                list.Add(LookUpTable.CritChance);
+                list.Add(LookUpTable.DamageUniverse);
+            }
+            if(Tier >= 1)
+            {
+                list.Add(LookUpTable.Defense);
+                list.Add(LookUpTable.RegenMana);
+                list.Add(LookUpTable.MaxMana);
+                list.Add(LookUpTable.RegenHP);
+                list.Add(LookUpTable.MaxHP);
+                list.Add(LookUpTable.MovementSpeed);
+                list.Add(LookUpTable.SummonDMG);
+                list.Add(LookUpTable.MagicDMG);
+                list.Add(LookUpTable.RangeDMG);
+                list.Add(LookUpTable.MeleeDMG);
             }
         }
         /// <summary>
@@ -68,28 +109,6 @@ namespace BossRush.Contents.Items.Card
     class PlayerCardHandle : ModPlayer
     {
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
-        enum LookUpTable
-        {
-            MeleeDMG,
-            RangeDMG,
-            MagicDMG,
-            SummonDMG,
-            MovementSpeed,
-            MaxHP,
-            RegenHP,
-            MaxMana,
-            RegenMana,
-            Defense,
-            DamageUniverse,
-            CritChance,
-            CritDamage,
-            ChanceToNotConsumeAmmo,
-            DefenseEffectiveness,
-            ChestLootDropIncrease,
-            DamageReduction,
-            MaxMinion,
-            MaxSentry
-        }
 
         //Copper tier
         public float MeleeDamageMultiply = 0;
