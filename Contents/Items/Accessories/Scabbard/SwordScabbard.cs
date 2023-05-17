@@ -71,7 +71,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
             Projectile.width = 36;
             Projectile.height = 56;
             Projectile.friendly = true;
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 5;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 360;
@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard
         {
             if (Projectile.damage > 1)
             {
-                Projectile.damage -= 1;
+                Projectile.damage = (int)(Projectile.damage * .8f);
             }
             target.immune[Projectile.owner] = 4;
         }
