@@ -1,15 +1,16 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Chest;
-using System.Data.Common;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
+using Microsoft.Xna.Framework;
+using Terraria.GameContent.ItemDropRules;
 
 namespace BossRush.Contents.Items.Card
 {
-    enum LookUpTable
+    enum PlayerStats
     {
         MeleeDMG,
         RangeDMG,
@@ -27,7 +28,6 @@ namespace BossRush.Contents.Items.Card
         ChanceToNotConsumeAmmo,
         DefenseEffectiveness,
         ChestLootDropIncrease,
-        DamageReduction,
         MaxMinion,
         MaxSentry
     }
@@ -41,49 +41,92 @@ namespace BossRush.Contents.Items.Card
             PostCardSetDefault();
         }
         public virtual void PostCardSetDefault() { }
-        public override bool? UseItem(Player player)
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
-            OnUseItem(player, modplayer);
-            return true;
+            if (Tier <= 0)
+            {
+                return;
+            }
+            for (int i = 0; i < stats.Count; i++)
+            {
+                if (DoesStatsRequiredWholeNumber(i))
+                {
+                    TooltipLine line1 = new TooltipLine(Mod, "stats", $"Increase {statsNumber[i]} {stats[i]}");
+                    tooltips.Add(line1);
+                    continue;
+                }
+                int Fullnum = (int)(statsNumber[i] * 100);
+                TooltipLine line = new TooltipLine(Mod, "stats", $"Increase {Fullnum}% {stats[i]}");
+                tooltips.Add(line);
+            }
         }
-        private int ChooseID;
-        public override void OnSpawn(IEntitySource source)
+        private void SetStatsToAddBaseOnTier(ref List<PlayerStats> list)
         {
-            List<LookUpTable> list = new List<LookUpTable>();
-            if(Tier >= 4)
+            if (Tier >= 4)
             {
 
             }
-            if(Tier >= 3)
+            if (Tier >= 3)
             {
-                list.Add(LookUpTable.MaxSentry);
-                list.Add(LookUpTable.MaxMinion);
-                list.Add(LookUpTable.DamageReduction);
-                list.Add(LookUpTable.ChestLootDropIncrease);
+                list.Add(PlayerStats.MaxSentry);
+                list.Add(PlayerStats.MaxMinion);
+                list.Add(PlayerStats.ChestLootDropIncrease);
             }
-            if(Tier >= 2)
+            if (Tier >= 2)
             {
-                list.Add(LookUpTable.DefenseEffectiveness);
-                list.Add(LookUpTable.ChanceToNotConsumeAmmo);
-                list.Add(LookUpTable.CritDamage);
-                list.Add(LookUpTable.CritChance);
-                list.Add(LookUpTable.DamageUniverse);
+                list.Add(PlayerStats.DefenseEffectiveness);
+                //list.Add(PlayerStats.ChanceToNotConsumeAmmo);
+                list.Add(PlayerStats.CritDamage);
+                list.Add(PlayerStats.CritChance);
+                list.Add(PlayerStats.DamageUniverse);
             }
-            if(Tier >= 1)
+            if (Tier >= 1)
             {
-                list.Add(LookUpTable.Defense);
-                list.Add(LookUpTable.RegenMana);
-                list.Add(LookUpTable.MaxMana);
-                list.Add(LookUpTable.RegenHP);
-                list.Add(LookUpTable.MaxHP);
-                list.Add(LookUpTable.MovementSpeed);
-                list.Add(LookUpTable.SummonDMG);
-                list.Add(LookUpTable.MagicDMG);
-                list.Add(LookUpTable.RangeDMG);
-                list.Add(LookUpTable.MeleeDMG);
+                list.Add(PlayerStats.Defense);
+                list.Add(PlayerStats.RegenMana);
+                list.Add(PlayerStats.MaxMana);
+                list.Add(PlayerStats.RegenHP);
+                list.Add(PlayerStats.MaxHP);
+                list.Add(PlayerStats.MovementSpeed);
+                list.Add(PlayerStats.SummonDMG);
+                list.Add(PlayerStats.MagicDMG);
+                list.Add(PlayerStats.RangeDMG);
+                list.Add(PlayerStats.MeleeDMG);
             }
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            if(Tier <= 0)
+            {
+                return;
+            }
+            List<PlayerStats> list = new List<PlayerStats>();
+            SetStatsToAddBaseOnTier(ref list);
+            for (int i = 0; i < Tier; i++)
+            {
+                stats.Add(Main.rand.Next(list));
+                statsNumber.Add(statsCalculator());
+            }
+        }
+        private float statsCalculator()
+        {
+            float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
+            switch (Tier)
+            {
+                case 1:
+                    return statsNum;
+                case 2:
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.02f)) + .01f) * Tier;
+                case 3:
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.05f)) + .01f) * Tier;
+                case 4:
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.07f)) + .01f) * Tier;
+                default:
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier;
+            }
+        }
+        private List<PlayerStats> stats;
+        private List<float> statsNumber;
         /// <summary>
         /// 1 = Copper<br/>
         /// 2 = Silver<br/>
@@ -91,11 +134,74 @@ namespace BossRush.Contents.Items.Card
         /// 4 = Platinum<br/>
         /// </summary>
         public virtual int Tier => 0;
-        public virtual bool CanBeCraft => true;
-        public virtual void OnUseItem(Player player, PlayerCardHandle modplayer)
+        public virtual void OnUseItem(Player player, PlayerCardHandle modplayer) { }
+        public override bool? UseItem(Player player)
         {
-
+            PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
+            OnUseItem(player, modplayer);
+            for (int i = 0; i < stats.Count; i++)
+            {
+                switch (stats[i])
+                {
+                    case PlayerStats.MeleeDMG:
+                        modplayer.MeleeDamageMultiply += statsNumber[i];
+                        break;
+                    case PlayerStats.RangeDMG:
+                        modplayer.RangeDamageMultiply += statsNumber[i];
+                        break;
+                    case PlayerStats.MagicDMG:
+                        modplayer.MagicDamageMultiply += statsNumber[i];
+                        break;
+                    case PlayerStats.SummonDMG:
+                        modplayer.SummonDamageMultiply += statsNumber[i];
+                        break;
+                    case PlayerStats.MovementSpeed:
+                        modplayer.MovementMulti += statsNumber[i];
+                        break;
+                    case PlayerStats.MaxHP://This involve some special calculation, we can't use the normal calculation
+                        break;
+                    case PlayerStats.RegenHP:
+                        modplayer.LifeRegenMulti += statsNumber[i];
+                        break;
+                    case PlayerStats.MaxMana://This involve some special calculation, we can't use the normal calculation
+                        break;
+                    case PlayerStats.RegenMana:
+                        modplayer.ManaRegenMulti += statsNumber[i];
+                        break;
+                    case PlayerStats.Defense://This involve some special calculation, we can't use the normal calculation
+                        break;
+                    case PlayerStats.DamageUniverse:
+                        modplayer.DamageMultiply += statsNumber[i];
+                        break;
+                    case PlayerStats.CritChance:
+                        modplayer.CritDamage += statsNumber[i];
+                        break;
+                    case PlayerStats.CritDamage:
+                        modplayer.CritDamage += statsNumber[i];
+                        break;
+                    case PlayerStats.DefenseEffectiveness:
+                        modplayer.DefenseEffectiveness += statsNumber[i];
+                        break;
+                    case PlayerStats.ChestLootDropIncrease://This involve some special calculation, we can't use the normal calculation
+                        break;
+                    case PlayerStats.MaxMinion://This involve some special calculation, we can't use the normal calculation
+                        break;
+                    case PlayerStats.MaxSentry://This involve some special calculation, we can't use the normal calculation
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return true;
         }
+        private bool DoesStatsRequiredWholeNumber(int i) => 
+                    stats[i] is PlayerStats.Defense
+                    || stats[i] is PlayerStats.MaxMinion
+                    || stats[i] is PlayerStats.MaxSentry
+                    || stats[i] is PlayerStats.MaxHP
+                    || stats[i] is PlayerStats.MaxMana
+                    || stats[i] is PlayerStats.ChestLootDropIncrease;
+        public virtual bool CanBeCraft => true;
         public override void AddRecipes()
         {
             if (CanBeCraft)
@@ -139,7 +245,6 @@ namespace BossRush.Contents.Items.Card
         /// Not implemented
         /// </summary>
         public int DropAmountIncrease = 0;
-        public float DamageReduction = 0;
         public int MinionSlot = 0;
         public int SentrySlot = 0;
         //Platinum
@@ -175,16 +280,7 @@ namespace BossRush.Contents.Items.Card
             Player.DefenseEffectiveness *= DefenseEffectiveness;
             Player.maxMinions += MinionSlot;
             Player.maxTurrets += SentrySlot;
-            Player.endurance += DamageReduction;
         }
-
-        //_Copper : ( 1 - 3 )%
-
-        //_Silver : ( 3 - 8 )%
-
-        //_Gold : ( 6 - 16 )%
-
-        //_Platinum : ( 8 - 20)%
     }
     class CardNPCdrop : GlobalNPC
     {
