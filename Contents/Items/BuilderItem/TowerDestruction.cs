@@ -98,7 +98,7 @@ namespace BossRush.Contents.Items.BuilderItem
                 Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(19f, 19f);
             }
         }
-        int explosionRadiusX = 100;
+        int explosionRadiusX = 300;
         int explosionRadiusY = 10;
         public override void Kill(int timeLeft)
         {
