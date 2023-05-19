@@ -1072,6 +1072,21 @@ Mods: {
 				DisplayName: Copper Card
 				Tooltip: ""
 			}
+
+			GoldCard: {
+				DisplayName: Gold Card
+				Tooltip: ""
+			}
+
+			PlatinumCard: {
+				DisplayName: Platinum Card
+				Tooltip: ""
+			}
+
+			SilverCard: {
+				DisplayName: Silver Card
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
