@@ -286,12 +286,23 @@ namespace BossRush.Contents.Items.Card
         //public float LuckIncrease = 0;
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            Player.GetDamage(DamageClass.Melee) += MeleeDMG;
-            Player.GetDamage(DamageClass.Ranged) += RangeDMG;
-            Player.GetDamage(DamageClass.Magic) += MagicDMG;
-            Player.GetDamage(DamageClass.Summon) += SummonDMG;
-
-            Player.GetDamage(DamageClass.Generic) += DamagePure;
+            if(item.DamageType == DamageClass.Melee)
+            {
+             damage += MeleeDMG;
+            }
+            if (item.DamageType == DamageClass.Ranged)
+            {
+                damage += RangeDMG;
+            }
+            if (item.DamageType == DamageClass.Magic)
+            {
+                damage += MagicDMG;
+            }
+            if (item.DamageType == DamageClass.Summon)
+            {
+                damage += SummonDMG;
+            }
+            damage += DamagePure;
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {

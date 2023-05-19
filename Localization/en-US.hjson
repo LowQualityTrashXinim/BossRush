@@ -1090,12 +1090,12 @@ Mods: {
 
 			BigCardPacket: {
 				DisplayName: Big Card Packet
-				Tooltip: ""
+				Tooltip: Right click to open to get 5 cards
 			}
 
 			CardPacket: {
 				DisplayName: Card Packet
-				Tooltip: ""
+				Tooltip: Right click to open to get a card
 			}
 		}
 

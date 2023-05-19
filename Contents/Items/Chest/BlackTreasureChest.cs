@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.Chest
             return ModContent.GetInstance<BossRushModConfig>().SynergyMode;
         }
 
-        public override void OnRightClick(Player player)
+        public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             if (NPC.downedEmpressOfLight)
