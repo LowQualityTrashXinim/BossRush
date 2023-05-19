@@ -36,7 +36,7 @@ namespace BossRush.Contents.Items.Chest
             return list;
         }
         public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.ButterflyWings, ItemID.FlameWings, ItemID.FrozenWings, ItemID.SteampunkWings, ItemID.Jetpack });

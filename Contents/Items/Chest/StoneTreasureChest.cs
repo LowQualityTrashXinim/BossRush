@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int> { 0, 1, 2, 3 };
         public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             int RandomNumber = Main.rand.Next(6);

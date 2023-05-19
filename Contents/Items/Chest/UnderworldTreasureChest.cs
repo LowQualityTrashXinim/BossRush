@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Chest
             return new List<int> { 0 };
         }
         public override List<int> FlagNumAcc() => new List<int>() { 0, 1, 2, 3 };
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             GetAmount(out int weaponAmount, out int potionTypeAmount, out int potionNum, player);

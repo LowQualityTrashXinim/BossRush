@@ -138,7 +138,7 @@ namespace BossRush.Contents.Items.Card
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
             {
-                if (stats is PlayerStats.ChestLootDropIncrease)
+                if (stats is PlayerStats.ChestLootDropIncrease || stats is PlayerStats.MaxMinion || stats is PlayerStats.MaxSentry)
                 {
                     statsNum = Main.rand.Next(Tier) + 1;
                     return statsNum;
@@ -401,7 +401,8 @@ namespace BossRush.Contents.Items.Card
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 20));
         }
     }
 }

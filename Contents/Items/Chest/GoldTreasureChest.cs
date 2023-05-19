@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.Chest
             return list;
         }
 
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             if (NPC.downedQueenBee)

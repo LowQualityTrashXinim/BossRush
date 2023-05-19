@@ -34,7 +34,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override bool CanLootRNGbeRandomize() => false;
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4, 5 };
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             for (int i = 0; i < 3; i++)

@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Chest
         {
             return true;
         }
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             int chestRanAmount = Main.rand.Next(2, 9);

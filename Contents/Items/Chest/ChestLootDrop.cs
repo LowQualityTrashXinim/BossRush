@@ -11,6 +11,8 @@ using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.CodeAnalysis;
 using Terraria.GameContent;
+using BossRush.Contents.Items.Card;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -353,7 +355,23 @@ namespace BossRush.Contents.Items.Chest
             //actual choosing item
             ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
         }
-
+        public override void RightClick(Player player)
+        {
+            base.RightClick(player);
+            OnRightClick(player);
+            var entitySource = player.GetSource_OpenItem(Type);
+            if (Main.rand.NextBool(15))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
+                return;
+            }
+            if (Main.rand.NextBool(7))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<CardPacket>());
+                return;
+            }
+        }
+        public virtual void OnRightClick(Player player) { }
         public void ChooseWeapon(int rng, ref int weapon, ref int amount)
         {
             weapon = ItemID.None;

@@ -26,7 +26,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int> { 8, 9, 10, 11, 12, 13 };
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             for (int i = 0; i < 2; i++)
