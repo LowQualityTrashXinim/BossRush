@@ -1087,6 +1087,16 @@ Mods: {
 				DisplayName: Silver Card
 				Tooltip: ""
 			}
+
+			BigCardPacket: {
+				DisplayName: Big Card Packet
+				Tooltip: ""
+			}
+
+			CardPacket: {
+				DisplayName: Card Packet
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

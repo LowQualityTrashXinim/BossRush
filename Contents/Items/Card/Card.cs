@@ -266,7 +266,6 @@ namespace BossRush.Contents.Items.Card
         public float RangeDMG = 0;
         public float MagicDMG = 0;
         public float SummonDMG = 0;
-
         public float Movement = 1;
         public int HPMax = 0;
         public float HPRegen = 0;
@@ -276,15 +275,10 @@ namespace BossRush.Contents.Items.Card
         //Silver Tier
         public float DamagePure = 0;
         public int CritStrikeChance = 0;
-        /// <summary>
-        /// Not implemented
-        /// </summary>
+
         public float CritDamage = 1;
         public float DefenseEffectiveness = 1;
         //Gold
-        /// <summary>
-        /// Not implemented
-        /// </summary>
         public int DropAmountIncrease = 0;
         public int MinionSlot = 0;
         public int SentrySlot = 0;
@@ -390,7 +384,7 @@ namespace BossRush.Contents.Items.Card
             SummonDMG = (float)tag["SummonDMG"];
             Movement = (float)tag["Movement"];
             HPMax = (int)tag["HPMax"];
-            HPRegen= (int)tag["HPRegen"];
+            HPRegen= (float)tag["HPRegen"];
             ManaMax = (int)tag["ManaMax"];
             ManaRegen = (float)tag["ManaRegen"];
             DefenseBase = (int)tag["DefenseBase"];

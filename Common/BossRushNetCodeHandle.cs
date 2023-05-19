@@ -94,7 +94,7 @@ namespace BossRush.Common
                     modplayer.HPRegen = reader.ReadSingle();
                     modplayer.ManaMax = reader.ReadInt32();
                     modplayer.ManaRegen = reader.ReadSingle();
-                    modplayer.DefenseBase += reader.ReadInt32();
+                    modplayer.DefenseBase = reader.ReadInt32();
                     modplayer.DamagePure = reader.ReadSingle();
                     modplayer.CritStrikeChance = reader.ReadInt32();
                     modplayer.CritDamage = reader.ReadSingle();

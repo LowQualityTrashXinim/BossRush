@@ -1,10 +1,12 @@
-﻿using Terraria;
+﻿using BossRush.Texture;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Card
 {
     internal class CardPacket : ModItem
     {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.width = 20;
@@ -37,6 +39,7 @@ namespace BossRush.Contents.Items.Card
     }
     internal class BigCardPacket : ModItem
     {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.width = 20;
