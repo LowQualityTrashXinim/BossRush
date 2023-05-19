@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Contents.BuffAndDebuff;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -66,6 +68,23 @@ namespace BossRush.Contents.Items.Card
             modplayer.ChestLoot.RangeChanceMutilplier = 1f;
             modplayer.ChestLoot.MagicChanceMutilplier = 1f;
             modplayer.ChestLoot.SummonChanceMutilplier = 1f;
+            modplayer.MeleeDMG = 0;
+            modplayer.RangeDMG = 0;
+            modplayer.MagicDMG = 0;
+            modplayer.SummonDMG = 0;
+            modplayer.Movement = 1;
+            modplayer.HPMax = 0;
+            modplayer.HPRegen = 0;
+            modplayer.ManaMax = 0;
+            modplayer.ManaRegen = 0;
+            modplayer.DefenseBase = 0;
+            modplayer.DamagePure = 0;
+            modplayer.CritStrikeChance = 0;
+            modplayer.CritDamage = 1;
+            modplayer.DefenseEffectiveness = 1;
+            modplayer.DropAmountIncrease = 0;
+            modplayer.MinionSlot = 0;
+            modplayer.SentrySlot = 0;
         }
     }
     internal class CopperCard : Card

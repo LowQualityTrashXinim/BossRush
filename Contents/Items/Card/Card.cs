@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Common;
+using Terraria.ModLoader.IO;
+using System.Runtime.InteropServices;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -25,7 +28,6 @@ namespace BossRush.Contents.Items.Card
         DamageUniverse,
         CritChance,
         CritDamage,
-        ChanceToNotConsumeAmmo,
         DefenseEffectiveness,
         ChestLootDropIncrease,
         MaxMinion,
@@ -85,7 +87,6 @@ namespace BossRush.Contents.Items.Card
             if (Tier >= 2)
             {
                 list.Add(PlayerStats.DefenseEffectiveness);
-                //list.Add(PlayerStats.ChanceToNotConsumeAmmo);
                 list.Add(PlayerStats.CritDamage);
                 list.Add(PlayerStats.CritChance);
                 list.Add(PlayerStats.DamageUniverse);
@@ -112,7 +113,23 @@ namespace BossRush.Contents.Items.Card
                 return;
             }
             OnTierItemSpawn();
+            for (int i = 0; i < CardStats.Count; i++)
+            {
+                for (int l = i + 1; l < CardStats.Count; l++)
+                {
+                    if (CardStats[i] == CardStats[l])
+                    {
+                        CardStatsNumber[i] += CardStatsNumber[l];
+                        CardStats.RemoveAt(i);
+                        CardStatsNumber.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
         }
+        /// <summary>
+        /// Use this if <see cref="Tier"/> value set within the card item have value larger than 0
+        /// </summary>
         public virtual void OnTierItemSpawn() { }
         public virtual List<PlayerStats> CardStats => new List<PlayerStats>();
         public virtual List<float> CardStatsNumber => new List<float>();
@@ -126,7 +143,7 @@ namespace BossRush.Contents.Items.Card
                     statsNum = Main.rand.Next(Tier) + 1;
                     return statsNum;
                 }
-                statsNum = (Main.rand.Next(Tier) + Main.rand.Next(Tier) + 1) * Tier;
+                statsNum = (Main.rand.Next(Tier) + 1) * Tier;
                 return statsNum;
             }
             switch (Tier)
@@ -164,37 +181,37 @@ namespace BossRush.Contents.Items.Card
                 switch (CardStats[i])
                 {
                     case PlayerStats.MeleeDMG:
-                        modplayer.MeleeDamageMultiply += CardStatsNumber[i];
+                        modplayer.MeleeDMG += CardStatsNumber[i];
                         break;
                     case PlayerStats.RangeDMG:
-                        modplayer.RangeDamageMultiply += CardStatsNumber[i];
+                        modplayer.RangeDMG += CardStatsNumber[i];
                         break;
                     case PlayerStats.MagicDMG:
-                        modplayer.MagicDamageMultiply += CardStatsNumber[i];
+                        modplayer.MagicDMG += CardStatsNumber[i];
                         break;
                     case PlayerStats.SummonDMG:
-                        modplayer.SummonDamageMultiply += CardStatsNumber[i];
+                        modplayer.SummonDMG += CardStatsNumber[i];
                         break;
                     case PlayerStats.MovementSpeed:
-                        modplayer.MovementMulti += CardStatsNumber[i];
+                        modplayer.Movement += CardStatsNumber[i];
                         break;
                     case PlayerStats.MaxHP://This involve some special calculation, we can't use the normal calculation
-                        modplayer.HPMaxMulti += CardStatsNumber[i];
+                        modplayer.HPMax += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.RegenHP:
-                        modplayer.LifeRegenMulti += CardStatsNumber[i];
+                        modplayer.HPRegen += CardStatsNumber[i];
                         break;
                     case PlayerStats.MaxMana://This involve some special calculation, we can't use the normal calculation
-                        modplayer.ManaMaxMulti += CardStatsNumber[i];
+                        modplayer.ManaMax += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.RegenMana:
-                        modplayer.ManaRegenMulti += CardStatsNumber[i];
+                        modplayer.ManaRegen += CardStatsNumber[i];
                         break;
                     case PlayerStats.Defense://This involve some special calculation, we can't use the normal calculation
-                        modplayer.DefenseBase += CardStatsNumber[i];
+                        modplayer.DefenseBase += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.DamageUniverse:
-                        modplayer.DamageMultiply += CardStatsNumber[i];
+                        modplayer.DamagePure += CardStatsNumber[i];
                         break;
                     case PlayerStats.CritChance:
                         modplayer.CritStrikeChance += (int)CardStatsNumber[i];
@@ -206,13 +223,13 @@ namespace BossRush.Contents.Items.Card
                         modplayer.DefenseEffectiveness += CardStatsNumber[i];
                         break;
                     case PlayerStats.ChestLootDropIncrease://This involve some special calculation, we can't use the normal calculation
-                        modplayer.DropAmountIncrease += CardStatsNumber[i];
+                        modplayer.DropAmountIncrease += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.MaxMinion://This involve some special calculation, we can't use the normal calculation
-                        modplayer.MinionSlot += CardStatsNumber[i];
+                        modplayer.MinionSlot += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.MaxSentry://This involve some special calculation, we can't use the normal calculation
-                        modplayer.SentrySlot += CardStatsNumber[i];
+                        modplayer.SentrySlot += (int)CardStatsNumber[i];
                         break;
                     default:
                         break;
@@ -245,46 +262,42 @@ namespace BossRush.Contents.Items.Card
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
 
         //Copper tier
-        public float MeleeDamageMultiply = 0;
-        public float RangeDamageMultiply = 0;
-        public float MagicDamageMultiply = 0;
-        public float SummonDamageMultiply = 0;
+        public float MeleeDMG = 0;
+        public float RangeDMG = 0;
+        public float MagicDMG = 0;
+        public float SummonDMG = 0;
 
-        public float MovementMulti = 1;
-        public float HPMaxMulti = 0;
-        public float LifeRegenMulti = 0;
-        public float ManaMaxMulti = 0;
-        public float ManaRegenMulti = 0;
-        public float DefenseBase = 0;
+        public float Movement = 1;
+        public int HPMax = 0;
+        public float HPRegen = 0;
+        public int ManaMax = 0;
+        public float ManaRegen = 0;
+        public int DefenseBase = 0;
         //Silver Tier
-        public float DamageMultiply = 0;
+        public float DamagePure = 0;
         public int CritStrikeChance = 0;
         /// <summary>
         /// Not implemented
         /// </summary>
         public float CritDamage = 1;
-        /// <summary>
-        /// Not implemented
-        /// </summary>
-        public float ChanceToNoConsumeAmmo = 0;
         public float DefenseEffectiveness = 1;
         //Gold
         /// <summary>
         /// Not implemented
         /// </summary>
-        public float DropAmountIncrease = 0;
-        public float MinionSlot = 0;
-        public float SentrySlot = 0;
+        public int DropAmountIncrease = 0;
+        public int MinionSlot = 0;
+        public int SentrySlot = 0;
         //Platinum
         //public float LuckIncrease = 0;
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            Player.GetDamage(DamageClass.Melee) += MeleeDamageMultiply;
-            Player.GetDamage(DamageClass.Ranged) += RangeDamageMultiply;
-            Player.GetDamage(DamageClass.Magic) += MagicDamageMultiply;
-            Player.GetDamage(DamageClass.Summon) += SummonDamageMultiply;
+            Player.GetDamage(DamageClass.Melee) += MeleeDMG;
+            Player.GetDamage(DamageClass.Ranged) += RangeDMG;
+            Player.GetDamage(DamageClass.Magic) += MagicDMG;
+            Player.GetDamage(DamageClass.Summon) += SummonDMG;
 
-            Player.GetDamage(DamageClass.Generic) += DamageMultiply;
+            Player.GetDamage(DamageClass.Generic) += DamagePure;
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
@@ -302,8 +315,8 @@ namespace BossRush.Contents.Items.Card
             health = StatModifier.Default;
             mana = StatModifier.Default;
 
-            health.Base = HPMaxMulti;
-            mana.Base = ManaMaxMulti;
+            health.Base = HPMax;
+            mana.Base = ManaMax;
         }
         public override void PreUpdate()
         {
@@ -316,13 +329,78 @@ namespace BossRush.Contents.Items.Card
         }
         public override void ResetEffects()
         {
-            Player.statDefense += (int)DefenseBase;
-            Player.accRunSpeed *= MovementMulti;
-            Player.lifeRegen = (int)(LifeRegenMulti * Player.lifeRegen);
-            Player.manaRegen = (int)(ManaRegenMulti * Player.manaRegen);
+            Player.statDefense += DefenseBase;
+            Player.accRunSpeed *= Movement;
+            Player.lifeRegen = (int)(HPRegen * Player.lifeRegen);
+            Player.manaRegen = (int)(ManaRegen * Player.manaRegen);
             Player.DefenseEffectiveness *= DefenseEffectiveness;
-            Player.maxMinions = (int)(MinionSlot + Player.maxMinions);
-            Player.maxTurrets = (int)(SentrySlot + Player.maxTurrets);
+            Player.maxMinions += MinionSlot;
+            Player.maxTurrets += SentrySlot;
+        }
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)BossRushNetCodeHandle.MessageType.CardEffect);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(MeleeDMG);
+            packet.Write(RangeDMG);
+            packet.Write(MagicDMG);
+            packet.Write(SummonDMG);
+            packet.Write(Movement);
+            packet.Write(HPMax);
+            packet.Write(HPRegen);
+            packet.Write(ManaMax);
+            packet.Write(ManaRegen);
+            packet.Write(DefenseBase);
+            packet.Write(DamagePure);
+            packet.Write(CritStrikeChance);
+            packet.Write(CritDamage);
+            packet.Write(DefenseEffectiveness);
+            packet.Write(DropAmountIncrease);
+            packet.Write(MinionSlot);
+            packet.Write(SentrySlot);
+            packet.Send(toWho, fromWho);
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag["MeleeDMG"] = MeleeDMG;
+            tag["RangeDMG"] = RangeDMG;
+            tag["MagicDMG"] = MagicDMG;
+            tag["SummonDMG"] = SummonDMG;
+            tag["Movement"] = Movement;
+            tag["HPMax"] = HPMax;
+            tag["HPRegen"] = HPRegen;
+            tag["ManaMax"] = ManaMax;
+            tag["ManaRegen"] = ManaRegen;
+            tag["DefenseBase"] = DefenseBase;
+            tag["DamagePure"] = DamagePure;
+            tag["CritStrikeChance"] = CritStrikeChance;
+            tag["CritDamage"] = CritDamage;
+            tag["DefenseEffectiveness"] = DefenseEffectiveness;
+            tag["DropAmountIncrease"] = DropAmountIncrease;
+            tag["MinionSlot"] = MinionSlot;
+            tag["SentrySlot"] = SentrySlot;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            MeleeDMG = (float)tag["MeleeDMG"];
+            RangeDMG = (float)tag["RangeDMG"];
+            MagicDMG = (float)tag["MagicDMG"];
+            SummonDMG = (float)tag["SummonDMG"];
+            Movement = (float)tag["Movement"];
+            HPMax = (int)tag["HPMax"];
+            HPRegen= (int)tag["HPRegen"];
+            ManaMax = (int)tag["ManaMax"];
+            ManaRegen = (float)tag["ManaRegen"];
+            DefenseBase = (int)tag["DefenseBase"];
+            DamagePure = (float)tag["DamagePure"];
+            CritStrikeChance = (int)tag["CritStrikeChance"];
+            CritDamage = (float)tag["CritDamage"];
+            DefenseEffectiveness = (float)tag["DefenseEffectiveness"];
+            DropAmountIncrease = (int)tag["DropAmountIncrease"];
+            MinionSlot = (int)tag["MinionSlot"];
+            SentrySlot = (int)tag["SentrySlot"];
         }
     }
     class CardNPCdrop : GlobalNPC

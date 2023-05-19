@@ -6,6 +6,7 @@ using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
 using BossRush.Common.Global;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Common
 {
@@ -22,7 +23,8 @@ namespace BossRush.Common
             GambleAddiction,
             ExtraChallenge,
             ArtifactRegister,
-            ChanceMultiplayer
+            ChanceMultiplayer,
+            CardEffect
         }
         public void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -80,6 +82,26 @@ namespace BossRush.Common
                     chestplayer.RangeChanceMutilplier = reader.ReadSingle();
                     chestplayer.MagicChanceMutilplier = reader.ReadSingle();
                     chestplayer.SummonChanceMutilplier = reader.ReadSingle();
+                    break;
+                case MessageType.CardEffect:
+                    PlayerCardHandle modplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
+                    modplayer.MeleeDMG = reader.ReadSingle();
+                    modplayer.RangeDMG = reader.ReadSingle();
+                    modplayer.MagicDMG = reader.ReadSingle();
+                    modplayer.SummonDMG = reader.ReadSingle();
+                    modplayer.Movement = reader.ReadSingle();
+                    modplayer.HPMax = reader.ReadInt32();
+                    modplayer.HPRegen = reader.ReadSingle();
+                    modplayer.ManaMax = reader.ReadInt32();
+                    modplayer.ManaRegen = reader.ReadSingle();
+                    modplayer.DefenseBase += reader.ReadInt32();
+                    modplayer.DamagePure = reader.ReadSingle();
+                    modplayer.CritStrikeChance = reader.ReadInt32();
+                    modplayer.CritDamage = reader.ReadSingle();
+                    modplayer.DefenseEffectiveness = reader.ReadSingle();
+                    modplayer.DropAmountIncrease = reader.ReadInt32();
+                    modplayer.MinionSlot = reader.ReadInt32();
+                    modplayer.SentrySlot = reader.ReadInt32();
                     break;
             }
         }
