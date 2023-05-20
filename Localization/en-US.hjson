@@ -1137,6 +1137,11 @@ Mods: {
 				DisplayName: Hell Flesh
 				Tooltip: ""
 			}
+
+			ClearAllNoHit: {
+				DisplayName: Clear All No Hit
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

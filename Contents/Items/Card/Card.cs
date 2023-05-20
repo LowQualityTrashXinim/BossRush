@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.IO;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -194,19 +195,19 @@ namespace BossRush.Contents.Items.Card
                     case PlayerStats.MovementSpeed:
                         modplayer.Movement += CardStatsNumber[i];
                         break;
-                    case PlayerStats.MaxHP://This involve some special calculation, we can't use the normal calculation
+                    case PlayerStats.MaxHP:
                         modplayer.HPMax += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.RegenHP:
                         modplayer.HPRegen += CardStatsNumber[i];
                         break;
-                    case PlayerStats.MaxMana://This involve some special calculation, we can't use the normal calculation
+                    case PlayerStats.MaxMana:
                         modplayer.ManaMax += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.RegenMana:
                         modplayer.ManaRegen += CardStatsNumber[i];
                         break;
-                    case PlayerStats.Defense://This involve some special calculation, we can't use the normal calculation
+                    case PlayerStats.Defense:
                         modplayer.DefenseBase += (int)CardStatsNumber[i];
                         break;
                     case PlayerStats.DamageUniverse:
@@ -221,13 +222,13 @@ namespace BossRush.Contents.Items.Card
                     case PlayerStats.DefenseEffectiveness:
                         modplayer.DefenseEffectiveness += CardStatsNumber[i];
                         break;
-                    case PlayerStats.ChestLootDropIncrease://This involve some special calculation, we can't use the normal calculation
+                    case PlayerStats.ChestLootDropIncrease:
                         modplayer.DropAmountIncrease += (int)CardStatsNumber[i];
                         break;
-                    case PlayerStats.MaxMinion://This involve some special calculation, we can't use the normal calculation
+                    case PlayerStats.MaxMinion:
                         modplayer.MinionSlot += (int)CardStatsNumber[i];
                         break;
-                    case PlayerStats.MaxSentry://This involve some special calculation, we can't use the normal calculation
+                    case PlayerStats.MaxSentry:
                         modplayer.SentrySlot += (int)CardStatsNumber[i];
                         break;
                     default:
@@ -418,8 +419,14 @@ namespace BossRush.Contents.Items.Card
             }
             else
             {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(),ModContent.ItemType<CardPacket>(), 10));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(),ModContent.ItemType<BigCardPacket>(), 20));
+                if (npc.friendly || npc.lifeMax <= 5)
+                {
+                    return;
+                }
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 25));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 35));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 90));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 120));
             }
         }
     }

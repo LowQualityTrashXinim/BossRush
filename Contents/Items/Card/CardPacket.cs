@@ -1,12 +1,12 @@
-﻿using BossRush.Texture;
-using Terraria;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Card
 {
     internal class CardPacket : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Chest);
         public override void SetDefaults()
         {
             Item.width = 20;
@@ -19,12 +19,12 @@ namespace BossRush.Contents.Items.Card
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            if(Main.rand.NextBool(20))
+            if(Main.rand.NextBool(25))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                 return;
             }
-            if(Main.rand.NextBool(10))
+            if(Main.rand.NextBool(12))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
                 return;
@@ -39,7 +39,7 @@ namespace BossRush.Contents.Items.Card
     }
     internal class BigCardPacket : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldChest);
         public override void SetDefaults()
         {
             Item.width = 20;
@@ -54,12 +54,12 @@ namespace BossRush.Contents.Items.Card
             var entitySource = player.GetSource_OpenItem(Type);
             for (int i = 0; i < 5; i++)
             {
-                if (Main.rand.NextBool(20))
+                if (Main.rand.NextBool(25))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(10))
+                if (Main.rand.NextBool(12))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
                     continue;

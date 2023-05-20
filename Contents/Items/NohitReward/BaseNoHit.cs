@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.NohitReward
                 if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
             }
         }
-        public virtual int Data => 0;
+        public virtual int Data => Item.type;
         public override bool? UseItem(Player player)
         {
             player.statLifeMax2 += HP;
