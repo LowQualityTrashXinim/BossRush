@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Items.aDebugItem

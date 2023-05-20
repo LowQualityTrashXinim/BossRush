@@ -6,6 +6,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.ID;
 
 namespace BossRush
 {
@@ -51,6 +52,25 @@ namespace BossRush
                 return "Terraria/Images/Projectile_" + EntityType;
             }
             return BossRushTexture.MISSINGTEXTURE;
+        }
+        public static bool IsAnyVanillaBossAlive()
+        {
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (npc.boss && npc.active)
+                {
+                    return true;
+                }
+                else if ((npc.type == NPCID.EaterofWorldsBody
+                    || npc.type == NPCID.EaterofWorldsHead
+                    || npc.type == NPCID.EaterofWorldsTail)
+                    && npc.active)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         /// <summary>
         /// Use to order 2 values from smallest to biggest

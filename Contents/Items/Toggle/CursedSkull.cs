@@ -45,7 +45,7 @@ namespace BossRush.Contents.Items.Toggle
 
         public override bool CanUseItem(Player player)
         {
-            return !player.GetModPlayer<ModdedPlayer>().LookingForBossVanilla();
+            return !BossRushUtils.IsAnyVanillaBossAlive();
         }
         int count = 0;
         public override bool? UseItem(Player player)

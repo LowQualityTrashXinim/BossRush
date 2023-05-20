@@ -18,6 +18,7 @@ namespace BossRush.Contents.Items.Card
         MagicDMG,
         SummonDMG,
         MovementSpeed,
+        JumpBoost,
         MaxHP,
         RegenHP,
         MaxMana,
@@ -97,6 +98,7 @@ namespace BossRush.Contents.Items.Card
                 list.Add(PlayerStats.RegenHP);
                 list.Add(PlayerStats.MaxHP);
                 list.Add(PlayerStats.MovementSpeed);
+                list.Add(PlayerStats.JumpBoost);
                 list.Add(PlayerStats.SummonDMG);
                 list.Add(PlayerStats.MagicDMG);
                 list.Add(PlayerStats.RangeDMG);
@@ -195,6 +197,9 @@ namespace BossRush.Contents.Items.Card
                     case PlayerStats.MovementSpeed:
                         modplayer.Movement += CardStatsNumber[i];
                         break;
+                    case PlayerStats.JumpBoost:
+                        modplayer.JumpBoost += CardStatsNumber[i];
+                        break;
                     case PlayerStats.MaxHP:
                         modplayer.HPMax += (int)CardStatsNumber[i];
                         break;
@@ -266,7 +271,8 @@ namespace BossRush.Contents.Items.Card
         public float RangeDMG = 0;
         public float MagicDMG = 0;
         public float SummonDMG = 0;
-        public float Movement = 1;
+        public float Movement = 0;
+        public float JumpBoost = 0;
         public int HPMax = 0;
         public float HPRegen = 0;
         public int ManaMax = 0;
@@ -335,7 +341,8 @@ namespace BossRush.Contents.Items.Card
         public override void ResetEffects()
         {
             Player.statDefense += DefenseBase;
-            Player.accRunSpeed *= Movement;
+            Player.accRunSpeed += Movement;
+            Player.jumpSpeedBoost += JumpBoost;
             Player.lifeRegen = (int)(HPRegen * Player.lifeRegen);
             Player.manaRegen = (int)(ManaRegen * Player.manaRegen);
             Player.DefenseEffectiveness *= DefenseEffectiveness;
@@ -352,6 +359,7 @@ namespace BossRush.Contents.Items.Card
             packet.Write(MagicDMG);
             packet.Write(SummonDMG);
             packet.Write(Movement);
+            packet.Write(JumpBoost);
             packet.Write(HPMax);
             packet.Write(HPRegen);
             packet.Write(ManaMax);
@@ -373,6 +381,7 @@ namespace BossRush.Contents.Items.Card
             tag["MagicDMG"] = MagicDMG;
             tag["SummonDMG"] = SummonDMG;
             tag["Movement"] = Movement;
+            tag["JumpBoost"] = JumpBoost;
             tag["HPMax"] = HPMax;
             tag["HPRegen"] = HPRegen;
             tag["ManaMax"] = ManaMax;
@@ -394,6 +403,7 @@ namespace BossRush.Contents.Items.Card
             MagicDMG = (float)tag["MagicDMG"];
             SummonDMG = (float)tag["SummonDMG"];
             Movement = (float)tag["Movement"];
+            JumpBoost = (float)tag["JumpBoost"];
             HPMax = (int)tag["HPMax"];
             HPRegen = (float)tag["HPRegen"];
             ManaMax = (int)tag["ManaMax"];

@@ -64,15 +64,16 @@ namespace BossRush.Contents.Items.Card
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
-            modplayer.ChestLoot.MeleeChanceMutilplier = 1f;
-            modplayer.ChestLoot.RangeChanceMutilplier = 1f;
-            modplayer.ChestLoot.MagicChanceMutilplier = 1f;
-            modplayer.ChestLoot.SummonChanceMutilplier = 1f;
+            modplayer.ChestLoot.MeleeChanceMutilplier = 0;
+            modplayer.ChestLoot.RangeChanceMutilplier = 0;
+            modplayer.ChestLoot.MagicChanceMutilplier = 0;
+            modplayer.ChestLoot.SummonChanceMutilplier = 0;
             modplayer.MeleeDMG = 0;
             modplayer.RangeDMG = 0;
             modplayer.MagicDMG = 0;
             modplayer.SummonDMG = 0;
-            modplayer.Movement = 1;
+            modplayer.Movement = 0;
+            modplayer.JumpBoost = 0;
             modplayer.HPMax = 0;
             modplayer.HPRegen = 0;
             modplayer.ManaMax = 0;

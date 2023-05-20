@@ -26,7 +26,6 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
             CreateRecipe()
                 .AddIngredient(ItemID.KingSlimeTrophy)
                 .AddIngredient(ItemID.SlimeGun)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

@@ -14,6 +14,7 @@ using Terraria.GameContent;
 using BossRush.Contents.Items.Card;
 using Terraria.DataStructures;
 using static Terraria.ModLoader.PlayerDrawLayer;
+using BossRush.Contents.Items.Accessories;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -357,9 +358,16 @@ namespace BossRush.Contents.Items.Chest
             base.RightClick(player);
             OnRightClick(player);
             var entitySource = player.GetSource_OpenItem(Type);
-            if (Main.rand.NextBool(1000))
+            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
+                if (Main.rand.NextBool(1000))
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
+                }
+                if (Main.rand.NextBool(1000))
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
+                }
             }
             //Card dropping
             if (Main.rand.NextBool(15))

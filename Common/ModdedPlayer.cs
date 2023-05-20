@@ -13,9 +13,6 @@ using BossRush.Contents.Items.Note;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark;
 using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Card;
@@ -34,25 +31,6 @@ namespace BossRush.Common
         //NoHiter
         public bool gitGud = false;
         public int HowManyBossIsAlive = 0;
-        public bool LookingForBossVanilla()
-        {
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-                if (npc.boss && npc.active)
-                {
-                    return true;
-                }
-                else if ((npc.type == NPCID.EaterofWorldsBody
-                    || npc.type == NPCID.EaterofWorldsHead
-                    || npc.type == NPCID.EaterofWorldsTail)
-                    && npc.active)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
         public override void PreUpdate()
         {
             HowManyBossIsAlive = 0;
@@ -141,7 +119,7 @@ namespace BossRush.Common
             {
                 QueenBeeEnraged = false;
             }
-            if (!LookingForBossVanilla())
+            if (!BossRushUtils.IsAnyVanillaBossAlive())
             {
                 KingSlimeEnraged = false;
                 EoCEnraged = false;
@@ -225,7 +203,7 @@ namespace BossRush.Common
         public int amountoftimegothit = 0;
         public override void OnHurt(Player.HurtInfo info)
         {
-            if (LookingForBossVanilla())
+            if (BossRushUtils.IsAnyVanillaBossAlive())
             {
                 if (gitGud)
                 {

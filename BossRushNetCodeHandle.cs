@@ -102,6 +102,7 @@ namespace BossRush
                     modplayer.MagicDMG = reader.ReadSingle();
                     modplayer.SummonDMG = reader.ReadSingle();
                     modplayer.Movement = reader.ReadSingle();
+                    modplayer.JumpBoost = reader.ReadSingle();
                     modplayer.HPMax = reader.ReadInt32();
                     modplayer.HPRegen = reader.ReadSingle();
                     modplayer.ManaMax = reader.ReadInt32();

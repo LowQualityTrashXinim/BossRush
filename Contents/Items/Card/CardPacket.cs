@@ -11,6 +11,7 @@ namespace BossRush.Contents.Items.Card
         {
             Item.width = 20;
             Item.height = 40;
+            Item.maxStack = 30;
         }
         public override bool CanRightClick()
         {
@@ -44,6 +45,7 @@ namespace BossRush.Contents.Items.Card
         {
             Item.width = 20;
             Item.height = 40;
+            Item.maxStack = 30;
         }
         public override bool CanRightClick()
         {

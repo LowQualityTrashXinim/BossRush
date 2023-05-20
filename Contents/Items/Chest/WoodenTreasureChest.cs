@@ -94,11 +94,6 @@ namespace BossRush.Contents.Items.Chest
             }
             int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });
             player.QuickSpawnItem(entitySource, RandomAssArmor);
-            int SuperRare = Main.rand.Next(1000);
-            if (SuperRare == 1 && ModContent.GetInstance<BossRushModConfig>().SynergyMode)
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
-            }
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 int RandomModdedBuff = Main.rand.Next(new int[] {

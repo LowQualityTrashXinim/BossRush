@@ -143,8 +143,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ModdedPlayer>().LookingForBossVanilla()
-                    && !info.npc.boss;
+                return BossRushUtils.IsAnyVanillaBossAlive() && !info.npc.boss;
             }
             return false;
         }

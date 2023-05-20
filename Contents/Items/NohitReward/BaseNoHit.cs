@@ -42,14 +42,8 @@ namespace BossRush.Contents.Items.NohitReward
             {
                 player.HealEffect(HP);
             }
-            NoHitPlayerHandle modplayer = player.GetModPlayer<NoHitPlayerHandle>();
-            OnUseItem(modplayer);
-            modplayer.BossNoHitNumber.Add(Data);
+            player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Add(Data);
             return true;
-        }
-        public virtual void OnUseItem(NoHitPlayerHandle modplayer)
-        {
-
         }
         public override bool CanUseItem(Player player)
         {
