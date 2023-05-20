@@ -98,7 +98,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.QueenBee)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>()));
@@ -114,7 +114,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.SkeletronHead)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GoldTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GoldTreasureChest>()));
@@ -127,7 +127,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.Deerclops)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IceTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IceTreasureChest>()));
@@ -143,7 +143,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.WallofFlesh)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));

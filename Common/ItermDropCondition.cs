@@ -137,6 +137,20 @@ namespace BossRush.Common
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Drop if player is fighting in snow biome, in night and is snowing";
     }
+    public class IsNotABossAndBossIsAlive :IItemDropRuleCondition
+    {
+        public bool CanDrop(DropAttemptInfo info)
+        {
+            if (!info.IsInSimulation)
+            {
+                return info.player.GetModPlayer<ModdedPlayer>().LookingForBossVanilla()
+                    && !info.npc.boss;
+            }
+            return false;
+        }
+        public bool CanShowItemDropInUI() => true;
+        public string GetConditionDescription() => "Drop only when npc is not a boss and boss is alive";
+    }
     public class GitGudMode : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)

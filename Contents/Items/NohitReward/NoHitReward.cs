@@ -24,4 +24,24 @@ namespace BossRush.Contents.Items.NohitReward
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.BrainOfCthulhuPetItem);
         public override int Data => NPCID.BrainofCthulhu;
     }
+    internal class SkeletronNoHitReward : BaseNoHit
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SkeletronPrimePetItem);
+        public override int Data => NPCID.SkeletronHead;
+    }
+    internal class QueenBeeNoHitReward : BaseNoHit
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.QueenBeePetItem);
+        public override int Data => NPCID.QueenBee;
+    }
+    internal class DeerclopNoHitReward : BaseNoHit
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.DeerclopsPetItem);
+        public override int Data => NPCID.Deerclops;
+    }
+    internal class WallOfFleshNoHitReward : BaseNoHit
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.WallOfFleshGoatMountItem);
+        public override int Data => NPCID.WallofFlesh;
+    }
 }

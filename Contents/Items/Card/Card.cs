@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.IO;
 using System.Runtime.InteropServices;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -413,8 +414,9 @@ namespace BossRush.Contents.Items.Card
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 10));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 20));
+            LeadingConditionRule rule = new LeadingConditionRule(new IsNotABossAndBossIsAlive());
+            rule.OnFailedConditions(npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 10)));
+            rule.OnFailedConditions(npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 20)));
         }
     }
 }
