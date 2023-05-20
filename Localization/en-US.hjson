@@ -1121,7 +1121,7 @@ Mods: {
 			SkeletronNoHitReward: {
 				DisplayName: Cursed Milk
 				Tooltip: ""
-			}s
+			}
 
 			DeerclopNoHitReward: {
 				DisplayName: Winter Meat
