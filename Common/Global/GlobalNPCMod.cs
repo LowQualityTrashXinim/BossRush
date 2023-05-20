@@ -30,7 +30,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.KingSlime)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TrueKingSlimeTrophy>()));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StoneTreasureChest>()));
@@ -48,7 +48,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.EyeofCthulhu)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TrueEyeOfCthulhuTrophy>()));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SilverTreasureChest>()));
@@ -68,7 +68,7 @@ namespace BossRush.Common.Global
             if (System.Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<TrueEaterOfWorldTrophy>()));
+                noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Expert mode drop
                 IsABoss.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<CorruptedTreasureChest>()));
@@ -83,7 +83,7 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.BrainofCthulhu)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TrueBrainOfCthulhuTrophy>()));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCNoHitReward>()));
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonTreasureChest>()));

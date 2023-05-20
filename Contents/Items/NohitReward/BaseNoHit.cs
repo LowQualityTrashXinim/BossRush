@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
+using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.NohitReward
 {
@@ -26,6 +32,137 @@ namespace BossRush.Contents.Items.NohitReward
             {
                 if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
             }
+        }
+        public virtual int Data => 0;
+        public override bool? UseItem(Player player)
+        {
+            player.statLifeMax2 += HP;
+            player.statLife += HP;
+            if (Main.myPlayer == player.whoAmI)
+            {
+                player.HealEffect(HP);
+            }
+            NoHitPlayerHandle modplayer = player.GetModPlayer<NoHitPlayerHandle>();
+            OnUseItem(modplayer);
+            modplayer.BossNoHitNumber.Add(Data);
+            return true;
+        }
+        public virtual void OnUseItem(NoHitPlayerHandle modplayer)
+        {
+
+        }
+        public override bool CanUseItem(Player player)
+        {
+            NoHitPlayerHandle modplayer = player.GetModPlayer<NoHitPlayerHandle>();
+            return !modplayer.BossNoHitNumber.Contains(Data);
+        }
+        private int countX = 0;
+        private int countY = 0;
+        private float positionRotateX = 0;
+        private float positionRotateY = 0;
+        private void PositionHandle()
+        {
+            if (positionRotateX < 3 && countX == 1)
+            {
+                positionRotateX += .3f;
+            }
+            else
+            {
+                countX = -1;
+            }
+            if (positionRotateX > 0 && countX == -1)
+            {
+                positionRotateX -= .3f;
+            }
+            else
+            {
+                countX = 1;
+            }
+            if (positionRotateY < 3 && countY == 1)
+            {
+                positionRotateY += .3f;
+            }
+            else
+            {
+                countY = -1;
+            }
+            if (positionRotateY > 0 && countY == -1)
+            {
+                positionRotateY -= .3f;
+            }
+            else
+            {
+                countY = 1;
+            }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Color color = new Color(255, 255, 0, 50);
+            spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+        }
+    }
+    public class NoHitPlayerHandle : ModPlayer
+    {
+        public List<int> BossNoHitNumber;
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
+        {
+            health = StatModifier.Default;
+            mana = StatModifier.Default;
+            health.Base = BossNoHitNumber.Count * BaseNoHit.HP;
+        }
+        public override void Initialize()
+        {
+            BossNoHitNumber = new List<int>();
+        }
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)BossRush.MessageType.NoHitBossNum);
+            packet.Write((byte)Player.whoAmI);
+            foreach (int BossNum in BossNoHitNumber)
+            {
+                packet.Write(BossNum);
+            }
+            packet.Send(toWho, fromWho);
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            for (int i = 0; i < BossNoHitNumber.Count; i++)
+            {
+                BossNoHitNumber[i] = reader.ReadByte();
+            }
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            NoHitPlayerHandle clone = (NoHitPlayerHandle)targetCopy;
+            clone.BossNoHitNumber = BossNoHitNumber;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            NoHitPlayerHandle clone = (NoHitPlayerHandle)clientPlayer;
+            if (BossNoHitNumber != clone.BossNoHitNumber) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            BossNoHitNumber = tag.Get<List<int>>("BossNoHitNumber");
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag["BossNoHitNumber"] = BossNoHitNumber;
         }
     }
 }

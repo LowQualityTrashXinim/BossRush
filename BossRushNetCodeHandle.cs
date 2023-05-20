@@ -1,25 +1,53 @@
-﻿using System.IO;
-using Terraria;
+﻿using Terraria;
+using System.IO;
+using Terraria.ID;
+using BossRush.Common.Global;
 using BossRush.Common.ExtraChallenge;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
-using BossRush.Common.Global;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Card;
 
-namespace BossRush.Common
+namespace BossRush
 {
+    partial class BossRush
+    {
+        internal enum MessageType : byte
+        {
+            SkillIssuePlayer,
+            DrugSyncPlayer,
+            NoHitBossNum,
+            GambleAddiction,
+            ExtraChallenge,
+            ArtifactRegister,
+            ChanceMultiplayer,
+            CardEffect
+        }
+        public override void HandlePacket(BinaryReader reader, int whoAmI)
+        {
+            base.HandlePacket(reader, whoAmI);
+            MessageType msgType = (MessageType)reader.ReadByte();
+            byte playernumber = reader.ReadByte();
+            switch (msgType)
+            {
+                case MessageType.NoHitBossNum:
+                    NoHitPlayerHandle modplayer = Main.player[playernumber].GetModPlayer<NoHitPlayerHandle>();
+                    modplayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        modplayer.SyncPlayer(-1, whoAmI, false);
+                    }
+                    break;
+            }
+        }
+    }
     partial class BossRushNetCodeHandle
     {
         internal enum MessageType : byte
         {
             SkillIssuePlayer,
             DrugSyncPlayer,
-            KingSlimeNoHit,
-            EoCNoHit,
-            EoWNoHit,
-            BoCNoHit,
             GambleAddiction,
             ExtraChallenge,
             ArtifactRegister,
@@ -39,22 +67,6 @@ namespace BossRush.Common
                 case MessageType.SkillIssuePlayer:
                     SkillIssuedArtifactPlayer SkillISsue = Main.player[playernumber].GetModPlayer<SkillIssuedArtifactPlayer>();
                     SkillISsue.SkillIssue = reader.ReadInt32();
-                    break;
-                case MessageType.KingSlimeNoHit:
-                    KingSlimeNoHit KSNOHIT = Main.player[playernumber].GetModPlayer<KingSlimeNoHit>();
-                    KSNOHIT.KS0hit = reader.ReadInt32();
-                    break;
-                case MessageType.EoCNoHit:
-                    EoCNoHit EOC = Main.player[playernumber].GetModPlayer<EoCNoHit>();
-                    EOC.EoC0hit = reader.ReadInt32();
-                    break;
-                case MessageType.EoWNoHit:
-                    EoWNoHit EoW = Main.player[playernumber].GetModPlayer<EoWNoHit>();
-                    EoW.EoW0Hit = reader.ReadInt32();
-                    break;
-                case MessageType.BoCNoHit:
-                    BoCNoHit BoC = Main.player[playernumber].GetModPlayer<BoCNoHit>();
-                    BoC.BoC0Hit = reader.ReadInt32();
                     break;
                 case MessageType.GambleAddiction:
                     GamblePlayer gamble = Main.player[playernumber].GetModPlayer<GamblePlayer>();

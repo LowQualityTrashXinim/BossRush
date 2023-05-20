@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Common;
 using Terraria.ModLoader.IO;
 using System.Runtime.InteropServices;
 
@@ -138,7 +137,9 @@ namespace BossRush.Contents.Items.Card
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
             {
-                if (stats is PlayerStats.ChestLootDropIncrease || stats is PlayerStats.MaxMinion || stats is PlayerStats.MaxSentry)
+                if (stats is PlayerStats.ChestLootDropIncrease 
+                    || stats is PlayerStats.MaxMinion 
+                    || stats is PlayerStats.MaxSentry)
                 {
                     statsNum = Main.rand.Next(Tier) + 1;
                     return statsNum;

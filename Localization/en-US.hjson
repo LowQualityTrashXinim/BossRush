@@ -1097,6 +1097,26 @@ Mods: {
 				DisplayName: Card Packet
 				Tooltip: Right click to open to get a card
 			}
+
+			KSNoHitReward: {
+				DisplayName: Slimey delux
+				Tooltip: ""
+			}
+
+			EoCNoHitReward: {
+				DisplayName: Fang of Cthulhu
+				Tooltip: ""
+			}
+
+			EoWNoHitReward: {
+				DisplayName: Tainted flesh
+				Tooltip: ""
+			}
+
+			BoCNoHitReward: {
+				DisplayName: Brain in the jar
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis;
 using Terraria.GameContent;
 using BossRush.Contents.Items.Card;
 using Terraria.DataStructures;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -68,10 +69,6 @@ namespace BossRush.Contents.Items.Chest
         }
         private int ModifyRNG(int rng, Player player)
         {
-            if (Main.rand.NextBool(1000))
-            {
-                return 7;
-            }
             int DrugValue = player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
             if (DrugValue > 0)
             {
@@ -360,6 +357,11 @@ namespace BossRush.Contents.Items.Chest
             base.RightClick(player);
             OnRightClick(player);
             var entitySource = player.GetSource_OpenItem(Type);
+            if (Main.rand.NextBool(1000))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
+            }
+            //Card dropping
             if (Main.rand.NextBool(15))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
@@ -404,9 +406,6 @@ namespace BossRush.Contents.Items.Chest
                     return;
                 case 6:
                     weapon = ModContent.ItemType<WonderDrug>();
-                    return;
-                case 7:
-                    weapon = ModContent.ItemType<RainbowTreasureChest>();
                     return;
             }
         }
@@ -860,56 +859,21 @@ namespace BossRush.Contents.Items.Chest
             DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
             return Main.rand.NextFromCollection(DropItemPotion);
         }
-        private int countX = 0;
-        private int countY = 0;
-        private float positionRotateX = 0;
-        private float positionRotateY = 0;
-
-        private void PositionHandle()
-        {
-            if (positionRotateX < 5 && countX == 1)
-            {
-                positionRotateX += .2f;
-            }
-            else
-            {
-                countX = -1;
-            }
-            if (positionRotateX > -5 && countX == -1)
-            {
-                positionRotateX -= .2f;
-            }
-            else
-            {
-                countX = 1;
-            }
-            if (positionRotateY < 5 && countY == 1)
-            {
-                positionRotateY += .2f;
-            }
-            else
-            {
-                countY = -1;
-            }
-            if (positionRotateY > -5 && countY == -1)
-            {
-                positionRotateY -= .2f;
-            }
-            else
-            {
-                countY = 1;
-            }
-        }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            PositionHandle();
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Color color = new Color(255, 255, 0, 50);
-            spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            Color color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 40);
+            Color color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 40);
+            Color color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 40);
+            Color color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 40);
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, position + new Vector2(2, 2), null, color1, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-2, 2), null, color2, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(2, -2), null, color3, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, color4, 0, origin, scale, SpriteEffects.None, 0);
+            }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)

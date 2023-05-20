@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ID;
-using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
