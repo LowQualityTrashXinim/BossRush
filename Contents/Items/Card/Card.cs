@@ -5,11 +5,8 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.IO;
-using System.Runtime.InteropServices;
-using BossRush.Common;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -138,8 +135,8 @@ namespace BossRush.Contents.Items.Card
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
             {
-                if (stats is PlayerStats.ChestLootDropIncrease 
-                    || stats is PlayerStats.MaxMinion 
+                if (stats is PlayerStats.ChestLootDropIncrease
+                    || stats is PlayerStats.MaxMinion
                     || stats is PlayerStats.MaxSentry)
                 {
                     statsNum = Main.rand.Next(Tier) + 1;
@@ -288,9 +285,9 @@ namespace BossRush.Contents.Items.Card
         //public float LuckIncrease = 0;
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if(item.DamageType == DamageClass.Melee)
+            if (item.DamageType == DamageClass.Melee)
             {
-             damage += MeleeDMG;
+                damage += MeleeDMG;
             }
             if (item.DamageType == DamageClass.Ranged)
             {
@@ -397,7 +394,7 @@ namespace BossRush.Contents.Items.Card
             SummonDMG = (float)tag["SummonDMG"];
             Movement = (float)tag["Movement"];
             HPMax = (int)tag["HPMax"];
-            HPRegen= (float)tag["HPRegen"];
+            HPRegen = (float)tag["HPRegen"];
             ManaMax = (int)tag["ManaMax"];
             ManaRegen = (float)tag["ManaRegen"];
             DefenseBase = (int)tag["DefenseBase"];
@@ -414,9 +411,16 @@ namespace BossRush.Contents.Items.Card
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            LeadingConditionRule rule = new LeadingConditionRule(new IsNotABossAndBossIsAlive());
-            rule.OnFailedConditions(npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 10)));
-            rule.OnFailedConditions(npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 20)));
+            if (npc.boss)
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 3));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 7));
+            }
+            else
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(),ModContent.ItemType<CardPacket>(), 10));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(),ModContent.ItemType<BigCardPacket>(), 20));
+            }
         }
     }
 }

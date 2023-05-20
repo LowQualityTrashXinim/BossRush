@@ -1117,6 +1117,26 @@ Mods: {
 				DisplayName: Brain in the jar
 				Tooltip: ""
 			}
+
+			SkeletronNoHitReward: {
+				DisplayName: Cursed Milk
+				Tooltip: ""
+			}s
+
+			DeerclopNoHitReward: {
+				DisplayName: Winter Meat
+				Tooltip: ""
+			}
+
+			QueenBeeNoHitReward: {
+				DisplayName: Royal Honey Pot
+				Tooltip: ""
+			}
+
+			WallOfFleshNoHitReward: {
+				DisplayName: Hell Flesh
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
