@@ -387,22 +387,15 @@ namespace BossRush.Common.Global
             }
             float useTimeMultiplierOnCombo = 1;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-            if (item.useStyle == BossRushUseStyle.Swipe)
-            {
-                if (modPlayer.ComboNumber == 2)
-                {
-                    useTimeMultiplierOnCombo -= .5f;
-                }
-            }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
-                if (modPlayer.ComboNumber == 1)
+                if (modPlayer.ComboNumber == 0)
                 {
                     useTimeMultiplierOnCombo -= .5f;
                 }
                 if (modPlayer.ComboNumber == 2)
                 {
-                    useTimeMultiplierOnCombo -= .25f;
+                    useTimeMultiplierOnCombo += .75f;
                 }
             }
             return useTimeMultiplierOnCombo;
@@ -435,10 +428,10 @@ namespace BossRush.Common.Global
                     switch (modPlayer.ComboNumber)
                     {
                         case 0:
-                            SwipeAttack(player, modPlayer, 1);
+                            WideSwingAttack(player, modPlayer);
                             break;
                         case 1:
-                            WideSwingAttack(player, modPlayer);
+                            SwipeAttack(player, modPlayer, 1);
                             break;
                         case 2:
                             StrongThrust(player, modPlayer);
@@ -507,8 +500,9 @@ namespace BossRush.Common.Global
         private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
             int direction = modPlayer.data.X > 0 ? 1 : -1;
-            Vector2 toThrust = Vector2.UnitX * direction;
-            Vector2 poke = Vector2.SmoothStep(toThrust * 30f, toThrust, percentDone);
+            //Vector2 toThrust = modPlayer.mouseLastPosition * direction;
+            //Vector2 poke = Vector2.SmoothStep(toThrust * 30f, toThrust, percentDone);
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(modPlayer.mouseLastPosition.ToRotation());
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
@@ -525,7 +519,7 @@ namespace BossRush.Common.Global
         private void WideSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            percentDone = BossRushUtils.InOutBack(percentDone);
+            percentDone = BossRushUtils.InExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 145) * player.direction;
             float start = baseAngle + angle;
@@ -571,6 +565,7 @@ namespace BossRush.Common.Global
         public int CountDownToResetCombo = 0;
         public float RotateThurst;
         public int MouseXPosDirection = 1;
+        public Vector2 mouseLastPosition = Vector2.Zero;
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
@@ -608,10 +603,20 @@ namespace BossRush.Common.Global
                 return;
             }
             MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
+            if (Main.mouseRight)
+            {
+                Vector2 playerVelIfNotCombo = ComboNumber != 2 ? Player.velocity : Vector2.Zero; 
+                for (int i = 0; i < 4; i++)
+                {
+                    int dust = Dust.NewDust(mouseLastPosition, 0, 0, DustID.GemRuby);
+                    Main.dust[dust].velocity = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * Main.rand.NextFloat(2.5f, 4f) + playerVelIfNotCombo;
+                    Main.dust[dust].noGravity = true;
+                }
+            }
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
                 delaytimer = (int)(Player.itemAnimationMax * 1.2f);
-                ExecuteSpecialComboOnStart(item);
+                ExecuteSpecialComboOnStart();
             }
             if (Player.ItemAnimationActive)
             {
@@ -623,13 +628,21 @@ namespace BossRush.Common.Global
                 {
                     ++ComboNumber;
                 }
-                if (delaytimer != 0 && ComboNumber == 3 && item.useStyle == BossRushUseStyle.Poke)
+                if (delaytimer != 0 && ComboNumber == 3)
                 {
                     Player.velocity *= .1f;
                 }
                 ComboHandleSystem();
                 AlreadyHitNPC = false;
                 CanPlayerBeDamage = true;
+            }
+            if(!Player.ItemAnimationActive || ComboNumber != 2)
+            {
+                mouseLastPosition = Main.MouseWorld;
+                if (BossRushUtils.CompareSquareFloatValue(mouseLastPosition, Player.Center, 150))
+                {
+                    mouseLastPosition = mouseLastPosition.LimitedVelocity(150);
+                }
             }
         }
         private void ExecuteSpecialComboOnActive(Item item)
@@ -639,11 +652,9 @@ namespace BossRush.Common.Global
                 return;
             }
             CanPlayerBeDamage = false;
+            Player.gravity = 0;
             switch (item.useStyle)
             {
-                case BossRushUseStyle.Poke:
-                    Player.gravity = 0;
-                    break;
                 case BossRushUseStyle.Swipe:
                     SpinAttackExtraHit(item);
                     break;
@@ -665,25 +676,17 @@ namespace BossRush.Common.Global
             Player.mount.Active
             || IsWallBossAlive()
             || ComboNumber != 2
-            || (Player.velocity.X > -.15f && MouseXPosDirection == -1)
-            || (Player.velocity.X < .15f && MouseXPosDirection == 1)
-            || Player.velocity == Vector2.Zero;
-        private void ExecuteSpecialComboOnStart(Item item)
+            || !Main.mouseRight;
+        private void ExecuteSpecialComboOnStart()
         {
             if (ComboConditionChecking())
             {
                 return;
             }
-            switch (item.useStyle)
-            {
-                case BossRushUseStyle.Poke:
-                    Player.velocity.X += Vector2.UnitX.SafeNormalize(Vector2.Zero).X * 25f * Player.direction;
-                    Player.velocity.Y = 0;
-                    break;
-                case BossRushUseStyle.Swipe:
-                    Player.velocity.X += Vector2.UnitX.SafeNormalize(Vector2.Zero).X * 15f * Player.direction;
-                    break;
-            }
+            Player.controlLeft = false;
+            Player.controlRight = false;
+            Vector2 Toward = mouseLastPosition - Player.Center;
+            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / Player.itemAnimationMax);
         }
         private bool CanAttack(NPC npc)
         {
@@ -743,7 +746,7 @@ namespace BossRush.Common.Global
         bool AlreadyHitNPC = false;
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
-            if(!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
             {
                 return;
             }
@@ -762,7 +765,7 @@ namespace BossRush.Common.Global
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
-                if (ComboNumber == 1)
+                if (ComboNumber == 0)
                 {
                     return damage * .75f;
                 }

@@ -2,11 +2,11 @@
 using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.NohitReward
 {
