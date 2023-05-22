@@ -1,11 +1,8 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
+﻿using System;
+using Terraria;
 using Terraria.Utilities;
-using System;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BossRush
 {
@@ -17,6 +14,12 @@ namespace BossRush
             velocity.X = Math.Clamp(velocity.X, -X, X);
             velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
             return velocity;
+        }
+        public static Vector2 LimitedPosition(this Vector2 position, Vector2 position2, float limited)
+        {
+            position.X = Math.Clamp(position.X, -limited + position2.X, limited + position2.X);
+            position.Y = Math.Clamp(position.Y, -limited + position2.Y, limited + position2.Y);
+            return position;
         }
         /// <summary>
         /// Take a bool and return a int number base on true or false
@@ -58,7 +61,7 @@ namespace BossRush
         }
         public static bool IsLimitReached(this Vector2 velocity, float limited)
         {
-            if(velocity.X < limited && velocity.X > -limited &&
+            if (velocity.X < limited && velocity.X > -limited &&
                 velocity.Y < limited && velocity.Y > -limited)
             {
                 return false;

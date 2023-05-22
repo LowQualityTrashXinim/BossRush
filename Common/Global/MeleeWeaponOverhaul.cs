@@ -605,7 +605,7 @@ namespace BossRush.Common.Global
             MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
             if (Main.mouseRight)
             {
-                Vector2 playerVelIfNotCombo = ComboNumber != 2 ? Player.velocity : Vector2.Zero; 
+                Vector2 playerVelIfNotCombo = ComboNumber != 2 ? Player.velocity : Vector2.Zero;
                 for (int i = 0; i < 4; i++)
                 {
                     int dust = Dust.NewDust(mouseLastPosition, 0, 0, DustID.GemRuby);
@@ -636,13 +636,13 @@ namespace BossRush.Common.Global
                 AlreadyHitNPC = false;
                 CanPlayerBeDamage = true;
             }
-            if(!Player.ItemAnimationActive || ComboNumber != 2)
+            if (!Player.ItemAnimationActive || ComboNumber != 2)
             {
                 mouseLastPosition = Main.MouseWorld;
-                if (BossRushUtils.CompareSquareFloatValue(mouseLastPosition, Player.Center, 150))
-                {
-                    mouseLastPosition = mouseLastPosition.LimitedVelocity(150);
-                }
+                //if (!BossRushUtils.CompareSquareFloatValue(mouseLastPosition, Player.Center, 550))
+                //{
+                //    mouseLastPosition = mouseLastPosition.LimitedPosition(Player.Center, 550);
+                //}
             }
         }
         private void ExecuteSpecialComboOnActive(Item item)
