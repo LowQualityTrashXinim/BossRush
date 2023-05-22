@@ -86,4 +86,3 @@ namespace BossRush.Contents.Items.Chest
         }
     }
 }
-

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.NohitReward
 {
@@ -23,7 +22,7 @@ namespace BossRush.Contents.Items.NohitReward
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             tooltips.Add(new TooltipLine(Mod, "NoHitReward",
-                "Overcoming a small challenge, tho sadly not place-able \n" +
+                "Overcoming a small challenge \n" +
                 "Reward for not getting hit \n" +
                 "Increase max HP by 50 \n" +
                 "Can only be uses once \n"

@@ -13,7 +13,6 @@ using Microsoft.CodeAnalysis;
 using Terraria.GameContent;
 using BossRush.Contents.Items.Card;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.PlayerDrawLayer;
 using BossRush.Contents.Items.Accessories;
 
 namespace BossRush.Contents.Items.Chest
