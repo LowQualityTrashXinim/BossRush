@@ -194,7 +194,7 @@ namespace BossRush.Common
                 items.Add(new Item(ItemID.LifeCrystal, 3));
                 items.Add(new Item(ItemID.ManaCrystal, 3));
             }
-            if (Main.rand.NextBool(10))
+            if (Main.rand.NextBool(5))
             {
                 items.Add(new Item(ModContent.ItemType<WonderDrug>()));
             }

@@ -371,13 +371,13 @@ namespace BossRush.Common.Global
                 if(item.useStyle == BossRushUseStyle.Swipe)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 50% more damage");
-                    line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
+                    line2.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
                     tooltips.Add(line2);
                 }
                 if (item.useStyle == BossRushUseStyle.Poke)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 75% more damage\n3rd attack deal 25% more damage");
-                    line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
+                    line2.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
                     tooltips.Add(line2);
                 }
             }
@@ -541,9 +541,6 @@ namespace BossRush.Common.Global
         }
         private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
-            int direction = modPlayer.data.X > 0 ? 1 : -1;
-            //Vector2 toThrust = modPlayer.mouseLastPosition * direction;
-            //Vector2 poke = Vector2.SmoothStep(toThrust * 30f, toThrust, percentDone);
             Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(modPlayer.mouseLastPosition.ToRotation());
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
@@ -669,7 +666,7 @@ namespace BossRush.Common.Global
                 {
                     ++ComboNumber;
                 }
-                if (delaytimer != 0 && ComboNumber == 3)
+                if (delaytimer != 0 && ComboNumber == 3 && comboExecuteWithDash)
                 {
                     Player.velocity *= .1f;
                 }
@@ -686,12 +683,15 @@ namespace BossRush.Common.Global
                 //}
             }
         }
+        bool comboExecuteWithDash = false;
         private void ExecuteSpecialComboOnActive(Item item)
         {
             if (ComboConditionChecking())
             {
+                comboExecuteWithDash = false;
                 return;
             }
+            comboExecuteWithDash = true;
             CanPlayerBeDamage = false;
             Player.gravity = 0;
             switch (item.useStyle)

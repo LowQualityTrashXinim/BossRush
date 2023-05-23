@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -118,7 +119,7 @@ namespace BossRush.Contents.Items.Potion
                     Player.accRunSpeed += DrugDealer * WonderDrug.DrugSpeed1;
                     break;
                 case 3:
-                    Player.statLifeMax2 += WonderDrug.DrugHP3 + WonderDrug.DrugHP2 + WonderDrug.DrugHP;
+                    Player.statLifeMax2 += WonderDrug.DrugHP2 + WonderDrug.DrugHP;
                     Player.GetDamage(DamageClass.Generic).Flat += DrugDamage3 + DrugDamage2 + DrugDamage;
                     Player.statDefense += WonderDrug.DrugDef3 + WonderDrug.DrugDef2 + WonderDrug.DrugDef1;
                     Player.lifeRegen += DrugDealer * WonderDrug.DrugRegen;
@@ -127,7 +128,7 @@ namespace BossRush.Contents.Items.Potion
                     Player.accRunSpeed += DrugDealer * WonderDrug.DrugSpeed1;
                     break;
                 default:
-                    Player.statLifeMax2 += (DrugDealer - 3) * WonderDrug.DrugHP4 + WonderDrug.DrugHP3 + WonderDrug.DrugHP2 + WonderDrug.DrugHP;
+                    Player.statLifeMax2 += Math.Clamp((DrugDealer - 3) * WonderDrug.DrugHP4 + WonderDrug.DrugHP2 + WonderDrug.DrugHP,100,Player.statLifeMax2);
                     Player.GetDamage(DamageClass.Generic).Flat += (DrugDealer - 3) * DrugDamage3 + DrugDamage2 + DrugDamage;
                     Player.statDefense += DrugDealer * WonderDrug.DrugDef3 + WonderDrug.DrugDef2 + WonderDrug.DrugDef1;
                     Player.lifeRegen += DrugDealer * WonderDrug.DrugRegen;

@@ -142,7 +142,7 @@ namespace BossRush.Contents.Items.Card
                     || stats is PlayerStats.MaxMinion
                     || stats is PlayerStats.MaxSentry)
                 {
-                    statsNum = Main.rand.Next(Tier) + 1;
+                    statsNum = Main.rand.Next((int)(Tier * .5f)) + 1;
                     return statsNum;
                 }
                 statsNum = (Main.rand.Next(Tier) + 1) * Tier;
@@ -424,8 +424,8 @@ namespace BossRush.Contents.Items.Card
         {
             if (npc.boss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 3));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 7));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 5));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 10));
             }
             else
             {
@@ -434,9 +434,9 @@ namespace BossRush.Contents.Items.Card
                     return;
                 }
                 npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 25));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 35));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 90));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 120));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 50));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 100));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 200));
             }
         }
     }
