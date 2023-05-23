@@ -1,24 +1,20 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
 {
     internal class MoonStarBow : ModItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Moonlight's Fragment");
-            // Tooltip.SetDefault("Make your wish !");
-        }
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(18, 32, 33, 1f, 7, 7, ItemUseStyleID.Shoot, ModContent.ProjectileType<MoonStarProjectile>(), 5f, true);
+            Item.BossRushDefaultRange(18, 32, 33, 1f, 2, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<MoonStarProjectile>(), 5f, true);
+            Item.reuseDelay = 5;
             Item.rare = ItemRarityID.LightRed;
             Item.value = Item.buyPrice(gold: 50);
             Item.scale = .5f;
@@ -36,10 +32,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
                 Projectile.NewProjectile(source, position, velocity, type, damage * 2, knockback, player.whoAmI);
                 count = 0;
             }
-            for (int i = 0; i < 3; i++)
-            {
-                Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100f, 200f), velocity * .5f, ModContent.ProjectileType<MoonStarProjectileSmaller>(), damage, knockback, player.whoAmI);
-            }
+            Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100f, 200f), velocity * .5f, ModContent.ProjectileType<MoonStarProjectileSmaller>(), damage, knockback, player.whoAmI);
             return false;
         }
         public override void AddRecipes()
@@ -112,7 +105,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
                 Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, (Projectile.scale - (k - 1) * .02f) * .5f, SpriteEffects.None, 0);
             }
             Texture2D thisProjectiletexture = TextureAssets.Projectile[Projectile.type].Value;
-            Color fullwhite = Projectile.GetAlpha(new Color(255, 255, 255));
+            Color fullwhite = new Color(255, 255, 255, 30);
             Vector2 thisProjectiledrawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
             Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, -Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
@@ -136,7 +129,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
             }
             for (int i = 0; i < 100; i++)
             {
-
                 if (i % 2 == 0)
                 {
                     Rotate = Main.rand.NextVector2CircularEdge(.5f, 10f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 2;
@@ -178,7 +170,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
         int changedirection = Main.rand.Next(new int[] { 1, -1 });
         private void AttackHomeIn()
         {
-            if (Projectile.Center.LookForHostileNPC(out NPC npc, 150))
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, 250))
             {
                 if (npc == null)
                 {
@@ -214,7 +206,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"),ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"), ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             Vector2 origin = new Vector2(Projectile.width * .5f, Projectile.height * .5f);
             Vector2 offsetOriginbyQuad = origin * .33f;
             for (int k = 1; k < Projectile.oldPos.Length + 1; k++)

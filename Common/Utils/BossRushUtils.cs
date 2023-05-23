@@ -238,23 +238,6 @@ namespace BossRush
                 Main.EntitySpriteDraw(texture, drawPos, null, color, projectile.rotation, origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
             }
         }
-        public static List<int> SetUpRNGTier(this List<int> FlagNum)
-        {
-            if (FlagNum.Count < 2)
-            {
-                return FlagNum;
-            }
-            List<int> FlagNumNew = new List<int> { FlagNum[0] };
-            float GetOnePercentChance = 100 / (float)FlagNum.Count;
-            for (int i = 1; i < FlagNum.Count; ++i)
-            {
-                if (Main.rand.Next(101) < GetOnePercentChance * i)
-                {
-                    FlagNumNew.Add(FlagNum[^i]);//get element from the last of the list
-                }
-            }
-            return FlagNumNew;
-        }
         public static List<int> RemoveDupeInList(this List<int> flag)
         {
             HashSet<int> HashsetRemoveDup = new(flag);

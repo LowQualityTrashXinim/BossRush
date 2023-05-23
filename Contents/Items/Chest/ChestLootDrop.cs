@@ -3,16 +3,14 @@ using Terraria;
 using Terraria.ID;
 using BossRush.Common;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using BossRush.Common.Utils;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.CodeAnalysis;
-using Terraria.GameContent;
-using BossRush.Contents.Items.Card;
-using Terraria.DataStructures;
 using BossRush.Contents.Items.Accessories;
 
 namespace BossRush.Contents.Items.Chest
@@ -48,8 +46,6 @@ namespace BossRush.Contents.Items.Chest
             if (Main.getGoodWorld)
             {
                 amountForWeapon = 2;
-                amountForPotionType = 1;
-                amountForPotionNum = 1;
             }
             if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
             {
@@ -174,16 +170,32 @@ namespace BossRush.Contents.Items.Chest
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
         protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
+        public static List<int> SetUpRNGTier(List<int> FlagNum)
+        {
+            if (FlagNum.Count < 2)
+            {
+                return FlagNum;
+            }
+            List<int> FlagNumNew = new List<int> { FlagNum[0] };
+            float GetOnePercentChance = 100 / (float)FlagNum.Count;
+            for (int i = 1; i < FlagNum.Count; ++i)
+            {
+                if (Main.rand.Next(101) < GetOnePercentChance * i)
+                {
+                    FlagNumNew.Add(FlagNum[^i]);//get element from the last of the list
+                }
+            }
+            return FlagNumNew;
+        }
         private void AddLoot(List<int> flagNumber)
         {
-            List<int> RNGchooseWhichTierToGet = flagNumber;
             if (CanLootRNGbeRandomize())
             {
-                RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.SetUpRNGTier();
-                RNGchooseWhichTierToGet = RNGchooseWhichTierToGet.RemoveDupeInList();
-                RNGchooseWhichTierToGet.Sort();
+                flagNumber = SetUpRNGTier(flagNumber);
+                flagNumber = flagNumber.RemoveDupeInList();
+                flagNumber.Sort();
             }
-            for (int i = 0; i < RNGchooseWhichTierToGet.Count; ++i)
+            for (int i = 0; i < flagNumber.Count; ++i)
             {
                 switch (flagNumber[i])
                 {
