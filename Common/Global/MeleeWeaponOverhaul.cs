@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Contents.Items;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Global
 {
@@ -348,6 +350,38 @@ namespace BossRush.Common.Global
                     break;
             }
         }
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            {
+                return;
+            }
+            if (item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
+            {
+                TooltipLine line = new TooltipLine(Mod, "SwingImprove", "Sword can swing in all direction");
+                line.OverrideColor = Color.LightYellow;
+                tooltips.Add(line);
+            }
+            if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke)
+            {
+                TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction, on 3rd attack will do a special attack" +
+                    "\nHold down right mouse to enable dash toward your cursor on 3rd attack");
+                line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
+                tooltips.Add(line);
+                if(item.useStyle == BossRushUseStyle.Swipe)
+                {
+                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 50% more damage");
+                    line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
+                    tooltips.Add(line2);
+                }
+                if (item.useStyle == BossRushUseStyle.Poke)
+                {
+                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 75% more damage\n3rd attack deal 25% more damage");
+                    line.OverrideColor = BossRushModSystem.YellowPulseYellowWhite;
+                    tooltips.Add(line2);
+                }
+            }
+        }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
@@ -387,6 +421,14 @@ namespace BossRush.Common.Global
             }
             float useTimeMultiplierOnCombo = 1;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+            //This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
+            if(item.useStyle == BossRushUseStyle.Swipe)
+            {
+                if(modPlayer.ComboNumber == 2)
+                {
+                    useTimeMultiplierOnCombo += .35f;
+                }
+            }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
                 if (modPlayer.ComboNumber == 0)
@@ -395,7 +437,7 @@ namespace BossRush.Common.Global
                 }
                 if (modPlayer.ComboNumber == 2)
                 {
-                    useTimeMultiplierOnCombo += .75f;
+                    useTimeMultiplierOnCombo += .35f;
                 }
             }
             return useTimeMultiplierOnCombo;
@@ -605,11 +647,10 @@ namespace BossRush.Common.Global
             MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
             if (Main.mouseRight)
             {
-                Vector2 playerVelIfNotCombo = ComboNumber != 2 ? Player.velocity : Vector2.Zero;
                 for (int i = 0; i < 4; i++)
                 {
                     int dust = Dust.NewDust(mouseLastPosition, 0, 0, DustID.GemRuby);
-                    Main.dust[dust].velocity = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * Main.rand.NextFloat(2.5f, 4f) + playerVelIfNotCombo;
+                    Main.dust[dust].velocity = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * Main.rand.NextFloat(2.5f, 4f);
                     Main.dust[dust].noGravity = true;
                 }
             }

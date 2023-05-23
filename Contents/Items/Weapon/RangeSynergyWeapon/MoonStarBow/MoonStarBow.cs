@@ -94,7 +94,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[ModContent.ProjectileType<MoonStarProjectileTrail>()].Value;
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"), ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             Vector2 origin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
             Vector2 FullOrigin = origin * 2f;
             Vector2 threehalfOrigin = origin * .5f;
@@ -180,7 +180,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
         {
             if (Projectile.Center.LookForHostileNPC(out NPC npc, 150))
             {
-                if (npc == null && !npc.active)
+                if (npc == null)
                 {
                     return;
                 }
@@ -214,14 +214,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[ModContent.ProjectileType<MoonStarProjectileTrail>()].Value;
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"),ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             Vector2 origin = new Vector2(Projectile.width * .5f, Projectile.height * .5f);
             Vector2 offsetOriginbyQuad = origin * .33f;
             for (int k = 1; k < Projectile.oldPos.Length + 1; k++)
             {
                 Vector2 drawPos = Projectile.oldPos[k - 1] - Main.screenPosition + origin + offsetOriginbyQuad + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(new Color(0, 0, 255, 255 / k));
-                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .01f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, 0, origin, Projectile.scale - (k - 1) * .5f * .02f, SpriteEffects.None, 0);
             }
             Texture2D textureThis = TextureAssets.Projectile[Projectile.type].Value;
             Vector2 drawPosThis = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
@@ -243,13 +243,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(7f, 7f);
             }
-        }
-    }
-    class MoonStarProjectileTrail : ModProjectile
-    {
-        public override void SetDefaults()
-        {
-            Projectile.width = Projectile.height = 14;
         }
     }
 }

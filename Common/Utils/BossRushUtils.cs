@@ -96,7 +96,10 @@ namespace BossRush
             List<float> ListOfDistance = new List<float>();
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active && CompareSquareFloatValue(position, Main.npc[i].Center, distance))
+                if (Main.npc[i].active 
+                    && CompareSquareFloatValue(position, Main.npc[i].Center, distance)
+                    && Main.npc[i].CanBeChasedBy()
+                    && !Main.npc[i].friendly)
                 {
                     vector2List.Add(Main.npc[i].Center);
                     ListOfDistance.Add(Vector2.DistanceSquared(position, Main.npc[i].Center));
@@ -139,7 +142,11 @@ namespace BossRush
             List<Vector2> vector2List = new List<Vector2>();
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active && CompareSquareFloatValue(Main.npc[i].Center, position, distance))
+                if (Main.npc[i].active 
+                    && CompareSquareFloatValue(Main.npc[i].Center, position, distance) 
+                    && Main.npc[i].CanBeChasedBy()
+                    && !Main.npc[i].friendly
+                    )
                 {
                     npcList.Add(Main.npc[i]);
                     vector2List.Add(position - Main.npc[i].position);
@@ -167,7 +174,10 @@ namespace BossRush
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npcLocal = Main.npc[i];
-                if (npcLocal.active && CompareSquareFloatValue(npcLocal.Center, position, distance))
+                if (npcLocal.active 
+                    && CompareSquareFloatValue(npcLocal.Center, position, distance) 
+                    && npcLocal.CanBeChasedBy() 
+                    && npcLocal.friendly)
                 {
                     localNPC.Add(npcLocal);
                 }
