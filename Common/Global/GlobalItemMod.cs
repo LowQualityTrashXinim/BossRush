@@ -25,16 +25,16 @@ namespace BossRush.Common.Global
 
             //enraged covert to normal
             Recipe KingSlimeEnraged = Recipe.Create(ItemID.SlimeCrown);
-            KingSlimeEnraged.AddIngredient(ModContent.ItemType<KingSlimeCall>());
+            KingSlimeEnraged.AddIngredient(ModContent.ItemType<KingSlimeSpecialSpawner>());
 
             Recipe EoCEnraged = Recipe.Create(ItemID.SuspiciousLookingEye);
-            EoCEnraged.AddIngredient(ModContent.ItemType<BloodyEye>());
+            EoCEnraged.AddIngredient(ModContent.ItemType<EyeOfCthulhuSpecialSpawner>());
 
             Recipe EoWEnraged = Recipe.Create(ItemID.WormFood);
-            EoWEnraged.AddIngredient(ModContent.ItemType<WormFeast>());
+            EoWEnraged.AddIngredient(ModContent.ItemType<EaterOfWorldSpecialSpawner>());
 
             Recipe BoWEnraged = Recipe.Create(ItemID.BloodySpine);
-            BoWEnraged.AddIngredient(ModContent.ItemType<AttackOnTheMind>());
+            BoWEnraged.AddIngredient(ModContent.ItemType<BrainOfCthulhuSpecialSpawner>());
 
             Recipe MoonLordEnraged = Recipe.Create(ItemID.CelestialSigil);
             MoonLordEnraged.AddIngredient(ModContent.ItemType<MoonLordEnrage>());
@@ -50,7 +50,7 @@ namespace BossRush.Common.Global
         {
             if (ModContent.GetInstance<BossRushModConfig>().Enraged && player.whoAmI == Main.myPlayer && item.type == ItemID.SuspiciousLookingEye)
             {
-                player.GetModPlayer<ModdedPlayer>().EoCEnraged = true;
+                player.GetModPlayer<ModdedPlayer>().Enraged = true;
                 int type = NPCID.EyeofCthulhu;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
