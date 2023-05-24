@@ -3,7 +3,10 @@ using Terraria.ID;
 using Terraria.Audio;
 using BossRush.Common;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
 using Terraria.GameContent.Creative;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Spawner
 {
@@ -46,6 +49,20 @@ namespace BossRush.Contents.Items.Spawner
                 OnUseItem(player);
             }
             return true;
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Color redAlpha = new Color(255, 0, 0, 30);
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, position + new Vector2(2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
         /// <summary>
         /// This is called in the check if player whoAmI is myPlayer

@@ -481,7 +481,7 @@ Mods: {
 			}
 
 			SynergyEnergy: {
-				Tooltip: "the possibility is only limited to our own mind"
+				Tooltip: the possibility is only limited to our own mind
 				DisplayName: Synergy Energy
 			}
 
@@ -1136,6 +1136,31 @@ Mods: {
 
 			ShowPlayerStats: {
 				DisplayName: Show Player Stats
+				Tooltip: ""
+			}
+
+			BrainOfCthulhuSpecialSpawner: {
+				DisplayName: Brain Of Cthulhu Special Spawner
+				Tooltip: ""
+			}
+
+			EaterOfWorldSpecialSpawner: {
+				DisplayName: Eater Of World Special Spawner
+				Tooltip: ""
+			}
+
+			EyeOfCthulhuSpecialSpawner: {
+				DisplayName: Eye Of Cthulhu Special Spawner
+				Tooltip: ""
+			}
+
+			KingSlimeSpecialSpawner: {
+				DisplayName: King Slime Special Spawner
+				Tooltip: ""
+			}
+
+			QueenBeeSpecialSpawner: {
+				DisplayName: Queen Bee Special Spawner
 				Tooltip: ""
 			}
 		}

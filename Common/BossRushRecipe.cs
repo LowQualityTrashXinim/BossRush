@@ -1,13 +1,10 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Spawner;
 
 namespace BossRush.Common
 {
@@ -92,32 +89,37 @@ namespace BossRush.Common
         public override void PostAddRecipes()
         {
             BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
-            SynergyRecipe();
-            ChallengeModeRecipe(config);
-        }
-        private static void SynergyRecipe()
-        {
             foreach (Recipe recipe in Main.recipe)
             {
-                if (recipe.createItem.ModItem is ISynergyItem)
+                SynergyRecipe(recipe);
+                EnragedBossSpawnerRecipe(recipe);
+                if (config.EnableChallengeMode)
                 {
-                    recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
+                    continue;
                 }
+                ChallengeModeRecipe(recipe);
             }
         }
-        private static void ChallengeModeRecipe(BossRushModConfig config)
+        private void SynergyRecipe(Recipe recipe)
         {
-            if (!config.EnableChallengeMode)
+            if (recipe.createItem.ModItem is ISynergyItem)
             {
-                return;
+                recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
             }
-            for (int i = 0; i < Recipe.numRecipes; i++)
+        }
+        private void EnragedBossSpawnerRecipe(Recipe recipe)
+        {
+            if (recipe.createItem.ModItem is EnragedSpawner)
             {
-                if (Main.recipe[i].HasResult(ItemID.FlamingArrow) ||
-                    Main.recipe[i].HasResult(ItemID.FrostburnArrow))
-                {
-                    Main.recipe[i].DisableRecipe();
-                }
+                recipe.AddIngredient(ModContent.ItemType<PowerEnergy>());
+            }
+        }
+        private void ChallengeModeRecipe(Recipe recipe)
+        {
+            if (recipe.HasResult(ItemID.FlamingArrow) ||
+                recipe.HasResult(ItemID.FrostburnArrow))
+            {
+                recipe.DisableRecipe();
             }
         }
     }
