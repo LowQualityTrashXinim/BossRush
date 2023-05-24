@@ -62,6 +62,7 @@ namespace BossRush.Contents.Items.Card
         {
             Item.rare = ItemRarityID.Red;
         }
+        public override bool CanBeCraft => false; 
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
             modplayer.ChestLoot.MeleeChanceMutilplier = 0;

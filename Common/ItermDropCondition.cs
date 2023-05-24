@@ -4,20 +4,6 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace BossRush.Common
 {
-    public class KingSlimeEnraged : IItemDropRuleCondition
-    {
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            if (!info.IsInSimulation)
-            {
-                return info.player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged;
-            }
-            return false;
-        }
-        public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription() => "Drops if KingSlime is enraged";
-    }
-
     public class IsPlayerAlreadyHaveASpawner : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)
@@ -57,46 +43,18 @@ namespace BossRush.Common
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Exclusive to Synergy mode";
     }
-    public class EoCEnraged : IItemDropRuleCondition
+    public class BossIsEnragedBySpecialSpawner : IItemDropRuleCondition 
     {
         public bool CanDrop(DropAttemptInfo info)
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ModdedPlayer>().EoCEnraged && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
-            }
-            return false;
-        }
-
-        public bool CanShowItemDropInUI() => true;
-
-        public string GetConditionDescription() => "Drops only if Eye of cthulhu is enraged";
-    }
-    public class BoCEnraged : IItemDropRuleCondition
-    {
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            if (!info.IsInSimulation)
-            {
-                return info.player.GetModPlayer<ModdedPlayer>().BrainFuck;
+                return info.player.GetModPlayer<ModdedPlayer>().Enraged && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
             }
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription() => "Drops only if Brain of Cthulhu is enraged";
-    }
-    public class EoWEnraged : IItemDropRuleCondition
-    {
-        public bool CanDrop(DropAttemptInfo info)
-        {
-            if (!info.IsInSimulation)
-            {
-                return info.player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged;
-            }
-            return false;
-        }
-        public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription() => "Drops only if Eater of World is enraged";
+        public string GetConditionDescription() => "Drops only if all the enraged bosses that is present is dead";
     }
     public class QueenBeeEnranged : IItemDropRuleCondition
     {

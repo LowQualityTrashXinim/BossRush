@@ -380,6 +380,7 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
                 }
             }
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
             if (Main.rand.NextBool(15))
             {

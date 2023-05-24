@@ -15,19 +15,13 @@ using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Items.Card;
 
 namespace BossRush.Common
 {
     class ModdedPlayer : ModPlayer
     {
         //Enraged boss
-        public bool KingSlimeEnraged;
-        public bool EoCEnraged;
-        public bool BrainFuck;
-        public bool EaterOfWorldEnraged;
-        public bool QueenBeeEnraged;
-        public bool MoonLordEnraged;
+        public bool Enraged = false;
         //NoHiter
         public bool gitGud = false;
         public int HowManyBossIsAlive = 0;
@@ -49,49 +43,32 @@ namespace BossRush.Common
         }
         public override void PostUpdate()
         {
-            BossRushModConfig configSetting = ModContent.GetInstance<BossRushModConfig>();
+            if(!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
+            {
+                return;
+            }
             //Enraged here
-            if ((MoonLordEnraged || configSetting.Enraged) && NPC.AnyNPCs(NPCID.MoonLordCore))
+            if (NPC.AnyNPCs(NPCID.MoonLordCore))
             {
                 Player.AddBuff(ModContent.BuffType<MoonLordWrath>(), 5);
                 Player.AddBuff(BuffID.PotionSickness, 5);
             }
-            else if (!NPC.AnyNPCs(NPCID.MoonLordCore))
-            {
-                MoonLordEnraged = false;
-            }
-
-            if ((KingSlimeEnraged || configSetting.Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
+            if (NPC.AnyNPCs(NPCID.KingSlime))
             {
                 Player.AddBuff(BuffID.Slimed, 5);
                 Player.AddBuff(ModContent.BuffType<KingSlimeRage>(), 5);
             }
-            else if (!NPC.AnyNPCs(NPCID.KingSlime))
-            {
-                KingSlimeEnraged = false;
-            }
-
-            if ((EoCEnraged || configSetting.Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 Player.AddBuff(BuffID.Blackout, 5);
                 Player.AddBuff(BuffID.Darkness, 5);
                 Player.AddBuff(ModContent.BuffType<EvilPresence>(), 5);
             }
-            if (!NPC.AnyNPCs(NPCID.EyeofCthulhu))
-            {
-                EoCEnraged = false;
-            }
-
-            if ((BrainFuck || configSetting.Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu))
+            if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
             {
                 Player.AddBuff(ModContent.BuffType<MindBreak>(), 5);
             }
-            if (!NPC.AnyNPCs(NPCID.BrainofCthulhu))
-            {
-                BrainFuck = false;
-            }
-
-            if ((EaterOfWorldEnraged || configSetting.Enraged) &&
+            if (
                 (NPC.AnyNPCs(NPCID.EaterofWorldsHead)
                 || NPC.AnyNPCs(NPCID.EaterofWorldsBody)
                 || NPC.AnyNPCs(NPCID.EaterofWorldsTail)))
@@ -102,12 +79,7 @@ namespace BossRush.Common
                 }
                 Player.AddBuff(ModContent.BuffType<Rotting>(), 5);
             }
-            if (!NPC.AnyNPCs(NPCID.EaterofWorldsHead) && !NPC.AnyNPCs(NPCID.EaterofWorldsBody) && !NPC.AnyNPCs(NPCID.EaterofWorldsTail))
-            {
-                EaterOfWorldEnraged = false;
-            }
-
-            if ((QueenBeeEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
+            if (NPC.AnyNPCs(NPCID.QueenBee))
             {
                 if (Player.ZoneJungle)
                 {
@@ -115,19 +87,15 @@ namespace BossRush.Common
                 }
                 Player.AddBuff(ModContent.BuffType<RoyalAntiEscapeTm>(), 5);
             }
-            if (!NPC.AnyNPCs(NPCID.QueenBee))
-            {
-                QueenBeeEnraged = false;
-            }
             if (!BossRushUtils.IsAnyVanillaBossAlive())
             {
-                KingSlimeEnraged = false;
-                EoCEnraged = false;
-                BrainFuck = false;
-                EaterOfWorldEnraged = false;
-                QueenBeeEnraged = false;
-                MoonLordEnraged = false;
+                Enraged = false;
             }
+        }
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
+        {
+            health = StatModifier.Default; mana = StatModifier.Default;
+            health.Base += 100;
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {
@@ -147,9 +115,7 @@ namespace BossRush.Common
             {
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
-                items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
                 items.Add(new Item(ModContent.ItemType<Note1>()));
-                items.Add(new Item(ModContent.ItemType<EmptyCard>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
             {
@@ -222,7 +188,11 @@ namespace BossRush.Common
         }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            if (NPC.AnyNPCs(NPCID.BrainofCthulhu) && BrainFuck)
+            if(!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
+            {
+                return;
+            }
+            if (NPC.AnyNPCs(NPCID.BrainofCthulhu) && Enraged)
             {
                 Player.AddBuff(BuffID.PotionSickness, 240);
             }
@@ -231,39 +201,19 @@ namespace BossRush.Common
         {
             if (NPC.AnyNPCs(NPCID.KingSlime))
             {
-                if (KingSlimeEnraged)
-                {
-                    Player.QuickSpawnItem(null, ModContent.ItemType<PowerEnergy>());
-                }
                 Player.QuickSpawnItem(null, ItemID.SlimeCrown);
-                KingSlimeEnraged = false;
             }
             else if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
-                if (EoCEnraged)
-                {
-                    Player.QuickSpawnItem(null, ModContent.ItemType<PowerEnergy>());
-                }
                 Player.QuickSpawnItem(null, ItemID.SuspiciousLookingEye);
-                EoCEnraged = false;
             }
             else if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
             {
-                if (BrainFuck)
-                {
-                    Player.QuickSpawnItem(null, ModContent.ItemType<PowerEnergy>());
-                }
                 Player.QuickSpawnItem(null, ItemID.BloodySpine);
-                BrainFuck = false;
             }
             else if (NPC.AnyNPCs(NPCID.EaterofWorldsHead))
             {
-                if (EaterOfWorldEnraged)
-                {
-                    Player.QuickSpawnItem(null, ModContent.ItemType<PowerEnergy>());
-                }
                 Player.QuickSpawnItem(null, ItemID.WormFood);
-                EaterOfWorldEnraged = false;
             }
             else if (NPC.AnyNPCs(NPCID.SkeletronHead))
             {
@@ -271,12 +221,7 @@ namespace BossRush.Common
             }
             else if (NPC.AnyNPCs(NPCID.QueenBee))
             {
-                if (QueenBeeEnraged)
-                {
-                    Player.QuickSpawnItem(null, ModContent.ItemType<PowerEnergy>());
-                }
                 Player.QuickSpawnItem(null, ItemID.Abeemination);
-                QueenBeeEnraged = false;
             }
             else if (NPC.AnyNPCs(NPCID.WallofFlesh))
             {
@@ -317,8 +262,8 @@ namespace BossRush.Common
             else if (NPC.AnyNPCs(NPCID.MoonLordCore))
             {
                 Player.QuickSpawnItem(null, ItemID.CelestialSigil);
-                MoonLordEnraged = false;
             }
+            Enraged = false;
         }
     }
 }

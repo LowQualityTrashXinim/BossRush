@@ -1142,6 +1142,11 @@ Mods: {
 				DisplayName: Clear All No Hit
 				Tooltip: ""
 			}
+
+			ShowPlayerStats: {
+				DisplayName: Show Player Stats
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

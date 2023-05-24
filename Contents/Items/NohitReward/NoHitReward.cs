@@ -21,7 +21,7 @@ namespace BossRush.Contents.Items.NohitReward
     }
     internal class SkeletronNoHitReward : BaseNoHit
     {
-        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SkeletronPrimePetItem);
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SkeletronPetItem);
     }
     internal class QueenBeeNoHitReward : BaseNoHit
     {

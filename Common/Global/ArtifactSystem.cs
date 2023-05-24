@@ -84,6 +84,11 @@ namespace BossRush.Common.Global
         bool Earth = false;
         bool FateDice = false;
         int EarthCD = 0;
+        string artifactName = "";
+        public string ToStringArtifact()
+        {
+            return artifactName;
+        }
         ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void PreUpdate()
         {
@@ -95,19 +100,27 @@ namespace BossRush.Common.Global
             switch (ArtifactDefinedID)
             {
                 case 1:
+                    artifactName = "Token of Greed";
                     Greed = true;
                     break;
                 case 2:
+                    artifactName = "Token of Pride";
                     Pride = true;
                     break;
                 case 3:
+                    artifactName = "Vampirism Crystal";
                     Vampire = true;
                     break;
                 case 4:
+                    artifactName = "Heart of earth";
                     Earth = true;
                     break;
                 case 5:
+                    artifactName = "Fate Decider";
                     FateDice = true;
+                    break;
+                default:
+                    artifactName = "no artifact active";
                     break;
             }
         }

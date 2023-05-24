@@ -36,7 +36,7 @@ namespace BossRush.Common.Global
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StoneTreasureChest>()));
                 npcLoot.Add(ItemDropRule.Common(ItemID.SuspiciousLookingEye));
                 //Enraged boss drop
-                LeadingConditionRule KSE = new LeadingConditionRule(new KingSlimeEnraged());
+                LeadingConditionRule KSE = new LeadingConditionRule(new BossIsEnragedBySpecialSpawner());
                 KSE.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<KingSlimeDelight>()));
                 KSE.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>(), 1, 2, 2));
                 npcLoot.Add(KSE);
@@ -57,7 +57,7 @@ namespace BossRush.Common.Global
                 npcLoot.Add(DropOnce);
                 npcLoot.Add(ExpertVSnormal);
                 //Enraged boss drop
-                LeadingConditionRule EOCE = new LeadingConditionRule(new EoCEnraged());
+                LeadingConditionRule EOCE = new LeadingConditionRule(new BossIsEnragedBySpecialSpawner());
                 EOCE.OnSuccess(ItemDropRule.BossBag(ItemID.TheEyeOfCthulhu));
                 EOCE.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<EvilEye>()));
                 EOCE.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>(), 1, 1, 1));
@@ -295,7 +295,7 @@ namespace BossRush.Common.Global
         }
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
-            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
+            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
             {
                 pool.Clear();
                 //Slime
@@ -315,7 +315,7 @@ namespace BossRush.Common.Global
                     pool.Add(NPCID.LavaSlime, 0.75f);
                 }
             }
-            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().EoCEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 pool.Clear();
                 //eye
@@ -334,17 +334,17 @@ namespace BossRush.Common.Global
                 pool.Add(NPCID.WanderingEye, 0.65f);
                 pool.Add(NPCID.EyeballFlyingFish, 0.45f);
             }
-            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsBody) && spawnInfo.Player.ZoneOverworldHeight)
+            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsBody) && spawnInfo.Player.ZoneOverworldHeight)
             {
                 pool.Add(NPCID.Corruptor, 0.25f);
                 pool.Add(NPCID.Slimer, 0.25f);
             }
-            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().BrainFuck || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu) && spawnInfo.Player.ZoneOverworldHeight)
+            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu) && spawnInfo.Player.ZoneOverworldHeight)
             {
                 pool.Add(NPCID.CrimsonBunny, 0.25f);
                 pool.Add(NPCID.CrimsonGoldfish, 0.25f);
             }
-            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().QueenBeeEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
+            if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
             {
                 pool.Clear();
                 //bee
@@ -373,27 +373,27 @@ namespace BossRush.Common.Global
                 maxSpawns += 100;
                 spawnRate -= 10;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
+            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
             {
                 spawnRate = 70;
                 maxSpawns = 150;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().EoCEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 spawnRate = 80;
                 maxSpawns = 175;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsHead))
             {
                 spawnRate = 80;
                 maxSpawns = 250;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().BrainFuck || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu) && player.ZoneOverworldHeight)
+            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu) && player.ZoneOverworldHeight)
             {
                 spawnRate = 80;
                 maxSpawns = 250;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().QueenBeeEnraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
+            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
             {
                 spawnRate = 75;
                 maxSpawns = 290;
@@ -402,33 +402,33 @@ namespace BossRush.Common.Global
 
         public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
-            if (npc.type == NPCID.KingSlime && target.GetModPlayer<ModdedPlayer>().KingSlimeEnraged)
+            if (npc.type == NPCID.KingSlime && target.GetModPlayer<ModdedPlayer>().Enraged)
             {
                 target.AddBuff(BuffID.BrokenArmor, 90);
             }
-            if (npc.type == NPCID.EyeofCthulhu && target.GetModPlayer<ModdedPlayer>().EoCEnraged)
+            if (npc.type == NPCID.EyeofCthulhu && target.GetModPlayer<ModdedPlayer>().Enraged)
             {
                 target.AddBuff(BuffID.Cursed, 90);
                 target.AddBuff(BuffID.Bleeding, 150);
                 target.AddBuff(BuffID.Obstructed, 180);
                 target.AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 30);
             }
-            if (npc.type == NPCID.BrainofCthulhu && target.GetModPlayer<ModdedPlayer>().BrainFuck)
+            if (npc.type == NPCID.BrainofCthulhu && target.GetModPlayer<ModdedPlayer>().Enraged)
             {
                 target.AddBuff(164, 60);
                 target.AddBuff(BuffID.Ichor, 180);
             }
-            if (npc.type == NPCID.EaterofWorldsHead && target.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged)
+            if (npc.type == NPCID.EaterofWorldsHead && target.GetModPlayer<ModdedPlayer>().Enraged)
             {
                 target.AddBuff(BuffID.Weak, 180);
                 target.AddBuff(BuffID.CursedInferno, 300);
                 target.AddBuff(BuffID.BrokenArmor, 180);
             }
-            if ((npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsTail) && target.GetModPlayer<ModdedPlayer>().EaterOfWorldEnraged)
+            if ((npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsTail) && target.GetModPlayer<ModdedPlayer>().Enraged)
             {
                 target.AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 30);
             }
-            if (npc.type == NPCID.QueenBee && target.GetModPlayer<ModdedPlayer>().QueenBeeEnraged)
+            if (npc.type == NPCID.QueenBee && target.GetModPlayer<ModdedPlayer>().Enraged)
             {
                 target.AddBuff(BuffID.Venom, 180);
                 target.AddBuff(BuffID.Bleeding, 180);
