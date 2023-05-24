@@ -481,16 +481,7 @@ Mods: {
 			}
 
 			SynergyEnergy: {
-				Tooltip:
-					'''
-					"the possibility is only limited to our own mind"
-					Due to how overpowering this energy is, equiping it will
-					Increase speed by 10%
-					Increase jump speed by 10%
-					Increase damage flat by 5
-					Increase max mana by 20
-					Increase health regen by 1
-					'''
+				Tooltip: "the possibility is only limited to our own mind"
 				DisplayName: Synergy Energy
 			}
 

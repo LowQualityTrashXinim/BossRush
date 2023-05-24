@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 using Terraria.Audio;
 using BossRush.Common;
 
@@ -44,7 +43,7 @@ namespace BossRush.Contents.Items.Spawner
 
                 int type = NPCID.MoonLordCore;
                 int type2 = NPCID.MoonLordFreeEye;
-                player.GetModPlayer<ModdedPlayer>().MoonLordEnraged = true;
+                player.GetModPlayer<ModdedPlayer>().Enraged = true;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     NPC.SpawnOnPlayer(player.whoAmI, type);

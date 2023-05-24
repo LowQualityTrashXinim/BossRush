@@ -1,66 +1,56 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Creative;
 using Terraria.Audio;
 using BossRush.Common;
+using Terraria.ModLoader;
+using Terraria.GameContent.Creative;
 
 namespace BossRush.Contents.Items.Spawner
 {
-    public class KingSlimeCall : ModItem
+    public abstract class EnragedSpawner : ModItem
     {
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
+            base.SetStaticDefaults();
+            ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12;
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            NPCID.Sets.MPAllowedEnemies[NPCID.KingSlime] = true;
+            PostSetStaticDefaults();
         }
-
+        public virtual void PostSetStaticDefaults() { }
         public override void SetDefaults()
         {
-            Item.height = 78;
-            Item.width = 66;
-            Item.maxStack = 999;
+            Item.height = Item.width = 10;
+            Item.maxStack = 30;
             Item.value = 100;
+            Item.useAnimation = Item.useTime = 30;
             Item.rare = ItemRarityID.Blue;
-            Item.useAnimation = 30;
-            Item.useTime = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = true;
         }
-
-        public override bool CanUseItem(Player player)
-        {
-            return true;
-        }
-
+        public virtual int BossToSpawn => NPCID.GreenSlime;
         public override bool? UseItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
             {
-                player.GetModPlayer<ModdedPlayer>().KingSlimeEnraged = true;
+                player.GetModPlayer<ModdedPlayer>().Enraged = true;
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
-
-                int type = NPCID.KingSlime;
+                int type = BossToSpawn;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     NPC.SpawnOnPlayer(player.whoAmI, type);
-                    Main.StartSlimeRain();
                 }
                 else
                 {
                     NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
+                OnUseItem(player);
             }
             return true;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.SlimeCrown)
-                .AddIngredient(ModContent.ItemType<PowerEnergy>())
-                .Register();
-        }
+        /// <summary>
+        /// This is called in the check if player whoAmI is myPlayer
+        /// </summary>
+        /// <param name="player"></param>
+        public virtual void OnUseItem(Player player) { }
     }
 }
