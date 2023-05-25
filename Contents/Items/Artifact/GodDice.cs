@@ -6,6 +6,8 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Potion;
+using System.IO;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -86,7 +88,7 @@ namespace BossRush.Contents.Items.Artifact
     class GamblePlayer : ModPlayer
     {
         public float GambleDamage = 1;
-        public float GambleDef = 0;
+        public int GambleDef = 0;
         public float GambleSpeed = 1;
         public float GambleHP = 1;
         public float GambleLifeRegen = 1;
@@ -95,18 +97,21 @@ namespace BossRush.Contents.Items.Artifact
         public int GambleMinionSlot = 0;
         public int GambleCrit = 0;
         public int Roll = 0;
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            damage *= GambleDamage;
+        }
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
+        {
+            base.ModifyMaxStats(out health, out mana);
+            health.Base = (int)(GambleHP * Player.statLifeMax);
+            mana.Base = (int)(GambleMana * Player.statManaMax);
+        }
         public override void ResetEffects()
         {
-            Player.GetDamage(DamageClass.Generic) *= GambleDamage;
-            Player.statDefense += (int)GambleDef;
+            Player.statDefense += GambleDef;
             Player.accRunSpeed *= GambleSpeed;
-            Player.statLifeMax2 = (int)(GambleHP * Player.statLifeMax);
             Player.lifeRegen = (int)(GambleLifeRegen * Player.lifeRegen);
-            Player.statManaMax2 = (int)(GambleMana * Player.statManaMax);
-            Player.manaRegenDelay = (int)(Player.manaRegenDelay * GambleManaRegen);
-            Player.manaRegenDelayBonus = (int)(Player.manaRegenDelayBonus * GambleManaRegen);
-            Player.manaRegenCount = (int)(Player.manaRegenCount * GambleManaRegen);
-            Player.manaRegenBonus = (int)(Player.manaRegenBonus * GambleManaRegen);
             Player.manaRegen = (int)(Player.manaRegen * GambleManaRegen);
             Player.maxMinions += GambleMinionSlot;
             Player.maxTurrets += GambleMinionSlot;
@@ -119,7 +124,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.GambleAddiction);
+            packet.Write((byte)BossRush.MessageType.GambleAddiction);
             packet.Write((byte)Player.whoAmI);
             packet.Write(GambleDamage);
             packet.Write(GambleDef);
@@ -148,7 +153,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void LoadData(TagCompound tag)
         {
             GambleDamage = (float)tag["GamblePlayer"];
-            GambleDef = (float)tag["GambleDef"];
+            GambleDef = (int)tag["GambleDef"];
             GambleSpeed = (float)tag["GambleSpeed"];
             GambleHP = (float)tag["GambleHP"];
             GambleLifeRegen = (float)tag["GambleLifeRegen"];
@@ -156,6 +161,46 @@ namespace BossRush.Contents.Items.Artifact
             GambleManaRegen = (float)tag["GambleManaRegen"];
             GambleMinionSlot = (int)tag["GambleMinionSlot"];
             GambleCrit = (int)tag["GambleCrit"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            GambleDamage = reader.ReadSingle();
+            GambleDef = reader.ReadInt32();
+            GambleSpeed = reader.ReadSingle();
+            GambleHP = reader.ReadSingle();
+            GambleLifeRegen = reader.ReadSingle();
+            GambleMana = reader.ReadSingle();
+            GambleManaRegen = reader.ReadSingle();
+            GambleMinionSlot = reader.ReadInt32();
+            GambleCrit = reader.ReadInt32();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            GamblePlayer clone = (GamblePlayer)targetCopy;
+            clone.GambleDamage = GambleDamage;
+            clone.GambleDef = GambleDef;
+            clone.GambleSpeed = GambleSpeed;
+            clone.GambleHP = GambleHP;
+            clone.GambleLifeRegen = GambleLifeRegen;
+            clone.GambleMana = GambleMana;
+            clone.GambleManaRegen = GambleManaRegen;
+            clone.GambleMinionSlot = GambleMinionSlot;
+            clone.GambleCrit = GambleCrit;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            GamblePlayer clone = (GamblePlayer)clientPlayer;
+            if (GambleDamage != clone.GambleDamage) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleDef != clone.GambleDef) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleSpeed != clone.GambleSpeed) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleHP != clone.GambleHP) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleLifeRegen != clone.GambleLifeRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleMana != clone.GambleMana) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleManaRegen != clone.GambleManaRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleMinionSlot != clone.GambleMinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleCrit != clone.GambleCrit) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }

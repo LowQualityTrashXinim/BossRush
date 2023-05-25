@@ -11,6 +11,35 @@ namespace BossRush.Common
     internal class BossRushRecipe : ModSystem
     {
         List<int> list = new List<int>();
+        public override void AddRecipes()
+        {
+            //QoL convert
+            Recipe recipe = Recipe.Create(ItemID.FallenStar, 5);
+            recipe.AddIngredient(ItemID.ManaCrystal);
+            recipe.Register();
+
+            //enraged covert to normal
+            Recipe KingSlimeEnraged = Recipe.Create(ItemID.SlimeCrown);
+            KingSlimeEnraged.AddIngredient(ModContent.ItemType<KingSlimeSpecialSpawner>());
+
+            Recipe EoCEnraged = Recipe.Create(ItemID.SuspiciousLookingEye);
+            EoCEnraged.AddIngredient(ModContent.ItemType<EyeOfCthulhuSpecialSpawner>());
+
+            Recipe EoWEnraged = Recipe.Create(ItemID.WormFood);
+            EoWEnraged.AddIngredient(ModContent.ItemType<EaterOfWorldSpecialSpawner>());
+
+            Recipe BoWEnraged = Recipe.Create(ItemID.BloodySpine);
+            BoWEnraged.AddIngredient(ModContent.ItemType<BrainOfCthulhuSpecialSpawner>());
+
+            Recipe MoonLordEnraged = Recipe.Create(ItemID.CelestialSigil);
+            MoonLordEnraged.AddIngredient(ModContent.ItemType<MoonLordEnrage>());
+
+            KingSlimeEnraged.Register();
+            EoCEnraged.Register();
+            EoWEnraged.Register();
+            BoWEnraged.Register();
+            MoonLordEnraged.Register();
+        }
         public override void AddRecipeGroups()
         {
             foreach (var item in ContentSamples.ItemsByType)

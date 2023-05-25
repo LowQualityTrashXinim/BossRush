@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
+using BossRush.Contents.Items.NohitReward;
+using System.IO;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -49,7 +51,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.SkillIssuePlayer);
+            packet.Write((byte)BossRush.MessageType.SkillIssuePlayer);
             packet.Write((byte)Player.whoAmI);
             packet.Write(SkillIssue);
             packet.Send(toWho, fromWho);
@@ -62,6 +64,22 @@ namespace BossRush.Contents.Items.Artifact
         public override void LoadData(TagCompound tag)
         {
             SkillIssue = (int)tag["SkillIssue"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            SkillIssue = reader.ReadByte();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            SkillIssuedArtifactPlayer clone = (SkillIssuedArtifactPlayer)targetCopy;
+            clone.SkillIssue = SkillIssue;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            SkillIssuedArtifactPlayer clone = (SkillIssuedArtifactPlayer)clientPlayer;
+            if (SkillIssue != clone.SkillIssue) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 

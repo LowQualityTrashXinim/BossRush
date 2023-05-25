@@ -1276,5 +1276,83 @@ Mods: {
 				DisplayName: Petrified
 			}
 		}
+
+		Configs: {
+			BossRushModConfig: {
+				DisplayName: Boss Rush Mod Config
+
+				EnableChallengeMode: {
+					Label: Enable Challenge Mode ( On World Generation )
+					Tooltip:
+						'''
+						The intended way to play the mod
+						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD
+						THIS WILL MESS WITH YOUR WORLD GEN
+						it is recommend to enable this if you want to experience what the mod have to offer along with Synergy Mode
+						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
+						What this mode do :
+						-Pot drop nothing
+						-NPC sell nothing
+						-World gen change so you could easily build arena and chest gone
+						'''
+				}
+
+				SynergyMode: {
+					Label: Synergy Mode (W.I.P)
+					Tooltip:
+						'''
+						Make bosses queen bee, deerclop, queen slime, duke fishron and empress of light drop synergy energy
+						Allow possibility of getting even stronger and possibly OP weapons/accessories
+						recommend enable after at least 3 playthroughs of the mod
+						'''
+				}
+
+				EasyMode: {
+					Label: Enable Easy Mode ( On Making Character )
+					Tooltip:
+						'''
+						Grant you a small starter boost for those who are casual
+						Give you 3 Mana Crystal and Life Crystal
+						Treasure Chest drop more stuff
+						'''
+				}
+
+				Enraged: {
+					Label: Enraged Mode (W.I.P)
+					Tooltip:
+						'''
+						Will make every boss in the vanilla if there a special fight variant activate
+						won't drop the reward, will still require to spawn it manually using power energy to get reward
+						recommend for practicing
+						'''
+				}
+
+				YouLikeToHurtYourself: {
+					Label: You like to hurt yourself(W.I.P)
+					Tooltip:
+						'''
+						Will enable ForTheWorthy seeds regardless of world type, require you to play in master mode
+						Upon entering a world, you will be given a broken artifact that you can craft into a stronger artifact
+						Some secret are reveal when you have certain player name
+						'''
+				}
+
+				ExtraChallenge: {
+					Label: ExtraChallange(W.I.P)
+					Tooltip:
+						'''
+						The first time you kill a boss, you will get a challenge added into your game, this is irrevertible
+						The next time you kill a boss, the current challenge will be swap for a random challenge
+						These mode offer no real reward or benefit, only activate if you are bored and want extra challenge
+						This do not work with multiplayer world
+						'''
+				}
+
+				DisableWeaponOverhaul: {
+					Label: DisableWeaponOverhaul(W.I.P)
+					Tooltip: Disable the mod overhaul on weapon
+				}
+			}
+		}
 	}
 }

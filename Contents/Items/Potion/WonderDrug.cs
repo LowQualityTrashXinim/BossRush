@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BossRush.Contents.Items.Artifact;
+using System;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -141,7 +143,7 @@ namespace BossRush.Contents.Items.Potion
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.DrugSyncPlayer);
+            packet.Write((byte)BossRush.MessageType.DrugSyncPlayer);
             packet.Write((byte)Player.whoAmI);
             packet.Write(DrugDealer);
             packet.Send(toWho, fromWho);
@@ -154,6 +156,22 @@ namespace BossRush.Contents.Items.Potion
         public override void LoadData(TagCompound tag)
         {
             DrugDealer = (int)tag["Drug"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            DrugDealer = reader.ReadByte();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            WonderDrugPlayer clone = (WonderDrugPlayer)targetCopy;
+            clone.DrugDealer = DrugDealer;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            WonderDrugPlayer clone = (WonderDrugPlayer)clientPlayer;
+            if (DrugDealer != clone.DrugDealer) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }
