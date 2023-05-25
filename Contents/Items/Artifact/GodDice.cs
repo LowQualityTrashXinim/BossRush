@@ -1,13 +1,12 @@
 ﻿using System;
 using Terraria;
+using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using BossRush.Common.Global;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Common.Global;
-using BossRush.Contents.Items.Potion;
-using System.IO;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -26,7 +25,7 @@ namespace BossRush.Contents.Items.Artifact
             Item.useAnimation = 10;
             Item.width = 60;
             Item.height = 73;
-            Item.rare = 9;
+            Item.rare = ItemRarityID.Cyan;
             Item.useStyle = ItemUseStyleID.HoldUp;
         }
 
