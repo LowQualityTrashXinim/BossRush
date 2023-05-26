@@ -62,59 +62,37 @@ namespace BossRush
                         gamble.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
-            }
-        }
-    }
-    partial class BossRushNetCodeHandle
-    {
-        internal enum MessageType : byte
-        {
-            ExtraChallenge,
-            ArtifactRegister,
-            ChanceMultiplayer,
-            CardEffect
-        }
-        public void HandlePacket(BinaryReader reader, int whoAmI)
-        {
-            MessageType msgType = (MessageType)reader.ReadByte();
-            byte playernumber = reader.ReadByte();
-            switch (msgType)
-            {
                 case MessageType.ExtraChallenge:
-                    ExtraChallengePlayer extraChallenge = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
-                    extraChallenge.ChallengeChooser = reader.ReadInt32();
+                    ExtraChallengePlayer extraPlayer = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
+                    extraPlayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        extraPlayer.SyncPlayer(-1, whoAmI, false);
+                    }
                     break;
                 case MessageType.ArtifactRegister:
-                    ArtifactPlayerHandleLogic artifact = Main.player[playernumber].GetModPlayer<ArtifactPlayerHandleLogic>();
-                    artifact.ArtifactDefinedID = reader.ReadInt32();
+                    ArtifactPlayerHandleLogic artifactplayer = Main.player[playernumber].GetModPlayer<ArtifactPlayerHandleLogic>();
+                    artifactplayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        artifactplayer.SyncPlayer(-1, whoAmI, false);
+                    }
                     break;
                 case MessageType.ChanceMultiplayer:
                     ChestLootDropPlayer chestplayer = Main.player[playernumber].GetModPlayer<ChestLootDropPlayer>();
-                    chestplayer.MeleeChanceMutilplier = reader.ReadSingle();
-                    chestplayer.RangeChanceMutilplier = reader.ReadSingle();
-                    chestplayer.MagicChanceMutilplier = reader.ReadSingle();
-                    chestplayer.SummonChanceMutilplier = reader.ReadSingle();
+                    chestplayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        chestplayer.SyncPlayer(-1, whoAmI, false);
+                    }
                     break;
                 case MessageType.CardEffect:
-                    PlayerCardHandle modplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
-                    modplayer.MeleeDMG = reader.ReadSingle();
-                    modplayer.RangeDMG = reader.ReadSingle();
-                    modplayer.MagicDMG = reader.ReadSingle();
-                    modplayer.SummonDMG = reader.ReadSingle();
-                    modplayer.Movement = reader.ReadSingle();
-                    modplayer.JumpBoost = reader.ReadSingle();
-                    modplayer.HPMax = reader.ReadInt32();
-                    modplayer.HPRegen = reader.ReadSingle();
-                    modplayer.ManaMax = reader.ReadInt32();
-                    modplayer.ManaRegen = reader.ReadSingle();
-                    modplayer.DefenseBase = reader.ReadInt32();
-                    modplayer.DamagePure = reader.ReadSingle();
-                    modplayer.CritStrikeChance = reader.ReadInt32();
-                    modplayer.CritDamage = reader.ReadSingle();
-                    modplayer.DefenseEffectiveness = reader.ReadSingle();
-                    modplayer.DropAmountIncrease = reader.ReadInt32();
-                    modplayer.MinionSlot = reader.ReadInt32();
-                    modplayer.SentrySlot = reader.ReadInt32();
+                    PlayerCardHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
+                    cardplayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        cardplayer.SyncPlayer(-1, whoAmI, false);
+                    }
                     break;
             }
         }

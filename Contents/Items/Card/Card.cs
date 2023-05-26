@@ -12,6 +12,8 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.Net.Sockets;
+using BossRush.Contents.Items.Artifact;
+using System.IO;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -311,10 +313,10 @@ namespace BossRush.Contents.Items.Card
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
-            if (Item.whoAmI != whoAmI)
-            {
-                return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-            }
+            //if (Item.whoAmI != whoAmI)
+            //{
+            //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            //}
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
@@ -501,6 +503,73 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = (int)tag["DropAmountIncrease"];
             MinionSlot = (int)tag["MinionSlot"];
             SentrySlot = (int)tag["SentrySlot"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            MeleeDMG = reader.ReadSingle();
+            RangeDMG = reader.ReadSingle();
+            MagicDMG = reader.ReadSingle();
+            SummonDMG = reader.ReadSingle();
+            Movement = reader.ReadSingle();
+            JumpBoost = reader.ReadSingle();
+            HPMax = reader.ReadInt32();
+            HPRegen = reader.ReadSingle();
+            ManaMax = reader.ReadInt32();
+            ManaRegen = reader.ReadSingle();
+            DefenseBase = reader.ReadInt32();
+            DamagePure = reader.ReadSingle();
+            CritStrikeChance = reader.ReadInt32();
+            CritDamage = reader.ReadSingle();
+            DefenseEffectiveness = reader.ReadSingle();
+            DropAmountIncrease = reader.ReadInt32();
+            MinionSlot = reader.ReadInt32();
+            SentrySlot = reader.ReadInt32();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            PlayerCardHandle clone = (PlayerCardHandle)targetCopy;
+            clone.MeleeDMG = MeleeDMG;
+            clone.RangeDMG = RangeDMG;
+            clone.MagicDMG = MagicDMG;
+            clone.SummonDMG = SummonDMG;
+            clone.Movement = Movement;
+            clone.JumpBoost = JumpBoost;
+            clone.HPMax = HPMax;
+            clone.HPRegen = HPRegen;
+            clone.ManaMax = ManaMax;
+            clone.ManaRegen = ManaRegen;
+            clone.DefenseBase = DefenseBase;
+            clone.DamagePure = DamagePure;
+            clone.CritStrikeChance = CritStrikeChance;
+            clone.CritDamage = CritDamage;
+            clone.DefenseEffectiveness = DefenseEffectiveness;
+            clone.DropAmountIncrease = DropAmountIncrease;
+            clone.MinionSlot = MinionSlot;
+            clone.SentrySlot = SentrySlot;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            PlayerCardHandle clone = (PlayerCardHandle)clientPlayer;
+            if (MeleeDMG != clone.MeleeDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (RangeDMG != clone.RangeDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (MagicDMG != clone.MagicDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (SummonDMG != clone.SummonDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (Movement != clone.Movement) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (JumpBoost != clone.JumpBoost) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (HPMax != clone.HPMax) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (HPRegen != clone.HPRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (ManaMax != clone.ManaMax) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (ManaRegen != clone.ManaRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (DefenseBase != clone.DefenseBase) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (DamagePure != clone.DamagePure) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (CritStrikeChance != clone.CritStrikeChance) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (CritDamage != clone.CritDamage) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (DefenseEffectiveness != clone.DefenseEffectiveness) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (DropAmountIncrease != clone.DropAmountIncrease) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (MinionSlot != clone.MinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (SentrySlot != clone.SentrySlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
     class CardNPCdrop : GlobalNPC

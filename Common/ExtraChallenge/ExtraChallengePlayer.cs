@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using BossRush.Contents.Items.Artifact;
+using System.IO;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -62,7 +64,7 @@ namespace BossRush.Common.ExtraChallenge
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.ExtraChallenge);
+            packet.Write((byte)BossRush.MessageType.ExtraChallenge);
             packet.Write((byte)Player.whoAmI);
             packet.Write(ChallengeChooser);
             packet.Send(toWho, fromWho);
@@ -71,10 +73,23 @@ namespace BossRush.Common.ExtraChallenge
         {
             tag["ExtraChallenge"] = ChallengeChooser;
         }
-
         public override void LoadData(TagCompound tag)
         {
             ChallengeChooser = (int)tag["ExtraChallenge"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            ChallengeChooser = reader.ReadInt32();
+        }
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            ExtraChallengePlayer clone = (ExtraChallengePlayer)targetCopy;
+            clone.ChallengeChooser = ChallengeChooser;
+        }
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            ExtraChallengePlayer clone = (ExtraChallengePlayer)clientPlayer;
+            if (ChallengeChooser != clone.ChallengeChooser) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }

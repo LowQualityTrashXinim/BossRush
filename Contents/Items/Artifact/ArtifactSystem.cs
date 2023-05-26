@@ -12,6 +12,7 @@ using BossRush.Common.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using BossRush.Common;
+using System.IO;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -619,6 +620,22 @@ namespace BossRush.Contents.Items.Artifact
         public override void LoadData(TagCompound tag)
         {
             ArtifactDefinedID = (int)tag["ArtifactDefinedID"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            ArtifactDefinedID = reader.ReadInt32();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            ArtifactPlayerHandleLogic clone = (ArtifactPlayerHandleLogic)targetCopy;
+            clone.ArtifactDefinedID = ArtifactDefinedID;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            ArtifactPlayerHandleLogic clone = (ArtifactPlayerHandleLogic)clientPlayer;
+            if (ArtifactDefinedID != clone.ArtifactDefinedID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }

@@ -90,10 +90,10 @@ namespace BossRush.Contents.Items.Card
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
-            if (Item.whoAmI != whoAmI)
-            {
-                return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-            }
+            //if (Item.whoAmI != whoAmI)
+            //{
+            //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            //}
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);

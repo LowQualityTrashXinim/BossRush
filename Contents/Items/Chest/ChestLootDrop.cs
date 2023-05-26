@@ -13,6 +13,8 @@ using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Accessories;
 using static Terraria.ModLoader.PlayerDrawLayer;
+using BossRush.Contents.Items.Artifact;
+using System.IO;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -915,10 +917,10 @@ namespace BossRush.Contents.Items.Chest
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
-            if (Item.whoAmI != whoAmI)
-            {
-                return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-            }
+            //if (Item.whoAmI != whoAmI)
+            //{
+            //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            //}
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
@@ -972,6 +974,31 @@ namespace BossRush.Contents.Items.Chest
             RangeChanceMutilplier = (float)tag["RangeChanceMulti"];
             MagicChanceMutilplier = (float)tag["MagicChanceMulti"];
             SummonChanceMutilplier = (float)tag["SummonChanceMulti"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            MeleeChanceMutilplier = reader.ReadSingle();
+            RangeChanceMutilplier = reader.ReadSingle();
+            MagicChanceMutilplier = reader.ReadSingle();
+            SummonChanceMutilplier = reader.ReadSingle();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            ChestLootDropPlayer clone = (ChestLootDropPlayer)targetCopy;
+            clone.MeleeChanceMutilplier = MeleeChanceMutilplier;
+            clone.RangeChanceMutilplier = RangeChanceMutilplier;
+            clone.MagicChanceMutilplier = MagicChanceMutilplier;
+            clone.SummonChanceMutilplier = SummonChanceMutilplier;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            ChestLootDropPlayer clone = (ChestLootDropPlayer)clientPlayer;
+            if (MeleeChanceMutilplier != clone.MeleeChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (RangeChanceMutilplier != clone.RangeChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (MagicChanceMutilplier != clone.MagicChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (SummonChanceMutilplier != clone.SummonChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }
