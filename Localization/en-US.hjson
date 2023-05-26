@@ -626,17 +626,17 @@ Mods: {
 			}
 
 			WoodenTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Wooden Treasure Chest
 			}
 
 			UnderworldTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Underworld Treasure Chest
 			}
 
 			StoneTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Stone Treasure Chest
 			}
 
@@ -646,107 +646,107 @@ Mods: {
 			}
 
 			SilverTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Silver Treasure Chest
 			}
 
 			ShadowTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Shadow Treasure Chest
 			}
 
 			RainbowTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Rainbow Treasure Chest
 			}
 
 			NatureTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Nature Treasure Chest
 			}
 
 			MoonTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Moon Treasure Chest
 			}
 
 			MechTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Mech Treasure Chest
 			}
 
 			LunchBox: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Lunch Box
 			}
 
 			LunaticTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Lunatic Treasure Chest
 			}
 
 			LihzahrdTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Lihzahrd Treasure Chest
 			}
 
 			IceTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Ice Treasure Chest
 			}
 
 			HoneyTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Honey Treasure Chest
 			}
 
 			GoldTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Gold Treasure Chest
 			}
 
 			EmpressTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Empress Treasure Chest
 			}
 
 			DukeTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Duke Treasure Chest
 			}
 
 			DeerclopTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Deerclop Treasure Chest
 			}
 
 			CrystalTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Crystal Treasure Chest
 			}
 
 			CrimsonTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Crimson Treasure Chest
 			}
 
 			CorruptedTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Corrupted Treasure Chest
 			}
 
 			BuilderTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Builder Treasure Chest
 			}
 
 			BloodTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Blood Treasure Chest
 			}
 
 			BlackTreasureChest: {
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Black Treasure Chest
 			}
 
@@ -1081,12 +1081,17 @@ Mods: {
 
 			BigCardPacket: {
 				DisplayName: Big Card Packet
-				Tooltip: Right click to open to get 5 cards
+				Tooltip: Right click to open to get 3 cards
 			}
 
 			CardPacket: {
 				DisplayName: Card Packet
 				Tooltip: Right click to open to get a card
+			}
+
+			BoxOfCard: {
+				DisplayName: Box Of Card
+				Tooltip: Right click to open to get 5 cards
 			}
 
 			KSNoHitReward: {

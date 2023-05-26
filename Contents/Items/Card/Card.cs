@@ -1,13 +1,17 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
+using BossRush.Common;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.IO;
-using BossRush.Common;
+using Terraria.GameContent.Tile_Entities;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -42,7 +46,6 @@ namespace BossRush.Contents.Items.Card
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(1, 1);
-            Item.maxStack = 1;
             Item.UseSound = SoundID.Item35;
             PostCardSetDefault();
         }
@@ -124,8 +127,8 @@ namespace BossRush.Contents.Items.Card
                     if (CardStats[i] == CardStats[l])
                     {
                         CardStatsNumber[i] += CardStatsNumber[l];
-                        CardStats.RemoveAt(i);
-                        CardStatsNumber.RemoveAt(i);
+                        CardStats.RemoveAt(l);
+                        CardStatsNumber.RemoveAt(l);
                         break;
                     }
                 }
@@ -250,6 +253,57 @@ namespace BossRush.Contents.Items.Card
                 //CombatText.NewText(new Rectangle((int)player.Center.X, (int)player.Center.Y, (int)player.Center.X, (int)player.Center.Y), Color.White, $"+{CardStatsNumber[i]} {CardStats[i]}");
             }
             return true;
+        }
+        private int countX = 0;
+        private float positionRotateX = 0;
+        private void PositionHandle()
+        {
+            if (positionRotateX < 3.5f && countX == 1)
+            {
+                positionRotateX += .2f;
+            }
+            else
+            {
+                countX = -1;
+            }
+            if (positionRotateX > 0 && countX == -1)
+            {
+                positionRotateX -= .2f;
+            }
+            else
+            {
+                countX = 1;
+            }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Color auraColor;
+            switch (Tier)
+            {
+                case 1:
+                    auraColor = new Color(255, 100, 0, 30);
+                    break;
+                case 2:
+                    auraColor = new Color(200, 200, 200, 30);
+                    break;
+                case 3:
+                    auraColor = new Color(255, 255, 0, 30);
+                    break;
+                default:
+                    auraColor = new Color(255, 255, 255, 30);
+                    break;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
         private bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
                     stats is PlayerStats.Defense
@@ -434,6 +488,7 @@ namespace BossRush.Contents.Items.Card
             {
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 5));
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 10));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BoxOfCard>(), 50));
             }
             else
             {

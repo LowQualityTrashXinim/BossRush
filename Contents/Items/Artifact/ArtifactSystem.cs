@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -37,7 +38,7 @@ namespace BossRush.Contents.Items.Artifact
                         .Register();
                         continue;
                     }
-                    if(item is BrokenArtifact)
+                    if(item is BrokenArtifact || item is GodDice)
                     {
                         continue;
                     }
@@ -52,29 +53,46 @@ namespace BossRush.Contents.Items.Artifact
     {
         public override bool CanUseItem(Item item, Player player)
         {
+            ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            if (item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye)
+            {
+                return artifactplayer.ArtifactDefinedID != 0;
+            }
             if (item.ModItem is IArtifactItem)
             {
                 if (item.consumable)
                 {
-                    return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID < 1;
+                    return artifactplayer.ArtifactDefinedID < 1;
                 }
             }
             return base.CanUseItem(item, player);
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
             if (item.ModItem is IArtifactItem)
             {
                 if (item.consumable)
                 {
                     tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 artifact can be consume"));
                 }
-                if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0)
+                if (artifactplayer.ArtifactDefinedID != 0)
                 {
                     TooltipLine line = new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact");
                     line.OverrideColor = Color.DarkRed;
                     tooltips.Add(line);
                 }
+            }
+            if (artifactplayer.ArtifactDefinedID == 0)
+            {
+                if (item.type != ItemID.SlimeCrown && item.type != ItemID.SuspiciousLookingEye)
+                {
+                    return;
+                }
+                    TooltipLine line = new TooltipLine(Mod, "SummonBoss",
+                    $"You haven't use a artifact, please use at least one or use to continue [i:{ModContent.ItemType<BrokenArtifact>()}]");
+                line.OverrideColor = BossRushModSystem.RedToBlack;
+                tooltips.Add(line);
             }
         }
     }

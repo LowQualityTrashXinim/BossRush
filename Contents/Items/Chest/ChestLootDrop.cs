@@ -38,6 +38,11 @@ namespace BossRush.Contents.Items.Chest
                 return ValueToModify + amountToModify > 0 ? (int)(amountToModify + ValueToModify) : 0;
             }
         }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            PostModifyTooltips(ref tooltips);
+        }
+        public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
         {
             amountForWeapon = 3;
@@ -75,7 +80,6 @@ namespace BossRush.Contents.Items.Chest
             }
             return rng;
         }
-
         protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
@@ -110,7 +114,6 @@ namespace BossRush.Contents.Items.Chest
             }
             return 0;
         }
-
         protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
         {
             ChestLootDropPlayer modPlayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
@@ -382,6 +385,11 @@ namespace BossRush.Contents.Items.Chest
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
+            if (Main.rand.NextBool(25))
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
+                return;
+            }
             if (Main.rand.NextBool(15))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
@@ -762,9 +770,13 @@ namespace BossRush.Contents.Items.Chest
                     Amount = (int)(1 * AmountModifier);
                 }
             }
+            else if (weapontoCheck.useAmmo == AmmoID.Sand)
+            {
+                Ammo = ItemID.SandBlock;
+            }
             else
             {
-                Ammo = ItemID.None;
+                Ammo = ItemID.WoodenArrow;
             }
         }
 

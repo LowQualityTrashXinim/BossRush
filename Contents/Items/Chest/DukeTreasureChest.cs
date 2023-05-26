@@ -1,18 +1,9 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class DukeTreasureChest : ModItem
+    internal class DukeTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("You certainly prove yourself to be something, here a gift");
-        }
         public override void SetDefaults()
         {
             Item.width = 38;
@@ -25,11 +16,21 @@ namespace BossRush.Contents.Items.Chest
             return true;
         }
 
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            int SynergyWeapon = Main.rand.Next(new int[] { ModContent.ItemType<SuperShortSword>(), ModContent.ItemType<NatureSelection>(), ModContent.ItemType<TrueEnchantedSword>(), ModContent.ItemType<ChaosMiniShark>() });
-            player.QuickSpawnItem(entitySource, SynergyWeapon, 1);
+            GetAmount(out int amount, out int _, out int _, player);
+            for (int i = 0; i < amount; i++)
+            {
+                GetWeapon(player, out int weapon, out int specialAmount, RNGManage(25, 25, 25, 25, 0));
+                AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
+                player.QuickSpawnItem(entitySource, weapon, specialAmount);
+                player.QuickSpawnItem(entitySource, ammo, num);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                player.QuickSpawnItem(entitySource, GetAccessory());
+            }
         }
     }
 }

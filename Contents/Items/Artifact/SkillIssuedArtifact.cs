@@ -9,7 +9,6 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class SkillIssuedArtifact : ModItem, IArtifactItem
     {
-        public bool CanBeCraft => false;
         public override void SetDefaults()
         {
             Item.width = 80;

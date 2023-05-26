@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class DeerclopTreasureChest : ModItem
+    class DeerclopTreasureChest : ChestLootDrop
     {
         public override void SetStaticDefaults()
         {
@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Chest
             Item.rare = 5;
         }
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        public override void PostModifyTooltips(ref List<TooltipLine> tooltips)
         {
             if (!NPC.downedBoss3)
             {
@@ -34,7 +34,7 @@ namespace BossRush.Contents.Items.Chest
         {
             return NPC.downedBoss3;
         }
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             player.QuickSpawnItem(entitySource, ItemID.SnowGlobe);
@@ -52,28 +52,10 @@ namespace BossRush.Contents.Items.Chest
                 {
                     int rand = Main.rand.Next(new int[] { ItemID.NorthPole, ItemID.Amarok, ItemID.Frostbrand, ItemID.SnowmanCannon, ItemID.CoolWhip, ItemID.IceBlade, ItemID.SnowballCannon, ItemID.IceBoomerang, ItemID.FrostDaggerfish, ItemID.FrostStaff, ItemID.FlowerofFrost, ItemID.IceBow, ItemID.BlizzardStaff, ItemID.IceSickle, ItemID.IceRod, ItemID.StaffoftheFrostHydra });
                     player.QuickSpawnItem(entitySource, rand);
-                    ReturnAmmo(player, rand);
+                    AmmoForWeapon(out int ammo, out int amount, rand, 2.75f);
+                    player.QuickSpawnItem(entitySource, rand);
+                    player.QuickSpawnItem(entitySource, ammo, amount);
                 }
-            }
-        }
-        private void ReturnAmmo(Player player, int rand)
-        {
-            var entitySource = player.GetSource_OpenItem(Type);
-            if (rand == ItemID.SnowmanCannon)
-            {
-                player.QuickSpawnItem(entitySource, ItemID.RocketI, 300);
-            }
-            else if (rand == ItemID.SnowmanCannon)
-            {
-                player.QuickSpawnItem(entitySource, ItemID.Snowball, 400);
-            }
-            else if (rand == ItemID.IceBow)
-            {
-                player.QuickSpawnItem(entitySource, ItemID.WoodenArrow, 400);
-            }
-            else if (rand == ItemID.FrostDaggerfish)
-            {
-                player.QuickSpawnItem(entitySource, ItemID.FrostDaggerfish, 399);
             }
         }
     }

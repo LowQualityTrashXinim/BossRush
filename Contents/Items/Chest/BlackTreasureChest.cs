@@ -1,21 +1,14 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Common;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using BossRush.Common;
-using BossRush.Contents.Items.Accessories;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class BlackTreasureChest : ModItem
+    class BlackTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("? Treasure chest");
-            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
-        }
         public override void SetDefaults()
         {
             Item.width = 54;
@@ -23,7 +16,7 @@ namespace BossRush.Contents.Items.Chest
             Item.rare = 11;
         }
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        public override void PostModifyTooltips(ref List<TooltipLine> tooltips)
         {
             tooltips.Add(new TooltipLine(Mod, "SynergyOnly", "Is limited to synergy mode only"));
         }
@@ -33,7 +26,7 @@ namespace BossRush.Contents.Items.Chest
             return ModContent.GetInstance<BossRushModConfig>().SynergyMode;
         }
 
-        public override void RightClick(Player player)
+        public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             if (NPC.downedEmpressOfLight)
@@ -81,10 +74,6 @@ namespace BossRush.Contents.Items.Chest
             if (Main.rand.NextBool(25) && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<UltimatePistol>());
-            }
-            if (Main.rand.NextBool(1000) && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
             }
             switch (Main.rand.Next(11))
             {

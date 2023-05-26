@@ -1,12 +1,14 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Contents.Items.Artifact;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 
 namespace BossRush.Common.Global
 {
+    /// <summary>
+    /// This is where we should modify vanilla item
+    /// </summary>
     class GlobalItemMod : GlobalItem
     {
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
@@ -18,23 +20,18 @@ namespace BossRush.Common.Global
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
-            if (artifactplayer.ArtifactDefinedID == 0)
+            if (item.type == ItemID.Sandgun)
             {
-                TooltipLine line = new TooltipLine(Mod, "Can't Summon the boss",
-                    $"You haven't use a artifact, please use at least one or use to continue [i:{ModContent.ItemType<BrokenArtifact>()}]");
-                line.OverrideColor = BossRushModSystem.RedToBlack;
-                tooltips.Add(line);
+                tooltips.Add(new TooltipLine(Mod, "SandGunChange",
+                    $"The sand projectile no longer spawn upon kill\nDecrease damage by 35%"));
             }
         }
-        public override bool CanUseItem(Item item, Player player)
+        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
-            ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-            if(item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye)
+            if(item.type == ItemID.Sandgun)
             {
-                return artifactplayer.ArtifactDefinedID != 0;
+                damage.Base -= .35f;
             }
-            return base.CanUseItem(item, player);
         }
     }
 }

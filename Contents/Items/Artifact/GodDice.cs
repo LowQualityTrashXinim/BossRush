@@ -11,8 +11,6 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class GodDice : ModItem, IArtifactItem
     {
-        public bool CanBeCraft => false;
-
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));

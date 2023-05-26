@@ -5,10 +5,6 @@ namespace BossRush.Contents.Items.Chest
 {
     internal class BloodTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
-        }
         public override void SetDefaults()
         {
             Item.width = 38;

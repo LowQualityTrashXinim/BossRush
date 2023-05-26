@@ -1,9 +1,6 @@
-﻿using BossRush.Contents.BuffAndDebuff;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -12,6 +9,7 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentSolar);
         public override void PostCardSetDefault()
         {
+            Item.maxStack = 99;
             Item.rare = ItemRarityID.Red;
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
@@ -24,6 +22,7 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentVortex);
         public override void PostCardSetDefault()
         {
+            Item.maxStack = 99;
             Item.rare = ItemRarityID.Red;
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
@@ -36,6 +35,7 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentNebula);
         public override void PostCardSetDefault()
         {
+            Item.maxStack = 99;
             Item.rare = ItemRarityID.Red;
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
@@ -48,6 +48,7 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentStardust);
         public override void PostCardSetDefault()
         {
+            Item.maxStack = 99;
             Item.rare = ItemRarityID.Red;
         }
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
@@ -60,6 +61,7 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.LunarBar);
         public override void PostCardSetDefault()
         {
+            Item.maxStack = 99;
             Item.rare = ItemRarityID.Red;
         }
         public override bool CanBeCraft => false; 
@@ -201,6 +203,7 @@ namespace BossRush.Contents.Items.Card
             Item.width = 0;
             Item.height = 0;
             Item.material = true;
+            Item.maxStack = 99;
         }
         public override bool CanBeCraft => false;
     }
