@@ -439,7 +439,7 @@ namespace BossRush.Contents.Items.Card
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.CardEffect);
+            packet.Write((byte)BossRush.MessageType.CardEffect);
             packet.Write((byte)Player.whoAmI);
             packet.Write(MeleeDMG);
             packet.Write(RangeDMG);

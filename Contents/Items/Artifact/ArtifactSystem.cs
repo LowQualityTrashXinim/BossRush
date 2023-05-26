@@ -608,7 +608,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.ArtifactRegister);
+            packet.Write((byte)BossRush.MessageType.ArtifactRegister);
             packet.Write((byte)Player.whoAmI);
             packet.Write(ArtifactDefinedID);
             packet.Send(toWho, fromWho);

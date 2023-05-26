@@ -953,7 +953,7 @@ namespace BossRush.Contents.Items.Chest
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)BossRushNetCodeHandle.MessageType.ChanceMultiplayer);
+            packet.Write((byte)BossRush.MessageType.ChanceMultiplayer);
             packet.Write((byte)Player.whoAmI);
             packet.Write(MeleeChanceMutilplier);
             packet.Write(RangeChanceMutilplier);
