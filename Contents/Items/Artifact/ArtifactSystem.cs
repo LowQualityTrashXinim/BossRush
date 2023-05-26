@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.DataStructures;
@@ -13,7 +12,7 @@ using BossRush.Common.Utils;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace BossRush.Common.Global
+namespace BossRush.Contents.Items.Artifact
 {
     internal class ArtifactSystem : ModSystem
     {
@@ -36,6 +35,10 @@ namespace BossRush.Common.Global
                         .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                         .AddIngredient(ModContent.ItemType<WoodenTreasureChest>())
                         .Register();
+                        continue;
+                    }
+                    if(item is BrokenArtifact)
+                    {
                         continue;
                     }
                     item.CreateRecipe()
@@ -77,12 +80,12 @@ namespace BossRush.Common.Global
     }
     class ArtifactPlayerHandleLogic : ModPlayer
     {
-        public int ArtifactDefinedID = 0;
+        public int ArtifactDefinedID = 0;//setting to -1 mean it just do nothing
         bool Greed = false;//ID = 1
         bool Pride = false;//ID = 2
         bool Vampire = false;//ID = 3
-        bool Earth = false;
-        bool FateDice = false;
+        bool Earth = false;// ID = 4
+        bool FateDice = false;// ID = 5
         int EarthCD = 0;
         string artifactName = "";
         public string ToStringArtifact()
@@ -174,7 +177,7 @@ namespace BossRush.Common.Global
         int OPEFFECT = 0;
         private void FateDeciderEffect()
         {
-            if(Player.dead && !Player.active)
+            if (Player.dead && !Player.active)
             {
                 return;
             }
@@ -555,7 +558,7 @@ namespace BossRush.Common.Global
                 countRange++;
                 if (countRange >= 3)
                 {
-                    LifeSteal(target,1,5);
+                    LifeSteal(target, 1, 5);
                     countRange = 0;
                 }
             }

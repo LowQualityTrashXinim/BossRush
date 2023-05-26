@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using System.IO;
 using Terraria.ID;
-using BossRush.Common.Global;
 using BossRush.Common.ExtraChallenge;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
@@ -70,9 +69,6 @@ namespace BossRush
     {
         internal enum MessageType : byte
         {
-            SkillIssuePlayer,
-            DrugSyncPlayer,
-            GambleAddiction,
             ExtraChallenge,
             ArtifactRegister,
             ChanceMultiplayer,

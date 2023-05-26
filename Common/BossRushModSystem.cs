@@ -11,8 +11,9 @@ namespace BossRush.Common
         public override void PostUpdateEverything()
         {
             ChallengeGodColorAnimation();
-            YellowPulseYellowWhiteAnimation(); 
+            YellowPulseYellowWhiteColorAnimation(); 
             SynergyColorAnimation();
+            RedToBlackColorAnimation();
         }
 
         public static Color ChallangeGodColor => new Color(ChallengeR, 0, ChallengeB);
@@ -50,7 +51,7 @@ namespace BossRush.Common
         public static Color YellowPulseYellowWhite => new Color(YWRed, YWGreen, YWBlue);
         static int YWRed = 150, YWGreen = 150, YWBlue = 0;
         int Switch2 = 0;
-        private void YellowPulseYellowWhiteAnimation()
+        private void YellowPulseYellowWhiteColorAnimation()
         {
             //Pulsing Yellow
             if (Switch2 != 1)
@@ -104,6 +105,35 @@ namespace BossRush.Common
                 if (BWBlue <= 175)
                 {
                     Switch3 = 0;
+                }
+            }
+        }
+        public static Color RedToBlack => new Color(RBred, 0, 0);
+        static int RBred = 255;
+        int Switch4 = 0;
+        private void RedToBlackColorAnimation()
+        {
+            //Pulsing Purple
+            if (Switch4 != 1)
+            {
+                if (RBred < 255)
+                {
+                    ++RBred;
+                }
+                else
+                {
+                    Switch4 = 1;
+                }
+            }
+            else
+            {
+                if (RBred > 0)
+                {
+                    --RBred;
+                }
+                else
+                {
+                    Switch4 = 0;
                 }
             }
         }

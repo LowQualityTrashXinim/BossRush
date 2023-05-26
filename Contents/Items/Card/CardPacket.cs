@@ -20,17 +20,17 @@ namespace BossRush.Contents.Items.Card
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            if(Main.rand.NextBool(25))
+            if(Main.rand.NextBool(Card.PlatinumCardDropChance))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                 return;
             }
-            if(Main.rand.NextBool(12))
+            if(Main.rand.NextBool(Card.GoldCardDropChance))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
                 return;
             }
-            if (Main.rand.NextBool(4))
+            if (Main.rand.NextBool(Card.SilverCardDropChance))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverCard>());
                 return;
@@ -54,19 +54,19 @@ namespace BossRush.Contents.Items.Card
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
-                if (Main.rand.NextBool(25))
+                if (Main.rand.NextBool(Card.PlatinumCardDropChance))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(12))
+                if (Main.rand.NextBool(Card.GoldCardDropChance))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(Card.SilverCardDropChance))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverCard>());
                     continue;

@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
-using BossRush.Contents.Items.NohitReward;
 using System.IO;
 
 namespace BossRush.Contents.Items.Artifact

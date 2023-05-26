@@ -35,6 +35,10 @@ namespace BossRush.Contents.Items.Card
     }
     abstract class Card : ModItem
     {
+        public const int PlatinumCardDropChance = 40;
+        public const int GoldCardDropChance = 20;
+        public const int SilverCardDropChance = 10;
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(1, 1);
@@ -169,6 +173,10 @@ namespace BossRush.Contents.Items.Card
         /// 4 = Platinum<br/>
         /// </summary>
         public virtual int Tier => 0;
+        public override bool CanUseItem(Player player)
+        {
+            return !BossRushUtils.IsAnyVanillaBossAlive();
+        }
         public virtual void OnUseItem(Player player, PlayerCardHandle modplayer) { }
         public override bool? UseItem(Player player)
         {
@@ -433,10 +441,10 @@ namespace BossRush.Contents.Items.Card
                 {
                     return;
                 }
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 25));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 50));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 100));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 200));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 100));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 200));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 200));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 400));
             }
         }
     }

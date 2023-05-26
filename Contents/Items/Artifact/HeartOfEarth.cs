@@ -2,7 +2,6 @@
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Artifact
 {

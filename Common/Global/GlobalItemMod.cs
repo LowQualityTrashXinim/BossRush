@@ -2,6 +2,8 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Contents.Items.Artifact;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Global
 {
@@ -14,26 +16,25 @@ namespace BossRush.Common.Global
                 player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
             }
         }
-
-        public override bool? UseItem(Item item, Player player)
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().Enraged && player.whoAmI == Main.myPlayer && item.type == ItemID.SuspiciousLookingEye)
+            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
+            if (artifactplayer.ArtifactDefinedID == 0)
             {
-                player.GetModPlayer<ModdedPlayer>().Enraged = true;
-                int type = NPCID.EyeofCthulhu;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    NPC.SpawnOnPlayer(player.whoAmI, type);
-                    Main.bloodMoon = true;
-                }
-                else
-                {
-                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
-                }
-                return true;
+                TooltipLine line = new TooltipLine(Mod, "Can't Summon the boss",
+                    $"You haven't use a artifact, please use at least one or use to continue [i:{ModContent.ItemType<BrokenArtifact>()}]");
+                line.OverrideColor = BossRushModSystem.RedToBlack;
+                tooltips.Add(line);
             }
-            return default;
         }
-
+        public override bool CanUseItem(Item item, Player player)
+        {
+            ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            if(item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye)
+            {
+                return artifactplayer.ArtifactDefinedID != 0;
+            }
+            return base.CanUseItem(item, player);
+        }
     }
 }

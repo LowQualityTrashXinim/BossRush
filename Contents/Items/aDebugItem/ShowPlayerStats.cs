@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Global;
+﻿using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;

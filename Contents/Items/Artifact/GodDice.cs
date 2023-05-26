@@ -4,7 +4,6 @@ using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Global;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 
