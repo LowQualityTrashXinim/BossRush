@@ -12,6 +12,7 @@ using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Accessories;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -891,14 +892,18 @@ namespace BossRush.Contents.Items.Chest
             DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
             return Main.rand.NextFromCollection(DropItemPotion);
         }
+        Color color1, color2, color3, color4;
+        private void ColorHandle()
+        {
+            color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 40);
+            color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 40);
+            color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 40);
+            color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 40);
+        }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Color color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 40);
-            Color color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 40);
-            Color color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 40);
-            Color color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 40);
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, position + new Vector2(2, 2), null, color1, 0, origin, scale, SpriteEffects.None, 0);
@@ -910,6 +915,21 @@ namespace BossRush.Contents.Items.Chest
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
+            if (Item.whoAmI != whoAmI)
+            {
+                return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            }
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Vector2 drawPos = Item.position - Main.screenPosition + origin;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
+            }
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
     }
