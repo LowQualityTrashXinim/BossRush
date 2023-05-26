@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.GameContent.Tile_Entities;
+using System.Net.Sockets;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -45,7 +45,7 @@ namespace BossRush.Contents.Items.Card
 
         public override void SetDefaults()
         {
-            Item.BossRushDefaultToConsume(1, 1);
+            Item.BossRushDefaultToConsume(30, 24);
             Item.UseSound = SoundID.Item35;
             PostCardSetDefault();
         }
@@ -275,12 +275,9 @@ namespace BossRush.Contents.Items.Card
                 countX = 1;
             }
         }
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        Color auraColor;
+        private void ColorHandle()
         {
-            PositionHandle();
-            Main.instance.LoadItem(Item.type);
-            Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Color auraColor;
             switch (Tier)
             {
                 case 1:
@@ -296,6 +293,13 @@ namespace BossRush.Contents.Items.Card
                     auraColor = new Color(255, 255, 255, 30);
                     break;
             }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            ColorHandle();
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
@@ -304,6 +308,25 @@ namespace BossRush.Contents.Items.Card
                 spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            if (Item.whoAmI != whoAmI)
+            {
+                return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            }
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Vector2 drawPos = Item.position - Main.screenPosition + origin;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, -positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, -positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
         private bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
                     stats is PlayerStats.Defense

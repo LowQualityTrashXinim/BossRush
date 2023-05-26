@@ -54,12 +54,9 @@ namespace BossRush.Contents.Items.Card
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<CopperCard>());
             }
         }
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        Color auraColor;
+        private void ColorHandle()
         {
-            PositionHandle();
-            Main.instance.LoadItem(Item.type);
-            Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Color auraColor;
             switch (PacketType)
             {
                 case 1:
@@ -75,6 +72,13 @@ namespace BossRush.Contents.Items.Card
                     auraColor = new Color(255, 255, 255, 30);
                     break;
             }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            ColorHandle();
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
@@ -84,6 +88,25 @@ namespace BossRush.Contents.Items.Card
             }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            if (Item.whoAmI != whoAmI)
+            {
+                return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            }
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Vector2 drawPos = Item.position - Main.screenPosition + origin;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, -positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, -positionRotateX), null, auraColor, rotation, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+        }
     }
 
     internal class CardPacket : CardPacketBase
@@ -92,8 +115,8 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Chest);
         public override void SetDefaults()
         {
-            Item.width = 20;
-            Item.height = 40;
+            Item.width = 32;
+            Item.height = 28;
             Item.maxStack = 30;
         }
         public override bool CanRightClick()
@@ -111,8 +134,8 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldChest);
         public override void SetDefaults()
         {
-            Item.width = 20;
-            Item.height = 40;
+            Item.width = 32;
+            Item.height = 28;
             Item.maxStack = 30;
         }
         public override bool CanRightClick()
@@ -130,8 +153,8 @@ namespace BossRush.Contents.Items.Card
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.ShadowChest);
         public override void SetDefaults()
         {
-            Item.width = 20;
-            Item.height = 40;
+            Item.width = 32;
+            Item.height = 28;
             Item.maxStack = 30;
         }
         public override bool CanRightClick()
