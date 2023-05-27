@@ -55,10 +55,6 @@ namespace BossRush.Contents.Items.Artifact
         public override bool CanUseItem(Item item, Player player)
         {
             ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-            if (item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye)
-            {
-                return artifactplayer.ArtifactDefinedID != 0;
-            }
             if (item.ModItem is IArtifactItem)
             {
                 if (item.consumable)

@@ -30,10 +30,6 @@ namespace BossRush.Contents.Items.Chest
                 tooltips.Add(new TooltipLine(Mod, "ItemName", $"It is now can be open"));
             }
         }
-        public override bool CanRightClick()
-        {
-            return NPC.downedBoss3;
-        }
         public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);

@@ -28,10 +28,6 @@ namespace BossRush.Contents.Items.Chest
                 tooltips.Add(new TooltipLine(Mod, "ItemName", $"It is now can be open, you free that poor old man from his eternal suffer!"));
             }
         }
-        public override bool CanRightClick()
-        {
-            return NPC.downedBoss3;
-        }
         public override bool CanLootRNGbeRandomize() => false;
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 4, 5 };
         public override void OnRightClick(Player player)

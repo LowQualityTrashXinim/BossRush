@@ -19,10 +19,6 @@ namespace BossRush.Contents.Items.Chest
             Item.height = 30;
             Item.rare = 11;
         }
-        public override bool CanRightClick()
-        {
-            return true;
-        }
         public override void OnRightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);

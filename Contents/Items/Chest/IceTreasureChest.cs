@@ -16,10 +16,6 @@ namespace BossRush.Contents.Items.Chest
             Item.height = 30;
             Item.rare = 5;
         }
-        public override bool CanRightClick()
-        {
-            return true;
-        }
         public override bool CanLootRNGbeRandomize() => false;
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
         public override List<int> FlagNumAcc()

@@ -9,11 +9,9 @@ namespace BossRush.Contents.Items.Artifact
         
         public override void SetDefaults()
         {
-            Item.width = 32;
-            Item.height = 32;
-            Item.rare = ItemRarityID.White;
-            Item.material = true;
-            Item.consumable = true;
+            Item.BossRushDefaultToConsume(32, 32);
+            Item.UseSound = SoundID.Zombie105;
+            Item.rare = 9;
         }
         public override bool? UseItem(Player player)
         {

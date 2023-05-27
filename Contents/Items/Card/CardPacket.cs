@@ -11,6 +11,10 @@ namespace BossRush.Contents.Items.Card
     {
         private int countX = 0;
         private float positionRotateX = 0;
+        public override bool CanRightClick()
+        {
+            return !BossRushUtils.IsAnyVanillaBossAlive();
+        }
         private void PositionHandle()
         {
             if (positionRotateX < 3 && countX == 1)
@@ -31,10 +35,12 @@ namespace BossRush.Contents.Items.Card
             }
         }
         public virtual int PacketType => 0;
-        protected void CardDropHandle(Player player, int amount = 1)
+        public virtual int CardAmount => 1;
+        public override void RightClick(Player player)
         {
+            base.RightClick(player);
             var entitySource = player.GetSource_OpenItem(Type);
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < CardAmount; i++)
             {
                 if (Main.rand.NextBool(Card.PlatinumCardDropChance))
                 {
@@ -111,7 +117,6 @@ namespace BossRush.Contents.Items.Card
 
     internal class CardPacket : CardPacketBase
     {
-        public override int PacketType => 1;
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Chest);
         public override void SetDefaults()
         {
@@ -119,18 +124,12 @@ namespace BossRush.Contents.Items.Card
             Item.height = 28;
             Item.maxStack = 30;
         }
-        public override bool CanRightClick()
-        {
-            return true;
-        }
-        public override void RightClick(Player player)
-        {
-            CardDropHandle(player);
-        }
+        public override int PacketType => 1;
     }
     internal class BigCardPacket : CardPacketBase
     {
         public override int PacketType => 2;
+        public override int CardAmount => 3;
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldChest);
         public override void SetDefaults()
         {
@@ -138,32 +137,17 @@ namespace BossRush.Contents.Items.Card
             Item.height = 28;
             Item.maxStack = 30;
         }
-        public override bool CanRightClick()
-        {
-            return true;
-        }
-        public override void RightClick(Player player)
-        {
-            CardDropHandle(player, 3);
-        }
     }
     internal class BoxOfCard : CardPacketBase
     {
         public override int PacketType => 3;
+        public override int CardAmount => 5;
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.ShadowChest);
         public override void SetDefaults()
         {
             Item.width = 32;
             Item.height = 28;
             Item.maxStack = 30;
-        }
-        public override bool CanRightClick()
-        {
-            return true;
-        }
-        public override void RightClick(Player player)
-        {
-            CardDropHandle(player, 5);
         }
     }
 }

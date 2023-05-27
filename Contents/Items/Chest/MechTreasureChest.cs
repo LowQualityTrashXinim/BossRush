@@ -18,11 +18,6 @@ namespace BossRush.Contents.Items.Chest
             Item.height = 38;
             Item.rare = 7;
         }
-
-        public override bool CanRightClick()
-        {
-            return true;
-        }
         public override List<int> FlagNumber()
         {
             List<int> list = new List<int>() { 7, 8, 9 };

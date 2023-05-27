@@ -12,7 +12,6 @@ using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Accessories;
-using static Terraria.ModLoader.PlayerDrawLayer;
 using BossRush.Contents.Items.Artifact;
 using System.IO;
 
@@ -44,6 +43,8 @@ namespace BossRush.Contents.Items.Chest
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             PostModifyTooltips(ref tooltips);
+            //This is super post stuff
+            tooltips.Add(new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest"));
         }
         public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
@@ -370,6 +371,13 @@ namespace BossRush.Contents.Items.Chest
             //actual choosing item
             ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
         }
+        /// <summary>
+        /// Use this to add condition to chest
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool CanBeRightClick() => false;
+        public override bool CanRightClick() => Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0 || CanBeRightClick();
+        
         public override void RightClick(Player player)
         {
             base.RightClick(player);

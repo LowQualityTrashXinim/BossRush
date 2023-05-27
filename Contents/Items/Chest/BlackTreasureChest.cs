@@ -21,10 +21,8 @@ namespace BossRush.Contents.Items.Chest
             tooltips.Add(new TooltipLine(Mod, "SynergyOnly", "Is limited to synergy mode only"));
         }
 
-        public override bool CanRightClick()
-        {
-            return ModContent.GetInstance<BossRushModConfig>().SynergyMode;
-        }
+        public override bool CanBeRightClick() => ModContent.GetInstance<BossRushModConfig>().SynergyMode;
+        
 
         public override void OnRightClick(Player player)
         {
