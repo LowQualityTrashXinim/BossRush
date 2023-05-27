@@ -59,9 +59,9 @@ namespace BossRush.Contents.Items.Artifact
                 gamblePlayer.GambleDamage = 1;
                 gamblePlayer.GambleDef = 0;
                 gamblePlayer.GambleSpeed = 1;
-                gamblePlayer.GambleHP = 1;
+                gamblePlayer.GambleHP = 0;
                 gamblePlayer.GambleLifeRegen = 1;
-                gamblePlayer.GambleMana = 1;
+                gamblePlayer.GambleMana = 0;
                 gamblePlayer.GambleManaRegen = 1;
                 gamblePlayer.GambleMinionSlot = 0;
                 gamblePlayer.GambleCrit = 0;
@@ -72,9 +72,9 @@ namespace BossRush.Contents.Items.Artifact
             gamblePlayer.GambleDamage = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
             gamblePlayer.GambleDef = Main.rand.Next(-100, 100);
             gamblePlayer.GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleHP = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleHP = (float)Math.Round(Main.rand.NextFloat(-2f, 2f), 2);
             gamblePlayer.GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleMana = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
+            gamblePlayer.GambleMana = (float)Math.Round(Main.rand.NextFloat(-2f, 2f), 2);
             gamblePlayer.GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
             gamblePlayer.GambleMinionSlot = Main.rand.Next(0, 10);
             gamblePlayer.GambleCrit = Main.rand.Next(0, 100);
@@ -86,9 +86,9 @@ namespace BossRush.Contents.Items.Artifact
         public float GambleDamage = 1;
         public int GambleDef = 0;
         public float GambleSpeed = 1;
-        public float GambleHP = 1;
+        public float GambleHP = 0;
         public float GambleLifeRegen = 1;
-        public float GambleMana = 1;
+        public float GambleMana = 0;
         public float GambleManaRegen = 1;
         public int GambleMinionSlot = 0;
         public int GambleCrit = 0;

@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -11,6 +12,13 @@ namespace BossRush.Contents.Items.Card
     {
         private int countX = 0;
         private float positionRotateX = 0;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            if (BossRushUtils.IsAnyVanillaBossAlive())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BossPreventYou", "Boss lock the card packet to be open, kill the boss to open the packet"));
+            }
+        }
         public override bool CanRightClick()
         {
             return !BossRushUtils.IsAnyVanillaBossAlive();

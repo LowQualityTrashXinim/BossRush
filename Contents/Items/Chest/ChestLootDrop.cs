@@ -44,7 +44,10 @@ namespace BossRush.Contents.Items.Chest
         {
             PostModifyTooltips(ref tooltips);
             //This is super post stuff
-            tooltips.Add(new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest"));
+            if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 0)
+            {
+                tooltips.Add(new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest"));
+            }
         }
         public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
@@ -377,7 +380,7 @@ namespace BossRush.Contents.Items.Chest
         /// <returns></returns>
         public virtual bool CanBeRightClick() => false;
         public override bool CanRightClick() => Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0 || CanBeRightClick();
-        
+
         public override void RightClick(Player player)
         {
             base.RightClick(player);
@@ -905,26 +908,28 @@ namespace BossRush.Contents.Items.Chest
         Color color1, color2, color3, color4;
         private void ColorHandle()
         {
-            color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 40);
-            color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 40);
-            color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 40);
-            color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 40);
+            color1 = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB, 20);
+            color2 = new Color(Main.DiscoG, Main.DiscoB, Main.DiscoR, 20);
+            color3 = new Color(Main.DiscoB, Main.DiscoR, Main.DiscoG, 20);
+            color4 = new Color(Main.DiscoG, Main.DiscoR, Main.DiscoB, 20);
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
+            ColorHandle();
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, position + new Vector2(2, 2), null, color1, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + new Vector2(-2, 2), null, color2, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + new Vector2(2, -2), null, color3, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, color4, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(3, 3), null, color1, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-3, 3), null, color2, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(3, -3), null, color3, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-3, -3), null, color4, 0, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
+            ColorHandle();
             //if (Item.whoAmI != whoAmI)
             //{
             //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
@@ -935,10 +940,10 @@ namespace BossRush.Contents.Items.Chest
             Vector2 drawPos = Item.position - Main.screenPosition + origin;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(3, 3), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-3, 3), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(3, -3), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-3, -3), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }

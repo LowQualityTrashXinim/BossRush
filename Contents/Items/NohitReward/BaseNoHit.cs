@@ -7,6 +7,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.NohitReward
 {
@@ -102,6 +103,19 @@ namespace BossRush.Contents.Items.NohitReward
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
+            //if (Item.whoAmI != whoAmI)
+            //{
+            //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            //}
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Vector2 drawPos = Item.position - Main.screenPosition + origin;
+            Color color = new Color(255, 255, 0, 50);
+            spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, -positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, -positionRotateX), null, color, 0, origin, scale, SpriteEffects.None, 0);
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
     }

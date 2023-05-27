@@ -95,7 +95,7 @@ namespace BossRush.Common
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             health = StatModifier.Default; mana = StatModifier.Default;
-            health.Base += 100;
+            health.Base = 100;
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {

@@ -7,6 +7,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework.Graphics;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.Spawner
 {
@@ -20,15 +21,12 @@ namespace BossRush.Contents.Items.Spawner
             PostSetStaticDefaults();
         }
         public virtual void PostSetStaticDefaults() { }
+        public virtual void SetDefaultWidthHeight(out int width, out int height) { width = 10; height = 10; }
         public override void SetDefaults()
         {
-            Item.height = Item.width = 10;
-            Item.maxStack = 30;
-            Item.value = 100;
-            Item.useAnimation = Item.useTime = 30;
+            SetDefaultWidthHeight(out int width, out int height);
+            Item.BossRushDefaultToConsume(width, height);
             Item.rare = ItemRarityID.Blue;
-            Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.consumable = true;
         }
         public virtual int BossToSpawn => NPCID.GreenSlime;
         public override bool? UseItem(Player player)
@@ -63,6 +61,26 @@ namespace BossRush.Contents.Items.Spawner
                 spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            //if (Item.whoAmI != whoAmI)
+            //{
+            //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+            //}
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Vector2 drawPos = Item.position - Main.screenPosition + origin;
+            Color redAlpha = new Color(255, 0, 0, 30);
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
         /// <summary>
         /// This is called in the check if player whoAmI is myPlayer
