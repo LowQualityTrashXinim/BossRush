@@ -59,7 +59,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 if (item.consumable)
                 {
-                    return artifactplayer.ArtifactDefinedID < 1;
+                    return artifactplayer.ArtifactDefinedID == 0;
                 }
             }
             return base.CanUseItem(item, player);

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Common
 {
@@ -136,6 +137,15 @@ namespace BossRush.Common
                     Switch4 = 0;
                 }
             }
+        }
+        /// <summary>
+        /// This one will keep track somewhat, will reset if the list you put in is different
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static Color MultiColor(List<Color> color)
+        {
+            return Color.White;
         }
     }
 }

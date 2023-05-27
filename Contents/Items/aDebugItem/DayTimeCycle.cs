@@ -14,14 +14,19 @@ namespace BossRush.Contents.Items.aDebugItem
         }
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 1, 1, 0, 0, 1, 1, ItemUseStyleID.HoldUp, false);
+            BossRushUtils.BossRushSetDefault(Item, 20, 20, 0, 0, 1, 1, ItemUseStyleID.HoldUp, false);
         }
-        int count = 0;
         public override bool? UseItem(Player player)
         {
-            count++;
-            Main.dayTime = count % 2 == 0 ? true : false;
-            return base.UseItem(player);
+            if (!Main.dayTime)
+            {
+                Main.time = Main.nightLength;
+            }
+            else
+            {
+                Main.time = Main.dayLength;
+            }
+            return false;
         }
     }
 }
