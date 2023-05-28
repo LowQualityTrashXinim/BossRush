@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ID;
-using BossRush.Texture;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.aDebugItem

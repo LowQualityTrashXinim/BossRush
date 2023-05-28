@@ -140,12 +140,26 @@ namespace BossRush.Common
         }
         /// <summary>
         /// This one will keep track somewhat, will reset if the list you put in is different
+        /// This is a semi util that does color tranfering like disco color from <see cref="Main.DiscoColor"/>
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
         public static Color MultiColor(List<Color> color)
         {
+            if(color.Count < 1)
+            {
+                return color[0];
+            }
+            if(!listofMultiColor.Equals(color))
+            {
+                listofMultiColor.Clear();
+                listofMultiColor = color;
+            }
+            color1 = listofMultiColor[currentIndex];
             return Color.White;
         }
+        static List<Color> listofMultiColor = new List<Color>();
+        static Color color1, color2;
+        static int currentIndex = 0;
     }
 }
