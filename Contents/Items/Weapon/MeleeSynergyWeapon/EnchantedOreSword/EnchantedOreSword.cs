@@ -3,10 +3,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    class EnchantedOreSword : ModItem, ISynergyItem
+    class EnchantedOreSword : SynergyModItem, ISynergyItem
     {
         public override void SetDefaults()
         {
@@ -31,6 +32,21 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             Item.UseSound = SoundID.Item1;
         }
         int count = -1;
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            if(modplayer.EnchantedOreSword_StarFury)
+            {
+                tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Starfury}] Projectile will leave a trail of star"));
+            }
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            base.HoldSynergyItem(player, modplayer);
+            if(player.HasItem(ItemID.Starfury))
+            {
+                modplayer.EnchantedOreSword_StarFury = true;
+            }
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             int[] RandomShortSword = new int[] {

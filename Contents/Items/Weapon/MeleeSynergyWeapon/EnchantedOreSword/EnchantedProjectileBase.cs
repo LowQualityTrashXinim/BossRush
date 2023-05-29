@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    abstract class EnchantedProjectileBase : ModProjectile
+    abstract class EnchantedProjectileBase : SynergyModProjectile
     {
         public override void SetDefaults()
         {
@@ -19,8 +19,18 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
         public virtual void PostSetDefault() { }
-        public override void PostAI()
+        int counter = 0;
+        public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            base.SynergyPostAI(player, modplayer);
+            counter++;
+            if (modplayer.EnchantedOreSword_StarFury && counter >= 10)
+            {
+                int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * .001f, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Main.projectile[projectile].tileCollide = false;
+                Main.projectile[projectile].timeLeft = 90;
+                counter = 0;
+            }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             if (Projectile.alpha >= 235)
             {

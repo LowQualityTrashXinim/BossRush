@@ -19,12 +19,15 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool DarkCactus_BatScepter = false;
         public bool DarkCactus_BladeOfGrass = false;
+
+        public bool EnchantedOreSword_StarFury = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
             BurningPassion_WandofFrosting = false;
             DarkCactus_BatScepter = false;
             DarkCactus_BladeOfGrass = false;
+            EnchantedOreSword_StarFury = false;
         }
         int check = 1;
         public override void PostUpdate()
