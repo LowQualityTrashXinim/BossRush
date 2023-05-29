@@ -446,6 +446,10 @@ namespace BossRush.Contents.Items.Chest
                         break;
                     }
                     amount += 199;
+                    if(Main.masterMode)
+                    {
+                        amount += 300;
+                    }
                     weapon = Main.rand.NextFromCollection(DropItemMisc);
                     return;
                 case 6:
@@ -695,7 +699,10 @@ namespace BossRush.Contents.Items.Chest
         {
             Amount = (int)(200 * AmountModifier);
             Item weapontoCheck = new Item(weapon);
-
+            if(Main.masterMode)
+            {
+                Amount = (int)(Amount * 2.5f);
+            }
             DropArrowAmmo.Clear();
             DropBulletAmmo.Clear();
             DropDartAmmo.Clear();

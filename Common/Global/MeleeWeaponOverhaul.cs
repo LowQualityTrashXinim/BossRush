@@ -688,10 +688,8 @@ namespace BossRush.Common.Global
         {
             if (ComboConditionChecking())
             {
-                comboExecuteWithDash = false;
                 return;
             }
-            comboExecuteWithDash = true;
             CanPlayerBeDamage = false;
             Player.gravity = 0;
             switch (item.useStyle)
@@ -722,8 +720,10 @@ namespace BossRush.Common.Global
         {
             if (ComboConditionChecking())
             {
+                comboExecuteWithDash = false;
                 return;
             }
+            comboExecuteWithDash = true;
             Player.controlLeft = false;
             Player.controlRight = false;
             Vector2 Toward = mouseLastPosition - Player.Center;
