@@ -57,7 +57,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick
     }
     internal class ShadowTrickP2 : ModProjectile
     {
-        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<ShadowTrick>();
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<ShadowTrickP>();
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 3f;
@@ -76,4 +76,3 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick
         }
     }
 }
-

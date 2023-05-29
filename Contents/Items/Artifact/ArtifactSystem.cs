@@ -156,6 +156,10 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void PostUpdate()
         {
+            if(Vampire)
+            {
+                Player.AddBuff(BuffID.PotionSickness, 600);
+            }
             if (Pride)
             {
                 chestmodplayer.multiplier = true;

@@ -16,7 +16,7 @@ namespace BossRush.Common.Utils
                 ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow,
                 ItemID.CopperBow, ItemID.TinBow, ItemID.IronBow, ItemID.LeadBow, ItemID.SilverBow,ItemID.TungstenBow, ItemID.GoldBow, ItemID.PlatinumBow,
         };
-        public readonly static int[] MagicPreBoss = { ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff, ItemID.RubyStaff, ItemID.DiamondStaff };
+        public readonly static int[] MagicPreBoss = { ItemID.WandofFrosting, ItemID.WandofSparking, ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff };
         public readonly static int[] SummonPreBoss = { ItemID.BabyBirdStaff, ItemID.SlimeStaff, ItemID.FlinxStaff };
         public readonly static int[] SpecialPreBoss = { ItemID.Shuriken, ItemID.ThrowingKnife, ItemID.PoisonedKnife, ItemID.RottenEgg, ItemID.StarAnise, };
 
@@ -34,7 +34,7 @@ namespace BossRush.Common.Utils
                 ItemID.Sandgun, ItemID.FlareGun, ItemID.Blowpipe, ItemID.SnowballCannon, ItemID.PainterPaintballGun
         };
         public readonly static int[] MagicPreEoC = {
-                ItemID.WandofSparking,ItemID.ThunderStaff, ItemID.AmberStaff
+                ItemID.ThunderStaff, ItemID.AmberStaff,ItemID.RubyStaff, ItemID.DiamondStaff
         };
         public readonly static int[] SummonerPreEoC = {
                 ItemID.AbigailsFlower, ItemID.VampireFrogStaff,

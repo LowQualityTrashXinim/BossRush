@@ -32,6 +32,12 @@ namespace BossRush
             item.autoReuse = false;
             item.consumable = true;
         }
+        /// <summary>
+        /// Use this along with <see cref="BossRushSetDefault(Item, int, int, int, float, int, int, int, bool)"/>
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="spearType"></param>
+        /// <param name="shootSpeed"></param>
         public static void BossRushSetDefaultSpear(this Item item, int spearType, float shootSpeed)
         {
             item.noUseGraphic = true;
