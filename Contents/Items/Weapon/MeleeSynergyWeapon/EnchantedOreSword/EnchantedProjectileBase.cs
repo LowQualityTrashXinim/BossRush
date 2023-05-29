@@ -3,8 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Global;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
-using System;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
@@ -25,13 +23,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         int counter = 0;
         public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            base.SynergyPostAI(player, modplayer);
             counter++;
-            if (modplayer.EnchantedOreSword_StarFury && counter >= 10)
+            if (modplayer.EnchantedOreSword_StarFury && counter >= 20)
             {
                 int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * .001f, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 Main.projectile[projectile].tileCollide = false;
-                Main.projectile[projectile].timeLeft = 90;
+                Main.projectile[projectile].timeLeft = 120;
                 counter = 0;
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
@@ -40,11 +37,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
                 Projectile.Kill();
             }
         }
-        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, ref NPC npc, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            if (modplayer.EnchantedOreSword_Musket)
+            if (modplayer.EnchantedOreSword_Musket && player.ownedProjectileCounts[ModContent.ProjectileType<MusketGunProjectile>()] < 3)
             {
-                Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ModContent.ProjectileType<MusketGunProjectile>(), Projectile.damage, 0, Projectile.whoAmI);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ModContent.ProjectileType<MusketGunProjectile>(), Projectile.damage, 0, Projectile.owner);
             }
             EnchantedProjectileOnHitNPC(npc, hit, damageDone);
         }
@@ -62,35 +59,39 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.width = 56;
             Projectile.height = 18;
-            Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = 150;
+            Projectile.timeLeft = 250;
             Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.tileCollide = true;
+            Projectile.DamageType = DamageClass.Ranged;
         }
         public override bool? CanDamage() => false;
         int timer = 50;
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            if (!player.active || player.dead)
-            {
-                Projectile.Kill();
-            }
             Projectile.velocity -= Projectile.velocity * .05f;
-            if (Projectile.Center.LookForHostileNPC(out NPC npc, 500) && npc != null)
+            if (timer > 0)
             {
-                Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                Projectile.spriteDirection = Projectile.Center.X < npc.Center.X ? 1 : -1;
-                Projectile.rotation = velocityToNpc.ToRotation();
-                Projectile.rotation += Projectile.spriteDirection == 1 ? 0 : MathHelper.Pi;
-                if (timer <= 0)
+                timer = BossRushUtils.CoolDown(timer);
+            }
+            else
+            {
+                if (Projectile.Center.LookForHostileNPC(out NPC npc, 800) && npc != null)
                 {
+                    Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                    Projectile.spriteDirection = Projectile.Center.X < npc.Center.X ? 1 : -1;
+                    Projectile.rotation = velocityToNpc.ToRotation();
+                    Projectile.rotation += Projectile.spriteDirection == 1 ? 0 : MathHelper.Pi;
                     timer = 50;
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.PositionOFFSET(velocityToNpc, 45f), velocityToNpc * 20f, ProjectileID.Bullet, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                    return;
                 }
             }
-            timer = BossRushUtils.CoolDown(timer);
+        }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (Projectile.velocity.X != oldVelocity.X) Projectile.velocity.X = -oldVelocity.X;
+            if (Projectile.velocity.Y != oldVelocity.Y) Projectile.velocity.Y = -oldVelocity.Y;
+            return false;
         }
         public override void Kill(int timeLeft)
         {

@@ -34,17 +34,25 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         int count = -1;
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            if(modplayer.EnchantedOreSword_StarFury)
+            if (modplayer.EnchantedOreSword_StarFury)
             {
-                tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Starfury}] Projectile will leave a trail of star"));
+                tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Starfury}] Shortsword will leave a trail of star"));
+            }
+            if (modplayer.EnchantedOreSword_Musket)
+            {
+                tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Musket}] Shortsword on hit will launch out a ghost musket that shoot enemy ( up to 3 muskets )"));
             }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             base.HoldSynergyItem(player, modplayer);
-            if(player.HasItem(ItemID.Starfury))
+            if (player.HasItem(ItemID.Starfury))
             {
                 modplayer.EnchantedOreSword_StarFury = true;
+            }
+            if (player.HasItem(ItemID.Musket))
+            {
+                modplayer.EnchantedOreSword_Musket = true;
             }
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

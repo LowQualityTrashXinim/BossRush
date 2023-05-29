@@ -128,7 +128,7 @@ namespace BossRush.Common
             }
             else
             {
-                if (RBred > 0)
+                if (RBred > 50)
                 {
                     --RBred;
                 }

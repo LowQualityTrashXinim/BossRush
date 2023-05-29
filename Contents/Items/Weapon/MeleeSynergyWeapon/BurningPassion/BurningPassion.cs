@@ -122,7 +122,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
                 }
             }
         }
-        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, ref NPC npc, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
             if(modplayer.BurningPassion_WandofFrosting)
             {

@@ -801,7 +801,7 @@ Mods: {
 					'''
 					"Unpure, relentess crystal"
 					Passive : Attack heal player
-					Effect : reduce max life by 65%
+					Effect : reduce max life by 65% and permanent potion sickness
 					You can survive 1 fatal attack ( 3 minute cooldown )
 					'''
 				DisplayName: Vampirism Crystal

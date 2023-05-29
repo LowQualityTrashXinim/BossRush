@@ -31,7 +31,7 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
     }
     public class PlayerRelic : ModPlayer
     {
-        public bool Bouncy;
+        public bool Bouncy = false;
         public override void ResetEffects()
         {
             Bouncy = false;

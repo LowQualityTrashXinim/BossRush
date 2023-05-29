@@ -80,17 +80,6 @@ namespace BossRush.Contents.Items.Artifact
                     tooltips.Add(line);
                 }
             }
-            if (artifactplayer.ArtifactDefinedID == 0)
-            {
-                if (item.type != ItemID.SlimeCrown && item.type != ItemID.SuspiciousLookingEye)
-                {
-                    return;
-                }
-                    TooltipLine line = new TooltipLine(Mod, "SummonBoss",
-                    $"You haven't use a artifact, please use at least one or use to continue [i:{ModContent.ItemType<BrokenArtifact>()}]");
-                line.OverrideColor = BossRushModSystem.RedToBlack;
-                tooltips.Add(line);
-            }
         }
     }
     class ArtifactPlayerHandleLogic : ModPlayer

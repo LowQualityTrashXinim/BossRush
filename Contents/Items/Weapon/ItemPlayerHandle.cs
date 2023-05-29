@@ -115,8 +115,8 @@ namespace BossRush.Contents.Items.Weapon
         {
             base.OnHitNPC(target, hit, damageDone);
             Player player = Main.player[Projectile.owner];
-            OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), ref target, hit, damageDone);
+            OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
         }
-        public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, ref NPC npc, NPC.HitInfo hit, int damageDone) { }
+        public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) { }
     }
 }
