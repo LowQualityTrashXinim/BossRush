@@ -123,20 +123,20 @@ Mods: {
 			}
 
 			RectangleShotgun: {
-				Tooltip: What in the holy of this gun ?
+				Tooltip: What in the hell this gun?
 				DisplayName: Rectangle Shotgun
 			}
 
 			QuadDemonBlaster: {
-				Tooltip: Can get hot real fast
+				Tooltip: Get hot real fast
 				DisplayName: Quad Demon Blaster
 			}
 
 			UltimatePistol: {
 				Tooltip:
 					'''
-					It can't decide what it want to be, so it decide to become everything
-					Shoot out many thing
+					It couldn't decide what it want to be, so it decided to become everything
+					Shoots out many things
 					Alt click to shoot down a copy of itself onto the screen
 					'''
 				DisplayName: ? Pistol
@@ -146,7 +146,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Mega mode included"
-					It have a literal screw as a way to toggle mega mode
+					It has a literal screw to toggle mega mode
 					'''
 				DisplayName: Paint Rifle
 			}
@@ -155,7 +155,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Seafood with a touch of nature"
-					Shoot out poisonous bullet that have a chance to explode into flower vilethorn
+					Shoots out poisonous bullets that have a chance to explode into flower vilethorns
 					'''
 				DisplayName: Overgrown Minishark
 			}
@@ -166,7 +166,7 @@ Mods: {
 			}
 
 			MoonStarBow: {
-				Tooltip: Make your wish !
+				Tooltip: Make your wish!
 				DisplayName: Moonlight's Fragment
 			}
 
@@ -240,7 +240,7 @@ Mods: {
 			}
 
 			Deagle: {
-				Tooltip: Surprisingly accurated
+				Tooltip: Surprisingly accurate
 				DisplayName: Deagle
 			}
 
@@ -248,7 +248,7 @@ Mods: {
 				Tooltip:
 					'''
 					Not my best work that for sure
-					Have 43% of not consuming ammo
+					Has a 43% of not consuming ammo
 					'''
 				DisplayName: Chaos Mini Shark
 			}
@@ -301,19 +301,19 @@ Mods: {
 			NeoDynamite: {
 				Tooltip:
 					'''
-					"Mordern dynamite, never running out!"
-					Throw out a un-consumable dynamite that explode like normal dynamite on tile touch
+					"Mordern dynamite, never runs out!"
+					Throws out an un-consumable dynamite that creates a huge explosion when it hits a tile
 					'''
 				DisplayName: Neo Dynamite
 			}
 
 			YinYang: {
-				Tooltip: The balance between 2 forces, i wonder what secret it hold
+				Tooltip: The balance between 2 forces, i wonder what secret it holds
 				DisplayName: Yin Yang
 			}
 
 			TrueEnchantedSword: {
-				Tooltip: The long await magical younger brother of StarWrath and True sword family
+				Tooltip: The long awaited magical younger brother of StarWrath and True sword family
 				DisplayName: True Enchanted Sword
 			}
 
@@ -328,7 +328,7 @@ Mods: {
 			}
 
 			FrozenEnchantedSword: {
-				Tooltip: Prove to work despite it is just a ice blade on top of enchanted sword in photoshop
+				Tooltip: Proven to work despite it is just a ice blade on top of enchanted sword in photoshop
 				DisplayName: Frozen Enchanted Sword
 			}
 
@@ -343,31 +343,31 @@ Mods: {
 			}
 
 			FlamingWoodSword: {
-				Tooltip: Funny how a wooden sword got fire aspect enchantment
+				Tooltip: Funny how a wooden sword got the fire aspect enchantment
 				DisplayName: Flaming Wood Sword
 			}
 
 			EverlastingCold: {
-				Tooltip: This forever cold, so cold that it could sent the whole world back to ice age
+				Tooltip: So cold that it could send the whole world back to ice age
 				DisplayName: Everlasting Cold
 			}
 
 			PlatinumKatana: {
-				Tooltip: The best katana there is, yet
+				Tooltip: The best katana there is so far
 				DisplayName: Enhanced Katana
 			}
 
 			EnergyBlade: {
 				Tooltip:
 					'''
-					High energy vibration around the sword
-					It is sharp enough to even slash through the strongest mental like it is nothing
+					High energy vibrates around the sword
+					It is sharp enough to even slash through the strongest mental as if it was nothing
 					'''
 				DisplayName: Energy Blade
 			}
 
 			EnchantedStarfury: {
-				Tooltip: A truely unthinkable
+				Tooltip: A truly unthinkable
 				DisplayName: Enchanted Starfury
 			}
 
@@ -377,12 +377,12 @@ Mods: {
 			}
 
 			DarkCactus: {
-				Tooltip: Bat and Cactus, oh a wild love story
+				Tooltip: Bat and Cactus, a wild love story
 				DisplayName: Dark Cactus
 			}
 
 			BurningPassion: {
-				Tooltip: Brimsing with passion
+				Tooltip: Brimming with passion
 				DisplayName: Burning Passion
 			}
 
@@ -392,7 +392,7 @@ Mods: {
 			}
 
 			ZapSnapper: {
-				Tooltip: quite a zapping
+				Tooltip: Quite a zapping
 				DisplayName: Zap Snapper
 			}
 
@@ -449,7 +449,7 @@ Mods: {
 			AmethystSwotaff: {
 				Tooltip:
 					'''
-					You know, if this is all what it do...
+					You know, if this is it did...
 					Then it would be pretty disappointing...
 					Luckily, you can yeet the thing
 					'''
@@ -474,7 +474,7 @@ Mods: {
 			CursedSkull: {
 				Tooltip:
 					'''
-					Make every boss when you fight instant kill you
+					Make every boss when you fight instakill you
 					"The only way to make god acknowledge you"
 					'''
 				DisplayName: Cursed Skull
@@ -496,12 +496,12 @@ Mods: {
 			}
 
 			PocketPortal: {
-				Tooltip: Portal to another world !
+				Tooltip: Portal to another world!
 				DisplayName: Pocket Portal
 			}
 
 			PlanteraSpawn: {
-				Tooltip: Spawn Plantera, as for how 3 essence become a pot, i have no clue
+				Tooltip: Spawn Plantera. As for how 3 essence become a pot, i have no clue
 				DisplayName: Plantera Spawn
 			}
 
@@ -588,18 +588,18 @@ Mods: {
 			Note1: {
 				Tooltip:
 					'''
-					Hello, welcome to the mod, in this mod, you will be opening chest to get weapon to fight boss
-					To get you quick on the right track, let introduce you to basic mechanic to of the mod and what you should take note of
-					Chest usually contain weapon, accessories, armor, potion and some stuff you can build with with all of it is random
-					Tho in later game, you won't get stuff to build with as it was deemed unneeded, chest item progress with your progress
-					To open the chest, you simply right click it like a herb bag or treasure bags and it will give you stuff to progress
-					This mod is best played in expert mode, you would see that you get a king slime spawner in wooden chest
-					Wooden chest will always drop you 1 KS spawner, boss themselves will drop the spawner for the next boss
-					If you die while fighting a boss (do not account for boss despawn) then you will get another shot at that boss
+					Hello, welcome to the mod, in this mod, you will be opening chests to get weapons to fight bosses
+					To get you on the right track quickly, let introduce you to basic mechanic to of the mod and what you should take note of
+					Chests usually contain weapon, accessories, armor, potion and some stuff you can build with. All of it is random
+					However in the late game, you won't get stuff to build with as it was deemed unneeded. Chest items progress with your progress
+					To open the chest, you simply right click it like a herb bag or treasure bag and it will give you stuff to progress
+					This mod is best played in expert mode. You sould see that you get a king slime spawner in wooden chest
+					Wooden chest will always drop you 1 KS spawner, and the boss themselves will drop the spawner for the next boss
+					If you die while fighting a boss then you will get another shot at that boss (does not account for boss despawn)
 					There are no timer nor any rush in this mod,tho it is best if you try to fight boss as soon as possible
 					But that doesn't mean you shouldn't prepare a arena to fight boss as it is intended for you to beat boss
 					You may notice the Power Energy thing to craft King Scepter
-					All i can say about it is that you will be fighting same boss but with some special add into the fight
+					All i can say about it is that you will be fighting the same boss but with some special additions into the battle
 					for now, this is all i can cover, i will see you after King slime
 					'''
 				DisplayName: Note 1
@@ -809,7 +809,7 @@ Mods: {
 			TokenofPride: {
 				Tooltip:
 					'''
-					"Pride of having the skill to use, care little for reward"
+					"Pride: having the skill to use whatever you are given"
 					Positive Effect : Increase weapon damage by 45%
 					Negative Effect : Halves your drop from treasure chest
 					'''
@@ -819,7 +819,7 @@ Mods: {
 			TokenofGreed: {
 				Tooltip:
 					'''
-					"Greed is satified by just having, care not for weapon quality"
+					"Greed: satified by just having, caring not for weapon quality"
 					Positive Effect : Increase amount of drop by 4
 					Negative Effect : Decrease weapon damage globally by 35%
 					'''
@@ -829,11 +829,11 @@ Mods: {
 			SkillIssuedArtifact: {
 				Tooltip:
 					'''
-					"with this, nothing is impossible, even with skill issue in blood stream"
-					For each monster kill, your MaxHP will increase by 0.5 and 0.01% boost toward damage and thorn ( Multiplicative )
-					To further increase progress, by default this accessory will make monster spawn increase by CRAZY amount
-					Capped at 10 million kill so your game don't break, you can thx me for that
-					Only work with people have skill issue live up to the name
+					"with this, nothing is impossible, even with skill issue in bloodstream"
+					For each monster killed, your MaxHP will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative)
+					To further increase progress, this accessory will make monster spawns increase by CRAZY amount
+					Capped at 10 million kills so your game don't break, you can thank me for that
+					Only works with people have skill issue. lives up to the name
 					'''
 				DisplayName: Infinite Growth
 			}
@@ -841,8 +841,8 @@ Mods: {
 			GodDice: {
 				Tooltip:
 					'''
-					"The dice use by god to decide mortal fate"
-					Give you a roll for each boss kill
+					"The dice use by god to decide mortal fate"s
+					Gives you a roll for each boss kill
 					'''
 				DisplayName: God Dice
 			}
@@ -851,14 +851,14 @@ Mods: {
 				Tooltip:
 					'''
 					"Replacement of god dice"
-					On Equip : Increase amount weapon get drop from Treasure Chest by 2
+					On Equip : Increases amount of weapons from Treasure Chest by 2
 					Effect : Random effect may occur ...
 					'''
 				DisplayName: Fate Decider
 			}
 
 			BrokenArtifact: {
-				Tooltip: A far cry from it's former glory, maybe you can make something with this
+				Tooltip: A far cry from its former glory, maybe you can make something with this
 				DisplayName: Broken Artifact
 			}
 
@@ -868,7 +868,7 @@ Mods: {
 			}
 
 			ResetWonderDrug: {
-				Tooltip: Reset Wonder drug value back to normal
+				Tooltip: Resets Wonder drug value back to normal
 				DisplayName: Real Vitamin
 			}
 
@@ -888,7 +888,7 @@ Mods: {
 			}
 
 			ArtifactRemover: {
-				Tooltip: Remove the effect of artifact that you choose
+				Tooltip: Removes the effect of artifact that you choose
 				DisplayName: Artifact Remover
 			}
 
@@ -898,14 +898,14 @@ Mods: {
 			}
 
 			SuperBuilderTool: {
-				Tooltip: Hope this will make your building much quicker
+				Tooltip: This will make your building much quicker
 				DisplayName: Super Builder Tool
 			}
 
 			SwordScabbard: {
 				Tooltip:
 					'''
-					"Made for people who complain their sword isn't special"
+					"For people who complain their sword isn't special"
 					Increase melee speed by 25%
 					Release a sword slash upon swing
 					'''
@@ -915,11 +915,11 @@ Mods: {
 			ParryScabbard: {
 				Tooltip:
 					'''
-					"Made for display of skill"
+					"For displays of skill"
 					Getting hit during the attack swing will grant you 2s of immunity of damage
 					Have 6s cool down before you able to parry again
 					During parry period, you gain 10% damage
-					Only work if weapon is a sword
+					Only works if weapon is a sword
 					'''
 				DisplayName: Parry Scabbard
 			}
@@ -927,7 +927,7 @@ Mods: {
 			PlusOneBullet: {
 				Tooltip:
 					'''
-					"why have more gun when you can tape extra barrel into your gun"
+					"Why have more guns when you can tape on an extra barrel?"
 					Increase amount of bullet you shoot by 1
 					Increase weapon spread amount by 35%
 					'''
@@ -975,12 +975,12 @@ Mods: {
 			KingSlimeDelight: {
 				Tooltip:
 					'''
-					"Truely slime-da-ful"
-					Increase player Jump speed
-					Increase movement speed by 10%
-					Increase defense by 5
-					You shoot out slime spike when enemy is in range
-					You can shoot additional slime spike that deal 35% damage
+					"Truly slime-sentional"
+					Increases player Jump speed
+					Increases movement speed by 10%
+					Increases defense by 5
+					You shoot out slime spikes when enemy is in range
+					You can shoot additional slime spikes that deal 35% damage
 					'''
 				DisplayName: King Slime Delight
 			}
@@ -988,10 +988,10 @@ Mods: {
 			EvilEye: {
 				Tooltip:
 					'''
-					"Always watching, but now you know who is watching"
-					Increase defense by 10
-					Increase 5% DR and damage when above 45% hp
-					Increase movment speed and increase damage by 25% when below 45% hp
+					"They can watch, but you can watch them"
+					Increases defense by 10
+					Increases 5% DR and damage when above 45% hp
+					Increases movment speed and increase damage by 25% when below 45% hp
 					Heal 70% of player health when below 10% hp, have 2 min cooldown
 					'''
 				DisplayName: Evil Eye
@@ -1010,11 +1010,11 @@ Mods: {
 				Tooltip:
 					'''
 					"Isn't this is just rotten flesh but even more rotten ?"
-					Increase damage by 10%
-					Increase movement speed by 15%
-					Increase melee speed by 10%
+					Increases damage by 10%
+					Increases movement speed by 15%
+					Increases melee speed by 10%
 					You shoot out tiny eater for each shot
-					Upon getting hit, you will shoot out mini eater
+					Upon getting hit, you will shoot out a mini eater
 					'''
 				DisplayName: Corrupted Flesh
 			}
@@ -1049,13 +1049,13 @@ Mods: {
 				Tooltip:
 					'''
 					"Protected by the Earth"
-					Increase your max hp by 100% with additional 100 max hp
+					Increases your max hp by 100% with additional 100 max hp
 					Getting hit will make you unable to use your weapon for 6s
 					'''
 			}
 
 			TowerDestruction: {
-				Tooltip: The ultimate tower clearer
+				Tooltip: the ultimate tile annihilator
 				DisplayName: Tower Destruction
 			}
 
@@ -1081,21 +1081,21 @@ Mods: {
 
 			BigCardPacket: {
 				DisplayName: Big Card Packet
-				Tooltip: Right click to open to get 3 cards
+				Tooltip: Right click to get 3 cards
 			}
 
 			CardPacket: {
 				DisplayName: Card Packet
-				Tooltip: Right click to open to get a card
+				Tooltip: Right click to get a card
 			}
 
 			BoxOfCard: {
 				DisplayName: Box Of Card
-				Tooltip: Right click to open to get 5 cards
+				Tooltip: Right click to get 5 cards
 			}
 
 			KSNoHitReward: {
-				DisplayName: Slimey delux
+				DisplayName: Slimy deluxe
 				Tooltip: ""
 			}
 
@@ -1110,7 +1110,7 @@ Mods: {
 			}
 
 			BoCNoHitReward: {
-				DisplayName: Brain in the jar
+				DisplayName: Brain in a jar
 				Tooltip: ""
 			}
 
@@ -1293,7 +1293,7 @@ Mods: {
 						The intended way to play the mod
 						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD
 						THIS WILL MESS WITH YOUR WORLD GEN
-						it is recommend to enable this if you want to experience what the mod have to offer along with Synergy Mode
+						it is recommended to enable this if you want to experience what the mod have to offer along with Synergy Mode
 						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
 						What this mode do :
 						-Pot drop nothing
@@ -1326,9 +1326,9 @@ Mods: {
 					Label: Enraged Mode (W.I.P)
 					Tooltip:
 						'''
-						Will make every boss in the vanilla if there a special fight variant activate
-						won't drop the reward, will still require to spawn it manually using power energy to get reward
-						recommend for practicing
+						Challenge buffs for every boss that has them will activate
+						Will not drop the reward, however you can still get it by using power energy manually
+						recommended for practicing
 						'''
 				}
 
@@ -1336,9 +1336,9 @@ Mods: {
 					Label: You like to hurt yourself(W.I.P)
 					Tooltip:
 						'''
-						Will enable ForTheWorthy seeds regardless of world type, require you to play in master mode
+						Will enable ForTheWorthy seeds regardless of world type, requiring you to play in master mode
 						Upon entering a world, you will be given a broken artifact that you can craft into a stronger artifact
-						Some secret are reveal when you have certain player name
+						Some secrets are revealed when you have certain player name
 						'''
 				}
 
@@ -1346,16 +1346,16 @@ Mods: {
 					Label: ExtraChallange(W.I.P)
 					Tooltip:
 						'''
-						The first time you kill a boss, you will get a challenge added into your game, this is irrevertible
+						The first time you kill a boss, you will get a challenge added into your game. This is irrevertible
 						The next time you kill a boss, the current challenge will be swap for a random challenge
-						These mode offer no real reward or benefit, only activate if you are bored and want extra challenge
+						These mode offer no real reward or benefit, only activate if you are bored and want an extra challenge
 						This do not work with multiplayer world
 						'''
 				}
 
 				DisableWeaponOverhaul: {
 					Label: DisableWeaponOverhaul(W.I.P)
-					Tooltip: Disable the mod overhaul on weapon
+					Tooltip: Disable the mod overhaul on weapons
 				}
 			}
 		}
