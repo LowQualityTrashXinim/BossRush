@@ -97,6 +97,7 @@ Mods: {
 			GhostSlime.DisplayName: Ghost Slime
 			GooP.DisplayName: Goo
 			TowerDestructionProjectile.DisplayName: Tower Destruction Projectile
+			MusketGunProjectile.DisplayName: Musket Gun Projectile
 		}
 
 		NPCs.TrueEoC.DisplayName: True EoC

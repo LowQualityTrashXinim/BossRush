@@ -2,6 +2,9 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Global;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
+using System;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
@@ -37,10 +40,68 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
                 Projectile.Kill();
             }
         }
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, ref NPC npc, NPC.HitInfo hit, int damageDone)
+        {
+            if (modplayer.EnchantedOreSword_Musket)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ModContent.ProjectileType<MusketGunProjectile>(), Projectile.damage, 0, Projectile.whoAmI);
+            }
+            EnchantedProjectileOnHitNPC(npc, hit, damageDone);
+        }
+        public virtual void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawTrail(lightColor);
             return base.PreDraw(ref lightColor);
+        }
+    }
+    public class MusketGunProjectile : ModProjectile
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Musket);
+        public override void SetDefaults()
+        {
+            Projectile.width = 56;
+            Projectile.height = 18;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 150;
+            Projectile.penetrate = -1;
+        }
+        public override bool? CanDamage() => false;
+        int timer = 50;
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            if (!player.active || player.dead)
+            {
+                Projectile.Kill();
+            }
+            Projectile.velocity -= Projectile.velocity * .05f;
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, 500) && npc != null)
+            {
+                Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                Projectile.spriteDirection = Projectile.Center.X < npc.Center.X ? 1 : -1;
+                Projectile.rotation = velocityToNpc.ToRotation();
+                Projectile.rotation += Projectile.spriteDirection == 1 ? 0 : MathHelper.Pi;
+                if (timer <= 0)
+                {
+                    timer = 50;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.PositionOFFSET(velocityToNpc, 45f), velocityToNpc * 20f, ProjectileID.Bullet, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    return;
+                }
+            }
+            timer = BossRushUtils.CoolDown(timer);
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5f, 5f);
+                Main.dust[dust].scale = Main.rand.NextFloat(.75f, 1.5f);
+                Main.dust[dust].rotation = MathHelper.ToRadians(20f);
+            }
         }
     }
     internal class EnchantedCopperSwordP : EnchantedProjectileBase
@@ -134,7 +195,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.light = .75f;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 4;
         }
@@ -156,7 +217,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.alpha += 2;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 3;
             Projectile.position += Main.rand.NextVector2CircularEdge(200, 200);
