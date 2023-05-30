@@ -144,9 +144,13 @@ namespace BossRush.Common
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static Color MultiColor(List<Color> color)
+        public static Color MultiColor(List<Color> color, int speed)
         {
             if(color.Count < 1)
+            {
+                return Color.White;
+            }
+            if(color.Count < 2)
             {
                 return color[0];
             }
@@ -155,7 +159,24 @@ namespace BossRush.Common
                 listofMultiColor.Clear();
                 listofMultiColor = color;
             }
-            color1 = listofMultiColor[currentIndex];
+            if(listofMultiColor.Count < 1)
+            {
+                listofMultiColor = color;
+            }
+            if (color1 == color2)
+            {
+                color1 = color[currentIndex];
+                currentIndex += currentIndex + 1 >= color.Count ? color.Count : 1;
+                color2 = color[currentIndex];
+            }
+            if (color1 != color2)
+            {
+                Vector4 vec4 = new Vector4(Math.Clamp(color1.R + (color1.R == color2.R ? 0 : color1.R < color2.R ? speed : -speed), color1.R, color2.R),
+                Math.Clamp(color1.G + (color1.G == color2.G ? 0 : color1.G < color2.G ? speed : -speed), color1.G, color2.G),
+                Math.Clamp(color1.B + (color1.B == color2.B ? 0 : color1.B < color2.B ? speed : -speed), color1.B, color2.B),
+                Math.Clamp(color1.R + (color1.A == color2.A ? 0 : color1.A < color2.A ? speed : -speed), color1.A, color2.A));
+                color1 = new Color((int)vec4.X, (int)vec4.Y, (int)vec4.Z, (int)vec4.W);
+            }
             return Color.White;
         }
         static List<Color> listofMultiColor = new List<Color>();

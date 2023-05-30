@@ -39,7 +39,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            if (modplayer.EnchantedOreSword_Musket && player.ownedProjectileCounts[ModContent.ProjectileType<MusketGunProjectile>()] < 3)
+            if (modplayer.EnchantedOreSword_Musket && player.ownedProjectileCounts[ModContent.ProjectileType<MusketGunProjectile>()] < 5)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ModContent.ProjectileType<MusketGunProjectile>(), Projectile.damage, 0, Projectile.owner);
             }
