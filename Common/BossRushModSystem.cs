@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.GameContent;
 
 namespace BossRush.Common
 {
@@ -12,7 +13,7 @@ namespace BossRush.Common
         public override void PostUpdateEverything()
         {
             ChallengeGodColorAnimation();
-            YellowPulseYellowWhiteColorAnimation(); 
+            YellowPulseYellowWhiteColorAnimation();
             SynergyColorAnimation();
             RedToBlackColorAnimation();
         }
@@ -140,47 +141,42 @@ namespace BossRush.Common
         }
         /// <summary>
         /// This one will keep track somewhat, will reset if the list you put in is different
-        /// This is a semi util that does color tranfering like disco color from <see cref="Main.DiscoColor"/>
+        /// This is a semi util that does color tranfering like disco color from <see cref="Main.DiscoColor"/><br/>
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
         public static Color MultiColor(List<Color> color, int speed)
         {
-            if(color.Count < 1)
+            if (progress >= 255)
+            {
+                progress = 0;
+            }
+            else
+            {
+                progress = Math.Clamp(progress + 1 * speed, 0, 255);
+            }
+            if (color.Count < 1)
             {
                 return Color.White;
             }
-            if(color.Count < 2)
+            if (color.Count < 2)
             {
                 return color[0];
             }
-            if(!listofMultiColor.Equals(color))
-            {
-                listofMultiColor.Clear();
-                listofMultiColor = color;
-            }
-            if(listofMultiColor.Count < 1)
-            {
-                listofMultiColor = color;
-            }
-            if (color1 == color2)
+            if (color1.Equals(color2))
             {
                 color1 = color[currentIndex];
-                currentIndex += currentIndex + 1 >= color.Count ? color.Count : 1;
+                color3 = color1;
+                currentIndex = Math.Clamp((currentIndex + 1 >= color.Count) ? 0 : currentIndex + 1, 0, color.Count - 1);
                 color2 = color[currentIndex];
             }
-            if (color1 != color2)
+            if (!color1.Equals(color2))
             {
-                Vector4 vec4 = new Vector4(Math.Clamp(color1.R + (color1.R == color2.R ? 0 : color1.R < color2.R ? speed : -speed), color1.R, color2.R),
-                Math.Clamp(color1.G + (color1.G == color2.G ? 0 : color1.G < color2.G ? speed : -speed), color1.G, color2.G),
-                Math.Clamp(color1.B + (color1.B == color2.B ? 0 : color1.B < color2.B ? speed : -speed), color1.B, color2.B),
-                Math.Clamp(color1.R + (color1.A == color2.A ? 0 : color1.A < color2.A ? speed : -speed), color1.A, color2.A));
-                color1 = new Color((int)vec4.X, (int)vec4.Y, (int)vec4.Z, (int)vec4.W);
+                color1 = Color.Lerp(color3, color2, progress / 255);
             }
-            return Color.White;
+            return color1;
         }
-        static List<Color> listofMultiColor = new List<Color>();
-        static Color color1, color2;
-        static int currentIndex = 0;
+        private static int currentIndex = 0, progress = 0;
+        static Color color1 = new Color(), color2 = new Color(), color3 = new Color();
     }
 }
