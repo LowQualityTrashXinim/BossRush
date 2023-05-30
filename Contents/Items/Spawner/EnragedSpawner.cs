@@ -53,7 +53,7 @@ namespace BossRush.Contents.Items.Spawner
         {
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Color redAlpha = BossRushModSystem.MultiColor(new List<Color> { new Color(255, 0, 0, 30), new Color(0, 0, 0, 30), new Color(255, 255, 255, 30) }, 2);
+            Color redAlpha = new Color(255, 0, 0, 30);
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, position + new Vector2(2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);

@@ -4,14 +4,15 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Global;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 {
-    internal class EnchantedStarfury : ModItem, ISynergyItem
+    internal class EnchantedStarfury : SynergyModItem, ISynergyItem
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 66, 66, 32, 4f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);
+            Item.BossRushSetDefault(66, 66, 32, 4f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);
             Item.DamageType = DamageClass.Melee;
             Item.shoot = ProjectileID.EnchantedBeam;
             Item.shootSpeed = 20f;
@@ -21,6 +22,20 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             Item.UseSound = SoundID.Item1;
         }
         int switchProj = 0;
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            if(modplayer.EnchantedStarfury_SkyFacture)
+            {
+                tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_SkyFacture", $"[i:{ItemID.SkyFracture}] W.I.P"));
+            }
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if(player.HasItem(ItemID.SkyFracture))
+            {
+                modplayer.EnchantedStarfury_SkyFacture = true;
+            }
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             for (int i = 0; i < 5; i++)

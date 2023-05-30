@@ -22,6 +22,8 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool EnchantedOreSword_StarFury = false;
         public bool EnchantedOreSword_Musket = false;
+
+        public bool EnchantedStarfury_SkyFacture = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -30,6 +32,7 @@ namespace BossRush.Contents.Items.Weapon
             DarkCactus_BladeOfGrass = false;
             EnchantedOreSword_StarFury = false;
             EnchantedOreSword_Musket = false;
+            EnchantedOreSword_StarFury = false;
         }
         int check = 1;
         public override void PostUpdate()
