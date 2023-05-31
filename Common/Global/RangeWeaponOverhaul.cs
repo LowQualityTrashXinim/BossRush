@@ -84,14 +84,25 @@ namespace BossRush.Common.Global
         /// <returns></returns>
         public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
-            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.UnitX) * offSetBy;
+            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
             if (Collision.CanHitLine(position, 0, 0, position + OFFSET, 0, 0))
             {
                 return position += OFFSET;
             }
             return position;
         }
-
+        /// <summary>
+        /// Return a position Vector that got offset
+        /// </summary>
+        /// <param name="position">Original position</param>
+        /// <param name="ProjectileVelocity">Current projectile velocity </param>
+        /// <param name="offSetBy">Offset amount</param>
+        /// <returns></returns>
+        public static Vector2 IgnoreTilePositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
+        {
+            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
+            return position += OFFSET;
+        }
         /// <summary>
         /// Return a vector that got its X parameter and Y parameter change randomely
         /// </summary>

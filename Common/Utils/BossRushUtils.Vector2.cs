@@ -82,14 +82,14 @@ namespace BossRush
             X = Math.Abs(newVelocity.X);
             Y = Math.Abs(newVelocity.Y);
         }
-        public static Vector2 Vector2DistributeEvenly(this Vector2 velocity, float ProjectileAmount, float rotation, int i)
+        public static Vector2 Vector2DistributeEvenly(this Vector2 vec, float ProjectileAmount, float rotation, int i)
         {
             if (ProjectileAmount > 1)
             {
                 rotation = MathHelper.ToRadians(rotation);
-                return velocity.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
+                return vec.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
             }
-            return velocity;
+            return vec;
         }
         public static Vector2 NextVector2RotatedByRandom(this Vector2 velocity, float ToRadians)
         {
