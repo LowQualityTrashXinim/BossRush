@@ -97,6 +97,12 @@ namespace BossRush.Contents.Items.Weapon
             SpawnDustPostPreAI(player);
             return stopAI;
         }
+        /// <summary>
+        /// You should check the condition yourself
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="modplayer"></param>
+        /// <param name="runAI"></param>
         public virtual void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) { runAI = true; }
         public override void AI()
         {
@@ -105,6 +111,11 @@ namespace BossRush.Contents.Items.Weapon
             SynergyAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
             SpawnDustPostAI(player);
         }
+        /// <summary>
+        /// You should check the condition yourself
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="modplayer"></param>
         public virtual void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) { }
         public override void PostAI()
         {
@@ -113,6 +124,11 @@ namespace BossRush.Contents.Items.Weapon
             SynergyPostAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
             SpawnDustPostPostAI(player);
         }
+        /// <summary>
+        /// You should check the condition yourself
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="modplayer"></param>
         public virtual void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) { }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
