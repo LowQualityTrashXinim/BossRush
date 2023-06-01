@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.Weapon
             DarkCactus_BladeOfGrass = false;
             EnchantedOreSword_StarFury = false;
             EnchantedOreSword_Musket = false;
-            EnchantedOreSword_StarFury = false; 
+            EnchantedStarfury_SkyFacture = false; 
             EnchantedStarfury_BreakerBlade = false;
         }
         int check = 1;
@@ -132,6 +132,13 @@ namespace BossRush.Contents.Items.Weapon
         /// <param name="player"></param>
         /// <param name="modplayer"></param>
         public virtual void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) { }
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            base.ModifyHitNPC(target, ref modifiers);
+            Player player = Main.player[Projectile.owner];
+            ModifyHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, ref modifiers);
+        }
+        public virtual void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc,ref NPC.HitModifiers modifiers) { }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);

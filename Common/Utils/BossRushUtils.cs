@@ -36,23 +36,7 @@ namespace BossRush
             }
             return NameSpace.Replace(".", "/") + "/" + altName;
         }
-        public static string GetVanillaTexture<T>(int EntityType) where T : class
-        {
-            var type = typeof(T);
-            if (type == typeof(NPC))
-            {
-                return "Terraria/Images/NPC_" + EntityType;
-            }
-            if (type == typeof(Item))
-            {
-                return "Terraria/Images/Item_" + EntityType;
-            }
-            if (type == typeof(Projectile))
-            {
-                return "Terraria/Images/Projectile_" + EntityType;
-            }
-            return BossRushTexture.MISSINGTEXTURE;
-        }
+        public static string GetVanillaTexture<T>(int EntityType) where T : class => $"Terraria/Images/{typeof(T).Name}_{EntityType}";
         public static bool IsAnyVanillaBossAlive()
         {
             for (int i = 0; i < Main.maxNPCs; i++)

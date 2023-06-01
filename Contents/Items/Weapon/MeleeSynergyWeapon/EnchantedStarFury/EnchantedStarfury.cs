@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Global;
 using System.Collections.Generic;
+using System;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 {
@@ -28,12 +29,20 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             {
                 tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_SkyFacture", $"[i:{ItemID.SkyFracture}] Shower down StarFury regardless of attack and with additional sky facture"));
             }
+            if (modplayer.EnchantedStarfury_BreakerBlade)
+            {
+                tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_BreakerBlade", $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal quadruple of your weapon damage"));
+            }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.SkyFracture))
             {
                 modplayer.EnchantedStarfury_SkyFacture = true;
+            }
+            if (player.HasItem(ItemID.BreakerBlade))
+            {
+                modplayer.EnchantedStarfury_BreakerBlade = true;
             }
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
@@ -49,7 +58,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
                         Vector2 velocityTo = (aimSpread - customPos).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
                         int typeChoose = l == 0 ? ProjectileID.StarCannonStar : ProjectileID.SkyFracture;
                         Projectile.NewProjectile(source, customPos, velocityTo, typeChoose, damage * 3, knockback, player.whoAmI, i);
-                        if(!modplayer.EnchantedStarfury_SkyFacture)
+                        if (!modplayer.EnchantedStarfury_SkyFacture)
                         {
                             break;
                         }
@@ -62,10 +71,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
                 }
             }
             switchProj++;
-            //if (false)
-            //{
-            //    Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LivingEnchantedSwordProjectile>(), damage * 2, knockback, player.whoAmI);
-            //}
+            if (modplayer.EnchantedStarfury_BreakerBlade)
+            {
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LivingBreakerBladeProjectile>(), damage * 4, knockback, player.whoAmI);
+            }
             CanShootItem = false;
         }
 
@@ -121,6 +130,89 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
                 int dust = Dust.NewDust(Projectile.Center, 0, 0, dustPar, 0, 0, 0, default, Main.rand.NextFloat(1, 1.5f));
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].velocity = Main.rand.NextVector2Circular(10f, 10f);
+            }
+        }
+    }
+    class LivingBreakerBladeProjectile : SynergyModProjectile
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.BreakerBlade);
+        public override void SetDefaults()
+        {
+            Projectile.width = 80;
+            Projectile.height = 92;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 999;
+            Projectile.DamageType = DamageClass.Melee;
+        }
+        int firstframe = 0;
+        float MaxLengthX = 0;
+        float MaxLengthY = 0;
+        float MouseXPosDirection;
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if (firstframe == 0)
+            {
+                MouseXPosDirection = Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1;
+                MaxLengthX = (Main.MouseWorld - player.Center).Length();
+                MaxLengthY = MaxLengthX * .1f * -MouseXPosDirection;
+                firstframe++;
+            }
+            int duration = player.itemAnimationMax;
+            if (Projectile.timeLeft > duration)
+            {
+                Projectile.timeLeft = duration;
+            }
+            float timeleftcountbackward = duration - Projectile.timeLeft;
+            float HalfDuration = duration * 0.5f;
+            float progressX = BossRushUtils.InOutSine(timeleftcountbackward / duration);
+            float progressY;
+            if (Projectile.timeLeft < HalfDuration)
+            {
+                progressY = Projectile.timeLeft / HalfDuration;
+            }
+            else
+            {
+                progressY = timeleftcountbackward / HalfDuration;
+            }
+            progressY = BossRushUtils.InOutSine(progressY);
+            float X = MathHelper.Lerp(-20, MaxLengthX + 40, progressX);
+            float Y = MathHelper.Lerp(0, MaxLengthY, progressY);
+            Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
+            Projectile.Center = player.MountedCenter + VelocityPosition;
+            Projectile.spriteDirection = (int)MouseXPosDirection;
+            float value;
+            if (MouseXPosDirection == 1)
+            {
+                value = MathHelper.Lerp(-135, 70, progressX);
+            }
+            else
+            {
+                value = MathHelper.Lerp(120, -85, progressX);
+            }
+            Projectile.rotation = MathHelper.ToRadians(value);
+        }
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
+        {
+            npc.immune[player.whoAmI] = 6;
+        }
+        public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers)
+        {
+            if (npc.life > (int)(npc.lifeMax * .9f))
+            {
+                modifiers.SourceDamage.Base += 2.5f * Projectile.damage;
+            }
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5f, 5f);
+                Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 2.5f);
+                Main.dust[dust].rotation = MathHelper.ToRadians(20f);
             }
         }
     }
