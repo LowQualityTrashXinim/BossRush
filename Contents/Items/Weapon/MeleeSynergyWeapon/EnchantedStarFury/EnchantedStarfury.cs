@@ -156,7 +156,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             {
                 MouseXPosDirection = Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1;
                 MaxLengthX = (Main.MouseWorld - player.Center).Length();
-                MaxLengthY = MaxLengthX * .1f * -MouseXPosDirection;
+                MaxLengthY = MaxLengthX * .3f * -MouseXPosDirection;
                 firstframe++;
             }
             int duration = player.itemAnimationMax;
@@ -185,13 +185,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             float value;
             if (MouseXPosDirection == 1)
             {
-                value = MathHelper.Lerp(-135, 70, progressX);
+                value = MathHelper.Lerp(-135, 30, progressX) + 10;
             }
             else
             {
-                value = MathHelper.Lerp(120, -85, progressX);
+                value = MathHelper.Lerp(30, -135, progressX) - 90;
             }
-            Projectile.rotation = MathHelper.ToRadians(value);
+            Projectile.rotation = MathHelper.ToRadians(value) + Projectile.velocity.ToRotation();
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {

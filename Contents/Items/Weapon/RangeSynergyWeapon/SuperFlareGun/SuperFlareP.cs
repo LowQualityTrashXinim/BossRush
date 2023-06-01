@@ -37,7 +37,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
             if (Projectile.ai[0] >= 3)
             {
                 Vector2 RandomPos = Projectile.Center + Main.rand.NextVector2Circular(50f, 50f);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), RandomPos, Vector2.Zero, ModContent.ProjectileType<ExplodeProjectile>(), 0, 0, Projectile.owner);
+                //Projectile.NewProjectile(Projectile.GetSource_FromThis(), RandomPos, Vector2.Zero, ModContent.ProjectileType<ExplodeProjectile>(), 0, 0, Projectile.owner);
                 Projectile.ai[0] = 0;
             }
         }
@@ -85,18 +85,17 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
             Projectile.ai[0]++;
             if (Projectile.ai[0] >= 50)
             {
-                if (Projectile.ai[0] == 51)
-                {
-                    int RandomDust = Main.rand.Next();
-                    for (int i = 0; i < 55; i++)
-                    {
-                        Vector2 Rotate = Main.rand.NextVector2CircularEdge(10f, 10f);
-                        int dustnumber = Dust.NewDust(Projectile.Center, 10, 10, RandomDust, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
-                        Main.dust[dustnumber].noGravity = true;
-                    }
-                }
-                Projectile.netUpdate = true;
                 Projectile.damage = 50;
+            }
+        }
+        public override void Kill(int timeLeft)
+        {
+            int RandomDust = Main.rand.Next();
+            for (int i = 0; i < 55; i++)
+            {
+                Vector2 Rotate = Main.rand.NextVector2CircularEdge(10f, 10f);
+                int dustnumber = Dust.NewDust(Projectile.Center, 10, 10, RandomDust, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1f, 1.5f));
+                Main.dust[dustnumber].noGravity = true;
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
