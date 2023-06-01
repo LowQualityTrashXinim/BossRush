@@ -206,11 +206,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
         }
         public override void Kill(int timeLeft)
         {
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 60; i++)
             {
                 int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
                 Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5f, 5f);
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(6f,6f);
                 Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 2.5f);
                 Main.dust[dust].rotation = MathHelper.ToRadians(20f);
             }
