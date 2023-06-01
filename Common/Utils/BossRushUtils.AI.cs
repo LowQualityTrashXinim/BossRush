@@ -119,21 +119,8 @@ namespace BossRush
         {
             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, velocity, type, projectile.damage, projectile.knockBack, projectile.owner);
         }
-        /// <summary>
-        /// Use ISwingProjectileType interface along with this method
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="DirectionToSwing"></param>
-        /// <param name="firstFrame"></param>
-        /// <param name="swing"></param>
-        public static void ProjectileSwordSwingAI(Projectile projectile, ref Vector2 DirectionToSwing, ref int firstFrame, int swing = 1)
+        public static void ProjectileSwordSwingAI(Projectile projectile, Player player, Vector2 PositionFromMouseToPlayer, int swing = 1)
         {
-            Player player = Main.player[projectile.owner];
-            if (firstFrame == 0)
-            {
-                DirectionToSwing = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                firstFrame++;
-            }
             if (projectile.timeLeft > player.itemAnimationMax)
             {
                 projectile.timeLeft = player.itemAnimationMax;
@@ -142,11 +129,11 @@ namespace BossRush
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             if (swing == -1)
             {
-                percentDone = (1 - percentDone);
+                percentDone = 1 - percentDone;
             }
             percentDone = InOutExpo(Math.Clamp(percentDone, 0, 1));
             projectile.spriteDirection = player.direction;
-            float baseAngle = DirectionToSwing.ToRotation();
+            float baseAngle = PositionFromMouseToPlayer.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
             float start = baseAngle + angle;
             float end = baseAngle - angle;
@@ -156,11 +143,10 @@ namespace BossRush
             projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
         }
-        public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Projectile projectile)
+        public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player, int width, int height)
         {
-            Player player = Main.player[projectile.owner];
             Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
-            float length = new Vector2(projectile.width, projectile.height).Length() * player.GetAdjustedItemScale(player.HeldItem);
+            float length = new Vector2(width, height).Length() * player.GetAdjustedItemScale(player.HeldItem);
             Vector2 endPos = handPos;
             endPos *= length;
             handPos += player.MountedCenter;
@@ -171,10 +157,5 @@ namespace BossRush
         }
 
         public static int CoolDown(int timer) => timer > 0 ? --timer : 0;
-    }
-    public interface SwingProjectileType
-    {
-        public Vector2 DirectionToSwing { get; set; }
-        public int firstframe { get; set; }
     }
 }

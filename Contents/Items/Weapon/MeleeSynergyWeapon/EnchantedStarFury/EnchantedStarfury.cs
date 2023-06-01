@@ -216,32 +216,4 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             }
         }
     }
-    class LivingEnchantedSwordProjectile : SynergyModProjectile
-    {
-        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.EnchantedSword);
-        public override void SetDefaults()
-        {
-            Projectile.width = Projectile.height = 34;
-            Projectile.friendly = true;
-            Projectile.penetrate = 1;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = 100;
-        }
-        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
-        {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-            base.SynergyAI(player, modplayer);
-        }
-        public override void Kill(int timeLeft)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                Vector2 offsetCenter = Projectile.Center.IgnoreTilePositionOFFSET(Projectile.velocity.Vector2DistributeEvenly(5, 120, i), -400);
-                Vector2 velocity = (Projectile.Center - offsetCenter).SafeNormalize(Vector2.Zero) * 10;
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), offsetCenter, velocity, ProjectileID.EnchantedBeam, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Main.projectile[proj].tileCollide = false;
-            }
-            base.Kill(timeLeft);
-        }
-    }
 }

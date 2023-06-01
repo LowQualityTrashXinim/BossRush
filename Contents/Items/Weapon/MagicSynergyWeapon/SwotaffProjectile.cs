@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
@@ -18,7 +19,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Projectile.DamageType = DamageClass.Melee;
         }
         Vector2 PosToGo;
-        int FirstFrame = 0;
         bool isAlreadyHeldDown = false;
         bool isAlreadyReleased = false;
         int countdownBeforeReturn = 100;
@@ -27,9 +27,20 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         int projectileBelongToItem;
         Player player;
         bool isAlreadySpinState = false;
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            player = Main.player[Projectile.owner];
+            if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1 || player.altFunctionUse == 2)
+            {
+                PosToGo = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
+                return;
+            }
+            projectileBelongToItem = player.HeldItem.type;
+            PosToGo = Main.MouseWorld;
+        }
         public override void AI()
         {
-            player = Main.player[Projectile.owner];
             if (player.altFunctionUse == 2 || isAlreadySpinState)
             {
                 SpinAroundPlayer();
@@ -38,7 +49,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             }
             if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1)
             {
-                BossRushUtils.ProjectileSwordSwingAI(Projectile, ref PosToGo, ref FirstFrame, (int)Projectile.ai[0]);
+                BossRushUtils.ProjectileSwordSwingAI(Projectile, player, PosToGo, (int)Projectile.ai[0]);
                 return;
             }
             SpinAtCursorAI();
@@ -56,17 +67,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             {
                 return;
             }
-            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Projectile);
+            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Main.player[Projectile.owner], Projectile.width, Projectile.height);
         }
         private void SpinAtCursorAI()
         {
             Item item = player.HeldItem;
-            if (FirstFrame == 0)
-            {
-                projectileBelongToItem = item.type;
-                PosToGo = Main.MouseWorld;
-                FirstFrame++;
-            }
             Vector2 length = PosToGo - Projectile.Center;
             if (Main.mouseLeft && !isAlreadyHeldDown && !isAlreadyReleased)
             {
@@ -125,11 +130,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         private void SpinAroundPlayer()
         {
-            if (FirstFrame == 0)
-            {
-                PosToGo = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-                FirstFrame++;
-            }
             player.direction = PosToGo.X > 0 ? 1 : -1;
             float maxProgress = player.itemAnimationMax * 2f;
             if (Projectile.timeLeft > maxProgress)

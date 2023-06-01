@@ -15,26 +15,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         }
         public override void SetDefaults()
         {
-            Item.width = 64;
-            Item.height = 62;
-
-            Item.damage = 27;
-            Item.knockBack = 0f;
-            Item.useTime = 30;
-            Item.useAnimation = 30;
-
-            Item.shoot = ModContent.ProjectileType<EnergyBladeProjectile>();
-            Item.shootSpeed = 0;
-
-            Item.noMelee = true;
-            Item.noUseGraphic = true;
+            Item.BossRushDefaultMeleeCustomProjectile(64, 62, 21, 0, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<EnergyBladeProjectile>(), true);
             Item.rare = ItemRarityID.Orange;
-            Item.DamageType = DamageClass.Melee;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.autoReuse = true;
             Item.value = Item.buyPrice(gold: 50);
             Item.useTurn = false;
-
             Item.UseSound = SoundID.Item1;
         }
         public override bool CanUseItem(Player player)
@@ -75,15 +59,20 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             target.immune[Projectile.owner] = 0;
         }
         Vector2 data;
-        int FirstFrameOfAi = 0;
+        Player player;
+        public override void OnSpawn(IEntitySource source)
+        {
+            player = Main.player[Projectile.owner];
+            data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
+        }
         public override void AI()
         {
             frameCounter();
-            BossRushUtils.ProjectileSwordSwingAI(Projectile,ref data, ref FirstFrameOfAi, 1);
+            BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
-            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Projectile);
+            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Main.player[Projectile.owner], Projectile.width, Projectile.height);
         }
         public void frameCounter()
         {

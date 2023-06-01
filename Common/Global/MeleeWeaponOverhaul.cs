@@ -387,19 +387,7 @@ namespace BossRush.Common.Global
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
-                float length = new Vector2(item.width, item.height).Length() * player.GetAdjustedItemScale(item);
-                Vector2 endPos = handPos * (length + PLAYERARMLENGTH);
-                if (modPlayer.ComboNumber == 2 && item.useStyle == BossRushUseStyle.Poke)
-                {
-                    handPos.Y += 20;
-                    endPos.Y -= handPos.Y;
-                }
-                handPos += player.MountedCenter;
-                endPos += player.MountedCenter;
-                (int X1, int X2) = BossRushUtils.Order(handPos.X, endPos.X);
-                (int Y1, int Y2) = BossRushUtils.Order(handPos.Y, endPos.Y);
-                hitbox = new Rectangle(X1 - 2, Y1 - 2, X2 - X1 + 2, Y2 - Y1 + 2);
+                BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
                 modPlayer.SwordHitBox = hitbox;
             }
         }
