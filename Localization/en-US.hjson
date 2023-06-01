@@ -578,36 +578,6 @@ Mods: {
 				DisplayName: Berserker's Elixir
 			}
 
-			Note3: {
-				Tooltip: Congrats
-				DisplayName: Note3
-			}
-
-			Note2: {
-				DisplayName: Note 2
-				Tooltip: ""
-			}
-
-			Note1: {
-				Tooltip:
-					'''
-					Hello, welcome to the mod, in this mod, you will be opening chests to get weapons to fight bosses
-					To get you on the right track quickly, let introduce you to basic mechanic to of the mod and what you should take note of
-					Chests usually contain weapon, accessories, armor, potion and some stuff you can build with. All of it is random
-					However in the late game, you won't get stuff to build with as it was deemed unneeded. Chest items progress with your progress
-					To open the chest, you simply right click it like a herb bag or treasure bag and it will give you stuff to progress
-					This mod is best played in expert mode. You sould see that you get a king slime spawner in wooden chest
-					Wooden chest will always drop you 1 KS spawner, and the boss themselves will drop the spawner for the next boss
-					If you die while fighting a boss then you will get another shot at that boss (does not account for boss despawn)
-					There are no timer nor any rush in this mod,tho it is best if you try to fight boss as soon as possible
-					But that doesn't mean you shouldn't prepare a arena to fight boss as it is intended for you to beat boss
-					You may notice the Power Energy thing to craft King Scepter
-					All i can say about it is that you will be fighting the same boss but with some special additions into the battle
-					for now, this is all i can cover, i will see you after King slime
-					'''
-				DisplayName: Note 1
-			}
-
 			TrueKingSlimeTrophy: {
 				Tooltip: ""
 				DisplayName: True King Slime Trophy
