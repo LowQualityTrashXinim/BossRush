@@ -60,10 +60,12 @@ namespace BossRush.Contents.Items.Card
             }
             if (CardStats is null)
             {
+                tooltips.Add(new TooltipLine(Mod, "statsBugged", "It is appear that the card stats got corrupted or won't save !"));
                 return;
             }
             if (CardStats.Count < 1)
             {
+                tooltips.Add(new TooltipLine(Mod, "statsBugged", "It is appear that the card stats got corrupted or won't save !"));
                 return;
             }
             for (int i = 0; i < CardStats.Count; i++)
