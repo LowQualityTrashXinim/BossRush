@@ -11,8 +11,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using System.Net.Sockets;
-using BossRush.Contents.Items.Artifact;
 using System.IO;
 
 namespace BossRush.Contents.Items.Card
@@ -70,17 +68,11 @@ namespace BossRush.Contents.Items.Card
             }
             for (int i = 0; i < CardStats.Count; i++)
             {
-                if (DoesStatsRequiredWholeNumber(CardStats[i]))
-                {
-                    TooltipLine line1 = new TooltipLine(Mod, "stats", $"Increase {CardStatsNumber[i]} {CardStats[i]}");
-                    tooltips.Add(line1);
-                    continue;
-                }
-                int Fullnum = (int)(CardStatsNumber[i] * 100);
-                TooltipLine line = new TooltipLine(Mod, "stats", $"Increase {Fullnum}% {CardStats[i]}");
+                TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], CardStatsNumber[i]));
                 tooltips.Add(line);
             }
         }
+        private string StatNumberAsText(PlayerStats stat, float number) => DoesStatsRequiredWholeNumber(stat) ? $"+{number} {stat}" : $"+{(int)(number * 100)}% {stat}";
         protected PlayerStats SetStatsToAddBaseOnTier()
         {
             List<PlayerStats> list = new List<PlayerStats>();
@@ -195,6 +187,7 @@ namespace BossRush.Contents.Items.Card
             }
             for (int i = 0; i < CardStats.Count; i++)
             {
+                int offset = i * 20;
                 switch (CardStats[i])
                 {
                     case PlayerStats.MeleeDMG:
@@ -254,7 +247,7 @@ namespace BossRush.Contents.Items.Card
                     default:
                         break;
                 }
-                //CombatText.NewText(new Rectangle((int)player.Center.X, (int)player.Center.Y, (int)player.Center.X, (int)player.Center.Y), Color.White, $"+{CardStatsNumber[i]} {CardStats[i]}");
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.White, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offset);
             }
             return true;
         }

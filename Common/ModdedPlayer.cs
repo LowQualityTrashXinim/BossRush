@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Note;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
@@ -115,7 +114,6 @@ namespace BossRush.Common
             {
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
-                items.Add(new Item(ModContent.ItemType<Note1>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
             {

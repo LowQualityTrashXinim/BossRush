@@ -10,7 +10,6 @@ using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDeligh
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Note;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
@@ -42,7 +41,6 @@ namespace BossRush.Common.Global
                 npcLoot.Add(KSE);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<StoneTreasureChest>()));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Note2>()));
                 npcLoot.Add(ExpertVSnormal);
             }
             if (npc.type == NPCID.EyeofCthulhu)

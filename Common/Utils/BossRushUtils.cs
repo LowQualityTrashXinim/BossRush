@@ -5,7 +5,6 @@ using BossRush.Texture;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
 
 namespace BossRush
@@ -56,6 +55,20 @@ namespace BossRush
             }
             return false;
         }
+        public static void CombatTextRevamp(Rectangle location, Color color, string combatMessage, int offsetposY = 0, bool dramatic = false, bool dot = false)
+        {
+            int drama = 0;
+            if (dramatic)
+            {
+                drama = 1;
+            }
+            int text = CombatText.NewText(new Rectangle(), color, combatMessage);
+            CombatText cbtext = Main.combatText[text];
+            Vector2 vector = FontAssets.CombatText[drama].Value.MeasureString(cbtext.text);
+            cbtext.position.X = location.X + location.Width * 0.5f - vector.X * 0.5f;
+            cbtext.position.Y = location.Y + offsetposY + location.Height * 0.25f - vector.Y * 0.5f;
+            cbtext.lifeTime += 30;
+        }
         /// <summary>
         /// Use to order 2 values from smallest to biggest
         /// </summary>
@@ -80,7 +93,7 @@ namespace BossRush
             List<float> ListOfDistance = new List<float>();
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active 
+                if (Main.npc[i].active
                     && CompareSquareFloatValue(position, Main.npc[i].Center, distance)
                     && Main.npc[i].CanBeChasedBy()
                     && !Main.npc[i].friendly)
@@ -108,7 +121,7 @@ namespace BossRush
             List<float> finalflag = flag;
             for (int i = 0; i < flag.Count;)
             {
-            float index = finalflag[i];
+                float index = finalflag[i];
                 for (int l = i + 1; l < flag.Count; ++l)
                 {
                     if (index > flag[l])
@@ -126,8 +139,8 @@ namespace BossRush
             List<Vector2> vector2List = new List<Vector2>();
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active 
-                    && CompareSquareFloatValue(Main.npc[i].Center, position, distance) 
+                if (Main.npc[i].active
+                    && CompareSquareFloatValue(Main.npc[i].Center, position, distance)
                     && Main.npc[i].CanBeChasedBy()
                     && !Main.npc[i].friendly
                     )
@@ -158,9 +171,9 @@ namespace BossRush
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npcLocal = Main.npc[i];
-                if (npcLocal.active 
-                    && CompareSquareFloatValue(npcLocal.Center, position, distance) 
-                    && npcLocal.CanBeChasedBy() 
+                if (npcLocal.active
+                    && CompareSquareFloatValue(npcLocal.Center, position, distance)
+                    && npcLocal.CanBeChasedBy()
                     && npcLocal.friendly)
                 {
                     localNPC.Add(npcLocal);
