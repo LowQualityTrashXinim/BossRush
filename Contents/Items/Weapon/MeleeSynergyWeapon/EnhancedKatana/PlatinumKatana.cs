@@ -39,12 +39,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
         protected virtual float HoldoutRangeMin => 10f;
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Projectile.type] = 8;
+            Main.projFrames[Projectile.type] = 10;
         }
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.width = 40; Projectile.height = 54;
+            Projectile.width = 80; Projectile.height = 104;
             Projectile.penetrate = -1;
             Projectile.light = 0.1f;
             Projectile.tileCollide = false;
