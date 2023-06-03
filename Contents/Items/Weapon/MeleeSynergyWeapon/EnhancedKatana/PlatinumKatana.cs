@@ -44,20 +44,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
         public override void SetDefaults()
         {
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.width = 80; Projectile.height = 104;
+            Projectile.width = 80; 
+            Projectile.height = 104;
             Projectile.penetrate = -1;
             Projectile.light = 0.1f;
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.wet = false;
-        }
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
-            Vector2 Direction = (Projectile.rotation + MathHelper.ToRadians(90)).ToRotationVector2() * 60;
-            Vector2 Head = Projectile.Center + Direction;
-            Vector2 End = Projectile.Center - Direction;
-            float point = 0f;
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Head, End, Projectile.width, ref point);
         }
         public override void AI()
         {
@@ -105,15 +98,5 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
         {
             target.immune[Projectile.owner] = 8;
         }
-        //public override bool PreDraw(ref Color lightColor)
-        //{
-        //    Main.instance.LoadProjectile(Projectile.type);
-        //    Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-        //    Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-        //    Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-        //    SpriteEffects spriteEffects = Projectile.ai[0] % 2 == 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
-        //    Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
-        //    return false;
-        //}
     }
 }

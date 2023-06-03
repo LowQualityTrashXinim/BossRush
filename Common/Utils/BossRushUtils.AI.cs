@@ -5,6 +5,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.Utils;
 
 namespace BossRush
 {
@@ -145,8 +146,8 @@ namespace BossRush
         }
         public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player, int width, int height)
         {
-            Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
             float length = new Vector2(width, height).Length() * player.GetAdjustedItemScale(player.HeldItem);
+            Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
             Vector2 endPos = handPos;
             endPos *= length;
             handPos += player.MountedCenter;
@@ -155,7 +156,6 @@ namespace BossRush
             (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
             hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
         }
-
-        public static int CoolDown(int timer) => timer > 0 ? --timer : 0;
+        public static int CoolDown(int timer, int timeDecrease = 1) => timer > 0 ? timer - timeDecrease : 0;
     }
 }

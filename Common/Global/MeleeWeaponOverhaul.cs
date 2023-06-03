@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
+using BossRush.Common.Utils;
 
 namespace BossRush.Common.Global
 {
@@ -20,8 +21,6 @@ namespace BossRush.Common.Global
     }
     internal class MeleeWeaponOverhaul : GlobalItem
     {
-
-        public const float PLAYERARMLENGTH = 12f;
         public override void SetDefaults(Item item)
         {
             base.SetDefaults(item);
@@ -508,36 +507,9 @@ namespace BossRush.Common.Global
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
             Poke2(player, modPlayer, percentDone);
         }
-        private void FastThurst(Player player, MeleeOverhaulPlayer modPlayer)
-        {
-            float percentDone = player.itemAnimation / (float)player.itemAnimationMax * .33333f;
-            float firstThrust = player.itemAnimationMax / 3f;
-            float secondThrust = player.itemAnimationMax * 2 / 3f;
-            modPlayer.CountAmountOfThrustDid = 1;
-            if (player.itemAnimation >= firstThrust)
-            {
-                modPlayer.CountAmountOfThrustDid = 2;
-                --percentDone;
-            }
-            if (player.itemAnimation >= secondThrust)
-            {
-                modPlayer.CountAmountOfThrustDid = 3;
-                --percentDone;
-            }
-            percentDone = MathHelper.Clamp(percentDone, 0f, 1f);
-            Poke(player, modPlayer, percentDone);
-        }
         private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
-            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(modPlayer.mouseLastPosition.ToRotation());
-            player.itemRotation = poke.ToRotation();
-            player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
-            player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
-        }
-        private void Poke(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
-        {
-            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(modPlayer.RotateThurst * player.direction);
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation());
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
@@ -578,7 +550,7 @@ namespace BossRush.Common.Global
             player.itemRotation = currentAngle;
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * PLAYERARMLENGTH;
+            player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
         }
     }
     public class MeleeOverhaulPlayer : ModPlayer
@@ -587,42 +559,20 @@ namespace BossRush.Common.Global
         public int ComboNumber = 0;
         public Rectangle SwordHitBox;
         public int delaytimer = 10;
-        public int CountAmountOfThrustDid = 1;
         public int oldHeldItem;
         public int CountDownToResetCombo = 0;
-        public float RotateThurst;
         public int MouseXPosDirection = 1;
-        public Vector2 mouseLastPosition = Vector2.Zero;
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
-            if (item.type != oldHeldItem)
+            BossRushUtilsPlayer modplayer = Player.GetModPlayer<BossRushUtilsPlayer>();
+            if (!modplayer.IsPlayerStillUsingTheSameItem)
             {
                 ComboNumber = 0;
             }
-            //if (item.useStyle == BossRushUseStyle.Poke && count == 1)
-            //{
-            //    switch (CountAmountOfThrustDid)
-            //    {
-            //        case 1:
-            //            RotateThurst = MathH.ToRadByFiveTeen;
-            //            break;
-            //        case 2:
-            //            RotateThurst = 0;
-            //            break;
-            //        case 3:
-            //            RotateThurst = MathHelper.TwoPi - MathH.ToRadByFiveTeen;
-            //            break;
-            //    }
-            //}
-            //else
-            //{
-            //    RotateThurst = 0;
-            //}
-            //useStyle system handle
-            delaytimer -= delaytimer > 0 ? 1 : 0;
-            CountDownToResetCombo -= CountDownToResetCombo > 0 ? 1 : 0;
-            iframeCounter -= iframeCounter > 0 ? 1 : 0;
+            delaytimer = BossRushUtils.CoolDown(delaytimer);
+            CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
+            iframeCounter = BossRushUtils.CoolDown(iframeCounter);
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
                 item.noMelee
                 )
@@ -634,7 +584,7 @@ namespace BossRush.Common.Global
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    int dust = Dust.NewDust(mouseLastPosition, 0, 0, DustID.GemRuby);
+                    int dust = Dust.NewDust(modplayer.MouseLastPositionBeforeAnimation, 0, 0, DustID.GemRuby);
                     Main.dust[dust].velocity = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * Main.rand.NextFloat(2.5f, 4f);
                     Main.dust[dust].noGravity = true;
                 }
@@ -642,7 +592,7 @@ namespace BossRush.Common.Global
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
                 delaytimer = (int)(Player.itemAnimationMax * 1.2f);
-                ExecuteSpecialComboOnStart();
+                ExecuteSpecialComboOnStart(modplayer);
             }
             if (Player.ItemAnimationActive)
             {
@@ -661,14 +611,6 @@ namespace BossRush.Common.Global
                 ComboHandleSystem();
                 AlreadyHitNPC = false;
                 CanPlayerBeDamage = true;
-            }
-            if (!Player.ItemAnimationActive || ComboNumber != 2)
-            {
-                mouseLastPosition = Main.MouseWorld;
-                //if (!BossRushUtils.CompareSquareFloatValue(mouseLastPosition, Player.Center, 550))
-                //{
-                //    mouseLastPosition = mouseLastPosition.LimitedPosition(Player.Center, 550);
-                //}
             }
         }
         bool comboExecuteWithDash = false;
@@ -704,7 +646,7 @@ namespace BossRush.Common.Global
             || IsWallBossAlive()
             || ComboNumber != 2
             || !Main.mouseRight;
-        private void ExecuteSpecialComboOnStart()
+        private void ExecuteSpecialComboOnStart(BossRushUtilsPlayer modplayer)
         {
             if (ComboConditionChecking())
             {
@@ -714,7 +656,7 @@ namespace BossRush.Common.Global
             comboExecuteWithDash = true;
             Player.controlLeft = false;
             Player.controlRight = false;
-            Vector2 Toward = mouseLastPosition - Player.Center;
+            Vector2 Toward = modplayer.MouseLastPositionBeforeAnimation - Player.Center;
             Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / Player.itemAnimationMax);
         }
         private bool CanAttack(NPC npc)
@@ -763,7 +705,6 @@ namespace BossRush.Common.Global
             if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
             {
                 data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
-                oldHeldItem = item.type;
             }
             if (Player.ItemAnimationActive)
             {
