@@ -55,6 +55,15 @@ namespace BossRush
             }
             return false;
         }
+        /// <summary>
+        /// Spawn combat text above player without the random Y position
+        /// </summary>
+        /// <param name="location">player hitbox</param>
+        /// <param name="color"></param>
+        /// <param name="combatMessage"></param>
+        /// <param name="offsetposY"></param>
+        /// <param name="dramatic"></param>
+        /// <param name="dot"></param>
         public static void CombatTextRevamp(Rectangle location, Color color, string combatMessage, int offsetposY = 0, bool dramatic = false, bool dot = false)
         {
             int drama = 0;
@@ -62,7 +71,7 @@ namespace BossRush
             {
                 drama = 1;
             }
-            int text = CombatText.NewText(new Rectangle(), color, combatMessage);
+            int text = CombatText.NewText(new Rectangle(), color, combatMessage, dramatic, dot);
             CombatText cbtext = Main.combatText[text];
             Vector2 vector = FontAssets.CombatText[drama].Value.MeasureString(cbtext.text);
             cbtext.position.X = location.X + location.Width * 0.5f - vector.X * 0.5f;

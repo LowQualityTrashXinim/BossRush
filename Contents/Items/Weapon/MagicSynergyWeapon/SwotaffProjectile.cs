@@ -43,12 +43,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         {
             if (player.altFunctionUse == 2 || isAlreadySpinState)
             {
+                player.heldProj = Projectile.whoAmI;
                 SpinAroundPlayer();
                 isAlreadySpinState = true;
                 return;
             }
             if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1)
             {
+                player.heldProj = Projectile.whoAmI;
                 BossRushUtils.ProjectileSwordSwingAI(Projectile, player, PosToGo, (int)Projectile.ai[0]);
                 return;
             }

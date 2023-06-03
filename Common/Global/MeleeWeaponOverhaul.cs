@@ -430,14 +430,14 @@ namespace BossRush.Common.Global
             }
             return useTimeMultiplierOnCombo;
         }
-        public override void UseStyle(Item Item, Player player, Rectangle heldItemFrame)
+        public override void UseStyle(Item item, Player player, Rectangle heldItemFrame)
         {
-            if (Item.noMelee)
+            if (item.noMelee)
             {
                 return;
             }
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-            switch (Item.useStyle)
+            switch (item.useStyle)
             {
                 case BossRushUseStyle.Swipe:
                     switch (modPlayer.ComboNumber)
@@ -452,7 +452,7 @@ namespace BossRush.Common.Global
                             CircleSwingAttack(player, modPlayer);
                             break;
                     }
-                    Item.noUseGraphic = false;
+                    item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.Poke:
                     switch (modPlayer.ComboNumber)
@@ -467,11 +467,11 @@ namespace BossRush.Common.Global
                             StrongThrust(player, modPlayer);
                             break;
                     }
-                    Item.noUseGraphic = false;
+                    item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.GenericSwingDownImprove:
                     SwipeAttack(player, modPlayer, 1);
-                    Item.noUseGraphic = false;
+                    item.noUseGraphic = false;
                     break;
                 default:
                     break;
