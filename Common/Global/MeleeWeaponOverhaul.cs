@@ -413,7 +413,7 @@ namespace BossRush.Common.Global
             {
                 if(modPlayer.ComboNumber == 2)
                 {
-                    useTimeMultiplierOnCombo += .35f;
+                    useTimeMultiplierOnCombo -= .25f;
                 }
             }
             if (item.useStyle == BossRushUseStyle.Poke)
@@ -424,7 +424,7 @@ namespace BossRush.Common.Global
                 }
                 if (modPlayer.ComboNumber == 2)
                 {
-                    useTimeMultiplierOnCombo += .35f;
+                    useTimeMultiplierOnCombo += .25f;
                 }
             }
             return useTimeMultiplierOnCombo;
@@ -538,10 +538,9 @@ namespace BossRush.Common.Global
         private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            percentDone = BossRushUtils.InExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float start = baseAngle + MathHelper.PiOver2 * player.direction;
-            float end = baseAngle - (MathHelper.TwoPi + MathHelper.PiOver2) * player.direction;
+            float end = baseAngle - MathHelper.TwoPi * player.direction;
             Swipe(start, end, percentDone, player);
         }
         private void Swipe(float start, float end, float percentDone, Player player)
