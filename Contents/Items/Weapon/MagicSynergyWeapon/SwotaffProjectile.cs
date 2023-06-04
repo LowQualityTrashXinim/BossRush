@@ -59,6 +59,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         protected virtual int IframeIgnore() => 6;
         protected virtual int AltAttackAmountProjectile() => 8;
         protected virtual int? AltAttackProjectileType() => null;
+        protected virtual int? DustTypeForTrail() => null;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = IframeIgnore();
@@ -154,7 +155,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         private void SpawnDustTrailDelay()
         {
-            int dust = Dust.NewDust(player.Center.PositionOFFSET(Projectile.rotation.ToRotationVector2(), 50), 0, 0, DustID.GemAmethyst);
+            int dustType = DustTypeForTrail() ?? DustID.ManaRegeneration;
+            int dust = Dust.NewDust(player.Center.PositionOFFSET(Projectile.rotation.ToRotationVector2(), 50), 0, 0, dustType);
             Main.dust[dust].noGravity = true;
             Main.dust[dust].scale = 0.1f;
             Main.dust[dust].velocity = Projectile.rotation.ToRotationVector2() * 2f;

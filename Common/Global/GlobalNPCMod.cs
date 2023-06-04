@@ -483,7 +483,7 @@ namespace BossRush.Common.Global
             }
             if (npc.type == NPCID.CultistBoss)
             {
-                npc.lifeMax *= 2;
+                npc.lifeMax += 10000;
             }
         }
         public override void PostAI(NPC npc)
