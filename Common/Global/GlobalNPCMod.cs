@@ -280,17 +280,6 @@ namespace BossRush.Common.Global
             }
             npcLoot.Add(IsABoss);
         }
-        public override void SetDefaults(NPC npc)
-        {
-            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
-            {
-                return;
-            }
-            if (npc.boss)
-            {
-                npc.lavaImmune = true;
-            }
-        }
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
             if ((spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
@@ -480,6 +469,88 @@ namespace BossRush.Common.Global
                 }
                 Player player = Main.player[playerIndex];
                 player.GetModPlayer<GamblePlayer>().Roll++;
+            }
+        }
+        public override void SetDefaults(NPC npc)
+        {
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
+            if (npc.boss)
+            {
+                npc.lavaImmune = true;
+            }
+            if (npc.type == NPCID.CultistBoss)
+            {
+                npc.lifeMax *= 2;
+            }
+        }
+        public override void PostAI(NPC npc)
+        {
+            base.PostAI(npc);
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
+            if (npc.type == NPCID.CultistBoss)
+            {
+                if (npc.ai[0] == 5f)
+                {
+                    if (npc.ai[1] >= 120f)
+                    {
+                        npc.chaseable = true;
+                        npc.ai[0] = 0f;
+                        npc.ai[1] = 0f;
+                        npc.ai[3] += 1f;
+                        npc.velocity = Vector2.Zero;
+                        npc.netUpdate = true;
+                    }
+                }
+            }
+        }
+    }
+    public class GlobalProjectileMod : GlobalProjectile
+    {
+        public override void SetDefaults(Projectile entity)
+        {
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
+            base.SetDefaults(entity);
+        }
+        public override void PostAI(Projectile projectile)
+        {
+            base.PostAI(projectile);
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
+            if (projectile.type != ProjectileID.CultistRitual)
+            {
+                return;
+            }
+            if (projectile.ai[1] != -1f && Main.netMode != 1)
+            {
+                if (projectile.ai[0] == 100f)
+                {
+                    if (!NPC.AnyNPCs(454))
+                        projectile.ai[1] = NPC.NewNPC(NPC.InheritSource(projectile), (int)projectile.Center.X, (int)projectile.Center.Y, 454);
+                    else
+                        projectile.ai[1] = NPC.NewNPC(NPC.InheritSource(projectile), (int)projectile.Center.X, (int)projectile.Center.Y, 521);
+                }
+                if (projectile.ai[0] == 110f)
+                {
+                    if (!NPC.AnyNPCs(454))
+                        projectile.ai[1] = NPC.NewNPC(NPC.InheritSource(projectile), (int)projectile.Center.X, (int)projectile.Center.Y, 454);
+                    else
+                        projectile.ai[1] = NPC.NewNPC(NPC.InheritSource(projectile), (int)projectile.Center.X, (int)projectile.Center.Y, 521);
+                }
+            }
+            if (projectile.ai[0] == 120f)
+            {
+                projectile.Kill();
             }
         }
     }

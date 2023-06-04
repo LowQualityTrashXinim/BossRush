@@ -383,7 +383,7 @@ namespace BossRush.Common.Global
         }
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
         {
-            if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke || item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
+            if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
