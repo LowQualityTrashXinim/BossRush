@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
 {
@@ -11,103 +12,71 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
     {
         public override void SetStaticDefaults()
         {
-            // Tooltip.SetDefault("the sword is quite useless if you ask me");
             Item.staff[Item.type] = true;
         }
-
         public override void SetDefaults()
         {
-            Item.width = 60;
-            Item.height = 58;
-
-            Item.damage = 20;
+            Item.BossRushDefaultMagic(60, 58, 20, 3f, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<TopazSwotaffP>(), 7, 10, false);
             Item.crit = 10;
-            Item.knockBack = 3f;
-
-            Item.useTime = 4;
-            Item.useAnimation = 40;
-            Item.reuseDelay = 20;
-
-            Item.shootSpeed = 7;
-            Item.mana = 30;
-
-            Item.DamageType = DamageClass.Magic;
-            Item.shoot = ProjectileID.TopazBolt;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
-            Item.useTurn = false;
-            Item.rare = 2;
             Item.value = Item.buyPrice(gold: 50);
-
+            Item.useTurn = false;
+            Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item8;
-        }
-
-        int i = 0;
-        int countChange = 0;
-
-        public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                mult = 2.5f;
-            }
+            Item.noUseGraphic = true;
         }
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[ModContent.ProjectileType<TopazSwotaffP>()] < 1;
         }
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (player.altFunctionUse != 2)
-            {
-                Item.noUseGraphic = false;
-                i++;
-                float rotation = MathHelper.ToRadians(30);
-                if (countChange == 0)
-                {
-                    velocity = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, (float)(i / 9f)));
-                }
-                else
-                {
-                    velocity = velocity.RotatedBy(MathHelper.Lerp(rotation, -rotation, (float)(i / 9f)));
-                }
-                if (i > 9)
-                {
-                    i = 0;
-                    countChange++;
-                    if (countChange > 1)
-                    {
-                        countChange = 0;
-                    }
-                }
-                Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 50f;
-                if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
-                {
-                    position += muzzleOffset;
-                }
-            }
-        }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void OnConsumeMana(Player player, int manaConsumed)
         {
             if (player.altFunctionUse == 2)
             {
-                if (player.ItemAnimationJustStarted)
-                {
-                    Item.noUseGraphic = true;
-                    Projectile.NewProjectile(source, position, velocity * 4, ModContent.ProjectileType<TopazSwotaffP>(), damage, knockback, player.whoAmI);
-                }
-                return false;
+                player.statMana += manaConsumed;
             }
-            else
+        }
+        public override void OnMissingMana(Player player, int neededMana)
+        {
+            if (player.statMana <= player.GetManaCost(Item))
             {
-                return true;
+                CanShootProjectile = -1;
             }
-
+            player.statMana += neededMana;
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            CanShootProjectile = -1;
+            return true;
+        }
+        int CanShootProjectile = 1;
+        int countIndex = 1;
+        int time = 1;
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (player.statMana >= player.GetManaCost(Item) && player.altFunctionUse != 2)
+            {
+                CanShootProjectile = 1;
+            }
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex, CanShootProjectile);
+            if (CanShootProjectile == 1)
+            {
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.TopazBolt, damage, knockback, player.whoAmI);
+            }
+            if (player.altFunctionUse != 2)
+            {
+                SwingComboHandle();
+            }
+            return false;
+        }
+        private void SwingComboHandle()
+        {
+            countIndex = countIndex != 0 ? countIndex * -1 : 1;
+            time++;
+            if (time >= 3)
+            {
+                countIndex = 0;
+                time = 0;
+            }
         }
 
         public override void AddRecipes()
@@ -121,6 +90,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
     public class TopazSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TopazSwotaff>();
-        protected override int? AltAttackProjectileType() => 1;
+        protected override int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
+        protected override int NormalBoltProjectile() => ProjectileID.TopazBolt;
+        protected override int DustType() => DustID.GemTopaz;
     }
 }

@@ -58,8 +58,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         protected virtual int IframeIgnore() => 6;
         protected virtual int AltAttackAmountProjectile() => 8;
-        protected virtual int? AltAttackProjectileType() => null;
-        protected virtual int? DustTypeForTrail() => null;
+        protected virtual int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
+        protected virtual int NormalBoltProjectile() => ProjectileID.WoodenArrowFriendly;
+        protected virtual int DustType() => DustID.ManaRegeneration;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = IframeIgnore();
@@ -104,7 +105,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
             Projectile.rotation += MathHelper.ToRadians(15);
             Vector2 velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * Main.rand.NextFloat(6, 9);
-            int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(velocity, 50), 0, 0, DustID.GemAmethyst);
+            int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(velocity, 50), 0, 0, DustType());
             Main.dust[dust].scale = Main.rand.NextFloat(.8f, 1.2f);
             Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
             Main.dust[dust].noGravity = true;
@@ -123,7 +124,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     timeToSpin = 0;
                 }
                 timeToSpin++;
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, ProjectileID.AmethystBolt, (int)(Projectile.damage * .55f), Projectile.knockBack, Projectile.owner);
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center.PositionOFFSET(velocity, 50), velocity, NormalBoltProjectile(), (int)(Projectile.damage * .55f), Projectile.knockBack, Projectile.owner);
                 Main.projectile[proj].timeLeft = 30;
             }
             if ((Projectile.Center - player.Center).LengthSquared() > 1000 * 1000)
@@ -141,6 +142,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             }
             player.heldProj = Projectile.whoAmI;
             float percentDone = Projectile.timeLeft / maxProgress;
+            if(percentDone*100/(100/ AltAttackAmountProjectile()) > 100 / AltAttackAmountProjectile())
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 4f, AltAttackProjectileType(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
             percentDone = BossRushUtils.InExpo(percentDone);
             Projectile.spriteDirection = player.direction;
             float baseAngle = PosToGo.ToRotation();
@@ -155,7 +160,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         private void SpawnDustTrailDelay()
         {
-            int dustType = DustTypeForTrail() ?? DustID.ManaRegeneration;
+            int dustType = DustType();
             int dust = Dust.NewDust(player.Center.PositionOFFSET(Projectile.rotation.ToRotationVector2(), 50), 0, 0, dustType);
             Main.dust[dust].noGravity = true;
             Main.dust[dust].scale = 0.1f;

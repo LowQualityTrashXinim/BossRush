@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Common.Global;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
@@ -88,6 +87,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
     public class AmethystSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AmethystSwotaff>();
-        protected override int? AltAttackProjectileType() => 1;
+        protected override int AltAttackProjectileType() => 1;
+        protected override int NormalBoltProjectile() => ProjectileID.AmethystBolt;
+        protected override int DustType() => DustID.GemAmethyst;
     }
 }
