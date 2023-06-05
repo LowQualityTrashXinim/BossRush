@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
 {
@@ -90,7 +91,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
     public class TopazSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TopazSwotaff>();
-        protected override int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
+        protected override int AltAttackProjectileType() => ModContent.ProjectileType<TopazGemP>();
         protected override int NormalBoltProjectile() => ProjectileID.TopazBolt;
         protected override int DustType() => DustID.GemTopaz;
     }

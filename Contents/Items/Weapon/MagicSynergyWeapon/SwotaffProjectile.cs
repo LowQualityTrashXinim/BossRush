@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
@@ -57,7 +58,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             SpinAtCursorAI();
         }
         protected virtual int IframeIgnore() => 6;
-        protected virtual int AltAttackAmountProjectile() => 8;
+        protected virtual float AltAttackAmountProjectile() => 4;
         protected virtual int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
         protected virtual int NormalBoltProjectile() => ProjectileID.WoodenArrowFriendly;
         protected virtual int DustType() => DustID.ManaRegeneration;
@@ -132,6 +133,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                 Projectile.Kill();
             }
         }
+        int amount = 1;
         private void SpinAroundPlayer()
         {
             player.direction = PosToGo.X > 0 ? 1 : -1;
@@ -141,17 +143,22 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                 Projectile.timeLeft = (int)maxProgress;
             }
             player.heldProj = Projectile.whoAmI;
-            float percentDone = Projectile.timeLeft / maxProgress;
-            if(percentDone*100/(100/ AltAttackAmountProjectile()) > 100 / AltAttackAmountProjectile())
+            float percentDone = (maxProgress - Projectile.timeLeft) / maxProgress;
+            //percentDone = BossRushUtils.InExpo(percentDone);
+            float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile() + 1) * amount, 0, 1);
+            if (percentDone >= percentageToPass)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 4f, AltAttackProjectileType(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), 
+                    Projectile.Center, 
+                    (Projectile.rotation - MathHelper.ToRadians(90)).ToRotationVector2() * 4f, AltAttackProjectileType(),
+                    Projectile.damage, Projectile.knockBack, Projectile.owner);
+                amount++;
             }
-            percentDone = BossRushUtils.InExpo(percentDone);
             Projectile.spriteDirection = player.direction;
             float baseAngle = PosToGo.ToRotation();
-            float start = baseAngle + MathHelper.PiOver2 * player.direction;
-            float end = baseAngle - (MathHelper.TwoPi + MathHelper.PiOver2) * player.direction;
-            float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+            float start = baseAngle;
+            float end = baseAngle - MathHelper.TwoPi * player.direction;
+            float currentAngle = MathHelper.SmoothStep(end, start, percentDone);
             Projectile.rotation = currentAngle;
             Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             Projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
