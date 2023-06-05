@@ -11,21 +11,10 @@ namespace BossRush.Contents.Items.BuilderItem
     {
         public override void SetDefaults()
         {
-            Item.width = 18;
-            Item.height = 56;
-
-            Item.useAnimation = 20;
-            Item.useTime = 20;
-
-            Item.shoot = ModContent.ProjectileType<NeoDynamiteExplosion>();
-            Item.shootSpeed = 11f;
-
-            Item.UseSound = SoundID.Item1;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.noUseGraphic = true;
-            Item.noMelee = true;
-            Item.value = Item.buyPrice(0, 0, 20, 0);
+            Item.BossRushDefaultRange(18, 56, 0, 0, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<NeoDynamiteExplosion>(), 11f, false);
             Item.rare = ItemRarityID.Blue;
+            Item.UseSound = SoundID.Item1;
+            Item.value = Item.buyPrice(0, 0, 20, 0);
         }
 
         public override void AddRecipes()

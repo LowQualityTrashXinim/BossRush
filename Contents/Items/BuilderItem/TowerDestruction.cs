@@ -3,6 +3,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace BossRush.Contents.Items.BuilderItem
 {
@@ -59,50 +60,12 @@ namespace BossRush.Contents.Items.BuilderItem
                 firstframe++;
             }
             Projectile.rotation += MathHelper.ToRadians(20);
-            //Vector2 Head = Projectile.Center + (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
-            //Vector2 End = Projectile.Center - (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2() * 13;
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    int dust = Dust.NewDust(Head, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
-            //    Main.dust[dust].noGravity = true;
-            //    Main.dust[dust].velocity = Vector2.Zero;
-            //    Main.dust[dust].fadeIn = 1f;
-            //    int dust2 = Dust.NewDust(End, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
-            //    Main.dust[dust2].noGravity = true;
-            //    Main.dust[dust2].velocity = Vector2.Zero;
-            //    Main.dust[dust2].fadeIn = 1f;
-            //    int dust3 = Dust.NewDust(Projectile.Center, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.1f));
-            //    Main.dust[dust3].noGravity = true;
-            //    Main.dust[dust3].velocity = Main.rand.NextVector2Circular(3f, 3f) - Projectile.velocity;
-            //    Main.dust[dust3].fadeIn = 1f;
-            //}
-        }
-        public void SpawnExplosiveDust()
-        {
-            int count;
-            float rngRotate = Main.rand.NextFloat(180);
-            for (int i = 0; i < 200; i++)
-            {
-                count = i / 100;
-                float ToRotation = MathHelper.ToRadians(90 * count + rngRotate);
-                Vector2 circle = Main.rand.NextVector2CircularEdge(4f, 22.5f).RotatedBy(ToRotation);
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.2f));
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].fadeIn = 1.5f;
-                Main.dust[dust].velocity = circle;
-            }
-            for (int i = 0; i < 200; i++)
-            {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, Type: DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(19f, 19f);
-            }
         }
         int explosionRadiusX = 300;
         int explosionRadiusY = 10;
         public override void Kill(int timeLeft)
         {
-            //SpawnExplosiveDust();
+            SpawnExplosionDust();
             float tileX = Projectile.position.X * .0625f; float tileY = Projectile.position.Y * .0625f;
             int minX = directionOfMoving ? -3 : -explosionRadiusX;
             int maxX = directionOfMoving ? explosionRadiusX : 3;
@@ -124,6 +87,27 @@ namespace BossRush.Contents.Items.BuilderItem
                     {
                         killWall(xPos, yPos);
                     }
+                }
+            }
+        }
+        private void SpawnExplosionDust()
+        {
+            int offsethalf = (int)(explosionRadiusY * .5f);
+            for (int i = -offsethalf; i < offsethalf; i++)
+            {
+                Vector2 pos = Projectile.Center + new Vector2(0, i * 16);
+                for (int l = 0; l < 25; l++)
+                {
+                    int dust = Dust.NewDust(pos + new Vector2(Main.rand.NextFloat(20), Main.rand.NextFloat(20)), 0, 0, DustID.Torch);
+                    Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(8, 25), 0) * directionOfMoving.BoolOne();
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].scale = Main.rand.NextFloat(3f, 5f);
+                    Main.dust[dust].fadeIn = Main.rand.NextFloat(1f, 2f);
+                    int dust2 = Dust.NewDust(pos + new Vector2(Main.rand.NextFloat(20), Main.rand.NextFloat(20)), 0, 0, DustID.Obsidian);
+                    Main.dust[dust2].velocity = new Vector2(Main.rand.NextFloat(5, 9), 0) * directionOfMoving.BoolOne();
+                    Main.dust[dust2].noGravity = true;
+                    Main.dust[dust2].scale = Main.rand.NextFloat(3f, 5f);
+                    Main.dust[dust].fadeIn = Main.rand.NextFloat(1f, 2f);
                 }
             }
         }
