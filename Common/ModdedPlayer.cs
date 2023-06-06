@@ -14,6 +14,7 @@ using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Common
 {
@@ -110,6 +111,10 @@ namespace BossRush.Common
             new Item(ModContent.ItemType<LunchBox>()),
             new Item(ModContent.ItemType<CursedSkull>())
             };
+            if(ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
+            }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));

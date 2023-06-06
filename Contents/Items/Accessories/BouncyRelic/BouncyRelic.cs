@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Texture;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Accessories.BouncyRelic
 {
@@ -59,6 +60,10 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
                             projectile.velocity.Y = -oldVelocity.Y;
                         }
                         projectile.damage = (int)(projectile.damage * 1.2);
+                        if(projectile.timeLeft > 180)
+                        {
+                            projectile.timeLeft = 180;
+                        }
                         return false;
                     }
                 }

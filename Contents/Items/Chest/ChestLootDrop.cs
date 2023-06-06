@@ -25,21 +25,6 @@ namespace BossRush.Contents.Items.Chest
         private List<int> DropItemSummon = new List<int>();
         private List<int> DropItemMisc = new List<int>();
         public virtual bool CanLootRNGbeRandomize() => true;
-        private int ModifyGetAmount(int ValueToModify, Player player)
-        {
-            //Modifier
-            float amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
-            bool multiplier = player.GetModPlayer<ChestLootDropPlayer>().multiplier;
-            //Change
-            if (multiplier)
-            {
-                return amountToModify > 0 ? (int)Math.Ceiling(amountToModify * ValueToModify) : 0;
-            }
-            else
-            {
-                return ValueToModify + amountToModify > 0 ? (int)(amountToModify + ValueToModify) : 0;
-            }
-        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             PostModifyTooltips(ref tooltips);
@@ -52,6 +37,13 @@ namespace BossRush.Contents.Items.Chest
             }
         }
         public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
+        private int ModifyGetAmount(int ValueToModify, Player player)
+        {
+            //Modifier
+            int amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
+            float finalMultipler = player.GetModPlayer<ChestLootDropPlayer>().finalMultiplier;
+            return finalMultipler > 0 ? (int)Math.Ceiling(finalMultipler * (ValueToModify + amountToModify)) : 0;
+        }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
         {
             amountForWeapon = 3;
@@ -959,17 +951,48 @@ namespace BossRush.Contents.Items.Chest
     }
     public class ChestLootDropPlayer : ModPlayer
     {
-        public float amountModifier = 0;
+        public float finalMultiplier = 1f;
+        public int amountModifier = 0;
         public float MeleeChanceMutilplier = 1f;
         public float RangeChanceMutilplier = 1f;
         public float MagicChanceMutilplier = 1f;
         public float SummonChanceMutilplier = 1f;
-
-        public bool multiplier = false;
+        private int ModifyGetAmount(int ValueToModify, Player player)
+        {
+            //Modifier
+            int amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
+            float finalMultipler = player.GetModPlayer<ChestLootDropPlayer>().finalMultiplier;
+            return finalMultipler > 0 ? (int)Math.Ceiling(finalMultipler * (ValueToModify + amountToModify)) : 0;
+        }
+        public void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
+        {
+            amountForWeapon = 3;
+            amountForPotionType = 1;
+            amountForPotionNum = 2;
+            if (Main.getGoodWorld)
+            {
+                amountForWeapon = 2;
+            }
+            if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
+            {
+                amountForWeapon += 2;
+                amountForPotionType += 2;
+                amountForPotionNum += 2;
+            }
+            if (Main.hardMode)
+            {
+                amountForWeapon += 1;
+                amountForPotionType += 1;
+                amountForPotionNum += 1;
+            }
+            amountForWeapon = ModifyGetAmount(amountForWeapon, player);
+            amountForPotionType = ModifyGetAmount(amountForPotionType, player);
+            amountForPotionNum = ModifyGetAmount(amountForPotionNum, player);
+        }
         public override void ResetEffects()
         {
             amountModifier = 0;
-            multiplier = false;
+            finalMultiplier = 1f;
             base.ResetEffects();
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)

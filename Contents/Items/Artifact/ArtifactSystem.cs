@@ -151,8 +151,7 @@ namespace BossRush.Contents.Items.Artifact
             }
             if (Pride)
             {
-                chestmodplayer.multiplier = true;
-                chestmodplayer.amountModifier = .5f;
+                chestmodplayer.finalMultiplier -= .5f;
             }
             if (Greed)
             {

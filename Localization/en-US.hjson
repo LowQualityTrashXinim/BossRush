@@ -1141,6 +1141,11 @@ Mods: {
 				DisplayName: Queen Bee Special Spawner
 				Tooltip: ""
 			}
+
+			PremiumCardPacket: {
+				DisplayName: Premium Card Packet
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

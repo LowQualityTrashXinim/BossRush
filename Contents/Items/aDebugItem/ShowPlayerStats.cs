@@ -26,7 +26,8 @@ namespace BossRush.Contents.Items.aDebugItem
             NoHitPlayerHandle nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
             ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
             Player player = Main.LocalPlayer;
-            TooltipLine line = new TooltipLine(Mod, "Stats", 
+            chestplayer.GetAmount(out int weapon, out int potiontype, out int potionNum, player);
+            TooltipLine line = new TooltipLine(Mod, "Stats",
                 $"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).Flat}" +
                 $"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).Flat}" +
                 $"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).Flat}" +
@@ -44,14 +45,18 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nJump speed : {player.jumpSpeedBoost}" +
                 $"\nMax minion : {player.maxMinions}" +
                 $"\nMax sentry/turret : {player.maxTurrets}" +
-                $"\nAmount increase : {chestplayer.amountModifier}" +
+                $"\nAmount drop chest addition : {chestplayer.amountModifier}" +
+                $"\nAmount drop chest multiplication : {chestplayer.finalMultiplier}" +
+                $"\nAmount drop chest final weapon : {weapon}" +
+                $"\nAmount drop chest final potion type : {potiontype}" +
+                $"\nAmount drop chest final potion amount : {potionNum}" +
                 $"\nMelee drop chance : {chestplayer.MeleeChanceMutilplier}" +
                 $"\nRange drop chance : {chestplayer.RangeChanceMutilplier}" +
                 $"\nMagic drop chance : {chestplayer.MagicChanceMutilplier}" +
                 $"\nSummon drop chance : {chestplayer.SummonChanceMutilplier}" +
                 $"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
                 $"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-                $"\nCurrent active artifact : {artifactplayer.ToStringArtifact()}" 
+                $"\nCurrent active artifact : {artifactplayer.ToStringArtifact()}"
                 );
             tooltips.Add(line);
         }

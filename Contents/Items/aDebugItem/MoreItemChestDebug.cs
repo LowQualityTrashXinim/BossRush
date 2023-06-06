@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.aDebugItem
     }
     public class DebugPlayerChest : ModPlayer
     {
-        public float num = 0;
+        public int num = 0;
         public override void PostUpdate()
         {
             Player.GetModPlayer<ChestLootDropPlayer>().amountModifier += num;

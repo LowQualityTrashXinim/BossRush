@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items.Card
             var entitySource = player.GetSource_OpenItem(Type);
             for (int i = 0; i < CardAmount; i++)
             {
-                if (Main.rand.NextBool(Card.PlatinumCardDropChance))
+                if (Main.rand.NextBool(Card.PlatinumCardDropChance) || PacketType == 4)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                     continue;
@@ -151,6 +151,18 @@ namespace BossRush.Contents.Items.Card
         public override int PacketType => 3;
         public override int CardAmount => 5;
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.ShadowChest);
+        public override void SetDefaults()
+        {
+            Item.width = 32;
+            Item.height = 28;
+            Item.maxStack = 30;
+        }
+    }
+    internal class PremiumCardPacket : CardPacketBase
+    {
+        public override int PacketType => 4;
+        public override int CardAmount => 1;
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.DesertChest);
         public override void SetDefaults()
         {
             Item.width = 32;
