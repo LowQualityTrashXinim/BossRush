@@ -132,10 +132,6 @@ namespace BossRush.Contents.Items.BuilderItem
                 {
                     return false;
                 }
-                if (!Main.hardMode && Main.tile[i, j].TileType == 58)
-                {
-                    return false;
-                }
                 if (!TileLoader.CanExplode(i, j))
                 {
                     return false;
