@@ -13,12 +13,12 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool CanUseItem(Player player)
         {
-            return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 0;
+            return player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != -1;
         }
         public override bool? UseItem(Player player)
         {
             ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-            modplayer.ArtifactDefinedID = 0;
+            modplayer.ArtifactDefinedID = -1;
             return true;
         }
     }

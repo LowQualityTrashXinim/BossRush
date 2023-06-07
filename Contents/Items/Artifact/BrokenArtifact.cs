@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
-            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = -1;
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = 0;
             return true;
         }
     }
