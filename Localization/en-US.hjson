@@ -100,6 +100,7 @@ Mods: {
 			MusketGunProjectile.DisplayName: Musket Gun Projectile
 			LivingEnchantedSwordProjectile.DisplayName: Living Enchanted Sword Projectile
 			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
+			SandInYourFace.DisplayName: Sand In Your Face
 		}
 
 		NPCs.TrueEoC.DisplayName: True EoC
@@ -1145,6 +1146,11 @@ Mods: {
 			PremiumCardPacket: {
 				DisplayName: Premium Card Packet
 				Tooltip: ""
+			}
+
+			RandomArtifactChooser: {
+				DisplayName: Random Artifact Chooser
+				Tooltip: Randomly choose 1 of artifact
 			}
 		}
 

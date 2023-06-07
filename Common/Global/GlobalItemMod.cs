@@ -11,6 +11,14 @@ namespace BossRush.Common.Global
     /// </summary>
     class GlobalItemMod : GlobalItem
     {
+        public override void SetDefaults(Item entity)
+        {
+            base.SetDefaults(entity);
+            if (entity.type == ItemID.Sandgun)
+            {
+                entity.shoot = ModContent.ProjectileType<SandInYourFace>();
+            }
+        }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
             if (item.type == ItemID.EoCShield)
@@ -28,10 +36,31 @@ namespace BossRush.Common.Global
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
-            if(item.type == ItemID.Sandgun)
+            if (item.type == ItemID.Sandgun)
             {
                 damage.Base -= .35f;
             }
+        }
+    }
+    class SandInYourFace : ModProjectile
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.SandBallGun);
+        public override void SetDefaults()
+        {
+            Projectile.CloneDefaults(ProjectileID.SandBallGun);
+            Projectile.aiStyle = -1;
+        }
+        public override void AI()
+        {
+            base.AI();
+            if (Projectile.ai[0] >= 50)
+            {
+                if (Projectile.velocity.Y < 16)
+                {
+                    Projectile.velocity.Y += .25f;
+                }
+            }
+            Projectile.ai[0]++;
         }
     }
 }
