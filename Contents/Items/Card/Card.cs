@@ -37,7 +37,7 @@ namespace BossRush.Contents.Items.Card
         MaxSentry,
         //Luck
     }
-    abstract class Card : ModItem
+    abstract class CardItem : ModItem
     {
         public const int PlatinumCardDropChance = 40;
         public const int GoldCardDropChance = 20;

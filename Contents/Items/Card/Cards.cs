@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card
 {
-    internal class SolarCard : Card
+    internal class SolarCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentSolar);
         public override void PostCardSetDefault()
@@ -17,7 +17,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.ChestLoot.MeleeChanceMutilplier += .5f;
         }
     }
-    internal class VortexCard : Card
+    internal class VortexCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentVortex);
         public override void PostCardSetDefault()
@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.ChestLoot.RangeChanceMutilplier += .5f;
         }
     }
-    internal class NebulaCard : Card
+    internal class NebulaCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentNebula);
         public override void PostCardSetDefault()
@@ -43,7 +43,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.ChestLoot.MagicChanceMutilplier += .5f;
         }
     }
-    internal class StarDustCard : Card
+    internal class StarDustCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentStardust);
         public override void PostCardSetDefault()
@@ -56,7 +56,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.ChestLoot.SummonChanceMutilplier += .5f;
         }
     }
-    internal class ResetCard : Card
+    internal class ResetCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.LunarBar);
         public override void PostCardSetDefault()
@@ -91,7 +91,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.SentrySlot = 0;
         }
     }
-    internal class CopperCard : Card
+    internal class CopperCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBar);
         public override void PostCardSetDefault()
@@ -117,7 +117,7 @@ namespace BossRush.Contents.Items.Card
         public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
-    internal class SilverCard : Card
+    internal class SilverCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SilverBar);
         public override void PostCardSetDefault()
@@ -143,7 +143,7 @@ namespace BossRush.Contents.Items.Card
         public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
-    internal class GoldCard : Card
+    internal class GoldCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldBar);
         public override void PostCardSetDefault()
@@ -169,7 +169,7 @@ namespace BossRush.Contents.Items.Card
         public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
-    internal class PlatinumCard : Card
+    internal class PlatinumCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumBar);
         public override void PostCardSetDefault()
@@ -195,7 +195,7 @@ namespace BossRush.Contents.Items.Card
         public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
-    internal class EmptyCard : Card
+    internal class EmptyCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Glass);
         public override void SetDefaults()

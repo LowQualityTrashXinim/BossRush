@@ -50,17 +50,17 @@ namespace BossRush.Contents.Items.Card
             var entitySource = player.GetSource_OpenItem(Type);
             for (int i = 0; i < CardAmount; i++)
             {
-                if (Main.rand.NextBool(Card.PlatinumCardDropChance) || PacketType == 4)
+                if (Main.rand.NextBool(CardItem.PlatinumCardDropChance) || PacketType == 4)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(Card.GoldCardDropChance))
+                if (Main.rand.NextBool(CardItem.GoldCardDropChance))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(Card.SilverCardDropChance))
+                if (Main.rand.NextBool(CardItem.SilverCardDropChance))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverCard>());
                     continue;
