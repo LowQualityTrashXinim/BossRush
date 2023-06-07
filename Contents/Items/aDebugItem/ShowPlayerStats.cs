@@ -28,11 +28,11 @@ namespace BossRush.Contents.Items.aDebugItem
             Player player = Main.LocalPlayer;
             chestplayer.GetAmount(out int weapon, out int potiontype, out int potionNum, player);
             TooltipLine line = new TooltipLine(Mod, "Stats",
-                $"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).Flat}" +
-                $"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).Flat}" +
-                $"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).Flat}" +
-                $"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).Flat}" +
-                $"\nPure/Generic Damage : {player.GetTotalDamage(DamageClass.Generic).Flat}" +
+                $"Melee Damage : {player.GetDamage(DamageClass.Melee)}" +
+                $"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged)}" +
+                $"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic)}" +
+                $"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon)}" +
+                $"\nPure/Generic Damage : {player.GetTotalDamage(DamageClass.Generic)}" +
                 $"\nCrit chance : {player.GetCritChance(DamageClass.Generic)}" +
                 $"\nCrit damage : {cardplayer.CritDamage}" +
                 $"\nMax HP : {player.statLifeMax2}" +

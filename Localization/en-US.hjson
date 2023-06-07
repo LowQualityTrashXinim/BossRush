@@ -1010,7 +1010,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A small ancient power left from god, said to be cursed"
-					Most projectile can bounce of tile
+					Most projectile can bounce off tile
 					Bouncing off a tile increase damage by 20%
 					Bouncing off a tile will make the projectile disappear after 3s
 					'''

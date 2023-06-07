@@ -44,7 +44,7 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
         {
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.myPlayer == projectile.owner)
+                if (projectile.owner == Main.myPlayer && projectile.friendly && !projectile.hostile)
                 {
                     Player player = Main.player[projectile.owner];
                     if (player.GetModPlayer<PlayerRelic>().Bouncy)
