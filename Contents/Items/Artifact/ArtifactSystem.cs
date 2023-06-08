@@ -1,18 +1,15 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using BossRush.Common;
-using System.IO;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -52,6 +49,23 @@ namespace BossRush.Contents.Items.Artifact
     }
     class ArtifactGlobalItem : GlobalItem
     {
+        public override void SetDefaults(Item entity)
+        {
+            base.SetDefaults(entity);
+            if(entity.ModItem is IArtifactItem)
+            {
+                entity.UseSound = SoundID.Zombie105;
+            }
+        }
+        public override bool? UseItem(Item item, Player player)
+        {
+            if(item.ModItem is IArtifactItem moditem)
+            {
+                player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = moditem.ArtifactID;
+                return true;
+            }
+            return base.UseItem(item, player);
+        }
         public override bool CanUseItem(Item item, Player player)
         {
             ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();

@@ -64,13 +64,13 @@ namespace BossRush.Contents.Items.Card
             Item.maxStack = 99;
             Item.rare = ItemRarityID.Red;
         }
-        public override bool CanBeCraft => false; 
+        public override bool CanBeCraft => false;
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
-            modplayer.ChestLoot.MeleeChanceMutilplier = 0;
-            modplayer.ChestLoot.RangeChanceMutilplier = 0;
-            modplayer.ChestLoot.MagicChanceMutilplier = 0;
-            modplayer.ChestLoot.SummonChanceMutilplier = 0;
+            modplayer.ChestLoot.MeleeChanceMutilplier = 1;
+            modplayer.ChestLoot.RangeChanceMutilplier = 1;
+            modplayer.ChestLoot.MagicChanceMutilplier = 1;
+            modplayer.ChestLoot.SummonChanceMutilplier = 1;
             modplayer.MeleeDMG = 0;
             modplayer.RangeDMG = 0;
             modplayer.MagicDMG = 0;
@@ -110,9 +110,6 @@ namespace BossRush.Contents.Items.Card
                 statsNumber.Add(statsCalculator(stats[i]));
             }
         }
-        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
-        {
-        }
         public override List<PlayerStats> CardStats => stats;
         public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
@@ -135,9 +132,6 @@ namespace BossRush.Contents.Items.Card
                 stats.Add(SetStatsToAddBaseOnTier());
                 statsNumber.Add(statsCalculator(stats[i]));
             }
-        }
-        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
-        {
         }
         public override List<PlayerStats> CardStats => stats;
         public override List<float> CardStatsNumber => statsNumber;
@@ -162,9 +156,6 @@ namespace BossRush.Contents.Items.Card
                 statsNumber.Add(statsCalculator(stats[i]));
             }
         }
-        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
-        {
-        }
         public override List<PlayerStats> CardStats => stats;
         public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
@@ -187,9 +178,6 @@ namespace BossRush.Contents.Items.Card
                 stats.Add(SetStatsToAddBaseOnTier());
                 statsNumber.Add(statsCalculator(stats[i]));
             }
-        }
-        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
-        {
         }
         public override List<PlayerStats> CardStats => stats;
         public override List<float> CardStatsNumber => statsNumber;

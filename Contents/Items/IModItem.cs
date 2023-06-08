@@ -7,6 +7,6 @@
 
     interface IArtifactItem
     {
-
+        public int ArtifactID { get; }
     }
 }
