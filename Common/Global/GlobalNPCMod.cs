@@ -507,6 +507,17 @@ namespace BossRush.Common.Global
                         npc.netUpdate = true;
                     }
                 }
+                if (!BossRushUtils.CompareSquareFloatValue(npc.Center, Main.player[npc.target].Center, 2000))
+                {
+                    Main.player[npc.target].AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 120);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int dust = Dust.NewDust(Main.player[npc.target].Center, 0, 0, DustID.SolarFlare);
+                        Main.dust[dust].noGravity = true;
+                        Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(7f, 7f);
+                        Main.dust[dust].fadeIn = 2f;
+                    }
+                }
             }
         }
     }

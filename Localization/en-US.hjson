@@ -1152,6 +1152,21 @@ Mods: {
 				DisplayName: Random Artifact Chooser
 				Tooltip: Randomly choose 1 of artifact
 			}
+
+			BootOfSpeed: {
+				DisplayName: Boot Of Speed Manipulation
+				Tooltip:
+					'''
+					"Run like how you want"
+					Increase your movement capacity massively
+					You can't fly with wing
+					'''
+			}
+
+			BootOfSpeedManipulation: {
+				DisplayName: Boot Of Speed Manipulation
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

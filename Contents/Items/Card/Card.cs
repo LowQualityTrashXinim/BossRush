@@ -130,6 +130,14 @@ namespace BossRush.Contents.Items.Card
                 }
             }
         }
+        //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
+        private void AddBadStatsBaseOnTier()
+        {
+            if(Tier > 1)
+            {
+
+            }
+        }
         /// <summary>
         /// Use this if <see cref="Tier"/> value set within the card item have value larger than 0
         /// </summary>

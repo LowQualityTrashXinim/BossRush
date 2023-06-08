@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Artifact
 {
-    internal class BootOfSpeed : ModItem,IArtifactItem
+    internal class BootOfSpeedManipulation : ModItem,IArtifactItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public int ArtifactID => 6;

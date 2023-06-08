@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Artifact
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
-        public int ArtifactID => Main.rand.Next(6);
+        public int ArtifactID => Main.rand.Next(7);
 
         public override void SetDefaults()
         {

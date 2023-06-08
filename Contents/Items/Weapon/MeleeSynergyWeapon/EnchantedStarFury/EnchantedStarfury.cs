@@ -31,7 +31,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             }
             if (modplayer.EnchantedStarfury_BreakerBlade)
             {
-                tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_BreakerBlade", $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal quadruple of your weapon damage"));
+                tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_BreakerBlade", $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal 250% of your weapon damage"));
             }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -73,7 +73,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             switchProj++;
             if (modplayer.EnchantedStarfury_BreakerBlade)
             {
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LivingBreakerBladeProjectile>(), damage * 4, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LivingBreakerBladeProjectile>(), (int    )(damage * 2.5f), knockback, player.whoAmI);
             }
             CanShootItem = false;
         }

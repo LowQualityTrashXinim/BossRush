@@ -36,7 +36,7 @@ namespace BossRush.Contents.Items.Artifact
                         .Register();
                         continue;
                     }
-                    if(item is BrokenArtifact || item is GodDice)
+                    if (item is BrokenArtifact || item is GodDice)
                     {
                         continue;
                     }
@@ -52,14 +52,14 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetDefaults(Item entity)
         {
             base.SetDefaults(entity);
-            if(entity.ModItem is IArtifactItem)
+            if (entity.ModItem is IArtifactItem)
             {
                 entity.UseSound = SoundID.Zombie105;
             }
         }
         public override bool? UseItem(Item item, Player player)
         {
-            if(item.ModItem is IArtifactItem moditem)
+            if (item.ModItem is IArtifactItem moditem)
             {
                 player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = moditem.ArtifactID;
                 return true;
@@ -104,6 +104,7 @@ namespace BossRush.Contents.Items.Artifact
         bool Vampire = false;//ID = 3
         bool Earth = false;// ID = 4
         bool FateDice = false;// ID = 5
+        bool BootofSpeed = false;// ID = 6
         int EarthCD = 0;
         string artifactName = "";
         public string ToStringArtifact()
@@ -118,6 +119,7 @@ namespace BossRush.Contents.Items.Artifact
             Vampire = false;
             Earth = false;
             FateDice = false;
+            BootofSpeed = false;
             switch (ArtifactDefinedID)
             {
                 case 1:
@@ -140,6 +142,10 @@ namespace BossRush.Contents.Items.Artifact
                     artifactName = "Fate Decider";
                     FateDice = true;
                     break;
+                case 6:
+                    artifactName = "Boot of speed";
+                    BootofSpeed = true;
+                    break;
                 default:
                     artifactName = "no artifact active";
                     break;
@@ -157,9 +163,21 @@ namespace BossRush.Contents.Items.Artifact
                 health.Base = 100 + Player.statLifeMax * 2;
             }
         }
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            if (BootofSpeed)
+            {
+                Player.moveSpeed += 1f;
+                Player.maxFallSpeed += 2f;
+                Player.runAcceleration += .5f;
+                Player.jumpSpeed += 3f;
+                Player.noFallDmg = true;
+            }
+        }
         public override void PostUpdate()
         {
-            if(Vampire)
+            if (Vampire)
             {
                 Player.AddBuff(BuffID.PotionSickness, 600);
             }
@@ -184,6 +202,13 @@ namespace BossRush.Contents.Items.Artifact
                     int dust = Dust.NewDust(Player.Center, 0, 0, DustID.Blood);
                     Main.dust[dust].velocity = -Vector2.UnitY * 2f + Main.rand.NextVector2Circular(2, 2);
                 }
+            }
+            if (BootofSpeed)
+            {
+                Player.wingTime *= 0;
+                Player.wingAccRunSpeed *= 0;
+                Player.wingRunAccelerationMult *= 0;
+                Player.wingTimeMax = 0;
             }
             FateDeciderEffect();
         }

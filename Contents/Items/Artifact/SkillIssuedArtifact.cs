@@ -9,6 +9,8 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class SkillIssuedArtifact : ModItem, IArtifactItem
     {
+        public int ArtifactID => 999;
+
         public override void SetDefaults()
         {
             Item.width = 80;
