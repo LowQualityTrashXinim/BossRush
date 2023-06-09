@@ -133,9 +133,51 @@ namespace BossRush.Contents.Items.Card
         //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
         private void AddBadStatsBaseOnTier()
         {
-            if(Tier > 1)
+            if (Tier <= 1)
             {
+                return;
+            }
+            switch (Tier)
+            {
+                case 1:
 
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+        }
+        private float BadstatsCalculator(PlayerStats stats)
+        {
+            float badstatsmultiplier = 2;
+            float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2) * badstatsmultiplier;
+            if (DoesStatsRequiredWholeNumber(stats))
+            {
+                if (SpecialCheckPlayerStats(stats))
+                {
+                    statsNum = -Main.rand.Next((int)(Tier * .5f)) + 1;
+                    return statsNum;
+                }
+                statsNum = -(Main.rand.Next(Tier) + 1) * Tier;
+                return statsNum;
+            }
+            switch (Tier)
+            {
+                case 1:
+                    return statsNum;
+                case 2:
+                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.02f)) + .01f)) * Tier;
+                case 3:
+                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.05f)) + .01f)) * Tier;
+                case 4:
+                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.07f)) + .01f)) * Tier;
+                default:
+                    return (statsNum - (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier;
             }
         }
         /// <summary>
@@ -149,9 +191,7 @@ namespace BossRush.Contents.Items.Card
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
             {
-                if (stats is PlayerStats.ChestLootDropIncrease
-                    || stats is PlayerStats.MaxMinion
-                    || stats is PlayerStats.MaxSentry)
+                if (SpecialCheckPlayerStats(stats))
                 {
                     statsNum = Main.rand.Next((int)(Tier * .5f)) + 1;
                     return statsNum;
@@ -173,6 +213,10 @@ namespace BossRush.Contents.Items.Card
                     return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier;
             }
         }
+        public bool SpecialCheckPlayerStats(PlayerStats stats) =>
+            stats is PlayerStats.ChestLootDropIncrease
+            || stats is PlayerStats.MaxMinion
+            || stats is PlayerStats.MaxSentry;
         /// <summary>
         /// 1 = Copper<br/>
         /// 2 = Silver<br/>
