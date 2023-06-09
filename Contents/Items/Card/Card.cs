@@ -12,6 +12,7 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.IO;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -399,7 +400,7 @@ namespace BossRush.Contents.Items.Card
     class PlayerCardHandle : ModPlayer
     {
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
-
+        public const int maxStatCanBeAchieved = 9999;
         //Copper tier
         public float MeleeDMG = 0;
         public float RangeDMG = 0;
@@ -428,31 +429,31 @@ namespace BossRush.Contents.Items.Card
         {
             if (item.DamageType == DamageClass.Melee)
             {
-                damage += MeleeDMG;
+                damage.Base = Math.Clamp(MeleeDMG + damage.Base, 0, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Ranged)
             {
-                damage += RangeDMG;
+                damage.Base = Math.Clamp(RangeDMG + damage.Base, 0, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Magic)
             {
-                damage += MagicDMG;
+                damage.Base = Math.Clamp(MagicDMG + damage.Base, 0, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Summon)
             {
-                damage += SummonDMG;
+                damage.Base = Math.Clamp(SummonDMG + damage.Base, 0, maxStatCanBeAchieved);
             }
-            damage += DamagePure;
+            damage.Base = Math.Clamp(DamagePure + damage.Base, 0, maxStatCanBeAchieved);
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
-            crit += CritStrikeChance;
+            crit = Math.Clamp(CritStrikeChance + crit, 0, maxStatCanBeAchieved);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (hit.Crit)
             {
-                hit.Damage = (int)(CritDamage * hit.Damage);
+                hit.Damage = (int)(Math.Clamp(CritDamage, 0, 999999) * hit.Damage);
             }
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
@@ -460,8 +461,8 @@ namespace BossRush.Contents.Items.Card
             health = StatModifier.Default;
             mana = StatModifier.Default;
 
-            health.Base = HPMax;
-            mana.Base = ManaMax;
+            health.Base = Math.Clamp(HPMax + health.Base, 0, maxStatCanBeAchieved);
+            mana.Base = Math.Clamp(ManaMax + mana.Base, 0, maxStatCanBeAchieved);
         }
         public override void PreUpdate()
         {
@@ -470,18 +471,18 @@ namespace BossRush.Contents.Items.Card
         public override void PostUpdate()
         {
             base.PostUpdate();
-            ChestLoot.amountModifier += DropAmountIncrease;
+            ChestLoot.amountModifier = Math.Clamp(DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
         }
         public override void ResetEffects()
         {
-            Player.statDefense += DefenseBase;
-            Player.accRunSpeed += Movement;
-            Player.jumpSpeedBoost += JumpBoost;
-            Player.lifeRegen = (int)(HPRegen * Player.lifeRegen);
-            Player.manaRegen = (int)(ManaRegen * Player.manaRegen);
-            Player.DefenseEffectiveness *= DefenseEffectiveness;
-            Player.maxMinions += MinionSlot;
-            Player.maxTurrets += SentrySlot;
+            Player.statDefense += Math.Clamp(DefenseBase, -(maxStatCanBeAchieved + Player.statDefense), maxStatCanBeAchieved);
+            Player.moveSpeed = Math.Clamp(Movement + Player.moveSpeed, 0, maxStatCanBeAchieved);
+            Player.jumpSpeedBoost = Math.Clamp(JumpBoost + Player.jumpSpeedBoost, 0, maxStatCanBeAchieved);
+            Player.lifeRegen = (int)Math.Clamp(HPRegen * Player.lifeRegen, 0, maxStatCanBeAchieved);
+            Player.manaRegen = (int)Math.Clamp(ManaRegen * Player.manaRegen, 0, maxStatCanBeAchieved);
+            Player.DefenseEffectiveness *= Math.Clamp(DefenseEffectiveness, 0, maxStatCanBeAchieved);
+            Player.maxMinions = Math.Clamp(MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
+            Player.maxTurrets = Math.Clamp(SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
