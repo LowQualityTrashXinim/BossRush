@@ -953,41 +953,39 @@ namespace BossRush.Contents.Items.Chest
     {
         public float finalMultiplier = 1f;
         public int amountModifier = 0;
+        public int weaponAmount;
+        public int potionTypeAmount;
+        public int potionNumAmount;
         public float MeleeChanceMutilplier = 1f;
         public float RangeChanceMutilplier = 1f;
         public float MagicChanceMutilplier = 1f;
         public float SummonChanceMutilplier = 1f;
-        private int ModifyGetAmount(int ValueToModify, Player player)
+        private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 0;
+        
+        public void GetAmount()
         {
-            //Modifier
-            int amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
-            float finalMultipler = player.GetModPlayer<ChestLootDropPlayer>().finalMultiplier;
-            return finalMultipler > 0 ? (int)Math.Ceiling(finalMultipler * (ValueToModify + amountToModify)) : 0;
-        }
-        public void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
-        {
-            amountForWeapon = 3;
-            amountForPotionType = 1;
-            amountForPotionNum = 2;
+            weaponAmount = 3;
+            potionTypeAmount = 1;
+            potionNumAmount = 2;
             if (Main.getGoodWorld)
             {
-                amountForWeapon = 2;
+                weaponAmount = 2;
             }
             if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
             {
-                amountForWeapon += 2;
-                amountForPotionType += 2;
-                amountForPotionNum += 2;
+                weaponAmount += 2;
+                potionTypeAmount += 2;
+                potionNumAmount += 2;
             }
             if (Main.hardMode)
             {
-                amountForWeapon += 1;
-                amountForPotionType += 1;
-                amountForPotionNum += 1;
+                weaponAmount += 1;
+                potionTypeAmount += 1;
+                potionNumAmount += 1;
             }
-            amountForWeapon = ModifyGetAmount(amountForWeapon, player);
-            amountForPotionType = ModifyGetAmount(amountForPotionType, player);
-            amountForPotionNum = ModifyGetAmount(amountForPotionNum, player);
+            weaponAmount = ModifyGetAmount(weaponAmount);
+            potionTypeAmount = ModifyGetAmount(potionTypeAmount);
+            potionNumAmount = ModifyGetAmount(potionNumAmount);
         }
         public override void ResetEffects()
         {
