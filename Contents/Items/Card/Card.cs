@@ -68,11 +68,34 @@ namespace BossRush.Contents.Items.Card
             }
             for (int i = 0; i < CardStats.Count; i++)
             {
+                if (CardStatsNumber[i] == 0)
+                {
+                    continue;
+                }
+                if (CardStatsNumber[i] < 0)
+                {
+                    TooltipLine badline = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], CardStatsNumber[i]));
+                    badline.OverrideColor = BossRushModSystem.RedToBlack;
+                    tooltips.Add(badline);
+                    continue;
+                }
                 TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], CardStatsNumber[i]));
                 tooltips.Add(line);
             }
         }
-        private string StatNumberAsText(PlayerStats stat, float number) => DoesStatsRequiredWholeNumber(stat) ? $"+{number} {stat}" : $"+{(int)(number * 100)}% {stat}";
+        private string StatNumberAsText(PlayerStats stat, float number)
+        {
+            string value = "";
+            if(number > 0)
+            {
+                value = "+"; 
+            }
+            if(DoesStatsRequiredWholeNumber(stat))
+            {
+                return value + $"{number} {stat}";
+            }
+            return value + $"{(int)(number * 100)}% {stat}";
+        }
         protected PlayerStats SetStatsToAddBaseOnTier()
         {
             List<PlayerStats> list = new List<PlayerStats>();
@@ -120,6 +143,8 @@ namespace BossRush.Contents.Items.Card
             {
                 for (int l = i + 1; l < CardStats.Count; l++)
                 {
+                    float badstats = ReturnBadStatsBaseOnTier(CardStats[i]);
+                    CardStatsNumber[i] += badstats;
                     if (CardStats[i] == CardStats[l])
                     {
                         CardStatsNumber[i] += CardStatsNumber[l];
@@ -131,53 +156,46 @@ namespace BossRush.Contents.Items.Card
             }
         }
         //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
-        private void AddBadStatsBaseOnTier()
+        private float ReturnBadStatsBaseOnTier(PlayerStats stats)
         {
             if (Tier <= 1)
             {
-                return;
+                return 0;
             }
-            switch (Tier)
+            if (Main.rand.NextFloat() < .1f * Tier)
             {
-                case 1:
-
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                default:
-                    break;
+                return BadstatsCalculator(stats);
             }
+            return 0;
         }
         private float BadstatsCalculator(PlayerStats stats)
         {
             float badstatsmultiplier = 2;
-            float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2) * badstatsmultiplier;
+            float statsNum = -(float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
             {
                 if (SpecialCheckPlayerStats(stats))
                 {
                     statsNum = -Main.rand.Next((int)(Tier * .5f)) + 1;
-                    return statsNum;
                 }
-                statsNum = -(Main.rand.Next(Tier) + 1) * Tier;
-                return statsNum;
+                else
+                {
+                    statsNum = -(Main.rand.Next(Tier) + 1) * Tier;
+                }
+                return statsNum * badstatsmultiplier;
             }
             switch (Tier)
             {
                 case 1:
-                    return statsNum;
+                    return statsNum * badstatsmultiplier;
                 case 2:
-                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.02f)) + .01f)) * Tier;
+                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.02f)) + .01f)) * Tier * badstatsmultiplier;
                 case 3:
-                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.05f)) + .01f)) * Tier;
+                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.05f)) + .01f)) * Tier * badstatsmultiplier;
                 case 4:
-                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.07f)) + .01f)) * Tier;
+                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.07f)) + .01f)) * Tier * badstatsmultiplier;
                 default:
-                    return (statsNum - (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier;
+                    return (statsNum - (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier * badstatsmultiplier;
             }
         }
         /// <summary>
@@ -460,8 +478,8 @@ namespace BossRush.Contents.Items.Card
             health = StatModifier.Default;
             mana = StatModifier.Default;
 
-            health.Base = Math.Clamp(HPMax + health.Base, 0, maxStatCanBeAchieved);
-            mana.Base = Math.Clamp(ManaMax + mana.Base, 0, maxStatCanBeAchieved);
+            health.Base = Math.Clamp(HPMax + health.Base, 100, maxStatCanBeAchieved);
+            mana.Base = Math.Clamp(ManaMax + mana.Base, 20, maxStatCanBeAchieved);
         }
         public override void PreUpdate()
         {

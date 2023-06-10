@@ -26,7 +26,7 @@ namespace BossRush.Contents.Items.aDebugItem
             NoHitPlayerHandle nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
             ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
             Player player = Main.LocalPlayer;
-            chestplayer.GetAmount(out int weapon, out int potiontype, out int potionNum, player);
+            chestplayer.GetAmount();
             TooltipLine line = new TooltipLine(Mod, "Stats",
                 $"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).Additive}" +
                 $"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).Additive}" +
@@ -47,9 +47,9 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nMax sentry/turret : {player.maxTurrets}" +
                 $"\nAmount drop chest addition : {chestplayer.amountModifier}" +
                 $"\nAmount drop chest multiplication : {chestplayer.finalMultiplier}" +
-                $"\nAmount drop chest final weapon : {weapon}" +
-                $"\nAmount drop chest final potion type : {potiontype}" +
-                $"\nAmount drop chest final potion amount : {potionNum}" +
+                $"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
+                $"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
+                $"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
                 $"\nMelee drop chance : {chestplayer.MeleeChanceMutilplier}" +
                 $"\nRange drop chance : {chestplayer.RangeChanceMutilplier}" +
                 $"\nMagic drop chance : {chestplayer.MagicChanceMutilplier}" +

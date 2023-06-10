@@ -961,7 +961,9 @@ namespace BossRush.Contents.Items.Chest
         public float MagicChanceMutilplier = 1f;
         public float SummonChanceMutilplier = 1f;
         private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 0;
-        
+        /// <summary>
+        /// This must be called before using <see cref="weaponAmount"/>
+        /// </summary>
         public void GetAmount()
         {
             weaponAmount = 3;
