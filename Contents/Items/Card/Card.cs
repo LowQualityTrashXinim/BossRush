@@ -12,7 +12,6 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.IO;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 
 namespace BossRush.Contents.Items.Card
 {
