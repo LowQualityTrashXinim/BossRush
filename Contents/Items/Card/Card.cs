@@ -86,11 +86,11 @@ namespace BossRush.Contents.Items.Card
         private string StatNumberAsText(PlayerStats stat, float number)
         {
             string value = "";
-            if(number > 0)
+            if (number > 0)
             {
-                value = "+"; 
+                value = "+";
             }
-            if(DoesStatsRequiredWholeNumber(stat))
+            if (DoesStatsRequiredWholeNumber(stat))
             {
                 return value + $"{number} {stat}";
             }
@@ -139,63 +139,34 @@ namespace BossRush.Contents.Items.Card
                 return;
             }
             OnTierItemSpawn();
+            AddBadStatsBaseOnTier();
             for (int i = 0; i < CardStats.Count; i++)
             {
                 for (int l = i + 1; l < CardStats.Count; l++)
                 {
-                    float badstats = ReturnBadStatsBaseOnTier(CardStats[i]);
-                    CardStatsNumber[i] += badstats;
                     if (CardStats[i] == CardStats[l])
                     {
                         CardStatsNumber[i] += CardStatsNumber[l];
                         CardStats.RemoveAt(l);
                         CardStatsNumber.RemoveAt(l);
-                        break;
+                        i = 0;
+                        l = 0;
                     }
                 }
             }
         }
         //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
-        private float ReturnBadStatsBaseOnTier(PlayerStats stats)
+        private void AddBadStatsBaseOnTier()
         {
             if (Tier <= 1)
             {
-                return 0;
+                return;
             }
             if (Main.rand.NextFloat() < .1f * Tier)
             {
-                return BadstatsCalculator(stats);
-            }
-            return 0;
-        }
-        private float BadstatsCalculator(PlayerStats stats)
-        {
-            float badstatsmultiplier = 2;
-            float statsNum = -(float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
-            if (DoesStatsRequiredWholeNumber(stats))
-            {
-                if (SpecialCheckPlayerStats(stats))
-                {
-                    statsNum = -Main.rand.Next((int)(Tier * .5f)) + 1;
-                }
-                else
-                {
-                    statsNum = -(Main.rand.Next(Tier) + 1) * Tier;
-                }
-                return statsNum * badstatsmultiplier;
-            }
-            switch (Tier)
-            {
-                case 1:
-                    return statsNum * badstatsmultiplier;
-                case 2:
-                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.02f)) + .01f)) * Tier * badstatsmultiplier;
-                case 3:
-                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.05f)) + .01f)) * Tier * badstatsmultiplier;
-                case 4:
-                    return (statsNum - (float)Math.Round((Main.rand.NextFloat(.07f)) + .01f)) * Tier * badstatsmultiplier;
-                default:
-                    return (statsNum - (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier * badstatsmultiplier;
+                PlayerStats badstat = SetStatsToAddBaseOnTier();
+                CardStats.Add(badstat);
+                CardStatsNumber.Add(statsCalculator(badstat, -2));
             }
         }
         /// <summary>
@@ -204,7 +175,7 @@ namespace BossRush.Contents.Items.Card
         public virtual void OnTierItemSpawn() { }
         public virtual List<PlayerStats> CardStats => new List<PlayerStats>();
         public virtual List<float> CardStatsNumber => new List<float>();
-        protected float statsCalculator(PlayerStats stats)
+        protected float statsCalculator(PlayerStats stats, float multiplier = 1)
         {
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
@@ -212,23 +183,25 @@ namespace BossRush.Contents.Items.Card
                 if (SpecialCheckPlayerStats(stats))
                 {
                     statsNum = Main.rand.Next((int)(Tier * .5f)) + 1;
-                    return statsNum;
                 }
-                statsNum = (Main.rand.Next(Tier) + 1) * Tier;
-                return statsNum;
+                else
+                {
+                    statsNum = (Main.rand.Next(Tier) + 1) * Tier;
+                }
+                return statsNum * multiplier;
             }
             switch (Tier)
             {
                 case 1:
-                    return statsNum;
+                    return statsNum * multiplier;
                 case 2:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.02f)) + .01f) * Tier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.02f)) + .01f) * Tier * multiplier;
                 case 3:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.05f)) + .01f) * Tier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.05f)) + .01f) * Tier * multiplier;
                 case 4:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.07f)) + .01f) * Tier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.07f)) + .01f) * Tier * multiplier;
                 default:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier * multiplier;
             }
         }
         public bool SpecialCheckPlayerStats(PlayerStats stats) =>
