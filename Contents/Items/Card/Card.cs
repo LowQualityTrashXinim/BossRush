@@ -5,6 +5,7 @@ using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.ModLoader.IO;
+using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.IO;
+using System.Linq;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -96,42 +98,6 @@ namespace BossRush.Contents.Items.Card
             }
             return value + $"{(int)(number * 100)}% {stat}";
         }
-        protected PlayerStats SetStatsToAddBaseOnTier()
-        {
-            List<PlayerStats> list = new List<PlayerStats>();
-            if (Tier >= 4)
-            {
-                //list.Add(PlayerStats.Luck);
-            }
-            if (Tier >= 3)
-            {
-                list.Add(PlayerStats.MaxSentry);
-                list.Add(PlayerStats.MaxMinion);
-                list.Add(PlayerStats.ChestLootDropIncrease);
-            }
-            if (Tier >= 2)
-            {
-                list.Add(PlayerStats.DefenseEffectiveness);
-                list.Add(PlayerStats.CritDamage);
-                list.Add(PlayerStats.CritChance);
-                list.Add(PlayerStats.DamageUniverse);
-            }
-            if (Tier >= 1)
-            {
-                list.Add(PlayerStats.Defense);
-                list.Add(PlayerStats.RegenMana);
-                list.Add(PlayerStats.MaxMana);
-                list.Add(PlayerStats.RegenHP);
-                list.Add(PlayerStats.MaxHP);
-                list.Add(PlayerStats.MovementSpeed);
-                list.Add(PlayerStats.JumpBoost);
-                list.Add(PlayerStats.SummonDMG);
-                list.Add(PlayerStats.MagicDMG);
-                list.Add(PlayerStats.RangeDMG);
-                list.Add(PlayerStats.MeleeDMG);
-            }
-            return Main.rand.Next(list);
-        }
         public override void OnSpawn(IEntitySource source)
         {
             if (Tier <= 0)
@@ -139,28 +105,61 @@ namespace BossRush.Contents.Items.Card
                 return;
             }
             OnTierItemSpawn();
-            AddBadStatsBaseOnTier();
+            SetBadStatsBaseOnTier();
             for (int i = 0; i < CardStats.Count; i++)
             {
                 for (int l = i + 1; l < CardStats.Count; l++)
                 {
-                    if (CardStats[i] == CardStats[l])
+                    if (CardStats[i] != CardStats[l])
                     {
-                        CardStatsNumber[i] += CardStatsNumber[l];
-                        CardStats.RemoveAt(l);
-                        CardStatsNumber.RemoveAt(l);
-                        i = 0;
-                        l = 0;
+                        continue;
                     }
+                    CardStatsNumber[i] += CardStatsNumber[l];
+                    CardStats.RemoveAt(l);
+                    CardStatsNumber.RemoveAt(l);
+                    i = 0;
+                    l = 0;
                 }
             }
-            if (Tier > 3 && CardStats.Count < 3)
+        }
+        protected PlayerStats SetStatsToAddBaseOnTier()
+        {
+            List<PlayerStats> stats = new List<PlayerStats>();
+            if (Tier >= 4)
             {
-
+                //list.Add(PlayerStats.Luck);
             }
+            if (Tier >= 3)
+            {
+                stats.Add(PlayerStats.MaxSentry);
+                stats.Add(PlayerStats.MaxMinion);
+                stats.Add(PlayerStats.ChestLootDropIncrease);
+            }
+            if (Tier >= 2)
+            {
+                stats.Add(PlayerStats.DefenseEffectiveness);
+                stats.Add(PlayerStats.CritDamage);
+                stats.Add(PlayerStats.CritChance);
+                stats.Add(PlayerStats.DamageUniverse);
+            }
+            if (Tier >= 1)
+            {
+                stats.Add(PlayerStats.Defense);
+                stats.Add(PlayerStats.RegenMana);
+                stats.Add(PlayerStats.MaxMana);
+                stats.Add(PlayerStats.RegenHP);
+                stats.Add(PlayerStats.MaxHP);
+                stats.Add(PlayerStats.MovementSpeed);
+                stats.Add(PlayerStats.JumpBoost);
+                stats.Add(PlayerStats.SummonDMG);
+                stats.Add(PlayerStats.MagicDMG);
+                stats.Add(PlayerStats.RangeDMG);
+                stats.Add(PlayerStats.MeleeDMG);
+            }
+            return Main.rand.Next(stats);
         }
         //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
-        private void AddBadStatsBaseOnTier()
+        private void SetBadStatsBaseOnTier()
         {
             if (Tier <= 1)
             {
