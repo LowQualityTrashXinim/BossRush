@@ -154,6 +154,10 @@ namespace BossRush.Contents.Items.Card
                     }
                 }
             }
+            if (Tier > 3 && CardStats.Count < 3)
+            {
+
+            }
         }
         //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
         private void AddBadStatsBaseOnTier()
@@ -195,11 +199,11 @@ namespace BossRush.Contents.Items.Card
                 case 1:
                     return statsNum * multiplier;
                 case 2:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.02f)) + .01f) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.1f, .03f)) + .01f) * Tier * multiplier;
                 case 3:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.05f)) + .01f) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.2f, .05f)) + .01f) * Tier * multiplier;
                 case 4:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.07f)) + .01f) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.5f, .07f)) + .01f) * Tier * multiplier;
                 default:
                     return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier * multiplier;
             }
@@ -616,9 +620,9 @@ namespace BossRush.Contents.Items.Card
         {
             if (npc.boss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 5));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 10));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BoxOfCard>(), 50));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 3));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 7));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BoxOfCard>(), 25));
             }
             else
             {
