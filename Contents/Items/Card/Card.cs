@@ -169,7 +169,7 @@ namespace BossRush.Contents.Items.Card
             {
                 PlayerStats badstat = SetStatsToAddBaseOnTier();
                 CardStats.Add(badstat);
-                CardStatsNumber.Add(statsCalculator(badstat, -2));
+                CardStatsNumber.Add(statsCalculator(badstat, -3));
             }
         }
         /// <summary>
@@ -198,13 +198,13 @@ namespace BossRush.Contents.Items.Card
                 case 1:
                     return statsNum * multiplier;
                 case 2:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.1f, .03f)) + .01f) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.1f, .03f), 2) + .01f) * Tier * multiplier;
                 case 3:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.2f, .05f)) + .01f) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.2f, .05f), 2) + .01f) * Tier * multiplier;
                 case 4:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.5f, .07f)) + .01f) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.5f, .07f), 2) + .01f) * Tier * multiplier;
                 default:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f))) * Tier * multiplier;
+                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f), 2)) * Tier * multiplier;
             }
         }
         public bool SpecialCheckPlayerStats(PlayerStats stats) =>
@@ -392,6 +392,38 @@ namespace BossRush.Contents.Items.Card
     }
     class PlayerCardHandle : ModPlayer
     {
+        public bool DecreaseRateOfFire = false;
+        public bool NoHealing = false;
+        public bool SluggishDamage = false;
+        public bool FiveTimeDamageTaken = false;
+        public bool LimitedResource = false;
+        public bool PlayWithConstantLifeLost = false;
+        public bool ReduceIframe = false;
+        public bool WeaponCanJammed = false; // sometime can't use weapon
+        public bool WeaponCanKick = false; // lose life on use weapon
+        public bool NegativeDamageRandomize = false;
+        public bool CritDealNoDamage = false;
+        public bool AccessoriesDisable = false; // Will be implement much later
+        public override float UseSpeedMultiplier(Item item)
+        {
+            if (WeaponCanKick)
+            {
+                Player.statLife -= Player.GetWeaponDamage(item);
+            }
+            if (DecreaseRateOfFire)
+            {
+                return 2f;
+            }
+            return base.UseSpeedMultiplier(item);
+        }
+        public override bool CanUseItem(Item item)
+        {
+            if (WeaponCanJammed)
+            {
+                return Main.rand.NextBool(20);
+            }
+            return base.CanUseItem(item);
+        }
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
         public const int maxStatCanBeAchieved = 9999;
         //Copper tier
@@ -422,21 +454,29 @@ namespace BossRush.Contents.Items.Card
         {
             if (item.DamageType == DamageClass.Melee)
             {
-                damage.Base = Math.Clamp(MeleeDMG + damage.Base, 0, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(MeleeDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Ranged)
             {
-                damage.Base = Math.Clamp(RangeDMG + damage.Base, 0, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(RangeDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Magic)
             {
-                damage.Base = Math.Clamp(MagicDMG + damage.Base, 0, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(MagicDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Summon)
             {
-                damage.Base = Math.Clamp(SummonDMG + damage.Base, 0, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(SummonDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
             }
-            damage.Base = Math.Clamp(DamagePure + damage.Base, 0, maxStatCanBeAchieved);
+            damage.Base = Math.Clamp(DamagePure + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
+            if (SluggishDamage)
+            {
+                damage.Flat *= .9f;
+            }
+            if (NegativeDamageRandomize)
+            {
+                damage = damage.Scale(Main.rand.NextFloat() + .1f);
+            }
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
@@ -446,7 +486,11 @@ namespace BossRush.Contents.Items.Card
         {
             if (hit.Crit)
             {
-                hit.Damage = (int)(Math.Clamp(CritDamage, 0, 999999) * hit.Damage);
+                hit.Damage = (int)(Math.Clamp(CritDamage, -hit.Damage + 1, 999999) * hit.Damage);
+                if (CritDealNoDamage)
+                {
+                    hit.Damage = 1;
+                }
             }
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
@@ -454,8 +498,8 @@ namespace BossRush.Contents.Items.Card
             health = StatModifier.Default;
             mana = StatModifier.Default;
 
-            health.Base = Math.Clamp(HPMax + health.Base, 100, maxStatCanBeAchieved);
-            mana.Base = Math.Clamp(ManaMax + mana.Base, 20, maxStatCanBeAchieved);
+            health.Base = Math.Clamp(HPMax + health.Base, -Player.statLifeMax + 100, maxStatCanBeAchieved);
+            mana.Base = Math.Clamp(ManaMax + mana.Base, -Player.statManaMax + 20, maxStatCanBeAchieved);
         }
         public override void PreUpdate()
         {
@@ -465,6 +509,34 @@ namespace BossRush.Contents.Items.Card
         {
             base.PostUpdate();
             ChestLoot.amountModifier = Math.Clamp(DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
+            if (NoHealing)
+            {
+                Player.AddBuff(BuffID.PotionSickness, 999);
+            }
+            if (PlayWithConstantLifeLost)
+            {
+                Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
+            }
+        }
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+        {
+            base.ModifyHurt(ref modifiers);
+            if(FiveTimeDamageTaken)
+            {
+                modifiers.FinalDamage.Base *= 5;
+            }
+        }
+        public override void PostHurt(Player.HurtInfo info)
+        {
+            base.PostHurt(info);
+            if (info.PvP)
+            {
+                return;
+            }
+            if (ReduceIframe)
+            {
+                Player.AddImmuneTime(info.CooldownCounter, -30);
+            }
         }
         public override void ResetEffects()
         {
@@ -476,6 +548,11 @@ namespace BossRush.Contents.Items.Card
             Player.DefenseEffectiveness *= Math.Clamp(DefenseEffectiveness, 0, maxStatCanBeAchieved);
             Player.maxMinions = Math.Clamp(MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
             Player.maxTurrets = Math.Clamp(SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
+            if(LimitedResource)
+            {
+                Player.lifeRegen = 0;
+                Player.manaRegen = 0;
+            }
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
