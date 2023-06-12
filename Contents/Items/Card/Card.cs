@@ -5,7 +5,6 @@ using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
@@ -13,8 +12,6 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.IO;
-using System.Linq;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -83,7 +80,15 @@ namespace BossRush.Contents.Items.Card
                     tooltips.Add(badline);
                     continue;
                 }
-                TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], CardStatsNumber[i]));
+                float statsNum = CardStatsNumber[i];
+                if (CardStatsNumber[i] > 0)
+                {
+                    if (modplayer.ReducePositiveCardStat)
+                    {
+                        statsNum *= PlayerCardHandle.ReducePositiveCardStatByHalf;
+                    }
+                }
+                TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], statsNum));
                 tooltips.Add(line);
             }
             if (CursedID != -1)
@@ -249,6 +254,10 @@ namespace BossRush.Contents.Items.Card
             for (int i = 0; i < CardStats.Count; i++)
             {
                 int offset = i * 20;
+                if (modplayer.ReducePositiveCardStat && CardStatsNumber[i] > 0)
+                {
+                    CardStatsNumber[i] *= PlayerCardHandle.ReducePositiveCardStatByHalf;
+                }
                 switch (CardStats[i])
                 {
                     case PlayerStats.MeleeDMG:
@@ -423,6 +432,7 @@ namespace BossRush.Contents.Items.Card
         public bool NegativeDamageRandomize = false;// ID 10
         public bool CritDealNoDamage = false;// ID 11
         public bool ReducePositiveCardStat = false;// ID 12
+        public const float ReducePositiveCardStatByHalf = .5f;
         public bool AccessoriesDisable = false; // Will be implement much later
         public List<int> CursesID = new List<int>();
         public override void PreUpdate()
@@ -514,7 +524,7 @@ namespace BossRush.Contents.Items.Card
                 case 9:
                     return "Your weapon use your life to work";
                 case 10:
-                    return "Damage have been ramdomize to worse";
+                    return "Damage have been ramdomize to be worse";
                 case 11:
                     return "Critical damage deal next to no damage";
                 case 12:
@@ -659,21 +669,7 @@ namespace BossRush.Contents.Items.Card
             }
             if (ReducePositiveCardStat)
             {
-                for (int i = 0; i < Player.inventory.Length; i++)
-                {
-                    if (Player.inventory[i] is null)
-                    {
-                        continue;
-                    }
-                    Item item = Player.inventory[i];
-                    if (item.ModItem is CardItem card)
-                    {
-                        foreach (float stNum in card.CardStatsNumber)
-                        {
 
-                        }
-                    }
-                }
             }
         }
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
