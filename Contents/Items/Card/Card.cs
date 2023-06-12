@@ -180,7 +180,7 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
-            if (Main.rand.NextFloat() < .1f * Tier)
+            if (Main.rand.NextFloat() < .15f * Tier)
             {
                 if (Main.rand.NextBool(10))
                 {
