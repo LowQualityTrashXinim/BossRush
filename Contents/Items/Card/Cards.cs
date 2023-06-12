@@ -89,6 +89,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.DropAmountIncrease = 0;
             modplayer.MinionSlot = 0;
             modplayer.SentrySlot = 0;
+            modplayer.CursesID.Clear();
         }
     }
     internal class CopperCard : CardItem
@@ -107,7 +108,7 @@ namespace BossRush.Contents.Items.Card
             for (int i = 0; i < Tier; i++)
             {
                 stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i]));
+                statsNumber.Add(statsCalculator(stats[i], Multiplier));
             }
         }
         public override List<PlayerStats> CardStats => stats;
@@ -130,7 +131,7 @@ namespace BossRush.Contents.Items.Card
             for (int i = 0; i < Tier; i++)
             {
                 stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i]));
+                statsNumber.Add(statsCalculator(stats[i], Multiplier));
             }
         }
         public override List<PlayerStats> CardStats => stats;
@@ -153,7 +154,7 @@ namespace BossRush.Contents.Items.Card
             for (int i = 0; i < Tier; i++)
             {
                 stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i]));
+                statsNumber.Add(statsCalculator(stats[i], Multiplier));
             }
         }
         public override List<PlayerStats> CardStats => stats;
@@ -176,7 +177,7 @@ namespace BossRush.Contents.Items.Card
             for (int i = 0; i < Tier; i++)
             {
                 stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i]));
+                statsNumber.Add(statsCalculator(stats[i], Multiplier));
             }
         }
         public override List<PlayerStats> CardStats => stats;

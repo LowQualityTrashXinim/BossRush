@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.IO;
 using System.Linq;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -44,7 +45,7 @@ namespace BossRush.Contents.Items.Card
         public const int PlatinumCardDropChance = 40;
         public const int GoldCardDropChance = 20;
         public const int SilverCardDropChance = 10;
-
+        public float Multiplier = 1f;
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(30, 24);
@@ -68,6 +69,7 @@ namespace BossRush.Contents.Items.Card
                 tooltips.Add(new TooltipLine(Mod, "statsBugged", "It is appear that the card stats got corrupted or won't save !"));
                 return;
             }
+            PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
             for (int i = 0; i < CardStats.Count; i++)
             {
                 if (CardStatsNumber[i] == 0)
@@ -83,6 +85,12 @@ namespace BossRush.Contents.Items.Card
                 }
                 TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], CardStatsNumber[i]));
                 tooltips.Add(line);
+            }
+            if (CursedID != -1)
+            {
+                TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CurseToString(CursedID));
+                badline.OverrideColor = BossRushModSystem.RedToBlack;
+                tooltips.Add(badline);
             }
         }
         private string StatNumberAsText(PlayerStats stat, float number)
@@ -122,6 +130,8 @@ namespace BossRush.Contents.Items.Card
                 }
             }
         }
+        //since we only add 1 curse per card, this don't need to be a list
+        int CursedID = -1;
         protected PlayerStats SetStatsToAddBaseOnTier()
         {
             List<PlayerStats> stats = new List<PlayerStats>();
@@ -167,6 +177,10 @@ namespace BossRush.Contents.Items.Card
             }
             if (Main.rand.NextFloat() < .1f * Tier)
             {
+                if (Main.rand.NextBool(10))
+                {
+                    CursedID = Main.rand.Next(12) + 1;
+                }
                 PlayerStats badstat = SetStatsToAddBaseOnTier();
                 CardStats.Add(badstat);
                 CardStatsNumber.Add(statsCalculator(badstat, -3));
@@ -178,7 +192,8 @@ namespace BossRush.Contents.Items.Card
         public virtual void OnTierItemSpawn() { }
         public virtual List<PlayerStats> CardStats => new List<PlayerStats>();
         public virtual List<float> CardStatsNumber => new List<float>();
-        protected float statsCalculator(PlayerStats stats, float multiplier = 1)
+        public virtual float CursedStat => -1;
+        protected float statsCalculator(PlayerStats stats, float multiplier)
         {
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
@@ -198,13 +213,13 @@ namespace BossRush.Contents.Items.Card
                 case 1:
                     return statsNum * multiplier;
                 case 2:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.1f, .03f), 2) + .01f) * Tier * multiplier;
+                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.01f, .03f) + .01f) * Tier * multiplier, 2);
                 case 3:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.2f, .05f), 2) + .01f) * Tier * multiplier;
+                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.02f, .05f) + .01f) * Tier * multiplier, 2);
                 case 4:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(0.5f, .07f), 2) + .01f) * Tier * multiplier;
+                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.04f, .07f) + .01f) * Tier * multiplier, 2);
                 default:
-                    return (statsNum + (float)Math.Round(Main.rand.NextFloat(.01f, .1f), 2)) * Tier * multiplier;
+                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.01f, .1f)) * Tier * multiplier, 2);
             }
         }
         public bool SpecialCheckPlayerStats(PlayerStats stats) =>
@@ -292,6 +307,10 @@ namespace BossRush.Contents.Items.Card
                         break;
                     default:
                         break;
+                }
+                if (CursedID != -1)
+                {
+                    modplayer.CursesID.Add(CursedID);
                 }
                 BossRushUtils.CombatTextRevamp(player.Hitbox, Color.White, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offset);
             }
@@ -392,37 +411,147 @@ namespace BossRush.Contents.Items.Card
     }
     class PlayerCardHandle : ModPlayer
     {
-        public bool DecreaseRateOfFire = false;
-        public bool NoHealing = false;
-        public bool SluggishDamage = false;
-        public bool FiveTimeDamageTaken = false;
-        public bool LimitedResource = false;
-        public bool PlayWithConstantLifeLost = false;
-        public bool ReduceIframe = false;
-        public bool WeaponCanJammed = false; // sometime can't use weapon
-        public bool WeaponCanKick = false; // lose life on use weapon
-        public bool NegativeDamageRandomize = false;
-        public bool CritDealNoDamage = false;
+        public bool DecreaseRateOfFire = false;// ID 1
+        public bool NoHealing = false;// ID 2
+        public bool SluggishDamage = false;// ID 3
+        public bool FiveTimeDamageTaken = false;// ID 4
+        public bool LimitedResource = false;// ID 5
+        public bool PlayWithConstantLifeLost = false;// ID 6
+        public bool ReduceIframe = false;// ID 7
+        public bool WeaponCanJammed = false; // ID 8 sometime can't use weapon
+        public bool WeaponCanKick = false; // ID 9 lose life on use weapon
+        public bool NegativeDamageRandomize = false;// ID 10
+        public bool CritDealNoDamage = false;// ID 11
+        public bool ReducePositiveCardStat = false;// ID 12
         public bool AccessoriesDisable = false; // Will be implement much later
+        public List<int> CursesID = new List<int>();
+        public override void PreUpdate()
+        {
+            if (item != Player.HeldItem)
+            {
+                SlowDown = 0;
+                CoolDown = 0;
+            }
+            DecreaseRateOfFire = false;
+            NoHealing = false;
+            SluggishDamage = false;
+            FiveTimeDamageTaken = false;
+            LimitedResource = false;
+            PlayWithConstantLifeLost = false;
+            ReduceIframe = false;
+            WeaponCanJammed = false;
+            WeaponCanKick = false;
+            NegativeDamageRandomize = false;
+            CritDealNoDamage = false;
+            ReducePositiveCardStat = false;
+            AccessoriesDisable = false;
+            for (int i = 0; i < CursesID.Count; i++)
+            {
+                switch (CursesID[i])
+                {
+                    case 1:
+                        DecreaseRateOfFire = true;
+                        break;
+                    case 2:
+                        NoHealing = true;
+                        break;
+                    case 3:
+                        SluggishDamage = true;
+                        break;
+                    case 4:
+                        FiveTimeDamageTaken = true;
+                        break;
+                    case 5:
+                        LimitedResource = true;
+                        break;
+                    case 6:
+                        PlayWithConstantLifeLost = true;
+                        break;
+                    case 7:
+                        ReduceIframe = true;
+                        break;
+                    case 8:
+                        WeaponCanJammed = true;
+                        break;
+                    case 9:
+                        WeaponCanKick = true;
+                        break;
+                    case 10:
+                        NegativeDamageRandomize = true;
+                        break;
+                    case 11:
+                        CritDealNoDamage = true;
+                        break;
+                    case 12:
+                        ReducePositiveCardStat = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            base.PreUpdate();
+        }
+        public string CurseToString(int Curseid)
+        {
+            switch (Curseid)
+            {
+                case 1:
+                    return "Weapon have decrease fire rate";
+                case 2:
+                    return "You can't heal using potion";
+                case 3:
+                    return "Decrease weapon damage severely";
+                case 4:
+                    return "Getting hit is much more fatal";
+                case 5:
+                    return "You can't regenarate mana nor hp";
+                case 6:
+                    return "You always lose life leaving you with 1 hp left";
+                case 7:
+                    return "Your immunity frame is decrease";
+                case 8:
+                    return "Your weapon will jammed if you use the same weapon too much";
+                case 9:
+                    return "Your weapon use your life to work";
+                case 10:
+                    return "Damage have been ramdomize to worse";
+                case 11:
+                    return "Critical damage deal next to no damage";
+                case 12:
+                    return "Cards stats is reduce by half";
+                default:
+                    return "Error, you shouldn't be getting this tho unless you done something horribly wrong";
+            }
+        }
         public override float UseSpeedMultiplier(Item item)
         {
-            if (WeaponCanKick)
-            {
-                Player.statLife -= Player.GetWeaponDamage(item);
-            }
             if (DecreaseRateOfFire)
             {
                 return 2f;
             }
             return base.UseSpeedMultiplier(item);
         }
+        float SlowDown = 1;
+        int CoolDown = 0;
         public override bool CanUseItem(Item item)
         {
-            if (WeaponCanJammed)
+            if (WeaponCanJammed && CoolDown != 0)
             {
-                return Main.rand.NextBool(20);
+                return SlowDown <= 1;
             }
             return base.CanUseItem(item);
+        }
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (WeaponCanKick)
+            {
+                Player.statLife -= Player.GetWeaponDamage(item);
+            }
+            if (WeaponCanJammed && Main.mouseLeft)
+            {
+                SlowDown += .2f;
+            }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
         public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
         public const int maxStatCanBeAchieved = 9999;
@@ -448,6 +577,7 @@ namespace BossRush.Contents.Items.Card
         public int DropAmountIncrease = 0;
         public int MinionSlot = 0;
         public int SentrySlot = 0;
+        Item item;
         //Platinum
         //public float LuckIncrease = 0;
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
@@ -501,13 +631,10 @@ namespace BossRush.Contents.Items.Card
             health.Base = Math.Clamp(HPMax + health.Base, -Player.statLifeMax + 100, maxStatCanBeAchieved);
             mana.Base = Math.Clamp(ManaMax + mana.Base, -Player.statManaMax + 20, maxStatCanBeAchieved);
         }
-        public override void PreUpdate()
-        {
-            base.PreUpdate();
-        }
         public override void PostUpdate()
         {
             base.PostUpdate();
+            item = Player.HeldItem;
             ChestLoot.amountModifier = Math.Clamp(DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
             if (NoHealing)
             {
@@ -517,11 +644,42 @@ namespace BossRush.Contents.Items.Card
             {
                 Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
             }
+            if (WeaponCanJammed)
+            {
+                if (SlowDown >= 6)
+                {
+                    SlowDown = 6;
+                    CoolDown = Player.itemAnimationMax * 10;
+                }
+                if (!Player.ItemAnimationActive)
+                {
+                    CoolDown = BossRushUtils.CoolDown(CoolDown);
+                    SlowDown = Math.Clamp(SlowDown - .05f, 1, 6);
+                }
+            }
+            if (ReducePositiveCardStat)
+            {
+                for (int i = 0; i < Player.inventory.Length; i++)
+                {
+                    if (Player.inventory[i] is null)
+                    {
+                        continue;
+                    }
+                    Item item = Player.inventory[i];
+                    if (item.ModItem is CardItem card)
+                    {
+                        foreach (float stNum in card.CardStatsNumber)
+                        {
+
+                        }
+                    }
+                }
+            }
         }
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
         {
             base.ModifyHurt(ref modifiers);
-            if(FiveTimeDamageTaken)
+            if (FiveTimeDamageTaken)
             {
                 modifiers.FinalDamage.Base *= 5;
             }
@@ -548,7 +706,7 @@ namespace BossRush.Contents.Items.Card
             Player.DefenseEffectiveness *= Math.Clamp(DefenseEffectiveness, 0, maxStatCanBeAchieved);
             Player.maxMinions = Math.Clamp(MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
             Player.maxTurrets = Math.Clamp(SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
-            if(LimitedResource)
+            if (LimitedResource)
             {
                 Player.lifeRegen = 0;
                 Player.manaRegen = 0;
@@ -577,6 +735,10 @@ namespace BossRush.Contents.Items.Card
             packet.Write(DropAmountIncrease);
             packet.Write(MinionSlot);
             packet.Write(SentrySlot);
+            foreach (int item in CursesID)
+            {
+                packet.Write(item);
+            }
             packet.Send(toWho, fromWho);
         }
         public override void SaveData(TagCompound tag)
@@ -599,8 +761,8 @@ namespace BossRush.Contents.Items.Card
             tag["DropAmountIncrease"] = DropAmountIncrease;
             tag["MinionSlot"] = MinionSlot;
             tag["SentrySlot"] = SentrySlot;
+            tag["CursesID"] = CursesID;
         }
-
         public override void LoadData(TagCompound tag)
         {
             MeleeDMG = (float)tag["MeleeDMG"];
@@ -621,6 +783,7 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = (int)tag["DropAmountIncrease"];
             MinionSlot = (int)tag["MinionSlot"];
             SentrySlot = (int)tag["SentrySlot"];
+            CursesID = tag.Get<List<int>>("CursesID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
@@ -642,6 +805,10 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = reader.ReadInt32();
             MinionSlot = reader.ReadInt32();
             SentrySlot = reader.ReadInt32();
+            for (int i = 0; i < CursesID.Count; i++)
+            {
+                CursesID[i] = reader.ReadByte();
+            }
         }
 
         public override void CopyClientState(ModPlayer targetCopy)
@@ -665,6 +832,7 @@ namespace BossRush.Contents.Items.Card
             clone.DropAmountIncrease = DropAmountIncrease;
             clone.MinionSlot = MinionSlot;
             clone.SentrySlot = SentrySlot;
+            clone.CursesID = CursesID;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -688,6 +856,7 @@ namespace BossRush.Contents.Items.Card
             if (DropAmountIncrease != clone.DropAmountIncrease) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (MinionSlot != clone.MinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (SentrySlot != clone.SentrySlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (CursesID != clone.CursesID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
     class CardNPCdrop : GlobalNPC
