@@ -237,5 +237,10 @@ namespace BossRush
             HashSet<int> HashsetRemoveDup = new(flag);
             return HashsetRemoveDup.ToList();
         }
+        public static List<T> RemoveDupeInList<T>(this List<T> flag) where T : Enum
+        {
+            HashSet<T> HashsetRemoveDup = new(flag);
+            return HashsetRemoveDup.ToList();
+        }
     }
 }

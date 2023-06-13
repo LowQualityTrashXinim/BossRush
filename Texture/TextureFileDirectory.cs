@@ -9,5 +9,6 @@ namespace BossRush.Texture
         public const string TOKENOFPRIDE = "BossRush/Texture/Token_of_Pride";
         public const string EMPTYBUFF = "BossRush/Texture/EmptyBuff";
         public const string PLACEHOLDERCHEST = "BossRush/Texture/PlaceHolderTreasureChest";
+        public const string WHITEBALL = "BossRush/Texture/WhiteBall";
     }
 }

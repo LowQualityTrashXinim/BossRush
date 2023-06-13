@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using System.IO;
 using Terraria.ID;
 using BossRush.Common;
 using Terraria.ModLoader;
@@ -11,8 +12,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using System.IO;
-using System.Linq;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -89,8 +89,7 @@ namespace BossRush.Contents.Items.Card
                         statsNum *= PlayerCardHandle.ReducePositiveCardStatByHalf;
                     }
                 }
-                TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], statsNum));
-                tooltips.Add(line);
+                tooltips.Add(new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], statsNum)));
             }
             if (!string.IsNullOrEmpty(badstatsline.Text))
             {
@@ -98,7 +97,7 @@ namespace BossRush.Contents.Items.Card
             }
             if (CursedID != -1)
             {
-                TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CurseToString(CursedID));
+                TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CursedString);
                 badline.OverrideColor = BossRushModSystem.RedToBlack;
                 tooltips.Add(badline);
             }
@@ -152,6 +151,21 @@ namespace BossRush.Contents.Items.Card
                 }
             }
         }
+        public override void UpdateInventory(Player player)
+        {
+            base.UpdateInventory(player);
+            if (CursedID == -1)
+            {
+                return;
+            }
+            PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
+            if (modplayer.listCursesID.Count >= 12)
+            {
+                CursedID = -1;
+                return;
+            }
+            CursedID = Main.rand.Next(12) + 1;
+        }
         //since we only add 1 curse per card, this don't need to be a list
         public int CursedID = -1;
         protected PlayerStats SetStatsToAddBaseOnTier()
@@ -187,6 +201,16 @@ namespace BossRush.Contents.Items.Card
                 stats.Add(PlayerStats.MagicDMG);
                 stats.Add(PlayerStats.RangeDMG);
                 stats.Add(PlayerStats.MeleeDMG);
+            }
+            if (CardStats.Count > 0)
+            {
+                foreach (var item in CardStats)
+                {
+                    if (stats.Contains(item))
+                    {
+                        stats.Remove(item);
+                    }
+                }
             }
             return Main.rand.Next(stats);
         }
@@ -335,16 +359,21 @@ namespace BossRush.Contents.Items.Card
                     default:
                         break;
                 }
-                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.White, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offset);
+                Color textcolor = Color.White;
+                if (CardStatsNumber[i] < 0)
+                {
+                    textcolor = Color.Red;
+                }
+                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offset);
             }
             if (CursedID != -1)
             {
-                while(modplayer.listCursesID.Contains(CursedID))
+                while (modplayer.listCursesID.Contains(CursedID))
                 {
                     CursedID = Main.rand.Next(12) + 1;
                 }
                 modplayer.listCursesID.Add(CursedID);
-                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CurseToString(CursedID));
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedString);
             }
             return true;
         }
@@ -458,40 +487,11 @@ namespace BossRush.Contents.Items.Card
         public const float ReducePositiveCardStatByHalf = .5f;
         public bool AccessoriesDisable = false; // Will be implement much later
         public List<int> listCursesID = new List<int>();
+        public string CursedString = "";
         //We handle no dupe curses in here
-        private void CursesHandle()
-        {
-            CardItem item;
-            for (int i = 0; i < Player.inventory.Length; i++)
-            {
-                Item itemInInventory = Player.inventory[i];
-                if (itemInInventory is null)
-                {
-                    continue;
-                }
-                if (itemInInventory.ModItem is CardItem carditem)
-                {
-                    item = carditem;
-                }
-                else
-                {
-                    continue;
-                }
-                if (item.CursedID == -1)
-                {
-                    continue;
-                }
-                if (listCursesID.Count >= 12)
-                {
-                    item.CursedID = -1;
-                    return;
-                }
-                item.CursedID = Main.rand.Next(12) + 1;
-            }
-        }
         public override void PreUpdate()
         {
-            CursesHandle();
+            base.PreUpdate();
             if (item != Player.HeldItem)
             {
                 SlowDown = 0;
@@ -516,76 +516,56 @@ namespace BossRush.Contents.Items.Card
                 {
                     case 1:
                         DecreaseRateOfFire = true;
+                        CursedString = "Weapon have decrease fire rate";
                         break;
                     case 2:
                         NoHealing = true;
+                        CursedString = "You can't heal using potion";
                         break;
                     case 3:
                         SluggishDamage = true;
+                        CursedString = "Decrease weapon damage severely";
                         break;
                     case 4:
                         FiveTimeDamageTaken = true;
+                        CursedString = "Getting hit is much more fatal";
                         break;
                     case 5:
                         LimitedResource = true;
+                        CursedString = "You can't regenarate mana nor hp";
                         break;
                     case 6:
                         PlayWithConstantLifeLost = true;
+                        CursedString = "You always lose life leaving you with 1 hp left";
                         break;
                     case 7:
                         ReduceIframe = true;
+                        CursedString = "Your lost some immunity frame";
                         break;
                     case 8:
                         WeaponCanJammed = true;
+                        CursedString = "Your weapon will jammed if you use the same weapon too much";
                         break;
                     case 9:
                         WeaponCanKick = true;
+                        CursedString = "Your weapon use your life to work";
                         break;
                     case 10:
-                        NegativeDamageRandomize = true;
+                        NegativeDamageRandomize = true; 
+                        CursedString = "Damage have been ramdomize to be worse";
                         break;
                     case 11:
                         CritDealNoDamage = true;
+                        CursedString = "Critical damage deal next to no damage";
                         break;
                     case 12:
                         ReducePositiveCardStat = true;
+                        CursedString = "Cards stats is reduce by half";
                         break;
                     default:
+                        CursedString = "Error ! You shouldn't be getting this tho unless you done something horribly wrong";
                         break;
                 }
-            }
-            base.PreUpdate();
-        }
-        public string CurseToString(int Curseid)
-        {
-            switch (Curseid)
-            {
-                case 1:
-                    return "Weapon have decrease fire rate";
-                case 2:
-                    return "You can't heal using potion";
-                case 3:
-                    return "Decrease weapon damage severely";
-                case 4:
-                    return "Getting hit is much more fatal";
-                case 5:
-                    return "You can't regenarate mana nor hp";
-                case 6:
-                    return "You always lose life leaving you with 1 hp left";
-                case 7:
-                    return "Your immunity frame is decrease";
-                case 8:
-                    return "Your weapon will jammed if you use the same weapon too much";
-                case 9:
-                    return "Your weapon use your life to work";
-                case 10:
-                    return "Damage have been ramdomize to be worse";
-                case 11:
-                    return "Critical damage deal next to no damage";
-                case 12:
-                    return "Cards stats is reduce by half";
-                default:
-                    return "Error, you shouldn't be getting this tho unless you done something horribly wrong";
             }
         }
         public override float UseSpeedMultiplier(Item item)
