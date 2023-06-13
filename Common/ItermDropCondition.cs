@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Contents.Items.Artifact;
 
 namespace BossRush.Common
 {
@@ -29,6 +30,20 @@ namespace BossRush.Common
         }
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Exclusive to challenge mode";
+    }
+    public class MagicalCardDeckException : IItemDropRuleCondition
+    {
+        public bool CanDrop(DropAttemptInfo info)
+        {
+            if (!info.IsInSimulation)
+            {
+                return info.player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+            }
+            return false;
+        }
+
+        public bool CanShowItemDropInUI() => true;
+        public string GetConditionDescription() => "Magical card deck call in more card";
     }
     public class SynergyDrop : IItemDropRuleCondition
     {

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Texture;
+using BossRush.Contents.Items.Artifact;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -220,9 +220,10 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
-            if (Main.rand.NextFloat() < .15f * Tier)
+            bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+            if (Main.rand.NextFloat() < .15f * Tier || (hasMagicDeck && Main.rand.NextFloat() < .25f * Tier))
             {
-                if (Main.rand.NextBool(10))
+                if (Main.rand.NextBool(10) || (hasMagicDeck && Main.rand.NextBool(3)))
                 {
                     CursedID = 0;
                 }
@@ -551,7 +552,7 @@ namespace BossRush.Contents.Items.Card
                         CursedString = "Your weapon use your life to work";
                         break;
                     case 10:
-                        NegativeDamageRandomize = true; 
+                        NegativeDamageRandomize = true;
                         CursedString = "Damage have been ramdomize to be worse";
                         break;
                     case 11:
@@ -834,7 +835,6 @@ namespace BossRush.Contents.Items.Card
                 listCursesID[i] = reader.ReadByte();
             }
         }
-
         public override void CopyClientState(ModPlayer targetCopy)
         {
             PlayerCardHandle clone = (PlayerCardHandle)targetCopy;
@@ -858,7 +858,6 @@ namespace BossRush.Contents.Items.Card
             clone.SentrySlot = SentrySlot;
             clone.listCursesID = listCursesID;
         }
-
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             PlayerCardHandle clone = (PlayerCardHandle)clientPlayer;
@@ -899,8 +898,10 @@ namespace BossRush.Contents.Items.Card
                 {
                     return;
                 }
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 100));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 200));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 100)
+                    .OnFailedRoll(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<CardPacket>(), 10)));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 200)
+                    .OnFailedRoll(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<CardPacket>(), 20)));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 200));
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 400));
             }
