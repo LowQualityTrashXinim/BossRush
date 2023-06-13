@@ -54,6 +54,7 @@ namespace BossRush.Contents.Items.Chest
                     ModContent.ItemType<TankPotion>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }
+            player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
         }
     }
 }

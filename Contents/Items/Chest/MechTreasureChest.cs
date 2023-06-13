@@ -82,6 +82,7 @@ namespace BossRush.Contents.Items.Chest
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<PlanteraEssence>());
             player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
+            player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
         }
     }
 }

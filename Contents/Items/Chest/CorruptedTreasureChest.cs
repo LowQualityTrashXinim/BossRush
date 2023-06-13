@@ -8,10 +8,6 @@ namespace BossRush.Contents.Items.Chest
 {
     class CorruptedTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Right click to open chest");
-        }
         public override void SetDefaults()
         {
             Item.width = 54;
@@ -67,7 +63,6 @@ namespace BossRush.Contents.Items.Chest
             player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
             player.QuickSpawnItem(entitySource, ItemID.Hellforge);
             player.QuickSpawnItem(entitySource, ItemID.IronAnvil);
-            player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 999);
             player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystalStand);
             player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
             player.QuickSpawnItem(entitySource, ModContent.ItemType<PocketPortal>());

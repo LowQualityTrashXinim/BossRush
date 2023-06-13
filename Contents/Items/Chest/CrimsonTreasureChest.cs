@@ -67,7 +67,6 @@ namespace BossRush.Contents.Items.Chest
             player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
             player.QuickSpawnItem(entitySource, ItemID.Hellforge);
             player.QuickSpawnItem(entitySource, ItemID.IronAnvil);
-            player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 999);
             player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystalStand);
             player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
             player.QuickSpawnItem(entitySource, ModContent.ItemType<PocketPortal>());

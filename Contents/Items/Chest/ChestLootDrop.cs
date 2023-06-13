@@ -46,18 +46,18 @@ namespace BossRush.Contents.Items.Chest
         }
         protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
         {
-            amountForWeapon = 3;
-            amountForPotionType = 1;
-            amountForPotionNum = 2;
+            amountForWeapon = 5;
+            amountForPotionType = 3;
+            amountForPotionNum = 4;
             if (Main.getGoodWorld)
             {
                 amountForWeapon = 2;
             }
-            if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
+            if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
             {
-                amountForWeapon += 2;
-                amountForPotionType += 2;
-                amountForPotionNum += 2;
+                amountForWeapon -= 2;
+                amountForPotionType -= 2;
+                amountForPotionNum -= 2;
             }
             if (Main.hardMode)
             {
@@ -393,17 +393,17 @@ namespace BossRush.Contents.Items.Chest
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
-            if (Main.rand.NextBool(25))
+            if (Main.rand.NextBool(25) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(7)))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
                 return;
             }
-            if (Main.rand.NextBool(15))
+            if (Main.rand.NextBool(15) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(4)))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
                 return;
             }
-            if (Main.rand.NextBool(7))
+            if (Main.rand.NextBool(7) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<CardPacket>());
                 return;
@@ -966,18 +966,18 @@ namespace BossRush.Contents.Items.Chest
         /// </summary>
         public void GetAmount()
         {
-            weaponAmount = 3;
-            potionTypeAmount = 1;
-            potionNumAmount = 2;
+            weaponAmount = 5;
+            potionTypeAmount = 3;
+            potionNumAmount = 4;
             if (Main.getGoodWorld)
             {
                 weaponAmount = 2;
             }
-            if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
+            if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
             {
-                weaponAmount += 2;
-                potionTypeAmount += 2;
-                potionNumAmount += 2;
+                weaponAmount -= 2;
+                potionTypeAmount -= 2;
+                potionNumAmount -= 2;
             }
             if (Main.hardMode)
             {

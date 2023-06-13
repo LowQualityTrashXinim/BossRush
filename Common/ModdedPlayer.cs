@@ -15,6 +15,7 @@ using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Card;
+using BossRush.Contents.Items.aDebugItem;
 
 namespace BossRush.Common
 {
@@ -43,7 +44,7 @@ namespace BossRush.Common
         }
         public override void PostUpdate()
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
+            if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
             {
                 return;
             }
@@ -95,6 +96,10 @@ namespace BossRush.Common
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             health = StatModifier.Default; mana = StatModifier.Default;
+            if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
+            {
+                return;
+            }
             health.Base = 100;
         }
         public override void ModifyItemScale(Item item, ref float scale)
@@ -109,9 +114,10 @@ namespace BossRush.Common
             List<Item> items = new List<Item>() {
             new Item(ModContent.ItemType<WoodenTreasureChest>()),
             new Item(ModContent.ItemType<LunchBox>()),
-            new Item(ModContent.ItemType<CursedSkull>())
+            new Item(ModContent.ItemType<CursedSkull>()),
+            new Item(ModContent.ItemType<DayTimeCycle>())
             };
-            if(ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
             }
@@ -158,11 +164,6 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja>()));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja2>()));
             }
-            if (ModContent.GetInstance<BossRushModConfig>().EasyMode)
-            {
-                items.Add(new Item(ItemID.LifeCrystal, 3));
-                items.Add(new Item(ItemID.ManaCrystal, 3));
-            }
             if (Main.rand.NextBool(5))
             {
                 items.Add(new Item(ModContent.ItemType<WonderDrug>()));
@@ -191,7 +192,7 @@ namespace BossRush.Common
         }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
+            if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
             {
                 return;
             }

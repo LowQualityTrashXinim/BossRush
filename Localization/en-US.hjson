@@ -1297,13 +1297,11 @@ Mods: {
 					Tooltip:
 						'''
 						The intended way to play the mod
-						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD
-						THIS WILL MESS WITH YOUR WORLD GEN
+						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD, THIS WILL MESS WITH YOUR WORLD GEN
 						it is recommended to enable this if you want to experience what the mod have to offer along with Synergy Mode
 						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
 						What this mode do :
 						-Pot drop nothing
-						-NPC sell nothing
 						-World gen change so you could easily build arena and chest gone
 						'''
 				}
@@ -1312,19 +1310,18 @@ Mods: {
 					Label: Synergy Mode (W.I.P)
 					Tooltip:
 						'''
-						Make bosses queen bee, deerclop, queen slime, duke fishron and empress of light drop synergy energy
+						You will start with Synergy Energy
 						Allow possibility of getting even stronger and possibly OP weapons/accessories
 						recommend enable after at least 3 playthroughs of the mod
 						'''
 				}
 
-				EasyMode: {
-					Label: Enable Easy Mode ( On Making Character )
+				VeteranMode: {
+					Label: Veteran Mode
 					Tooltip:
 						'''
-						Grant you a small starter boost for those who are casual
-						Give you 3 Mana Crystal and Life Crystal
-						Treasure Chest drop more stuff
+						Decrease amount of items you can get from chest
+						You start with 100 max hp instead of 200
 						'''
 				}
 
