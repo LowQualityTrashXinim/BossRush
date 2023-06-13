@@ -67,6 +67,7 @@ namespace BossRush.Contents.Items.Card
                 return;
             }
             PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
+            TooltipLine badstatsline = new(Mod, "stats", "");
             for (int i = 0; i < CardStats.Count; i++)
             {
                 if (CardStatsNumber[i] == 0)
@@ -75,9 +76,8 @@ namespace BossRush.Contents.Items.Card
                 }
                 if (CardStatsNumber[i] < 0)
                 {
-                    TooltipLine badline = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], CardStatsNumber[i]));
-                    badline.OverrideColor = BossRushModSystem.RedToBlack;
-                    tooltips.Add(badline);
+                    badstatsline.Text = StatNumberAsText(CardStats[i], CardStatsNumber[i]);
+                    badstatsline.OverrideColor = BossRushModSystem.RedToBlack;
                     continue;
                 }
                 float statsNum = CardStatsNumber[i];
@@ -90,6 +90,10 @@ namespace BossRush.Contents.Items.Card
                 }
                 TooltipLine line = new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], statsNum));
                 tooltips.Add(line);
+            }
+            if (!string.IsNullOrEmpty(badstatsline.Text))
+            {
+                tooltips.Add(badstatsline);
             }
             if (CursedID != -1)
             {
@@ -111,14 +115,26 @@ namespace BossRush.Contents.Items.Card
             }
             return value + $"{(int)(number * 100)}% {stat}";
         }
+        public List<PlayerStats> CardStats = new List<PlayerStats>();
+        public List<float> CardStatsNumber = new List<float>();
         public override void OnSpawn(IEntitySource source)
         {
             if (Tier <= 0)
             {
                 return;
             }
-            OnTierItemSpawn();
             SetBadStatsBaseOnTier();
+            int offset = 0;
+            if (CardStats.Count > 0)
+            {
+                offset++;
+            }
+            for (int i = offset; i < Tier + offset; i++)
+            {
+                CardStats.Add(SetStatsToAddBaseOnTier());
+                CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
+            }
+            OnTierItemSpawn();
             for (int i = 0; i < CardStats.Count; i++)
             {
                 for (int l = i + 1; l < CardStats.Count; l++)
@@ -136,7 +152,7 @@ namespace BossRush.Contents.Items.Card
             }
         }
         //since we only add 1 curse per card, this don't need to be a list
-        int CursedID = -1;
+        public int CursedID = -1;
         protected PlayerStats SetStatsToAddBaseOnTier()
         {
             List<PlayerStats> stats = new List<PlayerStats>();
@@ -185,6 +201,21 @@ namespace BossRush.Contents.Items.Card
                 if (Main.rand.NextBool(10))
                 {
                     CursedID = Main.rand.Next(12) + 1;
+                    //This is a very hacky way but this is to ensure we never dupe stats !
+                    if (Main.LocalPlayer.GetModPlayer<PlayerCardHandle>().listCursesID.Count < 12)
+                    {
+                        if (Main.LocalPlayer.GetModPlayer<PlayerCardHandle>().listCursesID.Contains(CursedID))
+                        {
+                            while (!Main.LocalPlayer.GetModPlayer<PlayerCardHandle>().listCursesID.Contains(CursedID))
+                            {
+                                CursedID = Main.rand.Next(12) + 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        CursedID = -1;
+                    }
                 }
                 PlayerStats badstat = SetStatsToAddBaseOnTier();
                 CardStats.Add(badstat);
@@ -195,11 +226,13 @@ namespace BossRush.Contents.Items.Card
         /// Use this if <see cref="Tier"/> value set within the card item have value larger than 0
         /// </summary>
         public virtual void OnTierItemSpawn() { }
-        public virtual List<PlayerStats> CardStats => new List<PlayerStats>();
-        public virtual List<float> CardStatsNumber => new List<float>();
         public virtual float CursedStat => -1;
         protected float statsCalculator(PlayerStats stats, float multiplier)
         {
+            if (CursedID != -1 && multiplier > 0)
+            {
+                multiplier *= 3;
+            }
             float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
             if (DoesStatsRequiredWholeNumber(stats))
             {
@@ -317,11 +350,11 @@ namespace BossRush.Contents.Items.Card
                     default:
                         break;
                 }
-                if (CursedID != -1)
-                {
-                    modplayer.CursesID.Add(CursedID);
-                }
                 BossRushUtils.CombatTextRevamp(player.Hitbox, Color.White, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offset);
+            }
+            if (CursedID != -1)
+            {
+                modplayer.listCursesID.Add(CursedID);
             }
             return true;
         }
@@ -434,7 +467,7 @@ namespace BossRush.Contents.Items.Card
         public bool ReducePositiveCardStat = false;// ID 12
         public const float ReducePositiveCardStatByHalf = .5f;
         public bool AccessoriesDisable = false; // Will be implement much later
-        public List<int> CursesID = new List<int>();
+        public List<int> listCursesID = new List<int>();
         public override void PreUpdate()
         {
             if (item != Player.HeldItem)
@@ -455,9 +488,9 @@ namespace BossRush.Contents.Items.Card
             CritDealNoDamage = false;
             ReducePositiveCardStat = false;
             AccessoriesDisable = false;
-            for (int i = 0; i < CursesID.Count; i++)
+            for (int i = 0; i < listCursesID.Count; i++)
             {
-                switch (CursesID[i])
+                switch (listCursesID[i])
                 {
                     case 1:
                         DecreaseRateOfFire = true;
@@ -537,7 +570,7 @@ namespace BossRush.Contents.Items.Card
         {
             if (DecreaseRateOfFire)
             {
-                return 2f;
+                return .35f;
             }
             return base.UseSpeedMultiplier(item);
         }
@@ -611,26 +644,23 @@ namespace BossRush.Contents.Items.Card
             damage.Base = Math.Clamp(DamagePure + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
             if (SluggishDamage)
             {
-                damage.Flat *= .9f;
+                damage *= .5f;
             }
             if (NegativeDamageRandomize)
             {
-                damage = damage.Scale(Main.rand.NextFloat() + .1f);
+                damage *= Main.rand.NextFloat();
             }
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
             crit = Math.Clamp(CritStrikeChance + crit, 0, maxStatCanBeAchieved);
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (hit.Crit)
+            modifiers.CritDamage.Flat = Math.Clamp(CritDamage, -modifiers.CritDamage.Base + 1, 999999) * modifiers.CritDamage.Base;
+            if (CritDealNoDamage)
             {
-                hit.Damage = (int)(Math.Clamp(CritDamage, -hit.Damage + 1, 999999) * hit.Damage);
-                if (CritDealNoDamage)
-                {
-                    hit.Damage = 1;
-                }
+                modifiers.CritDamage *= 0;
             }
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
@@ -666,10 +696,6 @@ namespace BossRush.Contents.Items.Card
                     CoolDown = BossRushUtils.CoolDown(CoolDown);
                     SlowDown = Math.Clamp(SlowDown - .05f, 1, 6);
                 }
-            }
-            if (ReducePositiveCardStat)
-            {
-
             }
         }
         public override void ModifyHurt(ref Player.HurtModifiers modifiers)
@@ -731,7 +757,7 @@ namespace BossRush.Contents.Items.Card
             packet.Write(DropAmountIncrease);
             packet.Write(MinionSlot);
             packet.Write(SentrySlot);
-            foreach (int item in CursesID)
+            foreach (int item in listCursesID)
             {
                 packet.Write(item);
             }
@@ -757,7 +783,7 @@ namespace BossRush.Contents.Items.Card
             tag["DropAmountIncrease"] = DropAmountIncrease;
             tag["MinionSlot"] = MinionSlot;
             tag["SentrySlot"] = SentrySlot;
-            tag["CursesID"] = CursesID;
+            tag["CursesID"] = listCursesID;
         }
         public override void LoadData(TagCompound tag)
         {
@@ -779,7 +805,7 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = (int)tag["DropAmountIncrease"];
             MinionSlot = (int)tag["MinionSlot"];
             SentrySlot = (int)tag["SentrySlot"];
-            CursesID = tag.Get<List<int>>("CursesID");
+            listCursesID = tag.Get<List<int>>("CursesID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
@@ -801,9 +827,9 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = reader.ReadInt32();
             MinionSlot = reader.ReadInt32();
             SentrySlot = reader.ReadInt32();
-            for (int i = 0; i < CursesID.Count; i++)
+            for (int i = 0; i < listCursesID.Count; i++)
             {
-                CursesID[i] = reader.ReadByte();
+                listCursesID[i] = reader.ReadByte();
             }
         }
 
@@ -828,7 +854,7 @@ namespace BossRush.Contents.Items.Card
             clone.DropAmountIncrease = DropAmountIncrease;
             clone.MinionSlot = MinionSlot;
             clone.SentrySlot = SentrySlot;
-            clone.CursesID = CursesID;
+            clone.listCursesID = listCursesID;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -852,7 +878,7 @@ namespace BossRush.Contents.Items.Card
             if (DropAmountIncrease != clone.DropAmountIncrease) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (MinionSlot != clone.MinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (SentrySlot != clone.SentrySlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (CursesID != clone.CursesID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (listCursesID != clone.listCursesID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
     class CardNPCdrop : GlobalNPC

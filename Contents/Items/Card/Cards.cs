@@ -89,7 +89,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.DropAmountIncrease = 0;
             modplayer.MinionSlot = 0;
             modplayer.SentrySlot = 0;
-            modplayer.CursesID.Clear();
+            modplayer.listCursesID.Clear();
         }
     }
     internal class CopperCard : CardItem
@@ -100,19 +100,6 @@ namespace BossRush.Contents.Items.Card
             Item.rare = ItemRarityID.Red;
         }
         public override int Tier => 1;
-        public List<PlayerStats> stats = new List<PlayerStats>();
-        public List<float> statsNumber = new List<float>();
-        public override void OnTierItemSpawn()
-        {
-            base.OnTierItemSpawn();
-            for (int i = 0; i < Tier; i++)
-            {
-                stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i], Multiplier));
-            }
-        }
-        public override List<PlayerStats> CardStats => stats;
-        public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
     internal class SilverCard : CardItem
@@ -123,19 +110,6 @@ namespace BossRush.Contents.Items.Card
             Item.rare = ItemRarityID.Red;
         }
         public override int Tier => 2;
-        public List<PlayerStats> stats = new List<PlayerStats>();
-        public List<float> statsNumber = new List<float>();
-        public override void OnTierItemSpawn()
-        {
-            base.OnTierItemSpawn();
-            for (int i = 0; i < Tier; i++)
-            {
-                stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i], Multiplier));
-            }
-        }
-        public override List<PlayerStats> CardStats => stats;
-        public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
     internal class GoldCard : CardItem
@@ -146,19 +120,6 @@ namespace BossRush.Contents.Items.Card
             Item.rare = ItemRarityID.Red;
         }
         public override int Tier => 3;
-        public List<PlayerStats> stats = new List<PlayerStats>();
-        public List<float> statsNumber = new List<float>();
-        public override void OnTierItemSpawn()
-        {
-            base.OnTierItemSpawn();
-            for (int i = 0; i < Tier; i++)
-            {
-                stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i], Multiplier));
-            }
-        }
-        public override List<PlayerStats> CardStats => stats;
-        public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
     internal class PlatinumCard : CardItem
@@ -169,19 +130,6 @@ namespace BossRush.Contents.Items.Card
             Item.rare = ItemRarityID.Red;
         }
         public override int Tier => 4;
-        public List<PlayerStats> stats = new List<PlayerStats>();
-        public List<float> statsNumber = new List<float>();
-        public override void OnTierItemSpawn()
-        {
-            base.OnTierItemSpawn();
-            for (int i = 0; i < Tier; i++)
-            {
-                stats.Add(SetStatsToAddBaseOnTier());
-                statsNumber.Add(statsCalculator(stats[i], Multiplier));
-            }
-        }
-        public override List<PlayerStats> CardStats => stats;
-        public override List<float> CardStatsNumber => statsNumber;
         public override bool CanBeCraft => false;
     }
     internal class EmptyCard : CardItem

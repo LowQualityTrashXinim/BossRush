@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.aDebugItem
             ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
             Player player = Main.LocalPlayer;
             chestplayer.GetAmount();
-            TooltipLine line = new TooltipLine(Mod, "Stats",
+            TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
                 $"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).Additive}" +
                 $"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).Additive}" +
                 $"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).Additive}" +
