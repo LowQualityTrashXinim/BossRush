@@ -61,9 +61,9 @@ namespace BossRush.Contents.Items.Artifact
                 gamblePlayer.GambleDamage = 1;
                 gamblePlayer.GambleDef = 0;
                 gamblePlayer.GambleSpeed = 1;
-                gamblePlayer.GambleHP = 0;
+                gamblePlayer.GambleHP = 1;
                 gamblePlayer.GambleLifeRegen = 1;
-                gamblePlayer.GambleMana = 0;
+                gamblePlayer.GambleMana = 1;
                 gamblePlayer.GambleManaRegen = 1;
                 gamblePlayer.GambleMinionSlot = 0;
                 gamblePlayer.GambleCrit = 0;

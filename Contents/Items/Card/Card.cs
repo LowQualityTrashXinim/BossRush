@@ -12,6 +12,7 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using System.IO;
+using System.Linq;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -189,7 +190,6 @@ namespace BossRush.Contents.Items.Card
             }
             return Main.rand.Next(stats);
         }
-        //This one is automatically add in bad stats and is handled by themselves, no need to interfere in this if not neccessary
         private void SetBadStatsBaseOnTier()
         {
             if (Tier <= 1)
@@ -200,22 +200,7 @@ namespace BossRush.Contents.Items.Card
             {
                 if (Main.rand.NextBool(10))
                 {
-                    CursedID = Main.rand.Next(12) + 1;
-                    //This is a very hacky way but this is to ensure we never dupe stats !
-                    if (Main.LocalPlayer.GetModPlayer<PlayerCardHandle>().listCursesID.Count < 12)
-                    {
-                        if (Main.LocalPlayer.GetModPlayer<PlayerCardHandle>().listCursesID.Contains(CursedID))
-                        {
-                            while (!Main.LocalPlayer.GetModPlayer<PlayerCardHandle>().listCursesID.Contains(CursedID))
-                            {
-                                CursedID = Main.rand.Next(12) + 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        CursedID = -1;
-                    }
+                    CursedID = 0;
                 }
                 PlayerStats badstat = SetStatsToAddBaseOnTier();
                 CardStats.Add(badstat);
@@ -286,7 +271,7 @@ namespace BossRush.Contents.Items.Card
             }
             for (int i = 0; i < CardStats.Count; i++)
             {
-                int offset = i * 20;
+                int offset = (i + 1) * 20;
                 if (modplayer.ReducePositiveCardStat && CardStatsNumber[i] > 0)
                 {
                     CardStatsNumber[i] *= PlayerCardHandle.ReducePositiveCardStatByHalf;
@@ -354,7 +339,12 @@ namespace BossRush.Contents.Items.Card
             }
             if (CursedID != -1)
             {
+                while(modplayer.listCursesID.Contains(CursedID))
+                {
+                    CursedID = Main.rand.Next(12) + 1;
+                }
                 modplayer.listCursesID.Add(CursedID);
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CurseToString(CursedID));
             }
             return true;
         }
@@ -468,8 +458,40 @@ namespace BossRush.Contents.Items.Card
         public const float ReducePositiveCardStatByHalf = .5f;
         public bool AccessoriesDisable = false; // Will be implement much later
         public List<int> listCursesID = new List<int>();
+        //We handle no dupe curses in here
+        private void CursesHandle()
+        {
+            CardItem item;
+            for (int i = 0; i < Player.inventory.Length; i++)
+            {
+                Item itemInInventory = Player.inventory[i];
+                if (itemInInventory is null)
+                {
+                    continue;
+                }
+                if (itemInInventory.ModItem is CardItem carditem)
+                {
+                    item = carditem;
+                }
+                else
+                {
+                    continue;
+                }
+                if (item.CursedID == -1)
+                {
+                    continue;
+                }
+                if (listCursesID.Count >= 12)
+                {
+                    item.CursedID = -1;
+                    return;
+                }
+                item.CursedID = Main.rand.Next(12) + 1;
+            }
+        }
         public override void PreUpdate()
         {
+            CursesHandle();
             if (item != Player.HeldItem)
             {
                 SlowDown = 0;

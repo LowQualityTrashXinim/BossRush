@@ -105,6 +105,7 @@ namespace BossRush.Contents.Items.Artifact
         bool Earth = false;// ID = 4
         bool FateDice = false;// ID = 5
         bool BootofSpeed = false;// ID = 6
+        bool MagicalCardDeck = false;// ID = 7
         int EarthCD = 0;
         string artifactName = "";
         public string ToStringArtifact()
@@ -120,6 +121,7 @@ namespace BossRush.Contents.Items.Artifact
             Earth = false;
             FateDice = false;
             BootofSpeed = false;
+            MagicalCardDeck = false;
             switch (ArtifactDefinedID)
             {
                 case 1:
@@ -145,6 +147,10 @@ namespace BossRush.Contents.Items.Artifact
                 case 6:
                     artifactName = "Boot of speed";
                     BootofSpeed = true;
+                    break;
+                case 7:
+                    artifactName = "Magical card deck";
+                    MagicalCardDeck = true;
                     break;
                 default:
                     artifactName = "no artifact active";

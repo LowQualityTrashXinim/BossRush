@@ -130,6 +130,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.RubySwotaff
         {
             SelectFrame();
             Player player = Main.player[Projectile.owner];
+            if (player.velocity != Vector2.Zero)
+            {
+                Projectile.timeLeft--;
+            }
             Projectile.velocity -= Projectile.velocity * 0.1f;
             EntitySource_ItemUse source = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<RubySwotaff>()));
             if (Projectile.velocity.X < 1 && Projectile.velocity.X > -1 && Projectile.velocity.Y < 1 && Projectile.velocity.Y > -1)

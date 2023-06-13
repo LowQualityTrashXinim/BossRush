@@ -111,6 +111,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
+            if (player.velocity != Vector2.Zero)
+            {
+                Projectile.timeLeft--;
+            }
             if (Projectile.velocity != Vector2.Zero)
             {
                 Projectile.velocity -= Projectile.velocity * 0.05f;

@@ -773,9 +773,10 @@ Mods: {
 				Tooltip:
 					'''
 					"Unpure, relentess crystal"
-					Passive : Attack heal player
-					Effect : reduce max life by 65% and permanent potion sickness
-					You can survive 1 fatal attack ( 3 minute cooldown )
+					Positive effect : 
+					+ Attack heal player
+					+ You can survive 1 fatal attack ( 3 minute cooldown )
+					Negative Effect : reduce max life by 65% and permanent potion sickness
 					'''
 				DisplayName: Vampirism Crystal
 			}
@@ -783,9 +784,9 @@ Mods: {
 			TokenofPride: {
 				Tooltip:
 					'''
-					"Pride: having the skill to use whatever you are given"
-					Positive Effect : Increase weapon damage by 45%
-					Negative Effect : Halves your drop from treasure chest
+					"having the skill to use whatever you are given"
+					Positive effect : Increase weapon damage by 45%
+					Negative effect : Halves your drop from treasure chest
 					'''
 				DisplayName: Token of pride
 			}
@@ -793,9 +794,9 @@ Mods: {
 			TokenofGreed: {
 				Tooltip:
 					'''
-					"Greed: satified by just having, caring not for weapon quality"
-					Positive Effect : Increase amount of drop by 4
-					Negative Effect : Decrease weapon damage globally by 35%
+					"satified by just having, caring not for weapon quality"
+					Positive effect : Increase amount of drop by 4
+					Negative effect : Decrease weapon damage globally by 35%
 					'''
 				DisplayName: Token of greed
 			}
@@ -816,7 +817,7 @@ Mods: {
 				Tooltip:
 					'''
 					"The dice use by god to decide mortal fate"s
-					Gives you a roll for each boss kill
+					Neutral effect : Gives you a roll for each boss kill, consume 1 roll to roll a random stats
 					'''
 				DisplayName: God Dice
 			}
@@ -824,9 +825,9 @@ Mods: {
 			FateDecider: {
 				Tooltip:
 					'''
-					"Replacement of god dice"
-					On Equip : Increases amount of weapons from Treasure Chest by 2
-					Effect : Random effect may occur ...
+					"Make your life a little more interesting"
+					Positive effect : Increases amount of weapons from Treasure Chest by 2
+					Neutral effect : Random effect may occur ...
 					'''
 				DisplayName: Fate Decider
 			}
@@ -834,6 +835,42 @@ Mods: {
 			BrokenArtifact: {
 				Tooltip: A far cry from its former glory, maybe you can make something with this
 				DisplayName: Broken Artifact
+			}
+
+			HeartOfEarth: {
+				DisplayName: Heart Of Earth
+				Tooltip:
+					'''
+					"Protected by the Earth"
+					Increases your max hp by 100% with additional 100 max hp
+					Getting hit will make you unable to use your weapon for 5s
+					'''
+			}
+
+			RandomArtifactChooser: {
+				DisplayName: Random Artifact Chooser
+				Tooltip: Randomly choose 1 of artifact
+			}
+
+			BootOfSpeedManipulation: {
+				DisplayName: Boot Of Speed Manipulation
+				Tooltip:
+					'''
+					"Run like how you want"
+					Positive effect : Increase your movement capacity massively
+					Negative effect : You can't fly with wing
+					'''
+			}
+
+			MagicalCardDeck: {
+				DisplayName: Magical Card Deck
+				Tooltip:
+					'''
+					"I Summon pot of greed ! it allow me to draw 2 card from the deck"
+					Banned for many reason
+					Postive effect : Increase card drop rate by a lot
+					Negative effect : Increase the chance of card getting bad stats
+					'''
 			}
 
 			totalcritacc: {
@@ -1018,16 +1055,6 @@ Mods: {
 				DisplayName: Bouncy Relic
 			}
 
-			HeartOfEarth: {
-				DisplayName: Heart Of Earth
-				Tooltip:
-					'''
-					"Protected by the Earth"
-					Increases your max hp by 100% with additional 100 max hp
-					Getting hit will make you unable to use your weapon for 6s
-					'''
-			}
-
 			TowerDestruction: {
 				Tooltip: the ultimate tile annihilator
 				DisplayName: Tower Destruction
@@ -1145,27 +1172,7 @@ Mods: {
 
 			PremiumCardPacket: {
 				DisplayName: Premium Card Packet
-				Tooltip: ""
-			}
-
-			RandomArtifactChooser: {
-				DisplayName: Random Artifact Chooser
-				Tooltip: Randomly choose 1 of artifact
-			}
-
-			BootOfSpeed: {
-				DisplayName: Boot Of Speed Manipulation
-				Tooltip:
-					'''
-					"Run like how you want"
-					Increase your movement capacity massively
-					You can't fly with wing
-					'''
-			}
-
-			BootOfSpeedManipulation: {
-				DisplayName: Boot Of Speed Manipulation
-				Tooltip: ""
+				Tooltip: Always drop Tier 4 card !
 			}
 		}
 
