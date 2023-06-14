@@ -53,7 +53,7 @@ namespace BossRush.Contents.UI
         public override void Draw(SpriteBatch spriteBatch)
         {
             // This prevents drawing unless we are using an ExampleCustomResourceWeapon
-            if (!Main.LocalPlayer.releaseInventory)
+            if (true)
                 return;
 
             base.Draw(spriteBatch);

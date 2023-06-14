@@ -1,13 +1,14 @@
 ! Massive disclaimer !
 The mod intended way to play will most likely won't support mod cross playthrough. 
 Mod like calamity, thorium, fargo and ect are massively not support.
-The mod is best played as it is, any comment about mod support or compatibility is straight up ignore.
+The mod is best played as it is, any comment about mod support or compatibility is ignore.
 Multiplayer is still being work on, I don't recommend you to play this mod with friend.
 As far as this mod goes, we only had completed pre hardmode part of the mod, the mod is still beatable up to moonlord but most of stuff is unpolished
-
+The mod is still in beta and is in demo state, any bug that you found please go into our discord server
+! Disclaimer end !
 
 Roguelike Terraria is a mod that make boss drop a custom treasure chest within the mod in rogue-like manner, providing new and fast gameplay experience for player.
-The mod introduced a lot of new items,mechanic/system and a lot of secret for you player can enjoy and explore
+The mod introduced a lot of new items, mechanic/system and a lot of secret for you player can enjoy and explore
 As far as this mod goes, anything is possible as long you are good enough, this mod will test your skill to the fullist
 
 (IMPORTANT)____THE INTENDED WAY TO PLAY :____(W.I.P)(Not compatible with multiplayer at all)
@@ -30,13 +31,9 @@ ____THE CONFIG REQUIRE FOR IT TO PLAY LIKE QOL MOD :____
 -Disable YouLikeToHurtYourself
 -Enable DisableWeaponOverhaul
 
-Planning :
--rework loot drop depend on future feedback ( only take more feedback after synergy update out )
--add more synergy energy weapon ( top priority )
--possible end mod boss
--Add spawner for mini boss
-
 feel free to use this mod in any playthrough or modpack with condition of crediting me as LowQualityTrash
+
+The mod mostly work on by 1 person, so please be moderate and considerate when play this
 
 Multiplayer is not yet supported, please wait for future update
 As for people want to support or chat to me, idk why you want to but you can join my discord server : https://discord.gg/YqN5z5WVaS

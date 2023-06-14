@@ -1303,6 +1303,8 @@ Mods: {
 						What this mode do :
 						-Pot drop nothing
 						-World gen change so you could easily build arena and chest gone
+						-Some minor enemy change
+						-Unlock special mechanic
 						'''
 				}
 
@@ -1339,8 +1341,7 @@ Mods: {
 					Label: You like to hurt yourself(W.I.P)
 					Tooltip:
 						'''
-						Will enable ForTheWorthy seeds regardless of world type, requiring you to play in master mode
-						Upon entering a world, you will be given a broken artifact that you can craft into a stronger artifact
+						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
 						Some secrets are revealed when you have certain player name
 						'''
 				}
