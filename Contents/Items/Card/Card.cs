@@ -886,6 +886,10 @@ namespace BossRush.Contents.Items.Card
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
             if (npc.boss)
             {
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 3));

@@ -393,6 +393,10 @@ namespace BossRush.Contents.Items.Chest
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
+            if(!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            {
+                return;
+            }
             if (Main.rand.NextBool(25) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(7)))
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
