@@ -41,9 +41,8 @@ namespace BossRush.Contents.Items.aDebugItem
     {
         public int Zoneindex = 0;
         public string BiomeText = "";
-        public override void PostUpdate()
+        private void SetBiome()
         {
-            base.PostUpdate();
             if (!Player.HasItem(ModContent.ItemType<BiomeToggle>()))
             {
                 return;
@@ -88,10 +87,36 @@ namespace BossRush.Contents.Items.aDebugItem
                     Player.ZoneRockLayerHeight = true;
                     BiomeText = $"{nameof(Player.ZoneJungle)} and {nameof(Player.ZoneRockLayerHeight)}";
                     break;
+                case 8:
+                    if(Main.hardMode)
+                    {
+                        Player.ZonePurity = true;
+                        BiomeText = nameof(Player.ZonePurity);
+                    }
+                    else
+                    {
+                        Zoneindex++;
+                    }
+                    break;
                 default:
                     Zoneindex = 0;
                     break;
             }
+        }
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            SetBiome();
+        }
+        public override void PreUpdate()
+        {
+            base.PreUpdate();
+            SetBiome();
+        }
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+            SetBiome();
         }
     }
 }

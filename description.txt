@@ -17,7 +17,6 @@ As far as this mod goes, anything is possible as long you are good enough, this 
 -Enable Synergy Mode ( in the mod config )
 -Recommend play this mod in expert or in higher difficulty
 -Try to fight boss as soon as possible
--Enraged boss is intended to be fight like normal boss progression, fighting it with better gear than it is not intended
 (Optional)Enable veteran mode if you think the mod is too easy (Optional)
 (Optional)Enable weapon overhaul for best mod experience (W.I.P and isn't compatible with any mod that change melee)(Optional)
 
