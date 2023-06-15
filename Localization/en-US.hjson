@@ -1174,6 +1174,11 @@ Mods: {
 				DisplayName: Premium Card Packet
 				Tooltip: Always drop Tier 4 card !
 			}
+
+			BiomeToggle: {
+				DisplayName: Biome Manipulation
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

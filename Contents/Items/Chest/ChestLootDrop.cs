@@ -925,10 +925,10 @@ namespace BossRush.Contents.Items.Chest
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, position + new Vector2(3, 3), null, color1, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + new Vector2(-3, 3), null, color2, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + new Vector2(3, -3), null, color3, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, position + new Vector2(-3, -3), null, color4, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(2, 2), null, color1, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-2, 2), null, color2, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(2, -2), null, color3, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, color4, 0, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
@@ -945,10 +945,10 @@ namespace BossRush.Contents.Items.Chest
             Vector2 drawPos = Item.position - Main.screenPosition + origin;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, drawPos + new Vector2(3, 3), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-3, 3), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(3, -3), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-3, -3), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }

@@ -1,5 +1,5 @@
 ! Massive disclaimer !
-The mod intended way to play will most likely won't support mod cross playthrough. 
+The mod intended way to play will most likely won't support mod cross playthrough.
 Mod like calamity, thorium, fargo and ect are massively not support.
 The mod is best played as it is, any comment about mod support or compatibility is ignore.
 Multiplayer is still being work on, I don't recommend you to play this mod with friend.
@@ -7,7 +7,7 @@ As far as this mod goes, we only had completed pre hardmode part of the mod, the
 The mod is still in beta and is in demo state, any bug that you found please go into our discord server
 ! Disclaimer end !
 
-Roguelike Terraria is a mod that make boss drop a custom treasure chest within the mod in rogue-like manner, providing new and fast gameplay experience for player.
+Roguelike BossRush Terraria is a mod that make boss drop a custom treasure chest within the mod in rogue-like manner, providing new and fast gameplay experience for player.
 The mod introduced a lot of new items, mechanic/system and a lot of secret for you player can enjoy and explore
 As far as this mod goes, anything is possible as long you are good enough, this mod will test your skill to the fullist
 
@@ -18,15 +18,15 @@ As far as this mod goes, anything is possible as long you are good enough, this 
 -Recommend play this mod in expert or in higher difficulty
 -Try to fight boss as soon as possible
 -Enraged boss is intended to be fight like normal boss progression, fighting it with better gear than it is not intended
-(Optional)Enable easy mode if you are new to the mod with normal mode(Optional)
+(Optional)Enable veteran mode if you think the mod is too easy (Optional)
 (Optional)Enable weapon overhaul for best mod experience (W.I.P and isn't compatible with any mod that change melee)(Optional)
 
-If fighting boss at extreme inconsitently fast progression isn't your type then you can play this mod like a QoL mod
+If fighting boss at extreme inconsistently fast progression isn't your type then you can play this mod like a QoL mod
 This mod has been designed so that player can play the mod without grinding much and to be play with other mod or at your own pace
 ____THE CONFIG REQUIRE FOR IT TO PLAY LIKE QOL MOD :____
 -Disable Challenge Mode
 -Disable Synergy Mode
--Enable Easy Mode (for extra life and mana crystal)
+-Disable veteran Mode (for extra life and mana crystal)
 -Disable Enraged
 -Disable YouLikeToHurtYourself
 -Enable DisableWeaponOverhaul
