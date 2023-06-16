@@ -38,7 +38,7 @@ namespace BossRush.Contents.Items.Toggle
             {
                 if (line2.Name == "ChallengeGod")
                 {
-                    line2.OverrideColor = BossRushModSystem.ChallangeGodColor;
+                    line2.OverrideColor = BossRushColor.ChallangeGodColor;
                 }
             }
         }

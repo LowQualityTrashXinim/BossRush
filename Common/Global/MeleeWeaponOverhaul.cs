@@ -367,7 +367,7 @@ namespace BossRush.Common.Global
                     "\nHold down right mouse to enable dash toward your cursor on 3rd attack");
                 line.OverrideColor = BossRushColor.YellowPulseYellowWhite;
                 tooltips.Add(line);
-                if(item.useStyle == BossRushUseStyle.Swipe)
+                if (item.useStyle == BossRushUseStyle.Swipe)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 50% more damage");
                     line2.OverrideColor = BossRushColor.YellowPulseYellowWhite;
@@ -385,10 +385,26 @@ namespace BossRush.Common.Global
         {
             if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
             {
+                Progressive(item, player);
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
                 modPlayer.SwordHitBox = hitbox;
             }
+        }
+        private void Progressive(Item item, Player player)
+        {
+            int duration = player.itemAnimationMax;
+            float thirdduration = duration / 3;
+            float progress;
+            if (player.itemAnimation < thirdduration)
+            {
+                progress = player.itemAnimation / thirdduration;
+            }
+            else
+            {
+                progress = (duration - player.itemAnimation) / thirdduration;
+            }
+            item.scale = MathHelper.SmoothStep(.5f, 1.5f, progress);
         }
         public override bool CanUseItem(Item item, Player player)
         {
@@ -409,9 +425,9 @@ namespace BossRush.Common.Global
             float useTimeMultiplierOnCombo = 1;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             //This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
-            if(item.useStyle == BossRushUseStyle.Swipe)
+            if (item.useStyle == BossRushUseStyle.Swipe)
             {
-                if(modPlayer.ComboNumber == 2)
+                if (modPlayer.ComboNumber == 2)
                 {
                     useTimeMultiplierOnCombo -= .25f;
                 }
@@ -435,6 +451,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
+            Progressive(item, player);
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             switch (item.useStyle)
             {
@@ -518,7 +535,7 @@ namespace BossRush.Common.Global
         private void WideSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            percentDone = BossRushUtils.InExpo(percentDone);
+            percentDone = BossRushUtils.InOutExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 145) * player.direction;
             float start = baseAngle + angle;
@@ -528,7 +545,7 @@ namespace BossRush.Common.Global
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            percentDone = BossRushUtils.InExpo(percentDone);
+            percentDone = BossRushUtils.InOutExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
             float start = baseAngle + angle * direct;

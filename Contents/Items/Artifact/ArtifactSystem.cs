@@ -105,7 +105,7 @@ namespace BossRush.Contents.Items.Artifact
         bool Earth = false;// ID = 4
         bool FateDice = false;// ID = 5
         bool BootofSpeed = false;// ID = 6
-        bool MagicalCardDeck = false;// ID = 7
+        public bool MagicalCardDeck = false;// ID = 7
         int EarthCD = 0;
         string artifactName = "";
         public string ToStringArtifact()

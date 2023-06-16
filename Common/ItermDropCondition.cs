@@ -37,7 +37,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+                return info.player.GetModPlayer<ArtifactPlayerHandleLogic>().MagicalCardDeck;
             }
             return false;
         }
