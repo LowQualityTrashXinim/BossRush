@@ -1,3 +1,4 @@
+using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;

@@ -99,14 +99,14 @@ namespace BossRush.Common.Global
                     item.height = 64;
                     break;
                 case ItemID.LightsBane:
-                    item.width = item.height = 37;
+                    item.width = item.height = 50;
                     break;
                 case ItemID.BloodButcherer:
                     item.width = 50;
                     item.height = 58;
                     break;
                 case ItemID.BladeofGrass:
-                    item.width = item.height = 50;
+                    item.width = item.height = 70;
                     break;
                 case ItemID.FieryGreatsword:
                     item.width = 54;
@@ -236,10 +236,13 @@ namespace BossRush.Common.Global
                     item.width = 48;
                     item.height = 54;
                     break;
+                case ItemID.DD2SquireDemonSword:
                 case ItemID.ChristmasTreeSword:
                     item.width = item.height = 60;
                     break;
             }
+            item.width += 10;
+            item.height += 10;
             #endregion
             switch (item.type)
             {
@@ -364,7 +367,7 @@ namespace BossRush.Common.Global
             if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke)
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction, on 3rd attack will do a special attack" +
-                    "\nHold down right mouse to enable dash toward your cursor on 3rd attack");
+                    "\nHold down right mouse to enable focus mode and allow you to dash toward your cursor on 3rd attack");
                 line.OverrideColor = BossRushColor.YellowPulseYellowWhite;
                 tooltips.Add(line);
                 if (item.useStyle == BossRushUseStyle.Swipe)
@@ -404,7 +407,7 @@ namespace BossRush.Common.Global
             {
                 progress = (duration - player.itemAnimation) / thirdduration;
             }
-            item.scale = MathHelper.SmoothStep(.5f, 1.5f, progress);
+            item.scale = MathHelper.SmoothStep(.5f, 1.25f, progress);
         }
         public override bool CanUseItem(Item item, Player player)
         {
@@ -545,7 +548,7 @@ namespace BossRush.Common.Global
         private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            percentDone = BossRushUtils.InOutExpo(percentDone);
+            //percentDone = BossRushUtils.InOutExpo(percentDone);
             float baseAngle = modPlayer.data.ToRotation();
             float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
             float start = baseAngle + angle * direct;
@@ -607,6 +610,10 @@ namespace BossRush.Common.Global
             }
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
+                if (Main.mouseRight)
+                {
+                    Player.velocity.X *= .15f;
+                }
                 delaytimer = (int)(Player.itemAnimationMax * 1.2f);
                 ExecuteSpecialComboOnStart(modplayer);
             }
@@ -720,7 +727,7 @@ namespace BossRush.Common.Global
             }
             if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
             {
-                data = (Main.MouseWorld - Player.MountedCenter).SafeNormalize(Vector2.Zero);
+                data = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
             }
             if (Player.ItemAnimationActive)
             {
@@ -732,35 +739,38 @@ namespace BossRush.Common.Global
         bool AlreadyHitNPC = false;
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) || item.noMelee)
             {
                 return;
             }
-            modifiers.FinalDamage.Base += DamageHandleSystem(Player.GetWeaponDamage(item));
+            modifiers.FinalDamage.Base *= DamageHandleSystem(item);
+            if (Main.mouseRight)
+            {
+                modifiers.FinalDamage *= 2f;
+            }
             if (!AlreadyHitNPC)
             {
                 AlreadyHitNPC = true;
             }
         }
-        private float DamageHandleSystem(float damage)
+        private float DamageHandleSystem(Item item)
         {
-            Item item = Player.HeldItem;
             if (item.useStyle == BossRushUseStyle.Swipe && ComboNumber == 2)
             {
-                return damage * .5f;
+                return 1.5f;
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
                 if (ComboNumber == 0)
                 {
-                    return damage * .75f;
+                    return 1.75f;
                 }
                 if (ComboNumber == 2)
                 {
-                    return damage * .25f;
+                    return 1.25f;
                 }
             }
-            return 0;
+            return 1;
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
