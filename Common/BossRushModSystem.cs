@@ -8,7 +8,7 @@ using Terraria.GameContent;
 
 namespace BossRush.Common
 {
-    internal class BossRushModSystem : ModSystem
+    internal class BossRushColor : ModSystem
     {
         public override void PostUpdateEverything()
         {

@@ -377,6 +377,7 @@ namespace BossRush.Contents.Items.Chest
 
         public override void RightClick(Player player)
         {
+            player.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen++;
             base.RightClick(player);
             OnRightClick(player);
             var entitySource = player.GetSource_OpenItem(Type);
@@ -955,6 +956,7 @@ namespace BossRush.Contents.Items.Chest
     }
     public class ChestLootDropPlayer : ModPlayer
     {
+        public int CurrentSectionAmountOfChestOpen = 0;
         public float finalMultiplier = 1f;
         public int amountModifier = 0;
         public int weaponAmount;

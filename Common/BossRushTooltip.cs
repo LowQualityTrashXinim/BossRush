@@ -20,7 +20,7 @@ namespace BossRush.Common
             if (item.ModItem is ISynergyItem)
             {
                 TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
-                line.OverrideColor = BossRushModSystem.SynergyColor;
+                line.OverrideColor = BossRushColor.SynergyColor;
                 tooltips.Add(line);
             }
         }
