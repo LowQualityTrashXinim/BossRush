@@ -533,7 +533,7 @@ namespace BossRush.Common.Global
             player.itemRotation = poke.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
+            player.itemLocation = player.Center + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
         }
         private void WideSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
@@ -569,7 +569,7 @@ namespace BossRush.Common.Global
             player.itemRotation = currentAngle;
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
-            player.itemLocation = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
+            player.itemLocation = player.Center + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
         }
     }
     public class MeleeOverhaulPlayer : ModPlayer
