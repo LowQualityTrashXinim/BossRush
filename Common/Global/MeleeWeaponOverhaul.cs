@@ -450,7 +450,7 @@ namespace BossRush.Common.Global
         }
         public override void UseStyle(Item item, Player player, Rectangle heldItemFrame)
         {
-            if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
