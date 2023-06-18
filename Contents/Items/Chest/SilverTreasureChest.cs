@@ -72,7 +72,6 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, GetPotion(), amount3);
             }
-            player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 999);
             player.QuickSpawnItem(entitySource, ItemID.StickyDynamite, 50);
             player.QuickSpawnItem(entitySource, ItemID.Campfire, 10);
             player.QuickSpawnItem(entitySource, ItemID.MagicConch);
