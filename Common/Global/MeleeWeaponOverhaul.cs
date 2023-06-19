@@ -388,31 +388,34 @@ namespace BossRush.Common.Global
         {
             if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
             {
-                Progressive(item, player);
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
                 modPlayer.SwordHitBox = hitbox;
             }
         }
-        private void Progressive(Item item, Player player)
+        public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
-            int duration = player.itemAnimationMax;
-            float thirdduration = duration / 3;
-            float progress;
-            if (player.itemAnimation < thirdduration)
+            if(item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
             {
-                progress = player.itemAnimation / thirdduration;
+                int duration = player.itemAnimationMax;
+                float thirdduration = duration / 3;
+                float progress;
+                if (player.itemAnimation < thirdduration)
+                {
+                    progress = player.itemAnimation / thirdduration;
+                }
+                else
+                {
+                    progress = (duration - player.itemAnimation) / thirdduration;
+                }
+                scale += MathHelper.SmoothStep(-.5f, .25f, progress);
             }
-            else
-            {
-                progress = (duration - player.itemAnimation) / thirdduration;
-            }
-            item.scale = MathHelper.SmoothStep(.5f, 1.25f, progress);
         }
         public override bool CanUseItem(Item item, Player player)
         {
-            if (item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke)
+            if ((item.useStyle != BossRushUseStyle.Swipe &&
+                item.useStyle != BossRushUseStyle.Poke )||
+                item.noMelee)
             {
                 return base.CanUseItem(item, player);
             }
@@ -420,10 +423,11 @@ namespace BossRush.Common.Global
         }
         public override float UseSpeedMultiplier(Item item, Player player)
         {
-            if (item.useStyle != BossRushUseStyle.Swipe
-                && item.useStyle != BossRushUseStyle.Poke)
+            if ((item.useStyle != BossRushUseStyle.Swipe &&
+                item.useStyle != BossRushUseStyle.Poke) ||
+                item.noMelee)
             {
-                return base.UseAnimationMultiplier(item, player);
+                return base.UseSpeedMultiplier(item, player);
             }
             float useTimeMultiplierOnCombo = 1;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
@@ -454,7 +458,6 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            Progressive(item, player);
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             switch (item.useStyle)
             {
@@ -610,11 +613,11 @@ namespace BossRush.Common.Global
             }
             if (Player.ItemAnimationJustStarted && delaytimer == 0)
             {
+                delaytimer = (int)(Player.itemAnimationMax * 1.2f);
                 if (Main.mouseRight)
                 {
-                    Player.velocity.X *= .15f;
+                    Player.velocity.X *= 0;
                 }
-                delaytimer = (int)(Player.itemAnimationMax * 1.2f);
                 ExecuteSpecialComboOnStart(modplayer);
             }
             if (Player.ItemAnimationActive)
@@ -710,7 +713,7 @@ namespace BossRush.Common.Global
                     npclaststrike = npc;
                     int damage = (int)(item.damage * 1.5f);
                     npc.StrikeNPC(npc.CalculateHitInfo(damage, Player.direction, critReference, item.knockBack, DamageClass.Melee));
-                    iframeCounter = (int)(Player.itemAnimationMax * .25f);
+                    iframeCounter = (int)(Player.itemAnimationMax * .15f);
                     Player.dpsDamage += damage;
                 }
             }
@@ -746,7 +749,7 @@ namespace BossRush.Common.Global
             modifiers.FinalDamage.Base *= DamageHandleSystem(item);
             if (Main.mouseRight)
             {
-                modifiers.FinalDamage *= 2f;
+                modifiers.FinalDamage *= 1.5f;
             }
             if (!AlreadyHitNPC)
             {
