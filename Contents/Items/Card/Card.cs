@@ -902,12 +902,15 @@ namespace BossRush.Contents.Items.Card
                 {
                     return;
                 }
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 100)
-                    .OnFailedRoll(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<CardPacket>(), 10)));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 200)
-                    .OnFailedRoll(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<CardPacket>(), 20)));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 200));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 400));
+                npcLoot.Add(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<CardPacket>(), 10));
+                npcLoot.Add(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<BigCardPacket>(), 20));
+                npcLoot.Add(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<BoxOfCard>(), 50));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 100));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 200));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BoxOfCard>(), 500));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 400));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 600));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BoxOfCard>(), 700));
             }
         }
     }
