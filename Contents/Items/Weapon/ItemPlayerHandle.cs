@@ -25,16 +25,33 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool EnchantedStarfury_SkyFacture = false;
         public bool EnchantedStarfury_BreakerBlade = false;
+
+        public bool IceStorm_SnowBallCannon = false;
+        public bool IceStorm_FlowerofFrost = false;
+        public bool IceStorm_BlizzardStaff = false;
+
+        public bool EnergyBlade_Code1 = false;
+        public bool EnergyBlade_Code2 = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
             BurningPassion_WandofFrosting = false;
+
             DarkCactus_BatScepter = false;
             DarkCactus_BladeOfGrass = false;
+
             EnchantedOreSword_StarFury = false;
             EnchantedOreSword_Musket = false;
-            EnchantedStarfury_SkyFacture = false; 
+
+            EnchantedStarfury_SkyFacture = false;
             EnchantedStarfury_BreakerBlade = false;
+
+            IceStorm_SnowBallCannon = false;
+            IceStorm_FlowerofFrost = false;
+            IceStorm_BlizzardStaff = false;
+
+            EnergyBlade_Code1 = false;
+            EnergyBlade_Code2 = false;
         }
         int check = 1;
         public override void PostUpdate()
@@ -79,6 +96,11 @@ namespace BossRush.Contents.Items.Weapon
             PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
             HoldSynergyItem(player, modplayer);
         }
+        /// <summary>
+        /// You should use this to set condition, the condition must be pre set in <see cref="PlayerSynergyItemHandle"/> and then check condition in here
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="modplayer"></param>
         public virtual void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) { }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -138,7 +160,7 @@ namespace BossRush.Contents.Items.Weapon
             Player player = Main.player[Projectile.owner];
             ModifyHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, ref modifiers);
         }
-        public virtual void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc,ref NPC.HitModifiers modifiers) { }
+        public virtual void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) { }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);

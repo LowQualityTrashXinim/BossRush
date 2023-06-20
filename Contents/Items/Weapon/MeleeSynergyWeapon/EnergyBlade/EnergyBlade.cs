@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
 {
-    internal class EnergyBlade : ModItem, ISynergyItem
+    internal class EnergyBlade : SynergyModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -21,13 +21,29 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Item.useTurn = false;
             Item.UseSound = SoundID.Item1;
         }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if(player.HasItem(ItemID.Code1))
+            {
+                modplayer.EnergyBlade_Code1 = true;
+            }
+            if(player.HasItem(ItemID.Code2))
+            {
+                modplayer.EnergyBlade_Code2 = true;
+            }
+        }
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
+            if(modplayer.EnergyBlade_Code1)
+            {
+                int proj = Projectile.NewProjectile(source, position, -velocity, type, damage, knockback, player.whoAmI, 1);
+                Main.projectile[proj].Size *= .5f;
+            }
+            CanShootItem = player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
         }
         public override void AddRecipes()
         {
@@ -67,6 +83,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         }
         public override void AI()
         {
+            if (Projectile.ai[0] == 1)
+            {
+                Projectile.Center = player.Center;
+
+                return;
+            }
             frameCounter();
             BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
         }

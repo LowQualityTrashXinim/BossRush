@@ -9,7 +9,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
-    internal class IceStorm : ModItem, ISynergyItem
+    internal class IceStorm : SynergyModItem, ISynergyItem
     {
         public override void SetDefaults()
         {
@@ -20,27 +20,30 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             Item.scale = 0.7f;
             Item.UseSound = SoundID.Item5;
         }
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            Player player = Main.LocalPlayer;
-            if (player.HasItem(ItemID.SnowballCannon))
+            base.ModifySynergyToolTips(ref tooltips, modplayer);
+            if (modplayer.IceStorm_SnowBallCannon)
             {
                 tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself"));
             }
-            if (player.HasItem(ItemID.FlowerofFrost))
+            if (modplayer.IceStorm_FlowerofFrost)
             {
                 tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost and summon itself"));
             }
-            if (player.HasItem(ItemID.BlizzardStaff))
+            if (modplayer.IceStorm_BlizzardStaff)
             {
                 tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.BlizzardStaff}] Max charge can now rain down frost spike"));
             }
         }
-        public override void HoldItem(Player player)
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
+            base.HoldSynergyItem(player, modplayer);
+            int type;
             if (player.HasItem(ItemID.SnowballCannon))
             {
-                int type = ModContent.ProjectileType<IceStormSnowBallCannonMinion>();
+                modplayer.IceStorm_SnowBallCannon = true;
+                type = ModContent.ProjectileType<IceStormSnowBallCannonMinion>();
                 if (player.ownedProjectileCounts[type] < 1)
                 {
                     Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
@@ -48,11 +51,16 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             }
             if (player.HasItem(ItemID.FlowerofFrost))
             {
-                int type = ModContent.ProjectileType<IceStormFrostFlowerMinion>();
+                modplayer.IceStorm_FlowerofFrost = true;
+                type = ModContent.ProjectileType<IceStormFrostFlowerMinion>();
                 if (player.ownedProjectileCounts[type] < 1)
                 {
                     Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
                 }
+            }
+            if (player.HasItem(ItemID.BlizzardStaff))
+            {
+                modplayer.IceStorm_BlizzardStaff = true;
             }
             if (!Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier >= 1)
             {
@@ -72,32 +80,54 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             return player.GetModPlayer<IceStormPlayer>().SpeedMultiplier;
         }
         int count = 0;
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             ChargeUpHandle(player);
-            IceStormSynergy(player, source, position, velocity, damage, knockback);
-            int projectile2 = 1 + (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .2f);
-            for (int i = 0; i < projectile2; ++i)
+            IceStormPlayer icePlayer = player.GetModPlayer<IceStormPlayer>();
+            float projectile = (int)(icePlayer.SpeedMultiplier * .5f);
+            if (modplayer.IceStorm_SnowBallCannon)
             {
-                float ToRa = 0;
-                if (projectile2 != 1)
+                for (int i = 0; i < projectile; i++)
                 {
-                    ToRa = projectile2 * 3;
+                    Projectile.NewProjectile(source, position, velocity.RotateRandom(projectile * 7).RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
                 }
-                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(ToRa) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
             }
-            int projectile = (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .2f);
+            if (modplayer.IceStorm_FlowerofFrost)
+            {
+                projectile = (int)(icePlayer.SpeedMultiplier * .1666667f);
+                for (int i = 0; i < projectile; i++)
+                {
+                    Projectile.NewProjectile(source, position, velocity.RotateRandom(projectile * 5).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
+                }
+            }
+            if (modplayer.IceStorm_BlizzardStaff && icePlayer.SpeedMultiplier >= 8)
+            {
+                Vector2 SkyPos = new Vector2(player.Center.X, player.Center.Y - 800);
+                Vector2 SkyVelocity = (Main.MouseWorld - SkyPos).SafeNormalize(Vector2.UnitX);
+                for (int i = 0; i < 5; i++)
+                {
+                    SkyPos += Main.rand.NextVector2Circular(200, 200);
+                    int FinalCharge = Projectile.NewProjectile(source, SkyPos, SkyVelocity * 30, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
+                    Main.projectile[FinalCharge].tileCollide = false;
+                    Main.projectile[FinalCharge].timeLeft = 100;
+                }
+            }
+            projectile = 1 + (int)(icePlayer.SpeedMultiplier * .2f);
+            for (int i = 0; i < projectile; ++i)
+            {
+                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(projectile * 3) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
+            }
+            projectile = (int)(icePlayer.SpeedMultiplier * .2f);
             for (int i = 0; i < projectile; i++)
             {
                 Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(5).NextVector2Spread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
             }
-            float projectile3 = player.GetModPlayer<IceStormPlayer>().SpeedMultiplier / 7f;
-            if (projectile3 >= 1)
+            projectile = icePlayer.SpeedMultiplier / 7f;
+            if (projectile >= 1)
             {
                 Projectile.NewProjectile(source, position, velocity * 2f, ProjectileID.FrostArrow, damage, knockback, player.whoAmI);
             }
-
-            if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier >= 8)
+            if (icePlayer.SpeedMultiplier >= 8)
             {
                 if (count == 0)
                 {
@@ -105,11 +135,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                     count++;
                 }
             }
-            if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 7)
+            else if (icePlayer.SpeedMultiplier <= 7)
             {
                 count = 0;
             }
-            return false;
+            CanShootItem = false;
         }
         private void ChargeUpHandle(Player player)
         {
@@ -139,63 +169,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 Main.dust[dustNum].noLight = false;
                 Main.dust[dustNum].noLightEmittence = false;
                 Main.dust[dustNum].velocity = circular;
-            }
-        }
-        private void IceStormSynergy(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
-        {
-            if (player.HasItem(ItemID.SnowballCannon))
-            {
-                HasSnowBall(player, source, position, velocity, damage, knockback);
-            }
-            if (player.HasItem(ItemID.FlowerofFrost))
-            {
-                HasFrostFlower(player, source, position, velocity, damage, knockback);
-            }
-            if (player.HasItem(ItemID.BlizzardStaff))
-            {
-                HasBlizzardStaff(player, source, damage, knockback);
-            }
-        }
-        private void HasSnowBall(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
-        {
-            int projectile4 = (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .5f);
-            for (int i = 0; i < projectile4; i++)
-            {
-                float ToRa = 0;
-                if (projectile4 != 1)
-                {
-                    ToRa = projectile4 * 7;
-                }
-                Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
-            }
-        }
-        private void HasFrostFlower(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
-        {
-            int projectile5 = (int)(player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .1666667f);
-            for (int i = 0; i < projectile5; i++)
-            {
-                float ToRa = 0;
-                if (projectile5 != 1)
-                {
-                    ToRa = projectile5 * 5;
-                }
-                Projectile.NewProjectile(source, position, velocity.RotateRandom(ToRa).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
-            }
-        }
-        private void HasBlizzardStaff(Player player, EntitySource_ItemUse_WithAmmo source, int damage, float knockback)
-        {
-            if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier < 8)
-            {
-                return;
-            }
-            Vector2 SkyPos = new Vector2(player.Center.X, player.Center.Y - 800);
-            Vector2 SkyVelocity = (Main.MouseWorld - SkyPos).SafeNormalize(Vector2.UnitX);
-            for (int i = 0; i < 5; i++)
-            {
-                SkyPos += Main.rand.NextVector2Circular(200, 200);
-                int FinalCharge = Projectile.NewProjectile(source, SkyPos, SkyVelocity * 30, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
-                Main.projectile[FinalCharge].tileCollide = false;
-                Main.projectile[FinalCharge].timeLeft = 100;
             }
         }
         public override void AddRecipes()

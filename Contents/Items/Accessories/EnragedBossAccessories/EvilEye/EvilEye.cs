@@ -74,8 +74,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
             }
             if (EoCShieldUpgrade && EoCCounter >= 30)
             {
-                EntitySource_ItemUse EoC = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<EvilEye>()));
-                Projectile.NewProjectile(EoC, Player.Center, -Player.velocity, ModContent.ProjectileType<EoCServant>(), (int)(Player.GetWeaponDamage(Player.HeldItem) * 0.5f) + 10, 1f, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, -Player.velocity, ModContent.ProjectileType<EoCServant>(), (int)(Player.GetWeaponDamage(Player.HeldItem) * 0.5f) + 10, 1f, Player.whoAmI);
                 EoCCounter = 0;
             }
         }
