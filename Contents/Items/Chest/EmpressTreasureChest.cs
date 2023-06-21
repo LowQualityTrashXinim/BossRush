@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Chest
             modplayer.GetAmount();
             for (int i = 0; i < modplayer.weaponAmount; i++)
             {
-                GetWeapon(player, out int weapon, out int specialAmount, RNGManage(25, 25, 25, 25, 0));
+                GetWeapon(player, out int weapon, out int specialAmount, RNGManage(player,25, 25, 25, 25, 0));
                 AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);

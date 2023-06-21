@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using System.IO;
 using Terraria.ID;
 using BossRush.Common;
 using Terraria.ModLoader;
@@ -10,10 +11,9 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Accessories;
-using BossRush.Contents.Items.Artifact;
-using System.IO;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -49,7 +49,7 @@ namespace BossRush.Contents.Items.Chest
             if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == -1)
             {
                 TooltipLine line = new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest");
-                line.OverrideColor = BossRushColor.RedToBlack;
+                line.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.DarkRed, Color.Red }, 10);
                 tooltips.Add(line);
             }
             PostModifyTooltips(ref tooltips);
@@ -101,41 +101,6 @@ namespace BossRush.Contents.Items.Chest
             }
             return 0;
         }
-        protected int RNGManage(int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15)
-        {
-            ChestLootDropPlayer modPlayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
-            meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
-            rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
-            magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
-            summonChance = (int)(modPlayer.SummonChanceMutilplier * summonChance);
-            rangeChance += meleeChance;
-            magicChance += rangeChance;
-            summonChance += magicChance;
-            specialChance += summonChance;
-            int chooser = Main.rand.Next(specialChance);
-            if (chooser <= meleeChance)
-            {
-                return 1;
-            }
-            else if (chooser > meleeChance && chooser <= rangeChance)
-            {
-                return 2;
-            }
-            else if (chooser > rangeChance && chooser <= magicChance)
-            {
-                return 3;
-            }
-            else if (chooser > magicChance && chooser <= summonChance)
-            {
-                return 4;
-            }
-            else if (chooser > summonChance && chooser <= specialChance)
-            {
-                return 5;
-            }
-            return 0;
-        }
-
         /// <summary>
         /// Allow for safely add extra loot, this will be called After all the loot is added
         /// </summary>
@@ -934,7 +899,7 @@ namespace BossRush.Contents.Items.Chest
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
-            Vector2 drawPos = Item.position - Main.screenPosition + origin;
+            Vector2 drawPos = Item.position - Main.screenPosition + origin + origin * .5f;
             for (int i = 0; i < 3; i++)
             {
                 spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);

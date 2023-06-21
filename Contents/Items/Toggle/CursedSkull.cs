@@ -2,11 +2,12 @@
 using Terraria.ID;
 using Terraria.Chat;
 using Terraria.Audio;
+using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Common;
 
 namespace BossRush.Contents.Items.Toggle
 {
@@ -33,14 +34,9 @@ namespace BossRush.Contents.Items.Toggle
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            tooltips.Add(new TooltipLine(Mod, "ChallengeGod", "A gift from God of challenge" + $"[i:{ModContent.ItemType<CursedSkull>()}]"));
-            foreach (TooltipLine line2 in tooltips)
-            {
-                if (line2.Name == "ChallengeGod")
-                {
-                    line2.OverrideColor = BossRushColor.ChallangeGodColor;
-                }
-            }
+            TooltipLine line = new TooltipLine(Mod, "ChallengeGod", "A gift from God of challenge" + $"[i:{ModContent.ItemType<CursedSkull>()}]");
+            line.OverrideColor = BossRushColor.MultiColor(new List<Color>() { new Color(255,50,255), new Color(100, 50, 100) }, 2);
+            tooltips.Add(line);
         }
 
         public override bool CanUseItem(Player player)

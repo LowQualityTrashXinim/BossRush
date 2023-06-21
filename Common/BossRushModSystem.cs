@@ -12,43 +12,11 @@ namespace BossRush.Common
     {
         public override void PostUpdateEverything()
         {
-            ChallengeGodColorAnimation();
             YellowPulseYellowWhiteColorAnimation();
             SynergyColorAnimation();
             RedToBlackColorAnimation();
         }
 
-        public static Color ChallangeGodColor => new Color(ChallengeR, 0, ChallengeB);
-        static int ChallengeR = 100, ChallengeB = 100;
-        int Switch1 = 0;
-        private void ChallengeGodColorAnimation()
-        {
-            //Pulsing Purple
-            if (Switch1 != 1)
-            {
-                if (ChallengeR < 255)
-                {
-                    Math.Clamp(++ChallengeR, 100, 255);
-                    Math.Clamp(++ChallengeB, 100, 255);
-                }
-                else
-                {
-                    Switch1 = 1;
-                }
-            }
-            else
-            {
-                if (ChallengeR > 100)
-                {
-                    Math.Clamp(--ChallengeR, 100, 255);
-                    Math.Clamp(--ChallengeB, 100, 255);
-                }
-                else
-                {
-                    Switch1 = 0;
-                }
-            }
-        }
 
         public static Color YellowPulseYellowWhite => new Color(YWRed, YWGreen, YWBlue);
         static int YWRed = 150, YWGreen = 150, YWBlue = 0;
@@ -163,20 +131,36 @@ namespace BossRush.Common
             {
                 return color[0];
             }
+            int count = 0;
+            foreach(Color c in listcolor)
+            {
+                if(color.Contains(c))
+                {
+                    count++;
+                }
+            }
+            if (count != color.Count)
+            {
+                listcolor = color;
+                color1 = new Color();
+                color2 = new Color();
+            }
             if (color1.Equals(color2))
             {
                 color1 = color[currentIndex];
-                color3 = color1;
+                color3 = color[currentIndex];
                 currentIndex = Math.Clamp((currentIndex + 1 >= color.Count) ? 0 : currentIndex + 1, 0, color.Count - 1);
                 color2 = color[currentIndex];
+                progress = 0;
             }
             if (!color1.Equals(color2))
             {
-                color1 = Color.Lerp(color3, color2, progress / 255);
+                color1 = Color.Lerp(color3, color2, Math.Clamp(progress / 255f, 0, 1f));
             }
             return color1;
         }
         private static int currentIndex = 0, progress = 0;
         static Color color1 = new Color(), color2 = new Color(), color3 = new Color();
+        static List<Color> listcolor = new List<Color>();
     }
 }
