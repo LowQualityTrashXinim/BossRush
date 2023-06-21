@@ -78,7 +78,7 @@ namespace BossRush.Contents.Items.Card
                 if (CardStatsNumber[i] < 0)
                 {
                     badstatsline.Text = StatNumberAsText(CardStats[i], CardStatsNumber[i]);
-                    badstatsline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black}, 1);
+                    badstatsline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black }, 1);
                     continue;
                 }
                 float statsNum = CardStatsNumber[i];
@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Card
             }
             if (CursedID != -1)
             {
-                TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CursedString);
+                TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CursedStringStats(CursedID));
                 badline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black }, 1);
                 tooltips.Add(badline);
             }
@@ -254,7 +254,7 @@ namespace BossRush.Contents.Items.Card
                 {
                     statsNum = (Main.rand.Next(Tier) + 1) * Tier;
                 }
-                return statsNum * multiplier;
+                return (int)(statsNum * multiplier);
             }
             switch (Tier)
             {
@@ -374,7 +374,7 @@ namespace BossRush.Contents.Items.Card
                     CursedID = Main.rand.Next(12) + 1;
                 }
                 modplayer.listCursesID.Add(CursedID);
-                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedString);
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID));
             }
             return true;
         }
@@ -488,7 +488,6 @@ namespace BossRush.Contents.Items.Card
         public const float ReducePositiveCardStatByHalf = .5f;
         public bool AccessoriesDisable = false; // Will be implement much later
         public List<int> listCursesID = new List<int>();
-        public string CursedString = "";
         //We handle no dupe curses in here
         public override void PreUpdate()
         {
@@ -517,57 +516,92 @@ namespace BossRush.Contents.Items.Card
                 {
                     case 1:
                         DecreaseRateOfFire = true;
-                        CursedString = "Weapon have decrease fire rate";
                         break;
                     case 2:
                         NoHealing = true;
-                        CursedString = "You can't heal using potion";
                         break;
                     case 3:
                         SluggishDamage = true;
-                        CursedString = "Decrease weapon damage severely";
                         break;
                     case 4:
                         FiveTimeDamageTaken = true;
-                        CursedString = "Getting hit is much more fatal";
+
                         break;
                     case 5:
                         LimitedResource = true;
-                        CursedString = "You can't regenarate mana nor hp";
                         break;
                     case 6:
                         PlayWithConstantLifeLost = true;
-                        CursedString = "You always lose life leaving you with 1 hp left";
                         break;
                     case 7:
                         ReduceIframe = true;
-                        CursedString = "Your lost some immunity frame";
                         break;
                     case 8:
                         WeaponCanJammed = true;
-                        CursedString = "Your weapon will jammed if you use the same weapon too much";
                         break;
                     case 9:
                         WeaponCanKick = true;
-                        CursedString = "Your weapon use your life to work";
                         break;
                     case 10:
                         NegativeDamageRandomize = true;
-                        CursedString = "Damage have been ramdomize to be worse";
                         break;
                     case 11:
                         CritDealNoDamage = true;
-                        CursedString = "Critical damage deal next to no damage";
                         break;
                     case 12:
                         ReducePositiveCardStat = true;
-                        CursedString = "Cards stats is reduce by half";
                         break;
                     default:
-                        CursedString = "Error ! You shouldn't be getting this tho unless you done something horribly wrong";
                         break;
                 }
             }
+        }
+        public string CursedStringStats(int curseID)
+        {
+            string CursedString = "";
+            switch (curseID)
+            {
+                case 1:
+                    CursedString = "Weapon have decrease fire rate";
+                    break;
+                case 2:
+                    CursedString = "You can't heal using potion";
+                    break;
+                case 3:
+                    CursedString = "Decrease weapon damage severely";
+                    break;
+                case 4:
+                    CursedString = "Getting hit is much more fatal";
+                    break;
+                case 5:
+                    CursedString = "You can't regenarate mana nor hp";
+                    break;
+                case 6:
+                    CursedString = "You always lose life leaving you with 1 hp left";
+                    break;
+                case 7:
+                    CursedString = "Your lost some immunity frame";
+                    break;
+                case 8:
+                    CursedString = "Your weapon will jammed if you use the same weapon too much";
+                    break;
+                case 9:
+                    CursedString = "Your weapon use your life to work";
+                    break;
+                case 10:
+                    CursedString = "Damage have been ramdomize to be worse";
+                    break;
+                case 11:
+                    CursedString = "Critical damage deal next to no damage";
+                    break;
+                case 12:
+                    CursedString = "Cards stats is reduce by half";
+                    break;
+                default:
+                    CursedString = "Error ! You shouldn't be getting this tho unless you done something horribly wrong";
+                    break;
+            }
+            return CursedString;
         }
         public override float UseSpeedMultiplier(Item item)
         {
