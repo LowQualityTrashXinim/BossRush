@@ -8,10 +8,6 @@ namespace BossRush.Contents.Items.Chest
 {
     class DeerclopTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
-        }
         public override void SetDefaults()
         {
             Item.width = 42;
@@ -30,7 +26,7 @@ namespace BossRush.Contents.Items.Chest
                 tooltips.Add(new TooltipLine(Mod, "ItemName", $"It is now can be open"));
             }
         }
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             player.QuickSpawnItem(entitySource, ItemID.SnowGlobe);

@@ -23,11 +23,11 @@ namespace BossRush.Contents.Items.Chest
         public override List<int> FlagNumber() => new List<int> { 0, 1, 2 };
 
         public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            GetAmount(out int amount, out int amount2, out int amount3, player);
-            for (int i = 0; i < amount; i++)
+            modplayer.GetAmount();
+            for (int i = 0; i < modplayer.weaponAmount; i++)
             {
                 GetWeapon(player, out int ReturnWeapon, out int SpecialAmount);
                 AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
@@ -44,9 +44,9 @@ namespace BossRush.Contents.Items.Chest
                 }
                 player.QuickSpawnItem(entitySource, GetAccessory());
             }
-            for (int i = 0; i < amount2; i++)
+            for (int i = 0; i < modplayer.potionTypeAmount; i++)
             {
-                player.QuickSpawnItem(entitySource, GetPotion(true), amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(true), modplayer.potionNumAmount);
             }
             int RandomNumber = Main.rand.Next(7);
             switch (RandomNumber)

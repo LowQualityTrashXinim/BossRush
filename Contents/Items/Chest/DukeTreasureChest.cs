@@ -10,11 +10,11 @@ namespace BossRush.Contents.Items.Chest
             Item.height = 30;
             Item.rare = 10;
         }
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            GetAmount(out int amount, out int _, out int _, player);
-            for (int i = 0; i < amount; i++)
+            modplayer.GetAmount();
+            for (int i = 0; i < modplayer.weaponAmount; i++)
             {
                 GetWeapon(player, out int weapon, out int specialAmount, RNGManage(25, 25, 25, 25, 0));
                 AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);

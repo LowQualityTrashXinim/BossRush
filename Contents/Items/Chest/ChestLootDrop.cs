@@ -24,51 +24,37 @@ namespace BossRush.Contents.Items.Chest
         private List<int> DropItemMagic = new List<int>();
         private List<int> DropItemSummon = new List<int>();
         private List<int> DropItemMisc = new List<int>();
+        private List<int> AllOfLootPossiblity = new List<int>();
         public virtual bool CanLootRNGbeRandomize() => true;
+        public virtual bool ChestUseOwnLogic() => false;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            PostModifyTooltips(ref tooltips);
-            //This is super post stuff
+            ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+            if (!ChestUseOwnLogic())
+            {
+                if (AllOfLootPossiblity.Count < 1)
+                {
+                    AddLoot(FlagNumber());
+                }
+                chestplayer.GetAmount();
+                List<int> potiontotal = new List<int>();
+                potiontotal.AddRange(TerrariaArrayID.NonMovementPotion);
+                potiontotal.AddRange(TerrariaArrayID.MovementPotion);
+                TooltipLine chestline = new TooltipLine(Mod, "ChestLoot",
+                    $"Weapon : [i:{Main.rand.Next(AllOfLootPossiblity)}] x {chestplayer.weaponAmount}\n" +
+                    $"Potion type : [i:{Main.rand.Next(potiontotal)}] x {chestplayer.potionTypeAmount}\n" +
+                    $"Amount of potion : [i:{ItemID.RegenerationPotion}][i:{ItemID.SwiftnessPotion}][i:{ItemID.IronskinPotion}] x {chestplayer.potionNumAmount}");
+                tooltips.Add(chestline);
+            }
             if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == -1)
             {
                 TooltipLine line = new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest");
                 line.OverrideColor = BossRushColor.RedToBlack;
                 tooltips.Add(line);
             }
+            PostModifyTooltips(ref tooltips);
         }
         public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
-        private int ModifyGetAmount(int ValueToModify, Player player)
-        {
-            //Modifier
-            int amountToModify = player.GetModPlayer<ChestLootDropPlayer>().amountModifier;
-            float finalMultipler = player.GetModPlayer<ChestLootDropPlayer>().finalMultiplier;
-            return finalMultipler > 0 ? (int)Math.Ceiling(finalMultipler * (ValueToModify + amountToModify)) : 0;
-        }
-        protected void GetAmount(out int amountForWeapon, out int amountForPotionType, out int amountForPotionNum, Player player)
-        {
-            amountForWeapon = 5;
-            amountForPotionType = 3;
-            amountForPotionNum = 4;
-            if (Main.getGoodWorld)
-            {
-                amountForWeapon = 2;
-            }
-            if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
-            {
-                amountForWeapon -= 2;
-                amountForPotionType -= 2;
-                amountForPotionNum -= 2;
-            }
-            if (Main.hardMode)
-            {
-                amountForWeapon += 1;
-                amountForPotionType += 1;
-                amountForPotionNum += 1;
-            }
-            amountForWeapon = ModifyGetAmount(amountForWeapon, player);
-            amountForPotionType = ModifyGetAmount(amountForPotionType, player);
-            amountForPotionNum = ModifyGetAmount(amountForPotionNum, player);
-        }
         private int ModifyRNG(int rng, Player player)
         {
             int DrugValue = player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
@@ -316,6 +302,11 @@ namespace BossRush.Contents.Items.Chest
             if (SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
             if (SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
             if (SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
+            AllOfLootPossiblity.AddRange(DropItemMagic);
+            AllOfLootPossiblity.AddRange(DropItemRange);
+            AllOfLootPossiblity.AddRange(DropItemMagic);
+            AllOfLootPossiblity.AddRange(DropItemSummon);
+            AllOfLootPossiblity.AddRange(DropItemMisc);
         }
         /// <summary>
         ///      Allow user to return a list of number that contain different data to insert into chest <br/>
@@ -379,7 +370,7 @@ namespace BossRush.Contents.Items.Chest
         {
             player.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen++;
             base.RightClick(player);
-            OnRightClick(player);
+            OnRightClick(player,player.GetModPlayer<ChestLootDropPlayer>());
             var entitySource = player.GetSource_OpenItem(Type);
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
@@ -394,7 +385,7 @@ namespace BossRush.Contents.Items.Chest
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
-            if(!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;
             }
@@ -414,7 +405,7 @@ namespace BossRush.Contents.Items.Chest
                 return;
             }
         }
-        public virtual void OnRightClick(Player player) { }
+        public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
         public void ChooseWeapon(int rng, ref int weapon, ref int amount)
         {
             weapon = ItemID.None;
@@ -443,7 +434,7 @@ namespace BossRush.Contents.Items.Chest
                         break;
                     }
                     amount += 199;
-                    if(Main.masterMode)
+                    if (Main.masterMode)
                     {
                         amount += 300;
                     }
@@ -696,7 +687,7 @@ namespace BossRush.Contents.Items.Chest
         {
             Amount = (int)(200 * AmountModifier);
             Item weapontoCheck = new Item(weapon);
-            if(Main.masterMode)
+            if (Main.masterMode)
             {
                 Amount = (int)(Amount * 2.5f);
             }
@@ -968,7 +959,10 @@ namespace BossRush.Contents.Items.Chest
         public float SummonChanceMutilplier = 1f;
         private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 0;
         /// <summary>
-        /// This must be called before using <see cref="weaponAmount"/>
+        /// This must be called before using
+        /// <br/><see cref="weaponAmount"/>
+        /// <br/><see cref="potionTypeAmount"/>
+        /// <br/><see cref="potionNumAmount"/>
         /// </summary>
         public void GetAmount()
         {

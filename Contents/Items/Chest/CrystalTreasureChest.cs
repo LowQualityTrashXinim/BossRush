@@ -6,10 +6,6 @@ namespace BossRush.Contents.Items.Chest
 {
     class CrystalTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Right click to open chest to get the following items\n1 Set of better random pre-mech armor\n2 Random accessory and a random wing\n5 random pre-mech weapons\n10 of 5 Random Buff Potions\nrare chance getting slime queen treasure bag\nGood Luck fighting mech!");
-        }
         public override void SetDefaults()
         {
             Item.width = 54;
@@ -18,7 +14,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int>() { 7, 8};
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
          {
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings, ItemID.LeafWings, ItemID.FairyWings, ItemID.HarpyWings });
@@ -41,8 +37,8 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ItemID.CrystalNinjaLeggings);
                     break;
             }
-            GetAmount(out int amount, out int amount2, out int amount3, player);
-            for (int i = 0; i < amount; i++)
+            modplayer.GetAmount();
+            for (int i = 0; i < modplayer.weaponAmount; i++)
             {
                 GetWeapon(player, out int weapon, out int specialAmount);
                 AmmoForWeapon(out int ammo, out int num, weapon);
@@ -53,9 +49,9 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, GetAccessory());
             }
-            for (int i = 0; i < amount2; i++)
+            for (int i = 0; i < modplayer.potionTypeAmount; i++)
             {
-                player.QuickSpawnItem(entitySource, GetPotion(), amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
             }
             if (Main.rand.NextBool(5))
             {

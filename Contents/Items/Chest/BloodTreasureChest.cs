@@ -13,20 +13,20 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 };
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            GetAmount(out int Amount1, out int Amount2, out int Amount3, player);
-            for (int i = 0; i < Amount1; i++)
+            modplayer.GetAmount();
+            for (int i = 0; i < modplayer.weaponAmount; i++)
             {
                 GetWeapon(player, out int weapon, out int specialAmount);
                 AmmoForWeapon(out int ammo, out int num, weapon);
                 player.QuickSpawnItem(entitySource, weapon, specialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            for (int i = 0; i < Amount2; i++)
+            for (int i = 0; i < modplayer.potionTypeAmount; i++)
             {
-                player.QuickSpawnItem(entitySource, GetPotion(), Amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
             }
             player.QuickSpawnItem(entitySource, GetAccessory());
         }

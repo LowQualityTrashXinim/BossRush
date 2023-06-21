@@ -21,7 +21,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int> { 8, 9, 10, 11, 12, 13 };
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             for (int i = 0; i < 2; i++)
@@ -31,8 +31,8 @@ namespace BossRush.Contents.Items.Chest
             }
             int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
             player.QuickSpawnItem(entitySource, wing);
-            GetAmount(out int amount, out int _, out int _, player);
-            for (int i = 0; i < amount; i++)
+            modplayer.GetAmount();
+            for (int i = 0; i < modplayer.weaponAmount; i++)
             {
                 GetWeapon(player, out int weapon, out int specialAmount, RNGManage(25, 25, 25, 25, 0));
                 AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);

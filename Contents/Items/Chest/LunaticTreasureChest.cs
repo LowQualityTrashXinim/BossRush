@@ -6,10 +6,6 @@ namespace BossRush.Contents.Items.Chest
 {
     internal class LunaticTreasureChest : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Let begin the Lunar Event !");
-        }
         public override void SetDefaults()
         {
             Item.width = 38;

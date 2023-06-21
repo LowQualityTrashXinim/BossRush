@@ -31,12 +31,12 @@ namespace BossRush.Contents.Items.Chest
             return list;
         }
         public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
-        public override void OnRightClick(Player player)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             int wing = Main.rand.Next(new int[] { ItemID.ButterflyWings, ItemID.FlameWings, ItemID.FrozenWings, ItemID.SteampunkWings, ItemID.Jetpack });
             player.QuickSpawnItem(entitySource, wing);
-            GetAmount(out int amount, out int amount2, out int amount3, player);
+            modplayer.GetAmount();
             if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
             {
                 int randChooser = Main.rand.Next(4);
@@ -61,7 +61,7 @@ namespace BossRush.Contents.Items.Chest
                         break;
                 }
             }
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < modplayer.weaponAmount; i++)
             {
                 GetWeapon(player, out int weapon, out int specialAmount, RNGManage(25, 25, 25, 25, 0));
                 AmmoForWeapon(out int ammo, out int num, weapon);
@@ -76,9 +76,9 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, ItemID.ChlorophytePickaxe);
             }
-            for (int i = 0; i < amount2; i++)
+            for (int i = 0; i < modplayer.potionTypeAmount; i++)
             {
-                player.QuickSpawnItem(entitySource, GetPotion(), amount3);
+                player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
             }
             player.QuickSpawnItem(entitySource, ModContent.ItemType<PlanteraEssence>());
             player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
