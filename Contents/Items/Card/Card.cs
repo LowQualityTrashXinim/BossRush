@@ -78,7 +78,7 @@ namespace BossRush.Contents.Items.Card
                 if (CardStatsNumber[i] < 0)
                 {
                     badstatsline.Text = StatNumberAsText(CardStats[i], CardStatsNumber[i]);
-                    badstatsline.OverrideColor = BossRushColor.RedToBlack;
+                    badstatsline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black}, 1);
                     continue;
                 }
                 float statsNum = CardStatsNumber[i];
@@ -98,7 +98,7 @@ namespace BossRush.Contents.Items.Card
             if (CursedID != -1)
             {
                 TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CursedString);
-                badline.OverrideColor = BossRushColor.RedToBlack;
+                badline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black }, 1);
                 tooltips.Add(badline);
             }
         }
