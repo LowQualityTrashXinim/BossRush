@@ -103,7 +103,10 @@ Mods: {
 			SandInYourFace.DisplayName: Sand In Your Face
 		}
 
-		NPCs.TrueEoC.DisplayName: True EoC
+		NPCs: {
+			TrueEoC.DisplayName: True EoC
+			TestBossNPCDoNotLook.DisplayName: Test Boss N P C Do Not Look
+		}
 
 		Items: {
 			StickyFlower: {

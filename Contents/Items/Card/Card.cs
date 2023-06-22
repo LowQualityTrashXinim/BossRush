@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Contents.Items.Artifact;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -558,7 +558,7 @@ namespace BossRush.Contents.Items.Card
         }
         public string CursedStringStats(int curseID)
         {
-            string CursedString = "";
+            string CursedString;
             switch (curseID)
             {
                 case 1:
