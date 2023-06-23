@@ -1,0 +1,24 @@
+{
+  "BossRush": {
+    "AchievementData": [
+      {
+        "Name": "The beginning of endless",
+        "description": "This mark the beginning of where it all start",
+        "conditionText": "Open your first chest",
+        "CondititionMet": false
+      },
+      {
+        "Name": "Artifact holder",
+        "description": "",
+        "conditionText": "Sharapova",
+        "CondititionMet": false
+      },
+      {
+        "Name": "The first of many",
+        "description": "First time is always the best",
+        "conditionText": "Kill king slime boss",
+        "CondititionMet": false
+      }
+    ]
+  }
+}
