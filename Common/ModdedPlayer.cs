@@ -114,15 +114,20 @@ namespace BossRush.Common
             List<Item> items = new List<Item>() {
             new Item(ModContent.ItemType<WoodenTreasureChest>()),
             new Item(ModContent.ItemType<LunchBox>()),
-            new Item(ModContent.ItemType<CursedSkull>()),
-            new Item(ModContent.ItemType<DayTimeCycle>())
             };
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
+                items.Add(new Item(ModContent.ItemType<DayTimeCycle>()));
+                items.Add(new Item(ModContent.ItemType<CursedSkull>()));
+                items.Add(new Item(ModContent.ItemType<BiomeToggle>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
+                if (Main.rand.NextBool(5))
+                {
+                    items.Add(new Item(ModContent.ItemType<WonderDrug>()));
+                }
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
@@ -163,10 +168,6 @@ namespace BossRush.Common
                 items.Add(new Item(ItemID.NinjaPants));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja>()));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja2>()));
-            }
-            if (Main.rand.NextBool(5))
-            {
-                items.Add(new Item(ModContent.ItemType<WonderDrug>()));
             }
             return items;
         }

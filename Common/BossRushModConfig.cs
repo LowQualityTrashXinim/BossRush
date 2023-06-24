@@ -7,10 +7,8 @@ namespace BossRush.Common
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
-
         [DefaultValue(true)]
         public bool EnableChallengeMode { get; set; }
-
 
         [DefaultValue(true)]
         public bool SynergyMode { get; set; }
