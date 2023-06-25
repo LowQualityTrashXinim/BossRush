@@ -12,17 +12,17 @@ namespace BossRush.Common
     {
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
-            if(!config.SynergyMode)
-            {
-                return;
-            }
-            if (item.ModItem is ISynergyItem)
-            {
-                TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
-                line.OverrideColor = BossRushColor.MultiColor(new List<Color> {new Color(50,175,175), Color.White }, 3);
-                tooltips.Add(line);
-            }
+            //BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+            //if(!config.SynergyMode)
+            //{
+            //    return;
+            //}
+            //if (item.ModItem is ISynergyItem)
+            //{
+            //    TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
+            //    line.OverrideColor = BossRushColor.MultiColor(new List<Color> {new Color(50,175,175), Color.White }, 3);
+            //    tooltips.Add(line);
+            //}
         }
     }
 }

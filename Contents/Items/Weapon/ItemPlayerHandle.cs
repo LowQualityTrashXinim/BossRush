@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -88,6 +89,9 @@ namespace BossRush.Contents.Items.Weapon
         {
             base.ModifyTooltips(tooltips);
             ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
+            TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
+            line.OverrideColor = BossRushColor.MultiColor(new List<Color> { new Color(50, 175, 175), Color.White }, 3);
+            tooltips.Add(line);
         }
         public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
         public override void HoldItem(Player player)
