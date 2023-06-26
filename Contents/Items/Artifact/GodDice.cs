@@ -55,7 +55,7 @@ namespace BossRush.Contents.Items.Artifact
         {
             player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = -1;
             GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
-            if ((player.name.Contains("Test") || player.name.Contains("Debug") || player.name == "LowQualityTrashXinim") && player.altFunctionUse == 2)
+            if (BossRushUtils.IsDebugPlayer(player) && player.altFunctionUse == 2)
             {
                 gamblePlayer.Roll++;
                 gamblePlayer.GambleDamage = 1;

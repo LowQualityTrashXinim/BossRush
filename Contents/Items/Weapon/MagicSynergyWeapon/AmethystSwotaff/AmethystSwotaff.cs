@@ -7,7 +7,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
 {
-    internal class AmethystSwotaff : ModItem, ISynergyItem
+    internal class AmethystSwotaff : SynergyModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
         int CanShootProjectile = 1;
         int countIndex = 1;
         int time = 1;
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             if (player.statMana >= player.GetManaCost(Item) && player.altFunctionUse != 2)
             {
@@ -65,7 +65,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmethystSwotaff
             {
                 SwingComboHandle();
             }
-            return false;
+            CanShootItem = false;
         }
         private void SwingComboHandle()
         {

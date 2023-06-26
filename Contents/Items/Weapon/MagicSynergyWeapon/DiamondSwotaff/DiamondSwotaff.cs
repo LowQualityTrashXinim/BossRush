@@ -3,17 +3,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
 {
-    internal class DiamondSwotaff : ModItem, ISynergyItem
+    internal class DiamondSwotaff : SynergyModItem, ISynergyItem
     {
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
             Item.staff[Item.type] = true;
         }
-
         public override void SetDefaults()
         {
             Item.BossRushDefaultMagic(60, 58, 17, 3f, 1, 10, ItemUseStyleID.Shoot, ProjectileID.DiamondBolt, 7, 20, true);
@@ -25,66 +25,59 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
             Item.value = Item.buyPrice(gold: 50);
         }
 
-        int i = 0;
-        int countChange = 0;
-
-        public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffP>()] < 1;
+        }
+        public override void OnConsumeMana(Player player, int manaConsumed)
         {
             if (player.altFunctionUse == 2)
             {
-                mult = 8.5f;
+                player.statMana += manaConsumed;
             }
         }
-
+        public override void OnMissingMana(Player player, int neededMana)
+        {
+            if (player.statMana <= player.GetManaCost(Item))
+            {
+                CanShootProjectile = -1;
+            }
+            player.statMana += neededMana;
+        }
         public override bool AltFunctionUse(Player player)
         {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1;
+            CanShootProjectile = -1;
+            return true;
         }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        int CanShootProjectile = 1;
+        int countIndex = 1;
+        int time = 1;
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
+            if (player.statMana >= player.GetManaCost(Item) && player.altFunctionUse != 2)
+            {
+                CanShootProjectile = 1;
+            }
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex, CanShootProjectile);
+            if (CanShootProjectile == 1)
+            {
+                Projectile.NewProjectile(source, position, velocity, ProjectileID.DiamondBolt, damage, knockback, player.whoAmI);
+            }
             if (player.altFunctionUse != 2)
             {
-                i++;
-                float rotation = MathHelper.ToRadians(30);
-                if (countChange == 0)
-                {
-                    velocity = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, (float)(i / 9f)));
-                }
-                else
-                {
-                    velocity = velocity.RotatedBy(MathHelper.Lerp(rotation, -rotation, (float)(i / 9f)));
-                }
-                if (i > 9)
-                {
-                    i = 0;
-                    countChange++;
-                    if (countChange > 1)
-                    {
-                        countChange = 0;
-                    }
-                }
-                Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 50f;
-                if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
-                {
-                    position += muzzleOffset;
-                }
+                SwingComboHandle();
             }
+            CanShootItem = false;
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        private void SwingComboHandle()
         {
-            if (player.altFunctionUse == 2)
+            countIndex = countIndex != 0 ? countIndex * -1 : 1;
+            time++;
+            if (time >= 3)
             {
-                if (player.ItemAnimationJustStarted)
-                {
-                    Projectile.NewProjectile(source, position, velocity * 5, ModContent.ProjectileType<DiamondSwotaffOrb>(), damage, knockback, player.whoAmI);
-                }
-                return false;
+                countIndex = 0;
+                time = 0;
             }
-            else
-            {
-                return true;
-            }
-
         }
 
         public override void AddRecipes()
@@ -201,5 +194,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         {
             target.immune[Projectile.owner] = 1;
         }
+    }
+    public class DiamondSwotaffP : SwotaffProjectile
+    {
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<DiamondSwotaff>();
+        protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondGemP>();
+        protected override int NormalBoltProjectile() => ProjectileID.DiamondBolt;
+        protected override int DustType() => DustID.GemDiamond;
     }
 }
