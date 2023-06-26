@@ -2,11 +2,15 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 
-namespace BossRush.Common.Utils
+namespace BossRush
 {
-    partial class BossRushUtils
+    public static partial class BossRushUtils
     {
-        
+        public static bool IsDebugPlayer(Player player) => 
+            player.name.Contains("Test") || 
+            player.name.Contains("Debug") || 
+            player.name == "LowQualityTrashXinim" ||
+            player.name.Contains("#Beta");
     }
 
     /// <summary>

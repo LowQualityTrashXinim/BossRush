@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Common.Utils
+namespace BossRush
 {
     partial class BossRushUtils
     {

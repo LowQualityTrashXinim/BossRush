@@ -45,7 +45,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool CanUseItem(Player player)
         {
-            return player.GetModPlayer<GamblePlayer>().Roll > 0 || player.name.Contains("Test") || player.name.Contains("Debug") || player.name == "LowQualityTrashXinim";
+            return player.GetModPlayer<GamblePlayer>().Roll > 0 || BossRushUtils.IsDebugPlayer(player);
         }
         public override bool AltFunctionUse(Player player)
         {
