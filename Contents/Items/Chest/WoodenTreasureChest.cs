@@ -1,19 +1,14 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Common;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using BossRush.Common;
-using BossRush.Contents.Items.Accessories;
 using BossRush.Contents.Items.Potion;
 
 namespace BossRush.Contents.Items.Chest
 {
     class WoodenTreasureChest : ChestLootDrop
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Good Luck!");
-        }
         public override void SetDefaults()
         {
             Item.width = 54;

@@ -13,6 +13,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -127,13 +128,14 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
-            SetBadStatsBaseOnTier();
+            bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+            SetBadStatsBaseOnTier(hasMagicDeck);
             int offset = 0;
             if (CardStats.Count > 0)
             {
                 offset++;
             }
-            for (int i = offset; i < Tier + offset; i++)
+            for (int i = offset; i < PostTierModify + offset; i++)
             {
                 CardStats.Add(SetStatsToAddBaseOnTier());
                 CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
@@ -218,14 +220,13 @@ namespace BossRush.Contents.Items.Card
             }
             return Main.rand.Next(stats);
         }
-        private void SetBadStatsBaseOnTier()
+        private void SetBadStatsBaseOnTier(bool hasMagicDeck)
         {
             if (Tier <= 1)
             {
                 return;
             }
-            bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
-            if (Main.rand.NextFloat() < .15f * Tier || (hasMagicDeck && Main.rand.NextFloat() < .25f * Tier))
+            if (Main.rand.NextFloat() < .15f * PostTierModify || (hasMagicDeck && Main.rand.NextFloat() < .25f * PostTierModify))
             {
                 if (Main.rand.NextBool(10) || (hasMagicDeck && Main.rand.NextBool(3)))
                 {
@@ -241,37 +242,37 @@ namespace BossRush.Contents.Items.Card
         /// </summary>
         public virtual void OnTierItemSpawn() { }
         public virtual float CursedStat => -1;
-        protected float statsCalculator(PlayerStats stats, float multiplier)
+        protected float statsCalculator(PlayerStats stats, float multi)
         {
-            if (CursedID != -1 && multiplier > 0)
+            if (CursedID != -1 && multi > 0)
             {
-                multiplier *= 3;
+                multi *= 3;
             }
-            float statsNum = (float)Math.Round(Main.rand.NextFloat(.01f, .04f), 2);
+            float statsNum = Main.rand.Next(1, 4);
             if (DoesStatsRequiredWholeNumber(stats))
             {
                 if (SpecialCheckPlayerStats(stats))
                 {
-                    statsNum = Main.rand.Next((int)(Tier * .5f)) + 1;
+                    statsNum = Main.rand.Next((int)(PostTierModify * .5f)) + 1;
                 }
                 else
                 {
-                    statsNum = (Main.rand.Next(Tier) + 1) * Tier;
+                    statsNum = (Main.rand.Next(PostTierModify) + 1) * PostTierModify;
                 }
-                return (int)(statsNum * multiplier);
+                return (int)(statsNum * multi);
             }
-            switch (Tier)
+            switch (PostTierModify)
             {
                 case 1:
-                    return statsNum * multiplier;
+                    return statsNum * multi;
                 case 2:
-                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.01f, .03f) + .01f) * Tier * multiplier, 2);
+                    return (statsNum + Main.rand.Next(1, 3) + .01f) * PostTierModify * multi * .01f;
                 case 3:
-                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.02f, .05f) + .01f) * Tier * multiplier, 2);
+                    return (statsNum + Main.rand.Next(2, 5) + .01f) * PostTierModify * multi * .01f;
                 case 4:
-                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.04f, .07f) + .01f) * Tier * multiplier, 2);
+                    return (statsNum + Main.rand.Next(4, 7) + .01f) * PostTierModify * multi * .01f;
                 default:
-                    return (float)Math.Round((statsNum + Main.rand.NextFloat(.01f, .1f)) * Tier * multiplier, 2);
+                    return (statsNum + Main.rand.Next(1, 1)) * PostTierModify * multi * .01f;
             }
         }
         public bool SpecialCheckPlayerStats(PlayerStats stats) =>
@@ -285,6 +286,7 @@ namespace BossRush.Contents.Items.Card
         /// 4 = Platinum<br/>
         /// </summary>
         public virtual int Tier => 0;
+        public virtual int PostTierModify => Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 ? Tier + 1 : Tier;
         public override bool CanUseItem(Player player)
         {
             return !BossRushUtils.IsAnyVanillaBossAlive();
@@ -294,7 +296,7 @@ namespace BossRush.Contents.Items.Card
         {
             PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
             OnUseItem(player, modplayer);
-            if (Tier == 0)
+            if (Tier <= 0)
             {
                 return true;
             }
@@ -929,11 +931,14 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
+            int cardpacket1 = ModContent.ItemType<CardPacket>()
+                , cardpacket2 = ModContent.ItemType<BigCardPacket>()
+                , cardpacket3 = ModContent.ItemType<BoxOfCard>();
             if (npc.boss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CardPacket>(), 3));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BigCardPacket>(), 7));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<BoxOfCard>(), 25));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), cardpacket1, 3));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), cardpacket2, 7));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), cardpacket3, 25));
             }
             else
             {
@@ -941,15 +946,16 @@ namespace BossRush.Contents.Items.Card
                 {
                     return;
                 }
-                npcLoot.Add(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<CardPacket>(), 10));
-                npcLoot.Add(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<BigCardPacket>(), 20));
-                npcLoot.Add(ItemDropRule.ByCondition(new MagicalCardDeckException(), ModContent.ItemType<BoxOfCard>(), 50));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<CardPacket>(), 100));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BigCardPacket>(), 200));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), ModContent.ItemType<BoxOfCard>(), 500));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CardPacket>(), 400));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BigCardPacket>(), 600));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BoxOfCard>(), 700));
+                LeadingConditionRule rule = new LeadingConditionRule(new MagicalCardDeckException());
+                npcLoot.Add(rule.OnSuccess(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket1, 10)));
+                npcLoot.Add(rule.OnSuccess(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket2, 20)));
+                npcLoot.Add(rule.OnSuccess(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket3, 50)));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket1, 100));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket2, 200));
+                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket3, 500));
+                npcLoot.Add(ItemDropRule.Common(cardpacket1, 400));
+                npcLoot.Add(ItemDropRule.Common(cardpacket2, 600));
+                npcLoot.Add(ItemDropRule.Common(cardpacket3, 700));
             }
         }
     }

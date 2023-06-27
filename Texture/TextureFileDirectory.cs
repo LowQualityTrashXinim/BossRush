@@ -10,5 +10,6 @@ namespace BossRush.Texture
         public const string EMPTYBUFF = "BossRush/Texture/EmptyBuff";
         public const string PLACEHOLDERCHEST = "BossRush/Texture/PlaceHolderTreasureChest";
         public const string WHITEBALL = "BossRush/Texture/WhiteBall";
+        public const string DIAMONDSWOTAFFORB = "BossRush/Texture/DiamondSwotaffOrb";
     }
 }

@@ -87,6 +87,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         public override void SetDefaults()
         {
             PreSetDefault();
+            Projectile.DamageType = DamageClass.Magic;
             Projectile.friendly = true;
             base.SetDefaults();
         }
