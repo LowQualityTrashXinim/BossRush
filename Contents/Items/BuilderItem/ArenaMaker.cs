@@ -60,10 +60,10 @@ namespace BossRush.Contents.Items.BuilderItem
             Color redAlpha = new Color(255, 255, 0, 30);
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, redAlpha, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, redAlpha, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, redAlpha, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, redAlpha, rotation, origin, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }

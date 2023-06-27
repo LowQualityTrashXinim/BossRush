@@ -1,13 +1,96 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using System;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
+    public abstract class SwotaffGemItem : SynergyModItem
+    {
+        public virtual int ProjectileType => 0;
+        public virtual int ShootType => 0;
+        public override void SetStaticDefaults()
+        {
+            Item.staff[Item.type] = true;
+        }
+        public override void SetDefaults()
+        {
+            Item.BossRushDefaultMagic(60, 58, 20, 3f, 20, 20, ItemUseStyleID.Swing, ProjectileType, 7, 10, false);
+            Item.crit = 10;
+            Item.value = Item.buyPrice(gold: 50);
+            Item.useTurn = false;
+            Item.rare = ItemRarityID.Green;
+            Item.UseSound = SoundID.Item8;
+            Item.noUseGraphic = true;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[ProjectileType] < 1;
+        }
+        public override void OnConsumeMana(Player player, int manaConsumed)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                player.statMana += manaConsumed;
+            }
+        }
+        public override void OnMissingMana(Player player, int neededMana)
+        {
+            if (player.statMana <= player.GetManaCost(Item))
+            {
+                CanShootProjectile = -1;
+            }
+            player.statMana += neededMana;
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            CanShootProjectile = -1;
+            return true;
+        }
+        int CanShootProjectile = 1;
+        int countIndex = 1;
+        int time = 1;
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
+            if (player.statMana >= player.GetManaCost(Item) && player.altFunctionUse != 2)
+            {
+                CanShootProjectile = 1;
+            }
+            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex, CanShootProjectile);
+            if (CanShootProjectile == 1)
+            {
+                Projectile.NewProjectile(source, position, velocity, ShootType, damage, knockback, player.whoAmI);
+            }
+            if (player.altFunctionUse != 2)
+            {
+                SwingComboHandle();
+            }
+            CanShootItem = false;
+        }
+        private void SwingComboHandle()
+        {
+            countIndex = countIndex != 0 ? countIndex * -1 : 1;
+            time++;
+            if (time >= 3)
+            {
+                countIndex = 0;
+                time = 0;
+            }
+        }
+    }
+    public abstract class SwotaffGemProjectile : SynergyModProjectile
+    {
+        public virtual void PreSetDefault() { }
+        public override void SetDefaults()
+        {
+            PreSetDefault();
+            Projectile.friendly = true;
+            base.SetDefaults();
+        }
+    }
     public abstract class SwotaffProjectile : ModProjectile
     {
         public override void SetDefaults()

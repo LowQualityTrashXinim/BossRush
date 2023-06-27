@@ -101,6 +101,7 @@ Mods: {
 			LivingEnchantedSwordProjectile.DisplayName: Living Enchanted Sword Projectile
 			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
 			SandInYourFace.DisplayName: Sand In Your Face
+			DiamondSwotaffP.DisplayName: Diamond Swotaff P
 		}
 
 		NPCs: {

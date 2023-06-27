@@ -123,6 +123,10 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
+            if (CardStatsNumber.Count > 0)
+            {
+                return;
+            }
             SetBadStatsBaseOnTier();
             int offset = 0;
             if (CardStats.Count > 0)
@@ -439,6 +443,7 @@ namespace BossRush.Contents.Items.Card
             //{
             //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
             //}
+            PositionHandle();
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);

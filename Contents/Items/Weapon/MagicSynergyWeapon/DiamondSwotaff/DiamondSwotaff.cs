@@ -7,79 +7,10 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
 {
-    internal class DiamondSwotaff : SynergyModItem, ISynergyItem
+    internal class DiamondSwotaff : SwotaffGemItem, ISynergyItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("ya know, despite it being a stupid design idea, it working quite well");
-            Item.staff[Item.type] = true;
-        }
-        public override void SetDefaults()
-        {
-            Item.BossRushDefaultMagic(60, 58, 17, 3f, 1, 10, ItemUseStyleID.Shoot, ProjectileID.DiamondBolt, 7, 20, true);
-            Item.rare = 2;
-            Item.crit = 10;
-            Item.reuseDelay = 20;
-            Item.useTurn = false;
-            Item.UseSound = SoundID.Item8;
-            Item.value = Item.buyPrice(gold: 50);
-        }
-
-        public override bool CanUseItem(Player player)
-        {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffP>()] < 1;
-        }
-        public override void OnConsumeMana(Player player, int manaConsumed)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                player.statMana += manaConsumed;
-            }
-        }
-        public override void OnMissingMana(Player player, int neededMana)
-        {
-            if (player.statMana <= player.GetManaCost(Item))
-            {
-                CanShootProjectile = -1;
-            }
-            player.statMana += neededMana;
-        }
-        public override bool AltFunctionUse(Player player)
-        {
-            CanShootProjectile = -1;
-            return true;
-        }
-        int CanShootProjectile = 1;
-        int countIndex = 1;
-        int time = 1;
-        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
-        {
-            if (player.statMana >= player.GetManaCost(Item) && player.altFunctionUse != 2)
-            {
-                CanShootProjectile = 1;
-            }
-            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex, CanShootProjectile);
-            if (CanShootProjectile == 1)
-            {
-                Projectile.NewProjectile(source, position, velocity, ProjectileID.DiamondBolt, damage, knockback, player.whoAmI);
-            }
-            if (player.altFunctionUse != 2)
-            {
-                SwingComboHandle();
-            }
-            CanShootItem = false;
-        }
-        private void SwingComboHandle()
-        {
-            countIndex = countIndex != 0 ? countIndex * -1 : 1;
-            time++;
-            if (time >= 3)
-            {
-                countIndex = 0;
-                time = 0;
-            }
-        }
-
+        public override int ProjectileType => ModContent.ProjectileType<DiamondSwotaffP>();
+        public override int ShootType => ProjectileID.DiamondBolt;
         public override void AddRecipes()
         {
             CreateRecipe()
