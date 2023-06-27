@@ -20,13 +20,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
     public class DiamondSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<DiamondSwotaff>();
-        protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
+        //protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override int NormalBoltProjectile() => ProjectileID.DiamondBolt;
         protected override int DustType() => DustID.GemDiamond;
         protected override float AltAttackAmountProjectile() => 9;
     }
     public class DiamondSwotaffGemProjectile : SwotaffGemProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Diamond);
         public override void PreSetDefault()
         {
             Projectile.width = 18;
@@ -39,9 +40,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
             Projectile.velocity = (Projectile.Center - player.Center).SafeNormalize(Vector2.Zero);
-            if(Projectile.position.LookForHostileNPC(out NPC npc, 600))
+            if (Projectile.position.LookForHostileNPC(out NPC npc, 600))
             {
-                if(npc is null)
+                if (npc is null)
                 {
                     return;
                 }
@@ -51,6 +52,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
     }
     class DiamondGemProjectile : SynergyModProjectile
     {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Diamond);
         public override void SetDefaults()
         {
             Projectile.width = 18;
@@ -59,6 +61,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
             Projectile.tileCollide = false;
             Projectile.timeLeft = 100;
             Projectile.penetrate = -1;
+            Projectile.hide = true;
         }
     }
 }

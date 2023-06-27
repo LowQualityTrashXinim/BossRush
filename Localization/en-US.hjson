@@ -102,6 +102,8 @@ Mods: {
 			LivingBreakerBladeProjectile.DisplayName: Living Breaker Blade Projectile
 			SandInYourFace.DisplayName: Sand In Your Face
 			DiamondSwotaffP.DisplayName: Diamond Swotaff P
+			DiamondSwotaffGemProjectile.DisplayName: Diamond Swotaff Gem Projectile
+			DiamondGemProjectile.DisplayName: Diamond Gem Projectile
 		}
 
 		NPCs: {
