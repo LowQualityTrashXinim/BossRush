@@ -27,10 +27,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         protected override int NormalBoltProjectile() => ProjectileID.EmeraldBolt;
         protected override int DustType() => DustID.GemEmerald;
     }
-    public class EmeraldSwotaffGemProjectile : SwotaffGemProjectile
+    public class EmeraldSwotaffGemProjectile : SynergyModProjectile
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Emerald);
-        public override void PreSetDefault()
+        public override void SetDefaults()
         {
             Projectile.width = 18;
             Projectile.height = 16;
@@ -38,6 +38,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             Projectile.tileCollide = true;
             Projectile.timeLeft = 300;
             Projectile.penetrate = -1;
+            Projectile.DamageType = DamageClass.Magic;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {

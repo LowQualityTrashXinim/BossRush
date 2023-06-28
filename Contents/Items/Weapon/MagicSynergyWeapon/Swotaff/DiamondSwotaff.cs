@@ -25,30 +25,39 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 9;
         protected override int DustType() => DustID.GemDiamond;
-        protected override bool CanActivateSpecialAltAttack() => 
+        protected override bool CanActivateSpecialAltAttack() =>
             Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffGemProjectile>()] < AltAttackAmountProjectile();
-        
+
     }
-    public class DiamondSwotaffGemProjectile : SwotaffGemProjectile
+    public class DiamondSwotaffGemProjectile : SynergyModProjectile
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Diamond);
-        public override void PreSetDefault()
+        public override void SetDefaults()
         {
             Projectile.width = 18;
             Projectile.height = 16;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Magic;
             Projectile.timeLeft = 1000;
             Projectile.penetrate = -1;
         }
+
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (Main.rand.NextBool(5))
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].scale = Main.rand.NextFloat(1f);
+            }
+            Vector2 positionToGo = player.Center + Vector2.UnitY.RotatedBy(30 * (Projectile.ai[2] - 5)) * 50f;
             if (!player.active || player.dead)
             {
                 Projectile.Kill();
                 return;
             }
-            Projectile.velocity = player.velocity;
+            Projectile.velocity = (positionToGo - Projectile.Center).SafeNormalize(Vector2.Zero) * (positionToGo - Projectile.Center).Length() * .25f;
             if (Projectile.ai[0] > 0)
             {
                 Projectile.ai[0]--;
@@ -64,6 +73,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, toNPC, ModContent.ProjectileType<DiamondGemProjectile>(), Projectile.damage, 0, Projectile.owner);
                 Projectile.ai[0] = 60;
             }
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
+            }
+            base.Kill(timeLeft);
         }
     }
     class DiamondGemProjectile : SynergyModProjectile

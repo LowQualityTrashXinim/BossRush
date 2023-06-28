@@ -81,17 +81,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             }
         }
     }
-    public abstract class SwotaffGemProjectile : SynergyModProjectile
-    {
-        public virtual void PreSetDefault() { }
-        public override void SetDefaults()
-        {
-            PreSetDefault();
-            Projectile.DamageType = DamageClass.Magic;
-            Projectile.friendly = true;
-            base.SetDefaults();
-        }
-    }
+    /// <summary>
+    /// By default, ai2 will contain index of gem
+    /// </summary>
     public abstract class SwotaffProjectile : ModProjectile
     {
         public override void SetDefaults()
@@ -237,7 +229,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(),
                         Projectile.Center,
                         (Projectile.rotation - MathHelper.ToRadians(90)).ToRotationVector2() * 4f, AltAttackProjectileType(),
-                        Projectile.damage, Projectile.knockBack, Projectile.owner);
+                        Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0, amount);
                     amount++;
                 }
             }

@@ -1,38 +1,10 @@
-! Massive disclaimer !
-The mod intended way to play will most likely won't support mod cross playthrough.
-Mod like calamity, thorium, fargo and ect are massively not support.
-The mod is best played as it is, any comment about mod support or compatibility is ignore.
-Multiplayer is still being work on, I don't recommend you to play this mod with friend.
-As far as this mod goes, we only had completed pre hardmode part of the mod, the mod is still beatable up to moonlord but most of stuff is unpolished
-The mod is still in beta and is in demo state, any bug that you found please go into our discord server
-! Disclaimer end !
+Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished. If you spot any bug, please consider reporting it in our Discord server.
+Note: Multiplayer is currently in the works, so it will not work.
 
-Roguelike BossRush Terraria is a mod that make boss drop a custom treasure chest within the mod in rogue-like manner, providing new and fast gameplay experience for player.
-The mod introduced a lot of new items, mechanic/system and a lot of secret for you player can enjoy and explore
-As far as this mod goes, anything is possible as long you are good enough, this mod will test your skill to the fullist
+Roguelike Terraria is an expansive boss rush which aims to offer a fair and diverse randomised experience, all while eliminating the need for grinding.
+Your goal is to defeat Moon Lord by making use of the limited resources from special randomised treasure chests inside a simulated, simplified world. You only have one life, so make it count!
 
-(IMPORTANT)____THE INTENDED WAY TO PLAY :____(W.I.P)(Not compatible with multiplayer at all)
--Enable Hardcode mode on character selection (EXTREMELY RECOMMEND)
--Enable Challenge Mode ( in the mod config )
--Enable Synergy Mode ( in the mod config )
--Recommend play this mod in expert or in higher difficulty
--Try to fight boss as soon as possible
-(Optional)Enable veteran mode if you think the mod is too easy (Optional)
-(Optional)Enable weapon overhaul for best mod experience (W.I.P and isn't compatible with any mod that change melee)(Optional)
+If you are dissatisfied with the intended gameplay flow, you may disable relevant functions in the 'Main Experience' section, as well as enable extra gameplay gimmicks under the 'Difficulty' section inside the mod's config.
 
-If fighting boss at extreme inconsistently fast progression isn't your type then you can play this mod like a QoL mod
-This mod has been designed so that player can play the mod without grinding much and to be play with other mod or at your own pace
-____THE CONFIG REQUIRE FOR IT TO PLAY LIKE QOL MOD :____
--Disable Challenge Mode
--Disable Synergy Mode
--Disable veteran Mode (for extra life and mana crystal)
--Disable Enraged
--Disable YouLikeToHurtYourself
--Enable DisableWeaponOverhaul
-
-feel free to use this mod in any playthrough or modpack with condition of crediting me as LowQualityTrash
-
-The mod mostly work on by 1 person, so please be moderate and considerate when play this
-
-Multiplayer is not yet supported, please wait for future update
-As for people want to support or chat to me, idk why you want to but you can join my discord server : https://discord.gg/YqN5z5WVaS
+You may use this mod in any playthrough or modpack as long as you credit 'LowQualityTrash' for the mod. If you have further questions, don't hesitate to join our Discord server:
+https://discord.gg/YqN5z5WVaS

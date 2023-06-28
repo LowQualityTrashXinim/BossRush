@@ -250,7 +250,9 @@ namespace BossRush.Contents.Items.Card
             float statsNum = Main.rand.Next(1, 4);
             if (DoesStatsRequiredWholeNumber(stats))
             {
-                if (SpecialCheckPlayerStats(stats))
+                if (stats is PlayerStats.ChestLootDropIncrease
+            || stats is PlayerStats.MaxMinion
+            || stats is PlayerStats.MaxSentry)
                 {
                     statsNum = Main.rand.Next((int)(PostTierModify * .5f)) + 1;
                 }
@@ -274,10 +276,6 @@ namespace BossRush.Contents.Items.Card
                     return (statsNum + Main.rand.Next(1, 1)) * PostTierModify * multi * .01f;
             }
         }
-        public bool SpecialCheckPlayerStats(PlayerStats stats) =>
-            stats is PlayerStats.ChestLootDropIncrease
-            || stats is PlayerStats.MaxMinion
-            || stats is PlayerStats.MaxSentry;
         /// <summary>
         /// 1 = Copper<br/>
         /// 2 = Silver<br/>

@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Texture;
 using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Potion
