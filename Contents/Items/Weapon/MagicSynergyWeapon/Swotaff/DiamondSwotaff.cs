@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = Main.rand.NextFloat(1f);
             }
-            Vector2 positionToGo = player.Center + Vector2.UnitY.RotatedBy(30 * (Projectile.ai[2] - 5)) * 50f;
+            Vector2 positionToGo = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(40 * Projectile.ai[2])) * 50f;
             if (!player.active || player.dead)
             {
                 Projectile.Kill();

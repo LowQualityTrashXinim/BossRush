@@ -226,8 +226,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile() + 1) * amount, 0, 1);
                 if (percentDone >= percentageToPass)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(),
-                        Projectile.Center,
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center,
                         (Projectile.rotation - MathHelper.ToRadians(90)).ToRotationVector2() * 4f, AltAttackProjectileType(),
                         Projectile.damage, Projectile.knockBack, Projectile.owner, 0, 0, amount);
                     amount++;
