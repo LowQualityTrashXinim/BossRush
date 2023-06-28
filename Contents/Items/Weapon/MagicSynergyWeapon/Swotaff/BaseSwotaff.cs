@@ -6,7 +6,7 @@ using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
+namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     public abstract class SwotaffGemItem : SynergyModItem
     {
@@ -141,14 +141,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             }
             SpinAtCursorAI();
         }
-        protected virtual int IframeIgnore() => 6;
+        protected virtual bool CanActivateSpecialAltAttack() => true;
         protected virtual float AltAttackAmountProjectile() => 4;
         protected virtual int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
         protected virtual int NormalBoltProjectile() => ProjectileID.WoodenArrowFriendly;
         protected virtual int DustType() => DustID.ManaRegeneration;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.immune[Projectile.owner] = IframeIgnore();
+            target.immune[Projectile.owner] = 6;
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
@@ -229,14 +229,17 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             player.heldProj = Projectile.whoAmI;
             float percentDone = (maxProgress - Projectile.timeLeft) / maxProgress;
             //percentDone = BossRushUtils.InExpo(percentDone);
-            float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile() + 1) * amount, 0, 1);
-            if (percentDone >= percentageToPass)
+            if (CanActivateSpecialAltAttack())
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), 
-                    Projectile.Center, 
-                    (Projectile.rotation - MathHelper.ToRadians(90)).ToRotationVector2() * 4f, AltAttackProjectileType(),
-                    Projectile.damage, Projectile.knockBack, Projectile.owner);
-                amount++;
+                float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile() + 1) * amount, 0, 1);
+                if (percentDone >= percentageToPass)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(),
+                        Projectile.Center,
+                        (Projectile.rotation - MathHelper.ToRadians(90)).ToRotationVector2() * 4f, AltAttackProjectileType(),
+                        Projectile.damage, Projectile.knockBack, Projectile.owner);
+                    amount++;
+                }
             }
             Projectile.spriteDirection = player.direction;
             float baseAngle = PosToGo.ToRotation();

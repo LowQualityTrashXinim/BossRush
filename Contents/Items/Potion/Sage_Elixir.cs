@@ -6,7 +6,7 @@ using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Potion
 {
-    internal class SagePotion : ModItem
+    internal class Sage_Elixir : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetDefaults()

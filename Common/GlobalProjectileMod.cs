@@ -36,7 +36,7 @@ namespace BossRush.Common
         }
         private void CultistRitualAI(Projectile projectile)
         {
-            if (projectile.ai[1] != -1f && Main.netMode != 1)
+            if (projectile.ai[1] != -1f && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 if (projectile.ai[0] == 100f)
                 {

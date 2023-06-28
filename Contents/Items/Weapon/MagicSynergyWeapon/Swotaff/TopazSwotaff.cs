@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
-namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.TopazSwotaff
+namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class TopazSwotaff : SwotaffGemItem, ISynergyItem
     {

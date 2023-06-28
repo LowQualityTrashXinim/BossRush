@@ -6,7 +6,7 @@ using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Potion
 {
-    internal class BerserkPotion : ModItem
+    internal class Commander_Elixir : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetDefaults()
@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Potion
             Item.maxStack = 30;
             Item.consumable = true;
             Item.rare = ItemRarityID.Orange;
-            Item.buffType = ModContent.BuffType<BerserkBuff>();
+            Item.buffType = ModContent.BuffType<LeaderShip>();
             Item.buffTime = 12000;
         }
     }

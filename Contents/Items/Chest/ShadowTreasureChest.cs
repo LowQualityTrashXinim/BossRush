@@ -168,10 +168,10 @@ namespace BossRush.Contents.Items.Chest
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 int RandomModdedBuff = Main.rand.Next(new int[] {
-                    ModContent.ItemType<BerserkPotion>(),
-                    ModContent.ItemType<PinPointAccuracyPotion>(),
-                    ModContent.ItemType<SagePotion>(),
-                    ModContent.ItemType<LeaderPotion>(),
+                    ModContent.ItemType<Berserker_Elixir>(),
+                    ModContent.ItemType<Gunslinger_Elixir>(),
+                    ModContent.ItemType<Sage_Elixir>(),
+                    ModContent.ItemType<Commander_Elixir>(),
                     ModContent.ItemType<TankPotion>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }

@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
+namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class DiamondSwotaff : SwotaffGemItem, ISynergyItem
     {
@@ -25,6 +25,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 9;
         protected override int DustType() => DustID.GemDiamond;
+        protected override bool CanActivateSpecialAltAttack() => 
+            Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffGemProjectile>()] < AltAttackAmountProjectile();
+        
     }
     public class DiamondSwotaffGemProjectile : SwotaffGemProjectile
     {
@@ -40,6 +43,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (!player.active || player.dead)
+            {
+                Projectile.Kill();
+                return;
+            }
             Projectile.velocity = player.velocity;
             if (Projectile.ai[0] > 0)
             {
