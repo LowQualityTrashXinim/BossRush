@@ -263,7 +263,7 @@ namespace BossRush.Contents.Items.Card
             switch (PostTierModify)
             {
                 case 1:
-                    return statsNum * multi;
+                    return statsNum * multi * .01f;
                 case 2:
                     return (statsNum + Main.rand.Next(1, 3) + .01f) * PostTierModify * multi * .01f;
                 case 3:
