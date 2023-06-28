@@ -22,8 +22,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<DiamondSwotaff>();
         //protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override int NormalBoltProjectile() => ProjectileID.DiamondBolt;
-        protected override int DustType() => DustID.GemDiamond;
+        protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 9;
+        protected override int DustType() => DustID.GemDiamond;
     }
     public class DiamondSwotaffGemProjectile : SwotaffGemProjectile
     {
@@ -39,14 +40,21 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            Projectile.velocity = (Projectile.Center - player.Center).SafeNormalize(Vector2.Zero);
+            Projectile.velocity = player.velocity;
+            if (Projectile.ai[0] > 0)
+            {
+                Projectile.ai[0]--;
+                return;
+            }
             if (Projectile.position.LookForHostileNPC(out NPC npc, 600))
             {
                 if (npc is null)
                 {
                     return;
                 }
-
+                Vector2 toNPC = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 20f;
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, toNPC, ModContent.ProjectileType<DiamondGemProjectile>(), Projectile.damage, 0, Projectile.owner);
+                Projectile.ai[0] = 60;
             }
         }
     }
@@ -57,11 +65,21 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.DiamondSwotaff
         {
             Projectile.width = 18;
             Projectile.height = 16;
+            Projectile.timeLeft = 600;
+            Projectile.penetrate = 1;
+            Projectile.extraUpdates = 6;
+            Projectile.tileCollide = true;
             Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = 100;
-            Projectile.penetrate = -1;
             Projectile.hide = true;
+        }
+        public override void AI()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].scale = Main.rand.NextFloat(1f, 1.25f);
+            }
         }
     }
 }

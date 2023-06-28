@@ -104,6 +104,8 @@ Mods: {
 			DiamondSwotaffP.DisplayName: Diamond Swotaff P
 			DiamondSwotaffGemProjectile.DisplayName: Diamond Swotaff Gem Projectile
 			DiamondGemProjectile.DisplayName: Diamond Gem Projectile
+			EmeraldGemProjectile.DisplayName: Emerald Gem Projectile
+			EmeraldSwotaffGemProjectile.DisplayName: Emerald Swotaff Gem Projectile
 		}
 
 		NPCs: {
