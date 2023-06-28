@@ -31,27 +31,35 @@ namespace BossRush
             string autoPathfinding = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             int index = autoPathfinding.Length - "AppData\\Roaming".Length;
             autoPathfinding = autoPathfinding.Substring(0, index);
-            autoPathfinding += "Documents\\My Games\\Terraria\\tModLoader\\BossRushAchievement\\AchievementData.json";
+            autoPathfinding += "Documents\\My Games\\Terraria\\tModLoader\\BossRushAchievement";
             return autoPathfinding;
         }
         private void CheckIfFileExist(string path)
         {
-            if (File.Exists(path))
+            try
             {
-                using (StreamWriter sw = File.CreateText(path))
+                if (File.Exists(path))
                 {
-                    string json = JsonConvert.SerializeObject(achievementData);
-                    sw.WriteLine(json);
+                    using (StreamWriter sw = File.CreateText(path+ "\\AchievementData.json"))
+                    {
+                        string json = JsonConvert.SerializeObject(achievementData);
+                        sw.WriteLine(json);
+                    }
                 }
+                else
+                {
+                    Directory.CreateDirectory(path).Create();
+                    using (StreamWriter sw = File.CreateText(path + "\\AchievementData.json"))
+                    {
+                        string json = JsonConvert.SerializeObject(achievementData);
+                        sw.WriteLine(json);
+                    }
+                }
+
             }
-            else
+            catch
             {
-                Directory.CreateDirectory("C:\\Users\\DELL\\Documents\\My Games\\Terraria\\tModLoader\\BossRushAchievement").Create();
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    string json = JsonConvert.SerializeObject(achievementData);
-                    sw.WriteLine(json);
-                }
+
             }
         }
         private void AddAchievement()
