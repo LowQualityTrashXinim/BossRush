@@ -562,31 +562,6 @@ Mods: {
 				DisplayName: Wonder Drug
 			}
 
-			TankPotion: {
-				Tooltip: Let your body be shield for the weak
-				DisplayName: The Titan's Elixir
-			}
-
-			SagePotion: {
-				Tooltip: Side effects include becoming an explosive hazard
-				DisplayName: The Sage's Elixir
-			}
-
-			PinPointAccuracyPotion: {
-				Tooltip: High focus, stay alert
-				DisplayName: The Sniper's Elixir
-			}
-
-			LeaderPotion: {
-				Tooltip: Let your minion do your binding
-				DisplayName: The Commander's Elixir
-			}
-
-			BerserkPotion: {
-				Tooltip: Let them witness the slaughter
-				DisplayName: Berserker's Elixir
-			}
-
 			TrueKingSlimeTrophy: {
 				Tooltip: ""
 				DisplayName: True King Slime Trophy
@@ -1186,6 +1161,31 @@ Mods: {
 			BiomeToggle: {
 				DisplayName: Biome Manipulation
 				Tooltip: ""
+			}
+
+			BerserkerElixir: {
+				DisplayName: Berserker Elixir
+				Tooltip: Let them witness the slaughter
+			}
+
+			CommanderElixir: {
+				DisplayName: Commander Elixir
+				Tooltip: Let your minion do your binding
+			}
+
+			GunslingerElixir: {
+				DisplayName: Gunslinger Elixir
+				Tooltip: High focus, stay alert
+			}
+
+			SageElixir: {
+				DisplayName: Sage Elixir
+				Tooltip: Side effects include becoming an explosive hazard
+			}
+
+			TitanElixir: {
+				DisplayName: Titan Elixir
+				Tooltip: Let your body be shield for the weak
 			}
 		}
 

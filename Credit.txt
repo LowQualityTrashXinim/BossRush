@@ -2,3 +2,8 @@
 Cursed Skull sprite - Made by : DanielTheDragon
 Localization grammar fix - Thank : pototo#1347
 Katana Slash Projectile - Made by : pototo#1347
+Berseker Elixir - Made by : psuedofaux
+Gunslinger Elixir - Made by : psuedofaux
+Sage Elixir - Made by : psuedofaux
+Commander Elixir - Made by : psuedofaux
+Titan Elixir - Made by : psuedofaux

@@ -6,9 +6,8 @@ using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Potion
 {
-    internal class Sage_Elixir : ModItem
+    internal class BerserkerElixir : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetDefaults()
         {
             Item.width = 20;
@@ -20,7 +19,7 @@ namespace BossRush.Contents.Items.Potion
             Item.maxStack = 30;
             Item.consumable = true;
             Item.rare = ItemRarityID.Orange;
-            Item.buffType = ModContent.BuffType<SageBuff>();
+            Item.buffType = ModContent.BuffType<BerserkBuff>();
             Item.buffTime = 12000;
         }
     }

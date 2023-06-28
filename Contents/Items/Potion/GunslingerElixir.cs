@@ -6,9 +6,8 @@ using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Potion
 {
-    internal class TankPotion : ModItem
+    internal class GunslingerElixir : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
         public override void SetDefaults()
         {
             Item.width = 20;
@@ -20,7 +19,7 @@ namespace BossRush.Contents.Items.Potion
             Item.maxStack = 30;
             Item.consumable = true;
             Item.rare = ItemRarityID.Orange;
-            Item.buffType = ModContent.BuffType<Protection>();
+            Item.buffType = ModContent.BuffType<GodVision>();
             Item.buffTime = 12000;
         }
     }
