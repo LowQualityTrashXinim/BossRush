@@ -1,16 +1,18 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class AmethystSwotaff : SwotaffGemItem, ISynergyItem
     {
-        public override int ProjectileType => ModContent.ProjectileType<AmethystSwotaffP>();
-        public override int ShootType => ProjectileID.AmethystBolt;
+        public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
+        {
+            damage = 20;
+            ProjectileType = ModContent.ProjectileType<AmethystSwotaffP>();
+            ShootType = ProjectileID.AmethystBolt;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -25,10 +27,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<AmethystSwotaffGemProjectile>();
         protected override int NormalBoltProjectile() => ProjectileID.AmethystBolt;
         protected override int DustType() => DustID.GemAmethyst;
-        protected override bool CanActivateSpecialAltAttack(Player player)
-        {
-            return player.statMana >= ManaCostForAltSpecial() && player.ownedProjectileCounts[ModContent.ProjectileType<EmeraldSwotaffGemProjectile>()] < AltAttackAmountProjectile();
-        }
         protected override int ManaCostForAltSpecial() => 50;
     }
     public class AmethystSwotaffGemProjectile : SynergyModProjectile

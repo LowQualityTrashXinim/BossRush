@@ -175,8 +175,11 @@ namespace BossRush.Contents.Items.Chest
                     ModContent.ItemType<TitanElixir>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenArtifact>(), 1);
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<ArtifactRemover>(), 1);
+            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenArtifact>(), 1);
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<ArtifactRemover>(), 1);
+            }
         }
     }
 }

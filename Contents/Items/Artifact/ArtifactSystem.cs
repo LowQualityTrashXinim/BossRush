@@ -10,6 +10,7 @@ using BossRush.Contents.BuffAndDebuff;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -115,6 +116,10 @@ namespace BossRush.Contents.Items.Artifact
         ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void PreUpdate()
         {
+            if (!ModContent.GetInstance<BossRushModConfig>().SynergyMode)
+            {
+                ArtifactDefinedID = 0;
+            }
             Greed = false;
             Pride = false;
             Vampire = false;

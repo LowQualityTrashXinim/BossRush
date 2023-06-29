@@ -10,21 +10,38 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     public abstract class SwotaffGemItem : SynergyModItem
     {
-        public virtual int ProjectileType => 0;
-        public virtual int ShootType => 0;
+        public virtual void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
+        {
+            damage = 20;
+            ProjectileType = 0;
+            ShootType = 0;
+        }
+        int ProjectileType = 0;
+        int ShootType = 0;
         public override void SetStaticDefaults()
         {
             Item.staff[Item.type] = true;
         }
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(60, 58, 20, 3f, 20, 20, ItemUseStyleID.Swing, ProjectileType, 7, 10, false);
+            PreSetDefaults(out int damage, out int projectileType, out int shootType);
+            ProjectileType = projectileType;
+            ShootType = shootType;
+            Item.BossRushDefaultMagic(60, 58, damage, 3f, 20, 20, ItemUseStyleID.Swing, ProjectileType, 7, 10, false);
             Item.crit = 10;
             Item.value = Item.buyPrice(gold: 50);
             Item.useTurn = false;
             Item.rare = ItemRarityID.Green;
             Item.UseSound = SoundID.Item8;
             Item.noUseGraphic = true;
+        }
+        public override float UseSpeedMultiplier(Player player)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                return .5f;
+            }
+            return base.UseSpeedMultiplier(player);
         }
         public override bool CanUseItem(Player player)
         {
@@ -104,9 +121,21 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         int projectileBelongToItem;
         Player player;
         bool isAlreadySpinState = false;
+        bool ProjectileAlreadyExist = false;
         public override void OnSpawn(IEntitySource source)
         {
             base.OnSpawn(source);
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                if (Main.projectile[i] is null)
+                {
+                    continue;
+                }
+                if (Main.projectile[i].type == AltAttackProjectileType() && Main.projectile[i].active)
+                {
+                    ProjectileAlreadyExist = true;
+                }
+            }
             player = Main.player[Projectile.owner];
             if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1 || player.altFunctionUse == 2)
             {
@@ -120,10 +149,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             if (player.altFunctionUse == 2 || isAlreadySpinState)
             {
-                if (!isAlreadySpinState)
-                {
-                    player.statMana = Math.Clamp(player.statMana - ManaCostForAltSpecial(), 0, player.statManaMax2);
-                }
                 player.heldProj = Projectile.whoAmI;
                 SpinAroundPlayer();
                 isAlreadySpinState = true;
@@ -137,7 +162,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             }
             SpinAtCursorAI();
         }
-        protected virtual bool CanActivateSpecialAltAttack(Player player) => true;
         protected virtual float AltAttackAmountProjectile() => 4;
         protected virtual int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
         protected virtual int NormalBoltProjectile() => ProjectileID.WoodenArrowFriendly;
@@ -197,7 +221,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 {
                     if (player.CheckMana(player.GetManaCost(item), true))
                     {
-                        player.statMana -= player.GetManaCost(item);
+                        player.statMana -= player.GetManaCost(item) ;
                     }
                     else
                     {
@@ -218,7 +242,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         private void SpinAroundPlayer()
         {
             player.direction = PosToGo.X > 0 ? 1 : -1;
-            float maxProgress = player.itemAnimationMax * 2f;
+            float maxProgress = player.itemAnimationMax;
             if (Projectile.timeLeft > maxProgress)
             {
                 Projectile.timeLeft = (int)maxProgress;
@@ -226,8 +250,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             player.heldProj = Projectile.whoAmI;
             float percentDone = (maxProgress - Projectile.timeLeft) / maxProgress;
             //percentDone = BossRushUtils.InExpo(percentDone);
-            if (CanActivateSpecialAltAttack(player))
+            if (player.statMana >= ManaCostForAltSpecial() && !ProjectileAlreadyExist)
             {
+                if (!isAlreadySpinState)
+                {
+                    player.statMana = Math.Clamp(player.statMana - ManaCostForAltSpecial(), 0, player.statManaMax2);
+                }
                 float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile() + 1) * amount, 0, 1);
                 if (percentDone >= percentageToPass)
                 {
@@ -246,10 +274,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             Projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
-            SpawnDustTrailDelay();
-        }
-        private void SpawnDustTrailDelay()
-        {
             int dustType = DustType();
             int dust = Dust.NewDust(player.Center.PositionOFFSET(Projectile.rotation.ToRotationVector2(), 50), 0, 0, dustType);
             Main.dust[dust].noGravity = true;

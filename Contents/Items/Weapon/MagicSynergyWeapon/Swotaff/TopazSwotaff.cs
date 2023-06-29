@@ -6,8 +6,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class TopazSwotaff : SwotaffGemItem, ISynergyItem
     {
-        public override int ProjectileType => ModContent.ProjectileType<TopazSwotaffP>();
-        public override int ShootType => ProjectileID.TopazBolt;
+        public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
+        {
+            damage = 20;
+            ProjectileType = ModContent.ProjectileType<TopazSwotaffP>();
+            ShootType = ProjectileID.TopazBolt;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()

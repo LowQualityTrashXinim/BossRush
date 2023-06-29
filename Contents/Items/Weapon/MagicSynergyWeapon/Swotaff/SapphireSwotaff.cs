@@ -8,8 +8,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class SapphireSwotaff : SwotaffGemItem, ISynergyItem
     {
-        public override int ProjectileType => ModContent.ProjectileType<SapphireSwotaffP>();
-        public override int ShootType => ProjectileID.SapphireBolt;
+        public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
+        {
+            damage = 20;
+            ProjectileType = ModContent.ProjectileType<SapphireSwotaffP>();
+            ShootType = ProjectileID.SapphireBolt;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -24,10 +28,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<SapphireSwotaff>();
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<SapphireSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 5;
-        protected override bool CanActivateSpecialAltAttack(Player player)
-        {
-            return player.statMana >= ManaCostForAltSpecial() && player.ownedProjectileCounts[ModContent.ProjectileType<EmeraldSwotaffGemProjectile>()] < AltAttackAmountProjectile();
-        }
         protected override int ManaCostForAltSpecial() => 75;
         protected override int NormalBoltProjectile() => ProjectileID.SapphireBolt;
         protected override int DustType() => DustID.GemSapphire;

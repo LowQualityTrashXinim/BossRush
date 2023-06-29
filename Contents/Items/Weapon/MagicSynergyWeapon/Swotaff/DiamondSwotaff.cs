@@ -7,8 +7,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
     internal class DiamondSwotaff : SwotaffGemItem, ISynergyItem
     {
-        public override int ProjectileType => ModContent.ProjectileType<DiamondSwotaffP>();
-        public override int ShootType => ProjectileID.DiamondBolt;
+        public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
+        {
+            damage = 20;
+            ProjectileType = ModContent.ProjectileType<DiamondSwotaffP>();
+            ShootType = ProjectileID.DiamondBolt;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -25,10 +29,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 9;
         protected override int DustType() => DustID.GemDiamond;
-        protected override bool CanActivateSpecialAltAttack(Player player)
-        {
-            return player.statMana >= ManaCostForAltSpecial() && player.ownedProjectileCounts[ModContent.ProjectileType<EmeraldSwotaffGemProjectile>()] < AltAttackAmountProjectile();
-        }
         protected override int ManaCostForAltSpecial() => 100;
 
     }
@@ -45,16 +45,20 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             Projectile.timeLeft = 1000;
             Projectile.penetrate = -1;
         }
-
+        Vector2 firstframePos = Vector2.Zero;
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (Projectile.timeLeft == 1000)
+            {
+                firstframePos = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center;
+            }
             if (Main.rand.NextBool(5))
             {
                 int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = Main.rand.NextFloat(1f);
             }
-            Vector2 positionToGo = player.Center + Vector2.One.RotatedBy(MathHelper.ToRadians(40 * Projectile.ai[2])) * 50f;
+            Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(40 * Projectile.ai[2])) * (firstframePos.X > 0 ? 50f : -50f);
             if (!player.active || player.dead)
             {
                 Projectile.Kill();
