@@ -183,7 +183,7 @@ namespace BossRush
                 if (npcLocal.active
                     && CompareSquareFloatValue(npcLocal.Center, position, distance)
                     && npcLocal.CanBeChasedBy()
-                    && npcLocal.friendly)
+                    && !npcLocal.friendly)
                 {
                     localNPC.Add(npcLocal);
                 }

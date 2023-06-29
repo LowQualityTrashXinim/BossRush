@@ -107,6 +107,7 @@ Mods: {
 			EmeraldGemProjectile.DisplayName: Emerald Gem Projectile
 			EmeraldSwotaffGemProjectile.DisplayName: Emerald Swotaff Gem Projectile
 			SapphireSwotaffGemProjectile.DisplayName: Sapphire Swotaff Gem Projectile
+			AmethystSwotaffGemProjectile.DisplayName: Amethyst Swotaff Gem Projectile
 		}
 
 		NPCs: {

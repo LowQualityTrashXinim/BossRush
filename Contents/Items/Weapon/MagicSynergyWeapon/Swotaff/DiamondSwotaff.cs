@@ -25,8 +25,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 9;
         protected override int DustType() => DustID.GemDiamond;
-        protected override bool CanActivateSpecialAltAttack() =>
-            Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffGemProjectile>()] < AltAttackAmountProjectile();
+        protected override bool CanActivateSpecialAltAttack(Player player)
+        {
+            return player.statMana >= ManaCostForAltSpecial() && player.ownedProjectileCounts[ModContent.ProjectileType<EmeraldSwotaffGemProjectile>()] < AltAttackAmountProjectile();
+        }
+        protected override int ManaCostForAltSpecial() => 100;
 
     }
     public class DiamondSwotaffGemProjectile : SynergyModProjectile

@@ -120,6 +120,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             if (player.altFunctionUse == 2 || isAlreadySpinState)
             {
+                if (!isAlreadySpinState)
+                {
+                    player.statMana = Math.Clamp(player.statMana - ManaCostForAltSpecial(), 0, player.statManaMax2);
+                }
                 player.heldProj = Projectile.whoAmI;
                 SpinAroundPlayer();
                 isAlreadySpinState = true;
@@ -133,11 +137,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             }
             SpinAtCursorAI();
         }
-        protected virtual bool CanActivateSpecialAltAttack() => true;
+        protected virtual bool CanActivateSpecialAltAttack(Player player) => true;
         protected virtual float AltAttackAmountProjectile() => 4;
         protected virtual int AltAttackProjectileType() => ProjectileID.WoodenArrowFriendly;
         protected virtual int NormalBoltProjectile() => ProjectileID.WoodenArrowFriendly;
         protected virtual int DustType() => DustID.ManaRegeneration;
+        protected virtual int ManaCostForAltSpecial() => 0;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 6;
@@ -221,7 +226,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             player.heldProj = Projectile.whoAmI;
             float percentDone = (maxProgress - Projectile.timeLeft) / maxProgress;
             //percentDone = BossRushUtils.InExpo(percentDone);
-            if (CanActivateSpecialAltAttack())
+            if (CanActivateSpecialAltAttack(player))
             {
                 float percentageToPass = Math.Clamp(1 / (AltAttackAmountProjectile() + 1) * amount, 0, 1);
                 if (percentDone >= percentageToPass)

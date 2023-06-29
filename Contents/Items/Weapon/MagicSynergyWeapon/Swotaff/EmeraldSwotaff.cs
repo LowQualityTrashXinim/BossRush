@@ -22,8 +22,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<EmeraldSwotaff>();
         protected override int AltAttackProjectileType() => ModContent.ProjectileType<EmeraldSwotaffGemProjectile>();
         protected override float AltAttackAmountProjectile() => 5;
-        protected override bool CanActivateSpecialAltAttack() =>
-            Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EmeraldSwotaffGemProjectile>()] < AltAttackAmountProjectile();
+        protected override bool CanActivateSpecialAltAttack(Player player)
+        {
+            return player.statMana >= ManaCostForAltSpecial() && player.ownedProjectileCounts[ModContent.ProjectileType<EmeraldSwotaffGemProjectile>()] < AltAttackAmountProjectile();
+        }
+        protected override int ManaCostForAltSpecial() => 75;
         protected override int NormalBoltProjectile() => ProjectileID.EmeraldBolt;
         protected override int DustType() => DustID.GemEmerald;
     }
