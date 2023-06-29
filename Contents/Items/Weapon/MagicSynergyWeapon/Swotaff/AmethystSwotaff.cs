@@ -1,7 +1,7 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
@@ -24,10 +24,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     public class AmethystSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AmethystSwotaff>();
-        protected override int AltAttackProjectileType() => ModContent.ProjectileType<AmethystSwotaffGemProjectile>();
-        protected override int NormalBoltProjectile() => ProjectileID.AmethystBolt;
-        protected override int DustType() => DustID.GemAmethyst;
-        protected override int ManaCostForAltSpecial() => 50;
+        public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost)
+        {
+            AltAttackAmountProjectile = 4;
+            AltAttackProjectileType = ModContent.ProjectileType<AmethystSwotaffGemProjectile>();
+            NormalBoltProjectile = ProjectileID.AmethystBolt;
+            DustType = DustID.GemAmethyst;
+            ManaCost = 50;
+        }
     }
     public class AmethystSwotaffGemProjectile : SynergyModProjectile
     {

@@ -141,6 +141,7 @@ namespace BossRush
             float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
             projectile.rotation = currentAngle;
             projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            projectile.velocity.X = player.direction; 
             projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
         }

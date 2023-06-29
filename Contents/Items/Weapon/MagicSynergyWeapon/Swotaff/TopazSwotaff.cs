@@ -23,8 +23,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     public class TopazSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TopazSwotaff>();
-        protected override int AltAttackProjectileType() => ModContent.ProjectileType<TopazGemP>();
-        protected override int NormalBoltProjectile() => ProjectileID.TopazBolt;
-        protected override int DustType() => DustID.GemTopaz;
+        public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost)
+        {
+            AltAttackAmountProjectile = 4;
+            AltAttackProjectileType = ModContent.ProjectileType<TopazGemP>();
+            NormalBoltProjectile = ProjectileID.TopazBolt;
+            DustType = DustID.GemTopaz;
+            ManaCost = 50;
+        }
     }
 }

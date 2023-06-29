@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,11 +24,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     class RubySwotaffProjectile : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<RubySwotaff>();
-        protected override int AltAttackProjectileType() => ModContent.ProjectileType<RubySwotaffGemProjectile>();
-        protected override float AltAttackAmountProjectile() => 9;
-        protected override int ManaCostForAltSpecial() => 100;
-        protected override int NormalBoltProjectile() => ProjectileID.RubyBolt;
-        protected override int DustType() => DustID.GemRuby;
+        public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost)
+        {
+            AltAttackAmountProjectile = 9;
+            AltAttackProjectileType = ModContent.ProjectileType<RubySwotaffGemProjectile>();
+            NormalBoltProjectile = ProjectileID.RubyBolt;
+            DustType = DustID.GemRuby;
+            ManaCost = 100;
+        }
     }
     class RubySwotaffGemProjectile : SynergyModProjectile
     {

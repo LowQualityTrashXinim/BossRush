@@ -24,11 +24,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     public class EmeraldSwotaffP : SwotaffProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<EmeraldSwotaff>();
-        protected override int AltAttackProjectileType() => ModContent.ProjectileType<EmeraldSwotaffGemProjectile>();
-        protected override float AltAttackAmountProjectile() => 5;
-        protected override int ManaCostForAltSpecial() => 75;
-        protected override int NormalBoltProjectile() => ProjectileID.EmeraldBolt;
-        protected override int DustType() => DustID.GemEmerald;
+        public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost)
+        {
+            AltAttackAmountProjectile = 5;
+            AltAttackProjectileType = ModContent.ProjectileType<EmeraldSwotaffGemProjectile>();
+            NormalBoltProjectile = ProjectileID.EmeraldBolt;
+            DustType = DustID.GemEmerald;
+            ManaCost = 75;
+        }
     }
     public class EmeraldSwotaffGemProjectile : SynergyModProjectile
     {
