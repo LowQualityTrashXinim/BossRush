@@ -110,6 +110,9 @@ Mods: {
 			AmethystSwotaffGemProjectile.DisplayName: Amethyst Swotaff Gem Projectile
 			RubySwotaffProjectile.DisplayName: Ruby Swotaff Projectile
 			RubySwotaffGemProjectile.DisplayName: Ruby Swotaff Gem Projectile
+			TopazGemProjectile.DisplayName: Topaz Gem Projectile
+			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
+			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
 		}
 
 		NPCs: {
@@ -1326,12 +1329,12 @@ Mods: {
 				}
 
 				SynergyMode: {
-					Label: Synergy Mode (W.I.P)
+					Label: "[BETA] Synergy Mode"
 					Tooltip:
 						'''
-						You will start with Synergy Energy
-						Allow possibility of getting even stronger and possibly OP weapons/accessories
-						recommend enable after at least 3 playthroughs of the mod
+						Enables Synergy Items and Artifacts.
+						This config adds optional content which can be ignored if necessary. 
+						Warning: This config might not be compatible or balanced with other content mods.
 						'''
 				}
 

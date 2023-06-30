@@ -65,7 +65,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override bool AltFunctionUse(Player player)
         {
             CanShootProjectile = -1;
-            return true;
+            return player.ownedProjectileCounts[ProjectileType] < 1;
         }
         int CanShootProjectile = 1;
         int countIndex = 1;
