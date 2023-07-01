@@ -96,6 +96,10 @@ namespace BossRush.Contents.UI
             //base.Update(gameTime);
         }
     }
+    class ResponsivePanal : UIState
+    {
+
+    }
 
     class ExampleResourseUISystem : ModSystem
     {

@@ -105,8 +105,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     {
         public override void SetDefaults()
         {
-            Projectile.width = 60;
-            Projectile.height = 58;
+            Projectile.width = 66;
+            Projectile.height = 66;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
