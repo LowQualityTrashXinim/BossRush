@@ -1,55 +1,19 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
-    internal class TopazBow : ModItem, ISynergyItem
+    internal class TopazBow : MagicBow, ISynergyItem
     {
-        public override void SetStaticDefaults()
+        public override void MagicBowSetDefault(out int mana, out int shoot, out float shootspeed, out int damage, out int useTime, out int dustType)
         {
-            // Tooltip.SetDefault("well at least it don't consume arrow");
+            useTime = 40;
+            mana = 12;
+            damage = 21;
+            shootspeed = 5f;
+            shoot = ModContent.ProjectileType<TopazBolt>();
+            dustType = DustID.GemTopaz;
         }
-        public override void SetDefaults()
-        {
-            Item.width = 18;
-            Item.height = 32;
-
-            Item.damage = 21;
-            Item.knockBack = 1f;
-
-            Item.useTime = 40;
-            Item.useAnimation = 40;
-
-            Item.rare = 2;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-            Item.DamageType = DamageClass.Ranged;
-            Item.mana = 12;
-
-            Item.shoot = ModContent.ProjectileType<TopazBolt>();
-            Item.shootSpeed = 5f;
-            Item.value = Item.buyPrice(gold: 50);
-
-            Item.UseSound = SoundID.Item75;
-        }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Vector2 CircularRan = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(20));
-                CircularRan.X += Main.rand.Next(-3, 3);
-                CircularRan.Y += Main.rand.Next(-3, 3);
-                Dust.NewDustPerfect(position, DustID.GemTopaz, CircularRan, 100, default, 0.5f);
-            }
-            position -= new Vector2(0, 5);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TopazBolt>(), damage, knockback, player.whoAmI);
-            return false;
-        }
-
         public override void AddRecipes()
         {
             CreateRecipe()
