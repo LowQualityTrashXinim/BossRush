@@ -113,6 +113,7 @@ Mods: {
 			TopazGemProjectile.DisplayName: Topaz Gem Projectile
 			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
 			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
+			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
 		}
 
 		NPCs: {

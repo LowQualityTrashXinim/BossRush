@@ -18,10 +18,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         }
         int ProjectileType = 0;
         int ShootType = 0;
-        public override void SetStaticDefaults()
-        {
-            Item.staff[Item.type] = true;
-        }
         public override void SetDefaults()
         {
             PreSetDefaults(out int damage, out int projectileType, out int shootType);

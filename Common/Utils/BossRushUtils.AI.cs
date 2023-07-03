@@ -141,14 +141,37 @@ namespace BossRush
             projectile.Center = player.MountedCenter + Vector2.UnitX.RotatedBy(currentAngle) * 42;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
         }
-        public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player, int width, int height)
+        public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player, int width, int height, float offset = 0)
         {
             float length = new Vector2(width, height).Length() * player.GetAdjustedItemScale(player.HeldItem);
             Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
             Vector2 endPos = handPos;
             endPos *= length;
-            handPos += player.MountedCenter;
-            endPos += player.MountedCenter;
+            Vector2 offsetVector = handPos * offset - handPos;
+            handPos += player.MountedCenter + offsetVector;
+            endPos += player.MountedCenter + offsetVector;
+            (int X1, int X2) XVals = Order(handPos.X, endPos.X);
+            (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
+            hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
+        }
+        /// <summary>
+        /// Please applied the rotation to that is not <see cref="Projectile.rotation"/>
+        /// </summary>
+        /// <param name="hitbox"></param>
+        /// <param name="player"></param>
+        /// <param name="rotation"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="offset"></param>
+        public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player,float rotation, int width, int height, float offset = 0)
+        {
+            float length = new Vector2(width, height).Length() * player.GetAdjustedItemScale(player.HeldItem);
+            Vector2 handPos = Vector2.UnitX.RotatedBy(rotation);
+            Vector2 endPos = handPos;
+            endPos *= length;
+            Vector2 offsetVector = handPos * offset - handPos;
+            handPos += player.MountedCenter + offsetVector;
+            endPos += player.MountedCenter + offsetVector;
             (int X1, int X2) XVals = Order(handPos.X, endPos.X);
             (int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
             hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);

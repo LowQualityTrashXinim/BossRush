@@ -1,8 +1,11 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
 {
@@ -21,27 +24,52 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Item.useTurn = false;
             Item.UseSound = SoundID.Item1;
         }
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            if (modplayer.EnergyBlade_Code1)
+            {
+                tooltips.Add(new TooltipLine(Mod, "EnergyBlade_Code1", $"[i:{ItemID.Code1}] Unlock 1st Energy Blade ability"));
+            }
+            if (modplayer.EnergyBlade_Code2)
+            {
+                tooltips.Add(new TooltipLine(Mod, "EnergyBlade_Code2", $"[i:{ItemID.Code2}] Unlock 2nd Energy Blade ability"));
+            }
+            base.ModifySynergyToolTips(ref tooltips, modplayer);
+        }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            if(player.HasItem(ItemID.Code1))
+            if (player.HasItem(ItemID.Code1))
             {
                 modplayer.EnergyBlade_Code1 = true;
             }
-            if(player.HasItem(ItemID.Code2))
+            if (player.HasItem(ItemID.Code2))
             {
                 modplayer.EnergyBlade_Code2 = true;
             }
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
-        }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            if(modplayer.EnergyBlade_Code1)
+            if (modplayer.EnergyBlade_Code1)
             {
-                int proj = Projectile.NewProjectile(source, position, -velocity, type, damage, knockback, player.whoAmI, 1);
-                Main.projectile[proj].Size *= .5f;
+                if (modplayer.EnergyBlade_Code1_Energy > 0)
+                {
+                    for (int i = 0; i < modplayer.EnergyBlade_Code1_Energy; i++)
+                    {
+                        Vector2 lerp = velocity.Vector2DistributeEvenly(modplayer.EnergyBlade_Code1_Energy, 90, i) * 5f;
+                        int proj = Projectile.NewProjectile(source, position, lerp, ModContent.ProjectileType<EnergyBladeEnergyBallProjectile>(), damage, knockback, player.whoAmI, 1);
+                        Main.projectile[proj].timeLeft = 300;
+                    }
+                    modplayer.EnergyBlade_Code1_Energy = 0;
+                }
+                if (player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1)
+                {
+                    int proj = Projectile.NewProjectile(source, position, velocity, type, (int)(damage * .75f), knockback, player.whoAmI, 1);
+                    Main.projectile[proj].height *= 2;
+                    Main.projectile[proj].width *= 2;
+                    Main.projectile[proj].scale += .5f;
+                    Main.projectile[proj].Size *= .5f;
+                }
+                Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             }
             CanShootItem = player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1;
         }
@@ -53,7 +81,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
                 .Register();
         }
     }
-    public class EnergyBladeProjectile : ModProjectile
+    public class EnergyBladeProjectile : SynergyModProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<EnergyBlade>();
         public override void SetStaticDefaults()
@@ -70,9 +98,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            target.immune[Projectile.owner] = 0;
+            npc.immune[Projectile.owner] = 0;
+            if (modplayer.EnergyBlade_Code1)
+            {
+                if (Projectile.ai[0] == 1)
+                {
+                    Vector2 Toplayer = (player.Center - npc.Center).SafeNormalize(Vector2.Zero);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Toplayer * 6f, ModContent.ProjectileType<EnergyBladeEnergyBallProjectile>(), 0, 0, Projectile.owner);
+                }
+            }
         }
         Vector2 data;
         Player player;
@@ -80,21 +116,46 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         {
             player = Main.player[Projectile.owner];
             data = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
-        }
-        public override void AI()
-        {
             if (Projectile.ai[0] == 1)
             {
-                Projectile.Center = player.Center;
-
+                Projectile.timeLeft = 30;
+            }
+        }
+        float outrotation = 0;
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            frameCounter();
+            if (Projectile.ai[0] == 1)
+            {
+                if (Projectile.timeLeft > player.itemAnimationMax)
+                {
+                    Projectile.timeLeft = player.itemAnimationMax;
+                }
+                float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+                percentDone = Math.Clamp(percentDone, 0, 1);
+                Projectile.spriteDirection = player.direction;
+                float baseAngle = data.ToRotation();
+                float angle = MathHelper.ToRadians(150) * player.direction;
+                float start = baseAngle + angle;
+                float end = baseAngle - angle;
+                float rotation = MathHelper.Lerp(start, end, percentDone);
+                outrotation = rotation;
+                Projectile.rotation = rotation;
+                Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+                Projectile.velocity.X = player.direction;
+                Projectile.Center = player.Center + Vector2.UnitX.RotatedBy(rotation) * 180f;
                 return;
             }
-            frameCounter();
             BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
-            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, Main.player[Projectile.owner], Projectile.width, Projectile.height);
+            if (Projectile.ai[0] == 1)
+            {
+                BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, outrotation, Projectile.width, Projectile.height, 150f);
+                return;
+            }
+            BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, Projectile.width, Projectile.height);
         }
         public void frameCounter()
         {
@@ -107,6 +168,51 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
                     Projectile.frame = 0;
                 }
             }
+        }
+    }
+    class EnergyBladeEnergyBallProjectile : SynergyModProjectile
+    {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetDefaults()
+        {
+            Projectile.hide = true;
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.penetrate = -1;
+            Projectile.friendly = true;
+            Projectile.wet = false;
+            Projectile.tileCollide = false;
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.extraUpdates = 6;
+            Projectile.timeLeft = 150;
+        }
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                int type = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemSapphire, DustID.GemRuby });
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, type);
+                Main.dust[dust].noGravity = true;
+            }
+            if (Projectile.ai[0] == 1)
+            {
+                if (Projectile.ai[1] <= 0)
+                {
+                    Projectile.ai[1] = 5;
+                    Projectile.velocity = Projectile.velocity.RotatedByRandom(MathHelper.ToRadians(60));
+                }
+                else
+                {
+                    Projectile.ai[1]--;
+                }
+                return;
+            }
+            if (BossRushUtils.CompareSquareFloatValue(Projectile.Center, player.Center, 20))
+            {
+                modplayer.EnergyBlade_Code1_Energy++;
+                Projectile.Kill();
+            }
+            base.SynergyAI(player, modplayer);
         }
     }
 }

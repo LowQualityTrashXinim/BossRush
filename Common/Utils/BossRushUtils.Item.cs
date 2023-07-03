@@ -1,5 +1,6 @@
 ﻿using System;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Chest;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -88,6 +89,15 @@ namespace BossRush
         {
             CheckVanillaSwingWithModded,
             CheckOnlyModded
+        }
+        /// <summary>
+        /// This allow for easy access toward chest and related logic, tho this work on terraria progression
+        /// </summary>
+        /// <param name="player"></param>
+        public static void DropWeaponFromChestPool(Player player)
+        {
+            ChestLootDrop.GetWeapon(out int Weapon, out int amount);
+            player.QuickSpawnItem(null, Weapon, amount);
         }
         public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck)
         {

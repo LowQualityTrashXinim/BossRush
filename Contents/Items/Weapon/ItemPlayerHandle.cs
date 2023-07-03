@@ -33,6 +33,9 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool EnergyBlade_Code1 = false;
         public bool EnergyBlade_Code2 = false;
+        public int EnergyBlade_Code1_Energy = 0;
+
+        public bool Swotaff_Spear = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -53,6 +56,8 @@ namespace BossRush.Contents.Items.Weapon
 
             EnergyBlade_Code1 = false;
             EnergyBlade_Code2 = false;
+
+            Swotaff_Spear = false;
         }
         int check = 1;
         public override void PostUpdate()
@@ -172,5 +177,14 @@ namespace BossRush.Contents.Items.Weapon
             OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
         }
         public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) { }
+        public override void Kill(int timeLeft)
+        {
+            base.Kill(timeLeft);
+            Player player = Main.player[Projectile.owner];
+            SynergyKill(player, player.GetModPlayer<PlayerSynergyItemHandle>(), timeLeft);
+        }
+        public virtual void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+        }
     }
 }

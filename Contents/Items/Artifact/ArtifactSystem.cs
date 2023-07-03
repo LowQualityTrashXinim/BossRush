@@ -329,7 +329,7 @@ namespace BossRush.Contents.Items.Artifact
                     effectlasting = effectlasting > 0 ? effectlasting : 100;
                     break;
                 case 9:
-                    Effect9();
+                    BossRushUtils.DropWeaponFromChestPool(Player);
                     effectlasting = effectlasting > 0 ? effectlasting : 1;
                     break;
                 case 10:
@@ -341,27 +341,31 @@ namespace BossRush.Contents.Items.Artifact
                     effectlasting = effectlasting > 0 ? effectlasting : 300;
                     break;
                 case 12:
-                    Effect12();
+                    Player.Heal((int)(Player.statLifeMax2 * .25f));
                     effectlasting = effectlasting > 0 ? effectlasting : 1;
                     break;
                 case 13:
-                    Effect13();
+                    Dust.NewDust(Player.Center, 0, 0, DustID.Torch);
+                    CanCrit = true;
                     effectlasting = effectlasting > 0 ? effectlasting : 180;
                     break;
                 case 14:
-                    Effect14();
+                    Dust.NewDust(Player.Center, 0, 0, DustID.Smoke);
+                    CanBeHit = false;
                     effectlasting = effectlasting > 0 ? effectlasting : 60;
                     break;
                 case 15:
                     effectlasting = effectlasting > 0 ? effectlasting : 30;
                     if (OPEFFECT == 0)
                     {
-                        Effect9();
+                        BossRushUtils.DropWeaponFromChestPool(Player);
                         Effect10();
                         Effect11();
-                        Effect12();
-                        Effect13();
-                        Effect14();
+                        Player.Heal((int)(Player.statLifeMax2 * .25f));
+                        Dust.NewDust(Player.Center, 0, 0, DustID.Torch);
+                        CanCrit = true;
+                        Dust.NewDust(Player.Center, 0, 0, DustID.Smoke);
+                        CanBeHit = false;
                         Effect16(effectlasting);
                         OPEFFECT = 10;
                     }
@@ -495,11 +499,6 @@ namespace BossRush.Contents.Items.Artifact
                     return "asgfgfagasdf";
             }
         }
-        private void Effect9()
-        {
-            ChestLootDrop.GetWeapon(out int Weapon, out int amount);
-            Player.QuickSpawnItem(null, Weapon, amount);
-        }
         private void Effect10()
         {
             Player.Center.LookForHostileNPC(out List<NPC> npc, 1000);
@@ -514,20 +513,6 @@ namespace BossRush.Contents.Items.Artifact
             Vector2 position = new Vector2(Player.Center.X + Main.rand.NextFloat(-1000, 1000), Player.Center.Y - 1000);
             Vector2 velocity = new Vector2(0, 20);
             Projectile.NewProjectile(Player.GetSource_FromThis(), position, velocity, ProjectileID.StarWrath, Player.HeldItem.damage * 3, 10, Player.whoAmI);
-        }
-        private void Effect12()
-        {
-            Player.statLife += (int)Math.Clamp(Player.statLifeMax2 * .25f, 0, Player.statLifeMax2);
-        }
-        private void Effect13()
-        {
-            Dust.NewDust(Player.Center, 0, 0, DustID.Torch);
-            CanCrit = true;
-        }
-        private void Effect14()
-        {
-            Dust.NewDust(Player.Center, 0, 0, DustID.Smoke);
-            CanBeHit = false;
         }
         private void Effect16(int effectlasting)
         {

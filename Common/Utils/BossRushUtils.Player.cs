@@ -1,6 +1,7 @@
 ﻿using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria;
+using System;
 
 namespace BossRush
 {
@@ -11,6 +12,7 @@ namespace BossRush
             player.name.Contains("Debug") || 
             player.name == "LowQualityTrashXinim" ||
             player.name.Contains("#Beta");
+
     }
 
     /// <summary>

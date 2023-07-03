@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
-    internal class MagicBow : SynergyModItem
+    internal abstract class MagicBow : SynergyModItem
     {
         int DustType = 0;
         public override void SetDefaults()
