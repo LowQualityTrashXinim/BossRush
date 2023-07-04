@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush
 {
-    partial class BossRushUtils
+    static partial class BossRushUtils
     {
         public static void SpawnCircularDust(Vector2 position, int type, float speed)
         {

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using BossRush.Common.Utils;
+using BossRush.Texture;
 
 namespace BossRush.Contents.UI
 {
@@ -15,49 +17,127 @@ namespace BossRush.Contents.UI
     {
         private UIText text;
         private UIElement area;
-        private UIImage barFrame;
+        private UIImageButton btn;
+        private UIAchievementPanel achievementMenu;
 
         public override void OnInitialize()
         {
             area = new UIElement();
-            area.Left.Set(-area.Width.Pixels - 600, 1f);
-            area.Top.Set(30, 0f);
-            area.Width.Set(182, 0f);
-            area.Height.Set(60, 0f);
+            area.Width.Set(BossRushUtils.ScreenWidth, 0);
+            area.Height.Set(BossRushUtils.ScreenHeight, 0);
 
-            barFrame = new UIImage(ModContent.Request<Texture2D>("BossRush/icon"));
-            barFrame.Left.Set(0, 0f);
-            barFrame.Top.Set(0, 0f);
-            barFrame.Width.Set(80, 0f);
-            barFrame.Height.Set(80, 0f);
+            ButtonCreate();
+            TextGoesWithButtonCreate();
+            AchievementMenuCreate();
 
+            btn.Append(text);
+            area.Append(btn);
+            area.Append(achievementMenu);
+            Append(area);
+        }
+        private void ButtonCreate()
+        {
+            btn = new UIImageButton(ModContent.Request<Texture2D>("BossRush/icon"));
+            btn.Width.Set(80, 0f);
+            btn.Height.Set(80, 0f);
+            btn.Left.Set(0, 0f);
+            btn.Top.Set(0, 0f);
+            btn.HAlign = .5f;
+            btn.VAlign = .1f;
+            btn.OnLeftClick += new MouseEvent(OpenAchievementUI);
+        }
+        private void TextGoesWithButtonCreate()
+        {
             text = new UIText("Mod Achievement", 0.8f);
             text.Width.Set(138, 0f);
             text.Height.Set(34, 0f);
-            text.Top.Set(barFrame.Height.Pixels, 0f);
-            text.Left.Set(barFrame.Width.Pixels * .5f - text.Width.Pixels * .5f, 0f);
-
-            area.Append(text);
-            area.Append(barFrame);
-            Append(area);
+            text.Top.Set(btn.Height.Pixels, 0f);
+            text.Left.Set(btn.Width.Pixels * .5f - text.Width.Pixels * .5f, 0f);
+        }
+        private void AchievementMenuCreate()
+        {
+            achievementMenu = new UIAchievementPanel();
+            achievementMenu.HAlign = .1f;
+            achievementMenu.VAlign = .1f;
+            area.Append(achievementMenu);
+        }
+        private void OpenAchievementUI(UIMouseEvent evt, UIElement listeningElement)
+        {
+            Main.NewText("I'm called");
+            achievementMenu.hide = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (true)
-                return;
+            base.Draw(spriteBatch);
         }
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
         }
     }
-    class ResponsivePanal : UIState
+    class UIAchievementPanel : UIPanel
     {
+        private UIImage barFrame;
+        private UIImageButton btn;
+        public bool hide = true;
+        public override void OnInitialize()
+        {
+            barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+            barFrame.Width.Set(200, 0);
+            barFrame.Height.Set(200, 0);
 
+            Append(barFrame);
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (hide)
+            {
+                return;
+            }
+            base.Draw(spriteBatch);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
     }
-    class AchievementButton : UIState
+    class UISystem : ModSystem
     {
-
+        private UserInterface userInterface;
+        internal BossRushAchievementButton BRAbtn;
+        public override void Load()
+        {
+            return;
+            if (!Main.dedServ)
+            {
+                BRAbtn = new();
+                userInterface = new();
+                userInterface.SetState(BRAbtn);
+            }
+        }
+        public override void UpdateUI(GameTime gameTime)
+        {
+            return;
+            userInterface?.Update(gameTime);
+        }
+        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+        {
+            return;
+            int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+            if (resourceBarIndex != -1)
+            {
+                layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
+                    "BossRush: AchievementButton",
+                    delegate
+                    {
+                        userInterface.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+            }
+        }
     }
 }

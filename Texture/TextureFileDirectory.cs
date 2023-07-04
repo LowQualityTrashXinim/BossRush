@@ -11,5 +11,6 @@ namespace BossRush.Texture
         public const string PLACEHOLDERCHEST = "BossRush/Texture/PlaceHolderTreasureChest";
         public const string WHITEBALL = "BossRush/Texture/WhiteBall";
         public const string DIAMONDSWOTAFFORB = "BossRush/Texture/DiamondSwotaffOrb";
+        public const string ACCESSORIESSLOT = "Terraria/Images/Inventory_Back7";
     }
 }
