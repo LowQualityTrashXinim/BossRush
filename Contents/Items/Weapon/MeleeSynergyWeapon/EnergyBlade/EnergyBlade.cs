@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using Steamworks;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
 {
@@ -63,7 +64,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
                 }
                 if (player.ownedProjectileCounts[ModContent.ProjectileType<EnergyBladeProjectile>()] < 1)
                 {
-                    int proj = Projectile.NewProjectile(source, position, velocity, type, (int)(damage * .75f), knockback, player.whoAmI, 1);
+                    int proj = Projectile.NewProjectile(source, position, velocity, type, (int)(damage * 1.55f), knockback, player.whoAmI, 1);
                     Main.projectile[proj].height *= 2;
                     Main.projectile[proj].width *= 2;
                     Main.projectile[proj].scale += .5f;
@@ -127,32 +128,53 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             frameCounter();
             if (Projectile.ai[0] == 1)
             {
-                if (Projectile.timeLeft > player.itemAnimationMax)
-                {
-                    Projectile.timeLeft = player.itemAnimationMax;
-                }
-                float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-                percentDone = Math.Clamp(percentDone, 0, 1);
-                Projectile.spriteDirection = player.direction;
-                float baseAngle = data.ToRotation();
-                float angle = MathHelper.ToRadians(150) * player.direction;
-                float start = baseAngle + angle;
-                float end = baseAngle - angle;
-                float rotation = MathHelper.Lerp(start, end, percentDone);
-                outrotation = rotation;
-                Projectile.rotation = rotation;
-                Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
-                Projectile.velocity.X = player.direction;
-                Projectile.Center = player.Center + Vector2.UnitX.RotatedBy(rotation) * 180f;
+                EnergySword_Code1AI();
+                return;
+            }
+            if (Projectile.ai[0] == 2)
+            {
                 return;
             }
             BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
+            if (modplayer.EnergyBlade_Code1)
+            {
+                float rotation = Projectile.rotation - (Projectile.spriteDirection > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2);
+                int energycode1 = Projectile.NewProjectile(Projectile.GetSource_FromAI(),
+                    Projectile.Center,
+                    rotation.ToRotationVector2() * 10f,
+                    ModContent.ProjectileType<EnergyBladeEnergyBallProjectile>(),
+                    (int)(Projectile.damage * .25f),
+                    1f,
+                    Projectile.owner, 2);
+                Main.projectile[energycode1].timeLeft = 60;
+                Main.projectile[energycode1].penetrate = 1;
+            }
+        }
+        private void EnergySword_Code1AI()
+        {
+            if (Projectile.timeLeft > player.itemAnimationMax)
+            {
+                Projectile.timeLeft = player.itemAnimationMax;
+            }
+            float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
+            percentDone = Math.Clamp(percentDone, 0, 1);
+            Projectile.spriteDirection = player.direction;
+            float baseAngle = data.ToRotation();
+            float angle = MathHelper.ToRadians(150) * player.direction;
+            float start = baseAngle + angle;
+            float end = baseAngle - angle;
+            float rotation = MathHelper.Lerp(start, end, percentDone);
+            outrotation = rotation;
+            Projectile.rotation = rotation;
+            Projectile.rotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+            Projectile.velocity.X = player.direction;
+            Projectile.Center = player.Center + Vector2.UnitX.RotatedBy(rotation) * 180f;
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
             if (Projectile.ai[0] == 1)
             {
-                BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, outrotation, Projectile.width, Projectile.height, 150f);
+                BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, outrotation, (int)(Projectile.width * 1.5f), (int)(Projectile.height * 1.5f), 140f);
                 return;
             }
             BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, Projectile.width, Projectile.height);
@@ -188,6 +210,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (Projectile.ai[0] == 2)
+            {
+                Projectile.velocity -= Projectile.velocity * .1f;
+                if (Main.rand.NextBool(4))
+                {
+                    int type = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemSapphire, DustID.GemRuby });
+                    int dust = Dust.NewDust(Projectile.Center, 0, 0, type);
+                    Main.dust[dust].noGravity = true;
+                }
+                return;
+            }
             for (int i = 0; i < 2; i++)
             {
                 int type = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemSapphire, DustID.GemRuby });

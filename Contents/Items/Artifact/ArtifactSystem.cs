@@ -386,7 +386,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         private void SpamTextToScare()
         {
-            if (Main.rand.NextBool(750))
+            if (Main.rand.NextBool(10050))
             {
                 int RandomTextChooser = Main.rand.Next(11);
                 Color color = Color.White;
@@ -541,7 +541,7 @@ namespace BossRush.Contents.Items.Artifact
                 damage += .45f;
             }
         }
-        int countRange = 0;
+        int vampirecountRange = 0;
         private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1)
         {
             if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)
@@ -597,11 +597,11 @@ namespace BossRush.Contents.Items.Artifact
         {
             if (Vampire)
             {
-                countRange++;
-                if (countRange >= 3)
+                vampirecountRange++;
+                if (vampirecountRange >= 3)
                 {
                     LifeSteal(target, 1, 5);
-                    countRange = 0;
+                    vampirecountRange = 0;
                 }
             }
             if (CanCrit && FateDice)
