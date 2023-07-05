@@ -8,7 +8,7 @@ namespace BossRush.Contents.NPCs
 {
     internal class TrueEoC : ModNPC
     {
-        public override string Texture => "Terraria/Images/NPC_" + NPCID.MoonLordFreeEye;
+        public override string Texture => BossRushUtils.GetVanillaTexture<NPC>(NPCID.MoonLordFreeEye);
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("True Eye Of Cthulhu");

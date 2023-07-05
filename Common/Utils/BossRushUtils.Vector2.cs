@@ -53,21 +53,8 @@ namespace BossRush
             { return true; }//higher = -Y, lower = Y
             return false;
         }
-        public static bool Vector2TouchLine(float pos1, float pos2, float CenterY)
-        {
-            if (pos1 < (CenterY + pos2) && pos1 > (CenterY - pos2))
-            { return true; }//higher = -Y, lower = Y
-            return false;
-        }
-        public static bool IsLimitReached(this Vector2 velocity, float limited)
-        {
-            if (velocity.X < limited && velocity.X > -limited &&
-                velocity.Y < limited && velocity.Y > -limited)
-            {
-                return false;
-            }
-            return true;
-        }
+        public static bool Vector2TouchLine(float pos1, float pos2, float CenterY) => pos1 < (CenterY + pos2) && pos1 > (CenterY - pos2);
+        public static bool IsLimitReached(this Vector2 velocity, float limited) => !(velocity.X < limited && velocity.X > -limited && velocity.Y < limited && velocity.Y > -limited);
         [Obsolete("Not working", true)]
         public static bool ReachedLimited(this Vector2 velocity, float limited)
         {
@@ -102,6 +89,7 @@ namespace BossRush
             ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
             return ToRotateAgain;
         }
+        public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).Length() <= distance;
         public static Vector2 Vector2SmallestInList(List<Vector2> flag)
         {
             for (int i = 0; i < flag.Count;)

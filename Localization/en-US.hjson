@@ -114,11 +114,13 @@ Mods: {
 			TopazSwotaffProjectile.DisplayName: Topaz Swotaff Projectile
 			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
 			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
+			ShortSwordProjectile.DisplayName: Short Sword Projectile
 		}
 
 		NPCs: {
 			TrueEoC.DisplayName: True EoC
 			TestBossNPCDoNotLook.DisplayName: Test Boss N P C Do Not Look
+			ChestLord.DisplayName: Chest Lord
 		}
 
 		Items: {
