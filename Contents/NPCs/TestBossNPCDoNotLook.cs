@@ -20,7 +20,7 @@ namespace BossRush.Contents.NPCs
             NPC.defense = 20;
             NPC.width = 60;
             NPC.height = 60;
-            NPC.HitSound = SoundID.NPCHit1;
+            NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.npcSlots = 6f;
             NPC.noGravity = true;
@@ -66,7 +66,7 @@ namespace BossRush.Contents.NPCs
             Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 350);
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
-                NPC.ai[1] = Main.rand.Next(1,3);
+                NPC.ai[1] = Main.rand.Next(1, 3);
                 NPC.ai[0] = 90;
             }
         }
@@ -181,6 +181,7 @@ namespace BossRush.Contents.NPCs
                         Projectile.velocity = -Vector2.UnitX * OnSpawnDirection;
                         Projectile.timeLeft = 150;
                         Projectile.ai[1] = 1;
+                        Projectile.Center = LeftOfPlayer;
                     }
                     Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
                 }
@@ -197,7 +198,6 @@ namespace BossRush.Contents.NPCs
                         Projectile.velocity += Vector2.UnitX * OnSpawnDirection;
                         return;
                     }
-                    Projectile.Center = LeftOfPlayer;
                 }
                 return;
             }
