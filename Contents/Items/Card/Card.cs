@@ -529,7 +529,6 @@ namespace BossRush.Contents.Items.Card
                         break;
                     case 4:
                         FiveTimeDamageTaken = true;
-
                         break;
                     case 5:
                         LimitedResource = true;

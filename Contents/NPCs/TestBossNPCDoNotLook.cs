@@ -7,9 +7,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using BossRush.Common.Utils;
 using Terraria.DataStructures;
+using System;
+using Microsoft.Xna.Framework.Content;
 
 namespace BossRush.Contents.NPCs
 {
+    //To ensure the code is readable and consistent throughout the process of making
+    //ai[0] => timer
+    //ai[1] => ai switch
+    //ai[2] => counter ( not to be confused with timer )
+    //The code in this file must follow the above rule
     internal class ChestLord : ModNPC
     {
         public override string Texture => "BossRush/Contents/Items/Chest/WoodenTreasureChest";
@@ -47,10 +54,13 @@ namespace BossRush.Contents.NPCs
                     Move(player);
                     break;
                 case 1:
-                    ShootSwordSword();
+                    ShootShortSword();
                     break;
                 case 2:
-                    ShootSwordSword2();
+                    ShootShortSword2();
+                    break;
+                case 3:
+                    ShootBroadSword();
                     break;
             }
         }
@@ -66,11 +76,11 @@ namespace BossRush.Contents.NPCs
             Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 350);
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
-                NPC.ai[1] = Main.rand.Next(1, 3);
+                NPC.ai[1] = 3;
                 NPC.ai[0] = 90;
             }
         }
-        private void ShootSwordSword()
+        private void ShootShortSword()
         {
             if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1))
             {
@@ -82,7 +92,7 @@ namespace BossRush.Contents.NPCs
             Main.projectile[proj].owner = NPC.target;
             NPC.ai[2]++;
         }
-        private void ShootSwordSword2()
+        private void ShootShortSword2()
         {
             if (BossDelayAttack(20, 0, TerrariaArrayID.AllOreShortSword.Length - 1))
             {
@@ -97,7 +107,25 @@ namespace BossRush.Contents.NPCs
             Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
             NPC.ai[2]++;
         }
-        private bool BossDelayAttack(float delaytime, float nextattack, float whenAttackwillend)
+        private void ShootBroadSword()
+        {
+            if (BossDelayAttack(0, 0, 0, 360))
+            {
+                return;
+            }
+            for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++)
+            {
+                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(TerrariaArrayID.AllOreBroadSword.Length, 160, i) * 5f;
+                int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadProjectile>(), NPC.damage, 2);
+                Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreBroadSword[i];
+                Main.projectile[proj].ai[0] = -20;
+                Main.projectile[proj].owner = NPC.target;
+                Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
+            }
+            NPC.ai[2]++;
+            BossDelayAttack(0, 0, 0, 360);
+        }
+        private bool BossDelayAttack(float delaytime, float nextattack, float whenAttackwillend, int additionalDelay = 0)
         {
             if (NPC.ai[0] <= 0)
             {
@@ -111,12 +139,13 @@ namespace BossRush.Contents.NPCs
             if (NPC.ai[2] > whenAttackwillend)
             {
                 ResetEverything();
-                NPC.ai[1] = nextattack;
+                NPC.ai[0] = additionalDelay;
                 return true;
             }
             return false;
         }
     }
+    //This code did not follow the above rule and it should be change to follow the above rule
     class ShortSwordProjectile : ModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
@@ -217,6 +246,78 @@ namespace BossRush.Contents.NPCs
         {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Item[(int)Projectile.ai[2]].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
+        }
+    }
+    class SwordBroadProjectile : ModProjectile
+    {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 36;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+        }
+        int OnSpawnDirection = 0;
+        public override void OnSpawn(IEntitySource source)
+        {
+            OnSpawnDirection = Projectile.velocity.X > 0 ? 1 : -1;
+            base.OnSpawn(source);
+        }
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            if (Projectile.ai[1] == 1)
+            {
+                if (Projectile.rotation != -MathHelper.PiOver4)
+                {
+                    float rotation = MathHelper.ToRadians(1);
+                    float total;
+                    if (Projectile.rotation > -MathHelper.PiOver4)
+                    {
+                        total = Projectile.rotation - rotation;
+                        if (Math.Abs(total) <= MathHelper.PiOver4)
+                        {
+                            Projectile.rotation = MathHelper.PiOver4;
+                        }
+                        Projectile.rotation = total;
+                    }
+                    else
+                    {
+                        total = Projectile.rotation + rotation;
+                        if (Math.Abs(total) >= MathHelper.PiOver4)
+                        {
+                            Projectile.rotation = MathHelper.PiOver4;
+                        }
+                        Projectile.rotation = total;
+                    }
+                    return;
+                }
+                Projectile.ai[1] = 2;
+            }
+            if (Projectile.ai[1] == 2)
+            {
+                Vector2 BesideThePlayer = new Vector2(player.Center.X + 50 * OnSpawnDirection, player.Center.Y).RotatedBy(MathHelper.ToRadians(120) * OnSpawnDirection);
+            }
+            if (Projectile.velocity.IsLimitReached(1))
+            {
+                Projectile.velocity -= Projectile.velocity * .05f;
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            }
+            else
+            {
+                Projectile.ai[1] = 1;
+                Projectile.velocity = Vector2.Zero;
+            }
+            base.AI();
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>((int)Projectile.ai[2])).Value;
             Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
             Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);

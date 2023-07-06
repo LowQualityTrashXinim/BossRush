@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     {
         public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
         {
-            damage = 20;
+            damage = 17;
             ProjectileType = ModContent.ProjectileType<DiamondSwotaffP>();
             ShootType = ProjectileID.DiamondBolt;
         }
@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         //protected override int AltAttackProjectileType() => ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
         public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost)
         {
-            AltAttackAmountProjectile = 9;
+            AltAttackAmountProjectile = 6;
             AltAttackProjectileType = ModContent.ProjectileType<DiamondSwotaffGemProjectile>();
             NormalBoltProjectile = ProjectileID.DiamondBolt;
             DustType = DustID.GemDiamond;
@@ -60,7 +60,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = Main.rand.NextFloat(1f);
             }
-            Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(40 * Projectile.ai[2])) * (firstframePos.X > 0 ? 50f : -50f);
+            Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(60 * Projectile.ai[2])) * (firstframePos.X > 0 ? 50f : -50f);
             if (!player.active || player.dead)
             {
                 Projectile.Kill();

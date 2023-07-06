@@ -115,6 +115,7 @@ Mods: {
 			RubyGemProjectileSwotaff.DisplayName: Ruby Gem Projectile Swotaff
 			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
 			ShortSwordProjectile.DisplayName: Short Sword Projectile
+			SwordBroadProjectile.DisplayName: Sword Broad Projectile
 		}
 
 		NPCs: {

@@ -7,6 +7,9 @@ namespace BossRush.Common.Utils
         public readonly static int[] AllOreShortSword = {
             ItemID.CopperShortsword, ItemID.TinShortsword, ItemID.IronShortsword, ItemID.LeadShortsword,
             ItemID.SilverShortsword, ItemID.TungstenShortsword, ItemID.GoldShortsword, ItemID.PlatinumShortsword };
+        public readonly static int[] AllOreBroadSword = {
+            ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,ItemID.LeadBroadsword,
+            ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword };
         //Pre boss and Pre EoC is the same PreBoss
         public readonly static int[] MeleePreBoss = {
             ItemID.CopperShortsword, ItemID.TinShortsword, ItemID.IronShortsword, ItemID.LeadShortsword,

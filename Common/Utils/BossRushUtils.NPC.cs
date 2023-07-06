@@ -15,7 +15,7 @@ namespace BossRush
         public static bool NPCMoveToPosition(this NPC npc, Vector2 Position, float speed)
         {
             Vector2 distance = Position - npc.Center;
-            if (distance.Length() <= 10f)
+            if (distance.Length() <= 20f)
             {
                 npc.velocity = Vector2.Zero;
                 return true;

@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     {
         public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
         {
-            damage = 20;
+            damage = 17;
             ProjectileType = ModContent.ProjectileType<RubySwotaffProjectile>();
             ShootType = ProjectileID.RubyBolt;
         }
@@ -26,7 +26,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<RubySwotaff>();
         public override void SwotaffCustomSetDefault(out float AltAttackAmountProjectile, out int AltAttackProjectileType, out int NormalBoltProjectile, out int DustType, out int ManaCost)
         {
-            AltAttackAmountProjectile = 9;
+            AltAttackAmountProjectile = 6;
             AltAttackProjectileType = ModContent.ProjectileType<RubySwotaffGemProjectile>();
             NormalBoltProjectile = ProjectileID.RubyBolt;
             DustType = DustID.GemRuby;
@@ -54,7 +54,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             {
                 firstframePos = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center;
             }
-            Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(40 * Projectile.ai[2] + 360 * offset)) * Projectile.timeLeft;
+            Vector2 positionToGo = player.Center + firstframePos.SafeNormalize(Vector2.One).RotatedBy(MathHelper.ToRadians(60 * Projectile.ai[2] + 360 * offset)) * Projectile.timeLeft;
             Projectile.velocity = (positionToGo - Projectile.Center).SafeNormalize(Vector2.Zero) * (positionToGo - Projectile.Center).Length() * .25f;
             base.SynergyPreAI(player, modplayer, out runAI);
         }
