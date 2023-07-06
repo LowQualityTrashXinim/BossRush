@@ -116,7 +116,7 @@ namespace BossRush
         {
             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, velocity, type, projectile.damage, projectile.knockBack, projectile.owner);
         }
-        public static void ProjectileSwordSwingAI(Projectile projectile, Player player, Vector2 PositionFromMouseToPlayer, int swing = 1)
+        public static void ProjectileSwordSwingAI(Projectile projectile, Player player, Vector2 PositionFromMouseToPlayer, int swing = 1, int swingdegree = 120)
         {
             if (projectile.timeLeft > player.itemAnimationMax)
             {
@@ -128,10 +128,10 @@ namespace BossRush
             {
                 percentDone = 1 - percentDone;
             }
-            percentDone = InOutExpo(Math.Clamp(percentDone, 0, 1));
+            percentDone = Math.Clamp(percentDone, 0, 1);
             projectile.spriteDirection = player.direction;
             float baseAngle = PositionFromMouseToPlayer.ToRotation();
-            float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
+            float angle = MathHelper.ToRadians(baseAngle + swingdegree) * player.direction;
             float start = baseAngle + angle;
             float end = baseAngle - angle;
             float currentAngle = MathHelper.SmoothStep(start, end, percentDone);

@@ -72,10 +72,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             {
                 CanShootProjectile = 1;
             }
-            Projectile.NewProjectile(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI, countIndex, CanShootProjectile);
+            int projSwing = Projectile.NewProjectile(source, position, Vector2.Zero, type, (int)(damage * 1.25f), knockback * 2f, player.whoAmI, countIndex, CanShootProjectile);
+            if(countIndex == 0)
+            {
+                Main.projectile[projSwing].knockBack = .5f;
+            }
             if (CanShootProjectile == 1)
             {
-                Projectile.NewProjectile(source, position, velocity, ShootType, damage, knockback, player.whoAmI);
+                int proj = Projectile.NewProjectile(source, position, velocity, ShootType, damage, knockback, player.whoAmI);
+                Main.projectile[proj].usesIDStaticNPCImmunity = true;
             }
             if (player.altFunctionUse != 2)
             {
@@ -165,7 +170,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1)
             {
                 player.heldProj = Projectile.whoAmI;
-                BossRushUtils.ProjectileSwordSwingAI(Projectile, player, PosToGo, (int)Projectile.ai[0]);
+                BossRushUtils.ProjectileSwordSwingAI(Projectile, player, PosToGo, (int)Projectile.ai[0], 150);
                 return;
             }
             SpinAtCursorAI(player);
@@ -173,7 +178,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
-            npc.immune[Projectile.owner] = 6;
+            npc.immune[Projectile.owner] = 10;
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
@@ -224,7 +229,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 {
                     if (player.CheckMana(player.GetManaCost(item), true))
                     {
-                        player.statMana -= player.GetManaCost(item);
+                        player.statMana -= (int)(player.GetManaCost(item) * (420 - AbsoluteCountDown) * .01f);
                     }
                     else
                     {
