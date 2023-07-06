@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
     {
         public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
         {
-            damage = 17;
+            damage = 15;
             ProjectileType = ModContent.ProjectileType<TopazSwotaffProjectile>();
             ShootType = ProjectileID.TopazBolt;
         }
