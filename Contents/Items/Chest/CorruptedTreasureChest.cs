@@ -19,33 +19,40 @@ namespace BossRush.Contents.Items.Chest
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            switch (Main.rand.Next(5))
+            if (player.IsDebugPlayer())
             {
-                case 0:
-                    player.QuickSpawnItem(entitySource, ItemID.ShadowHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.ShadowScalemail);
-                    player.QuickSpawnItem(entitySource, ItemID.ShadowGreaves);
-                    break;
-                case 1:
-                    player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.MeteorSuit);
-                    player.QuickSpawnItem(entitySource, ItemID.MeteorLeggings);
-                    break;
-                case 2:
-                    player.QuickSpawnItem(entitySource, ItemID.FossilHelm);
-                    player.QuickSpawnItem(entitySource, ItemID.FossilShirt);
-                    player.QuickSpawnItem(entitySource, ItemID.FossilPants);
-                    break;
-                case 3:
-                    player.QuickSpawnItem(entitySource, ItemID.MoltenHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.MoltenBreastplate);
-                    player.QuickSpawnItem(entitySource, ItemID.MoltenGreaves);
-                    break;
-                case 4:
-                    player.QuickSpawnItem(entitySource, ItemID.ObsidianHelm);
-                    player.QuickSpawnItem(entitySource, ItemID.ObsidianShirt);
-                    player.QuickSpawnItem(entitySource, ItemID.ObsidianPants);
-                    break;
+
+            }
+            else
+            {
+                switch (Main.rand.Next(5))
+                {
+                    case 0:
+                        player.QuickSpawnItem(entitySource, ItemID.ShadowHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.ShadowScalemail);
+                        player.QuickSpawnItem(entitySource, ItemID.ShadowGreaves);
+                        break;
+                    case 1:
+                        player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.MeteorSuit);
+                        player.QuickSpawnItem(entitySource, ItemID.MeteorLeggings);
+                        break;
+                    case 2:
+                        player.QuickSpawnItem(entitySource, ItemID.FossilHelm);
+                        player.QuickSpawnItem(entitySource, ItemID.FossilShirt);
+                        player.QuickSpawnItem(entitySource, ItemID.FossilPants);
+                        break;
+                    case 3:
+                        player.QuickSpawnItem(entitySource, ItemID.MoltenHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.MoltenBreastplate);
+                        player.QuickSpawnItem(entitySource, ItemID.MoltenGreaves);
+                        break;
+                    case 4:
+                        player.QuickSpawnItem(entitySource, ItemID.ObsidianHelm);
+                        player.QuickSpawnItem(entitySource, ItemID.ObsidianShirt);
+                        player.QuickSpawnItem(entitySource, ItemID.ObsidianPants);
+                        break;
+                }
             }
             modplayer.GetAmount();
             for (int i = 0; i < modplayer.weaponAmount; i++)

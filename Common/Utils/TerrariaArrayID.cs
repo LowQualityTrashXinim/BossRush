@@ -152,5 +152,18 @@ namespace BossRush.Common.Utils
 
         //NPC
         public readonly static int[] BAT = { NPCID.CaveBat, NPCID.GiantBat, NPCID.IceBat, NPCID.IlluminantBat, NPCID.JungleBat, NPCID.SporeBat, NPCID.Lavabat, NPCID.Hellbat };
+
+        public readonly static int[] HeadArmorPreBoss = { ItemID.WoodHelmet, ItemID.BorealWoodHelmet, ItemID.RichMahoganyHelmet, ItemID.EbonwoodHelmet, ItemID.PalmWoodHelmet, ItemID.ShadewoodHelmet, ItemID.CactusHelmet, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.CopperHelmet, ItemID.TinHelmet, ItemID.IronHelmet, ItemID.LeadHelmet, ItemID.JungleHat, ItemID.MagicHat, ItemID.WizardHat,ItemID.SilverHelmet, ItemID.TungstenHelmet, ItemID.GoldHelmet, ItemID.PlatinumHelmet, ItemID.PumpkinHelmet, ItemID.GladiatorHelmet
+        };
+        public readonly static int[] BodyArmorPreBoss = { ItemID.WoodBreastplate, ItemID.BorealWoodBreastplate, ItemID.RichMahoganyBreastplate, ItemID.EbonwoodBreastplate, ItemID.PalmWoodBreastplate, ItemID.ShadewoodBreastplate, ItemID.CactusBreastplate, ItemID.FlinxFurCoat, ItemID.Gi, ItemID.CopperChainmail, ItemID.TinChainmail, ItemID.IronChainmail, ItemID.LeadChainmail, ItemID.JungleShirt, ItemID.AmethystRobe, ItemID.DiamondRobe, ItemID.RubyRobe, ItemID.SapphireRobe, ItemID.EmeraldRobe, ItemID.TopazRobe, ItemID.GypsyRobe, ItemID.SilverChainmail, ItemID.TungstenChainmail, ItemID.GoldChainmail, ItemID.PlatinumChainmail, ItemID.PumpkinBreastplate, ItemID.GladiatorBreastplate
+        };
+        public readonly static int[] LegArmorPreBoss = { ItemID.WoodGreaves, ItemID.BorealWoodGreaves, ItemID.RichMahoganyGreaves, ItemID.EbonwoodGreaves, ItemID.PalmWoodGreaves, ItemID.ShadewoodGreaves, ItemID.CactusLeggings, ItemID.CopperGreaves,ItemID.TinGreaves, ItemID.IronGreaves, ItemID.LeadGreaves, ItemID.JunglePants, ItemID.SilverGreaves, ItemID.TungstenGreaves, ItemID.GoldGreaves, ItemID.PlatinumGreaves, ItemID.PumpkinLeggings, ItemID.GladiatorLeggings
+        };
+        public readonly static int[] HeadArmorPostEvil ={ItemID.ShadowHelmet,ItemID.MeteorHelmet,ItemID.FossilHelm,ItemID.MoltenHelmet,ItemID.ObsidianHelm,ItemID.CrimsonHelmet
+        };
+        public readonly static int[] BodyArmorPostEvil ={ItemID.ShadowScalemail,ItemID.MeteorSuit,ItemID.FossilShirt,ItemID.MoltenBreastplate,ItemID.ObsidianShirt,ItemID.CrimsonScalemail
+        };
+        public readonly static int[] LegArmorPostEvil ={ItemID.ShadowGreaves,ItemID.MeteorLeggings,ItemID.FossilPants,ItemID.MoltenGreaves,ItemID.ObsidianPants,ItemID.CrimsonGreaves
+        };
     }
 }

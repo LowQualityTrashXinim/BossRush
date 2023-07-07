@@ -90,6 +90,23 @@ namespace BossRush
             return ToRotateAgain;
         }
         public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).Length() <= distance;
+        /// <summary>
+        /// This will take a approximation of the rough position that it need to go and then stop the npc from moving when it reach that position 
+        /// </summary>
+        /// <param name="npc"></param>
+        /// <param name="Position"></param>
+        /// <param name="speed"></param>
+        public static bool ProjectileMoveToPosition(this Projectile projectile, Vector2 Position, float speed)
+        {
+            Vector2 distance = Position - projectile.Center;
+            if (distance.Length() <= 20f)
+            {
+                projectile.velocity = Vector2.Zero;
+                return true;
+            }
+            projectile.velocity = distance.SafeNormalize(Vector2.Zero) * speed;
+            return false;
+        }
         public static Vector2 Vector2SmallestInList(List<Vector2> flag)
         {
             for (int i = 0; i < flag.Count;)

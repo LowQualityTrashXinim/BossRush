@@ -36,24 +36,31 @@ namespace BossRush.Contents.Items.Chest
                 int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace, ItemID.WaspGun });
                 player.QuickSpawnItem(entitySource, OneRareBeeItem);
             }
-            int RandomNumber = Main.rand.Next(3);
-            switch (RandomNumber)
+            if (player.IsDebugPlayer())
             {
-                case 0:
-                    player.QuickSpawnItem(entitySource, ItemID.NecroHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.NecroBreastplate);
-                    player.QuickSpawnItem(entitySource, ItemID.NecroGreaves);
-                    break;
-                case 1:
-                    player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.MeteorSuit);
-                    player.QuickSpawnItem(entitySource, ItemID.MeteorLeggings);
-                    break;
-                case 2:
-                    player.QuickSpawnItem(entitySource, ItemID.MoltenHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.MoltenBreastplate);
-                    player.QuickSpawnItem(entitySource, ItemID.MoltenGreaves);
-                    break;
+
+            }
+            else
+            {
+                int RandomNumber = Main.rand.Next(3);
+                switch (RandomNumber)
+                {
+                    case 0:
+                        player.QuickSpawnItem(entitySource, ItemID.NecroHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.NecroBreastplate);
+                        player.QuickSpawnItem(entitySource, ItemID.NecroGreaves);
+                        break;
+                    case 1:
+                        player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.MeteorSuit);
+                        player.QuickSpawnItem(entitySource, ItemID.MeteorLeggings);
+                        break;
+                    case 2:
+                        player.QuickSpawnItem(entitySource, ItemID.MoltenHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.MoltenBreastplate);
+                        player.QuickSpawnItem(entitySource, ItemID.MoltenGreaves);
+                        break;
+                }
             }
             modplayer.GetAmount();
             for (int i = 0; i < modplayer.weaponAmount; i++)

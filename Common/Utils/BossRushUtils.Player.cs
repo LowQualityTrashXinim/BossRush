@@ -7,7 +7,7 @@ namespace BossRush
 {
     public static partial class BossRushUtils
     {
-        public static bool IsDebugPlayer(Player player) => 
+        public static bool IsDebugPlayer(this Player player) => 
             player.name.Contains("Test") || 
             player.name.Contains("Debug") || 
             player.name == "LowQualityTrashXinim" ||

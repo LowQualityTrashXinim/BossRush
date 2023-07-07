@@ -14,6 +14,7 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Accessories;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -838,7 +839,44 @@ namespace BossRush.Contents.Items.Chest
                 if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
             }
         }
-
+        /// <summary>
+        /// This happen automatically for the sake of prototype
+        /// </summary>
+        public void GetArmorForPlayer(IEntitySource entitySource,Player player)
+        {
+            List<int> HeadArmor = new List<int>();
+            List<int> BodyArmor = new List<int>();
+            List<int> LegArmor = new List<int>();
+            HeadArmor.AddRange(TerrariaArrayID.HeadArmorPreBoss);
+            BodyArmor.AddRange(TerrariaArrayID.BodyArmorPreBoss);
+            LegArmor.AddRange(TerrariaArrayID.LegArmorPreBoss);
+            if(NPC.downedBoss2)
+            {
+                HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
+                BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
+                LegArmor.AddRange(TerrariaArrayID.LegArmorPostEvil);
+            }
+            if(NPC.downedBoss3)
+            {
+                HeadArmor.Add(ItemID.NecroHelmet);
+                BodyArmor.Add(ItemID.NecroBreastplate);
+                LegArmor.Add(ItemID.NecroGreaves);
+            }
+            if(NPC.downedQueenBee)
+            {
+                HeadArmor.Add(ItemID.BeeHeadgear);
+                BodyArmor.Add(ItemID.BeeBreastplate);
+                LegArmor.Add(ItemID.BeeGreaves);
+            }
+            int[] fullbodyarmor = new int[]{
+                Main.rand.Next(HeadArmor),
+                Main.rand.Next(BodyArmor),
+                Main.rand.Next(LegArmor) };
+            for (int i = 0; i < fullbodyarmor.Length; i++)
+            {
+                player.QuickSpawnItem(entitySource, fullbodyarmor[i]);
+            }
+        }
         /// <summary>
         /// Return a random accessory 
         /// </summary>

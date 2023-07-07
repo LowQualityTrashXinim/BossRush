@@ -1,6 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
 using System.Collections.Generic;
+using Steamworks;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -21,43 +23,57 @@ namespace BossRush.Contents.Items.Chest
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            int RandomNumber = Main.rand.Next(6);
-            switch (RandomNumber)
+            if (player.IsDebugPlayer())
             {
-                case 0:
-                    int RandomAssArmor = Main.rand.Next(new int[] { ItemID.MagicHat, ItemID.WizardHat });
-                    if (RandomAssArmor == ItemID.WizardHat || RandomAssArmor == ItemID.MagicHat)
-                    {
-                        player.QuickSpawnItem(entitySource, RandomAssArmor);
-                        int RobeWiz = Main.rand.Next(new int[] { ItemID.AmethystRobe, ItemID.DiamondRobe, ItemID.RubyRobe, ItemID.SapphireRobe, ItemID.EmeraldRobe, ItemID.TopazRobe, ItemID.GypsyRobe });
-                        player.QuickSpawnItem(entitySource, RobeWiz);
-                    }
-                    break;
-                case 1:
-                    player.QuickSpawnItem(entitySource, ItemID.SilverHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.SilverChainmail);
-                    player.QuickSpawnItem(entitySource, ItemID.SilverGreaves);
-                    break;
-                case 2:
-                    player.QuickSpawnItem(entitySource, ItemID.TungstenHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.TungstenChainmail);
-                    player.QuickSpawnItem(entitySource, ItemID.TungstenGreaves);
-                    break;
-                case 3:
-                    player.QuickSpawnItem(entitySource, ItemID.GoldHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.GoldChainmail);
-                    player.QuickSpawnItem(entitySource, ItemID.GoldGreaves);
-                    break;
-                case 4:
-                    player.QuickSpawnItem(entitySource, ItemID.PlatinumHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.PlatinumChainmail);
-                    player.QuickSpawnItem(entitySource, ItemID.PlatinumGreaves);
-                    break;
-                case 5:
-                    player.QuickSpawnItem(entitySource, ItemID.PumpkinHelmet);
-                    player.QuickSpawnItem(entitySource, ItemID.PumpkinBreastplate);
-                    player.QuickSpawnItem(entitySource, ItemID.PumpkinLeggings);
-                    break;
+                int[] fullbodyarmor = new int[]{
+                Main.rand.Next(TerrariaArrayID.HeadArmorPreBoss),
+                Main.rand.Next(TerrariaArrayID.BodyArmorPreBoss),
+                Main.rand.Next(TerrariaArrayID.LegArmorPreBoss) };
+                for (int i = 0; i < fullbodyarmor.Length; i++)
+                {
+                    player.QuickSpawnItem(entitySource, fullbodyarmor[i]);
+                }
+            }
+            else
+            {
+                int RandomNumber = Main.rand.Next(6);
+                switch (RandomNumber)
+                {
+                    case 0:
+                        int RandomAssArmor = Main.rand.Next(new int[] { ItemID.MagicHat, ItemID.WizardHat });
+                        if (RandomAssArmor == ItemID.WizardHat || RandomAssArmor == ItemID.MagicHat)
+                        {
+                            player.QuickSpawnItem(entitySource, RandomAssArmor);
+                            int RobeWiz = Main.rand.Next(new int[] { ItemID.AmethystRobe, ItemID.DiamondRobe, ItemID.RubyRobe, ItemID.SapphireRobe, ItemID.EmeraldRobe, ItemID.TopazRobe, ItemID.GypsyRobe });
+                            player.QuickSpawnItem(entitySource, RobeWiz);
+                        }
+                        break;
+                    case 1:
+                        player.QuickSpawnItem(entitySource, ItemID.SilverHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.SilverChainmail);
+                        player.QuickSpawnItem(entitySource, ItemID.SilverGreaves);
+                        break;
+                    case 2:
+                        player.QuickSpawnItem(entitySource, ItemID.TungstenHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.TungstenChainmail);
+                        player.QuickSpawnItem(entitySource, ItemID.TungstenGreaves);
+                        break;
+                    case 3:
+                        player.QuickSpawnItem(entitySource, ItemID.GoldHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.GoldChainmail);
+                        player.QuickSpawnItem(entitySource, ItemID.GoldGreaves);
+                        break;
+                    case 4:
+                        player.QuickSpawnItem(entitySource, ItemID.PlatinumHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.PlatinumChainmail);
+                        player.QuickSpawnItem(entitySource, ItemID.PlatinumGreaves);
+                        break;
+                    case 5:
+                        player.QuickSpawnItem(entitySource, ItemID.PumpkinHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.PumpkinBreastplate);
+                        player.QuickSpawnItem(entitySource, ItemID.PumpkinLeggings);
+                        break;
+                }
             }
             modplayer.GetAmount();
             for (int i = 0; i < modplayer.weaponAmount; i++)

@@ -267,6 +267,7 @@ namespace BossRush.Contents.NPCs
             OnSpawnDirection = Projectile.velocity.X > 0 ? 1 : -1;
             base.OnSpawn(source);
         }
+        Vector2 rememberThisPos = Vector2.Zero;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -281,7 +282,8 @@ namespace BossRush.Contents.NPCs
                         total = Projectile.rotation - rotation;
                         if (Math.Abs(total) <= MathHelper.PiOver4)
                         {
-                            Projectile.rotation = MathHelper.PiOver4;
+                            Projectile.rotation = -MathHelper.PiOver4;
+                            return;
                         }
                         Projectile.rotation = total;
                     }
@@ -290,7 +292,8 @@ namespace BossRush.Contents.NPCs
                         total = Projectile.rotation + rotation;
                         if (Math.Abs(total) >= MathHelper.PiOver4)
                         {
-                            Projectile.rotation = MathHelper.PiOver4;
+                            Projectile.rotation = -MathHelper.PiOver4;
+                            return;
                         }
                         Projectile.rotation = total;
                     }
@@ -300,7 +303,21 @@ namespace BossRush.Contents.NPCs
             }
             if (Projectile.ai[1] == 2)
             {
-                Vector2 BesideThePlayer = new Vector2(player.Center.X + 50 * OnSpawnDirection, player.Center.Y).RotatedBy(MathHelper.ToRadians(120) * OnSpawnDirection);
+                Vector2 BesideThePlayer = player.Center + new Vector2(100 * OnSpawnDirection, 0).RotatedBy(MathHelper.ToRadians(-120) * OnSpawnDirection);
+                if(Projectile.ProjectileMoveToPosition(BesideThePlayer, 10f))
+                {
+                    rememberThisPos = BesideThePlayer;
+                    Projectile.ai[1] = 3;
+                }
+            }
+            if (Projectile.ai[1] == 3)
+            {
+                if(Projectile.timeLeft > 30)
+                {
+                    Projectile.timeLeft = 30;
+                }
+                //Projectile.velocity = Vector2.One.RotatedBy(MathHelper.Lerp(rememberThisPos.ToRotation(), rememberThisPos.ToRotation() + MathHelper.ToRadians(120) * OnSpawnDirection, (30 - Projectile.timeLeft) / 30f));
+                return;
             }
             if (Projectile.velocity.IsLimitReached(1))
             {
