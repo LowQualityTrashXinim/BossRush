@@ -19,6 +19,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Item.rare = 2;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item75;
+            Item.DamageType = Terraria.ModLoader.DamageClass.Ranged;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
