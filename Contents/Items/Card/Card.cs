@@ -51,8 +51,14 @@ namespace BossRush.Contents.Items.Card
             PostCardSetDefault();
         }
         public virtual void PostCardSetDefault() { }
+        public virtual void ModifyCardToolTip(ref List<TooltipLine> tooltips, PlayerCardHandle modplayer)
+        {
+
+        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+            PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
+            ModifyCardToolTip(ref tooltips, modplayer);
             if (Tier <= 0)
             {
                 return;
@@ -67,7 +73,6 @@ namespace BossRush.Contents.Items.Card
                 tooltips.Add(new TooltipLine(Mod, "statsBugged", "It is appear that the card stats got corrupted or won't save !"));
                 return;
             }
-            PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
             TooltipLine badstatsline = new(Mod, "stats", "");
             for (int i = 0; i < CardStats.Count; i++)
             {
@@ -743,7 +748,7 @@ namespace BossRush.Contents.Items.Card
             base.ModifyHurt(ref modifiers);
             if (FiveTimeDamageTaken)
             {
-                modifiers.FinalDamage.Base *= 5;
+                modifiers.FinalDamage *= 5;
             }
         }
         public override void PostHurt(Player.HurtInfo info)

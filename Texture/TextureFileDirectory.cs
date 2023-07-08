@@ -12,5 +12,10 @@ namespace BossRush.Texture
         public const string WHITEBALL = "BossRush/Texture/WhiteBall";
         public const string DIAMONDSWOTAFFORB = "BossRush/Texture/DiamondSwotaffOrb";
         public const string ACCESSORIESSLOT = "Terraria/Images/Inventory_Back7";
+        public const string ACHIEVEMENTMENU = "BossRush/Texture/UI/menu";
+        public const string ACHIEVEMENTMAINWHITE = "BossRush/Texture/UI/mainwhite";
+        public const string ACHIEVEMENTMAINBLUE = "BossRush/Texture/UI/mainblue";
+        public const string ACHIEVEMENTMENUBLUE = "BossRush/Texture/UI/horizmainblue";
+        public const string ACHIEVEMENTMENUWHITE= "BossRush/Texture/UI/horizmainwhite";
     }
 }

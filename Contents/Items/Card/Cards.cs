@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -141,6 +142,66 @@ namespace BossRush.Contents.Items.Card
             Item.height = 0;
             Item.material = true;
             Item.maxStack = 99;
+        }
+        public override bool CanBeCraft => false;
+    }
+    internal class CursedCard : CardItem
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.HellstoneBar);
+        public override void SetDefaults()
+        {
+            Item.width = 1;
+            Item.height = 1;
+            Item.material = true;
+            Item.maxStack = 99;
+            Item.useTime = Item.useAnimation = 15;
+            Item.useStyle = ItemUseStyleID.HoldUp;
+        }
+        int cursesID = 1;
+        public override void ModifyCardToolTip(ref List<TooltipLine> tooltips, PlayerCardHandle modplayer)
+        {
+            tooltips.Add(new TooltipLine(Mod, "CursesShowcase", "Current cursed : " + modplayer.CursedStringStats(cursesID)));
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
+        //public override bool CanRightClick() => true;
+        //public override void RightClick(Player player)
+        //{
+        //    int item = player.QuickSpawnItem(null, ModContent.ItemType<CursedCard>());
+        //    if (Main.item[item].ModItem is CursedCard card)
+        //    {
+        //        if (card.cursesID > 12)
+        //        {
+        //            card.cursesID = 0;
+        //        }
+        //        else
+        //        {
+        //            card.cursesID++;
+        //        }
+        //    }
+        //}
+        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                if (cursesID > 12)
+                {
+                    cursesID = 1;
+                }
+                else
+                {
+                    cursesID++;
+                }
+            }
+            else
+            {
+                if (!modplayer.listCursesID.Contains(CursedID))
+                {
+                    modplayer.listCursesID.Add(cursesID);
+                }
+            }
         }
         public override bool CanBeCraft => false;
     }

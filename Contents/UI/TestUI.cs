@@ -84,9 +84,9 @@ namespace BossRush.Contents.UI
         public bool hide = true;
         public override void OnInitialize()
         {
-            barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
-            barFrame.Width.Set(200, 0);
-            barFrame.Height.Set(200, 0);
+            barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.ACHIEVEMENTMENUBLUE));
+            barFrame.Width.Set(900, 0);
+            barFrame.Height.Set(1300, 0);
 
             Append(barFrame);
         }
@@ -109,7 +109,6 @@ namespace BossRush.Contents.UI
         internal BossRushAchievementButton BRAbtn;
         public override void Load()
         {
-            return;
             if (!Main.dedServ)
             {
                 BRAbtn = new();
@@ -119,12 +118,10 @@ namespace BossRush.Contents.UI
         }
         public override void UpdateUI(GameTime gameTime)
         {
-            return;
             userInterface?.Update(gameTime);
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            return;
             int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
             if (resourceBarIndex != -1)
             {

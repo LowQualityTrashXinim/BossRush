@@ -116,6 +116,8 @@ Mods: {
 			EnergyBladeEnergyBallProjectile.DisplayName: Energy Blade Energy Ball Projectile
 			ShortSwordProjectile.DisplayName: Short Sword Projectile
 			SwordBroadProjectile.DisplayName: Sword Broad Projectile
+			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
+			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
 		}
 
 		NPCs: {
@@ -1197,6 +1199,11 @@ Mods: {
 			TitanElixir: {
 				DisplayName: Titan Elixir
 				Tooltip: Let your body be shield for the weak
+			}
+
+			CursedCard: {
+				DisplayName: Cursed Card
+				Tooltip: ""
 			}
 		}
 
