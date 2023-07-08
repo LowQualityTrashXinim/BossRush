@@ -1,14 +1,13 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using BossRush.Common.Utils;
 using Terraria.DataStructures;
-using System;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.NPCs
 {
@@ -140,6 +139,7 @@ namespace BossRush.Contents.NPCs
             {
                 ResetEverything();
                 NPC.ai[0] = additionalDelay;
+                NPC.ai[1] = nextattack;
                 return true;
             }
             return false;
