@@ -76,7 +76,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     Projectile.knockBack,
                     Projectile.owner);
             }
-            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 50);
+            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 100);
             if (npc.Count < 1)
             {
                 return;

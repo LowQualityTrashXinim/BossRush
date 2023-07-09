@@ -117,7 +117,7 @@ namespace BossRush.Common.Global
             return ToRotateAgain;
         }
 
-        public static int[] GunType = {
+        public readonly static int[] GunType = {
             ItemID.RedRyder,
             ItemID.Minishark,
             ItemID.Gatligator,
