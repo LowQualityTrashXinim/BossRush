@@ -75,7 +75,7 @@ namespace BossRush.Contents.NPCs
             Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 350);
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
-                NPC.ai[1] = 3;
+                NPC.ai[1] = Main.rand.Next(1,3);
                 NPC.ai[0] = 90;
             }
         }

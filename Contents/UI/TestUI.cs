@@ -42,8 +42,8 @@ namespace BossRush.Contents.UI
             btn.Height.Set(80, 0f);
             btn.Left.Set(0, 0f);
             btn.Top.Set(0, 0f);
-            btn.HAlign = .5f;
-            btn.VAlign = .1f;
+            btn.HAlign = .7f;
+            btn.VAlign = .05f;
             btn.OnLeftClick += new MouseEvent(OpenAchievementUI);
         }
         private void TextGoesWithButtonCreate()
@@ -63,7 +63,6 @@ namespace BossRush.Contents.UI
         }
         private void OpenAchievementUI(UIMouseEvent evt, UIElement listeningElement)
         {
-            Main.NewText("I'm called");
             achievementMenu.hide = false;
         }
 
@@ -85,9 +84,9 @@ namespace BossRush.Contents.UI
         public override void OnInitialize()
         {
             barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.ACHIEVEMENTMENUBLUE));
-            barFrame.Width.Set(900, 0);
-            barFrame.Height.Set(1300, 0);
-
+            barFrame.Width.Set(1204, 0);
+            barFrame.Height.Set(984, 0);
+            barFrame.ImageScale = .7f;
             Append(barFrame);
         }
         public override void Draw(SpriteBatch spriteBatch)
