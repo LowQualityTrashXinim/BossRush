@@ -1205,6 +1205,11 @@ Mods: {
 				DisplayName: Cursed Card
 				Tooltip: ""
 			}
+
+			ModStatsDebugger: {
+				Tooltip: ""
+				DisplayName: Mod Stats Debugger
+			}
 		}
 
 		Buffs: {

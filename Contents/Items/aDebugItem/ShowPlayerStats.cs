@@ -1,12 +1,8 @@
-﻿using BossRush.Contents.Items.Artifact;
-using BossRush.Contents.Items.Card;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Potion;
+﻿using Terraria;
 using BossRush.Texture;
-using System.Collections.Generic;
-using Terraria;
 using Terraria.ModLoader;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Items.aDebugItem
 {
@@ -20,43 +16,33 @@ namespace BossRush.Contents.Items.aDebugItem
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
             PlayerCardHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
-            WonderDrugPlayer drugplayer = Main.LocalPlayer.GetModPlayer<WonderDrugPlayer>();
-            NoHitPlayerHandle nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
-            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
-            Player player = Main.LocalPlayer;
-            chestplayer.GetAmount();
+            string Curses = "";
+            foreach(var curses in cardplayer.listCursesID)
+            {
+                Curses += $"{{{cardplayer.CursedStringStats(curses)}}}\n";
+            }
             TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
-                $"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).Additive}" +
-                $"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).Additive}" +
-                $"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).Additive}" +
-                $"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).Additive}" +
-                $"\nPure/Generic Damage : {player.GetTotalDamage(DamageClass.Generic).Additive}" +
-                $"\nCrit chance : {player.GetCritChance(DamageClass.Generic)}" +
+                "The below are card stats"+
+                $"\nMelee Damage : {cardplayer.MeleeDMG}" +
+                $"\nRange Damage : {cardplayer.RangeDMG}" +
+                $"\nMagic Damage : {cardplayer.MagicDMG}" +
+                $"\nSummon Damage : {cardplayer.SummonDMG}" +
+                $"\nPure/Generic Damage : {cardplayer.DamagePure}" +
+                $"\nCrit chance : {cardplayer.MeleeDMG}" +
                 $"\nCrit damage : {cardplayer.CritDamage}" +
-                $"\nMax HP : {player.statLifeMax2}" +
-                $"\nMax Mana : {player.statManaMax2}" +
-                $"\nHP regen : {player.lifeRegen}" +
-                $"\nMana regen : {player.manaRegen}" +
-                $"\nDefense : {player.statDefense}" +
-                $"\nDefense effectiveness : {player.DefenseEffectiveness.Value}" +
-                $"\nMovement speed : {player.accRunSpeed}" +
-                $"\nJump speed : {player.jumpSpeedBoost}" +
-                $"\nMax minion : {player.maxMinions}" +
-                $"\nMax sentry/turret : {player.maxTurrets}" +
-                $"\nAmount drop chest addition : {chestplayer.amountModifier}" +
-                $"\nAmount drop chest multiplication : {chestplayer.finalMultiplier}" +
-                $"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
-                $"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
-                $"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
-                $"\nMelee drop chance : {chestplayer.MeleeChanceMutilplier}" +
-                $"\nRange drop chance : {chestplayer.RangeChanceMutilplier}" +
-                $"\nMagic drop chance : {chestplayer.MagicChanceMutilplier}" +
-                $"\nSummon drop chance : {chestplayer.SummonChanceMutilplier}" +
-                $"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
-                $"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-                $"\nCurrent active artifact : {artifactplayer.ToStringArtifact()}"
+                $"\nMax HP : {cardplayer.HPMax}" +
+                $"\nMax Mana : {cardplayer.ManaMax}" +
+                $"\nHP regen : {cardplayer.HPRegen}" +
+                $"\nMana regen : {cardplayer.ManaRegen}" +
+                $"\nDefense : {cardplayer.DefenseBase}" +
+                $"\nDefense effectiveness : {cardplayer.DefenseEffectiveness}" +
+                $"\nMovement speed : {cardplayer.Movement}" +
+                $"\nJump speed : {cardplayer.JumpBoost}" +
+                $"\nMax minion : {cardplayer.MinionSlot}" +
+                $"\nMax sentry/turret : {cardplayer.SentrySlot}"+
+                "\n-Below are curses that you have-\n"+
+                Curses
                 );
             tooltips.Add(line);
         }
