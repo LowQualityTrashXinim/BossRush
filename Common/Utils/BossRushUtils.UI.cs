@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush
 {
@@ -22,6 +24,13 @@ namespace BossRush
                 position *= -1;
             }
             area.Left.Set(positionToSet - position, 1f);
+        }
+        public static void SetTextPosition(this UIText text, float width, float height)
+        {
+            text.Width.Set(138, 0f);
+            text.Height.Set(34, 0f);
+            text.Top.Set(height, 0f);
+            text.Left.Set(width * .5f - text.Width.Pixels * .5f, 0f);
         }
         public static void SetPercentageTop(this UIElement area, float positionToSet, float percentage = 0)
         {

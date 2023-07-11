@@ -24,7 +24,7 @@ namespace BossRush.Common.Global
         public override void SetDefaults(Item item)
         {
             base.SetDefaults(item);
-            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
@@ -354,7 +354,7 @@ namespace BossRush.Common.Global
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
@@ -501,7 +501,7 @@ namespace BossRush.Common.Global
         }
         public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
@@ -513,7 +513,7 @@ namespace BossRush.Common.Global
         }
         public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().DisableWeaponOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
