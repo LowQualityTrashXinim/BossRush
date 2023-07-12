@@ -10,10 +10,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Utils;
 using BossRush.Texture;
+using System.IO;
 
 namespace BossRush.Contents.UI
 {
-    internal class BossRushAchievementButton : UIState
+    internal class BossRushAchievementUI : UIState
     {
         private UIText text;
         private UIElement area;
@@ -63,7 +64,7 @@ namespace BossRush.Contents.UI
         }
         private void OpenAchievementUI(UIMouseEvent evt, UIElement listeningElement)
         {
-            achievementMenu.hide = false;
+            achievementMenu.hide = !achievementMenu.hide;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -79,7 +80,7 @@ namespace BossRush.Contents.UI
     class UIAchievementPanel : UIPanel
     {
         private UIImage barFrame;
-        private UIImageButton btn;
+        private List<UIImageButton> listbtn;
         public bool hide = true;
         public override void OnInitialize()
         {
@@ -87,6 +88,32 @@ namespace BossRush.Contents.UI
             barFrame.Width.Set(1204, 0);
             barFrame.Height.Set(984, 0);
             barFrame.ImageScale = .7f;
+            Dictionary<int, BossRushAchivement> achievementData = ModContent.GetInstance<BossRush>().achievementData;
+            float keyCount = achievementData.Keys.Count;
+            foreach (var key in achievementData.Values)
+            {
+                UIImageButton btn = new UIImageButton(ModContent.Request<Texture2D>(key.textureString));
+                btn.Width.Set(60, 0);
+                btn.Height.Set(60, 0);
+                UIText name = new UIText(key.Name);
+                name.SetTextPosition(btn.Width.Pixels, btn.Height.Pixels);
+                UIText desc = new UIText(key.Description);
+                desc.SetTextPosition(btn.Width.Pixels, btn.Height.Pixels);
+                UIText condition = new UIText(key.ConditionText);
+                condition.SetTextPosition(btn.Width.Pixels, btn.Height.Pixels);
+                btn.Append(name);
+                btn.Append(desc);
+                btn.Append(condition);
+                listbtn.Add(btn);
+            }
+            if (listbtn is not null)
+            {
+                for (int i = 0; i < listbtn.Count; i++)
+                {
+                    listbtn[i].VAlign = 1 / keyCount * i;
+                    Append(listbtn[i]);
+                }
+            }
             Append(barFrame);
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -105,7 +132,7 @@ namespace BossRush.Contents.UI
     class UISystem : ModSystem
     {
         private UserInterface userInterface;
-        internal BossRushAchievementButton BRAbtn;
+        internal BossRushAchievementUI BRAbtn;
         public override void Load()
         {
             if (!Main.dedServ)

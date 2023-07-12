@@ -4,12 +4,12 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
     internal class MagicGrenade : SynergyModItem, ISynergyItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.BossRushDefaultMagic(10, 10, 75, 3f, 25, 25, ItemUseStyleID.Swing, ModContent.ProjectileType<MagicGrenadeProjectile>(), 12, 30, true);
@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
     }
     public class MagicGrenadeProjectile : SynergyModProjectile
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<MagicGrenade>();
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 40;
@@ -38,9 +38,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Projectile.tileCollide = true;
             Projectile.timeLeft = 120;
             Projectile.penetrate = 1;
+            Projectile.scale = .75f;
+            DrawOffsetX = -13;
+            DrawOriginOffsetY = -10;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (Projectile.velocity != Vector2.Zero)
+            {
+                Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * 2.5f) * (Projectile.velocity.X > 0 ? 1 : -1);
+            }
             if (Projectile.ai[0] <= 15)
             {
                 Projectile.ai[0]++;
@@ -86,13 +93,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                 npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X > npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
             }
         }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            //Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+            return base.PreDraw(ref lightColor);
+        }
     }
     class CompoundGrenadeProjectile : SynergyModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 30;
+            Projectile.width = Projectile.height = 20;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
             Projectile.timeLeft = 300;
@@ -112,7 +124,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             {
                 Projectile.velocity.Y += .1f;
             }
-            if (!Main.rand.NextBool(5))
+            if (!Main.rand.NextBool(4))
             {
                 return;
             }

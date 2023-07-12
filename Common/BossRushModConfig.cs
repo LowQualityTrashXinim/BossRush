@@ -26,7 +26,7 @@ namespace BossRush.Common
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }
 
-        [DefaultValue(false)]
-        public bool DisableWeaponOverhaul { get; set; }
+        [DefaultValue(true)]
+        public bool RoguelikeOverhaul { get; set; }
     }
 }

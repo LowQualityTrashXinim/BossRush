@@ -421,11 +421,6 @@ Mods: {
 				DisplayName: Zap Snapper
 			}
 
-			TopazSwotaff: {
-				Tooltip: To Be In REWORK
-				DisplayName: Topaz Swotaff
-			}
-
 			StarLightDistributer: {
 				Tooltip: It is beautiful to look at
 				DisplayName: Star Light Distributer
@@ -434,16 +429,6 @@ Mods: {
 			SinisterBook: {
 				Tooltip: ""
 				DisplayName: Sinister Book
-			}
-
-			SapphireSwotaff: {
-				Tooltip: ""
-				DisplayName: Sapphire Swotaff
-			}
-
-			RubySwotaff: {
-				Tooltip: ""
-				DisplayName: Ruby Swotaff
 			}
 
 			PlasmaBlaster: {
@@ -461,16 +446,6 @@ Mods: {
 				DisplayName: Magic Grenade
 			}
 
-			EmeraldSwotaff: {
-				Tooltip: ""
-				DisplayName: Emerald Swotaff
-			}
-
-			DiamondSwotaff: {
-				Tooltip: ""
-				DisplayName: Diamond Swotaff
-			}
-
 			AmethystSwotaff: {
 				Tooltip:
 					'''
@@ -479,6 +454,35 @@ Mods: {
 					Luckily, you can yeet the thing
 					'''
 				DisplayName: Amethyst Swotaff
+			}
+
+			TopazSwotaff: {
+				Tooltip:
+					'''
+					Ah yes, just stick the blade ontop of a staff
+					What can possibility go wrong !
+					'''
+				DisplayName: Topaz Swotaff
+			}
+
+			SapphireSwotaff: {
+				Tooltip: ""
+				DisplayName: Sapphire Swotaff
+			}
+
+			EmeraldSwotaff: {
+				Tooltip: ""
+				DisplayName: Emerald Swotaff
+			}
+
+			RubySwotaff: {
+				Tooltip: ""
+				DisplayName: Ruby Swotaff
+			}
+
+			DiamondSwotaff: {
+				Tooltip: ""
+				DisplayName: Diamond Swotaff
 			}
 
 			HelixTestBullet: {
@@ -1393,11 +1397,13 @@ Mods: {
 						'''
 				}
 
-				DisableWeaponOverhaul: {
-					Label: DisableWeaponOverhaul(W.I.P)
-					Tooltip: Disable the mod overhaul on weapons
+				RoguelikeOverhaul: {
+					Label: "[BETA] Roguelike Overhaul"
+					Tooltip: Enable this to activate mod vanilla terraria overhaul
 				}
 			}
 		}
+
+		Prefixes.BasePrefix.DisplayName: Base Prefix
 	}
 }

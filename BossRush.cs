@@ -1,5 +1,6 @@
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
+using BossRush.Texture;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace BossRush
 {
     public partial class BossRush : Mod
     {
-
         public Dictionary<int, BossRushAchivement> achievementData = new Dictionary<int, BossRushAchivement>();
         public override void Load()
         {
@@ -57,9 +57,9 @@ namespace BossRush
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
         }
         private void AddAchievement()
@@ -69,42 +69,49 @@ namespace BossRush
                 Name = "The beginning of endless",
                 Description = "This mark the beginning of where it all start",
                 ConditionText = "Open your first lootboxs",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
             achievementData.Add(2, new BossRushAchivement()
             {
                 Name = "The first artifact holder",
                 Description = "Thing about to get spicy",
                 ConditionText = "Use the first artifact (beside Broken artifact)",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
             achievementData.Add(3, new BossRushAchivement()
             {
                 Name = "The first of many",
                 Description = "First time is always the best",
                 ConditionText = "Kill king slime boss",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
             achievementData.Add(4, new BossRushAchivement()
             {
                 Name = "The start of addiction",
                 Description = "",
                 ConditionText = "Open 100 lootbox",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
             achievementData.Add(5, new BossRushAchivement()
             {
                 Name = "There are many more",
                 Description = "",
                 ConditionText = "Open 1000 lootbox",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
             achievementData.Add(6, new BossRushAchivement()
             {
                 Name = "Skill check",
                 Description = "",
                 ConditionText = "Beat a boss without getting hit",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
             achievementData.Add(7, new BossRushAchivement()
             {
                 Name = "First success",
                 Description = "",
                 ConditionText = "Beat the mod from start to finish ( Pre boss to post moonlord )",
+                textureString = BossRushTexture.MISSINGTEXTURE
             });
         }
     }
@@ -124,7 +131,7 @@ namespace BossRush
     /// </summary>
     public class BossRushAchivement : BossRushCondition, AchievementDataHolder
     {
-        public string Name, Description, ConditionText;
+        public string Name, Description, ConditionText, textureString;
         public bool ConditionMet = false;
 
         public AchievementHolder dataholder() => Main.LocalPlayer.GetModPlayer<AchievementHolder>();

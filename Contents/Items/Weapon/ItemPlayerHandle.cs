@@ -6,14 +6,18 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
 using BossRush.Common;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Weapon
 {
-    //This mod player should hold all the logic require for the item, if the item is shooting out the projectile, it should be doing that itself !
-    //Same with projectile unless it is a vanilla projectile then we can refer to global projectile
-    //This should only hold custom bool or data that we think should be transfer
-    //We will name using the following format "Synergy item"_"vanilla item"
-    //Anything that relate to actual logic and how player interact from the item could also go in here
+    /// <summary>
+    ///This mod player should hold all the logic require for the item, if the item is shooting out the projectile, it should be doing that itself !<br/>
+    ///Same with projectile unless it is a vanilla projectile then we can refer to global projectile<br/>
+    ///This should only hold custom bool or data that we think should be hold/use/transfer<br/>
+    ///We will name using the following format "Synergy item"_"vanilla item" to assign synergy power so that it is clear to read and easy to maintain<br/>
+    ///Anything that relate to actual logic and how player interact from the item could or shoulds also go in here<br/>
+    /// </summary>
     public class PlayerSynergyItemHandle : ModPlayer
     {
         public bool BurningPassion_WandofFrosting = false;
@@ -36,6 +40,11 @@ namespace BossRush.Contents.Items.Weapon
         public int EnergyBlade_Code1_Energy = 0;
 
         public bool Swotaff_Spear = false;
+
+        public bool Deagle_PhoenixBlaster = false;
+        public bool Deagle_PhoenixBlaster_Critical = false;
+
+        public bool OvergrownMinishark_CrimsonRod = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -58,6 +67,10 @@ namespace BossRush.Contents.Items.Weapon
             EnergyBlade_Code2 = false;
 
             Swotaff_Spear = false;
+
+            Deagle_PhoenixBlaster = false;
+
+            OvergrownMinishark_CrimsonRod = false;
         }
         int check = 1;
         public override void PostUpdate()
@@ -79,6 +92,16 @@ namespace BossRush.Contents.Items.Weapon
                 }
             }
         }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if(Deagle_PhoenixBlaster)
+            {
+                if(hit.Crit)
+                {
+                    Deagle_PhoenixBlaster_Critical = true;
+                }
+            }
+        }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
             if (Player.ItemAnimationActive && Player.HeldItem.ModItem is BurningPassion && Player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] > 0)
@@ -95,7 +118,7 @@ namespace BossRush.Contents.Items.Weapon
             base.ModifyTooltips(tooltips);
             ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
             TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
-            line.OverrideColor = BossRushColor.MultiColor(new List<Color> { new Color(50, 175, 175), Color.White }, 3);
+            line.OverrideColor = BossRushColor.MultiColor(new List<Color> { new Color(25, 150, 150), Color.White }, 5);
             tooltips.Add(line);
         }
         public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }

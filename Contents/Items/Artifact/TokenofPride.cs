@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ID;
-using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 
@@ -8,8 +7,6 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class TokenofPride : ModItem, IArtifactItem
     {
-        public override string Texture => BossRushTexture.TOKENOFPRIDE;
-
         public int ArtifactID => 2;
 
         public override void SetStaticDefaults()
