@@ -57,9 +57,9 @@ namespace BossRush
                 }
 
             }
-            catch
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
             }
         }
         private void AddAchievement()

@@ -125,20 +125,14 @@ namespace BossRush.Contents.Items.Card
         public override void OnSpawn(IEntitySource source)
         {
             if (Tier <= 0)
-            {
                 return;
-            }
             if (CardStatsNumber.Count > 0)
-            {
                 return;
-            }
             bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
             SetBadStatsBaseOnTier(hasMagicDeck);
             int offset = 0;
             if (CardStats.Count > 0)
-            {
                 offset++;
-            }
             for (int i = offset; i < PostTierModify + offset; i++)
             {
                 CardStats.Add(SetStatsToAddBaseOnTier());
@@ -149,10 +143,7 @@ namespace BossRush.Contents.Items.Card
             {
                 for (int l = i + 1; l < CardStats.Count; l++)
                 {
-                    if (CardStats[i] != CardStats[l])
-                    {
-                        continue;
-                    }
+                    if (CardStats[i] != CardStats[l]) continue;
                     CardStatsNumber[i] += CardStatsNumber[l];
                     CardStats.RemoveAt(l);
                     CardStatsNumber.RemoveAt(l);
@@ -278,7 +269,7 @@ namespace BossRush.Contents.Items.Card
                 case 4:
                     return (statsNum + Main.rand.Next(4, 7) + .01f) * PostTierModify * multi * .01f;
                 default:
-                    return (statsNum + Main.rand.Next(1, 1)) * PostTierModify * multi * .01f;
+                    return (statsNum + Main.rand.Next(1, 10)) * PostTierModify * multi * .01f;
             }
         }
         /// <summary>
