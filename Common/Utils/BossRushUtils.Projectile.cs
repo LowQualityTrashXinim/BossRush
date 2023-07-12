@@ -32,11 +32,15 @@ namespace BossRush
             Main.projectile[projectile].hostile = true;
             Main.projectile[projectile].friendly = false;
         }
-        public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0)
+        public static void ProjectileDefaultDrawInfo(this Projectile projectile, out Texture2D texture, out Vector2 origin)
         {
             Main.instance.LoadProjectile(projectile.type);
-            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
+            texture = TextureAssets.Projectile[projectile.type].Value;
+            origin = new Vector2(texture.Width * 0.5f, projectile.height * 0.5f);
+        }
+        public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0)
+        {
+            projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
             for (int k = 0; k < projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);

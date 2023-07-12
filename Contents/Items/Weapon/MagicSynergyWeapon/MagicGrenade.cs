@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
@@ -92,13 +93,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                 npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X > npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
             }
         }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            //Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+            return base.PreDraw(ref lightColor);
+        }
     }
     class CompoundGrenadeProjectile : SynergyModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 30;
+            Projectile.width = Projectile.height = 20;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
             Projectile.timeLeft = 300;
@@ -118,7 +124,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             {
                 Projectile.velocity.Y += .1f;
             }
-            if (!Main.rand.NextBool(5))
+            if (!Main.rand.NextBool(4))
             {
                 return;
             }
