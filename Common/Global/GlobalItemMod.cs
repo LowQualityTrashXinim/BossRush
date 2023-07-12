@@ -6,6 +6,49 @@ using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 
 namespace BossRush.Common.Global
 {
+    enum TypeItem
+    {
+        //generalize
+        Water,
+        Ice,
+        Nature,
+        Fire,
+        Corruption,
+        Crimson,
+        Hallow,
+        Light,
+        Dark,
+        Life,//Weapon that give life
+        Chaotic,
+        Energy,
+        //Sword
+        Sword,
+        ShortSword,
+        GreatSword,
+        LongSword,
+        //Spear
+        Pike,
+        Trident,
+        Glaive,
+        Naginata,
+        //Gun
+        Pistol,
+        Rifle,
+        Sniper,
+        Shotgun,
+        //Bow
+        ShortBow,
+        LongBow,
+        CrossBow,
+        //Magic
+        TomeSpell,
+        Wand,
+        Staff,
+        //Summon
+        Whip,
+        SummonStaff,
+        MiscSummon,
+    }
     /// <summary>
     /// This is where we should modify vanilla item
     /// </summary>
