@@ -9,7 +9,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
     internal class MagicGrenade : SynergyModItem, ISynergyItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.BossRushDefaultMagic(10, 10, 75, 3f, 25, 25, ItemUseStyleID.Swing, ModContent.ProjectileType<MagicGrenadeProjectile>(), 12, 30, true);
@@ -30,7 +29,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
     }
     public class MagicGrenadeProjectile : SynergyModProjectile
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<MagicGrenade>();
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 40;
@@ -38,9 +37,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Projectile.tileCollide = true;
             Projectile.timeLeft = 120;
             Projectile.penetrate = 1;
+            Projectile.scale = .75f;
+            DrawOffsetX = -13;
+            DrawOriginOffsetY = -10;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (Projectile.velocity != Vector2.Zero)
+            {
+                Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * 2.5f) * (Projectile.velocity.X > 0 ? 1 : -1);
+            }
             if (Projectile.ai[0] <= 15)
             {
                 Projectile.ai[0]++;

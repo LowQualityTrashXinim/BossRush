@@ -106,10 +106,13 @@ namespace BossRush.Contents.UI
                 btn.Append(condition);
                 listbtn.Add(btn);
             }
-            for (int i = 0; i < listbtn.Count; i++)
+            if (listbtn is not null)
             {
-                listbtn[i].VAlign = 1 / keyCount * i;
-                Append(listbtn[i]);
+                for (int i = 0; i < listbtn.Count; i++)
+                {
+                    listbtn[i].VAlign = 1 / keyCount * i;
+                    Append(listbtn[i]);
+                }
             }
             Append(barFrame);
         }
