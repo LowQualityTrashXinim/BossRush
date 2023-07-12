@@ -1403,5 +1403,7 @@ Mods: {
 				}
 			}
 		}
+
+		Prefixes.BasePrefix.DisplayName: Base Prefix
 	}
 }

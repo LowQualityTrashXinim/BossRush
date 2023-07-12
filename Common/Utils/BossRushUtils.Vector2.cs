@@ -89,6 +89,23 @@ namespace BossRush
             ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
             return ToRotateAgain;
         }
+        /// <summary>
+        /// Only use this if you know the projectile can get spawn into a tile<br/>
+        /// </summary>
+        /// <param name="positionCurrent"></param>
+        /// <param name="positionTo"></param>
+        /// <returns></returns>
+        public static Vector2 SpawnRanPositionThatIsNotIntoTile(Vector2 positionCurrent, float halfwidth, float halfheight)
+        {
+            int counter = 0;
+            Vector2 pos;
+            do
+            {
+                counter++;
+                pos = positionCurrent + Main.rand.NextVector2Circular(halfwidth, halfheight);
+            } while (!Collision.CanHitLine(positionCurrent, 0, 0, pos, 0, 0) || counter > 50);
+            return pos;
+        }
         public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).Length() <= distance;
         /// <summary>
         /// This will take a approximation of the rough position that it need to go and then stop the npc from moving when it reach that position 

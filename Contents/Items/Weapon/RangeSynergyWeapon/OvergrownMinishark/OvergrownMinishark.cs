@@ -1,13 +1,14 @@
-﻿using BossRush.Common.Global;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 {
-    internal class OvergrownMinishark : ModItem, ISynergyItem
+    internal class OvergrownMinishark : SynergyModItem, ISynergyItem
     {
         public override void SetDefaults()
         {
@@ -21,6 +22,20 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         {
             return new Vector2(-4, 0);
         }
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            if (modplayer.OvergrownMinishark_CrimsonRod)
+            {
+                tooltips.Add(new TooltipLine(Mod, "OvergrownMinishark_CrimsonRod", $"[i:{ItemID.CrimsonRod}] When shooting, you summon blood rain at cursor"));
+            }
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if (player.HasItem(ItemID.CrimsonRod))
+            {
+                modplayer.OvergrownMinishark_CrimsonRod = true;
+            }
+        }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             Vector2 offset = velocity.SafeNormalize(Vector2.UnitX) * 40;
@@ -29,6 +44,16 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 position += offset;
             }
             velocity = velocity.RotateRandom(7);
+        }
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
+            if (modplayer.OvergrownMinishark_CrimsonRod)
+            {
+                Vector2 pos = Main.MouseWorld + new Vector2(Main.rand.NextFloat(-30, 30), -1000);
+                int proj = Projectile.NewProjectile(source, pos, Vector2.UnitY * Main.rand.NextFloat(9, 11), ProjectileID.BloodRain, damage, knockback, player.whoAmI);
+                Main.projectile[proj].penetrate = 1;
+            }
+            CanShootItem = true;
         }
         public override void AddRecipes()
         {
@@ -56,7 +81,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 return;
             }
             target.AddBuff(BuffID.Poisoned, 420);
-            if(Main.rand.NextBool(10))
+            if (Main.rand.NextBool(10))
             {
                 float randomRotation = Main.rand.Next(90);
                 Vector2 velocity;
