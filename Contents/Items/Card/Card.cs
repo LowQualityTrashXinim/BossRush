@@ -36,6 +36,7 @@ namespace BossRush.Contents.Items.Card
         ChestLootDropIncrease,
         MaxMinion,
         MaxSentry,
+        Thorn
         //Luck
     }
     abstract class CardItem : ModItem
@@ -184,6 +185,7 @@ namespace BossRush.Contents.Items.Card
             }
             if (Tier >= 2)
             {
+                stats.Add(PlayerStats.Thorn);
                 stats.Add(PlayerStats.DefenseEffectiveness);
                 stats.Add(PlayerStats.CritDamage);
                 stats.Add(PlayerStats.CritChance);
@@ -346,6 +348,9 @@ namespace BossRush.Contents.Items.Card
                         break;
                     case PlayerStats.DefenseEffectiveness:
                         modplayer.DefenseEffectiveness += CardStatsNumber[i];
+                        break;
+                    case PlayerStats.Thorn:
+                        modplayer.Thorn += CardStatsNumber[i];
                         break;
                     case PlayerStats.ChestLootDropIncrease:
                         modplayer.DropAmountIncrease += (int)CardStatsNumber[i];
@@ -649,7 +654,7 @@ namespace BossRush.Contents.Items.Card
         //Silver Tier
         public float DamagePure = 0;
         public int CritStrikeChance = 0;
-
+        public float Thorn = 0;
         public float CritDamage = 1;
         public float DefenseEffectiveness = 1;
         //Gold
@@ -764,6 +769,7 @@ namespace BossRush.Contents.Items.Card
             Player.DefenseEffectiveness *= Math.Clamp(DefenseEffectiveness, 0, maxStatCanBeAchieved);
             Player.maxMinions = Math.Clamp(MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
             Player.maxTurrets = Math.Clamp(SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
+            Player.thorns += Thorn;
             if (LimitedResource)
             {
                 Player.lifeRegen = 0;
@@ -793,6 +799,7 @@ namespace BossRush.Contents.Items.Card
             packet.Write(DropAmountIncrease);
             packet.Write(MinionSlot);
             packet.Write(SentrySlot);
+            packet.Write(Thorn);
             foreach (int item in listCursesID)
             {
                 packet.Write(item);
@@ -819,6 +826,7 @@ namespace BossRush.Contents.Items.Card
             tag["DropAmountIncrease"] = DropAmountIncrease;
             tag["MinionSlot"] = MinionSlot;
             tag["SentrySlot"] = SentrySlot;
+            tag["Thorn"] = Thorn;
             tag["CursesID"] = listCursesID;
         }
         public override void LoadData(TagCompound tag)
@@ -841,6 +849,7 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = (int)tag["DropAmountIncrease"];
             MinionSlot = (int)tag["MinionSlot"];
             SentrySlot = (int)tag["SentrySlot"];
+            Thorn = (float)tag["Thorn"];
             listCursesID = tag.Get<List<int>>("CursesID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
@@ -863,6 +872,7 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = reader.ReadInt32();
             MinionSlot = reader.ReadInt32();
             SentrySlot = reader.ReadInt32();
+            Thorn = reader.ReadSingle();
             for (int i = 0; i < listCursesID.Count; i++)
             {
                 listCursesID[i] = reader.ReadByte();
@@ -889,6 +899,7 @@ namespace BossRush.Contents.Items.Card
             clone.DropAmountIncrease = DropAmountIncrease;
             clone.MinionSlot = MinionSlot;
             clone.SentrySlot = SentrySlot;
+            clone.Thorn = Thorn;
             clone.listCursesID = listCursesID;
         }
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -912,6 +923,7 @@ namespace BossRush.Contents.Items.Card
             if (DropAmountIncrease != clone.DropAmountIncrease) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (MinionSlot != clone.MinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (SentrySlot != clone.SentrySlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (Thorn != clone.Thorn) SyncPlayer(-1, Main.myPlayer, false);
             if (listCursesID != clone.listCursesID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
