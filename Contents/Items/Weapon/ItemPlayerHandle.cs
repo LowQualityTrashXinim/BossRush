@@ -42,6 +42,8 @@ namespace BossRush.Contents.Items.Weapon
         public bool Swotaff_Spear = false;
 
         public bool Deagle_PhoenixBlaster = false;
+        public bool Deagle_DaedalusStormBow = false;
+        public int Deagle_DaedalusStormBow_coolDown = 0;
         public bool Deagle_PhoenixBlaster_Critical = false;
 
         public bool OvergrownMinishark_CrimsonRod = false;
@@ -69,6 +71,7 @@ namespace BossRush.Contents.Items.Weapon
             Swotaff_Spear = false;
 
             Deagle_PhoenixBlaster = false;
+            Deagle_DaedalusStormBow = false;
 
             OvergrownMinishark_CrimsonRod = false;
         }
@@ -91,14 +94,38 @@ namespace BossRush.Contents.Items.Weapon
                     check = 0;
                 }
             }
+            if(item.ModItem is Deagle)
+            {
+                if(Deagle_DaedalusStormBow)
+                {
+                    Deagle_DaedalusStormBow_coolDown = BossRushUtils.CoolDown(Deagle_DaedalusStormBow_coolDown);
+                }
+            }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if(Deagle_PhoenixBlaster)
+            if (hit.Crit)
             {
-                if(hit.Crit)
+                if (Deagle_PhoenixBlaster)
                 {
                     Deagle_PhoenixBlaster_Critical = true;
+                }
+                if(Deagle_DaedalusStormBow && Deagle_DaedalusStormBow_coolDown <= 0)
+                {
+                    for (int i = 0; i < 15; i++)
+                    {
+                        Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100,100), Main.rand.Next(-1100,-1000));
+                        int projectile = Projectile.NewProjectile(
+                            Player.GetSource_ItemUse_WithPotentialAmmo(Player.HeldItem, Player.HeldItem.ammo),
+                            positionAboveSky, 
+                            (target.Center - positionAboveSky).SafeNormalize(Vector2.Zero) * 20f, 
+                            ProjectileID.BulletHighVelocity, 
+                            hit.Damage, 
+                            0, 
+                            Player.whoAmI);
+                        Main.projectile[projectile].usesLocalNPCImmunity = true;
+                    }
+                    Deagle_DaedalusStormBow_coolDown = 600;
                 }
             }
         }
