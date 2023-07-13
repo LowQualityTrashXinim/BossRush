@@ -24,12 +24,21 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
             {
                 modplayer.Deagle_PhoenixBlaster = true;
             }
+            if(player.HasItem(ItemID.DaedalusStormbow))
+            {
+                modplayer.Deagle_DaedalusStormBow = true;
+            }
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
             if (modplayer.Deagle_PhoenixBlaster)
             {
                 tooltips.Add(new TooltipLine(Mod, "Deagle_PhoenixBlaster", $"[i:{ItemID.PhoenixBlaster}] You shoot out additional bullet but at a random position, getting crit will make the next shot shoot out a fire phoenix dealing quadruple damage"));
+            }
+            if(modplayer.Deagle_DaedalusStormBow)
+            {
+                tooltips.Add(new TooltipLine(Mod, "Deagle_DaedalusStormBow",
+                    $"[i:{ItemID.DaedalusStormbow}] Upon critical hit, storm of bullet fly down at target, have a 10 second cool down"));
             }
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

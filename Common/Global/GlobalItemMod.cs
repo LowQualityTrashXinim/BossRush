@@ -21,6 +21,12 @@ namespace BossRush.Common.Global
         Life,//Weapon that give life
         Chaotic,
         Energy,
+        //Generalize type 2
+        HeavyWeight,
+        LightWeight,
+        Technology,
+        Chemical,
+        Biological,
         //Sword
         Sword,
         ShortSword,
@@ -48,6 +54,15 @@ namespace BossRush.Common.Global
         Whip,
         SummonStaff,
         MiscSummon,
+        //Special
+        Synergy,
+        Terra,
+        True,
+        Omega,
+        Alpha,
+        Delta,
+        Beta,
+        Pure
     }
     /// <summary>
     /// This is where we should modify vanilla item
