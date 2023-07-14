@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Chest
                 switch (Main.rand.Next(11))
                 {
                     case 0:
-                        player.QuickSpawnItem(entitySource, ModContent.ItemType<WoodenLootbox>());
+                        player.QuickSpawnItem(entitySource, ModContent.ItemType<WoodenLootBox>());
                         break;
                     case 1:
                         player.QuickSpawnItem(entitySource, ModContent.ItemType<IronLootBox>());

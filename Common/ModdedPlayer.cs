@@ -112,7 +112,7 @@ namespace BossRush.Common
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
             List<Item> items = new List<Item>() {
-            new Item(ModContent.ItemType<WoodenLootbox>()),
+            new Item(ModContent.ItemType<WoodenLootBox>()),
             new Item(ModContent.ItemType<LunchBox>()),
             };
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
@@ -149,7 +149,7 @@ namespace BossRush.Common
             }
             if (Player.name == "ImNotGud")
             {
-                items.Add(new Item(ModContent.ItemType<WoodenLootbox>(), 10));
+                items.Add(new Item(ModContent.ItemType<WoodenLootBox>(), 10));
             }
             if (Player.name.ToLower().Trim() == "drugaddict")
             {

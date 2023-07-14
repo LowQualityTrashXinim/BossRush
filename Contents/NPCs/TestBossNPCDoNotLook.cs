@@ -8,6 +8,7 @@ using BossRush.Common.Utils;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.NPCs
 {
@@ -18,7 +19,7 @@ namespace BossRush.Contents.NPCs
     //The code in this file must follow the above rule
     internal class ChestLord : ModNPC
     {
-        public override string Texture => "BossRush/Contents/Items/Chest/WoodenTreasureChest";
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
         public override void SetDefaults()
         {
             NPC.lifeMax = 6000;

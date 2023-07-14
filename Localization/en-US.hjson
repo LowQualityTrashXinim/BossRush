@@ -600,131 +600,6 @@ Mods: {
 				DisplayName: True Brain Of Cthulhu Trophy
 			}
 
-			WoodenTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Wooden Treasure Chest
-			}
-
-			UnderworldTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Underworld Treasure Chest
-			}
-
-			StoneTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Stone Treasure Chest
-			}
-
-			StarTreasureChest: {
-				Tooltip: ""
-				DisplayName: Star Treasure Chest
-			}
-
-			SilverTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Silver Treasure Chest
-			}
-
-			ShadowTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Shadow Treasure Chest
-			}
-
-			RainbowTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Rainbow Treasure Chest
-			}
-
-			NatureTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Nature Treasure Chest
-			}
-
-			MoonTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Moon Treasure Chest
-			}
-
-			MechTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Mech Treasure Chest
-			}
-
-			LunchBox: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Lunch Box
-			}
-
-			LunaticTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Lunatic Treasure Chest
-			}
-
-			LihzahrdTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Lihzahrd Treasure Chest
-			}
-
-			IceTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Ice Treasure Chest
-			}
-
-			HoneyTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Honey Treasure Chest
-			}
-
-			GoldTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Gold Treasure Chest
-			}
-
-			EmpressTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Empress Treasure Chest
-			}
-
-			DukeTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Duke Treasure Chest
-			}
-
-			DeerclopTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Deerclop Treasure Chest
-			}
-
-			CrystalTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Crystal Treasure Chest
-			}
-
-			CrimsonTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Crimson Treasure Chest
-			}
-
-			CorruptedTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Corrupted Treasure Chest
-			}
-
-			BuilderTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Builder Treasure Chest
-			}
-
-			BloodTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Blood Treasure Chest
-			}
-
-			BlackTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Black Treasure Chest
-			}
-
 			VortexCard: {
 				Tooltip: Increase your chance to get range weapon from chest by 50 !
 				DisplayName: Vortex Card
@@ -1215,6 +1090,136 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Mod Stats Debugger
 			}
+
+			CorruptionLootBox: {
+				DisplayName: Corruption Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			CrimsonLootBox: {
+				DisplayName: Crimson Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			GoldLootBox: {
+				DisplayName: Gold Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			IceLootBox: {
+				DisplayName: Ice Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			IronLootBox: {
+				DisplayName: Iron Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			SilverLootBox: {
+				DisplayName: Silver Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			UnderworldLootBox: {
+				DisplayName: Underworld Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			WoodenLootBox: {
+				DisplayName: Wooden Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			UnderworldTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Underworld Treasure Chest
+			}
+
+			StarTreasureChest: {
+				Tooltip: ""
+				DisplayName: Star Treasure Chest
+			}
+
+			ShadowTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Shadow Treasure Chest
+			}
+
+			RainbowTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Rainbow Treasure Chest
+			}
+
+			NatureTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Nature Treasure Chest
+			}
+
+			MoonTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Moon Treasure Chest
+			}
+
+			MechTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Mech Treasure Chest
+			}
+
+			LunchBox: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Lunch Box
+			}
+
+			LunaticTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Lunatic Treasure Chest
+			}
+
+			LihzahrdTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Lihzahrd Treasure Chest
+			}
+
+			HoneyTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Honey Treasure Chest
+			}
+
+			EmpressTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Empress Treasure Chest
+			}
+
+			DukeTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Duke Treasure Chest
+			}
+
+			DeerclopTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Deerclop Treasure Chest
+			}
+
+			CrystalTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Crystal Treasure Chest
+			}
+
+			BuilderTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Builder Treasure Chest
+			}
+
+			BloodTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Blood Treasure Chest
+			}
+
+			BlackTreasureChest: {
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+				DisplayName: Black Treasure Chest
+			}
 		}
 
 		Buffs: {
@@ -1404,7 +1409,6 @@ Mods: {
 				}
 			}
 		}
-
 		Prefixes.BasePrefix.DisplayName: Base Prefix
 	}
 }
