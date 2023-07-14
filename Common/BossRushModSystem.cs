@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.GameContent;
+using Terraria.ModLoader.IO;
+using Humanizer;
 
 namespace BossRush.Common
 {
