@@ -7,7 +7,6 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
 {
     internal class KingSlimeDelight : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.accessory = true;

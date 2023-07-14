@@ -14,8 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
-            Projectile.width = 32;
-            Projectile.height = 32;
+            Projectile.width = Projectile.height = 32;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }

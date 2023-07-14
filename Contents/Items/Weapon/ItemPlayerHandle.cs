@@ -47,6 +47,7 @@ namespace BossRush.Contents.Items.Weapon
         public bool Deagle_PhoenixBlaster_Critical = false;
 
         public bool OvergrownMinishark_CrimsonRod = false;
+        public bool OvergrownMinishark_PlatinumShortSword = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -74,6 +75,7 @@ namespace BossRush.Contents.Items.Weapon
             Deagle_DaedalusStormBow = false;
 
             OvergrownMinishark_CrimsonRod = false;
+            OvergrownMinishark_PlatinumShortSword = false;
         }
         int check = 1;
         public override void PostUpdate()

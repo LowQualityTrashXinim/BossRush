@@ -118,6 +118,7 @@ Mods: {
 			SwordBroadProjectile.DisplayName: Sword Broad Projectile
 			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
 			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
+			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Overgrown Mini Shark Platinum Short Sword Projectile
 		}
 
 		NPCs: {

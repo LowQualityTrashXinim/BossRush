@@ -35,6 +35,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
             {
                 modplayer.OvergrownMinishark_CrimsonRod = true;
             }
+            if (player.HasItem(ItemID.PlatinumShortsword))
+            {
+                modplayer.OvergrownMinishark_PlatinumShortSword = true;
+            }
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -61,6 +65,22 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 .AddIngredient(ItemID.Minishark)
                 .AddIngredient(ItemID.Vilethorn)
                 .Register();
+        }
+    }
+    class OvergrownMiniSharkPlatinumShortSwordProjectile : SynergyModProjectile
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumShortsword);
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 32;
+            Projectile.penetrate = -1;
+            Projectile.tileCollide = false;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Melee;
+        }
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            base.SynergyAI(player, modplayer);
         }
     }
     class OvergrownMinisharkProjectileModify : GlobalProjectile
