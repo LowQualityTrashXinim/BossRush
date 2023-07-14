@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class DeerclopTreasureChest : ChestLootDrop
+    class DeerclopTreasureChest : LootBoxBase
     {
         public override void SetDefaults()
         {

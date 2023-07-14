@@ -18,7 +18,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Chest
 {
-    public abstract class ChestLootDrop : ModItem
+    public abstract class LootBoxBase : ModItem
     {
         private List<int> DropItemMelee = new List<int>();
         private List<int> DropItemRange = new List<int>();

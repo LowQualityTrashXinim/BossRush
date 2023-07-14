@@ -4,7 +4,7 @@ using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class NatureTreasureChest : ChestLootDrop
+    class NatureTreasureChest : LootBoxBase
     {
         public override void SetStaticDefaults()
         {

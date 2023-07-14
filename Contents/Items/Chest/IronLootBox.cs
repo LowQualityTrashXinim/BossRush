@@ -5,7 +5,7 @@ using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class StoneTreasureChest : ChestLootDrop
+    class IronLootBox : LootBoxBase
     {
         public override void SetStaticDefaults()
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class BloodTreasureChest : ChestLootDrop
+    internal class BloodTreasureChest : LootBoxBase
     {
         public override void SetDefaults()
         {

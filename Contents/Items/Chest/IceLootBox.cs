@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class IceTreasureChest : ChestLootDrop
+    internal class IceLootBox : LootBoxBase
     {
         public override void SetStaticDefaults()
         {

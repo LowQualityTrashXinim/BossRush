@@ -6,7 +6,7 @@ using BossRush.Texture;
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class UnderworldTreasureChest : ChestLootDrop
+    internal class UnderworldLootBox : LootBoxBase
     {
         public override string Texture => BossRushTexture.PLACEHOLDERCHEST;
         public override void SetDefaults()

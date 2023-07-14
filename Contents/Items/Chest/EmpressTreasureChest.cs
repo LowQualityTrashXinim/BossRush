@@ -4,7 +4,7 @@ using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EmpressDelight;
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class EmpressTreasureChest : ChestLootDrop
+    internal class EmpressTreasureChest : LootBoxBase
     {
         public override void SetDefaults()
         {

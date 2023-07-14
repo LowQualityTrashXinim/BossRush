@@ -2,7 +2,7 @@
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class DukeTreasureChest : ChestLootDrop
+    internal class DukeTreasureChest : LootBoxBase
     {
         public override void SetDefaults()
         {

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class MechTreasureChest : ChestLootDrop
+    class MechTreasureChest : LootBoxBase
     {
         public override void SetStaticDefaults()
         {

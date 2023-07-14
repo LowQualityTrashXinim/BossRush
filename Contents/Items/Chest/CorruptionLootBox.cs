@@ -6,7 +6,7 @@ using BossRush.Contents.Items.Spawner;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class CrimsonTreasureChest : ChestLootDrop
+    class CorruptionLootBox : LootBoxBase
     {
         public override void SetDefaults()
         {
@@ -16,7 +16,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int>() { 1, 2, 3, 5 };
         public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5 };
-        public override void OnRightClick(Player player,ChestLootDropPlayer modplayer)
+        public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);
             if (player.IsDebugPlayer())
@@ -28,9 +28,9 @@ namespace BossRush.Contents.Items.Chest
                 switch (Main.rand.Next(5))
                 {
                     case 0:
-                        player.QuickSpawnItem(entitySource, ItemID.CrimsonHelmet);
-                        player.QuickSpawnItem(entitySource, ItemID.CrimsonScalemail);
-                        player.QuickSpawnItem(entitySource, ItemID.CrimsonGreaves);
+                        player.QuickSpawnItem(entitySource, ItemID.ShadowHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.ShadowScalemail);
+                        player.QuickSpawnItem(entitySource, ItemID.ShadowGreaves);
                         break;
                     case 1:
                         player.QuickSpawnItem(entitySource, ItemID.MeteorHelmet);

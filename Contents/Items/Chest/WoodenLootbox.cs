@@ -8,7 +8,7 @@ using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class WoodenTreasureChest : ChestLootDrop
+    class WoodenLootbox : LootBoxBase
     {
         public override void SetDefaults()
         {

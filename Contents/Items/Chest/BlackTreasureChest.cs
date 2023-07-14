@@ -7,7 +7,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class BlackTreasureChest : ChestLootDrop
+    class BlackTreasureChest : LootBoxBase
     {
         public override void SetDefaults()
         {
@@ -76,26 +76,26 @@ namespace BossRush.Contents.Items.Chest
             switch (Main.rand.Next(11))
             {
                 case 0:
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<WoodenTreasureChest>());
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<WoodenLootbox>());
                     break;
                 case 1:
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<StoneTreasureChest>());
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<IronLootBox>());
                     break;
                 case 2:
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverTreasureChest>());
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverLootBox>());
                     break;
                 case 3:
                     if (WorldGen.crimson)
                     {
-                        player.QuickSpawnItem(entitySource, ModContent.ItemType<CrimsonTreasureChest>());
+                        player.QuickSpawnItem(entitySource, ModContent.ItemType<CrimsonLootBox>());
                     }
                     else
                     {
-                        player.QuickSpawnItem(entitySource, ModContent.ItemType<CorruptedTreasureChest>());
+                        player.QuickSpawnItem(entitySource, ModContent.ItemType<CorruptionLootBox>());
                     }
                     break;
                 case 4:
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldTreasureChest>());
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldLootBox>());
                     break;
                 case 5:
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<HoneyTreasureChest>());

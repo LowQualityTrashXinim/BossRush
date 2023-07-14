@@ -8,7 +8,7 @@ using BossRush.Contents.Items.Artifact;
 
 namespace BossRush.Contents.Items.Chest
 {
-    class ShadowTreasureChest : ChestLootDrop
+    class ShadowTreasureChest : LootBoxBase
     {
         public override void SetStaticDefaults()
         {

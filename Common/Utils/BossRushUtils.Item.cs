@@ -96,7 +96,7 @@ namespace BossRush
         /// <param name="player"></param>
         public static void DropWeaponFromChestPool(Player player)
         {
-            ChestLootDrop.GetWeapon(out int Weapon, out int amount);
+            LootBoxBase.GetWeapon(out int Weapon, out int amount);
             player.QuickSpawnItem(null, Weapon, amount);
         }
         public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck)

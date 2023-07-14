@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.Artifact
                         .AddIngredient(ModContent.ItemType<BrokenArtifact>())
                         .AddIngredient(ModContent.ItemType<PowerEnergy>())
                         .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                        .AddIngredient(ModContent.ItemType<WoodenTreasureChest>())
+                        .AddIngredient(ModContent.ItemType<WoodenLootbox>())
                         .Register();
                         continue;
                     }
