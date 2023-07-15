@@ -8,7 +8,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 {
-    internal class StarLightDistributer : ModItem, ISynergyItem
+    internal class StarLightDistributer : SynergyModItem, ISynergyItem
     {
         public override void SetDefaults()
         {
@@ -17,11 +17,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item12;
         }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<StarLightDistributerPlayer>().StarLightDistributer)
+            if (modplayer.StarLightDistributer_MeteorArmor)
             {
                 tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.MeteorHelmet}][i:{ItemID.MeteorSuit}][i:{ItemID.MeteorLeggings}]Attack now cost 0 mana"));
             }
@@ -74,28 +72,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
                 .AddIngredient(ItemID.SpaceGun)
                 .AddIngredient(ItemID.ThunderStaff)
                 .Register();
-        }
-    }
-    class StarLightDistributerPlayer : ModPlayer
-    {
-        public bool StarLightDistributer;
-        public override void ResetEffects()
-        {
-            StarLightDistributer = false;
-        }
-        public override void UpdateEquips()
-        {
-            if (Player.head == 6 && Player.body == 6 && Player.legs == 6)
-            {
-                StarLightDistributer = true;
-            }
-        }
-        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
-        {
-            if (StarLightDistributer && item.type == ModContent.ItemType<StarLightDistributer>())
-            {
-                mult = 0f;
-            }
         }
     }
 }

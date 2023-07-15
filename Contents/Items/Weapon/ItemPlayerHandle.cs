@@ -8,6 +8,7 @@ using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
 using BossRush.Common;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -48,6 +49,8 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool OvergrownMinishark_CrimsonRod = false;
         public bool OvergrownMinishark_PlatinumShortSword = false;
+
+        public bool StarLightDistributer_MeteorArmor = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -76,6 +79,8 @@ namespace BossRush.Contents.Items.Weapon
 
             OvergrownMinishark_CrimsonRod = false;
             OvergrownMinishark_PlatinumShortSword = false;
+
+            StarLightDistributer_MeteorArmor = false;
         }
         int check = 1;
         public override void PostUpdate()
@@ -138,6 +143,21 @@ namespace BossRush.Contents.Items.Weapon
                 return true;
             }
             return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
+        }
+
+        public override void UpdateEquips()
+        {
+            if (Player.head == 6 && Player.body == 6 && Player.legs == 6)
+            {
+                StarLightDistributer_MeteorArmor = true;
+            }
+        }
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
+        {
+            if (StarLightDistributer_MeteorArmor && item.ModItem is StarLightDistributer)
+            {
+                mult = 0f;
+            }
         }
     }
     public abstract class SynergyModItem : ModItem
