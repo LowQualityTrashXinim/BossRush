@@ -61,7 +61,7 @@ namespace BossRush.Common.ExtraChallenge
                 Player player = Main.player[playerIndex];
                 if (ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
                 {
-                    player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser = Main.rand.Next(9);
+                    player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser = Main.rand.Next(1,9);
                     player.GetModPlayer<ExtraChallengePlayer>().BossSlayedCount++;
                 }
             }

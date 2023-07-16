@@ -32,7 +32,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             position = position.PositionOFFSET(velocity, 30);
-            float rotation = MathHelper.ToRadians(5);
             float num = 5;
             if (Main.dayTime)
             {
@@ -42,7 +41,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
                 {
                     for (int i = 0; i < num; i++)
                     {
-                        Vector2 EvenSpread = velocity.Vector2DistributeEvenly(num, rotation, i);
+                        Vector2 EvenSpread = velocity.Vector2DistributeEvenly(num, 30, i);
                         Projectile.NewProjectile(source, position, EvenSpread, ProjectileID.GreenLaser, (int)(damage * 1.25f), knockback, player.whoAmI);
                     }
                 }
@@ -53,15 +52,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
                 num += 5;
                 for (int i = 0; i < num; i++)
                 {
-                    Vector2 EvenSpread = velocity.Vector2DistributeEvenly(num, rotation, i);
-                    Projectile.NewProjectile(source, position, EvenSpread, ProjectileID.GreenLaser, (int)(damage * 1.25f), knockback, player.whoAmI);
+                    Vector2 EvenSpread = velocity.Vector2DistributeEvenly(num, 30, i);
+                    int proj = Projectile.NewProjectile(source, position, EvenSpread, ProjectileID.GreenLaser, (int)(damage * 1.25f), knockback, player.whoAmI);
+                    Main.projectile[proj].usesLocalNPCImmunity = true;
                 }
-                return false;
             }
             Projectile.NewProjectile(source, position, velocity, ProjectileID.GreenLaser, damage, knockback, player.whoAmI);
             for (int i = 0; i < num; i++)
             {
-                Vector2 EvenSpread = velocity.Vector2DistributeEvenly(num, rotation, i);
+                Vector2 EvenSpread = velocity.Vector2DistributeEvenly(num, 30, i);
                 Projectile.NewProjectile(source, position, EvenSpread, ProjectileID.ThunderStaffShot, (int)(damage * 1.25f), knockback, player.whoAmI);
             }
             return false;

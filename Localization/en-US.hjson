@@ -119,6 +119,7 @@ Mods: {
 			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
 			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
 			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Overgrown Mini Shark Platinum Short Sword Projectile
+			AmberTippedSpearProj.DisplayName: Amber Tipped Spear Proj
 		}
 
 		NPCs: {
@@ -423,11 +424,11 @@ Mods: {
 			}
 
 			StarLightDistributer: {
-				Tooltip: 
-				'''
-				It is beautiful to look at
-				Effect may differ depend on when and where you use this
-				'''
+				Tooltip:
+					'''
+					It is beautiful to look at
+					Effect may differ depend on when and where you use this
+					'''
 				DisplayName: Star Light Distributer
 			}
 
@@ -1224,6 +1225,11 @@ Mods: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Black Treasure Chest
 			}
+
+			AmberTippedJavelin: {
+				DisplayName: Amber Tipped Javelin
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1413,6 +1419,7 @@ Mods: {
 				}
 			}
 		}
+
 		Prefixes.BasePrefix.DisplayName: Base Prefix
 	}
 }
