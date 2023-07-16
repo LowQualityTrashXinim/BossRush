@@ -776,6 +776,30 @@ namespace BossRush.Contents.Items.Card
                 Player.manaRegen = 0;
             }
         }
+        public override void UpdateDead()
+        {
+            MeleeDMG = 0;
+            RangeDMG = 0;
+            MagicDMG = 0;
+            SummonDMG = 0;
+            Movement = 0;
+            JumpBoost = 0;
+            HPMax = 0;
+            HPRegen = 0;
+            ManaMax = 0;
+            ManaRegen = 0;
+            DefenseBase = 0;
+            //Silver Tier
+            DamagePure = 0;
+            CritStrikeChance = 0;
+            Thorn = 0;
+            CritDamage = 1;
+            DefenseEffectiveness = 1;
+            //Gold
+            DropAmountIncrease = 0;
+            MinionSlot = 0;
+            SentrySlot = 0;
+        }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();

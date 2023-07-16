@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Spawner;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -21,7 +22,14 @@ namespace BossRush.Contents.Items.Chest
             var entitySource = player.GetSource_OpenItem(Type);
             if (player.IsDebugPlayer())
             {
-
+                int[] fullbodyarmor = new int[]{
+                Main.rand.Next(TerrariaArrayID.HeadArmorPostEvil),
+                Main.rand.Next(TerrariaArrayID.BodyArmorPostEvil),
+                Main.rand.Next(TerrariaArrayID.LegArmorPostEvil) };
+                for (int i = 0; i < fullbodyarmor.Length; i++)
+                {
+                    player.QuickSpawnItem(entitySource, fullbodyarmor[i]);
+                }
             }
             else
             {
