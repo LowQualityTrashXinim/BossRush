@@ -5,14 +5,14 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 //EnragedStuff
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using BossRush.Contents.Items.Artifact;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 
 namespace BossRush.Common.Global
 {
@@ -217,7 +217,8 @@ namespace BossRush.Common.Global
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdTreasureChest>()));
-                npcLoot.Add(ItemDropRule.Common(ItemID.TruffleWorm, 1, 5, 5));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LunaticCultistSpawner>()));
+                npcLoot.Add(ItemDropRule.Common(ItemID.TruffleWorm));
                 npcLoot.Add(ItemDropRule.Common(ItemID.EmpressButterfly, 1, 5, 5));
                 npcLoot.Add(ExpertVSnormal);
                 //Expert mode drop
@@ -256,14 +257,14 @@ namespace BossRush.Common.Global
             if (npc.type == NPCID.CultistBoss)
             {
                 //NoHit mode drop
-                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticTreasureChest>(), 1, 2, 2));
+                noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>(), 1, 2, 2));
                 npcLoot.Add(noHit);
                 //Normal mode drop
-                ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticTreasureChest>()));
+                ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>()));
                 npcLoot.Add(ExpertVSnormal);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
-                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LunaticTreasureChest>()));
+                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LunaticLootBox>()));
             }
             if (npc.type == NPCID.MoonLordCore)
             {
@@ -442,7 +443,7 @@ namespace BossRush.Common.Global
                     npc.Size += new Vector2(200, 200);
                     npc.lifeMax += 1500;
                 }
-                npc.knockBackResist = 0;
+                npc.knockBackResist *= .5f;
                 npc.trapImmune = true;
                 npc.lavaImmune = true;
             }
@@ -483,7 +484,8 @@ namespace BossRush.Common.Global
             }
             if (npc.type == NPCID.CultistBoss)
             {
-                npc.lifeMax += 10000;
+                npc.lifeMax += 15000;
+                npc.defense += 30;
             }
         }
         public override void PostAI(NPC npc)

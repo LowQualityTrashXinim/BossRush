@@ -148,6 +148,7 @@ namespace BossRush.Contents.UI
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
+            return;
             int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
             if (resourceBarIndex != -1)
             {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest
 {
-    internal class LunaticTreasureChest : ModItem
+    internal class LunaticLootBox : ModItem
     {
         public override void SetDefaults()
         {

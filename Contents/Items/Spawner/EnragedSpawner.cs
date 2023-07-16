@@ -7,8 +7,6 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework.Graphics;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Spawner
 {
