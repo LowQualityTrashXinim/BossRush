@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Prefixes
 {
-    internal class BasePrefix : ModPrefix, IBossRushPrefix
+    public abstract class BasePrefix : ModPrefix, IBossRushPrefix
     {
         //All of this is set default
         public PrefixCategory WeaponType => PrefixCategory.AnyWeapon;

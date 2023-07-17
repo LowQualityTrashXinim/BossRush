@@ -204,6 +204,13 @@ namespace BossRush.Common
         }
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
+            foreach (var item in Player.inventory)
+            {
+                if(item.ModItem is CardPacketBase)
+                {
+                    item.active = false;
+                }
+            }
             if (NPC.AnyNPCs(NPCID.KingSlime))
             {
                 Player.QuickSpawnItem(null, ItemID.SlimeCrown);

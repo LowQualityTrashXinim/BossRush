@@ -1230,6 +1230,21 @@ Mods: {
 				DisplayName: Amber Tipped Javelin
 				Tooltip: ""
 			}
+
+			LunaticLootBox: {
+				DisplayName: Lunatic Loot Box
+				Tooltip: ""
+			}
+
+			LunaticCultistSpawner: {
+				DisplayName: Lunatic Cultist Spawner
+				Tooltip: ""
+			}
+
+			WallOfFleshSpawner: {
+				DisplayName: Wall Of Flesh Spawner
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

@@ -586,6 +586,7 @@ namespace BossRush.Common.Global
         public int MouseXPosDirection = 1;
         public override void PreUpdate()
         {
+            Player.attackCD = 0;
             Item item = Player.HeldItem;
             BossRushUtilsPlayer modplayer = Player.GetModPlayer<BossRushUtilsPlayer>();
             if (!modplayer.IsPlayerStillUsingTheSameItem)
@@ -704,13 +705,11 @@ namespace BossRush.Common.Global
         int iframeCounter = 0;
         private void SpinAttackExtraHit(Item item)
         {
-            NPC npclaststrike = null;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
-                if (npc.Hitbox.Intersects(SwordHitBox) && CanAttack(npc) && (iframeCounter == 0 || npclaststrike != null && npclaststrike != npc))
+                if (npc.Hitbox.Intersects(SwordHitBox) && iframeCounter <= 0)
                 {
-                    npclaststrike = npc;
                     int damage = (int)(item.damage * 1.5f);
                     npc.StrikeNPC(npc.CalculateHitInfo(damage, Player.direction, critReference, item.knockBack, DamageClass.Melee));
                     iframeCounter = (int)(Player.itemAnimationMax * .15f);
@@ -746,7 +745,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            modifiers.FinalDamage.Base *= DamageHandleSystem(item);
+            modifiers.FinalDamage *= DamageHandleSystem(item);
             if (Main.mouseRight)
             {
                 modifiers.FinalDamage *= 1.5f;
