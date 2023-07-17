@@ -368,7 +368,7 @@ namespace BossRush.Common.Global
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction, on 3rd attack will do a special attack" +
                     "\nHold down right mouse to enable focus mode and allow you to dash toward your cursor on 3rd attack");
-                line.OverrideColor = BossRushColor.MultiColor(new List<Color> {new Color(150,150,0), Color.White }, 4);
+                line.OverrideColor = BossRushColor.MultiColor(new List<Color> { new Color(150, 150, 0), Color.White }, 4);
                 tooltips.Add(line);
                 if (item.useStyle == BossRushUseStyle.Swipe)
                 {
@@ -395,7 +395,7 @@ namespace BossRush.Common.Global
         }
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
-            if(item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
+            if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded))
             {
                 int duration = player.itemAnimationMax;
                 float thirdduration = duration / 3;
@@ -414,7 +414,7 @@ namespace BossRush.Common.Global
         public override bool CanUseItem(Item item, Player player)
         {
             if ((item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke )||
+                item.useStyle != BossRushUseStyle.Poke) ||
                 item.noMelee)
             {
                 return base.CanUseItem(item, player);
@@ -474,7 +474,6 @@ namespace BossRush.Common.Global
                             CircleSwingAttack(player, modPlayer);
                             break;
                     }
-                    item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.Poke:
                     switch (modPlayer.ComboNumber)
@@ -489,11 +488,9 @@ namespace BossRush.Common.Global
                             StrongThrust(player, modPlayer);
                             break;
                     }
-                    item.noUseGraphic = false;
                     break;
                 case BossRushUseStyle.GenericSwingDownImprove:
                     SwipeAttack(player, modPlayer, 1);
-                    item.noUseGraphic = false;
                     break;
                 default:
                     break;
@@ -586,7 +583,6 @@ namespace BossRush.Common.Global
         public int MouseXPosDirection = 1;
         public override void PreUpdate()
         {
-            Player.attackCD = 0;
             Item item = Player.HeldItem;
             BossRushUtilsPlayer modplayer = Player.GetModPlayer<BossRushUtilsPlayer>();
             if (!modplayer.IsPlayerStillUsingTheSameItem)
@@ -649,12 +645,6 @@ namespace BossRush.Common.Global
             }
             CanPlayerBeDamage = false;
             Player.gravity = 0;
-            switch (item.useStyle)
-            {
-                case BossRushUseStyle.Swipe:
-                    SpinAttackExtraHit(item);
-                    break;
-            }
         }
         private bool IsWallBossAlive()
         {
@@ -703,20 +693,6 @@ namespace BossRush.Common.Global
         }
         public bool critReference;
         int iframeCounter = 0;
-        private void SpinAttackExtraHit(Item item)
-        {
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-                if (npc.Hitbox.Intersects(SwordHitBox) && iframeCounter <= 0)
-                {
-                    int damage = (int)(item.damage * 1.5f);
-                    npc.StrikeNPC(npc.CalculateHitInfo(damage, Player.direction, critReference, item.knockBack, DamageClass.Melee));
-                    iframeCounter = (int)(Player.itemAnimationMax * .15f);
-                    Player.dpsDamage += damage;
-                }
-            }
-        }
         bool CanPlayerBeDamage = true;
         public override void PostUpdate()
         {
@@ -735,10 +711,23 @@ namespace BossRush.Common.Global
             {
                 Player.direction = data.X > 0 ? 1 : -1;
             }
-            item.noUseGraphic = true;
             Player.attackCD = 0;
+            for(int i = 0; i < Player.meleeNPCHitCooldown.Length; i++)
+            {
+                if (Player.meleeNPCHitCooldown[i] > 0)
+                {
+                    Player.meleeNPCHitCooldown[i]--;
+                }
+            }
         }
         bool AlreadyHitNPC = false;
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) || item.noMelee)
+            {
+                return;
+            }
+        }
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) || item.noMelee)

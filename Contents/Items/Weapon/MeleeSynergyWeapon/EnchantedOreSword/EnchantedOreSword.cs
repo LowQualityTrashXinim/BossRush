@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
@@ -12,7 +13,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         public override void SetDefaults()
         {
             Item.DamageType = DamageClass.Melee;
-            Item.useStyle = ItemUseStyleID.Swing;
+            Item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
 
             Item.height = 50;
             Item.width = 50;
