@@ -23,7 +23,7 @@ namespace BossRush
             Main.projectile[projectile].hostile = true;
             Main.projectile[projectile].friendly = false;
         }
-        public static void SpawnHostileProjectileDirectlyOnPlayer(Player player, float rangeX, float rangeY, bool randomizePosition, Vector2 velocity, int ProjectileType, int damage, float knockback)
+        public static int SpawnHostileProjectileDirectlyOnPlayer(Player player, float rangeX, float rangeY, bool randomizePosition, Vector2 velocity, int ProjectileType, int damage, float knockback)
         {
             float RandomizeX = randomizePosition ? Main.rand.NextFloat(-rangeX, rangeX) : rangeX;
             float RandomizeY = randomizePosition ? Main.rand.NextFloat(-rangeY, rangeY) : rangeY;
@@ -31,6 +31,7 @@ namespace BossRush
             int projectile = Projectile.NewProjectile(null, spawn, velocity, ProjectileType, damage, knockback);
             Main.projectile[projectile].hostile = true;
             Main.projectile[projectile].friendly = false;
+            return projectile;
         }
         public static void ProjectileDefaultDrawInfo(this Projectile projectile, out Texture2D texture, out Vector2 origin)
         {

@@ -120,6 +120,9 @@ Mods: {
 			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
 			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Overgrown Mini Shark Platinum Short Sword Projectile
 			AmberTippedSpearProj.DisplayName: Amber Tipped Spear Proj
+			AcornProjectile.DisplayName: Acorn Projectile
+			SandProjectile.DisplayName: Sand Projectile
+			AcornRainCloud.DisplayName: Acorn Rain Cloud
 		}
 
 		NPCs: {

@@ -1,9 +1,10 @@
 ﻿using Terraria;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
+using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using System.Linq;
 
 namespace BossRush.Common.Global
 {
@@ -75,7 +76,7 @@ namespace BossRush.Common.Global
             base.SetDefaults(entity);
             if (entity.type == ItemID.Sandgun)
             {
-                entity.shoot = ModContent.ProjectileType<SandInYourFace>();
+                entity.shoot = ModContent.ProjectileType<SandProjectile>();
             }
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -105,10 +106,18 @@ namespace BossRush.Common.Global
         {
             if(type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves)
             {
-                return "When in forest" +
-                    "\nIncrease defense by 15" +
+                return "When in forest :" +
+                    "\nIncrease defense by 11" +
                     "\nIncrease movement speed by 25%" +
-                    "\nIncrease flat melee damage by 10";
+                    "\nYour attack have 25% chance to drop down a acorn dealing 10 damage";
+            }
+            if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves)
+            {
+                return "When in snow biome :" +
+                    "\nIncrease defense by 15" +
+                    "\nIncrease movement speed by 15%" +
+                    "\nYou are immune to Chilled" +
+                    "\nYour attack have 10% chance to inflict frost burn for 10 second";
             }
             return "";
         }
@@ -122,13 +131,24 @@ namespace BossRush.Common.Global
         }
         public override void UpdateArmorSet(Player player, string set)
         {
-            if (set.Equals(ArmorSet.ConvertIntoArmorSetFormat(ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves)))
+            ModdedPlayer modplayer = player.GetModPlayer<ModdedPlayer>();
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves))
             {
                 if (player.ZoneForest)
                 {
-                    player.statDefense += 15;
+                    player.statDefense += 11;
                     player.moveSpeed += .25f;
-                    player.GetDamage(DamageClass.Melee).Base += 10;
+                    modplayer.WoodArmor = true;
+                }
+            }
+            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves))
+            {
+                if(player.ZoneSnow)
+                {
+                    player.statDefense += 15;
+                    player.moveSpeed += .15f;
+                    player.buffImmune[BuffID.Chilled] = true;
+                    modplayer.BorealWoodArmor = true;
                 }
             }
         }
@@ -165,26 +185,5 @@ namespace BossRush.Common.Global
         public static string ConvertIntoArmorSetFormat(int[] armor) => $"{armor[0]}:{armor[1]}:{armor[2]}";
         public override string ToString() => $"{headID}:{bodyID}:{legID}";
 
-    }
-    class SandInYourFace : ModProjectile
-    {
-        public override string Texture => BossRushUtils.GetVanillaTexture<Projectile>(ProjectileID.SandBallGun);
-        public override void SetDefaults()
-        {
-            Projectile.CloneDefaults(ProjectileID.SandBallGun);
-            Projectile.aiStyle = -1;
-        }
-        public override void AI()
-        {
-            base.AI();
-            if (Projectile.ai[0] >= 50)
-            {
-                if (Projectile.velocity.Y < 16)
-                {
-                    Projectile.velocity.Y += .25f;
-                }
-            }
-            Projectile.ai[0]++;
-        }
     }
 }

@@ -1,21 +1,21 @@
-﻿//Terraria stuff
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-//Microsoft stuff
+using BossRush.Contents.Items;
 using System.Collections.Generic;
-//general BossRush stuff
-using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
-using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
-using BossRush.Contents.Items;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Items.Card;
+using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
+using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
+using Microsoft.Xna.Framework;
+using BossRush.Contents.Projectiles;
+using MonoMod.Utils.Cil;
 
 namespace BossRush.Common
 {
@@ -27,6 +27,10 @@ namespace BossRush.Common
         public bool gitGud = false;
         public int HowManyBossIsAlive = 0;
         public override void PreUpdate()
+        {
+            CheckHowManyHit();
+        }
+        private void CheckHowManyHit()
         {
             HowManyBossIsAlive = 0;
             for (int i = 0; i < Main.maxNPCs; i++)
@@ -48,6 +52,10 @@ namespace BossRush.Common
             {
                 return;
             }
+            EnragedBoss();
+        }
+        private void EnragedBoss()
+        {
             //Enraged here
             if (NPC.AnyNPCs(NPCID.MoonLordCore))
             {
@@ -202,15 +210,74 @@ namespace BossRush.Common
                 Player.AddBuff(BuffID.PotionSickness, 240);
             }
         }
+        public bool WoodArmor = false;
+        public bool BorealWoodArmor = false;
+        public override void ResetEffects()
+        {
+            WoodArmor = false;
+            BorealWoodArmor = false;
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithProj(proj, target, hit, damageDone);
+            if (BorealWoodArmor)
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Frostburn, 600);
+            if (WoodArmor)
+                if (Main.rand.NextBool(4))
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), 
+                        target.Center + new Vector2(0, 400), 
+                        Vector2.UnitY * 5, 
+                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+
+        }
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithItem(item, target, hit, damageDone);
+            if (BorealWoodArmor)
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Frostburn, 600);
+            if (WoodArmor)
+                if (Main.rand.NextBool(4))
+                    Projectile.NewProjectile(Player.GetSource_FromThis(),
+                        target.Center + new Vector2(0, 400),
+                        Vector2.UnitY * 5,
+                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+        }
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
-            foreach (var item in Player.inventory)
+            DeleteCardItem();
+            SpawnItem();
+        }
+        private void DeleteCardItem()
+        {
+            for (int i = 0; i < Main.item.Length; i++)
             {
-                if(item.ModItem is CardPacketBase)
+                Item item = Main.item[i];
+                if (item is null || item.ModItem is null)
+                {
+                    continue;
+                }
+                if (item.ModItem is CardPacketBase)
                 {
                     item.active = false;
                 }
             }
+            foreach (var item in Player.inventory)
+            {
+                if (item is null || item.ModItem is null)
+                {
+                    continue;
+                }
+                if (item.ModItem is CardPacketBase)
+                {
+                    item.stack = 0;
+                    item.active = false;
+                }
+            }
+        }
+        private void SpawnItem()
+        {
             if (NPC.AnyNPCs(NPCID.KingSlime))
             {
                 Player.QuickSpawnItem(null, ItemID.SlimeCrown);

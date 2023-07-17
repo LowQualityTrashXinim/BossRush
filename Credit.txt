@@ -1,9 +1,5 @@
-﻿Bleeding Worm sprite - Made by : DanielTheDragon
-Cursed Skull sprite - Made by : DanielTheDragon
-Localization grammar fix - Thank : pototo#1347
-Katana Slash Projectile - Made by : pototo#1347
-Berseker Elixir - Made by : psuedofaux
-Gunslinger Elixir - Made by : psuedofaux
-Sage Elixir - Made by : psuedofaux
-Commander Elixir - Made by : psuedofaux
-Titan Elixir - Made by : psuedofaux
+﻿Special thx to :
+DanielTheDragon helping with sprite work
+pototo#1347 spending your time play testing and helping me with the problem in the mod
+psuedofaux helping the mod massively with the sprite work
+sorrow994 helping me in anyway that is possible

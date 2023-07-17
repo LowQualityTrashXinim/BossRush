@@ -4,7 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents
+namespace BossRush.Contents.Projectiles
 {
     internal class DiamondSwotaffOrb : ModProjectile
     {
