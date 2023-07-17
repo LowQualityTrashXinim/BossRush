@@ -623,13 +623,17 @@ namespace BossRush.Contents.Items.Card
             {
                 return SlowDown <= 1;
             }
+            if(WeaponCanKick && Player.statLife < Player.GetWeaponDamage(item))
+            {
+                return false;
+            }
             return base.CanUseItem(item);
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (WeaponCanKick)
             {
-                Player.statLife -= Player.GetWeaponDamage(item);
+                Player.statLife = Math.Clamp(Player.statLife - Player.GetWeaponDamage(item), 1, Player.statLifeMax2);
             }
             if (WeaponCanJammed && Main.mouseLeft)
             {

@@ -41,7 +41,7 @@ namespace BossRush.Contents.Projectiles
         }
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi;
             if (Projectile.ai[0] <= 30)
             {
                 Projectile.ai[0]++;

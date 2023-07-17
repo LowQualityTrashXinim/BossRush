@@ -199,8 +199,30 @@ namespace BossRush.Common
                 Player.ClearBuff(ModContent.BuffType<GodVision>());
             }
         }
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            if (RichMahoganyArmor)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
+                    int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(proj), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
+                    Main.projectile[projectile].penetrate = -1;
+                }
+            }
+            base.OnHitByProjectile(proj, hurtInfo);
+        }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
+            if(RichMahoganyArmor)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
+                    int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(npc), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
+                    Main.projectile[proj].penetrate = -1;
+                }
+            }
             if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
             {
                 return;
@@ -212,10 +234,12 @@ namespace BossRush.Common
         }
         public bool WoodArmor = false;
         public bool BorealWoodArmor = false;
+        public bool RichMahoganyArmor = false;
         public override void ResetEffects()
         {
             WoodArmor = false;
             BorealWoodArmor = false;
+            RichMahoganyArmor = false;
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -224,11 +248,12 @@ namespace BossRush.Common
                 if (Main.rand.NextBool(10))
                     target.AddBuff(BuffID.Frostburn, 600);
             if (WoodArmor)
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(4) && proj.ModProjectile is not AcornProjectile)
                     Projectile.NewProjectile(Player.GetSource_FromThis(), 
-                        target.Center + new Vector2(0, 400), 
+                        target.Center - new Vector2(0, 400), 
                         Vector2.UnitY * 5, 
                         ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+            
 
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
@@ -240,7 +265,7 @@ namespace BossRush.Common
             if (WoodArmor)
                 if (Main.rand.NextBool(4))
                     Projectile.NewProjectile(Player.GetSource_FromThis(),
-                        target.Center + new Vector2(0, 400),
+                        target.Center - new Vector2(0, 400),
                         Vector2.UnitY * 5,
                         ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
         }

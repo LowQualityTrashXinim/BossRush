@@ -106,7 +106,7 @@ namespace BossRush.Common.Global
         {
             if(type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves)
             {
-                return "When in forest :" +
+                return "When in forest biome :" +
                     "\nIncrease defense by 11" +
                     "\nIncrease movement speed by 25%" +
                     "\nYour attack have 25% chance to drop down a acorn dealing 10 damage";
@@ -118,6 +118,13 @@ namespace BossRush.Common.Global
                     "\nIncrease movement speed by 15%" +
                     "\nYou are immune to Chilled" +
                     "\nYour attack have 10% chance to inflict frost burn for 10 second";
+            }
+            if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves)
+            {
+                return "When in jungle biome :" +
+                    "\nIncrease defense by 12" +
+                    "\nIncrease movement speed by 35%" +
+                    "\nGetting hit release sharp leaf around you that deal 12 damage";
             }
             return "";
         }
@@ -149,6 +156,15 @@ namespace BossRush.Common.Global
                     player.moveSpeed += .15f;
                     player.buffImmune[BuffID.Chilled] = true;
                     modplayer.BorealWoodArmor = true;
+                }
+            }
+            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.RichMahoganyHelmet, ItemID.RichMahoganyBreastplate, ItemID.RichMahoganyGreaves))
+            {
+                if(player.ZoneJungle)
+                {
+                    player.statDefense += 12;
+                    player.moveSpeed += .35f;
+                    modplayer.RichMahoganyArmor = true;
                 }
             }
         }
