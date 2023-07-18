@@ -1,25 +1,19 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.Chat;
 using Terraria.ModLoader;
-using Terraria.Localization;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.ExtraChallenge
 {
     internal class ExtraChallengeSystem : ModSystem
     {
-        public bool BoulderRain;
-        public bool Hellfirerain;
-        public bool Closecombatfight;
-        public bool HostileProjectileOnTop;
         int count = 0;
         int NumberToCompare = 0;
-        public const int BoulderRainCooldown = 60;
+        public const int BoulderRainCooldown = 45;
         public int BoulderRainCount = 0;
-        public const int HellFireRainCoolDown = 30;
+        public const int HellFireRainCoolDown = 25;
         public int HellFireRainCount = 0;
-        public const int DeadFromAboveCoolDown = 45;
+        public const int DeadFromAboveCoolDown = 90;
         public int DeadFromAboveCount = 0;
         public override void PostUpdateWorld()
         {
@@ -28,97 +22,102 @@ namespace BossRush.Common.ExtraChallenge
                 return;
             }
             Player player = Main.LocalPlayer;
-            if (NumberToCompare != player.GetModPlayer<ExtraChallengePlayer>().BossSlayedCount)
+            ExtraChallengePlayer modplayer = player.GetModPlayer<ExtraChallengePlayer>();
+            if (NumberToCompare != modplayer.BossSlayedCount)
             {
                 count--;
-                HostileProjectileOnTop = false;
-                player.GetModPlayer<ExtraChallengePlayer>().OnlyUseOneClass = false;
-                player.GetModPlayer<ExtraChallengePlayer>().spawnRatex3 = false;
-                BoulderRain = false;
-                player.GetModPlayer<ExtraChallengePlayer>().strongerEnemy = false;
-                Hellfirerain = false;
-                player.GetModPlayer<ExtraChallengePlayer>().Badbuff = false;
-                Closecombatfight = false;
-                player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave = false;
+                modplayer.HostileProjectileOnTop = false;
+                modplayer.OnlyUseOneClass = false;
+                modplayer.spawnRatex3 = false;
+                modplayer.BoulderRain = false;
+                modplayer.strongerEnemy = false;
+                modplayer.Hellfirerain = false;
+                modplayer.Badbuff = false;
+                modplayer.Closecombatfight = false;
+                modplayer.BatJungleANDCave = false;
             }
             if (count == 0)
             {
-                switch (player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser)
+                switch (modplayer.ChallengeChooser)
                 {
                     case 1:
-                        HostileProjectileOnTop = true;
+                        modplayer.HostileProjectileOnTop = true;
                         Main.NewText("Death from above", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Death from above"), Colors.RarityDarkRed);
                         break;
                     case 2:
-                        player.GetModPlayer<ExtraChallengePlayer>().ClassChooser = Main.rand.Next(4);
-                        player.GetModPlayer<ExtraChallengePlayer>().OnlyUseOneClass = true;
+                        modplayer.ClassChooser = Main.rand.Next(4);
+                        modplayer.OnlyUseOneClass = true;
                         Main.NewText("Restrict to 1 class", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Restrict to 1 class"), Colors.RarityDarkRed);
                         break;
                     case 3:
-                        player.GetModPlayer<ExtraChallengePlayer>().spawnRatex3 = true;
+                        modplayer.spawnRatex3 = true;
                         Main.NewText("Increase spawn rate", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Increase spawn rate"), Colors.RarityDarkRed);
                         break;
                     case 4:
-                        BoulderRain = true;//done ?
+                        modplayer.BoulderRain = true;//done ?
                         Main.NewText("Boulder rain time", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Boulder rain time"), Colors.RarityDarkRed);
                         break;
                     case 5:
-                        player.GetModPlayer<ExtraChallengePlayer>().strongerEnemy = true;
+                        modplayer.strongerEnemy = true;
                         Main.NewText("Enemy get stronger", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Enemy get stronger"), Colors.RarityDarkRed);
                         break;
                     case 6:
-                        Hellfirerain = true; //done
+                        modplayer.Hellfirerain = true; //done
                         Main.NewText("Hell fire arrow rain", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Hell fire arrow rain"), Colors.RarityDarkRed);
                         break;
                     case 7:
-                        player.GetModPlayer<ExtraChallengePlayer>().Badbuff = true;
+                        modplayer.Badbuff = true;
                         Main.NewText("Very nasty debuff", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Very nasty debuff"), Colors.RarityDarkRed);
                         break;
                     case 8:
-                        player.GetModPlayer<ExtraChallengePlayer>().BatJungleANDCave = true;
+                        modplayer.BatJungleANDCave = true;
                         Main.NewText("Annoying bat start to spawn", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Bat start to spawn"), Colors.RarityDarkRed);
                         break;
+                    case 9:
+                        modplayer.InvertShoot = true;
+                        Main.NewText("Where are you aiming at ?", Colors.RarityDarkRed);
+                        break;
                     default:
-                        if (player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser > 8)
+                        if (modplayer.ChallengeChooser > 8)
                         {
-                            player.GetModPlayer<ExtraChallengePlayer>().ChallengeChooser = 0;
+                            modplayer.ChallengeChooser = 0;
                             Main.NewText("We run into a problem where we run out of challenge, are you using a debug item ? For now we gonna reset it back to 0", Colors.RarityDarkRed);
                             break;
                         }
                         Main.NewText("the dev is appear to be too lazy to implement a fix for this, grab Xinim and screenshot this message and explain how you encounter this ");
                         break;
                 }
-                NumberToCompare = player.GetModPlayer<ExtraChallengePlayer>().BossSlayedCount;
+                NumberToCompare = modplayer.BossSlayedCount;
                 count++;
             }
             //Custom stuff
-            FallingProjectileHandle(player);
+            FallingProjectileHandle(modplayer, player);
         }
-        private void FallingProjectileHandle(Player player)
+        private void FallingProjectileHandle(ExtraChallengePlayer modplayer, Player player)
         {
             if (!player.active || player.dead)
             {
                 return;
             }
-            Boulder(player);
-            HellFireRain(player);
-            CannonBallFalling(player);
+            Boulder(modplayer, player);
+            HellFireRain(modplayer, player);
+            CannonBallFalling(modplayer, player);
         }
-        private void Boulder(Player player)
+        private void Boulder(ExtraChallengePlayer modplayer, Player player)
         {
-            if (!BoulderRain)
+            if (!modplayer.BoulderRain)
             {
                 return;
             }
-            if (BoulderRainCooldown == BoulderRainCount)
+            if (BoulderRainCount >= BoulderRainCooldown)
             {
                 BossRushUtils.SpawnBoulderOnTopPlayer(player, 1000);
                 BoulderRainCount = 0;
@@ -128,13 +127,13 @@ namespace BossRush.Common.ExtraChallenge
                 BoulderRainCount++;
             }
         }
-        private void HellFireRain(Player player)
+        private void HellFireRain(ExtraChallengePlayer modplayer, Player player)
         {
-            if (!Hellfirerain)
+            if (!modplayer.Hellfirerain)
             {
                 return;
             }
-            if (HellFireRainCount == HellFireRainCoolDown)
+            if (HellFireRainCount >= HellFireRainCoolDown)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -147,9 +146,9 @@ namespace BossRush.Common.ExtraChallenge
                 HellFireRainCount++;
             }
         }
-        private void CannonBallFalling(Player player)
+        private void CannonBallFalling(ExtraChallengePlayer modplayer, Player player)
         {
-            if (!HostileProjectileOnTop)
+            if (!modplayer.HostileProjectileOnTop)
             {
                 return;
             }

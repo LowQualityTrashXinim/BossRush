@@ -361,27 +361,28 @@ namespace BossRush.Common.Global
                 maxSpawns += 100;
                 spawnRate -= 10;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
+            ModdedPlayer modplayer = player.GetModPlayer<ModdedPlayer>();
+            if ((modplayer.Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.KingSlime))
             {
                 spawnRate = 70;
                 maxSpawns = 150;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            if ((modplayer.Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 spawnRate = 80;
                 maxSpawns = 175;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+            if ((modplayer.Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.EaterofWorldsHead))
             {
                 spawnRate = 80;
                 maxSpawns = 250;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu) && player.ZoneOverworldHeight)
+            if ((modplayer.Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.BrainofCthulhu) && player.ZoneOverworldHeight)
             {
                 spawnRate = 80;
                 maxSpawns = 250;
             }
-            if ((player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
+            if ((modplayer.Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && NPC.AnyNPCs(NPCID.QueenBee))
             {
                 spawnRate = 75;
                 maxSpawns = 290;
@@ -421,31 +422,50 @@ namespace BossRush.Common.Global
                 target.AddBuff(BuffID.Venom, 180);
                 target.AddBuff(BuffID.Bleeding, 180);
             }
-        }
-        public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
-        {
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && PlayerNameContain("Masochist"))
+            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
             {
-                if (npc.boss && npc.type == NPCID.EyeofCthulhu)
-                {
-                    npc.scale -= 0.25f;
-                    npc.Size -= new Vector2(25, 25);
-                }
-                if (npc.type == NPCID.ServantofCthulhu)
-                {
-                    npc.scale += 1.5f;
-                    npc.Size += new Vector2(50, 50);
-                    npc.lifeMax += 300;
-                }
-                if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody)
-                {
-                    npc.scale += 2.5f;
-                    npc.Size += new Vector2(200, 200);
-                    npc.lifeMax += 1500;
-                }
-                npc.knockBackResist *= .5f;
-                npc.trapImmune = true;
-                npc.lavaImmune = true;
+                if(Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.BrokenArmor, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Cursed, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Bleeding, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Burning, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Weak, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.CursedInferno, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Ichor, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Venom, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Poisoned, Main.rand.Next(1,901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Slow, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.ManaSickness, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.PotionSickness, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Obstructed, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Blackout, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Confused, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Darkness, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Electrified, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Stoned, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.WitheredArmor, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.WitheredWeapon, Main.rand.Next(1, 901));
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Suffocation, Main.rand.Next(1, 901));
             }
         }
         private bool PlayerNameContain(string contain)
@@ -474,6 +494,31 @@ namespace BossRush.Common.Global
         }
         public override void SetDefaults(NPC npc)
         {
+            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && PlayerNameContain("Masochist"))
+            {
+                if (npc.boss && npc.type == NPCID.EyeofCthulhu)
+                {
+                    npc.scale -= 0.25f;
+                    npc.Size -= new Vector2(25, 25);
+                }
+                if (npc.type == NPCID.ServantofCthulhu)
+                {
+                    npc.scale += 1.5f;
+                    npc.Size += new Vector2(50, 50);
+                    npc.lifeMax += 300;
+                }
+                if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody)
+                {
+                    npc.scale += 2.5f;
+                    npc.Size += new Vector2(200, 200);
+                    npc.lifeMax += 1500;
+                }
+                npc.knockBackResist *= .5f;
+                npc.trapImmune = true;
+                npc.lavaImmune = true;
+                npc.damage += Main.rand.Next(npc.damage + 1);
+                npc.lifeMax += Main.rand.Next(npc.lifeMax + 1);
+            }
             if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;

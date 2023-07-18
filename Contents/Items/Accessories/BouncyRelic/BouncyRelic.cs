@@ -1,9 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Texture;
-using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Accessories.BouncyRelic
 {
@@ -40,35 +39,39 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
     }
     public class BouncyProjectileGlobal : GlobalProjectile
     {
+        public override bool InstancePerEntity => true;
+        int counter = 0;
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            Player player = Main.player[projectile.owner];
+            if (player.GetModPlayer<PlayerRelic>().Bouncy)
             {
-                if (projectile.owner == Main.myPlayer && projectile.friendly && !projectile.hostile)
+                projectile.tileCollide = true;
+                Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+                if (projectile.velocity.X != oldVelocity.X)
                 {
-                    Player player = Main.player[projectile.owner];
-                    if (player.GetModPlayer<PlayerRelic>().Bouncy)
-                    {
-                        projectile.tileCollide = true;
-                        Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-                        if (projectile.velocity.X != oldVelocity.X)
-                        {
-                            projectile.velocity.X = -oldVelocity.X;
-                        }
-                        if (projectile.velocity.Y != oldVelocity.Y)
-                        {
-                            projectile.velocity.Y = -oldVelocity.Y;
-                        }
-                        projectile.damage = (int)(projectile.damage * 1.2);
-                        if(projectile.timeLeft > 180)
-                        {
-                            projectile.timeLeft = 180;
-                        }
-                        return false;
-                    }
+                    projectile.velocity.X = -oldVelocity.X;
                 }
+                if (projectile.velocity.Y != oldVelocity.Y)
+                {
+                    projectile.velocity.Y = -oldVelocity.Y;
+                }
+                if (projectile.timeLeft > 180)
+                {
+                    projectile.timeLeft = 180;
+                }
+                counter++;
+                if(counter > 10)
+                {
+                    return false;
+                }
+                projectile.damage = (int)(projectile.damage * 1.2f);
+                return false;
             }
             return true;
+        }
+        public override void PostAI(Projectile projectile)
+        {
         }
     }
 }

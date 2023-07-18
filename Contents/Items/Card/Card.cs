@@ -60,53 +60,6 @@ namespace BossRush.Contents.Items.Card
         {
             PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
             ModifyCardToolTip(ref tooltips, modplayer);
-            if (Tier <= 0)
-            {
-                return;
-            }
-            if (CardStats is null)
-            {
-                tooltips.Add(new TooltipLine(Mod, "statsBugged", "It is appear that the card stats got corrupted or won't save !"));
-                return;
-            }
-            if (CardStats.Count < 1)
-            {
-                tooltips.Add(new TooltipLine(Mod, "statsBugged", "It is appear that the card stats got corrupted or won't save !"));
-                return;
-            }
-            TooltipLine badstatsline = new(Mod, "stats", "");
-            for (int i = 0; i < CardStats.Count; i++)
-            {
-                if (CardStatsNumber[i] == 0)
-                {
-                    continue;
-                }
-                if (CardStatsNumber[i] < 0)
-                {
-                    badstatsline.Text = StatNumberAsText(CardStats[i], CardStatsNumber[i]);
-                    badstatsline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black }, 1);
-                    continue;
-                }
-                float statsNum = CardStatsNumber[i];
-                if (CardStatsNumber[i] > 0)
-                {
-                    if (modplayer.ReducePositiveCardStat)
-                    {
-                        statsNum *= PlayerCardHandle.ReducePositiveCardStatByHalf;
-                    }
-                }
-                tooltips.Add(new TooltipLine(Mod, "stats", StatNumberAsText(CardStats[i], statsNum)));
-            }
-            if (!string.IsNullOrEmpty(badstatsline.Text))
-            {
-                tooltips.Add(badstatsline);
-            }
-            if (CursedID != -1)
-            {
-                TooltipLine badline = new TooltipLine(Mod, "stats", modplayer.CursedStringStats(CursedID));
-                badline.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.Red, Color.Black }, 1);
-                tooltips.Add(badline);
-            }
         }
         private string StatNumberAsText(PlayerStats stat, float number)
         {
@@ -125,33 +78,6 @@ namespace BossRush.Contents.Items.Card
         public List<float> CardStatsNumber = new List<float>();
         public override void OnSpawn(IEntitySource source)
         {
-            if (Tier <= 0)
-                return;
-            if (CardStatsNumber.Count > 0)
-                return;
-            bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
-            SetBadStatsBaseOnTier(hasMagicDeck);
-            int offset = 0;
-            if (CardStats.Count > 0)
-                offset++;
-            for (int i = offset; i < PostTierModify + offset; i++)
-            {
-                CardStats.Add(SetStatsToAddBaseOnTier());
-                CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
-            }
-            OnTierItemSpawn();
-            for (int i = 0; i < CardStats.Count; i++)
-            {
-                for (int l = i + 1; l < CardStats.Count; l++)
-                {
-                    if (CardStats[i] != CardStats[l]) continue;
-                    CardStatsNumber[i] += CardStatsNumber[l];
-                    CardStats.RemoveAt(l);
-                    CardStatsNumber.RemoveAt(l);
-                    i = 0;
-                    l = 0;
-                }
-            }
         }
         public override void UpdateInventory(Player player)
         {
@@ -292,12 +218,35 @@ namespace BossRush.Contents.Items.Card
             PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
             OnUseItem(player, modplayer);
             if (Tier <= 0)
-            {
                 return true;
+            if (CardStatsNumber.Count > 0)
+                return true;
+            bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+            SetBadStatsBaseOnTier(hasMagicDeck);
+            int offset = 0;
+            if (CardStats.Count > 0)
+                offset++;
+            for (int i = offset; i < PostTierModify + offset; i++)
+            {
+                CardStats.Add(SetStatsToAddBaseOnTier());
+                CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
+            }
+            OnTierItemSpawn();
+            for (int i = 0; i < CardStats.Count; i++)
+            {
+                for (int l = i + 1; l < CardStats.Count; l++)
+                {
+                    if (CardStats[i] != CardStats[l]) continue;
+                    CardStatsNumber[i] += CardStatsNumber[l];
+                    CardStats.RemoveAt(l);
+                    CardStatsNumber.RemoveAt(l);
+                    i = 0;
+                    l = 0;
+                }
             }
             for (int i = 0; i < CardStats.Count; i++)
             {
-                int offset = (i + 1) * 20;
+                int offsetPos = (i + 1) * 20;
                 if (modplayer.ReducePositiveCardStat && CardStatsNumber[i] > 0)
                 {
                     CardStatsNumber[i] *= PlayerCardHandle.ReducePositiveCardStatByHalf;
@@ -369,7 +318,7 @@ namespace BossRush.Contents.Items.Card
                 {
                     textcolor = Color.Red;
                 }
-                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offset);
+                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offsetPos, 90);
             }
             if (CursedID != -1)
             {
@@ -378,7 +327,7 @@ namespace BossRush.Contents.Items.Card
                     CursedID = Main.rand.Next(12) + 1;
                 }
                 modplayer.listCursesID.Add(CursedID);
-                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID));
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 110);
             }
             return true;
         }
@@ -439,10 +388,6 @@ namespace BossRush.Contents.Items.Card
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
-            //if (Item.whoAmI != whoAmI)
-            //{
-            //    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-            //}
             PositionHandle();
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
@@ -623,7 +568,7 @@ namespace BossRush.Contents.Items.Card
             {
                 return SlowDown <= 1;
             }
-            if(WeaponCanKick && Player.statLife < Player.GetWeaponDamage(item))
+            if (WeaponCanKick && Player.statLife < Player.GetWeaponDamage(item))
             {
                 return false;
             }

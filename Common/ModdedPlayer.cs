@@ -15,7 +15,6 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
-using MonoMod.Utils.Cil;
 
 namespace BossRush.Common
 {
@@ -187,6 +186,7 @@ namespace BossRush.Common
                 if (gitGud)
                 {
                     Player.KillMe(new PlayerDeathReason(), 9999999, info.HitDirection);
+                    Player.KillMeForGood();
                     return;
                 }
                 else
