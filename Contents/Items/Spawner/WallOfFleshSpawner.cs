@@ -25,6 +25,11 @@ namespace BossRush.Contents.Items.Spawner
 
             return false;
         }
+        public override bool UseSpecialSpawningMethod => true;
+        public override void SpecialSpawningLogic(Player player)
+        {
+            NPC.SpawnWOF(player.Center);
+        }
         float positionRotateX = 0f;
         float countX = 0f;
         private void PositionHandle()

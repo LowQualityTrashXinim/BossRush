@@ -8,6 +8,7 @@ namespace BossRush.Contents.Items.Spawner
     public abstract class BaseSpawnerItem : ModItem
     {
         public virtual int[] NPCtypeToSpawn => new int[] { };
+        public virtual bool UseSpecialSpawningMethod => false;
         public override void SetStaticDefaults()
         {
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12; // This helps sort inventory know this is a boss summoning item.
@@ -39,7 +40,9 @@ namespace BossRush.Contents.Items.Spawner
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = true;
         }
-
+        public virtual void SpecialSpawningLogic(Player player)
+        {
+        }
         public override bool? UseItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
@@ -51,7 +54,14 @@ namespace BossRush.Contents.Items.Spawner
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        NPC.SpawnOnPlayer(player.whoAmI, NPCtypeToSpawn[i]);
+                        if (UseSpecialSpawningMethod)
+                        {
+                            SpecialSpawningLogic(player);
+                        }
+                        else
+                        {
+                            NPC.SpawnOnPlayer(player.whoAmI, NPCtypeToSpawn[i]);
+                        }
                     }
                     else
                     {
