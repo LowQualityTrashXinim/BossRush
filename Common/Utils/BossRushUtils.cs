@@ -1,11 +1,11 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using System.Linq;
 using BossRush.Texture;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.ID;
 
 namespace BossRush
 {
