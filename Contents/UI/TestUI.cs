@@ -59,7 +59,7 @@ namespace BossRush.Contents.UI
         {
             achievementMenu = new UIAchievementPanel();
             achievementMenu.HAlign = .1f;
-            achievementMenu.VAlign = .1f;
+            achievementMenu.VAlign = .05f;
             area.Append(achievementMenu);
         }
         private void OpenAchievementUI(UIMouseEvent evt, UIElement listeningElement)
@@ -85,9 +85,8 @@ namespace BossRush.Contents.UI
         public override void OnInitialize()
         {
             barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.ACHIEVEMENTMENUBLUE));
-            barFrame.Width.Set(1204, 0);
+            barFrame.Width.Set(1200, 0);
             barFrame.Height.Set(984, 0);
-            barFrame.ImageScale = .7f;
             Dictionary<int, BossRushAchivement> achievementData = ModContent.GetInstance<BossRush>().achievementData;
             float keyCount = achievementData.Keys.Count;
             foreach (var key in achievementData.Values)
@@ -148,7 +147,6 @@ namespace BossRush.Contents.UI
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            return;
             int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
             if (resourceBarIndex != -1)
             {

@@ -330,11 +330,11 @@ namespace BossRush.Contents.Items.Artifact
                     break;
                 case 9:
                     BossRushUtils.DropWeaponFromChestPool(Player);
-                    effectlasting = effectlasting > 0 ? effectlasting : 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 2;
                     break;
                 case 10:
                     Effect10();
-                    effectlasting = effectlasting > 0 ? effectlasting : 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 2;
                     break;
                 case 11:
                     Effect11();
@@ -342,7 +342,7 @@ namespace BossRush.Contents.Items.Artifact
                     break;
                 case 12:
                     Player.Heal((int)(Player.statLifeMax2 * .25f));
-                    effectlasting = effectlasting > 0 ? effectlasting : 1;
+                    effectlasting = effectlasting > 0 ? effectlasting : 2;
                     break;
                 case 13:
                     Dust.NewDust(Player.Center, 0, 0, DustID.Torch);

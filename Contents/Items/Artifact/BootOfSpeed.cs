@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 
