@@ -76,7 +76,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin
 
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 12 * Projectile.direction)) * 10 * i, ProjectileID.AmberBolt, Projectile.damage, 5);
                     }
-
                     boltFired = true;
                 }
             }

@@ -63,6 +63,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             CanShootProjectile = -1;
             return player.ownedProjectileCounts[ProjectileType] < 1;
         }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if(player.HasItem(ItemID.Spear))
+            {
+                modplayer.Swotaff_Spear = true;
+            }
+        }
         int CanShootProjectile = 1;
         int countIndex = 1;
         int time = 1;
@@ -255,7 +262,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             {
                 Projectile.timeLeft = (int)maxProgress;
             }
-            player.heldProj = Projectile.whoAmI;
             float percentDone = (maxProgress - Projectile.timeLeft) / maxProgress;
             //percentDone = BossRushUtils.InExpo(percentDone);
             if (player.statMana >= ManaCost && !ProjectileAlreadyExist)

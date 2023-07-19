@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush
 {
@@ -95,14 +96,14 @@ namespace BossRush
         /// <param name="positionCurrent"></param>
         /// <param name="positionTo"></param>
         /// <returns></returns>
-        public static Vector2 SpawnRanPositionThatIsNotIntoTile(Vector2 positionCurrent, float halfwidth, float halfheight)
+        public static Vector2 SpawnRanPositionThatIsNotIntoTile(Vector2 positionCurrent, float halfwidth, float halfheight, float rotation = 0)
         {
             int counter = 0;
             Vector2 pos;
             do
             {
                 counter++;
-                pos = positionCurrent + Main.rand.NextVector2Circular(halfwidth, halfheight);
+                pos = positionCurrent + Main.rand.NextVector2Circular(halfwidth, halfheight).RotatedBy(rotation);
             } while (!Collision.CanHitLine(positionCurrent, 0, 0, pos, 0, 0) || counter > 50);
             return pos;
         }

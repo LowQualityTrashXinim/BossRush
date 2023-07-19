@@ -9,6 +9,7 @@ using BossRush.Common;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -41,6 +42,7 @@ namespace BossRush.Contents.Items.Weapon
         public int EnergyBlade_Code1_Energy = 0;
 
         public bool Swotaff_Spear = false;
+        public int Swotaff_Spear_Counter = 0;
 
         public bool Deagle_PhoenixBlaster = false;
         public bool Deagle_DaedalusStormBow = false;
@@ -101,13 +103,31 @@ namespace BossRush.Contents.Items.Weapon
                     check = 0;
                 }
             }
-            if(item.ModItem is Deagle)
+            if (item.ModItem is Deagle)
             {
-                if(Deagle_DaedalusStormBow)
+                if (Deagle_DaedalusStormBow)
                 {
                     Deagle_DaedalusStormBow_coolDown = BossRushUtils.CoolDown(Deagle_DaedalusStormBow_coolDown);
                 }
             }
+        }
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (Swotaff_Spear)
+            {
+                if (Swotaff_Spear_Counter < 5)
+                {
+                    Swotaff_Spear_Counter++;
+                }
+                else
+                {
+                    Vector2 cirRanPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 30, 90, velocity.ToRotation());
+                    Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero);
+                    Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI);
+                    Swotaff_Spear_Counter = 0;
+                }
+            }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -117,18 +137,18 @@ namespace BossRush.Contents.Items.Weapon
                 {
                     Deagle_PhoenixBlaster_Critical = true;
                 }
-                if(Deagle_DaedalusStormBow && Deagle_DaedalusStormBow_coolDown <= 0)
+                if (Deagle_DaedalusStormBow && Deagle_DaedalusStormBow_coolDown <= 0)
                 {
                     for (int i = 0; i < 15; i++)
                     {
-                        Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100,100), Main.rand.Next(-1100,-1000));
+                        Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100, 100), Main.rand.Next(-1100, -1000));
                         int projectile = Projectile.NewProjectile(
                             Player.GetSource_ItemUse_WithPotentialAmmo(Player.HeldItem, Player.HeldItem.ammo),
-                            positionAboveSky, 
-                            (target.Center - positionAboveSky).SafeNormalize(Vector2.Zero) * 20f, 
-                            ProjectileID.BulletHighVelocity, 
-                            hit.Damage, 
-                            0, 
+                            positionAboveSky,
+                            (target.Center - positionAboveSky).SafeNormalize(Vector2.Zero) * 20f,
+                            ProjectileID.BulletHighVelocity,
+                            hit.Damage,
+                            0,
                             Player.whoAmI);
                         Main.projectile[projectile].usesLocalNPCImmunity = true;
                     }

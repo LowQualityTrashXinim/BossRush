@@ -309,6 +309,7 @@ namespace BossRush.Common.Global
                 case ItemID.ChlorophyteSaber:
                 case ItemID.ChristmasTreeSword:
                 case ItemID.TrueExcalibur:
+                    ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = .64f;
                     item.useStyle = BossRushUseStyle.Swipe;
                     item.useTurn = false;
                     break;
@@ -333,6 +334,7 @@ namespace BossRush.Common.Global
                 case ItemID.DD2SquireBetsySword:
                 case ItemID.Meowmere:
                 case ItemID.StarWrath:
+                    ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = .64f;
                     item.useStyle = BossRushUseStyle.Poke;
                     item.useTurn = false;
                     break;
@@ -344,6 +346,7 @@ namespace BossRush.Common.Global
                 case ItemID.AntlionClaw:
                 case ItemID.HamBat:
                 case ItemID.PsychoKnife:
+                    ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = .64f;
                     item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
                     item.useTurn = false;
                     break;
@@ -438,6 +441,7 @@ namespace BossRush.Common.Global
                 {
                     useTimeMultiplierOnCombo -= .25f;
                 }
+                if (item.useTime < 17) useTimeMultiplierOnCombo -= .55f;
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
@@ -558,8 +562,8 @@ namespace BossRush.Common.Global
         private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer)
         {
             float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-            float baseAngle = modPlayer.data.ToRotation();
-            float start = baseAngle + MathHelper.PiOver2 * player.direction;
+            float baseAngle = modPlayer.data.ToRotation() - MathHelper.Pi;
+            float start = baseAngle + (MathHelper.Pi + MathHelper.PiOver2) * player.direction;
             float end = baseAngle - MathHelper.TwoPi * player.direction;
             Swipe(start, end, percentDone, player);
         }
@@ -598,6 +602,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
+            Player.GetAttackSpeed(DamageClass.Melee) *= .1f;
             MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
             if (Main.mouseRight)
             {
@@ -635,6 +640,11 @@ namespace BossRush.Common.Global
                 AlreadyHitNPC = false;
                 CanPlayerBeDamage = true;
             }
+        }
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            Player.GetAttackSpeed(DamageClass.Melee) *= .64f;
         }
         bool comboExecuteWithDash = false;
         private void ExecuteSpecialComboOnActive(Item item)
@@ -712,7 +722,7 @@ namespace BossRush.Common.Global
                 Player.direction = data.X > 0 ? 1 : -1;
             }
             Player.attackCD = 0;
-            for(int i = 0; i < Player.meleeNPCHitCooldown.Length; i++)
+            for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++)
             {
                 if (Player.meleeNPCHitCooldown[i] > 0)
                 {
