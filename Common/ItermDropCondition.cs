@@ -58,13 +58,13 @@ namespace BossRush.Common
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Exclusive to Synergy mode";
     }
-    public class BossIsEnragedBySpecialSpawner : IItemDropRuleCondition 
+    public class BossIsEnragedBySpecialSpawner : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ModdedPlayer>().Enraged && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
+                return (info.player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
             }
             return false;
         }
@@ -110,7 +110,7 @@ namespace BossRush.Common
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Drop if player is fighting in snow biome, in night and is snowing";
     }
-    public class IsNotABossAndBossIsAlive :IItemDropRuleCondition
+    public class IsNotABossAndBossIsAlive : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)
         {

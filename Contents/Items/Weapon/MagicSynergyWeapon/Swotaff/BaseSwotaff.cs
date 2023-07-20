@@ -65,7 +65,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            if(player.HasItem(ItemID.Spear))
+            if (player.HasItem(ItemID.Spear))
             {
                 modplayer.Swotaff_Spear = true;
             }
@@ -80,7 +80,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 CanShootProjectile = 1;
             }
             int projSwing = Projectile.NewProjectile(source, position, Vector2.Zero, type, (int)(damage * 1.25f), knockback * 2f, player.whoAmI, countIndex, CanShootProjectile);
-            if(countIndex == 0)
+            if (countIndex == 0)
             {
                 Main.projectile[projSwing].knockBack = .5f;
             }
@@ -153,8 +153,22 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 }
             }
         }
+        public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI)
+        {
+            runAI = true;
+        }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (Projectile.ai[0] == 2)
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+                Projectile.velocity -= Projectile.velocity * .1f;
+                if (!Projectile.velocity.IsLimitReached(1f))
+                {
+                    Projectile.Kill();
+                }
+                return;
+            }
             if (player.ItemAnimationJustStarted)
             {
                 if (Projectile.ai[0] == 1 || Projectile.ai[0] == -1 || player.altFunctionUse == 2)
@@ -185,7 +199,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
-            npc.immune[Projectile.owner] = 10;
+            npc.immune[Projectile.owner] = 8;
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
@@ -294,6 +308,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             Main.dust[dust].scale = 0.1f;
             Main.dust[dust].velocity = Projectile.rotation.ToRotationVector2() * 2f;
             Main.dust[dust].fadeIn = 1.5f;
+        }
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+            if (modplayer.Swotaff_Spear && Projectile.ai[0] == 2)
+            {
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * 3f, NormalBoltProjectile, Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                Main.projectile[proj].extraUpdates = 6;
+            }
         }
     }
 }

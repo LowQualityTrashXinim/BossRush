@@ -9,7 +9,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 
 namespace BossRush.Contents.Items.Accessories.Crystal
 {
-    class NatureCrystal : ModItem
+    class NatureCrystal : ModItem, ISynergyItem
     {
         public override void SetDefaults()
         {

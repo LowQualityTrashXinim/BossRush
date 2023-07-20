@@ -115,15 +115,15 @@ namespace BossRush.Contents.Items.Weapon
         {
             if (Swotaff_Spear)
             {
-                if (Swotaff_Spear_Counter < 5)
+                if (Swotaff_Spear_Counter < 2)
                 {
                     Swotaff_Spear_Counter++;
                 }
                 else
                 {
                     Vector2 cirRanPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 30, 90, velocity.ToRotation());
-                    Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero);
-                    Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI);
+                    Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero) * 10;
+                    Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI, 2);
                     Swotaff_Spear_Counter = 0;
                 }
             }

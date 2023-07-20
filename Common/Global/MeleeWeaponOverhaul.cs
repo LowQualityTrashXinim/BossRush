@@ -624,7 +624,7 @@ namespace BossRush.Common.Global
             }
             if (Player.ItemAnimationActive)
             {
-                ExecuteSpecialComboOnActive(item);
+                ExecuteSpecialComboOnActive();
             }
             else
             {
@@ -647,7 +647,7 @@ namespace BossRush.Common.Global
             Player.GetAttackSpeed(DamageClass.Melee) *= .64f;
         }
         bool comboExecuteWithDash = false;
-        private void ExecuteSpecialComboOnActive(Item item)
+        private void ExecuteSpecialComboOnActive()
         {
             if (ComboConditionChecking())
             {
@@ -685,14 +685,6 @@ namespace BossRush.Common.Global
             Player.controlRight = false;
             Vector2 Toward = modplayer.MouseLastPositionBeforeAnimation - Player.Center;
             Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / Player.itemAnimationMax);
-        }
-        private bool CanAttack(NPC npc)
-        {
-            if (!npc.active || npc.immune[Player.whoAmI] > 0)
-            {
-                return true;
-            }
-            return false;
         }
         private void ComboHandleSystem()
         {
