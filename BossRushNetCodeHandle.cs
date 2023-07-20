@@ -7,6 +7,7 @@ using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Card;
+using BossRush.Common;
 
 namespace BossRush
 {
@@ -96,11 +97,11 @@ namespace BossRush
                     }
                     break;
                 case MessageType.GodUltimateChallenge:
-                    PlayerCardHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
-                    cardplayer.ReceivePlayerSync(reader);
+                    ModdedPlayer moddedplayer = Main.player[playernumber].GetModPlayer<ModdedPlayer>();
+                    moddedplayer.ReceivePlayerSync(reader);
                     if (Main.netMode == NetmodeID.Server)
                     {
-                        cardplayer.SyncPlayer(-1, whoAmI, false);
+                        moddedplayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
             }

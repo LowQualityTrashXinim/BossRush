@@ -81,10 +81,6 @@ namespace BossRush.Common.ExtraChallenge
                         Main.NewText("Annoying bat start to spawn", Colors.RarityDarkRed);
                         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Bat start to spawn"), Colors.RarityDarkRed);
                         break;
-                    case 9:
-                        modplayer.InvertShoot = true;
-                        Main.NewText("Where are you aiming at ?", Colors.RarityDarkRed);
-                        break;
                     default:
                         if (modplayer.ChallengeChooser > 8)
                         {

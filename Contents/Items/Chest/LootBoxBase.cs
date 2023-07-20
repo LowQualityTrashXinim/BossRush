@@ -972,15 +972,15 @@ namespace BossRush.Contents.Items.Chest
             weaponAmount = 5;
             potionTypeAmount = 3;
             potionNumAmount = 4;
-            if (Main.getGoodWorld)
-            {
-                weaponAmount = 2;
-            }
             if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
             {
                 weaponAmount -= 2;
                 potionTypeAmount -= 2;
                 potionNumAmount -= 2;
+            }
+            if (Main.getGoodWorld)
+            {
+                weaponAmount = 2;
             }
             if (Main.hardMode)
             {

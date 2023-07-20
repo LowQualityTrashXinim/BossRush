@@ -19,8 +19,9 @@ namespace BossRush.Contents.Items.Accessories
         }
         public override void UpdateEquip(Player player)
         {
-            RangeWeaponOverhaul.NumOfProModify += 1;
-            RangeWeaponOverhaul.SpreadModify += .35f;
+            RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+            modplayer.ProjectileAmountModify += 1;
+            modplayer.SpreadModify += .35f;
         }
         public override void AddRecipes()
         {

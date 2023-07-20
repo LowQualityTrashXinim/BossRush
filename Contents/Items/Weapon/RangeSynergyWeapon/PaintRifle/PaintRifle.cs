@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
 {
@@ -60,11 +59,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    velocity = velocity.RotateRandom(15).RandomSpread(2, 1.2f);
+                    velocity = velocity.Vector2RotateByRandom(15).Vector2RandomSpread(2, 1.2f);
                     Projectile.NewProjectile(source, position, velocity, type, (int)(damage * .7f), knockback, player.whoAmI);
                     for (int l = 0; l < 15; l++)
                     {
-                        Vector2 spread = velocity.RotateRandom(35).RandomSpread(3, .2f) + player.velocity;
+                        Vector2 spread = velocity.Vector2RotateByRandom(35).Vector2RandomSpread(3, .2f) + player.velocity;
                         int dust = Dust.NewDust(position, 0, 0, DustID.Paint, spread.X, spread.Y, 0, new Color(r, g, b), Main.rand.NextFloat(1.2f, 1.45f));
                         Main.dust[dust].noGravity = true;
                     }
@@ -73,7 +72,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
             }
             for (int i = 0; i < 15; i++)
             {
-                Vector2 spread = velocity.RotateRandom(35).RandomSpread(3, .2f) + player.velocity;
+                Vector2 spread = velocity.Vector2RotateByRandom(35).Vector2RandomSpread(3, .2f) + player.velocity;
                 int dust = Dust.NewDust(position, 0, 0, DustID.Paint, spread.X, spread.Y, 0, new Color(r, g, b), Main.rand.NextFloat(1f, 1.45f));
                 Main.dust[dust].noGravity = true;
             }

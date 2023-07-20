@@ -37,7 +37,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless
             position = position.PositionOFFSET(velocity, 60);
             for (int i = 0; i < 10; i++)
             {
-                Vector2 velocityRotate = velocity.RotateRandom(20).RandomSpread(3, 0.55f);
+                Vector2 velocityRotate = velocity.Vector2RotateByRandom(20).Vector2RandomSpread(3, 0.55f);
                 Projectile.NewProjectile(source, position, velocityRotate, type, damage, knockback, player.whoAmI);
             }
             if (count == 0)

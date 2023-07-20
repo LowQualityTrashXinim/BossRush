@@ -89,7 +89,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             {
                 for (int i = 0; i < projectile; i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.RotateRandom(projectile * 7).RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 7).Vector2RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
                 }
             }
             if (modplayer.IceStorm_FlowerofFrost)
@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 projectile = (int)(icePlayer.SpeedMultiplier * .1666667f);
                 for (int i = 0; i < projectile; i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.RotateRandom(projectile * 5).RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 5).Vector2RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
                 }
             }
             if (modplayer.IceStorm_BlizzardStaff && icePlayer.SpeedMultiplier >= 8)

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.Global;
 
 namespace BossRush
 {
@@ -139,6 +140,31 @@ namespace BossRush
                 return vector2;
             }
             return Vector2.Zero;
+        }
+        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians)
+        {
+            float rotation = MathHelper.ToRadians(ToRadians);
+            return Vec2ToRotate.RotatedByRandom(rotation);
+        }
+        public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
+        {
+            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
+            if (Collision.CanHitLine(position, 0, 0, position + OFFSET, 0, 0))
+            {
+                return position += OFFSET;
+            }
+            return position;
+        }
+        public static Vector2 IgnoreTilePositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
+        {
+            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
+            return position += OFFSET;
+        }
+        public static Vector2 Vector2RandomSpread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
+        {
+            ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
+            ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
+            return ToRotateAgain;
         }
     }
 }

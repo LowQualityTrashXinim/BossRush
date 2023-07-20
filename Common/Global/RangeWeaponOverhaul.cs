@@ -9,79 +9,24 @@ namespace BossRush.Common.Global
     /// <summary>
     /// This is for specific gun that deal range damage only
     /// </summary>
-    public static class RangeWeaponOverhaul
+    public static class RangeWeaponOverhaulUtils
     {
-        /// <summary>
-        /// Use this to change how much weapon spread should be modify<br/>
-        /// -For global modify use multiplication<br/>
-        /// -For general modify use addictive<br/>
-        /// Do not use SpreadModify = 0 as it will fuck the other stuff<br/>
-        /// Best practice for this is to use + operator as it is what i use<br/>
-        /// Using * is for globally and very hard to balance
-        /// </summary>
-        public static float SpreadModify = 1;
-        /// <summary>
-        /// This is use to set how many projectile you can shoot in actual weapon class<br/>
-        /// Do not use NumOfProjectile = 0 as it will make gun unable to shoot<br/>
-        /// Use this when making a range modder weapon
-        /// </summary>
-        public static int NumOfProjectile = 1;
-        /// <summary>
-        /// This is to modify the amount of projectiles you gonna shoot from weapon that got assigned with NumOfProjectile<br/>
-        /// This is the safe way to modify the amount of projectile you can modify, do keep in mind to not go below -1 as it is very dangerous<br/>
-        /// Use this if you are making a accessory
-        /// </summary>
-        public static float NumOfProModify = 0;
-        /// <summary>
-        /// Modify the ammount of projectile to be shoot
-        /// </summary>
-        /// <param name="TakeNumAmount">the original amount</param>
-        /// <returns></returns>
-        public static float ModifiedProjAmount(float TakeNumAmount)
+        public static Vector2 RotateCode(this Vector2 Vec2ToRotate,RangerOverhaulPlayer modplayer, float ToRadians, float i = 0)
         {
-            return NumOfProModify + TakeNumAmount;
-        }
-        /// <summary>
-        /// Modify the spread of a weapon
-        /// </summary>
-        /// <param name="TakeFloat">the amount to be change</param>
-        /// <returns></returns>
-        private static float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat * SpreadModify;
-
-        /// <summary>
-        /// Return a Vector that got evenly distribute
-        /// </summary>
-        /// <param name="ToRadians">The radius that it get distribute</param>
-        /// <param name="time">the current progress</param>
-        /// <returns></returns>
-        public static Vector2 RotateCode(this Vector2 Vec2ToRotate, float ToRadians, float i = 0)
-        {
-            float modifyradian = ModifySpread(ToRadians);
+            float modifyradian = modplayer.ModifySpread(ToRadians);
             float rotation = MathHelper.ToRadians(modifyradian) * .5f;
-            if (NumOfProjectile > 1)
+            if (modplayer.NumOfProjectile > 1)
             {
-                float RotateValue = MathHelper.Lerp(-rotation, rotation, i / NumOfProjectile);
+                float RotateValue = MathHelper.Lerp(-rotation, rotation, i / modplayer.NumOfProjectile);
                 return Vec2ToRotate.RotatedBy(RotateValue);
             }
             return Vec2ToRotate;
         }
-        /// <summary>
-        /// Return a random vector that got rotate randomly
-        /// </summary>
-        /// <param name="ToRadians">Rotate radius</param>
-        /// <returns></returns>
-        public static Vector2 RotateRandom(this Vector2 Vec2ToRotate, float ToRadians)
+        public static Vector2 RotateRandom(this Vector2 Vec2ToRotate,RangerOverhaulPlayer modplayer, float ToRadians)
         {
-            float rotation = MathHelper.ToRadians(ModifySpread(ToRadians));
+            float rotation = MathHelper.ToRadians(modplayer.ModifySpread(ToRadians));
             return Vec2ToRotate.RotatedByRandom(rotation);
         }
-        /// <summary>
-        /// Return a position Vector that got offset
-        /// </summary>
-        /// <param name="position">Original position</param>
-        /// <param name="ProjectileVelocity">Current projectile velocity </param>
-        /// <param name="offSetBy">Offset amount</param>
-        /// <returns></returns>
         public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
             Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
@@ -91,29 +36,15 @@ namespace BossRush.Common.Global
             }
             return position;
         }
-        /// <summary>
-        /// Return a position Vector that got offset
-        /// </summary>
-        /// <param name="position">Original position</param>
-        /// <param name="ProjectileVelocity">Current projectile velocity </param>
-        /// <param name="offSetBy">Offset amount</param>
-        /// <returns></returns>
         public static Vector2 IgnoreTilePositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
             Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
             return position += OFFSET;
         }
-        /// <summary>
-        /// Return a vector that got its X parameter and Y parameter change randomely
-        /// </summary>
-        /// <param name="ToRotateAgain">The original Vector</param>
-        /// <param name="Spread">Value to change speed</param>
-        /// <param name="additionalMultiplier">Multiplier for final speed change</param>
-        /// <returns></returns>
-        public static Vector2 RandomSpread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
+        public static Vector2 RandomSpread(this Vector2 ToRotateAgain, RangerOverhaulPlayer modplayer,float Spread, float additionalMultiplier = 1)
         {
-            ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier * ModifySpread(1);
-            ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier * ModifySpread(1);
+            ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier * modplayer.ModifySpread(1);
+            ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier * modplayer.ModifySpread(1);
             return ToRotateAgain;
         }
 
@@ -140,21 +71,6 @@ namespace BossRush.Common.Global
             ItemID.OnyxBlaster,
             ItemID.TacticalShotgun
         };
-        /// <summary>
-        /// Method that make the item currently in use can be shoot by many amount at a random spread<br/>
-        /// It is better to use this method if you want to make your weapon affected by spread in ModifyShootStats
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="source"></param>
-        /// <param name="position"></param>
-        /// <param name="velocity"></param>
-        /// <param name="type"></param>
-        /// <param name="damage"></param>
-        /// <param name="knockback"></param>
-        /// <param name="SpreadAmount">Rotation radius</param>
-        /// <param name="AdditionalSpread">Addition X and Y modifier</param>
-        /// <param name="AdditionalMultiplier">Multiplier for final speed change</param>
-        /// </param>
         public static void NewGunShotProjectile(
             Player player,
             EntitySource_ItemUse_WithAmmo source,
@@ -168,27 +84,19 @@ namespace BossRush.Common.Global
             float AdditionalSpread = 0,
             float AdditionalMultiplier = 1)
         {
-            int ProjectileAmount = (int)ModifiedProjAmount(NumOfProjectile);
+            RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+            int ProjectileAmount = (int)modplayer.ModifiedProjAmount(NumOfProjectile);
             if (ProjectileAmount == 1)
             {
-                velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
+                velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(modplayer,AdditionalSpread, AdditionalMultiplier);
                 Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
                 return;
             }
             for (int i = 0; i < ProjectileAmount; i++)
             {
-                Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMultiplier);
+                Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(modplayer,AdditionalSpread, AdditionalMultiplier);
                 Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
             }
-        }
-    }
-    public class GlobalHandleSystem : ModSystem
-    {
-        public override void PostUpdateItems()
-        {
-            RangeWeaponOverhaul.NumOfProModify = 0;
-            RangeWeaponOverhaul.SpreadModify = 1;
-            RangeWeaponOverhaul.NumOfProjectile = 1;
         }
     }
     public class GlobalWeaponModify : GlobalItem
@@ -199,10 +107,6 @@ namespace BossRush.Common.Global
             {
                 return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
             }
-            //if (!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
-            //{
-            //    return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
-            //}
             if (item.type == ItemID.VortexBeater)
             {
                 return true;
@@ -211,9 +115,9 @@ namespace BossRush.Common.Global
             {
                 Projectile.NewProjectile(source, position, velocity, ProjectileID.BlackBolt, damage * 3, knockback, player.whoAmI);
             }
-            for (int i = 0; i < RangeWeaponOverhaul.GunType.Length; i++)
+            for (int i = 0; i < RangeWeaponOverhaulUtils.GunType.Length; i++)
             {
-                if (item.type == RangeWeaponOverhaul.GunType[i] && AppliesToEntity(item, true))
+                if (item.type == RangeWeaponOverhaulUtils.GunType[i] && AppliesToEntity(item, true))
                 {
                     return false;
                 }
@@ -227,10 +131,6 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            //if(!player.GetModPlayer<OverhaulWeaponPlayer>().OverhaulWeapon)
-            //{
-            //    return;
-            //}
             var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
             if (AppliesToEntity(item, false))
             {
@@ -370,18 +270,31 @@ namespace BossRush.Common.Global
                         NumOfProjectile += 6;
                         break;
                 }
-                RangerWeaponOverhaulPlayerDataHandle modplayer = player.GetModPlayer<RangerWeaponOverhaulPlayerDataHandle>();
+                RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
                 modplayer.SpreadAmount = SpreadAmount;
                 modplayer.AdditionalSpread = AdditionalSpread;
                 modplayer.AdditionalMultiSpread = AdditionalMulti;
                 modplayer.NumOfProjectile = NumOfProjectile;
                 position = position.PositionOFFSET(velocity, OffSetPost);
-                RangeWeaponOverhaul.NewGunShotProjectile(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
+                RangeWeaponOverhaulUtils.NewGunShotProjectile(player, source, ref position, ref velocity, ref type, ref damage, ref knockback, NumOfProjectile, SpreadAmount, AdditionalSpread, AdditionalMulti);
             }
         }
     }
-    class RangerWeaponOverhaulPlayerDataHandle : ModPlayer
+    public class RangerOverhaulPlayer: ModPlayer
     {
         public float SpreadAmount = 0, AdditionalSpread = 0, AdditionalMultiSpread = 0, NumOfProjectile = 1;
+        public float SpreadModify = 1, ProjectileAmountModify = 0;
+        public override void ResetEffects()
+        {
+            base.ResetEffects();
+            SpreadAmount = 0;
+            AdditionalSpread = 0;
+            AdditionalMultiSpread = 0;
+            NumOfProjectile = 1;
+        }
+        public float ModifiedProjAmount(float TakeNumAmount) => ProjectileAmountModify + TakeNumAmount;
+        
+        public float ModifySpread(float TakeFloat) => SpreadModify <= 0 ? 0 : TakeFloat * SpreadModify;
+
     }
 }

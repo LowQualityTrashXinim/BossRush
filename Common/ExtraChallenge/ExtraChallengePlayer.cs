@@ -18,7 +18,6 @@ namespace BossRush.Common.ExtraChallenge
         public bool spawnRatex3 = false;
         public bool strongerEnemy = false;
         public bool BatJungleANDCave = false;
-        public bool InvertShoot = false;
         public bool BoulderRain = false;
         public bool Hellfirerain = false;
         public bool Closecombatfight = false;
@@ -65,13 +64,6 @@ namespace BossRush.Common.ExtraChallenge
                 }
             }
             return true;
-        }
-        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-           if(InvertShoot)
-            {
-                velocity = -velocity;
-            }
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
