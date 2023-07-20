@@ -1249,6 +1249,11 @@ Mods: {
 				DisplayName: Wall Of Flesh Spawner
 				Tooltip: With this, you no longer need to care for the guide to respawn
 			}
+
+			NormalizeArtifact: {
+				DisplayName: Normalize Artifact
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

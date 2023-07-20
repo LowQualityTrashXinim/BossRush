@@ -25,7 +25,7 @@ namespace BossRush.Common
         //Enraged boss
         public bool Enraged = false;
         //NoHiter
-        public bool gitGud = false;
+        public int gitGud = 0;
         public int HowManyBossIsAlive = 0;
         public override void PreUpdate()
         {
@@ -185,7 +185,7 @@ namespace BossRush.Common
         {
             if (BossRushUtils.IsAnyVanillaBossAlive())
             {
-                if (gitGud)
+                if (gitGud > 0)
                 {
                     Player.KillMe(new PlayerDeathReason(), 9999999, info.HitDirection);
                     Player.KillMeForGood();
@@ -389,11 +389,11 @@ namespace BossRush.Common
         }
         public override void LoadData(TagCompound tag)
         {
-            gitGud = (bool)tag["gitgud"];
+            gitGud = (int)tag["gitgud"];
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
-            gitGud = reader.ReadBoolean();
+            gitGud = reader.ReadInt32();
         }
 
         public override void CopyClientState(ModPlayer targetCopy)

@@ -309,7 +309,6 @@ namespace BossRush.Common.Global
                 case ItemID.ChlorophyteSaber:
                 case ItemID.ChristmasTreeSword:
                 case ItemID.TrueExcalibur:
-                    ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = .64f;
                     item.useStyle = BossRushUseStyle.Swipe;
                     item.useTurn = false;
                     break;
@@ -334,7 +333,6 @@ namespace BossRush.Common.Global
                 case ItemID.DD2SquireBetsySword:
                 case ItemID.Meowmere:
                 case ItemID.StarWrath:
-                    ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = .64f;
                     item.useStyle = BossRushUseStyle.Poke;
                     item.useTurn = false;
                     break;
@@ -346,7 +344,6 @@ namespace BossRush.Common.Global
                 case ItemID.AntlionClaw:
                 case ItemID.HamBat:
                 case ItemID.PsychoKnife:
-                    ItemID.Sets.BonusAttackSpeedMultiplier[item.type] = .64f;
                     item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
                     item.useTurn = false;
                     break;
