@@ -23,13 +23,13 @@ namespace BossRush.Contents.Items.Accessories
             modplayer.ProjectileAmountModify += 1;
             modplayer.SpreadModify += .35f;
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.Minishark)
-                .AddIngredient(ItemID.CloudinaBottle)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                .Register();
-        }
+        //public override void AddRecipes()
+        //{
+        //    CreateRecipe()
+        //        .AddIngredient(ItemID.Minishark)
+        //        .AddIngredient(ItemID.CloudinaBottle)
+        //        .AddIngredient(ModContent.ItemType<SynergyEnergy>())
+        //        .Register();
+        //}
     }
 }

@@ -141,11 +141,8 @@ namespace BossRush
             }
             return Vector2.Zero;
         }
-        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians)
-        {
-            float rotation = MathHelper.ToRadians(ToRadians);
-            return Vec2ToRotate.RotatedByRandom(rotation);
-        }
+        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
+        
         public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
             Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;

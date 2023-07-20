@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(54, 24, 24, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
+            Item.BossRushDefaultRange(54, 24, 14, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
 
             Item.rare = 2;
             Item.value = Item.sellPrice(gold: 50);
@@ -47,7 +47,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
             {
                 position += offset;
             }
-            velocity = velocity.RotateRandom(7);
+            velocity = velocity.NextVector2RotatedByRandom(7);
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {

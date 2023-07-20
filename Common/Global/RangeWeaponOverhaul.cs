@@ -107,6 +107,7 @@ namespace BossRush.Common.Global
             {
                 return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
             }
+            return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
             if (item.type == ItemID.VortexBeater)
             {
                 return true;
@@ -131,6 +132,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
+            return;
             var source = new EntitySource_ItemUse_WithAmmo(player, item, item.ammo);
             if (AppliesToEntity(item, false))
             {

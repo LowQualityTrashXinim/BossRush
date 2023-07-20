@@ -17,7 +17,7 @@ namespace BossRush.Contents.BuffAndDebuff
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetCritChance(DamageClass.Generic) += 70;
-            player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify *= 0;
+            //player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify *= 0;
         }
     }
 }
