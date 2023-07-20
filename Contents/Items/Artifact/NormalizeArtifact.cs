@@ -1,11 +1,10 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
+﻿using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Artifact
 {
-    internal class BrokenArtifact : ModItem
+    internal class NormalizeArtifact : ModItem, IArtifactItem
     {
+        public int ArtifactID => 0;
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);

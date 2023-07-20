@@ -32,15 +32,13 @@ namespace BossRush.Contents.Items.Toggle
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             TooltipLine line = new TooltipLine(Mod, "ChallengeGod", "A gift from God of challenge" + $"[i:{ModContent.ItemType<CursedSkull>()}]");
-            line.OverrideColor = BossRushColor.MultiColor(new List<Color>() { new Color(255,50,255), new Color(100, 50, 100) }, 2);
+            line.OverrideColor = BossRushColor.MultiColor(new List<Color>() { new Color(255, 50, 255), new Color(100, 50, 100) }, 2);
             tooltips.Add(line);
         }
-
         public override bool CanUseItem(Player player)
         {
             return !BossRushUtils.IsAnyVanillaBossAlive();
         }
-        int count = 0;
         public override bool? UseItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
@@ -48,18 +46,8 @@ namespace BossRush.Contents.Items.Toggle
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    if (count == 0)
-                    {
-                        player.GetModPlayer<ModdedPlayer>().gitGud = true;
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun"), Colors.RarityDarkRed);
-                        count++;
-                    }
-                    else
-                    {
-                        player.GetModPlayer<ModdedPlayer>().gitGud = false;
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Skill issue"), new Microsoft.Xna.Framework.Color(0, 110, 225));
-                        count = 0;
-                    }
+                    player.GetModPlayer<ModdedPlayer>().gitGud = true;
+                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun, you can't revert this change"), Colors.RarityDarkRed);
                 }
             }
             return true;

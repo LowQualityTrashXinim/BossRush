@@ -21,7 +21,8 @@ namespace BossRush
             ExtraChallenge,
             ArtifactRegister,
             ChanceMultiplayer,
-            CardEffect
+            CardEffect,
+            GodUltimateChallenge
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -87,6 +88,14 @@ namespace BossRush
                     }
                     break;
                 case MessageType.CardEffect:
+                    PlayerCardHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
+                    cardplayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        cardplayer.SyncPlayer(-1, whoAmI, false);
+                    }
+                    break;
+                case MessageType.GodUltimateChallenge:
                     PlayerCardHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
                     cardplayer.ReceivePlayerSync(reader);
                     if (Main.netMode == NetmodeID.Server)

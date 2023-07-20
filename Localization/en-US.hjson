@@ -512,7 +512,7 @@ Mods: {
 			CursedSkull: {
 				Tooltip:
 					'''
-					Make every boss when you fight instakill you
+					Make every boss when you fight instakill you, basically no hit mode, and also you die for good
 					"The only way to make god acknowledge you"
 					'''
 				DisplayName: Cursed Skull
@@ -627,7 +627,7 @@ Mods: {
 				Tooltip:
 					'''
 					For Debug purpose only !
-					Reset all of the card that manipulate the chance from chest
+					Reset all of the card stats
 					'''
 				DisplayName: Reset Card
 			}
@@ -659,7 +659,7 @@ Mods: {
 					"Unpure, relentess crystal"
 					Positive effect : 
 					+ Attack heal player
-					+ You can survive 1 fatal attack ( 3 minute cooldown )
+					+ You can survive 1 fatal attack ( 5 minute cooldown )
 					Negative Effect : reduce max life by 65% and permanent potion sickness
 					'''
 				DisplayName: Vampirism Crystal
@@ -710,7 +710,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Make your life a little more interesting"
-					Positive effect : Increases amount of weapons from Treasure Chest by 2
+					Positive effect : Increases amount of weapons from Lootbox by 2
 					Neutral effect : Random effect may occur ...
 					'''
 				DisplayName: Fate Decider

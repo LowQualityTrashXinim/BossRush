@@ -623,7 +623,7 @@ namespace BossRush.Contents.Items.Artifact
             if (!Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire)
             {
                 Player.Heal(Player.statLifeMax2);
-                Player.AddBuff(ModContent.BuffType<SecondChance>(), 10800);
+                Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
                 return false;
             }
             return true;

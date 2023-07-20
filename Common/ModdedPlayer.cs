@@ -15,6 +15,8 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
+using System.IO;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common
 {
@@ -307,67 +309,103 @@ namespace BossRush.Common
             {
                 Player.QuickSpawnItem(null, ItemID.SlimeCrown);
             }
-            else if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
+            if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
             {
                 Player.QuickSpawnItem(null, ItemID.SuspiciousLookingEye);
             }
-            else if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
+            if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
             {
                 Player.QuickSpawnItem(null, ItemID.BloodySpine);
             }
-            else if (NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+            if (NPC.AnyNPCs(NPCID.EaterofWorldsHead))
             {
                 Player.QuickSpawnItem(null, ItemID.WormFood);
             }
-            else if (NPC.AnyNPCs(NPCID.SkeletronHead))
+            if (NPC.AnyNPCs(NPCID.SkeletronHead))
             {
                 Player.QuickSpawnItem(null, ModContent.ItemType<CursedDoll>());
             }
-            else if (NPC.AnyNPCs(NPCID.QueenBee))
+            if (NPC.AnyNPCs(NPCID.QueenBee))
             {
                 Player.QuickSpawnItem(null, ItemID.Abeemination);
             }
-            else if (NPC.AnyNPCs(NPCID.WallofFlesh))
+            if (NPC.AnyNPCs(NPCID.WallofFlesh))
             {
                 Player.QuickSpawnItem(null, ItemID.GuideVoodooDoll);
             }
-            else if (NPC.AnyNPCs(NPCID.QueenSlimeBoss))
+            if (NPC.AnyNPCs(NPCID.QueenSlimeBoss))
             {
                 Player.QuickSpawnItem(null, ItemID.QueenSlimeCrystal);
             }
-            else if (NPC.AnyNPCs(NPCID.Spazmatism) || NPC.AnyNPCs(NPCID.Retinazer))
+            if (NPC.AnyNPCs(NPCID.Spazmatism) || NPC.AnyNPCs(NPCID.Retinazer))
             {
                 Player.QuickSpawnItem(null, ItemID.MechanicalEye);
             }
-            else if (NPC.AnyNPCs(NPCID.TheDestroyer))
+            if (NPC.AnyNPCs(NPCID.TheDestroyer))
             {
                 Player.QuickSpawnItem(null, ItemID.MechanicalWorm);
             }
-            else if (NPC.AnyNPCs(NPCID.SkeletronPrime))
+            if (NPC.AnyNPCs(NPCID.SkeletronPrime))
             {
                 Player.QuickSpawnItem(null, ItemID.MechanicalSkull);
             }
-            else if (NPC.AnyNPCs(NPCID.Plantera))
+            if (NPC.AnyNPCs(NPCID.Plantera))
             {
                 Player.QuickSpawnItem(null, ModContent.ItemType<PlanteraSpawn>());
             }
-            else if (NPC.AnyNPCs(NPCID.Golem))
+            if (NPC.AnyNPCs(NPCID.Golem))
             {
                 Player.QuickSpawnItem(null, ItemID.LihzahrdPowerCell);
             }
-            else if (NPC.AnyNPCs(NPCID.DukeFishron))
+            if (NPC.AnyNPCs(NPCID.DukeFishron))
             {
                 Player.QuickSpawnItem(null, ItemID.TruffleWorm);
             }
-            else if (NPC.AnyNPCs(NPCID.HallowBoss))
+            if (NPC.AnyNPCs(NPCID.HallowBoss))
             {
                 Player.QuickSpawnItem(null, ItemID.EmpressButterfly);
             }
-            else if (NPC.AnyNPCs(NPCID.MoonLordCore))
+            if(NPC.AnyNPCs(NPCID.CultistBoss))
+            {
+                Player.QuickSpawnItem(null, ModContent.ItemType<LunaticCultistSpawner>());
+            }
+            if (NPC.AnyNPCs(NPCID.MoonLordCore))
             {
                 Player.QuickSpawnItem(null, ItemID.CelestialSigil);
             }
             Enraged = false;
+        }
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)BossRush.MessageType.GodUltimateChallenge);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(gitGud);
+            packet.Send(toWho, fromWho);
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag["gitgud"] = gitGud;
+        }
+        public override void LoadData(TagCompound tag)
+        {
+            gitGud = (bool)tag["gitgud"];
+        }
+        public void ReceivePlayerSync(BinaryReader reader)
+        {
+            gitGud = reader.ReadBoolean();
+        }
+
+        public override void CopyClientState(ModPlayer targetCopy)
+        {
+            ModdedPlayer clone = (ModdedPlayer)targetCopy;
+            clone.gitGud = gitGud;
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            ModdedPlayer clone = (ModdedPlayer)clientPlayer;
+            if (gitGud != clone.gitGud) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }
