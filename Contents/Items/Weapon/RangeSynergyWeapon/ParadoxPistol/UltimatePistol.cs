@@ -8,16 +8,9 @@ using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
 {
-    class UltimatePistol : ModItem, IBossRushRangeGun
+    class UltimatePistol : ModItem
     {
         int Counter = 0;
-
-        public float OffSetPost { get => OffSetPost; set => OffSetPost = value; }
-        public float SpreadAmount { get => SpreadAmount; set => SpreadAmount = value; }
-        public float AdditionalSpread { get => AdditionalSpread; set => AdditionalSpread = value; }
-        public float AdditionalMulti { get => AdditionalMulti; set => AdditionalMulti = value; }
-        public int NumOfProjectile { get => NumOfProjectile; set => NumOfProjectile = value; }
-
         public override void SetDefaults()
         {
             Item.damage = 400;
@@ -56,8 +49,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol
             }
             else
             {
-                RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
                 Counter += 1;
+                float NumOfProjectile;
                 float SpeedMultiplier;
                 Vector2 newVelocity;
                 switch (Counter)

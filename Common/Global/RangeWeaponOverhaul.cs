@@ -1,79 +1,36 @@
 ﻿using Terraria;
+using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Mono.Cecil;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using System.IO;
-using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Global
 {
-    /// <summary>
-    /// This is for specific gun that deal range damage only
-    /// </summary>
-    public static class RangeWeaponOverhaulUtils
-    {
-        public static Vector2 RotateCode(this Vector2 Vec2ToRotate, float NumOfProjectile, float ToRadians, float i = 0)
-        {
-            float rotation = MathHelper.ToRadians(ToRadians) * .5f;
-            if (NumOfProjectile > 1)
-            {
-                float RotateValue = MathHelper.Lerp(-rotation, rotation, i / NumOfProjectile);
-                return Vec2ToRotate.RotatedBy(RotateValue);
-            }
-            return Vec2ToRotate;
-        }
-        public static Vector2 RotateRandom(this Vector2 Vec2ToRotate, float ToRadians)
-        {
-            float rotation = MathHelper.ToRadians(ToRadians);
-            return Vec2ToRotate.RotatedByRandom(rotation);
-        }
-        public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
-        {
-            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
-            if (Collision.CanHitLine(position, 0, 0, position + OFFSET, 0, 0))
-            {
-                return position += OFFSET;
-            }
-            return position;
-        }
-        public static Vector2 IgnoreTilePositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
-        {
-            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
-            return position += OFFSET;
-        }
-        public static Vector2 RandomSpread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
-        {
-            ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
-            ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
-            return ToRotateAgain;
-        }
-        public readonly static int[] GunType = {
-            ItemID.RedRyder,
-            ItemID.Minishark,
-            ItemID.Gatligator,
-            ItemID.Handgun,
-            ItemID.PhoenixBlaster,
-            ItemID.Musket,
-            ItemID.TheUndertaker,
-            ItemID.FlintlockPistol,
-            ItemID.Revolver,
-            ItemID.ClockworkAssaultRifle,
-            ItemID.Megashark,
-            ItemID.Uzi,
-            ItemID.VenusMagnum,
-            ItemID.SniperRifle,
-            ItemID.ChainGun,
-            ItemID.SDMG,
-            ItemID.Boomstick,
-            ItemID.QuadBarrelShotgun,
-            ItemID.Shotgun,
-            ItemID.OnyxBlaster,
-            ItemID.TacticalShotgun
-        };
-    }
+    //public readonly static int[] GunType = {
+    //    ItemID.RedRyder,
+    //    ItemID.Minishark,
+    //    ItemID.Gatligator,
+    //    ItemID.Handgun,
+    //    ItemID.PhoenixBlaster,
+    //    ItemID.Musket,
+    //    ItemID.TheUndertaker,
+    //    ItemID.FlintlockPistol,
+    //    ItemID.Revolver,
+    //    ItemID.ClockworkAssaultRifle,
+    //    ItemID.Megashark,
+    //    ItemID.Uzi,
+    //    ItemID.VenusMagnum,
+    //    ItemID.SniperRifle,
+    //    ItemID.ChainGun,
+    //    ItemID.SDMG,
+    //    ItemID.Boomstick,
+    //    ItemID.QuadBarrelShotgun,
+    //    ItemID.Shotgun,
+    //    ItemID.OnyxBlaster,
+    //    ItemID.TacticalShotgun
+    //};
     public class GlobalWeaponModify : GlobalItem
     {
         public override bool InstancePerEntity => true;
@@ -81,7 +38,7 @@ namespace BossRush.Common.Global
         float SpreadAmount = 0;
         float AdditionalSpread = 0;
         float AdditionalMulti = 1;
-        int NumOfProjectile = 0;
+        int NumOfProjectile = 1;
         public override void SetDefaults(Item entity)
         {
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
@@ -226,11 +183,14 @@ namespace BossRush.Common.Global
             {
                 return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
             }
-            if(NumOfProjectile > 1)
+            RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+            int amount = NumOfProjectile + modplayer.ProjectileAmountModify;
+            if (amount >= 2)
             {
-                for (int i = 0; i < NumOfProjectile; i++)
+                amount--;
+                for (int i = 0; i < amount; i++)
                 {
-                    Vector2 velocity2 = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMulti);
+                    Vector2 velocity2 = velocity = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
                     Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
                 }
             }
@@ -243,15 +203,8 @@ namespace BossRush.Common.Global
                 return;
             }
             RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
-            SpreadAmount *= modplayer.SpreadModify;
-            AdditionalSpread *= modplayer.SpreadModify;
-            AdditionalMulti *= modplayer.SpreadModify;
-            NumOfProjectile += modplayer.ProjectileAmountModify;
             position = position.PositionOFFSET(velocity, OffSetPost);
-            if (NumOfProjectile == 1)
-            {
-                velocity = velocity.RotateRandom(SpreadAmount).RandomSpread(AdditionalSpread, AdditionalMulti);
-            }
+            velocity = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
         }
     }
     /// <summary>
@@ -260,7 +213,7 @@ namespace BossRush.Common.Global
     /// </summary>
     public interface IBossRushRangeGun
     {
-        public float OffSetPost { get; set; }
+        public float OffSetPosition { get; set; }
         public float SpreadAmount { get; set; }
         public float AdditionalSpread { get; set; }
         public float AdditionalMulti { get; set; }
@@ -290,18 +243,20 @@ namespace BossRush.Common.Global
         public int ProjectileAmountModify = 0;
         public override void ResetEffects()
         {
+            SpreadModify = 1;
+            ProjectileAmountModify = 0;
             base.ResetEffects();
-            SpreadModify = 1 + BaseSpreadModifier;
-            ProjectileAmountModify = 0 + BaseProjectileAmountModifier;
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
+            return;
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
             if (item.ModItem is IBossRushRangeGun brItem)
             {
+                position = position.PositionOFFSET(velocity, brItem.OffSetPosition);
                 if (brItem.NumOfProjectile == 1)
                 {
                     velocity = velocity.NextVector2RotatedByRandom(brItem.SpreadAmount).Vector2RandomSpread(brItem.AdditionalSpread, brItem.AdditionalMulti);
@@ -310,6 +265,7 @@ namespace BossRush.Common.Global
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -343,7 +299,7 @@ namespace BossRush.Common.Global
         }
         public override void LoadData(TagCompound tag)
         {
-            BaseSpreadModifier = (int)tag["BaseSpreadModifier"];
+            BaseSpreadModifier = (float)tag["BaseSpreadModifier"];
             BaseProjectileAmountModifier = (int)tag["BaseProjectileAmountModifier"];
         }
         public void ReceivePlayerSync(BinaryReader reader)

@@ -7,21 +7,11 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
 {
-    internal class FrozenShark : ModItem, IBossRushRangeGun
+    internal class FrozenShark : ModItem
     {
-        public float OffSetPost { get => OffSetPost; set => OffSetPost = value; }
-        public float SpreadAmount { get => SpreadAmount; set => SpreadAmount = value; }
-        public float AdditionalSpread { get => AdditionalSpread; set => AdditionalSpread = value; }
-        public float AdditionalMulti { get => AdditionalMulti; set => AdditionalMulti = value; }
-        public int NumOfProjectile { get => NumOfProjectile; set => NumOfProjectile = value; }
-
         public override void SetDefaults()
         {
             BossRushUtils.BossRushDefaultRange(Item, 64, 20, 16, 1f, 9, 9, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);
-            OffSetPost = 50;
-            SpreadAmount = 9;
-            AdditionalSpread = 4;
-            NumOfProjectile = 1;
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
         }

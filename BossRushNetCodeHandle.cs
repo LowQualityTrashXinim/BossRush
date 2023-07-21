@@ -8,6 +8,7 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Card;
 using BossRush.Common;
+using BossRush.Common.Global;
 
 namespace BossRush
 {
@@ -103,6 +104,14 @@ namespace BossRush
                     if (Main.netMode == NetmodeID.Server)
                     {
                         moddedplayer.SyncPlayer(-1, whoAmI, false);
+                    }
+                    break;
+                case MessageType.RangerOverhaul:
+                    RangerOverhaulPlayer rangePlayer = Main.player[playernumber].GetModPlayer<RangerOverhaulPlayer>();
+                    rangePlayer.ReceivePlayerSync(reader);
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        rangePlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
             }
