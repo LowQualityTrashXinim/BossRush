@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
 using System.IO;
 using Terraria.ModLoader.IO;
+using System.Linq.Expressions;
 
 namespace BossRush.Common
 {
@@ -144,7 +145,7 @@ namespace BossRush.Common
             {
                 items.Add(new Item(ItemID.RedPotion, 10));
             }
-            if (Player.name == "LQTXinim")
+            if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim")
             {
                 items.Add(new Item(ModContent.ItemType<RainbowTreasureChest>()));
             }
@@ -178,9 +179,26 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja>()));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja2>()));
             }
+            if (Player.name == "I want to die" || Player.name == "Give me hell")
+            {
+                items.Clear();
+                items.Add(new Item(ModContent.ItemType<WoodenLootBox>()));
+                items.Add(new Item(ModContent.ItemType<CursedSkull>()));
+                items.Add(new Item(ModContent.ItemType<NormalizeArtifact>()));
+                items.Add(new Item(ModContent.ItemType<CardPacket>()));
+            }
             return items;
         }
         public int amountoftimegothit = 0;
+        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
+        {
+            if (Player.HasBuff(ModContent.BuffType<Protection>()))
+            {
+                Player.ClearBuff(ModContent.BuffType<Protection>());
+                return false;
+            }
+            return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
+        }
         public override void OnHurt(Player.HurtInfo info)
         {
             if (BossRushUtils.IsAnyVanillaBossAlive())
@@ -188,7 +206,6 @@ namespace BossRush.Common
                 if (gitGud > 0)
                 {
                     Player.KillMe(new PlayerDeathReason(), 9999999, info.HitDirection);
-                    Player.KillMeForGood();
                     return;
                 }
                 else
@@ -216,7 +233,7 @@ namespace BossRush.Common
         }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            if(RichMahoganyArmor)
+            if (RichMahoganyArmor)
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -251,11 +268,11 @@ namespace BossRush.Common
                     target.AddBuff(BuffID.Frostburn, 600);
             if (WoodArmor)
                 if (Main.rand.NextBool(4) && proj.ModProjectile is not AcornProjectile)
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), 
-                        target.Center - new Vector2(0, 400), 
-                        Vector2.UnitY * 5, 
+                    Projectile.NewProjectile(Player.GetSource_FromThis(),
+                        target.Center - new Vector2(0, 400),
+                        Vector2.UnitY * 5,
                         ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
-            
+
 
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
@@ -365,7 +382,7 @@ namespace BossRush.Common
             {
                 Player.QuickSpawnItem(null, ItemID.EmpressButterfly);
             }
-            if(NPC.AnyNPCs(NPCID.CultistBoss))
+            if (NPC.AnyNPCs(NPCID.CultistBoss))
             {
                 Player.QuickSpawnItem(null, ModContent.ItemType<LunaticCultistSpawner>());
             }

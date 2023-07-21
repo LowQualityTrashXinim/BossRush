@@ -42,11 +42,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vector2 offset = velocity.SafeNormalize(Vector2.UnitX) * 40;
-            if (Collision.CanHit(position, 0, 0, position * offset, 0, 0))
-            {
-                position += offset;
-            }
+            position = position.PositionOFFSET(velocity, 40);
             velocity = velocity.NextVector2RotatedByRandom(7);
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)

@@ -213,11 +213,11 @@ namespace BossRush.Common.Global
     /// </summary>
     public interface IBossRushRangeGun
     {
-        public float OffSetPosition { get; set; }
-        public float SpreadAmount { get; set; }
-        public float AdditionalSpread { get; set; }
-        public float AdditionalMulti { get; set; }
-        public int NumOfProjectile { get; set; }
+        public float OffSetPosition { get; }
+        public float SpreadAmount { get; }
+        public float AdditionalSpread { get; }
+        public float AdditionalMulti { get; }
+        public int NumOfProjectile { get; }
     }
     /// <summary>
     /// This will auto handle the value for you, but if you want to shoot custom projectile<br/>

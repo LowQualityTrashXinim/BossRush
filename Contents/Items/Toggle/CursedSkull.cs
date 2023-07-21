@@ -8,6 +8,7 @@ using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Toggle
 {
@@ -27,6 +28,7 @@ namespace BossRush.Contents.Items.Toggle
             Item.useAnimation = 30;
             Item.useTime = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
+            Item.scale = .5f;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -43,10 +45,15 @@ namespace BossRush.Contents.Items.Toggle
         {
             if (player.whoAmI == Main.myPlayer)
             {
+                if(player.GetModPlayer<ModdedPlayer>().gitGud > 0)
+                {
+                    return true;
+                }
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     player.difficulty = 2;
+                    player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 5;
                     player.GetModPlayer<ModdedPlayer>().gitGud++;
                     ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun, you can't revert this change"), Colors.RarityDarkRed);
                 }

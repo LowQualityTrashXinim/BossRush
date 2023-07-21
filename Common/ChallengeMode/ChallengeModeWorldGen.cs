@@ -29,7 +29,8 @@ namespace BossRush.Common.ChallengeMode
         {
             if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && worldData.GameMode != 3 && !worldData.ForTheWorthy)
             {
-                return "A force of pain block you from cheesing\nokay, with the stupid cringe edgy line out of the way, you must play on Master difficulty world";
+                return "A force of pain block you from cheesing" +
+                    "\nokay, with the stupid cringe edgy line out of the way, you must play on Master difficulty world";
             }
             return base.WorldCanBePlayedRejectionMessage(playerData, worldData);
         }
@@ -92,6 +93,12 @@ namespace BossRush.Common.ChallengeMode
                 tasks.RemoveAt(JungleTemple);
                 int MicroBiomes = tasks.FindIndex(GenPass => GenPass.Name.Equals("Micro Biomes"));
                 tasks.RemoveAt(MicroBiomes);
+                int Marble = tasks.FindIndex(GenPass => GenPass.Name.Equals("Marble"));
+                tasks.RemoveAt(Marble);
+                int Granite = tasks.FindIndex(GenPass => GenPass.Name.Equals("Granite"));
+                tasks.RemoveAt(Granite);
+                int GlowMushroom = tasks.FindIndex(GenPass => GenPass.Name.Equals("Mushrooms"));
+                tasks.RemoveAt(GlowMushroom);
                 int Moss = tasks.FindIndex(GenPass => GenPass.Name.Equals("Moss"));
                 tasks.RemoveAt(Moss);
                 int SurfaceOreandStone = tasks.FindIndex(GenPass => GenPass.Name.Equals("Surface Ore and Stone"));

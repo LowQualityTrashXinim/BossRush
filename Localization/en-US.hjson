@@ -1252,7 +1252,11 @@ Mods: {
 
 			NormalizeArtifact: {
 				DisplayName: Normalize Artifact
-				Tooltip: ""
+				Tooltip:
+						'''
+						"Offer no tactical advantage what so ever"
+						Grant no effect !
+						'''
 			}
 		}
 

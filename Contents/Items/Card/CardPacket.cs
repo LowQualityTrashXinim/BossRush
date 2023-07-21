@@ -110,7 +110,7 @@ namespace BossRush.Contents.Items.Card
             //}
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Vector2 origin = new Vector2(texture.Width * 0.5f, Item.width * 0.5f);
             Vector2 drawPos = Item.position - Main.screenPosition + origin;
             for (int i = 0; i < 3; i++)
             {
