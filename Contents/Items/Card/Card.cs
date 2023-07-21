@@ -329,6 +329,7 @@ namespace BossRush.Contents.Items.Card
                 modplayer.listCursesID.Add(CursedID);
                 BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 110);
             }
+            modplayer.CardTracker++;
             return true;
         }
         private int countX = 0;
@@ -423,6 +424,7 @@ namespace BossRush.Contents.Items.Card
     }
     class PlayerCardHandle : ModPlayer
     {
+        public int CardTracker = 0;
         public bool DecreaseRateOfFire = false;// ID 1
         public bool NoHealing = false;// ID 2
         public bool SluggishDamage = false;// ID 3
@@ -722,6 +724,7 @@ namespace BossRush.Contents.Items.Card
             if (LimitedResource)
             {
                 Player.lifeRegen = 0;
+               
                 Player.manaRegen = 0;
             }
         }
@@ -773,6 +776,7 @@ namespace BossRush.Contents.Items.Card
             packet.Write(MinionSlot);
             packet.Write(SentrySlot);
             packet.Write(Thorn);
+            packet.Write(CardTracker);
             foreach (int item in listCursesID)
             {
                 packet.Write(item);
@@ -800,6 +804,7 @@ namespace BossRush.Contents.Items.Card
             tag["MinionSlot"] = MinionSlot;
             tag["SentrySlot"] = SentrySlot;
             tag["Thorn"] = Thorn;
+            tag["CardTracker"] = CardTracker;
             tag["CursesID"] = listCursesID;
         }
         public override void LoadData(TagCompound tag)
@@ -823,6 +828,7 @@ namespace BossRush.Contents.Items.Card
             MinionSlot = (int)tag["MinionSlot"];
             SentrySlot = (int)tag["SentrySlot"];
             Thorn = (float)tag["Thorn"];
+            CardTracker = (int)tag["CardTracker"];
             listCursesID = tag.Get<List<int>>("CursesID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
@@ -846,6 +852,7 @@ namespace BossRush.Contents.Items.Card
             MinionSlot = reader.ReadInt32();
             SentrySlot = reader.ReadInt32();
             Thorn = reader.ReadSingle();
+            CardTracker = reader.ReadInt32();
             for (int i = 0; i < listCursesID.Count; i++)
             {
                 listCursesID[i] = reader.ReadByte();
@@ -873,6 +880,7 @@ namespace BossRush.Contents.Items.Card
             clone.MinionSlot = MinionSlot;
             clone.SentrySlot = SentrySlot;
             clone.Thorn = Thorn;
+            clone.CardTracker = CardTracker;
             clone.listCursesID = listCursesID;
         }
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -897,6 +905,7 @@ namespace BossRush.Contents.Items.Card
             if (MinionSlot != clone.MinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (SentrySlot != clone.SentrySlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
             if (Thorn != clone.Thorn) SyncPlayer(-1, Main.myPlayer, false);
+            if (CardTracker != clone.CardTracker) SyncPlayer(-1, Main.myPlayer, false);
             if (listCursesID != clone.listCursesID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
