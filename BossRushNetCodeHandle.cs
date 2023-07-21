@@ -23,7 +23,8 @@ namespace BossRush
             ArtifactRegister,
             ChanceMultiplayer,
             CardEffect,
-            GodUltimateChallenge
+            GodUltimateChallenge,
+            RangerOverhaul
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {

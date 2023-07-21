@@ -1,7 +1,7 @@
-﻿using BossRush.Common.Global;
+﻿using Terraria;
 using BossRush.Texture;
-using Terraria;
 using Terraria.ModLoader;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.BuffAndDebuff
 {

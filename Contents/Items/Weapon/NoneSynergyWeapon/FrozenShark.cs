@@ -7,25 +7,24 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
 {
-    internal class FrozenShark : ModItem
+    internal class FrozenShark : ModItem, IBossRushRangeGun
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Functional surprisingly enough");
-        }
+        public float OffSetPost { get => OffSetPost; set => OffSetPost = value; }
+        public float SpreadAmount { get => SpreadAmount; set => SpreadAmount = value; }
+        public float AdditionalSpread { get => AdditionalSpread; set => AdditionalSpread = value; }
+        public float AdditionalMulti { get => AdditionalMulti; set => AdditionalMulti = value; }
+        public int NumOfProjectile { get => NumOfProjectile; set => NumOfProjectile = value; }
+
         public override void SetDefaults()
         {
             BossRushUtils.BossRushDefaultRange(Item, 64, 20, 16, 1f, 9, 9, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);
-
+            OffSetPost = 50;
+            SpreadAmount = 9;
+            AdditionalSpread = 4;
+            NumOfProjectile = 1;
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
         }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            position = position.PositionOFFSET(velocity, 50);
-            velocity = velocity.RotateRandom(9);
-        }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (Main.rand.NextBool(5))
@@ -34,12 +33,10 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-2f, -3f);
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()
