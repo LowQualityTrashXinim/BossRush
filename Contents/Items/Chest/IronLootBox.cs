@@ -87,7 +87,6 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, ItemID.KingSlimeBossBag);
             }
-            player.QuickSpawnItem(entitySource, ItemID.WoodPlatform, 999);
             player.QuickSpawnItem(entitySource, ItemID.Campfire, 10);
             player.QuickSpawnItem(entitySource, ItemID.PlatinumPickaxe);
             player.QuickSpawnItem(entitySource, ItemID.PlatinumAxe);

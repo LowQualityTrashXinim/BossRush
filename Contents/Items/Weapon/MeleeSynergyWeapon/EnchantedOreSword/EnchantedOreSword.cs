@@ -12,24 +12,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
     {
         public override void SetDefaults()
         {
-            Item.DamageType = DamageClass.Melee;
-            Item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
-
-            Item.height = 50;
-            Item.width = 50;
-
-            Item.useTime = 26;
-            Item.useAnimation = 26;
-
-            Item.damage = 22;
-            Item.knockBack = 6f;
-
-            Item.shoot = ModContent.ProjectileType<EnchantedSilverSwordP>();
-            Item.shootSpeed = 15f;
-            Item.autoReuse = true;
+            Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 15, 6f, 28, 28, BossRushUseStyle.GenericSwingDownImprove, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = ItemRarityID.Blue;
-
             Item.UseSound = SoundID.Item1;
         }
         int count = -1;
@@ -41,7 +26,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             }
             if (modplayer.EnchantedOreSword_Musket)
             {
-                tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Musket}] Shortsword on hit will launch out a ghost musket that shoot enemy ( up to 3 muskets )"));
+                tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Musket}] Shortsword on hit will launch out a ghost musket that shoot enemy ( up to 5 muskets )"));
             }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -105,14 +90,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
                     }
                     break;
                 case 4:
-                    Above = new Vector2(Main.MouseWorld.X + Main.rand.Next(-300, 300), player.Center.Y - 700);
-                    AimTo = (Main.MouseWorld - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed * 3;
-                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage * 3, knockback, player.whoAmI);
+                    Above = new Vector2(Main.MouseWorld.X + Main.rand.Next(-300, 300), player.Center.Y - 500);
+                    AimTo = (Main.MouseWorld - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
+                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage, knockback, player.whoAmI);
                     break;
                 case 5:
-                    Above = new Vector2(Main.MouseWorld.X + Main.rand.Next(-300, 300), player.Center.Y + 700);
-                    AimTo = (Main.MouseWorld - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed * 3;
-                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage * 3, knockback, player.whoAmI);
+                    Above = new Vector2(Main.MouseWorld.X + Main.rand.Next(-300, 300), player.Center.Y + 500);
+                    AimTo = (Main.MouseWorld - Above).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
+                    Projectile.NewProjectile(source, Above, AimTo, RandomShortSword[count], damage, knockback, player.whoAmI);
                     break;
                 case 6:
                     Projectile.NewProjectile(source, position, velocity, RandomShortSword[count], damage, knockback, player.whoAmI);
@@ -128,6 +113,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             CreateRecipe()
                 .AddRecipeGroup("OreShortSword")
                 .AddRecipeGroup("OreBroadSword")
+                .AddRecipeGroup("Wood Sword")
                 .Register();
         }
     }

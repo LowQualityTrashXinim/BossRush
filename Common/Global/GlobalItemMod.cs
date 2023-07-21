@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.Global
 {
@@ -138,7 +139,7 @@ namespace BossRush.Common.Global
         }
         public override void UpdateArmorSet(Player player, string set)
         {
-            ModdedPlayer modplayer = player.GetModPlayer<ModdedPlayer>();
+            GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves))
             {
                 if (player.ZoneForest)
@@ -183,6 +184,69 @@ namespace BossRush.Common.Global
             }
         }
     }
+    public class GlobalItemPlayer : ModPlayer
+    {
+        public bool WoodArmor = false;
+        public bool BorealWoodArmor = false;
+        public bool RichMahoganyArmor = false;
+        public override void ResetEffects()
+        {
+            WoodArmor = false;
+            BorealWoodArmor = false;
+            RichMahoganyArmor = false;
+        }
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            if (RichMahoganyArmor)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
+                    int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(proj), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
+                    Main.projectile[projectile].penetrate = -1;
+                }
+            }
+            base.OnHitByProjectile(proj, hurtInfo);
+        }
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
+        {
+            if (RichMahoganyArmor)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
+                    int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(npc), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
+                    Main.projectile[proj].penetrate = -1;
+                }
+            }
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithProj(proj, target, hit, damageDone);
+            if (BorealWoodArmor)
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Frostburn, 600);
+            if (WoodArmor)
+                if (Main.rand.NextBool(4) && proj.ModProjectile is not AcornProjectile)
+                    Projectile.NewProjectile(Player.GetSource_FromThis(),
+                        target.Center - new Vector2(0, 400),
+                        Vector2.UnitY * 5,
+                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+        }
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithItem(item, target, hit, damageDone);
+            if (BorealWoodArmor)
+                if (Main.rand.NextBool(10))
+                    target.AddBuff(BuffID.Frostburn, 600);
+            if (WoodArmor)
+                if (Main.rand.NextBool(4))
+                    Projectile.NewProjectile(Player.GetSource_FromThis(),
+                        target.Center - new Vector2(0, 400),
+                        Vector2.UnitY * 5,
+                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+        }
+    }
     class ArmorSet
     {
         int headID, bodyID, legID;
@@ -200,6 +264,5 @@ namespace BossRush.Common.Global
         /// <returns></returns>
         public static string ConvertIntoArmorSetFormat(int[] armor) => $"{armor[0]}:{armor[1]}:{armor[2]}";
         public override string ToString() => $"{headID}:{bodyID}:{legID}";
-
     }
 }
