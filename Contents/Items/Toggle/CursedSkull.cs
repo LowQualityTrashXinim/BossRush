@@ -46,6 +46,7 @@ namespace BossRush.Contents.Items.Toggle
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
+                    player.difficulty = 2;
                     player.GetModPlayer<ModdedPlayer>().gitGud++;
                     ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun, you can't revert this change"), Colors.RarityDarkRed);
                 }
