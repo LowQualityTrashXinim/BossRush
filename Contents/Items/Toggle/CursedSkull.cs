@@ -53,7 +53,6 @@ namespace BossRush.Contents.Items.Toggle
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     player.difficulty = 2;
-                    player.GetModPlayer<ChestLootDropPlayer>().amountModifier += 5;
                     player.GetModPlayer<ModdedPlayer>().gitGud++;
                     ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun, you can't revert this change"), Colors.RarityDarkRed);
                 }

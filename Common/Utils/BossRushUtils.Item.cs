@@ -51,7 +51,7 @@ namespace BossRush
         {
             BossRushSetDefault(item, width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);
             item.shoot = shoot;
-
+            item.shootSpeed = shootspeed;
             item.DamageType = DamageClass.Melee;
         }
         public static void BossRushDefaultMeleeCustomProjectile(this Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, int shoot, bool autoReuse)

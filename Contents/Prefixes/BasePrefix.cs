@@ -14,7 +14,7 @@ namespace BossRush.Contents.Prefixes
         public override PrefixCategory Category => WeaponType;
         public override float RollChance(Item item)
         {
-            return WeaponRollchance;
+            return 0f;
         }
 
         // Determines if it can roll at all.

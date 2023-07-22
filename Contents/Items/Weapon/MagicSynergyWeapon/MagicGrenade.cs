@@ -4,7 +4,6 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
@@ -24,7 +23,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             CreateRecipe()
                 .AddIngredient(ItemID.Grenade)
                 .AddIngredient(ItemID.AleThrowingGlove)
-                .AddIngredient(ModContent.ItemType<SynergyEnergy>())
                 .Register();
         }
     }

@@ -188,14 +188,15 @@ namespace BossRush.Common
             return items;
         }
         public int amountoftimegothit = 0;
-        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
+        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
             if (Player.HasBuff(ModContent.BuffType<Protection>()))
             {
+                Player.Heal(Player.statLifeMax2);
                 Player.ClearBuff(ModContent.BuffType<Protection>());
                 return false;
             }
-            return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
+            return base.PreKill(damage, hitDirection, pvp,ref playSound,ref genGore,ref damageSource);
         }
         public override void OnHurt(Player.HurtInfo info)
         {

@@ -88,7 +88,7 @@ namespace BossRush.Common.Global
             {
                 tooltips.Add(new TooltipLine(Mod, "SandGunChange",
                     "The sand projectile no longer spawn upon kill" +
-                    "\nDecrease damage by 35%"));
+                    "\nDecrease damage by 55%"));
             }
             int[] armorSet = new int[] { player.armor[0].type, player.armor[1].type, player.armor[2].type };
             foreach (TooltipLine tooltipLine in tooltips)
@@ -125,14 +125,14 @@ namespace BossRush.Common.Global
             {
                 return "When in jungle biome :" +
                     "\nIncrease defense by 12" +
-                    "\nIncrease movement speed by 35%" +
+                    "\nIncrease movement speed by 30%" +
                     "\nGetting hit release sharp leaf around you that deal 12 damage";
             }
             if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves)
             {
                 return "When in crimson biome :" +
                     "\nIncrease defense by 17" +
-                    "\nIncrease movement speed by 10%" +
+                    "\nIncrease movement speed by 15%" +
                     "\nIncrease critical strike chance by 5" +
                     "\nIncrease life regen by 1" +
                     "\nWhenever you strike a enemy :" +
@@ -141,9 +141,9 @@ namespace BossRush.Common.Global
             if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves)
             {
                 return "When in corruption biome :" +
-                    "\nIncrease defense by 8" +
-                    "\nIncrease movement speed by 45%" +
-                    "\nIncrease flat damage by 3" +
+                    "\nIncrease defense by 6" +
+                    "\nIncrease movement speed by 35%" +
+                    "\nIncrease damage by 5%" +
                     "\nYou leave a trail of corruption that deal 15 damage and inflict cursed inferno";
             }
             if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings)
@@ -151,7 +151,14 @@ namespace BossRush.Common.Global
                 return "Increase defenses by 10" +
                     "\nWhen in desert biome :" +
                     "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
-                    "\nGetting hit will shoot out 8 cactus spike that is friendly dealing 15 dmg";
+                    "\nGetting hit will shoot out 8 cactus spike that is friendly deal 15 damage";
+            }
+            if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves)
+            {
+                return "When in desert or ocean biome :" +
+                    "\nIncrease defense by 16" +
+                    "\nIncrease movement speed by 17%" +
+                    "\nJumping will leave a trail of sand that deal 12 damage";
             }
             return "";
         }
@@ -190,7 +197,7 @@ namespace BossRush.Common.Global
                 if (player.ZoneJungle)
                 {
                     player.statDefense += 12;
-                    player.moveSpeed += .35f;
+                    player.moveSpeed += .30f;
                     modplayer.RichMahoganyArmor = true;
                 }
             }
@@ -200,7 +207,7 @@ namespace BossRush.Common.Global
                 {
                     player.statDefense += 17;
                     player.lifeRegen += 1;
-                    player.moveSpeed += .1f;
+                    player.moveSpeed += .15f;
                     player.GetCritChance(DamageClass.Generic) += 5f;
                     modplayer.ShadewoodArmor = true;
                 }
@@ -209,9 +216,9 @@ namespace BossRush.Common.Global
             {
                 if (player.ZoneCorrupt)
                 {
-                    player.statDefense += 8;
-                    player.moveSpeed += .45f;
-                    player.GetDamage(DamageClass.Generic) += 3;
+                    player.statDefense += 6;
+                    player.moveSpeed += .35f;
+                    player.GetDamage(DamageClass.Generic) += .05f;
                     modplayer.EbonWoodArmor = true;
                 }
             }
@@ -221,6 +228,15 @@ namespace BossRush.Common.Global
                 if (player.ZoneDesert)
                 {
                     modplayer.CactusArmor = true;
+                }
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PalmWoodHelmet, ItemID.PalmWoodBreastplate, ItemID.PalmWoodGreaves))
+            {
+                if (player.ZoneBeach || player.ZoneDesert)
+                {
+                    player.statDefense += 16;
+                    player.moveSpeed += .17f;
+                    modplayer.PalmWoodArmor = true;
                 }
             }
         }
@@ -235,7 +251,7 @@ namespace BossRush.Common.Global
         {
             if (item.type == ItemID.Sandgun)
             {
-                damage.Base -= .35f;
+                damage.Base -= .55f;
             }
         }
     }
@@ -250,6 +266,7 @@ namespace BossRush.Common.Global
         int EbonWoodArmorCD = 0;
         public bool CactusArmor = false;
         int CactusArmorCD = 0;
+        public bool PalmWoodArmor = false;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -258,6 +275,7 @@ namespace BossRush.Common.Global
             ShadewoodArmor = false;
             EbonWoodArmor = false;
             CactusArmor = false;
+            PalmWoodArmor = false;
         }
         public override void PreUpdate()
         {
@@ -271,6 +289,15 @@ namespace BossRush.Common.Global
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 15, 0, Player.whoAmI);
                     EbonWoodArmorCD = 15;
                 }
+            if (PalmWoodArmor)
+            {
+                if (Player.justJumped)
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).NextVector2RotatedByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
+                        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vec, ModContent.ProjectileType<SandProjectile>(), 12, 1f, Player.whoAmI);
+                    }
+            }
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
@@ -341,12 +368,12 @@ namespace BossRush.Common.Global
             if (ShadewoodArmor)
                 if (ShadewoodArmorCD <= 0)
                 {
-                    for (int i = 0; i < 50; i++)
+                    for (int i = 0; i < 75; i++)
                     {
-                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.Crimson);
-                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.GemRuby);
+                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
+                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
                     }
-                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 200f);
+                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 300f);
                     foreach (var npc in npclist)
                     {
                         npc.StrikeNPC(npc.CalculateHitInfo(10, 1));
@@ -368,7 +395,7 @@ namespace BossRush.Common.Global
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             base.OnSpawn(projectile, source);
-            if(projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile)
+            if (projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile)
             {
                 projectile.friendly = parentProjectile.friendly;
                 projectile.hostile = parentProjectile.hostile;

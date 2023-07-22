@@ -57,14 +57,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ItemID.CopperShortsword, 1)
-            .AddIngredient(ItemID.TinShortsword, 1)
-            .AddIngredient(ItemID.IronShortsword, 1)
-            .AddIngredient(ItemID.LeadShortsword, 1)
-            .AddIngredient(ItemID.SilverShortsword, 1)
-            .AddIngredient(ItemID.TungstenShortsword, 1)
-            .AddIngredient(ItemID.GoldShortsword, 1)
-            .AddIngredient(ItemID.PlatinumShortsword, 1)
+            .AddIngredient(ItemID.CopperShortsword)
+            .AddIngredient(ItemID.TinShortsword)
+            .AddIngredient(ItemID.IronShortsword)
+            .AddIngredient(ItemID.LeadShortsword)
+            .AddIngredient(ItemID.SilverShortsword)
+            .AddIngredient(ItemID.TungstenShortsword)
+            .AddIngredient(ItemID.GoldShortsword)
+            .AddIngredient(ItemID.PlatinumShortsword)
             .Register();
         }
     }
