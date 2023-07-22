@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using Microsoft.Xna.Framework;
+using System.Security.Cryptography;
 
 namespace BossRush.Common.Global
 {
@@ -92,11 +93,11 @@ namespace BossRush.Common.Global
             int[] armorSet = new int[] { player.armor[0].type, player.armor[1].type, player.armor[2].type };
             foreach (TooltipLine tooltipLine in tooltips)
             {
-                if(tooltipLine.Name != "SetBonus")
+                if (tooltipLine.Name != "SetBonus")
                 {
                     continue;
                 }
-                if(armorSet.Contains(item.type))
+                if (armorSet.Contains(item.type))
                 {
                     tooltips.Add(new TooltipLine(Mod, ArmorSet.ConvertIntoArmorSetFormat(armorSet), GetToolTip(item.type)));
                     return;
@@ -105,7 +106,7 @@ namespace BossRush.Common.Global
         }
         private string GetToolTip(int type)
         {
-            if(type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves)
+            if (type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves)
             {
                 return "When in forest biome :" +
                     "\nIncrease defense by 11" +
@@ -115,7 +116,7 @@ namespace BossRush.Common.Global
             if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves)
             {
                 return "When in snow biome :" +
-                    "\nIncrease defense by 15" +
+                    "\nIncrease defense by 13" +
                     "\nIncrease movement speed by 15%" +
                     "\nYou are immune to Chilled" +
                     "\nYour attack have 10% chance to inflict frost burn for 10 second";
@@ -127,11 +128,28 @@ namespace BossRush.Common.Global
                     "\nIncrease movement speed by 35%" +
                     "\nGetting hit release sharp leaf around you that deal 12 damage";
             }
+            if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves)
+            {
+                return "When in crimson biome :" +
+                    "\nIncrease defense by 17" +
+                    "\nIncrease movement speed by 10%" +
+                    "\nIncrease critical strike chance by 5" +
+                    "\nWhenever you strike a enemy" +
+                    "\nA ring of crimson burst out that deal fixed 10 damage and heal you for each enemy hit and debuff them with ichor";
+            }
+            if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves)
+            {
+                return "When in corruption biome :" +
+                    "\nIncrease defense by 8" +
+                    "\nIncrease movement speed by 45%" +
+                    "\nIncrease flat damage by 3" +
+                    "\nYou leave a trail of corruption that deal 15 damage and inflict cursed inferno";
+            }
             return "";
         }
         public override string IsArmorSet(Item head, Item body, Item legs)
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return "";
             }
@@ -149,23 +167,43 @@ namespace BossRush.Common.Global
                     modplayer.WoodArmor = true;
                 }
             }
-            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves))
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves))
             {
-                if(player.ZoneSnow)
+                if (player.ZoneSnow)
                 {
-                    player.statDefense += 15;
+                    player.statDefense += 13;
                     player.moveSpeed += .15f;
                     player.buffImmune[BuffID.Chilled] = true;
                     modplayer.BorealWoodArmor = true;
                 }
             }
-            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.RichMahoganyHelmet, ItemID.RichMahoganyBreastplate, ItemID.RichMahoganyGreaves))
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.RichMahoganyHelmet, ItemID.RichMahoganyBreastplate, ItemID.RichMahoganyGreaves))
             {
-                if(player.ZoneJungle)
+                if (player.ZoneJungle)
                 {
                     player.statDefense += 12;
                     player.moveSpeed += .35f;
                     modplayer.RichMahoganyArmor = true;
+                }
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.ShadewoodHelmet, ItemID.ShadewoodBreastplate, ItemID.ShadewoodGreaves))
+            {
+                if (player.ZoneCrimson)
+                {
+                    player.statDefense += 17;
+                    player.moveSpeed += .1f;
+                    player.GetCritChance(DamageClass.Generic) += 5f;
+                    modplayer.ShadewoodArmor = true;
+                }
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.EbonwoodHelmet, ItemID.EbonwoodBreastplate, ItemID.EbonwoodGreaves))
+            {
+                if (player.ZoneCorrupt)
+                {
+                    player.statDefense += 8;
+                    player.moveSpeed += .45f;
+                    player.GetDamage(DamageClass.Generic) += 3;
+                    modplayer.EbonWoodArmor = true;
                 }
             }
         }
@@ -189,40 +227,69 @@ namespace BossRush.Common.Global
         public bool WoodArmor = false;
         public bool BorealWoodArmor = false;
         public bool RichMahoganyArmor = false;
+        public bool ShadewoodArmor = false;
+        int ShadewoodArmorCD = 0;
+        public bool EbonWoodArmor = false;
+        int EbonWoodArmorCD = 0;
         public override void ResetEffects()
         {
             WoodArmor = false;
             BorealWoodArmor = false;
             RichMahoganyArmor = false;
+            ShadewoodArmor = false;
+            EbonWoodArmor = false;
+        }
+        public override void PreUpdate()
+        {
+            base.PreUpdate();
+            ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
+            EbonWoodArmorCD = BossRushUtils.CoolDown(EbonWoodArmorCD);
+            if (EbonWoodArmor)
+                if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero)
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10,10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 15, 0, Player.whoAmI);
+                    EbonWoodArmorCD = 15;
+                }
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
             if (RichMahoganyArmor)
-            {
                 for (int i = 0; i < 10; i++)
                 {
                     Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
                     int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(proj), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
                     Main.projectile[projectile].penetrate = -1;
                 }
-            }
-            base.OnHitByProjectile(proj, hurtInfo);
         }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
             if (RichMahoganyArmor)
-            {
                 for (int i = 0; i < 10; i++)
                 {
                     Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
                     int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(npc), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
                     Main.projectile[proj].penetrate = -1;
                 }
-            }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPCWithProj(proj, target, hit, damageDone);
+            if (ShadewoodArmor)
+                if (ShadewoodArmorCD <= 0)
+                {
+                    for (int i = 0; i < 50; i++)
+                    {
+                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.Crimson);
+                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.GemRuby);
+                    }
+                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 200f);
+                    foreach (var npc in npclist)
+                    {
+                        npc.StrikeNPC(npc.CalculateHitInfo(10, 1));
+                        npc.AddBuff(BuffID.Ichor, 300);
+                        Player.Heal(1);
+                    }
+                    ShadewoodArmorCD = 180;
+                }
             if (BorealWoodArmor)
                 if (Main.rand.NextBool(10))
                     target.AddBuff(BuffID.Frostburn, 600);
@@ -235,7 +302,23 @@ namespace BossRush.Common.Global
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPCWithItem(item, target, hit, damageDone);
+            if (ShadewoodArmor)
+                if (ShadewoodArmorCD <= 0)
+                {
+                    for (int i = 0; i < 50; i++)
+                    {
+                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.Crimson);
+                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.GemRuby);
+                    }
+                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 200f);
+                    foreach (var npc in npclist)
+                    {
+                        npc.StrikeNPC(npc.CalculateHitInfo(10, 1));
+                        npc.AddBuff(BuffID.Ichor, 300);
+                        Player.Heal(1);
+                    }
+                    ShadewoodArmorCD = 180;
+                }
             if (BorealWoodArmor)
                 if (Main.rand.NextBool(10))
                     target.AddBuff(BuffID.Frostburn, 600);

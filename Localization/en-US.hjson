@@ -123,6 +123,7 @@ Mods: {
 			AcornProjectile.DisplayName: Acorn Projectile
 			SandProjectile.DisplayName: Sand Projectile
 			AcornRainCloud.DisplayName: Acorn Rain Cloud
+			CorruptionTrail.DisplayName: Corruption Trail
 		}
 
 		NPCs: {
@@ -1253,10 +1254,10 @@ Mods: {
 			NormalizeArtifact: {
 				DisplayName: Normalize Artifact
 				Tooltip:
-						'''
-						"Offer no tactical advantage what so ever"
-						Grant no effect !
-						'''
+					'''
+					"Offer no tactical advantage what so ever"
+					Grant no effect !
+					'''
 			}
 		}
 
