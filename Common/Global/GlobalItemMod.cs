@@ -7,6 +7,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using Microsoft.Xna.Framework;
 using System.Security.Cryptography;
+using System.Linq.Expressions;
 
 namespace BossRush.Common.Global
 {
@@ -134,7 +135,8 @@ namespace BossRush.Common.Global
                     "\nIncrease defense by 17" +
                     "\nIncrease movement speed by 10%" +
                     "\nIncrease critical strike chance by 5" +
-                    "\nWhenever you strike a enemy" +
+                    "\nIncrease life regen by 1" +
+                    "\nWhenever you strike a enemy :" +
                     "\nA ring of crimson burst out that deal fixed 10 damage and heal you for each enemy hit and debuff them with ichor";
             }
             if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves)
@@ -191,6 +193,7 @@ namespace BossRush.Common.Global
                 if (player.ZoneCrimson)
                 {
                     player.statDefense += 17;
+                    player.lifeRegen += 1;
                     player.moveSpeed += .1f;
                     player.GetCritChance(DamageClass.Generic) += 5f;
                     modplayer.ShadewoodArmor = true;
@@ -204,6 +207,14 @@ namespace BossRush.Common.Global
                     player.moveSpeed += .45f;
                     player.GetDamage(DamageClass.Generic) += 3;
                     modplayer.EbonWoodArmor = true;
+                }
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CactusHelmet, ItemID.CactusBreastplate, ItemID.CactusLeggings))
+            {
+                player.statDefense += 10;
+                if (player.ZoneDesert)
+                {
+                    modplayer.CactusArmor = true;
                 }
             }
         }
@@ -231,6 +242,8 @@ namespace BossRush.Common.Global
         int ShadewoodArmorCD = 0;
         public bool EbonWoodArmor = false;
         int EbonWoodArmorCD = 0;
+        public bool CactusArmor = false;
+        int CactusArmorCD = 0;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -238,69 +251,74 @@ namespace BossRush.Common.Global
             RichMahoganyArmor = false;
             ShadewoodArmor = false;
             EbonWoodArmor = false;
+            CactusArmor = false;
         }
         public override void PreUpdate()
         {
             base.PreUpdate();
             ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
             EbonWoodArmorCD = BossRushUtils.CoolDown(EbonWoodArmorCD);
+            CactusArmorCD = BossRushUtils.CoolDown(CactusArmorCD);
             if (EbonWoodArmor)
                 if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero)
                 {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10,10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 15, 0, Player.whoAmI);
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 15, 0, Player.whoAmI);
                     EbonWoodArmorCD = 15;
                 }
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
-            if (RichMahoganyArmor)
-                for (int i = 0; i < 10; i++)
-                {
-                    Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
-                    int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(proj), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
-                    Main.projectile[projectile].penetrate = -1;
-                }
+            OnHitEffect_RichMahoganyArmor(proj);
+            OnHitEffect_CactusArmor(proj);
         }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
+            OnHitEffect_RichMahoganyArmor(npc);
+            OnHitEffect_CactusArmor(npc);
+        }
+        private void OnHitEffect_RichMahoganyArmor(Entity entity)
+        {
             if (RichMahoganyArmor)
                 for (int i = 0; i < 10; i++)
                 {
                     Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
-                    int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(npc), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
+                    int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
                     Main.projectile[proj].penetrate = -1;
                 }
         }
+        private void OnHitEffect_CactusArmor(Entity entity)
+        {
+            if (CactusArmor)
+            {
+                Vector2 AbovePlayer = Player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1000);
+                int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), AbovePlayer, Vector2.Zero, ProjectileID.RollingCactus, 150, 0, Player.whoAmI);
+                Main.projectile[projectile].friendly = true;
+                Main.projectile[projectile].hostile = false;
+                CactusArmorCD = 300;
+            }
+        }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (ShadewoodArmor)
-                if (ShadewoodArmorCD <= 0)
-                {
-                    for (int i = 0; i < 50; i++)
-                    {
-                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.Crimson);
-                        Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(200, 200), 0, 0, DustID.GemRuby);
-                    }
-                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 200f);
-                    foreach (var npc in npclist)
-                    {
-                        npc.StrikeNPC(npc.CalculateHitInfo(10, 1));
-                        npc.AddBuff(BuffID.Ichor, 300);
-                        Player.Heal(1);
-                    }
-                    ShadewoodArmorCD = 180;
-                }
-            if (BorealWoodArmor)
-                if (Main.rand.NextBool(10))
-                    target.AddBuff(BuffID.Frostburn, 600);
+            OnHitNPC_ShadewoodArmor();
+            OnHitNPC_BorealWoodArmor(target);
+            OnHitNPC_WoodArmor(target, proj);
+        }
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            OnHitNPC_ShadewoodArmor();
+            OnHitNPC_BorealWoodArmor(target);
+            OnHitNPC_WoodArmor(target);
+        }
+        private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null)
+        {
             if (WoodArmor)
-                if (Main.rand.NextBool(4) && proj.ModProjectile is not AcornProjectile)
+                if (Main.rand.NextBool(4) && (proj is null || (proj is not null && proj.ModProjectile is not AcornProjectile)))
                     Projectile.NewProjectile(Player.GetSource_FromThis(),
                         target.Center - new Vector2(0, 400),
                         Vector2.UnitY * 5,
                         ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
         }
-        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        private void OnHitNPC_ShadewoodArmor()
         {
             if (ShadewoodArmor)
                 if (ShadewoodArmorCD <= 0)
@@ -319,15 +337,12 @@ namespace BossRush.Common.Global
                     }
                     ShadewoodArmorCD = 180;
                 }
+        }
+        private void OnHitNPC_BorealWoodArmor(NPC target)
+        {
             if (BorealWoodArmor)
                 if (Main.rand.NextBool(10))
                     target.AddBuff(BuffID.Frostburn, 600);
-            if (WoodArmor)
-                if (Main.rand.NextBool(4))
-                    Projectile.NewProjectile(Player.GetSource_FromThis(),
-                        target.Center - new Vector2(0, 400),
-                        Vector2.UnitY * 5,
-                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
         }
     }
     class ArmorSet
