@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using Microsoft.Xna.Framework;
-using System.Security.Cryptography;
-using System.Linq.Expressions;
+using Terraria.DataStructures;
 
 namespace BossRush.Common.Global
 {
@@ -118,7 +117,7 @@ namespace BossRush.Common.Global
             {
                 return "When in snow biome :" +
                     "\nIncrease defense by 13" +
-                    "\nIncrease movement speed by 15%" +
+                    "\nIncrease movement speed by 20%" +
                     "\nYou are immune to Chilled" +
                     "\nYour attack have 10% chance to inflict frost burn for 10 second";
             }
@@ -147,6 +146,13 @@ namespace BossRush.Common.Global
                     "\nIncrease flat damage by 3" +
                     "\nYou leave a trail of corruption that deal 15 damage and inflict cursed inferno";
             }
+            if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings)
+            {
+                return "Increase defenses by 10" +
+                    "\nWhen in desert biome :" +
+                    "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
+                    "\nGetting hit will shoot out 8 cactus spike that is friendly dealing 15 dmg";
+            }
             return "";
         }
         public override string IsArmorSet(Item head, Item body, Item legs)
@@ -174,7 +180,7 @@ namespace BossRush.Common.Global
                 if (player.ZoneSnow)
                 {
                     player.statDefense += 13;
-                    player.moveSpeed += .15f;
+                    player.moveSpeed += .20f;
                     player.buffImmune[BuffID.Chilled] = true;
                     modplayer.BorealWoodArmor = true;
                 }
@@ -290,11 +296,23 @@ namespace BossRush.Common.Global
         {
             if (CactusArmor)
             {
-                Vector2 AbovePlayer = Player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1000);
-                int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), AbovePlayer, Vector2.Zero, ProjectileID.RollingCactus, 150, 0, Player.whoAmI);
-                Main.projectile[projectile].friendly = true;
-                Main.projectile[projectile].hostile = false;
-                CactusArmorCD = 300;
+                if (CactusArmorCD <= 0)
+                {
+                    bool manualDirection = Player.Center.X < entity.Center.X;
+                    Vector2 AbovePlayer = Player.Center + new Vector2(Main.rand.NextFloat(-500, 500), -1000);
+                    int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), AbovePlayer, Vector2.UnitX * .1f * manualDirection.BoolOne(), ProjectileID.RollingCactus, 150, 0, Player.whoAmI);
+                    Main.projectile[projectile].friendly = true;
+                    Main.projectile[projectile].hostile = false;
+                    CactusArmorCD = 300;
+                }
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector2 vec = Vector2.One.Vector2DistributeEvenly(8, 360, i);
+                    int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, vec, ProjectileID.RollingCactusSpike, 15, 0, Player.whoAmI);
+                    Main.projectile[projectile].friendly = true;
+                    Main.projectile[projectile].hostile = false;
+                    Main.projectile[projectile].penetrate = -1;
+                }
             }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -343,6 +361,18 @@ namespace BossRush.Common.Global
             if (BorealWoodArmor)
                 if (Main.rand.NextBool(10))
                     target.AddBuff(BuffID.Frostburn, 600);
+        }
+    }
+    public class GlobalItemProjectile : GlobalProjectile
+    {
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            base.OnSpawn(projectile, source);
+            if(projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile)
+            {
+                projectile.friendly = parentProjectile.friendly;
+                projectile.hostile = parentProjectile.hostile;
+            }
         }
     }
     class ArmorSet

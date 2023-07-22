@@ -219,8 +219,6 @@ namespace BossRush.Contents.Items.Card
             OnUseItem(player, modplayer);
             if (Tier <= 0)
                 return true;
-            if (CardStatsNumber.Count > 0)
-                return true;
             bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
             SetBadStatsBaseOnTier(hasMagicDeck);
             int offset = 0;
@@ -232,18 +230,6 @@ namespace BossRush.Contents.Items.Card
                 CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
             }
             OnTierItemSpawn();
-            for (int i = 0; i < CardStats.Count; i++)
-            {
-                for (int l = i + 1; l < CardStats.Count; l++)
-                {
-                    if (CardStats[i] != CardStats[l]) continue;
-                    CardStatsNumber[i] += CardStatsNumber[l];
-                    CardStats.RemoveAt(l);
-                    CardStatsNumber.RemoveAt(l);
-                    i = 0;
-                    l = 0;
-                }
-            }
             for (int i = 0; i < CardStats.Count; i++)
             {
                 int offsetPos = (i + 1) * 20;
@@ -318,16 +304,20 @@ namespace BossRush.Contents.Items.Card
                 {
                     textcolor = Color.Red;
                 }
-                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offsetPos, 90);
+                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offsetPos, 180);
             }
             if (CursedID != -1)
             {
-                while (modplayer.listCursesID.Contains(CursedID))
+                if (modplayer.listCursesID.Count < 12)
                 {
-                    CursedID = Main.rand.Next(12) + 1;
-                }
+                    CursedID = Main.rand.Next(1, 12);
+                    while (modplayer.listCursesID.Contains(CursedID))
+                    {
+                        CursedID = Main.rand.Next(1, 12);
+                    }
                 modplayer.listCursesID.Add(CursedID);
-                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 110);
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
+                }
             }
             modplayer.CardTracker++;
             return true;
@@ -724,7 +714,7 @@ namespace BossRush.Contents.Items.Card
             if (LimitedResource)
             {
                 Player.lifeRegen = 0;
-               
+
                 Player.manaRegen = 0;
             }
         }
