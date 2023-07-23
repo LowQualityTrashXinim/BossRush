@@ -124,6 +124,7 @@ Mods: {
 			SandProjectile.DisplayName: Sand Projectile
 			AcornRainCloud.DisplayName: Acorn Rain Cloud
 			CorruptionTrail.DisplayName: Corruption Trail
+			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
 		}
 
 		NPCs: {
@@ -1258,6 +1259,11 @@ Mods: {
 					"Offer no tactical advantage what so ever"
 					Grant no effect !
 					'''
+			}
+
+			OrbOfEnergy: {
+				DisplayName: Orb Of Energy
+				Tooltip: ""
 			}
 		}
 
