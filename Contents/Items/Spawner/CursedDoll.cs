@@ -41,4 +41,5 @@ namespace BossRush.Contents.Items.Spawner
             return !Main.dayTime;
         }
     }
+    
 }
