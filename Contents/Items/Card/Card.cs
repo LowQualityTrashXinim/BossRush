@@ -16,29 +16,6 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace BossRush.Contents.Items.Card
 {
-    enum PlayerStats
-    {
-        MeleeDMG,
-        RangeDMG,
-        MagicDMG,
-        SummonDMG,
-        MovementSpeed,
-        JumpBoost,
-        MaxHP,
-        RegenHP,
-        MaxMana,
-        RegenMana,
-        Defense,
-        DamageUniverse,
-        CritChance,
-        CritDamage,
-        DefenseEffectiveness,
-        ChestLootDropIncrease,
-        MaxMinion,
-        MaxSentry,
-        Thorn
-        //Luck
-    }
     abstract class CardItem : ModItem
     {
         public const int PlatinumCardDropChance = 40;
@@ -68,7 +45,7 @@ namespace BossRush.Contents.Items.Card
             {
                 value = "+";
             }
-            if (DoesStatsRequiredWholeNumber(stat))
+            if (BossRushUtils.DoesStatsRequiredWholeNumber(stat))
             {
                 return value + $"{number} {stat}";
             }
@@ -96,53 +73,6 @@ namespace BossRush.Contents.Items.Card
         }
         //since we only add 1 curse per card, this don't need to be a list
         public int CursedID = -1;
-        protected PlayerStats SetStatsToAddBaseOnTier()
-        {
-            List<PlayerStats> stats = new List<PlayerStats>();
-            if (Tier >= 4)
-            {
-                //list.Add(PlayerStats.Luck);
-            }
-            if (Tier >= 3)
-            {
-                stats.Add(PlayerStats.MaxSentry);
-                stats.Add(PlayerStats.MaxMinion);
-                stats.Add(PlayerStats.ChestLootDropIncrease);
-            }
-            if (Tier >= 2)
-            {
-                stats.Add(PlayerStats.Thorn);
-                stats.Add(PlayerStats.DefenseEffectiveness);
-                stats.Add(PlayerStats.CritDamage);
-                stats.Add(PlayerStats.CritChance);
-                stats.Add(PlayerStats.DamageUniverse);
-            }
-            if (Tier >= 1)
-            {
-                stats.Add(PlayerStats.Defense);
-                stats.Add(PlayerStats.RegenMana);
-                stats.Add(PlayerStats.MaxMana);
-                stats.Add(PlayerStats.RegenHP);
-                stats.Add(PlayerStats.MaxHP);
-                stats.Add(PlayerStats.MovementSpeed);
-                stats.Add(PlayerStats.JumpBoost);
-                stats.Add(PlayerStats.SummonDMG);
-                stats.Add(PlayerStats.MagicDMG);
-                stats.Add(PlayerStats.RangeDMG);
-                stats.Add(PlayerStats.MeleeDMG);
-            }
-            if (CardStats.Count > 0)
-            {
-                foreach (var item in CardStats)
-                {
-                    if (stats.Contains(item))
-                    {
-                        stats.Remove(item);
-                    }
-                }
-            }
-            return Main.rand.Next(stats);
-        }
         private void SetBadStatsBaseOnTier(bool hasMagicDeck)
         {
             if (Tier <= 1)
@@ -155,7 +85,7 @@ namespace BossRush.Contents.Items.Card
                 {
                     CursedID = 0;
                 }
-                PlayerStats badstat = SetStatsToAddBaseOnTier();
+                PlayerStats badstat = BossRushUtils.SetStatsToAddBaseOnTier(CardStats, PostTierModify);
                 CardStats.Add(badstat);
                 CardStatsNumber.Add(statsCalculator(badstat, -3));
             }
@@ -172,7 +102,7 @@ namespace BossRush.Contents.Items.Card
                 multi *= 3;
             }
             float statsNum = Main.rand.Next(1, 4);
-            if (DoesStatsRequiredWholeNumber(stats))
+            if (BossRushUtils.DoesStatsRequiredWholeNumber(stats))
             {
                 if (stats is PlayerStats.ChestLootDropIncrease
             || stats is PlayerStats.MaxMinion
@@ -226,7 +156,7 @@ namespace BossRush.Contents.Items.Card
                 offset++;
             for (int i = offset; i < PostTierModify + offset; i++)
             {
-                CardStats.Add(SetStatsToAddBaseOnTier());
+                CardStats.Add(BossRushUtils.SetStatsToAddBaseOnTier(CardStats, PostTierModify));
                 CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
             }
             OnTierItemSpawn();
@@ -315,8 +245,8 @@ namespace BossRush.Contents.Items.Card
                     {
                         CursedID = Main.rand.Next(1, 12);
                     }
-                modplayer.listCursesID.Add(CursedID);
-                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
+                    modplayer.listCursesID.Add(CursedID);
+                    BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
                 }
             }
             modplayer.CardTracker++;
@@ -393,14 +323,6 @@ namespace BossRush.Contents.Items.Card
             }
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
-        private bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
-                    stats is PlayerStats.Defense
-                    || stats is PlayerStats.MaxMinion
-                    || stats is PlayerStats.MaxSentry
-                    || stats is PlayerStats.MaxHP
-                    || stats is PlayerStats.MaxMana
-                    || stats is PlayerStats.CritChance
-                    || stats is PlayerStats.ChestLootDropIncrease;
         public virtual bool CanBeCraft => true;
         public override void AddRecipes()
         {

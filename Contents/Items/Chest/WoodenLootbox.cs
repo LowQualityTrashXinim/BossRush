@@ -30,8 +30,6 @@ namespace BossRush.Contents.Items.Chest
                 player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            GetWeapon(player, out int ReturnWeaponMelee, out _, 1);
-            player.QuickSpawnItem(entitySource, ReturnWeaponMelee);
             for (int i = 0; i < 2; i++)
             {
                 if (i == 1)

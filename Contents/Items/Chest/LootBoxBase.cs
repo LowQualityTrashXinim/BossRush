@@ -336,10 +336,14 @@ namespace BossRush.Contents.Items.Chest
         {
             player.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen++;
             base.RightClick(player);
-            OnRightClick(player,player.GetModPlayer<ChestLootDropPlayer>());
+            OnRightClick(player, player.GetModPlayer<ChestLootDropPlayer>());
             var entitySource = player.GetSource_OpenItem(Type);
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
+                if (player.IsDebugPlayer())
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), 3);
+                }
                 if (Main.rand.NextBool(1000))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
@@ -842,7 +846,7 @@ namespace BossRush.Contents.Items.Chest
         /// <summary>
         /// This happen automatically for the sake of prototype
         /// </summary>
-        public void GetArmorForPlayer(IEntitySource entitySource,Player player)
+        public void GetArmorForPlayer(IEntitySource entitySource, Player player)
         {
             List<int> HeadArmor = new List<int>();
             List<int> BodyArmor = new List<int>();
@@ -850,19 +854,19 @@ namespace BossRush.Contents.Items.Chest
             HeadArmor.AddRange(TerrariaArrayID.HeadArmorPreBoss);
             BodyArmor.AddRange(TerrariaArrayID.BodyArmorPreBoss);
             LegArmor.AddRange(TerrariaArrayID.LegArmorPreBoss);
-            if(NPC.downedBoss2)
+            if (NPC.downedBoss2)
             {
                 HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
                 BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
                 LegArmor.AddRange(TerrariaArrayID.LegArmorPostEvil);
             }
-            if(NPC.downedBoss3)
+            if (NPC.downedBoss3)
             {
                 HeadArmor.Add(ItemID.NecroHelmet);
                 BodyArmor.Add(ItemID.NecroBreastplate);
                 LegArmor.Add(ItemID.NecroGreaves);
             }
-            if(NPC.downedQueenBee)
+            if (NPC.downedQueenBee)
             {
                 HeadArmor.Add(ItemID.BeeHeadgear);
                 BodyArmor.Add(ItemID.BeeBreastplate);

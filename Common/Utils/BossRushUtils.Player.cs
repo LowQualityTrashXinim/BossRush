@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using System;
+using System.Collections.Generic;
 
 namespace BossRush
 {
@@ -13,6 +14,97 @@ namespace BossRush
             player.name == "LowQualityTrashXinim" ||
             player.name.Contains("#Beta");
 
+        public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
+                    stats is PlayerStats.Defense
+                    || stats is PlayerStats.MaxMinion
+                    || stats is PlayerStats.MaxSentry
+                    || stats is PlayerStats.MaxHP
+                    || stats is PlayerStats.MaxMana
+                    || stats is PlayerStats.CritChance
+                    || stats is PlayerStats.ChestLootDropIncrease;
+        public static PlayerStats SetStatsToAddBaseOnTier(List<PlayerStats> CardStats, int Tier)
+        {
+            List<PlayerStats> stats = new List<PlayerStats>();
+            if (Tier >= 4)
+            {
+                //list.Add(PlayerStats.Luck);
+            }
+            if (Tier >= 3)
+            {
+                stats.Add(PlayerStats.MaxSentry);
+                stats.Add(PlayerStats.MaxMinion);
+                stats.Add(PlayerStats.ChestLootDropIncrease);
+            }
+            if (Tier >= 2)
+            {
+                stats.Add(PlayerStats.Thorn);
+                stats.Add(PlayerStats.DefenseEffectiveness);
+                stats.Add(PlayerStats.CritDamage);
+                stats.Add(PlayerStats.CritChance);
+                stats.Add(PlayerStats.DamageUniverse);
+            }
+            if (Tier >= 1)
+            {
+                stats.Add(PlayerStats.Defense);
+                stats.Add(PlayerStats.RegenMana);
+                stats.Add(PlayerStats.MaxMana);
+                stats.Add(PlayerStats.RegenHP);
+                stats.Add(PlayerStats.MaxHP);
+                stats.Add(PlayerStats.MovementSpeed);
+                stats.Add(PlayerStats.JumpBoost);
+                stats.Add(PlayerStats.SummonDMG);
+                stats.Add(PlayerStats.MagicDMG);
+                stats.Add(PlayerStats.RangeDMG);
+                stats.Add(PlayerStats.MeleeDMG);
+            }
+            if (CardStats.Count > 0 && CardStats.Count != stats.Count)
+            {
+                foreach (var item in CardStats)
+                {
+                    if (stats.Contains(item))
+                    {
+                        stats.Remove(item);
+                    }
+                }
+            }
+            return Main.rand.Next(stats);
+        }
+        public static string StatNumberAsText(PlayerStats stat, float number)
+        {
+            string value = "";
+            if (number > 0)
+            {
+                value = "+";
+            }
+            if (DoesStatsRequiredWholeNumber(stat))
+            {
+                return value + $"{number} {stat}";
+            }
+            return value + $"{(int)(number * 100)}% {stat}";
+        }
+    }
+    public enum PlayerStats
+    {
+        MeleeDMG,
+        RangeDMG,
+        MagicDMG,
+        SummonDMG,
+        MovementSpeed,
+        JumpBoost,
+        MaxHP,
+        RegenHP,
+        MaxMana,
+        RegenMana,
+        Defense,
+        DamageUniverse,
+        CritChance,
+        CritDamage,
+        DefenseEffectiveness,
+        ChestLootDropIncrease,
+        MaxMinion,
+        MaxSentry,
+        Thorn
+        //Luck
     }
 
     /// <summary>

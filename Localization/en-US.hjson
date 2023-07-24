@@ -561,8 +561,8 @@ Mods: {
 			}
 
 			CursedDoll: {
-				Tooltip: NEED SPRITE REWORK
 				DisplayName: Cursed Doll
+				Tooltip: Summon Skeletron !
 			}
 
 			BloodyEye: {
@@ -1265,6 +1265,11 @@ Mods: {
 				DisplayName: Orb Of Energy
 				Tooltip: ""
 			}
+
+			MysteriousPotion: {
+				DisplayName: Mysterious Potion
+				Tooltip: What it do is a complete mystery...
+			}
 		}
 
 		Buffs: {
@@ -1376,6 +1381,11 @@ Mods: {
 			AbsoluteStunMovement: {
 				Description: The might of gods weakens your very soul...
 				DisplayName: Petrified
+			}
+
+			MysteriousPotionBuff: {
+				DisplayName: Mysterious Potion Buff
+				Description: ?
 			}
 		}
 

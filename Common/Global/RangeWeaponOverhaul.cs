@@ -39,6 +39,7 @@ namespace BossRush.Common.Global
         float AdditionalSpread = 0;
         float AdditionalMulti = 1;
         int NumOfProjectile = 1;
+        bool itemIsAShotgun = false;
         public override void SetDefaults(Item entity)
         {
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
@@ -148,12 +149,14 @@ namespace BossRush.Common.Global
                     AdditionalSpread = 4;
                     AdditionalMulti = .4f;
                     NumOfProjectile += Main.rand.Next(4, 6);
+                    itemIsAShotgun = true;
                     break;
                 case ItemID.QuadBarrelShotgun:
                     OffSetPost = 25;
                     SpreadAmount = 45;
                     AdditionalSpread = 6;
                     NumOfProjectile += 6;
+                    itemIsAShotgun = true;
                     break;
                 case ItemID.Shotgun:
                     OffSetPost = 35;
@@ -161,12 +164,14 @@ namespace BossRush.Common.Global
                     AdditionalSpread = 6;
                     AdditionalMulti = .5f;
                     NumOfProjectile += Main.rand.Next(4, 6);
+                    itemIsAShotgun = true;
                     break;
                 case ItemID.OnyxBlaster:
                     OffSetPost = 35;
                     SpreadAmount = 15;
                     AdditionalSpread = 6;
                     NumOfProjectile += Main.rand.Next(4, 6);
+                    itemIsAShotgun = true;
                     break;
                 case ItemID.TacticalShotgun:
                     OffSetPost = 35;
@@ -174,6 +179,7 @@ namespace BossRush.Common.Global
                     AdditionalSpread = 3;
                     AdditionalMulti = .76f;
                     NumOfProjectile += 6;
+                    itemIsAShotgun = true;
                     break;
             }
         }
@@ -185,13 +191,17 @@ namespace BossRush.Common.Global
             }
             RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
             int amount = NumOfProjectile + modplayer.ProjectileAmountModify;
+            if(itemIsAShotgun)
+            {
+                return true;
+            }
             if (amount >= 2)
             {
                 amount--;
                 for (int i = 0; i < amount; i++)
                 {
                     Vector2 velocity2 = velocity = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
-                    Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, item, item.ammo), position, velocity2, type, damage, knockback, player.whoAmI);
                 }
             }
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
@@ -204,7 +214,10 @@ namespace BossRush.Common.Global
             }
             RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
             position = position.PositionOFFSET(velocity, OffSetPost);
-            velocity = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
+            if (!itemIsAShotgun)
+            {
+                velocity = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
+            }
         }
     }
     /// <summary>

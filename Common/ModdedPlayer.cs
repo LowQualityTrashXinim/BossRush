@@ -124,6 +124,7 @@ namespace BossRush.Common
             };
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
+                items.Add(new Item(ItemID.ManaCrystal, 5));
                 items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
                 items.Add(new Item(ModContent.ItemType<DayTimeCycle>()));
                 items.Add(new Item(ModContent.ItemType<CursedSkull>()));

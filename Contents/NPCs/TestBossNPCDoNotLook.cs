@@ -47,14 +47,6 @@ namespace BossRush.Contents.NPCs
             {
                 NPC.active = false;
             }
-            if (NPC.ai[1] < 4 && NPC.ai[0] <= 0)
-            {
-                NPC.ai[1]++;
-            }
-            else
-            {
-                NPC.ai[1] = 0;
-            }
             //Move above the player
             switch (NPC.ai[1])
             {
@@ -85,6 +77,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 90;
+                NPC.ai[1] = Main.rand.Next(1, 4);
             }
         }
         private void ShootShortSword()
