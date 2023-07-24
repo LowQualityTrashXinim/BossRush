@@ -1,5 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Microsoft.Xna.Framework;
+using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Spawner
 {
@@ -14,6 +16,24 @@ namespace BossRush.Contents.Items.Spawner
         {
             height = 55;
             width = 53;
+        }
+
+        public override bool UseSpecialSpawningMethod => true;
+        public override void SpecialSpawningLogic(Player player)
+        {
+
+            int spawnY = 750;
+
+            NPC.SpawnBoss((int)(player.Center.X), (int)(player.Center.Y - spawnY), NPCtypeToSpawn[0], player.whoAmI);
+
+            for(int i = 0; i <= spawnY; i++)
+            {
+        
+                Dust.NewDustPerfect(player.Center - new Vector2((float)(Math.Sin(i * 8) * (i * 0.25)), i * 1.2f), DustID.PurpleTorch);
+
+                Dust.NewDustPerfect(new Vector2(player.Center.X, player.Center.Y - spawnY), DustID.BoneTorch, Main.rand.NextVector2Unit() * 65);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.DD2_EtherianPortalOpen);
+            }
         }
 
         public override bool CanUseItem(Player player)
