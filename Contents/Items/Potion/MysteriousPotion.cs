@@ -1,13 +1,9 @@
 ﻿using Terraria;
-using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using BossRush.Contents.BuffAndDebuff;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items.Card;
 using System;
-using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Items.Potion
 {

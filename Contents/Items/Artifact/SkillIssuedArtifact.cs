@@ -56,6 +56,10 @@ namespace BossRush.Contents.Items.Artifact
             packet.Write(SkillIssue);
             packet.Send(toWho, fromWho);
         }
+        public override void Initialize()
+        {
+            SkillIssue = 0;
+        }
         public override void SaveData(TagCompound tag)
         {
             tag["SkillIssue"] = SkillIssue;

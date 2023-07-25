@@ -44,7 +44,7 @@ namespace BossRush.Contents.Items.Accessories.BouncyRelic
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
             Player player = Main.player[projectile.owner];
-            if (player.GetModPlayer<PlayerRelic>().Bouncy)
+            if (player.GetModPlayer<PlayerRelic>().Bouncy && !projectile.minion)
             {
                 projectile.tileCollide = true;
                 Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);

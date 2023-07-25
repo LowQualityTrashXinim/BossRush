@@ -28,13 +28,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
             //}
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.ThunderSpear)
-                .AddIngredient(ItemID.ThunderStaff)
-                .Register();
-        }
     }
     class OrbOfEnergyBolt : ModProjectile
     {

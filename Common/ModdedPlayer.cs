@@ -15,6 +15,9 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
 using System.IO;
 using Terraria.ModLoader.IO;
+using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.NPCs;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common
 {
@@ -25,9 +28,35 @@ namespace BossRush.Common
         //NoHiter
         public int gitGud = 0;
         public int HowManyBossIsAlive = 0;
+        public bool GodAreEnraged = false;
         public override void PreUpdate()
         {
             CheckHowManyHit();
+        }
+        public override void OnEnterWorld()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient || Player.IsDebugPlayer())
+            {
+                return;
+            }
+            if (Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2) >= 2)
+            {
+                GodAreEnraged = true;
+                Player.difficulty = 2;
+            }
+            int synergyCounter = 0;
+            foreach (var item in Player.inventory)
+            {
+                if (item.ModItem is SynergyModItem)
+                {
+                    synergyCounter++;
+                }
+            }
+            if (synergyCounter >= 2)
+            {
+                GodAreEnraged = true;
+                Player.difficulty = 2;
+            }
         }
         private void CheckHowManyHit()
         {
@@ -47,6 +76,16 @@ namespace BossRush.Common
         }
         public override void PostUpdate()
         {
+            if (GodAreEnraged)
+            {
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1000, 1000) + Player.Center;
+                    NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
+                }
+                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "God are angered !");
+                GodAreEnraged = false;
+            }
             if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
             {
                 return;
@@ -197,7 +236,7 @@ namespace BossRush.Common
                 Player.ClearBuff(ModContent.BuffType<Protection>());
                 return false;
             }
-            return base.PreKill(damage, hitDirection, pvp,ref playSound,ref genGore,ref damageSource);
+            return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
         }
         public override void OnHurt(Player.HurtInfo info)
         {
@@ -341,6 +380,10 @@ namespace BossRush.Common
             packet.Write((byte)Player.whoAmI);
             packet.Write(gitGud);
             packet.Send(toWho, fromWho);
+        }
+        public override void Initialize()
+        {
+            gitGud = 0;
         }
         public override void SaveData(TagCompound tag)
         {

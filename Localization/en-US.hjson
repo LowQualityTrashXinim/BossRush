@@ -125,12 +125,15 @@ Mods: {
 			AcornRainCloud.DisplayName: Acorn Rain Cloud
 			CorruptionTrail.DisplayName: Corruption Trail
 			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
+			ResolveProjectile.DisplayName: Resolve Projectile
+			ServantProjectile.DisplayName: Servant Projectile
 		}
 
 		NPCs: {
 			TrueEoC.DisplayName: True EoC
 			TestBossNPCDoNotLook.DisplayName: Test Boss N P C Do Not Look
 			ChestLord.DisplayName: Chest Lord
+			Servant.DisplayName: Servant
 		}
 
 		Items: {
@@ -1269,6 +1272,11 @@ Mods: {
 			MysteriousPotion: {
 				DisplayName: Mysterious Potion
 				Tooltip: What it do is a complete mystery...
+			}
+
+			Resolve: {
+				DisplayName: Resolve
+				Tooltip: ""
 			}
 		}
 

@@ -148,6 +148,10 @@ namespace BossRush.Contents.Items.Potion
             packet.Write(DrugDealer);
             packet.Send(toWho, fromWho);
         }
+        public override void Initialize()
+        {
+            DrugDealer = 0;
+        }
         public override void SaveData(TagCompound tag)
         {
             tag["Drug"] = DrugDealer;

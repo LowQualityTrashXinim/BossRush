@@ -340,10 +340,6 @@ namespace BossRush.Contents.Items.Chest
             var entitySource = player.GetSource_OpenItem(Type);
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                if (player.IsDebugPlayer())
-                {
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), 3);
-                }
                 if (Main.rand.NextBool(1000))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
@@ -358,6 +354,10 @@ namespace BossRush.Contents.Items.Chest
             if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;
+            }
+            if (player.IsDebugPlayer() && player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
+            {
+                player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
             }
             if (Main.rand.NextBool(25) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(7)))
             {
@@ -1001,6 +1001,13 @@ namespace BossRush.Contents.Items.Chest
             amountModifier = 0;
             finalMultiplier = 1f;
             base.ResetEffects();
+        }
+        public override void Initialize()
+        {
+            MeleeChanceMutilplier = 1f;
+            RangeChanceMutilplier = 1f;
+            MagicChanceMutilplier = 1f;
+            SummonChanceMutilplier = 1f;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

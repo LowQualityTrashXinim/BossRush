@@ -636,6 +636,10 @@ namespace BossRush.Contents.Items.Artifact
             packet.Write(ArtifactDefinedID);
             packet.Send(toWho, fromWho);
         }
+        public override void Initialize()
+        {
+            ArtifactDefinedID = -1;
+        }
         public override void SaveData(TagCompound tag)
         {
             tag["ArtifactDefinedID"] = ArtifactDefinedID;
