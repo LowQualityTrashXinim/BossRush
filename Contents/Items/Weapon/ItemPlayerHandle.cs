@@ -197,6 +197,15 @@ namespace BossRush.Contents.Items.Weapon
             PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
             HoldSynergyItem(player, modplayer);
         }
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            ModifySynergyShootStats(player,player.GetModPlayer<PlayerSynergyItemHandle>(), ref position, ref velocity, ref type, ref damage, ref knockback);
+        }
+        public virtual void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+
+        }
         /// <summary>
         /// You should use this to set condition, the condition must be pre set in <see cref="PlayerSynergyItemHandle"/> and then check condition in here
         /// </summary>

@@ -35,7 +35,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
                 MaxLengthY = MaxLengthX * .2f * -MouseXPosDirection;
                 firstframe++;
             }
-
+            if(player.dead || !player.active)
+            {
+                Projectile.Kill();
+            }
             int duration = player.itemAnimationMax;
             if (Projectile.timeLeft > duration)
             {

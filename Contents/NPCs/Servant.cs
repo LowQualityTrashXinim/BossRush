@@ -126,7 +126,7 @@ namespace BossRush.Contents.NPCs
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawTrail(Color.Black, .02f);
+            Projectile.DrawTrailWithoutColorAdjustment(Color.Black, .02f);
             return true;
         }
     }
@@ -180,7 +180,7 @@ namespace BossRush.Contents.NPCs
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawTrail(Color.Black, .01f);
+            Projectile.DrawTrailWithoutColorAdjustment(Color.Black, .01f);
             return true;
         }
     }
