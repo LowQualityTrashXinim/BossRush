@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
 {
-    internal class FlamingWoodSword : ModItem, ISynergyItem
+    internal class FlamingWoodSword : SynergyModItem
     {
         public override void SetDefaults()
         {

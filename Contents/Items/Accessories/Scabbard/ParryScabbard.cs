@@ -7,7 +7,7 @@ using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard
 {
-    internal class ParryScabbard : ModItem, ISynergyItem
+    internal class ParryScabbard : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void ModifyTooltips(List<TooltipLine> tooltips)

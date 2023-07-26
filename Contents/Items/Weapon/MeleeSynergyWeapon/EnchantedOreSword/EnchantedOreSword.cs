@@ -8,7 +8,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
-    class EnchantedOreSword : SynergyModItem, ISynergyItem
+    class EnchantedOreSword : SynergyModItem
     {
         public override void SetDefaults()
         {

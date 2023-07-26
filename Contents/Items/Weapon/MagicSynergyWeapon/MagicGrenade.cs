@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
 {
-    internal class MagicGrenade : SynergyModItem, ISynergyItem
+    internal class MagicGrenade : SynergyModItem
     {
         public override void SetDefaults()
         {

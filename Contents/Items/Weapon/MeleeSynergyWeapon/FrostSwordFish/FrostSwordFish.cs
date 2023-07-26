@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
 {
-    internal class FrostSwordFish : ModItem, ISynergyItem
+    internal class FrostSwordFish : SynergyModItem
     {
         public override void SetDefaults()
         {

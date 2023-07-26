@@ -9,7 +9,7 @@ using System;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
 {
-    internal class EnchantedStarfury : SynergyModItem, ISynergyItem
+    internal class EnchantedStarfury : SynergyModItem
     {
         public override void SetDefaults()
         {

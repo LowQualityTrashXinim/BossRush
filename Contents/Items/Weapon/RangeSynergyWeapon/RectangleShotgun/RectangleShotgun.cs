@@ -6,29 +6,14 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 {
-    class RectangleShotgun : ModItem, ISynergyItem
+    class RectangleShotgun : SynergyModItem
     {
         public override void SetDefaults()
         {
-            Item.damage = 75;
-            Item.knockBack = 4f;
-            Item.height = 12;
-            Item.width = 74;
-
-            Item.useAmmo = AmmoID.Bullet;
-            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.BossRushDefaultRange(12, 74, 75, 4f, 10, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<RectangleBullet>(), 100f, true, AmmoID.Bullet);
             Item.value = Item.buyPrice(gold: 50);
-            Item.rare = 4;
-
-            Item.useTime = 10;
-            Item.useAnimation = 10;
-            Item.shoot = ModContent.ProjectileType<RectangleBullet>();
-            Item.shootSpeed = 100f;
+            Item.rare = ItemRarityID.LightRed;
             Item.reuseDelay = 30;
-            Item.DamageType = DamageClass.Ranged;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-
             Item.UseSound = SoundID.Item38;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

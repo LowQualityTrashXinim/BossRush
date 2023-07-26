@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
 {
-    internal class ZapSnapper : ModItem, ISynergyItem
+    internal class ZapSnapper : SynergyModItem
     {
         public override void SetDefaults()
         {

@@ -9,7 +9,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 
 namespace BossRush.Contents.Items.Accessories.Crystal
 {
-    class NatureCrystal : ModItem, ISynergyItem
+    class NatureCrystal : ModItem
     {
         public override void SetDefaults()
         {
@@ -38,7 +38,6 @@ namespace BossRush.Contents.Items.Accessories.Crystal
         public override void AddRecipes()
         {
             CreateRecipe()
-           .AddIngredient(ModContent.ItemType<SynergyEnergy>())
            .AddIngredient(ItemID.LifeCrystal, 1)
            .AddIngredient(ItemID.ManaCrystal, 1)
            .Register();

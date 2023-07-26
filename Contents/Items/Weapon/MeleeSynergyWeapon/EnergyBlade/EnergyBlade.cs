@@ -10,7 +10,7 @@ using Steamworks;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
 {
-    internal class EnergyBlade : SynergyModItem, ISynergyItem
+    internal class EnergyBlade : SynergyModItem
     {
         public override void SetStaticDefaults()
         {

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
-    internal class EmeraldSwotaff : SwotaffGemItem, ISynergyItem
+    internal class EmeraldSwotaff : SwotaffGemItem
     {
         public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
         {

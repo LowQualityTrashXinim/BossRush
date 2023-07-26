@@ -8,7 +8,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
 {
-    internal class SinisterBook : ModItem, ISynergyItem
+    internal class SinisterBook : SynergyModItem
     {
         public override void SetDefaults()
         {

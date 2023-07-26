@@ -5,32 +5,15 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
 {
-    internal class KnifeRevolver : ModItem, ISynergyItem
+    internal class KnifeRevolver : SynergyModItem
     {
         public override void SetDefaults()
         {
-            Item.width = 84;
-            Item.height = 24;
-
-            Item.damage = 21;
+            Item.BossRushDefaultRange(84, 24, 21, 3f, 30, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);
             Item.crit = 10;
-            Item.knockBack = 3f;
             Item.scale = 0.85f;
-
-            Item.useTime = 30;
-            Item.useAnimation = 30;
-
-            Item.shootSpeed = 10;
-
             Item.rare = 4;
-            Item.noUseGraphic = false;
-            Item.noMelee = true;
-            Item.autoReuse = false;
-            Item.shoot = ProjectileID.Bullet;
-            Item.useAmmo = AmmoID.Bullet;
             Item.value = Item.buyPrice(gold: 50);
-            Item.DamageType = DamageClass.Ranged;
-            Item.useStyle = ItemUseStyleID.Shoot;
         }
         public override Vector2? HoldoutOffset()
         {

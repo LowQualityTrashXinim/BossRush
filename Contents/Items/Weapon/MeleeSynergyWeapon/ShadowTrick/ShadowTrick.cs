@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick
 {
-    public class ShadowTrick : ModItem, ISynergyItem
+    public class ShadowTrick : SynergyModItem
     {
         public override void SetStaticDefaults()
         {

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark
 {
-    internal class ChaosMiniShark : ModItem, ISynergyItem
+    internal class ChaosMiniShark : SynergyModItem
     {
         int counter = 0;
         public override void SetStaticDefaults()

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver
 {
-    internal class SkullRevolver : ModItem, ISynergyItem
+    internal class SkullRevolver : SynergyModItem
     {
         int counter = 0;
         public override void SetDefaults()

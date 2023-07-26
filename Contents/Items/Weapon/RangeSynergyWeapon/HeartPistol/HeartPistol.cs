@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
 {
-    internal class HeartPistol : ModItem, ISynergyItem
+    internal class HeartPistol : SynergyModItem
     {
         public override void SetDefaults()
         {

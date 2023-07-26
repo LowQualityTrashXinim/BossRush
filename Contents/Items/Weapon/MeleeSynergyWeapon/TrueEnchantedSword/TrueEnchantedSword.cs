@@ -7,16 +7,13 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
 {
-    internal class TrueEnchantedSword : ModItem, ISynergyItem
+    internal class TrueEnchantedSword : SynergyModItem
     {
         int count = 0;
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 100, 100, 150, 7f, 19, 19, BossRushUseStyle.GenericSwingDownImprove, true);
-            Item.DamageType = DamageClass.Melee;
+            Item.BossRushDefaultMeleeShootCustomProjectile(100, 100, 150, 7f, 19, 19, BossRushUseStyle.GenericSwingDownImprove, ProjectileID.EnchantedBeam, 20, true);
             Item.crit = 30;
-            Item.shoot = ProjectileID.EnchantedBeam;
-            Item.shootSpeed = 20;
             Item.rare = ItemRarityID.LightPurple;
             Item.value = Item.buyPrice(platinum: 5);
             Item.UseSound = SoundID.Item1;
@@ -65,6 +62,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
                 Projectile.NewProjectile(source, position, rotate * 0.6f, ProjectileID.IceBolt, (int)(damage * 0.9), knockback, player.whoAmI);
             }
             return false;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe().AddIngredient(ItemID.MoonLordPetItem).Register();
         }
     }
 }

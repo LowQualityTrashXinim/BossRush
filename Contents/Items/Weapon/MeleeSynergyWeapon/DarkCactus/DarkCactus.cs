@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
 {
-    internal class DarkCactus : SynergyModItem, ISynergyItem
+    internal class DarkCactus : SynergyModItem
     {
         public override void SetDefaults()
         {

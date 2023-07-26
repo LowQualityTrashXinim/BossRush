@@ -5,7 +5,7 @@ using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Accessories.FuryEmblem
 {
-    class FuryEmblem : ModItem, ISynergyItem
+    class FuryEmblem : ModItem
     {
         public override void SetDefaults()
         {

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 {
-    internal class SuperFlareGun : ModItem, ISynergyItem
+    internal class SuperFlareGun : SynergyModItem
     {
         public override void SetDefaults()
         {

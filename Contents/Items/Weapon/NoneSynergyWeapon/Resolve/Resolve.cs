@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -10,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
 {
-    internal class Resolve : SynergyModItem, ISynergyItem
+    internal class Resolve : SynergyModItem
     {
         public override void SetDefaults()
         {
@@ -72,6 +71,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             Projectile.timeLeft = 180;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
+            Projectile.usesIDStaticNPCImmunity = true;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {

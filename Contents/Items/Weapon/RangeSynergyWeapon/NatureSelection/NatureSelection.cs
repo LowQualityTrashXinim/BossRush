@@ -6,14 +6,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
 {
-    internal class NatureSelection : ModItem, ISynergyItem
+    internal class NatureSelection : SynergyModItem
     {
         static int counter = 0;
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Natural Selection");
-            // Tooltip.SetDefault("Mother of all bows");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(32, 66, 40, 3f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 20, true, AmmoID.Arrow);
@@ -58,12 +53,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
             }
             return true;
         }
-
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-4, 0);
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

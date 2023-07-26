@@ -9,7 +9,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
 {
-    internal class IceStorm : SynergyModItem, ISynergyItem
+    internal class IceStorm : SynergyModItem
     {
         public override void SetDefaults()
         {

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
 {
-    public class YinYang : ModItem, ISynergyItem
+    public class YinYang : SynergyModItem
     {
         public override void SetStaticDefaults()
         {

@@ -5,30 +5,14 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword
 {
-    class SuperShortSword : ModItem, ISynergyItem
+    class SuperShortSword : SynergyModItem
     {
         public override void SetDefaults()
         {
-            Item.DamageType = DamageClass.Melee;
-            Item.noMelee = true;
-            Item.autoReuse = true;
-            Item.noUseGraphic = true;
-            Item.shoot = ModContent.ProjectileType<SuperShortSwordP>();
-
-            Item.useStyle = 5;
+            Item.BossRushSetDefault(68, 68, 93, 6f, 36, 36, ItemUseStyleID.Shoot, true);
+            Item.BossRushSetDefaultSpear(ModContent.ProjectileType<SuperShortSwordP>(), 2.4f);
             Item.rare = 2;
-
-            Item.height = 68;
-            Item.width = 68;
-
-            Item.useTime = 36;
-            Item.useAnimation = 36;
-
-            Item.damage = 93;
-            Item.knockBack = 4f;
-            Item.shootSpeed = 2.4f;
             Item.value = Item.buyPrice(platinum: 5);
-
             Item.UseSound = SoundID.Item1;
         }
         public override bool CanUseItem(Player player)

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana
 {
-    internal class PlatinumKatana : ModItem, ISynergyItem
+    internal class PlatinumKatana : SynergyModItem
     {
         public override void SetDefaults()
         {

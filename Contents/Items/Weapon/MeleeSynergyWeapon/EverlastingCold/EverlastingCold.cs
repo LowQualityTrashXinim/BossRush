@@ -6,7 +6,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
 {
-    internal class EverlastingCold : ModItem, ISynergyItem
+    internal class EverlastingCold : SynergyModItem
     {
         public override void SetDefaults()
         {

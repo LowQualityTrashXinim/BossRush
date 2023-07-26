@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark
 {
-    internal class DeathBySpark : ModItem, ISynergyItem
+    internal class DeathBySpark : SynergyModItem
     {
         public override void SetDefaults()
         {

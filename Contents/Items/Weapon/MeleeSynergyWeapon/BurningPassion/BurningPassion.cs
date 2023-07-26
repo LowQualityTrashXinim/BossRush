@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
 {
-    class BurningPassion : SynergyModItem, ISynergyItem
+    class BurningPassion : SynergyModItem
     {
         public override void SetDefaults()
         {

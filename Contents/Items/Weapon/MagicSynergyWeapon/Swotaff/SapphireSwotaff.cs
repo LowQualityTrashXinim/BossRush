@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
-    internal class SapphireSwotaff : SwotaffGemItem, ISynergyItem
+    internal class SapphireSwotaff : SwotaffGemItem
     {
         public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
         {

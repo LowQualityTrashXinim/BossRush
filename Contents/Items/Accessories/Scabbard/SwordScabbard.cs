@@ -7,7 +7,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard
 {
-    internal class SwordScabbard : ModItem, ISynergyItem
+    internal class SwordScabbard : ModItem
     {
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

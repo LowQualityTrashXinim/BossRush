@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
 {
-    internal class RubySwotaff : SwotaffGemItem, ISynergyItem
+    internal class RubySwotaff : SwotaffGemItem
     {
         public override void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType)
         {

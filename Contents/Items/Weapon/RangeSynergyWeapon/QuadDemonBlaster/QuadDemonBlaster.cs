@@ -6,29 +6,15 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
 {
-    class QuadDemonBlaster : ModItem, ISynergyItem
+    class QuadDemonBlaster : SynergyModItem
     {
         public override void SetDefaults()
         {
-            Item.damage = 39;
-            Item.knockBack = 1.5f;
-            Item.shootSpeed = 15f;
-            Item.height = 30;
-            Item.width = 46;
+            Item.BossRushDefaultRange(40, 30, 39, 3f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
 
-            Item.useAmmo = AmmoID.Bullet;
-            Item.useStyle = ItemUseStyleID.Shoot;
             Item.value = Item.buyPrice(gold: 50);
-            Item.rare = 3;
-
-            Item.useTime = 4;
-            Item.useAnimation = 4;
-            Item.shoot = ProjectileID.Bullet;
+            Item.rare = ItemRarityID.Orange;
             Item.reuseDelay = 15;
-            Item.DamageType = DamageClass.Ranged;
-            Item.autoReuse = true;
-            Item.noMelee = true;
-
             Item.UseSound = SoundID.Item41;
         }
         public override void HoldItem(Player player)

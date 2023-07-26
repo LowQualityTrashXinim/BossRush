@@ -8,7 +8,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 {
-    internal class StarLightDistributer : SynergyModItem, ISynergyItem
+    internal class StarLightDistributer : SynergyModItem
     {
         public override void SetDefaults()
         {

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 {
-    internal class DiamondBow : MagicBow, ISynergyItem
+    internal class DiamondBow : MagicBow
     {
         public override void MagicBowSetDefault(out int mana, out int shoot, out float shootspeed, out int damage, out int useTime, out int dustType)
         {

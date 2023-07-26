@@ -7,7 +7,7 @@ using BossRush.Texture;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
 {
-    internal class StickyFlower : ModItem, ISynergyItem
+    internal class StickyFlower : SynergyModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetStaticDefaults()

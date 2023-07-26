@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 {
-    internal class OvergrownMinishark : SynergyModItem, ISynergyItem
+    internal class OvergrownMinishark : SynergyModItem
     {
         public override void SetDefaults()
         {

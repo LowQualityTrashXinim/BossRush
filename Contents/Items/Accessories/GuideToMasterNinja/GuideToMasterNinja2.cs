@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
 {
-    internal class GuideToMasterNinja2 : ModItem, ISynergyItem
+    internal class GuideToMasterNinja2 : ModItem
     {
         public override void SetDefaults()
         {

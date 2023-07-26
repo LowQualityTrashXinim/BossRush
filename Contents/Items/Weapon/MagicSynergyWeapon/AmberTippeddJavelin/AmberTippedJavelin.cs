@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin
 {
-    public class AmberTippedJavelin : SynergyModItem, ISynergyItem
+    public class AmberTippedJavelin : SynergyModItem
     {
         public override void SetDefaults()
         {

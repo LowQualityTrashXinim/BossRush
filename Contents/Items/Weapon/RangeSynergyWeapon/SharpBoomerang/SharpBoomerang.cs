@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
 {
-    internal class SharpBoomerang : ModItem, ISynergyItem
+    internal class SharpBoomerang : SynergyModItem
     {
         public override void SetDefaults()
         {

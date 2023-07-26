@@ -5,6 +5,7 @@ using Terraria.Localization;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Common
 {
@@ -44,7 +45,7 @@ namespace BossRush.Common
         {
             foreach (var item in ContentSamples.ItemsByType)
             {
-                if (item.Value.ModItem is ISynergyItem)
+                if (item.Value.ModItem is SynergyModItem)
                 {
                     list.Add(item.Key);
                 }
@@ -131,7 +132,7 @@ namespace BossRush.Common
         }
         private void SynergyRecipe(Recipe recipe)
         {
-            if (recipe.createItem.ModItem is ISynergyItem)
+            if (recipe.createItem.ModItem is SynergyModItem)
             {
                 recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
             }

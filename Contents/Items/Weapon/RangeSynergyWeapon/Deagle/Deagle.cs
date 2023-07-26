@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
 {
-    internal class Deagle : SynergyModItem, ISynergyItem
+    internal class Deagle : SynergyModItem
     {
         public override void SetDefaults()
         {

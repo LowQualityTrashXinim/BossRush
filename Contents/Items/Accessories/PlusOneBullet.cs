@@ -6,7 +6,7 @@ using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Accessories
 {
-    internal class PlusOneBullet : ModItem, ISynergyItem
+    internal class PlusOneBullet : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()

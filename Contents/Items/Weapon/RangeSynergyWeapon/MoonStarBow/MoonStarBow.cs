@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
 {
-    internal class MoonStarBow : ModItem, ISynergyItem
+    internal class MoonStarBow : ModItem
     {
         public override void SetDefaults()
         {
