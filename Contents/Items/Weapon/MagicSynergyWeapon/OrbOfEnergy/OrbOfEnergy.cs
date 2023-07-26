@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
 {
-    internal class OrbOfEnergy : ModItem
+    internal class OrbOfEnergy : SynergyModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
     }
-    class OrbOfEnergyBolt : ModProjectile
+    class OrbOfEnergyBolt : SynergyModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()

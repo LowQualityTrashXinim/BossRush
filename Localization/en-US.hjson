@@ -129,6 +129,7 @@ Mods: {
 			ServantProjectile.DisplayName: Servant Projectile
 			ServantSmallerProjectile.DisplayName: Servant Smaller Projectile
 			ResolveBroadSword.DisplayName: Resolve Broad Sword
+			ZenishProjectile.DisplayName: Zenish Projectile
 		}
 
 		NPCs: {
@@ -1278,6 +1279,11 @@ Mods: {
 
 			Resolve: {
 				DisplayName: Resolve
+				Tooltip: ""
+			}
+
+			Zenish: {
+				DisplayName: Zenish
 				Tooltip: ""
 			}
 		}

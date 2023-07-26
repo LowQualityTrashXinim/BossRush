@@ -99,7 +99,7 @@ namespace BossRush.Contents.Items.Artifact
     }
     class ArtifactPlayerHandleLogic : ModPlayer
     {
-        public int ArtifactDefinedID = -1;//setting to -1 mean it just do nothing
+        public int ArtifactDefinedID = 999;//setting to 999 mean it just do nothing
         bool Greed = false;//ID = 1
         bool Pride = false;//ID = 2
         bool Vampire = false;//ID = 3
@@ -638,7 +638,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void Initialize()
         {
-            ArtifactDefinedID = -1;
+            ArtifactDefinedID = 999;
         }
         public override void SaveData(TagCompound tag)
         {
@@ -646,7 +646,10 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void LoadData(TagCompound tag)
         {
-            ArtifactDefinedID = (int)tag["ArtifactDefinedID"];
+            if (tag.ContainsKey("ArtifactDefinedID"))
+            {
+                ArtifactDefinedID = (int)tag["ArtifactDefinedID"];
+            }
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {

@@ -17,7 +17,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.penetrate = 1;
             Projectile.light = 1f;
             Projectile.tileCollide = true;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 500;
         }
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
         {
@@ -37,8 +37,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             else
             {
-                if (Projectile.velocity.Y < 0.5f && Projectile.velocity.Y > -0.5 && Projectile.velocity.X < 1f && Projectile.velocity.X > -1f)
+                if (Projectile.velocity.IsLimitReached(.1f))
                 {
+                    Projectile.position += Projectile.velocity;
                     Projectile.velocity = Vector2.Zero;
                 }
             }
@@ -53,13 +54,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
 
         public override void AI()
         {
-            if (!Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
+            if (Projectile.velocity != Vector2.Zero)
             {
-                Projectile.rotation = Projectile.velocity.ToRotation();
-            }
-            else
-            {
-                Projectile.timeLeft = 300;
+                if (!Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
+                {
+                    Projectile.rotation = Projectile.velocity.ToRotation();
+                }
             }
             if (Main.rand.NextBool(7))
             {
