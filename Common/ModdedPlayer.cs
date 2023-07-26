@@ -39,12 +39,7 @@ namespace BossRush.Common
             {
                 return;
             }
-            if (Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2) >= 2)
-            {
-                GodAreEnraged = true;
-                Player.difficulty = 2;
-            }
-            int synergyCounter = 0;
+            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>());
             foreach (var item in Player.inventory)
             {
                 if (item.ModItem is SynergyModItem)
@@ -55,7 +50,6 @@ namespace BossRush.Common
             if (synergyCounter >= 2)
             {
                 GodAreEnraged = true;
-                Player.difficulty = 2;
             }
         }
         private void CheckHowManyHit()
@@ -83,7 +77,7 @@ namespace BossRush.Common
                     Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1000, 1000) + Player.Center;
                     NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
                 }
-                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "God are angered !");
+                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
                 GodAreEnraged = false;
             }
             if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)

@@ -42,20 +42,27 @@ namespace BossRush.Contents.NPCs
                 Main.dust[dust].color = Color.Black;
             }
             Player player = Main.player[NPC.target];
-            NPC.velocity = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 2;
+            NPC.velocity = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 4;
             if (!player.active || player.dead)
             {
                 return;
             }
+            if (NPC.ai[0] >= 150)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector2 vel = Vector2.One.Vector2DistributeEvenly(8, 360, i);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, vel, ModContent.ProjectileType<ServantSmallerProjectile>(), (int)(NPC.damage * .25f), 40, -1, NPC.target);
+                }
+                NPC.ai[0] = 0;
+            }
             if (NPC.ai[1] >= 100)
             {
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<ServantProjectile>(), NPC.damage, 40, -1, NPC.target);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity * .1f, ModContent.ProjectileType<ServantProjectile>(), NPC.damage, 40, -1, NPC.target);
                 NPC.ai[1] = 0;
             }
-            else
-            {
-                NPC.ai[1]++;
-            }
+            NPC.ai[0]++;
+            NPC.ai[1]++;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -77,15 +84,25 @@ namespace BossRush.Contents.NPCs
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.tileCollide = true;
+            Projectile.extraUpdates = 10;
         }
         public override void AI()
         {
-            Projectile.velocity += Projectile.velocity * .01f;
+            Lighting.AddLight(Projectile.Center, new Vector3(1, 1, 1));
+            if (Projectile.ai[1] < 10)
+            {
+                Projectile.velocity += Projectile.velocity * .001f;
+            }
+            else
+            {
+                Projectile.ai[1]++;
+            }
             if (Projectile.ai[0] >= 0)
             {
-                Projectile.velocity += (Main.player[(int)Projectile.ai[0]].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .1f;
+                Projectile.velocity += (Main.player[(int)Projectile.ai[0]].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .005f;
             }
-            for (int i = 0; i < 4; i++)
+            Projectile.velocity.LimitedVelocity(5);
+            if (Main.rand.NextBool(4))
             {
                 int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.Granite);
                 Main.dust[dust].noGravity = true;
@@ -110,6 +127,60 @@ namespace BossRush.Contents.NPCs
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawTrail(Color.Black, .02f);
+            return true;
+        }
+    }
+    public class ServantSmallerProjectile : ModProjectile
+    {
+        public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.scale = .5f;
+            Projectile.width = Projectile.height = 15;
+            Projectile.penetrate = 1;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.tileCollide = true;
+            Projectile.extraUpdates = 10;
+        }
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.Center, new Vector3(1, 1, 1));
+            if (Projectile.ai[0] >= 0)
+            {
+                Projectile.velocity += (Main.player[(int)Projectile.ai[0]].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .0025f;
+            }
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
+            if (Main.rand.NextBool(4))
+            {
+                int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(15, 15), 0, 0, DustID.Granite);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].color = Color.Black;
+            }
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Granite, 0, 0, 0, Color.Black, Main.rand.NextFloat(.5f, 2f));
+                Vector2 vel = Main.rand.NextVector2Circular(3, 3);
+                Main.dust[dust].velocity = vel;
+                Main.dust[dust].color = Color.Black;
+            }
+            base.Kill(timeLeft);
+        }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.Black;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.DrawTrail(Color.Black, .01f);
             return true;
         }
     }

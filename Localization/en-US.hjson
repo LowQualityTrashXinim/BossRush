@@ -127,6 +127,7 @@ Mods: {
 			OrbOfEnergyBolt.DisplayName: Orb Of Energy Bolt
 			ResolveProjectile.DisplayName: Resolve Projectile
 			ServantProjectile.DisplayName: Servant Projectile
+			ServantSmallerProjectile.DisplayName: Servant Smaller Projectile
 		}
 
 		NPCs: {
