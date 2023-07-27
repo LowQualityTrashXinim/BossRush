@@ -1,23 +1,23 @@
 ﻿using Terraria;
+using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
-using System.IO;
-using Terraria.ModLoader.IO;
-using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.NPCs;
-using Microsoft.Xna.Framework;
 
 namespace BossRush.Common
 {
@@ -165,7 +165,7 @@ namespace BossRush.Common
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                if (Main.rand.NextBool(5))
+                if (Main.rand.NextBool(10))
                 {
                     items.Add(new Item(ModContent.ItemType<WonderDrug>()));
                 }
