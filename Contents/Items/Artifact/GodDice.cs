@@ -162,7 +162,14 @@ namespace BossRush.Contents.Items.Artifact
         public override void LoadData(TagCompound tag)
         {
             GambleDamage = tag.GetFloat("GambleDmg");
-            GambleDef = tag.GetAsInt("GambleDef");
+            if (tag.ContainsKey("GambleDef"))
+            {
+                object GambleDefData = tag["GambleDef"];
+                if (GambleDefData is float GambleDefFloat)
+                    GambleDef = (int)GambleDefFloat;
+                if (GambleDefData is int GambleDefInt)
+                    GambleDef = GambleDefInt;
+            }
             GambleSpeed = tag.GetFloat("GambleSpeed");
             GambleHP = tag.GetFloat("GambleHP");
             GambleLifeRegen = tag.GetFloat("GambleLifeRegen");
