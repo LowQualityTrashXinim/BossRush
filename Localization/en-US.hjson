@@ -1286,6 +1286,11 @@ Mods: {
 				DisplayName: Zenish
 				Tooltip: ""
 			}
+
+			Nadir: {
+				DisplayName: Nadir
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

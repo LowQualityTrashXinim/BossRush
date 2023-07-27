@@ -53,7 +53,6 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool? UseItem(Player player)
         {
-            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = -1;
             GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
             if (BossRushUtils.IsDebugPlayer(player) && player.altFunctionUse == 2)
             {
@@ -86,12 +85,12 @@ namespace BossRush.Contents.Items.Artifact
     class GamblePlayer : ModPlayer
     {
         public float GambleDamage = 1;
-        public int GambleDef = 0;
         public float GambleSpeed = 1;
         public float GambleHP = 1;
         public float GambleLifeRegen = 1;
         public float GambleMana = 1;
         public float GambleManaRegen = 1;
+        public int GambleDef = 0;
         public int GambleMinionSlot = 0;
         public int GambleCrit = 0;
         public int Roll = 0;
@@ -136,20 +135,20 @@ namespace BossRush.Contents.Items.Artifact
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)BossRush.MessageType.GambleAddiction);
             packet.Write((byte)Player.whoAmI);
-            packet.Write(GambleDamage);
-            packet.Write(GambleDef);
-            packet.Write(GambleSpeed);
-            packet.Write(GambleHP);
-            packet.Write(GambleLifeRegen);
-            packet.Write(GambleMana);
-            packet.Write(GambleManaRegen);
-            packet.Write(GambleMinionSlot);
-            packet.Write(GambleCrit);
+            packet.Write((byte)GambleDamage);
+            packet.Write((byte)GambleDef);
+            packet.Write((byte)GambleSpeed);
+            packet.Write((byte)GambleHP);
+            packet.Write((byte)GambleLifeRegen);
+            packet.Write((byte)GambleMana);
+            packet.Write((byte)GambleManaRegen);
+            packet.Write((byte)GambleMinionSlot);
+            packet.Write((byte)GambleCrit);
             packet.Send(toWho, fromWho);
         }
         public override void SaveData(TagCompound tag)
         {
-            tag["GamblePlayer"] = GambleDamage;
+            tag["GambleDmg"] = GambleDamage;
             tag["GambleDef"] = GambleDef;
             tag["GambleSpeed"] = GambleSpeed;
             tag["GambleHP"] = GambleHP;
@@ -162,25 +161,25 @@ namespace BossRush.Contents.Items.Artifact
 
         public override void LoadData(TagCompound tag)
         {
-            GambleDamage = (float)tag["GamblePlayer"];
-            GambleSpeed = (float)tag["GambleSpeed"];
-            GambleHP = (float)tag["GambleHP"];
-            GambleLifeRegen = (float)tag["GambleLifeRegen"];
-            GambleMana = (float)tag["GambleMana"];
-            GambleManaRegen = (float)tag["GambleManaRegen"];
-            GambleDef = (int)tag["GambleDef"];
-            GambleMinionSlot = (int)tag["GambleMinionSlot"];
-            GambleCrit = (int)tag["GambleCrit"];
+            GambleDamage = tag.GetFloat("GambleDmg");
+            GambleDef = tag.GetAsInt("GambleDef");
+            GambleSpeed = tag.GetFloat("GambleSpeed");
+            GambleHP = tag.GetFloat("GambleHP");
+            GambleLifeRegen = tag.GetFloat("GambleLifeRegen");
+            GambleMana = tag.GetFloat("GambleMana");
+            GambleManaRegen = tag.GetFloat("GambleManaRegen");
+            GambleMinionSlot = tag.GetInt("GambleMinionSlot");
+            GambleCrit = tag.GetInt("GambleCrit");
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
             GambleDamage = reader.ReadSingle();
+            GambleDef = reader.ReadInt32();
             GambleSpeed = reader.ReadSingle();
             GambleHP = reader.ReadSingle();
             GambleLifeRegen = reader.ReadSingle();
             GambleMana = reader.ReadSingle();
             GambleManaRegen = reader.ReadSingle();
-            GambleDef = reader.ReadInt32();
             GambleMinionSlot = reader.ReadInt32();
             GambleCrit = reader.ReadInt32();
         }

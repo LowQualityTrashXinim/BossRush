@@ -646,10 +646,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void LoadData(TagCompound tag)
         {
-            if (tag.ContainsKey("ArtifactDefinedID"))
-            {
-                ArtifactDefinedID = (int)tag["ArtifactDefinedID"];
-            }
+            ArtifactDefinedID = tag.GetInt("ArtifactDefinedID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
