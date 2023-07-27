@@ -74,7 +74,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 if (item.consumable)
                 {
-                    return artifactplayer.ArtifactDefinedID == -1;
+                    return artifactplayer.ArtifactDefinedID == ArtifactPlayerHandleLogic.ArtifactDefaultID;
                 }
             }
             return base.CanUseItem(item, player);
@@ -88,7 +88,7 @@ namespace BossRush.Contents.Items.Artifact
                 {
                     tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 artifact can be consume"));
                 }
-                if (artifactplayer.ArtifactDefinedID != -1)
+                if (artifactplayer.ArtifactDefinedID != ArtifactPlayerHandleLogic.ArtifactDefaultID)
                 {
                     TooltipLine line = new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact");
                     line.OverrideColor = Color.DarkRed;
@@ -99,7 +99,8 @@ namespace BossRush.Contents.Items.Artifact
     }
     class ArtifactPlayerHandleLogic : ModPlayer
     {
-        public int ArtifactDefinedID = 999;//setting to 999 mean it just do nothing
+        public const int ArtifactDefaultID = 999;
+        public int ArtifactDefinedID = ArtifactDefaultID;//setting to 999 mean it just do nothing
         bool Greed = false;//ID = 1
         bool Pride = false;//ID = 2
         bool Vampire = false;//ID = 3
@@ -638,7 +639,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void Initialize()
         {
-            ArtifactDefinedID = 999;
+            ArtifactDefinedID = ArtifactDefaultID;
         }
         public override void SaveData(TagCompound tag)
         {
