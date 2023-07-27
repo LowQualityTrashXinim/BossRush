@@ -117,8 +117,8 @@ namespace BossRush.Common
                 if (Player.ZoneOverworldHeight)
                 {
                     Player.AddBuff(BuffID.CursedInferno, 120);
+                    Player.AddBuff(ModContent.BuffType<Rotting>(), 5);
                 }
-                Player.AddBuff(ModContent.BuffType<Rotting>(), 5);
             }
             if (NPC.AnyNPCs(NPCID.QueenBee))
             {

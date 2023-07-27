@@ -47,7 +47,7 @@ namespace BossRush.Contents.Items.Chest
                     $"Amount of potion : [i:{ItemID.RegenerationPotion}][i:{ItemID.SwiftnessPotion}][i:{ItemID.IronskinPotion}] x {chestplayer.potionNumAmount}");
                 tooltips.Add(chestline);
             }
-            if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == -1)
+            if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 999)
             {
                 TooltipLine line = new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest");
                 line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { Color.DarkRed, Color.Red }, 10);
@@ -330,7 +330,7 @@ namespace BossRush.Contents.Items.Chest
         /// </summary>
         /// <returns></returns>
         public virtual bool CanBeRightClick() => false;
-        public override bool CanRightClick() => Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != -1 || CanBeRightClick();
+        public override bool CanRightClick() => Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID != 999 || CanBeRightClick();
 
         public override void RightClick(Player player)
         {
