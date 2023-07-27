@@ -250,5 +250,54 @@ namespace BossRush
             HashSet<T> HashsetRemoveDup = new(flag);
             return HashsetRemoveDup.ToList();
         }
+        public static Color MultiColor(List<Color> color, int speed)
+        {
+            if (progress >= 255)
+            {
+                progress = 0;
+            }
+            else
+            {
+                progress = Math.Clamp(progress + 1 * speed, 0, 255);
+            }
+            if (color.Count < 1)
+            {
+                return Color.White;
+            }
+            if (color.Count < 2)
+            {
+                return color[0];
+            }
+            int count = 0;
+            foreach (Color c in listcolor)
+            {
+                if (color.Contains(c))
+                {
+                    count++;
+                }
+            }
+            if (count != color.Count)
+            {
+                listcolor = color;
+                color1 = new Color();
+                color2 = new Color();
+            }
+            if (color1.Equals(color2))
+            {
+                color1 = color[currentIndex];
+                color3 = color[currentIndex];
+                currentIndex = Math.Clamp((currentIndex + 1 >= color.Count) ? 0 : currentIndex + 1, 0, color.Count - 1);
+                color2 = color[currentIndex];
+                progress = 0;
+            }
+            if (!color1.Equals(color2))
+            {
+                color1 = Color.Lerp(color3, color2, Math.Clamp(progress / 255f, 0, 1f));
+            }
+            return color1;
+        }
+        private static int currentIndex = 0, progress = 0;
+        static Color color1 = new Color(), color2 = new Color(), color3 = new Color();
+        static List<Color> listcolor = new List<Color>();
     }
 }

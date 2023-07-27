@@ -78,6 +78,7 @@ namespace BossRush.Common.Global
             base.SetDefaults(entity);
             if (entity.type == ItemID.Sandgun)
             {
+                entity.damage = (int)(entity.damage * .45f);
                 entity.shoot = ModContent.ProjectileType<SandProjectile>();
             }
         }

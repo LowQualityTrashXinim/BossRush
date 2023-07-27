@@ -34,7 +34,7 @@ namespace BossRush.Contents.Items.Toggle
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             TooltipLine line = new TooltipLine(Mod, "ChallengeGod", "A gift from God of challenge" + $"[i:{ModContent.ItemType<CursedSkull>()}]");
-            line.OverrideColor = BossRushColor.MultiColor(new List<Color>() { new Color(255, 50, 255), new Color(100, 50, 100) }, 2);
+            line.OverrideColor = BossRushUtils.MultiColor(new List<Color>() { new Color(255, 50, 255), new Color(100, 50, 100) }, 2);
             tooltips.Add(line);
         }
         public override bool CanUseItem(Player player)

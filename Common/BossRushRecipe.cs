@@ -53,7 +53,7 @@ namespace BossRush.Common
             RecipeGroup SynergyItem = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ModContent.ItemType<SynergyEnergy>())}", list.ToArray());
             RecipeGroup.RegisterGroup("Synergy Item", SynergyItem);
 
-            RecipeGroup WoodSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.WoodenSword)}", new int[]
+            RecipeGroup WoodSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Wood sword", new int[]
             {
                 ItemID.WoodenSword,
                 ItemID.BorealWoodSword,
@@ -65,7 +65,7 @@ namespace BossRush.Common
             });
             RecipeGroup.RegisterGroup("Wood Sword", WoodSword);
 
-            RecipeGroup WoodBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.WoodenBow)}", new int[]
+            RecipeGroup WoodBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Wood bow", new int[]
             {
                 ItemID.WoodenBow,
                 ItemID.BorealWoodBow,
@@ -77,7 +77,7 @@ namespace BossRush.Common
             });
             RecipeGroup.RegisterGroup("Wood Bow", WoodBow);
 
-            RecipeGroup OreShortSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.CopperShortsword)}", new int[]
+            RecipeGroup OreShortSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Ore short sword", new int[]
             {
                 ItemID.CopperShortsword,
                 ItemID.TinShortsword,
@@ -90,7 +90,7 @@ namespace BossRush.Common
             });
             RecipeGroup.RegisterGroup("OreShortSword", OreShortSword);
 
-            RecipeGroup OreBroadSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.CopperBroadsword)}", new int[]
+            RecipeGroup OreBroadSword = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Ore broad sword", new int[]
             {
                 ItemID.CopperBroadsword,
                 ItemID.TinBroadsword,
@@ -103,7 +103,7 @@ namespace BossRush.Common
             });
             RecipeGroup.RegisterGroup("OreBroadSword", OreBroadSword);
 
-            RecipeGroup OreBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {Lang.GetItemNameValue(ItemID.CopperBow)}", new int[]
+            RecipeGroup OreBow = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} Ore Bow", new int[]
             {
                 ItemID.CopperBow,
                 ItemID.TinBow,

@@ -13,6 +13,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\Enraged\" />
-    <Folder Include="Contents\Items\Weapon\NoneSynergyWeapon\Resolve\" />
   </ItemGroup>
 </Project>

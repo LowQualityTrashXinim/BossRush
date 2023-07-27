@@ -130,6 +130,9 @@ Mods: {
 			ServantSmallerProjectile.DisplayName: Servant Smaller Projectile
 			ResolveBroadSword.DisplayName: Resolve Broad Sword
 			ZenishProjectile.DisplayName: Zenish Projectile
+			GhostBroadsword.DisplayName: Ghost Broadsword
+			GhostShortsword.DisplayName: Ghost Shortsword
+			ResolveGhostArrow.DisplayName: Resolve Ghost Arrow
 		}
 
 		NPCs: {

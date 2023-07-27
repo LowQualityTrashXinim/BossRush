@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items.Chest
             if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == -1)
             {
                 TooltipLine line = new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest");
-                line.OverrideColor = BossRushColor.MultiColor(new List<Color> { Color.DarkRed, Color.Red }, 10);
+                line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { Color.DarkRed, Color.Red }, 10);
                 tooltips.Add(line);
             }
             PostModifyTooltips(ref tooltips);
