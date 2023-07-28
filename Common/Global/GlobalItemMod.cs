@@ -300,6 +300,13 @@ namespace BossRush.Common.Global
                     }
             }
         }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            if(item.type == ItemID.WaspGun && !NPC.downedPlantBoss)
+            {
+                damage *= .5f;
+            }
+        }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
             OnHitEffect_RichMahoganyArmor(proj);

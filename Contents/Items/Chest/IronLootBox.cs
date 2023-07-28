@@ -83,10 +83,7 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
             }
-            if (Main.rand.NextBool(5))
-            {
-                player.QuickSpawnItem(entitySource, ItemID.KingSlimeBossBag);
-            }
+            player.QuickSpawnItem(entitySource, ItemID.IronAnvil);
             player.QuickSpawnItem(entitySource, ItemID.Campfire, 10);
             player.QuickSpawnItem(entitySource, ItemID.PlatinumPickaxe);
             player.QuickSpawnItem(entitySource, ItemID.PlatinumAxe);

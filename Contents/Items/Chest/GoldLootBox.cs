@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Common.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -38,7 +39,23 @@ namespace BossRush.Contents.Items.Chest
             }
             if (player.IsDebugPlayer())
             {
-
+                List<int> armor = new List<int>();
+                armor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
+                armor.AddRange(TerrariaArrayID.HeadArmorPreBoss);
+                int[] fullbodyarmor = new int[3];
+                fullbodyarmor[0] = Main.rand.Next(armor);
+                armor.Clear();
+                armor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
+                armor.AddRange(TerrariaArrayID.BodyArmorPreBoss);
+                fullbodyarmor[1] = Main.rand.Next(armor);
+                armor.Clear();
+                armor.AddRange(TerrariaArrayID.LegArmorPostEvil);
+                armor.AddRange(TerrariaArrayID.LegArmorPostEvil);
+                fullbodyarmor[2] = Main.rand.Next(armor);
+                for (int i = 0; i < fullbodyarmor.Length; i++)
+                {
+                    player.QuickSpawnItem(entitySource, fullbodyarmor[i]);
+                }
             }
             else
             {

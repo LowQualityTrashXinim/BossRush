@@ -42,7 +42,7 @@ namespace BossRush.Common
             {
                 return;
             }
-            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>());
+            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(),2);
             foreach (var item in Player.inventory)
             {
                 if (item.ModItem is SynergyModItem)
@@ -79,9 +79,9 @@ namespace BossRush.Common
                 {
                     Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1000, 1000) + Player.Center;
                     NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
+                    BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
+                    GodAreEnraged = false;
                 }
-                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
-                GodAreEnraged = false;
             }
             if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
             {
@@ -224,7 +224,7 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<CardPacket>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
             }
-            if(Player.IsDebugPlayer())
+            if (Player.IsDebugPlayer())
             {
                 items.Add(new Item(ModContent.ItemType<ModStatsDebugger>()));
                 items.Add(new Item(ModContent.ItemType<ShowPlayerStats>()));

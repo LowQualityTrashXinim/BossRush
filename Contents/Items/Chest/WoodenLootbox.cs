@@ -30,14 +30,7 @@ namespace BossRush.Contents.Items.Chest
                 player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
                 player.QuickSpawnItem(entitySource, ammo, num);
             }
-            for (int i = 0; i < 2; i++)
-            {
-                if (i == 1)
-                {
-                    FlagNumAcc(new List<int> { 0 });
-                }
-                player.QuickSpawnItem(entitySource, GetAccessory());
-            }
+            player.QuickSpawnItem(entitySource, GetAccessory());
             for (int i = 0; i < modplayer.potionTypeAmount; i++)
             {
                 player.QuickSpawnItem(entitySource, GetPotion(true), modplayer.potionNumAmount);
@@ -55,7 +48,7 @@ namespace BossRush.Contents.Items.Chest
             }
             else
             {
-                int RandomNumber = Main.rand.Next(7);
+                int RandomNumber = Main.rand.Next(8);
                 switch (RandomNumber)
                 {
                     case 0:
@@ -93,11 +86,16 @@ namespace BossRush.Contents.Items.Chest
                         player.QuickSpawnItem(entitySource, ItemID.CactusBreastplate);
                         player.QuickSpawnItem(entitySource, ItemID.CactusLeggings);
                         break;
+                    case 7:
+                        player.QuickSpawnItem(entitySource, ItemID.AshWoodHelmet);
+                        player.QuickSpawnItem(entitySource, ItemID.AshWoodBreastplate);
+                        player.QuickSpawnItem(entitySource, ItemID.AshWoodGreaves);
+                        break;
                 }
                 int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });
                 player.QuickSpawnItem(entitySource, RandomAssArmor);
             }
-            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 int RandomModdedBuff = Main.rand.Next(new int[] {
                     ModContent.ItemType<BerserkerElixir>(),

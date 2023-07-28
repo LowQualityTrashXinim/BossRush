@@ -5,15 +5,12 @@ using Terraria.ModLoader;
 using BossRush.Common;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Artifact;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BossRush.Contents.Items.Chest
 {
     class ShadowTreasureChest : LootBoxBase
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Right click to open chest to get the following items\n1 Set of random pre-mech armor\n2 Random accessory and a random wing\n5 random pre-mech weapons\n10 of 5 Random Buff Potions\n1 Mech bosses and QueenSlime\nHardmode anvil and forge\nGood Luck!");
-        }
         public override void SetDefaults()
         {
             Item.width = 54;
@@ -165,7 +162,8 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
             }
-            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            player.QuickSpawnItem(entitySource,ItemID.LifeCrystal, 5);
+            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 int RandomModdedBuff = Main.rand.Next(new int[] {
                     ModContent.ItemType<BerserkerElixir>(),
@@ -174,9 +172,6 @@ namespace BossRush.Contents.Items.Chest
                     ModContent.ItemType<CommanderElixir>(),
                     ModContent.ItemType<TitanElixir>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
-            }
-            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
-            {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenArtifact>(), 1);
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<ArtifactRemover>(), 1);
             }
