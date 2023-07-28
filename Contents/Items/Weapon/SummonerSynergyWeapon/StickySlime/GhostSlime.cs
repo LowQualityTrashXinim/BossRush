@@ -45,7 +45,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
             GeneralBehavior(player, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
             SearchForTargets(player, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
             Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-            AttackStyle0(player, foundTarget, targetCenter, distanceFromTarget);
+            AttackStyle0(foundTarget, targetCenter, distanceFromTarget);
             SelectFrame();
             Projectile.rotation = Projectile.velocity.X * 0.05f;
         }
@@ -77,7 +77,10 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
             {
                 Projectile other = Main.projectile[i];
 
-                if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
+                if (i != Projectile.whoAmI 
+                    && other.active 
+                    && other.owner == Projectile.owner 
+                    && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
                 {
                     if (Projectile.position.X < other.position.X)
                     {
@@ -110,45 +113,39 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
             // This code is required if your minion weapon has the targeting feature
             if (owner.HasMinionAttackTargetNPC)
             {
-                NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-                float between = Vector2.Distance(npc.Center, owner.Center);
+                NPC npc1 = Main.npc[owner.MinionAttackTargetNPC];
+                float between = Vector2.Distance(npc1.Center, owner.Center);
 
                 if (between < 2000f)
                 {
                     distanceFromTarget = between;
-                    targetCenter = npc.Center;
+                    targetCenter = npc1.Center;
                     foundTarget = true;
                 }
+                return;
             }
-
-            if (!foundTarget)
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, distanceFromTarget))
             {
-                for (int i = 0; i < Main.maxNPCs; i++)
+                if (npc.CanBeChasedBy())
                 {
-                    NPC npc = Main.npc[i];
+                    float between = Vector2.Distance(npc.Center, owner.Center);
+                    bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
+                    bool inRange = between < distanceFromTarget;
+                    bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
 
-                    if (npc.CanBeChasedBy())
+                    bool closeThroughWall = between < 100f;
+
+                    if ((closest && inRange || !foundTarget) && (lineOfSight || closeThroughWall))
                     {
-                        float between = Vector2.Distance(npc.Center, owner.Center);
-                        bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-                        bool inRange = between < distanceFromTarget;
-                        bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-
-                        bool closeThroughWall = between < 100f;
-
-                        if ((closest && inRange || !foundTarget) && (lineOfSight || closeThroughWall))
-                        {
-                            distanceFromTarget = between;
-                            targetCenter = npc.Center;
-                            foundTarget = true;
-                        }
+                        distanceFromTarget = between;
+                        targetCenter = npc.Center;
+                        foundTarget = true;
                     }
                 }
             }
             Projectile.friendly = foundTarget;
         }
-
-        private void AttackStyle0(Player player, bool foundTarget, Vector2 TargetCenter, float distanceToTarget)
+        private void AttackStyle0(bool foundTarget, Vector2 TargetCenter, float distanceToTarget)
         {
             if (foundTarget && distanceToTarget >= 350f)
             {
@@ -158,11 +155,10 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
                     Projectile.ai[0] = 0;
                     Projectile.netUpdate = true;
                     Vector2 AimTo = (TargetCenter - Projectile.Center).SafeNormalize(Vector2.UnitX) * 10f;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, AimTo, ModContent.ProjectileType<GooP>(), Projectile.damage, 0, player.whoAmI);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, AimTo, ModContent.ProjectileType<GooP>(), Projectile.damage, 0, Projectile.owner);
                 }
             }
         }
-
         private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
         {
             // Default movement parameters (here for attacking)
@@ -183,16 +179,13 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
             }
             else
             {
-                // Minion doesn't have a target: return to player and idle
                 if (distanceToIdlePosition > 600f)
                 {
-                    // Speed up the minion if it's away from the player
                     speed = 12f;
                     inertia = 60f;
                 }
                 else
                 {
-                    // Slow down the minion if closer to the player
                     speed = 4f;
                     inertia = 80f;
                 }
@@ -208,13 +201,11 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
                 }
                 else if (Projectile.velocity == Vector2.Zero)
                 {
-                    // If there is a case where it's not moving at all, give it a little "poke"
                     Projectile.velocity.X = -0.15f;
                     Projectile.velocity.Y = -0.05f;
                 }
             }
         }
-
         private bool CheckActive(Player owner)
         {
             if (owner.dead || !owner.active)
@@ -230,7 +221,6 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime
             }
             return true;
         }
-
         public void SelectFrame()
         {
             if (++Projectile.frameCounter >= 6)

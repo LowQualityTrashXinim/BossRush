@@ -79,9 +79,9 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
-            if (Main.rand.NextFloat() < .05f * PostTierModify || (hasMagicDeck && Main.rand.NextFloat() < .25f * PostTierModify))
+            if (Main.rand.NextFloat() < .05f * PostTierModify || (hasMagicDeck && Main.rand.NextFloat() < .20f * PostTierModify))
             {
-                if (Main.rand.NextBool(10) || (hasMagicDeck && Main.rand.NextBool(3)))
+                if (Main.rand.NextBool(10) || (hasMagicDeck && Main.rand.NextBool(5)))
                 {
                     CursedID = 0;
                 }
