@@ -7,6 +7,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.Enraged;
 
 namespace BossRush.Contents.Items.Spawner
 {
@@ -32,7 +33,7 @@ namespace BossRush.Contents.Items.Spawner
         {
             if (player.whoAmI == Main.myPlayer)
             {
-                player.GetModPlayer<ModdedPlayer>().Enraged = true;
+                player.GetModPlayer<EnragedPlayer>().Enraged = true;
                 SoundEngine.PlaySound(SoundID.Roar, player.position);
                 int type = BossToSpawn;
                 if (Main.netMode != NetmodeID.MultiplayerClient)

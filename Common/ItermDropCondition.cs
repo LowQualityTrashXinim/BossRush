@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Contents.Items.Artifact;
+using BossRush.Common.Enraged;
 
 namespace BossRush.Common
 {
@@ -64,7 +65,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return (info.player.GetModPlayer<ModdedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
+                return (info.player.GetModPlayer<EnragedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
             }
             return false;
         }

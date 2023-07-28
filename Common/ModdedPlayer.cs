@@ -23,8 +23,6 @@ namespace BossRush.Common
 {
     class ModdedPlayer : ModPlayer
     {
-        //Enraged boss
-        public bool Enraged = false;
         //NoHiter
         public int gitGud = 0;
         public int HowManyBossIsAlive = 0;
@@ -82,58 +80,6 @@ namespace BossRush.Common
                     BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
                     GodAreEnraged = false;
                 }
-            }
-            if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
-            {
-                return;
-            }
-            EnragedBoss();
-        }
-        private void EnragedBoss()
-        {
-            //Enraged here
-            if (NPC.AnyNPCs(NPCID.MoonLordCore))
-            {
-                Player.AddBuff(ModContent.BuffType<MoonLordWrath>(), 5);
-                Player.AddBuff(BuffID.PotionSickness, 5);
-            }
-            if (NPC.AnyNPCs(NPCID.KingSlime))
-            {
-                Player.AddBuff(BuffID.Slimed, 5);
-                Player.AddBuff(ModContent.BuffType<KingSlimeRage>(), 5);
-            }
-            if (NPC.AnyNPCs(NPCID.EyeofCthulhu))
-            {
-                Player.AddBuff(BuffID.Blackout, 5);
-                Player.AddBuff(BuffID.Darkness, 5);
-                Player.AddBuff(ModContent.BuffType<EvilPresence>(), 5);
-            }
-            if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
-            {
-                Player.AddBuff(ModContent.BuffType<MindBreak>(), 5);
-            }
-            if (
-                (NPC.AnyNPCs(NPCID.EaterofWorldsHead)
-                || NPC.AnyNPCs(NPCID.EaterofWorldsBody)
-                || NPC.AnyNPCs(NPCID.EaterofWorldsTail)))
-            {
-                if (Player.ZoneOverworldHeight)
-                {
-                    Player.AddBuff(BuffID.CursedInferno, 120);
-                    Player.AddBuff(ModContent.BuffType<Rotting>(), 5);
-                }
-            }
-            if (NPC.AnyNPCs(NPCID.QueenBee))
-            {
-                if (Player.ZoneJungle)
-                {
-                    Player.AddBuff(BuffID.Poisoned, 90);
-                }
-                Player.AddBuff(ModContent.BuffType<RoyalAntiEscapeTm>(), 5);
-            }
-            if (!BossRushUtils.IsAnyVanillaBossAlive())
-            {
-                Enraged = false;
             }
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
@@ -261,17 +207,6 @@ namespace BossRush.Common
                 }
             }
         }
-        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
-        {
-            if (!ModContent.GetInstance<BossRushModConfig>().Enraged && !Enraged)
-            {
-                return;
-            }
-            if (NPC.AnyNPCs(NPCID.BrainofCthulhu) && Enraged)
-            {
-                Player.AddBuff(BuffID.PotionSickness, 240);
-            }
-        }
 
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
@@ -375,7 +310,6 @@ namespace BossRush.Common
             {
                 Player.QuickSpawnItem(null, ItemID.CelestialSigil);
             }
-            Enraged = false;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

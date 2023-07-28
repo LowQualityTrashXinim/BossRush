@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(34, 54, 11, 7f, 5, 25, ItemUseStyleID.Shoot, true);
+            Item.BossRushSetDefault(34, 54, 14, 7f, 12, 12, ItemUseStyleID.Shoot, true);
             Item.reuseDelay = 30;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.sellPrice(0, 5);
@@ -28,7 +28,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         {
             base.HoldSynergyItem(player, modplayer);
         }
-        int typechooser = 0;
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             position = position.PositionOFFSET(velocity, 30);

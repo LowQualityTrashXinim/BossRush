@@ -11,7 +11,7 @@ namespace BossRush.Common.Enraged
     {
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
-            if (!spawnInfo.Player.GetModPlayer<ModdedPlayer>().Enraged && !ModContent.GetInstance<BossRushModConfig>().Enraged)
+            if (!spawnInfo.Player.GetModPlayer<EnragedPlayer>().Enraged && !ModContent.GetInstance<BossRushModConfig>().Enraged)
             {
                 return;
             }
@@ -90,8 +90,7 @@ namespace BossRush.Common.Enraged
 
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
-            ModdedPlayer modplayer = player.GetModPlayer<ModdedPlayer>();
-            if (modplayer.Enraged && !ModContent.GetInstance<BossRushModConfig>().Enraged)
+            if (player.GetModPlayer<EnragedPlayer>().Enraged && !ModContent.GetInstance<BossRushModConfig>().Enraged)
             {
                 return;
             }
@@ -128,7 +127,7 @@ namespace BossRush.Common.Enraged
 
         public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
-            if (!target.GetModPlayer<ModdedPlayer>().Enraged)
+            if (!target.GetModPlayer<EnragedPlayer>().Enraged)
             {
                 return;
             }
