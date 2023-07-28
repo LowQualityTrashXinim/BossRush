@@ -355,7 +355,7 @@ namespace BossRush.Contents.Items.Chest
             {
                 return;
             }
-            if (player.IsDebugPlayer() && player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
+            if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
             {
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
             }

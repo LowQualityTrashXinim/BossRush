@@ -35,9 +35,9 @@ namespace BossRush.Common
         }
         public override void OnEnterWorld()
         {
-            Main.NewText("Currently the mod are extremely incompleted in hardmode and there are a lot of feature being implemented are not yet completed in Pre Hardmode");
+            Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will feel lacking a lot");
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
-            Main.NewText("So sorry for the inconvenience");
+            Main.NewText("So sorry for the inconvenience", Color.Blue);
             if (Main.netMode == NetmodeID.MultiplayerClient || Player.IsDebugPlayer())
             {
                 return;

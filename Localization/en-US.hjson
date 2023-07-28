@@ -290,7 +290,7 @@ Mods: {
 			}
 
 			Deagle: {
-				Tooltip: "Surprisingly accurate when standing still"
+				Tooltip: Surprisingly accurate when standing still
 				DisplayName: Deagle
 			}
 
