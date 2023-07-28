@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
 {
@@ -23,90 +22,60 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye
             Projectile.timeLeft = 500;
             Projectile.penetrate = -1;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
-            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
         }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 3;
         }
-
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
             Projectile.ai[0] += 1f;
-            if (Projectile.ai[0] > 30)
+            if (Projectile.ai[0] < 30)
             {
-                Projectile.netUpdate = true;
-                float distance = 1500;
-
-                NPC closestNPC = FindClosestNPC(distance);
-                if (closestNPC == null)
-                {
-                    Projectile.velocity.Y += 0.3f;
-                }
-                else
-                {
-                    Projectile.velocity += (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 7;
-                    if (Projectile.timeLeft % 50 == 0)
-                    {
-                        Projectile.velocity = (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 20;
-                    }
-                    if (Projectile.velocity.X > 40)
-                    {
-                        Projectile.velocity.X = 40;
-                    }
-                    else if (Projectile.velocity.X < -40)
-                    {
-                        Projectile.velocity.X = -40;
-                    }
-                    if (Projectile.velocity.Y > 40)
-                    {
-                        Projectile.velocity.Y = 40;
-                    }
-                    else if (Projectile.velocity.Y < -40)
-                    {
-                        Projectile.velocity.Y = -40;
-                    }
-                }
+                return;
             }
-        }
-
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-            for (int k = 0; k < Main.maxNPCs; k++)
+            Projectile.netUpdate = true;
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, 1500))
             {
-                NPC target = Main.npc[k];
-                if (target.CanBeChasedBy())
+                Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 7;
+                if (Projectile.timeLeft % 50 == 0)
                 {
-                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    // Check if it is within the radius
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-
+                    Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 20;
                 }
+                if (Projectile.velocity.X > 40)
+                {
+                    Projectile.velocity.X = 40;
+                }
+                else if (Projectile.velocity.X < -40)
+                {
+                    Projectile.velocity.X = -40;
+                }
+                if (Projectile.velocity.Y > 40)
+                {
+                    Projectile.velocity.Y = 40;
+                }
+                else if (Projectile.velocity.Y < -40)
+                {
+                    Projectile.velocity.Y = -40;
+                }
+                return;
             }
-            return closestNPC;
-        }
+            Projectile.velocity.Y += 0.3f;
 
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Projectile[ModContent.ProjectileType<PhantasmalEyeAfterImage>()].Value;
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<PhantasmalEye>("PhantasmalEyeAfterImage")).Value;
 
             Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             for (int k = 0; k < Projectile.oldPos.Length; k++)
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, origin, Projectile.scale - k * 0.1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.oldRot[k], origin, Projectile.scale - k * 0.1f, SpriteEffects.None, 0);
             }
             return true;
         }
