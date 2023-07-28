@@ -8,7 +8,8 @@ namespace BossRush.Contents.Items.Artifact
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultToConsume(32, 32);
+            Item.BossRushSetDefault(32, 32, 0,0,10,10,ItemUseStyleID.HoldUp, false);
+            Item.material = true;
             Item.rare = 9;
         }
     }

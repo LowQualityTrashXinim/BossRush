@@ -49,7 +49,7 @@ namespace BossRush.Contents.Items.Chest
             }
             if (Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ArtifactPlayerHandleLogic.ArtifactDefaultID)
             {
-                TooltipLine line = new TooltipLine(Mod, "ArtifactBlock", "You must consume at least 1 artifact to open the chest");
+                TooltipLine line = new TooltipLine(Mod, "ArtifactBlock", "You must uses at least 1 artifact to open the chest");
                 line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { Color.DarkRed, Color.Red }, 10);
                 tooltips.Add(line);
             }

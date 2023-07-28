@@ -35,6 +35,9 @@ namespace BossRush.Common
         }
         public override void OnEnterWorld()
         {
+            Main.NewText("Currently the mod are extremely incompleted in hardmode and there are a lot of feature being implemented are not yet completed in Pre Hardmode");
+            Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
+            Main.NewText("So sorry for the inconvenience");
             if (Main.netMode == NetmodeID.MultiplayerClient || Player.IsDebugPlayer())
             {
                 return;
@@ -154,6 +157,8 @@ namespace BossRush.Common
             List<Item> items = new List<Item>() {
             new Item(ModContent.ItemType<WoodenLootBox>()),
             new Item(ModContent.ItemType<LunchBox>()),
+            new Item(ItemID.Safe),
+            new Item(ItemID.MoneyTrough)
             };
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
@@ -218,6 +223,11 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<NormalizeArtifact>()));
                 items.Add(new Item(ModContent.ItemType<CardPacket>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
+            }
+            if(Player.IsDebugPlayer())
+            {
+                items.Add(new Item(ModContent.ItemType<ModStatsDebugger>()));
+                items.Add(new Item(ModContent.ItemType<ShowPlayerStats>()));
             }
             return items;
         }

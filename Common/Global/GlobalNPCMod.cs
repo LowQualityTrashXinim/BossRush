@@ -172,7 +172,6 @@ namespace BossRush.Common.Global
                 npcLoot.Add(ExpertVSnormal);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrystalTreasureChest>()));
-                npcLoot.Add(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<SynergyEnergy>()));
             }
 
             if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime)

@@ -21,7 +21,7 @@ namespace BossRush.Contents.BuffAndDebuff
             player.statLifeMax2 += 400;
             player.statDefense += 25;
 
-            player.GetDamage(DamageClass.Generic) *= 0.45f;
+            player.GetDamage(DamageClass.Generic) *= 0.65f;
 
             player.moveSpeed *= 0.5f;
             player.maxRunSpeed = 0.5f;
