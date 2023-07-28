@@ -13,6 +13,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Tile_Entities;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -37,6 +38,12 @@ namespace BossRush.Contents.Items.Card
         {
             PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
             ModifyCardToolTip(ref tooltips, modplayer);
+            if(Tier > 0)
+            {
+                tooltips.Add(new TooltipLine(Mod, "HelpfulText", "Use the card to get bonus stats" +
+                    "\nCard maybe faulty, faulty card give you bad stats and have chance to give you curses" +
+                    "\nCard's bonus will be reset upon death beside curses"));
+            }
         }
         private string StatNumberAsText(PlayerStats stat, float number)
         {
