@@ -236,12 +236,12 @@ namespace BossRush.Contents.Items.Card
                     default:
                         break;
                 }
-                Color textcolor = Color.White;
+                Color textcolor = Color.Green;
                 if (CardStatsNumber[i] < 0)
                 {
                     textcolor = Color.Red;
                 }
-                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offsetPos, 180);
+                BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offsetPos, 110 + 10 * PostTierModify);
             }
             if (CursedID != -1)
             {
@@ -432,40 +432,40 @@ namespace BossRush.Contents.Items.Card
             switch (curseID)
             {
                 case 1:
-                    CursedString = "Weapon have decrease fire rate";
+                    CursedString = "Weapon have decreased fire rate";
                     break;
                 case 2:
-                    CursedString = "You can't heal using potion";
+                    CursedString = "You can no longer heal using health potion";
                     break;
                 case 3:
-                    CursedString = "Decrease weapon damage severely";
+                    CursedString = "Weapon deal significantly less damage";
                     break;
                 case 4:
                     CursedString = "Getting hit is much more fatal";
                     break;
                 case 5:
-                    CursedString = "You can't regenarate mana nor hp";
+                    CursedString = "You can't regenerate mana nor hp";
                     break;
                 case 6:
                     CursedString = "You always lose life leaving you with 1 hp left";
                     break;
                 case 7:
-                    CursedString = "Your lost some immunity frame";
+                    CursedString = "Your immunity frame have been reduced";
                     break;
                 case 8:
-                    CursedString = "Your weapon will jammed if you use the same weapon too much";
+                    CursedString = "Your weapon will be jammed if you use the same weapon too much";
                     break;
                 case 9:
-                    CursedString = "Your weapon use your life to work";
+                    CursedString = "Your weapon cost life to work";
                     break;
                 case 10:
-                    CursedString = "Damage have been ramdomize to be worse";
+                    CursedString = "Damage has been ramdomized to be worse";
                     break;
                 case 11:
-                    CursedString = "Critical damage deal next to no damage";
+                    CursedString = "Critical hits deal next to no damage";
                     break;
                 case 12:
-                    CursedString = "Cards stats is reduce by half";
+                    CursedString = "Cards stats are halved";
                     break;
                 default:
                     CursedString = "Error ! You shouldn't be getting this tho unless you done something horribly wrong";

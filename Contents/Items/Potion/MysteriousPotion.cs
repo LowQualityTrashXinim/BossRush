@@ -81,7 +81,7 @@ namespace BossRush.Contents.Items.Potion
             }
             for (int i = 0; i < modplayer.Stats.Count; i++)
             {
-                Color textcolor = Color.White;
+                Color textcolor = Color.Green;
                 if (modplayer.StatsMulti[i] < 0)
                 {
                     textcolor = Color.Red;

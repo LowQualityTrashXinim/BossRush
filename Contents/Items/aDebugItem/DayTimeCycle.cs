@@ -17,14 +17,7 @@ namespace BossRush.Contents.Items.aDebugItem
         }
         public override bool? UseItem(Player player)
         {
-            if (!Main.dayTime)
-            {
-                Main.time = Main.nightLength;
-            }
-            else
-            {
-                Main.time = Main.dayLength;
-            }
+            Main.time = Main.dayTime ? Main.dayLength : Main.nightLength;
             return false;
         }
     }
