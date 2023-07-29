@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
 {
-    internal class MoonStarBow : ModItem
+    internal class MoonStarBow : SynergyModItem
     {
         public override void SetDefaults()
         {
@@ -44,7 +44,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
                 .Register();
         }
     }
-    class MoonStarProjectile : ModProjectile
+    class MoonStarProjectile : SynergyModProjectile
     {
         public override void SetDefaults()
         {
@@ -142,7 +142,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
             }
         }
     }
-    class MoonStarProjectileSmaller : ModProjectile
+    class MoonStarProjectileSmaller : SynergyModProjectile
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAs<MoonStarBow>("MoonStarProjectile");
         public override void SetDefaults()

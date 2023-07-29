@@ -2,10 +2,11 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.FuryEmblem
 {
-    class FuryEmblem : ModItem
+    class FuryEmblem : SynergyModItem
     {
         public override void SetDefaults()
         {

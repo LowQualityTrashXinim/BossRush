@@ -59,14 +59,5 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.SnowballRifle
         {
             return new Vector2(-8, 2);
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-            .AddIngredient(ItemID.Minishark)
-            .AddIngredient(ItemID.SnowballCannon)
-            .Register();
-
-        }
     }
 }

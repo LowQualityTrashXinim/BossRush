@@ -247,7 +247,11 @@ Mods: {
 			}
 
 			KnifeRevolver: {
-				Tooltip: Self defense at it finest
+				Tooltip:
+					'''
+					"Self defense at it finest"
+					Right click to use do spear attack
+					'''
 				DisplayName: Knife Revolver
 			}
 
@@ -765,14 +769,14 @@ Mods: {
 				Tooltip:
 					'''
 					"Protected by the Earth"
-					Increases your max hp by 100% with additional 100 max hp
-					Getting hit will make you unable to use your weapon for 5s
+					Positive effect : Increases your max hp by 100% with additional 100 max hp
+					Negative effect : Getting hit will make you unable to use your weapon for 5s
 					'''
 			}
 
 			RandomArtifactChooser: {
 				DisplayName: Random Artifact Chooser
-				Tooltip: Randomly choose 1 of artifact
+				Tooltip: Randomly choose 1 of any artifact
 			}
 
 			BootOfSpeedManipulation: {
@@ -781,7 +785,7 @@ Mods: {
 					'''
 					"Run like how you want"
 					Positive effect : Increase your movement capacity massively
-					Negative effect : You can't fly with wing
+					Negative effect : You can't fly with wing and randomize your damage when moving
 					'''
 			}
 
@@ -1342,12 +1346,20 @@ Mods: {
 
 			MysteriousPotion: {
 				DisplayName: Mysterious Potion
-				Tooltip: What it do is a complete mystery...
+				Tooltip:
+					'''
+					"What it do is a complete mystery..."
+					Drink the potion to gain randomize buff, only 1 buff can active
+					'''
 			}
 
 			Resolve: {
 				DisplayName: Resolve
-				Tooltip: ""
+				Tooltip:
+					'''
+					"It is hard to decide, what should be the shape of the weapon here"
+					Every 15 shots will shoot out 4 of the same projectile in a arch
+					'''
 			}
 
 			Zenish: {

@@ -23,13 +23,13 @@ namespace BossRush.Contents.Items.aDebugItem
                 Curses += $"{{{cardplayer.CursedStringStats(curses)}}}\n";
             }
             TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
-                "The below are card stats"+
+                "The below are card's bonus stats"+
                 $"\nMelee Damage : {cardplayer.MeleeDMG}" +
                 $"\nRange Damage : {cardplayer.RangeDMG}" +
                 $"\nMagic Damage : {cardplayer.MagicDMG}" +
                 $"\nSummon Damage : {cardplayer.SummonDMG}" +
                 $"\nPure/Generic Damage : {cardplayer.DamagePure}" +
-                $"\nCrit chance : {cardplayer.MeleeDMG}" +
+                $"\nCrit chance : {cardplayer.CritStrikeChance}" +
                 $"\nCrit damage : {cardplayer.CritDamage}" +
                 $"\nMax HP : {cardplayer.HPMax}" +
                 $"\nMax Mana : {cardplayer.ManaMax}" +

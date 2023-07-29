@@ -63,14 +63,5 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.SnowballShotgunCannon
         {
             return new Vector2(-20, 2);
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-            .AddIngredient(ItemID.Boomstick)
-            .AddIngredient(ItemID.SnowballCannon)
-            .Register();
-
-        }
     }
 }

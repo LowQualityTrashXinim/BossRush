@@ -15,15 +15,15 @@ namespace BossRush.Contents.Items.Artifact
 
         public override void SetStaticDefaults()
         {
-            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 7));
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 14));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
         public override void SetDefaults()
         {
             Item.useTime = 10;
             Item.useAnimation = 10;
-            Item.width = 60;
-            Item.height = 73;
+            Item.width = 46;
+            Item.height = 54;
             Item.rare = ItemRarityID.Cyan;
             Item.useStyle = ItemUseStyleID.HoldUp;
         }

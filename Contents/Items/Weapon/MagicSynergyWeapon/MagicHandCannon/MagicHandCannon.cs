@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 {
-    internal class MagicHandCannon : ModItem
+    internal class MagicHandCannon : SynergyModItem
     {
         public override void SetDefaults()
         {

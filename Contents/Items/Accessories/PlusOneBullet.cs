@@ -3,10 +3,11 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories
 {
-    internal class PlusOneBullet : ModItem
+    internal class PlusOneBullet : SynergyModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
@@ -23,13 +24,12 @@ namespace BossRush.Contents.Items.Accessories
             modplayer.ProjectileAmountModify += 1;
             modplayer.SpreadModify += .35f;
         }
-        //public override void AddRecipes()
-        //{
-        //    CreateRecipe()
-        //        .AddIngredient(ItemID.Minishark)
-        //        .AddIngredient(ItemID.CloudinaBottle)
-        //        .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-        //        .Register();
-        //}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Minishark)
+                .AddIngredient(ItemID.WhiteString)
+                .Register();
+        }
     }
 }

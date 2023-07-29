@@ -7,10 +7,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
 {
     internal class SingleBarrelMinishark : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("so, basically a more accurate and stronger minishark ? isn't that just megashark");
-        }
         public override void SetDefaults()
         {
             Item.damage = 30;

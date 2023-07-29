@@ -8,11 +8,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
 {
     internal class HuntingRifle : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("meant for killing small bird");
-        }
-
         public override void SetDefaults()
         {
             Item.width = 76;

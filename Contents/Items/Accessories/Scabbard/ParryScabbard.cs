@@ -4,10 +4,11 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard
 {
-    internal class ParryScabbard : ModItem
+    internal class ParryScabbard : SynergyModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void ModifyTooltips(List<TooltipLine> tooltips)

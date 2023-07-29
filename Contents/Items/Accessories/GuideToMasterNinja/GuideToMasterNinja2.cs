@@ -3,10 +3,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja
 {
-    internal class GuideToMasterNinja2 : ModItem
+    internal class GuideToMasterNinja2 : SynergyModItem
     {
         public override void SetDefaults()
         {

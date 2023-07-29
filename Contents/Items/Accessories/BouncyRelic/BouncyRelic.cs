@@ -3,10 +3,11 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.BouncyRelic
 {
-    internal class BouncyRelic : ModItem
+    internal class BouncyRelic : SynergyModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()

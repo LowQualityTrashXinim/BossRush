@@ -12,8 +12,8 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(34, 54, 14, 7f, 12, 12, ItemUseStyleID.Shoot, true);
-            Item.reuseDelay = 30;
+            Item.BossRushSetDefault(34, 54, 16, 7f, 20, 20, ItemUseStyleID.Shoot, false);
+            Item.crit = 15;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.sellPrice(0, 5);
             Item.noMelee = true;
@@ -36,15 +36,20 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
                 damage *= 2;
             velocity = velocity.NextVector2RotatedByRandom(5);
         }
+        int counter = 0;
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            if(type == ModContent.ProjectileType<ResolveProjectile>())
+            counter++;
+            if (counter >= 15)
             {
-                int projAmount = 3;
+                int projAmount = 4;
                 for (int i = 0; i < projAmount; i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(projAmount, 30, i), type, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(projAmount, 40, i), type, damage, knockback, player.whoAmI);
                 }
+                counter = 0;
+                CanShootItem = false;
+                return;
             }
             CanShootItem = true;
         }
@@ -126,6 +131,9 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
             Main.dust[dust].noGravity = true;
             Projectile.alpha = (int)MathHelper.Lerp(0, 255, (180 - Projectile.timeLeft) / 180f);
+            Projectile.ai[0]++;
+            if (Projectile.ai[0] <= 20)
+                return;
             if (Projectile.Center.LookForHostileNPC(out NPC npc, 600))
             {
                 Vector2 distance = npc.Center - Projectile.Center;

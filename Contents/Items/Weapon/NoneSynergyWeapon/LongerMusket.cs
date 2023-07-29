@@ -7,11 +7,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
 {
     internal class LongerMusket : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("some may think just because you improvise the barrel of the gun by making it longer make it better\nwell they are damn right");
-        }
-
         public override void SetDefaults()
         {
             Item.width = 80;

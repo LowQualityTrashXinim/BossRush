@@ -18,12 +18,5 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Gunmerang
         {
             return new Vector2(-2, 1);
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.WoodenBoomerang)
-                .AddIngredient(ItemID.FlintlockPistol)
-                .Register();
-        }
     }
 }

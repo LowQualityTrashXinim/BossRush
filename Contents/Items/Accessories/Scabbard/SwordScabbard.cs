@@ -4,10 +4,11 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard
 {
-    internal class SwordScabbard : ModItem
+    internal class SwordScabbard : SynergyModItem
     {
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

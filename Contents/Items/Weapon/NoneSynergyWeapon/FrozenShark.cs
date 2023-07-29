@@ -27,12 +27,5 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
         {
             return new Vector2(-2f, -3f);
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.Minishark)
-                .AddIngredient(ItemID.IceBlade)
-                .Register();
-        }
     }
 }

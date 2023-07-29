@@ -533,14 +533,14 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
+            if (BootofSpeed)
+                if (Player.velocity.IsLimitReached(5))
+                    damage *= Main.rand.NextFloat(.3f, 1f);
             if (Greed)
-            {
                 damage *= .65f;
-            }
             if (Pride)
-            {
                 damage += .45f;
-            }
+
         }
         int vampirecountRange = 0;
         private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1)

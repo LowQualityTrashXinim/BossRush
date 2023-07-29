@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.Crystal
 {
-    class NatureCrystal : ModItem
+    class NatureCrystal : SynergyModItem
     {
         public override void SetDefaults()
         {

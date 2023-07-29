@@ -32,7 +32,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
         {
             Player player = Main.player[Projectile.owner];
             Projectile.Center = player.Center;
-            int duration = player.itemAnimationMax;
+            int duration = (int)(player.itemAnimationMax * .5f);
             DrawOffsetX = -30;
             player.heldProj = Projectile.whoAmI;
 
@@ -63,7 +63,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
             Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
             SpriteEffects sprite = player.direction != 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Main.EntitySpriteDraw(texture, drawPos, null, Color.White, Projectile.rotation, origin, Projectile.scale, sprite, 0);
+            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, sprite, 0);
             return false;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

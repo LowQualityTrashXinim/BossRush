@@ -38,7 +38,7 @@ namespace BossRush.Contents.Items.Card
         {
             PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
             ModifyCardToolTip(ref tooltips, modplayer);
-            if(Tier > 0)
+            if (Tier > 0)
             {
                 tooltips.Add(new TooltipLine(Mod, "HelpfulText", "Use the card to get bonus stats" +
                     "\nCard maybe faulty, faulty card give you bad stats and have chance to give you curses" +
@@ -538,21 +538,21 @@ namespace BossRush.Contents.Items.Card
         {
             if (item.DamageType == DamageClass.Melee)
             {
-                damage.Base = Math.Clamp(MeleeDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(MeleeDMG + damage.Base, 1, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Ranged)
             {
-                damage.Base = Math.Clamp(RangeDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(RangeDMG + damage.Base, 1, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Magic)
             {
-                damage.Base = Math.Clamp(MagicDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(MagicDMG + damage.Base, 1, maxStatCanBeAchieved);
             }
             if (item.DamageType == DamageClass.Summon)
             {
-                damage.Base = Math.Clamp(SummonDMG + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
+                damage.Base = Math.Clamp(SummonDMG + damage.Base, 1, maxStatCanBeAchieved);
             }
-            damage.Base = Math.Clamp(DamagePure + damage.Base, -damage.Base + .1f, maxStatCanBeAchieved);
+            damage.Base = Math.Clamp(DamagePure + damage.Base, 1, maxStatCanBeAchieved);
             if (SluggishDamage)
             {
                 damage *= .5f;
@@ -579,8 +579,8 @@ namespace BossRush.Contents.Items.Card
             health = StatModifier.Default;
             mana = StatModifier.Default;
 
-            health.Base = Math.Clamp(HPMax + health.Base, -Player.statLifeMax + 100, maxStatCanBeAchieved);
-            mana.Base = Math.Clamp(ManaMax + mana.Base, -Player.statManaMax + 20, maxStatCanBeAchieved);
+            health.Base = Math.Clamp(HPMax + health.Base, -100, maxStatCanBeAchieved);
+            mana.Base = Math.Clamp(ManaMax + mana.Base, -20, maxStatCanBeAchieved);
         }
         public override void PostUpdate()
         {
