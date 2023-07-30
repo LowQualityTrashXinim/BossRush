@@ -305,6 +305,8 @@ namespace BossRush.Contents.Items.Card
                     modplayer.ListIsChange = true;
                 }
             }
+            CardStats.Clear();
+            CardStatsNumber.Clear();
             modplayer.CardTracker++;
             return true;
         }
