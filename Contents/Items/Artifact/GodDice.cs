@@ -135,15 +135,15 @@ namespace BossRush.Contents.Items.Artifact
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)BossRush.MessageType.GambleAddiction);
             packet.Write((byte)Player.whoAmI);
-            packet.Write((byte)GambleDamage);
-            packet.Write((byte)GambleDef);
-            packet.Write((byte)GambleSpeed);
-            packet.Write((byte)GambleHP);
-            packet.Write((byte)GambleLifeRegen);
-            packet.Write((byte)GambleMana);
-            packet.Write((byte)GambleManaRegen);
-            packet.Write((byte)GambleMinionSlot);
-            packet.Write((byte)GambleCrit);
+            packet.Write(GambleDamage);
+            packet.Write(GambleDef);
+            packet.Write(GambleSpeed);
+            packet.Write(GambleHP);
+            packet.Write(GambleLifeRegen);
+            packet.Write(GambleMana);
+            packet.Write(GambleManaRegen);
+            packet.Write(GambleMinionSlot);
+            packet.Write(GambleCrit);
             packet.Send(toWho, fromWho);
         }
         public override void SaveData(TagCompound tag)

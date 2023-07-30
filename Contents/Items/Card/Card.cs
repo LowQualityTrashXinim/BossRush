@@ -14,6 +14,7 @@ using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Tile_Entities;
+using System.Linq;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -92,7 +93,7 @@ namespace BossRush.Contents.Items.Card
                 {
                     CursedID = 0;
                 }
-                PlayerStats badstat = BossRushUtils.SetStatsToAddBaseOnTier(CardStats, PostTierModify);
+                PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
                 CardStats.Add(badstat);
                 CardStatsNumber.Add(statsCalculator(badstat, -3));
             }
@@ -137,6 +138,53 @@ namespace BossRush.Contents.Items.Card
                     return (statsNum + Main.rand.Next(1, 10)) * PostTierModify * multi * .01f;
             }
         }
+        public static PlayerStats SetStatsToAddBaseOnTier(List<PlayerStats> CardStats, int Tier)
+        {
+            List<PlayerStats> stats = new List<PlayerStats>();
+            if (Tier >= 4)
+            {
+                //list.Add(PlayerStats.Luck);
+            }
+            if (Tier >= 3)
+            {
+                stats.Add(PlayerStats.MaxSentry);
+                stats.Add(PlayerStats.MaxMinion);
+                stats.Add(PlayerStats.ChestLootDropIncrease);
+            }
+            if (Tier >= 2)
+            {
+                stats.Add(PlayerStats.Thorn);
+                stats.Add(PlayerStats.DefenseEffectiveness);
+                stats.Add(PlayerStats.CritDamage);
+                stats.Add(PlayerStats.CritChance);
+                stats.Add(PlayerStats.DamageUniverse);
+            }
+            if (Tier >= 1)
+            {
+                stats.Add(PlayerStats.Defense);
+                stats.Add(PlayerStats.RegenMana);
+                stats.Add(PlayerStats.MaxMana);
+                stats.Add(PlayerStats.RegenHP);
+                stats.Add(PlayerStats.MaxHP);
+                stats.Add(PlayerStats.MovementSpeed);
+                stats.Add(PlayerStats.JumpBoost);
+                stats.Add(PlayerStats.SummonDMG);
+                stats.Add(PlayerStats.MagicDMG);
+                stats.Add(PlayerStats.RangeDMG);
+                stats.Add(PlayerStats.MeleeDMG);
+            }
+            if (CardStats.Count > 0 && CardStats.Count != stats.Count)
+            {
+                foreach (var item in CardStats)
+                {
+                    if (stats.Contains(item))
+                    {
+                        stats.Remove(item);
+                    }
+                }
+            }
+            return Main.rand.Next(stats);
+        }
         /// <summary>
         /// 1 = Copper<br/>
         /// 2 = Silver<br/>
@@ -163,7 +211,7 @@ namespace BossRush.Contents.Items.Card
                 offset++;
             for (int i = offset; i < PostTierModify + offset; i++)
             {
-                CardStats.Add(BossRushUtils.SetStatsToAddBaseOnTier(CardStats, PostTierModify));
+                CardStats.Add(SetStatsToAddBaseOnTier(CardStats, PostTierModify));
                 CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
             }
             OnTierItemSpawn();
@@ -254,6 +302,7 @@ namespace BossRush.Contents.Items.Card
                     }
                     modplayer.listCursesID.Add(CursedID);
                     BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
+                    modplayer.ListIsChange = true;
                 }
             }
             modplayer.CardTracker++;
@@ -359,6 +408,7 @@ namespace BossRush.Contents.Items.Card
         public const float ReducePositiveCardStatByHalf = .5f;
         public bool AccessoriesDisable = false; // Will be implement much later
         public List<int> listCursesID = new List<int>();
+        public bool ListIsChange = false;
         //We handle no dupe curses in here
         public override void PreUpdate()
         {
@@ -444,7 +494,7 @@ namespace BossRush.Contents.Items.Card
                     CursedString = "Getting hit is much more fatal";
                     break;
                 case 5:
-                    CursedString = "You can't regenerate mana nor hp";
+                    CursedString = "Your wounds and your magic refuse to regenerate on their own...;";
                     break;
                 case 6:
                     CursedString = "You always lose life leaving you with 1 hp left";
@@ -453,7 +503,7 @@ namespace BossRush.Contents.Items.Card
                     CursedString = "Your immunity frame have been reduced";
                     break;
                 case 8:
-                    CursedString = "Your weapon will be jammed if you use the same weapon too much";
+                    CursedString = "Your weapons temporarily stop working after too much use...";
                     break;
                 case 9:
                     CursedString = "Your weapon cost life to work";
@@ -468,7 +518,7 @@ namespace BossRush.Contents.Items.Card
                     CursedString = "Cards stats are halved";
                     break;
                 default:
-                    CursedString = "Error ! You shouldn't be getting this tho unless you done something horribly wrong";
+                    CursedString = "Error ! You shouldn't be getting this unless you done something horribly wrong";
                     break;
             }
             return CursedString;
@@ -660,13 +710,11 @@ namespace BossRush.Contents.Items.Card
             ManaMax = 0;
             ManaRegen = 0;
             DefenseBase = 0;
-            //Silver Tier
             DamagePure = 0;
             CritStrikeChance = 0;
             Thorn = 0;
             CritDamage = 1;
             DefenseEffectiveness = 1;
-            //Gold
             DropAmountIncrease = 0;
             MinionSlot = 0;
             SentrySlot = 0;
@@ -684,13 +732,11 @@ namespace BossRush.Contents.Items.Card
             ManaMax = 0;
             ManaRegen = 0;
             DefenseBase = 0;
-            //Silver Tier
             DamagePure = 0;
             CritStrikeChance = 0;
             Thorn = 0;
             CritDamage = 1;
             DefenseEffectiveness = 1;
-            //Gold
             DropAmountIncrease = 0;
             MinionSlot = 0;
             SentrySlot = 0;
@@ -720,10 +766,9 @@ namespace BossRush.Contents.Items.Card
             packet.Write(SentrySlot);
             packet.Write(Thorn);
             packet.Write(CardTracker);
+            packet.Write(listCursesID.Count);
             foreach (int item in listCursesID)
-            {
                 packet.Write(item);
-            }
             packet.Send(toWho, fromWho);
         }
         public override void SaveData(TagCompound tag)
@@ -748,7 +793,7 @@ namespace BossRush.Contents.Items.Card
             tag["SentrySlot"] = SentrySlot;
             tag["Thorn"] = Thorn;
             tag["CardTracker"] = CardTracker;
-            tag["CursesID"] = listCursesID;
+            tag.Add("CursesID", listCursesID);
         }
         public override void LoadData(TagCompound tag)
         {
@@ -796,10 +841,10 @@ namespace BossRush.Contents.Items.Card
             SentrySlot = reader.ReadInt32();
             Thorn = reader.ReadSingle();
             CardTracker = reader.ReadInt32();
-            for (int i = 0; i < listCursesID.Count; i++)
-            {
-                listCursesID[i] = reader.ReadByte();
-            }
+            listCursesID.Clear();
+            int count = reader.ReadInt32();
+            for (int i = 0; i < count; i++)
+                listCursesID.Add(reader.ReadInt32());
         }
         public override void CopyClientState(ModPlayer targetCopy)
         {
@@ -829,27 +874,31 @@ namespace BossRush.Contents.Items.Card
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             PlayerCardHandle clone = (PlayerCardHandle)clientPlayer;
-            if (MeleeDMG != clone.MeleeDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (RangeDMG != clone.RangeDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (MagicDMG != clone.MagicDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (SummonDMG != clone.SummonDMG) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (Movement != clone.Movement) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (JumpBoost != clone.JumpBoost) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (HPMax != clone.HPMax) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (HPRegen != clone.HPRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (ManaMax != clone.ManaMax) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (ManaRegen != clone.ManaRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (DefenseBase != clone.DefenseBase) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (DamagePure != clone.DamagePure) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (CritStrikeChance != clone.CritStrikeChance) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (CritDamage != clone.CritDamage) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (DefenseEffectiveness != clone.DefenseEffectiveness) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (DropAmountIncrease != clone.DropAmountIncrease) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (MinionSlot != clone.MinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (SentrySlot != clone.SentrySlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (Thorn != clone.Thorn) SyncPlayer(-1, Main.myPlayer, false);
-            if (CardTracker != clone.CardTracker) SyncPlayer(-1, Main.myPlayer, false);
-            if (listCursesID != clone.listCursesID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (MeleeDMG != clone.MeleeDMG 
+                || RangeDMG != clone.RangeDMG
+                || MagicDMG != clone.MagicDMG
+                || SummonDMG != clone.SummonDMG
+                || Movement != clone.Movement
+                || JumpBoost != clone.JumpBoost
+                || HPMax != clone.HPMax
+                || HPRegen != clone.HPRegen
+                || ManaMax != clone.ManaMax
+                || ManaRegen != clone.ManaRegen
+                || DefenseBase != clone.DefenseBase
+                || DamagePure != clone.DamagePure
+                || CritStrikeChance != clone.CritStrikeChance
+                || CritDamage != clone.CritDamage
+                || DefenseEffectiveness != clone.DefenseEffectiveness
+                || DropAmountIncrease != clone.DropAmountIncrease
+                || MinionSlot != clone.MinionSlot
+                || SentrySlot != clone.SentrySlot
+                || Thorn != clone.Thorn
+                || CardTracker != clone.CardTracker
+                || ListIsChange)
+            {
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+                ListIsChange = false;
+            }
         }
     }
     class CardNPCdrop : GlobalNPC

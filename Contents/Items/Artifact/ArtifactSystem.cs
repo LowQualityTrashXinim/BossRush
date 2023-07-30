@@ -236,6 +236,7 @@ namespace BossRush.Contents.Items.Artifact
         private void FateDeciderEffect()
         {
             if (Player.dead && !Player.active)
+            if (Player.dead || !Player.active)
             {
                 return;
             }

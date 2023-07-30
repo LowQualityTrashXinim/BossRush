@@ -7,7 +7,6 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.Items.NohitReward
 {
@@ -43,6 +42,7 @@ namespace BossRush.Contents.Items.NohitReward
                 player.HealEffect(HP);
             }
             player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Add(Data);
+            player.GetModPlayer<NoHitPlayerHandle>().ListIsChange = true;
             return true;
         }
         public override bool CanUseItem(Player player)
@@ -122,6 +122,7 @@ namespace BossRush.Contents.Items.NohitReward
     public class NoHitPlayerHandle : ModPlayer
     {
         public List<int> BossNoHitNumber;
+        public bool ListIsChange = false;
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             health = StatModifier.Default;
@@ -137,18 +138,17 @@ namespace BossRush.Contents.Items.NohitReward
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)BossRush.MessageType.NoHitBossNum);
             packet.Write((byte)Player.whoAmI);
-            foreach (int BossNum in BossNoHitNumber)
-            {
-                packet.Write(BossNum);
-            }
+            packet.Write(BossNoHitNumber.Count);
+            foreach (int item in BossNoHitNumber)
+                packet.Write(item);
             packet.Send(toWho, fromWho);
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
-            for (int i = 0; i < BossNoHitNumber.Count; i++)
-            {
-                BossNoHitNumber[i] = reader.ReadByte();
-            }
+            BossNoHitNumber.Clear();
+            int count = reader.ReadInt32();
+            for (int i = 0; i < count; i++)
+                BossNoHitNumber.Add(reader.ReadInt32());
         }
 
         public override void CopyClientState(ModPlayer targetCopy)
@@ -159,8 +159,11 @@ namespace BossRush.Contents.Items.NohitReward
 
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
-            NoHitPlayerHandle clone = (NoHitPlayerHandle)clientPlayer;
-            if (BossNoHitNumber != clone.BossNoHitNumber) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (ListIsChange)
+            {
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+                ListIsChange = false;
+            }
         }
 
         public override void LoadData(TagCompound tag)

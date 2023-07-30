@@ -14,10 +14,10 @@ namespace BossRush.Common.ChallengeMode
         }
         public override void AI(NPC npc)
         {
-            if (npc.type == NPCID.KingSlime)
-            {
-                KingSlimeAI(npc);
-            }
+            //if (npc.type == NPCID.KingSlime)
+            //{
+            //    KingSlimeAI(npc);
+            //}
         }
         private void KingSlimeAI(NPC npc)
         {

@@ -70,7 +70,7 @@ namespace BossRush.Common.Enraged
             {
                 return;
             }
-            if (NPC.AnyNPCs(NPCID.BrainofCthulhu) && Enraged)
+            if (NPC.AnyNPCs(NPCID.BrainofCthulhu))
             {
                 Player.AddBuff(BuffID.PotionSickness, 240);
             }

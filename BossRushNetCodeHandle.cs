@@ -29,7 +29,6 @@ namespace BossRush
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
-            base.HandlePacket(reader, whoAmI);
             MessageType msgType = (MessageType)reader.ReadByte();
             byte playernumber = reader.ReadByte();
             switch (msgType)

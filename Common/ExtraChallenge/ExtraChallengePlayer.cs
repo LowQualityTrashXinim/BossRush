@@ -65,6 +65,10 @@ namespace BossRush.Common.ExtraChallenge
             }
             return true;
         }
+        public override void Initialize()
+        {
+            ChallengeChooser = 0;
+        }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();

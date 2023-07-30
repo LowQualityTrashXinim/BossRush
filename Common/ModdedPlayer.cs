@@ -40,7 +40,7 @@ namespace BossRush.Common
             {
                 return;
             }
-            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(),2);
+            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
             foreach (var item in Player.inventory)
             {
                 if (item.ModItem is SynergyModItem)

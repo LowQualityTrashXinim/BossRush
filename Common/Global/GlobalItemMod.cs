@@ -7,6 +7,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
 namespace BossRush.Common.Global
 {
@@ -112,7 +113,7 @@ namespace BossRush.Common.Global
                 return "When in forest biome :" +
                     "\nIncrease defense by 11" +
                     "\nIncrease movement speed by 25%" +
-                    "\nYour attack have 25% chance to drop down a acorn dealing 10 damage";
+                    "\nYour attack have 25% chance to drop down a acorn dealing 16 damage";
             }
             if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves)
             {
@@ -240,6 +241,11 @@ namespace BossRush.Common.Global
                     modplayer.PalmWoodArmor = true;
                 }
             }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves))
+            {
+                player.statDefense += 12;
+                modplayer.TinArmor = true;
+            }
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
@@ -268,6 +274,7 @@ namespace BossRush.Common.Global
         public bool CactusArmor = false;
         int CactusArmorCD = 0;
         public bool PalmWoodArmor = false;
+        public bool TinArmor = false;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -277,6 +284,7 @@ namespace BossRush.Common.Global
             EbonWoodArmor = false;
             CactusArmor = false;
             PalmWoodArmor = false;
+            TinArmor = true;
         }
         public override void PreUpdate()
         {
@@ -300,12 +308,37 @@ namespace BossRush.Common.Global
                     }
             }
         }
+        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            base.ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
+            if (TinArmor)
+                if (item.type == ItemID.TinBow && Main.rand.NextBool(5))
+                {
+                    type = ModContent.ProjectileType<TopazBolt>();
+                }
+        }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if(item.type == ItemID.WaspGun && !NPC.downedPlantBoss)
+            if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss)
             {
                 damage *= .5f;
             }
+            if (TinArmor)
+                switch (item.type)
+                {
+                    case ItemID.TinBow:
+                        damage += .5f;
+                        break;
+                    case ItemID.TinBroadsword:
+                        damage += .75f;
+                        break;
+                    case ItemID.TinShortsword:
+                        damage += 1.25f;
+                        break;
+                    case ItemID.TopazStaff:
+                        damage += .65f;
+                        break;
+                }
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
@@ -368,8 +401,8 @@ namespace BossRush.Common.Global
                 if (Main.rand.NextBool(4) && (proj is null || (proj is not null && proj.ModProjectile is not AcornProjectile)))
                     Projectile.NewProjectile(Player.GetSource_FromThis(),
                         target.Center - new Vector2(0, 400),
-                        Vector2.UnitY * 5,
-                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+                        Vector2.UnitY * 10,
+                        ModContent.ProjectileType<AcornProjectile>(), 16, 1f, Player.whoAmI);
         }
         private void OnHitNPC_ShadewoodArmor()
         {
