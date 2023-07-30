@@ -70,12 +70,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin
                 Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(chooseRotation));
                 if (!boltFired && player.altFunctionUse != 2)
                 {
-                    for (int i = 1; i < 4; i++)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 5 * Projectile.direction)) * 18, ProjectileID.BoneJavelin, Projectile.damage, 5);
-
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 12 * Projectile.direction)) * 10 * i, ProjectileID.AmberBolt, Projectile.damage, 5);
-                    }
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 10f, ProjectileID.AmberBolt, Projectile.damage, 5);
                     boltFired = true;
                 }
             }

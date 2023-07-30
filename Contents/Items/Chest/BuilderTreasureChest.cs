@@ -25,6 +25,11 @@ namespace BossRush.Contents.Items.Chest
             player.QuickSpawnItem(entitySource, ItemID.Torch, 999);
             player.QuickSpawnItem(entitySource,ModContent.ItemType<ArenaMaker>());
             player.QuickSpawnItem(entitySource, ModContent.ItemType<SuperBuilderTool>());
+            player.QuickSpawnItem(entitySource, ItemID.SteampunkChest,6);
+            player.QuickSpawnItem(entitySource, ItemID.StardustChest);
+            player.QuickSpawnItem(entitySource, ItemID.VortexChest);
+            player.QuickSpawnItem(entitySource, ItemID.SolarChest);
+            player.QuickSpawnItem(entitySource, ItemID.NebulaChest);
         }
     }
 }
