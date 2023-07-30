@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Common.Utils;
+using BossRush.Contents.Items.BuilderItem;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -89,6 +90,8 @@ namespace BossRush.Contents.Items.Chest
             player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystalStand);
             player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
             player.QuickSpawnItem(entitySource, ModContent.ItemType<PocketPortal>());
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<NeoDynamite>());
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<TowerDestruction>());
         }
     }
 }

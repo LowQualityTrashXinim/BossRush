@@ -162,7 +162,6 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
             }
-            player.QuickSpawnItem(entitySource,ItemID.LifeCrystal, 5);
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 int RandomModdedBuff = Main.rand.Next(new int[] {

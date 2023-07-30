@@ -109,17 +109,13 @@ namespace BossRush.Common
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 items.Add(new Item(ItemID.ManaCrystal, 5));
-                items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
                 items.Add(new Item(ModContent.ItemType<DayTimeCycle>()));
                 items.Add(new Item(ModContent.ItemType<CursedSkull>()));
                 items.Add(new Item(ModContent.ItemType<BiomeToggle>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                if (Main.rand.NextBool(10))
-                {
-                    items.Add(new Item(ModContent.ItemType<WonderDrug>()));
-                }
+                items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }

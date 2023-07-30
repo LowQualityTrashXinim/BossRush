@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.IO;
+﻿using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.YouLikeToHurtYourself
@@ -29,7 +24,7 @@ namespace BossRush.Common.YouLikeToHurtYourself
                     return false;
                 return true;
             }
-            return true;
+            return base.CanWorldBePlayed(playerData, worldFileData);
         }
     }
 }

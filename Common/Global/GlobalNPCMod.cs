@@ -20,12 +20,12 @@ namespace BossRush.Common.Global
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
+            int lifecrystal = 1;
+            int manacrystal = 1;
             LeadingConditionRule ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
             LeadingConditionRule noHit = new LeadingConditionRule(new GitGudMode());
             LeadingConditionRule DropOnce = new LeadingConditionRule(new IsPlayerAlreadyHaveASpawner());
             LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
-            IsABoss.OnSuccess(ItemDropRule.Common(ItemID.LifeCrystal));
-            IsABoss.OnSuccess(ItemDropRule.Common(ItemID.ManaCrystal));
             if (npc.type == NPCID.KingSlime)
             {
                 //NoHit mode drop
@@ -69,6 +69,8 @@ namespace BossRush.Common.Global
                 //Expert mode drop
                 IsABoss.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<CorruptionLootBox>()));
                 //normal drop
+                lifecrystal += 2;
+                manacrystal += 2;
                 IsABoss.OnSuccess(ItemDropRule.Common(ItemID.DeerThing));
                 IsABoss.OnSuccess(ItemDropRule.Common(ItemID.Abeemination));
                 IsABoss.OnSuccess(ItemDropRule.Common(ItemID.GoblinBattleStandard));
@@ -83,6 +85,8 @@ namespace BossRush.Common.Global
                 npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
+                lifecrystal += 2;
+                manacrystal += 2;
                 npcLoot.Add(ItemDropRule.Common(ItemID.DeerThing));
                 npcLoot.Add(ItemDropRule.Common(ItemID.Abeemination));
                 npcLoot.Add(ItemDropRule.Common(ItemID.GoblinBattleStandard));
@@ -144,6 +148,7 @@ namespace BossRush.Common.Global
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));
                 npcLoot.Add(ExpertVSnormal);
+                lifecrystal += 5;
                 npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalEye));
                 npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalWorm));
                 npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalSkull));
@@ -276,6 +281,8 @@ namespace BossRush.Common.Global
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
             }
+            IsABoss.OnSuccess(ItemDropRule.Common(ItemID.LifeCrystal, 1,lifecrystal, lifecrystal));
+            IsABoss.OnSuccess(ItemDropRule.Common(ItemID.ManaCrystal, 1,manacrystal, manacrystal));
             npcLoot.Add(IsABoss);
         }
         public override void SetDefaults(NPC npc)
