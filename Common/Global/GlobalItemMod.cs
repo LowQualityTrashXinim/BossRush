@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,7 +7,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Common.Global
 {
@@ -79,7 +79,6 @@ namespace BossRush.Common.Global
             base.SetDefaults(entity);
             if (entity.type == ItemID.Sandgun)
             {
-                entity.damage = (int)(entity.damage * .45f);
                 entity.shoot = ModContent.ProjectileType<SandProjectile>();
             }
         }
@@ -111,56 +110,101 @@ namespace BossRush.Common.Global
             if (type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves)
             {
                 return "When in forest biome :" +
-                    "\nIncrease defense by 11" +
-                    "\nIncrease movement speed by 25%" +
-                    "\nYour attack have 25% chance to drop down a acorn dealing 16 damage";
+                       "\nIncrease defense by 11" +
+                       "\nIncrease movement speed by 25%" +
+                       "\nYour attack have 25% chance to drop down a acorn dealing 10 damage";
             }
             if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves)
             {
                 return "When in snow biome :" +
-                    "\nIncrease defense by 13" +
-                    "\nIncrease movement speed by 20%" +
-                    "\nYou are immune to Chilled" +
-                    "\nYour attack have 10% chance to inflict frost burn for 10 second";
+                       "\nIncrease defense by 13" +
+                       "\nIncrease movement speed by 20%" +
+                       "\nYou are immune to Chilled" +
+                       "\nYour attack have 10% chance to inflict frost burn for 10 second";
             }
             if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves)
             {
                 return "When in jungle biome :" +
-                    "\nIncrease defense by 12" +
-                    "\nIncrease movement speed by 30%" +
-                    "\nGetting hit release sharp leaf around you that deal 12 damage";
+                       "\nIncrease defense by 12" +
+                       "\nIncrease movement speed by 30%" +
+                       "\nGetting hit release sharp leaf around you that deal 12 damage";
             }
             if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves)
             {
                 return "When in crimson biome :" +
-                    "\nIncrease defense by 17" +
-                    "\nIncrease movement speed by 15%" +
-                    "\nIncrease critical strike chance by 5" +
-                    "\nIncrease life regen by 1" +
-                    "\nWhenever you strike a enemy :" +
-                    "\nA ring of crimson burst out that deal fixed 10 damage and heal you for each enemy hit and debuff them with ichor";
+                       "\nIncrease defense by 17" +
+                       "\nIncrease movement speed by 15%" +
+                       "\nIncrease critical strike chance by 5" +
+                       "\nIncrease life regen by 1" +
+                       "\nWhenever you strike a enemy :" +
+                       "\nA ring of crimson burst out that deal fixed 10 damage and heal you for each enemy hit and debuff them with ichor";
             }
             if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves)
             {
                 return "When in corruption biome :" +
-                    "\nIncrease defense by 6" +
-                    "\nIncrease movement speed by 35%" +
-                    "\nIncrease damage by 5%" +
-                    "\nYou leave a trail of corruption that deal 15 damage and inflict cursed inferno";
+                       "\nIncrease defense by 6" +
+                       "\nIncrease movement speed by 35%" +
+                       "\nIncrease damage by 5%" +
+                       "\nYou leave a trail of corruption that deal 15 damage and inflict cursed inferno";
             }
             if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings)
             {
                 return "Increase defenses by 10" +
-                    "\nWhen in desert biome :" +
-                    "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
-                    "\nGetting hit will shoot out 8 cactus spike that is friendly deal 15 damage";
+                       "\nWhen in desert biome :" +
+                       "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
+                       "\nGetting hit will shoot out 8 cactus spike that is friendly deal 15 damage";
             }
             if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves)
             {
                 return "When in desert or ocean biome :" +
-                    "\nIncrease defense by 16" +
-                    "\nIncrease movement speed by 17%" +
-                    "\nJumping will leave a trail of sand that deal 12 damage";
+                       "\nIncrease defense by 16" +
+                       "\nIncrease movement speed by 17%" +
+                       "\nJumping will leave a trail of sand that deal 12 damage";
+            }
+            if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings)
+            {
+                return "When in overworld :" +
+                       "\nPerma Major Well Fed" +
+                       "\nhitting enemies has 25% to inflict pumpkin overdose" + 
+                       "\ninflicting the same debuff to an enemy who already has it " +
+                       "\ncauses an explosion, dealing 5 + 5% of damage dealt" +
+                       "\nWhile below 20% HP, you gain 5x health regen";
+            }
+            if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves)
+            {
+                return "When in underworld :" +
+                       "\nIncrease defense by 16" +
+                       "\nIncrease damage by 10%" +
+                       "\ngetting hit fires a burst of flames at the attacker, dealing 5 - 15 damage" +
+                       "\nall attacks inflicts On Fire! for 5 seconds" +
+                       "\nGain Increased Life Regen";
+            }
+            if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves)
+            {
+                return "Increase Damage by 7.5%" +
+                       "\nIncrease movement speed by 15%" +
+                       "\nevery 50 hit (25 if on surface while its raining) against an enemy grants you the OverCharged Buff." +
+                       "\nOverCharged: Gain Ultra-High Movement speed and Increase damage by 10%";
+            }
+            if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves)
+            {
+                return "+2.5% damage reduction, Increase Defense Effectivness by 1.1x and Increase damage by 15% " +              
+                       "\n-5% Movement Speed and acceleration speed" +
+                       "\nWhile under 50% HP, Gain 15 Bonus Defense, But -10% Less Attack Speed";
+            }
+            if (type == ItemID.SilverHelmet || type == ItemID.SilverChainmail || type == ItemID.SilverGreaves)
+            {
+                return "gain 25% more defense during day" +
+                       "\ngain plus 5% total damage dealt during night" +
+                       "\nat full HP, these effects are 2x more effective and gain an additional 25 defense" +
+                       "\nIncrease life regen by 20% (vital crystal effect)";
+                      
+            }
+            if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves)
+            {
+                return "attacks against enemies inflicted with the midas debuff take additional damage based on their defense" +
+                       "\n(lower defense enemies take bonus damage, up to 25% damage dealt at 0 defense)" +
+                       "\nwhen dealing damage to an enemy below 35% max HP, they get inflicted with the midas debuff for 6 seconds ";
             }
             return "";
         }
@@ -241,10 +285,90 @@ namespace BossRush.Common.Global
                     modplayer.PalmWoodArmor = true;
                 }
             }
-            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves))
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PumpkinHelmet, ItemID.PumpkinBreastplate, ItemID.PumpkinLeggings))
             {
-                player.statDefense += 12;
-                modplayer.TinArmor = true;
+
+                if(player.ZoneOverworldHeight)
+                {
+
+                    modplayer.Player.AddBuff(BuffID.WellFed3, 2);
+                    modplayer.pumpkinArmor = true;
+
+                }
+                
+                
+            }
+            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.AshWoodHelmet,ItemID.AshWoodBreastplate, ItemID.AshWoodGreaves))
+            {
+
+                if(player.ZoneUnderworldHeight)
+                {
+
+                    player.statDefense += 16;
+                    player.GetDamage(DamageClass.Generic) += .1f;
+                    modplayer.ashWoodArmor = true;
+
+                }
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves))
+            {
+
+                player.moveSpeed += 0.15f;
+                player.GetDamage(DamageClass.Generic) += 0.075f;
+                modplayer.copperArmor = true;
+
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves))
+            {
+
+                player.moveSpeed -= 0.05f;
+                player.endurance += 0.05f;
+                player.DefenseEffectiveness *= 1.1f;
+                player.GetDamage(DamageClass.Generic) += 0.05f;
+
+                if(player.statLife <= player.statLifeMax * 0.25f)
+                {
+                    player.statDefense += 15;
+                    player.GetAttackSpeed(DamageClass.Generic) -= 0.10f;
+
+                }
+                modplayer.ironArmor = true;
+
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves))
+            {
+
+                player.GetArmorPenetration(DamageClass.Generic) += 5;
+                player.GetDamage(DamageClass.Generic).Flat += 5;
+
+                bool fullHP = player.statLife >= player.statLifeMax2;
+                
+                if(Main.dayTime)
+                {
+
+                    player.statDefense *= fullHP == true ? 1.5f : 1.25f;
+
+
+                } else
+                {
+
+                    player.GetDamage(DamageClass.Generic) *= fullHP == true ? 1.1f : 1.05f;
+
+                }
+
+                if (fullHP)
+                    player.statDefense += 25;
+
+                modplayer.silverArmor = true;
+
+            }
+
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.GoldHelmet, ItemID.GoldChainmail, ItemID.GoldGreaves))
+            {
+
+
+                modplayer.goldArmor = true;
+
             }
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
@@ -274,7 +398,14 @@ namespace BossRush.Common.Global
         public bool CactusArmor = false;
         int CactusArmorCD = 0;
         public bool PalmWoodArmor = false;
-        public bool TinArmor = false;
+        public bool pumpkinArmor = false;
+        public bool ashWoodArmor = false;
+        public bool copperArmor = false;
+        int copperArmorChargeCounter = 0;
+        public bool ironArmor = false;
+        public bool silverArmor = false;
+        public bool goldArmor = false;
+
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -284,8 +415,13 @@ namespace BossRush.Common.Global
             EbonWoodArmor = false;
             CactusArmor = false;
             PalmWoodArmor = false;
-            TinArmor = true;
-        }
+            pumpkinArmor = false;
+            ashWoodArmor = false;
+            copperArmor = false;
+            ironArmor = false;
+            silverArmor = false;
+            goldArmor = false;
+    }
         public override void PreUpdate()
         {
             base.PreUpdate();
@@ -308,47 +444,27 @@ namespace BossRush.Common.Global
                     }
             }
         }
-        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            base.ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
-            if (TinArmor)
-                if (item.type == ItemID.TinBow && Main.rand.NextBool(5))
-                {
-                    type = ModContent.ProjectileType<TopazBolt>();
-                }
-        }
-        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
-        {
-            if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss)
-            {
-                damage *= .5f;
-            }
-            if (TinArmor)
-                switch (item.type)
-                {
-                    case ItemID.TinBow:
-                        damage += .5f;
-                        break;
-                    case ItemID.TinBroadsword:
-                        damage += .75f;
-                        break;
-                    case ItemID.TinShortsword:
-                        damage += 1.25f;
-                        break;
-                    case ItemID.TopazStaff:
-                        damage += .65f;
-                        break;
-                }
-        }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
             OnHitEffect_RichMahoganyArmor(proj);
             OnHitEffect_CactusArmor(proj);
+            OnHitEffect_AshWoodArmor(proj);
+            OnHitEffect_CopperArmor();
         }
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
             OnHitEffect_RichMahoganyArmor(npc);
             OnHitEffect_CactusArmor(npc);
+            OnHitEffect_AshWoodArmor(npc);
+            OnHitEffect_CopperArmor();
+        }
+        private void OnHitEffect_AshWoodArmor(Entity entity)
+        {
+            if (ashWoodArmor)
+            {
+                int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, (entity.Center - Player.Center).SafeNormalize(Vector2.UnitX) * 10, ProjectileID.Flames, Main.rand.Next(5, 15), 1f, Player.whoAmI);
+                Main.projectile[proj].penetrate = -1;
+            }
         }
         private void OnHitEffect_RichMahoganyArmor(Entity entity)
         {
@@ -383,17 +499,31 @@ namespace BossRush.Common.Global
                 }
             }
         }
+        private void OnHitEffect_CopperArmor()
+        {
+            if(copperArmor)
+                copperArmorChargeCounter = 0;
+
+        }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             OnHitNPC_ShadewoodArmor();
             OnHitNPC_BorealWoodArmor(target);
             OnHitNPC_WoodArmor(target, proj);
+            OnHitNPC_PumpkinArmor(target, damageDone);
+            OnHitNPC_AshWoodArmor(target, damageDone);
+            OnHitNPC_CopperArmor(target, damageDone);
+            OnHitNPC_GoldArmor(target, damageDone);
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
             OnHitNPC_ShadewoodArmor();
             OnHitNPC_BorealWoodArmor(target);
             OnHitNPC_WoodArmor(target);
+            OnHitNPC_PumpkinArmor(target, damageDone);
+            OnHitNPC_AshWoodArmor(target, damageDone);
+            OnHitNPC_CopperArmor(target, damageDone);
+            OnHitNPC_GoldArmor(target, damageDone);
         }
         private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null)
         {
@@ -401,8 +531,8 @@ namespace BossRush.Common.Global
                 if (Main.rand.NextBool(4) && (proj is null || (proj is not null && proj.ModProjectile is not AcornProjectile)))
                     Projectile.NewProjectile(Player.GetSource_FromThis(),
                         target.Center - new Vector2(0, 400),
-                        Vector2.UnitY * 10,
-                        ModContent.ProjectileType<AcornProjectile>(), 16, 1f, Player.whoAmI);
+                        Vector2.UnitY * 5,
+                        ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
         }
         private void OnHitNPC_ShadewoodArmor()
         {
@@ -430,6 +560,125 @@ namespace BossRush.Common.Global
                 if (Main.rand.NextBool(10))
                     target.AddBuff(BuffID.Frostburn, 600);
         }
+        private void OnHitNPC_PumpkinArmor(NPC npc, float damage)
+        {
+            if (pumpkinArmor && Main.rand.NextBool(3))
+            {
+
+                if (npc.HasBuff(ModContent.BuffType<pumpkinOverdose>()))
+                {
+
+                    int explosionRaduis = 75 + (int)(MathHelper.Clamp(damage, 0, 125));
+                    for (int i = 0; i < 35; i++)
+                    {
+                        Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.Pumpkin);
+                        Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.OrangeTorch);
+
+                    }
+                    npc.Center.LookForHostileNPC(out List<NPC> npclist, explosionRaduis);
+                    foreach (var i in npclist)
+                    {
+                        i.StrikeNPC(i.CalculateHitInfo(5 + (int)(damage * 0.05f), 1, Main.rand.NextBool(40)));
+                    }
+                    Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCDeath46);
+                    npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+                }
+                else npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+            }
+        }
+        private void OnHitNPC_AshWoodArmor(NPC npc, float damage)
+        {
+            if (ashWoodArmor)
+            {
+                //debuff duration scales with damage dealt 
+                npc.AddBuff(BuffID.OnFire,300 + (int)(MathHelper.Clamp(damage / 60,0,300)));
+
+
+            }
+        }
+        private void OnHitNPC_CopperArmor(NPC npc, float damage)
+        {
+            if (copperArmor)
+            {
+
+                if (damage > 2)
+                {
+                    copperArmorChargeCounter++;
+                    if (Player.ZoneRain)
+                        copperArmorChargeCounter++;
+
+                }
+
+
+                if (copperArmorChargeCounter >= 50)
+                {
+                    {
+                        Player.AddBuff(ModContent.BuffType<copperRageMode>(), 60 * 15);
+                        copperArmorChargeCounter = 0;
+
+
+                    }
+
+                }
+            }
+        }
+        private void OnHitNPC_GoldArmor(NPC npc, float damage)
+        {
+            if (goldArmor)
+            {
+
+                if(npc.HasBuff(BuffID.Midas)) {
+
+                    int GoldArmorBonusDamage = (int)(damage * 0.25f) * (10 / 10 * npc.defense);
+                    npc.StrikeNPC(npc.CalculateHitInfo(GoldArmorBonusDamage, 1, false, 1, DamageClass.Generic, true, Player.luck));
+
+                }
+                
+               
+            }
+        }
+        public override void NaturalLifeRegen(ref float regen)
+        {
+            //multiplie
+            regen *= NaturalLifeRegen_pumpkinArmor();
+            regen *= NaturalLifeRegen_CopperArmor();
+
+            //additive
+            regen += NaturalLifeRegen_AshWoodArmor();
+        }
+        private float NaturalLifeRegen_pumpkinArmor()
+        {
+
+            if (Player.statLife <= Player.statLifeMax * 0.20f)
+            {
+
+                return 5;
+
+            }
+            return 1;
+
+        }
+        private float NaturalLifeRegen_AshWoodArmor()
+        {
+            return copperArmor == true ? 2 : 0;
+        }
+        private float NaturalLifeRegen_CopperArmor()
+        {
+            return copperArmor == true ? 1.25f: 1;
+        }
+        public override void UpdateLifeRegen()
+        {
+
+
+
+            //life regen time (vital crystal effect)
+            Player.lifeRegenTime += UpdateLifeRegen_SilverArmor();
+        }
+        private float UpdateLifeRegen_SilverArmor()
+        {
+            return silverArmor == true ? 0.20f : 0;
+        }
+
     }
     public class GlobalItemProjectile : GlobalProjectile
     {
