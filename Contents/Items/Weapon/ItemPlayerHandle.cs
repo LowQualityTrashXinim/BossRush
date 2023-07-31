@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff;
+using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -53,6 +54,11 @@ namespace BossRush.Contents.Items.Weapon
         public bool OvergrownMinishark_PlatinumShortSword = false;
 
         public bool StarLightDistributer_MeteorArmor = false;
+
+        public bool StreetLamp_Firecracker = false;
+        public bool StreetLamp_VampireFrogStaff = false;
+        public int StreetLamp_VampireFrogStaff_HitCounter = 0;
+
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -83,6 +89,10 @@ namespace BossRush.Contents.Items.Weapon
             OvergrownMinishark_PlatinumShortSword = false;
 
             StarLightDistributer_MeteorArmor = false;
+
+            StreetLamp_VampireFrogStaff = false;
+            StreetLamp_Firecracker = false;
+
         }
         int check = 1;
         public override void PostUpdate()
@@ -155,6 +165,7 @@ namespace BossRush.Contents.Items.Weapon
                     Deagle_DaedalusStormBow_coolDown = 600;
                 }
             }
+
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
@@ -187,7 +198,7 @@ namespace BossRush.Contents.Items.Weapon
             base.ModifyTooltips(tooltips);
             ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
             TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
-            line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { new Color(25, 150, 150), Color.White }, 5);
+            line.OverrideColor = BossRushColor.MultiColor(new List<Color> { new Color(25, 150, 150), Color.White }, 5);
             tooltips.Add(line);
         }
         public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
@@ -196,15 +207,6 @@ namespace BossRush.Contents.Items.Weapon
             base.HoldItem(player);
             PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
             HoldSynergyItem(player, modplayer);
-        }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            ModifySynergyShootStats(player,player.GetModPlayer<PlayerSynergyItemHandle>(), ref position, ref velocity, ref type, ref damage, ref knockback);
-        }
-        public virtual void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-
         }
         /// <summary>
         /// You should use this to set condition, the condition must be pre set in <see cref="PlayerSynergyItemHandle"/> and then check condition in here
