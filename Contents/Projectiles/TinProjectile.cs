@@ -32,7 +32,6 @@ namespace BossRush.Contents.Projectiles
                 if (Projectile.velocity.Y < 30)
                     Projectile.velocity.Y++;
             }
-            base.AI();
         }
     }
     class TinBarProjectile : ModProjectile

@@ -90,8 +90,8 @@ namespace BossRush.Contents.Items.Weapon
 
             StarLightDistributer_MeteorArmor = false;
 
-            StreetLamp_VampireFrogStaff = false;
             StreetLamp_Firecracker = false;
+            StreetLamp_VampireFrogStaff = false;
 
         }
         int check = 1;
