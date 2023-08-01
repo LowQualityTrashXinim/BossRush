@@ -36,7 +36,7 @@ namespace BossRush.Common
             Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will feel lacking a lot");
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
             Main.NewText("So sorry for the inconvenience", Color.Blue);
-            if (Main.netMode == NetmodeID.MultiplayerClient || Player.IsDebugPlayer())
+            if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 return;
             }

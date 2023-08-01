@@ -985,6 +985,8 @@ namespace BossRush.Contents.Items.Chest
             if (Main.getGoodWorld)
             {
                 weaponAmount = 2;
+                potionTypeAmount = 1;
+                potionNumAmount = 1;
             }
             if (Main.hardMode)
             {

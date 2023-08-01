@@ -1,27 +1,17 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime;
-using BossRush.Texture;
-using rail;
-using static Humanizer.In;
-using System.Drawing.Text;
-using System.Collections.Specialized;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 {
     public class StreetLamp : SynergyModItem
     {
-
-
         int lampY = -64;
-
         public override void SetDefaults()
         {
             Item.BossRushSetDefault(128, 128, 28, 5, 32, 32, ItemUseStyleID.HoldUp, true);
@@ -30,9 +20,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             Item.mana = 15;
             Item.noMelee = true;
             Item.holdStyle = ItemHoldStyleID.HoldUp;
-            Item.color= Color.White;
-            
-
+            Item.color = Color.White;
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -41,13 +29,6 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            base.HoldSynergyItem(player, modplayer);
-
-
-            //add light 
-            Lighting.AddLight(player.Center + new Vector2(0, lampY), 1f, 1f, 1f);
-            Lighting.AddLight(player.Center + new Vector2(0, lampY / 2), 1f, 1f, 0f);
-
             if (player.HasItem(ItemID.VampireFrogStaff))
             {
                 modplayer.StreetLamp_VampireFrogStaff = true;
@@ -56,9 +37,8 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             {
                 modplayer.StreetLamp_Firecracker = true;
             }
-            
-        }
 
+        }
         public override void UseStyle(Player player, Rectangle heldItemFrame)
         {
             LampHold(player);
@@ -67,32 +47,30 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         {
             LampHold(player);
         }
-
         public override void PostUpdate()
         {
             Lighting.AddLight(Item.Center + new Vector2(0, lampY), 1f, 1f, 1f);
-            Lighting.AddLight(Item.Center + new Vector2(0, lampY / 2), 1f, 1f, 0f);
+            Lighting.AddLight(Item.Center + new Vector2(0, lampY * .5f), 1f, 1f, 0f);
         }
 
         // custom hold and use style to fit the theme :D
         private void LampHold(Player player)
         {
-
             player.itemRotation = MathHelper.ToRadians(45 * -player.direction);
             player.itemLocation = player.Center + new Vector2(8 * player.direction, 16);
-
-
         }
 
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
             if (modplayer.StreetLamp_VampireFrogStaff)
             {
-                tooltips.Add(new TooltipLine(Mod, "StreetLamp_VampireFrogStaff", $"[i:{ItemID.VampireFrogStaff}] Moth's Dash Speed Increased By 15%, also every 3 successful moth dash hits, heal the player by 2.5% of dash attack's bonus damage dealt (affected by vanilla's life steal cooldown mechanic)"));
+                tooltips.Add(new TooltipLine(Mod, "StreetLamp_VampireFrogStaff", 
+                    $"[i:{ItemID.VampireFrogStaff}] Moth's dash speed increased by 15%, also every 3 successful moth dash hits, heal player for 2.5% of dash attack's bonus damage dealt"));
             }
             if (modplayer.StreetLamp_Firecracker)
             {
-                tooltips.Add(new TooltipLine(Mod, "StreetLamp_Firecracker", $"[i:{ItemID.FireWhip}] Moth's Dash attacks have 10% chance to deal 2x damage and inflict Hellfire for 5 seconds"));
+                tooltips.Add(new TooltipLine(Mod, "StreetLamp_Firecracker", 
+                    $"[i:{ItemID.FireWhip}] Moth's Dash attacks have 10% chance to deal 2x damage and inflict Hellfire for 5 seconds"));
             }
         }
 
@@ -168,7 +146,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
             Main.projPet[Projectile.type] = true;
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-            
+
 
         }
 
@@ -182,7 +160,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             Projectile.minionSlots = 1;
             Projectile.penetrate = -1;
             Projectile.minion = true;
-            Projectile.usesLocalNPCImmunity= true;
+            Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 30;
         }
 
@@ -210,7 +188,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             }
             //get all the important informations about the target
             getInfos(player, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-            
+
             //the movement, attacks, etc... is here
             behavior(player, vectorToIdlePosition, distanceToIdlePosition, foundTarget, distanceFromTarget, targetCenter, modplayer);
 
@@ -221,11 +199,11 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             if (currentState == State.dashing)
             {
                 Projectile.rotation = Projectile.spriteDirection == 1 ? Projectile.velocity.ToRotation() : Projectile.velocity.ToRotation() - MathHelper.ToRadians(180f);
-                
+
             }
             else
                 Projectile.rotation = Projectile.velocity.X * 0.05f;
-            if(currentState != State.windup)
+            if (currentState != State.windup)
                 Projectile.direction = Projectile.spriteDirection = Projectile.velocity.X > 0f ? 1 : -1;
             else
                 Projectile.direction = Projectile.spriteDirection = targetCenter.X > Projectile.Center.X ? 1 : -1;
@@ -234,17 +212,17 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            
+
             if (currentState == State.dashing)
             {
 
                 //deal more damage if dashing
                 int DashBonusDamage = damageDone * 3;
 
-                if(modplayer.StreetLamp_VampireFrogStaff)
+                if (modplayer.StreetLamp_VampireFrogStaff)
                 {
                     modplayer.StreetLamp_VampireFrogStaff_HitCounter++;
-                    if(modplayer.StreetLamp_VampireFrogStaff_HitCounter >= 3)
+                    if (modplayer.StreetLamp_VampireFrogStaff_HitCounter >= 3)
                     {
                         int SynergyhealAmount = (int)(DashBonusDamage * 0.025f);
                         player.Heal(SynergyhealAmount);
@@ -272,7 +250,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         private void getInfos(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter)
         {
 
-            Vector2 idlePosition = owner.Center + new Vector2(0,-80);
+            Vector2 idlePosition = owner.Center + new Vector2(0, -80);
             vectorToIdlePosition = idlePosition - Projectile.Center;
             distanceToIdlePosition = vectorToIdlePosition.Length();
 
@@ -313,7 +291,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
                         float between = Vector2.Distance(npc.Center, owner.Center);
                         bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
                         bool inRange = between < distanceFromTarget;
-                        
+
 
                         if ((closest && inRange || !foundTarget))
                         {
@@ -324,7 +302,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
                     }
                 }
             }
-            
+
         }
 
         public void behavior(Player owner, Vector2 vectorToIdlePosition, float distanceToIdlePosition, bool foundTarget, float distanceFromTarget, Vector2 targetCenter, PlayerSynergyItemHandle modplayer)
@@ -360,7 +338,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             }
 
             //machine state juice
-            switch(currentState, attackable)
+            switch (currentState, attackable)
             {
 
                 case (State.followOwner, false):
@@ -401,35 +379,35 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 
                     if (distanceToIdlePosition > 600f)
                     {
-                        
+
                         speed = 12f;
                         inertia = 10f;
                     }
                     else
                     {
-                        
+
                         speed = 4f;
                         inertia = 20f;
                     }
 
                     if (distanceToIdlePosition > 20f)
                     {
-                        
+
                         vectorToIdlePosition.Normalize();
                         vectorToIdlePosition *= speed;
                         Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
                     }
                     else if (Projectile.velocity == Vector2.Zero)
                     {
-  
+
                         Projectile.velocity.X = -0.15f;
                         Projectile.velocity.Y = -0.05f;
                     }
-                    
+
                     break;
 
                 //ready, set, GO!
-                case (State.followOwner, true): 
+                case (State.followOwner, true):
                     windingUp = baseWindUpDuration;
                     state = State.windup;
                     Projectile.velocity.Y = -15;
@@ -450,9 +428,9 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
                             Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch, Main.rand.NextVector2CircularEdge(2, 2));
 
                         }
-                        Projectile.velocity = (((dashAt + new Vector2(Main.rand.Next(-25, 25),Main.rand.Next(-25, 25))) - Projectile.Center).SafeNormalize(Vector2.UnitX) * (speed));
+                        Projectile.velocity = (((dashAt + new Vector2(Main.rand.Next(-25, 25), Main.rand.Next(-25, 25))) - Projectile.Center).SafeNormalize(Vector2.UnitX) * (speed));
                         state = State.dashing;
-                        dashDuration = (int)((Projectile.Center.Distance(dashAt))/(speed)) + baseDashDuration;
+                        dashDuration = (int)((Projectile.Center.Distance(dashAt)) / (speed)) + baseDashDuration;
                         Projectile.ResetLocalNPCHitImmunity();
                     }
 
@@ -460,17 +438,17 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
                     break;
 
                 case (State.dashing, true):
-                   
+
                     dashDuration--;
-                    if(dashDuration <= 0)
+                    if (dashDuration <= 0)
                     {
                         attackCooldown = 20;
                         state = State.miss;
                     }
                     break;
-                
 
-                case(State.hit, false || true):
+
+                case (State.hit, false || true):
 
                     dashDuration = 0;
                     Projectile.velocity *= 0.75f;
@@ -491,11 +469,12 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         }
 
         //renames for easier readabilty
-        public int windingUp { 
-            
-            
+        public int windingUp
+        {
+
+
             get => (int)Projectile.ai[0];
-            set => Projectile.ai[0] = value; 
+            set => Projectile.ai[0] = value;
 
         }
 
@@ -572,4 +551,3 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 }
 
 
-  
