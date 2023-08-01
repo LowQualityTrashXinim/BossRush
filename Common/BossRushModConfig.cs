@@ -21,7 +21,7 @@ namespace BossRush.Common
 
         [ReloadRequired]
         [DefaultValue(false)]
-        public bool YouLikeToHurtYourself { get; set; }
+        public bool Nightmare { get; set; }
 
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }

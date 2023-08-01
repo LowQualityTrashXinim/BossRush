@@ -119,7 +119,7 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)//gitgudlol
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol
             {
                 items.Add(new Item(ItemID.RedPotion, 10));
             }

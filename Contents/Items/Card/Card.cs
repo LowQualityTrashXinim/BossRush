@@ -129,13 +129,13 @@ namespace BossRush.Contents.Items.Card
                 case 1:
                     return statsNum * multi * .01f;
                 case 2:
-                    return (statsNum + Main.rand.Next(1, 3) + .01f) * PostTierModify * multi * .01f;
+                    return (statsNum + Main.rand.Next(1, 3) + 1) * PostTierModify * multi * .01f;
                 case 3:
-                    return (statsNum + Main.rand.Next(2, 5) + .01f) * PostTierModify * multi * .01f;
+                    return (statsNum + Main.rand.Next(2, 5) + 1) * PostTierModify * multi * .01f;
                 case 4:
-                    return (statsNum + Main.rand.Next(4, 7) + .01f) * PostTierModify * multi * .01f;
+                    return (statsNum + Main.rand.Next(4, 7) + 1) * PostTierModify * multi * .01f;
                 default:
-                    return (statsNum + Main.rand.Next(1, 10)) * PostTierModify * multi * .01f;
+                    return (statsNum + Main.rand.Next(7) + Main.rand.Next(1, 11)) * PostTierModify * multi * .01f;
             }
         }
         public static PlayerStats SetStatsToAddBaseOnTier(List<PlayerStats> CardStats, int Tier)
@@ -209,7 +209,8 @@ namespace BossRush.Contents.Items.Card
             int offset = 0;
             if (CardStats.Count > 0)
                 offset++;
-            for (int i = offset; i < PostTierModify + offset; i++)
+            int cardlength = Math.Clamp(PostTierModify + offset, 0, 19);
+            for (int i = offset; i < cardlength; i++)
             {
                 CardStats.Add(SetStatsToAddBaseOnTier(CardStats, PostTierModify));
                 CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
@@ -876,7 +877,7 @@ namespace BossRush.Contents.Items.Card
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             PlayerCardHandle clone = (PlayerCardHandle)clientPlayer;
-            if (MeleeDMG != clone.MeleeDMG 
+            if (MeleeDMG != clone.MeleeDMG
                 || RangeDMG != clone.RangeDMG
                 || MagicDMG != clone.MagicDMG
                 || SummonDMG != clone.SummonDMG

@@ -29,7 +29,7 @@ namespace BossRush.Common.ChallengeMode
         }
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && !Main.getGoodWorld)
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare && !Main.getGoodWorld)
             {
                 Main.getGoodWorld = true;
             }

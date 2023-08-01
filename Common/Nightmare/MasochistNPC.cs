@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Common.YouLikeToHurtYourself
 {
@@ -20,7 +21,7 @@ namespace BossRush.Common.YouLikeToHurtYourself
         }
         public override void SetDefaults(NPC npc)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && PlayerNameContain("Masochist"))
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare && PlayerNameContain("Masochist"))
             {
                 if (npc.boss && npc.type == NPCID.EyeofCthulhu)
                 {
@@ -42,13 +43,17 @@ namespace BossRush.Common.YouLikeToHurtYourself
                 npc.knockBackResist *= .5f;
                 npc.trapImmune = true;
                 npc.lavaImmune = true;
-                npc.damage += Main.rand.Next(npc.damage + 1);
-                npc.lifeMax += Main.rand.Next(npc.lifeMax + 1);
             }
+        }
+        public override void OnSpawn(NPC npc, IEntitySource source)
+        {
+            npc.damage += Main.rand.Next(npc.damage + 1);
+            npc.lifeMax += Main.rand.Next(npc.lifeMax + 1);
+            npc.life = npc.lifeMax;
         }
         public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
                 return;
             }
@@ -97,7 +102,7 @@ namespace BossRush.Common.YouLikeToHurtYourself
         }
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
                 maxSpawns += 100;
                 spawnRate -= 10;

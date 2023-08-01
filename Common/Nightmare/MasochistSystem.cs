@@ -7,7 +7,7 @@ namespace BossRush.Common.YouLikeToHurtYourself
     {
         public override string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself && worldData.GameMode != 3 && !worldData.ForTheWorthy)
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare && worldData.GameMode != 3 && !worldData.ForTheWorthy)
             {
                 return "A force of pain block you from cheesing" +
                     "\nokay, with the stupid cringe edgy line out of the way, you must play on Master difficulty world";
@@ -16,7 +16,7 @@ namespace BossRush.Common.YouLikeToHurtYourself
         }
         public override bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().YouLikeToHurtYourself)
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
                 if (worldFileData.GameMode != 3)
                     return false;
