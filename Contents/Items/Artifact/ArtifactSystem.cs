@@ -63,6 +63,10 @@ namespace BossRush.Contents.Items.Artifact
             if (item.ModItem is IArtifactItem moditem)
             {
                 player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = moditem.ArtifactID;
+                if (item.ModItem is RandomArtifactChooser)
+                {
+                    BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, player.GetModPlayer<ArtifactPlayerHandleLogic>().ToStringArtifact());
+                }
                 return true;
             }
             return base.UseItem(item, player);
@@ -109,10 +113,27 @@ namespace BossRush.Contents.Items.Artifact
         bool BootofSpeed = false;// ID = 6
         public bool MagicalCardDeck = false;// ID = 7
         int EarthCD = 0;
-        string artifactName = "";
         public string ToStringArtifact()
         {
-            return artifactName;
+            switch (ArtifactDefinedID)
+            {
+                case 1:
+                    return "Token of Greed";
+                case 2:
+                    return "Token of Pride";
+                case 3:
+                    return "Vampirism Crystal";
+                case 4:
+                    return "Heart of earth";
+                case 5:
+                    return "Fate Decider";
+                case 6:
+                    return "Boot of speed manipulation";
+                case 7:
+                    return "Magical card deck";
+                default:
+                    return "no artifact active";
+            }
         }
         ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void PreUpdate()
@@ -131,35 +152,25 @@ namespace BossRush.Contents.Items.Artifact
             switch (ArtifactDefinedID)
             {
                 case 1:
-                    artifactName = "Token of Greed";
                     Greed = true;
                     break;
                 case 2:
-                    artifactName = "Token of Pride";
                     Pride = true;
                     break;
                 case 3:
-                    artifactName = "Vampirism Crystal";
                     Vampire = true;
                     break;
                 case 4:
-                    artifactName = "Heart of earth";
                     Earth = true;
                     break;
                 case 5:
-                    artifactName = "Fate Decider";
                     FateDice = true;
                     break;
                 case 6:
-                    artifactName = "Boot of speed";
                     BootofSpeed = true;
                     break;
                 case 7:
-                    artifactName = "Magical card deck";
                     MagicalCardDeck = true;
-                    break;
-                default:
-                    artifactName = "no artifact active";
                     break;
             }
         }
@@ -211,8 +222,8 @@ namespace BossRush.Contents.Items.Artifact
                 EarthCD -= isOnCoolDown ? 1 : 0;
                 if (isOnCoolDown)
                 {
-                    int dust = Dust.NewDust(Player.Center, 0, 0, DustID.Blood);
-                    Main.dust[dust].velocity = -Vector2.UnitY * 2f + Main.rand.NextVector2Circular(2, 2);
+                    int dust = Dust.NewDust(Player.Center + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.Blood);
+                    Main.dust[dust].velocity = -Vector2.UnitY * 2f;
                 }
             }
             if (BootofSpeed)
@@ -236,10 +247,10 @@ namespace BossRush.Contents.Items.Artifact
         private void FateDeciderEffect()
         {
             if (Player.dead && !Player.active)
-            if (Player.dead || !Player.active)
-            {
-                return;
-            }
+                if (Player.dead || !Player.active)
+                {
+                    return;
+                }
             effectlasting -= effectlasting > 0 ? 1 : 0;
             if (effectlasting <= 0)
             {

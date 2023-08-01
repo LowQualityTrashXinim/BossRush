@@ -177,5 +177,6 @@ namespace BossRush
             hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
         }
         public static int CoolDown(int timer, int timeDecrease = 1) => timer > 0 ? timer - timeDecrease : 0;
+        public static float CoolDown(float timer, int timeDecrease = 1) => timer > 0 ? timer - timeDecrease : 0;
     }
 }

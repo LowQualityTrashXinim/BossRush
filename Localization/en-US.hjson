@@ -133,6 +133,8 @@ Mods: {
 			GhostBroadsword.DisplayName: Ghost Broadsword
 			GhostShortsword.DisplayName: Ghost Shortsword
 			ResolveGhostArrow.DisplayName: Resolve Ghost Arrow
+			TinOreProjectile.DisplayName: Tin Ore Projectile
+			TinBarProjectile.DisplayName: Tin Bar Projectile
 		}
 
 		NPCs: {

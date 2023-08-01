@@ -146,7 +146,7 @@ namespace BossRush.Common.Global
                     "\nIncrease defense by 6" +
                     "\nIncrease movement speed by 35%" +
                     "\nIncrease damage by 5%" +
-                    "\nYou leave a trail of corruption that deal 15 damage and inflict cursed inferno";
+                    "\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno";
             }
             if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings)
             {
@@ -161,6 +161,12 @@ namespace BossRush.Common.Global
                     "\nIncrease defense by 16" +
                     "\nIncrease movement speed by 17%" +
                     "\nJumping will leave a trail of sand that deal 12 damage";
+            }
+            if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves)
+            {
+                return "Increase defense by 5" +
+                    "\nIncrease movement speed by 21%" +
+                    "\nPure tin weapon are stronger";
             }
             return "";
         }
@@ -243,8 +249,13 @@ namespace BossRush.Common.Global
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves))
             {
-                player.statDefense += 12;
+                player.statDefense += 5;
+                player.moveSpeed += .21f;
                 modplayer.TinArmor = true;
+                if (Main.raining)
+                {
+                    modplayer.TinUnderWetEffect = true;
+                }
             }
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
@@ -275,6 +286,8 @@ namespace BossRush.Common.Global
         int CactusArmorCD = 0;
         public bool PalmWoodArmor = false;
         public bool TinArmor = false;
+        public bool TinUnderWetEffect = false;
+        public int TinArmorCountEffect = 0;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -284,7 +297,7 @@ namespace BossRush.Common.Global
             EbonWoodArmor = false;
             CactusArmor = false;
             PalmWoodArmor = false;
-            TinArmor = true;
+            TinArmor = false;
         }
         public override void PreUpdate()
         {
@@ -295,8 +308,8 @@ namespace BossRush.Common.Global
             if (EbonWoodArmor)
                 if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero)
                 {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 15, 0, Player.whoAmI);
-                    EbonWoodArmorCD = 15;
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
+                    EbonWoodArmorCD = 25;
                 }
             if (PalmWoodArmor)
             {
@@ -308,13 +321,30 @@ namespace BossRush.Common.Global
                     }
             }
         }
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (TinArmor)
+                if (item.type == ItemID.TinBow)
+                {
+                    Vector2 pos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 50, 50);
+                    Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * velocity.Length();
+                    Projectile.NewProjectile(source, pos, vel, ModContent.ProjectileType<TinOreProjectile>(), damage, knockback, Player.whoAmI);
+                    TinArmorCountEffect++;
+                    if (TinArmorCountEffect >= 5)
+                    {
+                        Projectile.NewProjectile(source, position, velocity * 1.15f, ModContent.ProjectileType<TinBarProjectile>(), (int)(damage * 1.5f), knockback, Player.whoAmI);
+                        TinArmorCountEffect = 0;
+                    }
+                }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
+        }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             base.ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
             if (TinArmor)
-                if (item.type == ItemID.TinBow && Main.rand.NextBool(5))
+                if (item.type == ItemID.TinBow)
                 {
-                    type = ModContent.ProjectileType<TopazBolt>();
+                    velocity *= 2;
                 }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
@@ -327,16 +357,16 @@ namespace BossRush.Common.Global
                 switch (item.type)
                 {
                     case ItemID.TinBow:
-                        damage += .5f;
+                        damage += .85f;
                         break;
                     case ItemID.TinBroadsword:
-                        damage += .75f;
+                        damage += 1.75f;
                         break;
                     case ItemID.TinShortsword:
                         damage += 1.25f;
                         break;
                     case ItemID.TopazStaff:
-                        damage += .65f;
+                        damage += .95f;
                         break;
                 }
         }

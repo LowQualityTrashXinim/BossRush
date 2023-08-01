@@ -25,14 +25,7 @@ namespace BossRush.Contents.Items.Chest
             var entitySource = player.GetSource_OpenItem(Type);
             if (player.IsDebugPlayer())
             {
-                int[] fullbodyarmor = new int[]{
-                Main.rand.Next(TerrariaArrayID.HeadArmorPreBoss),
-                Main.rand.Next(TerrariaArrayID.BodyArmorPreBoss),
-                Main.rand.Next(TerrariaArrayID.LegArmorPreBoss) };
-                for (int i = 0; i < fullbodyarmor.Length; i++)
-                {
-                    player.QuickSpawnItem(entitySource, fullbodyarmor[i]);
-                }
+                GetArmorForPlayer(entitySource, player);
             }
             else
             {

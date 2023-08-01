@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(10, 10, 24, 2f, 9, 9, ItemUseStyleID.Shoot, ModContent.ProjectileType<SinisterBolt>(), 2.5f, 7, true);
+            Item.BossRushDefaultMagic(10, 10, 24, 2f, 9, 9, ItemUseStyleID.Shoot, ModContent.ProjectileType<SinisterBolt>(), 2.5f, 14, true);
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.buyPrice(platinum: 5);
             Item.UseSound = SoundID.Item8;

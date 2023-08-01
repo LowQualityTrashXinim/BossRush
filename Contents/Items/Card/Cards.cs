@@ -99,6 +99,7 @@ namespace BossRush.Contents.Items.Card
         public override void PostCardSetDefault()
         {
             Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
         }
         public override int Tier => 1;
         public override bool CanBeCraft => false;
@@ -109,6 +110,7 @@ namespace BossRush.Contents.Items.Card
         public override void PostCardSetDefault()
         {
             Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
         }
         public override int Tier => 2;
         public override bool CanBeCraft => false;
@@ -119,6 +121,7 @@ namespace BossRush.Contents.Items.Card
         public override void PostCardSetDefault()
         {
             Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
         }
         public override int Tier => 3;
         public override bool CanBeCraft => false;
@@ -129,6 +132,7 @@ namespace BossRush.Contents.Items.Card
         public override void PostCardSetDefault()
         {
             Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
         }
         public override int Tier => 4;
         public override bool CanBeCraft => false;

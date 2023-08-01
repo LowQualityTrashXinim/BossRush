@@ -340,11 +340,15 @@ namespace BossRush.Contents.Items.Chest
             var entitySource = player.GetSource_OpenItem(Type);
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                if (Main.rand.NextBool(1000))
+                if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
+                }
+                if (Main.rand.NextBool(1500))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
                 }
-                if (Main.rand.NextBool(1000))
+                if (Main.rand.NextBool(1500))
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
                 }
@@ -354,10 +358,6 @@ namespace BossRush.Contents.Items.Chest
             if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;
-            }
-            if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
             }
             if (Main.rand.NextBool(25) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(7)))
             {
