@@ -593,7 +593,7 @@ namespace BossRush.Common.Global
             delaytimer = BossRushUtils.CoolDown(delaytimer);
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
             iframeCounter = BossRushUtils.CoolDown(iframeCounter);
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) ||
                 item.noMelee
                 )
             {
@@ -696,7 +696,7 @@ namespace BossRush.Common.Global
         public override void PostUpdate()
         {
             Item item = Player.HeldItem;
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) ||
                 item.noMelee
                 )
             {

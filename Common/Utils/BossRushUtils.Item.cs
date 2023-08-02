@@ -95,7 +95,8 @@ namespace BossRush
         public enum MeleeStyle
         {
             CheckVanillaSwingWithModded,
-            CheckOnlyModded
+            CheckOnlyModded,
+            CheckOnlyModdedWithoutDefault
         }
         /// <summary>
         /// This allow for easy access toward chest and related logic, tho this work on terraria progression
@@ -118,6 +119,9 @@ namespace BossRush
                 case MeleeStyle.CheckOnlyModded:
                     return item.useStyle == BossRushUseStyle.GenericSwingDownImprove
                         || item.useStyle == BossRushUseStyle.Swipe
+                        || item.useStyle == BossRushUseStyle.Poke;
+                case MeleeStyle.CheckOnlyModdedWithoutDefault:
+                    return item.useStyle == BossRushUseStyle.Swipe
                         || item.useStyle == BossRushUseStyle.Poke;
                 default:
                     Console.WriteLine("Fail to know what to check !");

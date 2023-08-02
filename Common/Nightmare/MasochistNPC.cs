@@ -47,6 +47,10 @@ namespace BossRush.Common.YouLikeToHurtYourself
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
+            if(!ModContent.GetInstance<BossRushModConfig>().Nightmare)
+            {
+                return;
+            }
             npc.damage += Main.rand.Next(npc.damage + 1);
             npc.lifeMax += Main.rand.Next(npc.lifeMax + 1);
             npc.life = npc.lifeMax;

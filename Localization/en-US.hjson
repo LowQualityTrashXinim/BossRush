@@ -1562,15 +1562,6 @@ Mods: {
 						'''
 				}
 
-				YouLikeToHurtYourself: {
-					Label: You like to hurt yourself(W.I.P)
-					Tooltip:
-						'''
-						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
-						Some secrets are revealed when you have certain player name
-						'''
-				}
-
 				ExtraChallenge: {
 					Label: ExtraChallange(W.I.P)
 					Tooltip:
@@ -1585,6 +1576,15 @@ Mods: {
 				RoguelikeOverhaul: {
 					Label: "[BETA] Roguelike Overhaul"
 					Tooltip: Enable this to activate mod vanilla terraria overhaul
+				}
+
+				Nightmare: {
+					Label: Nightmare (W.I.P)
+					Tooltip:
+						'''
+						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
+						Some secrets are revealed when you have certain player name
+						'''
 				}
 			}
 		}
