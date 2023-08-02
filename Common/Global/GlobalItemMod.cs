@@ -167,7 +167,7 @@ namespace BossRush.Common.Global
             {
                 return "Increase defense by 5" +
                     "\nIncrease movement speed by 21%" +
-                    "\nPure tin weapon are stronger";
+                    "\nVanilla tin weapon are stronger";
             }
             if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings)
             {
@@ -321,10 +321,6 @@ namespace BossRush.Common.Global
                 player.statDefense += 5;
                 player.moveSpeed += .21f;
                 modplayer.TinArmor = true;
-                if (Main.raining)
-                {
-                    modplayer.TinUnderWetEffect = true;
-                }
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves))
             {
@@ -385,7 +381,6 @@ namespace BossRush.Common.Global
         int CactusArmorCD = 0;
         public bool PalmWoodArmor = false;
         public bool TinArmor = false;
-        public bool TinUnderWetEffect = false;
         public int TinArmorCountEffect = 0;
         public bool PumpkinArmor = false;
         public bool AshWoodArmor = false;
@@ -456,6 +451,11 @@ namespace BossRush.Common.Global
                     }
                     return false;
                 }
+                if(item.type == ItemID.TinShortsword)
+                {
+                    Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
+                    Projectile.NewProjectile(source, pos, (Main.MouseWorld - pos), ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
+                }
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
@@ -472,6 +472,12 @@ namespace BossRush.Common.Global
                     position = position.PositionOFFSET(velocity, 50);
                 }
             }
+        }
+        public override void ModifyItemScale(Item item, ref float scale)
+        {
+            if (TinArmor)
+                if (item.type == ItemID.TinBroadsword)
+                    scale += .5f;
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
@@ -575,6 +581,11 @@ namespace BossRush.Common.Global
             OnHitNPC_AshWoodArmor(target, damageDone);
             OnHitNPC_CopperArmor();
             OnHitNPC_GoldArmor(target, damageDone);
+            if (TinArmor)
+                if (item.type == ItemID.TinBroadsword)
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TinBroadSwordProjectile>(), 12, 1f, Player.whoAmI);
+                }
         }
         private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null)
         {
@@ -664,7 +675,7 @@ namespace BossRush.Common.Global
                 }
                 else
                 {
-                    if(Main.rand.NextFloat() < .15f)
+                    if (Main.rand.NextFloat() < .15f)
                     {
                         npc.AddBuff(BuffID.Midas, 600);
                     }

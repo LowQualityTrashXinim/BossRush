@@ -136,6 +136,8 @@ Mods: {
 			TinOreProjectile.DisplayName: Tin Ore Projectile
 			TinBarProjectile.DisplayName: Tin Bar Projectile
 			MothProj.DisplayName: Moth Proj
+			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
+			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
 		}
 
 		NPCs: {
