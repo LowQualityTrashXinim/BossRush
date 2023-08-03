@@ -139,6 +139,9 @@ Mods: {
 			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
 			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
 			AmberTippedProjectile.DisplayName: Amber Tipped Projectile
+			AmberBoneProjectile.DisplayName: Amber Bone Projectile
+			AmberBoneSpearProjectile.DisplayName: Amber Bone Spear Projectile
+			AntlionMandibleModProjectile.DisplayName: Antlion Mandible Mod Projectile
 		}
 
 		NPCs: {
@@ -1380,6 +1383,11 @@ Mods: {
 
 			StreetLamp: {
 				DisplayName: Street Lamp
+				Tooltip: ""
+			}
+
+			AmberBoneSpear: {
+				DisplayName: Amber Bone Spear
 				Tooltip: ""
 			}
 		}

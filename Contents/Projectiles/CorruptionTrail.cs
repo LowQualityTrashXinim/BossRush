@@ -41,7 +41,7 @@ namespace BossRush.Contents.Projectiles
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.CursedInferno, 300);
+            target.AddBuff(BuffID.CursedInferno, 120);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace BossRush
         /// <param name="offsetposY"></param>
         /// <param name="dramatic"></param>
         /// <param name="dot"></param>
-        public static void CombatTextRevamp(Rectangle location, Color color, string combatMessage, int offsetposY = 0, int timeleft = 30,bool dramatic = false, bool dot = false)
+        public static void CombatTextRevamp(Rectangle location, Color color, string combatMessage, int offsetposY = 0, int timeleft = 30, bool dramatic = false, bool dot = false)
         {
             int drama = 0;
             if (dramatic)
@@ -152,6 +152,7 @@ namespace BossRush
                     && CompareSquareFloatValue(Main.npc[i].Center, position, distance)
                     && Main.npc[i].CanBeChasedBy()
                     && !Main.npc[i].friendly
+                    && Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height)
                     )
                 {
                     npcList.Add(Main.npc[i]);

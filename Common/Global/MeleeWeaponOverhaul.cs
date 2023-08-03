@@ -696,7 +696,7 @@ namespace BossRush.Common.Global
         public override void PostUpdate()
         {
             Item item = Player.HeldItem;
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) ||
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
                 item.noMelee
                 )
             {

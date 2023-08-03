@@ -78,6 +78,10 @@ namespace BossRush.Common.Global
         public override void SetDefaults(Item entity)
         {
             base.SetDefaults(entity);
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            {
+                return;
+            }
             if (entity.type == ItemID.Sandgun)
             {
                 entity.shoot = ModContent.ProjectileType<SandProjectile>();
@@ -91,6 +95,10 @@ namespace BossRush.Common.Global
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             Player player = Main.LocalPlayer;
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            {
+                return;
+            }
             if (item.type == ItemID.Sandgun)
             {
                 tooltips.Add(new TooltipLine(Mod, "SandGunChange",
@@ -151,7 +159,7 @@ namespace BossRush.Common.Global
                     "\nIncrease defense by 6" +
                     "\nIncrease movement speed by 35%" +
                     "\nIncrease damage by 5%" +
-                    "\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno";
+                    "\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s";
             }
             if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves)
             {
@@ -366,10 +374,19 @@ namespace BossRush.Common.Global
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
+            VanillaChange(item, player, ref damage);
+        }
+        private void VanillaChange(Item item, Player player, ref StatModifier damage)
+        {
+            if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            {
+                return;
+            }
             if (item.type == ItemID.Sandgun)
             {
                 damage -= .55f;
             }
+
         }
     }
     public class GlobalItemPlayer : ModPlayer
@@ -419,7 +436,7 @@ namespace BossRush.Common.Global
                 if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero)
                 {
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
-                    EbonWoodArmorCD = 25;
+                    EbonWoodArmorCD = 45;
                 }
             if (PalmWoodArmor)
                 if (Player.justJumped)

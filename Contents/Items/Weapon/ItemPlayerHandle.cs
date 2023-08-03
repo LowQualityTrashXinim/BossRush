@@ -45,6 +45,8 @@ namespace BossRush.Contents.Items.Weapon
         public bool Swotaff_Spear = false;
         public int Swotaff_Spear_Counter = 0;
 
+        public bool AmberBoneSpear_MandibleBlade = false;
+
         public bool Deagle_PhoenixBlaster = false;
         public bool Deagle_DaedalusStormBow = false;
         public int Deagle_DaedalusStormBow_coolDown = 0;
@@ -81,6 +83,8 @@ namespace BossRush.Contents.Items.Weapon
             EnergyBlade_Code2 = false;
 
             Swotaff_Spear = false;
+
+            AmberBoneSpear_MandibleBlade = false;
 
             Deagle_PhoenixBlaster = false;
             Deagle_DaedalusStormBow = false;
