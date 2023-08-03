@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using Microsoft.CodeAnalysis.MSBuild;
 
 namespace BossRush.Common.Global
 {
@@ -83,6 +82,11 @@ namespace BossRush.Common.Global
             {
                 entity.shoot = ModContent.ProjectileType<SandProjectile>();
             }
+            if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal)
+            {
+                entity.autoReuse = true;
+            }
+
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
@@ -199,7 +203,7 @@ namespace BossRush.Common.Global
             {
                 return "Increase damage reduction 2.5%" +
                        "\nIncrease defense effectivness by 10%" +
-                       "\nIncrease damage by 15%" +
+                       "\nIncrease damage by 5%" +
                        "\nDecrease movement speed 5%" +
                        "\nWhile under 50% HP, gain 15 bonus defense, but -10% less attack speed";
             }
@@ -334,7 +338,7 @@ namespace BossRush.Common.Global
                 player.endurance += 0.05f;
                 player.DefenseEffectiveness *= 1.1f;
                 player.GetDamage(DamageClass.Generic) += 0.05f;
-                if (player.statLife <= player.statLifeMax * 0.25f)
+                if (player.statLife <= player.statLifeMax * 0.5f)
                 {
                     player.statDefense += 15;
                     player.GetAttackSpeed(DamageClass.Generic) -= 0.10f;
@@ -364,7 +368,7 @@ namespace BossRush.Common.Global
         {
             if (item.type == ItemID.Sandgun)
             {
-                damage.Base -= .55f;
+                damage -= .55f;
             }
         }
     }
@@ -451,7 +455,7 @@ namespace BossRush.Common.Global
                     }
                     return false;
                 }
-                if(item.type == ItemID.TinShortsword)
+                if (item.type == ItemID.TinShortsword)
                 {
                     Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
                     Projectile.NewProjectile(source, pos, (Main.MouseWorld - pos), ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);

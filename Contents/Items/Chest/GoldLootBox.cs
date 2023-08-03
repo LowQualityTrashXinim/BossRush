@@ -76,11 +76,7 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
             }
-            player.QuickSpawnItem(entitySource, ItemID.WaterWalkingPotion, 10);
-            player.QuickSpawnItem(entitySource, ItemID.FeatherfallPotion, 10);
-            player.QuickSpawnItem(entitySource, ItemID.GravitationPotion, 10);
             player.QuickSpawnItem(entitySource, ItemID.CalmingPotion, 10);
-            player.QuickSpawnItem(entitySource, ItemID.DemonConch);
         }
     }
 }

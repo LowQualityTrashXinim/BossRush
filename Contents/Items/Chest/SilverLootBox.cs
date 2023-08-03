@@ -83,9 +83,7 @@ namespace BossRush.Contents.Items.Chest
             }
             player.QuickSpawnItem(entitySource, ItemID.StickyDynamite, 50);
             player.QuickSpawnItem(entitySource, ItemID.Campfire, 10);
-            player.QuickSpawnItem(entitySource, ItemID.MagicConch);
-            player.QuickSpawnItem(entitySource, ItemID.MagicMirror);
-            player.QuickSpawnItem(entitySource, ItemID.MoneyTrough);
+            player.QuickSpawnItem(entitySource, Main.rand.Next(new int[] { ItemID.AmethystHook, ItemID.TopazHook, ItemID.SapphireHook, ItemID.EmeraldHook }));
         }
     }
 }

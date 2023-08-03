@@ -18,6 +18,7 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
+using System.Runtime.CompilerServices;
 
 namespace BossRush.Common
 {
@@ -102,10 +103,12 @@ namespace BossRush.Common
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
             List<Item> items = new List<Item>() {
-            new Item(ModContent.ItemType<WoodenLootBox>()),
-            new Item(ModContent.ItemType<LunchBox>()),
-            new Item(ItemID.Safe),
-            new Item(ItemID.MoneyTrough)
+                        new Item(ModContent.ItemType<WoodenLootBox>()),
+                        new Item(ModContent.ItemType<LunchBox>()),
+                        new Item(ItemID.Safe),
+                        new Item(ItemID.MoneyTrough),
+                        new Item(ItemID.PlatinumPickaxe),
+                        new Item(ItemID.PlatinumAxe)
             };
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
@@ -173,6 +176,10 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<ShowPlayerStats>()));
             }
             return items;
+        }
+        public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath)
+        {
+            itemsByMod["Terraria"].Clear();
         }
         public int amountoftimegothit = 0;
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
