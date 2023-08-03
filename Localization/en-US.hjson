@@ -138,6 +138,7 @@ Mods: {
 			MothProj.DisplayName: Moth Proj
 			TinBroadSwordProjectile.DisplayName: Tin Broad Sword Projectile
 			TinShortSwordProjectile.DisplayName: Tin Short Sword Projectile
+			AmberTippedProjectile.DisplayName: Amber Tipped Projectile
 		}
 
 		NPCs: {

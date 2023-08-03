@@ -153,6 +153,15 @@ namespace BossRush.Common.Global
                     "\nIncrease damage by 5%" +
                     "\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno";
             }
+            if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves)
+            {
+                return "When in underworld or underground caven level :" +
+                       "\nIncrease defense by 16" +
+                       "\nIncrease damage by 10%" +
+                       "\nGetting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage" +
+                       "\nAll attacks inflicts On Fire! for 5 seconds" +
+                       "\nIncreased life regen by 1";
+            }
             if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings)
             {
                 return "Increase defenses by 10" +
@@ -181,15 +190,6 @@ namespace BossRush.Common.Global
                        "\ninflicting the same debuff to an enemy who already has it " +
                        "\ncauses an explosion, dealing 5 + 5% of damage dealt" +
                        "\nWhile below 20% HP, you gain 5x health regen";
-            }
-            if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves)
-            {
-                return "When in underworld :" +
-                       "\nIncrease defense by 16" +
-                       "\nIncrease damage by 10%" +
-                       "\nGetting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage" +
-                       "\nAll attacks inflicts On Fire! for 5 seconds" +
-                       "\nIncreased life regen by 1";
             }
             if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves)
             {
@@ -286,6 +286,16 @@ namespace BossRush.Common.Global
                     modplayer.EbonWoodArmor = true;
                 }
             }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.AshWoodHelmet, ItemID.AshWoodBreastplate, ItemID.AshWoodGreaves))
+            {
+                if (player.ZoneUnderworldHeight || player.ZoneUnderworldHeight)
+                {
+                    player.statDefense += 16;
+                    player.GetDamage(DamageClass.Generic) += .1f;
+                    player.lifeRegen++;
+                    modplayer.AshWoodArmor = true;
+                }
+            }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CactusHelmet, ItemID.CactusBreastplate, ItemID.CactusLeggings))
             {
                 player.statDefense += 10;
@@ -308,16 +318,6 @@ namespace BossRush.Common.Global
                 if (player.ZoneOverworldHeight)
                 {
                     modplayer.PumpkinArmor = true;
-                }
-            }
-            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.AshWoodHelmet, ItemID.AshWoodBreastplate, ItemID.AshWoodGreaves))
-            {
-                if (player.ZoneUnderworldHeight)
-                {
-                    player.statDefense += 16;
-                    player.GetDamage(DamageClass.Generic) += .1f;
-                    player.lifeRegen++;
-                    modplayer.AshWoodArmor = true;
                 }
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves))
