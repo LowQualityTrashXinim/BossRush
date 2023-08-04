@@ -614,7 +614,7 @@ namespace BossRush.Common.Global
                 if (Main.rand.NextBool(4) && (proj is null || (proj is not null && proj.ModProjectile is not AcornProjectile)))
                     Projectile.NewProjectile(Player.GetSource_FromThis(),
                         target.Center - new Vector2(0, 400),
-                        Vector2.UnitY * 5,
+                        Vector2.UnitY * 10,
                         ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
         }
         private void OnHitNPC_ShadewoodArmor()

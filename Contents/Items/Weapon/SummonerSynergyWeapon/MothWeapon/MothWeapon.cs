@@ -81,7 +81,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             player.AddBuff(ModContent.BuffType<MothBuff>(), 1000);
-            var proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+            Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
             return false;
         }
 
@@ -142,7 +142,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         public override bool MinionContactDamage() => true;
         public override void OnSpawn(IEntitySource source)
         {
-            Main.NewText("<Moth> LAMP", Color.Beige);
+            BossRushUtils.CombatTextRevamp(Main.player[Projectile.owner].Hitbox, Color.Beige, "<Moth> LAMP");
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
