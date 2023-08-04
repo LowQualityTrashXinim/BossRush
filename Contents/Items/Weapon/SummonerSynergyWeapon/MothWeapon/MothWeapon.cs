@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         {
             return Color.White;
         }
-        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.VampireFrogStaff))
             {
@@ -142,7 +142,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         public override bool MinionContactDamage() => true;
         public override void OnSpawn(IEntitySource source)
         {
-            BossRushUtils.CombatTextRevamp(Main.player[Projectile.owner].Hitbox, Color.Beige, "<Moth> LAMP");
+            BossRushUtils.CombatTextRevamp(Main.player[Projectile.owner].Hitbox, Color.Beige, "LAMP");
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {

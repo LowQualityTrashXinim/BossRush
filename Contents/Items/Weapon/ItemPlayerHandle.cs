@@ -4,13 +4,10 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
-using BossRush.Common;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff;
-using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
+using System.ComponentModel.Design;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -216,6 +213,15 @@ namespace BossRush.Contents.Items.Weapon
         {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
             ModifySynergyShootStats(player, player.GetModPlayer<PlayerSynergyItemHandle>(), ref position, ref velocity, ref type, ref damage, ref knockback);
+        }
+        public override void UpdateInventory(Player player)
+        {
+            base.UpdateInventory(player);
+            SynergyUpdateInventory(player, player.GetModPlayer<PlayerSynergyItemHandle>());
+        }
+        public virtual void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer)
+        {
+
         }
         public virtual void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
