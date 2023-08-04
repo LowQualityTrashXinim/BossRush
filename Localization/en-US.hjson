@@ -1390,6 +1390,26 @@ Mods: {
 				DisplayName: Amber Bone Spear
 				Tooltip: ""
 			}
+
+			CopperCardNormalizer: {
+				DisplayName: Copper Card Normalizer
+				Tooltip: "Have a chance to reduce the chance of getting bad stats by 0 to 10%"
+			}
+
+			SilverCardNormalizer: {
+				DisplayName: Silver Card Normalizer
+				Tooltip: "Have a chance to reduce the chance of getting bad stats by 5 to 20%"
+			}
+
+			GoldCardNormalizer: {
+				DisplayName: Gold Card Normalizer
+				Tooltip: "Have a chance to reduce the chance of getting bad stats by 15 to 35%"
+			}
+
+			PlatinumCardNormalizer: {
+				DisplayName: Platinum Card Normalizer
+				Tooltip: "Have a chance to reduce the chance of getting bad stats by 25 to 65%"
+			}
 		}
 
 		Buffs: {
@@ -1505,22 +1525,22 @@ Mods: {
 
 			MysteriousPotionBuff: {
 				DisplayName: Mysterious Potion Buff
-				Description: ?
+				Description: "?"
 			}
 
 			copperRageMode: {
-				DisplayName: copper Rage Mode
+				DisplayName: Overchaged !
 				Description: Mods.BossRush.Buffs.copperRageMode.Description
 			}
 
 			pumpkinOverdose: {
-				DisplayName: pumpkin Overdose
+				DisplayName: Pumpkin Overdose
 				Description: Mods.BossRush.Buffs.pumpkinOverdose.Description
 			}
 
 			MothBuff: {
-				DisplayName: Moth Buff
-				Description: Mods.BossRush.Buffs.MothBuff.Description
+				DisplayName: Moth friend
+				Description: Friend
 			}
 		}
 
@@ -1539,7 +1559,6 @@ Mods: {
 						What this mode do :
 						-Pot drop nothing
 						-World gen change so you could easily build arena and chest gone
-						-Some minor enemy change
 						-Unlock special mechanic
 						'''
 				}
@@ -1586,7 +1605,13 @@ Mods: {
 
 				RoguelikeOverhaul: {
 					Label: "[BETA] Roguelike Overhaul"
-					Tooltip: Enable this to activate mod vanilla terraria overhaul
+					Tooltip:
+						'''
+						Enable this to activate vanilla terraria overhaul
+						- It will change some weapon behavior
+						- Rework how most vanilla weapon work to fit the mod
+						- Rebalancing vanilla item
+						'''
 				}
 
 				Nightmare: {
@@ -1594,7 +1619,11 @@ Mods: {
 					Tooltip:
 						'''
 						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
-						Some secrets are revealed when you have certain player name
+						Highly not recommend for inexperience player
+						- Enemy are much more brutal, and is immune to lava and trap
+						- NPC will gain randomize health and damage buff that range from 0% to 100%
+						- Spawn rate are increased even during boss fight
+						- Some bosses receive minor AI change and buff
 						'''
 				}
 			}

@@ -41,7 +41,8 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nJump speed : {cardplayer.JumpBoost}" +
                 $"\nMax minion : {cardplayer.MinionSlot}" +
                 $"\nMax sentry/turret : {cardplayer.SentrySlot}"+
-                "\n-Below are curses that you have-\n"+
+                $"\nCard luck ( max value 200 ) : {cardplayer.CardLuck}" +
+                "\n-Below are curses that you have-\n" +
                 Curses
                 );
             tooltips.Add(line);

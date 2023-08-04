@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Common.YouLikeToHurtYourself
 {
@@ -21,33 +22,45 @@ namespace BossRush.Common.YouLikeToHurtYourself
         }
         public override void SetDefaults(NPC npc)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().Nightmare && PlayerNameContain("Masochist"))
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
-                if (npc.boss && npc.type == NPCID.EyeofCthulhu)
-                {
-                    npc.scale -= 0.25f;
-                    npc.Size -= new Vector2(25, 25);
-                }
-                if (npc.type == NPCID.ServantofCthulhu)
-                {
-                    npc.scale += 1.5f;
-                    npc.Size += new Vector2(50, 50);
-                    npc.lifeMax += 300;
-                }
-                if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody)
-                {
-                    npc.scale += 2.5f;
-                    npc.Size += new Vector2(200, 200);
-                    npc.lifeMax += 1500;
-                }
-                npc.knockBackResist *= .5f;
-                npc.trapImmune = true;
-                npc.lavaImmune = true;
+                return;
+            }
+            npc.trapImmune = true;
+            npc.lavaImmune = true;
+            BossChange(npc);
+            if (npc.type == NPCID.ServantofCthulhu)
+            {
+                npc.scale += 1.5f;
+                npc.Size += new Vector2(50, 50);
+                npc.lifeMax += 300;
+            }
+            npc.knockBackResist *= .5f;
+        }
+        private void BossChange(NPC npc)
+        {
+            if (!npc.boss)
+                return;
+            if (npc.type == NPCID.CultistBoss)
+            {
+                npc.lifeMax += 15000;
+                npc.defense += 30;
+            }
+            if (npc.type == NPCID.EyeofCthulhu)
+            {
+                npc.scale -= 0.25f;
+                npc.Size -= new Vector2(25, 25);
+            }
+            if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody)
+            {
+                npc.scale += 2.5f;
+                npc.Size += new Vector2(200, 200);
+                npc.lifeMax += 1500;
             }
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().Nightmare)
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
                 return;
             }
@@ -110,6 +123,46 @@ namespace BossRush.Common.YouLikeToHurtYourself
             {
                 maxSpawns += 100;
                 spawnRate -= 10;
+            }
+        }
+        public override void PostAI(NPC npc)
+        {
+            base.PostAI(npc);
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
+            {
+                return;
+            }
+            if (npc.type == NPCID.CultistBoss)
+            {
+                if (npc.ai[0] == 5f)
+                {
+                    if (npc.ai[1] >= 120f)
+                    {
+                        npc.chaseable = true;
+                        npc.ai[0] = 0f;
+                        npc.ai[1] = 0f;
+                        npc.ai[3] += 1f;
+                        npc.velocity = Vector2.Zero;
+                        npc.netUpdate = true;
+                    }
+                }
+                for (int i = 0; i < 300; i++)
+                {
+                    int dust1 = Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(2000f, 2000f), 0, 0, DustID.SolarFlare);
+                    Main.dust[dust1].noGravity = true;
+                    Main.dust[dust1].velocity = (Main.dust[dust1].position - npc.Center).SafeNormalize(Vector2.Zero) * 3f;
+                }
+                if (!BossRushUtils.CompareSquareFloatValue(npc.Center, Main.player[npc.target].Center, 2000))
+                {
+                    Main.player[npc.target].AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 120);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int dust = Dust.NewDust(Main.player[npc.target].Center, 0, 0, DustID.SolarFlare);
+                        Main.dust[dust].noGravity = true;
+                        Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(7f, 7f);
+                        Main.dust[dust].fadeIn = 2f;
+                    }
+                }
             }
         }
     }

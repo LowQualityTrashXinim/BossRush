@@ -2,6 +2,7 @@
 using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.ModLoader;
+using System;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -137,6 +138,83 @@ namespace BossRush.Contents.Items.Card
         public override int Tier => 4;
         public override bool CanBeCraft => false;
     }
+    class CopperCardNormalizer : CardItem
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBrickWall);
+        public override void PostCardSetDefault()
+        {
+            Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
+        }
+        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
+        {
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(11), 0, 200);
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<CopperCard>(), 10)
+                .Register();
+        }
+    }
+    class SilverCardNormalizer : CardItem
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SilverBrickWall);
+        public override void PostCardSetDefault()
+        {
+            Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
+        }
+        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
+        {
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(5, 21), 0, 200);
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<SilverCard>(), 10)
+                .Register();
+        }
+    }
+    class GoldCardNormalizer : CardItem
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldBrickWall);
+        public override void PostCardSetDefault()
+        {
+            Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
+        }
+        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
+        {
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(15, 36), 0, 200);
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<GoldCard>(), 10)
+                .Register();
+        }
+    }
+    class PlatinumCardNormalizer : CardItem
+    {
+        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumBrickWall);
+        public override void PostCardSetDefault()
+        {
+            Item.rare = ItemRarityID.Red;
+            Item.maxStack = 99;
+        }
+        public override void OnUseItem(Player player, PlayerCardHandle modplayer)
+        {
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(25, 66), 0, 200);
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<PlatinumCard>(), 10)
+                .Register();
+        }
+    }
+
     internal class EmptyCard : CardItem
     {
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Glass);

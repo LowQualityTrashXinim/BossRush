@@ -42,7 +42,7 @@ namespace BossRush.Contents.Items.Card
             if (Tier > 0)
             {
                 tooltips.Add(new TooltipLine(Mod, "HelpfulText", "Use the card to get bonus stats" +
-                    "\nCard maybe faulty, faulty card give you bad stats and have chance to give you curses" +
+                    "\nThe more cards you uses, the higher the chance of getting bad stats will become, the chance capped at 200%" +
                     "\nCard's bonus will be reset upon death beside curses"));
             }
         }
@@ -81,15 +81,17 @@ namespace BossRush.Contents.Items.Card
         }
         //since we only add 1 curse per card, this don't need to be a list
         public int CursedID = -1;
-        private void SetBadStatsBaseOnTier(bool hasMagicDeck)
+        private void SetBadStatsBaseOnTier(PlayerCardHandle modplayer, bool hasMagicDeck)
         {
             if (Tier <= 1)
             {
                 return;
             }
-            if (Main.rand.NextFloat() < .05f * PostTierModify || (hasMagicDeck && Main.rand.NextFloat() < .20f * PostTierModify))
+            int RandomNumberGen = Main.rand.Next(101);
+            if (RandomNumberGen < modplayer.CardLuck | (hasMagicDeck && RandomNumberGen < modplayer.CardLuck * 2))
             {
-                if (Main.rand.NextBool(30) || (hasMagicDeck && Main.rand.NextBool(15)))
+                RandomNumberGen = Main.rand.Next(101);
+                if (RandomNumberGen < modplayer.CardLuck - 100)
                 {
                     CursedID = 0;
                 }
@@ -204,8 +206,8 @@ namespace BossRush.Contents.Items.Card
             OnUseItem(player, modplayer);
             if (Tier <= 0)
                 return true;
-            bool hasMagicDeck = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
-            SetBadStatsBaseOnTier(hasMagicDeck);
+            bool hasMagicDeck = player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+            SetBadStatsBaseOnTier(modplayer, hasMagicDeck);
             int offset = 0;
             if (CardStats.Count > 0)
                 offset++;
@@ -309,6 +311,8 @@ namespace BossRush.Contents.Items.Card
             CardStats.Clear();
             CardStatsNumber.Clear();
             modplayer.CardTracker++;
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + 1, 0, 200);
+            Main.NewText(modplayer.CardLuck);
             return true;
         }
         private int countX = 0;
@@ -584,6 +588,7 @@ namespace BossRush.Contents.Items.Card
         public int DropAmountIncrease = 0;
         public int MinionSlot = 0;
         public int SentrySlot = 0;
+        public int CardLuck = 0;
         Item item;
         //Platinum
         //public float LuckIncrease = 0;
@@ -743,6 +748,8 @@ namespace BossRush.Contents.Items.Card
             DropAmountIncrease = 0;
             MinionSlot = 0;
             SentrySlot = 0;
+            CardTracker = 0;
+            CardLuck = 0;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
@@ -769,6 +776,7 @@ namespace BossRush.Contents.Items.Card
             packet.Write(SentrySlot);
             packet.Write(Thorn);
             packet.Write(CardTracker);
+            packet.Write(CardLuck);
             packet.Write(listCursesID.Count);
             foreach (int item in listCursesID)
                 packet.Write(item);
@@ -796,6 +804,7 @@ namespace BossRush.Contents.Items.Card
             tag["SentrySlot"] = SentrySlot;
             tag["Thorn"] = Thorn;
             tag["CardTracker"] = CardTracker;
+            tag["CardLuck"] = CardLuck;
             tag.Add("CursesID", listCursesID);
         }
         public override void LoadData(TagCompound tag)
@@ -820,6 +829,7 @@ namespace BossRush.Contents.Items.Card
             SentrySlot = (int)tag["SentrySlot"];
             Thorn = (float)tag["Thorn"];
             CardTracker = (int)tag["CardTracker"];
+            CardLuck = (int)tag["CardLuck"];
             listCursesID = tag.Get<List<int>>("CursesID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
@@ -844,6 +854,7 @@ namespace BossRush.Contents.Items.Card
             SentrySlot = reader.ReadInt32();
             Thorn = reader.ReadSingle();
             CardTracker = reader.ReadInt32();
+            CardLuck = reader.ReadInt32();
             listCursesID.Clear();
             int count = reader.ReadInt32();
             for (int i = 0; i < count; i++)
@@ -872,6 +883,7 @@ namespace BossRush.Contents.Items.Card
             clone.SentrySlot = SentrySlot;
             clone.Thorn = Thorn;
             clone.CardTracker = CardTracker;
+            clone.CardLuck = CardLuck;
             clone.listCursesID = listCursesID;
         }
         public override void SendClientChanges(ModPlayer clientPlayer)
@@ -897,6 +909,7 @@ namespace BossRush.Contents.Items.Card
                 || SentrySlot != clone.SentrySlot
                 || Thorn != clone.Thorn
                 || CardTracker != clone.CardTracker
+                || CardLuck != clone.CardLuck
                 || ListIsChange)
             {
                 SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
