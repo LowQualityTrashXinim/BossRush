@@ -201,11 +201,10 @@ namespace BossRush.Common.Global
             }
             if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves)
             {
-                return "Increase damage by 8%" +
-                       "\nIncrease movement speed by 15%" +
-                       "\nEvery 50 hit to enemy grants you the over charged" +
+                return "Increase movement speed by 15%" +
+                       "\nEvery 50 hit to enemy grants you the over charged for 3s" +
                        "\nDuring the rain, your hit requirement reduce by half" +
-                       "\nOver charged: gain ultra-high movement speed and increase damage by 10%";
+                       "\nOver charged: Increases movement speed, use speed, damage by 10%";
             }
             if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves)
             {
@@ -337,7 +336,6 @@ namespace BossRush.Common.Global
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves))
             {
                 player.moveSpeed += 0.15f;
-                player.GetDamage(DamageClass.Generic) += .08f;
                 modplayer.CopperArmor = true;
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves))
@@ -682,7 +680,7 @@ namespace BossRush.Common.Global
                 CopperArmorChargeCounter++;
             if (CopperArmorChargeCounter >= 50)
             {
-                Player.AddBuff(ModContent.BuffType<copperRageMode>(), 900);
+                Player.AddBuff(ModContent.BuffType<copperRageMode>(), 180);
                 CopperArmorChargeCounter = 0;
             }
         }

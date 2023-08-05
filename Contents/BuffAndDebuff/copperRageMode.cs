@@ -1,27 +1,22 @@
-﻿using BossRush.Common.Global;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.BuffAndDebuff
 {
     internal class copperRageMode : ModBuff
     {
         public override string Texture => BossRushTexture.EMPTYBUFF;
-        
+
         public override void Update(Player player, ref int buffIndex)
         {
-            Dust.NewDustPerfect(player.Center + new Vector2(Main.rand.Next(-player.width, player.width), Main.rand.Next(-player.height, player.height)), DustID.Electric, Main.rand.NextVector2CircularEdge(player.width, player.height) * 0.1f);
-            player.accRunSpeed *= 3;
-            player.moveSpeed += 1;
-            player.GetDamage(DamageClass.Generic) += 0.075f;
+            int dust = Dust.NewDust(player.Center + new Vector2(Main.rand.Next(-player.width, player.width)), 0, 0, DustID.Electric);
+            Main.dust[dust].velocity = -player.velocity * .1f + Main.rand.NextVector2Circular(3, 3);
+            player.moveSpeed += .1f;
+            player.GetDamage(DamageClass.Generic) += 0.1f;
+            player.GetAttackSpeed(DamageClass.Generic) += .1f;
         }
-
-       
     }
 }

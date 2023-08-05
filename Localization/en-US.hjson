@@ -1393,22 +1393,22 @@ Mods: {
 
 			CopperCardNormalizer: {
 				DisplayName: Copper Card Normalizer
-				Tooltip: "Have a chance to reduce the chance of getting bad stats by 0 to 10%"
+				Tooltip: Have a chance to reduce the chance of getting bad stats by 0 to 10%
 			}
 
 			SilverCardNormalizer: {
 				DisplayName: Silver Card Normalizer
-				Tooltip: "Have a chance to reduce the chance of getting bad stats by 5 to 20%"
+				Tooltip: Have a chance to reduce the chance of getting bad stats by 5 to 20%
 			}
 
 			GoldCardNormalizer: {
 				DisplayName: Gold Card Normalizer
-				Tooltip: "Have a chance to reduce the chance of getting bad stats by 15 to 35%"
+				Tooltip: Have a chance to reduce the chance of getting bad stats by 15 to 35%
 			}
 
 			PlatinumCardNormalizer: {
 				DisplayName: Platinum Card Normalizer
-				Tooltip: "Have a chance to reduce the chance of getting bad stats by 25 to 65%"
+				Tooltip: Have a chance to reduce the chance of getting bad stats by 25 to 65%
 			}
 		}
 
@@ -1525,7 +1525,7 @@ Mods: {
 
 			MysteriousPotionBuff: {
 				DisplayName: Mysterious Potion Buff
-				Description: "?"
+				Description: ?
 			}
 
 			copperRageMode: {

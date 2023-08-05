@@ -13,8 +13,6 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.GameContent.Tile_Entities;
-using System.Linq;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -311,7 +309,7 @@ namespace BossRush.Contents.Items.Card
             CardStats.Clear();
             CardStatsNumber.Clear();
             modplayer.CardTracker++;
-            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + 1, 0, 200);
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + Main.rand.Next(PostTierModify + 1), 0, 200);
             Main.NewText(modplayer.CardLuck);
             return true;
         }

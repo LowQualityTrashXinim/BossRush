@@ -155,7 +155,7 @@ namespace BossRush.Contents.Items.Potion
                         player.GetDamage(DamageClass.Generic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
                         break;
                     case PlayerStats.CritChance:
-                        player.GetCritChance(DamageClass.Generic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+                        player.GetCritChance(DamageClass.Generic) += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
                         break;
                     case PlayerStats.CritDamage:
                         modplayer.CritDMG += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
@@ -188,6 +188,7 @@ namespace BossRush.Contents.Items.Potion
             return point;
         }
         public float CritDMG = 0;
+        public float CritChance = 0;
         public float ToStatsNumFloat(PlayerStats stats, int multi) => lookupDictionary[stats] * multi * .01f;
 
         public int ToStatsNumInt(PlayerStats stats, int multi) => lookupDictionary[stats] * multi;
@@ -196,6 +197,7 @@ namespace BossRush.Contents.Items.Potion
         {
             base.ResetEffects();
             CritDMG = 0;
+            CritChance = 0;
             if (!Player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>()))
             {
                 if (Stats.Count > 0)
@@ -225,6 +227,10 @@ namespace BossRush.Contents.Items.Potion
             { PlayerStats.MaxMinion, 1 },
             { PlayerStats.MaxSentry, 1 },
         };
+        public override void ModifyWeaponCrit(Item item, ref float crit)
+        {
+            crit += CritChance;
+        }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             modifiers.CritDamage += Math.Clamp(CritDMG * .01f, 0, 999999);
