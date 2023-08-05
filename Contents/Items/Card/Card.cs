@@ -27,6 +27,7 @@ namespace BossRush.Contents.Items.Card
             Item.BossRushDefaultToConsume(30, 24);
             Item.UseSound = SoundID.Item35;
             PostCardSetDefault();
+            CursedID = -1;
         }
         public virtual void PostCardSetDefault() { }
         public virtual void ModifyCardToolTip(ref List<TooltipLine> tooltips, PlayerCardHandle modplayer)
@@ -65,17 +66,6 @@ namespace BossRush.Contents.Items.Card
         public override void UpdateInventory(Player player)
         {
             base.UpdateInventory(player);
-            if (CursedID == -1)
-            {
-                return;
-            }
-            PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
-            if (modplayer.listCursesID.Count >= 12)
-            {
-                CursedID = -1;
-                return;
-            }
-            CursedID = Main.rand.Next(12) + 1;
         }
         //since we only add 1 curse per card, this don't need to be a list
         public int CursedID = -1;
@@ -221,7 +211,11 @@ namespace BossRush.Contents.Items.Card
                 int offsetPos = (i + 1) * 20;
                 if (modplayer.ReducePositiveCardStat && CardStatsNumber[i] > 0)
                 {
-                    CardStatsNumber[i] *= PlayerCardHandle.ReducePositiveCardStatByHalf;
+                    if (BossRushUtils.DoesStatsRequiredWholeNumber(CardStats[i]))
+                        CardStatsNumber[i] = (int)(PlayerCardHandle.ReducePositiveCardStatByHalf * CardStatsNumber[i]);
+                    else
+                        CardStatsNumber[i] *= PlayerCardHandle.ReducePositiveCardStatByHalf;
+
                 }
                 switch (CardStats[i])
                 {
@@ -294,13 +288,18 @@ namespace BossRush.Contents.Items.Card
             }
             if (CursedID != -1)
             {
-                if (modplayer.listCursesID.Count < 12)
+                List<int> list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+                if (modplayer.listCursesID.Count < list.Count)
                 {
-                    CursedID = Main.rand.Next(1, 12);
-                    while (modplayer.listCursesID.Contains(CursedID))
+                    foreach (var item in modplayer.listCursesID)
                     {
-                        CursedID = Main.rand.Next(1, 12);
+                        if (list.Contains(item))
+                            list.Remove(item);
                     }
+                    if (list.Count > 1)
+                        CursedID = Main.rand.Next(list);
+                    else
+                        CursedID = list[0];
                     modplayer.listCursesID.Add(CursedID);
                     BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
                     modplayer.ListIsChange = true;
@@ -308,8 +307,9 @@ namespace BossRush.Contents.Items.Card
             }
             CardStats.Clear();
             CardStatsNumber.Clear();
+            CursedID = -1;
             modplayer.CardTracker++;
-            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + Main.rand.Next(PostTierModify + 1), 0, 200);
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + Main.rand.Next(PostTierModify + 1) + 1, 0, 200);
             Main.NewText(modplayer.CardLuck);
             return true;
         }

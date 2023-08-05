@@ -5,6 +5,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Artifact;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -48,7 +49,13 @@ namespace BossRush.Contents.Items.Card
         {
             base.RightClick(player);
             var entitySource = player.GetSource_OpenItem(Type);
-            for (int i = 0; i < CardAmount; i++)
+            int amount = CardAmount;
+            ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            if (modplayer.ArtifactDefinedID == 1)
+                amount += 2;
+            if (modplayer.ArtifactDefinedID == 7)
+                amount += Main.rand.Next(4);
+            for (int i = 0; i < amount; i++)
             {
                 if (Main.rand.NextBool(CardItem.PlatinumCardDropChance) || PacketType == 4)
                 {

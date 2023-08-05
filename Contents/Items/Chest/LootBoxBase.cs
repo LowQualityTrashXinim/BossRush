@@ -955,11 +955,21 @@ namespace BossRush.Contents.Items.Chest
     public class ChestLootDropPlayer : ModPlayer
     {
         public int CurrentSectionAmountOfChestOpen = 0;
+        //To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
+        //Alternatively we can use this to handle all the data itself
+
+        //This is global modifier ( aka amount modifier to all )
         public float finalMultiplier = 1f;
         public int amountModifier = 0;
+        //This is inner modifier ( aka amount modifier to x stuff )
+        public int ModifyWeaponAmountAddition = 0;
+        public int ModifyPotionTypeAmountAddition = 0;
+        public int ModifyPotionNumberAmountAddition = 0;
+        //Do not touch this
         public int weaponAmount;
         public int potionTypeAmount;
         public int potionNumAmount;
+        //Chest weapon prefer drop modify
         public float MeleeChanceMutilplier = 1f;
         public float RangeChanceMutilplier = 1f;
         public float MagicChanceMutilplier = 1f;
@@ -994,14 +1004,17 @@ namespace BossRush.Contents.Items.Chest
                 potionTypeAmount += 1;
                 potionNumAmount += 1;
             }
-            weaponAmount = ModifyGetAmount(weaponAmount);
-            potionTypeAmount = ModifyGetAmount(potionTypeAmount);
-            potionNumAmount = ModifyGetAmount(potionNumAmount);
+            weaponAmount = ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition);
+            potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition);
+            potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition);
         }
         public override void ResetEffects()
         {
             amountModifier = 0;
             finalMultiplier = 1f;
+            ModifyWeaponAmountAddition = 0;
+            ModifyPotionTypeAmountAddition = 0;
+            ModifyPotionNumberAmountAddition = 0;
             base.ResetEffects();
         }
         public override void Initialize()

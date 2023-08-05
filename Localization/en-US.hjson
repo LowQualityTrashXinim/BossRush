@@ -730,7 +730,9 @@ Mods: {
 				Tooltip:
 					'''
 					"Satisfied by just having, caring not for weapon quality"
-					Positive effect : Increase amount of drop by 4
+					Positive effect : 
+					+ Increase amount of drop by 4 
+					+ Increase amount of card from packet by 2
 					Negative effect : Decrease weapon damage globally by 35%
 					'''
 				DisplayName: Token of greed
@@ -794,7 +796,9 @@ Mods: {
 					'''
 					"Run like how you want"
 					Positive effect : Increase your movement capacity massively
-					Negative effect : You can't fly with wing and randomize your damage when moving
+					Negative effect : 
+					- You can't fly with wing
+					- Negative randomize your damage when moving
 					'''
 			}
 
@@ -804,8 +808,12 @@ Mods: {
 					'''
 					"I Summon pot of greed ! it allow me to draw 2 card from the deck"
 					Banned for many reason
-					Postive effect : Increase card drop rate by a lot when boss is alive
-					Negative effect : Increase the chance of faulty card
+					Postive effect : 
+					+ Increase card packet drop rate by a lot when boss is alive
+					+ Card packet can drop potentially more cards ( up to 3 )
+					Negative effect : 
+					- Accelerate the bad card luck
+					- Increase the chance to get faulty card
 					'''
 			}
 

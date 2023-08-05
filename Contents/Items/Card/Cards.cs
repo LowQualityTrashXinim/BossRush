@@ -91,6 +91,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.DropAmountIncrease = 0;
             modplayer.MinionSlot = 0;
             modplayer.SentrySlot = 0;
+            modplayer.CardLuck = 0;
             modplayer.listCursesID.Clear();
         }
     }
