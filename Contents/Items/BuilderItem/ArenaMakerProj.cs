@@ -51,10 +51,16 @@ namespace BossRush.Contents.Items.BuilderItem
                 else
                 {
                     WorldGen.PlaceTile(xPos, yPos, TileID.Platforms);
+                    Tile tileAbove = Main.tile[xPos, yPos - 1];
+                    if (x % 25 == 0 && tileAbove != null)
+                    {
+                        WorldGen.PlaceTile(xPos, yPos - 1, TileID.Torches);
+                        if (Main.netMode == NetmodeID.Server)
+                            NetMessage.SendTileSquare(-1, xPos, yPos - 1, 1);
+                    }
                 }
                 if (Main.netMode == NetmodeID.Server)
                     NetMessage.SendTileSquare(-1, xPos, yPos, 1);
-
             }
         }
     }

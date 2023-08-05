@@ -98,7 +98,7 @@ namespace BossRush.Contents.Items.Chest
                     ModContent.ItemType<TitanElixir>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
             }
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<BuilderTreasureChest>());
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<BuilderLootBox>());
             player.QuickSpawnItem(entitySource, ItemID.SlimeCrown);
             player.QuickSpawnItem(entitySource, ItemID.GrapplingHook);
             player.QuickSpawnItem(entitySource, ItemID.LesserHealingPotion, 5);

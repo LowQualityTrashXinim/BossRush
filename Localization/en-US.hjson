@@ -1418,6 +1418,11 @@ Mods: {
 				DisplayName: Platinum Card Normalizer
 				Tooltip: Have a chance to reduce the chance of getting bad stats by 25 to 65%
 			}
+
+			BuilderLootBox: {
+				DisplayName: Builder Loot Box
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
