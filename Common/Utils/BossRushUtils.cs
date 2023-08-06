@@ -85,6 +85,8 @@ namespace BossRush
         /// <param name="v2"></param>
         /// <returns></returns>
         public static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
+        public static bool LookForSpecificNPC(int type) => Main.npc.Where(npc => npc.type == type).Any();
+        
         public static bool LookForHostileNPC(this Vector2 position, float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)

@@ -91,6 +91,7 @@ namespace BossRush.Contents.Items.Card
             modplayer.DropAmountIncrease = 0;
             modplayer.MinionSlot = 0;
             modplayer.SentrySlot = 0;
+            modplayer.Thorn = 0;
             modplayer.CardLuck = 0;
             modplayer.listCursesID.Clear();
         }
@@ -249,22 +250,6 @@ namespace BossRush.Contents.Items.Card
         {
             return true;
         }
-        //public override bool CanRightClick() => true;
-        //public override void RightClick(Player player)
-        //{
-        //    int item = player.QuickSpawnItem(null, ModContent.ItemType<CursedCard>());
-        //    if (Main.item[item].ModItem is CursedCard card)
-        //    {
-        //        if (card.cursesID > 12)
-        //        {
-        //            card.cursesID = 0;
-        //        }
-        //        else
-        //        {
-        //            card.cursesID++;
-        //        }
-        //    }
-        //}
         public override void OnUseItem(Player player, PlayerCardHandle modplayer)
         {
             if (player.altFunctionUse == 2)

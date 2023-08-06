@@ -191,7 +191,7 @@ namespace BossRush.Common.Global
             }
             RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
             int amount = NumOfProjectile + modplayer.ProjectileAmountModify;
-            if(itemIsAShotgun)
+            if (itemIsAShotgun)
             {
                 return true;
             }

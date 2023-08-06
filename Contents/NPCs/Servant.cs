@@ -141,7 +141,7 @@ namespace BossRush.Contents.NPCs
         public override void SetDefaults()
         {
             Projectile.scale = .5f;
-            Projectile.width = Projectile.height = 15;
+            Projectile.width = Projectile.height = 30;
             Projectile.penetrate = 1;
             Projectile.friendly = false;
             Projectile.hostile = true;
