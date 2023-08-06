@@ -6,21 +6,31 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using System.Media;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 {
     public class StreetLamp : SynergyModItem
     {
+
+        public override void SetStaticDefaults()
+        {
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(15,6));
+
+        }
+
         int lampY = -64;
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(128, 128, 18, 0, 32, 32, ItemUseStyleID.HoldUp, true);
+            Item.BossRushSetDefault(62, 62, 20, 0, 32, 32, ItemUseStyleID.HoldUp, true);
             Item.DamageType = DamageClass.Summon;
             Item.shoot = ModContent.ProjectileType<MothProj>();
             Item.mana = 15;
             Item.noMelee = true;
             Item.holdStyle = ItemHoldStyleID.HoldUp;
             Item.rare = 3;
+            Item.UseSound= SoundID.Item46;
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -60,8 +70,11 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             player.itemLocation = player.Center + new Vector2(8 * player.direction, 16);
         }
 
+        
+
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
+            tooltips.Add(new TooltipLine(Mod, "StreetLampTooltip", "Summons a Moth to protect their Lamp"));
             if (modplayer.StreetLamp_VampireFrogStaff)
             {
                 tooltips.Add(new TooltipLine(Mod, "StreetLamp_VampireFrogStaff",
@@ -84,6 +97,8 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
             return false;
         }
+
+        
 
         public override void AddRecipes()
         {
@@ -190,6 +205,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
                     npc.Center.LookForHostileNPC(out List<NPC> npclist, 200);
                     foreach (var entity in npclist)
                     {
+                        SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot);
                         entity.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 3, (Projectile.Center.X <= entity.Center.X).BoolOne(), false, 8, DamageClass.Summon, true));
                         entity.AddBuff(BuffID.OnFire3, 300);
                         player.addDPS(Projectile.damage * 3);
@@ -263,13 +279,13 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
 
         public void behavior(Player owner, Vector2 vectorToIdlePosition, float distanceToIdlePosition, bool foundTarget, float distanceFromTarget, Vector2 targetCenter, PlayerSynergyItemHandle modplayer)
         {
-            float baseSpeed = 15f;
+            float baseSpeed = 20f;
             // projectile speed scales with whip attack speed for extra synergy juice
             float speed = (baseSpeed * owner.GetAttackSpeed(DamageClass.SummonMeleeSpeed)) + (modplayer.StreetLamp_VampireFrogStaff == true ? baseSpeed * 0.15f : 0f);
             //placeholder
             Vector2 dashAt = owner.Center;
             // dashDurtion = distance/speed + baseDashDuration
-            int baseDashDuration = 8;
+            int baseDashDuration = 10;
             int baseWindUpDuration = 20;
             float inertia;
             bool attackable = foundTarget && distanceFromTarget <= 1000f;
