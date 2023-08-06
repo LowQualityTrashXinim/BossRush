@@ -57,9 +57,7 @@ namespace BossRush.Common
         private void GodDecision()
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
-            {
                 return;
-            }
             if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()))
                 return;
             CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
@@ -73,7 +71,7 @@ namespace BossRush.Common
                 Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
                 NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
                 BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
-                CooldownCheck = 9999;
+                CooldownCheck = 999;
                 GodAreEnraged = false;
             }
         }

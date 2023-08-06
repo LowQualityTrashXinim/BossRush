@@ -58,6 +58,9 @@ namespace BossRush.Contents.Items.Weapon
         public bool StreetLamp_VampireFrogStaff = false;
         public int StreetLamp_VampireFrogStaff_HitCounter = 0;
 
+        public bool OrbOfEnergy_BookOfSkulls = false;
+        public bool OrbOfEnergy_WaterBolt = false;
+
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -94,6 +97,8 @@ namespace BossRush.Contents.Items.Weapon
             StreetLamp_Firecracker = false;
             StreetLamp_VampireFrogStaff = false;
 
+            OrbOfEnergy_BookOfSkulls = false;
+            OrbOfEnergy_WaterBolt = false;
         }
         int check = 1;
         public override void PostUpdate()
