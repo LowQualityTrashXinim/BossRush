@@ -126,7 +126,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin
             if (Projectile.timeLeft > duration)
             {
                 Projectile.timeLeft = duration;
-                if (Main.rand.NextBool(4))
+                if(modplayer.AmberBoneSpear_MandibleBlade && Main.rand.NextBool(4))
                     Projectile.NewProjectile(
                         Projectile.GetSource_FromAI(),
                         Projectile.Center,

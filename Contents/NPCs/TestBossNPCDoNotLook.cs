@@ -77,7 +77,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 90;
-                NPC.ai[1] = Main.rand.Next(1, 4);
+                NPC.ai[1] = Main.rand.Next(1, 3);
             }
         }
         private void ShootShortSword()

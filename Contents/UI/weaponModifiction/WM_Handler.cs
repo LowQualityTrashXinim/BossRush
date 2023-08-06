@@ -44,12 +44,17 @@ namespace BossRush.Contents.UI.weaponModifiction
         //extract the infos about the item to make the UI use some of it
         public void getItemInfoForUI(Item item)
         {
-
             Height.Set(item.height * slotItemScale, 0f);
             Width.Set(item.width * slotItemScale, 0f);
         }
-
-
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
+            if (Main.mouseItem is not null)
+            {
+                item = Main.mouseItem;
+            }
+        }
         public override int CompareTo(object obj)
         {
             WM_ItemSlot Test = obj as WM_ItemSlot;
@@ -58,7 +63,6 @@ namespace BossRush.Contents.UI.weaponModifiction
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-
             CalculatedStyle innerDimensions = GetInnerDimensions();
             innerDimensions = pos;
             innerDimensions.X += slotSprite.Width * slotItemScale / 2f;
@@ -66,25 +70,18 @@ namespace BossRush.Contents.UI.weaponModifiction
 
             //draw the slot sprite first
             spriteBatch.Draw(slotSprite, pos.Position(), Color.White);
-
             // check if theres item to show an item sprite
-            
             if(item != null)
             {
                 Main.instance.LoadItem(item.type);
                 item.GetColor(Color.Beige);
                 Color itemAlpha = item.GetAlpha(Color.White);
                 Color itemColor = item.GetColor(Color.White);
-
                 Rectangle rect = TextureAssets.Item[item.type].Frame(1, 1, 0, 0);
                 spriteBatch.Draw(TextureAssets.Item[item.type].Value, innerDimensions.Position(), new Rectangle?(rect), itemAlpha, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                 spriteBatch.Draw(TextureAssets.Item[item.type].Value, innerDimensions.Position(), new Rectangle?(rect), itemColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-
                 if (IsMouseHovering)
                     Main.hoverItemName = item.Name;
-
-
-
             }
 
         }
@@ -92,28 +89,20 @@ namespace BossRush.Contents.UI.weaponModifiction
 
     public class WM_UI : UIState
     {
-
         public WM_ItemSlot itemSlot;
-        
-
-        public override void OnInitialize()
+        public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+            return;
             var player = Main.LocalPlayer.GetModPlayer<WM_modPlayer>();
-            
-
-
             for(int i = 0; i < player.WM_availableSlots; i++)
             {
-
                 itemSlot = new WM_ItemSlot(player.storedItems[i], i);
-
                 Append(itemSlot);
-
             }
-
-
-            
-
+        }
+        public override void OnInitialize()
+        {
         }
     }
 
@@ -125,28 +114,22 @@ namespace BossRush.Contents.UI.weaponModifiction
         {
             if (!Main.dedServ)
             {
-                
                 slot = new();
                 userInterface = new();
-                
-
-
             }
         }
         public override void UpdateUI(GameTime gameTime)
         {
+            return;
             userInterface?.Update(gameTime);
             if (Main.playerInventory)
-            {
                 userInterface?.SetState(slot);
-
-            } 
             else 
                 userInterface?.SetState(null);
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-
+            return;
             int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             if (InventoryIndex != -1)
             {
@@ -173,11 +156,14 @@ namespace BossRush.Contents.UI.weaponModifiction
 
         public override void OnEnterWorld()
         {
-            storedItems[0] = 4;
-            storedItems[1] = 2;
-            storedItems[2] = 98;
+            storedItems[0] = ItemID.ActiveStoneBlock;
+            storedItems[1] = ItemID.Minishark;
+            storedItems[2] = ItemID.TerraBlade;
         }
-
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+        }
         public override void Initialize()
         {
             base.Initialize();

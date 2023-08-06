@@ -18,12 +18,12 @@ namespace BossRush.Contents.Items.aDebugItem
             base.ModifyTooltips(tooltips);
             PlayerCardHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
             string Curses = "";
-            foreach(var curses in cardplayer.listCursesID)
+            foreach (var curses in cardplayer.listCursesID)
             {
                 Curses += $"{{{cardplayer.CursedStringStats(curses)}}}\n";
             }
             TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
-                "The below are card's bonus stats"+
+                "The below are card's bonus stats" +
                 $"\nMelee Damage : {cardplayer.MeleeDMG}" +
                 $"\nRange Damage : {cardplayer.RangeDMG}" +
                 $"\nMagic Damage : {cardplayer.MagicDMG}" +
@@ -40,7 +40,8 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nMovement speed : {cardplayer.Movement}" +
                 $"\nJump speed : {cardplayer.JumpBoost}" +
                 $"\nMax minion : {cardplayer.MinionSlot}" +
-                $"\nMax sentry/turret : {cardplayer.SentrySlot}"+
+                $"\nMax sentry/turret : {cardplayer.SentrySlot}" +
+                $"\nThorn : {cardplayer.Thorn}" +
                 $"\nCard luck ( max value 200 ) : {cardplayer.CardLuck}" +
                 "\n-Below are curses that you have-\n" +
                 Curses
