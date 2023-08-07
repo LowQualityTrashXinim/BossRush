@@ -61,9 +61,11 @@ namespace BossRush.Contents.Items.Weapon
         public bool OrbOfEnergy_BookOfSkulls = false;
         public bool OrbOfEnergy_WaterBolt = false;
 
+        public bool SinisterBook_DemonScythe = false;
+
+        public bool StarLightDistributer_MagicMissile = false;
         public override void ResetEffects()
         {
-            base.ResetEffects();
             BurningPassion_WandofFrosting = false;
 
             DarkCactus_BatScepter = false;
@@ -99,6 +101,10 @@ namespace BossRush.Contents.Items.Weapon
 
             OrbOfEnergy_BookOfSkulls = false;
             OrbOfEnergy_WaterBolt = false;
+
+            SinisterBook_DemonScythe = false;
+
+            StarLightDistributer_MagicMissile = false;
         }
         int check = 1;
         public override void PostUpdate()

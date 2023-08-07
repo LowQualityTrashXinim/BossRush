@@ -462,7 +462,7 @@ Mods: {
 			StarLightDistributer: {
 				Tooltip:
 					'''
-					It is beautiful to look at
+					"It is beautiful to look at"
 					Effect may differ depend on when and where you use this
 					'''
 				DisplayName: Star Light Distributer
