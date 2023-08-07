@@ -40,15 +40,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         {
             Projectile.width = Projectile.height = 18;
             Projectile.friendly = true;
-            Projectile.tileCollide = false;
-            Projectile.timeLeft = 300;
+            Projectile.tileCollide = true;
+            Projectile.timeLeft = 200;
             Projectile.penetrate = 3;
             Projectile.DamageType = DamageClass.Magic;
         }
         Vector2 firstframePos = Vector2.Zero;
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            if (Projectile.timeLeft == 300)
+            if (Projectile.timeLeft == 200)
             {
                 Projectile.velocity = Vector2.Zero;
                 firstframePos = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero);

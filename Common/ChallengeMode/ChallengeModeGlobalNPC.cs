@@ -14,10 +14,10 @@ namespace BossRush.Common.ChallengeMode
         }
         public override void AI(NPC npc)
         {
-            //if (npc.type == NPCID.KingSlime)
-            //{
-            //    KingSlimeAI(npc);
-            //}
+            if (npc.type == NPCID.KingSlime)
+            {
+                KingSlimeAI(npc);
+            }
         }
         private void KingSlimeAI(NPC npc)
         {
@@ -217,7 +217,7 @@ namespace BossRush.Common.ChallengeMode
                 npc.ai[0]++;
                 num236 = MathHelper.Clamp(npc.ai[0] / 30f, 0f, 1f);
                 num236 = 0.5f + num236 * 0.5f;
-                if (npc.ai[0] >= 30f && Main.netMode != 1)
+                if (npc.ai[0] >= 30f && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     npc.ai[1] = 0f;
                     npc.ai[0] = 0f;
@@ -225,7 +225,7 @@ namespace BossRush.Common.ChallengeMode
                     npc.TargetClosest();
                 }
 
-                if (Main.netMode == 1 && npc.ai[0] >= 60f)
+                if (Main.netMode == NetmodeID.MultiplayerClient && npc.ai[0] >= 60f)
                 {
                     npc.ai[1] = 0f;
                     npc.ai[0] = 0f;
@@ -241,7 +241,7 @@ namespace BossRush.Common.ChallengeMode
                 }
             }
 
-            npc.dontTakeDamage = (npc.hide = flag8);
+            npc.dontTakeDamage = npc.hide = flag8;
             if (npc.velocity.Y == 0f)
             {
                 npc.velocity.X *= 0.8f;
@@ -270,27 +270,34 @@ namespace BossRush.Common.ChallengeMode
                     {
                         npc.netUpdate = true;
                         npc.TargetClosest();
+                        float jumpStrength = 0;
+                        float MoveSpeed = 0;
+                        float DelayAttack = 0;
                         switch (npc.ai[1])
                         {
                             case 2:
-                            npc.velocity.Y = -6f;
-                            npc.velocity.X += 4.5f * npc.direction;
-                            npc.ai[0] = -120f;
-                            npc.ai[1] += 1f;
+                                jumpStrength = -6;
+                                MoveSpeed = 4.5f;
+                                DelayAttack = -120;
+                                npc.ai[1] += 1f;
                                 break;
                             case 3:
-                            npc.velocity.Y = -13f;
-                            npc.velocity.X += 3.5f * npc.direction;
-                            npc.ai[0] = -200f;
-                            npc.ai[1] = 0f;
+                                KingSlimeStartOfBigJump(npc, ref jumpStrength, ref MoveSpeed, ref DelayAttack);
+                                jumpStrength = -13f;
+                                MoveSpeed = 3.5f;
+                                DelayAttack = -200f;
+                                npc.ai[1] = 0f;
                                 break;
                             default:
-                            npc.velocity.Y = -8f;
-                            npc.velocity.X += 4f * npc.direction;
-                            npc.ai[0] = -120f;
-                            npc.ai[1] += 1f;
+                                jumpStrength = -8f;
+                                MoveSpeed = 4f;
+                                DelayAttack = -120;
+                                npc.ai[1] += 1f;
                                 break;
                         }
+                        npc.velocity.Y = jumpStrength;
+                        npc.velocity.X += MoveSpeed * npc.direction;
+                        npc.ai[0] = DelayAttack;
                     }
                     else if (npc.ai[0] >= -30f)
                     {
@@ -312,7 +319,6 @@ namespace BossRush.Common.ChallengeMode
                         npc.velocity.X *= 0.93f;
                 }
             }
-
             int num254 = Dust.NewDust(npc.position, npc.width, npc.height, 4, npc.velocity.X, npc.velocity.Y, 255, new Color(0, 80, 255, 80), npc.scale * 1.2f);
             Main.dust[num254].noGravity = true;
             dust = Main.dust[num254];
@@ -360,6 +366,19 @@ namespace BossRush.Common.ChallengeMode
                 Main.npc[slimeMinion].ai[1] = 0f;
                 if (Main.netMode == NetmodeID.Server)
                     NetMessage.SendData(23, -1, -1, null, slimeMinion);
+            }
+        }
+        private void KingSlimeAttackSwitcher(NPC nPC)
+        {
+
+        }
+        private void KingSlimeStartOfBigJump(NPC npc, ref float JumpStrength, ref float MoveSpeed, ref float DelayAttack)
+        {
+            return;
+            for (int i = 0; i < 16; i++)
+            {
+                Vector2 spreadoutring = Vector2.One.Vector2DistributeEvenly(16, 360, i) * 10f;
+                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, spreadoutring, ProjectileID.SpikedSlimeSpike, npc.damage, 4f);
             }
         }
         public override void PostAI(NPC npc)

@@ -52,8 +52,6 @@ namespace BossRush.Contents.Items.Weapon
         public bool OvergrownMinishark_CrimsonRod = false;
         public bool OvergrownMinishark_PlatinumShortSword = false;
 
-        public bool StarLightDistributer_MeteorArmor = false;
-
         public bool StreetLamp_Firecracker = false;
         public bool StreetLamp_VampireFrogStaff = false;
         public int StreetLamp_VampireFrogStaff_HitCounter = 0;
@@ -63,7 +61,9 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool SinisterBook_DemonScythe = false;
 
+        public bool StarLightDistributer_MeteorArmor = false;
         public bool StarLightDistributer_MagicMissile = false;
+        public bool StarlightDistributer_StarCannon = false;
         public override void ResetEffects()
         {
             BurningPassion_WandofFrosting = false;
@@ -105,6 +105,7 @@ namespace BossRush.Contents.Items.Weapon
             SinisterBook_DemonScythe = false;
 
             StarLightDistributer_MagicMissile = false;
+            StarlightDistributer_StarCannon = false;
         }
         int check = 1;
         public override void PostUpdate()

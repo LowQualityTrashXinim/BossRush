@@ -4,8 +4,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Common.Global;
-using System;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 {
@@ -24,11 +22,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
                 tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MeteorArmor", $"[i:{ItemID.MeteorHelmet}][i:{ItemID.MeteorSuit}][i:{ItemID.MeteorLeggings}]Attack now cost 0 mana"));
             if (modplayer.StarLightDistributer_MagicMissile)
                 tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.MagicMissile}] Shoot out magic missle"));
+            if (modplayer.StarlightDistributer_StarCannon)
+                tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.StarCannon}] Create shooting star at your position"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.MagicMissile))
                 modplayer.StarLightDistributer_MagicMissile = true;
+            if (player.HasItem(ItemID.StarCannon))
+                modplayer.StarlightDistributer_StarCannon = true;
         }
         public override Vector2? HoldoutOffset() => new Vector2(-2, 0);
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
@@ -64,6 +66,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
                 {
                     Vector2 spread = velocity.Vector2DistributeEvenly(num, 60, i);
                     Projectile.NewProjectile(source, position, spread, ProjectileID.MagicMissile, (int)(damage * 1.5f), knockback, player.whoAmI);
+                }
+            if(modplayer.StarlightDistributer_StarCannon)
+                for (int i = 0; i < 3; i++)
+                {
+                    int proj = Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100, 100), velocity * Main.rand.NextFloat(1f,2f), ProjectileID.StarCannonStar, damage * 2, knockback, player.whoAmI);
+                    Main.projectile[proj].timeLeft = 150;
                 }
             CanShootItem = false;
         }
