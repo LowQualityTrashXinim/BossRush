@@ -780,7 +780,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Protected by the Earth"
-					Positive effect : Increases your max hp by 100% with additional 100 max hp
+					Positive effect : Increases your max hp by 200% with additional 100 max hp
 					Negative effect : Getting hit will make you unable to use your weapon for 5s
 					'''
 			}
