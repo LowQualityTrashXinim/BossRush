@@ -14,10 +14,10 @@ namespace BossRush.Common.ChallengeMode
         }
         public override void AI(NPC npc)
         {
-            if (npc.type == NPCID.KingSlime)
-            {
-                KingSlimeAI(npc);
-            }
+            //if (npc.type == NPCID.KingSlime)
+            //{
+            //    KingSlimeAI(npc);
+            //}
         }
         private void KingSlimeAI(NPC npc)
         {
@@ -41,7 +41,7 @@ namespace BossRush.Common.ChallengeMode
             {
                 npc.localAI[3] = 1f;
                 flag6 = true;
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     npc.ai[0] = -100f;
                     npc.TargetClosest();
@@ -78,7 +78,7 @@ namespace BossRush.Common.ChallengeMode
                 npc.ai[2] = 0f;
                 npc.ai[0] = 0f;
                 npc.ai[1] = 5f;
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     npc.TargetClosest(false);
                     Point point3 = npc.Center.ToTileCoordinates();
@@ -153,10 +153,10 @@ namespace BossRush.Common.ChallengeMode
             if (!Collision.CanHitLine(npc.Center, 0, 0, Main.player[npc.target].Center, 0, 0) || Math.Abs(npc.Top.Y - Main.player[npc.target].Bottom.Y) > 160f)
             {
                 npc.ai[2]++;
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                     npc.localAI[0]++;
             }
-            else if (Main.netMode != 1)
+            else if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 npc.localAI[0]--;
                 if (npc.localAI[0] < 0f)
@@ -185,7 +185,7 @@ namespace BossRush.Common.ChallengeMode
                 if (npc.ai[0] == 60f)
                     Gore.NewGore(npc.GetSource_FromAI(), npc.Center + new Vector2(-40f, -npc.height / 2), npc.velocity, 734);
 
-                if (npc.ai[0] >= 60f && Main.netMode != 1)
+                if (npc.ai[0] >= 60f && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     npc.Bottom = new Vector2(npc.localAI[1], npc.localAI[2]);
                     npc.ai[1] = 6f;
@@ -193,7 +193,7 @@ namespace BossRush.Common.ChallengeMode
                     npc.netUpdate = true;
                 }
 
-                if (Main.netMode == 1 && npc.ai[0] >= 120f)
+                if (Main.netMode == NetmodeID.MultiplayerClient && npc.ai[0] >= 120f)
                 {
                     npc.ai[1] = 6f;
                     npc.ai[0] = 0f;
@@ -203,7 +203,7 @@ namespace BossRush.Common.ChallengeMode
                 {
                     for (int num249 = 0; num249 < 10; num249++)
                     {
-                        int num250 = Dust.NewDust(npc.position + Vector2.UnitX * -20f, npc.width + 40, npc.height, 4, npc.velocity.X, npc.velocity.Y, 150, new Color(78, 136, 255, 80), 2f);
+                        int num250 = Dust.NewDust(npc.position + Vector2.UnitX * -20f, npc.width + 40, npc.height, DustID.TintableDust, npc.velocity.X, npc.velocity.Y, 150, new Color(78, 136, 255, 80), 2f);
                         Main.dust[num250].noGravity = true;
                         dust = Main.dust[num250];
                         dust.velocity *= 0.5f;
@@ -234,7 +234,7 @@ namespace BossRush.Common.ChallengeMode
 
                 for (int num251 = 0; num251 < 10; num251++)
                 {
-                    int num252 = Dust.NewDust(npc.position + Vector2.UnitX * -20f, npc.width + 40, npc.height, 4, npc.velocity.X, npc.velocity.Y, 150, new Color(78, 136, 255, 80), 2f);
+                    int num252 = Dust.NewDust(npc.position + Vector2.UnitX * -20f, npc.width + 40, npc.height, DustID.TintableDust, npc.velocity.X, npc.velocity.Y, 150, new Color(78, 136, 255, 80), 2f);
                     Main.dust[num252].noGravity = true;
                     dust = Main.dust[num252];
                     dust.velocity *= 2f;
@@ -319,7 +319,7 @@ namespace BossRush.Common.ChallengeMode
                         npc.velocity.X *= 0.93f;
                 }
             }
-            int num254 = Dust.NewDust(npc.position, npc.width, npc.height, 4, npc.velocity.X, npc.velocity.Y, 255, new Color(0, 80, 255, 80), npc.scale * 1.2f);
+            int num254 = Dust.NewDust(npc.position, npc.width, npc.height, DustID.TintableDust, npc.velocity.X, npc.velocity.Y, 255, new Color(0, 80, 255, 80), npc.scale * 1.2f);
             Main.dust[num254].noGravity = true;
             dust = Main.dust[num254];
             dust.velocity *= 0.5f;
@@ -365,7 +365,7 @@ namespace BossRush.Common.ChallengeMode
                 Main.npc[slimeMinion].ai[0] = -1000 * Main.rand.Next(3);
                 Main.npc[slimeMinion].ai[1] = 0f;
                 if (Main.netMode == NetmodeID.Server)
-                    NetMessage.SendData(23, -1, -1, null, slimeMinion);
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, slimeMinion);
             }
         }
         private void KingSlimeAttackSwitcher(NPC nPC)

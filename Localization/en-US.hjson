@@ -1423,6 +1423,11 @@ Mods: {
 				DisplayName: Builder Loot Box
 				Tooltip: ""
 			}
+
+			PerkChooser: {
+				DisplayName: Perk Chooser
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

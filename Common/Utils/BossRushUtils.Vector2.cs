@@ -67,7 +67,7 @@ namespace BossRush
             if (ProjectileAmount > 1)
             {
                 rotation = MathHelper.ToRadians(rotation);
-                return vec.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
+                return vec.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / ProjectileAmount));
             }
             return vec;
         }
@@ -92,7 +92,7 @@ namespace BossRush
             {
                 counter++;
                 pos = positionCurrent + Main.rand.NextVector2Circular(halfwidth, halfheight).RotatedBy(rotation);
-            } while (!Collision.CanHitLine(positionCurrent, 0, 0, pos, 0, 0) || counter > 50);
+            } while (!Collision.CanHitLine(positionCurrent, 0, 0, pos, 0, 0) || counter < 50);
             return pos;
         }
         public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).Length() <= distance;
