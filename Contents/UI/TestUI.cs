@@ -29,7 +29,7 @@ namespace BossRush.Contents.UI
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
-                    UIImageButton btn = new UIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+                    PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer);
                     btn.Width.Pixels = texture.Width;
                     btn.Height.Pixels = texture.Height;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
