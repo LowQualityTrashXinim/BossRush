@@ -29,7 +29,7 @@ namespace BossRush.Contents.UI
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
-                    PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer);
+                    PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer, i);
                     btn.Width.Pixels = texture.Width;
                     btn.Height.Pixels = texture.Height;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
@@ -48,11 +48,22 @@ namespace BossRush.Contents.UI
     class PerkUIImageButton : UIImageButton
     {
         PerkPlayer perkplayer;
-        public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer) : base(texture)
+        Perk perk;
+        int index;
+        public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer, int index) : base(texture)
         {
             Width.Pixels = texture.Value.Width;
             Height.Pixels = texture.Value.Height;
             perkplayer = perkPlayer;
+            this.index = index;
+        }
+        public override void OnActivate()
+        {
+            base.OnActivate();
+        }
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
         }
     }
     class UISystem : ModSystem
@@ -78,7 +89,7 @@ namespace BossRush.Contents.UI
             if (resourceBarIndex != -1)
             {
                 layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
-                    "BossRush: AchievementButton",
+                    "BossRush: PerkSystem",
                     delegate
                     {
                         userInterface.Draw(Main.spriteBatch, new GameTime());
@@ -88,20 +99,6 @@ namespace BossRush.Contents.UI
                 );
             }
         }
-    }
-    public enum Perk
-    {
-        //Stackable Perk
-        IllegalTrading,
-        AlchemistKnowledge,
-        IncreaseUniversalDamage,
-        //Not stackable perk
-        ImmunityToPoison,
-        YouMadePeaceWithGod,
-        BackUpMana,
-        //Misc perk
-        SuppliesDrop,
-
     }
     class PerkPlayer : ModPlayer
     {
@@ -146,5 +143,37 @@ namespace BossRush.Contents.UI
             }
             return base.UseItem(player);
         }
+    }
+    class Perk
+    {
+        public Texture2D PerkTexture;
+        public short type = PerkID.None;
+        public Perk()
+        { 
+        }
+        public Perk(Texture2D texture)
+        {
+            PerkTexture = texture;
+        }
+    }
+    static class PerkID
+    {
+        public const short None = 0;
+
+        public const short IllegalTrading = 1;
+
+        public const short AlchemistKnowledge = 2;
+
+        public const short IncreaseUniversalDamage = 3;
+
+        public const short LifeForceParticle = 4;
+
+        public const short ImmunityToPoison = 5;
+
+        public const short YouMadePeaceWithGod = 6;
+
+        public const short BackUpMana = 7;
+
+        public const short SuppliesDrop = 8;
     }
 }

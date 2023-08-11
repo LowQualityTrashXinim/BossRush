@@ -798,7 +798,7 @@ Mods: {
 					Positive effect : Increase your movement capacity massively
 					Negative effect : 
 					- You can't fly with wing
-					- Negative randomize your damage when moving
+					- Randomize your damage to be worse when moving
 					'''
 			}
 
@@ -809,11 +809,11 @@ Mods: {
 					"I Summon pot of greed ! it allow me to draw 2 card from the deck"
 					Banned for many reason
 					Postive effect : 
-					+ Increase card packet drop rate by a lot when boss is alive
 					+ Card packet can drop potentially more cards ( up to 3 )
 					Negative effect : 
-					- Accelerate the bad card luck
 					- Increase the chance to get faulty card
+					Neutral effect :
+					= Accelerate card luck stats
 					'''
 			}
 
