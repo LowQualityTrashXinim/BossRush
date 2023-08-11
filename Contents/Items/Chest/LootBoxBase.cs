@@ -363,12 +363,12 @@ namespace BossRush.Contents.Items.Chest
             int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
             for (int i = 0; i < cardReRoll; i++)
             {
-                if (Main.rand.NextFloat() < cardplayer.CardLuck)
+                if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<BoxOfCard>());
                     continue;
                 }
-                if (Main.rand.NextFloat() < cardplayer.CardLuck * 2)
+                if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck * 2)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
                     continue;

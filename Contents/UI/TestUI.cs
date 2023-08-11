@@ -155,6 +155,7 @@ namespace BossRush.Contents.UI
         {
             PerkTexture = texture;
         }
+
     }
     static class PerkID
     {
