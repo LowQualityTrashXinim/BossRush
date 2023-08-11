@@ -9,6 +9,7 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class MagicalCardDeck : ModItem, IArtifactItem
     {
+        public int ArtifactID => ArtifactItemID.MagicalCardDeck;
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 9));
@@ -19,6 +20,5 @@ namespace BossRush.Contents.Items.Artifact
             Item.BossRushDefaultToConsume(32, 37);
             Item.rare = ItemRarityID.Cyan;
         }
-        public int ArtifactID => 7;
     }
 }

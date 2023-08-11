@@ -6,7 +6,7 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class BootOfSpeedManipulation : ModItem,IArtifactItem
     {
-        public int ArtifactID => 6;
+        public int ArtifactID => ArtifactItemID.BootOfSpeedManipulation;
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);

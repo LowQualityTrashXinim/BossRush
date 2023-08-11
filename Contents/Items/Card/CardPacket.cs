@@ -51,23 +51,26 @@ namespace BossRush.Contents.Items.Card
             var entitySource = player.GetSource_OpenItem(Type);
             int amount = CardAmount;
             ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
             if (modplayer.ArtifactDefinedID == 1)
                 amount += 2;
             if (modplayer.ArtifactDefinedID == 7)
                 amount += Main.rand.Next(4);
+            if (PacketType == 4)
+                amount = 1;
             for (int i = 0; i < amount; i++)
             {
-                if (Main.rand.NextBool(CardItem.PlatinumCardDropChance) || PacketType == 4)
+                if (Main.rand.NextFloat() < cardplayer.CardLuck|| PacketType == 4)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(CardItem.GoldCardDropChance))
+                if (Main.rand.NextFloat() < cardplayer.CardLuck * 1.5f)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
                     continue;
                 }
-                if (Main.rand.NextBool(CardItem.SilverCardDropChance))
+                if (Main.rand.NextFloat() < cardplayer.CardLuck * 3)
                 {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverCard>());
                     continue;

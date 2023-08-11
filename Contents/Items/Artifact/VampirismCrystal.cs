@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class VampirismCrystal : ModItem, IArtifactItem
     {
-        public int ArtifactID => 3;
+        public int ArtifactID => ArtifactItemID.VampirismCrystal;
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 7));

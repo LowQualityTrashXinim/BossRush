@@ -149,7 +149,7 @@ namespace BossRush.Contents.UI
         public Texture2D PerkTexture;
         public short type = PerkID.None;
         public Perk()
-        { 
+        {
         }
         public Perk(Texture2D texture)
         {
