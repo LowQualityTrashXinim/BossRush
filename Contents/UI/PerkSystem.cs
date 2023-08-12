@@ -1,18 +1,12 @@
 ﻿using Terraria;
 using Terraria.UI;
+using ReLogic.Content;
+using BossRush.Texture;
 using Terraria.ModLoader;
-using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using BossRush.Common.Utils;
-using BossRush.Texture;
-using System.IO;
-using BossRush.Contents.Items.NohitReward;
-using ReLogic.Content;
 
 namespace BossRush.Contents.UI
 {
