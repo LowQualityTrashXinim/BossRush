@@ -353,12 +353,12 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
                 }
             }
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
             if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;
             }
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
             int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
             for (int i = 0; i < cardReRoll; i++)

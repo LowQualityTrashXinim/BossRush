@@ -104,22 +104,76 @@ namespace BossRush.Contents.UI
     {
         public bool CanGetPerk = false;
         public int PerkAmount = 3;
-        public Dictionary<Perk, int> perkDictionary = new Dictionary<Perk, int>();
-
-        //Stackable Perk
-        public int TradeDamageForWeapon = 0;
-        //Not stackable perk
-        //Misc perk
+        public List<Perk> perks = new List<Perk>();
         public override void ResetEffects()
         {
-            NoHitPlayerHandle nohitplayer = Player.GetModPlayer<NoHitPlayerHandle>();
-            PerkAmount = 3 + nohitplayer.BossNoHitNumber.Count;
+            foreach (Perk perk in perks)
+            {
+                perk.ResetEffect();
+            }
         }
         public override void PostUpdate()
         {
-            base.PostUpdate();
+            foreach (Perk perk in perks)
+            {
+                perk.Update();
+            }
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+        }
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            foreach (Perk perk in perks)
+            {
+                perk.OnHitNPCWithItem(item, target, hit, damageDone);
+            }
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            foreach (Perk perk in perks)
+            {
+                perk.OnHitNPCWithProj(proj, target, hit, damageDone);
+            }
         }
     }
+    class Perk
+    {
+        public Texture2D texture;
+        public short type = PerkID.None;
+        Player player;
+        public Perk()
+        {
+        }
+        public Perk(Player player, Texture2D texture)
+        {
+            this.texture = texture;
+            this.player = player;
+        }
+        public virtual int NewPerk(int type, int whoAmI)
+        {
+            Perk perk = new Perk();
+            return type;
+        }
+        public virtual void ResetEffect()
+        {
+
+        }
+        public virtual void Update()
+        {
+
+        }
+        public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+
+        }
+        public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+
+        }
+    }
+    //This should be use to decide which perk will get spawn or get choosen
     class PerkChooser : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
@@ -132,7 +186,8 @@ namespace BossRush.Contents.UI
         {
             PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-            check = !check;
+            if (player.ItemAnimationJustStarted)
+                check = !check;
             if (check && player.ItemAnimationEndingOrEnded)
             {
                 uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
@@ -143,19 +198,6 @@ namespace BossRush.Contents.UI
             }
             return base.UseItem(player);
         }
-    }
-    class Perk
-    {
-        public Texture2D PerkTexture;
-        public short type = PerkID.None;
-        public Perk()
-        {
-        }
-        public Perk(Texture2D texture)
-        {
-            PerkTexture = texture;
-        }
-
     }
     static class PerkID
     {
@@ -176,5 +218,7 @@ namespace BossRush.Contents.UI
         public const short BackUpMana = 7;
 
         public const short SuppliesDrop = 8;
+
+        public const short CardCollection = 9;
     }
 }
