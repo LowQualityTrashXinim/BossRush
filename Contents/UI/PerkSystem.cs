@@ -59,6 +59,10 @@ namespace BossRush.Contents.UI
         {
             base.LeftClick(evt);
         }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+        }
     }
     class UISystem : ModSystem
     {
@@ -150,18 +154,38 @@ namespace BossRush.Contents.UI
             Perk perk = new Perk();
             return type;
         }
+        /// <summary>
+        /// This will run in <see cref="ModPlayer.ResetEffects"/>
+        /// </summary>
         public virtual void ResetEffect()
         {
 
         }
+        /// <summary>
+        /// This will run in <see cref="ModPlayer.PostUpdate"/>
+        /// </summary>
         public virtual void Update()
         {
 
         }
+        /// <summary>
+        /// This will run in <see cref="ModPlayer.OnHitNPCWithItem(Item, NPC, NPC.HitInfo, int)"/>
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="target"></param>
+        /// <param name="hit"></param>
+        /// <param name="damageDone"></param>
         public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
         }
+        /// <summary>
+        /// This will run in <see cref="ModPlayer.OnHitNPCWithProj(Projectile, NPC, NPC.HitInfo, int)"/>
+        /// </summary>
+        /// <param name="proj"></param>
+        /// <param name="target"></param>
+        /// <param name="hit"></param>
+        /// <param name="damageDone"></param>
         public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
