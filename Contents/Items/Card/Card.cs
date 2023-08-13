@@ -310,7 +310,6 @@ namespace BossRush.Contents.Items.Card
             CursedID = -1;
             modplayer.CardTracker++;
             modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + Main.rand.Next(PostTierModify + 1) + 1, 0, 200);
-            Main.NewText(modplayer.CardLuck);
             return true;
         }
         private int countX = 0;

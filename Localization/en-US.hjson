@@ -231,7 +231,7 @@ Mods: {
 			}
 
 			TopazBow: {
-				Tooltip: Create explosive land-topaz that increase the more it longer stay until self detonate
+				Tooltip: Create explosive land-topaz that increase damage the longer it stay on ground until self detonate
 				DisplayName: Topaz Bow
 			}
 
