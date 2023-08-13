@@ -1567,7 +1567,7 @@ Mods: {
 				DisplayName: Boss Rush Mod Config
 
 				EnableChallengeMode: {
-					Label: Enable Challenge Mode ( On World Generation )
+					Label: Enable Challenge World ( On World Generation )
 					Tooltip:
 						'''
 						The intended way to play the mod
@@ -1636,12 +1636,28 @@ Mods: {
 					Label: Nightmare (W.I.P)
 					Tooltip:
 						'''
+						"So you think the game is too easy ?"
 						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
 						Highly not recommend for inexperience player
 						- Enemy are much more brutal, and is immune to lava and trap
 						- NPC will gain randomize health and damage buff that range from 0% to 100%
 						- Spawn rate are increased even during boss fight
 						- Some bosses receive minor AI change and buff
+						- The mode will force Veteran mode to be activate
+						'''
+				}
+
+				NightmarePlus: {
+					Label: Nightmare+ (W.I.P)
+					Tooltip:
+						'''
+						"So you like more pain regardless of reward"
+						This mode will not treat you fair, expect hundred or even thousand of attempts
+						Extremely not recommend for any Player
+						- Enemy are even more brutal
+						- Boss will gain 5 time the hp
+						- Nightmare mode are enable by default
+						- Special debuff now can be inflict by enemy and projectile
 						'''
 				}
 			}

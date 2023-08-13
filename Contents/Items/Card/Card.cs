@@ -71,12 +71,12 @@ namespace BossRush.Contents.Items.Card
         public int CursedID = -1;
         private void SetBadStatsBaseOnTier(PlayerCardHandle modplayer, bool hasMagicDeck)
         {
-            if (Tier <= 1)
+            if (Tier <= 0)
             {
                 return;
             }
-            int RandomNumberGen = Main.rand.Next(101);
-            if (RandomNumberGen < modplayer.CardLuck | (hasMagicDeck && RandomNumberGen < modplayer.CardLuck * 2))
+            int RandomNumberGen = Main.rand.Next(101 + modplayer.CardLuck / Tier);
+            if (RandomNumberGen < modplayer.CardLuck || (hasMagicDeck && RandomNumberGen < modplayer.CardLuck * (2 + Tier)))
             {
                 RandomNumberGen = Main.rand.Next(101);
                 if (RandomNumberGen < modplayer.CardLuck - 100)
@@ -85,7 +85,7 @@ namespace BossRush.Contents.Items.Card
                 }
                 PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
                 CardStats.Add(badstat);
-                CardStatsNumber.Add(statsCalculator(badstat, -3));
+                CardStatsNumber.Add(statsCalculator(badstat, -Tier));
             }
         }
         /// <summary>
@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Card
         {
             if (CursedID != -1 && multi > 0)
             {
-                multi *= 3;
+                multi += 2 + PostTierModify;
             }
             float statsNum = Main.rand.Next(1, 4);
             if (BossRushUtils.DoesStatsRequiredWholeNumber(stats))
@@ -309,7 +309,7 @@ namespace BossRush.Contents.Items.Card
             CardStatsNumber.Clear();
             CursedID = -1;
             modplayer.CardTracker++;
-            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + Main.rand.Next(PostTierModify + 1) + 1, 0, 200);
+            modplayer.CardLuck = Math.Clamp(modplayer.CardLuck + Main.rand.Next(PostTierModify + 1), 0, 200);
             return true;
         }
         private int countX = 0;
