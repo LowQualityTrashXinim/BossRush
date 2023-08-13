@@ -101,6 +101,16 @@ namespace BossRush.Contents.Items.Artifact
             }
         }
     }
+    class ArtifactItemID
+    {
+        public const short TokenOfGreed = 1;
+        public const short TokenOfPride = 2;
+        public const short VampirismCrystal = 3;
+        public const short HeartOfEarth = 4;
+        public const short FateDecider = 5;
+        public const short BootOfSpeedManipulation = 6;
+        public const short MagicalCardDeck = 7;
+    }
     class ArtifactPlayerHandleLogic : ModPlayer
     {
         public const int ArtifactDefaultID = 999;

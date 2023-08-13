@@ -462,7 +462,7 @@ Mods: {
 			StarLightDistributer: {
 				Tooltip:
 					'''
-					It is beautiful to look at
+					"It is beautiful to look at"
 					Effect may differ depend on when and where you use this
 					'''
 				DisplayName: Star Light Distributer
@@ -780,7 +780,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Protected by the Earth"
-					Positive effect : Increases your max hp by 100% with additional 100 max hp
+					Positive effect : Increases your max hp by 200% with additional 100 max hp
 					Negative effect : Getting hit will make you unable to use your weapon for 5s
 					'''
 			}
@@ -798,7 +798,7 @@ Mods: {
 					Positive effect : Increase your movement capacity massively
 					Negative effect : 
 					- You can't fly with wing
-					- Negative randomize your damage when moving
+					- Randomize your damage to be worse when moving
 					'''
 			}
 
@@ -809,11 +809,11 @@ Mods: {
 					"I Summon pot of greed ! it allow me to draw 2 card from the deck"
 					Banned for many reason
 					Postive effect : 
-					+ Increase card packet drop rate by a lot when boss is alive
 					+ Card packet can drop potentially more cards ( up to 3 )
 					Negative effect : 
-					- Accelerate the bad card luck
 					- Increase the chance to get faulty card
+					Neutral effect :
+					= Accelerate card luck stats
 					'''
 			}
 
@@ -1421,6 +1421,11 @@ Mods: {
 
 			BuilderLootBox: {
 				DisplayName: Builder Loot Box
+				Tooltip: ""
+			}
+
+			PerkChooser: {
+				DisplayName: Perk Chooser
 				Tooltip: ""
 			}
 		}

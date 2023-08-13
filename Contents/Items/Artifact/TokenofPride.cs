@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class TokenofPride : ModItem, IArtifactItem
     {
-        public int ArtifactID => 2;
+        public int ArtifactID => ArtifactItemID.TokenOfPride;
 
         public override void SetStaticDefaults()
         {

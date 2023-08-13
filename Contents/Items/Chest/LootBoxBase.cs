@@ -353,26 +353,27 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
                 }
             }
-            player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
             //Card dropping
             if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 return;
             }
-            if (Main.rand.NextBool(25) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(7)))
+            player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
+            PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
+            int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
+            for (int i = 0; i < cardReRoll; i++)
             {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
-                return;
-            }
-            if (Main.rand.NextBool(15) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 && Main.rand.NextBool(4)))
-            {
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
-                return;
-            }
-            if (Main.rand.NextBool(7) || (player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7))
-            {
+                if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck)
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<BoxOfCard>());
+                    continue;
+                }
+                if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck * 2)
+                {
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
+                    continue;
+                }
                 player.QuickSpawnItem(entitySource, ModContent.ItemType<CardPacket>());
-                return;
             }
         }
         public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
@@ -974,7 +975,7 @@ namespace BossRush.Contents.Items.Chest
         public float RangeChanceMutilplier = 1f;
         public float MagicChanceMutilplier = 1f;
         public float SummonChanceMutilplier = 1f;
-        private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 0;
+        private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 1;
         /// <summary>
         /// This must be called before using
         /// <br/><see cref="weaponAmount"/>
@@ -1004,7 +1005,7 @@ namespace BossRush.Contents.Items.Chest
                 potionTypeAmount += 1;
                 potionNumAmount += 1;
             }
-            weaponAmount = ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition);
+            weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition), 1, 999999);
             potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition);
             potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition);
         }
@@ -1023,6 +1024,9 @@ namespace BossRush.Contents.Items.Chest
             RangeChanceMutilplier = 1f;
             MagicChanceMutilplier = 1f;
             SummonChanceMutilplier = 1f;
+            ModifyWeaponAmountAddition = 0;
+            ModifyPotionTypeAmountAddition = 0;
+            ModifyPotionNumberAmountAddition = 0;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
@@ -1033,6 +1037,9 @@ namespace BossRush.Contents.Items.Chest
             packet.Write(RangeChanceMutilplier);
             packet.Write(MagicChanceMutilplier);
             packet.Write(SummonChanceMutilplier);
+            packet.Write(ModifyWeaponAmountAddition);
+            packet.Write(ModifyPotionTypeAmountAddition);
+            packet.Write(ModifyPotionNumberAmountAddition);
             packet.Send(toWho, fromWho);
         }
         public override void SaveData(TagCompound tag)
@@ -1041,6 +1048,9 @@ namespace BossRush.Contents.Items.Chest
             tag["RangeChanceMulti"] = RangeChanceMutilplier;
             tag["MagicChanceMulti"] = MagicChanceMutilplier;
             tag["SummonChanceMulti"] = SummonChanceMutilplier;
+            tag["ModifyWeaponAmountAddition"] = ModifyWeaponAmountAddition;
+            tag["ModifyPotionTypeAmountAddition"] = ModifyPotionTypeAmountAddition;
+            tag["ModifyPotionNumberAmountAddition"] = ModifyPotionNumberAmountAddition;
         }
         public override void LoadData(TagCompound tag)
         {
@@ -1048,6 +1058,9 @@ namespace BossRush.Contents.Items.Chest
             RangeChanceMutilplier = (float)tag["RangeChanceMulti"];
             MagicChanceMutilplier = (float)tag["MagicChanceMulti"];
             SummonChanceMutilplier = (float)tag["SummonChanceMulti"];
+            ModifyWeaponAmountAddition = (int)tag["ModifyWeaponAmountAddition"];
+            ModifyPotionTypeAmountAddition = (int)tag["ModifyPotionTypeAmountAddition"];
+            ModifyPotionNumberAmountAddition = (int)tag["ModifyPotionNumberAmountAddition"];
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {
@@ -1055,6 +1068,9 @@ namespace BossRush.Contents.Items.Chest
             RangeChanceMutilplier = reader.ReadSingle();
             MagicChanceMutilplier = reader.ReadSingle();
             SummonChanceMutilplier = reader.ReadSingle();
+            ModifyWeaponAmountAddition = reader.ReadInt32();
+            ModifyPotionTypeAmountAddition = reader.ReadInt32();
+            ModifyPotionNumberAmountAddition = reader.ReadInt32();
         }
 
         public override void CopyClientState(ModPlayer targetCopy)
@@ -1064,15 +1080,23 @@ namespace BossRush.Contents.Items.Chest
             clone.RangeChanceMutilplier = RangeChanceMutilplier;
             clone.MagicChanceMutilplier = MagicChanceMutilplier;
             clone.SummonChanceMutilplier = SummonChanceMutilplier;
+            clone.ModifyWeaponAmountAddition = ModifyWeaponAmountAddition;
+            clone.ModifyPotionTypeAmountAddition = ModifyPotionTypeAmountAddition;
+            clone.ModifyPotionNumberAmountAddition = ModifyPotionNumberAmountAddition;
         }
 
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             ChestLootDropPlayer clone = (ChestLootDropPlayer)clientPlayer;
-            if (MeleeChanceMutilplier != clone.MeleeChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (RangeChanceMutilplier != clone.RangeChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (MagicChanceMutilplier != clone.MagicChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (SummonChanceMutilplier != clone.SummonChanceMutilplier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (MeleeChanceMutilplier != clone.MeleeChanceMutilplier
+            || RangeChanceMutilplier != clone.RangeChanceMutilplier
+             || MagicChanceMutilplier != clone.MagicChanceMutilplier
+             || SummonChanceMutilplier != clone.SummonChanceMutilplier
+             || ModifyWeaponAmountAddition != clone.ModifyWeaponAmountAddition
+             || ModifyPotionTypeAmountAddition != clone.ModifyPotionTypeAmountAddition
+             || ModifyPotionNumberAmountAddition != clone.ModifyPotionNumberAmountAddition
+             )
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }
