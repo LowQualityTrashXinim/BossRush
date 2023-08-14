@@ -7,9 +7,12 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using BossRush.Common;
+using System.Linq;
 
 namespace BossRush.Contents.UI
 {
+    //Do all the check in UI state since that is where the perk actually get create and choose
     internal class PerkUIState : UIState
     {
         public override void OnActivate()
@@ -23,6 +26,12 @@ namespace BossRush.Contents.UI
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
+
+
+
+
+
+
                     PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer, i);
                     btn.Width.Pixels = texture.Width;
                     btn.Height.Pixels = texture.Height;
@@ -58,9 +67,22 @@ namespace BossRush.Contents.UI
         public override void LeftClick(UIMouseEvent evt)
         {
             base.LeftClick(evt);
+            //We are assuming the perk are auto handle
+            if (perk is not null)
+            {
+                if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perk))
+                    perkplayer.perks.Add(perk, 1);
+                else
+                    if (perkplayer.perks.ContainsKey(perk) && perk.CanBeStack)
+                    perkplayer.perks.Add(perk, perkplayer.perks[perk] + 1);
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
+            Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
+            Vector2 drawpos = perkplayer.Player.Center - Main.screenPosition - origin;
+            spriteBatch.Draw(texture, drawpos, Color.White);
             base.Draw(spriteBatch);
         }
     }
@@ -102,19 +124,27 @@ namespace BossRush.Contents.UI
     {
         public bool CanGetPerk = false;
         public int PerkAmount = 3;
-        public List<Perk> perks = new List<Perk>();
+        public Dictionary<Perk, int> perks = new Dictionary<Perk, int>();
+        public bool HasPerk(Perk perk) => perks.Keys.Where(x => x == perk).Any();
         public override void ResetEffects()
         {
-            foreach (Perk perk in perks)
+            foreach (Perk perk in perks.Keys)
             {
                 perk.ResetEffect();
             }
         }
         public override void PostUpdate()
         {
-            foreach (Perk perk in perks)
+            foreach (Perk perk in perks.Keys)
             {
                 perk.Update();
+            }
+        }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            foreach (Perk perk in perks.Keys)
+            {
+                perk.ModifyDamage(item, ref damage);
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -123,36 +153,58 @@ namespace BossRush.Contents.UI
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            foreach (Perk perk in perks)
+            foreach (Perk perk in perks.Keys)
             {
                 perk.OnHitNPCWithItem(item, target, hit, damageDone);
             }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            foreach (Perk perk in perks)
+            foreach (Perk perk in perks.Keys)
             {
                 perk.OnHitNPCWithProj(proj, target, hit, damageDone);
             }
         }
     }
-    class Perk
+    public abstract class Perk : ModType
     {
-        public Texture2D texture;
-        public short type = PerkID.None;
         Player player;
+        PerkPlayer PerkPlayer;
+        public bool CanBeStack = false;
+        public int StackAmount = 0;
+        public string textureString = null;
+        public string Tooltip = null;
+        public int Type { get; internal set; }
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode;
+        }
+        protected override sealed void Register()
+        {
+        }
+        public override void Unload()
+        {
+            player = null;
+            PerkPlayer = null;
+            textureString = null;
+            Tooltip = null;
+        }
+        public override void Load()
+        {
+            base.Load();
+            SetDefaults();
+        }
+        public virtual void SetDefaults()
+        {
+
+        }
         public Perk()
         {
         }
-        public Perk(Player player, Texture2D texture)
+        public Perk(Player player)
         {
-            this.texture = texture;
             this.player = player;
-        }
-        public virtual int NewPerk(int type, int whoAmI)
-        {
-            Perk perk = new Perk();
-            return type;
+            PerkPlayer = player.GetModPlayer<PerkPlayer>();
         }
         /// <summary>
         /// This will run in <see cref="ModPlayer.ResetEffects"/>
@@ -165,6 +217,10 @@ namespace BossRush.Contents.UI
         /// This will run in <see cref="ModPlayer.PostUpdate"/>
         /// </summary>
         public virtual void Update()
+        {
+
+        }
+        public virtual void ModifyDamage(Item item, ref StatModifier damage)
         {
 
         }
@@ -191,6 +247,18 @@ namespace BossRush.Contents.UI
 
         }
     }
+    public class GenericDamageIncrease : Perk
+    {
+        public override void SetDefaults()
+        {
+            Tooltip = "Increase damage by 50%";
+            CanBeStack = true;
+        }
+        public override void ModifyDamage(Item item, ref StatModifier damage)
+        {
+            damage += .5f;
+        }
+    }
     //This should be use to decide which perk will get spawn or get choosen
     class PerkChooser : ModItem
     {
@@ -198,6 +266,7 @@ namespace BossRush.Contents.UI
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 23);
+            Item.useTime = Item.useAnimation = 1;
         }
         bool check = false;
         public override bool? UseItem(Player player)
@@ -209,6 +278,7 @@ namespace BossRush.Contents.UI
             if (check && player.ItemAnimationEndingOrEnded)
             {
                 uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
+
             }
             else
             {
@@ -216,27 +286,5 @@ namespace BossRush.Contents.UI
             }
             return base.UseItem(player);
         }
-    }
-    static class PerkID
-    {
-        public const short None = 0;
-
-        public const short IllegalTrading = 1;
-
-        public const short AlchemistKnowledge = 2;
-
-        public const short IncreaseUniversalDamage = 3;
-
-        public const short LifeForceParticle = 4;
-
-        public const short ImmunityToPoison = 5;
-
-        public const short YouMadePeaceWithGod = 6;
-
-        public const short BackUpMana = 7;
-
-        public const short SuppliesDrop = 8;
-
-        public const short CardCollection = 9;
     }
 }

@@ -1641,14 +1641,14 @@ Mods: {
 						Highly not recommend for inexperience player
 						- Enemy are much more brutal, and is immune to lava and trap
 						- NPC will gain randomize health and damage buff that range from 0% to 100%
-						- Spawn rate are increased even during boss fight
+						- Spawn rate are increases even during boss fight
 						- Some bosses receive minor AI change and buff
 						- The mode will force Veteran mode to be activate
 						'''
 				}
 
 				NightmarePlus: {
-					Label: Nightmare+ (W.I.P)
+					Label: Ultra Nightmare (W.I.P)
 					Tooltip:
 						'''
 						"So you like more pain regardless of reward"
