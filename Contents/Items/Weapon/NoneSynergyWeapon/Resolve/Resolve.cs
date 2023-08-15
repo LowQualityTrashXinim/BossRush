@@ -13,6 +13,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         public override void SetDefaults()
         {
             Item.BossRushSetDefault(34, 54, 16, 7f, 20, 20, ItemUseStyleID.Shoot, false);
+            Item.DamageType = DamageClass.Generic;
             Item.crit = 15;
             Item.rare = ItemRarityID.Blue;
             Item.value = Item.sellPrice(0, 5);

@@ -1,4 +1,5 @@
-﻿using Terraria.IO;
+﻿using Terraria;
+using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.YouLikeToHurtYourself
@@ -7,24 +8,29 @@ namespace BossRush.Common.YouLikeToHurtYourself
     {
         public override string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().Nightmare && worldData.GameMode != 3 && !worldData.ForTheWorthy)
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
-                return "A force of pain block you from cheesing" +
-                    "\nokay, with the stupid cringe edgy line out of the way, you must play on Master difficulty world";
+                if (!ModContent.GetInstance<BossRushModConfig>().VeteranMode)
+                    return "Must be play on veteran mode";
+                return "Master difficulty world required";
             }
             return base.WorldCanBePlayedRejectionMessage(playerData, worldData);
         }
         public override bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData)
         {
-            if (ModContent.GetInstance<BossRushModConfig>().Nightmare)
+            BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+            if (config.Nightmare)
             {
-                if (worldFileData.GameMode != 3)
-                    return false;
-                if (!worldFileData.ForTheWorthy)
-                    return false;
-                return true;
+                return config.VeteranMode && worldFileData.ForTheWorthy;
             }
             return base.CanWorldBePlayed(playerData, worldFileData);
+        }
+        public override void PreWorldGen()
+        {
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare && !Main.getGoodWorld)
+            {
+                Main.getGoodWorld = true;
+            }
         }
     }
 }

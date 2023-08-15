@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
 {
@@ -17,12 +18,27 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
             Item.value = Item.buyPrice(platinum: 5);
             Item.UseSound = SoundID.Item8;
         }
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            base.ModifySynergyToolTips(ref tooltips, modplayer);
+            if (modplayer.SinisterBook_DemonScythe)
+                tooltips.Add(new TooltipLine(Mod, "SinisterBook_DemonScythe", $"[i:{ItemID.DemonScythe}] Where the sinister bolt explode will spawn a demon scythe that aim back to player"));
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if (player.HasItem(ItemID.DemonScythe))
+                modplayer.SinisterBook_DemonScythe = true;
+        }
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
+            base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             position = position.PositionOFFSET(velocity, 30);
             for (int i = 0; i < Main.rand.Next(3, 5); i++)
             {
-                velocity = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.NextBool(2) ? Main.rand.Next(40, 90) : -Main.rand.Next(40, 90)));
+                velocity = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(60, 90) * Main.rand.NextBool().BoolOne()));
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SinisterBolt>(), damage, knockback, player.whoAmI);
             }
             return false;
@@ -35,18 +51,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
                 .Register();
         }
     }
-    internal class SinisterBolt : ModProjectile
+    internal class SinisterBolt : SynergyModProjectile
     {
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 20;
+            Projectile.width = Projectile.height = 10;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.light = 0.8f;
             Projectile.tileCollide = false;
             Projectile.extraUpdates = 6;
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 20;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
         Vector2 MousePosFixed;
@@ -55,9 +71,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
         int CountMain = 0;
         int CountCount = 0;
         bool CheckRotation;
-        public override void AI()
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            Player player = Main.player[Projectile.owner];
             if (CountMain == 0)
             {
                 MousePosFixed = Main.MouseWorld;
@@ -65,11 +80,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
             }
             CountMain++;
             if (CountMain == 10)
-            {
                 CheckRotation = Projectile.velocity.Y < 0;
-            }
-            if (CountMain > 10) Projectile.velocity = !DirectionFace ? CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f));
-            if (CountMain >= 60)
+            if (CountMain > 10)
+                Projectile.velocity = !DirectionFace ? 
+                    CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : 
+                    CheckRotation ? Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1f)) : Projectile.velocity.RotatedBy(MathHelper.ToRadians(1f));
+            if (CountMain >= 120)
             {
                 if (Math.Round(Projectile.velocity.X, 2) != 0 && Math.Round(Projectile.velocity.Y, 2) != 0 && count == 0)
                 {
@@ -90,7 +106,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
                 }
             }
         }
-        public override void Kill(int timeLeft)
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
         {
             Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);
             for (int i = 0; i < 25; i++)
@@ -99,10 +115,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(0.75f, 1f));
                 Main.dust[dustnumber].noGravity = true;
             }
+            if (modplayer.SinisterBook_DemonScythe)
+            {
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero), ProjectileID.DemonScythe, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Main.projectile[proj].timeLeft = 100;
+                Main.projectile[proj].usesLocalNPCImmunity = true;
+            }
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawTrail(lightColor, .05f);
+            Projectile.DrawTrailWithoutColorAdjustment(lightColor, .02f);
             return true;
         }
     }

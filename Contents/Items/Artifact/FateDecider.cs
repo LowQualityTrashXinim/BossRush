@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Artifact
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
-        public int ArtifactID => 5;
+        public int ArtifactID => ArtifactItemID.FateDecider;
 
         public override void SetDefaults()
         {

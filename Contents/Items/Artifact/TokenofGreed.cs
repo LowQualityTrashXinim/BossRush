@@ -6,7 +6,7 @@ namespace BossRush.Contents.Items.Artifact
 {
     internal class TokenofGreed : ModItem, IArtifactItem
     {
-        public int ArtifactID => 1;
+        public int ArtifactID => ArtifactItemID.TokenOfGreed;
 
         public override void SetDefaults()
         {

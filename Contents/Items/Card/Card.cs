@@ -923,31 +923,9 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
-            int cardpacket1 = ModContent.ItemType<CardPacket>()
-                , cardpacket2 = ModContent.ItemType<BigCardPacket>()
-                , cardpacket3 = ModContent.ItemType<BoxOfCard>();
             if (npc.boss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), cardpacket1, 3));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), cardpacket2, 7));
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), cardpacket3, 25));
-            }
-            else
-            {
-                if (npc.friendly || npc.lifeMax <= 5)
-                {
-                    return;
-                }
-                LeadingConditionRule rule = new LeadingConditionRule(new MagicalCardDeckException());
-                npcLoot.Add(rule.OnSuccess(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket1, 10)));
-                npcLoot.Add(rule.OnSuccess(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket2, 20)));
-                npcLoot.Add(rule.OnSuccess(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket3, 50)));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket1, 100));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket2, 200));
-                npcLoot.Add(ItemDropRule.ByCondition(new IsNotABossAndBossIsAlive(), cardpacket3, 500));
-                npcLoot.Add(ItemDropRule.Common(cardpacket1, 400));
-                npcLoot.Add(ItemDropRule.Common(cardpacket2, 600));
-                npcLoot.Add(ItemDropRule.Common(cardpacket3, 700));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<PremiumCardPacket>()));
             }
         }
     }

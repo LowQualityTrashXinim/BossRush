@@ -18,7 +18,6 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
-using System.Runtime.CompilerServices;
 
 namespace BossRush.Common
 {
@@ -28,7 +27,7 @@ namespace BossRush.Common
         public int gitGud = 0;
         public int HowManyBossIsAlive = 0;
         public bool GodAreEnraged = false;
-        public int CooldownCheck = 9999;
+        public int CooldownCheck = 999;
         public override void PreUpdate()
         {
             CheckHowManyHit();
@@ -39,7 +38,6 @@ namespace BossRush.Common
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
             Main.NewText("So sorry for the inconvenience", Color.Blue);
             Main.NewText("Developer note : You only have reach surface of the mod, the mod contain some secret, good luck", Color.Green);
-
         }
         private void SynergyEnergyCheckPlayer()
         {
@@ -59,10 +57,11 @@ namespace BossRush.Common
         private void GodDecision()
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
-            {
                 return;
-            }
+            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()))
+                return;
             CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
+            //Main.NewText(CooldownCheck);
             if (CooldownCheck <= 0)
             {
                 SynergyEnergyCheckPlayer();
@@ -72,6 +71,7 @@ namespace BossRush.Common
                 Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
                 NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
                 BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
+                CooldownCheck = 999;
                 GodAreEnraged = false;
             }
         }
