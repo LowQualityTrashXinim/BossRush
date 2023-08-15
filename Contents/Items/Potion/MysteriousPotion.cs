@@ -111,6 +111,10 @@ namespace BossRush.Contents.Items.Potion
             Main.debuff[Type] = false;
             Main.buffNoSave[Type] = true;
         }
+        public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
+        {
+            base.ModifyBuffText(ref buffName, ref tip, ref rare);
+        }
         public override void Update(Player player, ref int buffIndex)
         {
             MysteriousPotionPlayer modplayer = player.GetModPlayer<MysteriousPotionPlayer>();

@@ -641,7 +641,6 @@ namespace BossRush.Common.Global
         public override void ResetEffects()
         {
             base.ResetEffects();
-            Player.GetAttackSpeed(DamageClass.Melee) *= .64f;
         }
         bool comboExecuteWithDash = false;
         private void ExecuteSpecialComboOnActive()

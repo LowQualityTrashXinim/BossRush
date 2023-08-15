@@ -12,6 +12,7 @@ namespace BossRush.Contents.Items.BuilderItem
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(18, 56, 0, 0, 20, 20, ItemUseStyleID.Swing, ModContent.ProjectileType<NeoDynamiteExplosion>(), 11f, false);
+            Item.noUseGraphic = true;
             Item.rare = ItemRarityID.Blue;
             Item.UseSound = SoundID.Item1;
             Item.value = Item.buyPrice(0, 0, 20, 0);

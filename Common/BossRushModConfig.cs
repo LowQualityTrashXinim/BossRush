@@ -22,6 +22,9 @@ namespace BossRush.Common
         [ReloadRequired]
         [DefaultValue(false)]
         public bool Nightmare { get; set; }
+        [ReloadRequired]
+        [DefaultValue(false)]
+        public bool NightmarePlus { get; set; }
 
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }

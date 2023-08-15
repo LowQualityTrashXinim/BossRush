@@ -24,7 +24,8 @@ namespace BossRush.Contents.Items.NohitReward
             tooltips.Add(new TooltipLine(Mod, "NoHitReward",
                 "Overcoming a small challenge \n" +
                 "Reward for not getting hit \n" +
-                "Increase max HP by 50 \n" +
+                "Increase max HP by 50 " +
+                "Increase amount of perk that can be choose by 1\n" +
                 "Can only be uses once \n"
                 ));
             foreach (TooltipLine line in tooltips)
