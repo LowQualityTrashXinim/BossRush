@@ -17,7 +17,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
             Item.reuseDelay = 5;
             Item.rare = ItemRarityID.LightRed;
             Item.value = Item.buyPrice(gold: 50);
-            Item.scale = .5f;
             Item.UseSound = SoundID.Item75;
         }
         int count = 0;
