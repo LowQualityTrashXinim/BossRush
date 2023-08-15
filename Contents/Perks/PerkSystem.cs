@@ -1,16 +1,16 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.UI;
+using System.Linq;
+using BossRush.Common;
 using ReLogic.Content;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using BossRush.Common;
-using System.Linq;
-using BossRush.Contents.Items.Chest;
-using Terraria.ID;
 
 namespace BossRush.Contents.Perks
 {
@@ -43,8 +43,11 @@ namespace BossRush.Contents.Perks
                     }
                     //here we will randomize and validate perk
                     Perk newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
-                    if (!perkchooser.Contains(newperk))
-                        perkchooser[i] = newperk;
+                    while (perkchooser.Contains(newperk))
+                    {
+                        newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
+                    }
+                    perkchooser[i] = newperk;
                     //After that we assign perk
                     PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer, i);
                     btn.perk = newperk;
@@ -55,6 +58,22 @@ namespace BossRush.Contents.Perks
                     btn.Left.Pixels = drawpos.X;
                     btn.Top.Pixels = drawpos.Y;
                     Append(btn);
+                }
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            foreach (var item in Elements)
+            {
+                if (item.IsMouseHovering)
+                {
+                    if (item is PerkUIImageButton perkbtn)
+                        Main.hoverItemName = perkbtn.perk.Tooltip;
+                    if (item is MaterialWeaponUIImageButton)
+                        Main.hoverItemName = "Give you 5 randomize weapon based on progression";
+                    if (Main.hoverItemName is not null)
+                        Main.NewText(Main.hoverItemName);
                 }
             }
         }
@@ -89,8 +108,14 @@ namespace BossRush.Contents.Perks
                     perkplayer.perks.Add(perk, 1);
                 else
                     if (perkplayer.perks.ContainsKey(perk) && perk.CanBeStack)
-                    perkplayer.perks.Add(perk, perkplayer.perks[perk] + 1);
+                    perkplayer.perks[perk] = perkplayer.perks[perk] + 1;
             }
+            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            uiSystemInstance.userInterface.SetState(null);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -115,14 +140,20 @@ namespace BossRush.Contents.Perks
                 LootBoxBase.GetWeapon(out int weapon, out int amount);
                 player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
             }
+            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            uiSystemInstance.userInterface.SetState(null);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            base.Draw(spriteBatch);
             Texture2D WeaponTexture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemID.IronBroadsword)).Value;
             Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
             Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
-            spriteBatch.Draw(WeaponTexture, drawposWeapon, Color.White);
-            base.Draw(spriteBatch);
+            spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
     }
     class UISystem : ModSystem
@@ -171,10 +202,20 @@ namespace BossRush.Contents.Perks
             { new ImmunityToPoison(), 1},
 
         };
-        public bool HasPerk(Perk perk) => perks.Keys.Where(x => x == perk).Any();
+        private int[] _perks;
+
+        public override void Initialize()
+        {
+            _perks = new int[ModPerkLoader.TotalCount];
+        }
+
+        public bool HasPerk<T>() where T : Perk => _perks[Perk.GetPerkType<T>()] > 0;
+        public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
+
+        public bool HasPerkDic(Perk perk) => perks.Keys.Where(x => x == perk).Any();
         public override void ResetEffects()
         {
-            foreach (Perk perk in perks.Keys) 
+            foreach (Perk perk in perks.Keys)
             {
                 perk.ResetEffect();
                 perk.StackAmount = perks[perk];
@@ -218,8 +259,14 @@ namespace BossRush.Contents.Perks
         {
             return ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode;
         }
-        protected override sealed void Register()
+        public static int GetPerkType<T>() where T : Perk
         {
+            return ModContent.GetInstance<T>().Type;
+        }
+
+        protected sealed override void Register()
+        {
+            Type = ModPerkLoader.Register(this);
         }
         public override void Unload()
         {
@@ -242,6 +289,7 @@ namespace BossRush.Contents.Perks
             this.player = Main.LocalPlayer;
             if (player.TryGetModPlayer(out PerkPlayer modplayer))
                 perkPlayer = modplayer;
+            SetDefaults();
         }
         public Perk(Player player)
         {
@@ -250,6 +298,7 @@ namespace BossRush.Contents.Perks
             else
                 this.player = Main.LocalPlayer;
             perkPlayer = player.GetModPlayer<PerkPlayer>();
+            SetDefaults();
         }
         /// <summary>
         /// This will run in <see cref="ModPlayer.ResetEffects"/>
@@ -292,6 +341,21 @@ namespace BossRush.Contents.Perks
 
         }
     }
+    sealed class ModPerkLoader : ModSystem
+    {
+        public static int TotalCount { get; private set; }
+
+        internal static int Register(Perk value)
+        {
+            ModTypeLookup<Perk>.Register(value);
+            return TotalCount++;
+        }
+
+        public override void Unload()
+        {
+            TotalCount = 0;
+        }
+    }
     class PerkChooser : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
@@ -299,6 +363,7 @@ namespace BossRush.Contents.Perks
         {
             Item.BossRushDefaultToConsume(32, 23);
         }
+        public override bool AltFunctionUse(Player player) => true;
         bool check = false;
         public override bool? UseItem(Player player)
         {
@@ -307,15 +372,11 @@ namespace BossRush.Contents.Perks
             {
                 UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
                 if (player.ItemAnimationJustStarted)
-                    check = !check;
-                if (check && player.ItemAnimationEndingOrEnded)
+                    check = true;
+                if (check && uiSystemInstance.userInterface.CurrentState is null)
                 {
                     uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
-
-                }
-                else
-                {
-                    uiSystemInstance.userInterface.SetState(null);
+                    check = false;
                 }
             }
             else
