@@ -17,61 +17,69 @@ using ReLogic.Content;
 
 namespace BossRush.Contents.UI.weaponModifiction
 {
-    //why items dosent show????
 
     public class WM_ItemSlot : UIElement
     {
         internal static Texture2D slotSprite = TextureAssets.InventoryBack2.Value;
-        private Asset<Texture2D> _texture;
         internal Item item;
         internal float slotItemScale = .5f;
         internal int slotID = 0;
-        internal CalculatedStyle pos;
-        internal Vector2 screenCenter = new Vector2(Main.screenWidth + 25, Main.screenHeight - 20) / 2f;
+        internal Vector2 screenCenter = new Vector2(Main.screenWidth, Main.screenHeight) / 2f;
         internal int space = 12;
-        //just get item ID ONLY, and then we can get everything about it (texture, name, etc...)
-        public WM_ItemSlot(int itemID,int slotOrder = 0)
-        {
-            slotID = itemID;
-            pos.X = slotOrder * 64 + screenCenter.X + space;
-            pos.Y = screenCenter.Y;
-            item = new Item();
-            item.SetDefaults(itemID);
-            _texture = TextureAssets.Item[itemID];
-            getItemInfoForUI(item);
 
-        }
-        //extract the infos about the item to make the UI use some of it
-        public void getItemInfoForUI(Item item)
+        //this is for intianlaizing the UI upon loading.
+        public WM_ItemSlot(int ItemID, int slotOrder = 0)
         {
-            Height.Set(item.height * slotItemScale, 0f);
-            Width.Set(item.width * slotItemScale, 0f);
+            slotID = slotOrder;
+            item = new Item(ItemID);
+            updateSlot(item.type);
         }
-        public override void LeftClick(UIMouseEvent evt)
+
+        //extract the infos about the item to make the UI update its data accourding the player's storedItems
+        public void updateSlot(int newItemID)
         {
-            base.LeftClick(evt);
-            if (Main.mouseItem is not null)
-            {
-                item = Main.mouseItem;
-            }
+            item.SetDefaults(newItemID);
         }
+
+        //apprently this is needed to make everthing work
         public override int CompareTo(object obj)
         {
-            WM_ItemSlot Test = obj as WM_ItemSlot;
-            return slotID.CompareTo(Test.slotID);
+            WM_ItemSlot otherItem = obj as WM_ItemSlot;
+            return slotID.CompareTo(otherItem.slotID);
         }
+
+        //interaction
+        public override void LeftMouseDown(UIMouseEvent evt)
+        {
+            base.LeftMouseDown(evt);
+            var player = Main.LocalPlayer.GetModPlayer<WM_modPlayer>();
+
+            if (IsMouseHovering && player.Player.itemAnimation == 0)
+            {
+                if(Main.mouseItem is not null)
+                    Main.mouseItem = new Item(player.storedItems[slotID]);
+
+
+                //terraria for some reason uses the item at the same frame as picking it up, why? idk, this is banadage fix... maybe
+                player.Player.reuseDelay = 30;
+            }
+
+            
+        }
+
+        
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            CalculatedStyle innerDimensions = GetInnerDimensions();
-            innerDimensions = pos;
+            CalculatedStyle innerDimensions = GetDimensions();
+            innerDimensions = GetDimensions();
             innerDimensions.X += slotSprite.Width * slotItemScale / 2f;
-            innerDimensions.Y += slotSprite.Height * slotItemScale / 2f; 
+            innerDimensions.Y += slotSprite.Height * slotItemScale / 2f;
 
             //draw the slot sprite first
-            spriteBatch.Draw(slotSprite, pos.Position(), Color.White);
+            spriteBatch.Draw(slotSprite, GetDimensions().Position(), Color.White);
             // check if theres item to show an item sprite
-            if(item != null)
+            if (item != null)
             {
                 Main.instance.LoadItem(item.type);
                 item.GetColor(Color.Beige);
@@ -80,29 +88,49 @@ namespace BossRush.Contents.UI.weaponModifiction
                 Rectangle rect = TextureAssets.Item[item.type].Frame(1, 1, 0, 0);
                 spriteBatch.Draw(TextureAssets.Item[item.type].Value, innerDimensions.Position(), new Rectangle?(rect), itemAlpha, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                 spriteBatch.Draw(TextureAssets.Item[item.type].Value, innerDimensions.Position(), new Rectangle?(rect), itemColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                if (IsMouseHovering)
+                if(IsMouseHovering)
                     Main.hoverItemName = item.Name;
             }
 
         }
     }
-
+    // this class serves as the middle man between the player's stored items and the slots themself, and its the holder (parent) of all the UIElements it creates (children).
     public class WM_UI : UIState
     {
         public WM_ItemSlot itemSlot;
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            return;
+            //here is where we update the existing UIELEMETS that are inside the WM_ItemSlot itemSlot above.
             var player = Main.LocalPlayer.GetModPlayer<WM_modPlayer>();
-            for(int i = 0; i < player.WM_availableSlots; i++)
+            foreach (WM_ItemSlot i in Children)
             {
-                itemSlot = new WM_ItemSlot(player.storedItems[i], i);
-                Append(itemSlot);
+
+                i.updateSlot(player.storedItems[i.slotID]);
+
             }
         }
+
+        //this method creates the slots, and updates them if the player has items stored.
         public override void OnInitialize()
         {
+            var player = Main.LocalPlayer.GetModPlayer<WM_modPlayer>();
+            for (int i = 0; i < player.WM_availableSlots; i++)
+            {
+
+            
+                itemSlot = new WM_ItemSlot(player.storedItems[i], i);
+                itemSlot.VAlign = .5f;
+                itemSlot.HAlign = .5f;
+                itemSlot.Width.Set(48, 0);
+                itemSlot.Height.Set(48, 0);
+
+                //the itemslot is basically a list that contains instances of WM_ItemSlot types, or atleast this is what i understand
+                Append(itemSlot);
+
+
+            }
         }
     }
 
@@ -120,16 +148,16 @@ namespace BossRush.Contents.UI.weaponModifiction
         }
         public override void UpdateUI(GameTime gameTime)
         {
-            return;
+
             userInterface?.Update(gameTime);
             if (Main.playerInventory)
                 userInterface?.SetState(slot);
-            else 
+            else
                 userInterface?.SetState(null);
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            return;
+
             int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             if (InventoryIndex != -1)
             {
@@ -149,17 +177,11 @@ namespace BossRush.Contents.UI.weaponModifiction
     public class WM_modPlayer : ModPlayer
     {
         public const int WM_MAXSLOTS = 12;
-        public const int WM_STARTINGSLOTS = 4;
+        public const int WM_STARTINGSLOTS = 1;
         public int WM_availableSlots = WM_STARTINGSLOTS;
         public int[] storedItems = new int[WM_MAXSLOTS];
 
 
-        public override void OnEnterWorld()
-        {
-            storedItems[0] = ItemID.ActiveStoneBlock;
-            storedItems[1] = ItemID.Minishark;
-            storedItems[2] = ItemID.TerraBlade;
-        }
         public override void PostUpdate()
         {
             base.PostUpdate();
@@ -182,6 +204,15 @@ namespace BossRush.Contents.UI.weaponModifiction
 
             storedItems = tag.GetIntArray("storedItems");
             WM_availableSlots = tag.GetInt("WM_availableSlots");
+
+        }
+
+        // FOR TESTING ONLY PLEASE REMOVE IT IF NO LONGER NEEDED
+        public override bool CanUseItem(Item item)
+        {
+            storedItems[0]++;
+
+            return base.CanUseItem(item);
 
         }
     }
