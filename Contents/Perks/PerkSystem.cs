@@ -9,8 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common;
 using System.Linq;
+using BossRush.Contents.Items.Chest;
+using Terraria.ID;
 
-namespace BossRush.Contents.UI
+namespace BossRush.Contents.Perks
 {
     //Do all the check in UI state since that is where the perk actually get create and choose
     internal class PerkUIState : UIState
@@ -24,15 +26,28 @@ namespace BossRush.Contents.UI
             {
                 Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
+                Perk[] perkchooser = new Perk[modplayer.PerkAmount];
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
-
-
-
-
-
-
+                    if (i >= modplayer.PerkAmount - 1)
+                    {
+                        MaterialWeaponUIImageButton buttonWeapon = new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+                        buttonWeapon.Width.Pixels = texture.Width;
+                        buttonWeapon.Height.Pixels = texture.Height;
+                        Vector2 offsetPosWeapon = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
+                        Vector2 drawposWeapon = player.Center + offsetPosWeapon - Main.screenPosition - origin;
+                        buttonWeapon.Left.Pixels = drawposWeapon.X;
+                        buttonWeapon.Top.Pixels = drawposWeapon.Y;
+                        Append(buttonWeapon);
+                        continue;
+                    }
+                    //here we will randomize and validate perk
+                    Perk newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
+                    if (!perkchooser.Contains(newperk))
+                        perkchooser[i] = newperk;
+                    //After that we assign perk
                     PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer, i);
+                    btn.perk = newperk;
                     btn.Width.Pixels = texture.Width;
                     btn.Height.Pixels = texture.Height;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
@@ -51,7 +66,7 @@ namespace BossRush.Contents.UI
     class PerkUIImageButton : UIImageButton
     {
         PerkPlayer perkplayer;
-        Perk perk;
+        public Perk perk;
         int index;
         public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer, int index) : base(texture)
         {
@@ -79,10 +94,34 @@ namespace BossRush.Contents.UI
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
-            Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
-            Vector2 drawpos = perkplayer.Player.Center - Main.screenPosition - origin;
-            spriteBatch.Draw(texture, drawpos, Color.White);
+            base.Draw(spriteBatch);
+        }
+    }
+    class MaterialWeaponUIImageButton : UIImageButton
+    {
+        public MaterialWeaponUIImageButton(Asset<Texture2D> texture) : base(texture)
+        {
+        }
+        public override void OnActivate()
+        {
+            base.OnActivate();
+        }
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
+            Player player = Main.LocalPlayer;
+            for (int i = 0; i < 5; i++)
+            {
+                LootBoxBase.GetWeapon(out int weapon, out int amount);
+                player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Texture2D WeaponTexture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemID.IronBroadsword)).Value;
+            Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
+            Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
+            spriteBatch.Draw(WeaponTexture, drawposWeapon, Color.White);
             base.Draw(spriteBatch);
         }
     }
@@ -120,32 +159,34 @@ namespace BossRush.Contents.UI
             }
         }
     }
-    class PerkPlayer : ModPlayer
+    public class PerkPlayer : ModPlayer
     {
         public bool CanGetPerk = false;
         public int PerkAmount = 3;
         public Dictionary<Perk, int> perks = new Dictionary<Perk, int>();
+        public readonly Dictionary<Perk, int> DictionaryPerk = new Dictionary<Perk, int>()
+        {
+            { new GenericDamageIncrease(), 3 },
+            { new LifeForceOrb(), 1},
+            { new ImmunityToPoison(), 1},
+
+        };
         public bool HasPerk(Perk perk) => perks.Keys.Where(x => x == perk).Any();
         public override void ResetEffects()
         {
-            foreach (Perk perk in perks.Keys)
+            foreach (Perk perk in perks.Keys) 
             {
                 perk.ResetEffect();
+                perk.StackAmount = perks[perk];
             }
         }
         public override void PostUpdate()
         {
-            foreach (Perk perk in perks.Keys)
-            {
-                perk.Update();
-            }
+            foreach (Perk perk in perks.Keys) { perk.Update(); }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            foreach (Perk perk in perks.Keys)
-            {
-                perk.ModifyDamage(item, ref damage);
-            }
+            foreach (Perk perk in perks.Keys) { perk.ModifyDamage(item, ref damage); }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -153,24 +194,22 @@ namespace BossRush.Contents.UI
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            foreach (Perk perk in perks.Keys)
-            {
-                perk.OnHitNPCWithItem(item, target, hit, damageDone);
-            }
+            foreach (Perk perk in perks.Keys) { perk.OnHitNPCWithItem(item, target, hit, damageDone); }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            foreach (Perk perk in perks.Keys)
-            {
-                perk.OnHitNPCWithProj(proj, target, hit, damageDone);
-            }
+            foreach (Perk perk in perks.Keys) { perk.OnHitNPCWithProj(proj, target, hit, damageDone); }
         }
     }
     public abstract class Perk : ModType
     {
-        Player player;
-        PerkPlayer PerkPlayer;
+        protected Player player;
+        protected PerkPlayer perkPlayer;
         public bool CanBeStack = false;
+        /// <summary>
+        /// Use this if <see cref="CanBeStack"/> is true
+        /// <br/> This allow easy multiply
+        /// </summary>
         public int StackAmount = 0;
         public string textureString = null;
         public string Tooltip = null;
@@ -185,7 +224,7 @@ namespace BossRush.Contents.UI
         public override void Unload()
         {
             player = null;
-            PerkPlayer = null;
+            perkPlayer = null;
             textureString = null;
             Tooltip = null;
         }
@@ -200,11 +239,17 @@ namespace BossRush.Contents.UI
         }
         public Perk()
         {
+            this.player = Main.LocalPlayer;
+            if (player.TryGetModPlayer(out PerkPlayer modplayer))
+                perkPlayer = modplayer;
         }
         public Perk(Player player)
         {
-            this.player = player;
-            PerkPlayer = player.GetModPlayer<PerkPlayer>();
+            if (player is not null)
+                this.player = player;
+            else
+                this.player = Main.LocalPlayer;
+            perkPlayer = player.GetModPlayer<PerkPlayer>();
         }
         /// <summary>
         /// This will run in <see cref="ModPlayer.ResetEffects"/>
@@ -247,42 +292,35 @@ namespace BossRush.Contents.UI
 
         }
     }
-    public class GenericDamageIncrease : Perk
-    {
-        public override void SetDefaults()
-        {
-            Tooltip = "Increase damage by 50%";
-            CanBeStack = true;
-        }
-        public override void ModifyDamage(Item item, ref StatModifier damage)
-        {
-            damage += .5f;
-        }
-    }
-    //This should be use to decide which perk will get spawn or get choosen
     class PerkChooser : ModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 23);
-            Item.useTime = Item.useAnimation = 1;
         }
         bool check = false;
         public override bool? UseItem(Player player)
         {
             PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-            if (player.ItemAnimationJustStarted)
-                check = !check;
-            if (check && player.ItemAnimationEndingOrEnded)
+            if (player.altFunctionUse != 2)
             {
-                uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
+                UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+                if (player.ItemAnimationJustStarted)
+                    check = !check;
+                if (check && player.ItemAnimationEndingOrEnded)
+                {
+                    uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
 
+                }
+                else
+                {
+                    uiSystemInstance.userInterface.SetState(null);
+                }
             }
             else
             {
-                uiSystemInstance.userInterface.SetState(null);
+                modplayer.perks.Clear();
             }
             return base.UseItem(player);
         }

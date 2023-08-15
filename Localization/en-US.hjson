@@ -142,6 +142,7 @@ Mods: {
 			AmberBoneProjectile.DisplayName: Amber Bone Projectile
 			AmberBoneSpearProjectile.DisplayName: Amber Bone Spear Projectile
 			AntlionMandibleModProjectile.DisplayName: Antlion Mandible Mod Projectile
+			LifeOrb.DisplayName: Life Orb
 		}
 
 		NPCs: {
