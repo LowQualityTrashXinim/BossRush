@@ -17,6 +17,7 @@ namespace BossRush.Contents.Perks
     //Do all the check in UI state since that is where the perk actually get create and choose
     internal class PerkUIState : UIState
     {
+        private UIText toolTip;
         public override void OnActivate()
         {
             base.OnActivate();
@@ -27,6 +28,9 @@ namespace BossRush.Contents.Perks
                 Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
                 Perk[] perkchooser = new Perk[modplayer.PerkAmount];
+
+                
+
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
                     if (i >= modplayer.PerkAmount - 1)
@@ -59,29 +63,57 @@ namespace BossRush.Contents.Perks
                     btn.Top.Pixels = drawpos.Y;
                     Append(btn);
                 }
+
+                //TEXT STUFF
+                toolTip = new UIText("");
+                toolTip.Top.Set(Main.screenHeight / 2f - player.height * 2.5f, 0);
+                toolTip.HAlign = 0.25f;
+                toolTip.TextOriginY += 2.5f;
+                Append(toolTip);
             }
         }
+
+        
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            foreach (var item in Elements)
-            {
-                if (item.IsMouseHovering)
-                {
-                    if (item is PerkUIImageButton perkbtn)
-                        Main.hoverItemName = perkbtn.perk.Tooltip;
-                    if (item is MaterialWeaponUIImageButton)
-                        Main.hoverItemName = "Give you 5 randomize weapon based on progression";
-                    if (Main.hoverItemName is not null)
-                        Main.NewText(Main.hoverItemName);
-                }
-            }
+
+           
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            toolTip.SetTextPosition(Main.MouseScreen.X, Main.MouseScreen.Y);
+            
+            foreach (var item in Elements)
+            {
+                
+                if (item.IsMouseHovering)
+                {
+                    
+
+                    if (item is PerkUIImageButton perkbtn)
+                        toolTip.SetText(perkbtn.perk.Tooltip);
+                    else
+                    if (item is MaterialWeaponUIImageButton)
+                        toolTip.SetText("Give you 5 randomize weapon based on progression");
+                    else toolTip.SetText("");
+
+                }
+                
+
+            }
+
         }
     }
+
     class PerkUIImageButton : UIImageButton
     {
         PerkPlayer perkplayer;
@@ -116,11 +148,20 @@ namespace BossRush.Contents.Perks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            
         }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            
+        }
+
     }
     class MaterialWeaponUIImageButton : UIImageButton
     {
@@ -150,6 +191,7 @@ namespace BossRush.Contents.Perks
             Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
             Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
             spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            
         }
         public override void Update(GameTime gameTime)
         {
@@ -166,7 +208,7 @@ namespace BossRush.Contents.Perks
             {
                 perkUIstate = new();
                 userInterface = new();
-                userInterface.SetState(perkUIstate);
+                //userInterface.SetState(perkUIstate);
             }
         }
         public override void UpdateUI(GameTime gameTime)
