@@ -341,17 +341,13 @@ namespace BossRush.Contents.Items.Chest
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
-                {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
-                }
                 if (Main.rand.NextBool(1500))
-                {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
-                }
                 if (Main.rand.NextBool(1500))
-                {
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
-                }
+                if (player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+                    player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
             }
             //Card dropping
             if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
@@ -955,6 +951,8 @@ namespace BossRush.Contents.Items.Chest
     }
     public class ChestLootDropPlayer : ModPlayer
     {
+        public bool CanDropSynergyEnergy = true;
+
         public int CurrentSectionAmountOfChestOpen = 0;
         //To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
         //Alternatively we can use this to handle all the data itself
@@ -1034,6 +1032,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override void ResetEffects()
         {
+            CanDropSynergyEnergy = false;
             amountModifier = 0;
             finalMultiplier = 1f;
             WeaponAmountAddition = 0;

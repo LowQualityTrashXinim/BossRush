@@ -20,6 +20,8 @@ namespace BossRush.Contents.Items.Weapon
     /// </summary>
     public class PlayerSynergyItemHandle : ModPlayer
     {
+        public bool SynergyBonusBlock = false;
+
         public bool BurningPassion_WandofFrosting = false;
 
         public bool DarkCactus_BatScepter = false;
@@ -66,6 +68,8 @@ namespace BossRush.Contents.Items.Weapon
         public bool StarlightDistributer_StarCannon = false;
         public override void ResetEffects()
         {
+            SynergyBonusBlock = true;
+            
             BurningPassion_WandofFrosting = false;
 
             DarkCactus_BatScepter = false;
@@ -219,6 +223,10 @@ namespace BossRush.Contents.Items.Weapon
         {
             base.HoldItem(player);
             PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
+            if(modplayer.SynergyBonusBlock)
+            {
+                return;
+            }
             HoldSynergyItem(player, modplayer);
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

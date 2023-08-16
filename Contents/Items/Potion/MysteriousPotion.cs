@@ -186,11 +186,8 @@ namespace BossRush.Contents.Items.Potion
     {
         public List<PlayerStats> Stats = new List<PlayerStats>();
         public List<int> StatsMulti = new List<int>();
-        public int PotionPoint()
-        {
-            int point = 5;
-            return point;
-        }
+        public int PotionPointAddition = 0;
+        public int PotionPoint() => Math.Clamp(5 + PotionPointAddition, 1, 999);
         public float CritDMG = 0;
         public float CritChance = 0;
         public float ToStatsNumFloat(PlayerStats stats, int multi) => lookupDictionary[stats] * multi * .01f;
@@ -202,6 +199,7 @@ namespace BossRush.Contents.Items.Potion
             base.ResetEffects();
             CritDMG = 0;
             CritChance = 0;
+            PotionPointAddition = 0;
             if (!Player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>()))
             {
                 if (Stats.Count > 0)

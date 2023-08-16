@@ -18,6 +18,7 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common
 {
@@ -58,7 +59,7 @@ namespace BossRush.Common
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
-            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()))
+            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
                 return;
             CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
             //Main.NewText(CooldownCheck);
