@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Perks
 {
@@ -29,7 +30,11 @@ namespace BossRush.Contents.Perks
                 Perk[] perkchooser = new Perk[modplayer.PerkAmount];
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
-                    if (i >= modplayer.PerkAmount - 1)
+                    Perk newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
+                    if (i >= modplayer.DictionaryPerk.Keys.Count 
+                        || i >= modplayer.PerkAmount - 1
+                        || ( modplayer.perks.ContainsKey(newperk) && !newperk.CanBeStack & modplayer.perks[newperk] >= modplayer.DictionaryPerk[newperk])
+                        )
                     {
                         MaterialWeaponUIImageButton buttonWeapon = new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
                         buttonWeapon.Width.Pixels = texture.Width;
@@ -41,8 +46,8 @@ namespace BossRush.Contents.Perks
                         Append(buttonWeapon);
                         continue;
                     }
-                    //here we will randomize and validate perk
-                    Perk newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
+                    // The above code will ensure that perk randomizer and perk chooser will never dupe and will never goes infinite
+                    // Here we will randomize and validate perk
                     while (perkchooser.Contains(newperk))
                     {
                         newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
@@ -120,6 +125,14 @@ namespace BossRush.Contents.Perks
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            if (perk.textureString == null)
+            {
+                return;
+            }
+            Texture2D WeaponTexture = ModContent.Request<Texture2D>(perk.textureString).Value;
+            Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
+            Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
+            spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
     }
     class MaterialWeaponUIImageButton : UIImageButton
@@ -166,7 +179,6 @@ namespace BossRush.Contents.Perks
             {
                 perkUIstate = new();
                 userInterface = new();
-                userInterface.SetState(perkUIstate);
             }
         }
         public override void UpdateUI(GameTime gameTime)
@@ -215,6 +227,7 @@ namespace BossRush.Contents.Perks
         public bool HasPerkDic(Perk perk) => perks.Keys.Where(x => x == perk).Any();
         public override void ResetEffects()
         {
+                PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
             foreach (Perk perk in perks.Keys)
             {
                 perk.ResetEffect();
@@ -224,6 +237,19 @@ namespace BossRush.Contents.Perks
         public override void PostUpdate()
         {
             foreach (Perk perk in perks.Keys) { perk.Update(); }
+        }
+        public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
+        {
+            base.ModifyMaxStats(out health, out mana);
+            foreach (Perk perk in perks.Keys) { perk.ModifyMaxStats(ref health, ref mana); }
+        }
+        public override void ModifyWeaponCrit(Item item, ref float crit)
+        {
+            foreach (Perk perk in perks.Keys) { perk.ModifyCriticalStrikeChance(item, ref crit); }
+        }
+        public override void ModifyItemScale(Item item, ref float scale)
+        {
+            foreach (Perk perk in perks.Keys) { perk.ModifyItemScale(item, ref scale); }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
@@ -263,7 +289,6 @@ namespace BossRush.Contents.Perks
         {
             return ModContent.GetInstance<T>().Type;
         }
-
         protected sealed override void Register()
         {
             Type = ModPerkLoader.Register(this);
@@ -279,10 +304,6 @@ namespace BossRush.Contents.Perks
         {
             base.Load();
             SetDefaults();
-        }
-        public virtual void SetDefaults()
-        {
-
         }
         public Perk()
         {
@@ -300,10 +321,7 @@ namespace BossRush.Contents.Perks
             perkPlayer = player.GetModPlayer<PerkPlayer>();
             SetDefaults();
         }
-        /// <summary>
-        /// This will run in <see cref="ModPlayer.ResetEffects"/>
-        /// </summary>
-        public virtual void ResetEffect()
+        public virtual void SetDefaults()
         {
 
         }
@@ -314,32 +332,25 @@ namespace BossRush.Contents.Perks
         {
 
         }
+        public virtual void ResetEffect()
+        {
+
+        }
         public virtual void ModifyDamage(Item item, ref StatModifier damage)
         {
 
         }
-        /// <summary>
-        /// This will run in <see cref="ModPlayer.OnHitNPCWithItem(Item, NPC, NPC.HitInfo, int)"/>
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="target"></param>
-        /// <param name="hit"></param>
-        /// <param name="damageDone"></param>
         public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
         }
-        /// <summary>
-        /// This will run in <see cref="ModPlayer.OnHitNPCWithProj(Projectile, NPC, NPC.HitInfo, int)"/>
-        /// </summary>
-        /// <param name="proj"></param>
-        /// <param name="target"></param>
-        /// <param name="hit"></param>
-        /// <param name="damageDone"></param>
         public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
         }
+        public virtual void ModifyMaxStats(ref StatModifier health, ref StatModifier mana) { }
+        public virtual void ModifyCriticalStrikeChance(Item item,ref float crit) { }
+        public virtual void ModifyItemScale(Item item, ref float scale) { }
     }
     sealed class ModPerkLoader : ModSystem
     {
@@ -364,20 +375,13 @@ namespace BossRush.Contents.Perks
             Item.BossRushDefaultToConsume(32, 23);
         }
         public override bool AltFunctionUse(Player player) => true;
-        bool check = false;
         public override bool? UseItem(Player player)
         {
             PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
             if (player.altFunctionUse != 2)
             {
                 UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-                if (player.ItemAnimationJustStarted)
-                    check = true;
-                if (check && uiSystemInstance.userInterface.CurrentState is null)
-                {
-                    uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
-                    check = false;
-                }
+                uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
             }
             else
             {
