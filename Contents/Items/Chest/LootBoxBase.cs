@@ -962,9 +962,32 @@ namespace BossRush.Contents.Items.Chest
         //This is global modifier ( aka amount modifier to all )
         public float finalMultiplier = 1f;
         public int amountModifier = 0;
+
+
         //This is inner modifier ( aka amount modifier to x stuff )
+        /// <summary>
+        /// Use this if it is a always update item
+        /// </summary>
+        public int WeaponAmountAddition = 0;
+        /// <summary>
+        /// Use this if it is a always update item
+        /// </summary>
+        public int PotionTypeAmountAddition = 0;
+        /// <summary>
+        /// Use this if it is a always update item
+        /// </summary>
+        public int PotionNumberAmountAddition = 0;
+        /// <summary>
+        /// Use this if it is a consumable item
+        /// </summary>
         public int ModifyWeaponAmountAddition = 0;
+        /// <summary>
+        /// Use this if it is a consumable item
+        /// </summary>
         public int ModifyPotionTypeAmountAddition = 0;
+        /// <summary>
+        /// Use this if it is a consumable item
+        /// </summary>
         public int ModifyPotionNumberAmountAddition = 0;
         //Do not touch this
         public int weaponAmount;
@@ -1005,17 +1028,17 @@ namespace BossRush.Contents.Items.Chest
                 potionTypeAmount += 1;
                 potionNumAmount += 1;
             }
-            weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition), 1, 999999);
-            potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition);
-            potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition);
+            weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition + WeaponAmountAddition), 1, 999999);
+            potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition + PotionTypeAmountAddition);
+            potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition + PotionNumberAmountAddition);
         }
         public override void ResetEffects()
         {
             amountModifier = 0;
             finalMultiplier = 1f;
-            ModifyWeaponAmountAddition = 0;
-            ModifyPotionTypeAmountAddition = 0;
-            ModifyPotionNumberAmountAddition = 0;
+            WeaponAmountAddition = 0;
+            PotionTypeAmountAddition = 0;
+            PotionNumberAmountAddition = 0;
             base.ResetEffects();
         }
         public override void Initialize()

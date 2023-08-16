@@ -18,7 +18,6 @@ namespace BossRush.Contents.Perks
     //Do all the check in UI state since that is where the perk actually get create and choose
     internal class PerkUIState : UIState
     {
-        private UIText toolTip;
         public override void OnActivate()
         {
             base.OnActivate();
@@ -65,54 +64,20 @@ namespace BossRush.Contents.Perks
                     btn.Top.Pixels = drawpos.Y;
                     Append(btn);
                 }
-
-                //TEXT STUFF
-                toolTip = new UIText("");
-                toolTip.Top.Set(Main.screenHeight / 2f - player.height * 2.5f, 0);
-                toolTip.HAlign = 0.25f;
-                toolTip.TextOriginY += 2.5f;
-                Append(toolTip);
             }
         }
-
-        
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-
-           
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-            
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            toolTip.SetTextPosition(Main.MouseScreen.X, Main.MouseScreen.Y);
-            
-            foreach (var item in Elements)
-            {
-                
-                if (item.IsMouseHovering)
-                {
-                    
-
-                    if (item is PerkUIImageButton perkbtn)
-                        toolTip.SetText(perkbtn.perk.Tooltip);
-                    else
-                    if (item is MaterialWeaponUIImageButton)
-                        toolTip.SetText("Give you 5 randomize weapon based on progression");
-                    else toolTip.SetText("");
-
-                }
-                
-
-            }
-
         }
     }
 
@@ -121,6 +86,7 @@ namespace BossRush.Contents.Perks
         PerkPlayer perkplayer;
         public Perk perk;
         int index;
+        private UIText toolTip;
         public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer, int index) : base(texture)
         {
             Width.Pixels = texture.Value.Width;
@@ -131,6 +97,9 @@ namespace BossRush.Contents.Perks
         public override void OnActivate()
         {
             base.OnActivate();
+            toolTip = new UIText("");
+            toolTip.HAlign = .5f;
+            Append(toolTip);
         }
         public override void LeftClick(UIMouseEvent evt)
         {
@@ -150,7 +119,16 @@ namespace BossRush.Contents.Perks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            
+            if (IsMouseHovering)
+            {
+                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
+                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
+                toolTip.SetText(perk.Tooltip);
+            }
+            else
+            {
+                toolTip.SetText("");
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -175,12 +153,16 @@ namespace BossRush.Contents.Perks
     }
     class MaterialWeaponUIImageButton : UIImageButton
     {
+        private UIText toolTip;
         public MaterialWeaponUIImageButton(Asset<Texture2D> texture) : base(texture)
         {
         }
         public override void OnActivate()
         {
             base.OnActivate();
+            toolTip = new UIText("");
+            toolTip.HAlign = .5f;
+            Append(toolTip);
         }
         public override void LeftClick(UIMouseEvent evt)
         {
@@ -205,6 +187,16 @@ namespace BossRush.Contents.Perks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (IsMouseHovering)
+            {
+                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
+                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
+                toolTip.SetText("Give you 5 randomize weapon based on progression");
+            }
+            else
+            {
+                toolTip.SetText("");
+            }
         }
     }
     class UISystem : ModSystem
@@ -250,6 +242,7 @@ namespace BossRush.Contents.Perks
             { new GenericDamageIncrease(), 3 },
             { new LifeForceOrb(), 1},
             { new ImmunityToPoison(), 1},
+            { new IllegalTrading(), 5},
 
         };
         private int[] _perks;
@@ -358,7 +351,9 @@ namespace BossRush.Contents.Perks
                 this.player = Main.LocalPlayer;
             perkPlayer = player.GetModPlayer<PerkPlayer>();
             SetDefaults();
-        }
+            if (CanBeStack)
+                Tooltip += "\n( Can be stack ! )";
+    }
         public virtual void SetDefaults()
         {
 

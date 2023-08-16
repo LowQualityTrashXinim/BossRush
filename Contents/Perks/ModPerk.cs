@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Perks
 {
@@ -10,7 +11,8 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
-            Tooltip = "Increase damage by 10%";
+            Tooltip =
+                    "+ Increase damage by 10%";
             CanBeStack = true;
         }
         public override void ModifyDamage(Item item, ref StatModifier damage)
@@ -22,7 +24,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
-            Tooltip = "Attacking enemy will periodically create a life orb that heal you";
+            Tooltip = "+ Attacking enemy will periodically create a life orb that heal you";
             CanBeStack = false;
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
@@ -43,13 +45,28 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
-            Tooltip = "Give you immunity to poison";
+            Tooltip = "+ Give you immunity to poison";
             CanBeStack = false;
         }
         public override void Update()
         {
             base.Update();
             player.buffImmune[BuffID.Poisoned] = true;
+        }
+    }
+
+    public class IllegalTrading : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = true;
+            Tooltip =
+                "+ Increase amount of weapon drop from chest by 1 !" +
+                "\n- Decrease your damage by 10%";
+        }
+        public override void ResetEffect()
+        {
+            player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 1;
         }
     }
 }
