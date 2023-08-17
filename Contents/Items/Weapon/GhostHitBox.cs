@@ -41,7 +41,7 @@ namespace BossRush.Contents.Items.Weapon
             Projectile.tileCollide = true;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 1;
-            Projectile.alpha = 255;
+            Projectile.hide = true;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
         }

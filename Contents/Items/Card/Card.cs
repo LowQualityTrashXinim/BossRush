@@ -922,10 +922,9 @@ namespace BossRush.Contents.Items.Card
             {
                 return;
             }
-            if (npc.boss)
-            {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<PremiumCardPacket>()));
-            }
+            LeadingConditionRule NightmareMode = new LeadingConditionRule(new NightmareMode());
+            NightmareMode.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<PremiumCardPacket>()));
+            npcLoot.Add(NightmareMode);
         }
     }
 }

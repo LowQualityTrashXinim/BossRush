@@ -350,7 +350,7 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
             }
             //Card dropping
-            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
                 return;
             }

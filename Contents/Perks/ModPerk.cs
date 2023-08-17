@@ -119,4 +119,40 @@ namespace BossRush.Contents.Perks
             player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 3;
         }
     }
+    public class Dirt : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip = "+ Having a single dirt in your inventory increase defense by 5";
+        }
+        public override void ResetEffect(Player player)
+        {
+            base.ResetEffect(player);
+            if (player.HasItem(ItemID.DirtBlock))
+                player.statDefense += 5;
+        }
+    }
+    public class AuraShot : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ Range damage type projectile now can deal AoE damage that deal 25% of damage\n" +
+                "- Range weapon damage are decrease by 35%";
+        }
+        public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
+        {
+            if (item.DamageType == DamageClass.Ranged)
+                damage -= .35f;
+        }
+        public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if(proj.DamageType == DamageClass.Ranged)
+            {
+                Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), (int)(proj.damage * .25f), 0, player.whoAmI);
+            }
+        }
+    }
 }

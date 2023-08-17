@@ -131,12 +131,12 @@ namespace BossRush.Common
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
                 items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol
             {
+                items.Add(new Item(ModContent.ItemType<PremiumCardPacket>()));
                 items.Add(new Item(ItemID.RedPotion, 10));
             }
             if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim")

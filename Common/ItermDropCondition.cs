@@ -138,4 +138,17 @@ namespace BossRush.Common
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Drop if player beat boss in no hit aka git gud mode";
     }
+    public class NightmareMode : IItemDropRuleCondition
+    {
+        public bool CanDrop(DropAttemptInfo info)
+        {
+            if (!info.IsInSimulation)
+            {
+                return ModContent.GetInstance<BossRushModConfig>().Nightmare || ModContent.GetInstance<BossRushModConfig>().NightmarePlus;
+            }
+            return false;
+        }
+        public bool CanShowItemDropInUI() => true;
+        public string GetConditionDescription() => "Nightmare mode exclusive";
+    }
 }

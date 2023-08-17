@@ -13,6 +13,7 @@ using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Global
 {
@@ -283,6 +284,7 @@ namespace BossRush.Common.Global
             }
             IsABoss.OnSuccess(ItemDropRule.Common(ItemID.LifeCrystal, 1,lifecrystal, lifecrystal));
             IsABoss.OnSuccess(ItemDropRule.Common(ItemID.ManaCrystal, 1,manacrystal, manacrystal));
+            IsABoss.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PerkChooser>()));
             npcLoot.Add(IsABoss);
         }
     }

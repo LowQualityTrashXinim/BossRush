@@ -1427,7 +1427,11 @@ Mods: {
 
 			PerkChooser: {
 				DisplayName: Perk Chooser
-				Tooltip: ""
+				Tooltip:
+					'''
+					Use this to choose a perk
+					When choosing a perk, you can't use anything so be wary of where you are choosing
+					'''
 			}
 		}
 

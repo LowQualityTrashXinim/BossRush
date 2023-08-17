@@ -38,6 +38,15 @@ namespace BossRush.Contents.Projectiles
             int dust = Dust.NewDust(Projectile.Center - new Vector2(5, 5), 0, 0, DustID.GemEmerald);
             Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
             Main.dust[dust].noGravity = true;
+            if (Projectile.Center.IsCloseToPosition(player.Center, 125))
+            {
+                Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .1f;
+                Projectile.velocity = Projectile.velocity.LimitedVelocity(2);
+            }
+            else
+            {
+                Projectile.velocity *= .98f;
+            }
             if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25))
             {
                 player.Heal(10);

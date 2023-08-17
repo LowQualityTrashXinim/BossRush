@@ -7,7 +7,6 @@ using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using System.ComponentModel.Design;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -68,7 +67,7 @@ namespace BossRush.Contents.Items.Weapon
         public bool StarlightDistributer_StarCannon = false;
         public override void ResetEffects()
         {
-            SynergyBonusBlock = true;
+            SynergyBonusBlock = false;
             
             BurningPassion_WandofFrosting = false;
 
