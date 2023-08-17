@@ -32,13 +32,15 @@ namespace BossRush.Contents.Perks
             {
                 Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
-                Perk[] perkchooser = new Perk[modplayer.PerkAmount];
+                int[] perkchooser = new int[modplayer.PerkAmount];
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
-                    Perk newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
+                    int newperk = Main.rand.Next(ModPerkLoader.TotalCount - 1);
                     if (i >= 2 && (i >= ModPerkLoader.TotalCount
                         || i >= modplayer.PerkAmount - 3
-                        || (modplayer.perks.ContainsKey(newperk) && !newperk.CanBeStack & modplayer.perks[newperk] >= modplayer.DictionaryPerk[newperk])
+                        || (modplayer.perks.ContainsKey(newperk)
+                        && !ModPerkLoader.GetPerk(newperk).CanBeStack
+                        && modplayer.perks[newperk] >= ModPerkLoader.GetPerk(newperk).StackLimit)
                         ))
                     {
                         UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
@@ -60,18 +62,26 @@ namespace BossRush.Contents.Perks
                     }
                     // The above code will ensure that perk randomizer and perk chooser will never dupe and will never goes infinite
                     // Here we will randomize and validate perk
-
-                    while (perkchooser.Contains(newperk) ||
-                        modplayer.perks.ContainsKey(newperk) ||
-                        (!newperk.CanBeStack && modplayer.perks[newperk] > 0) ||
-                        modplayer.perks[newperk] >= modplayer.DictionaryPerk[newperk])
+                    if (modplayer.perks.ContainsKey(newperk))
                     {
-                        newperk = Main.rand.Next(modplayer.DictionaryPerk.Keys.ToArray());
+                        while (perkchooser.Contains(newperk) ||
+                            (!ModPerkLoader.GetPerk(newperk).CanBeStack && modplayer.perks[newperk] > 0) ||
+                            modplayer.perks[newperk] >= ModPerkLoader.GetPerk(newperk).StackLimit)
+                        {
+                            newperk = Main.rand.Next(ModPerkLoader.TotalCount - 1);
+                        }
+                    }
+                    else
+                    {
+                        while (perkchooser.Contains(newperk))
+                        {
+                            newperk = Main.rand.Next(ModPerkLoader.TotalCount - 1);
+                        }
                     }
                     perkchooser[i] = newperk;
                     //After that we assign perk
                     PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer);
-                    btn.perk = newperk;
+                    btn.perk = ModPerkLoader.GetPerk(newperk);
                     btn.Width.Pixels = texture.Width;
                     btn.Height.Pixels = texture.Height;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
@@ -119,15 +129,13 @@ namespace BossRush.Contents.Perks
         {
             base.LeftClick(evt);
             //We are assuming the perk are auto handle
-            perk.player = Main.LocalPlayer;
-            perk.perkPlayer = perkplayer;
             if (perk is not null)
             {
-                if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perk))
-                    perkplayer.perks.Add(perk, 1);
+                if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perk.Type))
+                    perkplayer.perks.Add(perk.Type, 1);
                 else
-                    if (perkplayer.perks.ContainsKey(perk) && perk.CanBeStack)
-                    perkplayer.perks[perk] = perkplayer.perks[perk] + 1;
+                    if (perkplayer.perks.ContainsKey(perk.Type) && perk.CanBeStack)
+                    perkplayer.perks[perk.Type] = perkplayer.perks[perk.Type] + 1;
             }
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
             uiSystemInstance.userInterface.SetState(null);
@@ -350,40 +358,61 @@ namespace BossRush.Contents.Perks
         public override void ResetEffects()
         {
             PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
-            foreach (Perk perk in perks.Keys)
+            foreach (int perk in perks.Keys)
             {
-                perk.ResetEffect();
-                perk.StackAmount = perks[perk];
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.ResetEffect(Player);
+                perkreal.StackAmount = perks[perk];
             }
-        }
-        public override void PreUpdate()
-        {
-            foreach (Perk perk in perks.Keys) { perk.player = Player; perk.perkPlayer = Player.GetModPlayer<PerkPlayer>(); }
         }
         public override void PostUpdate()
         {
-            foreach (Perk perk in perks.Keys) { perk.Update(); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.Update(Player);
+            }
         }
         public override void OnMissingMana(Item item, int neededMana)
         {
-            foreach (Perk perk in perks.Keys) { perk.OnMissingMana(item, neededMana); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.OnMissingMana(Player, item, neededMana);
+            }
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             base.ModifyMaxStats(out health, out mana);
-            foreach (Perk perk in perks.Keys) { perk.ModifyMaxStats(ref health, ref mana); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.ModifyMaxStats(Player, ref health, ref mana);
+            }
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
-            foreach (Perk perk in perks.Keys) { perk.ModifyCriticalStrikeChance(item, ref crit); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.ModifyCriticalStrikeChance(Player, item, ref crit);
+            }
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {
-            foreach (Perk perk in perks.Keys) { perk.ModifyItemScale(item, ref scale); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.ModifyItemScale(Player, item, ref scale);
+            }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            foreach (Perk perk in perks.Keys) { perk.ModifyDamage(item, ref damage); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.ModifyDamage(Player, item, ref damage);
+            }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -391,17 +420,23 @@ namespace BossRush.Contents.Perks
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            foreach (Perk perk in perks.Keys) { perk.OnHitNPCWithItem(item, target, hit, damageDone); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.OnHitNPCWithItem(Player, item, target, hit, damageDone);
+            }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            foreach (Perk perk in perks.Keys) { perk.OnHitNPCWithProj(proj, target, hit, damageDone); }
+            foreach (int perk in perks.Keys)
+            {
+                Perk perkreal = ModPerkLoader.GetPerk(perk);
+                perkreal.OnHitNPCWithProj(Player, proj, target, hit, damageDone);
+            }
         }
     }
     public abstract class Perk : ModType
     {
-        public Player player;
-        public PerkPlayer perkPlayer;
         public bool CanBeStack = false;
         /// <summary>
         /// Use this if <see cref="CanBeStack"/> is true
@@ -411,50 +446,26 @@ namespace BossRush.Contents.Perks
         public int StackLimit = 1;
         public string textureString = null;
         public string Tooltip = null;
-        public int Type { get; internal set; }
-        public override bool IsLoadingEnabled(Mod mod)
+        public int Type { get; private set; }
+        protected sealed override void Register()
         {
-            return ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode;
+            Type = ModPerkLoader.Register(this);
         }
         public static int GetPerkType<T>() where T : Perk
         {
             return ModContent.GetInstance<T>().Type;
         }
-        protected sealed override void Register()
+        public sealed override void Unload()
         {
-            ModTypeLookup<Perk>.Register(this);
-
-            ModPerkLoader.Register(this);
-        }
-        public override void Unload()
-        {
-            player = null;
-            perkPlayer = null;
+            base.Unload();
             textureString = null;
             Tooltip = null;
         }
-        public override void Load()
+        public Perk()
         {
-            base.Load();
-            SetDefaults();
-        }
-        public Perk(int whoAmI)
-        {
-            UseThisForConstructor(whoAmI);
             SetDefaults();
             if (CanBeStack)
                 Tooltip += "\n( Can be stack ! )";
-        }
-        public void UseThisForConstructor(int whoAmI)
-        {
-            if (whoAmI == -1)
-                player = Main.LocalPlayer;
-            else
-                player = Main.player[whoAmI];
-            if (player.TryGetModPlayer(out PerkPlayer modplayer))
-            {
-                perkPlayer = modplayer;
-            }
         }
         public virtual void SetDefaults()
         {
@@ -463,50 +474,47 @@ namespace BossRush.Contents.Perks
         /// <summary>
         /// This will run in <see cref="ModPlayer.PostUpdate"/>
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(Player player)
         {
 
         }
-        public virtual void ResetEffect()
+        public virtual void ResetEffect(Player player)
         {
 
         }
-        public virtual void OnMissingMana(Item item, int neededMana)
+        public virtual void OnMissingMana(Player player, Item item, int neededMana)
         {
 
         }
-        public virtual void ModifyDamage(Item item, ref StatModifier damage)
+        public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage)
         {
 
         }
-        public virtual void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
         }
-        public virtual void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
         }
-        public virtual void ModifyMaxStats(ref StatModifier health, ref StatModifier mana) { }
-        public virtual void ModifyCriticalStrikeChance(Item item, ref float crit) { }
-        public virtual void ModifyItemScale(Item item, ref float scale) { }
+        public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
+        public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
+        public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
     }
     public static class ModPerkLoader
     {
-        internal static Dictionary<int, Perk> perks = new();
-        internal static int NextTypeID = 3;
-        public static int Count => NextTypeID;
-        internal static void RegisterFluid(Perk perk)
+        private static readonly List<Perk> _perks = new();
+        public static int TotalCount => _perks.Count;
+        public static int Register(Perk perk)
         {
-            perks.Add(perk.Type, perk);
+            ModTypeLookup<Perk>.Register(perk);
+            _perks.Add(perk);
+            return _perks.Count - 1;
         }
-        public static int PerkType<T>() where T : Perk => ModContent.GetInstance<T>()?.Type ?? -1;
-        public static Perk GetPerk(int type) => perks[type];
-        public static int TotalCount { get; private set; }
-        internal static int Register(Perk value)
+        public static Perk GetPerk(int type)
         {
-            ModTypeLookup<Perk>.Register(value);
-            return TotalCount++;
+            return type >= 0 && type < _perks.Count ? _perks[type] : null;
         }
     }
     class PerkChooser : ModItem
