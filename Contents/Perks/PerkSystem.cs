@@ -360,25 +360,22 @@ namespace BossRush.Contents.Perks
             PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.ResetEffect(Player);
-                perkreal.StackAmount = perks[perk];
+                ModPerkLoader.GetPerk(perk).ResetEffect(Player);
+                ModPerkLoader.GetPerk(perk).StackAmount = perks[perk];
             }
         }
         public override void PostUpdate()
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.Update(Player);
+                ModPerkLoader.GetPerk(perk).Update(Player);
             }
         }
         public override void OnMissingMana(Item item, int neededMana)
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.OnMissingMana(Player, item, neededMana);
+                ModPerkLoader.GetPerk(perk).OnMissingMana(Player, item, neededMana);
             }
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
@@ -386,32 +383,28 @@ namespace BossRush.Contents.Perks
             base.ModifyMaxStats(out health, out mana);
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.ModifyMaxStats(Player, ref health, ref mana);
+                ModPerkLoader.GetPerk(perk).ModifyMaxStats(Player, ref health, ref mana);
             }
         }
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.ModifyCriticalStrikeChance(Player, item, ref crit);
+                ModPerkLoader.GetPerk(perk).ModifyCriticalStrikeChance(Player, item, ref crit);
             }
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.ModifyItemScale(Player, item, ref scale);
+                ModPerkLoader.GetPerk(perk).ModifyItemScale(Player, item, ref scale);
             }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.ModifyDamage(Player, item, ref damage);
+                ModPerkLoader.GetPerk(perk).ModifyDamage(Player, item, ref damage);
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -422,16 +415,14 @@ namespace BossRush.Contents.Perks
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.OnHitNPCWithItem(Player, item, target, hit, damageDone);
+                ModPerkLoader.GetPerk(perk).OnHitNPCWithItem(Player, item, target, hit, damageDone);
             }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             foreach (int perk in perks.Keys)
             {
-                Perk perkreal = ModPerkLoader.GetPerk(perk);
-                perkreal.OnHitNPCWithProj(Player, proj, target, hit, damageDone);
+                ModPerkLoader.GetPerk(perk).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
             }
         }
     }
