@@ -333,11 +333,28 @@ namespace BossRush.Contents.Perks
             }
         }
     }
+    public class PerkItem : GlobalItem
+    {
+        public override bool? UseItem(Item item, Player player)
+        {
+            PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+            if (player.ItemAnimationJustStarted)
+                perkplayer.PotionExpert_perk_CanConsume = !Main.rand.NextBool(4);
+            if (perkplayer.perk_PotionExpert && item.buffType > 0)
+            {
+                return perkplayer.PotionExpert_perk_CanConsume;
+            }
+            return base.UseItem(item, player);
+        }
+    }
     public class PerkPlayer : ModPlayer
     {
         public bool CanGetPerk = false;
         public int PerkAmount = 3;
         public Dictionary<int, int> perks = new Dictionary<int, int>();
+
+        public bool perk_PotionExpert = false;
+        public bool PotionExpert_perk_CanConsume = false;
 
         private int[] _perks;
         public override void Initialize()
@@ -345,11 +362,11 @@ namespace BossRush.Contents.Perks
             _perks = new int[ModPerkLoader.TotalCount];
             perks = new Dictionary<int, int>();
         }
-
         public bool HasPerk<T>() where T : Perk => _perks[Perk.GetPerkType<T>()] > 0;
         public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
         public override void ResetEffects()
         {
+            perk_PotionExpert = false;
             PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
             foreach (int perk in perks.Keys)
             {
@@ -357,7 +374,6 @@ namespace BossRush.Contents.Perks
                 ModPerkLoader.GetPerk(perk).StackAmount = perks[perk];
             }
         }
-
         public override bool CanUseItem(Item item)
         {
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
@@ -428,6 +444,7 @@ namespace BossRush.Contents.Perks
                 ModPerkLoader.GetPerk(perk).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
             }
         }
+        //TODO : make a override for item
         public override void SaveData(TagCompound tag)
         {
             tag["PlayerPerks"] = perks.Keys.ToList();

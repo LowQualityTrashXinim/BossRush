@@ -7,6 +7,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Perks
 {
@@ -111,12 +112,12 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             CanBeStack = true;
-            Tooltip = "+ Mysterious potion are better than before";
+            Tooltip = "+ Mysterious potion are slightly better than before";
             StackLimit = 3;
         }
         public override void ResetEffect(Player player)
         {
-            player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 3;
+            player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 1 * StackAmount;
         }
     }
     public class Dirt : Perk
@@ -153,6 +154,22 @@ namespace BossRush.Contents.Perks
             {
                 Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), (int)(proj.damage * .25f), 0, player.whoAmI);
             }
+        }
+    }
+    public class PotionExpert : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ Potion have 25% to not be consumed";
+        }
+        public override void ResetEffect(Player player)
+        {
+            player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
+        }
+        public override void Update(Player player)
+        {
         }
     }
 }
