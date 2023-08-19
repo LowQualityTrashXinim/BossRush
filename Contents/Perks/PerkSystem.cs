@@ -45,9 +45,10 @@ namespace BossRush.Contents.Perks
                 }
                 Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
                 Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
-                int amount = listOfPerk.Count;
+                int amount = listOfPerk.Count; 
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
+                string textureString = BossRushTexture.ACCESSORIESSLOT;
                     if (i >= amount || i >= modplayer.PerkAmount - 1)
                     {
                         UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
@@ -65,11 +66,18 @@ namespace BossRush.Contents.Perks
                         continue;
                     }
                     int newperk = Main.rand.Next(listOfPerk);
+                    if (ModPerkLoader.GetPerk(newperk).textureString is not null)
+                    {
+                        textureString = ModPerkLoader.GetPerk(newperk).textureString;
+                        //We are resetting origin and texture if texture string aren't null
+                        texture = ModContent.Request<Texture2D>(textureString).Value;
+                        origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
+                    }
                     // The above code will ensure that perk randomizer and perk chooser will never dupe and will never goes infinite
                     // Here we will randomize and validate perk
                     listOfPerk.Remove(newperk);
                     //After that we assign perk
-                    PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), modplayer);
+                    PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(textureString), modplayer);
                     btn.perkType = newperk;
                     btn.Width.Pixels = texture.Width;
                     btn.Height.Pixels = texture.Height;
@@ -131,7 +139,7 @@ namespace BossRush.Contents.Perks
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if(toolTip is null)
+            if (toolTip is null)
             {
                 return;
             }
@@ -149,14 +157,6 @@ namespace BossRush.Contents.Perks
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            if (ModPerkLoader.GetPerk(perkType).textureString == null)
-            {
-                return;
-            }
-            Texture2D WeaponTexture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString).Value;
-            Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
-            Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
-            spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -457,7 +457,7 @@ namespace BossRush.Contents.Perks
             perks = PlayerPerks.Zip(PlayerPerkStack, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
         }
     }
-    
+
     public abstract class Perk : ModType
     {
         public bool CanBeStack = false;
@@ -467,6 +467,9 @@ namespace BossRush.Contents.Perks
         /// </summary>
         public int StackAmount = 0;
         public int StackLimit = 1;
+        /// <summary>
+        /// Please set this texture string as if you are setting <see cref="ModItem.Texture"/>
+        /// </summary>
         public string textureString = null;
         public string Tooltip = null;
         public int Type { get; private set; }

@@ -7,7 +7,6 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Perks
 {
@@ -81,6 +80,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();
             Tooltip =
                   "+ You can fire magic weapon forever" +
                   "\n- When you are out of mana, you will use your life instead";
