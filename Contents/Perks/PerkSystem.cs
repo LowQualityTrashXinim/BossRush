@@ -332,6 +332,11 @@ namespace BossRush.Contents.Perks
         public bool PotionExpert_perk_CanConsume = false;
 
         private int[] _perks;
+        public override void OnEnterWorld()
+        {
+            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            uiSystemInstance.userInterface.SetState(null);
+        }
         public override void Initialize()
         {
             _perks = new int[ModPerkLoader.TotalCount];
