@@ -44,23 +44,25 @@ namespace BossRush.Contents.Items.BuilderItem
 
                 if (tile == null)
                     continue;
+
                 if (Main.player[Projectile.owner].ZoneUnderworldHeight)
-                {
                     WorldGen.PlaceTile(xPos, yPos, TileID.Platforms, false, false, -1, 13);
-                }
                 else
-                {
                     WorldGen.PlaceTile(xPos, yPos, TileID.Platforms);
-                    Tile tileAbove = Main.tile[xPos, yPos - 1];
-                    if (x % 25 == 0 && tileAbove != null)
-                    {
-                        WorldGen.PlaceTile(xPos, yPos - 1, TileID.Torches);
-                        if (Main.netMode == NetmodeID.Server)
-                            NetMessage.SendTileSquare(-1, xPos, yPos - 1, 1);
-                    }
-                }
+
                 if (Main.netMode == NetmodeID.Server)
                     NetMessage.SendTileSquare(-1, xPos, yPos, 1);
+
+                if (x % 25 != 0 || yPos - 1 < 0)
+                    continue;
+
+                Tile tileAbove = Main.tile[xPos, yPos - 1];
+                if (tileAbove.HasTile)
+                    continue;
+
+                WorldGen.PlaceTile(xPos, yPos - 1, TileID.Torches);
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendTileSquare(-1, xPos, yPos - 1, 1);
             }
         }
     }

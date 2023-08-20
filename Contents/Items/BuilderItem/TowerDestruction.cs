@@ -77,7 +77,7 @@ namespace BossRush.Contents.Items.BuilderItem
                     int yPos = (int)(y + tileY);
                     if (canKillTiles(xPos, yPos))
                     {
-                        WorldGen.KillTile(xPos, yPos, false, false, false);
+                        WorldGen.KillTile(xPos, yPos);
                         if (Main.tile[xPos, yPos] != null && Main.netMode != NetmodeID.SinglePlayer)
                         {
                             NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, xPos, yPos, 0f, 0, 0, 0);
