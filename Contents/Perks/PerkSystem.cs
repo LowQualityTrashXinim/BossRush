@@ -43,12 +43,11 @@ namespace BossRush.Contents.Perks
                     }
                     listOfPerk.Add(i);
                 }
-                Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
-                Vector2 origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
-                int amount = listOfPerk.Count; 
+                int amount = listOfPerk.Count;
+                Texture2D textureDefault = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
+                Vector2 originDefault = new Vector2(textureDefault.Width * .5f, textureDefault.Height * .5f);
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
-                string textureString = BossRushTexture.ACCESSORIESSLOT;
                     if (i >= amount || i >= modplayer.PerkAmount - 1)
                     {
                         UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
@@ -56,30 +55,28 @@ namespace BossRush.Contents.Perks
                          new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
                          new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT))
                         });
-                        buttonWeapon.Width.Pixels = texture.Width;
-                        buttonWeapon.Height.Pixels = texture.Height;
+                        buttonWeapon.Width.Pixels = textureDefault.Width;
+                        buttonWeapon.Height.Pixels = textureDefault.Height;
                         Vector2 offsetPosWeapon = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
-                        Vector2 drawposWeapon = player.Center + offsetPosWeapon - Main.screenPosition - origin;
+                        Vector2 drawposWeapon = player.Center + offsetPosWeapon - Main.screenPosition - originDefault;
                         buttonWeapon.Left.Pixels = drawposWeapon.X;
                         buttonWeapon.Top.Pixels = drawposWeapon.Y;
                         Append(buttonWeapon);
                         continue;
                     }
                     int newperk = Main.rand.Next(listOfPerk);
+                    Asset<Texture2D> texture;
                     if (ModPerkLoader.GetPerk(newperk).textureString is not null)
-                    {
-                        textureString = ModPerkLoader.GetPerk(newperk).textureString;
-                        //We are resetting origin and texture if texture string aren't null
-                        texture = ModContent.Request<Texture2D>(textureString).Value;
-                    }
-                    // The above code will ensure that perk randomizer and perk chooser will never dupe and will never goes infinite
-                    // Here we will randomize and validate perk
+                        texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
+                    else
+                        texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+                    Vector2 origin = new Vector2(26, 26);
                     listOfPerk.Remove(newperk);
                     //After that we assign perk
-                    PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(textureString), modplayer);
+                    PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
                     btn.perkType = newperk;
-                    btn.Width.Pixels = texture.Width;
-                    btn.Height.Pixels = texture.Height;
+                    btn.Width.Pixels = 52;
+                    btn.Height.Pixels = 52;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
                     Vector2 drawpos = player.Center + offsetPos - Main.screenPosition - origin;
                     btn.Left.Pixels = drawpos.X;

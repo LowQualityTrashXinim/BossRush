@@ -1002,7 +1002,12 @@ Mods: {
 			}
 
 			TowerDestruction: {
-				Tooltip: the ultimate tile annihilator
+				Tooltip:
+					'''
+					"The ultimate tile annihilator"
+					Use this if you want to clear out a large area to be flat
+					This will clear out 300 10 tile (X : 300 | Y : 10)
+					'''
 				DisplayName: Tower Destruction
 			}
 
