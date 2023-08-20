@@ -71,7 +71,6 @@ namespace BossRush.Contents.Perks
                         textureString = ModPerkLoader.GetPerk(newperk).textureString;
                         //We are resetting origin and texture if texture string aren't null
                         texture = ModContent.Request<Texture2D>(textureString).Value;
-                        origin = new Vector2(texture.Width * .5f, texture.Height * .5f);
                     }
                     // The above code will ensure that perk randomizer and perk chooser will never dupe and will never goes infinite
                     // Here we will randomize and validate perk
@@ -186,14 +185,6 @@ namespace BossRush.Contents.Perks
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
             uiSystemInstance.userInterface.SetState(null);
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-            Texture2D WeaponTexture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemID.IronBroadsword)).Value;
-            Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
-            Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
-            spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-        }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -229,14 +220,6 @@ namespace BossRush.Contents.Perks
             player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<BigCardPacket>());
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
             uiSystemInstance.userInterface.SetState(null);
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-            Texture2D WeaponTexture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemID.Chest)).Value;
-            Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
-            Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
-            spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
         public override void Update(GameTime gameTime)
         {
@@ -276,14 +259,6 @@ namespace BossRush.Contents.Perks
             }
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
             uiSystemInstance.userInterface.SetState(null);
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-            Texture2D WeaponTexture = ModContent.Request<Texture2D>(BossRushTexture.MISSINGTEXTUREPOTION).Value;
-            Vector2 originWeapon = new Vector2(WeaponTexture.Width * .5f, WeaponTexture.Height * .5f);
-            Vector2 drawposWeapon = new Vector2(Left.Pixels, Top.Pixels) + originWeapon * .5f;
-            spriteBatch.Draw(WeaponTexture, drawposWeapon, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
         public override void Update(GameTime gameTime)
         {

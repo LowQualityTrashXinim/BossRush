@@ -19,7 +19,6 @@ namespace BossRush.Contents.Items.Chest
         public override void RightClick(Player player)
         {
             var entitySource = player.GetSource_OpenItem(Type);
-            player.QuickSpawnItem(entitySource, ItemID.Torch, 999);
             player.QuickSpawnItem(entitySource,ModContent.ItemType<ArenaMaker>());
             player.QuickSpawnItem(entitySource, ModContent.ItemType<SuperBuilderTool>());
             player.QuickSpawnItem(entitySource, ItemID.SteampunkChest,6);
