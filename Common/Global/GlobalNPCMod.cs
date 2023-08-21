@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Terraria.GameContent.ItemDropRules;
 //EnragedStuff
 using BossRush.Contents.Items;
+using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Spawner;
@@ -13,7 +14,6 @@ using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Global
 {
@@ -150,11 +150,7 @@ namespace BossRush.Common.Global
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));
                 npcLoot.Add(ExpertVSnormal);
                 lifecrystal += 5;
-                npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalEye));
-                npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalWorm));
-                npcLoot.Add(ItemDropRule.Common(ItemID.MechanicalSkull));
-                npcLoot.Add(ItemDropRule.Common(ItemID.QueenSlimeCrystal));
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BleedingWorm>()));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
             }

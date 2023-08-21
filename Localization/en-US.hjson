@@ -1332,7 +1332,10 @@ Mods: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Black Treasure Chest
 			}
-
+			HardModeBossBundle: {
+				DisplayName: Hard Mode Boss Bundle
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
 			AmberTippedJavelin: {
 				DisplayName: Amber Tipped Javelin
 				Tooltip: ""

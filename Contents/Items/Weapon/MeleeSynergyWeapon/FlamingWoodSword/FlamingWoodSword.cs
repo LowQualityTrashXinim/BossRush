@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 32, 36, 36, 5f, 4, 40, ItemUseStyleID.Swing, false);
+            BossRushUtils.BossRushSetDefault(Item, 32, 36, 22, 5f, 4, 40, ItemUseStyleID.Swing, false);
             Item.DamageType = DamageClass.Melee;
 
             Item.crit = 5;
@@ -37,7 +37,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
             {
                 rotate += MathHelper.ToRadians(14) * player.direction;
                 Vector2 staticRotate = new Vector2(Item.shootSpeed, 0).RotatedBy(rotate);
-                Projectile.NewProjectile(source, position, staticRotate, type, (int)(damage * 0.75f), knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, staticRotate, type, (int)(damage * 0.45f), knockback, player.whoAmI);
                 count++;
             }
             if (count == 10)
