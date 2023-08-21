@@ -282,8 +282,8 @@ namespace BossRush.Common.Global
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
             }
-            IsABoss.OnSuccess(ItemDropRule.Common(ItemID.LifeCrystal, 1,lifecrystal, lifecrystal));
-            IsABoss.OnSuccess(ItemDropRule.Common(ItemID.ManaCrystal, 1,manacrystal, manacrystal));
+            IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(),ItemID.LifeCrystal, 1,lifecrystal, lifecrystal));
+            IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(),ItemID.ManaCrystal, 1,manacrystal, manacrystal));
             IsABoss.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PerkChooser>()));
             npcLoot.Add(IsABoss);
         }
