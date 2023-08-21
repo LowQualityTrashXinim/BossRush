@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -163,9 +164,20 @@ namespace BossRush.Common.Utils
             ModContent.ProjectileType<PlatinumBowP>()
         };
 
+        public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };
+        public readonly static int[] Smallmeal = new int[] { ItemID.CookedMarshmallow, ItemID.RoastedBird, ItemID.SauteedFrogLegs, ItemID.GrilledSquirrel, ItemID.FruitSalad, ItemID.CookedFish, ItemID.BunnyStew, ItemID.PotatoChips, ItemID.ShuckedOyster };
+        public readonly static int[] fruit = new int[] { ItemID.Lemon, ItemID.Peach, ItemID.Apple, ItemID.Apricot, ItemID.BlackCurrant, ItemID.Elderberry, ItemID.Grapefruit, ItemID.Mango, ItemID.Mango, ItemID.Plum, ItemID.Rambutan, ItemID.Coconut, ItemID.BloodOrange, ItemID.Grapes, ItemID.Dragonfruit, ItemID.Starfruit };
+
+        public readonly static int[] MediumMeal = new int[] { ItemID.Sashimi, ItemID.PumpkinPie, ItemID.GrubSoup, ItemID.CookedShrimp, ItemID.BowlofSoup, ItemID.RoastedDuck, ItemID.MonsterLasagna, ItemID.LobsterTail, ItemID.FroggleBunwich, ItemID.Escargot, ItemID.Nachos, ItemID.ShrimpPoBoy, ItemID.Pho, ItemID.PadThai, ItemID.Fries, ItemID.Hotdog, ItemID.FriedEgg, ItemID.BananaSplit, ItemID.ChickenNugget, ItemID.ChocolateChipCookie };
+        public readonly static int[] MediumDrink = new int[] { ItemID.PrismaticPunch, ItemID.IceCream, ItemID.CreamSoda, ItemID.CoffeeCup };
+
+        public readonly static int[] BigMeal = new int[] { ItemID.SeafoodDinner, ItemID.GoldenDelight, ItemID.ApplePie, ItemID.BBQRibs, ItemID.Burger, ItemID.Pizza, ItemID.Spaghetti, ItemID.Steak, ItemID.Bacon, ItemID.ChristmasPudding, ItemID.GingerbreadCookie, ItemID.SugarCookie };
+        public readonly static int[] StrongDrink = new int[] { ItemID.Milkshake, ItemID.Grapefruit };
+
         //NPC
         public readonly static int[] BAT = { NPCID.CaveBat, NPCID.GiantBat, NPCID.IceBat, NPCID.IlluminantBat, NPCID.JungleBat, NPCID.SporeBat, NPCID.Lavabat, NPCID.Hellbat };
 
+        //Armor
         public readonly static int[] HeadArmorPreBoss = { ItemID.WoodHelmet, ItemID.BorealWoodHelmet, ItemID.RichMahoganyHelmet, ItemID.EbonwoodHelmet, ItemID.PalmWoodHelmet, ItemID.ShadewoodHelmet, ItemID.CactusHelmet, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.CopperHelmet, ItemID.TinHelmet, ItemID.IronHelmet, ItemID.LeadHelmet, ItemID.JungleHat, ItemID.MagicHat, ItemID.WizardHat,ItemID.SilverHelmet, ItemID.TungstenHelmet, ItemID.GoldHelmet, ItemID.PlatinumHelmet, ItemID.PumpkinHelmet, ItemID.GladiatorHelmet
         };
         public readonly static int[] BodyArmorPreBoss = { ItemID.WoodBreastplate, ItemID.BorealWoodBreastplate, ItemID.RichMahoganyBreastplate, ItemID.EbonwoodBreastplate, ItemID.PalmWoodBreastplate, ItemID.ShadewoodBreastplate, ItemID.CactusBreastplate, ItemID.FlinxFurCoat, ItemID.Gi, ItemID.CopperChainmail, ItemID.TinChainmail, ItemID.IronChainmail, ItemID.LeadChainmail, ItemID.JungleShirt, ItemID.AmethystRobe, ItemID.DiamondRobe, ItemID.RubyRobe, ItemID.SapphireRobe, ItemID.EmeraldRobe, ItemID.TopazRobe, ItemID.GypsyRobe, ItemID.SilverChainmail, ItemID.TungstenChainmail, ItemID.GoldChainmail, ItemID.PlatinumChainmail, ItemID.PumpkinBreastplate, ItemID.GladiatorBreastplate
