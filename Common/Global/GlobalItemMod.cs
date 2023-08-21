@@ -680,7 +680,7 @@ namespace BossRush.Common.Global
                 CopperArmorChargeCounter++;
             if (CopperArmorChargeCounter >= 50)
             {
-                Player.AddBuff(ModContent.BuffType<copperRageMode>(), 180);
+                Player.AddBuff(ModContent.BuffType<OverCharged>(), 180);
                 CopperArmorChargeCounter = 0;
             }
         }

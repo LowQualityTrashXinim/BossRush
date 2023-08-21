@@ -1565,8 +1565,8 @@ Mods: {
 				Description: ?
 			}
 
-			copperRageMode: {
-				DisplayName: Overchaged !
+			OverCharged: {
+				DisplayName: Overcharged !
 				Description: Mods.BossRush.Buffs.copperRageMode.Description
 			}
 

@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.ID;
-using System.Collections.Generic;
 
 namespace BossRush.Contents.BuffAndDebuff
 {
@@ -17,16 +15,7 @@ namespace BossRush.Contents.BuffAndDebuff
 
         public override void Update(NPC npc, ref int buffIndex)
         {
-
             npc.color = Color.DarkOrange;
-            
-
-
-
         }
-
-        
-
-
     }
 }

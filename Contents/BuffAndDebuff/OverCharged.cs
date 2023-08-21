@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.BuffAndDebuff
 {
-    internal class copperRageMode : ModBuff
+    internal class OverCharged : ModBuff
     {
         public override string Texture => BossRushTexture.EMPTYBUFF;
 
