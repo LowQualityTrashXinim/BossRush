@@ -1,171 +1,432 @@
 ﻿using Terraria;
+using System.Linq;
 using Terraria.ID;
+using Terraria.UI;
+using ReLogic.Content;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Terraria.GameContent.UI.Elements;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Common.ExtraChallenge
 {
-    internal class ExtraChallengeSystem : ModSystem
+    internal class ExtraChallengerChooserUI : UIState
     {
-        int count = 0;
-        int NumberToCompare = 0;
-        public const int BoulderRainCooldown = 45;
-        public int BoulderRainCount = 0;
-        public const int HellFireRainCoolDown = 25;
-        public int HellFireRainCount = 0;
-        public const int DeadFromAboveCoolDown = 90;
-        public int DeadFromAboveCount = 0;
-        public override void PostUpdateWorld()
+        public int whoAmI = -1;
+        public override void OnActivate()
+        {
+            base.OnActivate();
+            Elements.Clear();
+            if (whoAmI == -1)
+                return;
+            Player player = Main.player[whoAmI];
+            if (player.TryGetModPlayer(out PerkPlayer modplayer))
+            {
+                List<int> listOfPerk = new List<int>();
+                for (int i = 0; i < ModPerkLoader.TotalCount; i++)
+                {
+                    if (modplayer.perks.ContainsKey(i))
+                    {
+                        if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0) ||
+                            modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit)
+                        {
+                            continue;
+                        }
+                    }
+                    listOfPerk.Add(i);
+                }
+                Texture2D textureDefault = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
+                Vector2 originDefault = new Vector2(textureDefault.Width * .5f, textureDefault.Height * .5f);
+                for (int i = 0; i < 3; i++)
+                {
+                    int newperk = Main.rand.Next(listOfPerk);
+                    Asset<Texture2D> texture;
+                    if (ModPerkLoader.GetPerk(newperk).textureString is not null)
+                        texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
+                    else
+                        texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+                    Vector2 origin = new Vector2(26, 26);
+                    listOfPerk.Remove(newperk);
+                    //After that we assign perk
+                    PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
+                    btn.perkType = newperk;
+                    btn.Width.Pixels = 52;
+                    btn.Height.Pixels = 52;
+                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 180, i) * 150;
+                    Vector2 drawpos = player.Center + offsetPos - Main.screenPosition - origin;
+                    btn.Left.Pixels = drawpos.X;
+                    btn.Top.Pixels = drawpos.Y;
+                    Append(btn);
+                }
+            }
+        }
+    }
+    class ExtraChallengerChooserUIButton : UIImageButton
+    {
+        PerkPlayer perkplayer;
+        public int perkType;
+        private UIText toolTip;
+        public ExtraChallengerChooserUIButton(Asset<Texture2D> texture, PerkPlayer perkPlayer) : base(texture)
+        {
+            Width.Pixels = texture.Value.Width;
+            Height.Pixels = texture.Value.Height;
+            perkplayer = perkPlayer;
+        }
+        public override void OnActivate()
+        {
+            base.OnActivate();
+            toolTip = new UIText("");
+            toolTip.HAlign = .5f;
+            Append(toolTip);
+        }
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
+            //We are assuming the perk are auto handle
+
+            if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perkType))
+                perkplayer.perks.Add(perkType, 1);
+            else
+                if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
+                perkplayer.perks[perkType] = perkplayer.perks[perkType] + 1;
+
+            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            uiSystemInstance.userInterface.SetState(null);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (toolTip is null)
+            {
+                return;
+            }
+            if (IsMouseHovering)
+            {
+                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
+                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
+                toolTip.SetText(ModPerkLoader.GetPerk(perkType).Tooltip);
+            }
+            else
+            {
+                toolTip.SetText("");
+            }
+        }
+    }
+    internal class ExtraChallengeGlobalNPCModifier : GlobalNPC
+    {
+        public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+        {
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.Horde))
+            {
+                spawnRate = (int)(spawnRate * .5f);
+            }
+        }
+        public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
+        {
+            OnHitEffectNPC(npc);
+        }
+        public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            OnHitEffectNPC(npc);
+        }
+        private void OnHitEffectNPC(NPC npc)
+        {
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.BossShootHomeIn))
+            {
+                if (Main.projectile.Where(x => x.ModProjectile is ExChallengeProjectile_BossShootHomeIn && x.active).Any())
+                {
+                    return;
+                }
+                int amount = Main.rand.Next(1, 6);
+                for (int i = 0; i < amount; i++)
+                {
+                    Vector2 vel = Vector2.One.Vector2DistributeEvenly(amount, 360, i);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<ExChallengeProjectile_BossShootHomeIn>(), npc.damage, 0, -1, npc.target);
+                }
+            }
+        }
+        public override void PostAI(NPC npc)
+        {
+            base.PostAI(npc);
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.LimitedArena))
+            {
+                Player player = Main.player[npc.target];
+                if (npc.boss && (npc.type != NPCID.EaterofWorldsBody
+                    && npc.type != NPCID.EaterofWorldsHead
+                    && npc.type != NPCID.EaterofWorldsTail)
+                    && player.GetModPlayer<ExtraChallengePlayer>().spawnPos == Vector2.Zero)
+                {
+                    player.GetModPlayer<ExtraChallengePlayer>().spawnPos = player.Center;
+                }
+            }
+        }
+        public override void OnKill(NPC npc)
         {
             if (!ModContent.GetInstance<BossRushModConfig>().ExtraChallenge)
             {
                 return;
             }
-            Player player = Main.LocalPlayer;
-            ExtraChallengePlayer modplayer = player.GetModPlayer<ExtraChallengePlayer>();
-            if (NumberToCompare != modplayer.BossSlayedCount)
+            if (npc.boss)
             {
-                count--;
-                modplayer.HostileProjectileOnTop = false;
-                modplayer.OnlyUseOneClass = false;
-                modplayer.spawnRatex3 = false;
-                modplayer.BoulderRain = false;
-                modplayer.strongerEnemy = false;
-                modplayer.Hellfirerain = false;
-                modplayer.Badbuff = false;
-                modplayer.Closecombatfight = false;
-                modplayer.BatJungleANDCave = false;
-            }
-            if (count == 0)
-            {
-                switch (modplayer.ChallengeChooser)
+                if (ExtraChallengeSystem.ListChallengeID.Count != ExtraChallengeSystem.readOnlyList.Count)
                 {
-                    case 1:
-                        modplayer.HostileProjectileOnTop = true;
-                        Main.NewText("Death from above", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Death from above"), Colors.RarityDarkRed);
-                        break;
-                    case 2:
-                        modplayer.ClassChooser = Main.rand.Next(4);
-                        modplayer.OnlyUseOneClass = true;
-                        Main.NewText("Restrict to 1 class", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Restrict to 1 class"), Colors.RarityDarkRed);
-                        break;
-                    case 3:
-                        modplayer.spawnRatex3 = true;
-                        Main.NewText("Increase spawn rate", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Increase spawn rate"), Colors.RarityDarkRed);
-                        break;
-                    case 4:
-                        modplayer.BoulderRain = true;//done ?
-                        Main.NewText("Boulder rain time", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Boulder rain time"), Colors.RarityDarkRed);
-                        break;
-                    case 5:
-                        modplayer.strongerEnemy = true;
-                        Main.NewText("Enemy get stronger", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Enemy get stronger"), Colors.RarityDarkRed);
-                        break;
-                    case 6:
-                        modplayer.Hellfirerain = true; //done
-                        Main.NewText("Hell fire arrow rain", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Hell fire arrow rain"), Colors.RarityDarkRed);
-                        break;
-                    case 7:
-                        modplayer.Badbuff = true;
-                        Main.NewText("Very nasty debuff", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Very nasty debuff"), Colors.RarityDarkRed);
-                        break;
-                    case 8:
-                        modplayer.BatJungleANDCave = true;
-                        Main.NewText("Annoying bat start to spawn", Colors.RarityDarkRed);
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Bat start to spawn"), Colors.RarityDarkRed);
-                        break;
-                    default:
-                        if (modplayer.ChallengeChooser > 8)
+                    List<ExChallenge> list = ExtraChallengeSystem.readOnlyList;
+                    if (ExtraChallengeSystem.ListChallengeID.Count < 1)
+                        ExtraChallengeSystem.ListChallengeID.Add(Main.rand.Next(list));
+                    else
+                    {
+                        foreach (var item in ExtraChallengeSystem.ListChallengeID)
                         {
-                            modplayer.ChallengeChooser = 0;
-                            Main.NewText("We run into a problem where we run out of challenge, are you using a debug item ? For now we gonna reset it back to 0", Colors.RarityDarkRed);
-                            break;
+                            if (list.Contains(item))
+                                list.Remove(item);
                         }
-                        Main.NewText("the dev is appear to be too lazy to implement a fix for this, grab Xinim and screenshot this message and explain how you encounter this ");
-                        break;
+                        ExtraChallengeSystem.ListChallengeID.Add(Main.rand.Next(list));
+                    }
                 }
-                NumberToCompare = modplayer.BossSlayedCount;
-                count++;
             }
-            //Custom stuff
-            FallingProjectileHandle(modplayer, player);
-        }
-        private void FallingProjectileHandle(ExtraChallengePlayer modplayer, Player player)
-        {
-            if (!player.active || player.dead)
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.LimitedArena))
             {
-                return;
-            }
-            Boulder(modplayer, player);
-            HellFireRain(modplayer, player);
-            CannonBallFalling(modplayer, player);
-        }
-        private void Boulder(ExtraChallengePlayer modplayer, Player player)
-        {
-            if (!modplayer.BoulderRain)
-            {
-                return;
-            }
-            if (BoulderRainCount >= BoulderRainCooldown)
-            {
-                BossRushUtils.SpawnBoulderOnTopPlayer(player, 1000);
-                BoulderRainCount = 0;
-            }
-            else
-            {
-                BoulderRainCount++;
-            }
-        }
-        private void HellFireRain(ExtraChallengePlayer modplayer, Player player)
-        {
-            if (!modplayer.Hellfirerain)
-            {
-                return;
-            }
-            if (HellFireRainCount >= HellFireRainCoolDown)
-            {
-                for (int i = 0; i < 4; i++)
+                if (npc.boss && !BossRushUtils.IsAnyVanillaBossAlive())
                 {
-                    BossRushUtils.SpawnHostileProjectileDirectlyOnPlayer(player, 1500, 0, true, Vector2.Zero, ProjectileID.HellfireArrow, 100, 1f);
-                    HellFireRainCount = 0;
+                    Player player = Main.player[npc.target];
+                    player.GetModPlayer<ExtraChallengePlayer>().spawnPos = Vector2.Zero;
                 }
-            }
-            else
-            {
-                HellFireRainCount++;
             }
         }
-        private void CannonBallFalling(ExtraChallengePlayer modplayer, Player player)
+    }
+    enum ExChallenge
+    {
+        HighStress,//Done
+        Horde,//Done
+        LimitedArena,//Done
+        KeepMoving,//Done
+        StopMoving,//Done
+        EverythingIsClassless,//Done
+        BeingHuntDown,//Done
+        BossShootHomeIn,//Done
+    }
+    internal class ExtraChallengeSystem : ModSystem
+    {
+        public static readonly List<ExChallenge> readOnlyList = new List<ExChallenge>
         {
-            if (!modplayer.HostileProjectileOnTop)
+            ExChallenge.HighStress,
+            ExChallenge.Horde,
+            ExChallenge.LimitedArena,
+            ExChallenge.KeepMoving,
+            ExChallenge.StopMoving,
+            ExChallenge.EverythingIsClassless,
+            ExChallenge.BeingHuntDown,
+            ExChallenge.BossShootHomeIn
+        };
+        public override void PostUpdateNPCs()
+        {
+            base.PostUpdateNPCs();
+        }
+        public override void PostUpdatePlayers()
+        {
+            base.PostUpdatePlayers();
+        }
+        public override void PostUpdateWorld()
+        {
+            ExChallenge_BeingHuntDown();
+        }
+        private void ExChallenge_BeingHuntDown()
+        {
+            if (ListChallengeID.Contains(ExChallenge.BeingHuntDown))
             {
-                return;
-            }
-            if (DeadFromAboveCoolDown == DeadFromAboveCount)
-            {
-                for (int i = 0; i < 4; i++)
+                if (Main.projectile.Where(x => x.ModProjectile is ExChallengeProjectile_BeingHuntDown).Any())
                 {
-                    Vector2 spawn = new Vector2(player.Center.X, -1000 + player.Center.Y);
-                    int projectile = Projectile.NewProjectile(null, spawn, Vector2.Zero, ProjectileID.CannonballHostile, 10000, 1f, Main.myPlayer, 0f, 0f);
-                    Main.projectile[projectile].hostile = true;
-                    Main.projectile[projectile].friendly = false;
-                    Main.projectile[projectile].tileCollide = false;
-                    Main.projectile[projectile].timeLeft = 200;
-                    Main.projectile[projectile].light = 1f;
-                    DeadFromAboveCount = 0;
+                    return;
+                }
+                Projectile.NewProjectile(
+                    Entity.GetSource_NaturalSpawn(),
+                    Main.LocalPlayer.Center + Main.rand.NextVector2CircularEdge(1000, 1000),
+                    Vector2.Zero,
+                    ModContent.ProjectileType<ExChallengeProjectile_BeingHuntDown>(),
+                    100, 0, -1, Main.LocalPlayer.whoAmI
+                    );
+            }
+        }
+        public static List<ExChallenge> ListChallengeID = new List<ExChallenge>();
+        public override void ClearWorld()
+        {
+            ListChallengeID.Clear();
+        }
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag.Add("ListChallengeID", ListChallengeID);
+        }
+        public override void LoadWorldData(TagCompound tag)
+        {
+            ListChallengeID = tag.Get<List<ExChallenge>>("ListChallengeID");
+        }
+    }
+    public class ExtraChallengePlayer : ModPlayer
+    {
+        public Vector2 spawnPos = Vector2.Zero;
+        public override void PostUpdate()
+        {
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.LimitedArena))
+            {
+                if (!spawnPos.IsCloseToPosition(Player.Center, 2000))
+                {
+                    Player.statLife -= 10;
+                }
+                for (int i = 0; i < 100; i++)
+                {
+                    int dust = Dust.NewDust(spawnPos + Main.rand.NextVector2CircularEdge(2000, 2000), 0, 0, DustID.AncientLight);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].fadeIn = 2;
+                    Main.dust[dust].scale = Main.rand.NextFloat(1, 1.25f);
                 }
             }
-            else
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.KeepMoving))
             {
-                DeadFromAboveCount++;
+                if (Player.velocity == Vector2.Zero)
+                    Player.statLife -= 1;
             }
+        }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.StopMoving))
+            {
+                if (Player.velocity != Vector2.Zero)
+                    damage *= Main.rand.NextFloat(0.15f, 1.15f);
+            }
+        }
+        public override void PostItemCheck()
+        {
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.EverythingIsClassless))
+            {
+                Player.HeldItem.DamageType = DamageClass.Generic;
+            }
+        }
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
+        {
+            base.OnHitByNPC(npc, hurtInfo);
+            OnHitByAnything();
+        }
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            base.OnHitByProjectile(proj, hurtInfo);
+            OnHitByAnything();
+        }
+        private void OnHitByAnything()
+        {
+            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.HighStress))
+            {
+                if (Player.statLife >= 50)
+                    Player.statLife = 1;
+            }
+        }
+    }
+    public class ExChallengeProjectile_BossShootHomeIn : ModProjectile
+    {
+        public override string Texture => BossRushTexture.SMALLWHITEBALL;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+        }
+        Color color;
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 10;
+            Projectile.penetrate = 1;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.tileCollide = false;
+            Projectile.extraUpdates = 10;
+            color = new Color(Main.rand.Next(0, 256), Main.rand.Next(0, 256), Main.rand.Next(0, 256));
+        }
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.Center, new Vector3(1, 1, 1));
+            if (Projectile.ai[0] >= 0)
+            {
+                Projectile.velocity += (Main.player[(int)Projectile.ai[0]].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .0025f;
+            }
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
+            if (Main.rand.NextBool(4))
+            {
+                int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(15, 15), 0, 0, DustID.GemDiamond);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].color = color;
+            }
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond, 0, 0, 0, color, Main.rand.NextFloat(.5f, 2f));
+                Vector2 vel = Main.rand.NextVector2Circular(3, 3);
+                Main.dust[dust].velocity = vel;
+                Main.dust[dust].color = color;
+            }
+            base.Kill(timeLeft);
+        }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return color;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.DrawTrailWithoutColorAdjustment(color, .01f);
+            return true;
+        }
+    }
+    public class ExChallengeProjectile_BeingHuntDown : ModProjectile
+    {
+        public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 30;
+            Projectile.penetrate = 1;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.tileCollide = false;
+            Projectile.extraUpdates = 10;
+        }
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.Center, new Vector3(1, 1, 1));
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
+            Projectile.velocity += (Main.player[(int)Projectile.ai[0]].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .0025f;
+            if (Main.rand.NextBool(4))
+            {
+                int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.Granite);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].color = Color.Black;
+            }
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 150; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Granite, 0, 0, 0, Color.Black, Main.rand.NextFloat(.5f, 2f));
+                Vector2 vel = Main.rand.NextVector2Circular(5, 5);
+                Main.dust[dust].velocity = vel;
+                Main.dust[dust].color = Color.Black;
+            }
+            base.Kill(timeLeft);
+        }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.Black;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.DrawTrailWithoutColorAdjustment(Color.Black, .02f);
+            return true;
         }
     }
 }

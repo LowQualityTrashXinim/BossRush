@@ -101,7 +101,7 @@ namespace BossRush.Contents.NPCs
             {
                 Projectile.velocity += (Main.player[(int)Projectile.ai[0]].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .005f;
             }
-            Projectile.velocity.LimitedVelocity(5);
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
             if (Main.rand.NextBool(4))
             {
                 int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.Granite);

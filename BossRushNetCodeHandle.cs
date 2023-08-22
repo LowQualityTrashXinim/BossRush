@@ -20,7 +20,6 @@ namespace BossRush
             DrugSyncPlayer,
             NoHitBossNum,
             GambleAddiction,
-            ExtraChallenge,
             ArtifactRegister,
             ChanceMultiplayer,
             CardEffect,
@@ -63,14 +62,6 @@ namespace BossRush
                     if (Main.netMode == NetmodeID.Server)
                     {
                         gamble.SyncPlayer(-1, whoAmI, false);
-                    }
-                    break;
-                case MessageType.ExtraChallenge:
-                    ExtraChallengePlayer extraPlayer = Main.player[playernumber].GetModPlayer<ExtraChallengePlayer>();
-                    extraPlayer.ReceivePlayerSync(reader);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        extraPlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
                 case MessageType.ArtifactRegister:

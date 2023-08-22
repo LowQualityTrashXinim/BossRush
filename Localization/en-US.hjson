@@ -143,6 +143,8 @@ Mods: {
 			AmberBoneSpearProjectile.DisplayName: Amber Bone Spear Projectile
 			AntlionMandibleModProjectile.DisplayName: Antlion Mandible Mod Projectile
 			LifeOrb.DisplayName: Life Orb
+			ExChallengeProjectile_BeingHuntDown.DisplayName: Ex Challenge Projectile_ Being Hunt Down
+			ExChallengeProjectile_BossShootHomeIn.DisplayName: Ex Challenge Projectile_ Boss Shoot Home In
 		}
 
 		NPCs: {
@@ -1636,7 +1638,8 @@ Mods: {
 						The first time you kill a boss, you will get a challenge added into your game. This is irrevertible
 						The next time you kill a boss, the current challenge will be swap for a random challenge
 						These mode offer no real reward or benefit, only activate if you are bored and want an extra challenge
-						This do not work with multiplayer world
+						This do not work with in multiplayer
+						Warning : this may mess up a lot of item value, player value
 						'''
 				}
 
