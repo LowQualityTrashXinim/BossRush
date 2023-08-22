@@ -120,7 +120,7 @@ namespace BossRush.Common.ExtraChallenge
     {
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.Horde))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(1))
             {
                 spawnRate = (int)(spawnRate * .5f);
             }
@@ -135,7 +135,7 @@ namespace BossRush.Common.ExtraChallenge
         }
         private void OnHitEffectNPC(NPC npc)
         {
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.BossShootHomeIn))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(7))
             {
                 if (Main.projectile.Where(x => x.ModProjectile is ExChallengeProjectile_BossShootHomeIn && x.active).Any())
                 {
@@ -152,7 +152,7 @@ namespace BossRush.Common.ExtraChallenge
         public override void PostAI(NPC npc)
         {
             base.PostAI(npc);
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.LimitedArena))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(2))
             {
                 Player player = Main.player[npc.target];
                 if (npc.boss && (npc.type != NPCID.EaterofWorldsBody
@@ -174,7 +174,7 @@ namespace BossRush.Common.ExtraChallenge
             {
                 if (ExtraChallengeSystem.ListChallengeID.Count != ExtraChallengeSystem.readOnlyList.Count)
                 {
-                    List<ExChallenge> list = ExtraChallengeSystem.readOnlyList;
+                    List<int> list = ExtraChallengeSystem.readOnlyList;
                     if (ExtraChallengeSystem.ListChallengeID.Count < 1)
                         ExtraChallengeSystem.ListChallengeID.Add(Main.rand.Next(list));
                     else
@@ -188,7 +188,7 @@ namespace BossRush.Common.ExtraChallenge
                     }
                 }
             }
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.LimitedArena))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(2))
             {
                 if (npc.boss && !BossRushUtils.IsAnyVanillaBossAlive())
                 {
@@ -211,16 +211,16 @@ namespace BossRush.Common.ExtraChallenge
     }
     internal class ExtraChallengeSystem : ModSystem
     {
-        public static readonly List<ExChallenge> readOnlyList = new List<ExChallenge>
+        public static readonly List<int> readOnlyList = new List<int>
         {
-            ExChallenge.HighStress,
-            ExChallenge.Horde,
-            ExChallenge.LimitedArena,
-            ExChallenge.KeepMoving,
-            ExChallenge.StopMoving,
-            ExChallenge.EverythingIsClassless,
-            ExChallenge.BeingHuntDown,
-            ExChallenge.BossShootHomeIn
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
         };
         public override void PostUpdateNPCs()
         {
@@ -236,7 +236,7 @@ namespace BossRush.Common.ExtraChallenge
         }
         private void ExChallenge_BeingHuntDown()
         {
-            if (ListChallengeID.Contains(ExChallenge.BeingHuntDown))
+            if (ListChallengeID.Contains(6))
             {
                 if (Main.projectile.Where(x => x.ModProjectile is ExChallengeProjectile_BeingHuntDown).Any())
                 {
@@ -251,18 +251,19 @@ namespace BossRush.Common.ExtraChallenge
                     );
             }
         }
-        public static List<ExChallenge> ListChallengeID = new List<ExChallenge>();
+        public static List<int> ListChallengeID = new List<int>();
         public override void ClearWorld()
         {
             ListChallengeID.Clear();
         }
         public override void SaveWorldData(TagCompound tag)
         {
-            tag.Add("ListChallengeID", ListChallengeID);
+            if (ListChallengeID.Count > 0)
+                tag.Add("ListChallengeID", ListChallengeID);
         }
         public override void LoadWorldData(TagCompound tag)
         {
-            ListChallengeID = tag.Get<List<ExChallenge>>("ListChallengeID");
+            ListChallengeID = tag.Get<List<int>>("ListChallengeID");
         }
     }
     public class ExtraChallengePlayer : ModPlayer
@@ -270,21 +271,24 @@ namespace BossRush.Common.ExtraChallenge
         public Vector2 spawnPos = Vector2.Zero;
         public override void PostUpdate()
         {
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.LimitedArena))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(2))
             {
-                if (!spawnPos.IsCloseToPosition(Player.Center, 2000))
+                if (spawnPos != Vector2.Zero)
                 {
-                    Player.statLife -= 10;
-                }
-                for (int i = 0; i < 100; i++)
-                {
-                    int dust = Dust.NewDust(spawnPos + Main.rand.NextVector2CircularEdge(2000, 2000), 0, 0, DustID.AncientLight);
-                    Main.dust[dust].noGravity = true;
-                    Main.dust[dust].fadeIn = 2;
-                    Main.dust[dust].scale = Main.rand.NextFloat(1, 1.25f);
+                    if (!spawnPos.IsCloseToPosition(Player.Center, 2000))
+                    {
+                        Player.statLife -= 10;
+                    }
+                    for (int i = 0; i < 100; i++)
+                    {
+                        int dust = Dust.NewDust(spawnPos + Main.rand.NextVector2CircularEdge(2000, 2000), 0, 0, DustID.AncientLight);
+                        Main.dust[dust].noGravity = true;
+                        Main.dust[dust].fadeIn = 2;
+                        Main.dust[dust].scale = Main.rand.NextFloat(1, 1.25f);
+                    }
                 }
             }
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.KeepMoving))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(3))
             {
                 if (Player.velocity == Vector2.Zero)
                     Player.statLife -= 1;
@@ -292,7 +296,7 @@ namespace BossRush.Common.ExtraChallenge
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.StopMoving))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(4))
             {
                 if (Player.velocity != Vector2.Zero)
                     damage *= Main.rand.NextFloat(0.15f, 1.15f);
@@ -300,7 +304,7 @@ namespace BossRush.Common.ExtraChallenge
         }
         public override void PostItemCheck()
         {
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.EverythingIsClassless))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(5))
             {
                 Player.HeldItem.DamageType = DamageClass.Generic;
             }
@@ -317,7 +321,7 @@ namespace BossRush.Common.ExtraChallenge
         }
         private void OnHitByAnything()
         {
-            if (ExtraChallengeSystem.ListChallengeID.Contains(ExChallenge.HighStress))
+            if (ExtraChallengeSystem.ListChallengeID.Contains(0))
             {
                 if (Player.statLife >= 50)
                     Player.statLife = 1;
