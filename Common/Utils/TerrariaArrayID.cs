@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
+﻿using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -163,6 +164,16 @@ namespace BossRush.Common.Utils
             ModContent.ProjectileType<GoldBowP>(),
             ModContent.ProjectileType<PlatinumBowP>()
         };
+
+        public readonly static int[] EnchantedOreSwordProjectile = new int[] {
+                ModContent.ProjectileType<EnchantedCopperSwordP>(),
+                ModContent.ProjectileType<EnchantedTinSwordP>(),
+                ModContent.ProjectileType<EnchantedLeadSwordP>(),
+                ModContent.ProjectileType<EnchantedIronSwordP>(),
+                ModContent.ProjectileType<EnchantedSilverSwordP>(),
+                ModContent.ProjectileType<EnchantedTungstenSwordP>(),
+                ModContent.ProjectileType<EnchantedGoldSwordP>(),
+                ModContent.ProjectileType<EnchantedPlatinumSwordP>() };
 
         public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };
         public readonly static int[] Smallmeal = new int[] { ItemID.CookedMarshmallow, ItemID.RoastedBird, ItemID.SauteedFrogLegs, ItemID.GrilledSquirrel, ItemID.FruitSalad, ItemID.CookedFish, ItemID.BunnyStew, ItemID.PotatoChips, ItemID.ShuckedOyster };

@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -13,18 +12,6 @@ namespace BossRush.Contents.Items.Chest
             Item.width = 42;
             Item.height = 36;
             Item.rare = 5;
-        }
-
-        public override void PostModifyTooltips(ref List<TooltipLine> tooltips)
-        {
-            if (!NPC.downedBoss3)
-            {
-                tooltips.Add(new TooltipLine(Mod, "ItemName", $"Locked from being opening, that big head boney coward afraid of yous"));
-            }
-            else
-            {
-                tooltips.Add(new TooltipLine(Mod, "ItemName", $"It is now can be open"));
-            }
         }
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {

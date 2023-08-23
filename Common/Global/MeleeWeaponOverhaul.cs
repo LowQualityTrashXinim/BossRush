@@ -330,12 +330,12 @@ namespace BossRush.Common.Global
                 case ItemID.Seedler:
                 case ItemID.TrueNightsEdge:
                 case ItemID.TerraBlade:
-                case ItemID.DD2SquireBetsySword:
                 case ItemID.Meowmere:
                 case ItemID.StarWrath:
                     item.useStyle = BossRushUseStyle.Poke;
                     item.useTurn = false;
                     break;
+                case ItemID.DD2SquireBetsySword:
                 case ItemID.ZombieArm:
                 case ItemID.BatBat:
                 case ItemID.TentacleSpike:
@@ -429,7 +429,7 @@ namespace BossRush.Common.Global
             {
                 return base.UseSpeedMultiplier(item, player);
             }
-            float useTimeMultiplierOnCombo = 1;
+            float useTimeMultiplierOnCombo = .85f;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             //This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
             if (item.useStyle == BossRushUseStyle.Swipe)
@@ -438,7 +438,6 @@ namespace BossRush.Common.Global
                 {
                     useTimeMultiplierOnCombo -= .25f;
                 }
-                if (item.useTime < 17) useTimeMultiplierOnCombo -= .55f;
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
@@ -460,6 +459,7 @@ namespace BossRush.Common.Global
                 return;
             }
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+            modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             switch (item.useStyle)
             {
                 case BossRushUseStyle.Swipe:
@@ -519,7 +519,6 @@ namespace BossRush.Common.Global
             {
                 MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 modifiers.CritDamage.Base += modifiers.CritDamage.Base * .5f;
-                modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
             }
             base.ModifyHitNPC(item, player, target, ref modifiers);
         }
@@ -585,10 +584,9 @@ namespace BossRush.Common.Global
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
-            BossRushUtilsPlayer modplayer = Player.GetModPlayer<BossRushUtilsPlayer>();
-            if (!modplayer.IsPlayerStillUsingTheSameItem)
+            if (item.type != oldHeldItem)
             {
-                ComboNumber = 0;
+                ComboNumber = 0; CountDownToResetCombo = 0;
             }
             delaytimer = BossRushUtils.CoolDown(delaytimer);
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
@@ -605,19 +603,22 @@ namespace BossRush.Common.Global
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    int dust = Dust.NewDust(modplayer.MouseLastPositionBeforeAnimation, 0, 0, DustID.GemRuby);
+                    int dust = Dust.NewDust(Player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation, 0, 0, DustID.GemRuby);
                     Main.dust[dust].velocity = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * Main.rand.NextFloat(2.5f, 4f);
                     Main.dust[dust].noGravity = true;
                 }
             }
-            if (Player.ItemAnimationJustStarted && delaytimer == 0)
+            if (Player.ItemAnimationJustStarted)
             {
-                delaytimer = (int)(Player.itemAnimationMax * 1.2f);
-                if (Main.mouseRight)
+                if (delaytimer <= 0)
                 {
-                    Player.velocity.X *= 0;
+                    delaytimer = (int)(Player.itemAnimationMax * 1.2f);
+                    if (Main.mouseRight)
+                    {
+                        Player.velocity.X *= 0;
+                    }
+                    ExecuteSpecialComboOnStart(Player.GetModPlayer<BossRushUtilsPlayer>());
                 }
-                ExecuteSpecialComboOnStart(modplayer);
             }
             if (Player.ItemAnimationActive)
             {
@@ -625,16 +626,10 @@ namespace BossRush.Common.Global
             }
             else
             {
-                if (AlreadyHitNPC)
-                {
-                    ++ComboNumber;
-                }
                 if (delaytimer != 0 && ComboNumber == 3 && comboExecuteWithDash)
                 {
                     Player.velocity *= .1f;
                 }
-                ComboHandleSystem();
-                AlreadyHitNPC = false;
                 CanPlayerBeDamage = true;
             }
         }
@@ -680,10 +675,11 @@ namespace BossRush.Common.Global
             Player.controlLeft = false;
             Player.controlRight = false;
             Vector2 Toward = modplayer.MouseLastPositionBeforeAnimation - Player.Center;
-            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / Player.itemAnimationMax);
+            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / (Player.itemAnimationMax * 1.5f));
         }
         private void ComboHandleSystem()
         {
+            ComboNumber++;
             if (ComboNumber >= 3 || CountDownToResetCombo == 0)
             {
                 ComboNumber = 0;
@@ -695,15 +691,20 @@ namespace BossRush.Common.Global
         public override void PostUpdate()
         {
             Item item = Player.HeldItem;
+            oldHeldItem = item.type;
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
                 item.noMelee
                 )
             {
                 return;
             }
-            if (Player.ItemAnimationJustStarted && Player.ItemAnimationActive && delaytimer == 0)
+            if (Player.ItemAnimationJustStarted)
             {
-                data = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
+                ComboHandleSystem();
+                if (delaytimer == 0)
+                {
+                    data = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
+                }
             }
             if (Player.ItemAnimationActive)
             {
@@ -718,7 +719,6 @@ namespace BossRush.Common.Global
                 }
             }
         }
-        bool AlreadyHitNPC = false;
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) || item.noMelee)
@@ -736,10 +736,6 @@ namespace BossRush.Common.Global
             if (Main.mouseRight)
             {
                 modifiers.FinalDamage *= 1.5f;
-            }
-            if (!AlreadyHitNPC)
-            {
-                AlreadyHitNPC = true;
             }
         }
         private float DamageHandleSystem(Item item)

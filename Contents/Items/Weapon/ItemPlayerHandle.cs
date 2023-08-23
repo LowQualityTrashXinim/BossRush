@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.Weapon
         public bool DarkCactus_BladeOfGrass = false;
 
         public bool EnchantedOreSword_StarFury = false;
-        public bool EnchantedOreSword_Musket = false;
+        public bool EnchantedOreSword_EnchantedSword = false;
 
         public bool EnchantedStarfury_SkyFacture = false;
         public bool EnchantedStarfury_BreakerBlade = false;
@@ -68,14 +68,14 @@ namespace BossRush.Contents.Items.Weapon
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
-            
+
             BurningPassion_WandofFrosting = false;
 
             DarkCactus_BatScepter = false;
             DarkCactus_BladeOfGrass = false;
 
             EnchantedOreSword_StarFury = false;
-            EnchantedOreSword_Musket = false;
+            EnchantedOreSword_EnchantedSword = false;
 
             EnchantedStarfury_SkyFacture = false;
             EnchantedStarfury_BreakerBlade = false;
@@ -222,7 +222,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             base.HoldItem(player);
             PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
-            if(modplayer.SynergyBonusBlock)
+            if (modplayer.SynergyBonusBlock)
             {
                 return;
             }

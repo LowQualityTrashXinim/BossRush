@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
 {
@@ -25,7 +24,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             counter++;
             if (modplayer.EnchantedOreSword_StarFury && counter >= 20)
             {
-                int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * .001f, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity * .5f, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 Main.projectile[projectile].tileCollide = false;
                 Main.projectile[projectile].timeLeft = 120;
                 counter = 0;
@@ -38,10 +37,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            if (modplayer.EnchantedOreSword_Musket && player.ownedProjectileCounts[ModContent.ProjectileType<MusketGunProjectile>()] < 5)
-            {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ModContent.ProjectileType<MusketGunProjectile>(), Projectile.damage, 0, Projectile.owner);
-            }
             EnchantedProjectileOnHitNPC(npc, hit, damageDone);
         }
         public virtual void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
@@ -49,59 +44,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.DrawTrail(lightColor);
             return base.PreDraw(ref lightColor);
-        }
-    }
-    public class MusketGunProjectile : ModProjectile
-    {
-        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Musket);
-        public override void SetDefaults()
-        {
-            Projectile.width = 56;
-            Projectile.height = 18;
-            Projectile.timeLeft = 250;
-            Projectile.penetrate = -1;
-            Projectile.friendly = true;
-            Projectile.tileCollide = true;
-            Projectile.DamageType = DamageClass.Ranged;
-        }
-        public override bool? CanDamage() => false;
-        int timer = 50;
-        public override void AI()
-        {
-            Projectile.velocity -= Projectile.velocity * .05f;
-            if (timer > 0)
-            {
-                timer = BossRushUtils.CoolDown(timer);
-            }
-            else
-            {
-                if (Projectile.Center.LookForHostileNPC(out NPC npc, 800) && npc != null)
-                {
-                    Vector2 velocityToNpc = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                    Projectile.spriteDirection = Projectile.Center.X < npc.Center.X ? 1 : -1;
-                    Projectile.rotation = velocityToNpc.ToRotation();
-                    Projectile.rotation += Projectile.spriteDirection == 1 ? 0 : MathHelper.Pi;
-                    timer = 50;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.PositionOFFSET(velocityToNpc, 45f), velocityToNpc * 20f, ProjectileID.Bullet, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                }
-            }
-        }
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            if (Projectile.velocity.X != oldVelocity.X) Projectile.velocity.X = -oldVelocity.X;
-            if (Projectile.velocity.Y != oldVelocity.Y) Projectile.velocity.Y = -oldVelocity.Y;
-            return false;
-        }
-        public override void Kill(int timeLeft)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5f, 5f);
-                Main.dust[dust].scale = Main.rand.NextFloat(.75f, 1.5f);
-                Main.dust[dust].rotation = MathHelper.ToRadians(20f);
-            }
         }
     }
     internal class EnchantedCopperSwordP : EnchantedProjectileBase

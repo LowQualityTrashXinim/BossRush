@@ -41,6 +41,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
         {
             base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
         }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DD2LightningAuraT1Popper)
+                .AddIngredient(ItemID.ThunderSpear)
+                .Register();
+        }
     }
     class OrbOfEnergyBolt : SynergyModProjectile
     {
