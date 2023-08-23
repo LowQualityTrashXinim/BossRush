@@ -61,6 +61,8 @@ namespace BossRush.Common
                 return;
             if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
                 return;
+            if (Player.IsDebugPlayer())
+                return;
             CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
             //Main.NewText(CooldownCheck);
             if (CooldownCheck <= 0)

@@ -11,11 +11,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver
         int counter = 0;
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(26, 52, 45, 3f, 2, 12, ItemUseStyleID.Shoot, ProjectileID.Bullet, 20f, false, AmmoID.Bullet);
+            Item.BossRushDefaultRange(26, 52, 25, 3f, 10, 60, ItemUseStyleID.Shoot, ProjectileID.Bullet, 20f, false, AmmoID.Bullet);
             Item.rare = 3;
             Item.UseSound = SoundID.Item11;
             Item.crit = 15;
-            Item.reuseDelay = 37;
+            Item.reuseDelay = 57;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item41;
         }
