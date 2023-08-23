@@ -103,9 +103,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 Vector2 velocity;
                 for (int i = 0; i < 6; i++)
                 {
-                    velocity = projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation));
-                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, hit.Damage, hit.Knockback, projectile.owner);
-                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, hit.Damage, hit.Knockback, projectile.owner);
+                    velocity = projectile.velocity.RotatedBy(MathHelper.ToRadians(i * 60 + randomRotation)) * .5f;
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornTip, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
                 }
             }
         }

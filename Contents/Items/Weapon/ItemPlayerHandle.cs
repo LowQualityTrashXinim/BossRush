@@ -20,6 +20,7 @@ namespace BossRush.Contents.Items.Weapon
     public class PlayerSynergyItemHandle : ModPlayer
     {
         public bool SynergyBonusBlock = false;
+        public int SynergyBonus = 0;
 
         public bool BurningPassion_WandofFrosting = false;
 
@@ -68,6 +69,7 @@ namespace BossRush.Contents.Items.Weapon
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
+            SynergyBonus = 0;
 
             BurningPassion_WandofFrosting = false;
 

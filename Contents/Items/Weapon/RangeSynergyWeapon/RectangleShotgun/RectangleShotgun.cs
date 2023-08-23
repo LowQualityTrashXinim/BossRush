@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(12, 74, 75, 4f, 10, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<RectangleBullet>(), 100f, true, AmmoID.Bullet);
+            Item.BossRushDefaultRange(12, 74, 50, 4f, 10, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<RectangleBullet>(), 100f, true, AmmoID.Bullet);
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = ItemRarityID.LightRed;
             Item.reuseDelay = 30;

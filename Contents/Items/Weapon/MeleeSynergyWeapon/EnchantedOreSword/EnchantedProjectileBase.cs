@@ -24,9 +24,10 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             counter++;
             if (modplayer.EnchantedOreSword_StarFury && counter >= 20)
             {
-                int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity * .5f, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
+                int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
                 Main.projectile[projectile].tileCollide = false;
-                Main.projectile[projectile].timeLeft = 120;
+                Main.projectile[projectile].timeLeft = 30;
+                Main.projectile[projectile].penetrate = 1;
                 counter = 0;
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
@@ -55,7 +56,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         }
         public override void AI()
         {
-            Projectile.alpha += 5;
+            Projectile.alpha += 2;
         }
     }
     internal class EnchantedTinSwordP : EnchantedProjectileBase
@@ -65,9 +66,31 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.light = .45f;
         }
+        int count = 0;
+        float rotate = -2.5f;
         public override void AI()
         {
-            Projectile.alpha += 5;
+            Projectile.alpha += 2;
+            Projectile.ai[0] += 1f;
+            if (count == 2)
+            {
+                rotate = -5f;
+            }
+            if (count == 1)
+            {
+                rotate = 5f;
+            }
+            if (Projectile.ai[0] == 10)
+            {
+                Projectile.ai[0] = 0;
+                count++;
+            }
+            if (count > 2)
+            {
+                count = 1;
+            }
+            Vector2 Helix = new Vector2(Projectile.velocity.X, Projectile.velocity.Y).RotatedBy(MathHelper.ToRadians(rotate));
+            Projectile.velocity = Helix;
         }
     }
     internal class EnchantedIronSwordP : EnchantedProjectileBase
@@ -85,6 +108,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         public override void AI()
         {
             Projectile.alpha += 4;
+            Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
         }
     }
     internal class EnchantedLeadSwordP : EnchantedProjectileBase
@@ -95,13 +119,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             Projectile.light = .55f;
         }
         int count = 0;
-        public override void AI()
+        int direction = 0;
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (count == 0)
+            {
+                direction = Projectile.Center.X - player.Center.X > 0 ? 1 : -1;
+            }
             count++;
             if (count >= 20)
             {
-                Projectile.velocity = Main.rand.NextVector2CircularEdge(10f, 10f);
-                count = 0;
+                Projectile.velocity = Projectile.velocity.RotatedBy(3) * direction * 1.01f;
             }
             Projectile.alpha += 2;
         }
@@ -113,9 +141,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.light = 0.65f;
         }
-        public override void AI()
+        int firstFrame = 0;
+        int direction = 0;
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (firstFrame == 0)
+            {
+                direction = Projectile.Center.X - player.Center.X > 0 ? 1 : -1;
+                firstFrame++;
+            }
             Projectile.alpha += 3;
+            Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(1 * direction)) * 1.05f;
         }
     }
     internal class EnchantedTungstenSwordP : EnchantedProjectileBase
@@ -125,9 +161,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         {
             Projectile.light = 0.65f;
         }
-        public override void AI()
+        int firstFrame = 0;
+        int direction = 0;
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (firstFrame == 0)
+            {
+                direction = Projectile.Center.X - player.Center.X > 0 ? 1 : -1;
+                firstFrame++;
+            }
             Projectile.alpha += 3;
+            Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(-1 * direction)) * 1.05f;
         }
     }
     internal class EnchantedGoldSwordP : EnchantedProjectileBase
@@ -144,7 +188,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         public override void AI()
         {
             Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
-            Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
+            Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
             Projectile.alpha += 2;
         }
     }
@@ -154,16 +198,20 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
         public override void PostSetDefault()
         {
             Projectile.light = .75f;
+            Projectile.knockBack = 0;
         }
         public override void AI()
         {
             Projectile.alpha += 2;
+            Projectile.knockBack = 0;
         }
         public override void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 3;
-            Projectile.position += Main.rand.NextVector2CircularEdge(200, 200);
-            Projectile.velocity = (target.Center - Projectile.position).SafeNormalize(Vector2.UnitX) * 20;
+            Projectile.Center += Main.rand.NextVector2CircularEdge(200, 200);
+            Projectile.velocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 30f;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            Projectile.damage += 2;
         }
     }
 }

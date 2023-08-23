@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(42, 36, 37, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 5, false, AmmoID.Bullet);
+            Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 5, false, AmmoID.Bullet);
             Item.scale = 0.7f;
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);

@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 17, 6f, 24, 24, BossRushUseStyle.GenericSwingDownImprove, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
+            Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 19, 6f, 24, 24, BossRushUseStyle.GenericSwingDownImprove, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = ItemRarityID.Blue;
             Item.UseSound = SoundID.Item1;
@@ -67,7 +67,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             switch (counter)
             {
                 case 0:
-                    Projectile.NewProjectile(source, position, velocity, TerrariaArrayID.EnchantedOreSwordProjectile[count], damage, knockback, player.whoAmI);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Vector2 vel = velocity.Vector2DistributeEvenly(3, 30, i);
+                        Projectile.NewProjectile(source, position, vel, TerrariaArrayID.EnchantedOreSwordProjectile[count], damage, knockback, player.whoAmI);
+                    }
                     break;
                 case 1:
                     Projectile.NewProjectile(source, position, velocity, TerrariaArrayID.EnchantedOreSwordProjectile[count], damage, knockback, player.whoAmI);
