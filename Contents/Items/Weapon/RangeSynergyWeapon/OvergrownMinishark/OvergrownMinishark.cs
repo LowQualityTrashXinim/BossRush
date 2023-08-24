@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Common.Global;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -25,20 +24,16 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
             if (modplayer.OvergrownMinishark_CrimsonRod)
-            {
                 tooltips.Add(new TooltipLine(Mod, "OvergrownMinishark_CrimsonRod", $"[i:{ItemID.CrimsonRod}] When shooting, you summon blood rain at cursor"));
-            }
+            if (modplayer.OvergrownMinishark_DD2ExplosiveTrapT1Popper)
+                tooltips.Add(new TooltipLine(Mod, "OvergrownMinishark_DD2ExplosiveTrapT1Popper", $"[i:{ItemID.DD2ExplosiveTrapT1Popper}] You sometime shoot explosive mine that linger for a while"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.CrimsonRod))
-            {
                 modplayer.OvergrownMinishark_CrimsonRod = true;
-            }
-            if (player.HasItem(ItemID.PlatinumShortsword))
-            {
-                modplayer.OvergrownMinishark_PlatinumShortSword = true;
-            }
+            if (player.HasItem(ItemID.DD2ExplosiveTrapT1Popper))
+                modplayer.OvergrownMinishark_DD2ExplosiveTrapT1Popper = true;
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -61,22 +56,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 .AddIngredient(ItemID.Minishark)
                 .AddIngredient(ItemID.Vilethorn)
                 .Register();
-        }
-    }
-    class OvergrownMiniSharkPlatinumShortSwordProjectile : SynergyModProjectile
-    {
-        public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumShortsword);
-        public override void SetDefaults()
-        {
-            Projectile.width = Projectile.height = 32;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Melee;
-        }
-        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
-        {
-            base.SynergyAI(player, modplayer);
         }
     }
     class OvergrownMinisharkProjectileModify : GlobalProjectile
@@ -108,6 +87,33 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                     Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, velocity, ProjectileID.VilethornBase, (int)(hit.Damage * .35f), hit.Knockback, projectile.owner);
                 }
             }
+        }
+    }
+    public class ExplosiveMineProjectile : SynergyModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 10;
+            Projectile.friendly = true;
+            Projectile.timeLeft = 150;
+            Projectile.tileCollide = true;
+        }
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            Projectile.velocity *= .98f;
+            base.SynergyAI(player, modplayer);
+        }
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
+        {
+            Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150);
+            foreach (NPC target in npclist)
+            {
+                target.StrikeNPC(target.CalculateHitInfo(Projectile.damage, 1));
+            }
+        }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            return false;
         }
     }
 }

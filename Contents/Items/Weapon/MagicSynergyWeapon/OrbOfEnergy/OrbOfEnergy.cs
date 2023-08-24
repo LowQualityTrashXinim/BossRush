@@ -20,15 +20,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
             base.ModifySynergyToolTips(ref tooltips, modplayer);
             if (modplayer.OrbOfEnergy_BookOfSkulls)
                 tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.BookofSkulls}] Energy lighting can home in toward enemy"));
-            if (modplayer.OrbOfEnergy_WaterBolt)
-                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.WaterBolt}] Energy lighting are much more deadly"));
+            if (modplayer.OrbOfEnergy_DD2LightningAuraT1Popper)
+                tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.DD2LightningAuraT1Popper}] Energy lighting are much more deadly"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.BookofSkulls))
                 modplayer.OrbOfEnergy_BookOfSkulls = true;
-            if (player.HasItem(ItemID.WaterBolt))
-                modplayer.OrbOfEnergy_WaterBolt = true;
+            if (player.HasItem(ItemID.DD2LightningAuraT1Popper))
+                modplayer.OrbOfEnergy_DD2LightningAuraT1Popper = true;
 
         }
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -78,7 +78,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
             Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
             if (Projectile.timeLeft % 20 != 0)
                 return;
-            if (modplayer.OrbOfEnergy_WaterBolt)
+            if (modplayer.OrbOfEnergy_DD2LightningAuraT1Popper)
             {
                 Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 100f);
                 foreach (var npc in npclist)

@@ -32,7 +32,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                 .Register();
         }
     }
-    class MagicHandCannonProjectile : ModProjectile
+    class MagicHandCannonProjectile : SynergyModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -53,9 +53,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
         }
         bool isAlreadyOutX = false;
         bool isAlreadyOutY = false;
-        public override void AI()
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            Player player = Main.player[Projectile.owner];
             if (Projectile.direction == 1)
             {
                 DrawOffsetX = -5;
@@ -92,13 +91,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
             Projectile.rotation = Projectile.velocity.ToRotation();
             Projectile.position += player.velocity;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.ShadowFlame, 180);
+            npc.AddBuff(BuffID.ShadowFlame, 180);
+            npc.immune[Projectile.owner] = 4;
         }
-        public override void Kill(int timeLeft)
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
         {
-            base.Kill(timeLeft);
             for (int i = 0; i < 20; i++)
             {
                 int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2CircularEdge(5f, 5f), 0, 0, DustID.Shadowflame);

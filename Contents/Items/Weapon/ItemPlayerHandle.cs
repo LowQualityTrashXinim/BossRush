@@ -52,20 +52,22 @@ namespace BossRush.Contents.Items.Weapon
         public bool Deagle_PhoenixBlaster_Critical = false;
 
         public bool OvergrownMinishark_CrimsonRod = false;
-        public bool OvergrownMinishark_PlatinumShortSword = false;
+        public bool OvergrownMinishark_DD2ExplosiveTrapT1Popper = false;
 
         public bool StreetLamp_Firecracker = false;
         public bool StreetLamp_VampireFrogStaff = false;
         public int StreetLamp_VampireFrogStaff_HitCounter = 0;
 
         public bool OrbOfEnergy_BookOfSkulls = false;
-        public bool OrbOfEnergy_WaterBolt = false;
+        public bool OrbOfEnergy_DD2LightningAuraT1Popper = false;
 
         public bool SinisterBook_DemonScythe = false;
 
         public bool StarLightDistributer_MeteorArmor = false;
         public bool StarLightDistributer_MagicMissile = false;
         public bool StarlightDistributer_StarCannon = false;
+
+        public bool BloodyShoot_AquaScepter = false;
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
@@ -97,7 +99,7 @@ namespace BossRush.Contents.Items.Weapon
             Deagle_DaedalusStormBow = false;
 
             OvergrownMinishark_CrimsonRod = false;
-            OvergrownMinishark_PlatinumShortSword = false;
+            OvergrownMinishark_DD2ExplosiveTrapT1Popper = false;
 
             StarLightDistributer_MeteorArmor = false;
 
@@ -105,12 +107,14 @@ namespace BossRush.Contents.Items.Weapon
             StreetLamp_VampireFrogStaff = false;
 
             OrbOfEnergy_BookOfSkulls = false;
-            OrbOfEnergy_WaterBolt = false;
+            OrbOfEnergy_DD2LightningAuraT1Popper = false;
 
             SinisterBook_DemonScythe = false;
 
             StarLightDistributer_MagicMissile = false;
             StarlightDistributer_StarCannon = false;
+
+            BloodyShoot_AquaScepter = false;
         }
         int check = 1;
         public override void PostUpdate()
