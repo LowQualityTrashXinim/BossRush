@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -74,6 +75,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
     }
     internal class ExplodeProjectile : ModProjectile
     {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Projectile.width = 150;
@@ -81,7 +83,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
             Projectile.tileCollide = false;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.alpha = 255;
+            Projectile.hide = true;
             Projectile.timeLeft = 55;
         }
         public override void AI()

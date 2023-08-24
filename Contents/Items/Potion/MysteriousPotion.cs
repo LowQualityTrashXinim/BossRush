@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Potion
 {
@@ -191,9 +192,9 @@ namespace BossRush.Contents.Items.Potion
         public float CritDMG = 0;
         public float CritChance = 0;
         public float ToStatsNumFloat(PlayerStats stats, int multi) => lookupDictionary[stats] * multi * .01f;
-
         public int ToStatsNumInt(PlayerStats stats, int multi) => lookupDictionary[stats] * multi;
 
+        public bool AuraShot = false;
         public override void ResetEffects()
         {
             base.ResetEffects();
@@ -207,6 +208,7 @@ namespace BossRush.Contents.Items.Potion
                 if (StatsMulti.Count > 0)
                     StatsMulti.Clear();
             }
+            AuraShot = false;
         }
         public Dictionary<PlayerStats, int> lookupDictionary = new Dictionary<PlayerStats, int>()
         {
@@ -236,6 +238,13 @@ namespace BossRush.Contents.Items.Potion
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             modifiers.CritDamage += Math.Clamp(CritDMG * .01f, 0, 999999);
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (AuraShot && proj.DamageType == DamageClass.Ranged)
+            {
+                Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), (int)(proj.damage * .25f), 0, Player.whoAmI);
+            }
         }
     }
 }

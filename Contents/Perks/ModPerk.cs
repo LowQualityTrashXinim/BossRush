@@ -7,6 +7,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Perks
 {
@@ -28,6 +29,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushUtils.GetTheSameTextureAsEntity<LifeForceOrb>();
             Tooltip = "+ Attacking enemy will periodically create a life orb that heal you";
             CanBeStack = false;
         }
@@ -134,28 +136,6 @@ namespace BossRush.Contents.Perks
                 player.statDefense += 5;
         }
     }
-    public class AuraShot : Perk
-    {
-        public override void SetDefaults()
-        {
-            CanBeStack = false;
-            Tooltip =
-                "+ Range damage type projectile now can deal AoE damage that deal 25% of damage\n" +
-                "- Range weapon damage are decrease by 35%";
-        }
-        public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
-        {
-            if (item.DamageType == DamageClass.Ranged)
-                damage -= .35f;
-        }
-        public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if(proj.DamageType == DamageClass.Ranged)
-            {
-                Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), (int)(proj.damage * .25f), 0, player.whoAmI);
-            }
-        }
-    }
     public class PotionExpert : Perk
     {
         public override void SetDefaults()
@@ -168,8 +148,42 @@ namespace BossRush.Contents.Perks
         {
             player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
         }
+    }
+    public class SniperCharge : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ Range weapon can deal 2x damage when it is ready";
+        }
+        int RandomCountDown = 0;
+        int OpportunityWindow = 0;
         public override void Update(Player player)
         {
+            if (!player.ItemAnimationActive)
+                RandomCountDown = BossRushUtils.CoolDown(RandomCountDown);
+            if (RandomCountDown <= 0)
+            {
+                if (OpportunityWindow == 0)
+                {
+                    BossRushUtils.CombatTextRevamp(player.Hitbox, Color.ForestGreen, "!");
+                    SoundEngine.PlaySound(SoundID.MaxMana);
+                }
+                OpportunityWindow++;
+                if (OpportunityWindow >= 600 || player.ItemAnimationActive)
+                {
+                    OpportunityWindow = 0;
+                    RandomCountDown = Main.rand.Next(150, 210);
+                }
+            }
+        }
+        public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
+        {
+            if (item.DamageType == DamageClass.Ranged && RandomCountDown <= 0 && OpportunityWindow < 600)
+            {
+                damage *= 2;
+            }
         }
     }
 }
