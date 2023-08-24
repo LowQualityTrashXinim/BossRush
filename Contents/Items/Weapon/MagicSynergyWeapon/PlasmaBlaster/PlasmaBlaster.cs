@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 42, 24, 60, 4f, 30, 30, ItemUseStyleID.Shoot, false);
-            BossRushUtils.BossRushDefaultMagic(Item, ProjectileID.ChargedBlasterOrb, 20f, 14);
+            BossRushUtils.BossRushDefaultMagic(Item, ModContent.ProjectileType<PlasmaBlasterLaserProjectile>(), 20f, 14);
             Item.DamageType = DamageClass.Magic;
             Item.rare = ItemRarityID.Yellow;
             Item.value = Item.sellPrice(gold: 50);
