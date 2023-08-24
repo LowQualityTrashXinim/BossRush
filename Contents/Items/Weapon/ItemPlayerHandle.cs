@@ -7,6 +7,7 @@ using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using System.Threading;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -68,6 +69,12 @@ namespace BossRush.Contents.Items.Weapon
         public bool StarlightDistributer_StarCannon = false;
 
         public bool BloodyShoot_AquaScepter = false;
+
+        public bool RectangleShotgun_QuadBarrelShotgun = false;
+
+        public bool SharpBoomerang_EnchantedBoomerang = false;
+
+        public bool SuperFlareGun_Phaseblade = false;
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
@@ -115,6 +122,12 @@ namespace BossRush.Contents.Items.Weapon
             StarlightDistributer_StarCannon = false;
 
             BloodyShoot_AquaScepter = false;
+
+            RectangleShotgun_QuadBarrelShotgun = false;
+
+            SharpBoomerang_EnchantedBoomerang = false;
+
+            SuperFlareGun_Phaseblade = false;
         }
         int check = 1;
         public override void PostUpdate()

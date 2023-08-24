@@ -5,38 +5,23 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
 {
-    class HeartP : ModProjectile
+    class HeartP : SynergyModProjectile
     {
         public override void SetDefaults()
         {
+            Projectile.width = Projectile.height = 22;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.tileCollide = true;
             Projectile.friendly = true;
             Projectile.penetrate = 1;
-            Projectile.width = 22;
-            Projectile.height = 22;
-            Projectile.alpha = 0;
             Projectile.light = 0.1f;
             Projectile.timeLeft = 45;
         }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            // prevent heal from applying when damaging critters or target dummy
-            Player player = Main.player[Projectile.owner];
-            if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)
+            if (npc.lifeMax > 5 && !npc.friendly && npc.type != NPCID.TargetDummy)
             {
-                int healAmount = Main.rand.Next(1, 3);
-
-                player.statLife += healAmount;
-                // this part here prevents health from going above max
-                if (player.statLife > player.statLifeMax2)
-                {
-                    player.statLife = player.statLifeMax2;
-                }
-
-                // the heal popup text
-                player.HealEffect(healAmount, true);
+                player.Heal(Main.rand.Next(1, 3));
             }
         }
 
@@ -69,6 +54,23 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, leftsideofheartshape4, projectileType, damage, knockback, Projectile.owner);
             }
 
+        }
+    }
+    internal class smallerHeart : SynergyModProjectile
+    {
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.penetrate = 2;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.tileCollide = true;
+            Projectile.timeLeft = 30;
+        }
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            Projectile.velocity -= Projectile.velocity * 0.05f;
         }
     }
 }

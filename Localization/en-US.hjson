@@ -145,6 +145,8 @@ Mods: {
 			LifeOrb.DisplayName: Life Orb
 			ExChallengeProjectile_BeingHuntDown.DisplayName: Ex Challenge Projectile_ Being Hunt Down
 			ExChallengeProjectile_BossShootHomeIn.DisplayName: Ex Challenge Projectile_ Boss Shoot Home In
+			BloodWater.DisplayName: Blood Water
+			ExplosiveMineProjectile.DisplayName: Explosive Mine Projectile
 		}
 
 		NPCs: {

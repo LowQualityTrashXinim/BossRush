@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
 {
@@ -10,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(38, 72, 17, 5f, 35, 35, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
+            Item.BossRushDefaultRange(38, 72, 17, 5f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
             Item.crit = 6;
             Item.scale = 0.5f;
             Item.noUseGraphic = true;
@@ -19,11 +20,27 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            base.ModifySynergyToolTips(ref tooltips, modplayer);
+            if (modplayer.SharpBoomerang_EnchantedBoomerang)
+                tooltips.Add(new TooltipLine(Mod, "SharpBoomerang_EnchantedBoomerang", $"[i:{ItemID.EnchantedBoomerang}] You throw out additional boomerang"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            base.HoldSynergyItem(player, modplayer);
+            if (player.HasItem(ItemID.EnchantedBoomerang))
+                modplayer.SharpBoomerang_EnchantedBoomerang = true;
+        }
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
+            CanShootItem = true;
+            if (modplayer.SharpBoomerang_EnchantedBoomerang)
+            {
+                for (int i = -1; i < 2; i++)
+                {
+                    if (i == 0)
+                        continue;
+                    Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, i);
+                }
+                CanShootItem = false;
+            }
         }
         public override bool CanUseItem(Player player)
         {
@@ -52,6 +69,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
             Projectile.timeLeft = 999;
             DrawOriginOffsetX = 5;
             DrawOriginOffsetY = -10;
+            Projectile.usesLocalNPCImmunity = true;
         }
         float MaxLengthX = 0;
         float MaxLengthY = 0;
@@ -63,10 +81,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
         {
             if (Projectile.timeLeft == 999)
             {
+                if (Projectile.ai[0] == 0)
+                    Projectile.ai[0] = Main.rand.NextBool().BoolOne();
                 MaxLengthX = (Main.MouseWorld - player.Center).Length();
                 maxProgress += (int)(MaxLengthX * .05f);
                 progression = maxProgress;
-                MouseXPosDirection = Main.rand.NextBool().BoolOne() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
+                MouseXPosDirection = (int)Projectile.ai[0] * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
                 MaxLengthY = -(MaxLengthX + Main.rand.NextFloat(-10, 80)) * .25f * MouseXPosDirection;
             }
             if (player.dead || !player.active || progression <= 0)
@@ -116,8 +136,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
         {
             Vector2 RandomPos = Projectile.Center + Main.rand.NextVector2CircularEdge(50, 50);
             Vector2 DistanceToAim = (npc.Center - RandomPos).SafeNormalize(Vector2.UnitX) * 4f;
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), RandomPos, DistanceToAim, ProjectileID.SuperStarSlash, Projectile.damage, 0, Projectile.owner);
-            npc.immune[Projectile.owner] = 7;
+            int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), RandomPos, DistanceToAim, ProjectileID.SuperStarSlash, Projectile.damage, 0, Projectile.owner);
+            Main.projectile[proj].usesIDStaticNPCImmunity = true;
+            npc.immune[Projectile.owner] = 3;
         }
     }
 }

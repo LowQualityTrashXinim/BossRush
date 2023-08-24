@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 5, false, AmmoID.Bullet);
+            Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
             Item.scale = 0.7f;
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
             if (modplayer.BloodyShoot_AquaScepter)
-                tooltips.Add(new TooltipLine(Mod, "BloodyShoot_AquaScepter", $"{ItemID.AquaScepter} Your gun now shoot out damaging blood"));
+                tooltips.Add(new TooltipLine(Mod, "BloodyShoot_AquaScepter", $"[i:{ItemID.AquaScepter}] Your gun now shoot out damaging blood"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
@@ -36,7 +36,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
             {
                 for (int i = 0; i < Main.rand.Next(3, 6); i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(20), ModContent.ProjectileType<BloodWater>(), damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(20).Vector2RandomSpread(4, Main.rand.NextFloat(.9f, 1.1f)) * .5f, ModContent.ProjectileType<BloodWater>(), damage, knockback, player.whoAmI);
                 }
             }
             CanShootItem = false;
@@ -67,11 +67,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            Dust.NewDust(Projectile.Center, 10, 10, DustID.BloodWater);
+            int dust = Dust.NewDust(Projectile.Center, 10, 10, DustID.Blood);
+            Main.dust[dust].fadeIn = .5f;
+            Main.dust[dust].velocity = Vector2.Zero;
             Projectile.ai[0]++;
-            if (Projectile.ai[0] >= 50)
+            if (Projectile.ai[0] >= 100)
             {
-                Projectile.velocity.Y += .1f;
+                Projectile.velocity.Y += .01f;
             }
         }
     }
@@ -84,22 +86,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
             Projectile.friendly = true;
             Projectile.width = 10;
             Projectile.height = 10;
-            Projectile.extraUpdates = 6;
+            Projectile.extraUpdates = 20;
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            int ran = Main.rand.Next(7);
-            if (ran == 0)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    Vector2 newPos = new Vector2(Projectile.position.X + Main.rand.Next(-500, 500) + 5, Projectile.position.Y - (600 + Main.rand.Next(1, 100)) + 5);
-                    Vector2 safeAimto = (Projectile.position - newPos).SafeNormalize(Vector2.UnitX);
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, safeAimto * 5, ModContent.ProjectileType<BloodBullet>(), hit.Damage, hit.Knockback, player.whoAmI);
-                }
-            }
             int randNum = 1 + Main.rand.Next(3, 6);
             for (int i = 0; i < randNum; i++)
             {

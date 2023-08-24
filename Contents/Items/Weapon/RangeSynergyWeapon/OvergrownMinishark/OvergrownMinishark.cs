@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
@@ -48,6 +49,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
                 int proj = Projectile.NewProjectile(source, pos, Vector2.UnitY * Main.rand.NextFloat(9, 11), ProjectileID.BloodRain, damage, knockback, player.whoAmI);
                 Main.projectile[proj].penetrate = 1;
             }
+            if (modplayer.OvergrownMinishark_DD2ExplosiveTrapT1Popper)
+            {
+                if (Main.rand.NextBool(10))
+                    Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ExplosiveMineProjectile>(), damage * 2, 0, player.whoAmI);
+            }
             CanShootItem = true;
         }
         public override void AddRecipes()
@@ -91,24 +97,37 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
     }
     public class ExplosiveMineProjectile : SynergyModProjectile
     {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 10;
+            Projectile.width = Projectile.height = 40;
             Projectile.friendly = true;
-            Projectile.timeLeft = 150;
+            Projectile.timeLeft = 300;
+            Projectile.penetrate = -1;
             Projectile.tileCollide = true;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            Projectile.rotation = MathHelper.ToRadians(Projectile.velocity.Length());
             Projectile.velocity *= .98f;
-            base.SynergyAI(player, modplayer);
+            
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
+        {
+            ExplosionEffect();
+        }
+        private void ExplosionEffect()
         {
             Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 150);
             foreach (NPC target in npclist)
             {
                 target.StrikeNPC(target.CalculateHitInfo(Projectile.damage, 1));
+            }
+            for (int i = 0; i < 30; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 10, 10, DustID.Torch);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(10, 10);
             }
         }
         public override bool OnTileCollide(Vector2 oldVelocity)

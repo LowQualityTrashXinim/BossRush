@@ -2,10 +2,11 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
 {
-    internal class SuperFlareP : ModProjectile
+    internal class SuperFlareP : SynergyModProjectile
     {
         public override void SetDefaults()
         {
@@ -24,8 +25,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
             Projectile.velocity.Y = -20f;
             return false;
         }
-        public override void AI()
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (modplayer.SuperFlareGun_Phaseblade)
+                if (Projectile.timeLeft > 50)
+                    Projectile.timeLeft = 50;
             int RandomDust = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemTopaz });
             for (int i = 0; i < 7; i++)
             {
@@ -33,19 +37,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, RandomDust, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
-            Projectile.ai[0]++;
-            if (Projectile.ai[0] >= 3)
-            {
-                Vector2 RandomPos = Projectile.Center + Main.rand.NextVector2Circular(50f, 50f);
-                //Projectile.NewProjectile(Projectile.GetSource_FromThis(), RandomPos, Vector2.Zero, ModContent.ProjectileType<ExplodeProjectile>(), 0, 0, Projectile.owner);
-                Projectile.ai[0] = 0;
-            }
         }
-
-        public override void Kill(int timeLeft)
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
         {
             float randomRotation = Main.rand.NextFloat(90);
-            int RandomDust = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemAmber, DustID.GemAmethyst, DustID.GemEmerald, DustID.GemRuby, DustID.GemSapphire, DustID.GemTopaz });
+            int RandomDust = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemAmethyst, DustID.GemEmerald, DustID.GemRuby, DustID.GemSapphire, DustID.GemTopaz });
             Vector2 Rotate;
             for (int i = 0; i < 150; i++)
             {
@@ -53,6 +49,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, RandomDust, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 2.5f));
                 Main.dust[dustnumber].noGravity = true;
             }
+            int RandomDust2 = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemAmethyst, DustID.GemEmerald, DustID.GemRuby, DustID.GemSapphire, DustID.GemTopaz });
             for (int i = 0; i < 300; i++)
             {
                 if (i % 2 == 0)
@@ -63,8 +60,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
                 {
                     Rotate = Main.rand.NextVector2CircularEdge(30f, 10f).RotatedBy(MathHelper.ToRadians(randomRotation)) * 1.5f;
                 }
-                int dustnumber1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.75f, 2f));
+                int dustnumber1 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, RandomDust2, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.75f, 2f));
                 Main.dust[dustnumber1].noGravity = true;
+            }
+            Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 600);
+            foreach (NPC npc in npclist)
+            {
+                int direction = Projectile.Center.X - npc.Center.X > 0 ? -1 : 1;
+                npc.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 5, direction, false, 10));
+                player.addDPS(Projectile.damage * 5);
             }
         }
     }
