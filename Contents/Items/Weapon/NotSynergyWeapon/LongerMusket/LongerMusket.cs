@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
+namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.LongerMusket
 {
     internal class LongerMusket : ModItem
     {

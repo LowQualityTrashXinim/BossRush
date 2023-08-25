@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
+namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark
 {
     internal class SingleBarrelMinishark : ModItem
     {

@@ -45,7 +45,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.X);
 
-            if (Projectile.timeLeft % 5 == 0)
+            if (Projectile.timeLeft % 3 == 0)
             {
                 Projectile.damage += 1;
             }

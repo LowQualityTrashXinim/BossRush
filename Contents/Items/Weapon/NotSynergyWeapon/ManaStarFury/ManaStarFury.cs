@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ManaStarFury
+namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury
 {
     internal class ManaStarFury : ModItem
     {
@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ManaStarFury
         }
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 34, 40, 35, 6f, 20, 20, ItemUseStyleID.Swing, true);
+            Item.BossRushSetDefault(34, 40, 35, 6f, 20, 20, ItemUseStyleID.Swing, true);
             Item.DamageType = DamageClass.Melee;
             Item.useTurn = true;
             Item.rare = 3;

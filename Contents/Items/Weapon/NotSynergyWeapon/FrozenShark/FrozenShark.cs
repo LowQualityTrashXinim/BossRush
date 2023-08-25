@@ -5,13 +5,13 @@ using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon
+namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark
 {
     internal class FrozenShark : ModItem
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushDefaultRange(Item, 64, 20, 16, 1f, 9, 9, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);
+            Item.BossRushDefaultRange(64, 20, 16, 1f, 9, 9, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
         }

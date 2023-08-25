@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Chest
         }
         public override List<int> FlagNumber() => new List<int> { 0, 1, 2 };
 
-        public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
+        public override List<int> FlagNumAcc() => new List<int> {  2 };
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);

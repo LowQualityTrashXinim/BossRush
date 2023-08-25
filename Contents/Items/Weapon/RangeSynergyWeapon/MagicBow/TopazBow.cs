@@ -7,8 +7,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
     {
         public override void MagicBowSetDefault(out int mana, out int shoot, out float shootspeed, out int damage, out int useTime, out int dustType)
         {
-            useTime = 40;
-            mana = 12;
+            useTime = 30;
+            mana = 9;
             damage = 21;
             shootspeed = 5f;
             shoot = ModContent.ProjectileType<TopazBolt>();

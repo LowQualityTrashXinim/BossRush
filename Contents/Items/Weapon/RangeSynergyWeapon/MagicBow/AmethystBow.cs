@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         {
             mana = 12;
             damage = 15;
-            useTime = 45;
+            useTime = 25;
             shoot = ModContent.ProjectileType<AmethystBolt>();
             shootspeed = 5f;
             dustType = DustID.GemAmethyst;

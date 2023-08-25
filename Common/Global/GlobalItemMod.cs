@@ -184,12 +184,6 @@ namespace BossRush.Common.Global
                        "\nIncrease movement speed by 17%" +
                        "\nJumping will leave a trail of sand that deal 12 damage";
             }
-            if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves)
-            {
-                return "Increase defense by 5" +
-                    "\nIncrease movement speed by 21%" +
-                    "\nVanilla tin weapon are stronger";
-            }
             if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings)
             {
                 return "When in overworld :" +
@@ -198,6 +192,18 @@ namespace BossRush.Common.Global
                        "\ninflicting the same debuff to an enemy who already has it " +
                        "\ncauses an explosion, dealing 5 + 5% of damage dealt" +
                        "\nWhile below 20% HP, you gain 5x health regen";
+            }
+            if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves)
+            {
+                return "Increase defense by 5" +
+                    "\nIncrease movement speed by 21%" +
+                    "\nVanilla tin weapon are stronger";
+            }
+            if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail|| type == ItemID.LeadGreaves)
+            {
+                return "Increase defense by 7" +
+                    "\nYour attack can inflict irradiation poison" +
+                    "\nLead irradiation increase enemy defense by 20 but deal 50 DoT";
             }
             if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves)
             {
@@ -226,10 +232,8 @@ namespace BossRush.Common.Global
             if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves)
             {
                 return "Your attack have 15% to inflict Midas for 10 seconds" +
-                       "\nWhen dealing damage to an enemy below 35% max HP, they get inflicted with the midas debuff for 6 seconds " +
                        "\nAttacking enemies with midas debuff will : " +
-                       "\nDeal additional damage based on their defense" +
-                       "\nLower defense enemies take bonus damage, up to 25% damage dealt at 0 defense";
+                       "\nDeal additional damage based on their defense";
             }
             return "";
         }
@@ -333,6 +337,11 @@ namespace BossRush.Common.Global
                 player.moveSpeed += .21f;
                 modplayer.TinArmor = true;
             }
+            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.LeadHelmet, ItemID.LeadChainmail, ItemID.LeadGreaves))
+            {
+                player.statDefense += 7;
+                modplayer.LeadArmor = true;
+            }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves))
             {
                 player.moveSpeed += 0.15f;
@@ -399,8 +408,6 @@ namespace BossRush.Common.Global
         public bool CactusArmor = false;
         int CactusArmorCD = 0;
         public bool PalmWoodArmor = false;
-        public bool TinArmor = false;
-        public int TinArmorCountEffect = 0;
         public bool PumpkinArmor = false;
         public bool AshWoodArmor = false;
         public bool CopperArmor = false;
@@ -409,6 +416,9 @@ namespace BossRush.Common.Global
         public bool SilverArmor = false;
         public bool GoldArmor = false;
 
+        public bool TinArmor = false;
+        public int TinArmorCountEffect = 0;
+        public bool LeadArmor = false;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -418,12 +428,13 @@ namespace BossRush.Common.Global
             EbonWoodArmor = false;
             CactusArmor = false;
             PalmWoodArmor = false;
-            TinArmor = false;
             PumpkinArmor = false;
             AshWoodArmor = false;
             CopperArmor = false;
             IronArmor = false;
             GoldArmor = false;
+            TinArmor = false;
+            LeadArmor = false;
         }
         public override void PreUpdate()
         {
@@ -587,9 +598,10 @@ namespace BossRush.Common.Global
             OnHitNPC_BorealWoodArmor(target);
             OnHitNPC_WoodArmor(target, proj);
             OnHitNPC_PumpkinArmor(target, damageDone);
-            OnHitNPC_AshWoodArmor(target, damageDone);
+            OnHitNPC_AshWoodArmor(target);
             OnHitNPC_CopperArmor();
             OnHitNPC_GoldArmor(target, damageDone);
+            OnHitNPC_LeadArmor(target);
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -597,7 +609,7 @@ namespace BossRush.Common.Global
             OnHitNPC_BorealWoodArmor(target);
             OnHitNPC_WoodArmor(target);
             OnHitNPC_PumpkinArmor(target, damageDone);
-            OnHitNPC_AshWoodArmor(target, damageDone);
+            OnHitNPC_AshWoodArmor(target);
             OnHitNPC_CopperArmor();
             OnHitNPC_GoldArmor(target, damageDone);
             if (TinArmor)
@@ -605,6 +617,12 @@ namespace BossRush.Common.Global
                 {
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TinBroadSwordProjectile>(), 12, 1f, Player.whoAmI);
                 }
+            OnHitNPC_LeadArmor(target);
+        }
+        private void OnHitNPC_LeadArmor(NPC npc)
+        {
+            if (LeadArmor)
+                npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
         }
         private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null)
         {
@@ -664,7 +682,7 @@ namespace BossRush.Common.Global
                 else npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
             }
         }
-        private void OnHitNPC_AshWoodArmor(NPC npc, float damage)
+        private void OnHitNPC_AshWoodArmor(NPC npc)
         {
             if (AshWoodArmor)
                 npc.AddBuff(BuffID.OnFire, 300);
@@ -689,7 +707,7 @@ namespace BossRush.Common.Global
             if (GoldArmor)
                 if (npc.HasBuff(BuffID.Midas))
                 {
-                    int GoldArmorBonusDamage = (int)(damage * 0.25f) * (10 / 10 * npc.defense);
+                    int GoldArmorBonusDamage = (int)damage + npc.defense;
                     npc.StrikeNPC(npc.CalculateHitInfo(GoldArmorBonusDamage, 1, false, 1, DamageClass.Generic, true, Player.luck));
                 }
                 else
@@ -721,6 +739,14 @@ namespace BossRush.Common.Global
                 projectile.friendly = parentProjectile.friendly;
                 projectile.hostile = parentProjectile.hostile;
             }
+        }
+    }
+    public class GlobalItemMod_GlobalNPC : GlobalNPC
+    {
+        public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
+        {
+            if (npc.HasBuff(ModContent.BuffType<LeadIrradiation>()))
+                modifiers.Defense.Base += 20;
         }
     }
     class ArmorSet

@@ -41,6 +41,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         }
         public override bool CanUseItem(Player player)
         {
+            if (player.GetModPlayer<PlayerSynergyItemHandle>().Swotaff_Spear_Counter >= 2)
+            {
+                return player.ownedProjectileCounts[ProjectileType] < 2;
+            }
             return player.ownedProjectileCounts[ProjectileType] < 1;
         }
         public override void OnConsumeMana(Player player, int manaConsumed)
@@ -61,6 +65,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         public override bool AltFunctionUse(Player player)
         {
             CanShootProjectile = -1;
+            if(player.GetModPlayer<PlayerSynergyItemHandle>().Swotaff_Spear_Counter >= 2)
+            {
+                return player.ownedProjectileCounts[ProjectileType] < 2;
+            }
             return player.ownedProjectileCounts[ProjectileType] < 1;
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -163,10 +171,22 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             {
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
                 Projectile.velocity -= Projectile.velocity * .1f;
-                if (!Projectile.velocity.IsLimitReached(1f))
+                if (!Projectile.velocity.IsLimitReached(.1f))
                 {
-                    Projectile.Kill();
+                    if (Projectile.timeLeft > 20)
+                    {
+                        int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * 30f, NormalBoltProjectile, Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
+                        Main.projectile[proj].extraUpdates = 6;
+                        Projectile.timeLeft = 20;
+                        Projectile.velocity += -Projectile.velocity * 40;
+                    }
+                    Projectile.ai[0] = 3;
                 }
+                return;
+            }
+            if (Projectile.ai[0] == 3)
+            {
+                Projectile.alpha = (int)MathHelper.Lerp(0, 255, (20 - Projectile.timeLeft) / 20f);
                 return;
             }
             if (player.ItemAnimationJustStarted)
@@ -311,11 +331,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
         }
         public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
         {
-            if (modplayer.Swotaff_Spear && Projectile.ai[0] == 2)
-            {
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * 3f, NormalBoltProjectile, Projectile.damage * 2, Projectile.knockBack, Projectile.owner);
-                Main.projectile[proj].extraUpdates = 6;
-            }
         }
     }
 }

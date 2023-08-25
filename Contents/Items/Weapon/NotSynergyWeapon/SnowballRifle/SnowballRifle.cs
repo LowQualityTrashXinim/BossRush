@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.SnowballRifle
+namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballRifle
 {
     class SnowballRifle : ModItem
     {

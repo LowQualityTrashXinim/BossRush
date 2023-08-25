@@ -1583,6 +1583,11 @@ Mods: {
 				DisplayName: Moth friend
 				Description: Friend
 			}
+
+			LeadIrradiation: {
+				DisplayName: Lead Irradiation
+				Description: Mods.BossRush.Buffs.LeadIrradiation.Description
+			}
 		}
 
 		Configs: {

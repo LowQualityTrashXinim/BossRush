@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Gunmerang
+namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.Gunmerang
 {
     internal class Gunmerang : ModItem
     {
