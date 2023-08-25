@@ -242,6 +242,11 @@ namespace BossRush.Common.Global
                        "\nAttacking enemies with midas debuff will : " +
                        "\nDeal additional damage based on their defense";
             }
+            if (type == ItemID.PlatinumHelmet || type == ItemID.PlatinumChainmail || type == ItemID.PlatinumGreaves)
+            {
+                return "Increase weapon uses speed by 35%" +
+                       "\nAttacking too much will lit on fire";
+            }
             return "";
         }
         public override string IsArmorSet(Item head, Item body, Item legs)
@@ -386,6 +391,10 @@ namespace BossRush.Common.Global
             {
                 modplayer.GoldArmor = true;
             }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PlatinumHelmet, ItemID.PlatinumChainmail, ItemID.PlatinumGreaves))
+            {
+                modplayer.PlatinumArmor = true;
+            }
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
@@ -433,6 +442,8 @@ namespace BossRush.Common.Global
         public int TinArmorCountEffect = 0;
         public bool LeadArmor = false;
         public bool TungstenArmor = false;
+        public bool PlatinumArmor = false;
+        int PlatinumArmorCountEffect = 0;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -449,6 +460,7 @@ namespace BossRush.Common.Global
             TinArmor = false;
             LeadArmor = false;
             TungstenArmor = false;
+            PlatinumArmor = false;
         }
         public override void PreUpdate()
         {
@@ -468,6 +480,15 @@ namespace BossRush.Common.Global
                         Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).NextVector2RotatedByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vec, ModContent.ProjectileType<SandProjectile>(), 12, 1f, Player.whoAmI);
                     }
+            if (PlatinumArmor)
+            {
+                if (Player.ItemAnimationActive)
+                    PlatinumArmorCountEffect++;
+                else
+                    PlatinumArmorCountEffect = BossRushUtils.CoolDown(PlatinumArmorCountEffect);
+                Main.NewText(PlatinumArmorCountEffect);
+            }
+
         }
         public override void PostUpdate()
         {
@@ -475,6 +496,19 @@ namespace BossRush.Common.Global
             {
                 Player.statDefense *= 0;
             }
+            if (PlatinumArmorCountEffect >= 600)
+            {
+                Player.AddBuff(BuffID.OnFire, 300);
+                Dust.NewDust(Player.Center, 0, 0, DustID.Torch, 0,0,0,default, Main.rand.NextFloat(1,1.5f));
+            }
+        }
+        public override float UseSpeedMultiplier(Item item)
+        {
+            if (PlatinumArmor)
+            {
+                return 1.35f;
+            }
+            return base.UseSpeedMultiplier(item);
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
