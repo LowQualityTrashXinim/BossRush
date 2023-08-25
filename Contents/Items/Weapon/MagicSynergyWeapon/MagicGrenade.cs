@@ -42,6 +42,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            Lighting.AddLight(Projectile.Center, Color.Purple.ToVector3());
+            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, Main.rand.NextFloat(1, 1.2f));
+            Main.dust[dust].noGravity = true;
             if (Projectile.velocity != Vector2.Zero)
             {
                 Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * 2.5f) * (Projectile.velocity.X > 0 ? 1 : -1);
@@ -68,6 +71,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, scale);
                     Main.dust[dust].velocity = (Toward.RotatedByRandom(MathHelper.ToRadians(randomrotate)) * multiplier * 15);
                     Main.dust[dust].noGravity = true;
+                    if (l % 3 == 0)
+                    {
+                        int dust2 = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, scale);
+                        Main.dust[dust2].velocity = Main.rand.NextVector2CircularEdge(10, 10);
+                        Main.dust[dust2].noGravity = true;
+                    }
                 }
             }
             for (int i = 0; i < 7; i++)
@@ -89,6 +98,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             for (int i = 0; i < npc.Count; i++)
             {
                 npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X > npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+                player.dpsDamage += Projectile.damage;
             }
         }
         public override bool PreDraw(ref Color lightColor)
@@ -137,6 +147,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     float scale = MathHelper.Lerp(1.1f, .1f, multiplier);
                     int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemAmethyst, 0, 0, 0, Main.rand.Next(new Color[] { Color.White, Color.Purple }), scale);
                     Main.dust[dust].velocity = Toward * multiplier;
+                    Main.dust[dust].noGravity = true;
                 }
             }
             base.SynergyAI(player, modplayer);

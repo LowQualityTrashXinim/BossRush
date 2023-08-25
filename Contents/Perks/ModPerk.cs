@@ -8,6 +8,8 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
 using Terraria.Audio;
+using System.Collections.Generic;
+using System.IO.Pipes;
 
 namespace BossRush.Contents.Perks
 {
@@ -183,6 +185,25 @@ namespace BossRush.Contents.Perks
             if (item.DamageType == DamageClass.Ranged && RandomCountDown <= 0 && OpportunityWindow < 600)
             {
                 damage *= 2;
+            }
+        }
+    }
+    public class SelfExplosion : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = true;
+            Tooltip =
+                "+ When a enemy hit you, you will do self explosion that deal 100 damage to surrounding enemies";
+            StackLimit = 5;
+        }
+        public override void OnHitByAnything(Player player)
+        {
+            player.Center.LookForHostileNPC(out List<NPC> npclist, 300);
+            foreach (NPC npc in npclist)
+            {
+                int direction = player.Center.X - npc.Center.X > 0 ? 1 : -1;
+                npc.StrikeNPC(npc.CalculateHitInfo(100 * StackAmount, direction, false, 10));
             }
         }
     }

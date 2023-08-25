@@ -403,10 +403,6 @@ namespace BossRush.Contents.Perks
                 ModPerkLoader.GetPerk(perk).ModifyDamage(Player, item, ref damage);
             }
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            base.OnHitNPC(target, hit, damageDone);
-        }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
             foreach (int perk in perks.Keys)
@@ -419,6 +415,20 @@ namespace BossRush.Contents.Perks
             foreach (int perk in perks.Keys)
             {
                 ModPerkLoader.GetPerk(perk).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
+            }
+        }
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
+        {
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).OnHitByAnything(Player);
+            }
+        }
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).OnHitByAnything(Player);
             }
         }
         //TODO : make a override for item
@@ -501,6 +511,7 @@ namespace BossRush.Contents.Perks
         {
 
         }
+        public virtual void OnHitByAnything(Player player) { }
         public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
         public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
         public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }

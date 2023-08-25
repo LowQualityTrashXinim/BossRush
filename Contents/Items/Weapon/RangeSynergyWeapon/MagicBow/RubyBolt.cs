@@ -42,7 +42,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Main.dust[dustnumber].velocity = -Projectile.velocity.SafeNormalize(Vector2.Zero) + Main.rand.NextVector2Circular(1, 1);
             if (CheckNearByProjectile())
             {
-                Projectile.damage = (int)(Projectile.damage * 1.5f);
+                Projectile.damage += 2;
                 Projectile.velocity *= 1.25f;
             }
         }

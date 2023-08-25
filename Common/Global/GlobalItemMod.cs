@@ -486,7 +486,6 @@ namespace BossRush.Common.Global
                     PlatinumArmorCountEffect++;
                 else
                     PlatinumArmorCountEffect = BossRushUtils.CoolDown(PlatinumArmorCountEffect);
-                Main.NewText(PlatinumArmorCountEffect);
             }
 
         }
