@@ -31,24 +31,30 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<MagicGrenade>();
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 40;
+            Projectile.width = Projectile.height = 54;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
             Projectile.timeLeft = 120;
             Projectile.penetrate = 1;
-            Projectile.scale = .75f;
-            DrawOffsetX = -13;
-            DrawOriginOffsetY = -10;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
             Lighting.AddLight(Projectile.Center, Color.Purple.ToVector3());
-            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, Main.rand.NextFloat(1, 1.2f));
-            Main.dust[dust].noGravity = true;
             if (Projectile.velocity != Vector2.Zero)
             {
-                Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * 2.5f) * (Projectile.velocity.X > 0 ? 1 : -1);
+                Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * .5f) * (Projectile.velocity.X > 0 ? 1 : -1);
             }
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 vel = (Projectile.rotation + MathHelper.ToRadians(90 * i)).ToRotationVector2();
+                int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(vel, 25), 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, Main.rand.NextFloat(.75f, 1));
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = vel * .25f;
+            }
+            int dustnovel = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, 2);
+            Main.dust[dustnovel].noGravity = true;
+            Main.dust[dustnovel].velocity = Vector2.Zero;
+            Main.dust[dustnovel].fadeIn = 2;
             if (Projectile.ai[0] <= 15)
             {
                 Projectile.ai[0]++;
@@ -90,14 +96,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     Projectile.knockBack,
                     Projectile.owner);
             }
-            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 100);
+            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 200);
             if (npc.Count < 1)
             {
                 return;
             }
             for (int i = 0; i < npc.Count; i++)
             {
-                npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X > npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+                npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack * 4, Projectile.DamageType, true, player.luck));
                 player.dpsDamage += Projectile.damage;
             }
         }
