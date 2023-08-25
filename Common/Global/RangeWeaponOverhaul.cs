@@ -227,9 +227,6 @@ namespace BossRush.Common.Global
     public interface IBossRushRangeGun
     {
         public float OffSetPosition { get; }
-        public float SpreadAmount { get; }
-        public float AdditionalSpread { get; }
-        public float AdditionalMulti { get; }
         public int NumOfProjectile { get; }
     }
     /// <summary>
@@ -267,12 +264,12 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            if (item.ModItem is IBossRushRangeGun brItem)
+            if (item is IBossRushRangeGun brItem)
             {
                 position = position.PositionOFFSET(velocity, brItem.OffSetPosition);
                 if (brItem.NumOfProjectile == 1)
                 {
-                    velocity = velocity.NextVector2RotatedByRandom(brItem.SpreadAmount).Vector2RandomSpread(brItem.AdditionalSpread, brItem.AdditionalMulti);
+                    velocity = velocity.NextVector2RotatedByRandom(BaseSpreadModifier * SpreadModify);
                 }
             }
         }
@@ -283,13 +280,13 @@ namespace BossRush.Common.Global
             {
                 return base.Shoot(item, source, position, velocity, type, damage, knockback);
             }
-            if (item.ModItem is IBossRushRangeGun brItem)
+            if (item is IBossRushRangeGun brItem)
             {
                 if (brItem.NumOfProjectile > 1)
                 {
                     for (int i = 0; i < brItem.NumOfProjectile; i++)
                     {
-                        Vector2 velocity2 = velocity.NextVector2RotatedByRandom(brItem.SpreadAmount).Vector2RandomSpread(brItem.AdditionalSpread, brItem.AdditionalMulti);
+                        Vector2 velocity2 = velocity.NextVector2RotatedByRandom(BaseSpreadModifier * SpreadModify);
                         Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, Player.whoAmI);
                     }
                 }
@@ -331,8 +328,8 @@ namespace BossRush.Common.Global
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             RangerOverhaulPlayer clone = (RangerOverhaulPlayer)clientPlayer;
-            if (BaseSpreadModifier != clone.BaseSpreadModifier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (BaseProjectileAmountModifier != clone.BaseProjectileAmountModifier) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (BaseSpreadModifier != clone.BaseSpreadModifier || BaseProjectileAmountModifier != clone.BaseProjectileAmountModifier)
+                SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }

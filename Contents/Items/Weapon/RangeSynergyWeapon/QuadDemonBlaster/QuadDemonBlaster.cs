@@ -1,18 +1,19 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
+using BossRush.Common.Global;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
 {
     class QuadDemonBlaster : SynergyModItem
     {
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(40, 30, 29, 3f, 15, 15, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
-
             Item.value = Item.buyPrice(gold: 50);
             Item.rare = ItemRarityID.Orange;
             Item.reuseDelay = 15;
@@ -24,31 +25,29 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            SpeedMultiplier -= SpeedMultiplier == 1 ? 0 : .25f;
+            modplayer.QuadDemonBlaster_SpeedMultiplier -= modplayer.QuadDemonBlaster_SpeedMultiplier == 1 ? 0 : .25f;
         }
-        public float SpeedMultiplier = 1;
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             position = position.PositionOFFSET(velocity, 30);
-            float rotation = MathHelper.ToRadians(SpeedMultiplier);
+            float rotation = MathHelper.ToRadians(modplayer.QuadDemonBlaster_SpeedMultiplier);
             for (int i = 0; i < 10; i++)
             {
                 Vector2 Rotate = velocity.Vector2DistributeEvenly(10, rotation, i);
                 float RandomSpeadx = Main.rand.NextFloat(0.5f, 1f);
                 float RandomSpeady = Main.rand.NextFloat(0.5f, 1f);
                 Projectile.NewProjectile(source, position.X, position.Y,
-                    Rotate.X * (SpeedMultiplier == 1 ? 1 : RandomSpeadx),
-                    Rotate.Y * (SpeedMultiplier == 1 ? 1 : RandomSpeady),
+                    Rotate.X * (modplayer.QuadDemonBlaster_SpeedMultiplier == 1 ? 1 : RandomSpeadx),
+                    Rotate.Y * (modplayer.QuadDemonBlaster_SpeedMultiplier == 1 ? 1 : RandomSpeady),
                     type, damage, knockback, player.whoAmI);
             }
-            SpeedMultiplier += SpeedMultiplier < 45 ? 20 : 1;
+            modplayer.QuadDemonBlaster_SpeedMultiplier += modplayer.QuadDemonBlaster_SpeedMultiplier < 45 ? 20 : 1;
             CanShootItem = true;
         }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-4, 2);
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

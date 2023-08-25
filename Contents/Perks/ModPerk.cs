@@ -18,7 +18,7 @@ namespace BossRush.Contents.Perks
             Tooltip =
                     "+ Increase damage by 10%";
             CanBeStack = true;
-            StackLimit = 5;
+            StackLimit = 3;
         }
         public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
         {

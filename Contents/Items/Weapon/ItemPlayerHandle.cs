@@ -75,6 +75,9 @@ namespace BossRush.Contents.Items.Weapon
         public bool SharpBoomerang_EnchantedBoomerang = false;
 
         public bool SuperFlareGun_Phaseblade = false;
+
+        public float QuadDemonBlaster_SpeedMultiplier = 1;
+
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
