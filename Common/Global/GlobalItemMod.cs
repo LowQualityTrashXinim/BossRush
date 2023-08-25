@@ -199,7 +199,7 @@ namespace BossRush.Common.Global
                     "\nIncrease movement speed by 21%" +
                     "\nVanilla tin weapon are stronger";
             }
-            if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail|| type == ItemID.LeadGreaves)
+            if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves)
             {
                 return "Increase defense by 7" +
                     "\nYour attack can inflict irradiation poison" +
@@ -227,7 +227,14 @@ namespace BossRush.Common.Global
                        "\nDuring the night :" +
                        "\nIncrease damage by 10%" +
                        "\nAt full life, these effects are multiply by 2";
-
+            }
+            if (type == ItemID.TungstenHelmet || type == ItemID.TungstenChainmail || type == ItemID.TungstenGreaves)
+            {
+                return "Increase defense by 15" +
+                       "\nWhen at full hp :" +
+                       "\nReduce your defense down to 0" +
+                       "\nIncrease speed by 30%" +
+                       "\nThe closer your enemy is, the more damage increases";
             }
             if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves)
             {
@@ -337,11 +344,6 @@ namespace BossRush.Common.Global
                 player.moveSpeed += .21f;
                 modplayer.TinArmor = true;
             }
-            if(set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.LeadHelmet, ItemID.LeadChainmail, ItemID.LeadGreaves))
-            {
-                player.statDefense += 7;
-                modplayer.LeadArmor = true;
-            }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves))
             {
                 player.moveSpeed += 0.15f;
@@ -358,7 +360,11 @@ namespace BossRush.Common.Global
                     player.statDefense += 15;
                     player.GetAttackSpeed(DamageClass.Generic) -= 0.10f;
                 }
-                modplayer.IronArmor = true;
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.LeadHelmet, ItemID.LeadChainmail, ItemID.LeadGreaves))
+            {
+                player.statDefense += 7;
+                modplayer.LeadArmor = true;
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves))
             {
@@ -366,6 +372,15 @@ namespace BossRush.Common.Global
                     player.statDefense += player.statLife < player.statLifeMax2 ? 10 : 20;
                 else
                     player.GetDamage(DamageClass.Generic) += player.statLife < player.statLifeMax2 ? .1f : .2f;
+            }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TungstenHelmet, ItemID.TungstenChainmail, ItemID.TungstenGreaves))
+            {
+                player.statDefense += 15;
+                if (player.statLife >= player.statLifeMax2)
+                {
+                    player.moveSpeed += .3f;
+                    modplayer.TungstenArmor = true;
+                }
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.GoldHelmet, ItemID.GoldChainmail, ItemID.GoldGreaves))
             {
@@ -385,7 +400,7 @@ namespace BossRush.Common.Global
         }
         private void VanillaChange(Item item, Player player, ref StatModifier damage)
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
@@ -412,13 +427,12 @@ namespace BossRush.Common.Global
         public bool AshWoodArmor = false;
         public bool CopperArmor = false;
         int CopperArmorChargeCounter = 0;
-        public bool IronArmor = false;
-        public bool SilverArmor = false;
         public bool GoldArmor = false;
 
         public bool TinArmor = false;
         public int TinArmorCountEffect = 0;
         public bool LeadArmor = false;
+        public bool TungstenArmor = false;
         public override void ResetEffects()
         {
             WoodArmor = false;
@@ -431,10 +445,10 @@ namespace BossRush.Common.Global
             PumpkinArmor = false;
             AshWoodArmor = false;
             CopperArmor = false;
-            IronArmor = false;
             GoldArmor = false;
             TinArmor = false;
             LeadArmor = false;
+            TungstenArmor = false;
         }
         public override void PreUpdate()
         {
@@ -454,6 +468,13 @@ namespace BossRush.Common.Global
                         Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).NextVector2RotatedByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vec, ModContent.ProjectileType<SandProjectile>(), 12, 1f, Player.whoAmI);
                     }
+        }
+        public override void PostUpdate()
+        {
+            if (TungstenArmor)
+            {
+                Player.statDefense *= 0;
+            }
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -717,6 +738,14 @@ namespace BossRush.Common.Global
                         npc.AddBuff(BuffID.Midas, 600);
                     }
                 }
+        }
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            if (TungstenArmor)
+            {
+                float DamageIncrease = (target.Center - Player.Center).Length();
+                modifiers.SourceDamage += MathHelper.Clamp(600 - DamageIncrease, 0, 200) * .005f;
+            }
         }
         public override void NaturalLifeRegen(ref float regen)
         {
