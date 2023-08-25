@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Texture;
-using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.CorruptedFlesh
 {

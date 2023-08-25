@@ -11,6 +11,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using BossRush.Common;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -38,9 +39,9 @@ namespace BossRush.Contents.Items.Artifact
                         continue;
                     }
                     if (item is BrokenArtifact || item is GodDice)
-                    {
                         continue;
-                    }
+                    if(item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
+                        continue;
                     item.CreateRecipe()
                         .AddIngredient(ModContent.ItemType<BrokenArtifact>())
                         .Register();

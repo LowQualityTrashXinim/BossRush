@@ -9,6 +9,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Card;
 using BossRush.Common;
 using BossRush.Common.Global;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush
 {

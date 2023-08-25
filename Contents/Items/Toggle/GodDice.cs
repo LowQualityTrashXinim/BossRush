@@ -7,12 +7,10 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Items.Toggle
 {
-    internal class GodDice : ModItem, IArtifactItem
+    internal class GodDice : ModItem
     {
-        public int ArtifactID => 998;
-
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 14));
@@ -45,7 +43,7 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool CanUseItem(Player player)
         {
-            return player.GetModPlayer<GamblePlayer>().Roll > 0 || BossRushUtils.IsDebugPlayer(player);
+            return player.GetModPlayer<GamblePlayer>().Roll > 0 || player.IsDebugPlayer();
         }
         public override bool AltFunctionUse(Player player)
         {
@@ -54,7 +52,7 @@ namespace BossRush.Contents.Items.Artifact
         public override bool? UseItem(Player player)
         {
             GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
-            if (BossRushUtils.IsDebugPlayer(player) && player.altFunctionUse == 2)
+            if (player.IsDebugPlayer() && player.altFunctionUse == 2)
             {
                 gamblePlayer.Roll++;
                 gamblePlayer.GambleDamage = 1;
@@ -70,15 +68,15 @@ namespace BossRush.Contents.Items.Artifact
             }
             if (gamblePlayer.Roll > 0) gamblePlayer.Roll--;
 
-            gamblePlayer.GambleDamage = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleDef = Main.rand.Next(-100, 100);
-            gamblePlayer.GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleHP = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleMana = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.15f, 2f), 2);
-            gamblePlayer.GambleMinionSlot = Main.rand.Next(0, 10);
-            gamblePlayer.GambleCrit = Main.rand.Next(0, 100);
+            gamblePlayer.GambleDamage = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
+            gamblePlayer.GambleDef = Main.rand.Next(-50, 50);
+            gamblePlayer.GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
+            gamblePlayer.GambleHP = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
+            gamblePlayer.GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
+            gamblePlayer.GambleMana = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
+            gamblePlayer.GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
+            gamblePlayer.GambleMinionSlot = Main.rand.Next(-5, 5);
+            gamblePlayer.GambleCrit = Main.rand.Next(-50, 50);
             return true;
         }
     }
@@ -208,15 +206,15 @@ namespace BossRush.Contents.Items.Artifact
         public override void SendClientChanges(ModPlayer clientPlayer)
         {
             GamblePlayer clone = (GamblePlayer)clientPlayer;
-            if (GambleDamage != clone.GambleDamage) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleDef != clone.GambleDef) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleSpeed != clone.GambleSpeed) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleHP != clone.GambleHP) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleLifeRegen != clone.GambleLifeRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleMana != clone.GambleMana) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleManaRegen != clone.GambleManaRegen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleMinionSlot != clone.GambleMinionSlot) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-            if (GambleCrit != clone.GambleCrit) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+            if (GambleDamage != clone.GambleDamage
+            || GambleDef != clone.GambleDef
+            || GambleSpeed != clone.GambleSpeed
+            || GambleHP != clone.GambleHP
+            || GambleLifeRegen != clone.GambleLifeRegen
+            || GambleMana != clone.GambleMana
+            || GambleManaRegen != clone.GambleManaRegen
+            || GambleMinionSlot != clone.GambleMinionSlot
+            || GambleCrit != clone.GambleCrit) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
         }
     }
 }

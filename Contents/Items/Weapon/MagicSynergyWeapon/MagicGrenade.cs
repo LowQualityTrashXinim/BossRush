@@ -17,7 +17,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Item.UseSound = SoundID.Item1;
             Item.value = Item.buyPrice(gold: 50);
         }
-
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            base.ModifySynergyToolTips(ref tooltips, modplayer);
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            base.HoldSynergyItem(player, modplayer);
+        }
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -103,7 +110,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             }
             for (int i = 0; i < npc.Count; i++)
             {
-                npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack * 4, Projectile.DamageType, true, player.luck));
+                npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack * 2, Projectile.DamageType, true, player.luck));
                 player.dpsDamage += Projectile.damage;
             }
         }

@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Common.Enraged
 {

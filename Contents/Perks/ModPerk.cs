@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Potion;
 using Terraria.Audio;
 using System.Collections.Generic;
 using System.IO.Pipes;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Perks
 {
@@ -205,6 +206,19 @@ namespace BossRush.Contents.Perks
                 int direction = player.Center.X - npc.Center.X > 0 ? 1 : -1;
                 npc.StrikeNPC(npc.CalculateHitInfo(100 * StackAmount, direction, false, 10));
             }
+        }
+    }
+    public class GodGiveDice : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ God give you a dice";
+        }
+        public override void OnChoose(Player player)
+        {
+            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
         }
     }
 }

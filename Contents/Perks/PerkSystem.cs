@@ -128,7 +128,7 @@ namespace BossRush.Contents.Perks
             else
                 if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
                 perkplayer.perks[perkType] = perkplayer.perks[perkType] + 1;
-
+            ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
             UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
             uiSystemInstance.userInterface.SetState(null);
         }
@@ -515,6 +515,7 @@ namespace BossRush.Contents.Perks
         public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
         public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
         public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
+        public virtual void OnChoose(Player player) { }
     }
     public static class ModPerkLoader
     {
