@@ -121,8 +121,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
             Projectile.width = Projectile.height = 20;
             Projectile.friendly = true;
             Projectile.tileCollide = true;
-            Projectile.timeLeft = 300;
-            Projectile.penetrate = -1;
+            Projectile.timeLeft = 100;
+            Projectile.penetrate = 1;
             Projectile.hide = true;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
@@ -157,6 +157,40 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                 }
             }
             base.SynergyAI(player, modplayer);
+        }
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+            float randomrotation = Main.rand.NextFloat(90);
+            Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i + randomrotation));
+                for (int l = 0; l < 30; l++)
+                {
+                    float multiplier = Main.rand.NextFloat();
+                    float scale = MathHelper.Lerp(1.1f, .1f, multiplier) + 1f;
+                    float randomrotate = MathHelper.Lerp(50f, 1f, BossRushUtils.InOutSine(multiplier));
+                    int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, scale);
+                    Main.dust[dust].velocity = Toward.RotatedByRandom(MathHelper.ToRadians(randomrotate)) * multiplier * 6;
+                    Main.dust[dust].noGravity = true;
+                    if (l % 3 == 0)
+                    {
+                        int dust2 = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, scale);
+                        Main.dust[dust2].velocity = Main.rand.NextVector2CircularEdge(5, 5);
+                        Main.dust[dust2].noGravity = true;
+                    }
+                }
+            }
+            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 100);
+            if (npc.Count < 1)
+            {
+                return;
+            }
+            for (int i = 0; i < npc.Count; i++)
+            {
+                npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+                player.dpsDamage += Projectile.damage;
+            }
         }
     }
 }
