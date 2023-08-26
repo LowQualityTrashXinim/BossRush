@@ -85,19 +85,6 @@ namespace BossRush.Contents.Perks
                 }
             }
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-        }
-
-        protected override void DrawSelf(SpriteBatch spriteBatch)
-        {
-            base.DrawSelf(spriteBatch);
-        }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
     }
 
     class PerkUIImageButton : UIImageButton
