@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.UI;
 using System.Linq;
 using ReLogic.Content;
@@ -94,8 +93,6 @@ namespace BossRush.Contents.Perks
         private UIText toolTip;
         public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer) : base(texture)
         {
-            Width.Pixels = texture.Value.Width;
-            Height.Pixels = texture.Value.Height;
             perkplayer = perkPlayer;
         }
         public override void OnActivate()

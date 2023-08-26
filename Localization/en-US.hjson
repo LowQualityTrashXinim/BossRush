@@ -1451,6 +1451,11 @@ Mods: {
 					When choosing a perk, you can't use anything so be wary of where you are choosing
 					'''
 			}
+
+			CelestialWrath: {
+				DisplayName: Celestial Wrath
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
