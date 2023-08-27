@@ -147,6 +147,8 @@ Mods: {
 			ExChallengeProjectile_BossShootHomeIn.DisplayName: Ex Challenge Projectile_ Boss Shoot Home In
 			BloodWater.DisplayName: Blood Water
 			ExplosiveMineProjectile.DisplayName: Explosive Mine Projectile
+			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
+			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
 		}
 
 		NPCs: {
@@ -1454,7 +1456,7 @@ Mods: {
 
 			CelestialWrath: {
 				DisplayName: Celestial Wrath
-				Tooltip: ""
+				Tooltip: Bring down wrath of celestial being
 			}
 		}
 
