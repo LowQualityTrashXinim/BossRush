@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Enums;
@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster
         public override void SetDefaults()
         {
             BossRushUtils.BossRushSetDefault(Item, 42, 24, 60, 4f, 30, 30, ItemUseStyleID.Shoot, false);
-            BossRushUtils.BossRushDefaultMagic(Item, ModContent.ProjectileType<PlasmaBlasterLaserProjectile>(), 20f, 14);
+            BossRushUtils.BossRushDefaultMagic(Item, ModContent.ProjectileType<PlasmaBlasterLaserProjectile>(), 1f, 3);
             Item.DamageType = DamageClass.Magic;
             Item.rare = ItemRarityID.Yellow;
             Item.value = Item.sellPrice(gold: 50);
@@ -40,8 +40,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster
 
         public override void SetDefaults()
         {
-            Projectile.width = 10;
-            Projectile.height = 10;
+            Projectile.width = 4;
+            Projectile.height = 4;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
@@ -52,26 +52,30 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster
         {
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+         
             if (IsAtMaxCharge)
             {
-                DrawLaser(texture, Main.player[Projectile.owner].Center, Projectile.velocity, 10, -1.57f, default, (int)MOVE_DISTANCE);
+                DrawLaser(texture, Main.player[Projectile.owner].Center, Projectile.velocity);
             }
             return false;
         }
-        public void DrawLaser(Texture2D texture, Vector2 start, Vector2 unit, float step, float rotation = 0f, float scale = 1f, int transDist = 50)
+        public void DrawLaser(Texture2D texture, Vector2 start, Vector2 unit)
         {
-            float r = unit.ToRotation() + rotation;
-            Vector2 orignVec = new Vector2(14, 13);
-            Rectangle source = new Rectangle(0, 26, 28, 26);
-            for (float i = transDist; i <= Distance; i += step)
-            {
-                Vector2 origin = start + i * unit;
-                Vector2 drawPos = origin - Main.screenPosition;
-                Color c = Color.White;
-                Main.EntitySpriteDraw(texture, drawPos, source, i < transDist ? Color.Transparent : c, r, orignVec, scale, SpriteEffects.None, 0);//Body
-            }
-            Main.EntitySpriteDraw(texture, start + unit * (transDist - step) - Main.screenPosition, new Rectangle(0, 0, 28, 26), Color.White, r, orignVec, scale, 0, 0);//Tail
-            Main.EntitySpriteDraw(texture, start + (Distance + step) * unit - Main.screenPosition, new Rectangle(0, 52, 28, 26), Color.White, r, orignVec, scale, 0, 0);
+
+            Vector2 centerFloored = start + Projectile.velocity * 48;
+            Vector2 drawScale = new Vector2(Projectile.scale);
+            DelegateMethods.f_1 = 1f; 
+            Vector2 startPosition = centerFloored - Main.screenPosition;
+            Vector2 endPosition = (startPosition + unit * Distance);
+            DrawBeam(Main.spriteBatch, texture, startPosition, endPosition, drawScale, Color.White * Projectile.Opacity);
+
+        }
+
+        private void DrawBeam(SpriteBatch spriteBatch, Texture2D texture, Vector2 startPosition, Vector2 endPosition, Vector2 drawScale, Color beamColor)
+        {
+            Utils.LaserLineFraming lineFraming = new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw);
+            DelegateMethods.c_1 = beamColor;
+            Utils.DrawLaser(spriteBatch, texture, startPosition, endPosition, drawScale, lineFraming);
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -136,8 +140,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster
         {
             for (Distance = MOVE_DISTANCE; Distance <= 2200f; Distance += 5f)
             {
-                var start = player.Center + Projectile.velocity * Distance;
-                if (!Collision.CanHit(player.Center, 1, 1, start, 1, 1))
+                var start = Projectile.Center + Projectile.velocity * (Distance - 64);
+                if (!Collision.CanHitLine(Projectile.Center + Projectile.velocity, 1, 1, start, 1, 1))
                 {
                     Distance -= 5f;
                     break;
@@ -148,13 +152,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster
         {
             if (!player.channel)
             {
+                
                 Projectile.Kill();
                 return;
             }
-            if (Main.time % 10 < 1 && !player.CheckMana(player.GetManaCost(player.HeldItem), true))
-            {
-                Projectile.Kill();
-            }
+            if(Main.rand.NextBool(4))
+                if (!player.CheckMana(player.GetManaCost(player.HeldItem), true))
+                    Projectile.Kill();
+
             Vector2 offset = Projectile.velocity * (MOVE_DISTANCE - 20);
             Vector2 pos = player.Center + offset - new Vector2(10, 10);
             if (Charge < MAX_CHARGE)
