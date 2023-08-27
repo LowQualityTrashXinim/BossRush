@@ -20,6 +20,8 @@ namespace BossRush.Contents.Items
         }
         public override bool? UseItem(Player player)
         {
+            if (player.ItemAnimationJustStarted)
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "You feel like you should move");
             return true;
         }
     }
@@ -40,8 +42,8 @@ namespace BossRush.Contents.Items
         {
             if (++Projectile.ai[0] >= 20)
             {
-                Projectile.velocity.X *= .98f;
-                Projectile.velocity.Y += .1f;
+                Projectile.velocity.X *= .96f;
+                Projectile.velocity.Y += .25f;
             }
             float timer = MathHelper.Lerp(1, 120, BossRushUtils.InExpo((1200 - Projectile.timeLeft) / 1200f));
             float countdown = 480 - timer * 4;
@@ -51,6 +53,11 @@ namespace BossRush.Contents.Items
                 int dust = Dust.NewDust(Projectile.Center + vec, 0, 0, DustID.GemEmerald);
                 Main.dust[dust].noGravity = true;
             }
+        }
+        public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
+        {
+            fallThrough = false;
+            return true;
         }
         public override bool OnTileCollide(Vector2 oldVelocity) => false;
         public override bool? CanDamage() => false;
