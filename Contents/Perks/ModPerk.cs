@@ -57,7 +57,7 @@ namespace BossRush.Contents.Perks
             Tooltip = "+ Give you immunity to poison";
             CanBeStack = false;
         }
-        public override void Update(Player player)
+        public override void ResetEffect(Player player)
         {
             player.buffImmune[BuffID.Poisoned] = true;
         }
