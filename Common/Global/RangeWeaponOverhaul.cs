@@ -90,8 +90,8 @@ namespace BossRush.Common.Global
                 case ItemID.FlintlockPistol:
                     NumOfProjectile = 1;
                     OffSetPost = 10;
-                    SpreadAmount = 25;
-                    AdditionalSpread = 4;
+                    SpreadAmount = 5;
+                    AdditionalSpread = 2;
                     break;
                 case ItemID.Revolver:
                     NumOfProjectile = 1;

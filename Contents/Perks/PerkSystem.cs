@@ -13,6 +13,7 @@ using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.NohitReward;
+using Terraria.ID;
 
 namespace BossRush.Contents.Perks
 {
@@ -104,9 +105,6 @@ namespace BossRush.Contents.Perks
         }
         public override void LeftClick(UIMouseEvent evt)
         {
-            base.LeftClick(evt);
-            //We are assuming the perk are auto handle
-
             if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perkType))
                 perkplayer.perks.Add(perkType, 1);
             else
@@ -295,7 +293,7 @@ namespace BossRush.Contents.Perks
         {
             PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
             if (player.ItemAnimationJustStarted)
-                perkplayer.PotionExpert_perk_CanConsume = !Main.rand.NextBool(4);
+                perkplayer.PotionExpert_perk_CanConsume = Main.rand.NextFloat() <= .35f;
             if (perkplayer.perk_PotionExpert && item.buffType > 0)
             {
                 return perkplayer.PotionExpert_perk_CanConsume;
@@ -327,12 +325,20 @@ namespace BossRush.Contents.Perks
         public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
         public override void ResetEffects()
         {
+            Player.buffImmune[BuffID.OnFire] = true;
             perk_PotionExpert = false;
             PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
             foreach (int perk in perks.Keys)
             {
                 ModPerkLoader.GetPerk(perk).ResetEffect(Player);
                 ModPerkLoader.GetPerk(perk).StackAmount = perks[perk];
+            }
+        }
+        public override void PostUpdateEquips()
+        {
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).UpdateEquip(Player);
             }
         }
         public override bool CanUseItem(Item item)
@@ -472,6 +478,10 @@ namespace BossRush.Contents.Perks
         /// This will run in <see cref="ModPlayer.PostUpdate"/>
         /// </summary>
         public virtual void Update(Player player)
+        {
+
+        }
+        public virtual void UpdateEquip(Player player)
         {
 
         }
