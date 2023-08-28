@@ -28,9 +28,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.MagicMissile))
+            {
                 modplayer.StarLightDistributer_MagicMissile = true;
+                modplayer.SynergyBonus++;
+            }
             if (player.HasItem(ItemID.StarCannon))
+            {
                 modplayer.StarlightDistributer_StarCannon = true;
+                modplayer.SynergyBonus++;
+            }
         }
         public override Vector2? HoldoutOffset() => new Vector2(-2, 0);
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)

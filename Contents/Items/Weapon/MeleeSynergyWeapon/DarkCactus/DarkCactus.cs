@@ -57,15 +57,16 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
             if (player.HasItem(ItemID.BatScepter))
             {
                 modplayer.DarkCactus_BatScepter = true;
+                modplayer.SynergyBonus++;
             }
             if (player.HasItem(ItemID.BladeofGrass))
             {
                 modplayer.DarkCactus_BladeOfGrass = true;
+                modplayer.SynergyBonus++;
             }
         }
         public override void ModifyItemScale(Player player, ref float scale)
         {
-            base.ModifyItemScale(player, ref scale);
             if (player.GetModPlayer<PlayerSynergyItemHandle>().DarkCactus_BladeOfGrass)
             {
                 scale += 1.5f;

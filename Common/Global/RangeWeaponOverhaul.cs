@@ -48,77 +48,80 @@ namespace BossRush.Common.Global
             }
             switch (entity.type)
             {
-                case ItemID.RedRyder:
-                    NumOfProjectile = 1;
-                    OffSetPost = 20;
-                    SpreadAmount = 6;
-                    break;
                 case ItemID.Minishark:
                     NumOfProjectile = 1;
                     OffSetPost = 20;
-                    SpreadAmount = 7;
+                    SpreadAmount = 6.5f;
                     AdditionalSpread = 2;
                     break;
                 case ItemID.Gatligator:
                     NumOfProjectile = 1;
                     OffSetPost = 20;
-                    SpreadAmount = 30;
+                    SpreadAmount = 15;
                     AdditionalSpread = 3;
                     break;
-                case ItemID.Handgun:
+                case ItemID.RedRyder:
                     NumOfProjectile = 1;
-                    OffSetPost = 10;
-                    SpreadAmount = 15;
-                    AdditionalSpread = 2;
-                    break;
-                case ItemID.PhoenixBlaster:
-                    NumOfProjectile = 1;
-                    OffSetPost = 10;
-                    SpreadAmount = 12;
-                    AdditionalSpread = 2;
+                    OffSetPost = 20;
+                    SpreadAmount = 5;
+                    AdditionalSpread = .5f;
                     break;
                 case ItemID.Musket:
                     NumOfProjectile = 1;
                     OffSetPost = 35;
-                    SpreadAmount = 5;
-                    break;
-                case ItemID.TheUndertaker:
-                    NumOfProjectile = 1;
-                    OffSetPost = 20;
-                    SpreadAmount = 12;
+                    SpreadAmount = 3.5f;
                     break;
                 case ItemID.FlintlockPistol:
                     NumOfProjectile = 1;
                     OffSetPost = 10;
-                    SpreadAmount = 5;
+                    SpreadAmount = 7;
+                    AdditionalSpread = 2;
+                    break;
+                case ItemID.TheUndertaker:
+                    NumOfProjectile = 1;
+                    OffSetPost = 20;
+                    SpreadAmount = 6;
                     AdditionalSpread = 2;
                     break;
                 case ItemID.Revolver:
                     NumOfProjectile = 1;
                     OffSetPost = 10;
-                    SpreadAmount = 17;
+                    SpreadAmount = 6;
+                    AdditionalSpread = 1.5f;
+                    break;
+                case ItemID.Handgun:
+                    NumOfProjectile = 1;
+                    OffSetPost = 10;
+                    SpreadAmount = 5;
+                    AdditionalSpread = 1;
+                    break;
+                case ItemID.PhoenixBlaster:
+                    NumOfProjectile = 1;
+                    OffSetPost = 10;
+                    SpreadAmount = 4;
+                    AdditionalSpread = .5f;
                     break;
                 case ItemID.ClockworkAssaultRifle:
                     NumOfProjectile = 1;
                     OffSetPost = 15;
-                    SpreadAmount = 19;
+                    SpreadAmount = 9;
                     AdditionalSpread = 1;
                     break;
                 case ItemID.Megashark:
                     NumOfProjectile = 1;
                     OffSetPost = 30;
-                    SpreadAmount = 9;
+                    SpreadAmount = 7;
                     AdditionalSpread = 2;
                     break;
                 case ItemID.Uzi:
                     NumOfProjectile = 1;
-                    SpreadAmount = 14;
+                    SpreadAmount = 12;
                     AdditionalSpread = 1;
                     break;
                 case ItemID.VenusMagnum:
                     NumOfProjectile = 1;
                     OffSetPost = 25;
-                    SpreadAmount = 14;
+                    SpreadAmount = 10;
                     AdditionalSpread = 2;
                     break;
                 case ItemID.SniperRifle:
@@ -129,7 +132,7 @@ namespace BossRush.Common.Global
                 case ItemID.ChainGun:
                     NumOfProjectile = 1;
                     OffSetPost = 35;
-                    SpreadAmount = 33;
+                    SpreadAmount = 27;
                     AdditionalSpread = 3;
                     break;
                 case ItemID.VortexBeater:

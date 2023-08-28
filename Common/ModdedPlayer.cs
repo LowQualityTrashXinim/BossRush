@@ -38,7 +38,7 @@ namespace BossRush.Common
             Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will feel lacking a lot");
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
             Main.NewText("So sorry for the inconvenience", Color.Blue);
-            Main.NewText("Developer note : You only have reach surface of the mod, the mod contain some secret, good luck", Color.Green);
+            Main.NewText("Developer note : The mod have a lot more to offer", Color.Green);
         }
         private void SynergyEnergyCheckPlayer()
         {

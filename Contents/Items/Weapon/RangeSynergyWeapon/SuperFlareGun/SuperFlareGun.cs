@@ -35,7 +35,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
                 player.HasItem(ItemID.YellowPhaseblade) ||
                 player.HasItem(ItemID.PurplePhaseblade) ||
                 player.HasItem(ItemID.WhitePhaseblade))
+            {
                 modplayer.SuperFlareGun_Phaseblade = true;
+                modplayer.SynergyBonus++;
+            }
         }
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {

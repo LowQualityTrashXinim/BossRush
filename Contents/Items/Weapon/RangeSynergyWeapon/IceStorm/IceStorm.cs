@@ -48,6 +48,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 {
                     Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
                 }
+                modplayer.SynergyBonus++;
             }
             if (player.HasItem(ItemID.FlowerofFrost))
             {
@@ -57,10 +58,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 {
                     Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
                 }
+                modplayer.SynergyBonus++;
             }
             if (player.HasItem(ItemID.BlizzardStaff))
             {
                 modplayer.IceStorm_BlizzardStaff = true;
+                modplayer.SynergyBonus++;
             }
             if (!Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier >= 1)
             {

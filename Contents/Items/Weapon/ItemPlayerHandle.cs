@@ -8,6 +8,9 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using Terraria.ID;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using System.Threading;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using System.Timers;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -280,6 +283,62 @@ namespace BossRush.Contents.Items.Weapon
             return CanShootItem;
         }
         public virtual void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) { CanShootItem = true; }
+
+        private int countX = 0;
+        private float positionRotateX = 0;
+        private void PositionHandle()
+        {
+            if (positionRotateX < 3.5f && countX == 1)
+            {
+                positionRotateX += .2f;
+            }
+            else
+            {
+                countX = -1;
+            }
+            if (positionRotateX > 0 && countX == -1)
+            {
+                positionRotateX -= .2f;
+            }
+            else
+            {
+                countX = 1;
+            }
+        }
+        Color auraColor;
+        private void ColorHandle()
+        {
+            switch (Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus)
+            {
+                case 1:
+                    auraColor = new Color(255, 100, 0, 30);
+                    break;
+                case 2:
+                    auraColor = new Color(255, 255, 100, 30);
+                    break;
+                case 3:
+                    auraColor = new Color(100, 255, 100, 30);
+                    break;
+                default:
+                    auraColor = new Color(255, 255, 255, 30);
+                    break;
+            }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            ColorHandle();
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
     }
     public abstract class SynergyModProjectile : ModProjectile
     {

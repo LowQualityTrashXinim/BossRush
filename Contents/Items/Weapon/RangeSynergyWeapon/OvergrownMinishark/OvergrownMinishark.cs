@@ -32,9 +32,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.CrimsonRod))
+            {
                 modplayer.OvergrownMinishark_CrimsonRod = true;
+                modplayer.SynergyBonus++;
+            }
             if (player.HasItem(ItemID.DD2ExplosiveTrapT1Popper))
+            {
                 modplayer.OvergrownMinishark_DD2ExplosiveTrapT1Popper = true;
+                modplayer.SynergyBonus++;
+            }
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {

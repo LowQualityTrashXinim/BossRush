@@ -42,10 +42,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
             if (player.HasItem(ItemID.Code1))
             {
                 modplayer.EnergyBlade_Code1 = true;
+                modplayer.SynergyBonus++;
             }
             if (player.HasItem(ItemID.Code2))
             {
                 modplayer.EnergyBlade_Code2 = true;
+                modplayer.SynergyBonus++;
             }
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)

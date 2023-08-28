@@ -37,6 +37,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
             if (player.HasItem(ItemID.WandofFrosting))
             {
                 modplayer.BurningPassion_WandofFrosting = true;
+                modplayer.SynergyBonus++;
             }
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
