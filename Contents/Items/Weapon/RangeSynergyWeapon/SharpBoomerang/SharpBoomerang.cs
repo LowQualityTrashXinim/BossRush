@@ -26,7 +26,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.EnchantedBoomerang))
+            {
                 modplayer.SharpBoomerang_EnchantedBoomerang = true;
+                modplayer.SynergyBonus++;
+            }
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {

@@ -498,7 +498,7 @@ namespace BossRush.Common.Global
             if (PlatinumArmorCountEffect >= 600)
             {
                 Player.AddBuff(BuffID.OnFire, 300);
-                Dust.NewDust(Player.Center, 0, 0, DustID.Torch, 0,0,0,default, Main.rand.NextFloat(1,1.5f));
+                Dust.NewDust(Player.Center, 0, 0, DustID.Torch, 0, 0, 0, default, Main.rand.NextFloat(1, 1.5f));
             }
         }
         public override float UseSpeedMultiplier(Item item)

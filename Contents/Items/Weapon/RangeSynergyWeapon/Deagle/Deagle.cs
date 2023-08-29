@@ -23,10 +23,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
             if (player.HasItem(ItemID.PhoenixBlaster))
             {
                 modplayer.Deagle_PhoenixBlaster = true;
+                modplayer.SynergyBonus++;
             }
             if(player.HasItem(ItemID.DaedalusStormbow))
             {
                 modplayer.Deagle_DaedalusStormBow = true;
+                modplayer.SynergyBonus++;
             }
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)

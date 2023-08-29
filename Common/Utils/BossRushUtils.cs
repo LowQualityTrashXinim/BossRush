@@ -115,7 +115,7 @@ namespace BossRush
             }
             if (vector2List.Count > 0)
             {
-                float smallNum = FloatSmallestInList(ListOfDistance);
+                float smallNum = ListOfDistance.Min();
                 //idk why but IndexOf always return 0 so we are searching manually
                 for (int i = 0; i < ListOfDistance.Count; i++)
                 {
@@ -126,23 +126,6 @@ namespace BossRush
                 }
             }
             return Vector2.Zero;
-        }
-        public static float FloatSmallestInList(List<float> flag)
-        {
-            List<float> finalflag = flag;
-            for (int i = 0; i < flag.Count;)
-            {
-                float index = finalflag[i];
-                for (int l = i + 1; l < flag.Count; ++l)
-                {
-                    if (index > flag[l])
-                    {
-                        index = flag[l];
-                    }
-                }
-                return index;
-            }
-            return 0;
         }
         public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance)
         {

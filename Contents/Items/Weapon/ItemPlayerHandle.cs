@@ -1,13 +1,16 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
-using Terraria.ID;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using System.Threading;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.NPCs;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -78,6 +81,46 @@ namespace BossRush.Contents.Items.Weapon
 
         public float QuadDemonBlaster_SpeedMultiplier = 1;
 
+        public bool GodAreEnraged = false;
+        public int CooldownCheck = 999;
+        private void SynergyEnergyCheckPlayer()
+        {
+            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
+            foreach (var item in Player.inventory)
+            {
+                if (item.ModItem is SynergyModItem)
+                {
+                    synergyCounter++;
+                }
+            }
+            if (synergyCounter >= 2)
+            {
+                GodAreEnraged = true;
+            }
+        }
+        private void GodDecision()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+                return;
+            if (Player.IsDebugPlayer())
+                return;
+            CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
+            //Main.NewText(CooldownCheck);
+            if (CooldownCheck <= 0)
+            {
+                SynergyEnergyCheckPlayer();
+            }
+            if (GodAreEnraged)
+            {
+                Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
+                NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
+                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
+                CooldownCheck = 999;
+                GodAreEnraged = false;
+            }
+        }
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
@@ -135,6 +178,7 @@ namespace BossRush.Contents.Items.Weapon
         int check = 1;
         public override void PostUpdate()
         {
+            GodDecision();
             Item item = Player.HeldItem;
             if (item.ModItem is BurningPassion)
             {
@@ -203,7 +247,10 @@ namespace BossRush.Contents.Items.Weapon
                     Deagle_DaedalusStormBow_coolDown = 600;
                 }
             }
-
+        }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            damage += SynergyBonus * .5f;
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
@@ -280,6 +327,66 @@ namespace BossRush.Contents.Items.Weapon
             return CanShootItem;
         }
         public virtual void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) { CanShootItem = true; }
+
+        private int countX = 0;
+        private float positionRotateX = 0;
+        private void PositionHandle()
+        {
+            if (positionRotateX < 3.5f && countX == 1)
+            {
+                positionRotateX += .2f;
+            }
+            else
+            {
+                countX = -1;
+            }
+            if (positionRotateX > 0 && countX == -1)
+            {
+                positionRotateX -= .2f;
+            }
+            else
+            {
+                countX = 1;
+            }
+        }
+        Color auraColor;
+        private void ColorHandle()
+        {
+            switch (Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus)
+            {
+                case 1:
+                    auraColor = new Color(255, 50, 0, 30);
+                    break;
+                case 2:
+                    auraColor = new Color(255, 255, 0, 30);
+                    break;
+                case 3:
+                    auraColor = new Color(0, 255, 255, 30);
+                    break;
+                default:
+                    auraColor = new Color(255, 255, 255, 30);
+                    break;
+            }
+        }
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            PositionHandle();
+            ColorHandle();
+            if (ItemID.Sets.AnimatesAsSoul[Item.type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1)
+            {
+                return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+            }
+            Main.instance.LoadItem(Item.type);
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+            for (int i = 0; i < 3; i++)
+            {
+                spriteBatch.Draw(texture, position + new Vector2(1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-1.5f, 1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, position + new Vector2(-1.5f, -1.5f), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
+            }
+            return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+        }
     }
     public abstract class SynergyModProjectile : ModProjectile
     {

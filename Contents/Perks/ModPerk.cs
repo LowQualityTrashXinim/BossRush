@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Perks
 {
@@ -56,9 +57,21 @@ namespace BossRush.Contents.Perks
             Tooltip = "+ Give you immunity to poison";
             CanBeStack = false;
         }
-        public override void Update(Player player)
+        public override void UpdateEquip(Player player)
         {
             player.buffImmune[BuffID.Poisoned] = true;
+        }
+    }
+    public class ImmunityToOnFire : Perk
+    {
+        public override void SetDefaults()
+        {
+            Tooltip = "+ Give you immunity to On Fire !";
+            CanBeStack = false;
+        }
+        public override void UpdateEquip(Player player)
+        {
+            player.buffImmune[BuffID.OnFire] = true;
         }
     }
     public class IllegalTrading : Perk
@@ -77,7 +90,7 @@ namespace BossRush.Contents.Perks
         }
         public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
         {
-            damage -= -.1f * StackAmount;
+            damage -= .1f * StackAmount;
         }
     }
     public class BackUpMana : Perk
@@ -144,7 +157,7 @@ namespace BossRush.Contents.Perks
         {
             CanBeStack = false;
             Tooltip =
-                "+ Potion have 25% to not be consumed";
+                "+ Potion have 35% to not be consumed";
         }
         public override void ResetEffect(Player player)
         {
@@ -218,6 +231,19 @@ namespace BossRush.Contents.Perks
         public override void OnChoose(Player player)
         {
             player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
+        }
+    }
+    public class CelestialRage : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ A gift from celestial being";
+        }
+        public override void OnChoose(Player player)
+        {
+            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CelestialWrath>());
         }
     }
 }

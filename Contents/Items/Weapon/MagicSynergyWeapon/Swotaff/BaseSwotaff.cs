@@ -76,6 +76,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             if (player.HasItem(ItemID.Spear))
             {
                 modplayer.Swotaff_Spear = true;
+                modplayer.SynergyBonus++;
             }
         }
         int CanShootProjectile = 1;

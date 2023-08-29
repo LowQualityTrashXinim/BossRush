@@ -10,7 +10,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
 {
     internal class OrbOfEnergy : SynergyModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Item.BossRushDefaultMagic(1, 1, 100, 10, 5, 5, ItemUseStyleID.HoldUp, ModContent.ProjectileType<OrbOfEnergyBolt>(), 5, 20, true);
@@ -26,10 +25,15 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (player.HasItem(ItemID.BookofSkulls))
+            {
                 modplayer.OrbOfEnergy_BookOfSkulls = true;
+                modplayer.SynergyBonus++;
+            }
             if (player.HasItem(ItemID.DD2LightningAuraT1Popper))
+            {
                 modplayer.OrbOfEnergy_DD2LightningAuraT1Popper = true;
-
+                modplayer.SynergyBonus++;
+            }
         }
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {

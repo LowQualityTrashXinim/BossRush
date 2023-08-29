@@ -14,6 +14,9 @@ using System.Collections.Generic;
 using Terraria.ModLoader.IO;
 using Terraria.GameContent.Events;
 using ReLogic.Content;
+using Terraria.DataStructures;
+using System.Security.Permissions;
+using System.Linq;
 
 namespace BossRush.Contents.UI.weaponModifiction
 {
@@ -173,7 +176,35 @@ namespace BossRush.Contents.UI.weaponModifiction
             }
         }
     }
-
+    public class WM_GlobalItem : GlobalItem
+    {
+        public override bool InstancePerEntity => true;
+        public int[] WM_slot = new int[] { };
+        public override void OnCreated(Item item, ItemCreationContext context)
+        {
+            base.OnCreated(item, context);
+        }
+        public override void SaveData(Item item, TagCompound tag)
+        {
+            base.SaveData(item, tag);
+        }
+        public override void LoadData(Item item, TagCompound tag)
+        {
+            base.LoadData(item, tag);
+        }
+    }
+    public abstract class BaseModifierParticle : ModItem
+    {
+        public float DamageIncrease;
+    }
+    public class DamageIncreaseModifier : BaseModifierParticle
+    {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetDefaults()
+        {
+            DamageIncrease = .1f;
+        }
+    }
     public class WM_modPlayer : ModPlayer
     {
         public const int WM_MAXSLOTS = 12;
@@ -181,7 +212,17 @@ namespace BossRush.Contents.UI.weaponModifiction
         public int WM_availableSlots = WM_STARTINGSLOTS;
         public int[] storedItems = new int[WM_MAXSLOTS];
 
-
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            return;
+            foreach (int CustomParticle in item.GetGlobalItem<WM_GlobalItem>().WM_slot)
+            {
+                if(ItemLoader.GetItem(CustomParticle) is DamageIncreaseModifier particle)
+                {
+                    damage += particle.DamageIncrease;
+                }
+            }
+        }
         public override void PostUpdate()
         {
             base.PostUpdate();

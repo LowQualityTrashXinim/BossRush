@@ -19,8 +19,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
         }
         public override void AI()
         {
-            Vector2 AimPos = Main.MouseWorld - Projectile.position;
-            Vector2 safeAim = AimPos.SafeNormalize(Vector2.UnitX);
+            Vector2 safeAim = (Main.MouseWorld - Projectile.position).SafeNormalize(Vector2.UnitX);
             Projectile.ai[0] += 1f;
             if (Projectile.ai[0] < 19)
             {
@@ -38,11 +37,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
         public override void Kill(int timeLeft)
         {
             float numProj = 5 + Main.rand.Next(3);
-            float rotation = MathHelper.ToRadians(180 + Main.rand.Next(90));
             for (int i = 0; i < numProj; i++)
             {
-                Vector2 Star = new Vector2(Projectile.velocity.X, Projectile.velocity.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (numProj - 1)));
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), new Vector2(Projectile.position.X + 8, Projectile.position.Y + 16), Star, ProjectileID.WoodenArrowFriendly, (int)(Projectile.damage * 0.5f), (float)(Projectile.knockBack * 0.5f), Projectile.owner);
+                Vector2 Star = Projectile.velocity.Vector2DistributeEvenly(numProj, 360, i);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Star, ProjectileID.WoodenArrowFriendly, (int)(Projectile.damage * 0.5f),Projectile.knockBack * .5f, Projectile.owner);
             }
         }
     }

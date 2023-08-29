@@ -24,7 +24,7 @@ namespace BossRush.Common
         public override void PostAI(Projectile projectile)
         {
             base.PostAI(projectile);
-            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
                 return;
             }

@@ -27,56 +27,16 @@ namespace BossRush.Common
         //NoHiter
         public int gitGud = 0;
         public int HowManyBossIsAlive = 0;
-        public bool GodAreEnraged = false;
-        public int CooldownCheck = 999;
-        public override void PreUpdate()
-        {
-            CheckHowManyHit();
-        }
         public override void OnEnterWorld()
         {
             Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will feel lacking a lot");
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
             Main.NewText("So sorry for the inconvenience", Color.Blue);
-            Main.NewText("Developer note : You only have reach surface of the mod, the mod contain some secret, good luck", Color.Green);
+            Main.NewText("Developer note : The mod have a lot more to offer", Color.Green);
         }
-        private void SynergyEnergyCheckPlayer()
+        public override void PreUpdate()
         {
-            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
-            foreach (var item in Player.inventory)
-            {
-                if (item.ModItem is SynergyModItem)
-                {
-                    synergyCounter++;
-                }
-            }
-            if (synergyCounter >= 2)
-            {
-                GodAreEnraged = true;
-            }
-        }
-        private void GodDecision()
-        {
-            if (Main.netMode == NetmodeID.MultiplayerClient)
-                return;
-            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
-                return;
-            if (Player.IsDebugPlayer())
-                return;
-            CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
-            //Main.NewText(CooldownCheck);
-            if (CooldownCheck <= 0)
-            {
-                SynergyEnergyCheckPlayer();
-            }
-            if (GodAreEnraged)
-            {
-                Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
-                NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
-                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
-                CooldownCheck = 999;
-                GodAreEnraged = false;
-            }
+            CheckHowManyHit();
         }
         private void CheckHowManyHit()
         {
@@ -94,10 +54,7 @@ namespace BossRush.Common
                 }
             }
         }
-        public override void PostUpdate()
-        {
-            GodDecision();
-        }
+
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             health = StatModifier.Default; mana = StatModifier.Default;
@@ -230,8 +187,11 @@ namespace BossRush.Common
 
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
-            DeleteCardItem();
             SpawnItem();
+            if (ModContent.GetInstance<BossRushModConfig>().Nightmare)
+            {
+                DeleteCardItem();
+            }
         }
         private void DeleteCardItem()
         {

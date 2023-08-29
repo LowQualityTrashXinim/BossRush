@@ -39,10 +39,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             if (player.HasItem(ItemID.SkyFracture))
             {
                 modplayer.EnchantedStarfury_SkyFacture = true;
+                modplayer.SynergyBonus++;
             }
             if (player.HasItem(ItemID.BreakerBlade))
             {
                 modplayer.EnchantedStarfury_BreakerBlade = true;
+                modplayer.SynergyBonus++;
             }
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
