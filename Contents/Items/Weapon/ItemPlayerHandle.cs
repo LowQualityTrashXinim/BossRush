@@ -1,16 +1,14 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
-using Terraria.ID;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using System.Threading;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using System.Timers;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -206,7 +204,10 @@ namespace BossRush.Contents.Items.Weapon
                     Deagle_DaedalusStormBow_coolDown = 600;
                 }
             }
-
+        }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            damage += SynergyBonus * .5f;
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {

@@ -369,18 +369,18 @@ namespace BossRush.Common.Global
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction, on 3rd attack will do a special attack" +
                     "\nHold down right mouse to enable focus mode and allow you to dash toward your cursor on 3rd attack");
-                line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { new Color(150, 150, 0), Color.White }, 4);
+                line.OverrideColor = Color.Yellow;
                 tooltips.Add(line);
                 if (item.useStyle == BossRushUseStyle.Swipe)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 50% more damage");
-                    line2.OverrideColor = BossRushUtils.MultiColor(new List<Color> { new Color(150, 150, 0), Color.White }, 4);
+                    line2.OverrideColor = Color.Yellow;
                     tooltips.Add(line2);
                 }
                 if (item.useStyle == BossRushUseStyle.Poke)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 75% more damage\n3rd attack deal 25% more damage");
-                    line2.OverrideColor = BossRushUtils.MultiColor(new List<Color> { new Color(150, 150, 0), Color.White }, 4);
+                    line2.OverrideColor = Color.Yellow;
                     tooltips.Add(line2);
                 }
             }

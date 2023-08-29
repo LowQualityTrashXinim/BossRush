@@ -73,6 +73,8 @@ namespace BossRush.Contents.Perks
                     listOfPerk.Remove(newperk);
                     //After that we assign perk
                     PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
+                    btn.Height.Pixels = 52;
+                    btn.Width.Pixels = 52;
                     Vector2 origin = new Vector2(btn.Width.Pixels * .5f, btn.Height.Pixels * .5f);
                     btn.perkType = newperk;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
