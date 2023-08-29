@@ -311,13 +311,13 @@ namespace BossRush.Contents.Items.Weapon
             switch (Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus)
             {
                 case 1:
-                    auraColor = new Color(255, 100, 0, 30);
+                    auraColor = new Color(255, 50, 0, 30);
                     break;
                 case 2:
-                    auraColor = new Color(255, 255, 100, 30);
+                    auraColor = new Color(255, 255, 0, 30);
                     break;
                 case 3:
-                    auraColor = new Color(100, 255, 100, 30);
+                    auraColor = new Color(0, 255, 255, 30);
                     break;
                 default:
                     auraColor = new Color(255, 255, 255, 30);
@@ -328,6 +328,10 @@ namespace BossRush.Contents.Items.Weapon
         {
             PositionHandle();
             ColorHandle();
+            if (ItemID.Sets.AnimatesAsSoul[Item.type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1)
+            {
+                return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+            }
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
             for (int i = 0; i < 3; i++)

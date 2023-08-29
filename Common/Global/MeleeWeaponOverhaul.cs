@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Common.Utils;
+using BossRush.Contents.Items.Weapon.DupeSynergy;
 
 namespace BossRush.Common.Global
 {
@@ -517,7 +518,6 @@ namespace BossRush.Common.Global
             }
             if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
             {
-                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
                 modifiers.CritDamage.Base += modifiers.CritDamage.Base * .5f;
             }
             base.ModifyHitNPC(item, player, target, ref modifiers);
@@ -581,12 +581,14 @@ namespace BossRush.Common.Global
         public int oldHeldItem;
         public int CountDownToResetCombo = 0;
         public int MouseXPosDirection = 1;
+        bool InStateOfSwinging = false;
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
             if (item.type != oldHeldItem)
             {
-                ComboNumber = 0; CountDownToResetCombo = 0;
+                ComboNumber = 0;
+                CountDownToResetCombo = 0;
             }
             delaytimer = BossRushUtils.CoolDown(delaytimer);
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
@@ -597,7 +599,6 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            Player.GetAttackSpeed(DamageClass.Melee) *= .1f;
             MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
             if (Main.mouseRight)
             {
@@ -623,14 +624,20 @@ namespace BossRush.Common.Global
             if (Player.ItemAnimationActive)
             {
                 ExecuteSpecialComboOnActive();
+                InStateOfSwinging = true;
             }
             else
             {
-                if (delaytimer != 0 && ComboNumber == 3 && comboExecuteWithDash)
+                if (delaytimer != 0 && ComboNumber == 2 && comboExecuteWithDash)
                 {
                     Player.velocity *= .1f;
                 }
                 CanPlayerBeDamage = true;
+                if (InStateOfSwinging)
+                {
+                    ComboHandleSystem();
+                    InStateOfSwinging = false;
+                }
             }
         }
         public override void ResetEffects()
@@ -675,15 +682,15 @@ namespace BossRush.Common.Global
             Player.controlLeft = false;
             Player.controlRight = false;
             Vector2 Toward = modplayer.MouseLastPositionBeforeAnimation - Player.Center;
-            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / (Player.itemAnimationMax * 1.5f));
+            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / (float)Player.itemAnimationMax);
         }
         private void ComboHandleSystem()
         {
-            ComboNumber++;
-            if (ComboNumber >= 3 || CountDownToResetCombo == 0)
+            if (++ComboNumber >= 3 || CountDownToResetCombo == 0)
             {
                 ComboNumber = 0;
             }
+            Main.NewText(ComboNumber);
         }
         public bool critReference;
         int iframeCounter = 0;
@@ -700,7 +707,6 @@ namespace BossRush.Common.Global
             }
             if (Player.ItemAnimationJustStarted)
             {
-                ComboHandleSystem();
                 if (delaytimer == 0)
                 {
                     data = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);

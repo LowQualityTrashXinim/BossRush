@@ -59,8 +59,8 @@ namespace BossRush.Contents.Perks
                         buttonWeapon.Height.Pixels = textureDefault.Height;
                         Vector2 offsetPosWeapon = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
                         Vector2 drawposWeapon = player.Center + offsetPosWeapon - Main.screenPosition - originDefault;
-                        buttonWeapon.Left.Pixels = drawposWeapon.X;
-                        buttonWeapon.Top.Pixels = drawposWeapon.Y;
+                        buttonWeapon.Left.Pixels = drawposWeapon.X + (drawposWeapon.X * (1 - Main.UIScale));
+                        buttonWeapon.Top.Pixels = drawposWeapon.Y + (drawposWeapon.Y * (1 - Main.UIScale));
                         Append(buttonWeapon);
                         continue;
                     }
@@ -70,17 +70,15 @@ namespace BossRush.Contents.Perks
                         texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
                     else
                         texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
-                    Vector2 origin = new Vector2(26, 26);
                     listOfPerk.Remove(newperk);
                     //After that we assign perk
                     PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
+                    Vector2 origin = new Vector2(btn.Width.Pixels * .5f, btn.Height.Pixels * .5f);
                     btn.perkType = newperk;
-                    btn.Width.Pixels = 52;
-                    btn.Height.Pixels = 52;
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
-                    Vector2 drawpos = player.Center + offsetPos - Main.screenPosition - origin;
-                    btn.Left.Pixels = drawpos.X;
-                    btn.Top.Pixels = drawpos.Y;
+                    Vector2 drawpos = player.Center - Main.screenPosition - origin + offsetPos;
+                    btn.Left.Pixels = drawpos.X + (drawpos.X * (1 - Main.UIScale));
+                    btn.Top.Pixels = drawpos.Y + (drawpos.Y * (1 - Main.UIScale));
                     Append(btn);
                 }
             }
