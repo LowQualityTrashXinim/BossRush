@@ -199,6 +199,7 @@ namespace BossRush.Contents.UI.weaponModifiction
     }
     public class DamageIncreaseModifier : BaseModifierParticle
     {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             DamageIncrease = .1f;
@@ -213,6 +214,7 @@ namespace BossRush.Contents.UI.weaponModifiction
 
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
+            return;
             foreach (int CustomParticle in item.GetGlobalItem<WM_GlobalItem>().WM_slot)
             {
                 if(ItemLoader.GetItem(CustomParticle) is DamageIncreaseModifier particle)
