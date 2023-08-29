@@ -28,7 +28,6 @@ namespace BossRush.Contents.Items.aDebugItem
             WonderDrugPlayer drugplayer = Main.LocalPlayer.GetModPlayer<WonderDrugPlayer>();
             NoHitPlayerHandle nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
             ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
-            Player player = Main.LocalPlayer;
             chestplayer.GetAmount();
             TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
                 $"Amount drop chest addition : {chestplayer.amountModifier}" +
@@ -42,8 +41,7 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nSummon drop chance : {chestplayer.SummonChanceMutilplier}" +
                 $"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
                 $"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-                $"\nCurrent active artifact : {artifactplayer.ToStringArtifact()}" +
-                $"\n Dev test number : 10"
+                $"\nCurrent active artifact : {artifactplayer.ToStringArtifact()}"
                 );
             tooltips.Add(line);
         }

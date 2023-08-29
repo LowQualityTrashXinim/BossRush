@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.NPCs;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -79,6 +81,46 @@ namespace BossRush.Contents.Items.Weapon
 
         public float QuadDemonBlaster_SpeedMultiplier = 1;
 
+        public bool GodAreEnraged = false;
+        public int CooldownCheck = 999;
+        private void SynergyEnergyCheckPlayer()
+        {
+            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
+            foreach (var item in Player.inventory)
+            {
+                if (item.ModItem is SynergyModItem)
+                {
+                    synergyCounter++;
+                }
+            }
+            if (synergyCounter >= 2)
+            {
+                GodAreEnraged = true;
+            }
+        }
+        private void GodDecision()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+                return;
+            if (Player.IsDebugPlayer())
+                return;
+            CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
+            //Main.NewText(CooldownCheck);
+            if (CooldownCheck <= 0)
+            {
+                SynergyEnergyCheckPlayer();
+            }
+            if (GodAreEnraged)
+            {
+                Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
+                NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
+                BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
+                CooldownCheck = 999;
+                GodAreEnraged = false;
+            }
+        }
         public override void ResetEffects()
         {
             SynergyBonusBlock = false;
@@ -136,6 +178,7 @@ namespace BossRush.Contents.Items.Weapon
         int check = 1;
         public override void PostUpdate()
         {
+            GodDecision();
             Item item = Player.HeldItem;
             if (item.ModItem is BurningPassion)
             {
