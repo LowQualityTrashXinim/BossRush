@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using BossRush.Common;
 using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -562,8 +563,11 @@ namespace BossRush.Contents.Items.Artifact
             if (Greed)
                 damage *= .65f;
             if (Pride)
-                damage += .45f;
+            {
+                float reward = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count * .1f;
+                damage += .45f + reward;
 
+            }
         }
         int vampirecountRange = 0;
         private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1)

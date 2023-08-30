@@ -729,6 +729,7 @@ Mods: {
 					"Having the skill to use whatever you are given"
 					Positive effect : Increase weapon damage by 45%
 					Negative effect : Halves your drop from treasure chest
+					Additional Effect : Show me your skill that you so prideful about, and I shall reward it
 					'''
 				DisplayName: Token of pride
 			}
