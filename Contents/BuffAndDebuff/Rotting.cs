@@ -14,7 +14,7 @@ namespace BossRush.Contents.BuffAndDebuff
         public override void Update(Player player, ref int buffIndex)
         {
             player.statDefense -= 10;
-            player.statLife -= 4;
+            player.lifeRegen -= 12;
         }
     }
 }
