@@ -102,7 +102,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
-            if (BossRushUtils.LookForSpecificNPC(ModContent.NPCType<Servant>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+            if (NPC.AnyNPCs(ModContent.NPCType<Servant>())|| Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
                 return;
             if (Player.IsDebugPlayer())
                 return;
@@ -278,6 +278,10 @@ namespace BossRush.Contents.Items.Weapon
     }
     public abstract class SynergyModItem : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
+        }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
