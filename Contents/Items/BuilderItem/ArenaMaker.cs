@@ -1,11 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Texture;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
 namespace BossRush.Contents.Items.BuilderItem
 {

@@ -233,7 +233,6 @@ namespace BossRush.Contents.UI.weaponModifiction
             WM_availableSlots = WM_STARTINGSLOTS;
 
         }
-
         public override void SaveData(TagCompound tag)
         {
             tag["storedItems"] = storedItems;

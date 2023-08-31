@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using BossRush.Common;
 using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -38,9 +39,9 @@ namespace BossRush.Contents.Items.Artifact
                         .Register();
                         continue;
                     }
-                    if (item is BrokenArtifact || item is GodDice)
+                    if (item is BrokenArtifact || item is GodDice || item is EternalWealth)
                         continue;
-                    if(item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
+                    if (item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
                         continue;
                     item.CreateRecipe()
                         .AddIngredient(ModContent.ItemType<BrokenArtifact>())
@@ -111,6 +112,8 @@ namespace BossRush.Contents.Items.Artifact
         public const short FateDecider = 5;
         public const short BootOfSpeedManipulation = 6;
         public const short MagicalCardDeck = 7;
+
+        public const short EternalWealth = 998;
     }
     class ArtifactPlayerHandleLogic : ModPlayer
     {
@@ -124,6 +127,7 @@ namespace BossRush.Contents.Items.Artifact
         bool BootofSpeed = false;// ID = 6
         public bool MagicalCardDeck = false;// ID = 7
         int EarthCD = 0;
+        public bool EternalWealth = false;
         public string ToStringArtifact()
         {
             switch (ArtifactDefinedID)
@@ -162,26 +166,29 @@ namespace BossRush.Contents.Items.Artifact
             MagicalCardDeck = false;
             switch (ArtifactDefinedID)
             {
-                case 1:
+                case ArtifactItemID.TokenOfGreed:
                     Greed = true;
                     break;
-                case 2:
+                case ArtifactItemID.TokenOfPride:
                     Pride = true;
                     break;
-                case 3:
+                case ArtifactItemID.VampirismCrystal:
                     Vampire = true;
                     break;
-                case 4:
+                case ArtifactItemID.HeartOfEarth:
                     Earth = true;
                     break;
-                case 5:
+                case ArtifactItemID.FateDecider:
                     FateDice = true;
                     break;
-                case 6:
+                case ArtifactItemID.BootOfSpeedManipulation:
                     BootofSpeed = true;
                     break;
-                case 7:
+                case ArtifactItemID.MagicalCardDeck:
                     MagicalCardDeck = true;
+                    break;
+                case ArtifactItemID.EternalWealth:
+                    EternalWealth = true;
                     break;
             }
         }
@@ -199,7 +206,6 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void ResetEffects()
         {
-            base.ResetEffects();
             if (BootofSpeed)
             {
                 Player.moveSpeed += 1f;
@@ -209,6 +215,10 @@ namespace BossRush.Contents.Items.Artifact
                 Player.noFallDmg = true;
             }
         }
+        int timer = 0;
+        Vector2[] oldPos = new Vector2[5];
+        int counterOldPos = 0;
+        int MidasInfection = 0;
         public override void PostUpdate()
         {
             if (Vampire)
@@ -222,6 +232,49 @@ namespace BossRush.Contents.Items.Artifact
             if (Greed)
             {
                 chestmodplayer.amountModifier += 4;
+            }
+            if (EternalWealth)
+            {
+                chestmodplayer.finalMultiplier += 2;
+                timer = BossRushUtils.CoolDown(timer);
+                if (timer <= 0)
+                {
+                    if (counterOldPos >= oldPos.Length - 1)
+                    {
+                        counterOldPos = 0;
+                    }
+                    else
+                    {
+                        counterOldPos++;
+                    }
+                    oldPos[counterOldPos] = Player.Center;
+                    timer = 500;
+                }
+                bool IsInField = false;
+                foreach (Vector2 vec in oldPos)
+                {
+                    if (Player.Center.IsCloseToPosition(vec, 600))
+                    {
+                        IsInField = true;
+                        MidasInfection++;
+                        if (MidasInfection >= 120)
+                            Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
+                    }
+                    for (int i = 0; i < 25; i++)
+                    {
+                        int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(600, 600), 0, 0, DustID.GoldCoin);
+                        Main.dust[dust].noGravity = true;
+                        Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
+                    }
+                    for (int i = 0; i < 25; i++)
+                    {
+                        int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(600, 600), 0, 0, DustID.GoldCoin);
+                        Main.dust[dust].noGravity = true;
+                        Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
+                    }
+                }
+                if (!IsInField)
+                    MidasInfection = BossRushUtils.CoolDown(MidasInfection);
             }
             if (FateDice)
             {
@@ -562,8 +615,10 @@ namespace BossRush.Contents.Items.Artifact
             if (Greed)
                 damage *= .65f;
             if (Pride)
-                damage += .45f;
-
+            {
+                float reward = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count * .1f;
+                damage += .45f + reward;
+            }
         }
         int vampirecountRange = 0;
         private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1)

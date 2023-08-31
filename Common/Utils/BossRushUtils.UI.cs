@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush
 {
@@ -15,32 +9,18 @@ namespace BossRush
         //for real, who the fuk came up with these name
         public readonly static int ScreenWidth = Main.PendingResolutionWidth;
         public readonly static int ScreenHeight = Main.PendingResolutionHeight;
-        public static void SetPercentageLeft(this UIElement area, float positionToSet, float percentage = 0)
+
+        public static void UISetWidthHeight(this UIElement ui, float width, float height)
         {
-            float position = (positionToSet * percentage);
-            if(positionToSet > 0)
-            {
-                positionToSet *= -1;
-                position *= -1;
-            }
-            area.Left.Set(positionToSet - position, 1f);
+            ui.Width.Pixels = width;
+            ui.Height.Pixels = height;
         }
-        public static void SetTextPosition(this UIText text, float width, float height)
+        public static void UISetPosition(this UIElement ui, Vector2 position, Vector2 origin)
         {
-            text.Width.Set(138, 0f);
-            text.Height.Set(34, 0f);
-            text.Top.Set(height, 0f);
-            text.Left.Set(width * .5f - text.Width.Pixels * .5f, 0f);
-        }
-        public static void SetPercentageTop(this UIElement area, float positionToSet, float percentage = 0)
-        {
-            float position = (positionToSet * percentage);
-            if (positionToSet > 0)
-            {
-                positionToSet *= -1;
-                position *= -1;
-            }
-            area.Top.Set(positionToSet - position, 1f);
+            Vector2 drawpos = position - Main.screenPosition - origin;
+            ui.Left.Pixels = drawpos.X + (drawpos.X * (1 - Main.UIScale));
+            ui.Top.Pixels = drawpos.Y + (drawpos.X * (1 - Main.UIScale));
+
         }
     }
 }

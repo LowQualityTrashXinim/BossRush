@@ -95,7 +95,7 @@ namespace BossRush
             } while (!Collision.CanHitLine(positionCurrent, 0, 0, pos, 0, 0) || counter < 50);
             return pos;
         }
-        public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).Length() <= distance;
+        public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).LengthSquared() <= distance * distance;
         /// <summary>
         /// This will take a approximation of the rough position that it need to go and then stop the npc from moving when it reach that position 
         /// </summary>
@@ -115,19 +115,16 @@ namespace BossRush
         }
         public static Vector2 Vector2SmallestInList(List<Vector2> flag)
         {
-            for (int i = 0; i < flag.Count;)
+            if (flag.Count == 0)
+                return Vector2.Zero;
+
+            Vector2 smallest = flag[0];
+            for (int i = 1; i < flag.Count; i++)
             {
-                Vector2 vector2 = flag[i];
-                for (int l = i + 1; l < flag.Count; ++l)
-                {
-                    if (vector2.LengthSquared() > flag[l].LengthSquared())
-                    {
-                        vector2 = flag[l];
-                    }
-                }
-                return vector2;
+                if (flag[i].LengthSquared() < smallest.LengthSquared())
+                    smallest = flag[i];
             }
-            return Vector2.Zero;
+            return smallest;
         }
         public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
         

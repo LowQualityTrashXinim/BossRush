@@ -44,10 +44,10 @@ namespace BossRush.Contents.Perks
                     listOfPerk.Add(i);
                 }
                 int amount = listOfPerk.Count;
-                Texture2D textureDefault = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT).Value;
-                Vector2 originDefault = new Vector2(textureDefault.Width * .5f, textureDefault.Height * .5f);
+                Vector2 originDefault = new Vector2(26,26);
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
+                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
                     if (i >= amount || i >= modplayer.PerkAmount - 1)
                     {
                         UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
@@ -55,12 +55,8 @@ namespace BossRush.Contents.Perks
                          new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
                          new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT))
                         });
-                        buttonWeapon.Width.Pixels = textureDefault.Width;
-                        buttonWeapon.Height.Pixels = textureDefault.Height;
-                        Vector2 offsetPosWeapon = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
-                        Vector2 drawposWeapon = player.Center + offsetPosWeapon - Main.screenPosition - originDefault;
-                        buttonWeapon.Left.Pixels = drawposWeapon.X + (drawposWeapon.X * (1 - Main.UIScale));
-                        buttonWeapon.Top.Pixels = drawposWeapon.Y + (drawposWeapon.Y * (1 - Main.UIScale));
+                        buttonWeapon.UISetWidthHeight(52, 52);
+                        buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
                         Append(buttonWeapon);
                         continue;
                     }
@@ -73,14 +69,9 @@ namespace BossRush.Contents.Perks
                     listOfPerk.Remove(newperk);
                     //After that we assign perk
                     PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
-                    btn.Height.Pixels = 52;
-                    btn.Width.Pixels = 52;
-                    Vector2 origin = new Vector2(btn.Width.Pixels * .5f, btn.Height.Pixels * .5f);
+                    btn.UISetWidthHeight(52, 52);
+                    btn.UISetPosition(player.Center + offsetPos, originDefault);
                     btn.perkType = newperk;
-                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
-                    Vector2 drawpos = player.Center - Main.screenPosition - origin + offsetPos;
-                    btn.Left.Pixels = drawpos.X + (drawpos.X * (1 - Main.UIScale));
-                    btn.Top.Pixels = drawpos.Y + (drawpos.Y * (1 - Main.UIScale));
                     Append(btn);
                 }
             }

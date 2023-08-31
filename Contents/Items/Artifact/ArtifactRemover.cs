@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -18,6 +19,11 @@ namespace BossRush.Contents.Items.Artifact
         public override bool? UseItem(Player player)
         {
             ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            if (modplayer.ArtifactDefinedID == ArtifactItemID.EternalWealth)
+            {
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "Fail to remove");
+                return true;
+            }
             modplayer.ArtifactDefinedID = ArtifactPlayerHandleLogic.ArtifactDefaultID;
             return true;
         }

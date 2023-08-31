@@ -17,6 +17,7 @@ namespace BossRush.Contents.Items.Artifact
             Item.height = 80;
             Item.accessory = true;
             Item.rare = ItemRarityID.Expert;
+            Item.scale = .5f;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)

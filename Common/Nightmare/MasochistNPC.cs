@@ -9,17 +9,6 @@ namespace BossRush.Common.YouLikeToHurtYourself
 {
     internal class MasochistNPC : GlobalNPC
     {
-        private bool PlayerNameContain(string contain)
-        {
-            for (int i = 0; i < Main.player.Length; i++)
-            {
-                if (Main.player[i].name.Contains(contain))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
         public override void SetDefaults(NPC npc)
         {
             if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
