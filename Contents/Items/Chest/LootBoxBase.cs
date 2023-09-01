@@ -344,13 +344,11 @@ namespace BossRush.Contents.Items.Chest
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
                 if (Main.rand.NextBool(1500))
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
-                if (Main.rand.NextBool(1500))
-                    player.QuickSpawnItem(entitySource, ModContent.ItemType<EmblemofProgress>());
                 if (player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
                     player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
             }
             //Card dropping
-            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare)
+            if (!ModContent.GetInstance<BossRushModConfig>().Nightmare || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature)
             {
                 return;
             }

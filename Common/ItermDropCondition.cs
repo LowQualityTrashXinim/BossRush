@@ -25,7 +25,20 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode;
+                return ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless;
+            }
+            return false;
+        }
+        public bool CanShowItemDropInUI() => true;
+        public string GetConditionDescription() => "Exclusive to challenge mode";
+    }
+    public class EitherOfEvilBossDefeated : IItemDropRuleCondition
+    {
+        public bool CanDrop(DropAttemptInfo info)
+        {
+            if (!info.IsInSimulation)
+            {
+                return NPC.downedBoss2;
             }
             return false;
         }
@@ -42,7 +55,6 @@ namespace BossRush.Common
             }
             return false;
         }
-
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Magical card deck call in more card";
     }
@@ -52,7 +64,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return ModContent.GetInstance<BossRushModConfig>().SynergyMode;
+                return ModContent.GetInstance<BossRushModConfig>().SynergyMode || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
             }
             return false;
         }
@@ -144,7 +156,8 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return ModContent.GetInstance<BossRushModConfig>().Nightmare || ModContent.GetInstance<BossRushModConfig>().NightmarePlus;
+                return ModContent.GetInstance<BossRushModConfig>().Nightmare || ModContent.GetInstance<BossRushModConfig>().NightmarePlus 
+                    || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
             }
             return false;
         }

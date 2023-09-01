@@ -248,27 +248,28 @@ namespace BossRush.Contents.Items.Artifact
                         counterOldPos++;
                     }
                     oldPos[counterOldPos] = Player.Center;
-                    timer = 500;
+                    timer = 600;
                 }
+                float distance = 500;
                 bool IsInField = false;
                 foreach (Vector2 vec in oldPos)
                 {
-                    if (Player.Center.IsCloseToPosition(vec, 600))
+                    if (Player.Center.IsCloseToPosition(vec, distance))
                     {
                         IsInField = true;
                         MidasInfection++;
-                        if (MidasInfection >= 120)
+                        if (MidasInfection >= 180)
                             Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
                     }
                     for (int i = 0; i < 25; i++)
                     {
-                        int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(600, 600), 0, 0, DustID.GoldCoin);
+                        int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(distance, distance), 0, 0, DustID.GoldCoin);
                         Main.dust[dust].noGravity = true;
                         Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
                     }
                     for (int i = 0; i < 25; i++)
                     {
-                        int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(600, 600), 0, 0, DustID.GoldCoin);
+                        int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(distance, distance), 0, 0, DustID.GoldCoin);
                         Main.dust[dust].noGravity = true;
                         Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
                     }

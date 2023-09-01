@@ -90,7 +90,14 @@ namespace BossRush.Common
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
+                if (Player.name.Contains("[EW]"))
+                {
+                    items.Add(new Item(ModContent.ItemType<EternalWealth>()));
+                }
+                else
+                {
+                    items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
+                }
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol

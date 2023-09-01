@@ -31,5 +31,9 @@ namespace BossRush.Common
 
         [DefaultValue(true)]
         public bool RoguelikeOverhaul { get; set; }
+        [DefaultValue(false)]
+        public bool HardEnableFeature { get; set; }
+        [DefaultValue(false)]
+        public bool ForceBossDropRegadless { get; set; }
     }
 }
