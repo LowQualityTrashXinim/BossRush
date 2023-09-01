@@ -28,11 +28,12 @@ namespace BossRush.Common
         [ReloadRequired]
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }
-
         [DefaultValue(true)]
         public bool RoguelikeOverhaul { get; set; }
+        [ReloadRequired]
         [DefaultValue(false)]
         public bool HardEnableFeature { get; set; }
+        [ReloadRequired]
         [DefaultValue(false)]
         public bool ForceBossDropRegadless { get; set; }
     }

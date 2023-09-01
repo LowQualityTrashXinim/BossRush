@@ -1716,12 +1716,12 @@ Mods: {
 
 				HardEnableFeature: {
 					Label: Hard Enable Feature
-					Tooltip: ""
+					Tooltip: "This will enable feature that you should not be able to access regardless of config, this do not guarentee balance"
 				}
 
 				ForceBossDropRegadless: {
 					Label: Force Boss Drop Regadless
-					Tooltip: ""
+					Tooltip: "Make boss drop outside of challenge mode"
 				}
 			}
 		}

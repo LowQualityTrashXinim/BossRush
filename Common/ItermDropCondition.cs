@@ -43,7 +43,7 @@ namespace BossRush.Common
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription() => "Exclusive to challenge mode";
+        public string GetConditionDescription() => "";
     }
     public class MagicalCardDeckException : IItemDropRuleCondition
     {

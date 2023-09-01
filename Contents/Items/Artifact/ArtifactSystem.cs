@@ -39,7 +39,7 @@ namespace BossRush.Contents.Items.Artifact
                         .Register();
                         continue;
                     }
-                    if (item is BrokenArtifact || item is GodDice || item is EternalWealth)
+                    if (item is BrokenArtifact || item is EternalWealth)
                         continue;
                     if (item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
                         continue;
