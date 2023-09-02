@@ -12,10 +12,10 @@ namespace BossRush
         /// <param name="npc"></param>
         /// <param name="Position"></param>
         /// <param name="speed"></param>
-        public static bool NPCMoveToPosition(this NPC npc, Vector2 Position, float speed)
+        public static bool NPCMoveToPosition(this NPC npc, Vector2 Position, float speed, float roomforError = 20f)
         {
             Vector2 distance = Position - npc.Center;
-            if (distance.Length() <= 20f)
+            if (distance.Length() <= roomforError)
             {
                 npc.velocity = Vector2.Zero;
                 return true;

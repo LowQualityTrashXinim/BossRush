@@ -4,13 +4,12 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.Toggle;
-using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Perks
 {

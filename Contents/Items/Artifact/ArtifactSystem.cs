@@ -13,6 +13,8 @@ using BossRush.Common.Utils;
 using BossRush.Common;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Projectiles;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Items.Artifact
 {
@@ -127,7 +129,7 @@ namespace BossRush.Contents.Items.Artifact
         bool BootofSpeed = false;// ID = 6
         public bool MagicalCardDeck = false;// ID = 7
         int EarthCD = 0;
-        public bool EternalWealth = false;
+        bool EternalWealth = false;
 
         int timer = 0;
         Vector2[] oldPos = new Vector2[5];
@@ -135,8 +137,8 @@ namespace BossRush.Contents.Items.Artifact
         int MidasInfection = 0;
 
         bool IsBuffCurrentlyActive = false;
-        int GoodBuffIndex = -1;
-        int BadBuffIndex = -1;
+        public int GoodBuffIndex = -1;
+        public int BadBuffIndex = -1;
         public string ToStringArtifact()
         {
             switch (ArtifactDefinedID)
@@ -303,9 +305,12 @@ namespace BossRush.Contents.Items.Artifact
             {
                 FateDeciderEffect();
             }
+            else
+            {
+                GoodBuffIndex = -1;
+                BadBuffIndex = -1;
+            }
         }
-        bool ArrowBuff, SwordProjectileBuff, BulletBuff, MageBuff, SummonerBuff;
-        bool ArrowDebuff, SwordProjectileDebuff, BulletDeBuff, MageDebuff, SummonerDebuff;
         private void FateDeciderEffect()
         {
             if (Player.HasBuff(ModContent.BuffType<FateDeciderBuff>()))
@@ -320,11 +325,11 @@ namespace BossRush.Contents.Items.Artifact
             if (IsBuffCurrentlyActive)
             {
                 if (GoodBuffIndex == -1)
-                    GoodBuffIndex = Main.rand.Next(0, 3);
+                    GoodBuffIndex = Main.rand.Next(0, 6);
                 if (BadBuffIndex == -1)
                     do
                     {
-                        BadBuffIndex = Main.rand.Next(0, 3);
+                        BadBuffIndex = Main.rand.Next(0, 6);
                     }
                     while (BadBuffIndex == GoodBuffIndex);
             }
@@ -333,6 +338,12 @@ namespace BossRush.Contents.Items.Artifact
                 GoodBuffIndex = -1;
                 BadBuffIndex = -1;
             }
+        }
+        public override float UseSpeedMultiplier(Item item)
+        {
+            if(BadBuffIndex == 5 && item.DamageType == DamageClass.Melee && !item.noMelee)
+                return .5f;
+            return base.UseSpeedMultiplier(item);
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
@@ -441,11 +452,23 @@ namespace BossRush.Contents.Items.Artifact
             {
                 if (GoodBuffIndex == 2)
                 {
-                    int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, Player.whoAmI);
-                    if (Main.projectile[proj].ModProjectile is null)
+                    for (int i = 0; i < 3; i++)
                     {
-                        Main.projectile[proj].penetrate = 1;
+                        Vector2 newpos = position.PositionOFFSET(velocity, -90).Vector2DistributeEvenly(3, 45, i);
+                        int proj = Projectile.NewProjectile(source, newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * item.shootSpeed, type, damage, knockback, Player.whoAmI);
+                        if (Main.projectile[proj].ModProjectile is null)
+                        {
+                            Main.projectile[proj].penetrate = 1;
+                        }
                     }
+                }
+            }
+            if (item.mana > 0 && item.DamageType == DamageClass.Magic)
+            {
+                if (GoodBuffIndex == 3)
+                {
+                    Vector2 newpos = Main.rand.NextVector2Circular(100, 100);
+                    Projectile.NewProjectile(source, newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * item.shootSpeed, type, damage, knockback, Player.whoAmI);
                 }
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -455,6 +478,11 @@ namespace BossRush.Contents.Items.Artifact
             if (Vampire)
             {
                 LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
+            }
+            if (GoodBuffIndex == 5)
+            {
+                Vector2 pos = target.Center - Main.rand.NextVector2CircularEdge(100, 100);
+                Projectile.NewProjectile(Player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 3f, ModContent.ProjectileType<ArtifactSwordSlashProjectile>(), item.damage, 0, Player.whoAmI);
             }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -548,6 +576,51 @@ namespace BossRush.Contents.Items.Artifact
                         projectile.damage += 1;
                 }
             }
+        }
+        public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (projectile.minion)
+            {
+                Player player = Main.player[projectile.owner];
+                ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+                if (modplayer.GoodBuffIndex == 4)
+                {
+                    if (Main.rand.NextBool(10))
+                        player.Heal(Main.rand.Next(1, 5));
+                }
+                if (modplayer.BadBuffIndex == 4)
+                {
+                    if (Main.rand.NextBool(10))
+                        Projectile.NewProjectile(Entity.GetSource_None(), projectile.Center, (player.Center - projectile.Center).SafeNormalize(Vector2.Zero) * 5, ModContent.ProjectileType<NegativeLifeProjectile>(), 20, 0);
+                }
+            }
+        }
+    }
+    class ArtifactSwordSlashProjectile : ModProjectile
+    {
+        public override string Texture => BossRushTexture.SMALLWHITEBALL;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 50;
+            ProjectileID.Sets.TrailingMode[Type] = 0;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 15;
+            Projectile.friendly = true;
+            Projectile.tileCollide = false;
+            Projectile.timeLeft = 50;
+            Projectile.penetrate = -1;
+            Projectile.extraUpdates = 10;
+        }
+        public override void AI()
+        {
+            Projectile.alpha = (int)MathHelper.Lerp(0, 255, (50 - Projectile.timeLeft) / 50);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.DrawTrail(lightColor, .02f);
+            return base.PreDraw(ref lightColor);
         }
     }
 }
