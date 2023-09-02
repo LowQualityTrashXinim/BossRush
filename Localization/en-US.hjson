@@ -718,7 +718,7 @@ Mods: {
 					Positive effect : 
 					+ Attack heal player
 					+ You can survive 1 fatal attack ( 5 minute cooldown )
-					Negative Effect : reduce max life by 65% and permanent potion sickness
+					Negative Effect : reduce max life by 55% and permanent potion sickness
 					'''
 				DisplayName: Vampirism Crystal
 			}
@@ -770,10 +770,11 @@ Mods: {
 			FateDecider: {
 				Tooltip:
 					'''
-					"Make your life a little more interesting"
-					Positive effect : Increases amount of weapons from Lootbox by 2
-					Neutral effect : Random effect may occur ...
-					Note : rework this !
+					"Make your weapon a little bit more interesting"
+					Positive effect : Randomly make your weapon better than before
+					Negative effect : Randomly make your weapon worse than before
+					The positive effect and negative effect can't stack
+					After a certain amount of time is pass, the effect will change
 					'''
 				DisplayName: Fate Decider
 			}
