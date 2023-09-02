@@ -29,19 +29,26 @@ namespace BossRush.Contents.UI.weaponModifiction
         internal float slotItemScale = .5f;
         internal int slotID = 0;
         internal int space = 64;
+        internal bool isHidden = false;
+        
         
 
         //this is for intianlaizing the UI upon loading.
-        public weaponMod_ItemSlot(Item Item, int slotOrder = 0)
+        public weaponMod_ItemSlot(int slotOrder = 0)
         {
             slotID = slotOrder;
-            this.item = Item;
-            updateSlot(item);
+            item = new Item();
         }
 
         //extract the infos about the item to make the UI update its data accourding the player's storedItems
         public void updateSlot(Item newItem)
         {
+            var player = Main.LocalPlayer.GetModPlayer<weaponMod_modPlayer>();
+            if(slotID > player.modplayer_selectedItem.GetGlobalItem<weaponMod_GlobalItem>().availableWeaponModSlots)
+                isHidden = true;
+            else
+                isHidden = false;
+
             Vector2 origin = new Vector2(24, 24);
             item.SetDefaults(newItem.type);
             
@@ -79,6 +86,11 @@ namespace BossRush.Contents.UI.weaponModifiction
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
+
+            if (isHidden)
+                return;
+
+
             CalculatedStyle innerDimensions = GetDimensions();
             innerDimensions = GetDimensions();
             innerDimensions.X += slotSprite.Width * slotItemScale / 2f;
@@ -106,6 +118,7 @@ namespace BossRush.Contents.UI.weaponModifiction
     public class weaponMod_UI : UIState
     {
         public weaponMod_ItemSlot itemSlot;
+        public const int MAXSLOTS = 5;
 
         public override void Update(GameTime gameTime)
         {
@@ -128,16 +141,9 @@ namespace BossRush.Contents.UI.weaponModifiction
         {
             var player = Main.LocalPlayer.GetModPlayer<weaponMod_modPlayer>();
             
-            for (int i = 0; i < player.modplayer_selectedItem.GetGlobalItem<weaponMod_GlobalItem>().weaponMod_slot.Length; i++)
+            for (int i = 0; i < MAXSLOTS; i++)
             {
-
-            
-                itemSlot = new weaponMod_ItemSlot(player.modplayer_selectedItem.GetGlobalItem<weaponMod_GlobalItem>().weaponMod_slot[i], i);
-
-                //itemSlot.VAlign = .5f;
-                //itemSlot.HAlign = .5f;
-                //itemSlot.Width.Set(48, 0);
-                //itemSlot.Height.Set(48, 0);
+                itemSlot = new weaponMod_ItemSlot(i);
 
                 //the itemslot is basically a list that contains instances of WM_ItemSlot types, or atleast this is what i understand
                 Append(itemSlot);
@@ -187,6 +193,7 @@ namespace BossRush.Contents.UI.weaponModifiction
     public class weaponMod_GlobalItem : GlobalItem
     {
         public override bool InstancePerEntity => true;
+        
         public int availableWeaponModSlots;
         public Item[] weaponMod_slot;
 
@@ -194,7 +201,7 @@ namespace BossRush.Contents.UI.weaponModifiction
         public void Initialize_weaponModSlots()
         {
 
-            availableWeaponModSlots = Main.rand.Next(1, 5);
+            availableWeaponModSlots = Main.rand.Next(0, 5);
             weaponMod_slot = new Item[availableWeaponModSlots];
 
             for(int i = 0; i < weaponMod_slot.Length; i++)
