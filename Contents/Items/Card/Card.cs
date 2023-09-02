@@ -918,10 +918,6 @@ namespace BossRush.Contents.Items.Card
     {
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
-            {
-                return;
-            }
             LeadingConditionRule NightmareMode = new LeadingConditionRule(new NightmareMode());
             NightmareMode.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<PremiumCardPacket>()));
             npcLoot.Add(NightmareMode);

@@ -824,16 +824,18 @@ Mods: {
 					= Accelerate card luck stats
 					'''
 			}
+
 			EternalWealth: {
 				DisplayName: Eternal Wealth
-				Tooltip: 
-				'''
-				"Regardless of anything, wealth is all that matters"
-				+ Multiply your lootbox drop by 3
-				- A field of damage curses will be spawn and disappear after few seconds at where you are 
-				Field of damage will only damage you if you are in it for more than 2 second
-				'''
+				Tooltip:
+					'''
+					"Regardless of anything, wealth is all that matters"
+					+ Multiply your lootbox drop by 3
+					- A field of damage curses will be spawn and disappear after few seconds at where you are 
+					Field of damage will only damage you if you are in it for more than 3 second
+					'''
 			}
+
 			totalcritacc: {
 				Tooltip: 100% crits
 				DisplayName: totalcritacc
@@ -1473,7 +1475,6 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Damage Increase Modifier
 			}
-
 		}
 
 		Buffs: {
@@ -1711,6 +1712,16 @@ Mods: {
 						- Nightmare mode are enable by default
 						- Special debuff now can be inflict by enemy and projectile
 						'''
+				}
+
+				HardEnableFeature: {
+					Label: Hard Enable Feature
+					Tooltip: "This will enable feature that you should not be able to access regardless of config, this do not guarentee balance"
+				}
+
+				ForceBossDropRegadless: {
+					Label: Force Boss Drop Regadless
+					Tooltip: "Make boss drop outside of challenge mode"
 				}
 			}
 		}

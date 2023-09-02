@@ -39,7 +39,7 @@ namespace BossRush.Contents.Items.Artifact
                         .Register();
                         continue;
                     }
-                    if (item is BrokenArtifact || item is GodDice || item is EternalWealth)
+                    if (item is BrokenArtifact || item is EternalWealth)
                         continue;
                     if (item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
                         continue;
@@ -248,37 +248,34 @@ namespace BossRush.Contents.Items.Artifact
                         counterOldPos++;
                     }
                     oldPos[counterOldPos] = Player.Center;
-                    timer = 500;
+                    timer = 600;
                 }
+                float distance = 500;
                 bool IsInField = false;
                 foreach (Vector2 vec in oldPos)
                 {
-                    if (Player.Center.IsCloseToPosition(vec, 600))
+                    if (Player.Center.IsCloseToPosition(vec, distance))
                     {
                         IsInField = true;
                         MidasInfection++;
-                        if (MidasInfection >= 120)
+                        if (MidasInfection >= 180)
                             Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
                     }
                     for (int i = 0; i < 25; i++)
                     {
-                        int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(600, 600), 0, 0, DustID.GoldCoin);
+                        int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(distance, distance), 0, 0, DustID.GoldCoin);
                         Main.dust[dust].noGravity = true;
                         Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
                     }
                     for (int i = 0; i < 25; i++)
                     {
-                        int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(600, 600), 0, 0, DustID.GoldCoin);
+                        int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(distance, distance), 0, 0, DustID.GoldCoin);
                         Main.dust[dust].noGravity = true;
                         Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
                     }
                 }
                 if (!IsInField)
                     MidasInfection = BossRushUtils.CoolDown(MidasInfection);
-            }
-            if (FateDice)
-            {
-                chestmodplayer.amountModifier += 2;
             }
             if (Earth)
             {
@@ -297,315 +294,6 @@ namespace BossRush.Contents.Items.Artifact
                 Player.wingRunAccelerationMult *= 0;
                 Player.wingTimeMax = 0;
             }
-            FateDeciderEffect();
-        }
-        int RNGdecide = -1;
-        int effectlasting = 0;
-
-        bool CanCrit = false;
-        bool CanBeHit = true;
-        bool NPCdeal5TimeDamage = false;
-        bool UnableToUseWeapon = false;
-        bool ExtendingEffect = false;
-        int OPEFFECT = 0;
-        private void FateDeciderEffect()
-        {
-            if (Player.dead && !Player.active)
-                if (Player.dead || !Player.active)
-                {
-                    return;
-                }
-            effectlasting -= effectlasting > 0 ? 1 : 0;
-            if (effectlasting <= 0)
-            {
-                RNGdecide = -1;
-                CanCrit = false;
-                CanBeHit = true;
-                NPCdeal5TimeDamage = false;
-                UnableToUseWeapon = false;
-                ExtendingEffect = false;
-                OPEFFECT = 0;
-            }
-            if (!FateDice)
-            {
-                return;
-            }
-            if (effectlasting <= 0 && Main.rand.NextBool(1000))
-            {
-                RNGdecide = Main.rand.Next(17);
-            }
-            SpamTextToScare();
-            switch (RNGdecide)
-            {
-                case 0:
-                    Player.velocity = Vector2.Zero;
-                    Player.AddBuff(BuffID.Frozen, 60);
-                    effectlasting = effectlasting > 0 ? effectlasting : 5;
-                    break;
-                case 1:
-                    Player.AddBuff(BuffID.Weak, 300);
-                    Player.AddBuff(BuffID.Slow, 300);
-                    Player.AddBuff(BuffID.BrokenArmor, 300);
-                    Player.AddBuff(BuffID.ManaSickness, 300);
-                    Player.AddBuff(BuffID.Obstructed, 300);
-                    effectlasting = effectlasting > 0 ? effectlasting : 30;
-                    break;
-                case 2:
-                    if (effectlasting % 50 == 0)
-                    {
-                        BossRushUtils.SpawnBoulderOnTopPlayer(Player, 0, false);
-                    }
-                    if (effectlasting % 20 == 0)
-                    {
-                        BossRushUtils.SpawnHostileProjectileDirectlyOnPlayer(Player, 1000, 50, true, Vector2.Zero, ProjectileID.HellfireArrow, 100, 10f);
-                    }
-                    effectlasting = effectlasting > 0 ? effectlasting : 900;
-                    break;
-                case 3:
-                    Player.AddBuff(BuffID.Confused, 600);
-                    effectlasting = effectlasting > 0 ? effectlasting : 40;
-                    break;
-                case 4:
-                    NPCdeal5TimeDamage = true;
-                    effectlasting = effectlasting > 0 ? effectlasting : 210;
-                    break;
-                case 5:
-                    if (effectlasting % 4 == 0)
-                    {
-                        NPC.SpawnOnPlayer(Player.whoAmI, Main.rand.Next(TerrariaArrayID.BAT));
-                    }
-                    effectlasting = effectlasting > 0 ? effectlasting : 100;
-                    break;
-                case 6:
-                    UnableToUseWeapon = true;
-                    int dust = Dust.NewDust(Player.Center, 0, 0, DustID.Blood);
-                    Main.dust[dust].noGravity = true;
-                    Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
-                    effectlasting = effectlasting > 0 ? effectlasting : 120;
-                    break;
-                case 7:
-                    for (int i = 0; i < Player.CountBuffs(); i++)
-                    {
-                        Player.DelBuff(i);
-                    }
-                    effectlasting = effectlasting > 0 ? effectlasting : 1;
-                    break;
-                case 8:
-                    if (Main.dayTime)
-                    {
-                        if (Main.hardMode)
-                        {
-                            Main.eclipse = true;
-                        }
-                    }
-                    else
-                    {
-                        Main.bloodMoon = true;
-                    }
-                    RNGdecide = Main.rand.Next(8);
-                    effectlasting = effectlasting > 0 ? effectlasting : 100;
-                    break;
-                case 9:
-                    BossRushUtils.DropWeaponFromChestPool(Player);
-                    effectlasting = effectlasting > 0 ? effectlasting : 2;
-                    break;
-                case 10:
-                    Effect10();
-                    effectlasting = effectlasting > 0 ? effectlasting : 2;
-                    break;
-                case 11:
-                    Effect11();
-                    effectlasting = effectlasting > 0 ? effectlasting : 300;
-                    break;
-                case 12:
-                    Player.Heal((int)(Player.statLifeMax2 * .25f));
-                    effectlasting = effectlasting > 0 ? effectlasting : 2;
-                    break;
-                case 13:
-                    Dust.NewDust(Player.Center, 0, 0, DustID.Torch);
-                    CanCrit = true;
-                    effectlasting = effectlasting > 0 ? effectlasting : 180;
-                    break;
-                case 14:
-                    Dust.NewDust(Player.Center, 0, 0, DustID.Smoke);
-                    CanBeHit = false;
-                    effectlasting = effectlasting > 0 ? effectlasting : 60;
-                    break;
-                case 15:
-                    effectlasting = effectlasting > 0 ? effectlasting : 30;
-                    if (OPEFFECT == 0)
-                    {
-                        BossRushUtils.DropWeaponFromChestPool(Player);
-                        Effect10();
-                        Effect11();
-                        Player.Heal((int)(Player.statLifeMax2 * .25f));
-                        Dust.NewDust(Player.Center, 0, 0, DustID.Torch);
-                        CanCrit = true;
-                        Dust.NewDust(Player.Center, 0, 0, DustID.Smoke);
-                        CanBeHit = false;
-                        Effect16(effectlasting);
-                        OPEFFECT = 10;
-                    }
-                    OPEFFECT -= OPEFFECT > 0 ? 1 : 0;
-                    break;
-                case 16:
-                    effectlasting = effectlasting > 0 ? effectlasting : 600;
-                    Effect16(effectlasting);
-                    break;
-                default:
-                    break;
-            }
-            if (Main.rand.NextBool(300) && !ExtendingEffect)
-            {
-                ExtendingEffect = true;
-                effectlasting *= 5;
-            }
-        }
-        private void SpamTextToScare()
-        {
-            if (Main.rand.NextBool(10050))
-            {
-                int RandomTextChooser = Main.rand.Next(11);
-                Color color = Color.White;
-                string TextString;
-                switch (RandomTextChooser)
-                {
-                    case 0:
-                        TextString = "You feel an evil presence watching you...";
-                        color = new Color(50, 255, 130);
-                        break;
-                    case 1:
-                        TextString = "You feel vibrations from deep below...";
-                        color = new Color(50, 255, 130);
-                        break;
-                    case 2:
-                        TextString = "This is going to be a terrible night...";
-                        color = new Color(50, 255, 130);
-                        break;
-                    case 3:
-                        TextString = "The air is getting colder around you...";
-                        color = new Color(50, 255, 130);
-                        break;
-                    case 4:
-                        TextString = "Pirates are approaching from the west!";
-                        color = new Color(175, 75, 255);
-                        break;
-                    case 5:
-                        TextString = RandomName() + " has joined.";
-                        break;
-                    case 6:
-                        TextString = RandomNameExit() + " has left";
-                        break;
-                    case 7:
-                        TextString = "The weather forecast that there will be boulder rain soon !";
-                        color = new Color(10, 10, 255);
-                        break;
-                    case 8:
-                        TextString = "I see you, we gonna be together forever, forever chopping tree " + $"[i:{ItemID.LucyTheAxe}]" + $"[i:{ItemID.Heart}]";
-                        color = new Color(100, 0, 0);
-                        break;
-                    case 9:
-                        TextString = "Rare life form detected that there is a furry near by !";
-                        color = new Color(10, 10, 255);
-                        break;
-                    case 10:
-                        TextString = "To give yourself a zenith, please write in chat : \\Player::give[i:Zenith][1]";
-                        color = new Color(10, 10, 255);
-                        break;
-                    default:
-                        TextString = "The weather forecast that there will be boulder rain soon";
-                        color = new Color(10, 10, 255);
-                        break;
-                }
-                Main.NewText(TextString, color);
-            }
-        }
-        private string RandomName()
-        {
-            switch (Main.rand.Next(10))
-            {
-                case 0:
-                    return "God";
-                case 1:
-                    return Player.name;
-                case 2:
-                    return "Your mom";
-                case 3:
-                    return "Red";
-                case 4:
-                    return "skillissue";
-                case 5:
-                    return "FBI";
-                case 6:
-                    return "Guide";
-                case 7:
-                    return "Sans";
-                case 8:
-                    return "LQTXinim";
-                case 9:
-                    return "drugaddict";
-                default:
-                    return "asgfgfagasdf";
-            }
-        }
-        private string RandomNameExit()
-        {
-            switch (Main.rand.Next(10))
-            {
-                case 0:
-                    return "Your lover";
-                case 1:
-                    return Player.name;
-                case 2:
-                    return "Your father";
-                case 3:
-                    return "Anime";
-                case 4:
-                    return "Luck";
-                case 5:
-                    return "LQTMinix";
-                case 6:
-                    return "Ninja";
-                case 7:
-                    return "Sans";
-                case 8:
-                    return "FeelingLucky";
-                case 9:
-                    return "ImNotGud";
-                default:
-                    return "asgfgfagasdf";
-            }
-        }
-        private void Effect10()
-        {
-            Player.Center.LookForHostileNPC(out List<NPC> npc, 1000);
-            for (int i = 0; i < npc.Count; i++)
-            {
-                npc[i].StrikeNPC(npc[i].CalculateHitInfo(1000, 0));
-                NetMessage.SendStrikeNPC(npc[i], npc[i].CalculateHitInfo(1000, 0));
-            }
-        }
-        private void Effect11()
-        {
-            Vector2 position = new Vector2(Player.Center.X + Main.rand.NextFloat(-1000, 1000), Player.Center.Y - 1000);
-            Vector2 velocity = new Vector2(0, 20);
-            Projectile.NewProjectile(Player.GetSource_FromThis(), position, velocity, ProjectileID.StarWrath, Player.HeldItem.damage * 3, 10, Player.whoAmI);
-        }
-        private void Effect16(int effectlasting)
-        {
-            Player.AddBuff(BuffID.NebulaUpLife3, effectlasting);
-            Player.AddBuff(BuffID.NebulaUpDmg3, effectlasting);
-            Player.AddBuff(BuffID.NebulaUpMana3, effectlasting);
-            Player.AddBuff(BuffID.Endurance, effectlasting);
-            Player.AddBuff(BuffID.Wrath, effectlasting);
-            Player.AddBuff(BuffID.Rage, effectlasting);
-            Player.AddBuff(BuffID.Lifeforce, effectlasting);
-            Player.AddBuff(BuffID.Regeneration, effectlasting);
-            Player.AddBuff(BuffID.RapidHealing, effectlasting);
-            Player.AddBuff(BuffID.Honey, effectlasting);
-            Player.AddBuff(BuffID.BeetleEndurance3, effectlasting);
-            Player.AddBuff(BuffID.BeetleMight3, effectlasting);
-            Player.AddBuff(BuffID.BrainOfConfusionBuff, effectlasting);
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
@@ -639,10 +327,6 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override bool CanUseItem(Item item)
         {
-            if (FateDice)
-            {
-                return !UnableToUseWeapon;
-            }
             if (Earth)
             {
                 return EarthCD <= 0;
@@ -651,10 +335,6 @@ namespace BossRush.Contents.Items.Artifact
         }
         public override void OnHurt(Player.HurtInfo info)
         {
-            if (FateDice & NPCdeal5TimeDamage)
-            {
-                info.Damage *= 5;
-            }
             if (Earth)
             {
                 EarthCD = 300;
@@ -665,11 +345,6 @@ namespace BossRush.Contents.Items.Artifact
             if (Vampire)
             {
                 LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
-            }
-            if (CanCrit && FateDice)
-            {
-                hit.Crit = true;
-                hit.Damage *= 5;
             }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -683,19 +358,6 @@ namespace BossRush.Contents.Items.Artifact
                     vampirecountRange = 0;
                 }
             }
-            if (CanCrit && FateDice)
-            {
-                hit.Crit = true;
-                hit.Damage *= 5;
-            }
-        }
-        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
-        {
-            if (FateDice)
-            {
-                return !CanBeHit;
-            }
-            return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
         }
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
