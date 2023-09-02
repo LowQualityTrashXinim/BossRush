@@ -72,6 +72,7 @@ namespace BossRush
             return vec;
         }
         public static Vector2 NextVector2RotatedByRandom(this Vector2 velocity, float ToRadians) => velocity.RotatedByRandom(MathHelper.ToRadians(ToRadians));
+        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
         public static Vector2 NextVector2Spread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {
             ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
@@ -126,7 +127,6 @@ namespace BossRush
             }
             return smallest;
         }
-        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
         
         public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {

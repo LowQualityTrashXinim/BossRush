@@ -215,24 +215,24 @@ namespace BossRush.Contents.Perks
             player.Center.LookForHostileNPC(out List<NPC> npclist, 300);
             foreach (NPC npc in npclist)
             {
-                int direction = player.Center.X - npc.Center.X > 0 ? 1 : -1;
+                int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
                 npc.StrikeNPC(npc.CalculateHitInfo(100 * StackAmount, direction, false, 10));
             }
         }
     }
-    public class GodGiveDice : Perk
-    {
-        public override void SetDefaults()
-        {
-            CanBeStack = false;
-            Tooltip =
-                "+ God give you a dice";
-        }
-        public override void OnChoose(Player player)
-        {
-            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
-        }
-    }
+    //public class GodGiveDice : Perk
+    //{
+    //    public override void SetDefaults()
+    //    {
+    //        CanBeStack = false;
+    //        Tooltip =
+    //            "+ God give you a dice";
+    //    }
+    //    public override void OnChoose(Player player)
+    //    {
+    //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
+    //    }
+    //}
     public class CelestialRage : Perk
     {
         public override void SetDefaults()

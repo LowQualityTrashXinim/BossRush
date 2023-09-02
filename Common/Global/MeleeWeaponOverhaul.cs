@@ -529,8 +529,9 @@ namespace BossRush.Common.Global
         }
         private void Poke2(Player player, MeleeOverhaulPlayer modPlayer, float percentDone)
         {
-            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation());
-            player.itemRotation = poke.ToRotation();
+            float rotation = player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation.ToRotation();
+            Vector2 poke = Vector2.SmoothStep(modPlayer.data * 30f, modPlayer.data, percentDone).RotatedBy(rotation);
+            player.itemRotation = modPlayer.data.ToRotation();
             player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
             player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
             player.itemLocation = player.Center + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
@@ -690,7 +691,6 @@ namespace BossRush.Common.Global
             {
                 ComboNumber = 0;
             }
-            Main.NewText(ComboNumber);
         }
         public bool critReference;
         int iframeCounter = 0;
@@ -738,7 +738,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            modifiers.FinalDamage *= DamageHandleSystem(item);
+            modifiers.FinalDamage += DamageHandleSystem(item);
             if (Main.mouseRight)
             {
                 modifiers.FinalDamage *= 1.5f;
@@ -748,17 +748,17 @@ namespace BossRush.Common.Global
         {
             if (item.useStyle == BossRushUseStyle.Swipe && ComboNumber == 2)
             {
-                return 1.5f;
+                return .5f;
             }
             if (item.useStyle == BossRushUseStyle.Poke)
             {
                 if (ComboNumber == 0)
                 {
-                    return 1.75f;
+                    return .75f;
                 }
                 if (ComboNumber == 2)
                 {
-                    return 1.25f;
+                    return .25f;
                 }
             }
             return 1;

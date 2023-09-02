@@ -128,6 +128,15 @@ namespace BossRush.Contents.Items.Artifact
         public bool MagicalCardDeck = false;// ID = 7
         int EarthCD = 0;
         public bool EternalWealth = false;
+
+        int timer = 0;
+        Vector2[] oldPos = new Vector2[5];
+        int counterOldPos = 0;
+        int MidasInfection = 0;
+
+        bool IsBuffCurrentlyActive = false;
+        int GoodBuffIndex = -1;
+        int BadBuffIndex = -1;
         public string ToStringArtifact()
         {
             switch (ArtifactDefinedID)
@@ -215,10 +224,6 @@ namespace BossRush.Contents.Items.Artifact
                 Player.noFallDmg = true;
             }
         }
-        int timer = 0;
-        Vector2[] oldPos = new Vector2[5];
-        int counterOldPos = 0;
-        int MidasInfection = 0;
         public override void PostUpdate()
         {
             if (Vampire)
@@ -294,6 +299,40 @@ namespace BossRush.Contents.Items.Artifact
                 Player.wingRunAccelerationMult *= 0;
                 Player.wingTimeMax = 0;
             }
+            if (FateDice)
+            {
+                FateDeciderEffect();
+            }
+        }
+        bool ArrowBuff, SwordProjectileBuff, BulletBuff, MageBuff, SummonerBuff;
+        bool ArrowDebuff, SwordProjectileDebuff, BulletDeBuff, MageDebuff, SummonerDebuff;
+        private void FateDeciderEffect()
+        {
+            if (Player.HasBuff(ModContent.BuffType<FateDeciderBuff>()))
+            {
+                IsBuffCurrentlyActive = true;
+            }
+            else
+            {
+                Player.AddBuff(ModContent.BuffType<FateDeciderBuff>(), 18000);
+                IsBuffCurrentlyActive = false;
+            }
+            if (IsBuffCurrentlyActive)
+            {
+                if (GoodBuffIndex == -1)
+                    GoodBuffIndex = Main.rand.Next(0, 3);
+                if (BadBuffIndex == -1)
+                    do
+                    {
+                        BadBuffIndex = Main.rand.Next(0, 3);
+                    }
+                    while (BadBuffIndex == GoodBuffIndex);
+            }
+            else
+            {
+                GoodBuffIndex = -1;
+                BadBuffIndex = -1;
+            }
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
@@ -339,6 +378,77 @@ namespace BossRush.Contents.Items.Artifact
             {
                 EarthCD = 300;
             }
+        }
+        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (item.useAmmo == AmmoID.Arrow)
+            {
+                if (BadBuffIndex == 0)
+                {
+                    type = ProjectileID.WoodenArrowFriendly;
+                    velocity *= .5f;
+                    damage = (int)(damage * .5f);
+                }
+            }
+            if (item.useAmmo == AmmoID.Bullet)
+            {
+                if (BadBuffIndex == 1)
+                {
+                    velocity = velocity.NextVector2RotatedByRandom(360);
+                    position = position.PositionOFFSET(velocity, Main.rand.NextFloat(-500, 500));
+                }
+            }
+            if (!item.noMelee && !item.noUseGraphic && item.DamageType == DamageClass.Melee)
+            {
+                if (BadBuffIndex == 2)
+                {
+                    velocity = -velocity;
+                    position = Player.Center + Player.Center - Main.MouseWorld;
+                }
+            }
+        }
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (item.useAmmo == AmmoID.Arrow)
+            {
+                if (GoodBuffIndex == 0)
+                {
+                    velocity *= 2;
+                    int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, Player.whoAmI);
+                    if (Main.projectile[proj].ModProjectile is null)
+                    {
+                        Main.projectile[proj].aiStyle = -1;
+                        Main.projectile[proj].ai[0] = -1;
+                        Main.projectile[proj].ai[1] = AmmoID.Arrow;
+                    }
+                }
+            }
+            if (item.useAmmo == AmmoID.Bullet)
+            {
+                if (GoodBuffIndex == 1)
+                {
+                    velocity *= .25f;
+                    int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, Player.whoAmI);
+                    if (Main.projectile[proj].ModProjectile is null)
+                    {
+                        Main.projectile[proj].aiStyle = -1;
+                        Main.projectile[proj].ai[0] = -1;
+                        Main.projectile[proj].ai[1] = AmmoID.Bullet;
+                    }
+                }
+            }
+            if (!item.noMelee && !item.noUseGraphic && item.DamageType == DamageClass.Melee)
+            {
+                if (GoodBuffIndex == 2)
+                {
+                    int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, Player.whoAmI);
+                    if (Main.projectile[proj].ModProjectile is null)
+                    {
+                        Main.projectile[proj].penetrate = 1;
+                    }
+                }
+            }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -404,6 +514,40 @@ namespace BossRush.Contents.Items.Artifact
         {
             ArtifactPlayerHandleLogic clone = (ArtifactPlayerHandleLogic)clientPlayer;
             if (ArtifactDefinedID != clone.ArtifactDefinedID) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+        }
+    }
+    public class ArtifactGlobalProjectile : GlobalProjectile
+    {
+        //projectile.ai[2] will act as a timer
+        public override void PostAI(Projectile projectile)
+        {
+            if (projectile.aiStyle == -1 && projectile.ai[0] == -1)
+            {
+                if (projectile.ai[1] == AmmoID.Arrow)
+                {
+                    projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                    if (projectile.Center.LookForHostileNPC(out NPC npc, 600))
+                    {
+                        Vector2 distance = npc.Center - projectile.Center;
+                        float length = distance.Length();
+                        if (length > 5)
+                        {
+                            length = 5;
+                        }
+                        projectile.velocity -= projectile.velocity * .08f;
+                        projectile.velocity += distance.SafeNormalize(Vector2.Zero) * length;
+                        projectile.velocity = projectile.velocity.LimitedVelocity(20);
+                        return;
+                    }
+                }
+                if (projectile.ai[1] == AmmoID.Bullet)
+                {
+                    projectile.velocity += projectile.velocity * .02f;
+                    projectile.ai[2]++;
+                    if (projectile.ai[2] % 10 == 0)
+                        projectile.damage += 1;
+                }
+            }
         }
     }
 }

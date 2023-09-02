@@ -1612,6 +1612,11 @@ Mods: {
 				DisplayName: Lead Irradiation
 				Description: Mods.BossRush.Buffs.LeadIrradiation.Description
 			}
+
+			FateDeciderBuff: {
+				DisplayName: Fate Decider Buff
+				Description: Mods.BossRush.Buffs.FateDeciderBuff.Description
+			}
 		}
 
 		Configs: {
@@ -1716,12 +1721,12 @@ Mods: {
 
 				HardEnableFeature: {
 					Label: Hard Enable Feature
-					Tooltip: "This will enable feature that you should not be able to access regardless of config, this do not guarentee balance"
+					Tooltip: This will enable feature that you should not be able to access regardless of config, this do not guarentee balance
 				}
 
 				ForceBossDropRegadless: {
 					Label: Force Boss Drop Regadless
-					Tooltip: "Make boss drop outside of challenge mode"
+					Tooltip: Make boss drop outside of challenge mode
 				}
 			}
 		}
