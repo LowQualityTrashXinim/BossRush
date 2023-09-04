@@ -15,6 +15,7 @@ namespace BossRush.Contents.Items.Artifact
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);
+            Item.scale = .5f;
             Item.rare = 9;
         }
     }

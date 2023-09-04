@@ -20,7 +20,6 @@ namespace BossRush
             Vector2 drawpos = position - Main.screenPosition - origin;
             ui.Left.Pixels = drawpos.X + (drawpos.X * (1 - Main.UIScale));
             ui.Top.Pixels = drawpos.Y + (drawpos.X * (1 - Main.UIScale));
-
         }
     }
 }

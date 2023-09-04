@@ -7,6 +7,7 @@ using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Perks;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
@@ -18,7 +19,6 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
-using BossRush.Contents.Perks;
 
 namespace BossRush.Common
 {
@@ -29,10 +29,8 @@ namespace BossRush.Common
         public int HowManyBossIsAlive = 0;
         public override void OnEnterWorld()
         {
-            Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will feel lacking a lot");
+            Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will be lacking a lot");
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
-            Main.NewText("So sorry for the inconvenience", Color.Blue);
-            Main.NewText("Developer note : The mod have a lot more to offer", Color.Green);
         }
         public override void PreUpdate()
         {
@@ -90,14 +88,7 @@ namespace BossRush.Common
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                if (Player.name.Contains("[EW]"))
-                {
-                    items.Add(new Item(ModContent.ItemType<EternalWealth>()));
-                }
-                else
-                {
-                    items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
-                }
+                items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol
@@ -116,10 +107,6 @@ namespace BossRush.Common
             if (Player.name.ToLower().Trim().Contains("skillissue"))
             {
                 items.Add(new Item(ModContent.ItemType<SkillIssuedArtifact>()));
-            }
-            if (Player.name == "ImNotGud")
-            {
-                items.Add(new Item(ModContent.ItemType<WoodenLootBox>(), 10));
             }
             if (Player.name.ToLower().Trim() == "drugaddict")
             {

@@ -10,7 +10,7 @@ using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
 
-namespace BossRush.Common.Global
+namespace BossRush.Common
 {
     class GlobalNPCMod : GlobalNPC
     {

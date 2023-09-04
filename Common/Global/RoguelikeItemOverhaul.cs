@@ -73,7 +73,7 @@ namespace BossRush.Common.Global
     /// <summary>
     /// This is where we should modify vanilla item
     /// </summary>
-    class GlobalItemMod : GlobalItem
+    class RoguelikeItemOverhaul : GlobalItem
     {
         public override void SetDefaults(Item entity)
         {
@@ -163,9 +163,9 @@ namespace BossRush.Common.Global
             }
             if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves)
             {
-                return "When in underworld or underground caven level :" +
-                       "\nIncrease defense by 16" +
+                return "Increase defense by 16" +
                        "\nIncrease damage by 10%" +
+                       "\nWhen in underworld or underground caven level :" +
                        "\nGetting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage" +
                        "\nAll attacks inflicts On Fire! for 5 seconds" +
                        "\nIncreased life regen by 1";
@@ -173,14 +173,12 @@ namespace BossRush.Common.Global
             if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings)
             {
                 return "Increase defenses by 10" +
-                       "\nWhen in desert biome :" +
                        "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
                        "\nGetting hit will shoot out 8 cactus spike that is friendly deal 15 damage";
             }
             if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves)
             {
-                return "When in desert or ocean biome :" +
-                       "\nIncrease defense by 16" +
+                return "Increase defense by 10" +
                        "\nIncrease movement speed by 17%" +
                        "\nJumping will leave a trail of sand that deal 12 damage";
             }
@@ -210,7 +208,7 @@ namespace BossRush.Common.Global
                 return "Increase movement speed by 15%" +
                        "\nEvery 50 hit to enemy grants you the over charged for 3s" +
                        "\nDuring the rain, your hit requirement reduce by half" +
-                       "\nOver charged: Increases movement speed, use speed, damage by 10%";
+                       "\nOver charged: Increases movement speed, weapon speed, damage by 10%";
             }
             if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves)
             {
@@ -311,10 +309,10 @@ namespace BossRush.Common.Global
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.AshWoodHelmet, ItemID.AshWoodBreastplate, ItemID.AshWoodGreaves))
             {
+                player.statDefense += 16;
+                player.GetDamage(DamageClass.Generic) += .1f;
                 if (player.ZoneUnderworldHeight || player.ZoneUnderworldHeight)
                 {
-                    player.statDefense += 16;
-                    player.GetDamage(DamageClass.Generic) += .1f;
                     player.lifeRegen++;
                     modplayer.AshWoodArmor = true;
                 }
@@ -322,19 +320,13 @@ namespace BossRush.Common.Global
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CactusHelmet, ItemID.CactusBreastplate, ItemID.CactusLeggings))
             {
                 player.statDefense += 10;
-                if (player.ZoneDesert)
-                {
-                    modplayer.CactusArmor = true;
-                }
+                modplayer.CactusArmor = true;
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PalmWoodHelmet, ItemID.PalmWoodBreastplate, ItemID.PalmWoodGreaves))
             {
-                if (player.ZoneBeach || player.ZoneDesert)
-                {
-                    player.statDefense += 16;
-                    player.moveSpeed += .17f;
-                    modplayer.PalmWoodArmor = true;
-                }
+                player.statDefense += 10;
+                player.moveSpeed += .17f;
+                modplayer.PalmWoodArmor = true;
             }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PumpkinHelmet, ItemID.PumpkinBreastplate, ItemID.PumpkinLeggings))
             {
