@@ -102,7 +102,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
-            if (NPC.AnyNPCs(ModContent.NPCType<Servant>())|| Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+            if (NPC.AnyNPCs(ModContent.NPCType<Guardian>())|| Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
                 return;
             if (Player.IsDebugPlayer())
                 return;
@@ -115,7 +115,7 @@ namespace BossRush.Contents.Items.Weapon
             if (GodAreEnraged)
             {
                 Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
-                NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Servant>());
+                NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Guardian>());
                 BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
                 CooldownCheck = 999;
                 GodAreEnraged = false;

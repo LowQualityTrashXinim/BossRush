@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.NPCs
 {
-    internal class Servant : ModNPC
+    internal class Guardian : ModNPC
     {
         public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
         public override void SetStaticDefaults()
@@ -52,13 +52,13 @@ namespace BossRush.Contents.NPCs
                 for (int i = 0; i < 8; i++)
                 {
                     Vector2 vel = Vector2.One.Vector2DistributeEvenly(8, 360, i);
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, vel, ModContent.ProjectileType<ServantSmallerProjectile>(), (int)(NPC.damage * .25f), 40, -1, NPC.target);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, vel, ModContent.ProjectileType<GuardianSmallerProjectile>(), (int)(NPC.damage * .25f), 40, -1, NPC.target);
                 }
                 NPC.ai[0] = 0;
             }
             if (NPC.ai[1] >= 100)
             {
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity * .1f, ModContent.ProjectileType<ServantProjectile>(), NPC.damage, 40, -1, NPC.target);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity * .1f, ModContent.ProjectileType<GuardianProjectile>(), NPC.damage, 40, -1, NPC.target);
                 NPC.ai[1] = 0;
             }
             NPC.ai[0]++;
@@ -69,7 +69,7 @@ namespace BossRush.Contents.NPCs
             return true;
         }
     }
-    public class ServantProjectile : ModProjectile
+    public class GuardianProjectile : ModProjectile
     {
         public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
         public override void SetStaticDefaults()
@@ -130,7 +130,7 @@ namespace BossRush.Contents.NPCs
             return true;
         }
     }
-    public class ServantSmallerProjectile : ModProjectile
+    public class GuardianSmallerProjectile : ModProjectile
     {
         public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
         public override void SetStaticDefaults()

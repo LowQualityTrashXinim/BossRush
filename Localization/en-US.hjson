@@ -151,6 +151,8 @@ Mods: {
 			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
 			ArtifactSwordSlashProjectile.DisplayName: Artifact Sword Slash Projectile
 			NegativeLifeProjectile.DisplayName: Negative Life Projectile
+			GuardianProjectile.DisplayName: Guardian Projectile
+			GuardianSmallerProjectile.DisplayName: Guardian Smaller Projectile
 		}
 
 		NPCs: {
@@ -158,6 +160,8 @@ Mods: {
 			TestBossNPCDoNotLook.DisplayName: Test Boss N P C Do Not Look
 			ChestLord.DisplayName: Chest Lord
 			Servant.DisplayName: Servant
+			ElderGuardian.DisplayName: Elder Guardian
+			Guardian.DisplayName: Guardian
 		}
 
 		Items: {
