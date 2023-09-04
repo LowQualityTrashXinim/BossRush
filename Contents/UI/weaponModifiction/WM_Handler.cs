@@ -131,7 +131,7 @@ namespace BossRush.Contents.UI.weaponModifiction
             {
 
                 
-                i.updateSlot(player.modplayer_selectedItem.GetGlobalItem<weaponMod_GlobalItem>().weaponMod_slot[i.slotID]);
+                //i.updateSlot(player.modplayer_selectedItem.GetGlobalItem<weaponMod_GlobalItem>().weaponMod_slot[i.slotID]);
                 
             }
         }

@@ -149,6 +149,8 @@ Mods: {
 			ExplosiveMineProjectile.DisplayName: Explosive Mine Projectile
 			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
 			CelestialWrathProjectile.DisplayName: Celestial Wrath Projectile
+			ArtifactSwordSlashProjectile.DisplayName: Artifact Sword Slash Projectile
+			NegativeLifeProjectile.DisplayName: Negative Life Projectile
 		}
 
 		NPCs: {
