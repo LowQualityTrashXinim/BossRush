@@ -32,18 +32,16 @@ namespace BossRush.Common
         public bool CanShowItemDropInUI() => true;
         public string GetConditionDescription() => "Exclusive to challenge mode";
     }
-    public class EitherOfEvilBossDefeated : IItemDropRuleCondition
+    public class EvilBossChallengeModeException : IItemDropRuleCondition
     {
         public bool CanDrop(DropAttemptInfo info)
         {
-            if (!info.IsInSimulation)
-            {
-                return NPC.downedBoss2;
-            }
+            if(!info.IsInSimulation)
+                return (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2;
             return false;
         }
         public bool CanShowItemDropInUI() => true;
-        public string GetConditionDescription() => "";
+        public string GetConditionDescription() => "Exclusive to challenge mode";
     }
     public class MagicalCardDeckException : IItemDropRuleCondition
     {

@@ -1,9 +1,8 @@
 ﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Artifact;
 
-namespace BossRush.Contents.Items.Toggle
+namespace BossRush.Contents.Items.Artifact
 {
     internal class EternalWealth : ModItem, IArtifactItem
     {

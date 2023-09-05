@@ -11,7 +11,6 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Utils;
 using BossRush.Common;
-using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Projectiles;
 using BossRush.Texture;

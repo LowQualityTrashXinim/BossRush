@@ -22,12 +22,10 @@ namespace BossRush.Common
             LeadingConditionRule noHit = new LeadingConditionRule(new GitGudMode());
             LeadingConditionRule DropOnce = new LeadingConditionRule(new IsPlayerAlreadyHaveASpawner());
             LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
-            LeadingConditionRule EvilBossCanDrop = new(new EitherOfEvilBossDefeated());
             if (npc.type == NPCID.KingSlime)
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
                 npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.SuspiciousLookingEye));
@@ -42,7 +40,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SilverLootBox>()));
                 DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.WormFood));
@@ -60,42 +57,28 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Expert mode drop
-                IsABoss.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<CorruptionLootBox>()));
+                npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.LegacyHack_IsABoss() ,ModContent.ItemType<CorruptionLootBox>()));
                 //normal drop
                 lifecrystal += 2;
-                manacrystal += 2;
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.DeerThing)));
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.Abeemination)));
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.GoblinBattleStandard)));
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<CursedDoll>())));
-                npcLoot.Add(EvilBossCanDrop);
+                IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
-                return;
             }
             if (npc.type == NPCID.BrainofCthulhu)
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCNoHitReward>()));
-                npcLoot.Add(noHit);
-                //Normal mode drop
-                ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
-                lifecrystal += 2;
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.DeerThing)));
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.Abeemination)));
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.GoblinBattleStandard)));
-                EvilBossCanDrop.OnSuccess(IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<CursedDoll>())));
-                npcLoot.Add(EvilBossCanDrop);
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrimsonLootBox>()));
-                return;
+                //Normal mode drop
+                lifecrystal += 2;
+                IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
+                ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
             }
             if (npc.type == NPCID.QueenBee)
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>()));
                 //Enraged boss drop
@@ -109,7 +92,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GoldLootBox>()));
                 npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.GuideVoodooDoll));
@@ -120,7 +102,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IceLootBox>()));
                 //Enraged boss drop
@@ -135,7 +116,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));
                 lifecrystal += 5;
@@ -154,7 +134,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalTreasureChest>()));
                 //Expert mode drop
@@ -165,7 +144,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechTreasureChest>()));
                 //Expert mode drop
@@ -186,7 +164,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureTreasureChest>()));
                 npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdPowerCell));
@@ -198,7 +175,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdTreasureChest>()));
                 npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<LunaticCultistSpawner>()));
@@ -211,7 +187,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
                 //Enraged boss drop
@@ -225,7 +200,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DukeTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
                 //Enraged boss drop
@@ -239,7 +213,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>()));
                 //Expert mode drop
@@ -250,7 +223,6 @@ namespace BossRush.Common
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>(), 1, 2, 2));
-                npcLoot.Add(noHit);
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
                 //Expert mode drop
@@ -261,6 +233,7 @@ namespace BossRush.Common
             IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
             IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(), ItemID.ManaCrystal, 1, manacrystal, manacrystal));
             IsABoss.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PerkChooser>()));
+            npcLoot.Add(noHit);
             npcLoot.Add(ExpertVSnormal);
             npcLoot.Add(IsABoss);
         }

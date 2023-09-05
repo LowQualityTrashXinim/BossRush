@@ -4,6 +4,8 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria.DataStructures;
+using Mono.Cecil;
+using Terraria.Modules;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
 {
@@ -11,9 +13,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultRange(32, 64, 15, 3f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<BowmarangP>(), 20f, false);
+            Item.BossRushDefaultRange(32, 64, 15, 3f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
             Item.crit = 10;
             Item.noUseGraphic = true;
+        }
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<BowmarangP>(), damage, knockback, player.whoAmI, 1, type);
+            CanShootItem = false;
         }
         public override bool CanUseItem(Player player)
         {
@@ -37,54 +44,97 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
             Projectile.height = 64;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.timeLeft = 30;
             Projectile.DamageType = DamageClass.Melee;
+            Projectile.timeLeft = 999;
         }
-        int count = 0;
-        int count2 = 0;
+        float MaxLengthX = 0;
+        float MaxLengthY = 0;
+
+        int MouseXPosDirection;
+        int maxProgress = 90;
+        int progression = 0;
+
+        bool TileCollideJustHappen = false;
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            EntitySource_ItemUse source = new EntitySource_ItemUse(player, new Item(ModContent.ItemType<Bowmarang>()));
-            Projectile.rotation += 0.4f;
-            float offSetRotate = Projectile.rotation - MathHelper.PiOver4;
-
-            Vector2 aimto = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
-            if (count2 % 10 == 0)
+            if (progression % player.itemAnimationMax == 0)
             {
-                if (Projectile.velocity != Vector2.Zero)
-                {
-                    Projectile.NewProjectile(source, Projectile.Center + offSetRotate.ToRotationVector2(), aimto * 9, ProjectileID.WoodenArrowFriendly, Projectile.damage, Projectile.knockBack * 0.5f, Projectile.owner);
-                }
+                float offSetRotate = Projectile.rotation - MathHelper.PiOver4;
+                Vector2 aimto = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
+                int type = Projectile.ai[1] == ModContent.ProjectileType<BowmarangP>() ? ProjectileID.WoodenArrowFriendly : (int)Projectile.ai[1];
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center + offSetRotate.ToRotationVector2(), aimto * 9, type, Projectile.damage, 1f, Projectile.owner);
             }
-
-            if (Projectile.timeLeft < 3)
+            if (Projectile.timeLeft == 999)
             {
-                Vector2 GoBack = player.Center - Projectile.position;
-                Vector2 SafeGoBack = GoBack.SafeNormalize(Vector2.UnitY);
-                if (count >= 30)
-                {
-                    Projectile.velocity = SafeGoBack * 20f;
-                }
-                Projectile.timeLeft = 2;
-                Projectile.velocity += SafeGoBack * 2f;
-
-                float distance = 60;
-                Vector2 newMove = player.Center - Projectile.Center;
-                float distanceTo = (float)Math.Sqrt(newMove.X * newMove.X + newMove.Y * newMove.Y);
-                if (distanceTo < distance)
-                {
+                if (Projectile.ai[0] == 0)
+                    Projectile.ai[0] = Main.rand.NextBool().BoolOne();
+                MaxLengthX = (Main.MouseWorld - player.Center).Length() * 1.5f;
+                maxProgress += (int)(MaxLengthX * .05f);
+                progression = maxProgress;
+                MouseXPosDirection = (int)Projectile.ai[0] * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
+                MaxLengthY = -(MaxLengthX + Main.rand.NextFloat(-10, 80)) * .25f * MouseXPosDirection;
+            }
+            Projectile.rotation += MathHelper.ToRadians(25);
+            if (TileCollideJustHappen)
+            {
+                Projectile.tileCollide = false;
+                Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 15;
+                progression--;
+                if (Projectile.Center.IsCloseToPosition(player.Center, 50))
                     Projectile.Kill();
-                }
-                count++;
+                return;
             }
-            count2++;
-            Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
+            if (player.dead || !player.active || progression <= 0)
+            {
+                Projectile.Kill();
+            }
+            int halfmaxProgress = (int)(maxProgress * .5f);
+            int quadmaxProgress = (int)(maxProgress * .25f);
+            float progress;
+            if (progression > halfmaxProgress)
+            {
+                progress = (maxProgress - progression) / (float)halfmaxProgress;
+            }
+            else
+            {
+                progress = progression / (float)halfmaxProgress;
+            }
+            float X = MathHelper.SmoothStep(-20, MaxLengthX, progress);
+            ProgressYHandle(progression, halfmaxProgress, quadmaxProgress, out float Y);
+            Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
+            Projectile.Center = player.Center + VelocityPosition;
+            progression--;
         }
-
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            TileCollideJustHappen = true;
+            return false;
+        }
+        private void ProgressYHandle(int timeleft, float progressMaxHalf, float progressMaxQuad, out float Y)
+        {
+            if (timeleft > progressMaxHalf + progressMaxQuad)
+            {
+                float progressY = 1 - (timeleft - (progressMaxHalf + progressMaxQuad)) / progressMaxQuad;
+                Y = MathHelper.SmoothStep(0, MaxLengthY, progressY);
+                return;
+            }
+            if (timeleft > progressMaxQuad)
+            {
+                float progressY = 1 - (timeleft - progressMaxQuad) / progressMaxHalf;
+                Y = MathHelper.SmoothStep(MaxLengthY, -MaxLengthY, progressY);
+                return;
+            }
+            else
+            {
+                float progressY = 1 - timeleft / progressMaxQuad;
+                Y = MathHelper.SmoothStep(-MaxLengthY, 0, progressY);
+                return;
+            }
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.immune[Projectile.owner] = 6;
         }
     }
 }

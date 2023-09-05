@@ -1482,6 +1482,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Damage Increase Modifier
 			}
+
+			PreHardmodeBossBundle: {
+				DisplayName: Pre Hardmode Boss Bundle
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

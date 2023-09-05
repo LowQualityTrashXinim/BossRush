@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Items.Artifact
 {

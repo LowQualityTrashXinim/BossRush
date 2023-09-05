@@ -3,7 +3,6 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.NPCs
