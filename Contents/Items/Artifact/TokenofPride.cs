@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Artifact
 
         public override void SetStaticDefaults()
         {
-            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 6));
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 10));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
         public override void SetDefaults()

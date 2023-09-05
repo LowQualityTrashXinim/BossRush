@@ -1,11 +1,9 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria.DataStructures;
-using Mono.Cecil;
-using Terraria.Modules;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
 {
@@ -16,6 +14,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang
             Item.BossRushDefaultRange(32, 64, 15, 3f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
             Item.crit = 10;
             Item.noUseGraphic = true;
+        }
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            base.ModifySynergyToolTips(ref tooltips, modplayer);
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            base.HoldSynergyItem(player, modplayer);
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {

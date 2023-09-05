@@ -168,6 +168,7 @@ namespace BossRush.Contents.UI.weaponModifiction
         public override void UpdateUI(GameTime gameTime)
         {
             userInterface?.Update(gameTime);
+            return;
             if (Main.playerInventory)
                 userInterface?.SetState(slot);
             else
@@ -175,6 +176,7 @@ namespace BossRush.Contents.UI.weaponModifiction
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
+            return;
             int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
             if (InventoryIndex != -1)
             {

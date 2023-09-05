@@ -338,9 +338,49 @@ namespace BossRush.Contents.Items.Artifact
                 BadBuffIndex = -1;
             }
         }
+        public string BadEffectString()
+        {
+            switch (BadBuffIndex)
+            {
+                case 0:
+                    return "Your arrow is worse";
+                case 1:
+                    return "Your shot appear at random and is shot everywhere";
+                case 2:
+                    return "Your sword's projectiles appear at wrong place and fly at wrong velocity";
+                case 3:
+                    return "Your magic weapon also use life as well";
+                case 4:
+                    return "Your minion attack may cause some negative spirit to chase after you";
+                case 5:
+                    return "Sword are significantly slower";
+                default:
+                    return "No current bad effect are active";
+            }
+        }
+        public string GoodEffectString()
+        {
+            switch (GoodBuffIndex)
+            {
+                case 0:
+                    return "You shoot the same type arrow that have ability to home into enemy";
+                case 1:
+                    return "You shoot the same type of bullet that have can accelerate";
+                case 2:
+                    return "Melee weapon that shoot projectile can now shoot extra projectiles";
+                case 3:
+                    return "Your magic weapon summon a extra magic projectile";
+                case 4:
+                    return "Your minion can randomly heal you";
+                case 5:
+                    return "Hitting a enemy with the slow will release a slash";
+                default:
+                    return "No current good effect are active";
+            }
+        }
         public override float UseSpeedMultiplier(Item item)
         {
-            if(BadBuffIndex == 5 && item.DamageType == DamageClass.Melee && !item.noMelee)
+            if (BadBuffIndex == 5 && item.DamageType == DamageClass.Melee && !item.noMelee)
                 return .5f;
             return base.UseSpeedMultiplier(item);
         }
@@ -437,8 +477,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 if (GoodBuffIndex == 1)
                 {
-                    velocity *= .25f;
-                    int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, Player.whoAmI);
+                    int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10) * .25f, type, damage, knockback, Player.whoAmI);
                     if (Main.projectile[proj].ModProjectile is null)
                     {
                         Main.projectile[proj].aiStyle = -1;
@@ -453,7 +492,7 @@ namespace BossRush.Contents.Items.Artifact
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        Vector2 newpos = position.PositionOFFSET(velocity, -90).Vector2DistributeEvenly(3, 45, i);
+                        Vector2 newpos = position.PositionOFFSET(velocity.Vector2DistributeEvenly(3, 45, i), -90);
                         int proj = Projectile.NewProjectile(source, newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * item.shootSpeed, type, damage, knockback, Player.whoAmI);
                         if (Main.projectile[proj].ModProjectile is null)
                         {
@@ -468,6 +507,10 @@ namespace BossRush.Contents.Items.Artifact
                 {
                     Vector2 newpos = Main.rand.NextVector2Circular(100, 100);
                     Projectile.NewProjectile(source, newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * item.shootSpeed, type, damage, knockback, Player.whoAmI);
+                }
+                if(BadBuffIndex == 3)
+                {
+                    Player.statLife -= item.mana;
                 }
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
