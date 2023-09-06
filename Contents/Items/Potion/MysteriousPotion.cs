@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System;
 using BossRush.Contents.Items.Weapon;
+using static BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon.MothProj;
 
 namespace BossRush.Contents.Items.Potion
 {
@@ -114,7 +115,24 @@ namespace BossRush.Contents.Items.Potion
         }
         public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
         {
-            
+            Player player = Main.LocalPlayer;
+            MysteriousPotionPlayer modplayer = player.GetModPlayer<MysteriousPotionPlayer>();
+            tip = "";
+            for (int i = 0; i < modplayer.Stats.Count; i++)
+            {
+                if (BossRushUtils.DoesStatsRequiredWholeNumber(modplayer.Stats[i]))
+                {
+                    if (modplayer.StatsMulti[i] > 0)
+                        tip += $"+ {modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i])} {modplayer.Stats[i]}\n";
+                    else
+                        tip += $"- {Math.Abs(modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]))} {modplayer.Stats[i]}\n";
+                    continue;
+                }
+                if (modplayer.StatsMulti[i] > 0)
+                    tip += $"+ {modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i])}% {modplayer.Stats[i]}\n";
+                else
+                    tip += $"- {Math.Abs(modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]))}% {modplayer.Stats[i]}\n";
+            }
         }
         public override void Update(Player player, ref int buffIndex)
         {

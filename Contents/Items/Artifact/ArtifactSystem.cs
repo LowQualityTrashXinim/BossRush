@@ -373,7 +373,7 @@ namespace BossRush.Contents.Items.Artifact
                 case 4:
                     return "Your minion can randomly heal you";
                 case 5:
-                    return "Hitting a enemy with the slow will release a slash";
+                    return "Hitting a enemy with the sword will release a slash";
                 default:
                     return "No current good effect are active";
             }
