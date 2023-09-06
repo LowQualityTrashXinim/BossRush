@@ -27,6 +27,7 @@ namespace BossRush.Contents.Items.Weapon
         public int SynergyBonus = 0;
 
         public bool BurningPassion_WandofFrosting = false;
+        public int BurningPassion_Cooldown = 0;
 
         public bool DarkCactus_BatScepter = false;
         public bool DarkCactus_BladeOfGrass = false;

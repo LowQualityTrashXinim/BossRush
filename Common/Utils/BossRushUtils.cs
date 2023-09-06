@@ -129,7 +129,7 @@ namespace BossRush
         public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance)
         {
             List<NPC> npcList = new List<NPC>();
-            List<Vector2> vector2List = new List<Vector2>();
+            List<float> floatvector2List = new List<float>();
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 if (Main.npc[i].active
@@ -140,16 +140,15 @@ namespace BossRush
                     )
                 {
                     npcList.Add(Main.npc[i]);
-                    vector2List.Add(position - Main.npc[i].position);
+                    floatvector2List.Add((position - Main.npc[i].Center).LengthSquared());
                 }
             }
-            if (npcList.Count > 0 || vector2List.Count > 0)
+            if (npcList.Count > 0 || floatvector2List.Count > 0)
             {
-                Vector2 closestPos = Vector2SmallestInList(vector2List);
-                //idk why but IndexOf always return 0 so we are searching manually
-                for (int i = 0; i < vector2List.Count; i++)
+                float closestPos = floatvector2List.Min();
+                for (int i = 0; i < floatvector2List.Count; i++)
                 {
-                    if (vector2List[i] == closestPos)
+                    if (floatvector2List[i] == closestPos)
                     {
                         npc = npcList[i];
                         return true;

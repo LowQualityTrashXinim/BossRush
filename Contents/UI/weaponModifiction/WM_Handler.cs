@@ -30,8 +30,6 @@ namespace BossRush.Contents.UI.weaponModifiction
         internal int slotID = 0;
         internal int space = 64;
         internal bool isHidden = false;
-        
-        
 
         //this is for intianlaizing the UI upon loading.
         public weaponMod_ItemSlot(int slotOrder = 0)

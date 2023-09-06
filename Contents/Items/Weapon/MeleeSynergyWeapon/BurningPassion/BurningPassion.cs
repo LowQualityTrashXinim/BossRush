@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
         }
         public override bool AltFunctionUse(Player player)
         {
-            return true;
+            return player.GetModPlayer<PlayerSynergyItemHandle>().BurningPassion_Cooldown <= 0;
         }
         public override bool CanUseItem(Player player)
         {
@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
             base.ModifySynergyToolTips(ref tooltips, modplayer);
             if (modplayer.BurningPassion_WandofFrosting)
             {
-                tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit"));
+                tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit and shoot out spark flame on peak"));
             }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -39,17 +39,23 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
                 modplayer.BurningPassion_WandofFrosting = true;
                 modplayer.SynergyBonus++;
             }
+            if (modplayer.BurningPassion_Cooldown <= 0)
+                for (int i = 0; i < 20; i++)
+                {
+                    int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(5, 5);
+                }
+            modplayer.BurningPassion_Cooldown = BossRushUtils.CoolDown(modplayer.BurningPassion_Cooldown);
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            if (player.altFunctionUse == 2)
+            if (player.altFunctionUse == 2 && modplayer.BurningPassion_Cooldown <= 0)
             {
-                player.velocity = Vector2.Zero;
-
-                player.velocity.X = velocity.X * 5f;
-                player.velocity.Y = velocity.Y * 5f;
+                modplayer.BurningPassion_Cooldown = 120;
+                player.velocity = velocity * 5f;
             }
-            return true;
+            CanShootItem = false;
         }
         public override void AddRecipes()
         {
@@ -79,15 +85,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
         public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI)
         {
             int duration = player.itemAnimationMax;
-            if (player.altFunctionUse == 2 && player.ItemAnimationJustStarted)
-            {
-                Projectile.width += 30;
-                Projectile.height += 30;
-                Projectile.damage *= 3;
-            }
             player.heldProj = Projectile.whoAmI;
             if (Projectile.timeLeft > duration)
             {
+                if (player.altFunctionUse == 2)
+                {
+                    Projectile.width += 30;
+                    Projectile.height += 30;
+                }
                 Projectile.timeLeft = duration;
             }
             Projectile.velocity = Vector2.Normalize(Projectile.velocity);
@@ -99,6 +104,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
             }
             else
             {
+                if (Projectile.timeLeft == halfDuration && modplayer.BurningPassion_WandofFrosting)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.Vector2RotateByRandom(20).Vector2RandomSpread(3, Main.rand.NextFloat(.5f, 1.5f)), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
+                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.Vector2RotateByRandom(20).Vector2RandomSpread(3, Main.rand.NextFloat(.5f, 1.5f)), ProjectileID.WandOfFrostingFrost, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
+                    }
+                }
                 progress = (duration - Projectile.timeLeft) / halfDuration;
             }
             Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
@@ -125,7 +138,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            if(modplayer.BurningPassion_WandofFrosting)
+            if (modplayer.BurningPassion_WandofFrosting)
             {
                 npc.AddBuff(BuffID.Frostburn, 90);
             }
