@@ -13,7 +13,9 @@ namespace BossRush.Contents.Projectiles
             Projectile.aiStyle = -1;
         }
         public override void AI()
-        { 
+        {
+            if (Main.rand.NextBool(10))
+                Dust.NewDust(Projectile.Center, 10, 10, DustID.Sand);
             if (Projectile.ai[0] >= 50)
             {
                 if (Projectile.velocity.Y < 16)
@@ -22,6 +24,14 @@ namespace BossRush.Contents.Projectiles
                 }
             }
             Projectile.ai[0]++;
+        }
+        public override void Kill(int timeLeft)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center, 10, 10, DustID.Sand);
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(3, 3);
+            }
         }
     }
 }
