@@ -935,14 +935,14 @@ namespace BossRush.Contents.Items.Chest
             //}
             Main.instance.LoadItem(Item.type);
             Texture2D texture = TextureAssets.Item[Item.type].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
-            Vector2 drawPos = Item.position - Main.screenPosition + origin + origin * .5f;
+            Vector2 origin = new Vector2(38, 30);
+            Vector2 drawPos = Item.Center - Main.screenPosition - origin * .5f;
             for (int i = 0; i < 3; i++)
             {
-                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, origin, scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
             }
             return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
         }
