@@ -2,15 +2,15 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.NPCs;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -332,6 +332,15 @@ namespace BossRush.Contents.Items.Weapon
             return CanShootItem;
         }
         public virtual void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) { CanShootItem = true; }
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(player, target, hit, damageDone);
+            OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
+        }
+        public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+
+        }
 
         private int countX = 0;
         private float positionRotateX = 0;
@@ -377,7 +386,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             PositionHandle();
             ColorHandle();
-            if (ItemID.Sets.AnimatesAsSoul[Item.type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1)
+            if (ItemID.Sets.AnimatesAsSoul[Type] || Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonus < 1)
             {
                 return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
             }

@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Global;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
 {
@@ -20,14 +21,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
             Item.scale += 0.25f;
             Item.UseSound = SoundID.Item1;
         }
-        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            Vector2 pos;
-            do
-            {
-                pos = player.Center + Main.rand.NextVector2Circular(400f, 400f);
-            }
-            while (!Collision.CanHitLine(player.Center, 0, 0, pos, 0, 0));
+            base.ModifySynergyToolTips(ref tooltips, modplayer);
+        }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            base.HoldSynergyItem(player, modplayer);
+        }
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            Vector2 pos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(player.Center, 400,400);
             Projectile.NewProjectile(Item.GetSource_FromThis(), pos, Vector2.Zero, ModContent.ProjectileType<FrostDaggerFishP>(), hit.Damage, hit.Knockback, player.whoAmI);
             target.AddBuff(BuffID.Frostburn, 180);
         }

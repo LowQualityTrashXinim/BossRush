@@ -21,7 +21,7 @@ namespace BossRush.Contents.Items.Toggle
             Item.useTime = 10;
             Item.useAnimation = 10;
             Item.width = 46;
-            Item.height = 48;
+            Item.height = 52;
             Item.rare = ItemRarityID.Cyan;
             Item.useStyle = ItemUseStyleID.HoldUp;
         }

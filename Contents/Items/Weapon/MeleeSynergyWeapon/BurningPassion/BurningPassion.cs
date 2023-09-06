@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(74, 74, 40, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
+            Item.BossRushSetDefault(74, 74, 25, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
             Item.BossRushSetDefaultSpear(ModContent.ProjectileType<BurningPassionP>(), 3.7f);
             Item.rare = ItemRarityID.Orange;
             Item.value = Item.sellPrice(silver: 1000);
@@ -39,12 +39,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
                 modplayer.BurningPassion_WandofFrosting = true;
                 modplayer.SynergyBonus++;
             }
-            if (modplayer.BurningPassion_Cooldown <= 0)
-                for (int i = 0; i < 20; i++)
+            if (modplayer.BurningPassion_Cooldown == 1)
+                for (int i = 0; i < 25; i++)
                 {
                     int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
                     Main.dust[dust].noGravity = true;
                     Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(5, 5);
+                    Main.dust[dust].scale = Main.rand.NextFloat(1.5f, 2.75f);
+                    Main.dust[dust].fadeIn = 1;
                 }
             modplayer.BurningPassion_Cooldown = BossRushUtils.CoolDown(modplayer.BurningPassion_Cooldown);
         }
@@ -55,7 +57,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
                 modplayer.BurningPassion_Cooldown = 120;
                 player.velocity = velocity * 5f;
             }
-            CanShootItem = false;
+            CanShootItem = true;
         }
         public override void AddRecipes()
         {
@@ -98,31 +100,24 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
             Projectile.velocity = Vector2.Normalize(Projectile.velocity);
             float halfDuration = duration * 0.5f;
             float progress;
+            if (Projectile.timeLeft == (int)(halfDuration + 5) && modplayer.BurningPassion_WandofFrosting)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.velocity * Main.rand.NextFloat(3, 6)).Vector2RotateByRandom(5).Vector2RandomSpread(1, Main.rand.NextFloat(.75f, 1.25f)), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.velocity * Main.rand.NextFloat(3, 6)).Vector2RotateByRandom(5).Vector2RandomSpread(1, Main.rand.NextFloat(.75f, 1.25f)), ProjectileID.WandOfFrostingFrost, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
+                }
+            }
             if (Projectile.timeLeft < halfDuration)
             {
                 progress = Projectile.timeLeft / halfDuration;
             }
             else
             {
-                if (Projectile.timeLeft == halfDuration && modplayer.BurningPassion_WandofFrosting)
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.Vector2RotateByRandom(20).Vector2RandomSpread(3, Main.rand.NextFloat(.5f, 1.5f)), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
-                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.Vector2RotateByRandom(20).Vector2RandomSpread(3, Main.rand.NextFloat(.5f, 1.5f)), ProjectileID.WandOfFrostingFrost, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
-                    }
-                }
                 progress = (duration - Projectile.timeLeft) / halfDuration;
             }
             Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
-            if (Projectile.spriteDirection == -1)
-            {
-                Projectile.rotation += MathHelper.ToRadians(45f);
-            }
-            else
-            {
-                Projectile.rotation += MathHelper.ToRadians(135f);
-            }
+            Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2;
             runAI = false;
         }
         public override void SpawnDustPostPreAI(Player player)
@@ -142,6 +137,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion
             {
                 npc.AddBuff(BuffID.Frostburn, 90);
             }
+            Projectile.damage = (int)(Projectile.damage * .9f);
             npc.AddBuff(BuffID.OnFire, 90);
             npc.immune[Projectile.owner] = 5;
         }
