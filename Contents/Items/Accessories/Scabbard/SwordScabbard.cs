@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Common.Global;
 using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard

@@ -410,8 +410,8 @@ namespace BossRush.Common.RoguelikeChange
         }
         public override bool CanUseItem(Item item, Player player)
         {
-            if (item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke ||
+            if ((item.useStyle != BossRushUseStyle.Swipe &&
+                item.useStyle != BossRushUseStyle.Poke) ||
                 item.noMelee)
             {
                 return base.CanUseItem(item, player);

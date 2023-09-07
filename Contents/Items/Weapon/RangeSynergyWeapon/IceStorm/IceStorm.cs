@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Common.Global;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
 {

@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Common.Global;
 
 namespace BossRush
 {

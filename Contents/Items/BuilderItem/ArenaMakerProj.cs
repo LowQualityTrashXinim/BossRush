@@ -37,7 +37,7 @@ namespace BossRush.Contents.Items.BuilderItem
             {
                 int xPos = (int)(x + position.X * .0625f);
                 int yPos = (int)(position.Y * .0625f);
-                if (xPos < 0 || xPos >= Main.maxTilesX || yPos < 0 || yPos >= Main.maxTilesY)
+                if (!WorldGen.InWorld(xPos, yPos))
                     continue;
 
                 Tile tile = Main.tile[xPos, yPos];
