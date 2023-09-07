@@ -10,7 +10,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 
-namespace BossRush.Common.Global
+namespace BossRush.Common.RoguelikeChange
 {
     enum TypeItem
     {
@@ -530,7 +530,7 @@ namespace BossRush.Common.Global
                 if (item.type == ItemID.TinShortsword)
                 {
                     Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
-                    Projectile.NewProjectile(source, pos, (Main.MouseWorld - pos), ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
+                    Projectile.NewProjectile(source, pos, Main.MouseWorld - pos, ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
                 }
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -673,7 +673,7 @@ namespace BossRush.Common.Global
         private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null)
         {
             if (WoodArmor)
-                if (Main.rand.NextBool(4) && (proj is null || (proj is not null && proj.ModProjectile is not AcornProjectile)))
+                if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile))
                     Projectile.NewProjectile(Player.GetSource_FromThis(),
                         target.Center - new Vector2(0, 400),
                         Vector2.UnitY * 10,

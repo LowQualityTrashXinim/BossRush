@@ -2,7 +2,7 @@
 using Terraria.IO;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.YouLikeToHurtYourself
+namespace BossRush.Common.Nightmare
 {
     internal class MasochistSystem : ModSystem
     {

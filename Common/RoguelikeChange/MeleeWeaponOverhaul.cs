@@ -8,12 +8,8 @@ using System.Collections.Generic;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Weapon.DupeSynergy;
 
-namespace BossRush.Common.Global
+namespace BossRush.Common.RoguelikeChange
 {
-    public class MathH
-    {
-        public const float ToRadByFiveTeen = 0.2617994f;
-    }
     public class BossRushUseStyle
     {
         public const int Swipe = 999;
@@ -414,8 +410,8 @@ namespace BossRush.Common.Global
         }
         public override bool CanUseItem(Item item, Player player)
         {
-            if ((item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke) ||
+            if (item.useStyle != BossRushUseStyle.Swipe &&
+                item.useStyle != BossRushUseStyle.Poke ||
                 item.noMelee)
             {
                 return base.CanUseItem(item, player);
@@ -424,8 +420,8 @@ namespace BossRush.Common.Global
         }
         public override float UseSpeedMultiplier(Item item, Player player)
         {
-            if ((item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke) ||
+            if (item.useStyle != BossRushUseStyle.Swipe &&
+                item.useStyle != BossRushUseStyle.Poke ||
                 item.noMelee)
             {
                 return base.UseSpeedMultiplier(item, player);
@@ -600,7 +596,7 @@ namespace BossRush.Common.Global
             {
                 return;
             }
-            MouseXPosDirection = (Main.MouseWorld.X - Player.MountedCenter.X) > 0 ? 1 : -1;
+            MouseXPosDirection = Main.MouseWorld.X - Player.MountedCenter.X > 0 ? 1 : -1;
             if (Main.mouseRight)
             {
                 for (int i = 0; i < 4; i++)
@@ -683,7 +679,7 @@ namespace BossRush.Common.Global
             Player.controlLeft = false;
             Player.controlRight = false;
             Vector2 Toward = modplayer.MouseLastPositionBeforeAnimation - Player.Center;
-            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / (float)Player.itemAnimationMax);
+            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / Player.itemAnimationMax);
         }
         private void ComboHandleSystem()
         {

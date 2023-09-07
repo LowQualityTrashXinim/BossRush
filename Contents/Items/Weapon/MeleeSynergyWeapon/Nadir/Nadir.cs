@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Zenish
+namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir
 {
     internal class Nadir : SynergyModItem
     {
@@ -35,7 +35,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Zenish
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            if(counter >= TerrariaArrayID.AllOreBroadSword.Length)
+            if (counter >= TerrariaArrayID.AllOreBroadSword.Length)
             {
                 counter = 0;
             }

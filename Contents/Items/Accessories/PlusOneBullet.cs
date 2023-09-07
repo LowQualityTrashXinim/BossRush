@@ -2,8 +2,8 @@
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Common.Global;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Accessories
 {

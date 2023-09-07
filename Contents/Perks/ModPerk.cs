@@ -232,6 +232,21 @@ namespace BossRush.Contents.Perks
     //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
     //    }
     //}
+    public class SpeedArmor : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = true;
+            Tooltip =
+                "+ Gain 10% movement speed in exchange for -1 defense";
+            StackLimit = 5;
+        }
+        public override void ResetEffect(Player player)
+        {
+            player.moveSpeed += .1f * StackAmount;
+            player.statDefense -= 1 * StackAmount;
+        }
+    }
     public class CelestialRage : Perk
     {
         public override void SetDefaults()

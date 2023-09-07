@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.BuffAndDebuff;
 
-namespace BossRush.Common.YouLikeToHurtYourself
+namespace BossRush.Common.Nightmare
 {
     internal class MasochistNPC : GlobalNPC
     {

@@ -8,8 +8,8 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Card;
 using BossRush.Common;
-using BossRush.Common.Global;
 using BossRush.Contents.Items.Toggle;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush
 {

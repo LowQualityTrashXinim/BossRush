@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Common.Global
+namespace BossRush.Common.RoguelikeChange
 {
     //public readonly static int[] GunType = {
     //    ItemID.RedRyder,

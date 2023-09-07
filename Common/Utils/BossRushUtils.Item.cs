@@ -1,5 +1,5 @@
 ﻿using System;
-using BossRush.Common.Global;
+using BossRush.Common.RoguelikeChange;
 using BossRush.Contents.Items.Chest;
 using Terraria;
 using Terraria.ID;
