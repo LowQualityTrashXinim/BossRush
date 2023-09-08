@@ -277,10 +277,10 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
-            if (item.ModItem is IRogueLikeRangeGun brItem)
+            if (item.ModItem is IRogueLikeRangeGun Igun)
             {
-                position = position.PositionOFFSET(velocity, brItem.OffSetPosition);
-                velocity = RoguelikeGunVelocity(velocity);
+                position = position.PositionOFFSET(velocity, Igun.OffSetPosition);
+                velocity = RoguelikeGunVelocity(velocity, Igun.Spread);
             }
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -289,12 +289,12 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return base.Shoot(item, source, position, velocity, type, damage, knockback);
             }
-            if (item.ModItem is IRogueLikeRangeGun)
+            if (item.ModItem is IRogueLikeRangeGun Igun)
             {
                 int ProjectileAmount = ProjectileAmountModify + BaseProjectileAmountModifier;
                 for (int i = 0; i < ProjectileAmount; i++)
                 {
-                    Vector2 velocity2 = RoguelikeGunVelocity(velocity);
+                    Vector2 velocity2 = RoguelikeGunVelocity(velocity, Igun.Spread);
                     Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, Player.whoAmI);
                 }
             }
