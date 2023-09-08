@@ -35,7 +35,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             type = Main.rand.Next(new int[] { ModContent.ProjectileType<GhostBroadsword>(), ModContent.ProjectileType<GhostShortsword>(), ModContent.ProjectileType<ResolveGhostArrow>(), ModContent.ProjectileType<ResolveProjectile>() });
             if (type == ModContent.ProjectileType<GhostShortsword>())
                 damage *= 2;
-            velocity = velocity.NextVector2RotatedByRandom(5);
+            velocity = velocity.Vector2RotateByRandom(5);
         }
         int counter = 0;
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)

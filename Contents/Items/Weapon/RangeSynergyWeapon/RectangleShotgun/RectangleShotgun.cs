@@ -43,7 +43,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
             {
                 for (int i = 0; i < Main.rand.Next(3,5); i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(40), type, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(40), type, damage, knockback, player.whoAmI);
                 }
                 CanShootItem = false;
             }

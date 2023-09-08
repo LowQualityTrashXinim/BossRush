@@ -5,11 +5,16 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
 {
-    internal class OvergrownMinishark : SynergyModItem
+    internal class OvergrownMinishark : SynergyModItem, IRogueLikeRangeGun
     {
+        public float OffSetPosition => 40;
+
+        public float Spread { get; set; }
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(54, 24, 14, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
@@ -17,6 +22,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
             Item.rare = 2;
             Item.value = Item.sellPrice(gold: 50);
             Item.UseSound = SoundID.Item11;
+            Spread = 7;
         }
         public override Vector2? HoldoutOffset()
         {
@@ -44,8 +50,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark
         }
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            position = position.PositionOFFSET(velocity, 40);
-            velocity = velocity.NextVector2RotatedByRandom(7);
+            velocity = velocity.Vector2RotateByRandom(7);
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {

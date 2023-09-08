@@ -444,7 +444,7 @@ namespace BossRush.Contents.Items.Artifact
             {
                 if (BadBuffIndex == 1)
                 {
-                    velocity = velocity.NextVector2RotatedByRandom(360);
+                    velocity = velocity.Vector2RotateByRandom(360);
                     position = position.PositionOFFSET(velocity, Main.rand.NextFloat(-500, 500));
                 }
             }

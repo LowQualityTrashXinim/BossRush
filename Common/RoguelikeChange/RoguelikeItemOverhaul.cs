@@ -469,7 +469,7 @@ namespace BossRush.Common.RoguelikeChange
                 if (Player.justJumped)
                     for (int i = 0; i < 4; i++)
                     {
-                        Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).NextVector2RotatedByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
+                        Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).Vector2RotateByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
                         Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vec, ModContent.ProjectileType<SandProjectile>(), 12, 1f, Player.whoAmI);
                     }
             if (PlatinumArmor)

@@ -117,12 +117,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             projectile = 1 + (int)(icePlayer.SpeedMultiplier * .2f);
             for (int i = 0; i < projectile; ++i)
             {
-                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(projectile * 3) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 3) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
             }
             projectile = (int)(icePlayer.SpeedMultiplier * .2f);
             for (int i = 0; i < projectile; i++)
             {
-                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(5).NextVector2Spread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5).NextVector2Spread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
             }
             projectile = icePlayer.SpeedMultiplier / 7f;
             if (projectile >= 1)

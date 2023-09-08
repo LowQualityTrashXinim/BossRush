@@ -40,14 +40,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
                 Vector2 UnitXvelocity = Vector2.UnitX * player.direction;
                 for (int i = 0; i < 4; i++)
                 {
-                    Projectile.NewProjectile(source, position, UnitXvelocity.Vector2DistributeEvenly(4, 40, i).NextVector2RotatedByRandom(10f), ProjectileID.Bat, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, UnitXvelocity.Vector2DistributeEvenly(4, 40, i).Vector2RotateByRandom(10f), ProjectileID.Bat, damage, knockback, player.whoAmI);
                 }
             }
             if (modplayer.DarkCactus_BladeOfGrass)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(10f), ProjectileID.BladeOfGrass, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10f), ProjectileID.BladeOfGrass, damage, knockback, player.whoAmI);
                 }
             }
             CanShootItem = true;
@@ -116,7 +116,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
                 {
                     return;
                 }
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity.NextVector2RotatedByRandom(5f), ProjectileID.Bat, (int)(Projectile.damage * .5f), 0, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity.Vector2RotateByRandom(5f), ProjectileID.Bat, (int)(Projectile.damage * .5f), 0, Projectile.owner);
             }
         }
         public override void AI()

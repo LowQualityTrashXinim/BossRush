@@ -203,7 +203,7 @@ namespace BossRush.Common.RoguelikeChange
                 amount--;
                 for (int i = 0; i < amount; i++)
                 {
-                    Vector2 velocity2 = velocity = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
+                    Vector2 velocity2 = velocity.Vector2RotateByRandom(SpreadAmount * modplayer.SpreadModify).Vector2RandomSpread(AdditionalSpread * modplayer.SpreadModify, AdditionalMulti * modplayer.SpreadModify);
                     Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, item, item.ammo), position, velocity2, type, damage, knockback, player.whoAmI);
                 }
             }
@@ -224,17 +224,16 @@ namespace BossRush.Common.RoguelikeChange
         }
     }
     /// <summary>
-    /// This will auto handle the value for you, but if you want to shoot custom projectile<br/>
-    /// you must to it in <see cref="ModItem.Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/>
+    /// Use this if you are making a modded gun, recommend put all of this in SetDefault<br/>
     /// </summary>
-    public interface IBossRushRangeGun
+    public interface IRogueLikeRangeGun
     {
         public float OffSetPosition { get; }
-        public int NumOfProjectile { get; }
+        public float Spread { get; set; }
     }
     /// <summary>
-    /// This will auto handle the value for you, but if you want to shoot custom projectile<br/>
-    /// you must to it in <see cref="ModItem.Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/>
+    /// This will auto handle base shooting for you, but if you want to shoot custom projectile<br/>
+    /// you must do it in <see cref="ModItem.Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/>
     /// </summary>
     public class RangerOverhaulPlayer : ModPlayer
     {
@@ -251,7 +250,7 @@ namespace BossRush.Common.RoguelikeChange
         /// </summary>
         public float SpreadModify = 1;
         /// <summary>
-        /// Use this to change globaly, do not use "=" as that set and is not the correct way to use
+        /// Use this to change when you are using a accessories or something of similar, do not use "=" as that set and is not the correct way to use
         /// </summary>
         public int ProjectileAmountModify = 0;
         public override void ResetEffects()
@@ -260,38 +259,43 @@ namespace BossRush.Common.RoguelikeChange
             ProjectileAmountModify = 0;
             base.ResetEffects();
         }
+        /// <summary>
+        /// Use this if your weapon have spread or not
+        /// </summary>
+        /// <param name="velocity"></param>
+        /// <param name="spread"></param>
+        /// <param name="additionalSpread"></param>
+        /// <param name="additionalMutil"></param>
+        /// <returns></returns>
+        public Vector2 RoguelikeGunVelocity(Vector2 velocity, float spread = 0, float additionalSpread = 0, float additionalMutil = 1)
+        {
+            return velocity.Vector2RotateByRandom((spread + spread * BaseSpreadModifier) * SpreadModify).Vector2RandomSpread((additionalSpread + additionalSpread * BaseSpreadModifier) * SpreadModify, (additionalMutil + additionalMutil * BaseSpreadModifier) * SpreadModify);
+        }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            return;
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return;
             }
-            if (item is IBossRushRangeGun brItem)
+            if (item.ModItem is IRogueLikeRangeGun brItem)
             {
                 position = position.PositionOFFSET(velocity, brItem.OffSetPosition);
-                if (brItem.NumOfProjectile == 1)
-                {
-                    velocity = velocity.NextVector2RotatedByRandom(BaseSpreadModifier * SpreadModify);
-                }
+                velocity = RoguelikeGunVelocity(velocity);
             }
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            return base.Shoot(item, source, position, velocity, type, damage, knockback);
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
             {
                 return base.Shoot(item, source, position, velocity, type, damage, knockback);
             }
-            if (item is IBossRushRangeGun brItem)
+            if (item.ModItem is IRogueLikeRangeGun)
             {
-                if (brItem.NumOfProjectile > 1)
+                int ProjectileAmount = ProjectileAmountModify + BaseProjectileAmountModifier;
+                for (int i = 0; i < ProjectileAmount; i++)
                 {
-                    for (int i = 0; i < brItem.NumOfProjectile; i++)
-                    {
-                        Vector2 velocity2 = velocity.NextVector2RotatedByRandom(BaseSpreadModifier * SpreadModify);
-                        Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, Player.whoAmI);
-                    }
+                    Vector2 velocity2 = RoguelikeGunVelocity(velocity);
+                    Projectile.NewProjectile(source, position, velocity2, type, damage, knockback, Player.whoAmI);
                 }
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);

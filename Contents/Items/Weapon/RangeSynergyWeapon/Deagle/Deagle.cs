@@ -4,11 +4,16 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
 {
-    internal class Deagle : SynergyModItem
+    internal class Deagle : SynergyModItem, IRogueLikeRangeGun
     {
+        float IRogueLikeRangeGun.OffSetPosition => 50;
+
+        public float Spread { get; set; }
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(56, 30, 70, 5f, 21, 21, ItemUseStyleID.Shoot, ProjectileID.Bullet, 40, false, AmmoID.Bullet);
@@ -16,6 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
             Item.value = Item.sellPrice(silver: 1000);
             Item.scale -= 0.25f;
             Item.UseSound = SoundID.Item38;
+            Spread = 0;
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
@@ -42,14 +48,16 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle
                     $"[i:{ItemID.DaedalusStormbow}] Upon critical hit, storm of bullet fly down at target, have a 10 second cool down"));
             }
         }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.velocity != Vector2.Zero)
             {
+                Spread = 120;
                 velocity = velocity.RotateRandom(120);
             }
             else
             {
+                Spread = 0;
                 velocity *= 1.5f;
                 damage = (int)(damage * 1.5f);
                 knockback *= 2f;

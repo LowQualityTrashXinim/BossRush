@@ -7,10 +7,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless
 {
     internal class Merciless : SynergyModItem
     {
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("Absolute violence");
-        }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(102, 26, 20, 5f, 15, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 8, true, AmmoID.Bullet);

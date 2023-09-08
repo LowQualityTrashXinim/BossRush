@@ -88,7 +88,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
             Main.instance.LoadProjectile(Projectile.type);
             Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<MoonStarProjectileSmaller>("MoonStarProjectileTrail"), ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             Vector2 origin = new Vector2(Projectile.width * 0.5f, Projectile.height * 0.5f);
-            Vector2 FullOrigin = origin * 2f;
+            Vector2 FullOrigin = new Vector2(Projectile.width, Projectile.height);
             Vector2 threehalfOrigin = origin * .5f;
             Vector2 halfTexture = new Vector2(texture.Width, texture.Height) * .5f * .5f;
             for (int k = 1; k < Projectile.oldPos.Length + 1; k++)

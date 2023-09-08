@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark
         {
             if (Main.rand.NextBool(5))
             {
-                Projectile.NewProjectile(source, position, velocity.NextVector2RotatedByRandom(3), type, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(3), type, damage, knockback, player.whoAmI);
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }

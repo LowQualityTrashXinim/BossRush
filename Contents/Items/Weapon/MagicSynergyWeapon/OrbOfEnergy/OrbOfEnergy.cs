@@ -39,7 +39,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
         {
             position = position.PositionOFFSET(velocity, 20);
             position.Y -= 20;
-            velocity = velocity.NextVector2RotatedByRandom(10);
+            velocity = velocity.Vector2RotateByRandom(10);
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
@@ -73,7 +73,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy
             Main.dust[dust].velocity = Vector2.Zero;
             if (Projectile.timeLeft % 10 == 0)
             {
-                Projectile.velocity = Projectile.velocity.NextVector2RotatedByRandom(90);
+                Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(90);
                 Projectile.damage += 5;
             }
             if (modplayer.OrbOfEnergy_BookOfSkulls)
