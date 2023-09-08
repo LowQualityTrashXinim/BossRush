@@ -4,11 +4,16 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
 {
-    internal class BloodyShot : SynergyModItem
+    internal class BloodyShot : SynergyModItem, IRogueLikeRangeGun
     {
+        public float OffSetPosition => 30f;
+
+        public float Spread { get; set; }
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
@@ -16,6 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
             Item.rare = 3;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item11;
+            Spread = 5;
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
@@ -31,10 +37,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
             }
 
         }
+        public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            type = ModContent.ProjectileType<BloodBullet>();
+        }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            position = position.PositionOFFSET(velocity, 30);
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<BloodBullet>(), damage, knockback, player.whoAmI);
             if (modplayer.BloodyShoot_AquaScepter)
             {
                 for (int i = 0; i < Main.rand.Next(3, 6); i++)
@@ -42,7 +50,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot
                     Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(20).Vector2RandomSpread(4, Main.rand.NextFloat(.9f, 1.1f)) * .5f, ModContent.ProjectileType<BloodWater>(), damage, knockback, player.whoAmI);
                 }
             }
-            CanShootItem = false;
+            CanShootItem = true;
         }
         public override Vector2? HoldoutOffset()
         {

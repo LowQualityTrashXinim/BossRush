@@ -3,11 +3,15 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
 {
-    internal class PaintRifle : SynergyModItem
+    internal class PaintRifle : SynergyModItem, IRogueLikeRangeGun
     {
+        public float OffSetPosition => 42;
+
+        public float Spread { get; set; }
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(114, 40, 36, 4f, 4, 16, ItemUseStyleID.Shoot, ModContent.ProjectileType<CustomPaintProj>(), 7, true);
@@ -17,6 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
             Item.UseSound = SoundID.Item5;
             Item.value = Item.sellPrice(silver: 1000);
             Item.scale -= 0.25f;
+            Spread = 1;
         }
         public override Vector2? HoldoutOffset()
         {
@@ -27,15 +32,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
         {
             return true;
         }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            position = position.PositionOFFSET(velocity, 42);
-        }
 
         public static int r = Main.rand.Next(256);
         public static int b = Main.rand.Next(256);
         public static int g = Main.rand.Next(256);
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             r = 0; b = 0; g = 0;
             for (int i = 0; i < 2; i++)
@@ -54,9 +55,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
                         break;
                 }
             }
-            type = ModContent.ProjectileType<CustomPaintProj>();
             if (player.altFunctionUse == 2)
             {
+                Spread = 15;
                 for (int i = 0; i < 3; i++)
                 {
                     velocity = velocity.Vector2RotateByRandom(15).Vector2RandomSpread(2, 1.2f);
@@ -68,7 +69,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
                         Main.dust[dust].noGravity = true;
                     }
                 }
-                return false;
+                CanShootItem = false;
+                return;
             }
             for (int i = 0; i < 15; i++)
             {
@@ -76,7 +78,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle
                 int dust = Dust.NewDust(position, 0, 0, DustID.Paint, spread.X, spread.Y, 0, new Color(r, g, b), Main.rand.NextFloat(1f, 1.45f));
                 Main.dust[dust].noGravity = true;
             }
-            return true;
+            CanShootItem = true;
         }
         public override void AddRecipes()
         {

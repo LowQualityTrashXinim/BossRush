@@ -4,11 +4,16 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
 {
-    class RectangleShotgun : SynergyModItem
+    class RectangleShotgun : SynergyModItem, IRogueLikeRangeGun
     {
+        public float OffSetPosition => 40;
+
+        public float Spread { get; set; }
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultRange(12, 74, 50, 4f, 10, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<RectangleBullet>(), 100f, true, AmmoID.Bullet);
@@ -16,6 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
             Item.rare = ItemRarityID.LightRed;
             Item.reuseDelay = 30;
             Item.UseSound = SoundID.Item38;
+            Spread = 0;
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
@@ -33,15 +39,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             type = ModContent.ProjectileType<RectangleBullet>();
-            position = position.PositionOFFSET(velocity, 40);
             velocity *= .1f;
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             CanShootItem = true;
-            if(modplayer.RectangleShotgun_QuadBarrelShotgun)
+            if (modplayer.RectangleShotgun_QuadBarrelShotgun)
             {
-                for (int i = 0; i < Main.rand.Next(3,5); i++)
+                for (int i = 0; i < Main.rand.Next(3, 5); i++)
                 {
                     Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(40), type, damage, knockback, player.whoAmI);
                 }

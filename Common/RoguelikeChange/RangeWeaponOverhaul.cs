@@ -188,7 +188,7 @@ namespace BossRush.Common.RoguelikeChange
         }
         public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul || item.ModItem != null)
             {
                 return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
             }
@@ -211,7 +211,7 @@ namespace BossRush.Common.RoguelikeChange
         }
         public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul || item.ModItem != null)
             {
                 return;
             }
@@ -269,6 +269,7 @@ namespace BossRush.Common.RoguelikeChange
         /// <returns></returns>
         public Vector2 RoguelikeGunVelocity(Vector2 velocity, float spread = 0, float additionalSpread = 0, float additionalMutil = 1)
         {
+            SpreadModify = MathHelper.Clamp(SpreadModify, 0, 9999);
             return velocity.Vector2RotateByRandom((spread + spread * BaseSpreadModifier) * SpreadModify).Vector2RandomSpread((additionalSpread + additionalSpread * BaseSpreadModifier) * SpreadModify, (additionalMutil + additionalMutil * BaseSpreadModifier) * SpreadModify);
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -277,7 +278,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
-            if (item.ModItem is IRogueLikeRangeGun Igun)
+            if (item.ModItem is IRogueLikeRangeGun Igun && !item.noUseGraphic)
             {
                 position = position.PositionOFFSET(velocity, Igun.OffSetPosition);
                 velocity = RoguelikeGunVelocity(velocity, Igun.Spread);
@@ -289,7 +290,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return base.Shoot(item, source, position, velocity, type, damage, knockback);
             }
-            if (item.ModItem is IRogueLikeRangeGun Igun)
+            if (item.ModItem is IRogueLikeRangeGun Igun && !item.noUseGraphic)
             {
                 int ProjectileAmount = ProjectileAmountModify + BaseProjectileAmountModifier;
                 for (int i = 0; i < ProjectileAmount; i++)

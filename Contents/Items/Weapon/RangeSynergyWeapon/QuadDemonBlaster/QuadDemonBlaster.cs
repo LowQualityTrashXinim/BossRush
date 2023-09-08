@@ -4,11 +4,15 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
 {
-    class QuadDemonBlaster : SynergyModItem
+    class QuadDemonBlaster : SynergyModItem, IRogueLikeRangeGun
     {
+        public float OffSetPosition => 30;
+
+        public float Spread { get; set; }
 
         public override void SetDefaults()
         {
@@ -17,6 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
             Item.rare = ItemRarityID.Orange;
             Item.reuseDelay = 15;
             Item.UseSound = SoundID.Item41;
+            Spread = 0;
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
@@ -28,7 +33,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            position = position.PositionOFFSET(velocity, 30);
             float rotation = MathHelper.ToRadians(modplayer.QuadDemonBlaster_SpeedMultiplier);
             for (int i = 0; i < 10; i++)
             {
@@ -41,6 +45,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
                     type, damage, knockback, player.whoAmI);
             }
             modplayer.QuadDemonBlaster_SpeedMultiplier += modplayer.QuadDemonBlaster_SpeedMultiplier < 45 ? 20 : 1;
+            Spread = modplayer.QuadDemonBlaster_SpeedMultiplier;
             CanShootItem = true;
         }
         public override Vector2? HoldoutOffset()
