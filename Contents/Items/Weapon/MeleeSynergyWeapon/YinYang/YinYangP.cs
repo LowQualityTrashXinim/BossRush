@@ -91,7 +91,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang
             distance += frame % 6 == 0 ? 1 : 0;
             frame++;
             Counter++;
-
+            Projectile.alpha = (int)MathHelper.Lerp(0, 255, (999 - Projectile.timeLeft) / 999f);
             Projectile.Center = getPosToReturn(Offset(), Counter, projCenter, distance);
         }
         public Vector2 getPosToReturn(float offSet, int Counter, Vector2 pos, float Distance = 50)

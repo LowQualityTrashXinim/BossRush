@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using System.Linq;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -86,15 +87,14 @@ namespace BossRush.Contents.Items.Weapon
         public int CooldownCheck = 999;
         private void SynergyEnergyCheckPlayer()
         {
-            int synergyCounter = Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
-            foreach (var item in Player.inventory)
+            int synergyCounter = 0;
+            foreach (var player in Main.player.Where(p => p != null && p.active))
             {
-                if (item.ModItem is SynergyModItem)
-                {
-                    synergyCounter++;
-                }
+                synergyCounter += Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
+                synergyCounter += player.inventory.Where(itemInv => itemInv.ModItem is SynergyModItem).Count();
             }
-            if (synergyCounter >= 2)
+            int maxCount = NPC.GetActivePlayerCount() + 1;
+            if (synergyCounter >= maxCount)
             {
                 GodAreEnraged = true;
             }
@@ -103,7 +103,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
-            if (NPC.AnyNPCs(ModContent.NPCType<Guardian>())|| Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+            if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
                 return;
             if (Player.IsDebugPlayer())
                 return;

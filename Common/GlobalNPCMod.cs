@@ -216,18 +216,14 @@ namespace BossRush.Common
                 //Normal mode drop
                 ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LunaticLootBox>()));
                 //Expert mode drop
-                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LunaticLootBox>()));
             }
             if (npc.type == NPCID.MoonLordCore)
             {
                 //NoHit mode drop
                 noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>(), 1, 2, 2));
-                //Normal mode drop
-                ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
                 //Expert mode drop
                 npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<MoonLordEnrage>()));
-                npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
                 npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
             }
             IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
