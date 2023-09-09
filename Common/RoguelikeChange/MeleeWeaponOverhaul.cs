@@ -757,7 +757,7 @@ namespace BossRush.Common.RoguelikeChange
                     return .25f;
                 }
             }
-            return 1;
+            return 0;
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {

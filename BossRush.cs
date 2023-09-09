@@ -28,10 +28,8 @@ namespace BossRush
         }
         public string GeneratePathToAchievement()
         {
-            string autoPathfinding = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            int index = autoPathfinding.Length - "AppData\\Roaming".Length;
-            autoPathfinding = autoPathfinding.Substring(0, index);
-            autoPathfinding += "Documents\\My Games\\Terraria\\tModLoader\\BossRushAchievement";
+            string autoPathfinding = Program.SavePathShared;
+            autoPathfinding += "\\BossRushAchievement";
             return autoPathfinding;
         }
         private void CheckIfFileExist(string path)
