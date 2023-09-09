@@ -287,7 +287,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             base.ModifyTooltips(tooltips);
             ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
-            TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy Weapon");
+            TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy item");
             line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { new Color(25, 150, 150), Color.White }, 5);
             tooltips.Add(line);
         }

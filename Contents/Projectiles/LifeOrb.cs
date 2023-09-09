@@ -35,9 +35,9 @@ namespace BossRush.Contents.Projectiles
                     Main.dust[startdust].noGravity = true;
                 }
             }
-            int dust = Dust.NewDust(Projectile.Center - new Vector2(5, 5), 0, 0, DustID.GemEmerald);
-            Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+            int dust = Dust.NewDust(Projectile.Center - new Vector2(5, 5) + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemEmerald);
             Main.dust[dust].noGravity = true;
+            Main.dust[dust].velocity = Vector2.Zero;
             if (Projectile.Center.IsCloseToPosition(player.Center, 125))
             {
                 Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .1f;
@@ -49,7 +49,7 @@ namespace BossRush.Contents.Projectiles
             }
             if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25))
             {
-                player.Heal(10);
+                player.Heal(2);
                 Projectile.Kill();
             }
         }

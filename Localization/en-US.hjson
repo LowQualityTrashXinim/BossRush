@@ -1199,7 +1199,7 @@ Mods: {
 					'''
 						"Side effects include becoming an explosive hazard"
 						Multiply mana cost by 0.1
-						Increase mana regen
+						Massively increases mana regen
 						+100 Max Mana
 						+50% Magic Damage 
 						Multiply range, summon, melee Damage by 0.1

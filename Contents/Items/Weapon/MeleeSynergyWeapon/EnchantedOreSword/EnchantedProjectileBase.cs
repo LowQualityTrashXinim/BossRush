@@ -210,7 +210,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword
             target.immune[Projectile.owner] = 3;
             Projectile.Center += Main.rand.NextVector2CircularEdge(200, 200);
             Projectile.velocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 30f;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            Projectile.rotation = Projectile.velocity.ToRotation();
             Projectile.damage += 2;
         }
     }

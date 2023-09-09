@@ -20,7 +20,7 @@ namespace BossRush.Contents.BuffAndDebuff
             player.GetDamage(DamageClass.Melee) *= 0.1f;
 
             player.manaCost *= 0.1f;
-            player.manaRegen *= 5;
+            player.manaRegen += 50;
             player.statManaMax2 += 100;
             player.manaRegenBonus += 150;
             player.manaRegenDelay = (int)(player.manaRegenDelay * 0.35f);
