@@ -73,7 +73,8 @@ namespace BossRush.Common
                         new Item(ItemID.Safe),
                         new Item(ItemID.MoneyTrough),
                         new Item(ItemID.PlatinumPickaxe),
-                        new Item(ItemID.PlatinumAxe)
+                        new Item(ItemID.PlatinumAxe),
+                        new Item(ModContent.ItemType<BuilderLootBox>())
             };
             if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {

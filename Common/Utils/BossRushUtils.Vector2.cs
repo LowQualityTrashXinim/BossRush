@@ -70,7 +70,16 @@ namespace BossRush
             }
             return vec;
         }
-        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate,float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
+        public static Vector2 Vector2DistributeEvenlyPlus(this Vector2 vec, float ProjectileAmount, float rotation, int i)
+        {
+            if (ProjectileAmount > 1)
+            {
+                rotation = MathHelper.ToRadians(rotation);
+                return vec.RotatedBy(MathHelper.Lerp(rotation * .5f, rotation * -.5f, i / (ProjectileAmount - 1f)));
+            }
+            return vec;
+        }
+        public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate, float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
         public static Vector2 NextVector2Spread(this Vector2 ToRotateAgain, float Spread, float additionalMultiplier = 1)
         {
             ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
@@ -106,6 +115,25 @@ namespace BossRush
             Vector2 distance = Position - projectile.Center;
             if (distance.Length() <= 20f)
             {
+                projectile.Center = Position;
+                projectile.velocity = Vector2.Zero;
+                return true;
+            }
+            projectile.velocity = distance.SafeNormalize(Vector2.Zero) * speed;
+            return false;
+        }
+        /// <summary>
+        /// This will take a approximation of the rough position that it need to go and then stop the npc from moving when it reach that position 
+        /// </summary>
+        /// <param name="npc"></param>
+        /// <param name="Position"></param>
+        /// <param name="speed"></param>
+        public static bool ProjectileMoveToPosition(this Projectile projectile, Vector2 Position, float speed, float roomforError = 10)
+        {
+            Vector2 distance = Position - projectile.Center;
+            if (distance.Length() <= roomforError)
+            {
+                projectile.Center = Position;
                 projectile.velocity = Vector2.Zero;
                 return true;
             }
@@ -125,7 +153,7 @@ namespace BossRush
             }
             return smallest;
         }
-        
+
         public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
             Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;

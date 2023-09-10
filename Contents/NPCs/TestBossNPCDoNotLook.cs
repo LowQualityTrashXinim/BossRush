@@ -77,7 +77,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 90;
-                NPC.ai[1] = Main.rand.Next(1, 3);
+                NPC.ai[1] = 3;
             }
         }
         private void ShootShortSword()
@@ -87,7 +87,7 @@ namespace BossRush.Contents.NPCs
                 return;
             }
             Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 10f;
-            int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordProjectile>(), NPC.damage, 2);
+            int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackOne>(), NPC.damage, 2);
             Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
             Main.projectile[proj].owner = NPC.target;
             NPC.ai[2]++;
@@ -99,7 +99,7 @@ namespace BossRush.Contents.NPCs
                 return;
             }
             Vector2 vec = Vector2.UnitX * 20 * Main.rand.NextBool(2).BoolOne();
-            int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordProjectile>(), NPC.damage, 2);
+            int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackTwo>(), NPC.damage, 2);
             Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
             Main.projectile[proj].ai[1] = -20;
             Main.projectile[proj].ai[0] = 2;
@@ -115,12 +115,15 @@ namespace BossRush.Contents.NPCs
             }
             for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++)
             {
-                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(TerrariaArrayID.AllOreBroadSword.Length, 160, i) * 5f;
+                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 160, i) * 5f;
                 int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadProjectile>(), NPC.damage, 2);
                 Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreBroadSword[i];
-                Main.projectile[proj].ai[0] = -20;
                 Main.projectile[proj].owner = NPC.target;
-                Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
+                if (Main.projectile[proj].ModProjectile is SwordBroadProjectile swordProj)
+                {
+                    swordProj.OnSpawnDirection = vec.X > 0 ? 1 : -1;
+                    swordProj.rememberThisPos = Main.player[NPC.target].Center + new Vector2(250 * swordProj.OnSpawnDirection, -80 + 40 * i);
+                }
             }
             NPC.ai[2]++;
             BossDelayAttack(0, 0, 0, 360);
@@ -147,7 +150,7 @@ namespace BossRush.Contents.NPCs
         }
     }
     //This code did not follow the above rule and it should be change to follow the above rule
-    class ShortSwordProjectile : ModProjectile
+    public abstract class BaseHostileShortSword : ModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
@@ -156,17 +159,30 @@ namespace BossRush.Contents.NPCs
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
         }
-        int OnSpawnDirection = 0;
+        protected int OnSpawnDirection = 0;
         public override void OnSpawn(IEntitySource source)
         {
             OnSpawnDirection = Projectile.velocity.X > 0 ? 1 : -1;
             base.OnSpawn(source);
         }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = TextureAssets.Item[(int)Projectile.ai[2]].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
+        }
+    }
+    class ShortSwordAttackOne : BaseHostileShortSword
+    {
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
             if (Projectile.ai[0] == 1)
             {
+
                 if (Projectile.ai[1] >= 30)
                 {
                     Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 25f + player.velocity;
@@ -184,53 +200,6 @@ namespace BossRush.Contents.NPCs
                 }
                 return;
             }
-            if (Projectile.ai[0] == 2)
-            {
-                Vector2 LeftOfPlayer = new Vector2(player.Center.X + 400 * OnSpawnDirection, player.Center.Y);
-                if (Projectile.ai[1] < 0)
-                {
-                    Projectile.ai[1]++;
-                    return;
-                }
-                if (Projectile.ai[1] == 0)
-                {
-                    if (!Projectile.Center.IsCloseToPosition(LeftOfPlayer, 10f))
-                    {
-                        Vector2 distance = LeftOfPlayer - Projectile.Center;
-                        float length = distance.Length();
-                        if (length > 5)
-                        {
-                            length = 5;
-                        }
-                        Projectile.velocity -= Projectile.velocity * .08f;
-                        Projectile.velocity += distance.SafeNormalize(Vector2.Zero) * length;
-                        Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
-                    }
-                    else
-                    {
-                        Projectile.velocity = -Vector2.UnitX * OnSpawnDirection;
-                        Projectile.timeLeft = 150;
-                        Projectile.ai[1] = 1;
-                        Projectile.Center = LeftOfPlayer;
-                    }
-                    Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-                }
-                else
-                {
-                    Projectile.ai[1]++;
-                    if (Projectile.ai[1] >= 60)
-                    {
-                        if (Projectile.ai[1] >= 75)
-                        {
-                            Projectile.velocity -= Vector2.UnitX * 2 * OnSpawnDirection;
-                            return;
-                        }
-                        Projectile.velocity += Vector2.UnitX * OnSpawnDirection;
-                        return;
-                    }
-                }
-                return;
-            }
             if (Projectile.velocity.IsLimitReached(1))
             {
                 Projectile.velocity -= Projectile.velocity * .05f;
@@ -241,16 +210,56 @@ namespace BossRush.Contents.NPCs
                 Projectile.velocity = Vector2.Zero;
                 Projectile.ai[0] = 1;
             }
-            base.AI();
         }
-        public override bool PreDraw(ref Color lightColor)
+    }
+    class ShortSwordAttackTwo : BaseHostileShortSword
+    {
+        public override void AI()
         {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Item[(int)Projectile.ai[2]].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            return false;
+            Player player = Main.player[Projectile.owner];
+            Vector2 LeftOfPlayer = new Vector2(player.Center.X + 400 * OnSpawnDirection, player.Center.Y);
+            if (Projectile.ai[1] < 0)
+            {
+                Projectile.ai[1]++;
+                return;
+            }
+            if (Projectile.ai[1] == 0)
+            {
+                if (!Projectile.Center.IsCloseToPosition(LeftOfPlayer, 10f))
+                {
+                    Vector2 distance = LeftOfPlayer - Projectile.Center;
+                    float length = distance.Length();
+                    if (length > 5)
+                    {
+                        length = 5;
+                    }
+                    Projectile.velocity -= Projectile.velocity * .08f;
+                    Projectile.velocity += distance.SafeNormalize(Vector2.Zero) * length;
+                    Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
+                }
+                else
+                {
+                    Projectile.velocity = -Vector2.UnitX * OnSpawnDirection;
+                    Projectile.timeLeft = 150;
+                    Projectile.ai[1] = 1;
+                    Projectile.Center = LeftOfPlayer;
+                }
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            }
+            else
+            {
+                Projectile.ai[1]++;
+                if (Projectile.ai[1] >= 60)
+                {
+                    if (Projectile.ai[1] >= 75)
+                    {
+                        Projectile.velocity -= Vector2.UnitX * 2 * OnSpawnDirection;
+                        return;
+                    }
+                    Projectile.velocity += Vector2.UnitX * OnSpawnDirection;
+                    return;
+                }
+            }
         }
     }
     class SwordBroadProjectile : ModProjectile
@@ -262,13 +271,11 @@ namespace BossRush.Contents.NPCs
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
         }
-        int OnSpawnDirection = 0;
+        public int OnSpawnDirection = 0;
         public override void OnSpawn(IEntitySource source)
         {
-            OnSpawnDirection = Projectile.velocity.X > 0 ? 1 : -1;
-            base.OnSpawn(source);
         }
-        Vector2 rememberThisPos = Vector2.Zero;
+        public Vector2 rememberThisPos = Vector2.Zero;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -304,20 +311,26 @@ namespace BossRush.Contents.NPCs
             }
             if (Projectile.ai[1] == 2)
             {
-                Vector2 BesideThePlayer = player.Center + new Vector2(100 * OnSpawnDirection, 0).RotatedBy(MathHelper.ToRadians(-120) * OnSpawnDirection);
-                if(Projectile.ProjectileMoveToPosition(BesideThePlayer, 10f))
+                if (Projectile.ProjectileMoveToPosition(rememberThisPos, 20f))
                 {
-                    rememberThisPos = BesideThePlayer;
                     Projectile.ai[1] = 3;
                 }
             }
-            if (Projectile.ai[1] == 3)
+            if (Projectile.ai[1] >= 3)
             {
-                if(Projectile.timeLeft > 30)
+                Vector2 newVel = Vector2.UnitX * OnSpawnDirection;
+                Projectile.ai[1]++;
+                if (Projectile.ai[1] >= 75)
                 {
-                    Projectile.timeLeft = 30;
+                    Projectile.velocity -= newVel * 2;
                 }
-                //Projectile.velocity = Vector2.One.RotatedBy(MathHelper.Lerp(rememberThisPos.ToRotation(), rememberThisPos.ToRotation() + MathHelper.ToRadians(120) * OnSpawnDirection, (30 - Projectile.timeLeft) / 30f));
+                else if (Projectile.ai[1] >= 60)
+                {
+                    Projectile.velocity += newVel;
+                }
+                if (Projectile.timeLeft > 60)
+                    Projectile.timeLeft = 120;
+                Projectile.rotation = newVel.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi;
                 return;
             }
             if (Projectile.velocity.IsLimitReached(1))

@@ -153,6 +153,8 @@ Mods: {
 			NegativeLifeProjectile.DisplayName: Negative Life Projectile
 			GuardianProjectile.DisplayName: Guardian Projectile
 			GuardianSmallerProjectile.DisplayName: Guardian Smaller Projectile
+			ShortSwordAttackOne.DisplayName: Short Sword Attack One
+			ShortSwordAttackTwo.DisplayName: Short Sword Attack Two
 		}
 
 		NPCs: {
