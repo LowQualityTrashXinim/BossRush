@@ -155,6 +155,8 @@ Mods: {
 			GuardianSmallerProjectile.DisplayName: Guardian Smaller Projectile
 			ShortSwordAttackOne.DisplayName: Short Sword Attack One
 			ShortSwordAttackTwo.DisplayName: Short Sword Attack Two
+			SwordBroadAttackOne.DisplayName: Sword Broad Attack One
+			SwordBroadAttackTwo.DisplayName: Sword Broad Attack Two
 		}
 
 		NPCs: {

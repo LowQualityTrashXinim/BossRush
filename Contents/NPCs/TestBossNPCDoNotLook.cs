@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Chest;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.NPCs
 {
@@ -62,6 +63,67 @@ namespace BossRush.Contents.NPCs
                 case 3:
                     ShootBroadSword();
                     break;
+                case 4:
+                    ShootBroadSword2();
+                    break;
+            }
+            ActivateBroadSword();
+        }
+        /// <summary>
+        /// This is a way to make NPC itself handle it own projectile and activate as will
+        /// Make sure there are no junk data or overlapped attack
+        /// </summary>
+        private void ActivateBroadSword()
+        {
+            List<SwordBroadAttackOne> broadSwordProjectile = new List<SwordBroadAttackOne>();
+            for (int i = 0; i < ProjectileWhoAmI.Count; i++)
+            {
+                Projectile projectile = Main.projectile[ProjectileWhoAmI[i]];
+                if (projectile.ModProjectile is SwordBroadAttackOne swordProj && projectile.ai[1] >= 3)
+                {
+                    broadSwordProjectile.Add(swordProj);
+                }
+            }
+            if (broadSwordProjectile.Count >= TerrariaArrayID.AllOreBroadSword.Length)
+            {
+                foreach (SwordBroadAttackOne proj in broadSwordProjectile)
+                {
+                    proj.CanProgressToAI3 = true;
+                }
+                //We clean junk data here
+                //Since we have proven that all of them are here, and most likely this attack won't change in term of number
+                //We should clear the list so we can reuse the list
+                ProjectileWhoAmI.Clear();
+            }
+        }
+        public override void OnKill()
+        {
+            foreach (var projIndex in ProjectileWhoAmI)
+            {
+                Projectile projectile = Main.projectile[projIndex];
+                if (projectile == null)
+                {
+                    continue;
+                }
+                if (projectile.active)
+                {
+                    projectile.Kill();
+                }
+                ProjectileWhoAmI.Clear();
+            }
+        }
+        List<int> ProjectileWhoAmI = new List<int>();
+        private void Move(Player player)
+        {
+            if (BossDelayAttack(0, 0, 0))
+            {
+                return;
+            }
+            Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 300);
+            if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
+            {
+                NPC.ai[0] = 20;
+                NPC.ai[1] = Main.rand.Next(1, 5);
             }
         }
         private void ResetEverything()
@@ -71,22 +133,13 @@ namespace BossRush.Contents.NPCs
             NPC.ai[2] = 0;
             NPC.ai[3] = 0;
         }
-        private void Move(Player player)
-        {
-            Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 350);
-            if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
-            {
-                NPC.ai[0] = 90;
-                NPC.ai[1] = 3;
-            }
-        }
         private void ShootShortSword()
         {
             if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1))
             {
                 return;
             }
-            Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 10f;
+            Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 15f;
             int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackOne>(), NPC.damage, 2);
             Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
             Main.projectile[proj].owner = NPC.target;
@@ -94,6 +147,8 @@ namespace BossRush.Contents.NPCs
         }
         private void ShootShortSword2()
         {
+            Vector2 positionAbovePlayer = new Vector2(Main.player[NPC.target].Center.X, Main.player[NPC.target].Center.Y - 350);
+            NPC.NPCMoveToPosition(positionAbovePlayer, 5f);
             if (BossDelayAttack(20, 0, TerrariaArrayID.AllOreShortSword.Length - 1))
             {
                 return;
@@ -109,30 +164,59 @@ namespace BossRush.Contents.NPCs
         }
         private void ShootBroadSword()
         {
-            if (BossDelayAttack(0, 0, 0, 360))
+            if (BossDelayAttack(0, 0, 0))
             {
                 return;
             }
             for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++)
             {
-                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 160, i) * 5f;
-                int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadProjectile>(), NPC.damage, 2);
+                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 160, i) * 20f;
+                int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackOne>(), NPC.damage, 2);
                 Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreBroadSword[i];
                 Main.projectile[proj].owner = NPC.target;
-                if (Main.projectile[proj].ModProjectile is SwordBroadProjectile swordProj)
+                if (Main.projectile[proj].ModProjectile is SwordBroadAttackOne swordProj)
                 {
                     swordProj.OnSpawnDirection = vec.X > 0 ? 1 : -1;
                     swordProj.rememberThisPos = Main.player[NPC.target].Center + new Vector2(250 * swordProj.OnSpawnDirection, -80 + 40 * i);
+                    ProjectileWhoAmI.Add(proj);
                 }
             }
             NPC.ai[2]++;
-            BossDelayAttack(0, 0, 0, 360);
+            BossDelayAttack(0, 0, 0, 30);
+        }
+        private void ShootBroadSword2()
+        {
+            NPC.ai[0] = 0;
+            if (BossDelayAttack(0, 0, 0))
+            {
+                return;
+            }
+            for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++)
+            {
+                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 180, i) * 50f;
+                vec.Y = 5;
+                int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2);
+                Main.projectile[proj].ai[1] = 30;
+                Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreBroadSword[i];
+                Main.projectile[proj].owner = NPC.target;
+            }
+            for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++)
+            {
+                Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 90, i) * 20f;
+                int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2);
+                Main.projectile[proj].ai[1] = 40;
+                Main.projectile[proj].ai[2] = TerrariaArrayID.AllOreBroadSword[i];
+                Main.projectile[proj].owner = NPC.target;
+            }
+            NPC.ai[2]++;
+            BossDelayAttack(0, 0, 0);
+
         }
         private bool BossDelayAttack(float delaytime, float nextattack, float whenAttackwillend, int additionalDelay = 0)
         {
             if (NPC.ai[0] <= 0)
             {
-                NPC.ai[0] = delaytime;
+                NPC.ai[0] += delaytime;
             }
             else
             {
@@ -142,7 +226,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.ai[2] > whenAttackwillend)
             {
                 ResetEverything();
-                NPC.ai[0] = additionalDelay;
+                NPC.ai[0] += additionalDelay;
                 NPC.ai[1] = nextattack;
                 return true;
             }
@@ -182,32 +266,20 @@ namespace BossRush.Contents.NPCs
             Player player = Main.player[Projectile.owner];
             if (Projectile.ai[0] == 1)
             {
-
-                if (Projectile.ai[1] >= 30)
-                {
-                    Projectile.velocity = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 25f + player.velocity;
-                    Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-                    Projectile.ai[1] = -1;
-                    Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
-                }
-                else
-                {
-                    if (Projectile.ai[1] != -1)
-                    {
-                        Projectile.timeLeft = 150;
-                        Projectile.ai[1]++;
-                    }
-                }
+                if (Projectile.timeLeft > 120)
+                    Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+                if (Projectile.timeLeft > 250)
+                    Projectile.timeLeft = 250;
                 return;
             }
-            if (Projectile.velocity.IsLimitReached(1))
+            if (Projectile.velocity.IsLimitReached(3))
             {
                 Projectile.velocity -= Projectile.velocity * .05f;
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             }
             else
             {
-                Projectile.velocity = Vector2.Zero;
                 Projectile.ai[0] = 1;
             }
         }
@@ -262,7 +334,7 @@ namespace BossRush.Contents.NPCs
             }
         }
     }
-    class SwordBroadProjectile : ModProjectile
+    public abstract class BaseHostileSwordBroad : ModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
@@ -270,80 +342,6 @@ namespace BossRush.Contents.NPCs
             Projectile.width = Projectile.height = 36;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-        }
-        public int OnSpawnDirection = 0;
-        public override void OnSpawn(IEntitySource source)
-        {
-        }
-        public Vector2 rememberThisPos = Vector2.Zero;
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            if (Projectile.ai[1] == 1)
-            {
-                if (Projectile.rotation != -MathHelper.PiOver4)
-                {
-                    float rotation = MathHelper.ToRadians(1);
-                    float total;
-                    if (Projectile.rotation > -MathHelper.PiOver4)
-                    {
-                        total = Projectile.rotation - rotation;
-                        if (Math.Abs(total) <= MathHelper.PiOver4)
-                        {
-                            Projectile.rotation = -MathHelper.PiOver4;
-                            return;
-                        }
-                        Projectile.rotation = total;
-                    }
-                    else
-                    {
-                        total = Projectile.rotation + rotation;
-                        if (Math.Abs(total) >= MathHelper.PiOver4)
-                        {
-                            Projectile.rotation = -MathHelper.PiOver4;
-                            return;
-                        }
-                        Projectile.rotation = total;
-                    }
-                    return;
-                }
-                Projectile.ai[1] = 2;
-            }
-            if (Projectile.ai[1] == 2)
-            {
-                if (Projectile.ProjectileMoveToPosition(rememberThisPos, 20f))
-                {
-                    Projectile.ai[1] = 3;
-                }
-            }
-            if (Projectile.ai[1] >= 3)
-            {
-                Vector2 newVel = Vector2.UnitX * OnSpawnDirection;
-                Projectile.ai[1]++;
-                if (Projectile.ai[1] >= 75)
-                {
-                    Projectile.velocity -= newVel * 2;
-                }
-                else if (Projectile.ai[1] >= 60)
-                {
-                    Projectile.velocity += newVel;
-                }
-                if (Projectile.timeLeft > 60)
-                    Projectile.timeLeft = 120;
-                Projectile.rotation = newVel.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi;
-                return;
-            }
-            if (Projectile.velocity.IsLimitReached(1))
-            {
-                Projectile.velocity -= Projectile.velocity * .05f;
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-            }
-            else
-            {
-                Projectile.ai[1] = 1;
-                Projectile.velocity = Vector2.Zero;
-            }
-            base.AI();
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -353,6 +351,95 @@ namespace BossRush.Contents.NPCs
             Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
             Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
             return false;
+        }
+    }
+    class SwordBroadAttackOne : BaseHostileSwordBroad
+    {
+        public int OnSpawnDirection = 0;
+        public bool CanProgressToAI3 = false;
+        public Vector2 rememberThisPos = Vector2.Zero;
+        public override void AI()
+        {
+            if (Projectile.ai[1] == 2)
+            {
+                if (!Projectile.Center.IsCloseToPosition(rememberThisPos, 20f))
+                {
+                    Vector2 distance = rememberThisPos - Projectile.Center;
+                    float length = distance.Length();
+                    if (length > 2)
+                    {
+                        length = 2;
+                    }
+                    Projectile.velocity -= Projectile.velocity * .08f;
+                    Projectile.velocity += distance.SafeNormalize(Vector2.Zero) * length;
+                    Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
+                }
+                else
+                {
+                    Projectile.Center = rememberThisPos;
+                    Projectile.velocity = Vector2.Zero;
+                    Projectile.ai[1]++;
+                }
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+                return;
+            }
+            if (Projectile.ai[1] >= 3)
+            {
+                Vector2 newVel = Vector2.UnitX * OnSpawnDirection;
+                if (CanProgressToAI3)
+                {
+                    Projectile.ai[1]++;
+                    if (Projectile.ai[1] >= 30)
+                    {
+                        Projectile.velocity -= newVel * 2;
+                    }
+                    else if (Projectile.ai[1] >= 20)
+                    {
+                        Projectile.velocity += newVel;
+                    }
+                    if (Projectile.timeLeft > 40)
+                        Projectile.timeLeft = 120;
+                }
+                Projectile.rotation = newVel.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi;
+                return;
+            }
+
+            if (Projectile.velocity.IsLimitReached(7))
+            {
+                Projectile.velocity -= Projectile.velocity * .05f;
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            }
+            else
+            {
+                Projectile.ai[1] = 2;
+                Projectile.velocity = Vector2.Zero;
+            }
+        }
+    }
+    class SwordBroadAttackTwo : BaseHostileSwordBroad
+    {
+        public override void AI()
+        {
+            Projectile.rotation = MathHelper.PiOver4 + MathHelper.PiOver2;
+            if (Projectile.ai[1] == 1)
+            {
+                if (Projectile.timeLeft > 30)
+                    Projectile.timeLeft = 30;
+                Projectile.velocity.Y = 50;
+                Projectile.velocity.X = 0;
+                return;
+            }
+            if (Projectile.ai[1] > 1)
+            {
+                Projectile.velocity.Y += -.5f;
+                Projectile.ai[1]--;
+                Projectile.velocity -= Projectile.velocity * .1f;
+            }
+            else
+            {
+                Projectile.ai[1] = 1;
+                Projectile.velocity = Vector2.Zero;
+            }
         }
     }
 }
