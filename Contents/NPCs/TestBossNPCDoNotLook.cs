@@ -69,6 +69,9 @@ namespace BossRush.Contents.NPCs
                 case 5:
                     ShootWoodBow();
                     break;
+                case 6:
+                    ShootWoodBow2();
+                    break;
             }
             ActivateBroadSword();
         }
@@ -126,7 +129,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 20;
-                NPC.ai[1] = Main.rand.Next(1,6);
+                NPC.ai[1] = Main.rand.Next(1, 7);
             }
         }
         private void ResetEverything()
@@ -232,7 +235,7 @@ namespace BossRush.Contents.NPCs
                     Main.projectile[proj].owner = NPC.target;
                     if (i == length / 2 - 1)
                         Main.projectile[proj].ai[1] = -MathHelper.PiOver4;
-                    if(i == 0)
+                    if (i == 0)
                         Main.projectile[proj].ai[1] = MathHelper.PiOver4;
                 }
                 else
@@ -248,7 +251,20 @@ namespace BossRush.Contents.NPCs
                 }
             }
             NPC.ai[2]++;
-            BossDelayAttack(0, 0, 200);
+            BossDelayAttack(0, 0, 240);
+
+        }
+        private void ShootWoodBow2()
+        {
+            if (BossDelayAttack(5, 0, TerrariaArrayID.AllWoodBowPHM.Length - 1))
+            {
+                return;
+            }
+            Vector2 vec = Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllWoodBowPHM.Length, 120, (int)NPC.ai[2]) * 3f;
+            int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<WoodBowAttackTwo>(), NPC.damage, 2);
+            Main.projectile[proj].ai[2] = TerrariaArrayID.AllWoodBowPHM[(int)NPC.ai[2]];
+            Main.projectile[proj].owner = NPC.target;
+            NPC.ai[2]++;
 
         }
         private bool BossDelayAttack(float delaytime, float nextattack, float whenAttackwillend, int additionalDelay = 0)
@@ -305,11 +321,11 @@ namespace BossRush.Contents.NPCs
             Player player = Main.player[Projectile.owner];
             if (Projectile.ai[0] == 1)
             {
-                if (Projectile.timeLeft > 120)
+                if (Projectile.timeLeft > 30)
                     Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-                if (Projectile.timeLeft > 250)
-                    Projectile.timeLeft = 250;
+                if (Projectile.timeLeft > 160)
+                    Projectile.timeLeft = 160;
                 return;
             }
             if (Projectile.velocity.IsLimitReached(3))
@@ -513,6 +529,38 @@ namespace BossRush.Contents.NPCs
                 Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
                 Projectile.ai[0] = 0;
             }
+        }
+    }
+    class WoodBowAttackTwo : BaseHostileWoddBow
+    {
+        Vector2 toPlayer = Vector2.Zero;
+        public override void AI()
+        {
+            int Requirement = 35;
+            if (Projectile.ai[1] <= 0)
+                Projectile.rotation = Projectile.velocity.ToRotation();
+            else
+            {
+                toPlayer = (Main.player[Projectile.owner].Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                Projectile.rotation = toPlayer.ToRotation();
+                Requirement += 15;
+            }
+            if (Projectile.timeLeft > 90)
+                Projectile.timeLeft = 90;
+            if (++Projectile.ai[0] >= Requirement)
+            {
+                if (Projectile.ai[1] <= 0)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
+                }
+                else
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, toPlayer * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
+                }
+                Projectile.ai[0] = 0;
+                Projectile.ai[1]++;
+            }
+            Projectile.velocity -= Projectile.velocity * .05f;
         }
     }
 }
