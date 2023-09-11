@@ -66,6 +66,9 @@ namespace BossRush.Contents.NPCs
                 case 4:
                     ShootBroadSword2();
                     break;
+                case 5:
+                    ShootWoodBow();
+                    break;
             }
             ActivateBroadSword();
         }
@@ -123,7 +126,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 20;
-                NPC.ai[1] = Main.rand.Next(1, 5);
+                NPC.ai[1] = Main.rand.Next(1,6);
             }
         }
         private void ResetEverything()
@@ -210,6 +213,42 @@ namespace BossRush.Contents.NPCs
             }
             NPC.ai[2]++;
             BossDelayAttack(0, 0, 0);
+
+        }
+        private void ShootWoodBow()
+        {
+            if (BossDelayAttack(0, 0, 0))
+            {
+                return;
+            }
+            int length = TerrariaArrayID.AllWoodBowPHM.Length;
+            for (int i = 0; i < length; i++)
+            {
+                if (i < length / 2)
+                {
+                    Vector2 velocity = (Vector2.UnitX * 2).Vector2DistributeEvenlyPlus(3, 45, i);
+                    int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);
+                    Main.projectile[proj].ai[2] = TerrariaArrayID.AllWoodBowPHM[i];
+                    Main.projectile[proj].owner = NPC.target;
+                    if (i == length / 2 - 1)
+                        Main.projectile[proj].ai[1] = -MathHelper.PiOver4;
+                    if(i == 0)
+                        Main.projectile[proj].ai[1] = MathHelper.PiOver4;
+                }
+                else
+                {
+                    Vector2 velocity = (-Vector2.UnitX * 2).Vector2DistributeEvenlyPlus(3, 45, i - 3);
+                    int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);
+                    Main.projectile[proj].ai[2] = TerrariaArrayID.AllWoodBowPHM[i];
+                    Main.projectile[proj].owner = NPC.target;
+                    if (i == length - 1)
+                        Main.projectile[proj].ai[1] = -MathHelper.PiOver4;
+                    if (i == length / 2)
+                        Main.projectile[proj].ai[1] = MathHelper.PiOver4;
+                }
+            }
+            NPC.ai[2]++;
+            BossDelayAttack(0, 0, 200);
 
         }
         private bool BossDelayAttack(float delaytime, float nextattack, float whenAttackwillend, int additionalDelay = 0)
@@ -439,6 +478,40 @@ namespace BossRush.Contents.NPCs
             {
                 Projectile.ai[1] = 1;
                 Projectile.velocity = Vector2.Zero;
+            }
+        }
+    }
+    public abstract class BaseHostileWoddBow : ModProjectile
+    {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetDefaults()
+        {
+            Projectile.width = 16;
+            Projectile.height = 32;
+            Projectile.tileCollide = true;
+            Projectile.penetrate = -1;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = TextureAssets.Item[(int)Projectile.ai[2]].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
+        }
+    }
+    class WoodBowAttackOne : BaseHostileWoddBow
+    {
+        public override void AI()
+        {
+            if (Projectile.timeLeft > 150)
+                Projectile.timeLeft = 150;
+            Projectile.rotation = -MathHelper.PiOver2 + MathHelper.Pi + Projectile.ai[1];
+            if (++Projectile.ai[0] >= 35)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
+                Projectile.ai[0] = 0;
             }
         }
     }

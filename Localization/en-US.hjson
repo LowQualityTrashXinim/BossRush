@@ -157,6 +157,7 @@ Mods: {
 			ShortSwordAttackTwo.DisplayName: Short Sword Attack Two
 			SwordBroadAttackOne.DisplayName: Sword Broad Attack One
 			SwordBroadAttackTwo.DisplayName: Sword Broad Attack Two
+			WoodBowAttackOne.DisplayName: Wood Bow Attack One
 		}
 
 		NPCs: {
