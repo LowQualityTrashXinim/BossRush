@@ -159,6 +159,7 @@ Mods: {
 			SwordBroadAttackTwo.DisplayName: Sword Broad Attack Two
 			WoodBowAttackOne.DisplayName: Wood Bow Attack One
 			WoodBowAttackTwo.DisplayName: Wood Bow Attack Two
+			GemStaffAttackOne.DisplayName: Gem Staff Attack One
 		}
 
 		NPCs: {

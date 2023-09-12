@@ -72,6 +72,9 @@ namespace BossRush.Contents.NPCs
                 case 6:
                     ShootWoodBow2();
                     break;
+                case 7:
+                    ShootStaff(player);
+                    break;
             }
             ActivateBroadSword();
         }
@@ -129,7 +132,7 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 20;
-                NPC.ai[1] = Main.rand.Next(1, 7);
+                NPC.ai[1] = 7;
             }
         }
         private void ResetEverything()
@@ -265,19 +268,57 @@ namespace BossRush.Contents.NPCs
             Main.projectile[proj].ai[2] = TerrariaArrayID.AllWoodBowPHM[(int)NPC.ai[2]];
             Main.projectile[proj].owner = NPC.target;
             NPC.ai[2]++;
+        }
+        private void ShootStaff(Player player)
+        {
+            BossCircleMovement(player, 5, TerrariaArrayID.AllGemStaffPHM.Length, out float percent);
+            if (BossDelayAttack(5, 0, TerrariaArrayID.AllGemStaffPHM.Length - 1))
+            {
+                return;
+            }
+            Vector2 vec = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(MathHelper.Lerp(0, 360, percent)));
+            int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<GemStaffAttackOne>(), NPC.damage, 2);
+            Main.projectile[proj].ai[2] = TerrariaArrayID.AllGemStaffPHM[(int)NPC.ai[2]];
+            Main.projectile[proj].owner = NPC.target;
+            if (Main.projectile[proj].ModProjectile is BaseHostileGemStaff gemstaffProj)
+                gemstaffProj.ProjectileType = TerrariaArrayID.AllGemStafProjectilePHM[(int)NPC.ai[2]];
+            NPC.ai[2]++;
+        }
+        private void ShootStaff2()
+        {
 
         }
+        private void BossCircleMovement(Player player, int delayValue, int AttackEndValue, out float percent)
+        {
+            float total = delayValue * AttackEndValue;
+            percent = Math.Clamp(((delayValue - NPC.ai[0] >= 0 ? delayValue - NPC.ai[0] : 0) + delayValue * NPC.ai[2]) / total, 0, 1f);
+            float rotation = MathHelper.Lerp(0, 360, percent);
+            Vector2 rotateAroundPlayerCenter = player.Center - Vector2.UnitY.RotatedBy(MathHelper.ToRadians(rotation)) * 350;
+            NPC.Center = rotateAroundPlayerCenter;
+        }
+
+        /// <summary>
+        /// This is to ensure boss have a certain delay
+        /// </summary>
+        /// <param name="delaytime">the delay between each attack, use if you want to shoot out projectile individually or have a space out</param>
+        /// <param name="nextattack">Will set the next attack</param>
+        /// <param name="whenAttackwillend">determined whenever the attack will end</param>
+        /// <param name="additionalDelay">the post delay after the attack is done</param>
+        /// <returns></returns>
         private bool BossDelayAttack(float delaytime, float nextattack, float whenAttackwillend, int additionalDelay = 0)
         {
+            //This only run whenever a delay is given but only when the timer reach 0 or below
             if (NPC.ai[0] <= 0)
             {
                 NPC.ai[0] += delaytime;
             }
             else
             {
+                //The timer decrease
                 NPC.ai[0]--;
                 return true;
             }
+            //this will check if the counter (NPC.ai[2]) reach the requirement to reset everything
             if (NPC.ai[2] > whenAttackwillend)
             {
                 ResetEverything();
@@ -289,9 +330,21 @@ namespace BossRush.Contents.NPCs
         }
     }
     //This code did not follow the above rule and it should be change to follow the above rule
-    public abstract class BaseHostileShortSword : ModProjectile
+    public abstract class BaseHostileProjectile : ModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.instance.LoadProjectile(Projectile.type);
+            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>((int)Projectile.ai[2])).Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
+        }
+    }
+    public abstract class BaseHostileShortSword : BaseHostileProjectile
+    {
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 32;
@@ -303,15 +356,6 @@ namespace BossRush.Contents.NPCs
         {
             OnSpawnDirection = Projectile.velocity.X > 0 ? 1 : -1;
             base.OnSpawn(source);
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Item[(int)Projectile.ai[2]].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            return false;
         }
     }
     class ShortSwordAttackOne : BaseHostileShortSword
@@ -389,23 +433,13 @@ namespace BossRush.Contents.NPCs
             }
         }
     }
-    public abstract class BaseHostileSwordBroad : ModProjectile
+    public abstract class BaseHostileSwordBroad : BaseHostileProjectile
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 36;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-        }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>((int)Projectile.ai[2])).Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            return false;
         }
     }
     class SwordBroadAttackOne : BaseHostileSwordBroad
@@ -497,9 +531,8 @@ namespace BossRush.Contents.NPCs
             }
         }
     }
-    public abstract class BaseHostileWoddBow : ModProjectile
+    public abstract class BaseHostileWoodBow : BaseHostileProjectile
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
             Projectile.width = 16;
@@ -507,17 +540,8 @@ namespace BossRush.Contents.NPCs
             Projectile.tileCollide = true;
             Projectile.penetrate = -1;
         }
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.instance.LoadProjectile(Projectile.type);
-            Texture2D texture = TextureAssets.Item[(int)Projectile.ai[2]].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
-            Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            return false;
-        }
     }
-    class WoodBowAttackOne : BaseHostileWoddBow
+    class WoodBowAttackOne : BaseHostileWoodBow
     {
         public override void AI()
         {
@@ -531,7 +555,7 @@ namespace BossRush.Contents.NPCs
             }
         }
     }
-    class WoodBowAttackTwo : BaseHostileWoddBow
+    class WoodBowAttackTwo : BaseHostileWoodBow
     {
         Vector2 toPlayer = Vector2.Zero;
         public override void AI()
@@ -561,6 +585,32 @@ namespace BossRush.Contents.NPCs
                 Projectile.ai[1]++;
             }
             Projectile.velocity -= Projectile.velocity * .05f;
+        }
+    }
+    public abstract class BaseHostileGemStaff : BaseHostileProjectile
+    {
+        public int ProjectileType = ProjectileID.AmethystBolt;
+        public override void SetDefaults()
+        {
+            Projectile.width = 40;
+            Projectile.height = 42;
+            Projectile.tileCollide = true;
+            Projectile.penetrate = -1;
+        }
+    }
+    class GemStaffAttackOne : BaseHostileGemStaff
+    {
+        public override void AI()
+        {
+            if (Projectile.timeLeft > 180)
+                Projectile.timeLeft = 180;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.ToRadians(Projectile.ai[1] - 70);
+            if (++Projectile.ai[0] >= 35)
+            {
+                BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 10f, ProjectileType, Projectile.damage, 1);
+                Projectile.ai[0] = 0;
+            }
+            Projectile.ai[1] += 2;
         }
     }
 }
