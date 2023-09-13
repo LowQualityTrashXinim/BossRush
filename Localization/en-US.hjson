@@ -170,6 +170,7 @@ Mods: {
 			Servant.DisplayName: Servant
 			ElderGuardian.DisplayName: Elder Guardian
 			Guardian.DisplayName: Guardian
+			LootBoxLord.DisplayName: Loot Box Lord
 		}
 
 		Items: {
@@ -1493,6 +1494,11 @@ Mods: {
 
 			PreHardmodeBossBundle: {
 				DisplayName: Pre Hardmode Boss Bundle
+				Tooltip: ""
+			}
+
+			LootboxLordSummon: {
+				DisplayName: Lootbox Lord Summon
 				Tooltip: ""
 			}
 		}

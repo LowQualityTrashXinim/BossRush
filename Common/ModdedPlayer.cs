@@ -133,9 +133,17 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<CrimsonLootBox>()));
                 items.Add(new Item(ModContent.ItemType<IceLootBox>()));
                 items.Add(new Item(ModContent.ItemType<HoneyTreasureChest>()));
+                items.Add(new Item(ModContent.ItemType<LootboxLordSummon>()));
                 items.Add(new Item(ModContent.ItemType<PerkChooser>(), 8));
-                items.Add(new Item(ItemID.LifeCrystal, 19));
+                items.Add(new Item(ItemID.LifeCrystal, 15));
                 items.Add(new Item(ItemID.ManaCrystal, 4));
+                items.Add(new Item(ItemID.KingSlimeBossBag));
+                items.Add(new Item(ItemID.EyeOfCthulhuBossBag));
+                items.Add(new Item(ItemID.EaterOfWorldsBossBag));
+                items.Add(new Item(ItemID.BrainOfCthulhuBossBag));
+                items.Add(new Item(ItemID.SkeletronBossBag));
+                items.Add(new Item(ItemID.QueenBeeBossBag));
+                items.Add(new Item(ItemID.DeerclopsBossBag));
             }
             if (Player.name == "I want to die" || Player.name == "Give me hell")
             {

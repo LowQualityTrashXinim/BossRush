@@ -18,7 +18,7 @@ namespace BossRush.Contents.NPCs
     //ai[1] => ai switch
     //ai[2] => counter ( not to be confused with timer )
     //The code in this file must follow the above rule
-    internal class ChestLord : ModNPC
+    internal class LootBoxLord : ModNPC
     {
         public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
         public override void SetDefaults()
@@ -216,7 +216,7 @@ namespace BossRush.Contents.NPCs
                 Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 180, i) * 50f;
                 vec.Y = 5;
                 int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2);
-                Main.projectile[proj].ai[1] = 30;
+                Main.projectile[proj].ai[1] = 35;
                 if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
                     projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
                 Main.projectile[proj].owner = NPC.target;
@@ -225,7 +225,7 @@ namespace BossRush.Contents.NPCs
             {
                 Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 90, i) * 20f;
                 int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2);
-                Main.projectile[proj].ai[1] = 40;
+                Main.projectile[proj].ai[1] = 50;
                 if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
                     projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
                 Main.projectile[proj].owner = NPC.target;
