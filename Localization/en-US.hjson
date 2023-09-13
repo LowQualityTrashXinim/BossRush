@@ -160,6 +160,7 @@ Mods: {
 			WoodBowAttackOne.DisplayName: Wood Bow Attack One
 			WoodBowAttackTwo.DisplayName: Wood Bow Attack Two
 			GemStaffAttackOne.DisplayName: Gem Staff Attack One
+			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
 		}
 
 		NPCs: {

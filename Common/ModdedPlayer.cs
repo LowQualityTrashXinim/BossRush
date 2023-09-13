@@ -15,6 +15,7 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common
 {
@@ -122,6 +123,19 @@ namespace BossRush.Common
                 items.Add(new Item(ItemID.NinjaPants));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja>()));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja2>()));
+            }
+            if(Player.name == "AccessToHiddenBoss")
+            {
+                items.Add(new Item(ModContent.ItemType<IronLootBox>()));
+                items.Add(new Item(ModContent.ItemType<SilverLootBox>()));
+                items.Add(new Item(ModContent.ItemType<GoldLootBox>()));
+                items.Add(new Item(ModContent.ItemType<CorruptionLootBox>()));
+                items.Add(new Item(ModContent.ItemType<CrimsonLootBox>()));
+                items.Add(new Item(ModContent.ItemType<IceLootBox>()));
+                items.Add(new Item(ModContent.ItemType<HoneyTreasureChest>()));
+                items.Add(new Item(ModContent.ItemType<PerkChooser>(), 8));
+                items.Add(new Item(ItemID.LifeCrystal, 19));
+                items.Add(new Item(ItemID.ManaCrystal, 4));
             }
             if (Player.name == "I want to die" || Player.name == "Give me hell")
             {

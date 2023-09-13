@@ -523,6 +523,7 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 23);
+            Item.maxStack = 999;
         }
         public override bool AltFunctionUse(Player player) => true;
         public override bool? UseItem(Player player)
