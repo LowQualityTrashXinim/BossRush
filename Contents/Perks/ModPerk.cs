@@ -50,7 +50,6 @@ namespace BossRush.Contents.Perks
                 Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
         }
     }
-    //Upgrade poison perk immunity
     public class ImmunityToPoison : Perk
     {
         public override void SetDefaults()
@@ -83,7 +82,6 @@ namespace BossRush.Contents.Perks
             }
         }
     }
-    //Upgrade fire perk immunity
     public class ImmunityToOnFire : Perk
     {
         public override void SetDefaults()
@@ -142,13 +140,13 @@ namespace BossRush.Contents.Perks
             textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();
             Tooltip =
                   "+ You can fire magic weapon forever" +
-                  "\n- When you are out of mana, you will use your life instead";
+                  "\n- When you are out of mana, mana cost reduce is by 50% and you use your life instead";
             CanBeStack = false;
         }
         public override void OnMissingMana(Player player, Item item, int neededMana)
         {
             player.statMana += neededMana;
-            player.statLife = Math.Clamp(player.statLife - neededMana, 0, player.statLifeMax2);
+            player.statLife = Math.Clamp(player.statLife - (int)(neededMana * .5f), 0, player.statLifeMax2);
         }
     }
     public class PeaceWithGod : Perk
@@ -300,13 +298,27 @@ namespace BossRush.Contents.Perks
     //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
     //    }
     //}
+    public class ProjectileProtection : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = true;
+            Tooltip =
+                "+ You are 15% more resistant to projectile";
+            StackLimit = 5;
+        }
+        public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            hurtInfo.SourceDamage = (int)(hurtInfo.SourceDamage * (1 - .15f * StackAmount));
+        }
+    }
     public class ProjectileDuplication : Perk
     {
         public override void SetDefaults()
         {
             CanBeStack = true;
             Tooltip =
-                "+ Have a chance to shoot out duplicate projectile";
+                "+ Your weapon have a chance to shoot out duplicate projectile ( warning : may work weirdly on many weapon due to terraria code )";
             StackLimit = 5;
         }
         public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

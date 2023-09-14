@@ -270,6 +270,17 @@ namespace BossRush
                 return true;
             return false;
         }
+        public static bool InWorld(int x, int y) => x >= 0 && y >= 0 && x < Main.maxTilesX && y < Main.maxTilesY;
+        public static void FastPlaceTile(int i, int j, ushort TileType)
+        {
+            if(InWorld(i,j))
+            {
+                return;
+            }
+            Tile tile = Main.tile[i, j];
+            tile.TileType = TileType;
+            tile.Get<TileWallWireStateData>().HasTile = true;
+        }
         public static List<int> RemoveDupeInList(this List<int> flag)
         {
             HashSet<int> HashsetRemoveDup = new(flag);

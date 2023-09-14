@@ -418,6 +418,7 @@ namespace BossRush.Contents.Perks
             foreach (int perk in perks.Keys)
             {
                 ModPerkLoader.GetPerk(perk).OnHitByAnything(Player);
+                ModPerkLoader.GetPerk(perk).OnHitByProjectile(Player, proj, hurtInfo);
             }
         }
         //TODO : make a override for item
@@ -509,6 +510,7 @@ namespace BossRush.Contents.Perks
 
         }
         public virtual void OnHitByAnything(Player player) { }
+        public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
         public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
         public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
         public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
