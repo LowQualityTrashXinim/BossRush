@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.NohitReward;
 using Terraria.ID;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Perks
 {
@@ -44,7 +45,7 @@ namespace BossRush.Contents.Perks
                     listOfPerk.Add(i);
                 }
                 int amount = listOfPerk.Count;
-                Vector2 originDefault = new Vector2(26,26);
+                Vector2 originDefault = new Vector2(26, 26);
                 for (int i = 0; i < modplayer.PerkAmount; i++)
                 {
                     Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
@@ -316,7 +317,6 @@ namespace BossRush.Contents.Perks
         public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
         public override void ResetEffects()
         {
-            Player.buffImmune[BuffID.OnFire] = true;
             perk_PotionExpert = false;
             PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
             foreach (int perk in perks.Keys)
@@ -347,6 +347,14 @@ namespace BossRush.Contents.Perks
             {
                 ModPerkLoader.GetPerk(perk).Update(Player);
             }
+        }
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).Shoot(Player, item, source, position, velocity, type, damage, knockback);
+            }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
         public override void OnMissingMana(Item item, int neededMana)
         {
@@ -462,6 +470,10 @@ namespace BossRush.Contents.Perks
                 Tooltip += "\n( Can be stack ! )";
         }
         public virtual void SetDefaults()
+        {
+
+        }
+        public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
 
         }

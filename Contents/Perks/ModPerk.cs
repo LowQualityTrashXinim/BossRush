@@ -10,6 +10,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Perks
 {
@@ -259,13 +260,31 @@ namespace BossRush.Contents.Perks
                 int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
                 npc.StrikeNPC(npc.CalculateHitInfo(100 * StackAmount, direction, false, 10));
             }
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 150; i++)
             {
+                int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
+                Main.dust[smokedust].noGravity = true;
+                Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(25, 25);
+                Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
                 int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
                 Main.dust[dust].noGravity = true;
-                Main.dust[dust].velocity = Main.rand.NextVector2Circular(30,30);
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(25, 25);
                 Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
             }
+        }
+    }
+    public class SpecialPotion : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ Grant you 1 random special potion";
+        }
+        public override void OnChoose(Player player)
+        {
+            int type = Main.rand.Next(new int[] { ModContent.ItemType<TitanElixir>(), ModContent.ItemType<BerserkerElixir>(), ModContent.ItemType<GunslingerElixir>(), ModContent.ItemType<CommanderElixir>(), ModContent.ItemType<SageElixir>(), });
+            player.QuickSpawnItem(player.GetSource_FromThis(), type);
         }
     }
     //public class GodGiveDice : Perk
@@ -281,6 +300,21 @@ namespace BossRush.Contents.Perks
     //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
     //    }
     //}
+    public class ProjectileDuplication : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = true;
+            Tooltip =
+                "+ Have a chance to shoot out duplicate projectile";
+            StackLimit = 5;
+        }
+        public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (Main.rand.NextFloat() <= .1f * StackAmount)
+                Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
+        }
+    }
     public class SpeedArmor : Perk
     {
         public override void SetDefaults()
