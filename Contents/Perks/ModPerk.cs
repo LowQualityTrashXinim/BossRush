@@ -49,18 +49,33 @@ namespace BossRush.Contents.Perks
                 Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
         }
     }
+    //Upgrade poison perk immunity
     public class ImmunityToPoison : Perk
     {
         public override void SetDefaults()
         {
-            Tooltip = "+ Give you immunity to poison";
+            Tooltip = 
+                "+ Give you immunity to poison" +
+                "+ Make a poison aura around player";
             CanBeStack = false;
         }
         public override void UpdateEquip(Player player)
         {
             player.buffImmune[BuffID.Poisoned] = true;
         }
+        public override void Update(Player player)
+        {
+            BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 100);
+            if (npclist.Count > 0)
+            {
+                foreach (NPC npc in npclist)
+                {
+                    npc.AddBuff(BuffID.Poisoned, 1);
+                }
+            }
+        }
     }
+    //Upgrade fire perk immunity
     public class ImmunityToOnFire : Perk
     {
         public override void SetDefaults()
@@ -71,6 +86,10 @@ namespace BossRush.Contents.Perks
         public override void UpdateEquip(Player player)
         {
             player.buffImmune[BuffID.OnFire] = true;
+        }
+        public override void Update(Player player)
+        {
+
         }
     }
     public class IllegalTrading : Perk
@@ -238,13 +257,13 @@ namespace BossRush.Contents.Perks
         {
             CanBeStack = true;
             Tooltip =
-                "+ Gain 10% movement speed in exchange for -1 defense";
+                "+ Gain 10% movement speed in exchange for -2 defenses";
             StackLimit = 5;
         }
         public override void ResetEffect(Player player)
         {
             player.moveSpeed += .1f * StackAmount;
-            player.statDefense -= 1 * StackAmount;
+            player.statDefense -= 2 * StackAmount;
         }
     }
     public class CelestialRage : Perk

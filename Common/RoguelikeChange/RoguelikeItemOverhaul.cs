@@ -689,14 +689,14 @@ namespace BossRush.Common.RoguelikeChange
                         Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
                         Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
                     }
-                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 300f);
+                    Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
                     foreach (var npc in npclist)
                     {
                         npc.StrikeNPC(npc.CalculateHitInfo(10, 1));
                         npc.AddBuff(BuffID.Ichor, 300);
                         Player.Heal(1);
                     }
-                    ShadewoodArmorCD = 180;
+                    ShadewoodArmorCD = 1;
                 }
         }
         private void OnHitNPC_BorealWoodArmor(NPC target)

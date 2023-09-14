@@ -135,15 +135,24 @@ namespace BossRush.Contents.NPCs
             if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f))
             {
                 NPC.ai[0] = 20;
-                NPC.ai[1] = Main.rand.Next(1, 9);
+                NPC.ai[1] = MoveSetHandle();
             }
+        }
+        private int MoveSetHandle()
+        {
+            int Move = (int)Math.Clamp(++NPC.ai[3], 1, 9);
+            if (Move >= 9)
+            {
+                Move = 1;
+                NPC.ai[3] = 1;
+            }
+            return Move;
         }
         private void ResetEverything()
         {
             NPC.ai[0] = 90;
             NPC.ai[1] = 0;
             NPC.ai[2] = 0;
-            NPC.ai[3] = 0;
         }
         private void ShootShortSword()
         {

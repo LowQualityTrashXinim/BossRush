@@ -1199,6 +1199,7 @@ Mods: {
 						"High focus, stay alert"
 						Most gun shoot more stable
 						Increase critical strike chance by 70%
+						Getting hit will remove this buff
 					'''
 			}
 
@@ -1223,7 +1224,8 @@ Mods: {
 						+45% Damage reduction
 						+400 Max life
 						Multiply all classes's damage by 0.65
-						Multiply Your movement, jumpspeed by 0.5
+						Multiply Your movement, jumpspeed by 1.5
+						Gain a extra life while the buff active
 					'''
 			}
 
