@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 {
@@ -9,8 +10,30 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 10, 30, false);
+            Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 20, 30, false);
             Item.scale = .75f;
+        }
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
+            CanShootItem = true;
+            for (int i = 0; i < 30; i++)
+            {
+                int dust = Dust.NewDust(position.PositionOFFSET(velocity, 60), 0, 0, DustID.Shadowflame);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].position += Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                Main.dust[dust].velocity = velocity * .2f;
+                Main.dust[dust].fadeIn = 1f;
+                int dust1 = Dust.NewDust(position.PositionOFFSET(velocity, 50), 0, 0, DustID.Shadowflame);
+                Main.dust[dust1].noGravity = true;
+                Main.dust[dust1].position += Main.rand.NextVector2CircularEdge(12.5f, 4.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                Main.dust[dust1].velocity = velocity * .2f;
+                Main.dust[dust1].fadeIn = 1f;
+                int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, 40), 0, 0, DustID.Shadowflame);
+                Main.dust[dust2].noGravity = true;
+                Main.dust[dust2].position += Main.rand.NextVector2CircularEdge(15, 5.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                Main.dust[dust2].velocity = velocity * .2f;
+                Main.dust[dust2].fadeIn = 1f;
+            }
         }
         public override void HoldItem(Player player)
         {
@@ -55,6 +78,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
         bool isAlreadyOutY = false;
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2CircularEdge(5f, 5f), 0, 0, DustID.Shadowflame);
+            Main.dust[dust].noGravity = true;
+            Main.dust[dust].velocity = Vector2.Zero;
+            Main.dust[dust].scale = .25f;
+            Main.dust[dust].fadeIn = 1;
             if (Projectile.direction == 1)
             {
                 DrawOffsetX = -5;
