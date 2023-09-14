@@ -696,7 +696,7 @@ namespace BossRush.Common.RoguelikeChange
                         npc.AddBuff(BuffID.Ichor, 300);
                         Player.Heal(1);
                     }
-                    ShadewoodArmorCD = 1;
+                    ShadewoodArmorCD = 180;
                 }
         }
         private void OnHitNPC_BorealWoodArmor(NPC target)

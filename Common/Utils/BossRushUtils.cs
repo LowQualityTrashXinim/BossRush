@@ -158,7 +158,6 @@ namespace BossRush
             npc = null;
             return false;
         }
-        //Main.npc.Where(e => e.active && CompareSquareFloatValue(e.Center, position, distance) && e.CanBeChasedBy() && !e.friendly && Collision.CanHitLine(position, 10, 10, e.position, e.width, e.height)).ToList();
         public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance)
         {
             npc = Main.npc.Where(npc =>

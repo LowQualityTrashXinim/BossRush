@@ -54,9 +54,9 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
-            Tooltip = 
+            Tooltip =
                 "+ Give you immunity to poison" +
-                "+ Make a poison aura around player";
+                "\n+ Make a poison aura around player";
             CanBeStack = false;
         }
         public override void UpdateEquip(Player player)
@@ -65,7 +65,14 @@ namespace BossRush.Contents.Perks
         }
         public override void Update(Player player)
         {
-            BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 100);
+            BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 150);
+            for (int i = 0; i < 2; i++)
+            {
+                int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(100, 100), 0, 0, DustID.Poisoned);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Vector2.Zero;
+                Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+            }
             if (npclist.Count > 0)
             {
                 foreach (NPC npc in npclist)
@@ -80,7 +87,9 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
-            Tooltip = "+ Give you immunity to On Fire !";
+            Tooltip =
+                "+ Give you immunity to On Fire !" +
+                "\n+ Make a poison aura around player";
             CanBeStack = false;
         }
         public override void UpdateEquip(Player player)
@@ -89,7 +98,21 @@ namespace BossRush.Contents.Perks
         }
         public override void Update(Player player)
         {
-
+            BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 150);
+            for (int i = 0; i < 2; i++)
+            {
+                int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(100, 100), 0, 0, DustID.Torch);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = -Vector2.UnitY * 4f;
+                Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+            }
+            if (npclist.Count > 0)
+            {
+                foreach (NPC npc in npclist)
+                {
+                    npc.AddBuff(BuffID.OnFire, 1);
+                }
+            }
         }
     }
     public class IllegalTrading : Perk
@@ -235,6 +258,13 @@ namespace BossRush.Contents.Perks
             {
                 int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
                 npc.StrikeNPC(npc.CalculateHitInfo(100 * StackAmount, direction, false, 10));
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(30,30);
+                Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
             }
         }
     }
