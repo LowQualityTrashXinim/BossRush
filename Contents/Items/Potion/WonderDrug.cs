@@ -1,10 +1,10 @@
-﻿using BossRush.Contents.Items.Artifact;
-using System;
+﻿using System;
 using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.Potion
 {
