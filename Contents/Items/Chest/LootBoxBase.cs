@@ -1077,9 +1077,16 @@ namespace BossRush.Contents.Items.Chest
             RangeChanceMutilplier = (float)tag["RangeChanceMulti"];
             MagicChanceMutilplier = (float)tag["MagicChanceMulti"];
             SummonChanceMutilplier = (float)tag["SummonChanceMulti"];
-            ModifyWeaponAmountAddition = (int)tag["ModifyWeaponAmountAddition"];
-            ModifyPotionTypeAmountAddition = (int)tag["ModifyPotionTypeAmountAddition"];
-            ModifyPotionNumberAmountAddition = (int)tag["ModifyPotionNumberAmountAddition"];
+            try
+            {
+                ModifyWeaponAmountAddition = (int)tag["ModifyWeaponAmountAddition"];
+                ModifyPotionTypeAmountAddition = (int)tag["ModifyPotionTypeAmountAddition"];
+                ModifyPotionNumberAmountAddition = (int)tag["ModifyPotionNumberAmountAddition"];
+            }
+            catch
+            {
+
+            }
         }
         public void ReceivePlayerSync(BinaryReader reader)
         {

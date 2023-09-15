@@ -161,6 +161,7 @@ Mods: {
 			WoodBowAttackTwo.DisplayName: Wood Bow Attack Two
 			GemStaffAttackOne.DisplayName: Gem Staff Attack One
 			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
+			ShadowMagicMissle.DisplayName: Shadow Magic Missle
 		}
 
 		NPCs: {

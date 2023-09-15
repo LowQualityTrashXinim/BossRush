@@ -81,7 +81,10 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool SuperFlareGun_Phaseblade = false;
 
+        public bool QuadDemonBlaster = false;
         public float QuadDemonBlaster_SpeedMultiplier = 1;
+
+        public bool MagicHandCannon_Flamelash = false;
 
         public bool GodAreEnraged = false;
         public int CooldownCheck = 999;
@@ -175,6 +178,8 @@ namespace BossRush.Contents.Items.Weapon
             SharpBoomerang_EnchantedBoomerang = false;
 
             SuperFlareGun_Phaseblade = false;
+
+            MagicHandCannon_Flamelash = false;
         }
         int check = 1;
         public override void PostUpdate()

@@ -1,8 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
 {
@@ -10,33 +12,58 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 20, 30, false);
+            Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 15, 30, false);
             Item.scale = .75f;
+            Item.rare = 3;
+        }
+        public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
+        {
+            if (modplayer.MagicHandCannon_Flamelash)
+                tooltips.Add(new TooltipLine(Mod, "MagicHandCannon_Flamelash", $"[i:{ItemID.Flamelash}] When magic shadow flame hit the border, shoot out a home in shadow magic missle"));
+        }
+        public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            position = position.PositionOFFSET(velocity, 50);
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             CanShootItem = true;
             for (int i = 0; i < 30; i++)
             {
-                int dust = Dust.NewDust(position.PositionOFFSET(velocity, 60), 0, 0, DustID.Shadowflame);
+                int dust = Dust.NewDust(position.PositionOFFSET(velocity, 10), 0, 0, DustID.Shadowflame);
                 Main.dust[dust].noGravity = true;
-                Main.dust[dust].position += Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
-                Main.dust[dust].velocity = velocity * .2f;
+                Main.dust[dust].position += Main.rand.NextVector2CircularEdge(5, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                Main.dust[dust].velocity = velocity * .5f;
                 Main.dust[dust].fadeIn = 1f;
-                int dust1 = Dust.NewDust(position.PositionOFFSET(velocity, 50), 0, 0, DustID.Shadowflame);
+            }
+            for (int i = 0; i < 60; i++)
+            {
+                int dust1 = Dust.NewDust(position, 0, 0, DustID.Shadowflame);
                 Main.dust[dust1].noGravity = true;
                 Main.dust[dust1].position += Main.rand.NextVector2CircularEdge(12.5f, 4.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
-                Main.dust[dust1].velocity = velocity * .2f;
+                Main.dust[dust1].velocity = velocity * .35f;
                 Main.dust[dust1].fadeIn = 1f;
-                int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, 40), 0, 0, DustID.Shadowflame);
+                int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, -5), 0, 0, DustID.Shadowflame);
                 Main.dust[dust2].noGravity = true;
-                Main.dust[dust2].position += Main.rand.NextVector2CircularEdge(15, 5.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                Main.dust[dust2].position += Main.rand.NextVector2CircularEdge(20, 5.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
                 Main.dust[dust2].velocity = velocity * .2f;
                 Main.dust[dust2].fadeIn = 1f;
             }
+            for (int i = 0; i < 100; i++)
+            {
+                Vector2 rotate = Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2);
+                int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, -10), 0, 0, DustID.Shadowflame);
+                Main.dust[dust2].noGravity = true;
+                Main.dust[dust2].velocity = rotate;
+                Main.dust[dust2].fadeIn = 1f;
+            }
         }
-        public override void HoldItem(Player player)
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
+            if (player.HasItem(ItemID.Flamelash))
+            {
+                modplayer.MagicHandCannon_Flamelash = true;
+            }
             for (int i = 0; i < 150; i++)
             {
                 Vector2 SquarePosition = player.Center + Main.rand.NextVector2RectangleEdge(400, 400);
@@ -78,11 +105,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
         bool isAlreadyOutY = false;
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
-            int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2CircularEdge(5f, 5f), 0, 0, DustID.Shadowflame);
-            Main.dust[dust].noGravity = true;
-            Main.dust[dust].velocity = Vector2.Zero;
-            Main.dust[dust].scale = .25f;
-            Main.dust[dust].fadeIn = 1;
+            //int dust = Dust.NewDust(Projectile.position + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.Shadowflame);
+            //Main.dust[dust].noGravity = true;
+            //Main.dust[dust].velocity = Vector2.Zero;
+            //Main.dust[dust].scale = Main.rand.NextFloat(.5f, 2f);
             if (Projectile.direction == 1)
             {
                 DrawOffsetX = -5;
@@ -92,12 +118,14 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                 DrawOffsetX = 0;
             }
             SelectFrame();
+            bool ShootProjectile = false;
             if (!BossRushUtils.Vector2TouchLine(Projectile.Center.X, 400, player.Center.X))
             {
                 if (!isAlreadyOutX)
                 {
                     Projectile.velocity.X = -Projectile.velocity.X;
                     isAlreadyOutX = true;
+                    ShootProjectile = true;
                 }
             }
             else
@@ -110,14 +138,19 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                 {
                     Projectile.velocity.Y = -Projectile.velocity.Y;
                     isAlreadyOutY = true;
+                    ShootProjectile = true;
                 }
             }
             else
             {
                 isAlreadyOutY = false;
             }
+            if (ShootProjectile && modplayer.MagicHandCannon_Flamelash)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2(), ModContent.ProjectileType<ShadowMagicMissle>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            }
             Projectile.rotation = Projectile.velocity.ToRotation();
-            Projectile.position += player.velocity;
+            //Projectile.position += player.velocity;
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -145,6 +178,53 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                     Projectile.frame = 0;
                 }
             }
+        }
+    }
+    public class ShadowMagicMissle : ModProjectile
+    {
+        public override string Texture => BossRushTexture.SMALLWHITEBALL;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 50;
+            ProjectileID.Sets.TrailingMode[Type] = 0;
+        }
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 11;
+            Projectile.DamageType = DamageClass.Magic;
+            Projectile.tileCollide = false;
+            Projectile.friendly = true;
+            Projectile.timeLeft = 600;
+            Projectile.penetrate = 1;
+            Projectile.extraUpdates = 6;
+        }
+        public override void AI()
+        {
+            int dust = Dust.NewDust(Projectile.position + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.Shadowflame);
+            Main.dust[dust].noGravity = true;
+            Main.dust[dust].velocity = Vector2.Zero;
+            Main.dust[dust].scale = Main.rand.NextFloat(.5f, 2f);
+            Projectile.alpha = (int)MathHelper.Lerp(0, 255, (600 - Projectile.timeLeft) / 600f);
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, 600))
+            {
+                Vector2 distance = npc.Center - Projectile.Center;
+                Projectile.velocity += distance.SafeNormalize(Vector2.Zero) * .01f;
+                Projectile.velocity = Projectile.velocity.LimitedVelocity(distance.Length() * .5f);
+                Projectile.timeLeft = 600;
+            }
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(BuffID.ShadowFlame, 180);
+        }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return new Color(155, 0, 255);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.DrawTrail(lightColor, .02f);
+            return base.PreDraw(ref lightColor);
         }
     }
 }

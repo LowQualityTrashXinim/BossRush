@@ -826,7 +826,14 @@ namespace BossRush.Contents.Items.Card
             SentrySlot = (int)tag["SentrySlot"];
             Thorn = (float)tag["Thorn"];
             CardTracker = (int)tag["CardTracker"];
-            CardLuck = (int)tag["CardLuck"];
+            if(tag.TryGet<int>("CardLuck", out int cardluck))
+            {
+                CardLuck = cardluck;
+            }
+            else
+            {
+                CardLuck = 0;
+            }
             listCursesID = tag.Get<List<int>>("CursesID");
         }
         public void ReceivePlayerSync(BinaryReader reader)
