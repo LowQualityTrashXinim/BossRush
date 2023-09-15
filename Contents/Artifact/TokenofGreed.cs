@@ -5,17 +5,15 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Artifact
 {
-    internal class TokenofGreed : ModItem, IArtifactItem
+    internal class TokenofGreed : ArtifactModItem
     {
-        public int ArtifactID => ArtifactItemID.TokenOfGreed;
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<EternalWealth>();
         }
-        public override void SetDefaults()
+        public override void ArtifactSetDefault()
         {
-            Item.BossRushDefaultToConsume(32, 32);
-            Item.scale = .5f;
+            width = height = 32;
             Item.rare = 9;
         }
     }

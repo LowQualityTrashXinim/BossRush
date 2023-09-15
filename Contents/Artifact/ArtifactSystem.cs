@@ -9,7 +9,6 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Utils;
 using BossRush.Common;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Projectiles;
@@ -18,6 +17,53 @@ using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Artifact
 {
+    public abstract class ArtifactModItem : ModItem
+    {
+        public int width, height;
+        public virtual void ArtifactSetDefault() { }
+        public override void SetDefaults()
+        {
+            ArtifactSetDefault();
+            Item.BossRushDefaultToConsume(width, height);
+            Item.UseSound = SoundID.Zombie105;
+        }
+        protected virtual bool CanBeCraft => true;
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
+            tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 artifact can be consume"));
+            if (artifactplayer.ArtifactDefinedID != ArtifactPlayerHandleLogic.ArtifactDefaultID)
+            {
+                TooltipLine line = new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact");
+                line.OverrideColor = Color.DarkRed;
+                tooltips.Add(line);
+            }
+        }
+        public override bool? UseItem(Player player)
+        {
+            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = Type;
+            //if (item.ModItem is RandomArtifactChooser)
+            //{
+            //    BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, player.GetModPlayer<ArtifactPlayerHandleLogic>().ToStringArtifact());
+            //}
+            return true;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+
+            return artifactplayer.ArtifactDefinedID == ArtifactPlayerHandleLogic.ArtifactDefaultID;
+        }
+        public override void AddRecipes()
+        {
+            if (CanBeCraft)
+            {
+                CreateRecipe()
+                    .AddIngredient(ModContent.ItemType<BrokenArtifact>())
+                    .Register();
+            }
+        }
+    }
     internal class ArtifactSystem : ModSystem
     {
         public override void AddRecipes()
@@ -31,76 +77,13 @@ namespace BossRush.Contents.Artifact
                 ModItem item = itemSample.Value.ModItem;
                 if (item is IArtifactItem)
                 {
-                    if (item is SkillIssuedArtifact)
-                    {
-                        item.CreateRecipe()
-                        .AddIngredient(ModContent.ItemType<BrokenArtifact>())
-                        .AddIngredient(ModContent.ItemType<PowerEnergy>())
-                        .AddIngredient(ModContent.ItemType<SynergyEnergy>())
-                        .AddIngredient(ModContent.ItemType<WoodenLootBox>())
-                        .Register();
-                        continue;
-                    }
-                    if (item is BrokenArtifact || item is EternalWealth)
+                    if (item is EternalWealth)
                         continue;
                     if (item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
                         continue;
                     item.CreateRecipe()
                         .AddIngredient(ModContent.ItemType<BrokenArtifact>())
                         .Register();
-                }
-            }
-        }
-    }
-    class ArtifactGlobalItem : GlobalItem
-    {
-        public override void SetDefaults(Item entity)
-        {
-            base.SetDefaults(entity);
-            if (entity.ModItem is IArtifactItem)
-            {
-                entity.UseSound = SoundID.Zombie105;
-            }
-        }
-        public override bool? UseItem(Item item, Player player)
-        {
-            if (item.ModItem is IArtifactItem moditem)
-            {
-                player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = moditem.ArtifactID;
-                if (item.ModItem is RandomArtifactChooser)
-                {
-                    BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, player.GetModPlayer<ArtifactPlayerHandleLogic>().ToStringArtifact());
-                }
-                return true;
-            }
-            return base.UseItem(item, player);
-        }
-        public override bool CanUseItem(Item item, Player player)
-        {
-            ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-            if (item.ModItem is IArtifactItem)
-            {
-                if (item.consumable)
-                {
-                    return artifactplayer.ArtifactDefinedID == ArtifactPlayerHandleLogic.ArtifactDefaultID;
-                }
-            }
-            return base.CanUseItem(item, player);
-        }
-        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
-        {
-            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
-            if (item.ModItem is IArtifactItem)
-            {
-                if (item.consumable)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "ArtifactCursed", "Only 1 artifact can be consume"));
-                }
-                if (artifactplayer.ArtifactDefinedID != ArtifactPlayerHandleLogic.ArtifactDefaultID)
-                {
-                    TooltipLine line = new TooltipLine(Mod, "ArtifactAlreadyConsumed", "You can't no longer consume anymore artifact");
-                    line.OverrideColor = Color.DarkRed;
-                    tooltips.Add(line);
                 }
             }
         }
@@ -117,13 +100,13 @@ namespace BossRush.Contents.Artifact
 
         public const short EternalWealth = 998;
     }
-    class ArtifactPlayerHandleLogic : ModPlayer
+    public abstract class ArtifactPlayerHandleLogic : ModPlayer
     {
         public const int ArtifactDefaultID = 999;
         public int ArtifactDefinedID = ArtifactDefaultID;//setting to 999 mean it just do nothing
         bool Greed = false;//ID = 1
         bool Pride = false;//ID = 2
-        bool Vampire = false;//ID = 3
+        //ID = 3
         bool Earth = false;// ID = 4
         bool FateDice = false;// ID = 5
         bool BootofSpeed = false;// ID = 6
@@ -141,10 +124,10 @@ namespace BossRush.Contents.Artifact
         public int BadBuffIndex = -1;
         public string ToStringArtifact()
         {
+            if(ArtifactDefinedID == ModContent.ItemType<TokenofGreed>())
+                return "Token of Greed";
             switch (ArtifactDefinedID)
             {
-                case 1:
-                    return "Token of Greed";
                 case 2:
                     return "Token of Pride";
                 case 3:
@@ -170,7 +153,6 @@ namespace BossRush.Contents.Artifact
             }
             Greed = false;
             Pride = false;
-            Vampire = false;
             Earth = false;
             FateDice = false;
             BootofSpeed = false;
@@ -182,9 +164,6 @@ namespace BossRush.Contents.Artifact
                     break;
                 case ArtifactItemID.TokenOfPride:
                     Pride = true;
-                    break;
-                case ArtifactItemID.VampirismCrystal:
-                    Vampire = true;
                     break;
                 case ArtifactItemID.HeartOfEarth:
                     Earth = true;
@@ -206,10 +185,6 @@ namespace BossRush.Contents.Artifact
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             base.ModifyMaxStats(out health, out mana);
-            if (Vampire)
-            {
-                health.Base = -(Player.statLifeMax * 0.55f);
-            }
             if (Earth)
             {
                 health.Base = 100 + Player.statLifeMax * 2;
@@ -228,10 +203,6 @@ namespace BossRush.Contents.Artifact
         }
         public override void PostUpdate()
         {
-            if (Vampire)
-            {
-                Player.AddBuff(BuffID.PotionSickness, 600);
-            }
             if (Pride)
             {
                 chestmodplayer.finalMultiplier -= .5f;
@@ -398,23 +369,7 @@ namespace BossRush.Contents.Artifact
                 damage += .45f + reward;
             }
         }
-        int vampirecountRange = 0;
-        private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1)
-        {
-            if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy)
-            {
-                int HP = (int)(Main.rand.Next(rangeMin, rangeMax) * multiplier);
-                int HPsimulation = Player.statLife + HP;
-                if (HPsimulation < Player.statLifeMax2)
-                {
-                    Player.Heal(HP);
-                }
-                else
-                {
-                    Player.statLife = Player.statLifeMax2;
-                }
-            }
-        }
+
         public override bool CanUseItem(Item item)
         {
             if (Earth)
@@ -518,37 +473,12 @@ namespace BossRush.Contents.Artifact
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Vampire)
-            {
-                LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
-            }
+            base.OnHitNPCWithItem(item, target, hit, damageDone); 
             if (GoodBuffIndex == 5)
             {
                 Vector2 pos = target.Center - Main.rand.NextVector2CircularEdge(100, 100);
                 Projectile.NewProjectile(Player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 3f, ModContent.ProjectileType<ArtifactSwordSlashProjectile>(), item.damage, 0, Player.whoAmI);
             }
-        }
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Vampire)
-            {
-                vampirecountRange++;
-                if (vampirecountRange >= 3)
-                {
-                    LifeSteal(target, 1, 5);
-                    vampirecountRange = 0;
-                }
-            }
-        }
-        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
-        {
-            if (!Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire)
-            {
-                Player.Heal(Player.statLifeMax2);
-                Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
-                return false;
-            }
-            return true;
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {

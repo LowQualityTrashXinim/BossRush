@@ -1,17 +1,14 @@
 ﻿using Terraria;
+using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
-using System.IO;
-using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Artifact
 {
-    internal class SkillIssuedArtifact : ModItem, IArtifactItem
+    internal class SkillIssuedArtifact : ModItem
     {
-        public int ArtifactID => 999;
-
         public override void SetDefaults()
         {
             Item.width = 80;
@@ -42,7 +39,7 @@ namespace BossRush.Contents.Artifact
     public class SkillIssuedArtifactPlayer : ModPlayer
     {
         public int SkillIssue = 0;
-        public bool SkillIssuePlayer;
+        public bool SkillIssuePlayer = false;
         public override void ResetEffects()
         {
             SkillIssuePlayer = false;

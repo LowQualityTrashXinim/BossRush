@@ -1,7 +1,5 @@
-﻿using BossRush.Contents.Perks;
-using System;
+﻿using Terraria.ModLoader;
 using System.Collections.Generic;
-using Terraria.ModLoader;
 
 namespace BossRush.Contents.WeaponModification
 {
