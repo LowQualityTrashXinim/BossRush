@@ -4,8 +4,9 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
 using System.IO;
+using BossRush.Contents.Items;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
     internal class SkillIssuedArtifact : ModItem, IArtifactItem
     {
@@ -27,7 +28,7 @@ namespace BossRush.Contents.Items.Artifact
             tooltips.Add(new TooltipLine(Mod, "SkillIssueEffect", "Effect : NONE"));
             foreach (var item in tooltips)
             {
-                if(item.Name == "SkillIssue")
+                if (item.Name == "SkillIssue")
                 {
                     item.OverrideColor = Main.DiscoColor;
                 }

@@ -3,7 +3,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
     internal class ArtifactRemover : ModItem
     {

@@ -1,5 +1,4 @@
-﻿using BossRush.Contents.Items.Artifact;
-using BossRush.Contents.Items.Card;
+﻿using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
@@ -11,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.aDebugItem
 {

@@ -5,7 +5,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Artifact;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.Card
 {

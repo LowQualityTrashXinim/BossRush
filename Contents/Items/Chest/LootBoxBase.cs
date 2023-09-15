@@ -12,8 +12,8 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.Artifact;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.Chest
 {

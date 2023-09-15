@@ -12,10 +12,10 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Common
 {

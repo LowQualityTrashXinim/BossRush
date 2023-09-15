@@ -2,7 +2,6 @@
 using System.IO;
 using Terraria.ID;
 using BossRush.Common.ExtraChallenge;
-using BossRush.Contents.Items.Artifact;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Chest;
@@ -10,6 +9,7 @@ using BossRush.Contents.Items.Card;
 using BossRush.Common;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Common.RoguelikeChange;
+using BossRush.Contents.Artifact;
 
 namespace BossRush
 {

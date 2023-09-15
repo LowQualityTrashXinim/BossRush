@@ -1,8 +1,9 @@
-﻿using Terraria;
+﻿using BossRush.Contents.Items;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
     internal class TokenofGreed : ModItem, IArtifactItem
     {

@@ -1,8 +1,9 @@
 ﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Contents.Items;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
     internal class EternalWealth : ModItem, IArtifactItem
     {

@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Items.Artifact;
+﻿using BossRush.Contents.Artifact;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;

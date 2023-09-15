@@ -1,8 +1,8 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Contents.Items.Artifact;
 using BossRush.Common.Enraged;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Common
 {

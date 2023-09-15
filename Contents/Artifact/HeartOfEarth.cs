@@ -2,18 +2,19 @@
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Contents.Items;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
-    internal class FateDecider : ModItem, IArtifactItem
+    internal class HeartOfEarth : ModItem, IArtifactItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
 
-        public int ArtifactID => ArtifactItemID.FateDecider;
+        public int ArtifactID => ArtifactItemID.HeartOfEarth;
 
         public override void SetDefaults()
         {
-            Item.BossRushDefaultToConsume(32, 32);
+            Item.BossRushDefaultToConsume(32, 58);
             Item.rare = ItemRarityID.Cyan;
         }
     }

@@ -4,8 +4,9 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Terraria;
+using BossRush.Contents.Items;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
     internal class MagicalCardDeck : ModItem, IArtifactItem
     {

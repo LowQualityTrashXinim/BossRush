@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Terraria.ModLoader;
 using BossRush.Common;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.Artifact;
 using System.Security.Cryptography.X509Certificates;
+using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.Chest
 {

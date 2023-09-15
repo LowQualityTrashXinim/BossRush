@@ -14,8 +14,9 @@ using BossRush.Common;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Projectiles;
 using BossRush.Texture;
+using BossRush.Contents.Items;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
     internal class ArtifactSystem : ModSystem
     {
@@ -508,7 +509,7 @@ namespace BossRush.Contents.Items.Artifact
                     Vector2 newpos = Main.rand.NextVector2Circular(100, 100);
                     Projectile.NewProjectile(source, newpos, (Main.MouseWorld - newpos).SafeNormalize(Vector2.Zero) * item.shootSpeed, type, damage, knockback, Player.whoAmI);
                 }
-                if(BadBuffIndex == 3)
+                if (BadBuffIndex == 3)
                 {
                     Player.statLife -= item.mana;
                 }

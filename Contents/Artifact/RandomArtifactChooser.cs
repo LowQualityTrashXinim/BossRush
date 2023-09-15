@@ -1,12 +1,17 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Contents.Items;
+using BossRush.Texture;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Artifact
+namespace BossRush.Contents.Artifact
 {
-    internal class NormalizeArtifact : ModItem, IArtifactItem
+    internal class RandomArtifactChooser : ModItem, IArtifactItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public int ArtifactID => 0;
+
+        public int ArtifactID => Main.rand.Next(8);
+
         public override void SetDefaults()
         {
             Item.BossRushDefaultToConsume(32, 32);
