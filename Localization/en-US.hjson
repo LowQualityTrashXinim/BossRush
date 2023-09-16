@@ -1761,5 +1761,6 @@ Mods: {
 		}
 
 		Prefixes.BasePrefix.DisplayName: Base Prefix
+		"Keybinds.Weapon Modification.DisplayName": Weapon  Modification
 	}
 }

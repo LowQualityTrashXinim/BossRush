@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Artifact
 {
@@ -20,12 +21,12 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    public class PridePlayer : ArtifactPlayerHandleLogic
+    public class PridePlayer : ModPlayer
     {
-        bool Pride = false;
+        bool Pride = false; protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void ResetEffects()
         {
-            Pride = ArtifactDefinedID == ModContent.ItemType<TokenofGreed>();
+            Pride = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<TokenofPride>();
         }
         public override void PostUpdate()
         {

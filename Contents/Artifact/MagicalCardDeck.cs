@@ -20,12 +20,12 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    class MagicalCardDeckPlayer : ArtifactPlayerHandleLogic
+    class MagicalCardDeckPlayer : ModPlayer
     {
         public bool MagicalCardDeck = false;
         public override void ResetEffects()
         {
-            MagicalCardDeck = ArtifactDefinedID == ModContent.ItemType<MagicalCardDeck>();
+            MagicalCardDeck = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<MagicalCardDeck>();
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.BuffAndDebuff;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common;
 using BossRush.Contents.Projectiles;
@@ -39,17 +36,31 @@ namespace BossRush.Contents.Artifact
         }
         public override bool? UseItem(Player player)
         {
+            if (Item.ModItem is BrokenArtifact)
+            {
+                return base.UseItem(player);
+            }
             player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = Type;
-            //if (item.ModItem is RandomArtifactChooser)
-            //{
-            //    BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, player.GetModPlayer<ArtifactPlayerHandleLogic>().ToStringArtifact());
-            //}
+            if (Item.ModItem is RandomArtifactChooser)
+            {
+                player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = Main.rand.Next(new int[]
+                {
+                    ModContent.ItemType<TokenofGreed>(),
+                    ModContent.ItemType<TokenofPride>(),
+                    ModContent.ItemType<FateDecider>(),
+                    ModContent.ItemType<HeartOfEarth>(),
+                    ModContent.ItemType<NormalizeArtifact>(),
+                    ModContent.ItemType<VampirismCrystal>(),
+                    ModContent.ItemType<BootOfSpeedManipulation>()
+                });
+                //BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, player.GetModPlayer<ArtifactPlayerHandleLogic>().ToStringArtifact());
+                return true;
+            }
             return true;
         }
         public override bool CanUseItem(Player player)
         {
             ArtifactPlayerHandleLogic artifactplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-
             return artifactplayer.ArtifactDefinedID == ArtifactPlayerHandleLogic.ArtifactDefaultID;
         }
         public override void AddRecipes()
@@ -62,102 +73,15 @@ namespace BossRush.Contents.Artifact
             }
         }
     }
-
-    //foreach (var itemSample in ContentSamples.ItemsByType)
-    //{
-    //    ModItem item = itemSample.Value.ModItem;
-    //    if (item is IArtifactItem)
-    //    {
-    //        if (item is EternalWealth)
-    //            continue;
-    //        if (item is MagicalCardDeck && !ModContent.GetInstance<BossRushModConfig>().Nightmare)
-    //            continue;
-    //    }
-
-    class ArtifactItemID
-    {
-        public const short TokenOfGreed = 1;
-        public const short TokenOfPride = 2;
-        public const short VampirismCrystal = 3;
-        public const short HeartOfEarth = 4;
-        public const short FateDecider = 5;
-        public const short BootOfSpeedManipulation = 6;
-        public const short MagicalCardDeck = 7;
-
-        public const short EternalWealth = 998;
-    }
-    public abstract class ArtifactPlayerHandleLogic : ModPlayer
+    public class ArtifactPlayerHandleLogic : ModPlayer
     {
         public const int ArtifactDefaultID = 999;
         public int ArtifactDefinedID = ArtifactDefaultID;//setting to 999 mean it just do nothing
-        //ID = 1
-        //ID = 2
-        //ID = 3
-        // ID = 4
-        // ID = 5
-        // ID = 6
-        // ID = 7
-
-        bool EternalWealth = false;
-
-        int timer = 0;
-        Vector2[] oldPos = new Vector2[5];
-        int counterOldPos = 0;
-        int MidasInfection = 0;
-
-        protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void PreUpdate()
         {
             if (!ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                ArtifactDefinedID = 0;
-            }
-        }
-        public override void PostUpdate()
-        {
-            if (EternalWealth)
-            {
-                chestmodplayer.finalMultiplier += 2;
-                timer = BossRushUtils.CoolDown(timer);
-                if (timer <= 0)
-                {
-                    if (counterOldPos >= oldPos.Length - 1)
-                    {
-                        counterOldPos = 0;
-                    }
-                    else
-                    {
-                        counterOldPos++;
-                    }
-                    oldPos[counterOldPos] = Player.Center;
-                    timer = 600;
-                }
-                float distance = 500;
-                bool IsInField = false;
-                foreach (Vector2 vec in oldPos)
-                {
-                    if (Player.Center.IsCloseToPosition(vec, distance))
-                    {
-                        IsInField = true;
-                        MidasInfection++;
-                        if (MidasInfection >= 180)
-                            Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
-                    }
-                    for (int i = 0; i < 25; i++)
-                    {
-                        int dust = Dust.NewDust(vec + Main.rand.NextVector2Circular(distance, distance), 0, 0, DustID.GoldCoin);
-                        Main.dust[dust].noGravity = true;
-                        Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
-                    }
-                    for (int i = 0; i < 25; i++)
-                    {
-                        int dust = Dust.NewDust(vec + Main.rand.NextVector2CircularEdge(distance, distance), 0, 0, DustID.GoldCoin);
-                        Main.dust[dust].noGravity = true;
-                        Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
-                    }
-                }
-                if (!IsInField)
-                    MidasInfection = BossRushUtils.CoolDown(MidasInfection);
+                ArtifactDefinedID = ModContent.ItemType<NormalizeArtifact>();
             }
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
@@ -235,7 +159,7 @@ namespace BossRush.Contents.Artifact
             if (projectile.minion)
             {
                 Player player = Main.player[projectile.owner];
-                ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+                FateDeciderPlayer modplayer = player.GetModPlayer<FateDeciderPlayer>();
                 if (modplayer.GoodBuffIndex == 4)
                 {
                     if (Main.rand.NextBool(10))

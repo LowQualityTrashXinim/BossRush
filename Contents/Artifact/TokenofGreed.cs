@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Contents.Items.Chest;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -16,12 +17,12 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    public class GreedPlayer : ArtifactPlayerHandleLogic
+    public class GreedPlayer : ModPlayer
     {
-        bool Greed = false;
+        bool Greed = false; protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void ResetEffects()
         {
-            Greed = ArtifactDefinedID == ModContent.ItemType<TokenofGreed>();
+            Greed = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<TokenofGreed>();
         }
         public override void PostUpdate()
         {

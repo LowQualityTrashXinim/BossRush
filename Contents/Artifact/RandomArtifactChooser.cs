@@ -1,21 +1,13 @@
-﻿using BossRush.Contents.Items;
-using BossRush.Texture;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using BossRush.Texture;
 
 namespace BossRush.Contents.Artifact
 {
-    internal class RandomArtifactChooser : ModItem, IArtifactItem
+    internal class RandomArtifactChooser : ArtifactModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
-
-        public int ArtifactID => Main.rand.Next(8);
-
-        public override void SetDefaults()
+        public override void ArtifactSetDefault()
         {
-            Item.BossRushDefaultToConsume(32, 32);
-            Item.rare = 9;
+            width = height = 32;
         }
     }
 }

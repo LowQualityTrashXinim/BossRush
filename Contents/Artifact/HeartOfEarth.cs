@@ -16,12 +16,12 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    class HeartOfEarthPlayer : ArtifactPlayerHandleLogic
+    class HeartOfEarthPlayer : ModPlayer
     {
         bool Earth = false;
         public override void ResetEffects()
         {
-            Earth = ArtifactDefinedID == ModContent.ItemType<HeartOfEarth>();
+            Earth = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<HeartOfEarth>();
         }
         int EarthCD = 0;
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)

@@ -5,6 +5,7 @@ using BossRush.Contents.Items;
 using Terraria.ID;
 using System;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.Artifact
 {
@@ -17,7 +18,7 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    class EternalWealthPlayer : ArtifactPlayerHandleLogic
+    class EternalWealthPlayer : ModPlayer
     {
         bool EternalWealth = false;
 
@@ -27,8 +28,9 @@ namespace BossRush.Contents.Artifact
         int MidasInfection = 0;
         public override void ResetEffects()
         {
-            EternalWealth = ArtifactDefinedID == ModContent.ItemType<EternalWealth>();
+            EternalWealth = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<EternalWealth>();
         }
+        protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void PostUpdate()
         {
             if (EternalWealth)

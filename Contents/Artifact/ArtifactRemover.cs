@@ -19,7 +19,7 @@ namespace BossRush.Contents.Artifact
         public override bool? UseItem(Player player)
         {
             ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
-            if (modplayer.ArtifactDefinedID == ModContent.ItemType<EternalWealth>())
+            if (modplayer.ArtifactDefinedID == ModContent.ItemType<EternalWealth>() && !player.IsDebugPlayer())
             {
                 BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "Fail to remove");
                 return true;

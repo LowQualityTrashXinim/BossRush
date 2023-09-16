@@ -9,7 +9,6 @@ namespace BossRush.Contents.Artifact
 {
     internal class VampirismCrystal : ArtifactModItem
     {
-        public int ArtifactID => ArtifactItemID.VampirismCrystal;
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 7));
@@ -21,13 +20,13 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    public class VampirePlayer : ArtifactPlayerHandleLogic
+    public class VampirePlayer : ModPlayer
     {
         bool Vampire = false;
         int vampirecountRange = 0;
         public override void ResetEffects()
         {
-            Vampire = ArtifactDefinedID == ModContent.ItemType<VampirismCrystal>();
+            Vampire = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<VampirismCrystal>();
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {

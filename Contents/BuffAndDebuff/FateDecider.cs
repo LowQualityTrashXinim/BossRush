@@ -15,7 +15,7 @@ namespace BossRush.Contents.BuffAndDebuff
         public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
         {
             Player player = Main.LocalPlayer;
-            ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            FateDeciderPlayer modplayer = player.GetModPlayer<FateDeciderPlayer>();
             tip = modplayer.GoodEffectString() + "\n" + modplayer.BadEffectString();
         }
         public override void Update(Player player, ref int buffIndex)

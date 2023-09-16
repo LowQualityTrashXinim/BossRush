@@ -17,7 +17,7 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    class FateDeciderPlayer : ArtifactPlayerHandleLogic
+    class FateDeciderPlayer : ModPlayer
     {
         bool FateDice = false;
         bool IsBuffCurrentlyActive = false;
@@ -25,13 +25,18 @@ namespace BossRush.Contents.Artifact
         public int BadBuffIndex = -1;
         public override void ResetEffects()
         {
-            FateDice = ArtifactDefinedID == ModContent.ItemType<FateDecider>();
+            FateDice = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<FateDecider>();
         }
         public override void PostUpdate()
         {
             if (FateDice)
             {
                 FateDeciderEffect();
+            }
+            else
+            {
+                GoodBuffIndex = -1;
+                BadBuffIndex = -1;
             }
         }
         private void FateDeciderEffect()

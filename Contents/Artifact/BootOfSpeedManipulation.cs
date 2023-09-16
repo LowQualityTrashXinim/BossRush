@@ -14,12 +14,12 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    class BootSpeedPlayer : ArtifactPlayerHandleLogic
+    class BootSpeedPlayer : ModPlayer
     {
         bool BootofSpeed = false;
         public override void ResetEffects()
         {
-            BootofSpeed = ArtifactDefinedID == ModContent.ItemType<BootOfSpeedManipulation>();
+            BootofSpeed = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<BootOfSpeedManipulation>();
             if (BootofSpeed)
             {
                 Player.moveSpeed += 1f;

@@ -49,7 +49,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ArtifactPlayerHandleLogic>().MagicalCardDeck;
+                return info.player.GetModPlayer<MagicalCardDeckPlayer>().MagicalCardDeck;
             }
             return false;
         }
