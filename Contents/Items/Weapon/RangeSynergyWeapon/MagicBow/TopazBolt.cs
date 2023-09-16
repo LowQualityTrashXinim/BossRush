@@ -23,11 +23,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            for (int i = 0; i < 5; i++)
+            int amountrand = Main.rand.Next(1, 3);
+            for (int i = 0; i < amountrand; i++)
             {
-                Vector2 RandomCircular = Main.rand.NextVector2Circular(10f, 10f);
-                Vector2 newVelocity = new Vector2(RandomCircular.X, -10 + RandomCircular.Y);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, newVelocity, ModContent.ProjectileType<TopazGemP>(), Projectile.damage, 0, Projectile.owner);
+            Vector2 RandomCircular = Main.rand.NextVector2Circular(10f, 10f);
+            Vector2 newVelocity = new Vector2(RandomCircular.X, -10 + RandomCircular.Y);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, newVelocity, ModContent.ProjectileType<TopazGemP>(), Projectile.damage, 0, Projectile.owner);
             }
             return true;
         }
@@ -48,7 +49,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.damage -= 1;
-            target.immune[Projectile.owner] = 3;
         }
 
         public override bool PreDraw(ref Color lightColor)

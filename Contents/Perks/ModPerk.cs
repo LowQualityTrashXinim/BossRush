@@ -285,19 +285,6 @@ namespace BossRush.Contents.Perks
             player.QuickSpawnItem(player.GetSource_FromThis(), type);
         }
     }
-    //public class GodGiveDice : Perk
-    //{
-    //    public override void SetDefaults()
-    //    {
-    //        CanBeStack = false;
-    //        Tooltip =
-    //            "+ God give you a dice";
-    //    }
-    //    public override void OnChoose(Player player)
-    //    {
-    //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
-    //    }
-    //}
     public class ProjectileProtection : Perk
     {
         public override void SetDefaults()
@@ -355,4 +342,17 @@ namespace BossRush.Contents.Perks
             player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CelestialWrath>());
         }
     }
+    //public class GodGiveDice : Perk
+    //{
+    //    public override void SetDefaults()
+    //    {
+    //        CanBeStack = false;
+    //        Tooltip =
+    //            "+ God give you a dice";
+    //    }
+    //    public override void OnChoose(Player player)
+    //    {
+    //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
+    //    }
+    //}
 }
