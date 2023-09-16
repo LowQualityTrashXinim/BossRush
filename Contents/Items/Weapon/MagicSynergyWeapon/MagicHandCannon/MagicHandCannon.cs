@@ -28,34 +28,34 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             CanShootItem = true;
-            for (int i = 0; i < 30; i++)
-            {
-                int dust = Dust.NewDust(position.PositionOFFSET(velocity, 10), 0, 0, DustID.Shadowflame);
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].position += Main.rand.NextVector2CircularEdge(5, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
-                Main.dust[dust].velocity = velocity * .5f;
-                Main.dust[dust].fadeIn = 1f;
-            }
-            for (int i = 0; i < 60; i++)
-            {
-                int dust1 = Dust.NewDust(position, 0, 0, DustID.Shadowflame);
-                Main.dust[dust1].noGravity = true;
-                Main.dust[dust1].position += Main.rand.NextVector2CircularEdge(12.5f, 4.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
-                Main.dust[dust1].velocity = velocity * .35f;
-                Main.dust[dust1].fadeIn = 1f;
-                int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, -5), 0, 0, DustID.Shadowflame);
-                Main.dust[dust2].noGravity = true;
-                Main.dust[dust2].position += Main.rand.NextVector2CircularEdge(20, 5.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
-                Main.dust[dust2].velocity = velocity * .2f;
-                Main.dust[dust2].fadeIn = 1f;
-            }
             for (int i = 0; i < 100; i++)
             {
+                if (i < 30)
+                {
+                    int dust = Dust.NewDust(position.PositionOFFSET(velocity, 10), 0, 0, DustID.Shadowflame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].position += Main.rand.NextVector2CircularEdge(5, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                    Main.dust[dust].velocity = velocity * .5f;
+                    Main.dust[dust].fadeIn = 1f;
+                }
+                if (i < 60)
+                {
+                    int dust1 = Dust.NewDust(position, 0, 0, DustID.Shadowflame);
+                    Main.dust[dust1].noGravity = true;
+                    Main.dust[dust1].position += Main.rand.NextVector2CircularEdge(12.5f, 4.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                    Main.dust[dust1].velocity = velocity * .35f;
+                    Main.dust[dust1].fadeIn = 1f;
+                    int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, -5), 0, 0, DustID.Shadowflame);
+                    Main.dust[dust2].noGravity = true;
+                    Main.dust[dust2].position += Main.rand.NextVector2CircularEdge(20, 5.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2) * 2;
+                    Main.dust[dust2].velocity = velocity * .2f;
+                    Main.dust[dust2].fadeIn = 1f;
+                }
                 Vector2 rotate = Main.rand.NextVector2CircularEdge(10, 3.5f).RotatedBy(velocity.ToRotation() + MathHelper.PiOver2);
-                int dust2 = Dust.NewDust(position.PositionOFFSET(velocity, -10), 0, 0, DustID.Shadowflame);
-                Main.dust[dust2].noGravity = true;
-                Main.dust[dust2].velocity = rotate;
-                Main.dust[dust2].fadeIn = 1f;
+                int dust3 = Dust.NewDust(position.PositionOFFSET(velocity, -10), 0, 0, DustID.Shadowflame);
+                Main.dust[dust3].noGravity = true;
+                Main.dust[dust3].velocity = rotate;
+                Main.dust[dust3].fadeIn = 1f;
             }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -63,6 +63,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
             if (player.HasItem(ItemID.Flamelash))
             {
                 modplayer.MagicHandCannon_Flamelash = true;
+                modplayer.SynergyBonus++;
             }
             for (int i = 0; i < 150; i++)
             {

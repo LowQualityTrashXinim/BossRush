@@ -1017,12 +1017,6 @@ namespace BossRush.Contents.Items.Chest
                 potionTypeAmount = 1;
                 potionNumAmount = 1;
             }
-            if (Main.hardMode)
-            {
-                weaponAmount += 1;
-                potionTypeAmount += 1;
-                potionNumAmount += 1;
-            }
             weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition + WeaponAmountAddition), 1, 999999);
             potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition + PotionTypeAmountAddition);
             potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition + PotionNumberAmountAddition);

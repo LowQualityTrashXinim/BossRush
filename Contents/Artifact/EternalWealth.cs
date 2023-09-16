@@ -1,9 +1,8 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
-using BossRush.Contents.Items;
-using Terraria.ID;
-using System;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 
@@ -11,6 +10,7 @@ namespace BossRush.Contents.Artifact
 {
     internal class EternalWealth : ArtifactModItem
     {
+        protected override bool CanBeCraft => false;
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void ArtifactSetDefault()
         {
