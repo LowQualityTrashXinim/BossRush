@@ -1,25 +1,31 @@
-﻿using System;
+﻿using Terraria;
 using Terraria.ID;
-using BossRush.Texture;
+using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Terraria;
-using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Artifact
 {
-    internal class MagicalCardDeck : ModItem, IArtifactItem
+    internal class MagicalCardDeck : ArtifactModItem
     {
-        public int ArtifactID => ArtifactItemID.MagicalCardDeck;
+        protected override bool CanBeCraft => ModContent.GetInstance<BossRushModConfig>().Nightmare;
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 9));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
-        public override void SetDefaults()
+        public override void ArtifactSetDefault()
         {
-            Item.BossRushDefaultToConsume(32, 37);
+            width = 32; height = 37;
             Item.rare = ItemRarityID.Cyan;
+        }
+    }
+    class MagicalCardDeckPlayer : ArtifactPlayerHandleLogic
+    {
+        public bool MagicalCardDeck = false;
+        public override void ResetEffects()
+        {
+            MagicalCardDeck = ArtifactDefinedID == ModContent.ItemType<MagicalCardDeck>();
         }
     }
 }

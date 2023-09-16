@@ -41,7 +41,7 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nSummon drop chance : {chestplayer.SummonChanceMutilplier}" +
                 $"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
                 $"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-                $"\nCurrent active artifact : {artifactplayer.ToStringArtifact()}"
+                $"\nCurrent active artifact : Broken for now"
                 );
             tooltips.Add(line);
         }

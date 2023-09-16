@@ -1,5 +1,4 @@
-﻿using BossRush.Contents.Items;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,7 +13,25 @@ namespace BossRush.Contents.Artifact
         public override void ArtifactSetDefault()
         {
             width = height = 32;
-            Item.rare = 9;
+            Item.rare = ItemRarityID.Cyan;
+        }
+    }
+    public class GreedPlayer : ArtifactPlayerHandleLogic
+    {
+        bool Greed = false;
+        public override void ResetEffects()
+        {
+            Greed = ArtifactDefinedID == ModContent.ItemType<TokenofGreed>();
+        }
+        public override void PostUpdate()
+        {
+            if (Greed)
+                chestmodplayer.amountModifier += 4;
+        }
+        public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
+        {
+            if (Greed)
+                damage *= .65f;
         }
     }
 }

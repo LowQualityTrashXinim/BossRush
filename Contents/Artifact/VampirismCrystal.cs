@@ -21,13 +21,13 @@ namespace BossRush.Contents.Artifact
             Item.rare = ItemRarityID.Cyan;
         }
     }
-    public class VampirePlayer : ModPlayer
+    public class VampirePlayer : ArtifactPlayerHandleLogic
     {
         bool Vampire = false;
         int vampirecountRange = 0;
-        public override void PreUpdate()
+        public override void ResetEffects()
         {
-            Vampire = false;
+            Vampire = ArtifactDefinedID == ModContent.ItemType<VampirismCrystal>();
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
