@@ -3,10 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Contents.Items;
 using System.Collections.Generic;
-using BossRush.Common.Utils;
-using BossRush.Contents.Items.Weapon.DupeSynergy;
 
 namespace BossRush.Common.RoguelikeChange
 {

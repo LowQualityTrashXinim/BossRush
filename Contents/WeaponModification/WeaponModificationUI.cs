@@ -4,10 +4,6 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.Perks;
-using BossRush.Texture;
-using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
 
 namespace BossRush.Contents.WeaponModification
@@ -17,7 +13,7 @@ namespace BossRush.Contents.WeaponModification
     /// it should only be working on client side only and always load so make sure to use TryGet"X" here<br/>
     /// I will work with UI state as that allow us to change state of UI whenever active and deactive
     /// </summary>
-    public class WeaponModificationUI: UIState
+    public class WeaponModificationUI : UIState
     {
         internal float slotItemScale = .5f;
         internal int slotID = 0;
@@ -40,12 +36,31 @@ namespace BossRush.Contents.WeaponModification
             if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer))
             {
                 Vector2 originDefault = new Vector2(26, 26);
-                for (int i = 0; i < 10; i++)
+                Item item = player.HeldItem;
+                int maxLengthX = 500;
+                if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem))
                 {
-                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(10, 360, i) * 10 * 20;
+                    for (int i = 0; i < globalItem.ModWeaponSlotType.Length; i++)
+                    {
+                        Vector2 offsetPos = player.Center + new Vector2(MathHelper.Lerp(-maxLengthX, 20 * globalItem.ModWeaponSlotType.Length - maxLengthX, i / (globalItem.ModWeaponSlotType.Length - 1f)), -100);
+                        offsetPos.X += 31 * i;
+                        UIImageButton btn = new UIImageButton(TextureAssets.InventoryBack2);
+                        btn.UISetWidthHeight(52, 52);
+                        btn.UISetPosition(offsetPos, originDefault);
+                        Append(btn);
+                    }
+                }
+                for (int i = 0; i < modplayer.WeaponModification_inventory.Length; i++)
+                {
+                    Vector2 offset = new Vector2(MathHelper.Lerp(-maxLengthX, maxLengthX, i / (modplayer.WeaponModification_inventory.Length - 1f)), 100);
+                    Vector2 position = player.Center + offset;
+                    if (i >= (modplayer.WeaponModification_inventory.Length - 1) * .5f)
+                    {
+                        position -= new Vector2(maxLengthX, -50);
+                    }
                     UIImageButton btn = new UIImageButton(TextureAssets.InventoryBack2);
                     btn.UISetWidthHeight(52, 52);
-                    btn.UISetPosition(player.Center + offsetPos, originDefault);
+                    btn.UISetPosition(position, originDefault);
                     Append(btn);
                 }
             }
@@ -76,12 +91,10 @@ namespace BossRush.Contents.WeaponModification
                 userInterface = new();
             }
         }
-
         public override void Unload()
         {
             WeaponModificationKeybind = null;
         }
-
         public override void UpdateUI(GameTime gameTime)
         {
             userInterface?.Update(gameTime);

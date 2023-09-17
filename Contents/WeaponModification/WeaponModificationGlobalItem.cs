@@ -43,9 +43,9 @@ namespace BossRush.Contents.WeaponModification
         {
             if (item.damage > 0 && ModWeaponSlotType != null)
             {
-                tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Delay : {Math.Round(Delay / 60f, 2)}s"));
-                tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Recharge : {Math.Round(Recharge / 60f, 2)}s"));
-                //tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Slot : {ModWeaponSlotType.Length}"));
+                tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification delay : {Math.Round(Delay / 60f, 2)}s"));
+                tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification recharge : {Math.Round(Recharge / 60f, 2)}s"));
+                tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification slot : {ModWeaponSlotType.Length}"));
             }
         }
         public override void SaveData(Item item, TagCompound tag)
