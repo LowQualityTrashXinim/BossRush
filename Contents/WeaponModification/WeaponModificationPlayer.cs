@@ -1,8 +1,9 @@
-﻿using Terraria.ID;
-using Terraria;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
 using BossRush.Contents.Perks;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -15,8 +16,13 @@ namespace BossRush.Contents.WeaponModification
         {
             if (WeaponModificationSystem.WeaponModificationKeybind.JustPressed)
             {
+                if (Player.HeldItem.type == ItemID.None || Player.HeldItem == null || Player.HeldItem.damage <= 0)
+                {
+                    BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You must hold a weapon !");
+                    return;
+                }
                 WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
-                if (uiSystemInstance.userInterface is null)
+                if (uiSystemInstance.userInterface.CurrentState is null)
                 {
                     uiSystemInstance.WM_uiState.whoAmI = Player.whoAmI;
                     uiSystemInstance.userInterface.SetState(uiSystemInstance.WM_uiState);

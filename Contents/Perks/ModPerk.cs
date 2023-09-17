@@ -195,6 +195,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushUtils.GetTheSameTextureAsEntity<PotionExpert>();
             CanBeStack = false;
             Tooltip =
                 "+ Potion have 35% to not be consumed";

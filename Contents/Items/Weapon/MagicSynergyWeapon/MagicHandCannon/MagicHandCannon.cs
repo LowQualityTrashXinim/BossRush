@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
             if (modplayer.MagicHandCannon_Flamelash)
-                tooltips.Add(new TooltipLine(Mod, "MagicHandCannon_Flamelash", $"[i:{ItemID.Flamelash}] When magic shadow flame hit the border, shoot out a home in shadow magic missle"));
+                tooltips.Add(new TooltipLine(Mod, "MagicHandCannon_Flamelash", $"[i:{ItemID.Flamelash}] When magic shadow flame hit the border, shoot out a home in shadow magic flame"));
         }
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -148,10 +148,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
             }
             if (ShootProjectile && modplayer.MagicHandCannon_Flamelash)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2(), ModContent.ProjectileType<ShadowMagicMissle>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation).ToRotationVector2(), ModContent.ProjectileType<ShadowMagicMissle>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
-            //Projectile.position += player.velocity;
+            Projectile.position += player.velocity;
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -197,7 +197,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
             Projectile.friendly = true;
             Projectile.timeLeft = 600;
             Projectile.penetrate = 1;
-            Projectile.extraUpdates = 6;
+            Projectile.extraUpdates = 10;
         }
         public override void AI()
         {
@@ -206,11 +206,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
             Main.dust[dust].velocity = Vector2.Zero;
             Main.dust[dust].scale = Main.rand.NextFloat(.5f, 2f);
             Projectile.alpha = (int)MathHelper.Lerp(0, 255, (600 - Projectile.timeLeft) / 600f);
-            if (Projectile.Center.LookForHostileNPC(out NPC npc, 600))
+            if (Projectile.Center.LookForHostileNPC(out NPC npc, 1000))
             {
                 Vector2 distance = npc.Center - Projectile.Center;
                 Projectile.velocity += distance.SafeNormalize(Vector2.Zero) * .01f;
-                Projectile.velocity = Projectile.velocity.LimitedVelocity(distance.Length() * .5f);
+                Projectile.velocity = Projectile.velocity.LimitedVelocity(distance.Length() * .1f);
                 Projectile.timeLeft = 600;
             }
         }

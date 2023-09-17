@@ -136,7 +136,7 @@ namespace BossRush
                     && CompareSquareFloatValue(Main.npc[i].Center, position, distance)
                     && Main.npc[i].CanBeChasedBy()
                     && !Main.npc[i].friendly
-                    && Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height)
+                    //&& Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height)
                     )
                 {
                     npcList.Add(Main.npc[i]);

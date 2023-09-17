@@ -5,6 +5,10 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Perks;
+using BossRush.Texture;
+using ReLogic.Content;
+using Terraria.GameContent.UI.Elements;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -15,7 +19,6 @@ namespace BossRush.Contents.WeaponModification
     /// </summary>
     public class WeaponModificationUI: UIState
     {
-        internal static Texture2D slotSprite = TextureAssets.InventoryBack2.Value;
         internal float slotItemScale = .5f;
         internal int slotID = 0;
         internal int space = 64;
@@ -28,26 +31,31 @@ namespace BossRush.Contents.WeaponModification
         {
             slotID = slotOrder;
         }
-        public void updateSlot()
+        public override void OnActivate()
         {
-            Vector2 origin = new Vector2(24, 24);
-
-            this.UISetPosition(Main.LocalPlayer.Center + new Vector2(space * slotID, -96), origin);
-            this.UISetWidthHeight(48, 48);
+            Elements.Clear();
+            if (whoAmI == -1)
+                return;
+            Player player = Main.player[whoAmI];
+            if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer))
+            {
+                Vector2 originDefault = new Vector2(26, 26);
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(10, 360, i) * 10 * 20;
+                    UIImageButton btn = new UIImageButton(TextureAssets.InventoryBack2);
+                    btn.UISetWidthHeight(52, 52);
+                    btn.UISetPosition(player.Center + offsetPos, originDefault);
+                    Append(btn);
+                }
+            }
         }
-
-        //apprently this is needed to make everthing work     
-        public override int CompareTo(object obj)
+        public override void OnDeactivate()
         {
-            WeaponModificationUI otherItem = obj as WeaponModificationUI;
-            return slotID.CompareTo(otherItem.slotID);
         }
         public override void LeftMouseDown(UIMouseEvent evt)
         {
             base.LeftMouseDown(evt);
-        }
-        protected override void DrawSelf(SpriteBatch spriteBatch)
-        {
         }
     }
     public class WeaponModificationSystem : ModSystem
@@ -59,7 +67,7 @@ namespace BossRush.Contents.WeaponModification
 
         public override void Load()
         {
-            WeaponModificationKeybind = KeybindLoader.RegisterKeybind(Mod, "Weapon Modification", "P");
+            WeaponModificationKeybind = KeybindLoader.RegisterKeybind(Mod, "WeaponModification", "P");
 
             //UI stuff
             if (!Main.dedServ)
