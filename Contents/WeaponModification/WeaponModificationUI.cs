@@ -37,7 +37,7 @@ namespace BossRush.Contents.WeaponModification
             {
                 Vector2 originDefault = new Vector2(26, 26);
                 Item item = player.HeldItem;
-                int maxLengthX = 500;
+                int maxLengthX = 550;
                 if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem))
                 {
                     for (int i = 0; i < globalItem.ModWeaponSlotType.Length; i++)
@@ -56,9 +56,9 @@ namespace BossRush.Contents.WeaponModification
                     Vector2 position = player.Center + offset;
                     if (i >= (modplayer.WeaponModification_inventory.Length - 1) * .5f)
                     {
-                        position -= new Vector2(maxLengthX, -50);
+                        position -= new Vector2(maxLengthX, -55);
                     }
-                    UIImageButton btn = new UIImageButton(TextureAssets.InventoryBack2);
+                    UIImageButton btn = new UIImageButton(TextureAssets.InventoryBack);
                     btn.UISetWidthHeight(52, 52);
                     btn.UISetPosition(position, originDefault);
                     Append(btn);
