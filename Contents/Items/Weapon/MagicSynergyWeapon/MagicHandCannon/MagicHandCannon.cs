@@ -21,6 +21,22 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
             if (modplayer.MagicHandCannon_Flamelash)
                 tooltips.Add(new TooltipLine(Mod, "MagicHandCannon_Flamelash", $"[i:{ItemID.Flamelash}] When magic shadow flame hit the border, shoot out a home in shadow magic flame"));
         }
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            if (player.HasItem(ItemID.Flamelash))
+            {
+                modplayer.MagicHandCannon_Flamelash = true;
+                modplayer.SynergyBonus++;
+            }
+            for (int i = 0; i < 150; i++)
+            {
+                Vector2 SquarePosition = player.Center + Main.rand.NextVector2RectangleEdge(400, 400);
+                int dust = Dust.NewDust(SquarePosition, 0, 0, DustID.Shadowflame, 0, 0, 0, default, 1f);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].noLight = true;
+                Main.dust[dust].velocity = Vector2.Zero;
+            }
+        }
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             position = position.PositionOFFSET(velocity, 50);
@@ -56,22 +72,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon
                 Main.dust[dust3].noGravity = true;
                 Main.dust[dust3].velocity = rotate;
                 Main.dust[dust3].fadeIn = 1f;
-            }
-        }
-        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
-        {
-            if (player.HasItem(ItemID.Flamelash))
-            {
-                modplayer.MagicHandCannon_Flamelash = true;
-                modplayer.SynergyBonus++;
-            }
-            for (int i = 0; i < 150; i++)
-            {
-                Vector2 SquarePosition = player.Center + Main.rand.NextVector2RectangleEdge(400, 400);
-                int dust = Dust.NewDust(SquarePosition, 0, 0, DustID.Shadowflame, 0, 0, 0, default, 1f);
-                Main.dust[dust].noGravity = true;
-                Main.dust[dust].noLight = true;
-                Main.dust[dust].velocity = Vector2.Zero;
             }
         }
         public override void AddRecipes()

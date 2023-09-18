@@ -126,7 +126,7 @@ namespace BossRush
             }
             return Vector2.Zero;
         }
-        public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance)
+        public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLockThroughTile = false)
         {
             List<NPC> npcList = new List<NPC>();
             List<float> floatvector2List = new List<float>();
@@ -136,7 +136,7 @@ namespace BossRush
                     && CompareSquareFloatValue(Main.npc[i].Center, position, distance)
                     && Main.npc[i].CanBeChasedBy()
                     && !Main.npc[i].friendly
-                    //&& Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height)
+                    && (Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height) || !CanLockThroughTile)
                     )
                 {
                     npcList.Add(Main.npc[i]);
@@ -273,7 +273,7 @@ namespace BossRush
         public static bool InWorld(int x, int y) => x >= 0 && y >= 0 && x < Main.maxTilesX && y < Main.maxTilesY;
         public static void FastPlaceTile(int i, int j, ushort TileType)
         {
-            if(InWorld(i,j))
+            if (InWorld(i, j))
             {
                 return;
             }

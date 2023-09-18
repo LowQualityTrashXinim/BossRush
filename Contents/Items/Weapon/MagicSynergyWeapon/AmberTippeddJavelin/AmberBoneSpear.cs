@@ -218,7 +218,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin
                     return;
                 }
                 Player player = Main.player[Projectile.owner];
-                if (player.Center.LookForHostileNPC(out NPC npc, 2000))
+                if (player.Center.LookForHostileNPC(out NPC npc, 2000, true))
                 {
                     rememberThisNPCPosition = npc.Center;
                     Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
