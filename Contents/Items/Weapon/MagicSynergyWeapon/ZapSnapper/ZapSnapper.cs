@@ -95,8 +95,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
                 {
                     lightningPreSetPath[i] = path;
                     Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(Main.rand.NextFloat(25, 35));
-                    path = path.PositionOFFSET(Projectile.velocity, Main.rand.NextFloat(75, 100));
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), lightningPreSetPath[i], Projectile.velocity * 1.5f, ProjectileID.ThunderSpearShot, (int)(Projectile.damage * .25f), 0, Projectile.owner);
 
+                    path = path.PositionOFFSET(Projectile.velocity, Main.rand.NextFloat(75, 100));
                     float length = Vector2.Distance(lightningPreSetPath[i], path);
                     for (int l = 0; l < 50; l++)
                     {
@@ -104,7 +105,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
                         Main.dust[dust].noGravity = true;
                         Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
                         Main.dust[dust].fadeIn = .1f;
-                        Main.dust[dust].velocity = Vector2.Zero;
+                        Main.dust[dust].velocity = Main.rand.NextVector2Circular(1,1);
                     }
                     if (i == lightningPreSetPath.Length - 1)
                     {

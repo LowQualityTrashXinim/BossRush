@@ -185,8 +185,8 @@ namespace BossRush.Contents.Items.Weapon
 
             MagicHandCannon_Flamelash = false;
 
-            ZapSnapper_Blowpipe = false;
             ZapSnapper_WeatherPain = false;
+            ZapSnapper_ThunderStaff = false;
         }
         int check = 1;
         public override void PostUpdate()
