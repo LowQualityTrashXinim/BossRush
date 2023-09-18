@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
     {
         public override void SetDefaults()
         {
-            Item.BossRushDefaultMagic(56, 16, 12, 2f, 5, 5, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
+            Item.BossRushDefaultMagic(56, 16, 12, 2f, 50, 50, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
 
             Item.rare = ItemRarityID.Green;
             Item.value = Item.buyPrice(gold: 50);
@@ -44,15 +44,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            for (int i = 0; i < 3; i++)
+            int amount = Main.rand.Next(20, 30);
+            for (int i = 0; i < amount; i++)
             {
-                Vector2 newVec = velocity.Vector2RotateByRandom(10);
+                Vector2 newVec = velocity.Vector2DistributeEvenly(amount, 30, i).Vector2RotateByRandom(10).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.5f));
                 int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
                 Main.projectile[proj].DamageType = DamageClass.Magic;
                 if (modplayer.ZapSnapper_ThunderStaff && Main.rand.NextBool(3))
-                    Projectile.NewProjectile(source, position, velocity * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
             }
-            if (modplayer.ZapSnapper_WeatherPain && Main.rand.NextBool(7))
+            if (modplayer.ZapSnapper_WeatherPain && Main.rand.NextBool(3))
             {
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI);
             }
@@ -94,7 +95,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
                 for (int i = 0; i < lightningPreSetPath.Length; i++)
                 {
                     lightningPreSetPath[i] = path;
-                    Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(Main.rand.NextFloat(25, 35));
+                    Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(Main.rand.NextFloat(5, 15));
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), lightningPreSetPath[i], Projectile.velocity * 1.5f, ProjectileID.ThunderSpearShot, (int)(Projectile.damage * .25f), 0, Projectile.owner);
 
                     path = path.PositionOFFSET(Projectile.velocity, Main.rand.NextFloat(75, 100));
@@ -105,7 +106,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
                         Main.dust[dust].noGravity = true;
                         Main.dust[dust].scale = Main.rand.NextFloat(.5f, .75f);
                         Main.dust[dust].fadeIn = .1f;
-                        Main.dust[dust].velocity = Main.rand.NextVector2Circular(1,1);
+                        Main.dust[dust].velocity = Main.rand.NextVector2Circular(1, 1);
                     }
                     if (i == lightningPreSetPath.Length - 1)
                     {
