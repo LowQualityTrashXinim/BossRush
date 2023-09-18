@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using Terraria.GameContent.Drawing;
 
 namespace BossRush.Common.RoguelikeChange
 {
@@ -157,10 +156,10 @@ namespace BossRush.Common.RoguelikeChange
             if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves)
             {
                 return "When in corruption biome :" +
-                    "\nIncrease defense by 6" +
-                    "\nIncrease movement speed by 35%" +
-                    "\nIncrease damage by 5%" +
-                    "\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s";
+                        "\nIncrease defense by 6" +
+                        "\nIncrease movement speed by 35%" +
+                        "\nIncrease damage by 5%" +
+                        "\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s";
             }
             if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves)
             {
@@ -195,14 +194,14 @@ namespace BossRush.Common.RoguelikeChange
             if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves)
             {
                 return "Increase defense by 5" +
-                    "\nIncrease movement speed by 21%" +
-                    "\nVanilla tin weapon are stronger";
+                        "\nIncrease movement speed by 21%" +
+                        "\nVanilla tin weapon are stronger";
             }
             if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves)
             {
                 return "Increase defense by 7" +
-                    "\nYour attack can inflict irradiation poison" +
-                    "\nLead irradiation increase enemy defense by 20 but deal 50 DoT";
+                        "\nYour attack can inflict irradiation poison" +
+                        "\nLead irradiation increase enemy defense by 20 but deal 50 DoT";
             }
             if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves)
             {
@@ -213,11 +212,11 @@ namespace BossRush.Common.RoguelikeChange
             }
             if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves)
             {
-                return "Increase Movement Speed By 35%" + 
+                return "Increase movement speed by 35%" +
                         "\nAttacking an enemy summons 6 hallow Swords that deals 5 damage with 4 seconds cooldown" +
-                        "\nIncrease Damage by 15% during day" +
-                        "\nIncrease Defense By 12" +
-                        "\nWhen in Hallow Biome:" + 
+                        "\nIncrease damage by 15% during day" +
+                        "\nIncrease defense By 12" +
+                        "\nWhen in Hallow biome:" +
                         "\n Hallow Swords deal 15 damage";
             }
             if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves)
@@ -759,32 +758,22 @@ namespace BossRush.Common.RoguelikeChange
         }
         private void OnHitNPC_PearlWoodArmor(NPC npc)
         {
-            
-            if (pearlWoodArmorCD == 0 && pearlWoodArmor)
+            if (pearlWoodArmorCD <= 0 && pearlWoodArmor)
             {
-                
                 int dmg = 5;
                 int projAmount = 6;
                 int Cooldown = 240;
-
-                
                 if (Player.ZoneHallow)
                 {
                     dmg += 10;
                 }
-
                 for (int i = 0; i < projAmount; i++)
                 {
-
                     Vector2 pos = npc.Center + new Vector2(0, -20).Vector2DistributeEvenly(projAmount, 360, i) * 10;
                     Vector2 vel = npc.Center - pos;
-                    vel.Normalize();
-                    Projectile.NewProjectile(Player.GetSource_OnHit(npc), pos, vel, ModContent.ProjectileType<pearlSwordProj>(), dmg, 1, Player.whoAmI);
-                    
+                    Projectile.NewProjectile(Player.GetSource_OnHit(npc), pos, vel.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<pearlSwordProj>(), dmg, 1, Player.whoAmI);
                 }
-
                 pearlWoodArmorCD = Cooldown;
-
             }
         }
         private void OnHitNPC_CopperArmor()

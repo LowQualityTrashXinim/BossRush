@@ -21,7 +21,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
         {
             base.ModifySynergyToolTips(ref tooltips, modplayer);
             if (modplayer.SinisterBook_DemonScythe)
-                tooltips.Add(new TooltipLine(Mod, "SinisterBook_DemonScythe", $"[i:{ItemID.DemonScythe}] Where the sinister bolt explode will spawn a demon scythe that aim back to player"));
+                tooltips.Add(new TooltipLine(Mod, "SinisterBook_DemonScythe", $"[i:{ItemID.DemonScythe}] You occasionally shoot out a ring of demon scythe"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
@@ -31,19 +31,27 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
                 modplayer.SynergyBonus++;
             }
         }
-        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
-        {
-            base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
-        }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             position = position.PositionOFFSET(velocity, 30);
+        }
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
+        {
             for (int i = 0; i < Main.rand.Next(3, 5); i++)
             {
-                velocity = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(60, 90) * Main.rand.NextBool().BoolOne()));
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SinisterBolt>(), damage, knockback, player.whoAmI);
+                Vector2 vel = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(80, 120) * Main.rand.NextBool().BoolOne()));
+                Projectile.NewProjectile(source, position, vel, ModContent.ProjectileType<SinisterBolt>(), damage, knockback, player.whoAmI);
             }
-            return false;
+            if(modplayer.SinisterBook_DemonScythe_Counter >= 20)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 vel = velocity.Vector2DistributeEvenly(10, 360, i);
+                    Projectile.NewProjectile(source, position, vel, ProjectileID.DemonScythe, damage, knockback, player.whoAmI);
+                }
+                modplayer.SinisterBook_DemonScythe_Counter = 0;
+            }
+            CanShootItem = false;
         }
         public override void AddRecipes()
         {
@@ -110,18 +118,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook
         }
         public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
         {
+            modplayer.SinisterBook_DemonScythe_Counter++;
             Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);
             for (int i = 0; i < 25; i++)
             {
                 Vector2 Rotate = Main.rand.NextVector2Circular(9f, 9f);
                 int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(0.75f, 1f));
                 Main.dust[dustnumber].noGravity = true;
-            }
-            if (modplayer.SinisterBook_DemonScythe)
-            {
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero), ProjectileID.DemonScythe, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                Main.projectile[proj].timeLeft = 100;
-                Main.projectile[proj].usesLocalNPCImmunity = true;
             }
         }
         public override bool PreDraw(ref Color lightColor)

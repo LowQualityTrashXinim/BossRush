@@ -162,6 +162,8 @@ Mods: {
 			GemStaffAttackOne.DisplayName: Gem Staff Attack One
 			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
 			ShadowMagicMissle.DisplayName: Shadow Magic Missle
+			pearlSwordProj.DisplayName: pearl Sword Proj
+			LightningStrike.DisplayName: Lightning Strike
 		}
 
 		NPCs: {

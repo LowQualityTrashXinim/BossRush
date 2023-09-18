@@ -162,9 +162,9 @@ namespace BossRush
         {
             npc = Main.npc.Where(npc =>
             npc.active
-            && npc.CanBeChasedBy()
-            && npc.type != NPCID.TargetDummy
-            && !npc.friendly
+            //&& npc.CanBeChasedBy()
+            //&& npc.type != NPCID.TargetDummy
+            //&& !npc.friendly
             && CompareSquareFloatValueWithHitbox(position, npc.position, npc.Hitbox, distance)).ToList();
         }
         public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
@@ -227,7 +227,7 @@ namespace BossRush
 
             float disY = position.Y - positionEntity.Y;
             float disYHeight = disY - hitboxEntity.Height;
-            float disYhalfHeight = disX - hitboxEntity.Height * .5f;
+            float disYhalfHeight = disY - hitboxEntity.Height * .5f;
             //|-|
             //0-|
             //|-|

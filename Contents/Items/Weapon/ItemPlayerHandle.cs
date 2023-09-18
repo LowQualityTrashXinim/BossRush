@@ -68,6 +68,7 @@ namespace BossRush.Contents.Items.Weapon
         public bool OrbOfEnergy_DD2LightningAuraT1Popper = false;
 
         public bool SinisterBook_DemonScythe = false;
+        public int SinisterBook_DemonScythe_Counter = 0;
 
         public bool StarLightDistributer_MeteorArmor = false;
         public bool StarLightDistributer_MagicMissile = false;
@@ -85,6 +86,9 @@ namespace BossRush.Contents.Items.Weapon
         public float QuadDemonBlaster_SpeedMultiplier = 1;
 
         public bool MagicHandCannon_Flamelash = false;
+
+        public bool ZapSnapper_Blowpipe = false;
+        public bool ZapSnapper_WeatherPain = false;
 
         public bool GodAreEnraged = false;
         public int CooldownCheck = 999;
@@ -180,6 +184,9 @@ namespace BossRush.Contents.Items.Weapon
             SuperFlareGun_Phaseblade = false;
 
             MagicHandCannon_Flamelash = false;
+
+            ZapSnapper_Blowpipe = false;
+            ZapSnapper_WeatherPain = false;
         }
         int check = 1;
         public override void PostUpdate()
