@@ -87,8 +87,8 @@ namespace BossRush.Contents.Items.Weapon
 
         public bool MagicHandCannon_Flamelash = false;
 
-        public bool ZapSnapper_Blowpipe = false;
         public bool ZapSnapper_WeatherPain = false;
+        public bool ZapSnapper_ThunderStaff = false;
 
         public bool GodAreEnraged = false;
         public int CooldownCheck = 999;

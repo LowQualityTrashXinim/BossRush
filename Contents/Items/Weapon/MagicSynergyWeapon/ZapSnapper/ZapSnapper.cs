@@ -20,22 +20,22 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            if (modplayer.ZapSnapper_Blowpipe)
-                tooltips.Add(new TooltipLine(Mod, "ZapSnapper_Blowpipe", $"[i:{ItemID.Blowpipe}] shoot out seed"));
             if (modplayer.ZapSnapper_WeatherPain)
                 tooltips.Add(new TooltipLine(Mod, "ZapSnapper_WeatherPain", $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot"));
+            if (modplayer.ZapSnapper_ThunderStaff)
+                tooltips.Add(new TooltipLine(Mod, "ZapSnapperThunderStaff", $"[i:{ItemID.ThunderStaff}] You occasionally shoot out thunder bolt"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            if (player.HasItem(ItemID.Blowpipe))
-            {
-                modplayer.SynergyBonus++;
-                modplayer.ZapSnapper_Blowpipe = true;
-            }
             if (player.HasItem(ItemID.WeatherPain))
             {
                 modplayer.SynergyBonus++;
                 modplayer.ZapSnapper_WeatherPain = true;
+            }
+            if (player.HasItem(ItemID.ThunderStaff))
+            {
+                modplayer.SynergyBonus++;
+                modplayer.ZapSnapper_ThunderStaff = true;
             }
         }
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -49,8 +49,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
                 Vector2 newVec = velocity.Vector2RotateByRandom(10);
                 int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
                 Main.projectile[proj].DamageType = DamageClass.Magic;
-                if (modplayer.ZapSnapper_Blowpipe && Main.rand.NextBool(5))
-                    Projectile.NewProjectile(source, position, newVec.Vector2RotateByRandom(5), ProjectileID.Seed, damage, knockback, player.whoAmI);
+                if (modplayer.ZapSnapper_ThunderStaff && Main.rand.NextBool(3))
+                    Projectile.NewProjectile(source, position, velocity * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
             }
             if (modplayer.ZapSnapper_WeatherPain && Main.rand.NextBool(7))
             {
