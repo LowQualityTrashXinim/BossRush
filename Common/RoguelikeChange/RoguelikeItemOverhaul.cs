@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using System.Linq;
 using Terraria.ID;
 using Terraria.Audio;
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
+using Terraria.GameContent.Drawing;
 
 namespace BossRush.Common.RoguelikeChange
 {
@@ -210,6 +211,15 @@ namespace BossRush.Common.RoguelikeChange
                        "\nDuring the rain, your hit requirement reduce by half" +
                        "\nOver charged: Increases movement speed, weapon speed, damage by 10%";
             }
+            if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves)
+            {
+                return "Increase Movement Speed By 35%" + 
+                        "\nAttacking an enemy summons 6 hallow Swords that deals 5 damage with 4 seconds cooldown" +
+                        "\nIncrease Damage by 15% during day" +
+                        "\nIncrease Defense By 12" +
+                        "\nWhen in Hallow Biome:" + 
+                        "\n Hallow Swords deal 15 damage";
+            }
             if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves)
             {
                 return "Increase damage reduction 2.5%" +
@@ -383,6 +393,15 @@ namespace BossRush.Common.RoguelikeChange
             {
                 modplayer.GoldArmor = true;
             }
+            if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PearlwoodHelmet, ItemID.PearlwoodBreastplate, ItemID.PearlwoodGreaves))
+            {
+                player.moveSpeed += 0.35f;
+                player.statDefense += 12;
+                modplayer.pearlWoodArmor = true;
+                if (Main.dayTime)
+                    player.GetDamage(DamageClass.Generic) += 0.15f;
+
+            }
             if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PlatinumHelmet, ItemID.PlatinumChainmail, ItemID.PlatinumGreaves))
             {
                 modplayer.PlatinumArmor = true;
@@ -429,7 +448,8 @@ namespace BossRush.Common.RoguelikeChange
         public bool CopperArmor = false;
         int CopperArmorChargeCounter = 0;
         public bool GoldArmor = false;
-
+        public bool pearlWoodArmor = false;
+        int pearlWoodArmorCD = 0;
         public bool TinArmor = false;
         public int TinArmorCountEffect = 0;
         public bool LeadArmor = false;
@@ -449,6 +469,7 @@ namespace BossRush.Common.RoguelikeChange
             AshWoodArmor = false;
             CopperArmor = false;
             GoldArmor = false;
+            pearlWoodArmor = false;
             TinArmor = false;
             LeadArmor = false;
             TungstenArmor = false;
@@ -459,6 +480,7 @@ namespace BossRush.Common.RoguelikeChange
             ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
             EbonWoodArmorCD = BossRushUtils.CoolDown(EbonWoodArmorCD);
             CactusArmorCD = BossRushUtils.CoolDown(CactusArmorCD);
+            pearlWoodArmorCD = BossRushUtils.CoolDown(pearlWoodArmorCD);
             if (EbonWoodArmor)
                 if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero)
                 {
@@ -648,6 +670,7 @@ namespace BossRush.Common.RoguelikeChange
             OnHitNPC_CopperArmor();
             OnHitNPC_GoldArmor(target, damageDone);
             OnHitNPC_LeadArmor(target);
+            OnHitNPC_PearlWoodArmor(target);
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -664,6 +687,7 @@ namespace BossRush.Common.RoguelikeChange
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TinBroadSwordProjectile>(), 12, 1f, Player.whoAmI);
                 }
             OnHitNPC_LeadArmor(target);
+            OnHitNPC_PearlWoodArmor(target);
         }
         private void OnHitNPC_LeadArmor(NPC npc)
         {
@@ -732,6 +756,36 @@ namespace BossRush.Common.RoguelikeChange
         {
             if (AshWoodArmor)
                 npc.AddBuff(BuffID.OnFire, 300);
+        }
+        private void OnHitNPC_PearlWoodArmor(NPC npc)
+        {
+            
+            if (pearlWoodArmorCD == 0 && pearlWoodArmor)
+            {
+                
+                int dmg = 5;
+                int projAmount = 6;
+                int Cooldown = 240;
+
+                
+                if (Player.ZoneHallow)
+                {
+                    dmg += 10;
+                }
+
+                for (int i = 0; i < projAmount; i++)
+                {
+
+                    Vector2 pos = npc.Center + new Vector2(0, -20).Vector2DistributeEvenly(projAmount, 360, i) * 10;
+                    Vector2 vel = npc.Center - pos;
+                    vel.Normalize();
+                    Projectile.NewProjectile(Player.GetSource_OnHit(npc), pos, vel, ModContent.ProjectileType<pearlSwordProj>(), dmg, 1, Player.whoAmI);
+                    
+                }
+
+                pearlWoodArmorCD = Cooldown;
+
+            }
         }
         private void OnHitNPC_CopperArmor()
         {
