@@ -24,15 +24,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             base.ModifySynergyToolTips(ref tooltips, modplayer);
             if (modplayer.IceStorm_SnowBallCannon)
             {
-                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself"));
+                tooltips.Add(new TooltipLine(Mod, "IceStorm_SnowBallCannon", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself"));
             }
             if (modplayer.IceStorm_FlowerofFrost)
             {
-                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost and summon itself"));
+                tooltips.Add(new TooltipLine(Mod, "IceStorm_FlowerofFrost", $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost and summon itself"));
             }
             if (modplayer.IceStorm_BlizzardStaff)
             {
-                tooltips.Add(new TooltipLine(Mod, "smth", $"[i:{ItemID.BlizzardStaff}] Max charge can now rain down frost spike"));
+                tooltips.Add(new TooltipLine(Mod, "IceStorm_BlizzardStaff", $"[i:{ItemID.BlizzardStaff}] Max charge can now rain down frost spike"));
             }
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -64,9 +64,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 modplayer.IceStorm_BlizzardStaff = true;
                 modplayer.SynergyBonus++;
             }
-            if (!Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier >= 1)
+            if (!Main.mouseLeft && modplayer.IceStorm_SpeedMultiplier >= 1)
             {
-                player.GetModPlayer<IceStormPlayer>().SpeedMultiplier -= 0.025f;
+                modplayer.IceStorm_SpeedMultiplier -= 0.025f;
             }
         }
         public override bool CanConsumeAmmo(Item ammo, Player player)
@@ -79,14 +79,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
         }
         public override float UseSpeedMultiplier(Player player)
         {
-            return player.GetModPlayer<IceStormPlayer>().SpeedMultiplier;
+            return player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier;
         }
         int count = 0;
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             ChargeUpHandle(player);
-            IceStormPlayer icePlayer = player.GetModPlayer<IceStormPlayer>();
-            float projectile = (int)(icePlayer.SpeedMultiplier * .5f);
+            float projectile = (int)(modplayer.IceStorm_SpeedMultiplier * .5f);
             if (modplayer.IceStorm_SnowBallCannon)
             {
                 for (int i = 0; i < projectile; i++)
@@ -96,13 +95,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
             }
             if (modplayer.IceStorm_FlowerofFrost)
             {
-                projectile = (int)(icePlayer.SpeedMultiplier * .1666667f);
+                projectile = (int)(modplayer.IceStorm_SpeedMultiplier * .1666667f);
                 for (int i = 0; i < projectile; i++)
                 {
                     Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 5).Vector2RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
                 }
             }
-            if (modplayer.IceStorm_BlizzardStaff && icePlayer.SpeedMultiplier >= 8)
+            if (modplayer.IceStorm_BlizzardStaff && modplayer.IceStorm_SpeedMultiplier >= 8)
             {
                 Vector2 SkyPos = new Vector2(player.Center.X, player.Center.Y - 800);
                 Vector2 SkyVelocity = (Main.MouseWorld - SkyPos).SafeNormalize(Vector2.UnitX);
@@ -114,22 +113,22 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                     Main.projectile[FinalCharge].timeLeft = 100;
                 }
             }
-            projectile = 1 + (int)(icePlayer.SpeedMultiplier * .2f);
+            projectile = 1 + (int)(modplayer.IceStorm_SpeedMultiplier * .2f);
             for (int i = 0; i < projectile; ++i)
             {
                 Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 3) * 2f, ProjectileID.FrostburnArrow, damage, knockback, player.whoAmI);
             }
-            projectile = (int)(icePlayer.SpeedMultiplier * .2f);
+            projectile = (int)(modplayer.IceStorm_SpeedMultiplier * .2f);
             for (int i = 0; i < projectile; i++)
             {
                 Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5).NextVector2Spread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
             }
-            projectile = icePlayer.SpeedMultiplier / 7f;
+            projectile = modplayer.IceStorm_SpeedMultiplier / 7f;
             if (projectile >= 1)
             {
                 Projectile.NewProjectile(source, position, velocity * 2f, ProjectileID.FrostArrow, damage, knockback, player.whoAmI);
             }
-            if (icePlayer.SpeedMultiplier >= 8)
+            if (modplayer.IceStorm_SpeedMultiplier >= 8)
             {
                 if (count == 0)
                 {
@@ -137,7 +136,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                     count++;
                 }
             }
-            else if (icePlayer.SpeedMultiplier <= 7)
+            else if (modplayer.IceStorm_SpeedMultiplier <= 7)
             {
                 count = 0;
             }
@@ -145,19 +144,19 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
         }
         private void ChargeUpHandle(Player player)
         {
-            if (Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 8)
+            if (Main.mouseLeft && player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier <= 8)
             {
-                if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 2)
+                if (player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier <= 2)
                 {
-                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.1f;
+                    player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier += 0.1f;
                 }
-                if (player.GetModPlayer<IceStormPlayer>().SpeedMultiplier <= 6)
+                if (player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier <= 6)
                 {
-                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.1f;
+                    player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier += 0.1f;
                 }
                 else
                 {
-                    player.GetModPlayer<IceStormPlayer>().SpeedMultiplier += 0.02f;
+                    player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier += 0.02f;
                 }
             }
         }
@@ -179,24 +178,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 .AddIngredient(ItemID.IceBlade)
                 .AddIngredient(ItemID.IceBow)
                 .Register();
-        }
-    }
-    public class IceStormPlayer : ModPlayer
-    {
-        public float SpeedMultiplier = 1;
-        public override void PostHurt(Player.HurtInfo info)
-        {
-            float Modify = SpeedMultiplier <= 3 ? 1f : SpeedMultiplier - 2f;
-            SpeedMultiplier = Modify;
-            base.PostHurt(info);
-        }
-
-        public override void PostUpdate()
-        {
-            if (Player.HeldItem.type != ModContent.ItemType<IceStorm>())
-            {
-                SpeedMultiplier = 1;
-            }
         }
     }
     class IceStormSnowBallCannonMinion : ModProjectile
@@ -237,7 +218,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 Projectile.rotation += Projectile.spriteDirection == 1 ? 0 : MathHelper.Pi;
                 if (timer <= 0)
                 {
-                    timer = (int)(20 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
+                    timer = (int)(20 * Math.Clamp(1 - player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier * .125f, .1f, 1f));
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.PositionOFFSET(velocityToNpc, 45f), velocityToNpc * 20f, ProjectileID.SnowBallFriendly, Projectile.damage, Projectile.knockBack, Projectile.owner);
                     return;
                 }
@@ -281,7 +262,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm
                 if (timer <= 0)
                 {
                     Vector2 velocityToNpc = (npc.Center - player.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(5f, 8f);
-                    timer = (int)(30 * Math.Clamp(1 - player.GetModPlayer<IceStormPlayer>().SpeedMultiplier * .125f, .1f, 1f));
+                    timer = (int)(30 * Math.Clamp(1 - player.GetModPlayer<PlayerSynergyItemHandle>().IceStorm_SpeedMultiplier * .125f, .1f, 1f));
                     int proj = Projectile.NewProjectile(
                         Projectile.GetSource_FromThis(),
                         Projectile.Center - new Vector2(0, 20),

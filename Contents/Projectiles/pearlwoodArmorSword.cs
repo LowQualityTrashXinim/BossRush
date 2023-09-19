@@ -1,19 +1,15 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Microsoft.Xna.Framework;
 using Terraria.GameContent.Drawing;
-using Terraria.Graphics;
-using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Projectiles
 {
     internal class pearlSwordProj : ModProjectile
     {
-
-        
         public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PearlwoodSword);
         public override void SetDefaults()
         {
@@ -32,16 +28,10 @@ namespace BossRush.Contents.Projectiles
 
         float flare = 0;
 
-        
         public override void PostDraw(Color lightColor)
         {
-
-            
-
             Vector2 position = Projectile.Center - Main.screenPosition;
             DrawPrettyStarSparkle(Projectile.Opacity, SpriteEffects.None, position, new Color(255, 255, 255, 0) * 125, new Color(255, 0, 122, 0) * 125, flare, 0f, 0.5f, 0.5f, 1f, 0f, Vector2.One * 2f, Vector2.One * 2f);
-
-            
         }
 
         private static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness)

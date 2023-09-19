@@ -12,6 +12,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using System.Linq;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -42,6 +43,7 @@ namespace BossRush.Contents.Items.Weapon
         public bool IceStorm_SnowBallCannon = false;
         public bool IceStorm_FlowerofFrost = false;
         public bool IceStorm_BlizzardStaff = false;
+        public float IceStorm_SpeedMultiplier = 1;
 
         public bool EnergyBlade_Code1 = false;
         public bool EnergyBlade_Code2 = false;
@@ -193,7 +195,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             GodDecision();
             Item item = Player.HeldItem;
-            if (item.ModItem is BurningPassion)
+            if (item.type != ModContent.ItemType<BurningPassion>())
             {
                 if (!Player.ItemAnimationActive && check == 0)
                 {
@@ -208,12 +210,16 @@ namespace BossRush.Contents.Items.Weapon
                     check = 0;
                 }
             }
-            if (item.ModItem is Deagle)
+            if (item.type != ModContent.ItemType<Deagle>())
             {
                 if (Deagle_DaedalusStormBow)
                 {
                     Deagle_DaedalusStormBow_coolDown = BossRushUtils.CoolDown(Deagle_DaedalusStormBow_coolDown);
                 }
+            }
+            if (item.type != ModContent.ItemType<IceStorm>())
+            {
+                IceStorm_SpeedMultiplier = 1;
             }
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -287,6 +293,12 @@ namespace BossRush.Contents.Items.Weapon
             {
                 mult = 0f;
             }
+        }
+        public override void PostHurt(Player.HurtInfo info)
+        {
+            float Modify = IceStorm_SpeedMultiplier <= 3 ? 1f : IceStorm_SpeedMultiplier - 2f;
+            IceStorm_SpeedMultiplier = Modify;
+            base.PostHurt(info);
         }
     }
     public abstract class SynergyModItem : ModItem

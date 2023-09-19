@@ -431,7 +431,7 @@ Mods: {
 			}
 
 			FlamingWoodSword: {
-				Tooltip: Funny how a wooden sword got the fire aspect enchantment
+				Tooltip: Funny how a wooden sword got the fire aspect enchantment (TOBEREWORK)
 				DisplayName: Flaming Wood Sword
 			}
 

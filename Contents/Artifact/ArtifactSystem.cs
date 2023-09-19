@@ -1,14 +1,13 @@
 ﻿using Terraria;
 using System.IO;
 using Terraria.ID;
+using BossRush.Common;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using System.Collections.Generic;
-using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework;
-using BossRush.Common;
+using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
-using BossRush.Texture;
 
 namespace BossRush.Contents.Artifact
 {
@@ -40,10 +39,11 @@ namespace BossRush.Contents.Artifact
             {
                 return base.UseItem(player);
             }
-            player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = Type;
+            ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
+            modplayer.ArtifactDefinedID = Type;
             if (Item.ModItem is RandomArtifactChooser)
             {
-                player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID = Main.rand.Next(new int[]
+                modplayer.ArtifactDefinedID = Main.rand.Next(new int[]
                 {
                     ModContent.ItemType<TokenofGreed>(),
                     ModContent.ItemType<TokenofPride>(),
@@ -51,9 +51,10 @@ namespace BossRush.Contents.Artifact
                     ModContent.ItemType<HeartOfEarth>(),
                     ModContent.ItemType<NormalizeArtifact>(),
                     ModContent.ItemType<VampirismCrystal>(),
-                    ModContent.ItemType<BootOfSpeedManipulation>()
+                    ModContent.ItemType<BootOfSpeedManipulation>(),
+                    ModContent.ItemType<AlchemistKnowledge>()
                 });
-                //BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, player.GetModPlayer<ArtifactPlayerHandleLogic>().ToStringArtifact());
+                BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, ItemLoader.GetItem(modplayer.ArtifactDefinedID).DisplayName.Value);
                 return true;
             }
             return true;
@@ -75,8 +76,8 @@ namespace BossRush.Contents.Artifact
     }
     public class ArtifactPlayerHandleLogic : ModPlayer
     {
-        public const int ArtifactDefaultID = 999;
-        public int ArtifactDefinedID = ArtifactDefaultID;//setting to 999 mean it just do nothing
+        public const int ArtifactDefaultID = 1;
+        public int ArtifactDefinedID = ArtifactDefaultID;//setting to 1 mean it just do nothing
         public override void PreUpdate()
         {
             if (!ModContent.GetInstance<BossRushModConfig>().SynergyMode)

@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
 {
@@ -10,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 32, 36, 22, 5f, 4, 40, ItemUseStyleID.Swing, false);
+            BossRushUtils.BossRushSetDefault(Item, 32, 36, 22, 5f, 4, 40, BossRushUseStyle.GenericSwingDownImprove, false);
             Item.DamageType = DamageClass.Melee;
 
             Item.crit = 5;
