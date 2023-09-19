@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using System.Linq;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
@@ -9,7 +10,7 @@ namespace BossRush.Contents.Artifact
 {
     internal class AlchemistKnowledge : ArtifactModItem
     {
-        public override string Texture => base.Texture;
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void ArtifactSetDefault()
         {
             width = height = 32;
@@ -31,7 +32,7 @@ namespace BossRush.Contents.Artifact
             }
             for (int i = 0; i < Player.inventory.Length; i++)
             {
-                if (TerrariaArrayID.MovementPotion.Any(i => i == Player.inventory[i].type) || TerrariaArrayID.NonMovementPotion.Any(i => i == Player.inventory[i].type))
+                if (TerrariaArrayID.MovementPotion.Any(l => l == Player.inventory[i].type) || TerrariaArrayID.NonMovementPotion.Any(l => l == Player.inventory[i].type))
                 {
                     Player.inventory[i].active = false;
                     Player.inventory[i].stack = 0;

@@ -11,7 +11,7 @@ using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Perks
 {
-    class UISystem : ModSystem
+    class PerkUISystem : ModSystem
     {
         public UserInterface userInterface;
         public PerkUIState perkUIstate;
@@ -70,7 +70,7 @@ namespace BossRush.Contents.Perks
         private int[] _perks;
         public override void OnEnterWorld()
         {
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
             uiSystemInstance.userInterface.SetState(null);
         }
         public override void Initialize()
@@ -99,7 +99,7 @@ namespace BossRush.Contents.Perks
         }
         public override bool CanUseItem(Item item)
         {
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
             if (uiSystemInstance.userInterface.CurrentState is not null)
             {
                 return false;
@@ -310,7 +310,7 @@ namespace BossRush.Contents.Perks
             PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
             if (player.altFunctionUse != 2)
             {
-                UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+                PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
                 uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
                 uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
             }

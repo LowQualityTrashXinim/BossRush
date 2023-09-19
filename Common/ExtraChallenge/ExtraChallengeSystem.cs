@@ -94,8 +94,6 @@ namespace BossRush.Common.ExtraChallenge
                 if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
                 perkplayer.perks[perkType] = perkplayer.perks[perkType] + 1;
 
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-            uiSystemInstance.userInterface.SetState(null);
         }
         public override void Update(GameTime gameTime)
         {

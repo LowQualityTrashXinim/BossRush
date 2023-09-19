@@ -1506,6 +1506,11 @@ Mods: {
 				DisplayName: Lootbox Lord Summon
 				Tooltip: ""
 			}
+
+			AlchemistKnowledge: {
+				DisplayName: Alchemist Knowledge
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

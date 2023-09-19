@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Artifact;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
@@ -14,8 +16,6 @@ using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
-using BossRush.Contents.Perks;
-using BossRush.Contents.Artifact;
 
 namespace BossRush.Common
 {
@@ -28,6 +28,10 @@ namespace BossRush.Common
         {
             Main.NewText("Currently the mod are extremely incompleted, the development currently only focusing on pre hardmode, so hardmode will be lacking a lot");
             Main.NewText("The dev is currently applying bandage fixes so the development could actually move on to important stuff");
+            if (Main.ActiveWorldFileData.GameMode == 0)
+            {
+                Main.NewText("Yo this guys playing on easy mode lol, skill issues spotted !");
+            }
         }
         public override void PreUpdate()
         {
@@ -53,11 +57,10 @@ namespace BossRush.Common
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
             health = StatModifier.Default; mana = StatModifier.Default;
-            if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
+            if (Main.ActiveWorldFileData.GameMode == 0)
             {
-                return;
+                health.Base = 100;
             }
-            health.Base = 100;
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {
@@ -124,7 +127,7 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja>()));
                 items.Add(new Item(ModContent.ItemType<GuideToMasterNinja2>()));
             }
-            if(Player.name == "AccessToHiddenBoss")
+            if (Player.name == "AccessToHiddenBoss")
             {
                 items.Add(new Item(ModContent.ItemType<IronLootBox>()));
                 items.Add(new Item(ModContent.ItemType<SilverLootBox>()));

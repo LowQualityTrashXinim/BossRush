@@ -10,8 +10,6 @@ namespace BossRush.Common.Nightmare
         {
             if (ModContent.GetInstance<BossRushModConfig>().Nightmare)
             {
-                if (!ModContent.GetInstance<BossRushModConfig>().VeteranMode)
-                    return "Must be play on veteran mode";
                 return "Master difficulty world required";
             }
             return base.WorldCanBePlayedRejectionMessage(playerData, worldData);
@@ -21,7 +19,7 @@ namespace BossRush.Common.Nightmare
             BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
             if (config.Nightmare)
             {
-                return config.VeteranMode && worldFileData.ForTheWorthy;
+                return worldFileData.ForTheWorthy;
             }
             return base.CanWorldBePlayed(playerData, worldFileData);
         }

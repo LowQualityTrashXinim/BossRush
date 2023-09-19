@@ -19,6 +19,7 @@ namespace BossRush.Common.ChallengeMode
             //{
             //    KingSlimeAI(npc);
             //}
+            base.AI(npc);
         }
         private void KingSlimeAI(NPC npc)
         {
@@ -369,13 +370,12 @@ namespace BossRush.Common.ChallengeMode
                     NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, slimeMinion);
             }
         }
-        private void KingSlimeAttackSwitcher(NPC nPC)
+        private void KingSlimeAttackSwitcher(NPC npc)
         {
 
         }
         private void KingSlimeStartOfBigJump(NPC npc, ref float JumpStrength, ref float MoveSpeed, ref float DelayAttack)
         {
-            return;
             for (int i = 0; i < 16; i++)
             {
                 Vector2 spreadoutring = Vector2.One.Vector2DistributeEvenly(16, 360, i) * 10f;

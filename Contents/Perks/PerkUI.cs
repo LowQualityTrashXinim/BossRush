@@ -99,7 +99,7 @@ namespace BossRush.Contents.Perks
                 if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
                 perkplayer.perks[perkType] = perkplayer.perks[perkType] + 1;
             ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
+            PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
             uiSystemInstance.userInterface.SetState(null);
         }
         public override void Update(GameTime gameTime)
@@ -130,116 +130,79 @@ namespace BossRush.Contents.Perks
             base.DrawSelf(spriteBatch);
         }
     }
-    class MaterialWeaponUIImageButton : UIImageButton
+    abstract class SpecialPerkUIImageButton : UIImageButton
     {
-        private UIText toolTip;
+        protected UIText toolTip;
+        protected SpecialPerkUIImageButton(Asset<Texture2D> texture) : base(texture)
+        {
+        }
+        public override void OnActivate()
+        {
+            base.OnActivate();
+            toolTip = new UIText("");
+            toolTip.HAlign = .5f;
+            Append(toolTip);
+        }
+        public new virtual void OnLeftClick(Player player)
+        {
+
+        }
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            base.LeftClick(evt);
+            OnLeftClick(Main.LocalPlayer);
+            PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
+            uiSystemInstance.userInterface.SetState(null);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (IsMouseHovering)
+            {
+                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
+                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
+                toolTip.SetText(TooltipText());
+            }
+            else
+            {
+                toolTip.SetText("");
+            }
+        }
+        public virtual string TooltipText() => "";
+    }
+    class MaterialWeaponUIImageButton : SpecialPerkUIImageButton
+    {
         public MaterialWeaponUIImageButton(Asset<Texture2D> texture) : base(texture)
         {
         }
-        public override void OnActivate()
+        public override void OnLeftClick(Player player)
         {
-            base.OnActivate();
-            toolTip = new UIText("");
-            toolTip.HAlign = .5f;
-            Append(toolTip);
-        }
-        public override void LeftClick(UIMouseEvent evt)
-        {
-            base.LeftClick(evt);
-            Player player = Main.LocalPlayer;
             LootBoxBase.GetWeapon(out int weapon, out int amount);
             player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-            uiSystemInstance.userInterface.SetState(null);
         }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            if (IsMouseHovering)
-            {
-                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
-                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-                toolTip.SetText("Give you 1 randomize weapon based on progression");
-            }
-            else
-            {
-                toolTip.SetText("");
-            }
-        }
+        public override string TooltipText() => "Give you 1 randomize weapon based on progression";
     }
-    class MaterialCardUIImageButton : UIImageButton
+    class MaterialCardUIImageButton : SpecialPerkUIImageButton
     {
-        private UIText toolTip;
         public MaterialCardUIImageButton(Asset<Texture2D> texture) : base(texture)
         {
         }
-        public override void OnActivate()
+        public override void OnLeftClick(Player player)
         {
-            base.OnActivate();
-            toolTip = new UIText("");
-            toolTip.HAlign = .5f;
-            Append(toolTip);
-        }
-        public override void LeftClick(UIMouseEvent evt)
-        {
-            base.LeftClick(evt);
-            Player player = Main.LocalPlayer;
             player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<BigCardPacket>());
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-            uiSystemInstance.userInterface.SetState(null);
         }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            if (IsMouseHovering)
-            {
-                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
-                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-                toolTip.SetText("Give you a big card packet");
-            }
-            else
-            {
-                toolTip.SetText("");
-            }
-        }
+        public override string TooltipText() => "Give you a big card packet";
     }
-    class MaterialPotionUIImageButton : UIImageButton
+    class MaterialPotionUIImageButton : SpecialPerkUIImageButton
     {
-        private UIText toolTip;
         public MaterialPotionUIImageButton(Asset<Texture2D> texture) : base(texture)
         {
         }
-        public override void OnActivate()
+
+        public override void OnLeftClick(Player player)
         {
-            base.OnActivate();
-            toolTip = new UIText("");
-            toolTip.HAlign = .5f;
-            Append(toolTip);
+            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<MysteriousPotion>(), 5);
         }
-        public override void LeftClick(UIMouseEvent evt)
-        {
-            base.LeftClick(evt);
-            Player player = Main.LocalPlayer;
-            for (int i = 0; i < 5; i++)
-            {
-                player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<MysteriousPotion>());
-            }
-            UISystem uiSystemInstance = ModContent.GetInstance<UISystem>();
-            uiSystemInstance.userInterface.SetState(null);
-        }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            if (IsMouseHovering)
-            {
-                toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
-                toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-                toolTip.SetText("Give you 5 mysterious potions");
-            }
-            else
-            {
-                toolTip.SetText("");
-            }
-        }
+        public override string TooltipText() => "Give you 5 mysterious potions";
     }
 }

@@ -1005,7 +1005,7 @@ namespace BossRush.Contents.Items.Chest
             weaponAmount = 5;
             potionTypeAmount = 3;
             potionNumAmount = 4;
-            if (ModContent.GetInstance<BossRushModConfig>().VeteranMode)
+            if (Main.ActiveWorldFileData.GameMode != 0)
             {
                 weaponAmount -= 2;
                 potionTypeAmount -= 2;
