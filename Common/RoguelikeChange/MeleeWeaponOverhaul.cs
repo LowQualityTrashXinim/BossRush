@@ -576,6 +576,9 @@ namespace BossRush.Common.RoguelikeChange
         public int CountDownToResetCombo = 0;
         public int MouseXPosDirection = 1;
         bool InStateOfSwinging = false;
+        float fixedRotationToDash = 0;
+        Vector2 positionToDash = Vector2.Zero;
+        Vector2 lastPlayerPositionBeforeAnimation = Vector2.Zero;
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
@@ -587,9 +590,7 @@ namespace BossRush.Common.RoguelikeChange
             delaytimer = BossRushUtils.CoolDown(delaytimer);
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
             iframeCounter = BossRushUtils.CoolDown(iframeCounter);
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) ||
-                item.noMelee
-                )
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
@@ -598,7 +599,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    int dust = Dust.NewDust(Player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation, 0, 0, DustID.GemRuby);
+                    int dust = Dust.NewDust(positionToDash, 0, 0, DustID.GemRuby);
                     Main.dust[dust].velocity = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i)) * Main.rand.NextFloat(2.5f, 4f);
                     Main.dust[dust].noGravity = true;
                 }
@@ -608,11 +609,7 @@ namespace BossRush.Common.RoguelikeChange
                 if (delaytimer <= 0)
                 {
                     delaytimer = (int)(Player.itemAnimationMax * 1.2f);
-                    if (Main.mouseRight)
-                    {
-                        Player.velocity.X *= 0;
-                    }
-                    ExecuteSpecialComboOnStart(Player.GetModPlayer<BossRushUtilsPlayer>());
+                    ExecuteSpecialComboOnStart();
                 }
             }
             if (Player.ItemAnimationActive)
@@ -622,10 +619,6 @@ namespace BossRush.Common.RoguelikeChange
             }
             else
             {
-                if (delaytimer != 0 && ComboNumber == 2 && comboExecuteWithDash)
-                {
-                    Player.velocity *= .1f;
-                }
                 CanPlayerBeDamage = true;
                 if (InStateOfSwinging)
                 {
@@ -645,27 +638,18 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
-            CanPlayerBeDamage = false;
             Player.gravity = 0;
-        }
-        private bool IsWallBossAlive()
-        {
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC npc = Main.npc[i];
-                if (npc.type == NPCID.WallofFlesh)
-                {
-                    return true;
-                }
-            }
-            return false;
+            CanPlayerBeDamage = false;
+            Player.controlLeft = false;
+            Player.controlRight = false;
+            float percentage = (Player.itemAnimationMax - Player.itemAnimation) / (float)Player.itemAnimationMax;
+            Player.Center = Vector2.SmoothStep(lastPlayerPositionBeforeAnimation, positionToDash, percentage);
         }
         private bool ComboConditionChecking() =>
             Player.mount.Active
-            || IsWallBossAlive()
             || ComboNumber != 2
             || !Main.mouseRight;
-        private void ExecuteSpecialComboOnStart(BossRushUtilsPlayer modplayer)
+        private void ExecuteSpecialComboOnStart()
         {
             if (ComboConditionChecking())
             {
@@ -673,10 +657,12 @@ namespace BossRush.Common.RoguelikeChange
                 return;
             }
             comboExecuteWithDash = true;
-            Player.controlLeft = false;
-            Player.controlRight = false;
-            Vector2 Toward = modplayer.MouseLastPositionBeforeAnimation - Player.Center;
-            Player.velocity = Toward.SafeNormalize(Vector2.Zero) * (Toward.Length() / Player.itemAnimationMax);
+        }
+        public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
+        {
+            if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active)
+                return Collision.CheckAABBvLineCollision(target.TopLeft, target.Size, lastPlayerPositionBeforeAnimation, positionToDash);
+            return null;
         }
         private void ComboHandleSystem()
         {
@@ -692,9 +678,7 @@ namespace BossRush.Common.RoguelikeChange
         {
             Item item = Player.HeldItem;
             oldHeldItem = item.type;
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) ||
-                item.noMelee
-                )
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
@@ -709,6 +693,11 @@ namespace BossRush.Common.RoguelikeChange
             {
                 Player.direction = data.X > 0 ? 1 : -1;
             }
+            else
+            {
+                lastPlayerPositionBeforeAnimation = Player.Center;
+                positionToDash = Player.Center + (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 500f;
+            }
             Player.attackCD = 0;
             for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++)
             {
@@ -720,14 +709,14 @@ namespace BossRush.Common.RoguelikeChange
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) || item.noMelee)
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
         }
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) || item.noMelee)
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
