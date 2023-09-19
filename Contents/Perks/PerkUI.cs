@@ -15,7 +15,10 @@ namespace BossRush.Contents.Perks
 {
     internal class PerkUIState : UIState
     {
+        public const short DefaultState = 0;
+        public const short StarterPerkState = 1;
         public int whoAmI = -1;
+        public short StateofState = 0;
         public override void OnActivate()
         {
             base.OnActivate();
@@ -25,50 +28,83 @@ namespace BossRush.Contents.Perks
             Player player = Main.player[whoAmI];
             if (player.TryGetModPlayer(out PerkPlayer modplayer))
             {
-                List<int> listOfPerk = new List<int>();
-                for (int i = 0; i < ModPerkLoader.TotalCount; i++)
+                if (StateofState == DefaultState)
                 {
-                    if (modplayer.perks.ContainsKey(i))
-                    {
-                        if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0) 
-                            || modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit || !ModPerkLoader.GetPerk(i).CanBeChoosen)
-                        {
-                            continue;
-                        }
-                    }
-                    listOfPerk.Add(i);
+                    ActivateNormalPerkUI(modplayer, player);
                 }
-                int amount = listOfPerk.Count;
-                Vector2 originDefault = new Vector2(26, 26);
-                for (int i = 0; i < modplayer.PerkAmountModified(); i++)
+                if (StateofState == StarterPerkState)
                 {
-                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmountModified(), 360, i) * modplayer.PerkAmountModified() * 20;
-                    if (i >= amount || i >= modplayer.PerkAmountModified() - 1)
+                    ActivateStarterPerkUI(modplayer, player);
+                }
+            }
+        }
+        private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player)
+        {
+            List<int> listOfPerk = new List<int>();
+            for (int i = 0; i < ModPerkLoader.TotalCount; i++)
+            {
+                if (modplayer.perks.ContainsKey(i))
+                {
+                    if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+                        || modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit || !ModPerkLoader.GetPerk(i).CanBeChoosen)
                     {
-                        UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
-                        { new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
-                         new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
-                         new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT))
-                        });
-                        buttonWeapon.UISetWidthHeight(52, 52);
-                        buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
-                        Append(buttonWeapon);
                         continue;
                     }
-                    int newperk = Main.rand.Next(listOfPerk);
-                    Asset<Texture2D> texture;
-                    if (ModPerkLoader.GetPerk(newperk).textureString is not null)
-                        texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
-                    else
-                        texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
-                    listOfPerk.Remove(newperk);
-                    //After that we assign perk
-                    PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
-                    btn.UISetWidthHeight(52, 52);
-                    btn.UISetPosition(player.Center + offsetPos, originDefault);
-                    btn.perkType = newperk;
-                    Append(btn);
                 }
+                listOfPerk.Add(i);
+            }
+            int amount = listOfPerk.Count;
+            Vector2 originDefault = new Vector2(26, 26);
+            for (int i = 0; i < modplayer.PerkAmountModified(); i++)
+            {
+                Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmountModified(), 360, i) * modplayer.PerkAmountModified() * 20;
+                if (i >= amount || i >= modplayer.PerkAmountModified() - 1)
+                {
+                    UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
+                    { new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
+                         new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
+                         new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT))
+                    });
+                    buttonWeapon.UISetWidthHeight(52, 52);
+                    buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
+                    Append(buttonWeapon);
+                    continue;
+                }
+                int newperk = Main.rand.Next(listOfPerk);
+                Asset<Texture2D> texture;
+                if (ModPerkLoader.GetPerk(newperk).textureString is not null)
+                    texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
+                else
+                    texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+                listOfPerk.Remove(newperk);
+                //After that we assign perk
+                PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
+                btn.UISetWidthHeight(52, 52);
+                btn.UISetPosition(player.Center + offsetPos, originDefault);
+                btn.perkType = newperk;
+                Append(btn);
+            }
+
+        }
+        private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player)
+        {
+            Vector2 originDefault = new Vector2(26, 26);
+            int[] starterPerk = new int[]
+            { Perk.GetPerkType<SolarGladiator>(),
+            Perk.GetPerkType<VortexRanger>(),
+            Perk.GetPerkType<NebulaMage>(),
+            Perk.GetPerkType<StardustTamer>(),
+            Perk.GetPerkType<IncreasePerkSelectionRange>()
+            };
+            for (int i = 0; i < starterPerk.Length; i++)
+            {
+                Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
+                //After that we assign perk
+                PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString), modplayer);
+                btn.UISetWidthHeight(52, 52);
+                btn.UISetPosition(player.Center + offsetPos, originDefault);
+                btn.perkType = starterPerk[i];
+                Append(btn);
             }
         }
     }

@@ -333,9 +333,36 @@ namespace BossRush.Contents.Perks
             {
                 PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
                 uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
+                uiSystemInstance.perkUIstate.StateofState = PerkUIState.DefaultState;
                 uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
             }
-            else
+            else if(player.IsDebugPlayer())
+            {
+                modplayer.perks.Clear();
+            }
+            return true;
+        }
+    }
+    class StarterPerkChooser : ModItem
+    {
+        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetDefaults()
+        {
+            Item.BossRushDefaultToConsume(32, 23);
+            Item.maxStack = 999;
+        }
+        public override bool AltFunctionUse(Player player) => true;
+        public override bool? UseItem(Player player)
+        {
+            PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
+            if (player.altFunctionUse != 2)
+            {
+                PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
+                uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
+                uiSystemInstance.perkUIstate.StateofState = PerkUIState.StarterPerkState;
+                uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
+            }
+            else if(player.IsDebugPlayer())
             {
                 modplayer.perks.Clear();
             }

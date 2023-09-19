@@ -1381,6 +1381,15 @@ Mods: {
 					'''
 			}
 
+			PreHardmodeBossBundle: {
+				DisplayName: Pre Hardmode Boss Bundle
+				Tooltip:
+					'''
+						"{$CommonItemTooltip.RightClickToOpen}"
+						Open this bundle to get almost all pre wall of flesh bosses spawner
+					'''
+			}
+
 			AmberTippedJavelin: {
 				DisplayName: Amber Tipped Javelin
 				Tooltip: ""
@@ -1487,6 +1496,15 @@ Mods: {
 					'''
 			}
 
+			StarterPerkChooser: {
+				DisplayName: Starter Perk Chooser
+				Tooltip:
+					'''
+					Use this to choose a starter perk
+					When choosing a perk, you can't use anything so be wary of where you are choosing
+					'''
+			}
+
 			CelestialWrath: {
 				DisplayName: Celestial Wrath
 				Tooltip: Bring down wrath of celestial being
@@ -1495,11 +1513,6 @@ Mods: {
 			DamageIncreaseModifier: {
 				Tooltip: ""
 				DisplayName: Damage Increase Modifier
-			}
-
-			PreHardmodeBossBundle: {
-				DisplayName: Pre Hardmode Boss Bundle
-				Tooltip: ""
 			}
 
 			LootboxLordSummon: {

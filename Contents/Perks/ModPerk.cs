@@ -11,6 +11,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
 using Terraria.DataStructures;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Perks
 {
@@ -347,6 +348,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = false;
             CanBeChoosen = false;
             Tooltip =
@@ -369,6 +371,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = false;
             CanBeChoosen = false;
             Tooltip =
@@ -390,6 +393,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = false;
             CanBeChoosen = false;
             Tooltip =
@@ -409,6 +413,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = false;
             CanBeChoosen = false;
             Tooltip =
@@ -429,6 +434,7 @@ namespace BossRush.Contents.Perks
     {
         public override void SetDefaults()
         {
+            textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = false;
             CanBeChoosen = false;
             Tooltip =
