@@ -993,6 +993,11 @@ namespace BossRush.Contents.Items.Chest
         public float RangeChanceMutilplier = 1f;
         public float MagicChanceMutilplier = 1f;
         public float SummonChanceMutilplier = 1f;
+        //Use this if you gonna always update it
+        public float UpdateMeleeChanceMutilplier = 1f;
+        public float UpdateRangeChanceMutilplier = 1f;
+        public float UpdateMagicChanceMutilplier = 1f;
+        public float UpdateSummonChanceMutilplier = 1f;
         private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 1;
         /// <summary>
         /// This must be called before using
@@ -1029,6 +1034,10 @@ namespace BossRush.Contents.Items.Chest
             WeaponAmountAddition = 0;
             PotionTypeAmountAddition = 0;
             PotionNumberAmountAddition = 0;
+            UpdateMeleeChanceMutilplier = 1f;
+            UpdateRangeChanceMutilplier = 1f;
+            UpdateMagicChanceMutilplier = 1f;
+            UpdateSummonChanceMutilplier = 1f;
             base.ResetEffects();
         }
         public override void Initialize()

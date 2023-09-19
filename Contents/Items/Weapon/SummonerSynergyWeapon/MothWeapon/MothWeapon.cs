@@ -41,10 +41,12 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
         {
             if (player.HasItem(ItemID.VampireFrogStaff))
             {
+                modplayer.SynergyBonus++;
                 modplayer.StreetLamp_VampireFrogStaff = true;
             }
             if (player.HasItem(ItemID.FireWhip))
             {
+                modplayer.SynergyBonus++;
                 modplayer.StreetLamp_Firecracker = true;
             }
 
@@ -69,8 +71,6 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon
             player.itemRotation = MathHelper.ToRadians(45 * -player.direction);
             player.itemLocation = player.Center + new Vector2(8 * player.direction, 16);
         }
-
-        
 
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {

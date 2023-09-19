@@ -46,10 +46,14 @@ namespace BossRush.Contents.Perks
                 if (modplayer.perks.ContainsKey(i))
                 {
                     if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
-                        || modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit || !ModPerkLoader.GetPerk(i).CanBeChoosen)
+                        || modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit)
                     {
                         continue;
                     }
+                }
+                if (!ModPerkLoader.GetPerk(i).CanBeChoosen)
+                {
+                    continue;
                 }
                 listOfPerk.Add(i);
             }

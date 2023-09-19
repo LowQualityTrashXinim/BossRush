@@ -86,6 +86,7 @@ namespace BossRush.Common
                 items.Add(new Item(ModContent.ItemType<DayTimeCycle>()));
                 items.Add(new Item(ModContent.ItemType<CursedSkull>()));
                 items.Add(new Item(ModContent.ItemType<BiomeToggle>()));
+                items.Add(new Item(ModContent.ItemType<StarterPerkChooser>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {

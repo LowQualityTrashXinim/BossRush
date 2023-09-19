@@ -349,22 +349,23 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
-            CanBeStack = false;
+            CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
                 "+ 58% increased odds for melee" +
                 "\n+ 5% melee speed" +
                 "\n+ 5% melee size increases";
+            StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().MeleeChanceMutilplier += .58f;
-            player.GetAttackSpeed(DamageClass.Melee) += .05f;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .58f * StackAmount;
+            player.GetAttackSpeed(DamageClass.Melee) += .05f * StackAmount;
         }
         public override void ModifyItemScale(Player player, Item item, ref float scale)
         {
             if (item.DamageType == DamageClass.Melee)
-                scale += .05f;
+                scale += .05f * StackAmount;
         }
     }
     public class VortexRanger : Perk
@@ -372,21 +373,22 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
-            CanBeStack = false;
+            CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
                 "+ 58% increased odds for range" +
                 "\n+ 5% range critical chance increases";
+            StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().RangeChanceMutilplier += .58f;
-            player.GetAttackSpeed(DamageClass.Melee) += .05f;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .58f * StackAmount;
+            player.GetAttackSpeed(DamageClass.Melee) += .05f * StackAmount;
         }
         public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit)
         {
             if (item.DamageType == DamageClass.Ranged)
-                crit += 5;
+                crit += 5 * StackAmount;
         }
     }
     public class NebulaMage : Perk
@@ -394,19 +396,20 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
-            CanBeStack = false;
+            CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
                 "+ 58% increased odds for magic" +
                 "\n+ 5% magic cost reduction";
+            StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().MagicChanceMutilplier += .58f;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += .58f * StackAmount;
         }
         public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi)
         {
-            reduce -= item.mana * .05f;
+            reduce -= item.mana * .05f * StackAmount;
         }
     }
     public class StardustTamer : Perk
@@ -414,20 +417,21 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
-            CanBeStack = false;
+            CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
                 "+ 58% increased odds for summoner" +
                 "\n+ 5% magic cost reduction";
+            StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().SummonChanceMutilplier += .58f;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += .58f * StackAmount;
         }
         public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
         {
             if (item.DamageType == DamageClass.Summon || item.DamageType == DamageClass.SummonMeleeSpeed)
-                damage += .05f;
+                damage += .05f * StackAmount;
         }
     }
     public class IncreasePerkSelectionRange : Perk
@@ -435,10 +439,11 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
-            CanBeStack = false;
+            CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
                 "+Increases perk range amount by 1";
+            StackLimit = 999;
         }
     }
     //public class GodGiveDice : Perk

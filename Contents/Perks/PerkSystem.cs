@@ -62,6 +62,10 @@ namespace BossRush.Contents.Perks
     {
         public bool CanGetPerk = false;
         public int PerkAmount = 3;
+        /// <summary>
+        /// Keys : Perk type
+        /// Values : Stack value
+        /// </summary>
         public Dictionary<int, int> perks = new Dictionary<int, int>();
 
         public bool perk_PotionExpert = false;
@@ -80,9 +84,9 @@ namespace BossRush.Contents.Perks
         }
         public int PerkAmountModified()
         {
-            if(HasPerk<IncreasePerkSelectionRange>())
+            if(perks.ContainsKey(Perk.GetPerkType<IncreasePerkSelectionRange>()))
             {
-                return PerkAmount + 1;
+                return PerkAmount + perks[Perk.GetPerkType<IncreasePerkSelectionRange>()];
             }
             return PerkAmount;
         }
