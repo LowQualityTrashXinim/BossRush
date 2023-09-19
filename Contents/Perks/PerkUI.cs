@@ -30,8 +30,8 @@ namespace BossRush.Contents.Perks
                 {
                     if (modplayer.perks.ContainsKey(i))
                     {
-                        if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0) ||
-                            modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit)
+                        if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0) 
+                            || modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit || !ModPerkLoader.GetPerk(i).CanBeChoosen)
                         {
                             continue;
                         }
@@ -40,10 +40,10 @@ namespace BossRush.Contents.Perks
                 }
                 int amount = listOfPerk.Count;
                 Vector2 originDefault = new Vector2(26, 26);
-                for (int i = 0; i < modplayer.PerkAmount; i++)
+                for (int i = 0; i < modplayer.PerkAmountModified(); i++)
                 {
-                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmount, 360, i) * modplayer.PerkAmount * 20;
-                    if (i >= amount || i >= modplayer.PerkAmount - 1)
+                    Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmountModified(), 360, i) * modplayer.PerkAmountModified() * 20;
+                    if (i >= amount || i >= modplayer.PerkAmountModified() - 1)
                     {
                         UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
                         { new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
@@ -73,8 +73,6 @@ namespace BossRush.Contents.Perks
         }
     }
     //Do all the check in UI state since that is where the perk actually get create and choose
-
-
     class PerkUIImageButton : UIImageButton
     {
         PerkPlayer perkplayer;
@@ -113,7 +111,7 @@ namespace BossRush.Contents.Perks
             {
                 toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
                 toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-                toolTip.SetText(ModPerkLoader.GetPerk(perkType).Tooltip);
+                toolTip.SetText(ModPerkLoader.GetPerk(perkType).ModifyToolTip());
             }
             else
             {

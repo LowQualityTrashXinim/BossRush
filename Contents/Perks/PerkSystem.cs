@@ -78,6 +78,14 @@ namespace BossRush.Contents.Perks
             _perks = new int[ModPerkLoader.TotalCount];
             perks = new Dictionary<int, int>();
         }
+        public int PerkAmountModified()
+        {
+            if(HasPerk<IncreasePerkSelectionRange>())
+            {
+                return PerkAmount + 1;
+            }
+            return PerkAmount;
+        }
         public bool HasPerk<T>() where T : Perk => _perks[Perk.GetPerkType<T>()] > 0;
         public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
         public override void ResetEffects()
@@ -186,7 +194,13 @@ namespace BossRush.Contents.Perks
                 ModPerkLoader.GetPerk(perk).OnHitByProjectile(Player, proj, hurtInfo);
             }
         }
-        //TODO : make a override for item
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
+        {
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).ModifyManaCost(Player, item, ref reduce, ref mult);
+            }
+        }
         public override void SaveData(TagCompound tag)
         {
             tag["PlayerPerks"] = perks.Keys.ToList();
@@ -214,6 +228,8 @@ namespace BossRush.Contents.Perks
         /// </summary>
         public string textureString = null;
         public string Tooltip = null;
+
+        public bool CanBeChoosen = true;
         public int Type { get; private set; }
         protected sealed override void Register()
         {
@@ -222,6 +238,10 @@ namespace BossRush.Contents.Perks
         public static int GetPerkType<T>() where T : Perk
         {
             return ModContent.GetInstance<T>().Type;
+        }
+        public virtual string ModifyToolTip()
+        {
+            return Tooltip;
         }
         public sealed override void Unload()
         {
@@ -279,6 +299,7 @@ namespace BossRush.Contents.Perks
         public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
         public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
         public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
+        public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
         public virtual void OnChoose(Player player) { }
     }
     public static class ModPerkLoader
