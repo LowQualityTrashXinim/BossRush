@@ -8,7 +8,7 @@ using BossRush.Contents.Items.Potion;
 
 namespace BossRush.Contents.Artifact
 {
-    internal class AlchemistKnowledge : ArtifactModItem
+    internal class OrbOfAlchemistKnowledge : ArtifactModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void ArtifactSetDefault()
@@ -22,23 +22,23 @@ namespace BossRush.Contents.Artifact
         bool Alchemist = false;
         public override void ResetEffects()
         {
-            Alchemist = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<AlchemistKnowledge>();
+            Alchemist = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<OrbOfAlchemistKnowledge>();
         }
         public override void PostUpdate()
         {
             if (Alchemist)
             {
                 Player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 5;
-            }
-            for (int i = 0; i < Player.inventory.Length; i++)
-            {
-                if (TerrariaArrayID.MovementPotion.Any(l => l == Player.inventory[i].type) || TerrariaArrayID.NonMovementPotion.Any(l => l == Player.inventory[i].type))
+                for (int i = 0; i < Player.inventory.Length; i++)
                 {
-                    Player.inventory[i].active = false;
-                    Player.inventory[i].stack = 0;
+                    if (TerrariaArrayID.MovementPotion.Any(l => l == Player.inventory[i].type) || TerrariaArrayID.NonMovementPotion.Any(l => l == Player.inventory[i].type))
+                    {
+                        Player.inventory[i].active = false;
+                        Player.inventory[i].stack = 0;
+                    }
+                    if (i >= 50)
+                        break;
                 }
-                if (i >= 50)
-                    break;
             }
         }
     }

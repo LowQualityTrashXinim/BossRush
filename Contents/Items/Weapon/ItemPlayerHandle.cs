@@ -195,7 +195,7 @@ namespace BossRush.Contents.Items.Weapon
         {
             GodDecision();
             Item item = Player.HeldItem;
-            if (item.type != ModContent.ItemType<BurningPassion>())
+            if (item.type == ModContent.ItemType<BurningPassion>())
             {
                 if (!Player.ItemAnimationActive && check == 0)
                 {
@@ -210,21 +210,21 @@ namespace BossRush.Contents.Items.Weapon
                     check = 0;
                 }
             }
-            if (item.type != ModContent.ItemType<Deagle>())
+            if (item.type == ModContent.ItemType<Deagle>())
             {
                 if (Deagle_DaedalusStormBow)
                 {
                     Deagle_DaedalusStormBow_coolDown = BossRushUtils.CoolDown(Deagle_DaedalusStormBow_coolDown);
                 }
             }
-            if (item.type != ModContent.ItemType<IceStorm>())
+            if (item.type == ModContent.ItemType<IceStorm>())
             {
                 IceStorm_SpeedMultiplier = 1;
             }
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (Swotaff_Spear)
+            if (Swotaff_Spear && Player.altFunctionUse != 2)
             {
                 if (Swotaff_Spear_Counter < 2)
                 {

@@ -1510,19 +1510,14 @@ Mods: {
 				Tooltip: Bring down wrath of celestial being
 			}
 
-			DamageIncreaseModifier: {
-				Tooltip: ""
-				DisplayName: Damage Increase Modifier
-			}
-
 			LootboxLordSummon: {
 				DisplayName: Lootbox Lord Summon
 				Tooltip: ""
 			}
 
-			AlchemistKnowledge: {
-				DisplayName: Alchemist Knowledge
-				Tooltip: ""
+			OrbOfAlchemistKnowledge: {
+				DisplayName: Orb Of Alchemist Knowledge
+				Tooltip: W.I.P
 			}
 		}
 

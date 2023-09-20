@@ -576,7 +576,6 @@ namespace BossRush.Common.RoguelikeChange
         public int CountDownToResetCombo = 0;
         public int MouseXPosDirection = 1;
         bool InStateOfSwinging = false;
-        float fixedRotationToDash = 0;
         Vector2 positionToDash = Vector2.Zero;
         Vector2 lastPlayerPositionBeforeAnimation = Vector2.Zero;
         public override void PreUpdate()
@@ -609,7 +608,6 @@ namespace BossRush.Common.RoguelikeChange
                 if (delaytimer <= 0)
                 {
                     delaytimer = (int)(Player.itemAnimationMax * 1.2f);
-                    ExecuteSpecialComboOnStart();
                 }
             }
             if (Player.ItemAnimationActive)
@@ -619,6 +617,11 @@ namespace BossRush.Common.RoguelikeChange
             }
             else
             {
+                if (Main.mouseRight)
+                {
+                    lastPlayerPositionBeforeAnimation = Player.Center;
+                    positionToDash = Player.Center.PositionOffsetDynamic((Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), 500f);
+                }
                 CanPlayerBeDamage = true;
                 if (InStateOfSwinging)
                 {
@@ -627,37 +630,21 @@ namespace BossRush.Common.RoguelikeChange
                 }
             }
         }
-        public override void ResetEffects()
-        {
-            base.ResetEffects();
-        }
-        bool comboExecuteWithDash = false;
         private void ExecuteSpecialComboOnActive()
         {
             if (ComboConditionChecking())
             {
                 return;
             }
-            Player.gravity = 0;
+            Player.noFallDmg = true;
             CanPlayerBeDamage = false;
-            Player.controlLeft = false;
-            Player.controlRight = false;
             float percentage = (Player.itemAnimationMax - Player.itemAnimation) / (float)Player.itemAnimationMax;
-            Player.Center = Vector2.SmoothStep(lastPlayerPositionBeforeAnimation, positionToDash, percentage);
+            Player.Center = Vector2.Lerp(lastPlayerPositionBeforeAnimation, positionToDash, BossRushUtils.OutExpo(percentage));
         }
         private bool ComboConditionChecking() =>
             Player.mount.Active
             || ComboNumber != 2
             || !Main.mouseRight;
-        private void ExecuteSpecialComboOnStart()
-        {
-            if (ComboConditionChecking())
-            {
-                comboExecuteWithDash = false;
-                return;
-            }
-            comboExecuteWithDash = true;
-        }
         public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
         {
             if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active)
@@ -693,11 +680,6 @@ namespace BossRush.Common.RoguelikeChange
             {
                 Player.direction = data.X > 0 ? 1 : -1;
             }
-            else
-            {
-                lastPlayerPositionBeforeAnimation = Player.Center;
-                positionToDash = Player.Center + (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 500f;
-            }
             Player.attackCD = 0;
             for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++)
             {
@@ -720,6 +702,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
+            modifiers.ArmorPenetration += 10;
             modifiers.FinalDamage += DamageHandleSystem(item);
             if (Main.mouseRight)
             {

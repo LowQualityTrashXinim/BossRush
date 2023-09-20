@@ -158,7 +158,25 @@ namespace BossRush
             }
             return smallest;
         }
-
+        /// <summary>
+        /// The higher the number, the heavier this method become, NOT RECOMMEND USING IT AT ALL COST
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="ProjectileVelocity"></param>
+        /// <param name="offSetBy"></param>
+        /// <returns></returns>
+        public static Vector2 PositionOffsetDynamic(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
+        {
+            Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero);
+            for (float i = offSetBy; i > 0; i--)
+            {
+                if (Collision.CanHitLine(position, 0, 0, position + OFFSET * i, 0, 0))
+                {
+                    return position += OFFSET * i;
+                }
+            }
+            return position;
+        }
         public static Vector2 PositionOFFSET(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy)
         {
             Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero) * offSetBy;
