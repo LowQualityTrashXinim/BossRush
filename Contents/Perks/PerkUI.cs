@@ -227,9 +227,9 @@ namespace BossRush.Contents.Perks
         }
         public override void OnLeftClick(Player player)
         {
-            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<BigCardPacket>());
+            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<BoxOfCard>(), 3);
         }
-        public override string TooltipText() => "Give you a big card packet";
+        public override string TooltipText() => "Give you 3 box of card";
     }
     class MaterialPotionUIImageButton : SpecialPerkUIImageButton
     {

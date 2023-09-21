@@ -89,7 +89,7 @@ namespace BossRush.Contents.Perks
         {
             Tooltip =
                 "+ Give you immunity to On Fire !" +
-                "\n+ Make a poison aura around player";
+                "\n+ Make a fiery aura around player";
             CanBeStack = false;
         }
         public override void UpdateEquip(Player player)
@@ -249,7 +249,7 @@ namespace BossRush.Contents.Perks
         {
             CanBeStack = true;
             Tooltip =
-                "+ When a enemy hit you, you will do self explosion that deal 100 damage to surrounding enemies";
+                "+ When a enemy hit you, you will do self explosion that deal 75 damage to surrounding enemies";
             StackLimit = 5;
         }
         public override void OnHitByAnything(Player player)
@@ -258,7 +258,7 @@ namespace BossRush.Contents.Perks
             foreach (NPC npc in npclist)
             {
                 int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
-                npc.StrikeNPC(npc.CalculateHitInfo(100 * StackAmount, direction, false, 10));
+                npc.StrikeNPC(npc.CalculateHitInfo(75 * StackAmount, direction, false, 10));
             }
             for (int i = 0; i < 150; i++)
             {

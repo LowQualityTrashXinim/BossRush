@@ -864,4 +864,7 @@ namespace BossRush.Common.RoguelikeChange
         public static string ConvertIntoArmorSetFormat(int[] armor) => $"{armor[0]}:{armor[1]}:{armor[2]}";
         public override string ToString() => $"{headID}:{bodyID}:{legID}";
     }
+    public class RoguelikeOverhaulSystem : ModSystem
+    {
+    }
 }

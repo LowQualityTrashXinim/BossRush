@@ -622,7 +622,7 @@ namespace BossRush.Common.RoguelikeChange
                 if (Main.mouseRight)
                 {
                     lastPlayerPositionBeforeAnimation = Player.Center;
-                    positionToDash = Player.Center.PositionOffsetDynamic((Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), 500f);
+                    positionToDash = Player.Center.PositionOFFSET((Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), 500f);
                 }
                 CanPlayerBeDamage = true;
                 if (InStateOfSwinging)
@@ -650,7 +650,10 @@ namespace BossRush.Common.RoguelikeChange
         public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
         {
             if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active && target.immune[Player.whoAmI] <= 0)
+            {
+                target.immune[Player.whoAmI] = 10;
                 return Collision.CheckAABBvLineCollision(target.TopLeft, target.Size, lastPlayerPositionBeforeAnimation, positionToDash);
+            }
             return null;
         }
         private void ComboHandleSystem()

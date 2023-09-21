@@ -164,6 +164,8 @@ Mods: {
 			ShadowMagicMissle.DisplayName: Shadow Magic Missle
 			pearlSwordProj.DisplayName: pearl Sword Proj
 			LightningStrike.DisplayName: Lightning Strike
+			heavenBolt.DisplayName: heaven Bolt
+			HeavenSmgThrow.DisplayName: Heaven Smg Throw
 		}
 
 		NPCs: {
@@ -1519,6 +1521,11 @@ Mods: {
 				DisplayName: Orb Of Alchemist Knowledge
 				Tooltip: W.I.P
 			}
+
+			HeavenSmg: {
+				DisplayName: Heaven Smg
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1660,6 +1667,11 @@ Mods: {
 			FateDeciderBuff: {
 				DisplayName: Fate Decider Buff
 				Description: Mods.BossRush.Buffs.FateDeciderBuff.Description
+			}
+
+			heavenSmgBuff: {
+				DisplayName: heaven Smg Buff
+				Description: Mods.BossRush.Buffs.heavenSmgBuff.Description
 			}
 		}
 
