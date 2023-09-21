@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 1f, 18, 18, BossRushUseStyle.GenericSwingDownImprove, true);
+            BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 1f, 18, 18, ItemUseStyleID.Swing, true);
             Item.DamageType = DamageClass.Melee;
 
             Item.rare = 2;
@@ -20,6 +20,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish
             Item.useTurn = false;
             Item.scale += 0.25f;
             Item.UseSound = SoundID.Item1;
+
+            if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+                meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {

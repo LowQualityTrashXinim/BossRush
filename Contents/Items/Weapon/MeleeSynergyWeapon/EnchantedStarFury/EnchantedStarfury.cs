@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(66, 66, 24, 4f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);
+            Item.BossRushSetDefault(66, 66, 24, 4f, 60, 20, ItemUseStyleID.Swing, true);
             Item.DamageType = DamageClass.Melee;
             Item.shoot = ProjectileID.EnchantedBeam;
             Item.shootSpeed = 20f;
@@ -21,6 +21,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury
             Item.rare = 4;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item1;
+
+            if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+                meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
         }
         int switchProj = 0;
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)

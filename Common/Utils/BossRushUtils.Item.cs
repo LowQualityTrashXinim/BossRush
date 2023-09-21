@@ -109,24 +109,28 @@ namespace BossRush
         }
         public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck)
         {
+            if(item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+            {
             switch (WhatToCheck)
             {
                 case MeleeStyle.CheckVanillaSwingWithModded:
                     return item.useStyle == ItemUseStyleID.Swing
-                        || item.useStyle == BossRushUseStyle.GenericSwingDownImprove
-                        || item.useStyle == BossRushUseStyle.Swipe
-                        || item.useStyle == BossRushUseStyle.Poke;
+                        || meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
+                        || meleeItem.SwingType == BossRushUseStyle.Swipe
+                        || meleeItem.SwingType == BossRushUseStyle.Poke;
                 case MeleeStyle.CheckOnlyModded:
-                    return item.useStyle == BossRushUseStyle.GenericSwingDownImprove
-                        || item.useStyle == BossRushUseStyle.Swipe
-                        || item.useStyle == BossRushUseStyle.Poke;
+                    return meleeItem.SwingType == BossRushUseStyle.GenericSwingDownImprove
+                        || meleeItem.SwingType == BossRushUseStyle.Swipe
+                        || meleeItem.SwingType == BossRushUseStyle.Poke;
                 case MeleeStyle.CheckOnlyModdedWithoutDefault:
-                    return item.useStyle == BossRushUseStyle.Swipe
-                        || item.useStyle == BossRushUseStyle.Poke;
+                    return meleeItem.SwingType == BossRushUseStyle.Swipe
+                        || meleeItem.SwingType == BossRushUseStyle.Poke;
                 default:
                     Console.WriteLine("Fail to know what to check !");
                     return false;
             }
+            }
+            return false;
         }
     }
 }

@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MFrozenEnchantedSword
 {
@@ -11,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MFrozenEnchantedSwor
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(34, 40, 29, 7f, 15, 15, BossRushUseStyle.GenericSwingDownImprove, true);
+            Item.BossRushSetDefault(34, 40, 29, 7f, 15, 15, ItemUseStyleID.Swing, true);
 
             Item.DamageType = DamageClass.Melee;
             Item.rare = 3;

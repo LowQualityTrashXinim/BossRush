@@ -15,6 +15,8 @@ namespace BossRush.Common.RoguelikeChange
     }
     internal class MeleeWeaponOverhaul : GlobalItem
     {
+        public int SwingType = 0;
+        public override bool InstancePerEntity => true;
         public override void SetDefaults(Item item)
         {
             base.SetDefaults(item);
@@ -303,7 +305,7 @@ namespace BossRush.Common.RoguelikeChange
                 case ItemID.ChlorophyteSaber:
                 case ItemID.ChristmasTreeSword:
                 case ItemID.TrueExcalibur:
-                    item.useStyle = BossRushUseStyle.Swipe;
+                    SwingType = BossRushUseStyle.Swipe;
                     item.useTurn = false;
                     break;
                 //Poke Sword
@@ -326,7 +328,7 @@ namespace BossRush.Common.RoguelikeChange
                 case ItemID.TerraBlade:
                 case ItemID.Meowmere:
                 case ItemID.StarWrath:
-                    item.useStyle = BossRushUseStyle.Poke;
+                    SwingType = BossRushUseStyle.Poke;
                     item.useTurn = false;
                     break;
                 case ItemID.DD2SquireBetsySword:
@@ -338,7 +340,7 @@ namespace BossRush.Common.RoguelikeChange
                 case ItemID.AntlionClaw:
                 case ItemID.HamBat:
                 case ItemID.PsychoKnife:
-                    item.useStyle = BossRushUseStyle.GenericSwingDownImprove;
+                    SwingType = BossRushUseStyle.GenericSwingDownImprove;
                     item.useTurn = false;
                     break;
                 #endregion
@@ -352,25 +354,25 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
-            if (item.useStyle == BossRushUseStyle.GenericSwingDownImprove)
+            if (SwingType == BossRushUseStyle.GenericSwingDownImprove)
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImprove", "Sword can swing in all direction");
                 line.OverrideColor = Color.LightYellow;
                 tooltips.Add(line);
             }
-            if (item.useStyle == BossRushUseStyle.Swipe || item.useStyle == BossRushUseStyle.Poke)
+            if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke)
             {
                 TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction, on 3rd attack will do a special attack" +
                     "\nHold down right mouse to enable focus mode and allow you to dash toward your cursor on 3rd attack");
                 line.OverrideColor = Color.Yellow;
                 tooltips.Add(line);
-                if (item.useStyle == BossRushUseStyle.Swipe)
+                if (SwingType == BossRushUseStyle.Swipe)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 50% more damage");
                     line2.OverrideColor = Color.Yellow;
                     tooltips.Add(line2);
                 }
-                if (item.useStyle == BossRushUseStyle.Poke)
+                if (SwingType == BossRushUseStyle.Poke)
                 {
                     TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 75% more damage\n3rd attack deal 25% more damage");
                     line2.OverrideColor = Color.Yellow;
@@ -407,8 +409,8 @@ namespace BossRush.Common.RoguelikeChange
         }
         public override bool CanUseItem(Item item, Player player)
         {
-            if ((item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke) ||
+            if ((SwingType != BossRushUseStyle.Swipe &&
+                SwingType != BossRushUseStyle.Poke) ||
                 item.noMelee)
             {
                 return base.CanUseItem(item, player);
@@ -417,8 +419,8 @@ namespace BossRush.Common.RoguelikeChange
         }
         public override float UseSpeedMultiplier(Item item, Player player)
         {
-            if (item.useStyle != BossRushUseStyle.Swipe &&
-                item.useStyle != BossRushUseStyle.Poke ||
+            if (SwingType != BossRushUseStyle.Swipe &&
+                SwingType != BossRushUseStyle.Poke ||
                 item.noMelee)
             {
                 return base.UseSpeedMultiplier(item, player);
@@ -426,14 +428,14 @@ namespace BossRush.Common.RoguelikeChange
             float useTimeMultiplierOnCombo = .85f;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             //This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
-            if (item.useStyle == BossRushUseStyle.Swipe)
+            if (SwingType == BossRushUseStyle.Swipe)
             {
                 if (modPlayer.ComboNumber == 2)
                 {
                     useTimeMultiplierOnCombo -= .25f;
                 }
             }
-            if (item.useStyle == BossRushUseStyle.Poke)
+            if (SwingType == BossRushUseStyle.Poke)
             {
                 if (modPlayer.ComboNumber == 0)
                 {
@@ -454,7 +456,7 @@ namespace BossRush.Common.RoguelikeChange
             }
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
-            switch (item.useStyle)
+            switch (SwingType)
             {
                 case BossRushUseStyle.Swipe:
                     switch (modPlayer.ComboNumber)
@@ -647,7 +649,7 @@ namespace BossRush.Common.RoguelikeChange
             || !Main.mouseRight;
         public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
         {
-            if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active)
+            if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active && target.immune[Player.whoAmI] <= 0)
                 return Collision.CheckAABBvLineCollision(target.TopLeft, target.Size, lastPlayerPositionBeforeAnimation, positionToDash);
             return null;
         }
@@ -711,19 +713,22 @@ namespace BossRush.Common.RoguelikeChange
         }
         private float DamageHandleSystem(Item item)
         {
-            if (item.useStyle == BossRushUseStyle.Swipe && ComboNumber == 2)
+            if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
             {
-                return .5f;
-            }
-            if (item.useStyle == BossRushUseStyle.Poke)
-            {
-                if (ComboNumber == 0)
+                if (meleeItem.SwingType == BossRushUseStyle.Swipe && ComboNumber == 2)
                 {
-                    return .75f;
+                    return .5f;
                 }
-                if (ComboNumber == 2)
+                if (meleeItem.SwingType == BossRushUseStyle.Poke)
                 {
-                    return .25f;
+                    if (ComboNumber == 0)
+                    {
+                        return .75f;
+                    }
+                    if (ComboNumber == 2)
+                    {
+                        return .25f;
+                    }
                 }
             }
             return 0;

@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(58, 78, 29, 5f, 60, 20, BossRushUseStyle.GenericSwingDownImprove, true);
+            Item.BossRushSetDefault(58, 78, 29, 5f, 60, 20, ItemUseStyleID.Swing, true);
             Item.DamageType = DamageClass.Melee;
 
             Item.shoot = ModContent.ProjectileType<CactusBall>();
@@ -21,6 +21,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus
             Item.value = Item.buyPrice(gold: 50);
 
             Item.UseSound = SoundID.Item1;
+
+            if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+                meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {

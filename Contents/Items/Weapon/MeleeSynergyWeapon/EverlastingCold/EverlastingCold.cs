@@ -10,11 +10,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold
     {
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushSetDefault(Item, 92, 92, 120, 5f, 20, 20, BossRushUseStyle.Swipe, true);
+            BossRushUtils.BossRushSetDefault(Item, 92, 92, 120, 5f, 20, 20, ItemUseStyleID.Swing, true);
             Item.DamageType = DamageClass.Melee;
             Item.rare = ItemRarityID.LightPurple;
             Item.value = Item.buyPrice(gold: 50);
             Item.UseSound = SoundID.Item1;
+            if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
+                meleeItem.SwingType = BossRushUseStyle.Swipe;
         }
 
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
