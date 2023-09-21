@@ -15,7 +15,7 @@ using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
 {
-    public class HeavenSmg : ModItem
+    public class HeavenSmg : SynergyModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
@@ -23,13 +23,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             BossRushUtils.BossRushDefaultRange(Item, 32, 32, 6, 1, 5, 30, ItemUseStyleID.Shoot,ProjectileID.Bullet,45,true,AmmoID.Bullet);
             Item.reuseDelay = 30;
             //Vanilla Code Cant handle 2 different UseStyle for some reason, so once there is a sprite for it then draw it manually or find a way that dont cause it to glitch out, i didnt find a perfect way to draw it cause idk how the sprite would look like... TY VANILLA CODE YAAAAAY
-            Item.noUseGraphic = true;
+            //Item.noUseGraphic = true;
         }
-        public override void HoldItem(Player player)
+        public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            var modPlayer = player.GetModPlayer<heavenSmgPlayer>();
-            player.GetDamage(DamageClass.Generic) += modPlayer.heavenSmgStacks * 0.05f;
-            player.GetAttackSpeed(DamageClass.Generic) += modPlayer.heavenSmgStacks * 0.01f;
+            var HeavenSMGmodplayer = player.GetModPlayer<heavenSmgPlayer>();
+            player.GetDamage(DamageClass.Generic) += HeavenSMGmodplayer.heavenSmgStacks * 0.05f;
+            player.GetAttackSpeed(DamageClass.Generic) += HeavenSMGmodplayer.heavenSmgStacks * 0.01f;
         }
         //public override bool AltFunctionUse(Player player)
         //{
@@ -42,7 +42,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         {
             return true;
         }
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse == 2)
             {
@@ -53,12 +53,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             } else
             SoundEngine.PlaySound(SoundID.Item36 with { Pitch = 1.5f }, player.Center);
         }
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             if(player.velocity.Y > 0f && player.HasBuff<heavenSmgBuff>()) {
                 Projectile.NewProjectileDirect(source,position,velocity * 0.5f,ModContent.ProjectileType<heavenBolt>(),(int)(damage * 1.25f),0,Main.myPlayer, 1);
             }
-            return true;
+            CanShootItem = true;
         }
     }
     // TRAAAAILSSS LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
@@ -83,7 +83,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             }
             private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 32f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
         }
-    public class HeavenSmgThrow : ModProjectile
+    public class HeavenSmgThrow : SynergyModProjectile
     {
         static bool returningToOwner = false;
         static bool targetHit = false;
@@ -146,15 +146,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             }
             return false;
         }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];
-            var modplayer = player.GetModPlayer<heavenSmgPlayer>();
+            var HeavenSMGmodplayer = player.GetModPlayer<heavenSmgPlayer>();
             if (!returningToOwner)
             {
                 targetHit = true;
                 player.AddBuff(ModContent.BuffType<heavenSmgBuff>(),60 * 4);
-                //modplayer.ModPlayer_IncreaseStack();
+                //HeavenSMGmodplayer.ModPlayer_IncreaseStack();
             }
             returnToPlayer();
         }
@@ -183,19 +182,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         float maxThrowSpeed = 50f;
         float accel = 0.8f;
         public int timeleftReset = 120;
-        public override void AI()
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
             if (!returningToOwner && Projectile.timeLeft <= 2)
             {
                 resetStacks();
                 returnToPlayer();
             }
-            Player player = Main.player[Projectile.owner];
             player.itemAnimation = player.itemTime = 2;
             player.heldProj = Projectile.whoAmI;
             if (returningToOwner)
             {
-                Vector2 vel = (player.Center - Projectile.Center);
+                Vector2 vel = player.Center - Projectile.Center;
                 vel.Normalize();
                 currentSpeed += accel;
                 if (currentSpeed > maxThrowSpeed)
@@ -264,7 +262,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             }
         }
     }
-    internal class heavenBolt : ModProjectile {
+    internal class heavenBolt : SynergyModProjectile {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         static int oldposFrameAmount = 25;
         public override void SetStaticDefaults()
@@ -280,7 +278,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         {
             Projectile.width = Projectile.height = 16;
             Projectile.friendly = true;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 570;
             Projectile.aiStyle = -1;
             Projectile.alpha = 0;
             Projectile.penetrate = 1;
@@ -325,7 +323,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             Main.EntitySpriteDraw(sparkleTexture, drawpos, null, smallColor, MathHelper.PiOver2 + rotation, origin, scaleLeftRight * 0.6f, dir);
             Main.EntitySpriteDraw(sparkleTexture, drawpos, null, smallColor, 0f + rotation, origin, scaleUpDown * 0.6f, dir);
         }
-        public override void Kill(int timeLeft)
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item125 with { Pitch = 2f}, Projectile.Center);
             for(int i = 0; i < 35; i++) {
@@ -334,7 +332,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
                 }
             if(Main.myPlayer == Projectile.owner && Projectile.ai[0] == 0) {
                 for(int i = 0; i < miniProjectileAmount; i++) {
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(),Projectile.oldPosition,Main.rand.NextVector2CircularEdge(1f,1f),ModContent.ProjectileType<heavenBolt>(),Projectile.damage / 3,0,Main.myPlayer, 1);
+                    var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(),Projectile.oldPosition,Main.rand.NextVector2CircularEdge(1f,1f),ModContent.ProjectileType<heavenBolt>(),Projectile.damage / 3,0,Main.myPlayer, 1);
+                    proj.timeLeft = 600;
                 }
             }
         }
@@ -342,7 +341,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         float projSpeed = 0f;
         bool canDealDamage = false;
         public override bool? CanHitNPC(NPC target) => canDealDamage;
-        public override void AI()
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 2000f;
