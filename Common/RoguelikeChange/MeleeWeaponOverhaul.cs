@@ -651,8 +651,12 @@ namespace BossRush.Common.RoguelikeChange
         {
             if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active && target.immune[Player.whoAmI] <= 0)
             {
-                target.immune[Player.whoAmI] = 10;
-                return Collision.CheckAABBvLineCollision(target.TopLeft, target.Size, lastPlayerPositionBeforeAnimation, positionToDash);
+                bool collide = Collision.CheckAABBvLineCollision(target.TopLeft, target.Size, lastPlayerPositionBeforeAnimation, positionToDash);
+                if (collide)
+                {
+                    target.immune[Player.whoAmI] = 10;
+                    return collide;
+                }
             }
             return null;
         }
