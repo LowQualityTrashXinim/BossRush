@@ -15,7 +15,7 @@ using BossRush.Texture;
 
 namespace BossRush.Contents.Perks
 {
-    public class GenericDamageIncrease : Perk
+    public class PowerUp : Perk
     {
         public override void SetDefaults()
         {
@@ -24,9 +24,32 @@ namespace BossRush.Contents.Perks
             CanBeStack = true;
             StackLimit = 3;
         }
+        public override string ModifyToolTip()
+        {
+            if (StackAmount == 3)
+                return "Increases damage by 30%" +
+                    "\nIncreases attack speed by 10%" +
+                    "\nIncreases critical strike chance by 10";
+            if (StackAmount == 2)
+                return "Increases damage by 20%" +
+                    "\nIncreases attack speed by 10%";
+            return
+                "+ Increases damage by 10%";
+        }
         public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
         {
             damage += .1f * StackAmount;
+        }
+        public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit)
+        {
+            if (StackAmount >= 3)
+                crit += 10;
+
+        }
+        public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed)
+        {
+            if (StackAmount >= 2)
+                useSpeed += .1f;
         }
     }
     public class LifeForceOrb : Perk
@@ -353,19 +376,30 @@ namespace BossRush.Contents.Perks
             CanBeChoosen = false;
             Tooltip =
                 "+ 78% increased odds for melee" +
-                "\n+ 5% melee speed" +
-                "\n+ 5% melee size increases";
-            StackLimit = 999;
+                "\n+ 15% thorn damage" +
+                "\n+ 2% melee size increases" +
+                "Attacking enemy have a 0.5% with melee item have a chance to drop a heart";
+            StackLimit = 11;
+        }
+        public override void ResetEffect(Player player)
+        {
+            player.thorns += .15f * StackAmount;
         }
         public override void Update(Player player)
         {
             player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .78f * StackAmount;
-            player.GetAttackSpeed(DamageClass.Melee) += .05f * StackAmount;
         }
         public override void ModifyItemScale(Player player, Item item, ref float scale)
         {
             if (item.DamageType == DamageClass.Melee)
-                scale += .05f * StackAmount;
+                scale += .02f * StackAmount;
+        }
+        public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (Main.rand.NextFloat() <= .005f * StackAmount && (item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed))
+            {
+                Item.NewItem(item.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Heart));
+            }
         }
     }
     public class BlessingOfVortex : Perk
@@ -427,7 +461,7 @@ namespace BossRush.Contents.Perks
             return
                 "+ 78% increased odds for magic" +
                 "\n+ 5% magic cost reduction" +
-                "\nMana star can spawn from hitting NPC with magic projectile (start at 5%)";
+                "\nMana star can spawn from hitting NPC with magic projectile (start at 2.5%)";
         }
         public override void Update(Player player)
         {
@@ -448,14 +482,9 @@ namespace BossRush.Contents.Perks
         }
         public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextFloat() <= .05f * StackAmount && proj.DamageType == DamageClass.Magic)
+            if (Main.rand.NextFloat() <= .025f * StackAmount && proj.DamageType == DamageClass.Magic)
             {
-                int amount = 1;
-                if (StackAmount > 10)
-                {
-                    amount = StackAmount - 10;
-                }
-                Item.NewItem(proj.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Star, amount));
+                Item.NewItem(proj.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Star));
             }
         }
     }
@@ -468,7 +497,7 @@ namespace BossRush.Contents.Perks
             CanBeChoosen = false;
             Tooltip =
                 "+ 78% increased odds for summoner" +
-                "\n+ 5% magic cost reduction";
+                "\n+ 5% summoner damage";
             StackLimit = 999;
         }
         public override void Update(Player player)

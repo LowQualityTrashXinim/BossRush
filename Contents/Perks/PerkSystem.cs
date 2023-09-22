@@ -84,7 +84,7 @@ namespace BossRush.Contents.Perks
         }
         public int PerkAmountModified()
         {
-            if(perks.ContainsKey(Perk.GetPerkType<IncreasePerkSelectionRange>()))
+            if (perks.ContainsKey(Perk.GetPerkType<IncreasePerkSelectionRange>()))
             {
                 return PerkAmount + perks[Perk.GetPerkType<IncreasePerkSelectionRange>()];
             }
@@ -216,6 +216,15 @@ namespace BossRush.Contents.Perks
                 ModPerkLoader.GetPerk(perk).ModifyManaCost(Player, item, ref reduce, ref mult);
             }
         }
+        public override float UseSpeedMultiplier(Item item)
+        {
+            float useSpeed = 1;
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).ModifyUseSpeed(Player, item, ref useSpeed);
+            }
+            return useSpeed;
+        }
         public override void SaveData(TagCompound tag)
         {
             tag["PlayerPerks"] = perks.Keys.ToList();
@@ -266,7 +275,7 @@ namespace BossRush.Contents.Perks
         public string PerkName()
         {
             string Name = ModPerkLoader.GetPerk(Type).Name;
-            for (int i = Name.Length - 1; i > 0 ; i--)
+            for (int i = Name.Length - 1; i > 0; i--)
             {
                 if (char.IsUpper(Name[i]))
                 {
@@ -291,7 +300,7 @@ namespace BossRush.Contents.Perks
         {
 
         }
-        public virtual void ModifyShootStat(Player player, Item item,ref Vector2 position,ref Vector2 velocity,ref int type,ref int damage,ref float knockback)
+        public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
 
         }
@@ -336,6 +345,14 @@ namespace BossRush.Contents.Perks
         public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
         public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
         public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
+        /// <summary>
+        /// Subtract will make player use weapon slower
+        /// Additive will make player use weapon faster
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="item"></param>
+        /// <param name="useSpeed">by default start at 1</param>
+        public virtual void ModifyUseSpeed(Player player, Item item, ref float useSpeed) { }
         public virtual void OnChoose(Player player) { }
     }
     public static class ModPerkLoader
@@ -372,7 +389,7 @@ namespace BossRush.Contents.Perks
                 uiSystemInstance.perkUIstate.StateofState = PerkUIState.DefaultState;
                 uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
             }
-            else if(player.IsDebugPlayer())
+            else if (player.IsDebugPlayer())
             {
                 modplayer.perks.Clear();
             }
@@ -398,7 +415,7 @@ namespace BossRush.Contents.Perks
                 uiSystemInstance.perkUIstate.StateofState = PerkUIState.StarterPerkState;
                 uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
             }
-            else if(player.IsDebugPlayer())
+            else if (player.IsDebugPlayer())
             {
                 modplayer.perks.Clear();
             }

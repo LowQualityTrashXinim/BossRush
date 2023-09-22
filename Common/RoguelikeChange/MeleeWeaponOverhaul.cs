@@ -599,7 +599,6 @@ namespace BossRush.Common.RoguelikeChange
             }
             delaytimer = BossRushUtils.CoolDown(delaytimer);
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
-            iframeCounter = BossRushUtils.CoolDown(iframeCounter);
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
@@ -677,7 +676,6 @@ namespace BossRush.Common.RoguelikeChange
             }
         }
         public bool critReference;
-        int iframeCounter = 0;
         bool CanPlayerBeDamage = true;
         public override void PostUpdate()
         {
