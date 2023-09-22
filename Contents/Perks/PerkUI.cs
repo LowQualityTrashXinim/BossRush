@@ -94,16 +94,23 @@ namespace BossRush.Contents.Perks
         {
             Vector2 originDefault = new Vector2(26, 26);
             int[] starterPerk = new int[]
-            { Perk.GetPerkType<SolarGladiator>(),
-            Perk.GetPerkType<VortexRanger>(),
-            Perk.GetPerkType<NebulaMage>(),
-            Perk.GetPerkType<StardustTamer>(),
+            { Perk.GetPerkType<BlessingOfSolar>(),
+            Perk.GetPerkType<BlessingOfVortex>(),
+            Perk.GetPerkType<BlessingOfNebula>(),
+            Perk.GetPerkType<BlessingOfStarDust>(),
             Perk.GetPerkType<IncreasePerkSelectionRange>()
             };
             for (int i = 0; i < starterPerk.Length; i++)
             {
                 Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
                 //After that we assign perk
+                if (modplayer.perks.ContainsKey(starterPerk[i]))
+                {
+                    if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(i).StackLimit)
+                    {
+                        continue;
+                    }
+                }
                 PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString), modplayer);
                 btn.UISetWidthHeight(52, 52);
                 btn.UISetPosition(player.Center + offsetPos, originDefault);
@@ -151,7 +158,7 @@ namespace BossRush.Contents.Perks
             {
                 toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
                 toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-                toolTip.SetText(ModPerkLoader.GetPerk(perkType).ModifyToolTip());
+                toolTip.SetText(ModPerkLoader.GetPerk(perkType).PerkNameToolTip);
             }
             else
             {

@@ -63,7 +63,7 @@ namespace BossRush.Contents.Perks
         public bool CanGetPerk = false;
         public int PerkAmount = 3;
         /// <summary>
-        /// Keys : Perk type
+        /// Keys : Perk type<br/>
         /// Values : Stack value
         /// </summary>
         public Dictionary<int, int> perks = new Dictionary<int, int>();
@@ -96,6 +96,10 @@ namespace BossRush.Contents.Perks
         {
             perk_PotionExpert = false;
             PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
+            for (int i = 0; i < ModPerkLoader.TotalCount; i++)
+            {
+                ModPerkLoader.GetPerk(i).StackAmount = 0;
+            }
             foreach (int perk in perks.Keys)
             {
                 ModPerkLoader.GetPerk(perk).ResetEffect(Player);
@@ -123,6 +127,13 @@ namespace BossRush.Contents.Perks
             foreach (int perk in perks.Keys)
             {
                 ModPerkLoader.GetPerk(perk).Update(Player);
+            }
+        }
+        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            foreach (int perk in perks.Keys)
+            {
+                ModPerkLoader.GetPerk(perk).ModifyShootStat(Player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
             }
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -243,9 +254,26 @@ namespace BossRush.Contents.Perks
         {
             return ModContent.GetInstance<T>().Type;
         }
+        public string PerkNameToolTip => ModifyName() + "\n" + ModifyToolTip();
         public virtual string ModifyToolTip()
         {
             return Tooltip;
+        }
+        public virtual string ModifyName()
+        {
+            return PerkName();
+        }
+        public string PerkName()
+        {
+            string Name = ModPerkLoader.GetPerk(Type).Name;
+            for (int i = Name.Length - 1; i > 0 ; i--)
+            {
+                if (char.IsUpper(Name[i]))
+                {
+                    Name = Name.Substring(0, i) + " " + Name.Substring(i);
+                }
+            }
+            return Name;
         }
         public sealed override void Unload()
         {
@@ -260,6 +288,10 @@ namespace BossRush.Contents.Perks
                 Tooltip += "\n( Can be stack ! )";
         }
         public virtual void SetDefaults()
+        {
+
+        }
+        public virtual void ModifyShootStat(Player player, Item item,ref Vector2 position,ref Vector2 velocity,ref int type,ref int damage,ref float knockback)
         {
 
         }

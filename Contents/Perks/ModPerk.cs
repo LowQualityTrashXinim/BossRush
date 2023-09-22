@@ -344,7 +344,7 @@ namespace BossRush.Contents.Perks
             player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CelestialWrath>());
         }
     }
-    public class SolarGladiator : Perk
+    public class BlessingOfSolar : Perk
     {
         public override void SetDefaults()
         {
@@ -352,14 +352,14 @@ namespace BossRush.Contents.Perks
             CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
-                "+ 58% increased odds for melee" +
+                "+ 78% increased odds for melee" +
                 "\n+ 5% melee speed" +
                 "\n+ 5% melee size increases";
             StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .58f * StackAmount;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .78f * StackAmount;
             player.GetAttackSpeed(DamageClass.Melee) += .05f * StackAmount;
         }
         public override void ModifyItemScale(Player player, Item item, ref float scale)
@@ -368,7 +368,7 @@ namespace BossRush.Contents.Perks
                 scale += .05f * StackAmount;
         }
     }
-    public class VortexRanger : Perk
+    public class BlessingOfVortex : Perk
     {
         public override void SetDefaults()
         {
@@ -376,14 +376,23 @@ namespace BossRush.Contents.Perks
             CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
-                "+ 58% increased odds for range" +
-                "\n+ 5% range critical chance increases";
+                "+ 78% increased odds for range" +
+                "\n+ 5% range critical strike chance" +
+                "\n+ 25% range critical damage";
             StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .58f * StackAmount;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f * StackAmount;
             player.GetAttackSpeed(DamageClass.Melee) += .05f * StackAmount;
+        }
+        public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithProj(player, proj, target, hit, damageDone);
+            if (hit.Crit)
+            {
+                hit.SourceDamage = (int)(hit.SourceDamage * (1 + .25f * StackAmount));
+            }
         }
         public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit)
         {
@@ -391,7 +400,7 @@ namespace BossRush.Contents.Perks
                 crit += 5 * StackAmount;
         }
     }
-    public class NebulaMage : Perk
+    public class BlessingOfNebula : Perk
     {
         public override void SetDefaults()
         {
@@ -399,20 +408,58 @@ namespace BossRush.Contents.Perks
             CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
-                "+ 58% increased odds for magic" +
-                "\n+ 5% magic cost reduction";
-            StackLimit = 999;
+                "+ 78% increased odds for magic" +
+                "\n+ 5% magic cost reduction" +
+                "\nMana star can spawm from NPC hit";
+            StackLimit = 11;
+        }
+        public override string ModifyToolTip()
+        {
+            if (StackAmount > 10)
+                return "+ 78% increased odds for magic" +
+                "\n+ 5% magic cost reduction" +
+                "\nMore Mana star can be spawn from hitting NPC with magic projectile" +
+                "\nYou will now use 100 mana for each time you uses magic weapon, the mana that consumes will contribute to more damage";
+            if (StackAmount > 0)
+                return "+ 78% increased odds for magic" +
+                "\n+ 5% magic cost reduction" +
+                "\nMana star spawn more frequent from hitting NPC with magic projectile";
+            return
+                "+ 78% increased odds for magic" +
+                "\n+ 5% magic cost reduction" +
+                "\nMana star can spawn from hitting NPC with magic projectile (start at 5%)";
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += .58f * StackAmount;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += .78f * StackAmount;
+        }
+        public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (StackAmount > 10)
+            {
+                player.statMana = Math.Clamp(player.statMana - 100, 0, player.statManaMax2);
+                if (player.statMana >= 100)
+                    damage *= 2;
+            }
         }
         public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi)
         {
-            reduce -= item.mana * .05f * StackAmount;
+            reduce -= item.mana * .5f * StackAmount;
+        }
+        public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (Main.rand.NextFloat() <= .05f * StackAmount && proj.DamageType == DamageClass.Magic)
+            {
+                int amount = 1;
+                if (StackAmount > 10)
+                {
+                    amount = StackAmount - 10;
+                }
+                Item.NewItem(proj.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Star, amount));
+            }
         }
     }
-    public class StardustTamer : Perk
+    public class BlessingOfStarDust : Perk
     {
         public override void SetDefaults()
         {
@@ -420,13 +467,13 @@ namespace BossRush.Contents.Perks
             CanBeStack = true;
             CanBeChoosen = false;
             Tooltip =
-                "+ 58% increased odds for summoner" +
+                "+ 78% increased odds for summoner" +
                 "\n+ 5% magic cost reduction";
             StackLimit = 999;
         }
         public override void Update(Player player)
         {
-            player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += .58f * StackAmount;
+            player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += .78f * StackAmount;
         }
         public override void ModifyDamage(Player player, Item item, ref StatModifier damage)
         {

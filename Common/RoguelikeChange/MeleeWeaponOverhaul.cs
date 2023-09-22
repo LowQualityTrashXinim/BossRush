@@ -24,6 +24,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
+            VanillaBuff(item);
             if (item.noMelee)
             {
                 return;
@@ -240,6 +241,7 @@ namespace BossRush.Common.RoguelikeChange
             item.width += 10;
             item.height += 10;
             #endregion
+
             switch (item.type)
             {
                 #region BossRushUseStyle.Swipe
@@ -348,6 +350,13 @@ namespace BossRush.Common.RoguelikeChange
                     break;
             }
         }
+        private void VanillaBuff(Item item)
+        {
+            if (item.type == ItemID.TrueNightsEdge)
+            {
+                item.useTime = item.useAnimation = 20;
+            }
+        }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
@@ -368,13 +377,13 @@ namespace BossRush.Common.RoguelikeChange
                 tooltips.Add(line);
                 if (SwingType == BossRushUseStyle.Swipe)
                 {
-                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 50% more damage");
+                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 65% more damage");
                     line2.OverrideColor = Color.Yellow;
                     tooltips.Add(line2);
                 }
                 if (SwingType == BossRushUseStyle.Poke)
                 {
-                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 75% more damage\n3rd attack deal 25% more damage");
+                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 55% more damage\n3rd attack deal 25% more damage");
                     line2.OverrideColor = Color.Yellow;
                     tooltips.Add(line2);
                 }
@@ -658,7 +667,7 @@ namespace BossRush.Common.RoguelikeChange
                     return collide;
                 }
             }
-            return null;
+            return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, target);
         }
         private void ComboHandleSystem()
         {
@@ -724,13 +733,13 @@ namespace BossRush.Common.RoguelikeChange
             {
                 if (meleeItem.SwingType == BossRushUseStyle.Swipe && ComboNumber == 2)
                 {
-                    return .5f;
+                    return .65f;
                 }
                 if (meleeItem.SwingType == BossRushUseStyle.Poke)
                 {
                     if (ComboNumber == 0)
                     {
-                        return .75f;
+                        return .55f;
                     }
                     if (ComboNumber == 2)
                     {
