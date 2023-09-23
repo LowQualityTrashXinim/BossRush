@@ -98,7 +98,7 @@ namespace BossRush.Contents.Perks
             Perk.GetPerkType<BlessingOfVortex>(),
             Perk.GetPerkType<BlessingOfNebula>(),
             Perk.GetPerkType<BlessingOfStarDust>(),
-            Perk.GetPerkType<IncreasePerkSelectionRange>()
+            Perk.GetPerkType<BlessingOfPerk>()
             };
             for (int i = 0; i < starterPerk.Length; i++)
             {

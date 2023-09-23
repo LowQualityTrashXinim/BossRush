@@ -84,9 +84,9 @@ namespace BossRush.Contents.Perks
         }
         public int PerkAmountModified()
         {
-            if (perks.ContainsKey(Perk.GetPerkType<IncreasePerkSelectionRange>()))
+            if (perks.ContainsKey(Perk.GetPerkType<BlessingOfPerk>()))
             {
-                return PerkAmount + perks[Perk.GetPerkType<IncreasePerkSelectionRange>()];
+                return PerkAmount + perks[Perk.GetPerkType<BlessingOfPerk>()];
             }
             return PerkAmount;
         }

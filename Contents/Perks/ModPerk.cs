@@ -12,6 +12,7 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
 using Terraria.DataStructures;
 using BossRush.Texture;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Perks
 {
@@ -206,13 +207,13 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             CanBeStack = false;
-            Tooltip = "+ Having a single dirt in your inventory increase defense by 5";
+            Tooltip = "+ Having a single dirt in your inventory increase defense by 15";
         }
         public override void ResetEffect(Player player)
         {
             base.ResetEffect(player);
             if (player.HasItem(ItemID.DirtBlock))
-                player.statDefense += 5;
+                player.statDefense += 15;
         }
     }
     public class PotionExpert : Perk
@@ -373,7 +374,6 @@ namespace BossRush.Contents.Perks
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = true;
-            CanBeChoosen = false;
             Tooltip =
                 "+ 78% increased odds for melee" +
                 "\n+ 15% thorn damage" +
@@ -408,7 +408,6 @@ namespace BossRush.Contents.Perks
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = true;
-            CanBeChoosen = false;
             Tooltip =
                 "+ 78% increased odds for range" +
                 "\n+ 5% range critical strike chance" +
@@ -418,7 +417,6 @@ namespace BossRush.Contents.Perks
         public override void Update(Player player)
         {
             player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f * StackAmount;
-            player.GetAttackSpeed(DamageClass.Melee) += .05f * StackAmount;
         }
         public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -440,7 +438,6 @@ namespace BossRush.Contents.Perks
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = true;
-            CanBeChoosen = false;
             Tooltip =
                 "+ 78% increased odds for magic" +
                 "\n+ 5% magic cost reduction" +
@@ -497,8 +494,15 @@ namespace BossRush.Contents.Perks
             CanBeChoosen = false;
             Tooltip =
                 "+ 78% increased odds for summoner" +
-                "\n+ 5% summoner damage";
+                "\n+ 5% summoner damage" +
+                "\n+ 1 minion slot" +
+                "\n+ 1 sentry slot";
             StackLimit = 999;
+        }
+        public override void ResetEffect(Player player)
+        {
+            player.maxMinions += 1 * StackAmount;
+            player.maxTurrets += 1 * StackAmount;
         }
         public override void Update(Player player)
         {
@@ -510,7 +514,7 @@ namespace BossRush.Contents.Perks
                 damage += .05f * StackAmount;
         }
     }
-    public class IncreasePerkSelectionRange : Perk
+    public class BlessingOfPerk : Perk
     {
         public override void SetDefaults()
         {
@@ -522,17 +526,18 @@ namespace BossRush.Contents.Perks
             StackLimit = 999;
         }
     }
-    //public class GodGiveDice : Perk
-    //{
-    //    public override void SetDefaults()
-    //    {
-    //        CanBeStack = false;
-    //        Tooltip =
-    //            "+ God give you a dice";
-    //    }
-    //    public override void OnChoose(Player player)
-    //    {
-    //        player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
-    //    }
-    //}
+    public class GodGiveDice : Perk
+    {
+        public override void SetDefaults()
+        {
+            CanBeStack = false;
+            Tooltip =
+                "+ God give you a dice";
+            CanBeChoosen = false;
+        }
+        public override void OnChoose(Player player)
+        {
+            player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
+        }
+    }
 }

@@ -988,15 +988,37 @@ namespace BossRush.Contents.Items.Chest
         public int weaponAmount;
         public int potionTypeAmount;
         public int potionNumAmount;
-        //Chest weapon prefer drop modify
+        /// <summary>
+        /// Use this if it is consumable
+        /// </summary>
         public float MeleeChanceMutilplier = 1f;
+        /// <summary>
+        /// Use this if it is consumable
+        /// </summary>
         public float RangeChanceMutilplier = 1f;
+        /// <summary>
+        /// Use this if it is consumable
+        /// </summary>
         public float MagicChanceMutilplier = 1f;
+        /// <summary>
+        /// Use this if it is consumable
+        /// </summary>
         public float SummonChanceMutilplier = 1f;
-        //Use this if you gonna always update it
+        /// <summary>
+        /// Use this if you gonna always update it
+        /// </summary>
         public float UpdateMeleeChanceMutilplier = 1f;
+        /// <summary>
+        /// Use this if you gonna always update it
+        /// </summary>
         public float UpdateRangeChanceMutilplier = 1f;
+        /// <summary>
+        /// Use this if you gonna always update it
+        /// </summary>
         public float UpdateMagicChanceMutilplier = 1f;
+        /// <summary>
+        /// Use this if you gonna always update it
+        /// </summary>
         public float UpdateSummonChanceMutilplier = 1f;
         private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 1;
         /// <summary>
