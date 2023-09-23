@@ -154,7 +154,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return ModContent.GetInstance<BossRushModConfig>().Nightmare || ModContent.GetInstance<BossRushModConfig>().NightmarePlus 
+                return ModContent.GetInstance<BossRushModConfig>().Nightmare
                     || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
             }
             return false;

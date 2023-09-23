@@ -378,7 +378,7 @@ namespace BossRush.Contents.Perks
                 "+ 78% increased odds for melee" +
                 "\n+ 15% thorn damage" +
                 "\n+ 2% melee size increases" +
-                "Attacking enemy have a 0.5% with melee item have a chance to drop a heart";
+                "\nAttacking enemy have a 0.5% with melee item have a chance to drop a heart";
             StackLimit = 11;
         }
         public override void ResetEffect(Player player)
@@ -412,7 +412,7 @@ namespace BossRush.Contents.Perks
                 "+ 78% increased odds for range" +
                 "\n+ 5% range critical strike chance" +
                 "\n+ 25% range critical damage";
-            StackLimit = 999;
+            StackLimit = 11;
         }
         public override void Update(Player player)
         {
@@ -497,7 +497,7 @@ namespace BossRush.Contents.Perks
                 "\n+ 5% summoner damage" +
                 "\n+ 1 minion slot" +
                 "\n+ 1 sentry slot";
-            StackLimit = 999;
+            StackLimit = 11;
         }
         public override void ResetEffect(Player player)
         {

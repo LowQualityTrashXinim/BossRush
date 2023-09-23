@@ -810,8 +810,7 @@ Mods: {
 					'''
 					"Protected by the Earth"
 					Positive effect : 
-					+ Increases your max hp by 200% with additional 100 max hp
-					+ Increases your defenses by 20
+					+ Multiply your max HP by 1.5 and add a additional 100 max hp
 					+ Standing still for a short moment massively boost your regen
 					Negative effect : Getting hit will make you unable to use your weapon for 5s
 					'''
@@ -847,6 +846,14 @@ Mods: {
 					Neutral effect :
 					= Accelerate card luck stats
 					'''
+			}
+
+			OrbOfAlchemist: {
+				DisplayName: Orb Of Alchemist
+				Tooltip: 
+				'''
+
+				'''
 			}
 
 			EternalWealth: {
@@ -1520,11 +1527,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			OrbOfAlchemistKnowledge: {
-				DisplayName: Orb Of Alchemist Knowledge
-				Tooltip: W.I.P
-			}
-
 			HeavenSmg: {
 				DisplayName: Heaven Smg
 				Tooltip: ""
@@ -1764,8 +1766,8 @@ Mods: {
 						'''
 				}
 
-				NightmarePlus: {
-					Label: Ultra Nightmare (W.I.P)
+				Accension: {
+					Label: Accension ( NOT IMPLEMENTED !)
 					Tooltip:
 						'''
 						"So you like more pain regardless of reward"

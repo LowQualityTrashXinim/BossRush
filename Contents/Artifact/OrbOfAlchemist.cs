@@ -8,7 +8,7 @@ using BossRush.Contents.Items.Potion;
 
 namespace BossRush.Contents.Artifact
 {
-    internal class OrbOfAlchemistKnowledge : ArtifactModItem
+    internal class OrbOfAlchemist : ArtifactModItem
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void ArtifactSetDefault()
@@ -22,7 +22,7 @@ namespace BossRush.Contents.Artifact
         bool Alchemist = false;
         public override void ResetEffects()
         {
-            Alchemist = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<OrbOfAlchemistKnowledge>();
+            Alchemist = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<OrbOfAlchemist>();
         }
         public override void PostUpdate()
         {

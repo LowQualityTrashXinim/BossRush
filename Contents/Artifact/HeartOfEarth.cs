@@ -58,7 +58,6 @@ namespace BossRush.Contents.Artifact
         public override void ResetEffects()
         {
             Earth = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<HeartOfEarth>();
-            Player.statDefense += 20;
         }
         int EarthCD = 0;
         int ShortStanding = 0;
@@ -67,7 +66,7 @@ namespace BossRush.Contents.Artifact
             base.ModifyMaxStats(out health, out mana);
             if (Earth)
             {
-                health.Base = 100 + Player.statLifeMax * 2;
+                health.Base = 100 + Player.statLifeMax * 1.5f;
             }
         }
         public override void PostUpdate()
