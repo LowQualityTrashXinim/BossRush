@@ -52,9 +52,9 @@ namespace BossRush.Contents.Items.Card
             int amount = CardAmount;
             ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
             PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
-            if (modplayer.ArtifactDefinedID == 1)
+            if (modplayer.ArtifactDefinedID == ModContent.ItemType<TokenofGreed>() || modplayer.ArtifactDefinedID == ModContent.ItemType<EternalWealth>())
                 amount += 2;
-            if (modplayer.ArtifactDefinedID == 7)
+            if (modplayer.ArtifactDefinedID == ModContent.ItemType<MagicalCardDeck>())
                 amount += Main.rand.Next(4);
             if (PacketType == 4)
                 amount = 1;
