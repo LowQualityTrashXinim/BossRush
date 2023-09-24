@@ -13,6 +13,7 @@ using BossRush.Contents.Items.Potion;
 using Terraria.DataStructures;
 using BossRush.Texture;
 using BossRush.Contents.Items.Toggle;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Perks
 {
@@ -374,11 +375,6 @@ namespace BossRush.Contents.Perks
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = true;
-            Tooltip =
-                "+ 78% increased odds for melee" +
-                "\n+ 15% thorn damage" +
-                "\n+ 2% melee size increases" +
-                "\nAttacking enemy have a 0.5% with melee item have a chance to drop a heart";
             StackLimit = 11;
         }
         public override string ModifyToolTip()
@@ -393,16 +389,19 @@ namespace BossRush.Contents.Perks
                 return "+ 78% increased odds for melee" +
                 "\n+ 15% thorn damage" +
                 "\n+ 2% melee size increases" +
+                "\nIncreases 1 armor penetration" +
                 "\nHeart appear more when attacking enemy with melee item";
             return
                 "+ 78% increased odds for melee" +
                 "\n+ 15% thorn damage" +
                 "\n+ 2% melee size increases" +
+                "\nIncreases 1 armor penetration" +
                 "\nAttacking enemy have a 0.5% with melee item have a chance to drop a heart";
         }
         public override void ResetEffect(Player player)
         {
             player.thorns += .15f * StackAmount;
+            player.GetArmorPenetration(DamageClass.Melee) += 2 * StackAmount;
         }
         public override void Update(Player player)
         {

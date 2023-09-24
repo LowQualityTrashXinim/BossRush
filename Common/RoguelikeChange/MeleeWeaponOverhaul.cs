@@ -589,6 +589,7 @@ namespace BossRush.Common.RoguelikeChange
         bool InStateOfSwinging = false;
         Vector2 positionToDash = Vector2.Zero;
         Vector2 lastPlayerPositionBeforeAnimation = Vector2.Zero;
+        bool IsAlreadyHeldDown = false;
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
@@ -622,24 +623,46 @@ namespace BossRush.Common.RoguelikeChange
             }
             if (Player.ItemAnimationActive)
             {
-                ExecuteSpecialComboOnActive();
+                if (IsAlreadyHeldDown && Main.mouseRight)
+                {
+                    ExecuteSpecialComboOnActive();
+                }
+                else
+                {
+                    IsAlreadyHeldDown = false;
+                }
                 InStateOfSwinging = true;
             }
             else
             {
-                if (Main.mouseRight)
-                {
-                    lastPlayerPositionBeforeAnimation = Player.Center;
-                    positionToDash = Player.Center.PositionOFFSET((Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), 500f);
-                }
-                CanPlayerBeDamage = true;
+                IsAlreadyHeldDown = Main.mouseRight;
                 if (InStateOfSwinging)
                 {
-                    ComboHandleSystem();
                     InStateOfSwinging = false;
+                    for (int i = 0; i < 100; i++)
+                    {
+                        int dust = Dust.NewDust(BossRushUtils.NextPointOn2Vector2(lastPlayerPositionBeforeAnimation, positionToDash), 0, 0, DustID.RedMoss);
+                        Main.dust[dust].noGravity = true;
+                    }
+                    if (!ComboConditionChecking())
+                    {
+                        lastPlayerPositionBeforeAnimation.LookForHostileNPC(out List<NPC> npclist, 500);
+                        foreach (NPC target in npclist)
+                        {
+                            float point = 0;
+                            bool collide = Collision.CheckAABBvLineCollision(target.Hitbox.TopLeft(), target.Hitbox.Size(), lastPlayerPositionBeforeAnimation, positionToDash, 22, ref point);
+                            if (collide)
+                            {
+                                Player.StrikeNPCDirect(target, target.CalculateHitInfo(Player.HeldItem.damage, MouseXPosDirection, false, 1f, DamageClass.Melee, true, Player.luck));
+                            }
+                        }
+                    }
+                    ComboHandleSystem();
                 }
+                CanPlayerBeDamage = true;
             }
         }
+        bool percentageReach = false;
         private void ExecuteSpecialComboOnActive()
         {
             if (ComboConditionChecking())
@@ -649,23 +672,19 @@ namespace BossRush.Common.RoguelikeChange
             Player.noFallDmg = true;
             CanPlayerBeDamage = false;
             float percentage = (Player.itemAnimationMax - Player.itemAnimation) / (float)Player.itemAnimationMax;
+            if (percentage >= .9f)
+            {
+                percentageReach = true;
+            }
             Player.Center = Vector2.Lerp(lastPlayerPositionBeforeAnimation, positionToDash, BossRushUtils.OutExpo(percentage));
         }
         private bool ComboConditionChecking() =>
             Player.mount.Active
             || ComboNumber != 2
             || !Main.mouseRight;
+        int NPCcounterDebug = 0;
         public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
         {
-            if (ComboNumber == 2 && Main.mouseRight && !Player.mount.Active && target.immune[Player.whoAmI] <= 0)
-            {
-                bool collide = Collision.CheckAABBvLineCollision(target.TopLeft, target.Size, lastPlayerPositionBeforeAnimation, positionToDash);
-                if (collide)
-                {
-                    target.immune[Player.whoAmI] = 10;
-                    return collide;
-                }
-            }
             return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, target);
         }
         private void ComboHandleSystem()
@@ -696,6 +715,12 @@ namespace BossRush.Common.RoguelikeChange
             {
                 Player.direction = data.X > 0 ? 1 : -1;
             }
+            else
+            {
+                percentageReach = false;
+                lastPlayerPositionBeforeAnimation = Player.Center;
+                positionToDash = Player.Center.PositionOffsetDynamic(Main.MouseWorld - Player.Center, 500f);
+            }
             Player.attackCD = 0;
             for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++)
             {
@@ -718,12 +743,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
-            modifiers.ArmorPenetration += 10;
             modifiers.FinalDamage += DamageHandleSystem(item);
-            if (Main.mouseRight)
-            {
-                modifiers.FinalDamage *= 1.5f;
-            }
         }
         private float DamageHandleSystem(Item item)
         {

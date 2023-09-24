@@ -48,7 +48,7 @@ namespace BossRush
         public static Vector2 NextPointOn2Vector2(Vector2 point1, Vector2 point2)
         {
             float length = Vector2.Distance(point1, point2);
-            return point1.PositionOFFSET((point1 - point2).SafeNormalize(Vector2.Zero), Main.rand.NextFloat(length));
+            return point1.PositionOFFSET(point2 - point1, Main.rand.NextFloat(length));
         }
         public static bool Vector2WithinRectangle(this Vector2 position, float X, float Y, Vector2 Center)
         {
