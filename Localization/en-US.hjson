@@ -850,10 +850,7 @@ Mods: {
 
 			OrbOfAlchemist: {
 				DisplayName: Orb Of Alchemist
-				Tooltip: 
-				'''
-
-				'''
+				Tooltip: ""
 			}
 
 			EternalWealth: {

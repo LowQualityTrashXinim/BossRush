@@ -9,10 +9,14 @@ namespace BossRush.Contents.Items
 {
     internal class CelestialWrath : ModItem
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override void SetStaticDefaults()
+        {
+            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 14));
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
+        }
         public override void SetDefaults()
         {
-            Item.BossRushDefaultToConsume(32, 32);
+            Item.BossRushDefaultToConsume(42, 42);
             Item.shoot = ModContent.ProjectileType<CelestialWrathProjectile>();
             Item.shootSpeed = 10;
             Item.noUseGraphic = true;
@@ -27,10 +31,14 @@ namespace BossRush.Contents.Items
     }
     class CelestialWrathProjectile : ModProjectile
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
+        public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<CelestialWrath>();
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 14;
+        }
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 20;
+            Projectile.width = Projectile.height = 42;
             Projectile.tileCollide = true;
             Projectile.timeLeft = 1200;
             Projectile.friendly = true;
@@ -40,6 +48,7 @@ namespace BossRush.Contents.Items
         }
         public override void AI()
         {
+            SelectFrame();
             if (++Projectile.ai[0] >= 20)
             {
                 Projectile.velocity.X *= .96f;
@@ -52,6 +61,18 @@ namespace BossRush.Contents.Items
                 Vector2 vec = Main.rand.NextVector2CircularEdge(countdown, countdown);
                 int dust = Dust.NewDust(Projectile.Center + vec, 0, 0, DustID.GemEmerald);
                 Main.dust[dust].noGravity = true;
+            }
+        }
+        public void SelectFrame()
+        {
+            if (++Projectile.frameCounter >= 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame += 1;
+                if (Projectile.frame >= Main.projFrames[Projectile.type])
+                {
+                    Projectile.frame = 0;
+                }
             }
         }
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)

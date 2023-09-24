@@ -52,7 +52,7 @@ namespace BossRush.Contents.Artifact
                     ModContent.ItemType<NormalizeArtifact>(),
                     ModContent.ItemType<VampirismCrystal>(),
                     ModContent.ItemType<BootOfSpeedManipulation>(),
-                    ModContent.ItemType<OrbOfAlchemistKnowledge>()
+                    ModContent.ItemType<OrbOfAlchemist>()
                 });
                 BossRushUtils.CombatTextRevamp(player.Hitbox, Main.DiscoColor, ItemLoader.GetItem(modplayer.ArtifactDefinedID).DisplayName.Value);
                 return true;
