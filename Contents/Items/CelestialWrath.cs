@@ -54,6 +54,9 @@ namespace BossRush.Contents.Items
                 Projectile.velocity.X *= .96f;
                 Projectile.velocity.Y += .25f;
             }
+            int dust1 = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(20,20), 0, 0, DustID.GemEmerald);
+            Main.dust[dust1].noGravity = true;
+            Main.dust[dust1].velocity = -Vector2.UnitY * Main.rand.NextFloat(1.5f);
             float timer = MathHelper.Lerp(1, 120, BossRushUtils.InExpo((1200 - Projectile.timeLeft) / 1200f));
             float countdown = 480 - timer * 4;
             for (int i = 0; i < timer; i++)

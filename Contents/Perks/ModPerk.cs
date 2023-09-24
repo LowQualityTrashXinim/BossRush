@@ -381,6 +381,25 @@ namespace BossRush.Contents.Perks
                 "\nAttacking enemy have a 0.5% with melee item have a chance to drop a heart";
             StackLimit = 11;
         }
+        public override string ModifyToolTip()
+        {
+            //if(StackAmount> 10)
+            //    return "+ 78% increased odds for melee" +
+            //    "\n+ 15% thorn damage" +
+            //    "\n+ 2% melee size increases" +
+            //    "\nGetting hit will make you berserk" +
+            //    "\nBerserk : Make you swing 25% faster and sword size increases by 50%";
+            if (StackAmount > 0)
+                return "+ 78% increased odds for melee" +
+                "\n+ 15% thorn damage" +
+                "\n+ 2% melee size increases" +
+                "\nHeart appear more when attacking enemy with melee item";
+            return
+                "+ 78% increased odds for melee" +
+                "\n+ 15% thorn damage" +
+                "\n+ 2% melee size increases" +
+                "\nAttacking enemy have a 0.5% with melee item have a chance to drop a heart";
+        }
         public override void ResetEffect(Player player)
         {
             player.thorns += .15f * StackAmount;
@@ -475,7 +494,7 @@ namespace BossRush.Contents.Perks
         }
         public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi)
         {
-            reduce -= item.mana * .5f * StackAmount;
+            multi -= .05f * StackAmount;
         }
         public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
