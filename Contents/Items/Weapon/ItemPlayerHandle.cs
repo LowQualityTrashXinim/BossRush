@@ -92,6 +92,8 @@ namespace BossRush.Contents.Items.Weapon
         public bool ZapSnapper_WeatherPain = false;
         public bool ZapSnapper_ThunderStaff = false;
 
+        public bool MagicGrenade_MagicMissle = false;
+
         public bool GodAreEnraged = false;
         public int CooldownCheck = 999;
         private void SynergyEnergyCheckPlayer()

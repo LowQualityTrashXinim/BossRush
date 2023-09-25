@@ -166,6 +166,8 @@ Mods: {
 			LightningStrike.DisplayName: Lightning Strike
 			heavenBolt.DisplayName: heaven Bolt
 			HeavenSmgThrow.DisplayName: Heaven Smg Throw
+			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
+			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
 		}
 
 		NPCs: {

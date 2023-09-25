@@ -98,7 +98,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
                     Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(Main.rand.NextFloat(5, 15));
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), lightningPreSetPath[i], Projectile.velocity * 1.5f, ProjectileID.ThunderSpearShot, (int)(Projectile.damage * .25f), 0, Projectile.owner);
 
-                    path = path.PositionOFFSET(Projectile.velocity, Main.rand.NextFloat(75, 100));
+                    path = path.PositionOFFSET(Projectile.velocity, Main.rand.NextFloat(75, 150));
                     float length = Vector2.Distance(lightningPreSetPath[i], path);
                     for (int l = 0; l < 50; l++)
                     {

@@ -4,8 +4,9 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
-namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
+namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
 {
     internal class MagicGrenade : SynergyModItem
     {
@@ -19,11 +20,16 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer)
         {
-            base.ModifySynergyToolTips(ref tooltips, modplayer);
+            if (modplayer.MagicGrenade_MagicMissle)
+                tooltips.Add(new TooltipLine(Mod, "MagicGrenade_MagicMissle", $"[i:{ItemID.MagicMissile}] Grenade's explosion will be accompany by magical bolt that explode shortly after"));
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            base.HoldSynergyItem(player, modplayer);
+            if (player.HasItem(ItemID.MagicMissile))
+            {
+                modplayer.SynergyBonus++;
+                modplayer.MagicGrenade_MagicMissle = true;
+            }
         }
         public override void AddRecipes()
         {
@@ -82,7 +88,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     float scale = MathHelper.Lerp(1.1f, .1f, multiplier) + 1f;
                     float randomrotate = MathHelper.Lerp(50f, 1f, BossRushUtils.InOutSine(multiplier));
                     int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemAmethyst, 0, 0, 0, Color.White, scale);
-                    Main.dust[dust].velocity = (Toward.RotatedByRandom(MathHelper.ToRadians(randomrotate)) * multiplier * 15);
+                    Main.dust[dust].velocity = Toward.RotatedByRandom(MathHelper.ToRadians(randomrotate)) * multiplier * 15;
                     Main.dust[dust].noGravity = true;
                     if (l % 3 == 0)
                     {
@@ -103,6 +109,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     Projectile.knockBack,
                     Projectile.owner);
             }
+            if (modplayer.MagicGrenade_MagicMissle)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i).Vector2RotateByRandom(120), ModContent.ProjectileType<MagicalExplosionBolt>(), Projectile.damage, 1, Projectile.owner, 0, Main.rand.NextBool().BoolOne());
+                }
+            }
             Projectile.Center.LookForHostileNPC(out List<NPC> npc, 200);
             if (npc.Count < 1)
             {
@@ -116,7 +129,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            //Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
             return base.PreDraw(ref lightColor);
         }
     }
@@ -188,15 +200,116 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon
                     }
                 }
             }
-            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 100);
+            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 150);
             if (npc.Count < 1)
             {
                 return;
             }
             for (int i = 0; i < npc.Count; i++)
             {
-                npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
-                player.dpsDamage += Projectile.damage;
+                player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+            }
+        }
+    }
+    class MagicalExplosionBolt : ModProjectile
+    {
+        public override string Texture => BossRushTexture.SMALLWHITEBALL;
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 10;
+            Projectile.hide = true;
+            Projectile.tileCollide = false;
+            Projectile.friendly = true;
+            Projectile.timeLeft = 800;
+            Projectile.extraUpdates = 10;
+            Projectile.penetrate = 1;
+        }
+        int direction = 0;
+        public override void AI()
+        {
+            int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.GemAmethyst);
+            Main.dust[dust].velocity = Vector2.Zero;
+            Main.dust[dust].scale = Main.rand.NextFloat(.55f, .85f);
+            Main.dust[dust].noGravity = true;
+            Main.dust[dust].fadeIn = .5f;
+            if (Projectile.timeLeft > 300)
+            {
+                Projectile.timeLeft = 300;
+            }
+            Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(.5f * Projectile.ai[1]));
+        }
+        public override void Kill(int timeLeft)
+        {
+            Player player = Main.player[Projectile.owner];
+            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 50);
+            for (int i = 0; i < 4; i++)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i), ModContent.ProjectileType<SmallerMagicalExplosionBolt>(), (int)(Projectile.damage * .5f), 1, Projectile.owner, 0, Main.rand.NextBool().BoolOne());
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.GemAmethyst);
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
+                Main.dust[dust].scale = Main.rand.NextFloat(.55f, .75f);
+                Main.dust[dust].fadeIn = 2f;
+                Main.dust[dust].noGravity = true;
+            }
+            if (npc.Count < 1)
+            {
+                return;
+            }
+            for (int i = 0; i < npc.Count; i++)
+            {
+                player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+            }
+        }
+    }
+    class SmallerMagicalExplosionBolt : ModProjectile
+    {
+        public override string Texture => BossRushTexture.SMALLWHITEBALL;
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 5;
+            Projectile.hide = true;
+            Projectile.tileCollide = false;
+            Projectile.friendly = true;
+            Projectile.timeLeft = 150;
+            Projectile.extraUpdates = 5;
+            Projectile.penetrate = 1;
+        }
+        int direction = 0;
+        public override void AI()
+        {
+            int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(2, 2), 0, 0, DustID.GemAmethyst);
+            Main.dust[dust].velocity = Vector2.Zero;
+            Main.dust[dust].scale = Main.rand.NextFloat(.35f, .55f);
+            Main.dust[dust].noGravity = true;
+            Main.dust[dust].fadeIn = .5f;
+            if (Projectile.timeLeft > 100)
+            {
+                Projectile.timeLeft = 100;
+            }
+            Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(1 * Projectile.ai[1]));
+        }
+        public override void Kill(int timeLeft)
+        {
+            Player player = Main.player[Projectile.owner];
+            for (int i = 0; i < 25; i++)
+            {
+                int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(2, 2), 0, 0, DustID.GemAmethyst);
+                Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
+                Main.dust[dust].scale = Main.rand.NextFloat(.55f, .75f);
+                Main.dust[dust].fadeIn = 1.5f;
+                Main.dust[dust].noGravity = true;
+            }
+            Projectile.Center.LookForHostileNPC(out List<NPC> npc, 20);
+            if (npc.Count < 1)
+            {
+                return;
+            }
+            for (int i = 0; i < npc.Count; i++)
+            {
+                player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
             }
         }
     }
