@@ -29,25 +29,36 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         {
             base.HoldSynergyItem(player, modplayer);
         }
+        static int[] ResolveProjectileBundle = new int[] { ModContent.ProjectileType<GhostBroadsword>(), ModContent.ProjectileType<GhostShortsword>(), ModContent.ProjectileType<ResolveGhostArrow>(), ModContent.ProjectileType<ResolveProjectile>() };
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             position = position.PositionOFFSET(velocity, 30);
-            type = Main.rand.Next(new int[] { ModContent.ProjectileType<GhostBroadsword>(), ModContent.ProjectileType<GhostShortsword>(), ModContent.ProjectileType<ResolveGhostArrow>(), ModContent.ProjectileType<ResolveProjectile>() });
+            type = ResolveProjectileBundle[ChangeProjectile];
             if (type == ModContent.ProjectileType<GhostShortsword>())
                 damage *= 2;
             velocity = velocity.Vector2RotateByRandom(5);
         }
         int counter = 0;
+        int ChangeProjectile = 0;
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             counter++;
-            if (counter >= 15)
+            if (counter >= 10)
             {
+                float rotation = velocity.ToRotation();
+                for (int i = 0; i < 45; i++)
+                {
+                    int dust = Dust.NewDust(position, 0, 0, DustID.GemDiamond);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(3, 6).RotatedBy(rotation);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.67f, 1.23f);
+                    Main.dust[dust].fadeIn = 1f;
+                }
+                if(++ChangeProjectile >= ResolveProjectileBundle.Length)
+                    ChangeProjectile = 0;
                 int projAmount = 4;
                 for (int i = 0; i < projAmount; i++)
-                {
                     Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(projAmount, 40, i), type, damage, knockback, player.whoAmI);
-                }
                 counter = 0;
                 CanShootItem = false;
                 return;
@@ -87,6 +98,8 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
+            int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
+            Main.dust[dust].noGravity = true;
             Projectile.alpha = (int)MathHelper.Lerp(0, 255, (90 - Projectile.timeLeft) / 90f);
             if (Projectile.velocity != Vector2.Zero)
             {
@@ -112,6 +125,10 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             Projectile.DrawTrail(lightColor);
             return base.PreDraw(ref lightColor);
         }
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+            base.SynergyKill(player, modplayer, timeLeft);
+        }
     }
     class ResolveGhostArrow : SynergyModProjectile
     {
@@ -130,11 +147,13 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         {
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
             int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
+            Main.dust[dust].velocity = Vector2.Zero;
             Main.dust[dust].noGravity = true;
             Projectile.alpha = (int)MathHelper.Lerp(0, 255, (180 - Projectile.timeLeft) / 180f);
             Projectile.ai[0]++;
             if (Projectile.ai[0] <= 20)
                 return;
+
             if (Projectile.Center.LookForHostileNPC(out NPC npc, 600))
             {
                 Vector2 distance = npc.Center - Projectile.Center;
@@ -156,6 +175,10 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         {
             base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
         }
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+            base.SynergyKill(player, modplayer, timeLeft);
+        }
     }
     class GhostBroadsword : SynergyModProjectile
     {
@@ -175,6 +198,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             ProjDirection = Projectile.velocity.X > 0 ? 1 : -1;
             int dust = Dust.NewDust(Projectile.Center + Projectile.rotation.ToRotationVector2() * 15, 0, 0, DustID.GemDiamond);
             Main.dust[dust].noGravity = true;
+            Main.dust[dust].velocity = Vector2.Zero;
             Projectile.alpha = (int)MathHelper.Lerp(0, 255, (180 - Projectile.timeLeft) / 180f);
             Projectile.rotation += MathHelper.ToRadians(20) * ProjDirection;
         }
@@ -182,6 +206,10 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         {
             base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
             npc.immune[Projectile.owner] = 3;
+        }
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+            base.SynergyKill(player, modplayer, timeLeft);
         }
     }
     class GhostShortsword : SynergyModProjectile
@@ -201,11 +229,16 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
             Main.dust[dust].noGravity = true;
+            Main.dust[dust].velocity = Vector2.Zero;
             Projectile.alpha = (int)MathHelper.Lerp(0, 255, (180 - Projectile.timeLeft) / 180f);
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
             Projectile.damage = (int)Math.Clamp(Projectile.damage - Projectile.damage * .1f, 1, Projectile.damage);
+        }
+        public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft)
+        {
+            base.SynergyKill(player, modplayer, timeLeft);
         }
     }
 }

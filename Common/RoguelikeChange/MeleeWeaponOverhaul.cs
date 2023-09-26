@@ -639,11 +639,6 @@ namespace BossRush.Common.RoguelikeChange
                 if (InStateOfSwinging)
                 {
                     InStateOfSwinging = false;
-                    for (int i = 0; i < 100; i++)
-                    {
-                        int dust = Dust.NewDust(BossRushUtils.NextPointOn2Vector2(lastPlayerPositionBeforeAnimation, positionToDash), 0, 0, DustID.RedMoss);
-                        Main.dust[dust].noGravity = true;
-                    }
                     if (!ComboConditionChecking())
                     {
                         lastPlayerPositionBeforeAnimation.LookForHostileNPC(out List<NPC> npclist, 500);
