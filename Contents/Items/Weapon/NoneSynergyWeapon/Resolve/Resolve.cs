@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
     {
         public override void SetDefaults()
         {
-            Item.BossRushSetDefault(34, 54, 16, 7f, 20, 20, ItemUseStyleID.Shoot, false);
+            Item.BossRushSetDefault(34, 54, 17, 7f, 15, 15, ItemUseStyleID.Shoot, false);
             Item.DamageType = DamageClass.Generic;
             Item.crit = 15;
             Item.rare = ItemRarityID.Blue;
@@ -73,7 +73,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
         {
             CreateRecipe()
                 .AddRecipeGroup("OreShortSword")
-                .AddRecipeGroup("OreBroadSword")
                 .AddRecipeGroup("OreBow")
                 .Register();
         }
@@ -94,7 +93,6 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve
             Projectile.timeLeft = 90;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
-            Projectile.usesIDStaticNPCImmunity = true;
         }
         public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
         {
