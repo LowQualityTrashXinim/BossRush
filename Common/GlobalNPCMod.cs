@@ -228,7 +228,7 @@ namespace BossRush.Common
             }
             IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
             IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(), ItemID.ManaCrystal, 1, manacrystal, manacrystal));
-            IsABoss.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PerkChooser>()));
+            IsABoss.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(),ModContent.ItemType<PerkChooser>()));
             npcLoot.Add(noHit);
             npcLoot.Add(ExpertVSnormal);
             npcLoot.Add(IsABoss);

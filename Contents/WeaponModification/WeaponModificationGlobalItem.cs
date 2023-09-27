@@ -40,6 +40,11 @@ namespace BossRush.Contents.WeaponModification
         public override void HoldItem(Item item, Player player)
         {
         }
+        public string GetWeaponModificationStats() =>
+            $"Item's modification delay : {Math.Round(Delay / 60f, 2)}s\n" +
+            $"Item's modification recharge : {Math.Round(Recharge / 60f, 2)}s\n" +
+            $"Item's modification slot : {ModWeaponSlotType.Length}";
+
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             if (item.damage > 0 && ModWeaponSlotType != null && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
@@ -51,26 +56,24 @@ namespace BossRush.Contents.WeaponModification
         }
         public override void SaveData(Item item, TagCompound tag)
         {
-            if(!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                return;
+                tag.Add("ItemDelay", Delay);
+                tag.Add("ItemRecharge", Recharge);
+                tag.Add("ModWeaponSlotType", ModWeaponSlotType);
             }
-            tag.Add("ItemDelay", Delay);
-            tag.Add("ItemRecharge", Recharge);
-            tag.Add("ModWeaponSlotType", ModWeaponSlotType);
         }
         public override void LoadData(Item item, TagCompound tag)
         {
-            if (!ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                return;
+                if (tag.TryGet("ItemDelay", out int DelayValue))
+                    Delay = DelayValue;
+                if (tag.TryGet("ItemRecharge", out int RechargeValue))
+                    Recharge = RechargeValue;
+                if (tag.TryGet("ModWeaponSlotType", out int[] TypeValue))
+                    ModWeaponSlotType = TypeValue;
             }
-            if (tag.TryGet("ItemDelay", out int DelayValue))
-                Delay = DelayValue;
-            if (tag.TryGet("ItemRecharge", out int RechargeValue))
-                Recharge = RechargeValue;
-            if (tag.TryGet("ModWeaponSlotType", out int[] TypeValue))
-                ModWeaponSlotType = TypeValue;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster
     class QuadDemonBlaster : SynergyModItem, IRogueLikeRangeGun
     {
         public float OffSetPosition => 30;
-
         public float Spread { get; set; }
 
         public override void SetDefaults()

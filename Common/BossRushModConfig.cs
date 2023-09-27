@@ -18,7 +18,7 @@ namespace BossRush.Common
         public bool Nightmare { get; set; }
         [ReloadRequired]
         [DefaultValue(false)]
-        public bool Accension { get; set; }
+        public bool Ascension { get; set; }
         [ReloadRequired]
         [DefaultValue(false)]
         public bool ExtraChallenge { get; set; }

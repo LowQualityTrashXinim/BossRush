@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.GameInput;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace BossRush.Contents.WeaponModification
 {

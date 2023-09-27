@@ -1765,8 +1765,8 @@ Mods: {
 						'''
 				}
 
-				Accension: {
-					Label: Accension ( NOT IMPLEMENTED !)
+				Ascension: {
+					Label: Ascension ( NOT IMPLEMENTED !)
 					Tooltip:
 						'''
 						"So you like more pain regardless of reward"
