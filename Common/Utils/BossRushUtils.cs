@@ -86,11 +86,11 @@ namespace BossRush
         /// <returns></returns>
         public static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
 
-        public static bool LookForHostileNPC(this Vector2 position, float distance)
+        public static bool LookForAnyHostileNPC(this Vector2 position, float distance)
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active)
+                if (Main.npc[i].active && Main.npc[i].friendly)
                 {
                     if (CompareSquareFloatValue(position, Main.npc[i].Center, distance)) return true;
                 }
@@ -103,15 +103,16 @@ namespace BossRush
             float maxDistanceSquare = distance;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
+                NPC npc = Main.npc[i];
                 if (Main.npc[i].active
-                    && CompareSquareFloatValue(Main.npc[i].Center, position, maxDistanceSquare, out float dis)
-                    && Main.npc[i].CanBeChasedBy()
-                    && !Main.npc[i].friendly
-                    && (Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height))
+                    && CompareSquareFloatValue(npc.Center, position, maxDistanceSquare, out float dis)
+                    && npc.CanBeChasedBy()
+                    && !npc.friendly
+                    && (Collision.CanHitLine(position, 10, 10, npc.position, npc.width, npc.height))
                     )
                 {
                     maxDistanceSquare = dis;
-                    hostilePos = Main.npc[i].Center;
+                    hostilePos = npc.Center;
                 }
             }
             return hostilePos;
@@ -122,15 +123,16 @@ namespace BossRush
             npc = null;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active
-                    && CompareSquareFloatValue(Main.npc[i].Center, position, maxDistanceSquare, out float dis)
-                    && Main.npc[i].CanBeChasedBy()
-                    && !Main.npc[i].friendly
-                    && (Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height) || !CanLockThroughTile)
+                NPC mainnpc = Main.npc[i];
+                if (mainnpc.active
+                    && CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
+                    && mainnpc.CanBeChasedBy()
+                    && !mainnpc.friendly
+                    && (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLockThroughTile)
                     )
                 {
                     maxDistanceSquare = dis;
-                    npc = Main.npc[i];
+                    npc = mainnpc;
                 }
             }
             return npc != null;

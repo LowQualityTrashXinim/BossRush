@@ -38,7 +38,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
         {
             if (KingSlimePower)
             {
-                if (Player.Center.LookForHostileNPC(100f))
+                if (Player.Center.LookForAnyHostileNPC(100f))
                 {
                     KSPcounter++;
                     if (KSPcounter == 100)
