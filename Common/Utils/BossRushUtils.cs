@@ -99,32 +99,22 @@ namespace BossRush
         }
         public static Vector2 LookForHostileNPCPositionClosest(this Vector2 position, float distance)
         {
-            List<Vector2> vector2List = new List<Vector2>();
-            List<float> ListOfDistance = new List<float>();
+            Vector2 hostilePos = Vector2.Zero;
+            float maxDistanceSquare = distance;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 if (Main.npc[i].active
-                    && CompareSquareFloatValue(position, Main.npc[i].Center, distance)
+                    && CompareSquareFloatValue(Main.npc[i].Center, position, maxDistanceSquare, out float dis)
                     && Main.npc[i].CanBeChasedBy()
-                    && !Main.npc[i].friendly)
+                    && !Main.npc[i].friendly
+                    && (Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height))
+                    )
                 {
-                    vector2List.Add(Main.npc[i].Center);
-                    ListOfDistance.Add(Vector2.DistanceSquared(position, Main.npc[i].Center));
+                    maxDistanceSquare = dis;
+                    hostilePos = Main.npc[i].Center;
                 }
             }
-            if (vector2List.Count > 0)
-            {
-                float smallNum = ListOfDistance.Min();
-                //idk why but IndexOf always return 0 so we are searching manually
-                for (int i = 0; i < ListOfDistance.Count; i++)
-                {
-                    if (ListOfDistance[i] == smallNum)
-                    {
-                        return vector2List[i];
-                    }
-                }
-            }
-            return Vector2.Zero;
+            return hostilePos;
         }
         public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLockThroughTile = false)
         {
@@ -149,9 +139,9 @@ namespace BossRush
         {
             npc = Main.npc.Where(npc =>
             npc.active
-            //&& npc.CanBeChasedBy()
-            //&& npc.type != NPCID.TargetDummy
-            //&& !npc.friendly
+            && npc.CanBeChasedBy()
+            && npc.type != NPCID.TargetDummy
+            && !npc.friendly
             && CompareSquareFloatValueWithHitbox(position, npc.position, npc.Hitbox, distance)).ToList();
         }
         public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
