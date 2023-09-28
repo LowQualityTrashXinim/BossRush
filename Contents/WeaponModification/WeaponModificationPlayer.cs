@@ -18,12 +18,12 @@ namespace BossRush.Contents.WeaponModification
         {
             if (WeaponModificationSystem.WeaponModificationKeybind.JustPressed)
             {
-                if (Player.HeldItem.type == ItemID.None || Player.HeldItem == null || Player.HeldItem.damage <= 0)
+                WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
+                if ((Player.HeldItem.type == ItemID.None || Player.HeldItem == null || Player.HeldItem.damage <= 0) && uiSystemInstance.userInterface.CurrentState == null)
                 {
                     BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You must hold a weapon !");
                     return;
                 }
-                WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
                 if (uiSystemInstance.userInterface.CurrentState is null)
                 {
                     uiSystemInstance.WM_uiState.whoAmI = Player.whoAmI;

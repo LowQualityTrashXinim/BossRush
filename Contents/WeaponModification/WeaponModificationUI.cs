@@ -11,6 +11,8 @@ using System;
 using System.Reflection;
 using System.Linq;
 using Terraria.UI.Chat;
+using Terraria.ID;
+using Microsoft.CodeAnalysis;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -49,8 +51,12 @@ namespace BossRush.Contents.WeaponModification
                         btn.UISetPosition(offsetPos, originDefault);
                         Append(btn);
                     }
+                    //we lost the entire UI when put item in the slot, don't mess with it
+                    WeaponModificationWeaponUISlot wpUI = new WeaponModificationWeaponUISlot(TextureAssets.InventoryBack2, player);
+                    wpUI.UISetPosition(player.Center + new Vector2(100, 40), originDefault);
+                    Append(wpUI);
                     ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
-                    string lines = $"Item : {item.Name} [i:{item.type}]\n";
+                    string lines = $"Item : {item.Name}\n";
                     itemtextbox.SetTextMaxLength(100000);
                     lines += globalItem.GetWeaponModificationStats();
                     itemtextbox.ImprovisedUIpanel_Width = 80;
@@ -58,7 +64,7 @@ namespace BossRush.Contents.WeaponModification
                     itemtextbox.Recalculate();
                     itemtextbox.IgnoresMouseInteraction = true;
                     itemtextbox.ShowInputTicker = false;
-                    itemtextbox.UISetPosition(player.Center + new Vector2(100, 0), originDefault);
+                    itemtextbox.UISetPosition(player.Center + new Vector2(100, 100), originDefault);
                     Append(itemtextbox);
                 }
                 for (int i = 0; i < modplayer.WeaponModification_inventory.Length; i++)
@@ -420,6 +426,60 @@ namespace BossRush.Contents.WeaponModification
                     Utils.DrawBorderString(spriteBatch, "|", pos, base.TextColor, base.TextScale);
                 }
             }
+        }
+    }
+    public class WeaponModificationWeaponUISlot : UIImage
+    {
+        Item item;
+        Player player;
+        public WeaponModificationWeaponUISlot(Asset<Texture2D> texture, Player eplayer) : base(texture)
+        {
+            player = eplayer;
+        }
+        public override void LeftMouseDown(UIMouseEvent evt)
+        {
+            if (Main.mouseItem != null)
+            {
+                if(Main.mouseItem.consumable)
+                    return;
+                item = Main.mouseItem;
+                Main.mouseItem = null;
+            }
+            else
+            {
+                if (item == null)
+                    return;
+                Main.mouseItem = item;
+                item = null;
+            }
+        }
+        public override void OnDeactivate()
+        {
+            if(item == null)
+            {
+                return;
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                if (player.CanItemSlotAccept(player.inventory[i], item))
+                {
+                    player.inventory[i] = item;
+                    return;
+                }
+            }
+            player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            if (item is null)
+            {
+                return;
+            }
+            Main.instance.LoadItem(item.type);
+            Texture2D texture = TextureAssets.Item[item.type].Value;
+            Vector2 origin = new Vector2(texture.Width * 0.5f, item.height * 0.5f);
+            spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels), null, Color.White, 0, origin, 0, SpriteEffects.None, 0);
         }
     }
     public class WeaponModificationUIslot : UIImageButton
