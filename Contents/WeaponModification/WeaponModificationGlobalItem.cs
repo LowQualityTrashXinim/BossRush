@@ -18,6 +18,8 @@ namespace BossRush.Contents.WeaponModification
 
         public override void OnCreated(Item item, ItemCreationContext context)
         {
+            if (!Main.LocalPlayer.IsDebugPlayer())
+                return;
             if (item.damage > 0 && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 Delay = Main.rand.Next(0, 400);
@@ -27,6 +29,8 @@ namespace BossRush.Contents.WeaponModification
         }
         public override void UpdateInventory(Item item, Player player)
         {
+            if (!player.IsDebugPlayer())
+                return;
             if (item.damage > 0 && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
                 if (ModWeaponSlotType == null)
@@ -47,7 +51,7 @@ namespace BossRush.Contents.WeaponModification
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (item.damage > 0 && ModWeaponSlotType != null && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
+            if (item.damage > 0 && ModWeaponSlotType != null && Main.LocalPlayer.IsDebugPlayer())
             {
                 tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification delay : {Math.Round(Delay / 60f, 2)}s"));
                 tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification recharge : {Math.Round(Recharge / 60f, 2)}s"));
