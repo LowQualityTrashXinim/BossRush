@@ -22,8 +22,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         {
             BossRushUtils.BossRushDefaultRange(Item, 32, 32, 6, 1, 5, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 45, true, AmmoID.Bullet);
             Item.reuseDelay = 30;
-            //Vanilla Code Cant handle 2 different UseStyle for some reason, so once there is a sprite for it then draw it manually or find a way that dont cause it to glitch out, i didnt find a perfect way to draw it cause idk how the sprite would look like... TY VANILLA CODE YAAAAAY
-            //Item.noUseGraphic = true;
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
@@ -31,17 +29,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             player.GetDamage(DamageClass.Generic) += HeavenSMGmodplayer.heavenSmgStacks * 0.05f;
             player.GetAttackSpeed(DamageClass.Generic) += HeavenSMGmodplayer.heavenSmgStacks * 0.01f;
         }
-        //public override bool AltFunctionUse(Player player)
-        //{
-        //    if (player.reuseDelay <= 0)
-        //        return true;
-        //    else;
-        //        return false;
-        //}
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
+        public override bool AltFunctionUse(Player player) => true;
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse == 2)
@@ -49,7 +37,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
                 player.itemTime = player.itemAnimation;
                 type = ModContent.ProjectileType<HeavenSmgThrow>();
                 damage *= 3;
-                return;
             }
             else
                 SoundEngine.PlaySound(SoundID.Item36 with { Pitch = 1.5f }, player.Center);
@@ -63,7 +50,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             CanShootItem = true;
         }
     }
-    // TRAAAAILSSS LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     public struct HeavenTrail
     {
         private static VertexStrip _vertexStrip = new VertexStrip();
@@ -150,12 +136,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         }
         public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            var HeavenSMGmodplayer = player.GetModPlayer<heavenSmgPlayer>();
             if (!returningToOwner)
             {
                 targetHit = true;
                 player.AddBuff(ModContent.BuffType<heavenSmgBuff>(), 60 * 4);
-                //HeavenSMGmodplayer.ModPlayer_IncreaseStack();
             }
             returnToPlayer();
         }
@@ -361,7 +345,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             float maxDetectRadius = 2000f;
             Vector2 vel = Projectile.velocity;
             float accel = 2f;
-            NPC closestNPC = FindClosestNPC(maxDetectRadius);
+            Projectile.Center.LookForHostileNPC(out NPC closestNPC, maxDetectRadius);
             if (closestNPC == null || (Projectile.timeLeft > 570 && Projectile.ai[0] == 1))
             {
                 accel = 1f;
@@ -379,25 +363,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
                 projSpeed = maxProjSpeed;
             }
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.DirectionTo(Projectile.Center + vel) * projSpeed, 0.025f);
-        }
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-            for (int k = 0; k < Main.maxNPCs; k++)
-            {
-                NPC target = Main.npc[k];
-                if (target.CanBeChasedBy())
-                {
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-            return closestNPC;
         }
     }
 }

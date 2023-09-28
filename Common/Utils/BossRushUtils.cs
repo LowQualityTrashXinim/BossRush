@@ -128,35 +128,22 @@ namespace BossRush
         }
         public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLockThroughTile = false)
         {
-            List<NPC> npcList = new List<NPC>();
-            List<float> floatvector2List = new List<float>();
+            float maxDistanceSquare = distance;
+            npc = null;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 if (Main.npc[i].active
-                    && CompareSquareFloatValue(Main.npc[i].Center, position, distance)
+                    && CompareSquareFloatValue(Main.npc[i].Center, position, maxDistanceSquare, out float dis)
                     && Main.npc[i].CanBeChasedBy()
                     && !Main.npc[i].friendly
                     && (Collision.CanHitLine(position, 10, 10, Main.npc[i].position, Main.npc[i].width, Main.npc[i].height) || !CanLockThroughTile)
                     )
                 {
-                    npcList.Add(Main.npc[i]);
-                    floatvector2List.Add((position - Main.npc[i].Center).LengthSquared());
+                    maxDistanceSquare = dis;
+                    npc = Main.npc[i];
                 }
             }
-            if (npcList.Count > 0 || floatvector2List.Count > 0)
-            {
-                float closestPos = floatvector2List.Min();
-                for (int i = 0; i < floatvector2List.Count; i++)
-                {
-                    if (floatvector2List[i] == closestPos)
-                    {
-                        npc = npcList[i];
-                        return true;
-                    }
-                }
-            }
-            npc = null;
-            return false;
+            return npc != null;
         }
         public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance)
         {
@@ -216,6 +203,25 @@ namespace BossRush
                 DistanceY = value1Y - value2Y,
                 maxDistanceDouble = maxDistance * maxDistance;
             return (DistanceX * DistanceX + DistanceY * DistanceY) < maxDistanceDouble;
+        }
+        /// <summary>
+        /// Calculate square length of Vector2 and check if it is smaller than square max distance
+        /// </summary>
+        /// <param name="pos1"></param>
+        /// <param name="pos2"></param>
+        /// <param name="maxDistance"></param>
+        /// <returns>
+        /// Return true if length of Vector2 smaller than max distance<br/>
+        /// Return false if length of Vector2 greater than max distance
+        /// </returns>
+        public static bool CompareSquareFloatValue(Vector2 pos1, Vector2 pos2, float maxDistance, out float distance)
+        {
+            float
+                DistanceX = pos1.X - pos2.X,
+                DistanceY = pos1.Y - pos2.Y,
+                maxDistanceDouble = maxDistance * maxDistance;
+            distance = (DistanceX * DistanceX + DistanceY * DistanceY);
+            return distance < maxDistanceDouble;
         }
         public static bool CompareSquareFloatValueWithHitbox(Vector2 position, Vector2 positionEntity, Rectangle hitboxEntity, float maxDis)
         {
