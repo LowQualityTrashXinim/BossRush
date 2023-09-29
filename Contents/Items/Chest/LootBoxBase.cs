@@ -653,7 +653,7 @@ namespace BossRush.Contents.Items.Chest
             Item weapontoCheck = new Item(weapon);
             if (Main.masterMode)
             {
-                Amount = (int)(Amount * 2.5f);
+                Amount += 150;
             }
             DropArrowAmmo.Clear();
             DropBulletAmmo.Clear();

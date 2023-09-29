@@ -13,6 +13,7 @@ using System.Linq;
 using Terraria.UI.Chat;
 using Terraria.ID;
 using Microsoft.CodeAnalysis;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -38,35 +39,10 @@ namespace BossRush.Contents.WeaponModification
             if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer))
             {
                 Vector2 originDefault = new Vector2(26, 26);
-                Item item = player.HeldItem;
                 int maxLengthX = 550;
-                if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem))
-                {
-                    for (int i = 0; i < globalItem.ModWeaponSlotType.Length; i++)
-                    {
-                        Vector2 offsetPos = player.Center + new Vector2(MathHelper.Lerp(-maxLengthX, 20 * globalItem.ModWeaponSlotType.Length - maxLengthX, i / (globalItem.ModWeaponSlotType.Length - 1f)), -100);
-                        offsetPos.X += 31 * i;
-                        WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack2);
-                        btn.UISetWidthHeight(52, 52);
-                        btn.UISetPosition(offsetPos, originDefault);
-                        Append(btn);
-                    }
-                    //we lost the entire UI when put item in the slot, don't mess with it
-                    WeaponModificationWeaponUISlot wpUI = new WeaponModificationWeaponUISlot(TextureAssets.InventoryBack2, player);
-                    wpUI.UISetPosition(player.Center + new Vector2(100, 40), originDefault);
-                    Append(wpUI);
-                    ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
-                    string lines = $"Item : {item.Name}\n";
-                    itemtextbox.SetTextMaxLength(100000);
-                    lines += globalItem.GetWeaponModificationStats();
-                    itemtextbox.ImprovisedUIpanel_Width = 80;
-                    itemtextbox.SetText(lines);
-                    itemtextbox.Recalculate();
-                    itemtextbox.IgnoresMouseInteraction = true;
-                    itemtextbox.ShowInputTicker = false;
-                    itemtextbox.UISetPosition(player.Center + new Vector2(100, 100), originDefault);
-                    Append(itemtextbox);
-                }
+                WeaponModificationWeaponUISlot wpUI = new WeaponModificationWeaponUISlot(TextureAssets.InventoryBack2, player);
+                wpUI.UISetPosition(player.Center + new Vector2(100, 40), originDefault);
+                Append(wpUI);
                 for (int i = 0; i < modplayer.WeaponModification_inventory.Length; i++)
                 {
                     Vector2 offset = new Vector2(MathHelper.Lerp(-maxLengthX, maxLengthX, i / (modplayer.WeaponModification_inventory.Length - 1f)), 100);
@@ -438,12 +414,13 @@ namespace BossRush.Contents.WeaponModification
         }
         public override void LeftMouseDown(UIMouseEvent evt)
         {
-            if (Main.mouseItem != null)
+            if (Main.mouseItem.type != 0)
             {
-                if(Main.mouseItem.consumable)
+                if (Main.mouseItem.consumable)
                     return;
-                item = Main.mouseItem;
-                Main.mouseItem = null;
+                item = Main.mouseItem.Clone();
+                player.inventory[58].TurnToAir();
+                CreateModUISlot();
             }
             else
             {
@@ -451,11 +428,41 @@ namespace BossRush.Contents.WeaponModification
                     return;
                 Main.mouseItem = item;
                 item = null;
+                Elements.RemoveAll(e => e is WeaponModificationUIslot || e is ImprovisedUITextBox);
+            }
+        }
+        private void CreateModUISlot()
+        {
+            if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem))
+            {
+                Vector2 originDefault = new Vector2(26, 26);
+                Item item = player.HeldItem;
+                int maxLengthX = 550;
+                for (int i = 0; i < globalItem.ModWeaponSlotType.Length; i++)
+                {
+                    Vector2 offsetPos = player.Center + new Vector2(MathHelper.Lerp(-maxLengthX, 20 * globalItem.ModWeaponSlotType.Length - maxLengthX, i / (globalItem.ModWeaponSlotType.Length - 1f)), -100);
+                    offsetPos.X += 31 * i;
+                    WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack2);
+                    btn.UISetWidthHeight(52, 52);
+                    btn.UISetPosition(offsetPos, originDefault);
+                    Append(btn);
+                }
+                ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
+                string lines = $"Item : {item.Name}\n";
+                itemtextbox.SetTextMaxLength(100000);
+                lines += globalItem.GetWeaponModificationStats();
+                itemtextbox.ImprovisedUIpanel_Width = 80;
+                itemtextbox.SetText(lines);
+                itemtextbox.Recalculate();
+                itemtextbox.IgnoresMouseInteraction = true;
+                itemtextbox.ShowInputTicker = false;
+                itemtextbox.UISetPosition(player.Center + new Vector2(100, 100), originDefault);
+                Append(itemtextbox);
             }
         }
         public override void OnDeactivate()
         {
-            if(item == null)
+            if (item == null)
             {
                 return;
             }
@@ -472,14 +479,13 @@ namespace BossRush.Contents.WeaponModification
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
-            if (item is null)
+            if (item != null)
             {
-                return;
+                Main.instance.LoadItem(item.type);
+                Texture2D texture = TextureAssets.Item[item.type].Value;
+                Vector2 origin = new Vector2(Width.Pixels * .5f, Height.Pixels * .5f);
+                spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + origin, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
             }
-            Main.instance.LoadItem(item.type);
-            Texture2D texture = TextureAssets.Item[item.type].Value;
-            Vector2 origin = new Vector2(texture.Width * 0.5f, item.height * 0.5f);
-            spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels), null, Color.White, 0, origin, 0, SpriteEffects.None, 0);
         }
     }
     public class WeaponModificationUIslot : UIImageButton
