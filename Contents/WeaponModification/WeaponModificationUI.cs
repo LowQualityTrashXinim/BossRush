@@ -427,22 +427,18 @@ namespace BossRush.Contents.WeaponModification
                     return;
                 Main.mouseItem = item;
                 item = null;
-                //int count = Parent.Children.Count();
-                //for (int i = 0; i < count; i++)
-                //{
-
-                //}
-                //foreach (var child in Parent.Children)
-                //{
-                //    if (child is WeaponModificationUIslot wmslot)
-                //    {
-                //        if (wmslot.item == null)
-                //            continue;
-                //    }
-                //    if((child is WeaponModificationUIslot wmSlot && wmSlot.item != null) || child is ImprovisedUITextBox)
-                //        child.Remove();
-                //    //Parent.RemoveChild(Parent.Children.Where(e => (e is WeaponModificationUIslot wmSlot && wmSlot.item != null) || e is ImprovisedUITextBox).FirstOrDefault());
-                //}
+                int count = Parent.Children.Count();
+                for (int i = count - 1; i >= 0; i--)
+                {
+                    UIElement child = Parent.Children.ElementAt(i);
+                    if (child is WeaponModificationUIslot wmslot)
+                    {
+                        if (wmslot.item == null)
+                            continue;
+                    }
+                    if ((child is WeaponModificationUIslot wmSlot && wmSlot.item != null) || child is ImprovisedUITextBox)
+                        child.Remove();
+                }
             }
         }
         private void CreateModUISlot()

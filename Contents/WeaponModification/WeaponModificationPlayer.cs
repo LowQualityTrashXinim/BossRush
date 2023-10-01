@@ -35,6 +35,15 @@ namespace BossRush.Contents.WeaponModification
                 }
             }
         }
+        public override bool CanUseItem(Item item)
+        {
+            WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
+            if (uiSystemInstance.userInterface.CurrentState is not null)
+            {
+                return false;
+            }
+            return base.CanUseItem(item);
+        }
         //public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         //{
         //    foreach (int CustomParticle in item.GetGlobalItem<weaponMod_GlobalItem>().weaponMod_slot)
