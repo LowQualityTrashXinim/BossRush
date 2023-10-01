@@ -140,7 +140,7 @@ namespace BossRush.Contents.Items.BuilderItem
             }
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SpawnExplosiveDust();
             int minTileX = Projectile.position.X > 0 ? (int)(Projectile.position.X / 16f - explosionRadius) : 0;

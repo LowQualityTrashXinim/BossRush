@@ -34,7 +34,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection
                 Projectile.rotation += 0.5f;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             float numProj = 5 + Main.rand.Next(3);
             for (int i = 0; i < numProj; i++)

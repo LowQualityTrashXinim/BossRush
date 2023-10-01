@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 Main.dust[dustnumber].velocity = Main.rand.NextVector2Circular(4f, 4f);
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)
             {

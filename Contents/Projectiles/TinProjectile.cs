@@ -52,9 +52,9 @@ namespace BossRush.Contents.Projectiles
                     Projectile.velocity.Y += 1.5f;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
             for (int i = 0; i < 4; i++)
             {
                 Vector2 vel = -Vector2.UnitY.Vector2DistributeEvenly(4, 60, i) * 5f;
@@ -210,9 +210,9 @@ namespace BossRush.Contents.Projectiles
             }
             progression--;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
             }
             cooktimer--;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);
             for (int i = 0; i < 25; i++)

@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver
             Projectile.DrawTrail(Color.White);
             return true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Vector2 Rotate;
             float randomRotation = Main.rand.NextFloat(90);

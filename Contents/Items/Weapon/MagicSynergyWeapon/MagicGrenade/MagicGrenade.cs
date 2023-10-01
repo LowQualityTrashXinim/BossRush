@@ -238,7 +238,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
             }
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(.5f * Projectile.ai[1]));
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Player player = Main.player[Projectile.owner];
             Projectile.Center.LookForHostileNPC(out List<NPC> npc, 50);
@@ -291,7 +291,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade
             }
             Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(1 * Projectile.ai[1]));
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Player player = Main.player[Projectile.owner];
             for (int i = 0; i < 25; i++)

@@ -25,7 +25,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol
             }
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Projectile.position += new Vector2(11, 11);
             int projectileType = ModContent.ProjectileType<smallerHeart>();

@@ -89,7 +89,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             }
             Projectile.velocity = Projectile.velocity.LimitedVelocity(15);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 25; i++)
             {

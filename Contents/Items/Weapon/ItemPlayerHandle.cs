@@ -487,9 +487,9 @@ namespace BossRush.Contents.Items.Weapon
             OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
         }
         public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) { }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
             Player player = Main.player[Projectile.owner];
             SynergyKill(player, player.GetModPlayer<PlayerSynergyItemHandle>(), timeLeft);
         }

@@ -1,19 +1,17 @@
+using System;
 using Terraria;
 using Terraria.UI;
+using ReLogic.Content;
+using Terraria.UI.Chat;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
-using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Reflection;
 using System.Linq;
-using Terraria.UI.Chat;
 using Terraria.ID;
-using Microsoft.CodeAnalysis;
-using static Terraria.ModLoader.PlayerDrawLayer;
+using System.Configuration;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -58,6 +56,7 @@ namespace BossRush.Contents.WeaponModification
                 }
             }
         }
+
         public override void OnDeactivate()
         {
         }
@@ -414,7 +413,7 @@ namespace BossRush.Contents.WeaponModification
         }
         public override void LeftMouseDown(UIMouseEvent evt)
         {
-            if (Main.mouseItem.type != 0)
+            if (Main.mouseItem.type != ItemID.None)
             {
                 if (Main.mouseItem.consumable)
                     return;
@@ -428,7 +427,22 @@ namespace BossRush.Contents.WeaponModification
                     return;
                 Main.mouseItem = item;
                 item = null;
-                Elements.RemoveAll(e => e is WeaponModificationUIslot || e is ImprovisedUITextBox);
+                //int count = Parent.Children.Count();
+                //for (int i = 0; i < count; i++)
+                //{
+
+                //}
+                //foreach (var child in Parent.Children)
+                //{
+                //    if (child is WeaponModificationUIslot wmslot)
+                //    {
+                //        if (wmslot.item == null)
+                //            continue;
+                //    }
+                //    if((child is WeaponModificationUIslot wmSlot && wmSlot.item != null) || child is ImprovisedUITextBox)
+                //        child.Remove();
+                //    //Parent.RemoveChild(Parent.Children.Where(e => (e is WeaponModificationUIslot wmSlot && wmSlot.item != null) || e is ImprovisedUITextBox).FirstOrDefault());
+                //}
             }
         }
         private void CreateModUISlot()
@@ -443,9 +457,10 @@ namespace BossRush.Contents.WeaponModification
                     Vector2 offsetPos = player.Center + new Vector2(MathHelper.Lerp(-maxLengthX, 20 * globalItem.ModWeaponSlotType.Length - maxLengthX, i / (globalItem.ModWeaponSlotType.Length - 1f)), -100);
                     offsetPos.X += 31 * i;
                     WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack2);
+                    btn.item = item;
                     btn.UISetWidthHeight(52, 52);
                     btn.UISetPosition(offsetPos, originDefault);
-                    Append(btn);
+                    Parent.Append(btn);
                 }
                 ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
                 string lines = $"Item : {item.Name}\n";
@@ -457,7 +472,7 @@ namespace BossRush.Contents.WeaponModification
                 itemtextbox.IgnoresMouseInteraction = true;
                 itemtextbox.ShowInputTicker = false;
                 itemtextbox.UISetPosition(player.Center + new Vector2(100, 100), originDefault);
-                Append(itemtextbox);
+                Parent.Append(itemtextbox);
             }
         }
         public override void OnDeactivate()
@@ -490,9 +505,14 @@ namespace BossRush.Contents.WeaponModification
     }
     public class WeaponModificationUIslot : UIImageButton
     {
-        int? WeaponModificationType = null;
+        public int? WeaponModificationType = null;
+        public Item item = null;
         public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
         {
+        }
+        public override void OnDeactivate()
+        {
+            item = null;
         }
     }
     public class WeaponModificationSystem : ModSystem

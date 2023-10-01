@@ -26,7 +26,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Player player = Main.player[Projectile.owner];
             EntitySource_ItemUse_WithAmmo source = new EntitySource_ItemUse_WithAmmo(player, new Item(ModContent.ItemType<TrueEnchantedSword>()), AmmoID.Arrow);

@@ -22,7 +22,7 @@ namespace BossRush.Contents.Items.BuilderItem
         {
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Vector2 position = Projectile.Center;
             const int length = 300;

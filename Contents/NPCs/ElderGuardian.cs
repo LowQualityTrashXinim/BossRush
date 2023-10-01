@@ -12,7 +12,7 @@ namespace BossRush.Contents.NPCs
         public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new NPCDebuffImmunityData() { ImmuneToAllBuffsThatAreNotWhips = true });
+            NPCID.Sets.ImmuneToAllBuffs[Type] = true;
         }
         public override void SetDefaults()
         {

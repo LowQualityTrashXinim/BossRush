@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
                 }
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int l = 0; l < 3; l++)
             {
@@ -83,7 +83,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.ai[0]++;
             if (Projectile.ai[0] >= 20 && Projectile.velocity.Y <= 20) Projectile.velocity.Y += 0.5f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 30; i++)
             {

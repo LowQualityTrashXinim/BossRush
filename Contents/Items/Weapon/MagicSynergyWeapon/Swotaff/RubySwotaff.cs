@@ -74,7 +74,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 return;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (timeLeft <= 0)
             {
@@ -90,7 +90,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
             }
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
     }
     class RubyGemProjectileSwotaff : SynergyModProjectile

@@ -78,7 +78,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 npc1.StrikeNPC(npc1.CalculateHitInfo(Projectile.damage * 2, 1, false, 0, DamageClass.Magic, false));
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -86,7 +86,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
             }
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
     }
 }

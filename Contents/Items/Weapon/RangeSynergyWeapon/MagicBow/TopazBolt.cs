@@ -56,7 +56,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.DrawTrail(lightColor, .02f);
             return true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 45; i++)
             {

@@ -360,7 +360,7 @@ namespace BossRush.Common.ExtraChallenge
                 Main.dust[dust].color = color;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 50; i++)
             {
@@ -369,7 +369,6 @@ namespace BossRush.Common.ExtraChallenge
                 Main.dust[dust].velocity = vel;
                 Main.dust[dust].color = color;
             }
-            base.Kill(timeLeft);
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -410,7 +409,7 @@ namespace BossRush.Common.ExtraChallenge
                 Main.dust[dust].color = Color.Black;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 150; i++)
             {
@@ -419,7 +418,7 @@ namespace BossRush.Common.ExtraChallenge
                 Main.dust[dust].velocity = vel;
                 Main.dust[dust].color = Color.Black;
             }
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override Color? GetAlpha(Color lightColor)
         {

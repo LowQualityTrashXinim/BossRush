@@ -63,7 +63,7 @@ namespace BossRush.Contents.Items.BuilderItem
         }
         int explosionRadiusX = 300;
         int explosionRadiusY = 10;
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SpawnExplosionDust();
             float tileX = Projectile.position.X * .0625f; float tileY = Projectile.position.Y * .0625f;

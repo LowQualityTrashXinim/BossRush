@@ -87,7 +87,7 @@ namespace BossRush.Contents.Items
         public override bool? CanDamage() => false;
         public override bool? CanHitNPC(NPC target) => false;
         public override bool CanHitPlayer(Player target) => false;
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 300; i++)
             {
@@ -127,7 +127,7 @@ namespace BossRush.Contents.Items
         public override bool? CanDamage() => true;
         public override bool? CanHitNPC(NPC target) => true;
         public override bool CanHitPlayer(Player target) => true;
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 2000; i++)
             {

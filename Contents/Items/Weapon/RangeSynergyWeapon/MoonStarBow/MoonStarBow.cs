@@ -110,7 +110,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
             Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Vector2 Rotate;
             float randomRotation = Main.rand.NextFloat(90);
@@ -219,7 +219,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow
             Main.EntitySpriteDraw(textureThis, drawPosThis, null, Projectile.GetAlpha(new Color(255, 255, 255)), 0, origin, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 30; i++)
             {

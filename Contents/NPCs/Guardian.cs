@@ -15,7 +15,7 @@ namespace BossRush.Contents.NPCs
         public override string Texture => BossRushTexture.DIAMONDSWOTAFFORB;
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new NPCDebuffImmunityData() { ImmuneToAllBuffsThatAreNotWhips = true });
+            NPCID.Sets.ImmuneToAllBuffs[Type] = true;
             NPCID.Sets.TrailCacheLength[NPC.type] = 50;
         }
         public override void SetDefaults()
@@ -109,7 +109,7 @@ namespace BossRush.Contents.NPCs
                 Main.dust[dust].color = Color.Black;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 150; i++)
             {
@@ -118,7 +118,7 @@ namespace BossRush.Contents.NPCs
                 Main.dust[dust].velocity = vel;
                 Main.dust[dust].color = Color.Black;
             }
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -163,7 +163,7 @@ namespace BossRush.Contents.NPCs
                 Main.dust[dust].color = Color.Black;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 50; i++)
             {
@@ -172,7 +172,7 @@ namespace BossRush.Contents.NPCs
                 Main.dust[dust].velocity = vel;
                 Main.dust[dust].color = Color.Black;
             }
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override Color? GetAlpha(Color lightColor)
         {

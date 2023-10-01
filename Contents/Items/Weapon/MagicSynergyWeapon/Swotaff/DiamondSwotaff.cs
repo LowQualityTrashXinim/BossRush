@@ -83,7 +83,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Projectile.ai[0] = 60;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -91,7 +91,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff
                 Main.dust[dust].noGravity = true;
                 Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
             }
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
     }
     class DiamondGemProjectile : SynergyModProjectile

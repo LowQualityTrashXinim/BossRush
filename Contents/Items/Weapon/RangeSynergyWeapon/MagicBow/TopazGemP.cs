@@ -69,7 +69,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow
             Projectile.velocity.X *= 0.98f;
             Projectile.velocity.Y += 0.5f;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), (int)(Projectile.damage * 0.85f), 5f, Projectile.owner);
             for (int i = 0; i < 15; i++)

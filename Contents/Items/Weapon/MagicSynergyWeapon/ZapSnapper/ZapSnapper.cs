@@ -131,7 +131,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper
             }
             return base.Colliding(projHitbox, targetHitbox);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             finalPosition.LookForHostileNPC(out List<NPC> npclist, 100);
             for (int i = 0; i < 150; i++)

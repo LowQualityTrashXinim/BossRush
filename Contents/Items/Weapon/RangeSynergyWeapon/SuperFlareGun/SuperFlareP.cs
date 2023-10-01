@@ -94,7 +94,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun
                 Projectile.damage = 50;
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             int RandomDust = Main.rand.Next();
             for (int i = 0; i < 55; i++)
