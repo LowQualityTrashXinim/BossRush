@@ -418,6 +418,7 @@ namespace BossRush.Contents.WeaponModification
                 if (Main.mouseItem.consumable)
                     return;
                 item = Main.mouseItem.Clone();
+                Main.mouseItem.TurnToAir();
                 player.inventory[58].TurnToAir();
                 CreateModUISlot();
             }
@@ -494,8 +495,8 @@ namespace BossRush.Contents.WeaponModification
             {
                 Main.instance.LoadItem(item.type);
                 Texture2D texture = TextureAssets.Item[item.type].Value;
-                Vector2 origin = new Vector2(Width.Pixels * .5f, Height.Pixels * .5f);
-                spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + origin, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+                Vector2 origin = texture.Size() * .5f;
+                spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + new Vector2(Width.Pixels, Height.Pixels) * .5f, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
             }
         }
     }
