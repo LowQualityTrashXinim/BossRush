@@ -6,6 +6,7 @@ namespace BossRush.Contents.WeaponModification
     public abstract class ModWeaponParticle : ModType
     {
         public int Type { get; private set; }
+        public short WeaponModType = -1;
         protected sealed override void Register()
         {
             Type = ModWeapoParticleLoader.Register(this);

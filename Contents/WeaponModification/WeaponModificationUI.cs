@@ -500,7 +500,7 @@ namespace BossRush.Contents.WeaponModification
             }
         }
     }
-    public class WeaponModificationUIslot : UIImageButton
+    public class WeaponModificationUIslot : UIImage
     {
         public int? WeaponModificationType = null;
         public Item item = null;

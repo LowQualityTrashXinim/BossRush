@@ -14,6 +14,14 @@ namespace BossRush.Contents.WeaponModification
     internal class WeaponModificationPlayer : ModPlayer
     {
         public int[] WeaponModification_inventory = new int[20];
+        public override void OnEnterWorld()
+        {
+            WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
+            if (uiSystemInstance.userInterface.CurrentState != null)
+            {
+                uiSystemInstance.userInterface.SetState(null);
+            }
+        }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (WeaponModificationSystem.WeaponModificationKeybind.JustPressed)
