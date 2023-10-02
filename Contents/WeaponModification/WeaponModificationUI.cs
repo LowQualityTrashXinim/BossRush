@@ -437,7 +437,7 @@ namespace BossRush.Contents.WeaponModification
                         if (wmslot.item == null)
                             continue;
                     }
-                    if ((child is WeaponModificationUIslot wmSlot && wmSlot.item != null) || child is ImprovisedUITextBox)
+                    if (child is WeaponModificationUIslot { item: not null } or ImprovisedUITextBox)
                         child.Remove();
                 }
             }
