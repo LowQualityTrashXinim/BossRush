@@ -22,6 +22,20 @@ namespace BossRush.Contents.WeaponModification
                 uiSystemInstance.userInterface.SetState(null);
             }
         }
+        public float Delay = 0;
+        public float Recharge = 0;
+        public float castAmount = 1;
+
+        public float damage = 1;
+        public float knockback = 1;
+        public float shootspeed = 1;
+        public float critChance = 0;
+        public float critDamage = 1;
+
+        public override void PostUpdate()
+        {
+            base.PostUpdate();
+        }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (WeaponModificationSystem.WeaponModificationKeybind.JustPressed)

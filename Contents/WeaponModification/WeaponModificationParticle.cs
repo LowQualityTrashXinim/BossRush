@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.ModLoader;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponModification
@@ -6,7 +7,11 @@ namespace BossRush.Contents.WeaponModification
     public abstract class ModWeaponParticle : ModType
     {
         public int Type { get; private set; }
-        public short WeaponModType = -1;
+        public short WeaponModType = 0;
+        public int ProjectileType = 0;
+        public float Damage = 0;
+        public float KnockBack = 0;
+        public float shootspeed = 0;
         protected sealed override void Register()
         {
             Type = ModWeapoParticleLoader.Register(this);
@@ -14,6 +19,30 @@ namespace BossRush.Contents.WeaponModification
         public static int GetWeaponParticleType<T>() where T : ModWeaponParticle
         {
             return ModContent.GetInstance<T>().Type;
+        }
+        public virtual void SetDefault()
+        {
+
+        }
+        public virtual void PreUpdate(Player player)
+        {
+
+        }
+        public virtual void PostUpdate(Player player)
+        {
+
+        }
+        public virtual void ModifyModificationDelay(Player player, ref float delay, ref float recharge, ref float castAmount)
+        {
+
+        }
+        public virtual void ModifyAttack(Player player, ref float damage, ref float knockback, ref float shootspeed)
+        {
+
+        }
+        public virtual void ModifyCritAttack(Player player, ref int critChance, ref float critDamage)
+        {
+
         }
     }
     public static class ModWeapoParticleLoader
