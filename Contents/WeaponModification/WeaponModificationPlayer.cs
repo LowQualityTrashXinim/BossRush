@@ -1,10 +1,7 @@
 ﻿using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
-using BossRush.Contents.Perks;
-using Microsoft.Xna.Framework;
-using System.Linq;
+using Terraria.ID;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -14,6 +11,7 @@ namespace BossRush.Contents.WeaponModification
     internal class WeaponModificationPlayer : ModPlayer
     {
         public int[] WeaponModification_inventory = new int[20];
+        Item item = null;
         public override void OnEnterWorld()
         {
             WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
@@ -24,17 +22,84 @@ namespace BossRush.Contents.WeaponModification
         }
         public float Delay = 0;
         public float Recharge = 0;
-        public float castAmount = 1;
+        public int currentIndex = 0;
 
         public float damage = 1;
         public float knockback = 1;
         public float shootspeed = 1;
-        public float critChance = 0;
+        public int critChance = 0;
         public float critDamage = 1;
-
         public override void PostUpdate()
         {
-            base.PostUpdate();
+            if (item == null || item != Player.HeldItem)
+            {
+                item = Player.HeldItem;
+                Delay = 0;
+                Recharge = 0;
+                currentIndex = 0;
+                damage = 1;
+            }
+            if (Delay > 0)
+            {
+                Delay = BossRushUtils.CoolDown(Delay);
+                return;
+            }
+            if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem))
+            {
+                if (globalItem.ModWeaponSlotType == null)
+                    return;
+                if (Recharge == 0)
+                    Recharge = globalItem.Recharge;
+                if (Recharge > 0 && currentIndex >= globalItem.ModWeaponSlotType.Length)
+                {
+                    Recharge = BossRushUtils.CoolDown(Recharge);
+                    return;
+                }
+                if (!Player.ItemAnimationActive)
+                {
+                    return;
+                }
+                Delay = globalItem.Delay;
+                for (int i = 1; i > 0; i--)
+                {
+                    if (globalItem.ModWeaponSlotType[currentIndex] == 0)
+                    {
+                        if (currentIndex >= globalItem.ModWeaponSlotType.Length)
+                        {
+                            currentIndex = 0;
+                            break;
+                        }
+                        currentIndex++;
+                        continue;
+                    }
+                    ModWeaponParticle modweapon = ModifierWeaponLoader.GetWeaponMod(globalItem.ModWeaponSlotType[currentIndex]);
+                    modweapon.PreUpdate(Player);
+                    modweapon.ModifyModificationDelay(Player, ref Delay, ref Recharge, ref i);
+                    modweapon.ModifyAttack(Player, ref damage, ref knockback, ref shootspeed);
+                    modweapon.ModifyCritAttack(Player, ref critChance, ref critDamage);
+                    modweapon.PostUpdate(Player);
+                    if (modweapon.ProjectileType != ProjectileID.None)
+                    {
+                        for (int l = 0; l < modweapon.ShootAmount; l++)
+                        {
+                            Projectile proj = modweapon.Shoot(Player, l);
+                            if (proj == null)
+                                break;
+                            proj.knockBack = knockback;
+                            if (Main.rand.Next(1, 101) < critChance)
+                                damage *= 2 + critDamage;
+                            proj.damage = (int)(modweapon.RealDamage * damage);
+                            proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Microsoft.Xna.Framework.Vector2.Zero) * shootspeed;
+                        }
+                    }
+                    if (currentIndex >= globalItem.ModWeaponSlotType.Length)
+                    {
+                        currentIndex = 0;
+                        break;
+                    }
+                    currentIndex++;
+                }
+            }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {

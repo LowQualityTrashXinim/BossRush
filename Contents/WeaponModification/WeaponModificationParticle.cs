@@ -9,17 +9,21 @@ namespace BossRush.Contents.WeaponModification
         public int Type { get; private set; }
         public short WeaponModType = 0;
         public int ProjectileType = 0;
-        public float Damage = 0;
+        public int RealDamage = 0;
+        public float ModifierableDamage = 0;
         public float KnockBack = 0;
         public float shootspeed = 0;
         protected sealed override void Register()
         {
-            Type = ModWeapoParticleLoader.Register(this);
+            Type = ModifierWeaponLoader.Register(this);
         }
-        public static int GetWeaponParticleType<T>() where T : ModWeaponParticle
+        public static int GetWeaponModType<T>() where T : ModWeaponParticle
         {
             return ModContent.GetInstance<T>().Type;
         }
+        /// <summary>
+        /// This is to set basic stats of your modifier
+        /// </summary>
         public virtual void SetDefault()
         {
 
@@ -32,7 +36,7 @@ namespace BossRush.Contents.WeaponModification
         {
 
         }
-        public virtual void ModifyModificationDelay(Player player, ref float delay, ref float recharge, ref float castAmount)
+        public virtual void ModifyModificationDelay(Player player, ref float delay, ref float recharge, ref int castAmount)
         {
 
         }
@@ -44,8 +48,13 @@ namespace BossRush.Contents.WeaponModification
         {
 
         }
+        public int ShootAmount = 0;
+        public virtual Projectile Shoot(Player player, int i)
+        {
+            return null;
+        }
     }
-    public static class ModWeapoParticleLoader
+    public static class ModifierWeaponLoader
     {
         private static readonly List<ModWeaponParticle> _weaponParticle= new();
         public static int TotalCount => _weaponParticle.Count;
@@ -55,7 +64,7 @@ namespace BossRush.Contents.WeaponModification
             _weaponParticle.Add(weaponParticle);
             return _weaponParticle.Count - 1;
         }
-        public static ModWeaponParticle GetPerk(int type)
+        public static ModWeaponParticle GetWeaponMod(int type)
         {
             return type >= 0 && type < _weaponParticle.Count ? _weaponParticle[type] : null;
         }

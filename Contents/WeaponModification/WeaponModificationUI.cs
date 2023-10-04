@@ -504,6 +504,7 @@ namespace BossRush.Contents.WeaponModification
     {
         public int? WeaponModificationType = null;
         public Item item = null;
+        public bool active = false;
         public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
         {
         }
