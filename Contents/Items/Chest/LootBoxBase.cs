@@ -26,11 +26,11 @@ namespace BossRush.Contents.Items.Chest
         private List<int> DropItemMisc = new List<int>();
         private List<int> AllOfLootPossiblity = new List<int>();
         public virtual bool CanLootRNGbeRandomize() => true;
-        public virtual bool ChestUseOwnLogic() => false;
+        public virtual bool ChestUseOwnLogic => false;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
-            if (!ChestUseOwnLogic())
+            if (!ChestUseOwnLogic)
             {
                 if (AllOfLootPossiblity.Count < 1)
                 {

@@ -49,10 +49,11 @@ namespace BossRush.Contents.WeaponModification
                     {
                         position -= new Vector2(maxLengthX, -55);
                     }
-                    WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack);
-                    btn.UISetWidthHeight(52, 52);
-                    btn.UISetPosition(position, originDefault);
-                    Append(btn);
+                    WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack);
+                    inventory.WhoAmI = i;
+                    inventory.UISetWidthHeight(52, 52);
+                    inventory.UISetPosition(position, originDefault);
+                    Append(inventory);
                 }
             }
         }
@@ -505,6 +506,7 @@ namespace BossRush.Contents.WeaponModification
         public int? WeaponModificationType = null;
         public Item item = null;
         public bool active = false;
+        public int WhoAmI = -1;
         public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
         {
         }
