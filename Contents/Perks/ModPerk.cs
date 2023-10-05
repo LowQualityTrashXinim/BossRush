@@ -208,13 +208,15 @@ namespace BossRush.Contents.Perks
         public override void SetDefaults()
         {
             CanBeStack = false;
-            Tooltip = "+ Having a single dirt in your inventory increase defense by 15";
+            Tooltip = "+ Having a single dirt in your inventory increase defense by 15" +
+                "\nAnd permanent exquisitely stuffed buff";
         }
         public override void ResetEffect(Player player)
         {
             base.ResetEffect(player);
             if (player.HasItem(ItemID.DirtBlock))
                 player.statDefense += 15;
+            player.AddBuff(BuffID.WellFed3, 1);
         }
     }
     public class PotionExpert : Perk

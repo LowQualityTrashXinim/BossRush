@@ -49,10 +49,11 @@ namespace BossRush.Contents.WeaponModification
                     {
                         position -= new Vector2(maxLengthX, -55);
                     }
-                    WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack);
-                    btn.UISetWidthHeight(52, 52);
-                    btn.UISetPosition(position, originDefault);
-                    Append(btn);
+                    WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack);
+                    inventory.WhoAmI = i;
+                    inventory.UISetWidthHeight(52, 52);
+                    inventory.UISetPosition(position, originDefault);
+                    Append(inventory);
                 }
             }
         }
@@ -418,6 +419,7 @@ namespace BossRush.Contents.WeaponModification
                 if (Main.mouseItem.consumable)
                     return;
                 item = Main.mouseItem.Clone();
+                Main.mouseItem.TurnToAir();
                 player.inventory[58].TurnToAir();
                 CreateModUISlot();
             }
@@ -427,22 +429,18 @@ namespace BossRush.Contents.WeaponModification
                     return;
                 Main.mouseItem = item;
                 item = null;
-                //int count = Parent.Children.Count();
-                //for (int i = 0; i < count; i++)
-                //{
-
-                //}
-                //foreach (var child in Parent.Children)
-                //{
-                //    if (child is WeaponModificationUIslot wmslot)
-                //    {
-                //        if (wmslot.item == null)
-                //            continue;
-                //    }
-                //    if((child is WeaponModificationUIslot wmSlot && wmSlot.item != null) || child is ImprovisedUITextBox)
-                //        child.Remove();
-                //    //Parent.RemoveChild(Parent.Children.Where(e => (e is WeaponModificationUIslot wmSlot && wmSlot.item != null) || e is ImprovisedUITextBox).FirstOrDefault());
-                //}
+                int count = Parent.Children.Count();
+                for (int i = count - 1; i >= 0; i--)
+                {
+                    UIElement child = Parent.Children.ElementAt(i);
+                    if (child is WeaponModificationUIslot wmslot)
+                    {
+                        if (wmslot.item == null)
+                            continue;
+                    }
+                    if (child is WeaponModificationUIslot { item: not null } or ImprovisedUITextBox)
+                        child.Remove();
+                }
             }
         }
         private void CreateModUISlot()
@@ -498,15 +496,17 @@ namespace BossRush.Contents.WeaponModification
             {
                 Main.instance.LoadItem(item.type);
                 Texture2D texture = TextureAssets.Item[item.type].Value;
-                Vector2 origin = new Vector2(Width.Pixels * .5f, Height.Pixels * .5f);
-                spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + origin, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+                Vector2 origin = texture.Size() * .5f;
+                spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + new Vector2(Width.Pixels, Height.Pixels) * .5f, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
             }
         }
     }
-    public class WeaponModificationUIslot : UIImageButton
+    public class WeaponModificationUIslot : UIImage
     {
         public int? WeaponModificationType = null;
         public Item item = null;
+        public bool active = false;
+        public int WhoAmI = -1;
         public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
         {
         }

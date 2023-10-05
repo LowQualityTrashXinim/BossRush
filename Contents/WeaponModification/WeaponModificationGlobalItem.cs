@@ -35,14 +35,11 @@ namespace BossRush.Contents.WeaponModification
             {
                 if (ModWeaponSlotType == null)
                 {
-                    Delay = Main.rand.Next(0, 400);
-                    Recharge = Main.rand.Next(0, 400);
+                    Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime);
+                    Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation);
                     ModWeaponSlotType = new int[Main.rand.Next(2, 26)];
                 }
             }
-        }
-        public override void HoldItem(Item item, Player player)
-        {
         }
         public string GetWeaponModificationStats() =>
             $"Item's modification delay : {Math.Round(Delay / 60f, 2)}s\n" +

@@ -1530,6 +1530,11 @@ Mods: {
 				DisplayName: Heaven Smg
 				Tooltip: ""
 			}
+
+			BundleHelper: {
+				DisplayName: Bundle Helper
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

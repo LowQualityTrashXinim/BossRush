@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Chest
             Item.height = 30;
             Item.rare = 11;
         }
-        public override bool ChestUseOwnLogic() => true;
+        public override bool ChestUseOwnLogic => true;
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
             var entitySource = player.GetSource_OpenItem(Type);

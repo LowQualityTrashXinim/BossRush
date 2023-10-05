@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushDefaultRange(Item, 32, 32, 6, 1, 5, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 45, true, AmmoID.Bullet);
+            BossRushUtils.BossRushDefaultRange(Item, 32, 32, 12, 1, 3, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 45, true, AmmoID.Bullet);
             Item.reuseDelay = 30;
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
@@ -39,13 +39,16 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
                 damage *= 3;
             }
             else
+            {
+                velocity = velocity.Vector2RotateByRandom(10);
                 SoundEngine.PlaySound(SoundID.Item36 with { Pitch = 1.5f }, player.Center);
+            }
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
             if (player.velocity.Y > 0f && player.HasBuff<heavenSmgBuff>())
             {
-                Projectile.NewProjectileDirect(source, position, velocity * 0.5f, ModContent.ProjectileType<heavenBolt>(), (int)(damage * 1.25f), 0, Main.myPlayer, 1);
+                Projectile.NewProjectileDirect(source, position, velocity * 0.5f, ModContent.ProjectileType<heavenBolt>(), (int)(damage * .5f), 0, Main.myPlayer, 1);
             }
             CanShootItem = true;
         }
@@ -248,7 +251,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             player.slowFall = true;
             player.jumpSpeedBoost = 5;
 
-
             player.GetModPlayer<heavenSmgPlayer>().heavenBuff = true;
             if (player.buffTime[buffIndex] == 2)
             {
@@ -286,6 +288,35 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         {
             if (Projectile.ai[0] == 1)
                 isMiniProjectile = true;
+        }
+        float maxProjSpeed = 15f;
+        float projSpeed = 0f;
+        bool canDealDamage = false;
+        public override bool? CanHitNPC(NPC target) => canDealDamage;
+        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
+        {
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            float maxDetectRadius = 2000f;
+            Vector2 vel = Projectile.velocity;
+            float accel = 2f;
+            Projectile.Center.LookForHostileNPC(out NPC closestNPC, maxDetectRadius);
+            if (closestNPC == null || (Projectile.timeLeft > 570 && Projectile.ai[0] == 1))
+            {
+                accel = 1f;
+                canDealDamage = false;
+            }
+            else
+            {
+                vel = closestNPC.Center - Projectile.Center;
+                canDealDamage = true;
+            }
+            vel.Normalize();
+            projSpeed += accel;
+            if (projSpeed > maxProjSpeed)
+            {
+                projSpeed = maxProjSpeed;
+            }
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.DirectionTo(Projectile.Center + vel) * projSpeed, 0.025f);
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -334,35 +365,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
                     proj.timeLeft = 600;
                 }
             }
-        }
-        float maxProjSpeed = 15f;
-        float projSpeed = 0f;
-        bool canDealDamage = false;
-        public override bool? CanHitNPC(NPC target) => canDealDamage;
-        public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer)
-        {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            float maxDetectRadius = 2000f;
-            Vector2 vel = Projectile.velocity;
-            float accel = 2f;
-            Projectile.Center.LookForHostileNPC(out NPC closestNPC, maxDetectRadius);
-            if (closestNPC == null || (Projectile.timeLeft > 570 && Projectile.ai[0] == 1))
-            {
-                accel = 1f;
-                canDealDamage = false;
-            }
-            else
-            {
-                vel = closestNPC.Center - Projectile.Center;
-                canDealDamage = true;
-            }
-            vel.Normalize();
-            projSpeed += accel;
-            if (projSpeed > maxProjSpeed)
-            {
-                projSpeed = maxProjSpeed;
-            }
-            Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.DirectionTo(Projectile.Center + vel) * projSpeed, 0.025f);
         }
     }
 }
