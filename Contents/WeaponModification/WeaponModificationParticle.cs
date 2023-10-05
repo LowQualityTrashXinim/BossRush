@@ -7,12 +7,11 @@ namespace BossRush.Contents.WeaponModification
     public abstract class ModWeaponParticle : ModType
     {
         public int Type { get; private set; }
-        public short WeaponModType = 0;
         public int ProjectileType = 0;
         public int RealDamage = 0;
         public float ModifierableDamage = 0;
         public float KnockBack = 0;
-        public float shootspeed = 0;
+        public float ShootSpeed = 0;
         protected sealed override void Register()
         {
             Type = ModifierWeaponLoader.Register(this);

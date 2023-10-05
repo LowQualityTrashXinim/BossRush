@@ -1,7 +1,8 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
-using Terraria.ID;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.WeaponModification
 {

@@ -354,7 +354,7 @@ namespace BossRush.Common.RoguelikeChange
         {
             if (item.type == ItemID.TrueNightsEdge)
             {
-                item.useTime = item.useAnimation = 20;
+                item.useTime = item.useAnimation = 25;
             }
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -371,8 +371,8 @@ namespace BossRush.Common.RoguelikeChange
             }
             if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke)
             {
-                TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction, on 3rd attack will do a special attack" +
-                    "\nHold down right mouse to enable focus mode and allow you to dash toward your cursor on 3rd attack");
+                TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction" +
+                    "\nHold down right mouse to make your normal slash push you back and allow you to dash toward your cursor on 3rd attack");
                 line.OverrideColor = Color.Yellow;
                 tooltips.Add(line);
                 if (SwingType == BossRushUseStyle.Swipe)
@@ -731,6 +731,8 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return;
             }
+            if (ComboNumber != 2 && Main.mouseRight)
+                Player.velocity += (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * item.knockBack;
         }
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
