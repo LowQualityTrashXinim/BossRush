@@ -242,7 +242,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade
                 }
                 return;
             }
-            if (BossRushUtils.CompareSquareFloatValue(Projectile.Center, player.Center, 20))
+            if (BossRushUtils.CompareSquareFloatValue(Projectile.Center, player.Center, 20 * 20))
             {
                 modplayer.EnergyBlade_Code1_Energy++;
                 Projectile.Kill();

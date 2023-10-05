@@ -72,7 +72,7 @@ namespace BossRush.Common
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
             List<Item> items = new List<Item>() {
-                        new Item(ModContent.ItemType<BundleHelper>()),
+                        new Item(ModContent.ItemType<WoodenLootBox>()),
                         new Item(ModContent.ItemType<LunchBox>()),
                         new Item(ItemID.Safe),
                         new Item(ItemID.MoneyTrough),
@@ -89,8 +89,8 @@ namespace BossRush.Common
             }
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
-                //items.Add(new Item(ModContent.ItemType<StarterPerkChooser>()));
-                //items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
+                items.Add(new Item(ModContent.ItemType<StarterPerkChooser>()));
+                items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol

@@ -30,5 +30,7 @@ namespace BossRush.Common
         [ReloadRequired]
         [DefaultValue(false)]
         public bool ForceBossDropRegadless { get; set; }
+        [DefaultValue(false)]
+        public bool DisableBundleHepler { get; set; }
     }
 }

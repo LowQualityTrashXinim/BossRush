@@ -9,7 +9,7 @@ namespace BossRush
     {
         public static void ResetMinion(this Projectile projectile, Vector2 position, float distance)
         {
-            if (CompareSquareFloatValue(projectile.Center, position, distance))
+            if (CompareSquareFloatValue(projectile.Center, position, distance * distance))
             {
                 return;
             }

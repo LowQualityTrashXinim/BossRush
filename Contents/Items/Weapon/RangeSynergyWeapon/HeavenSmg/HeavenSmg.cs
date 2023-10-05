@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,8 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using log4net.Util;
-using BossRush.Common;
 using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
@@ -20,14 +17,64 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         public override void SetDefaults()
         {
-            BossRushUtils.BossRushDefaultRange(Item, 32, 32, 12, 1, 3, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 45, true, AmmoID.Bullet);
+            BossRushUtils.BossRushDefaultRange(Item, 32, 32, 12, 1, 3, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 25, true, AmmoID.Bullet);
             Item.reuseDelay = 30;
         }
         public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer)
         {
-            var HeavenSMGmodplayer = player.GetModPlayer<heavenSmgPlayer>();
-            player.GetDamage(DamageClass.Generic) += HeavenSMGmodplayer.heavenSmgStacks * 0.05f;
-            player.GetAttackSpeed(DamageClass.Generic) += HeavenSMGmodplayer.heavenSmgStacks * 0.01f;
+            if (player.HasBuff(ModContent.BuffType<HeavenSmgBuff>()))
+            {
+                Vector2 offCenter = player.Center.IgnoreTilePositionOFFSET(Vector2.UnitX, player.direction == 1 ? -15 : 5);
+                float length = player.velocity.Length();
+                for (int i = 0; i < 35; i++)
+                {
+                    Vector2 pos = offCenter + new Vector2(0, -5) - new Vector2(1.3f * player.direction, .7f).Vector2RotateByRandom(25) * i;
+                    int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = new Vector2(length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
+                }
+                for (int i = 0; i < 30; i++)
+                {
+                    Vector2 pos = offCenter + new Vector2(0, -10) - new Vector2(1.2f * player.direction, .8f).Vector2RotateByRandom(25) * i;
+                    int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
+                }
+                for (int i = 0; i < 25; i++)
+                {
+                    Vector2 pos = offCenter + new Vector2(0, -15) - new Vector2(1.1f * player.direction, .9f).Vector2RotateByRandom(25) * i;
+                    int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
+                }
+                for (int i = 0; i < 20; i++)
+                {
+                    Vector2 pos = offCenter + new Vector2(0, -20) - new Vector2(1 * player.direction, 1).Vector2RotateByRandom(25) * i;
+                    int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 pos = offCenter - new Vector2(1 * player.direction, -1).Vector2RotateByRandom(25) * i;
+                    int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 pos = offCenter - new Vector2(1 * player.direction, -2).Vector2RotateByRandom(25) * i;
+                    int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
+                    Main.dust[dust].noGravity = true;
+                    Main.dust[dust].velocity = new Vector2(length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
+                    Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
+                }
+            }
         }
         public override bool AltFunctionUse(Player player) => true;
         public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -46,7 +93,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         }
         public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem)
         {
-            if (player.velocity.Y > 0f && player.HasBuff<heavenSmgBuff>())
+            if (player.velocity.Y > 0f && player.HasBuff<HeavenSmgBuff>())
             {
                 Projectile.NewProjectileDirect(source, position, velocity * 0.5f, ModContent.ProjectileType<heavenBolt>(), (int)(damage * .5f), 0, Main.myPlayer, 1);
             }
@@ -62,7 +109,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             miscShaderData.UseSaturation(-2f);
             miscShaderData.UseOpacity(2f);
             miscShaderData.Apply();
-            _vertexStrip.PrepareStripWithProceduralPadding(proj.oldPos, proj.oldRot, StripColors, StripWidth, -Main.screenPosition + proj.Size / 2f);
+            _vertexStrip.PrepareStripWithProceduralPadding(proj.oldPos, proj.oldRot, StripColors, StripWidth, -Main.screenPosition + proj.Size * .5f);
             _vertexStrip.DrawTrail();
             Main.pixelShader.CurrentTechnique.Passes[0].Apply();
         }
@@ -142,7 +189,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             if (!returningToOwner)
             {
                 targetHit = true;
-                player.AddBuff(ModContent.BuffType<heavenSmgBuff>(), 60 * 4);
+                player.AddBuff(ModContent.BuffType<HeavenSmgBuff>(), 300);
             }
             returnToPlayer();
         }
@@ -155,7 +202,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         private void resetStacks()
         {
             Player player = Main.player[Projectile.owner];
-            var modplayer = player.GetModPlayer<heavenSmgPlayer>();
+            var modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
             modplayer.ModPlayer_resetStacks();
         }
         private void returnToPlayer()
@@ -213,37 +260,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
                 }
         }
     }
-    internal class heavenSmgPlayer : ModPlayer
-    {
-        public bool heavenBuff;
-        public override void ResetEffects()
-        {
-            heavenBuff = false;
-        }
-        public int heavenSmgStacks = 0;
-        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) => ModPlayer_resetStacks();
-        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) => ModPlayer_resetStacks();
-        public void ModPlayer_IncreaseStack()
-        {
-            int MaxStacks = 40;
-            heavenSmgStacks++;
-            if (heavenSmgStacks == MaxStacks)
-            {
-                SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
-            }
-            else SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = heavenSmgStacks * 0.075f }, Player.Center);
-            heavenSmgStacks = (int)MathHelper.Clamp(heavenSmgStacks, 0, MaxStacks);
-            for (int i = 0; i < 5; i++)
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Main.rand.NextVector2CircularEdge(1f, 1f) * 15, ModContent.ProjectileType<heavenBolt>(), 30, 0, Main.myPlayer, 1);
-        }
-        public void ModPlayer_resetStacks()
-        {
-            if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
-                SoundEngine.PlaySound(SoundID.NPCDeath7, Player.Center);
-            heavenSmgStacks = 0;
-        }
-    }
-    internal class heavenSmgBuff : ModBuff
+    internal class HeavenSmgBuff : ModBuff
     {
         public override string Texture => BossRushTexture.EMPTYBUFF;
         public override void Update(Player player, ref int buffIndex)
@@ -251,10 +268,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             player.slowFall = true;
             player.jumpSpeedBoost = 5;
 
-            player.GetModPlayer<heavenSmgPlayer>().heavenBuff = true;
             if (player.buffTime[buffIndex] == 2)
             {
-                player.GetModPlayer<heavenSmgPlayer>().ModPlayer_IncreaseStack();
+                player.GetModPlayer<PlayerSynergyItemHandle>().IncreaseStack();
             }
         }
     }
@@ -268,9 +284,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = oldposFrameAmount;
         }
         bool isMiniProjectile = false;
-        bool isVanishingAnimation = false;
         int miniProjectileAmount = 3;
-        int TheDamage;
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 16;

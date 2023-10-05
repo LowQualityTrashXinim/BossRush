@@ -13,6 +13,8 @@ using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using System.Linq;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
+using Terraria.Audio;
 
 namespace BossRush.Contents.Items.Weapon
 {
@@ -93,6 +95,8 @@ namespace BossRush.Contents.Items.Weapon
         public bool ZapSnapper_ThunderStaff = false;
 
         public bool MagicGrenade_MagicMissle = false;
+
+        public int HeavenSmg_Stacks = 0;
 
         public bool GodAreEnraged = false;
         public int CooldownCheck = 999;
@@ -242,6 +246,11 @@ namespace BossRush.Contents.Items.Weapon
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
+        {
+            if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
+                ModPlayer_resetStacks();
+        }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (hit.Crit)
@@ -268,10 +277,42 @@ namespace BossRush.Contents.Items.Weapon
                     Deagle_DaedalusStormBow_coolDown = 600;
                 }
             }
+            if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
+                ModPlayer_resetStacks();
+        }
+        public void IncreaseStack()
+        {
+            for (int i = 0; i < 5; i++)
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<heavenBolt>(), 30, 0, Player.whoAmI, 1);
+            if (HeavenSmg_Stacks >= 40)
+            {
+                SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
+                return;
+            }
+            HeavenSmg_Stacks++;
+            SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
+        }
+        public void ModPlayer_resetStacks()
+        {
+            if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
+                SoundEngine.PlaySound(SoundID.NPCDeath7, Player.Center);
+            HeavenSmg_Stacks = 0;
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         {
             damage += SynergyBonus * .5f;
+            if(item.type == ModContent.ItemType<HeavenSmg>())
+            {
+                damage += HeavenSmg_Stacks * 0.05f;
+            }
+        }
+        public override float UseSpeedMultiplier(Item item)
+        {
+            if (item.type == ModContent.ItemType<HeavenSmg>())
+            {
+                return 1 + HeavenSmg_Stacks * 0.01f;
+            }
+            return base.UseSpeedMultiplier(item);
         }
         public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {

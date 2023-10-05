@@ -1682,6 +1682,11 @@ Mods: {
 				DisplayName: heaven Smg Buff
 				Description: Mods.BossRush.Buffs.heavenSmgBuff.Description
 			}
+
+			HeavenSmgBuff: {
+				DisplayName: Heaven Smg Buff
+				Description: Mods.BossRush.Buffs.HeavenSmgBuff.Description
+			}
 		}
 
 		Configs: {
@@ -1792,6 +1797,11 @@ Mods: {
 				ForceBossDropRegadless: {
 					Label: Force Boss Drop Regadless
 					Tooltip: Make boss drop outside of challenge mode
+				}
+
+				DisableBundleHepler: {
+					Label: Disable Bundle Hepler
+					Tooltip: ""
 				}
 			}
 		}

@@ -57,9 +57,10 @@ namespace BossRush.Contents.WeaponModification
                 }
             }
         }
-
         public override void OnDeactivate()
         {
+            WeaponModificationSystem.SelectedInventorySlot = -1;
+            WeaponModificationSystem.SelectedModifySlot = -1;
         }
         public override void LeftMouseDown(UIMouseEvent evt)
         {
@@ -439,7 +440,10 @@ namespace BossRush.Contents.WeaponModification
                             continue;
                     }
                     if (child is WeaponModificationUIslot { item: not null } or ImprovisedUITextBox)
+                    {
+                        child.Deactivate();
                         child.Remove();
+                    }
                 }
             }
         }
@@ -458,11 +462,12 @@ namespace BossRush.Contents.WeaponModification
                     btn.item = item;
                     btn.UISetWidthHeight(52, 52);
                     btn.UISetPosition(offsetPos, originDefault);
+                    btn.WhoAmI = i;
                     Parent.Append(btn);
                 }
                 ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
                 string lines = $"Item : {item.Name}\n";
-                itemtextbox.SetTextMaxLength(100000);
+                itemtextbox.SetTextMaxLength(1000);
                 lines += globalItem.GetWeaponModificationStats();
                 itemtextbox.ImprovisedUIpanel_Width = 80;
                 itemtextbox.SetText(lines);
@@ -507,21 +512,59 @@ namespace BossRush.Contents.WeaponModification
         public Item item = null;
         public bool active = false;
         public int WhoAmI = -1;
+        Texture2D texture;
         public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
         {
+            this.texture = texture.Value;
+        }
+        public override void LeftClick(UIMouseEvent evt)
+        {
+            if (item == null)
+            {
+                WeaponModificationSystem.SelectedInventorySlot = WeaponModificationSystem.SelectedInventorySlot != WhoAmI ? WhoAmI : -1;
+            }
+            else
+            {
+                WeaponModificationSystem.SelectedModifySlot = WeaponModificationSystem.SelectedModifySlot != WhoAmI ? WhoAmI : -1;
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (item == null)
+            {
+                if (WeaponModificationSystem.SelectedInventorySlot == WhoAmI)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + new Vector2(Width.Pixels, Height.Pixels) * .5f, null, new Color(255, 255, 0, 30), 0, texture.Size() * .5f, 1.2f, SpriteEffects.None, 0);
+                    }
+                }
+            }
+            else
+            {
+                if (WeaponModificationSystem.SelectedModifySlot == WhoAmI)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + new Vector2(Width.Pixels, Height.Pixels) * .5f, null, new Color(255, 255, 0, 30), 0, texture.Size() * .5f, 1.2f, SpriteEffects.None, 0);
+                    }
+                }
+            }
+            base.Draw(spriteBatch);
         }
         public override void OnDeactivate()
         {
             item = null;
+            WeaponModificationSystem.SelectedModifySlot = -1;
         }
     }
     public class WeaponModificationSystem : ModSystem
     {
         internal UserInterface userInterface;
         internal WeaponModificationUI WM_uiState;
-
         public static ModKeybind WeaponModificationKeybind { get; private set; }
-
+        public static int SelectedInventorySlot = -1;
+        public static int SelectedModifySlot = -1;
         public override void Load()
         {
             WeaponModificationKeybind = KeybindLoader.RegisterKeybind(Mod, "WeaponModification", "P");

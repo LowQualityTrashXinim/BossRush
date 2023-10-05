@@ -2,7 +2,9 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Audio;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
@@ -10,10 +12,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
-using Terraria.DataStructures;
-using BossRush.Texture;
 using BossRush.Contents.Items.Toggle;
-using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Perks
 {
@@ -190,7 +189,7 @@ namespace BossRush.Contents.Perks
             player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
         }
     }
-    public class Alchemistknowledge : Perk
+    public class AlchemistKnowledge : Perk
     {
         public override void SetDefaults()
         {
@@ -377,16 +376,10 @@ namespace BossRush.Contents.Perks
         {
             textureString = BossRushTexture.ACCESSORIESSLOT;
             CanBeStack = true;
-            StackLimit = 11;
+            StackLimit = 5;
         }
         public override string ModifyToolTip()
         {
-            //if(StackAmount> 10)
-            //    return "+ 78% increased odds for melee" +
-            //    "\n+ 15% thorn damage" +
-            //    "\n+ 2% melee size increases" +
-            //    "\nGetting hit will make you berserk" +
-            //    "\nBerserk : Make you swing 25% faster and sword size increases by 50%";
             if (StackAmount > 0)
                 return "+ 78% increased odds for melee" +
                 "\n+ 15% thorn damage" +
@@ -432,7 +425,7 @@ namespace BossRush.Contents.Perks
                 "+ 78% increased odds for range" +
                 "\n+ 5% range critical strike chance" +
                 "\n+ 25% range critical damage";
-            StackLimit = 11;
+            StackLimit = 5;
         }
         public override void Update(Player player)
         {
@@ -462,15 +455,15 @@ namespace BossRush.Contents.Perks
                 "+ 78% increased odds for magic" +
                 "\n+ 5% magic cost reduction" +
                 "\nMana star can spawm from NPC hit";
-            StackLimit = 11;
+            StackLimit = 5;
         }
         public override string ModifyToolTip()
         {
-            if (StackAmount > 10)
-                return "+ 78% increased odds for magic" +
-                "\n+ 5% magic cost reduction" +
-                "\nMore Mana star can be spawn from hitting NPC with magic projectile" +
-                "\nYou will now use 100 mana for each time you uses magic weapon, the mana that consumes will contribute to more damage";
+            //if (StackAmount >= 5)
+            //    return "+ 78% increased odds for magic" +
+            //    "\n+ 5% magic cost reduction" +
+            //    "\nMore Mana star can be spawn from hitting NPC with magic projectile" +
+            //    "\nYou will now use 100 mana for each time you uses magic weapon, the mana that consumes will contribute to more damage";
             if (StackAmount > 0)
                 return "+ 78% increased odds for magic" +
                 "\n+ 5% magic cost reduction" +
@@ -486,12 +479,12 @@ namespace BossRush.Contents.Perks
         }
         public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (StackAmount > 10)
-            {
-                player.statMana = Math.Clamp(player.statMana - 100, 0, player.statManaMax2);
-                if (player.statMana >= 100)
-                    damage *= 2;
-            }
+            //if (StackAmount >= 5)
+            //{
+            //    player.statMana = Math.Clamp(player.statMana - 100, 0, player.statManaMax2);
+            //    if (player.statMana >= 100)
+            //        damage *= 2;
+            //}
         }
         public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi)
         {
@@ -517,7 +510,7 @@ namespace BossRush.Contents.Perks
                 "\n+ 5% summoner damage" +
                 "\n+ 1 minion slot" +
                 "\n+ 1 sentry slot";
-            StackLimit = 11;
+            StackLimit = 5;
         }
         public override void ResetEffect(Player player)
         {

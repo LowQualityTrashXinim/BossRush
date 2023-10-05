@@ -92,7 +92,7 @@ namespace BossRush
             {
                 if (Main.npc[i].active && Main.npc[i].friendly)
                 {
-                    if (CompareSquareFloatValue(position, Main.npc[i].Center, distance)) return true;
+                    if (CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance)) return true;
                 }
             }
             return false;
@@ -100,7 +100,7 @@ namespace BossRush
         public static Vector2 LookForHostileNPCPositionClosest(this Vector2 position, float distance)
         {
             Vector2 hostilePos = Vector2.Zero;
-            float maxDistanceSquare = distance;
+            float maxDistanceSquare = distance * distance;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 NPC npc = Main.npc[i];
@@ -119,7 +119,7 @@ namespace BossRush
         }
         public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLockThroughTile = false)
         {
-            float maxDistanceSquare = distance;
+            float maxDistanceSquare = distance * distance;
             npc = null;
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -177,6 +177,7 @@ namespace BossRush
         }
         /// <summary>
         /// Calculate square length of Vector2 and check if it is smaller than square max distance
+        /// This won't power max distance by 2 so do it yourself
         /// </summary>
         /// <param name="pos1"></param>
         /// <param name="pos2"></param>
@@ -192,12 +193,12 @@ namespace BossRush
                 value2X = pos2.X,
                 value2Y = pos2.Y,
                 DistanceX = value1X - value2X,
-                DistanceY = value1Y - value2Y,
-                maxDistanceDouble = maxDistance * maxDistance;
-            return (DistanceX * DistanceX + DistanceY * DistanceY) < maxDistanceDouble;
+                DistanceY = value1Y - value2Y;
+            return (DistanceX * DistanceX + DistanceY * DistanceY) < maxDistance;
         }
         /// <summary>
         /// Calculate square length of Vector2 and check if it is smaller than square max distance
+        /// This won't power max distance by 2 so do it yourself
         /// </summary>
         /// <param name="pos1"></param>
         /// <param name="pos2"></param>
@@ -210,10 +211,9 @@ namespace BossRush
         {
             float
                 DistanceX = pos1.X - pos2.X,
-                DistanceY = pos1.Y - pos2.Y,
-                maxDistanceDouble = maxDistance * maxDistance;
+                DistanceY = pos1.Y - pos2.Y;
             distance = (DistanceX * DistanceX + DistanceY * DistanceY);
-            return distance < maxDistanceDouble;
+            return distance < maxDistance;
         }
         public static bool CompareSquareFloatValueWithHitbox(Vector2 position, Vector2 positionEntity, Rectangle hitboxEntity, float maxDis)
         {
