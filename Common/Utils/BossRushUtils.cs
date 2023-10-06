@@ -139,12 +139,7 @@ namespace BossRush
         }
         public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance)
         {
-            npc = Main.npc.Where(npc =>
-            npc.active
-            && npc.CanBeChasedBy()
-            && npc.type != NPCID.TargetDummy
-            && !npc.friendly
-            && CompareSquareFloatValueWithHitbox(position, npc.position, npc.Hitbox, distance)).ToList();
+            npc = Main.npc.Where(npc => npc.active && npc.CanBeChasedBy() && npc.type != NPCID.TargetDummy && !npc.friendly && CompareSquareFloatValueWithHitbox(position, npc.position, npc.Hitbox, distance)).ToList();
         }
         public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
         public static float OutExpo(float t) => 1 - InExpo(1 - t);

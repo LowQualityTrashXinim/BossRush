@@ -90,7 +90,7 @@ namespace BossRush.Contents.WeaponModification
                             if (Main.rand.Next(1, 101) < critChance)
                                 damage *= 2 + critDamage;
                             proj.damage = (int)(modweapon.RealDamage * damage);
-                            proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Microsoft.Xna.Framework.Vector2.Zero) * shootspeed;
+                            proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
                         }
                     }
                     if (currentIndex >= globalItem.ModWeaponSlotType.Length)

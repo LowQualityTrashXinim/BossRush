@@ -283,7 +283,7 @@ namespace BossRush.Contents.Items.Weapon
         public void IncreaseStack()
         {
             for (int i = 0; i < 5; i++)
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<heavenBolt>(), 30, 0, Player.whoAmI, 1);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<HeavenBolt>(), 30, 0, Player.whoAmI, 1);
             if (HeavenSmg_Stacks >= 40)
             {
                 SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);

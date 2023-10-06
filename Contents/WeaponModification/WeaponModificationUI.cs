@@ -51,6 +51,7 @@ namespace BossRush.Contents.WeaponModification
                     }
                     WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack);
                     inventory.WhoAmI = i;
+                    inventory.ModificationType = modplayer.WeaponModification_inventory[i];
                     inventory.UISetWidthHeight(52, 52);
                     inventory.UISetPosition(position, originDefault);
                     Append(inventory);
@@ -512,6 +513,7 @@ namespace BossRush.Contents.WeaponModification
         public Item item = null;
         public bool active = false;
         public int WhoAmI = -1;
+        public int ModificationType = 0;
         Texture2D texture;
         public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
         {

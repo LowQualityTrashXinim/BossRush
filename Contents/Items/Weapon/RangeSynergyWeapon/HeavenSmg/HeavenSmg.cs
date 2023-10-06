@@ -95,7 +95,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
         {
             if (player.velocity.Y > 0f && player.HasBuff<HeavenSmgBuff>())
             {
-                Projectile.NewProjectileDirect(source, position, velocity * 0.5f, ModContent.ProjectileType<heavenBolt>(), (int)(damage * .5f), 0, Main.myPlayer, 1);
+                Projectile.NewProjectileDirect(source, position, velocity * 0.5f, ModContent.ProjectileType<HeavenBolt>(), (int)(damage * .5f), 0, Main.myPlayer, 1);
             }
             CanShootItem = true;
         }
@@ -274,7 +274,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             }
         }
     }
-    internal class heavenBolt : SynergyModProjectile
+    internal class HeavenBolt : SynergyModProjectile
     {
         public override string Texture => BossRushTexture.MISSINGTEXTURE;
         static int oldposFrameAmount = 25;
@@ -375,7 +375,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg
             {
                 for (int i = 0; i < miniProjectileAmount; i++)
                 {
-                    var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.oldPosition, Main.rand.NextVector2CircularEdge(1f, 1f), ModContent.ProjectileType<heavenBolt>(), Projectile.damage / 3, 0, Main.myPlayer, 1);
+                    var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.oldPosition, Main.rand.NextVector2CircularEdge(1f, 1f), ModContent.ProjectileType<HeavenBolt>(), Projectile.damage / 3, 0, Main.myPlayer, 1);
                     proj.timeLeft = 600;
                 }
             }
