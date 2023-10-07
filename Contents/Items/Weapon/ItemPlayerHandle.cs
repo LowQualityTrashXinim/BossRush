@@ -308,9 +308,10 @@ namespace BossRush.Contents.Items.Weapon
         }
         public override float UseSpeedMultiplier(Item item)
         {
+            float multiplier = base.UseAnimationMultiplier(item);
             if (item.type == ModContent.ItemType<HeavenSmg>())
             {
-                return 1 + HeavenSmg_Stacks * 0.01f;
+                return multiplier + HeavenSmg_Stacks * 0.01f;
             }
             return base.UseSpeedMultiplier(item);
         }

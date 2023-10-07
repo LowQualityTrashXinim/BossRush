@@ -383,7 +383,9 @@ namespace BossRush.Common.RoguelikeChange
                 }
                 if (SwingType == BossRushUseStyle.Poke)
                 {
-                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "1st attack deal 55% more damage\n3rd attack deal 25% more damage");
+                    TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo",
+                        "Heavy attack deal 55% more damage (Activate by alt attack)" +
+                        "\nThurst attack deal 25% more damage");
                     line2.OverrideColor = Color.Yellow;
                     tooltips.Add(line2);
                 }
@@ -434,25 +436,25 @@ namespace BossRush.Common.RoguelikeChange
             {
                 return base.UseSpeedMultiplier(item, player);
             }
-            float useTimeMultiplierOnCombo = .85f;
+            float useTimeMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f;
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
             //This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
             if (SwingType == BossRushUseStyle.Swipe)
             {
                 if (modPlayer.ComboNumber == 2)
                 {
-                    useTimeMultiplierOnCombo -= .25f;
+                    return useTimeMultiplierOnCombo -= .25f;
                 }
             }
             if (SwingType == BossRushUseStyle.Poke)
             {
-                if (modPlayer.ComboNumber == 0)
-                {
-                    useTimeMultiplierOnCombo -= .5f;
-                }
                 if (modPlayer.ComboNumber == 2)
                 {
-                    useTimeMultiplierOnCombo += .25f;
+                    return useTimeMultiplierOnCombo -= .25f;
+                }
+                if (Main.mouseRight)
+                {
+                    return useTimeMultiplierOnCombo -= .5f;
                 }
             }
             return useTimeMultiplierOnCombo;
@@ -464,7 +466,7 @@ namespace BossRush.Common.RoguelikeChange
                 return;
             }
             MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-            modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 2.35f);
+            modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
             switch (SwingType)
             {
                 case BossRushUseStyle.Swipe:
@@ -485,10 +487,16 @@ namespace BossRush.Common.RoguelikeChange
                     switch (modPlayer.ComboNumber)
                     {
                         case 0:
-                            WideSwingAttack(player, modPlayer);
+                            if (Main.mouseRight)
+                                WideSwingAttack(player, modPlayer);
+                            else
+                                SwipeAttack(player, modPlayer, 1);
                             break;
                         case 1:
-                            SwipeAttack(player, modPlayer, 1);
+                            if (Main.mouseRight)
+                                WideSwingAttack(player, modPlayer);
+                            else
+                                SwipeAttack(player, modPlayer, 1);
                             break;
                         case 2:
                             StrongThrust(player, modPlayer);
@@ -500,18 +508,6 @@ namespace BossRush.Common.RoguelikeChange
                     break;
                 default:
                     break;
-            }
-        }
-        public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
-            {
-                return;
-            }
-            if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded))
-            {
-                MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-                modPlayer.critReference = hit.Crit;
             }
         }
         public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers)
@@ -600,6 +596,8 @@ namespace BossRush.Common.RoguelikeChange
             }
             delaytimer = BossRushUtils.CoolDown(delaytimer);
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
+            if (CountDownToResetCombo <= 0)
+                ComboNumber = 0;
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
@@ -684,12 +682,11 @@ namespace BossRush.Common.RoguelikeChange
         }
         private void ComboHandleSystem()
         {
-            if (++ComboNumber >= 3 || CountDownToResetCombo == 0)
+            if (++ComboNumber >= 3)
             {
                 ComboNumber = 0;
             }
         }
-        public bool critReference;
         bool CanPlayerBeDamage = true;
         public override void PostUpdate()
         {
