@@ -1,17 +1,39 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponModification
 {
     public abstract class ModWeaponParticle : ModType
     {
+        public ModWeaponParticle()
+        {
+            SetDefault();
+        }
         public int Type { get; private set; }
         public int ProjectileType = 0;
-        public int RealDamage = 0;
+        /// <summary>
+        /// This is the real damage where projectile damage is actually set
+        /// </summary>
+        public int ProjectileDamage = 0;
+        /// <summary>
+        /// This is to modify damage, use this if your Mod can modify damage of the other mod
+        /// </summary>
         public float ModifierableDamage = 0;
+        /// <summary>
+        /// This is set outside of <see cref="Shoot(Player, int)"/> method
+        /// </summary>
         public float KnockBack = 0;
+        /// <summary>
+        /// This is shoot speed which will be set outside of <see cref="Shoot(Player, int)"/> method
+        /// </summary>
         public float ShootSpeed = 0;
+        /// <summary>
+        /// This is to make <see cref="Shoot(Player, int)"/> run multiple time <br/>
+        /// default to 1
+        /// </summary>
+        public int ShootAmount = 1;
         protected sealed override void Register()
         {
             Type = ModifierWeaponLoader.Register(this);
@@ -47,15 +69,32 @@ namespace BossRush.Contents.WeaponModification
         {
 
         }
-        public int ShootAmount = 0;
+        /// <summary>
+        /// This is by default is set to shoot out a projectile, modify it if you want it to shoot multiple projectile in a arch<br/>
+        /// If so, then use <see cref="ShootAmount"/> in <see cref="SetDefault"/>
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         public virtual Projectile Shoot(Player player, int i)
         {
-            return null;
+            return Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center, Vector2.Zero, ProjectileType, ProjectileDamage, KnockBack, player.whoAmI);
+        }
+        /// <summary>
+        /// This is by default is set to shoot out a projectile, modify it if you want it to shoot multiple projectile in a arch<br/>
+        /// If so, then use <see cref="ShootAmount"/> in <see cref="SetDefault"/>
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public virtual Projectile Shoot(Player player, Vector2 position, Vector2 velocity, int damage, float knockbackOwn, int i)
+        {
+            return Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), position, velocity, ProjectileType, damage, knockbackOwn, player.whoAmI);
         }
     }
     public static class ModifierWeaponLoader
     {
-        private static readonly List<ModWeaponParticle> _weaponParticle= new();
+        private static readonly List<ModWeaponParticle> _weaponParticle = new();
         public static int TotalCount => _weaponParticle.Count;
         public static int Register(ModWeaponParticle weaponParticle)
         {

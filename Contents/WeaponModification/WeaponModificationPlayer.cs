@@ -83,13 +83,15 @@ namespace BossRush.Contents.WeaponModification
                     {
                         for (int l = 0; l < modweapon.ShootAmount; l++)
                         {
-                            Projectile proj = modweapon.Shoot(Player, l);
-                            if (proj == null)
+                            if (modweapon.Shoot(Player, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * shootspeed, (int)(modweapon.ProjectileDamage * damage), knockback, i) == null)
+                            {
                                 break;
+                            }
+                            Projectile proj = modweapon.Shoot(Player, l);
                             proj.knockBack = knockback;
                             if (Main.rand.Next(1, 101) < critChance)
                                 damage *= 2 + critDamage;
-                            proj.damage = (int)(modweapon.RealDamage * damage);
+                            proj.damage = (int)(modweapon.ProjectileDamage * damage);
                             proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
                         }
                     }
