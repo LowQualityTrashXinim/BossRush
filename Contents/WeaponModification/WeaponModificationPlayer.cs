@@ -49,7 +49,7 @@ namespace BossRush.Contents.WeaponModification
             {
                 if (globalItem.ModWeaponSlotType == null)
                     return;
-                if (Recharge == 0)
+                if (Recharge <= 0)
                     Recharge = globalItem.Recharge;
                 if (Recharge > 0 && currentIndex >= globalItem.ModWeaponSlotType.Length)
                 {

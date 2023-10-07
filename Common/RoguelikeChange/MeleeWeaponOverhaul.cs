@@ -589,8 +589,9 @@ namespace BossRush.Common.RoguelikeChange
         public override void PreUpdate()
         {
             Item item = Player.HeldItem;
-            if (item.type != oldHeldItem)
+            if (oldHeldItem != item.type)
             {
+                oldHeldItem = item.type;
                 ComboNumber = 0;
                 CountDownToResetCombo = 0;
             }
@@ -598,7 +599,7 @@ namespace BossRush.Common.RoguelikeChange
             CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
             if (CountDownToResetCombo <= 0)
                 ComboNumber = 0;
-            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) || item.noMelee)
             {
                 return;
             }
@@ -623,7 +624,7 @@ namespace BossRush.Common.RoguelikeChange
             {
                 if (IsAlreadyHeldDown && Main.mouseRight)
                 {
-                    ExecuteSpecialComboOnActive();
+                    ExecuteSpecialComboOnActive(item);
                 }
                 else
                 {
@@ -655,8 +656,7 @@ namespace BossRush.Common.RoguelikeChange
                 CanPlayerBeDamage = true;
             }
         }
-        bool percentageReach = false;
-        private void ExecuteSpecialComboOnActive()
+        private void ExecuteSpecialComboOnActive(Item item)
         {
             if (ComboConditionChecking())
             {
@@ -665,17 +665,18 @@ namespace BossRush.Common.RoguelikeChange
             Player.noFallDmg = true;
             CanPlayerBeDamage = false;
             float percentage = (Player.itemAnimationMax - Player.itemAnimation) / (float)Player.itemAnimationMax;
-            if (percentage >= .9f)
+            if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
             {
-                percentageReach = true;
+                if (meleeItem.SwingType == BossRushUseStyle.Poke)
+                    percentage = BossRushUtils.OutExpo(percentage);
+
             }
-            Player.Center = Vector2.Lerp(lastPlayerPositionBeforeAnimation, positionToDash, BossRushUtils.OutExpo(percentage));
+            Player.Center = Vector2.Lerp(lastPlayerPositionBeforeAnimation, positionToDash, percentage);
         }
         private bool ComboConditionChecking() =>
             Player.mount.Active
             || ComboNumber != 2
             || !Main.mouseRight;
-        int NPCcounterDebug = 0;
         public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, NPC target)
         {
             return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, target);
@@ -683,21 +684,19 @@ namespace BossRush.Common.RoguelikeChange
         private void ComboHandleSystem()
         {
             if (++ComboNumber >= 3)
-            {
                 ComboNumber = 0;
-            }
         }
         bool CanPlayerBeDamage = true;
         public override void PostUpdate()
         {
             Item item = Player.HeldItem;
-            oldHeldItem = item.type;
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
             if (Player.ItemAnimationJustStarted)
             {
+                JustHitANPC = false;
                 if (delaytimer == 0)
                 {
                     data = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
@@ -709,7 +708,6 @@ namespace BossRush.Common.RoguelikeChange
             }
             else
             {
-                percentageReach = false;
                 lastPlayerPositionBeforeAnimation = Player.Center;
                 positionToDash = Player.Center.PositionOffsetDynamic(Main.MouseWorld - Player.Center, 500f);
             }
@@ -722,14 +720,29 @@ namespace BossRush.Common.RoguelikeChange
                 }
             }
         }
+        public override void ModifyWeaponKnockback(Item item, ref StatModifier knockback)
+        {
+            if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) || item.noMelee)
+            {
+                return;
+            }
+            if (ComboNumber != 2 && Main.mouseRight && !JustHitANPC)
+            {
+                knockback *= 1.5f;
+            }
+        }
+        bool JustHitANPC = false;
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee)
             {
                 return;
             }
-            if (ComboNumber != 2 && Main.mouseRight)
-                Player.velocity += (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * item.knockBack;
+            if (ComboNumber != 2 && Main.mouseRight && !JustHitANPC)
+            {
+                Player.velocity += (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * Player.GetWeaponKnockback(item);
+                JustHitANPC = true;
+            }
         }
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {

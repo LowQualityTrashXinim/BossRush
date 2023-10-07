@@ -1,5 +1,7 @@
 using System;
 using Terraria;
+using System.Linq;
+using Terraria.ID;
 using Terraria.UI;
 using ReLogic.Content;
 using Terraria.UI.Chat;
@@ -9,9 +11,6 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
-using Terraria.ID;
-using System.Configuration;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -22,12 +21,8 @@ namespace BossRush.Contents.WeaponModification
     /// </summary>
     public class WeaponModificationUI : UIState
     {
-        internal float slotItemScale = .5f;
-        internal int slotID = 0;
-        internal int space = 64;
-        internal bool isHidden = false;
-
         public int whoAmI = -1;
+        Player player;
         public override void OnActivate()
         {
             Elements.Clear();
@@ -36,6 +31,7 @@ namespace BossRush.Contents.WeaponModification
             Player player = Main.player[whoAmI];
             if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer))
             {
+                this.player = player;
                 Vector2 originDefault = new Vector2(26, 26);
                 int maxLengthX = 550;
                 WeaponModificationWeaponUISlot wpUI = new WeaponModificationWeaponUISlot(TextureAssets.InventoryBack2, player);
@@ -49,7 +45,7 @@ namespace BossRush.Contents.WeaponModification
                     {
                         position -= new Vector2(maxLengthX, -55);
                     }
-                    WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack);
+                    WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack, player);
                     inventory.WhoAmI = i;
                     inventory.ModificationType = modplayer.WeaponModification_inventory[i];
                     inventory.UISetWidthHeight(52, 52);
@@ -62,6 +58,24 @@ namespace BossRush.Contents.WeaponModification
         {
             WeaponModificationSystem.SelectedInventorySlot = -1;
             WeaponModificationSystem.SelectedModifySlot = -1;
+            if (player == null)
+                return;
+            if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer))
+            {
+                foreach (var element in Elements)
+                {
+                    if (element is WeaponModificationUIslot wmUISlot && wmUISlot != null)
+                    {
+                        if (wmUISlot.WeaponModificationType != null)
+                        {
+                            if (wmUISlot.item == null)
+                            {
+                                modplayer.WeaponModification_inventory[wmUISlot.WhoAmI] = (int)wmUISlot.WeaponModificationType;
+                            }
+                        }
+                    }
+                }
+            }
         }
         public override void LeftMouseDown(UIMouseEvent evt)
         {
@@ -439,6 +453,10 @@ namespace BossRush.Contents.WeaponModification
                     {
                         if (wmslot.item == null)
                             continue;
+                        if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem))
+                        {
+                            globalItem.ModWeaponSlotType[wmslot.WhoAmI] = wmslot.ModificationType;
+                        }
                     }
                     if (child is WeaponModificationUIslot { item: not null } or ImprovisedUITextBox)
                     {
@@ -459,7 +477,7 @@ namespace BossRush.Contents.WeaponModification
                 {
                     Vector2 offsetPos = player.Center + new Vector2(MathHelper.Lerp(-maxLengthX, 20 * globalItem.ModWeaponSlotType.Length - maxLengthX, i / (globalItem.ModWeaponSlotType.Length - 1f)), -100);
                     offsetPos.X += 31 * i;
-                    WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack2);
+                    WeaponModificationUIslot btn = new WeaponModificationUIslot(TextureAssets.InventoryBack2, player);
                     btn.item = item;
                     btn.UISetWidthHeight(52, 52);
                     btn.UISetPosition(offsetPos, originDefault);
@@ -515,7 +533,7 @@ namespace BossRush.Contents.WeaponModification
         public int WhoAmI = -1;
         public int ModificationType = 0;
         Texture2D texture;
-        public WeaponModificationUIslot(Asset<Texture2D> texture) : base(texture)
+        public WeaponModificationUIslot(Asset<Texture2D> texture, Player player) : base(texture)
         {
             this.texture = texture.Value;
         }
