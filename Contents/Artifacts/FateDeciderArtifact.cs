@@ -18,7 +18,8 @@ namespace BossRush.Contents.Artifacts
     internal class FateDeciderArtifact : Artifact
     {
         public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
-    }
+		public override Color DisplayNameColor => Color.LimeGreen;
+	}
 
     class FateDeciderPlayer : ModPlayer
     {

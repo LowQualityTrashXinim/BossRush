@@ -13,8 +13,8 @@ namespace BossRush.Contents.Artifacts
 {
     internal class HeartOfEarthArtifact : Artifact
     {
-        public override float Scale => 0.7f;
-    }
+		public override Color DisplayNameColor => Color.Red;
+	}
 
     class HeartOfEarthPlayer : ModPlayer
     {
