@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader.IO;
+using System;
 
 namespace BossRush.Contents.WeaponModification
 {
@@ -30,6 +32,8 @@ namespace BossRush.Contents.WeaponModification
         public float shootspeed = 1;
         public int critChance = 0;
         public float critDamage = 1;
+
+        public bool IsOnRecharge = false;
         public override void PostUpdate()
         {
             if (item == null || item != Player.HeldItem)
@@ -50,9 +54,18 @@ namespace BossRush.Contents.WeaponModification
                 if (globalItem.ModWeaponSlotType == null)
                     return;
                 if (Recharge <= 0)
+                {
                     Recharge = globalItem.Recharge;
+                    IsOnRecharge = false;
+                    currentIndex = 0;
+                }
                 if (Recharge > 0 && currentIndex >= globalItem.ModWeaponSlotType.Length)
                 {
+                    if(!IsOnRecharge)
+                    {
+                        BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Recharged !");
+                        IsOnRecharge = true;
+                    }
                     Recharge = BossRushUtils.CoolDown(Recharge);
                     return;
                 }
@@ -63,17 +76,19 @@ namespace BossRush.Contents.WeaponModification
                 Delay = globalItem.Delay;
                 for (int i = 1; i > 0; i--)
                 {
-                    if (globalItem.ModWeaponSlotType[currentIndex] == 0)
+                    if (currentIndex >= globalItem.ModWeaponSlotType.Length)
                     {
-                        if (currentIndex >= globalItem.ModWeaponSlotType.Length)
-                        {
-                            currentIndex = 0;
-                            break;
-                        }
+                        currentIndex = 0;
+                        break;
+                    }
+                    if (globalItem.ModWeaponSlotType[currentIndex] == -1)
+                    {
                         currentIndex++;
                         continue;
                     }
                     ModWeaponParticle modweapon = ModifierWeaponLoader.GetWeaponMod(globalItem.ModWeaponSlotType[currentIndex]);
+                    shootspeed = modweapon.ShootSpeed;
+                    knockback = modweapon.KnockBack;
                     modweapon.PreUpdate(Player);
                     modweapon.ModifyModificationDelay(Player, ref Delay, ref Recharge, ref i);
                     modweapon.ModifyAttack(Player, ref damage, ref knockback, ref shootspeed);
@@ -83,7 +98,7 @@ namespace BossRush.Contents.WeaponModification
                     {
                         for (int l = 0; l < modweapon.ShootAmount; l++)
                         {
-                            if (modweapon.Shoot(Player, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * shootspeed, (int)(modweapon.ProjectileDamage * damage), knockback, i) == null)
+                            if (modweapon.Shoot(Player, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * shootspeed, (int)(modweapon.ProjectileDamage * damage), knockback, i) != null)
                             {
                                 break;
                             }
@@ -94,11 +109,6 @@ namespace BossRush.Contents.WeaponModification
                             proj.damage = (int)(modweapon.ProjectileDamage * damage);
                             proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
                         }
-                    }
-                    if (currentIndex >= globalItem.ModWeaponSlotType.Length)
-                    {
-                        currentIndex = 0;
-                        break;
                     }
                     currentIndex++;
                 }
@@ -133,6 +143,22 @@ namespace BossRush.Contents.WeaponModification
                 return false;
             }
             return base.CanUseItem(item);
+        }
+        public override void Initialize()
+        {
+            base.Initialize();
+            WeaponModification_inventory = new int[20];
+            Array.Fill(WeaponModification_inventory, -1);
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            base.SaveData(tag);
+            tag.Add("WeaponModification_inventory", WeaponModification_inventory);
+        }
+        public override void LoadData(TagCompound tag)
+        {
+            base.LoadData(tag);
+            WeaponModification_inventory = tag.Get<int[]>("WeaponModification_inventory");
         }
         //public override void ModifyWeaponDamage(Item item, ref StatModifier damage)
         //{

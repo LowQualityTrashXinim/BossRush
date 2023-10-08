@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ namespace BossRush.Contents.WeaponModification
 {
     public abstract class ModWeaponParticle : ModType
     {
+        public virtual string ParticleTexture => BossRushTexture.MISSINGTEXTURE;
         public ModWeaponParticle()
         {
             SetDefault();

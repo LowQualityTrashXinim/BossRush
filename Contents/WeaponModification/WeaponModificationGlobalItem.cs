@@ -22,9 +22,10 @@ namespace BossRush.Contents.WeaponModification
                 return;
             if (item.damage > 0 && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode)
             {
-                Delay = Main.rand.Next(0, 400);
-                Recharge = Main.rand.Next(0, 400);
-                ModWeaponSlotType = new int[Main.rand.Next(2, 26)];
+                Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime * 2);
+                Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation * 3);
+                ModWeaponSlotType = new int[Main.rand.Next(2, 10)];
+                Array.Fill(ModWeaponSlotType, -1);
             }
         }
         public override void UpdateInventory(Item item, Player player)
@@ -37,7 +38,7 @@ namespace BossRush.Contents.WeaponModification
                 {
                     Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime);
                     Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation);
-                    ModWeaponSlotType = new int[Main.rand.Next(2, 26)];
+                    ModWeaponSlotType = new int[Main.rand.Next(2, 10)];
                 }
             }
         }
