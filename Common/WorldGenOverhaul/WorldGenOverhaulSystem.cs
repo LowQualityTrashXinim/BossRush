@@ -9,14 +9,13 @@ using Terraria.GameContent.Generation;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 
-namespace BossRush.Common.WorldGenOverhaul
-{
-    internal partial class WorldGenOverhaulSystem : ModSystem
-    {
-        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
-        {
-            tasks.Clear();
-            tasks.AddRange(((ITaskCollection)this).Tasks);
-        }
-    }
+namespace BossRush.Common.WorldGenOverhaul {
+	internal partial class WorldGenOverhaulSystem : ModSystem {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+			if (ModContent.GetInstance<BossRushModConfig>().WorldGenTest) {
+				tasks.Clear();
+				tasks.AddRange(((ITaskCollection)this).Tasks);
+			}
+		}
+	}
 }
