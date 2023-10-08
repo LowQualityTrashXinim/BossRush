@@ -1,0 +1,140 @@
+BootsOfSpeedManipulationArtifact: {
+	DisplayName: Boots Of Manipulation
+	Description:
+		'''
+		"Run like you want to run."
+		[c/b7bf5c:Positive effect] : 
+			+ Increase your movement capacity massively
+		[c/ab3e43:Negative effect] : 
+			- You can't fly with wing
+			- Randomize your damage to be worse when moving
+		'''
+}
+
+EternalWealthArtifact: {
+	DisplayName: Eternal Wealth
+	Description:
+		'''
+		"Regardless of anything, wealth is all that matters."
+		[c/b7bf5c:Positive effect] : 
+			+ Multiply your lootbox drop by 3.
+		[c/ab3e43:Negative effect] : 
+			- A field of damage curses will be spawn and disappear after few seconds at where you are.
+			Field of damage will only damage you if you are in it for more than 3 second.
+		'''
+}
+
+HeartOfEarthArtifact: {
+	DisplayName: Heart Of Earth
+	Description:
+		'''
+		"Protected by the Earth"
+		[c/b7bf5c:Positive effect] : 
+			+ Multiply your max HP by 1.5 and add a additional 100 max hp
+			+ Standing still for a short moment massively boost your regen
+		[c/ab3e43:Negative effect] : 
+			- Getting hit will make you unable to use your weapon for 5s
+		'''
+}
+
+MagicalCardDeckArtifact: {
+	DisplayName: Magical Card Deck
+	Description:
+		'''
+		"I Summon pot of greed ! it allow me to draw 2 card from the deck"
+		Banned for many reason
+		[c/b7bf5c:Positive effect] : 
+			+ Card packet can drop potentially more cards ( up to 3 )
+		[c/ab3e43:Negative effect] :
+			- Increase the chance to get faulty card
+		[c/9b9c76:Neutral effect] :
+			= Accelerate card luck stats
+		'''
+}
+
+SkillIssuedArtifact: {
+	DisplayName: Skill Issued
+	Description:
+		'''
+		"with this, nothing is impossible, even with skill issue in bloodstream"
+		[c/b7bf5c:Positive effect] : 
+			+ For each monster killed, your MaxHP will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
+		[c/ab3e43:Negative effect] :
+			- make monster spawns increase by CRAZY amount
+
+		[c/757480:Only works with people have skill issue. Lives up to the name]
+		'''
+}
+
+TokenOfGreedArtifact: {
+	DisplayName: Token Of Greed
+	Description:
+		'''
+		"Satisfied by just having, caring not for weapon quality."
+		[c/b7bf5c:Positive effect] : 
+			+ Increase amount of drop by 4 
+			+ Increase amount of card from packet by 2
+		[c/ab3e43:Negative effect] : 
+			- Decrease weapon damage globally by 35%
+		'''
+}
+
+TokenOfPrideArtifact: {
+	DisplayName: Token Of Pride
+	Description:
+		'''
+		"Having the skill to use whatever you are given."
+		[c/b7bf5c:Positive effect] : 
+			+ Increase weapon damage by 45%
+		[c/ab3e43:Negative effect] : 
+			- Halves your drop from treasure chest
+		[c/546dc4:Secret Effect] : 
+			? Show me your skill that you are so prideful about, and I shall reward it!
+		'''
+}
+
+VampirismCrystalArtifact: {
+	DisplayName: Vampirism Crystal Artifact
+	Description:
+		'''
+		"Unpure, relentess crystal."
+		[c/b7bf5c:Positive effect] :
+			+ Attacks heal the player.
+			+ You can survive 1 fatal attack (5 minute cooldown).
+		[c/ab3e43:Negative effect] : 
+			- Reduce max life by 55% and apply permanent potion sickness.
+		'''
+}
+
+FateDeciderArtifact: {
+	DisplayName: Fate Decider
+	Description:
+		'''
+		"Make your weapon a little bit more interesting."
+		[c/b7bf5c:Positive effect] :
+			+ Randomly make your weapon better than before.
+		[c/ab3e43:Negative effect] : 
+			- Randomly make your weapon worse than before.
+		[c/757480:The positive effect and negative effect can't stack.
+		After a certain amount of time is pass, the effect will change.]
+		'''
+}
+
+NormalizeArtifact: {
+	DisplayName: Normalize Artifact
+	Description:
+		'''
+		"Offers no tactical advantage whatsoever!"
+		Grants no effect.
+		'''
+}
+
+OrbOfAlchemistArtifact: {
+	DisplayName: Orb Of Alchemist Artifact
+	Description: ""
+}
+
+RandomArtifact: {
+	DisplayName: Random Artifact
+	Description: "Randomly chooses an artifact."
+}
