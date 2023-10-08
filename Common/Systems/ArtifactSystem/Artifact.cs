@@ -25,10 +25,11 @@ namespace BossRush.Common.Systems.ArtifactSystem
         public virtual Color DisplayNameColor => Color.White;
         public virtual float Scale => 1f;
         public virtual int Frames => 1;
-        private int animationTimer;
-        public virtual void DrawInUI(SpriteBatch spriteBatch, CalculatedStyle dimensions)
+		public virtual bool CanBeSelected(Player player) => true;
+		private int animationTimer;
+		public virtual void DrawInUI(SpriteBatch spriteBatch, CalculatedStyle dimensions)
         {
-            Rectangle source = Texture.Value.GetSource(Frames, animationTimer++ / 4);
+            Rectangle source = Texture.Value.GetSource(Frames, animationTimer++ / 6);
             spriteBatch.Draw(
                 Texture.Value,
                 dimensions.Center(),
@@ -36,7 +37,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 Color.White,
                 0f,
                 source.Size() / 2f,
-                (dimensions.Height - 12f) / source.Height,
+                Scale * (dimensions.Height - 12f) / source.Height,
                 SpriteEffects.None,
                 0f
             );

@@ -136,5 +136,5 @@ OrbOfAlchemistArtifact: {
 
 RandomArtifact: {
 	DisplayName: Random Artifact
-	Description: "Randomly chooses an artifact."
+	Description: Randomly chooses an artifact.
 }

@@ -23,21 +23,24 @@ namespace BossRush.Common.Systems.ArtifactSystem
         private int ArtifactType { get; }
         private Player Player { get; }
         private Asset<Texture2D> SelectedBorderTexture { get; }
-        private Asset<Texture2D> HoveredBorderTexture { get; }
-        public ArtifactSelectionUIButton(int artifactType, Player player) : base(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanel"))
+		private Asset<Texture2D> HoveredBorderTexture { get; }
+		private Asset<Texture2D> LockTexture { get; }
+		public ArtifactSelectionUIButton(int artifactType, Player player) : base(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanel"))
         {
             ArtifactType = artifactType;
             Player = player;
 
             SelectedBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight");
             HoveredBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelBorder");
+			LockTexture = ModContent.Request<Texture2D>("BossRush/Texture/UI/lock");
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimensions = GetDimensions();
+			Artifact artifact = Artifact.AllArtifacts[ArtifactType];
 
-            base.DrawSelf(spriteBatch);
+			base.DrawSelf(spriteBatch);
             if (Player.ActiveArtifact() == ArtifactType)
             {
                 spriteBatch.Draw(   
@@ -62,17 +65,33 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 );
             }
 
-            Artifact artifact;
-            if ((artifact = Artifact.AllArtifacts[ArtifactType]) is not null)
-            {
-                artifact.DrawInUI(spriteBatch, dimensions);
-            }
+			artifact.DrawInUI(spriteBatch, dimensions);
+
+			if (!artifact.CanBeSelected(Player) && IsMouseHovering) {
+				spriteBatch.Draw(
+					LockTexture.Value,
+					dimensions.Center(),
+					null,
+					Color.White,
+					0f,
+					LockTexture.Size() / 2f,
+					1f,
+					SpriteEffects.None,
+					0f
+				);
+			}
         }
 
         public override void LeftClick(UIMouseEvent evt)
         {
-            SoundEngine.PlaySound(SoundID.MenuTick);
-            Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = ArtifactType;
+			Artifact artifact = Artifact.AllArtifacts[ArtifactType];
+			if (artifact.CanBeSelected(Player)) {
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = ArtifactType;
+			} else {
+				SoundEngine.PlaySound(SoundID.MenuClose);
+			}
+            
         }
     }
 }

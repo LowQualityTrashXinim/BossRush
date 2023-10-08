@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using BossRush.Common.Systems.ArtifactSystem;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Artifacts
 {
     internal class TokenOfPrideArtifact : Artifact
     {
         public override int Frames => 10;
-    }
+		public override Color DisplayNameColor => Color.PaleGreen;
+	}
 
     public class PridePlayer : ModPlayer
     {
