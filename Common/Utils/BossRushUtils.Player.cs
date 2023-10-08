@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using System;
 using System.Collections.Generic;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush
 {
@@ -13,6 +14,10 @@ namespace BossRush
             player.name.Contains("Debug") || 
             player.name == "LowQualityTrashXinim" ||
             player.name.Contains("#Beta");
+
+        public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
+        public static bool HasArtifact<T>(this Player player) 
+            where T : Artifact => Artifact.GetArtifact(player.GetModPlayer<ArtifactPlayer>().ActiveArtifact) is T;
 
         public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
                     stats is PlayerStats.Defense

@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
-using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.aDebugItem
 {
@@ -27,7 +26,6 @@ namespace BossRush.Contents.Items.aDebugItem
             ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
             WonderDrugPlayer drugplayer = Main.LocalPlayer.GetModPlayer<WonderDrugPlayer>();
             NoHitPlayerHandle nohitPlayer = Main.LocalPlayer.GetModPlayer<NoHitPlayerHandle>();
-            ArtifactPlayerHandleLogic artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>();
             chestplayer.GetAmount();
             TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
                 $"Amount drop chest addition : {chestplayer.amountModifier}" +

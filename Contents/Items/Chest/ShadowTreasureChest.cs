@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using BossRush.Common;
 using BossRush.Contents.Items.Potion;
 using System.Security.Cryptography.X509Certificates;
-using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -171,8 +170,6 @@ namespace BossRush.Contents.Items.Chest
                     ModContent.ItemType<CommanderElixir>(),
                     ModContent.ItemType<TitanElixir>() });
                 player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<BrokenArtifact>(), 1);
-                player.QuickSpawnItem(entitySource, ModContent.ItemType<ArtifactRemover>(), 1);
             }
         }
     }

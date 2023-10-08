@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Contents.Artifact;
 
 namespace BossRush.Contents.Items.Potion
 {
