@@ -29,6 +29,6 @@ namespace BossRush.Common {
 		[DefaultValue(false)]
 		public bool ForceBossDropRegadless { get; set; }
 		[DefaultValue(false)]
-		public bool DisableBundleHepler { get; set; }
+		public bool WorldGenTest { get; set; }
 	}
 }
