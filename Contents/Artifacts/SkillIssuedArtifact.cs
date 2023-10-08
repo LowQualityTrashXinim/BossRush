@@ -8,13 +8,18 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
 using Terraria;
 using BossRush.Common.Systems.ArtifactSystem;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Artifacts
 {
     internal class SkillIssuedArtifact : Artifact
     {
-        public override float Scale => 0.4f;
-    }
+		public override bool CanBeSelected(Player player) {
+			return player.name.ToLower().Contains("skillissue");
+		}
+
+		public override Color DisplayNameColor => Color.Orange;
+	}
 
     public class SkillIssuedArtifactPlayer : ModPlayer
     {

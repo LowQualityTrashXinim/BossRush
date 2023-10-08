@@ -9,13 +9,15 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using BossRush.Common.Systems.ArtifactSystem;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Artifacts
 {
     internal class VampirismCrystalArtifact : Artifact
     {
         public override int Frames => 7;
-    }
+		public override Color DisplayNameColor => Color.MediumVioletRed;
+	}
 
     public class VampirePlayer : ModPlayer
     {

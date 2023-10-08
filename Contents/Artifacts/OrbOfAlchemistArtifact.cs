@@ -9,13 +9,15 @@ using Terraria.ModLoader;
 using Terraria;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Texture;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Artifacts
 {
     internal class OrbOfAlchemistArtifact : Artifact
     {
         public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
-    }
+		public override Color DisplayNameColor => Color.PaleVioletRed;
+	}
 
     class AlchemistKnowledgePlayer : ModPlayer
     {
