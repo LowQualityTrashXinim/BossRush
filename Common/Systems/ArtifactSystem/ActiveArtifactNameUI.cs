@@ -25,7 +25,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            Artifact artifact = Artifact.AllArtifacts[Player.ActiveArtifact()];
+            Artifact artifact = Artifact.GetArtifact(Player.ActiveArtifact());
             string text = artifact.DisplayName;
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             Vector2 stringSize = font.MeasureString(text);

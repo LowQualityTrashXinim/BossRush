@@ -27,7 +27,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 Height = StyleDimension.FromPercent(1f),
             };
             
-            for (int type = 0; type < Artifact.AllArtifacts.Count; type++)
+            for (int type = 0; type < Artifact.ArtifactCount; type++)
             {
                 ArtifactSelectionUIButton button = new(type, player)
                 {

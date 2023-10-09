@@ -18,7 +18,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
         {
             while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>())
             {
-                ActiveArtifact = Main.rand.Next(Artifact.AllArtifacts.Count);
+                ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
             }
         }
 

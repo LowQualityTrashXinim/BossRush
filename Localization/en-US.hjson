@@ -1804,6 +1804,11 @@ Mods: {
 					Label: Disable Bundle Hepler
 					Tooltip: ""
 				}
+
+				WorldGenTest: {
+					Label: World Gen Test
+					Tooltip: ""
+				}
 			}
 		}
 

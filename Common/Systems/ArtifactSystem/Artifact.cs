@@ -16,7 +16,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
 {
     public abstract class Artifact : ModType
     {
-        public static List<Artifact> AllArtifacts { get; private set; }
+        private static List<Artifact> AllArtifacts { get; set; }
         public int Type { get; private set; }
         public virtual string TexturePath => (GetType().Namespace + "." + Name).Replace('.', '/');
         public Asset<Texture2D> Texture { get; private set; }
@@ -54,12 +54,20 @@ namespace BossRush.Common.Systems.ArtifactSystem
 
         public static int ArtifactType<T>() where T : Artifact
         {
-            return AllArtifacts.FirstOrDefault(artifact => artifact is T).Type;
+			for (int i = 0; i < AllArtifacts.Count; i++) {
+				if (AllArtifacts[i] is T) {
+					return i;
+				}
+			}
+
+            return -1;
         }
 
         public static Artifact GetArtifact(int type)
         {
-            return type > 0 && type < AllArtifacts.Count ? AllArtifacts[type] : null;
+            return type >= 0 && type < AllArtifacts.Count ? AllArtifacts[type] : null;
         }
+
+		public static int ArtifactCount => AllArtifacts.Count;
     }
 }
