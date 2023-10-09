@@ -53,9 +53,8 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 return;
             }
 
-            cursor.Index--;
-            cursor.Remove();
-            cursor.EmitLdcI4(380 + ARTIFACT_SELECTION_UI_HEIGHT + TOP_PADDING);
+			cursor.EmitLdcI4(ARTIFACT_SELECTION_UI_HEIGHT + TOP_PADDING);
+			cursor.EmitAdd();
 
             if (!cursor.TryGotoNext(
                     MoveType.After,
@@ -68,9 +67,8 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 return;
             }
 
-            cursor.Index--;
-            cursor.Remove();
-            cursor.EmitLdcR4(150f + ARTIFACT_SELECTION_UI_HEIGHT + TOP_PADDING);
+			cursor.EmitLdcR4(ARTIFACT_SELECTION_UI_HEIGHT + TOP_PADDING);
+			cursor.EmitAdd();
 
             if (!cursor.TryGotoNext(
                     MoveType.After,
@@ -82,8 +80,8 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 return;
             }
 
-            FieldInfo playerFieldInfo;
-            if ((playerFieldInfo = typeof(UICharacterCreation).GetField("_player", BindingFlags.NonPublic | BindingFlags.Instance)) is null)
+            FieldInfo playerFieldInfo = typeof(UICharacterCreation).GetField("_player", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (playerFieldInfo is null)
             {
                 return;
             }
@@ -91,7 +89,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
             cursor.EmitLdloc1();
             cursor.EmitLdarg0();
             cursor.EmitLdfld(playerFieldInfo);
-            cursor.EmitDelegate<Action<UIElement, Player>>((element, player)=>
+			cursor.EmitDelegate<Action<UIElement, Player>>((element, player) =>
             {
                 element.Append(new ArtifactSelectionUIPanel(player, ARTIFACT_SELECTION_UI_HEIGHT, 280 + TOP_PADDING));
             });

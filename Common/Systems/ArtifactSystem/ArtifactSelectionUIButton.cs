@@ -38,7 +38,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimensions = GetDimensions();
-			Artifact artifact = Artifact.AllArtifacts[ArtifactType];
+			Artifact artifact = Artifact.GetArtifact(ArtifactType);
 
 			base.DrawSelf(spriteBatch);
             if (Player.ActiveArtifact() == ArtifactType)
@@ -84,7 +84,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
 
         public override void LeftClick(UIMouseEvent evt)
         {
-			Artifact artifact = Artifact.AllArtifacts[ArtifactType];
+			Artifact artifact = Artifact.GetArtifact(ArtifactType);
 			if (artifact.CanBeSelected(Player)) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				Player.GetModPlayer<ArtifactPlayer>().ActiveArtifact = ArtifactType;
