@@ -37,9 +37,11 @@ namespace BossRush.Contents.Artifacts
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (BootofSpeed)
-				if (Player.velocity.IsLimitReached(5))
+			if (BootofSpeed){
+				if (Player.velocity.IsLimitReached(5)){
 					damage *= Main.rand.NextFloat(.3f, 1f);
+				}
+			}
 		}
 	}
 }
