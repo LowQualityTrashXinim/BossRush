@@ -17,7 +17,8 @@ namespace BossRush.Contents.Artifacts
 	}
 
 	public class GreedPlayer : ModPlayer {
-		bool Greed = false; protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
+		bool Greed = false; 
+  		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
 		public override void ResetEffects() {
 			Greed = Player.HasArtifact<TokenOfGreedArtifact>();
 		}
