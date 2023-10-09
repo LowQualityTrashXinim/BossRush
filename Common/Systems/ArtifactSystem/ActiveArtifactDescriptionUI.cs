@@ -34,7 +34,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
                 linePosition = 0;
             }
             previousArtifactType = currentArtifactType;
-            Artifact artifact = Artifact.AllArtifacts[currentArtifactType];
+            Artifact artifact = Artifact.GetArtifact(currentArtifactType);
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             float scale = 0.7f;
             string[] lines = Terraria.Utils.WordwrapString(
