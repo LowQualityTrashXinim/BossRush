@@ -9,6 +9,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Contents\Artifacts\BootsOfSpeedManipulationArtifact.png" />
+    <None Remove="Contents\Artifacts\HeartOfEarthArtifact.png" />
+    <None Remove="Contents\Artifacts\MagicalCardDeckArtifact.png" />
+    <None Remove="Contents\Artifacts\SkillIssuedArtifact.png" />
+    <None Remove="Contents\Artifacts\TokenOfGreedArtifact.png" />
     <None Remove="Texture\UI\DiamondBolt.png" />
   </ItemGroup>
   <ItemGroup>

@@ -1,22 +1,25 @@
-﻿using Terraria;
-using Terraria.ID;
-using BossRush.Texture;
-using Terraria.ModLoader;
+﻿using BossRush.Common.Systems.ArtifactSystem;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Projectiles;
+using BossRush.Texture;
 
-namespace BossRush.Contents.Artifact
+namespace BossRush.Contents.Artifacts
 {
-    internal class FateDecider : ArtifactModItem
+    internal class FateDeciderArtifact : Artifact
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void ArtifactSetDefault()
-        {
-            width = height = 32;
-            Item.rare = ItemRarityID.Cyan;
-        }
+        public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
     }
+
     class FateDeciderPlayer : ModPlayer
     {
         bool FateDice = false;
@@ -25,7 +28,7 @@ namespace BossRush.Contents.Artifact
         public int BadBuffIndex = -1;
         public override void ResetEffects()
         {
-            FateDice = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<FateDecider>();
+            FateDice = Player.HasArtifact<FateDeciderArtifact>();
         }
         public override void PostUpdate()
         {

@@ -5,7 +5,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using BossRush.Contents.Artifact;
+using BossRush.Contents.Artifacts;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -50,11 +50,10 @@ namespace BossRush.Contents.Items.Card
             base.RightClick(player);
             var entitySource = player.GetSource_OpenItem(Type);
             int amount = CardAmount;
-            ArtifactPlayerHandleLogic modplayer = player.GetModPlayer<ArtifactPlayerHandleLogic>();
             PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
-            if (modplayer.ArtifactDefinedID == ModContent.ItemType<TokenofGreed>() || modplayer.ArtifactDefinedID == ModContent.ItemType<EternalWealth>())
+            if (player.HasArtifact<TokenOfGreedArtifact>() || player.HasArtifact<EternalWealthArtifact>())
                 amount += 2;
-            if (modplayer.ArtifactDefinedID == ModContent.ItemType<MagicalCardDeck>())
+            if (player.HasArtifact<MagicalCardDeckArtifact>())
                 amount += Main.rand.Next(4);
             if (PacketType == 4)
                 amount = 1;

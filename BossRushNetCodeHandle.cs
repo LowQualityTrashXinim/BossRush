@@ -9,7 +9,7 @@ using BossRush.Contents.Items.Card;
 using BossRush.Common;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Common.RoguelikeChange;
-using BossRush.Contents.Artifact;
+using BossRush.Contents.Artifacts;
 
 namespace BossRush
 {
@@ -21,7 +21,6 @@ namespace BossRush
             DrugSyncPlayer,
             NoHitBossNum,
             GambleAddiction,
-            ArtifactRegister,
             ChanceMultiplayer,
             CardEffect,
             GodUltimateChallenge,
@@ -63,14 +62,6 @@ namespace BossRush
                     if (Main.netMode == NetmodeID.Server)
                     {
                         gamble.SyncPlayer(-1, whoAmI, false);
-                    }
-                    break;
-                case MessageType.ArtifactRegister:
-                    ArtifactPlayerHandleLogic artifactplayer = Main.player[playernumber].GetModPlayer<ArtifactPlayerHandleLogic>();
-                    artifactplayer.ReceivePlayerSync(reader);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        artifactplayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
                 case MessageType.ChanceMultiplayer:

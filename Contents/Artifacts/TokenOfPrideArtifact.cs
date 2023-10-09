@@ -1,32 +1,27 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using BossRush.Contents.Items;
+﻿using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Chest;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ModLoader;
+using Terraria;
+using BossRush.Common.Systems.ArtifactSystem;
 
-namespace BossRush.Contents.Artifact
+namespace BossRush.Contents.Artifacts
 {
-    internal class TokenofPride : ArtifactModItem
+    internal class TokenOfPrideArtifact : Artifact
     {
-        public override void SetStaticDefaults()
-        {
-            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 10));
-            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
-        }
-        public override void ArtifactSetDefault()
-        {
-            width = height = 32;
-            Item.rare = ItemRarityID.Cyan;
-        }
+        public override int Frames => 10;
     }
+
     public class PridePlayer : ModPlayer
     {
         bool Pride = false; protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
         public override void ResetEffects()
         {
-            Pride = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<TokenofPride>();
+            Pride = Player.HasArtifact<TokenOfPrideArtifact>();
         }
         public override void PostUpdate()
         {

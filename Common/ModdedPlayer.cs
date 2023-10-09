@@ -6,7 +6,6 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
-using BossRush.Contents.Artifact;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
@@ -90,7 +89,6 @@ namespace BossRush.Common
             if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
             {
                 items.Add(new Item(ModContent.ItemType<StarterPerkChooser>()));
-                items.Add(new Item(ModContent.ItemType<BrokenArtifact>()));
                 items.Add(new Item(ModContent.ItemType<SynergyEnergy>()));
             }
             if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol
@@ -105,10 +103,6 @@ namespace BossRush.Common
             if (Player.name == "FeelingLucky")
             {
                 items.Add(new Item(ModContent.ItemType<GodDice>()));
-            }
-            if (Player.name.ToLower().Trim().Contains("skillissue"))
-            {
-                items.Add(new Item(ModContent.ItemType<SkillIssuedArtifact>()));
             }
             if (Player.name.ToLower().Trim() == "drugaddict")
             {
@@ -154,7 +148,6 @@ namespace BossRush.Common
                 items.Clear();
                 items.Add(new Item(ModContent.ItemType<WoodenLootBox>()));
                 items.Add(new Item(ModContent.ItemType<CursedSkull>()));
-                items.Add(new Item(ModContent.ItemType<NormalizeArtifact>()));
                 items.Add(new Item(ModContent.ItemType<CardPacket>()));
                 items.Add(new Item(ModContent.ItemType<PowerEnergy>()));
             }

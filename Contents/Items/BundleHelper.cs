@@ -1,5 +1,4 @@
-﻿using BossRush.Contents.Artifact;
-using BossRush.Contents.Items.Chest;
+﻿using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Perks;
 using Terraria;
 using Terraria.ID;
@@ -21,7 +20,6 @@ namespace BossRush.Contents.Items
             switch (TimeOpen)
             {
                 case 0:
-                    player.QuickSpawnItemDirect(player.GetSource_ItemUse(Item), ModContent.ItemType<BrokenArtifact>());
                     Item itemHelper = player.QuickSpawnItemDirect(player.GetSource_ItemUse(Item), ModContent.ItemType<BundleHelper>());
                     if (itemHelper.ModItem is BundleHelper bundle)
                     {
