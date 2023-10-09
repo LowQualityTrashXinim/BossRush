@@ -31,6 +31,7 @@ namespace BossRush.Contents.WeaponModification {
 					Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime);
 					Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation);
 					ModWeaponSlotType = new int[Main.rand.Next(2, 10)];
+					Array.Fill(ModWeaponSlotType, -1);
 				}
 			}
 		}

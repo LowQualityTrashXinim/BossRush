@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponModification {
 	/// <summary>
@@ -23,7 +24,7 @@ namespace BossRush.Contents.WeaponModification {
 		public float Recharge = 0;
 		public int currentIndex = 0;
 
-		public float damage = 1;
+		public float damage = 0;
 		public float knockback = 1;
 		public float shootspeed = 1;
 		public int critChance = 0;
@@ -36,7 +37,7 @@ namespace BossRush.Contents.WeaponModification {
 				Delay = 0;
 				Recharge = 0;
 				currentIndex = 0;
-				damage = 1;
+				damage = 0;
 			}
 			if (Delay > 0) {
 				Delay = BossRushUtils.CoolDown(Delay);
@@ -62,6 +63,12 @@ namespace BossRush.Contents.WeaponModification {
 					return;
 				}
 				Delay = globalItem.Delay;
+				shootspeed = 0;
+				knockback = 0;
+				damage = 1;
+				critChance = 0;
+				critDamage = 1;
+				List<Projectile> RegisterProjectile = new List<Projectile>();
 				for (int i = 1; i > 0; i--) {
 					if (currentIndex >= globalItem.ModWeaponSlotType.Length) {
 						currentIndex = 0;
@@ -69,11 +76,11 @@ namespace BossRush.Contents.WeaponModification {
 					}
 					if (globalItem.ModWeaponSlotType[currentIndex] == -1) {
 						currentIndex++;
+						i++;
 						continue;
 					}
 					ModWeaponParticle modweapon = ModifierWeaponLoader.GetWeaponMod(globalItem.ModWeaponSlotType[currentIndex]);
 					shootspeed = modweapon.ShootSpeed;
-					knockback = modweapon.KnockBack;
 					modweapon.PreUpdate(Player);
 					modweapon.ModifyModificationDelay(Player, ref Delay, ref Recharge, ref i);
 					modweapon.ModifyAttack(Player, ref damage, ref knockback, ref shootspeed);
@@ -81,18 +88,17 @@ namespace BossRush.Contents.WeaponModification {
 					modweapon.PostUpdate(Player);
 					if (modweapon.ProjectileType != ProjectileID.None) {
 						for (int l = 0; l < modweapon.ShootAmount; l++) {
-							if (modweapon.Shoot(Player, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * shootspeed, (int)(modweapon.ProjectileDamage * damage), knockback, i) != null) {
-								break;
-							}
-							Projectile proj = modweapon.Shoot(Player, l);
-							proj.knockBack = knockback;
-							if (Main.rand.Next(1, 101) < critChance)
-								damage *= 2 + critDamage;
-							proj.damage = (int)(modweapon.ProjectileDamage * damage);
-							proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
+							RegisterProjectile.Add(modweapon.Shoot(Player, l));
 						}
 					}
 					currentIndex++;
+				}
+				foreach (Projectile proj in RegisterProjectile) {
+					proj.knockBack = knockback;
+					proj.damage = (int)(proj.damage * damage);
+					if (Main.rand.Next(1, 101) < critChance)
+						proj.damage = (int)(proj.damage * critDamage);
+					proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
 				}
 			}
 		}
@@ -105,6 +111,10 @@ namespace BossRush.Contents.WeaponModification {
 				//    return;
 				//}
 				if (uiSystemInstance.userInterface.CurrentState is null) {
+					//Debugging purpose
+					WeaponModification_inventory[0] = ModWeaponParticle.GetWeaponModType<DoubleOutput>();
+					WeaponModification_inventory[1] = ModWeaponParticle.GetWeaponModType<IncreaseDamage>();
+					WeaponModification_inventory[2] = ModWeaponParticle.GetWeaponModType<Arrow>();
 					uiSystemInstance.WM_uiState.whoAmI = Player.whoAmI;
 					uiSystemInstance.userInterface.SetState(uiSystemInstance.WM_uiState);
 				}
