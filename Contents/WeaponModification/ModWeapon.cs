@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.WeaponModification {
 	public class Arrow : ModWeaponParticle {
@@ -20,8 +21,8 @@ namespace BossRush.Contents.WeaponModification {
 			castAmount++;
 			delay += 30;
 		}
-		public override void ModifyAttack(Player player, ref float damage, ref float knockback, ref float shootspeed) {
-			damage += 1f;
+		public override void ModifyAttack(Player player, ref StatModifier damage, ref float knockback, ref float shootspeed) {
+			damage.Base += 10f;
 		}
 	}
 	//Multi cast

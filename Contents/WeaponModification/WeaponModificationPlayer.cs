@@ -48,14 +48,9 @@ namespace BossRush.Contents.WeaponModification {
 					return;
 				if (Recharge <= 0) {
 					Recharge = globalItem.Recharge;
-					IsOnRecharge = false;
 					currentIndex = 0;
 				}
 				if (Recharge > 0 && currentIndex >= globalItem.ModWeaponSlotType.Length) {
-					if (!IsOnRecharge) {
-						BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Recharged !");
-						IsOnRecharge = true;
-					}
 					Recharge = BossRushUtils.CoolDown(Recharge);
 					return;
 				}
@@ -80,7 +75,6 @@ namespace BossRush.Contents.WeaponModification {
 						continue;
 					}
 					ModWeaponParticle modweapon = ModifierWeaponLoader.GetWeaponMod(globalItem.ModWeaponSlotType[currentIndex]);
-					shootspeed = modweapon.ShootSpeed;
 					modweapon.PreUpdate(Player);
 					modweapon.ModifyModificationDelay(Player, ref Delay, ref Recharge, ref i);
 					modweapon.ModifyAttack(Player, ref damage, ref knockback, ref shootspeed);
@@ -94,11 +88,11 @@ namespace BossRush.Contents.WeaponModification {
 					currentIndex++;
 				}
 				foreach (Projectile proj in RegisterProjectile) {
-					proj.knockBack = knockback;
+					proj.knockBack += knockback;
 					proj.damage = (int)damage.ApplyTo(proj.damage);
 					if (Main.rand.Next(1, 101) < critChance)
 						proj.damage = (int)(proj.damage * critDamage);
-					proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
+					proj.velocity += proj.velocity * shootspeed;
 					proj.netUpdate = true;
 				}
 			}

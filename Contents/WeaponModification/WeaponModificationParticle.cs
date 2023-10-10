@@ -86,7 +86,7 @@ namespace BossRush.Contents.WeaponModification {
 		/// <param name="i"></param>
 		/// <returns></returns>
 		public virtual Projectile Shoot(Player player, int i) {
-			return Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center, Vector2.Zero, ProjectileType, ProjectileDamage, KnockBack, player.whoAmI);
+			return Projectile.NewProjectileDirect(player.GetSource_ItemUse(player.HeldItem), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * ShootSpeed, ProjectileType, ProjectileDamage, KnockBack, player.whoAmI);
 		}
 	}
 	public static class ModifierWeaponLoader {
