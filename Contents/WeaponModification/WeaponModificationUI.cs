@@ -2,73 +2,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using System.Linq;
+using ReLogic.Content;
 using Terraria.UI.Chat;
+using Terraria.ModLoader;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent.UI.Elements;
 
 namespace BossRush.Contents.WeaponModification {
-	/// <summary>
-	/// This is the UI where we will handle all the stupid logic<br/>
-	/// it should only be working on client side only and always load so make sure to use TryGet"X" here<br/>
-	/// I will work with UI state as that allow us to change state of UI whenever active and deactive
-	/// </summary>
-	public class WeaponModificationUI : UIState {
-		public int whoAmI = -1;
-		Player player;
-		public override void OnActivate() {
-			Elements.Clear();
-			if (whoAmI == -1)
-				return;
-			Player player = Main.player[whoAmI];
-			if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer)) {
-				this.player = player;
-				Vector2 originDefault = new Vector2(26, 26);
-				int maxLengthX = 550;
-				WeaponModificationWeaponUISlot wpUI = new WeaponModificationWeaponUISlot(TextureAssets.InventoryBack2, player);
-				wpUI.UISetPosition(player.Center + new Vector2(100, 40), originDefault);
-				Append(wpUI);
-				for (int i = 0; i < modplayer.WeaponModification_inventory.Length; i++) {
-					Vector2 offset = new Vector2(MathHelper.Lerp(-maxLengthX, maxLengthX, i / (modplayer.WeaponModification_inventory.Length - 1f)), 100);
-					Vector2 position = player.Center + offset;
-					if (i >= (modplayer.WeaponModification_inventory.Length - 1) * .5f) {
-						position -= new Vector2(maxLengthX, -55);
-					}
-					WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack, player);
-					inventory.WhoAmI = i;
-					inventory.ModificationType = modplayer.WeaponModification_inventory[i];
-					inventory.UISetWidthHeight(52, 52);
-					inventory.UISetPosition(position, originDefault);
-					Append(inventory);
-				}
-			}
-		}
-		public override void OnDeactivate() {
-			WeaponModificationSystem.SelectedInventorySlot = -1;
-			WeaponModificationSystem.SelectedModifySlot = -1;
-			if (player == null)
-				return;
-			if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer)) {
-				foreach (var element in Elements) {
-					if (element is WeaponModificationUIslot wmUISlot && wmUISlot != null) {
-						if (wmUISlot.WeaponModificationType != null) {
-							if (wmUISlot.item == null) {
-								modplayer.WeaponModification_inventory[wmUISlot.WhoAmI] = (int)wmUISlot.WeaponModificationType;
-							}
-						}
-					}
-				}
-			}
-		}
-		public override void LeftMouseDown(UIMouseEvent evt) {
-			base.LeftMouseDown(evt);
-		}
-	}
 	public class ImprovisedUIpanel : UIElement {
 		public int _cornerSize = 12;
 
@@ -348,9 +296,91 @@ namespace BossRush.Contents.WeaponModification {
 			}
 		}
 	}
-	public class WeaponModificationWeaponUISlot : UIImage {
-		Item item;
+	/// <summary>
+	/// This is the UI where we will handle all the stupid logic<br/>
+	/// it should only be working on client side only and always load so make sure to use TryGet"X" here<br/>
+	/// I will work with UI state as that allow us to change state of UI whenever active and deactive
+	/// </summary>
+	public class WeaponModificationUI : UIState {
+		public int whoAmI = -1;
 		Player player;
+		public override void OnActivate() {
+			Elements.Clear();
+			if (whoAmI == -1)
+				return;
+			Player player = Main.player[whoAmI];
+			if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer)) {
+				this.player = player;
+				Vector2 originDefault = new Vector2(26, 26);
+				int maxLengthX = 550;
+				WeaponModificationWeaponUISlot wpUI = new WeaponModificationWeaponUISlot(TextureAssets.InventoryBack2, player);
+				wpUI.UISetPosition(player.Center + new Vector2(100, 40), originDefault);
+				Append(wpUI);
+				for (int i = 0; i < modplayer.WeaponModification_inventory.Length; i++) {
+					Vector2 offset = new Vector2(MathHelper.Lerp(-maxLengthX, maxLengthX, i / (modplayer.WeaponModification_inventory.Length - 1f)), 100);
+					Vector2 position = player.Center + offset;
+					if (i >= (modplayer.WeaponModification_inventory.Length - 1) * .5f) {
+						position -= new Vector2(maxLengthX, -55);
+					}
+					WeaponModificationUIslot inventory = new WeaponModificationUIslot(TextureAssets.InventoryBack, player);
+					inventory.WhoAmI = i;
+					inventory.ModificationType = modplayer.WeaponModification_inventory[i];
+					inventory.UISetWidthHeight(52, 52);
+					inventory.UISetPosition(position, originDefault);
+					Append(inventory);
+				}
+			}
+			DeletionSlot delslot = new DeletionSlot(TextureAssets.InventoryBack11, player);
+			delslot.UISetWidthHeight(52, 52);
+			delslot.UISetPosition(player.Center + new Vector2(-580, 155), new Vector2(26, 26));
+			Append(delslot);
+		}
+		public override void OnDeactivate() {
+			WeaponModificationSystem.SelectedInventorySlot = -1;
+			WeaponModificationSystem.SelectedModifySlot = -1;
+			if (player == null)
+				return;
+			if (player.TryGetModPlayer(out WeaponModificationPlayer modplayer)) {
+				foreach (var element in Elements) {
+					if (element is WeaponModificationUIslot wmUISlot && wmUISlot != null) {
+						if (wmUISlot.ModificationType != -1 && wmUISlot.item == null)
+							modplayer.WeaponModification_inventory[wmUISlot.WhoAmI] = wmUISlot.ModificationType;
+					}
+				}
+			}
+		}
+	}
+	public class DeletionSlot : UIImage {
+		private Player player;
+		private Texture2D texture;
+		public DeletionSlot(Asset<Texture2D> texture, Player player) : base(texture) {
+			this.player = player;
+			this.texture = texture.Value;
+		}
+		public override void LeftClick(UIMouseEvent evt) {
+			if (WeaponModificationSystem.SelectedInventorySlot != -1) {
+				player.GetModPlayer<WeaponModificationPlayer>().WeaponModification_inventory[WeaponModificationSystem.SelectedInventorySlot] = -1;
+				WeaponModificationSystem.SelectedInventorySlot = -1;
+			}
+			if (WeaponModificationSystem.SelectedModifySlot != -1) {
+				WeaponModificationUIslot UIslot = (WeaponModificationUIslot)Parent.Children.Where(e => e is WeaponModificationUIslot { item: not null } slot && slot.WhoAmI == WeaponModificationSystem.SelectedModifySlot).FirstOrDefault();
+				if (UIslot.item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem)) {
+					globalItem.ModWeaponSlotType[WeaponModificationSystem.SelectedModifySlot] = -1;
+					WeaponModificationSystem.SelectedModifySlot = -1;
+				}
+			}
+		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			base.Draw(spriteBatch);
+			Texture2D trashbin = TextureAssets.Trash.Value;
+			Vector2 originTexture = texture.Size() * .5f;
+			Vector2 origintrashbin = trashbin.Size() * .5f;
+			spriteBatch.Draw(trashbin, new Vector2(Left.Pixels, Top.Pixels) + originTexture, null, Color.White, 0, origintrashbin, 1, SpriteEffects.None, 1);
+		}
+	}
+	public class WeaponModificationWeaponUISlot : UIImage {
+		private Item item;
+		private Player player;
 		public WeaponModificationWeaponUISlot(Asset<Texture2D> texture, Player eplayer) : base(texture) {
 			player = eplayer;
 		}
@@ -435,14 +465,14 @@ namespace BossRush.Contents.WeaponModification {
 		}
 	}
 	public class WeaponModificationUIslot : UIImage {
-		public int? WeaponModificationType = null;
 		public Item item = null;
 		public bool active = false;
 		public int WhoAmI = -1;
-		public int ModificationType = 0;
-		Texture2D texture;
+		public int ModificationType = -1;
 		public Texture2D textureDraw;
-		Player player;
+
+		private Texture2D texture;
+		private Player player;
 		public WeaponModificationUIslot(Asset<Texture2D> texture, Player player) : base(texture) {
 			this.player = player;
 			this.texture = texture.Value;
@@ -452,9 +482,20 @@ namespace BossRush.Contents.WeaponModification {
 		}
 		private void SelectState() {
 			if (item == null) {
+				if (WeaponModificationSystem.SelectedInventorySlot != -1) {
+					WeaponModificationPlayer modplayer = player.GetModPlayer<WeaponModificationPlayer>();
+					int cache = modplayer.WeaponModification_inventory[WeaponModificationSystem.SelectedInventorySlot];
+					modplayer.WeaponModification_inventory[WeaponModificationSystem.SelectedInventorySlot] = modplayer.WeaponModification_inventory[WhoAmI];
+					modplayer.WeaponModification_inventory[WhoAmI] = cache;
+					WeaponModificationSystem.SelectedInventorySlot = -1;
+					return;
+				}
 				WeaponModificationSystem.SelectedInventorySlot = WeaponModificationSystem.SelectedInventorySlot != WhoAmI ? WhoAmI : -1;
 				if (WeaponModificationSystem.SelectedInventorySlot == WhoAmI) {
-					WeaponModificationUIslot UIslot = (WeaponModificationUIslot)Parent.Children.Where(e => e is WeaponModificationUIslot { item: not null } slot && slot.WhoAmI == WeaponModificationSystem.SelectedModifySlot).FirstOrDefault();
+					WeaponModificationUIslot UIslot =
+						(WeaponModificationUIslot)Parent.Children
+						.Where(e => e is WeaponModificationUIslot { item: not null } slot && slot.WhoAmI == WeaponModificationSystem.SelectedModifySlot)
+						.FirstOrDefault();
 					WeaponModificationPlayer modplayer = player.GetModPlayer<WeaponModificationPlayer>();
 					if (UIslot == null)
 						return;
@@ -465,10 +506,19 @@ namespace BossRush.Contents.WeaponModification {
 						WeaponModificationSystem.SelectedModifySlot = -1;
 						WeaponModificationSystem.SelectedInventorySlot = -1;
 					}
-					return;
 				}
 			}
 			else {
+				if (WeaponModificationSystem.SelectedModifySlot != -1) {
+					WeaponModificationPlayer modplayer = player.GetModPlayer<WeaponModificationPlayer>();
+					if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem)) {
+						int cache = globalItem.ModWeaponSlotType[WeaponModificationSystem.SelectedModifySlot];
+						globalItem.ModWeaponSlotType[WeaponModificationSystem.SelectedModifySlot] = globalItem.ModWeaponSlotType[WhoAmI];
+						globalItem.ModWeaponSlotType[WhoAmI] = cache;
+					}
+					WeaponModificationSystem.SelectedModifySlot = -1;
+					return;
+				}
 				WeaponModificationSystem.SelectedModifySlot = WeaponModificationSystem.SelectedModifySlot != WhoAmI ? WhoAmI : -1;
 				if (WeaponModificationSystem.SelectedModifySlot == WhoAmI) {
 					if (WeaponModificationSystem.SelectedInventorySlot == -1)
@@ -481,7 +531,6 @@ namespace BossRush.Contents.WeaponModification {
 						WeaponModificationSystem.SelectedModifySlot = -1;
 						WeaponModificationSystem.SelectedInventorySlot = -1;
 					}
-					return;
 				}
 			}
 		}
@@ -506,7 +555,7 @@ namespace BossRush.Contents.WeaponModification {
 			}
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
-			Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + new Vector2(Width.Pixels, Height.Pixels) * .5f;
+			Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
 			if (item == null) {
 				if (WeaponModificationSystem.SelectedInventorySlot == WhoAmI) {
 					for (int i = 0; i < 4; i++) {
@@ -528,7 +577,7 @@ namespace BossRush.Contents.WeaponModification {
 					if (ModifierWeaponLoader.GetWeaponMod(ModificationType).ParticleTexture != null)
 						textureDraw = ModContent.Request<Texture2D>(ModifierWeaponLoader.GetWeaponMod(ModificationType).ParticleTexture).Value;
 					if (textureDraw != null) {
-						spriteBatch.Draw(textureDraw, drawpos, null, Color.White, 0, texture.Size() * .5f, 1, SpriteEffects.None, 0);
+						spriteBatch.Draw(textureDraw, drawpos, null, Color.White, 0, textureDraw.Size() * .5f, 1, SpriteEffects.None, 0);
 					}
 				}
 			}
@@ -547,7 +596,6 @@ namespace BossRush.Contents.WeaponModification {
 		public static ModKeybind WeaponModificationKeybind { get; private set; }
 		public static int SelectedInventorySlot = -1;
 		public static int SelectedModifySlot = -1;
-		public static int WeaponModificationTypeSelected = -1;
 		public override void Load() {
 			WeaponModificationKeybind = KeybindLoader.RegisterKeybind(Mod, "WeaponModification", "P");
 

@@ -341,17 +341,27 @@ namespace BossRush.Contents.Perks {
 			Tooltip =
 				"+ 78% increased odds for range" +
 				"\n+ 5% range critical strike chance" +
-				"\n+ 25% range critical damage";
+				"\nYou have 0.2% chance to deal 4x damage";
 			StackLimit = 5;
 		}
+		public override string ModifyToolTip() {
+			if (StackAmount > 0)
+				return "+ 78% increased odds for range" +
+				"\n+ 5% range critical strike chance" +
+				"\nIncrease chance to deal 4x damage by 1%";
+			return
+				"+ 78% increased odds for range" +
+				"\n+ 5% range critical strike chance" +
+				"\nYou have 1% chance to deal 4x damage";
+		}
+
 		public override void Update(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f * StackAmount;
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			base.OnHitNPCWithProj(player, proj, target, hit, damageDone);
-			if (hit.Crit) {
-				hit.SourceDamage = (int)(hit.SourceDamage * (1 + .25f * StackAmount));
-			}
+			if (Main.rand.NextFloat() <= .002f * StackAmount)
+				hit.Damage *= 4;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
 			if (item.DamageType == DamageClass.Ranged)
@@ -365,7 +375,7 @@ namespace BossRush.Contents.Perks {
 			Tooltip =
 				"+ 78% increased odds for magic" +
 				"\n+ 5% magic cost reduction" +
-				"\nMana star can spawm from NPC hit";
+				"\nMana star can spawn from hitting NPC with magic projectile (start at 2.5%)";
 			StackLimit = 5;
 		}
 		public override string ModifyToolTip() {
