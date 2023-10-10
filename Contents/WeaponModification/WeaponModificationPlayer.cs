@@ -24,7 +24,7 @@ namespace BossRush.Contents.WeaponModification {
 		public float Recharge = 0;
 		public int currentIndex = 0;
 
-		public float damage = 0;
+		public StatModifier damage = new StatModifier();
 		public float knockback = 1;
 		public float shootspeed = 1;
 		public int critChance = 0;
@@ -37,7 +37,7 @@ namespace BossRush.Contents.WeaponModification {
 				Delay = 0;
 				Recharge = 0;
 				currentIndex = 0;
-				damage = 0;
+				damage = new StatModifier();
 			}
 			if (Delay > 0) {
 				Delay = BossRushUtils.CoolDown(Delay);
@@ -65,7 +65,7 @@ namespace BossRush.Contents.WeaponModification {
 				Delay = globalItem.Delay;
 				shootspeed = 0;
 				knockback = 0;
-				damage = 1;
+				damage = new StatModifier();
 				critChance = 0;
 				critDamage = 1;
 				List<Projectile> RegisterProjectile = new List<Projectile>();
@@ -95,10 +95,11 @@ namespace BossRush.Contents.WeaponModification {
 				}
 				foreach (Projectile proj in RegisterProjectile) {
 					proj.knockBack = knockback;
-					proj.damage = (int)(proj.damage * damage);
+					proj.damage = (int)damage.ApplyTo(proj.damage);
 					if (Main.rand.Next(1, 101) < critChance)
 						proj.damage = (int)(proj.damage * critDamage);
 					proj.velocity = (Main.MouseWorld - proj.position).SafeNormalize(Vector2.Zero) * shootspeed;
+					proj.netUpdate = true;
 				}
 			}
 		}

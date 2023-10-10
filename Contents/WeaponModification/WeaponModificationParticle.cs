@@ -65,7 +65,7 @@ namespace BossRush.Contents.WeaponModification {
 		/// <param name="damage"></param>
 		/// <param name="knockback"></param>
 		/// <param name="shootspeed"></param>
-		public virtual void ModifyAttack(Player player, ref float damage, ref float knockback, ref float shootspeed) {
+		public virtual void ModifyAttack(Player player, ref StatModifier damage, ref float knockback, ref float shootspeed) {
 
 		}
 		/// <summary>
