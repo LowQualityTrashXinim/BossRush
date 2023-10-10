@@ -354,6 +354,7 @@ namespace BossRush.Contents.Perks {
 				"\n+ 5% range critical strike chance" +
 				"\nYou have 1% chance to deal 4x damage";
 		}
+
 		public override void Update(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f * StackAmount;
 		}

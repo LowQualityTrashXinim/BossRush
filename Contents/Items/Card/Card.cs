@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Contents.Artifact;
+using BossRush.Contents.Artifacts;
 
 namespace BossRush.Contents.Items.Card
 {
@@ -182,7 +182,7 @@ namespace BossRush.Contents.Items.Card
         /// 4 = Platinum<br/>
         /// </summary>
         public virtual int Tier => 0;
-        public virtual int PostTierModify => Main.LocalPlayer.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7 ? Tier + 1 : Tier;
+        public virtual int PostTierModify => Main.LocalPlayer.HasArtifact<MagicalCardDeckArtifact>() ? Tier + 1 : Tier;
         public override bool CanUseItem(Player player)
         {
             return !BossRushUtils.IsAnyVanillaBossAlive();
@@ -194,7 +194,7 @@ namespace BossRush.Contents.Items.Card
             OnUseItem(player, modplayer);
             if (Tier <= 0)
                 return true;
-            bool hasMagicDeck = player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == 7;
+            bool hasMagicDeck = Main.LocalPlayer.HasArtifact<MagicalCardDeckArtifact>();
             SetBadStatsBaseOnTier(modplayer, hasMagicDeck);
             int offset = 0;
             if (CardStats.Count > 0)

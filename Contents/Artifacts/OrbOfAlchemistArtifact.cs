@@ -1,28 +1,28 @@
-﻿using Terraria;
-using Terraria.ID;
-using System.Linq;
-using BossRush.Texture;
-using Terraria.ModLoader;
-using BossRush.Common.Utils;
+﻿using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ModLoader;
+using Terraria;
+using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Texture;
 
-namespace BossRush.Contents.Artifact
+namespace BossRush.Contents.Artifacts
 {
-    internal class OrbOfAlchemist : ArtifactModItem
+    internal class OrbOfAlchemistArtifact : Artifact
     {
-        public override string Texture => BossRushTexture.MISSINGTEXTURE;
-        public override void ArtifactSetDefault()
-        {
-            width = height = 32;
-            Item.rare = ItemRarityID.Cyan;
-        }
+        public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
     }
+
     class AlchemistKnowledgePlayer : ModPlayer
     {
         bool Alchemist = false;
         public override void ResetEffects()
         {
-            Alchemist = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<OrbOfAlchemist>();
+            Alchemist = Player.HasArtifact<OrbOfAlchemistArtifact>();
         }
         public override void PostUpdate()
         {

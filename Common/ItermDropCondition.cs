@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.Enraged;
-using BossRush.Contents.Artifact;
+using BossRush.Contents.Artifacts;
 
 namespace BossRush.Common
 {
@@ -49,7 +49,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<MagicalCardDeckPlayer>().MagicalCardDeck;
+                return info.player.HasArtifact<MagicalCardDeckArtifact>();
             }
             return false;
         }

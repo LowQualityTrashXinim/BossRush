@@ -1,48 +1,28 @@
-﻿using Terraria;
-using System.IO;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.ModLoader.IO;
+using Terraria.ModLoader;
+using Terraria;
+using BossRush.Common.Systems.ArtifactSystem;
 
-namespace BossRush.Contents.Artifact
+namespace BossRush.Contents.Artifacts
 {
-    internal class SkillIssuedArtifact : ModItem
+    internal class SkillIssuedArtifact : Artifact
     {
-        public override void SetDefaults()
-        {
-            Item.width = 80;
-            Item.height = 80;
-            Item.accessory = true;
-            Item.rare = ItemRarityID.Expert;
-            Item.scale = .5f;
-        }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            Player player = Main.LocalPlayer;
-            tooltips.Add(new TooltipLine(Mod, "SkillIssue", "Total Mobs kill : " + player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssue));
-            tooltips.Add(new TooltipLine(Mod, "SkillIssueEffect", "Effect : NONE"));
-            foreach (var item in tooltips)
-            {
-                if (item.Name == "SkillIssue")
-                {
-                    item.OverrideColor = Main.DiscoColor;
-                }
-            }
-        }
-        public override void UpdateEquip(Player player)
-        {
-            player.GetModPlayer<SkillIssuedArtifactPlayer>().SkillIssuePlayer = true;
-        }
+        public override float Scale => 0.4f;
     }
+
     public class SkillIssuedArtifactPlayer : ModPlayer
     {
         public int SkillIssue = 0;
         public bool SkillIssuePlayer = false;
         public override void ResetEffects()
         {
-            SkillIssuePlayer = false;
+            SkillIssuePlayer = Player.HasArtifact<SkillIssuedArtifact>();
             Player.GetDamage(DamageClass.Generic) *= SkillIssue * 0.01f + 1;
             Player.statLifeMax2 += (int)(SkillIssue * 0.5f);
             Player.thorns *= SkillIssue * 0.01f + 1;

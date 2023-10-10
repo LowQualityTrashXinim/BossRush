@@ -1,32 +1,29 @@
-﻿using Terraria;
+﻿using BossRush.Contents.BuffAndDebuff;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using BossRush.Contents.Items;
-using BossRush.Contents.BuffAndDebuff;
+using Terraria;
+using BossRush.Common.Systems.ArtifactSystem;
 
-namespace BossRush.Contents.Artifact
+namespace BossRush.Contents.Artifacts
 {
-    internal class VampirismCrystal : ArtifactModItem
+    internal class VampirismCrystalArtifact : Artifact
     {
-        public override void SetStaticDefaults()
-        {
-            Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 7));
-            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
-        }
-        public override void ArtifactSetDefault()
-        {
-            width = 32; height = 58;
-            Item.rare = ItemRarityID.Cyan;
-        }
+        public override int Frames => 7;
     }
+
     public class VampirePlayer : ModPlayer
     {
         bool Vampire = false;
         int vampirecountRange = 0;
         public override void ResetEffects()
         {
-            Vampire = Player.GetModPlayer<ArtifactPlayerHandleLogic>().ArtifactDefinedID == ModContent.ItemType<VampirismCrystal>();
+            Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
         }
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
