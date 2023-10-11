@@ -724,8 +724,8 @@ namespace BossRush.Common.ChallengeMode {
 								num170--;
 								if (!WorldGen.SolidTile(num169, num170)) {
 									int num171 = NPC.NewNPC(npc.GetSource_FromAI(), num169 * 16 + 8, num170 * 16, 32);
-									if (Main.netMode == 2 && num171 < 200)
-										NetMessage.SendData(23, -1, -1, null, num171);
+									if (Main.netMode == NetmodeID.Server && num171 < 200)
+										NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num171);
 
 									break;
 								}

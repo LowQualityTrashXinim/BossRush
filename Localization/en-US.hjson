@@ -169,6 +169,7 @@ Mods: {
 			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
 			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
 			HeavenBolt.DisplayName: Heaven Bolt
+			MagicboltProjectile.DisplayName: Magicbolt Projectile
 		}
 
 		NPCs: {

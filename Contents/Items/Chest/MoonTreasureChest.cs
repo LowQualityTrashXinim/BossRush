@@ -4,9 +4,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class MoonTreasureChest : ModItem {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("You certainly prove yourself to be something, here a gift");
-		}
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;
