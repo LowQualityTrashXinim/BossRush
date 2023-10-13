@@ -121,12 +121,8 @@ FateDeciderArtifact: {
 }
 
 NormalizeArtifact: {
-	DisplayName: Normalize Artifact
-	Description:
-		'''
-		"Offers no tactical advantage whatsoever!"
-		Grants no effect.
-		'''
+	DisplayName: None
+	Description: Grants no effect.
 }
 
 OrbOfAlchemistArtifact: {

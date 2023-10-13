@@ -65,30 +65,4 @@ namespace BossRush.Contents.WeaponModification {
 			}
 		}
 	}
-	class WeaponModificationGlobalProjectile : GlobalProjectile {
-		public override bool InstancePerEntity => true;
-		private int[] ModWeaponSlotTypeProjectile;
-		public override void OnSpawn(Projectile projectile, IEntitySource source) {
-			base.OnSpawn(projectile, source);
-			if(source is IEntitySource_WithStatsFromItem {Item : not null} parent) {
-				if(parent.Item.TryGetGlobalItem(out WeaponModificationGlobalItem globalitem)) {
-					if(globalitem.ModWeaponSlotType == null) {
-						return;
-					}
-					ModWeaponSlotTypeProjectile = globalitem.ModWeaponSlotType;
-					for (int i = 0; i < globalitem.ModWeaponSlotType.Length; i++) {
-						if (globalitem.ModWeaponSlotType[i] == -1)
-							continue;
-						ModifierWeaponLoader.GetWeaponMod(globalitem.ModWeaponSlotType[i]).ProjectileOnSpawn(projectile);
-					}
-				}
-			}
-		}
-		public override bool PreAI(Projectile projectile) {
-			return base.PreAI(projectile);
-		}
-		public override void AI(Projectile projectile) {
-			base.AI(projectile);
-		}
-	}
 }
