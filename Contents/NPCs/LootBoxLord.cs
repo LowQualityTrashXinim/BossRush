@@ -74,6 +74,9 @@ namespace BossRush.Contents.NPCs {
 				case 9:
 					ShootOreBow1();
 					break;
+				case 10:
+					ShootOreBow2();
+					break;
 			}
 			ActivateBroadSword();
 		}
@@ -123,8 +126,8 @@ namespace BossRush.Contents.NPCs {
 			}
 		}
 		private int MoveSetHandle() {
-			int Move = (int)Math.Clamp(++NPC.ai[3], 1, 10);
-			if (Move >= 10) {
+			int Move = (int)Math.Clamp(++NPC.ai[3], 1, 11);
+			if (Move >= 11) {
 				Move = 1;
 				NPC.ai[3] = 1;
 			}
@@ -292,12 +295,35 @@ namespace BossRush.Contents.NPCs {
 			if (BossDelayAttack(20, 0, TerrariaArrayID.AllOreBowPHM.Length - 1, 90)) {
 				return;
 			}
-			Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 5f;
+			Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 180, (int)NPC.ai[2]) * 10f;
+			float progress;
+			float halflength = TerrariaArrayID.AllOreBowPHM.Length * .5f;
+			if (NPC.ai[2] > halflength)
+				progress = (TerrariaArrayID.AllOreBowPHM.Length - NPC.ai[2]) / halflength;
+			else
+				progress = NPC.ai[2] / halflength;
+			vec.Y = MathHelper.Lerp(0, -5, progress);
 			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<OreBowAttackOne>(), NPC.damage, 2);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
 			Main.projectile[proj].owner = NPC.target;
 			Main.projectile[proj].ai[1] = 60;
+			NPC.ai[2]++;
+		}
+		private void ShootOreBow2() {
+			Vector2 positionAbovePlayer = new Vector2(Main.player[NPC.target].Center.X, Main.player[NPC.target].Center.Y - 350);
+			NPC.NPCMoveToPosition(positionAbovePlayer, 5f);
+			if (NPC.ai[2] >= TerrariaArrayID.AllOreBowPHM.Length - 1) {
+				ResetEverything();
+				return;
+			}
+			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreBowPHM.Length - 1, 20)) {
+				return;
+			}
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<OreBowAttackTwo>(), NPC.damage, 2);
+			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
+				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
+			Main.projectile[proj].owner = NPC.target;
 			NPC.ai[2]++;
 		}
 		Vector2 lastPlayerPosition = Vector2.Zero;
@@ -577,6 +603,20 @@ namespace BossRush.Contents.NPCs {
 			Projectile.velocity = vel * 4;
 			if (++Projectile.ai[0] >= 25) {
 				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel * 15, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
+				Projectile.ai[0] = 0;
+			}
+		}
+	}
+	class OreBowAttackTwo : BaseHostileBow {
+		public override void AI() {
+			Projectile.rotation = Vector2.UnitY.ToRotation();
+			Player player = Main.player[Projectile.owner];
+			if (Projectile.timeLeft > 150)
+				Projectile.timeLeft = 150;
+			Vector2 vel = (new Vector2(player.Center.X + Main.rand.Next(-100, 100), 0) - new Vector2(Projectile.Center.X, 0)).SafeNormalize(Vector2.Zero);
+			Projectile.velocity += vel;
+			if (++Projectile.ai[0] >= 15) {
+				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 15, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
 				Projectile.ai[0] = 0;
 			}
 		}
