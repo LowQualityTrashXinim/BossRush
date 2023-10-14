@@ -16,6 +16,9 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] AllGemStaffPHM = {
 			ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff,ItemID.RubyStaff, ItemID.DiamondStaff
 		};
+		public readonly static int[] AllOreBowPHM = {
+			ItemID.CopperBow, ItemID.TinBow, ItemID.IronBow, ItemID.LeadBow, ItemID.SilverBow,ItemID.TungstenBow, ItemID.GoldBow, ItemID.PlatinumBow
+		};
 		public readonly static int[] AllGemStafProjectilePHM = {
 			ProjectileID.AmethystBolt, ProjectileID.TopazBolt, ProjectileID.SapphireBolt, ProjectileID.EmeraldBolt,ProjectileID.RubyBolt, ProjectileID.DiamondBolt
 		};

@@ -18,6 +18,10 @@ internal class MagicboltProjectile : ModProjectile {
 		Projectile.penetrate = 1;
 		Projectile.timeLeft = 600;
 	}
+	public override void AI() {
+		int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.MagicMirror);
+		Main.dust[dust].noGravity = true;
+	}
 	public override Color? GetAlpha(Color lightColor) {
 		return new Color(150, 150, 255);
 	}

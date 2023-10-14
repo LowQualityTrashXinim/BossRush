@@ -21,7 +21,7 @@ namespace BossRush.Contents.WeaponModification {
 			ProjectileType = ModContent.ProjectileType<MagicboltProjectile>();
 			ProjectileDamage = 12;
 			KnockBack = 2f;
-			ShootSpeed = 2f;
+			ShootSpeed = 10f;
 			ShootAmount = 1;
 		}
 		public override void ModifyCritAttack(Player player, ref int critChance, ref float critDamage) {
