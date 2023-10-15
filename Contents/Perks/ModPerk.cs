@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Items;
+using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
@@ -23,11 +24,11 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override string ModifyToolTip() {
-			if (StackAmount == 3)
+			if (StackAmount == 2)
 				return "Increases damage by 30%" +
 					"\nIncreases attack speed by 10%" +
 					"\nIncreases critical strike chance by 10";
-			if (StackAmount == 2)
+			if (StackAmount == 1)
 				return "Increases damage by 20%" +
 					"\nIncreases attack speed by 10%";
 			return
@@ -171,9 +172,10 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			base.ResetEffect(player);
-			if (player.HasItem(ItemID.DirtBlock))
+			if (player.HasItem(ItemID.DirtBlock)) {
 				player.statDefense += 15;
-			player.AddBuff(BuffID.WellFed3, 1);
+				player.AddBuff(BuffID.WellFed3, 60);
+			}
 		}
 	}
 	public class PotionExpert : Perk {
@@ -271,7 +273,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 5;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Main.rand.NextFloat() <= .1f * StackAmount)
+			if (Main.rand.NextFloat() <= .1f * StackAmount && type != ModContent.ProjectileType<ArenaMakerProj>())
 				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
 		}
 	}
@@ -348,11 +350,11 @@ namespace BossRush.Contents.Perks {
 			if (StackAmount > 0)
 				return "+ 78% increased odds for range" +
 				"\n+ 5% range critical strike chance" +
-				"\nIncrease chance to deal 4x damage by 1%";
+				"\nIncrease chance to deal 4x damage by 0.2%";
 			return
 				"+ 78% increased odds for range" +
 				"\n+ 5% range critical strike chance" +
-				"\nYou have 1% chance to deal 4x damage";
+				"\nYou have 0.2% chance to deal 4x damage";
 		}
 
 		public override void Update(Player player) {

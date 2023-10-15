@@ -704,25 +704,6 @@ namespace BossRush.Contents.Items.Card
         }
         public override void UpdateDead()
         {
-            MeleeDMG = 0;
-            RangeDMG = 0;
-            MagicDMG = 0;
-            SummonDMG = 0;
-            Movement = 0;
-            JumpBoost = 0;
-            HPMax = 0;
-            HPRegen = 0;
-            ManaMax = 0;
-            ManaRegen = 0;
-            DefenseBase = 0;
-            DamagePure = 0;
-            CritStrikeChance = 0;
-            Thorn = 0;
-            CritDamage = 1;
-            DefenseEffectiveness = 1;
-            DropAmountIncrease = 0;
-            MinionSlot = 0;
-            SentrySlot = 0;
         }
         public override void Initialize()
         {

@@ -192,6 +192,13 @@ namespace BossRush.Contents.Perks {
 		/// <br/> This allow easy multiply
 		/// </summary>
 		public int StackAmount = 0;
+		/// <summary>
+		/// This is where you set limit to amount of stack should a perk have<br/>
+		/// <see cref="StackAmount"/> will always start at 0 and increase by 1 ( regardless if <see cref="CanBeStack"/> true or false )<br/>
+		/// The next time this perk get choosen, it will increase by 1<br/>
+		/// The perk will no longer show up if the stack amount reach the limit, for more info see <see cref="PerkUIState.ActivateNormalPerkUI(PerkPlayer, Player)"/><br/>
+		/// If you are modifying tooltip base on <see cref="StackAmount"/> then you should substract stack amount by 1
+		/// </summary>
 		public int StackLimit = 1;
 		/// <summary>
 		/// Please set this texture string as if you are setting <see cref="ModItem.Texture"/>
