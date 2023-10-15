@@ -221,6 +221,13 @@ namespace BossRush.Contents.NPCs {
 			}
 			int length = TerrariaArrayID.AllWoodBowPHM.Length;
 			for (int i = 0; i < length; i++) {
+				if (TerrariaArrayID.AllWoodBowPHM[i] == ItemID.AshWoodBow) {
+					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * 5, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);
+					if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
+						projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
+					Main.projectile[proj].owner = NPC.target;
+					continue;
+				}
 				if (i < length / 2) {
 					Vector2 velocity = (Vector2.UnitX * 2).Vector2DistributeEvenlyPlus(3, 45, i) * 5;
 					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);

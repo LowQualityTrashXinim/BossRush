@@ -9,6 +9,8 @@ using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -152,6 +154,32 @@ namespace BossRush.Contents.Perks {
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
 			player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
+		}
+	}
+	public class UnstableImbue : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			Tooltip = 
+				"+ Your melee attack randomly give out debuff that last 30s" +
+				"\n If that enemy already have that debuff, you will inflict different debuff instead";
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			bool Opportunity = Main.rand.NextBool(10);
+			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Electrified, BuffID.Midas };
+			if (!debuffArray.Where(d => !target.HasBuff(d)).Any())
+				return;
+			for (int i = 0; i < debuffArray.Length; i++) {
+				if (Opportunity && !target.HasBuff(debuffArray[i])) {
+					target.AddBuff(debuffArray[i], 1800);
+					break;
+				}
+				else {
+					if (!Opportunity)
+						Opportunity = Main.rand.NextBool(10);
+				}
+				if (i == debuffArray.Length - 1 && Opportunity)
+					i = 0;
+			}
 		}
 	}
 	public class AlchemistKnowledge : Perk {
