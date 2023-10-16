@@ -4,7 +4,6 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
-
 namespace BossRush.Contents.Artifacts {
 	internal class OrbOfAlchemistArtifact : Artifact {
 		public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
