@@ -32,9 +32,8 @@ namespace BossRush.Contents.Items.Card {
 			PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
 			ModifyCardToolTip(ref tooltips, modplayer);
 			if (Tier > 0) {
-				tooltips.Add(new TooltipLine(Mod, "HelpfulText", "Use the card to get stats bonus" +
-					"\nThe more cards you uses, the higher the chance of getting bad stats will be" +
-					"\nCard's bonus will be reset upon death, curses do not reset"));
+				tooltips.Add(new TooltipLine(Mod, "HelpfulText", "Use the card to get choose from 1 of 3 stats bonus" +
+					"\nThe more cards you uses, the higher the chance of getting bad stats will be"));
 			}
 		}
 
