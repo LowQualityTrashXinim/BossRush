@@ -11,11 +11,6 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.NPCs {
-	//To ensure the code is readable and consistent throughout the process of making
-	//ai[0] => timer
-	//ai[1] => ai switch
-	//ai[2] => counter ( not to be confused with timer )
-	//The code in this file must follow the above rule
 	internal class LootBoxLord : ModNPC {
 		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 		public override void SetDefaults() {

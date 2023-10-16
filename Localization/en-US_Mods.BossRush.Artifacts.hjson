@@ -129,7 +129,7 @@ OrbOfAlchemistArtifact: {
 	DisplayName: Orb Of Alchemist Artifact
 	Description:
 		'''
-		"The orb whisper secret of alchemist, the world that resolve around it"
+		"The orb whisper secret of alchemist, the world that revolve around it"
 		[c/b7bf5c:Positive effect] :
 			+ Attacking a NPC that have debuff active on them will increases your damage
 			+ Active buff that you have will also increase your damage

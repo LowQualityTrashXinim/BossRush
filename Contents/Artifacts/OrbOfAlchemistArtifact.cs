@@ -1,15 +1,9 @@
-﻿using BossRush.Common.Utils;
-using BossRush.Contents.Items.Potion;
-using System;
-using System.Collections.Generic;
+﻿using Terraria; 
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
-using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Texture;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts {
 	internal class OrbOfAlchemistArtifact : Artifact {

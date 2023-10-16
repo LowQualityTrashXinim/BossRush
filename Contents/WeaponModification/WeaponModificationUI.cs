@@ -27,7 +27,7 @@ namespace BossRush.Contents.WeaponModification {
 		public Color BackgroundColor = new Color(63, 82, 151) * 0.7f;
 
 		private bool _needsTextureLoading;
-		public int ImprovisedUIpanel_Width = 0;
+		public int ImprovisedUIpanel_Height = 0;
 		private void LoadTextures() {
 			if (_borderTexture == null) {
 				_borderTexture = Main.Assets.Request<Texture2D>("Images/UI/PanelBorder");
@@ -60,7 +60,7 @@ namespace BossRush.Contents.WeaponModification {
 		private void DrawPanel(SpriteBatch spriteBatch, Texture2D texture, Color color) {
 			CalculatedStyle dimensions = GetDimensions();
 			Point point = new Point((int)dimensions.X, (int)dimensions.Y);
-			Point point2 = new Point(point.X + (int)dimensions.Width - _cornerSize, point.Y + (int)dimensions.Height - _cornerSize + ImprovisedUIpanel_Width);
+			Point point2 = new Point(point.X + (int)dimensions.Width - _cornerSize, point.Y + (int)dimensions.Height - _cornerSize + ImprovisedUIpanel_Height);
 			int width = point2.X - point.X - _cornerSize;
 			int height = point2.Y - point.Y - _cornerSize;
 			spriteBatch.Draw(texture, new Rectangle(point.X, point.Y, _cornerSize, _cornerSize), new Rectangle(0, 0, _cornerSize, _cornerSize), color);
@@ -429,7 +429,7 @@ namespace BossRush.Contents.WeaponModification {
 				string lines = $"Item : {item.Name}\n";
 				itemtextbox.SetTextMaxLength(1000);
 				lines += globalItem.GetWeaponModificationStats();
-				itemtextbox.ImprovisedUIpanel_Width = 80;
+				itemtextbox.ImprovisedUIpanel_Height = 80;
 				itemtextbox.SetText(lines);
 				itemtextbox.Recalculate();
 				itemtextbox.IgnoresMouseInteraction = true;

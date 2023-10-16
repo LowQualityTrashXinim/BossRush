@@ -20,8 +20,6 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
 		public override void SetDefaults() {
-			Tooltip =
-					"+ Increase damage by 10%";
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -368,10 +366,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
-			Tooltip =
-				"+ 78% increased odds for range" +
-				"\n+ 5% range critical strike chance" +
-				"\nYou have 0.2% chance to deal 4x damage";
 			StackLimit = 5;
 		}
 		public override string ModifyToolTip() {
@@ -402,10 +396,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
-			Tooltip =
-				"+ 78% increased odds for magic" +
-				"\n+ 5% magic cost reduction" +
-				"\nMana star can spawn from hitting NPC with magic projectile (start at 2.5%)";
 			StackLimit = 5;
 		}
 		public override string ModifyToolTip() {
