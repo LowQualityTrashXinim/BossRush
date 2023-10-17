@@ -168,9 +168,6 @@ namespace BossRush.Common {
 
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
 			SpawnItem();
-			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
-				DeleteCardItem();
-			}
 		}
 		private void SpawnItem() {
 			if (NPC.AnyNPCs(NPCID.KingSlime)) {
