@@ -11,6 +11,14 @@ namespace BossRush.Contents.WeaponModification {
 			SetDefault();
 		}
 		public int Type { get; private set; }
+		/// <summary>
+		/// Set this to true if you want to allow this weapon modifier to modify projectile AI<br/>
+		/// Use this with caution
+		/// </summary>
+		public bool ProjectileAIModifier = false;
+		/// <summary>
+		/// Set this to a projectile id or projectile type if you want this mod to shoot out a projectile
+		/// </summary>
 		public int ProjectileType = 0;
 		/// <summary>
 		/// This is the real damage where projectile damage is actually set
@@ -45,6 +53,24 @@ namespace BossRush.Contents.WeaponModification {
 
 		}
 		public virtual void PostUpdate(Player player) {
+
+		}
+		public virtual void ProjectileOnSpawn(Projectile projectile) {
+
+		}
+		/// <summary>
+		/// This should only be use if you want to truely modify a projectile behavior and prevent the already existing Ai to be active
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <returns></returns>
+		public virtual bool PreUpdateProjectile(Projectile projectile) {
+			return true;
+		}
+		/// <summary>
+		/// This should only be use if you want to add on behavior for projectile along with projectile already existing AI
+		/// </summary>
+		/// <param name="projectile"></param>
+		public virtual void PostUpdateProjectile(Projectile projectile) {
 
 		}
 		/// <summary>

@@ -1,8 +1,8 @@
-﻿using BossRush.Common.RoguelikeChange;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver {
 	internal class SkullRevolver : SynergyModItem, IRogueLikeRangeGun {

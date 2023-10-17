@@ -1,47 +1,48 @@
-﻿using BossRush.Common.Utils;
-using BossRush.Contents.Items.Potion;
-using System;
-using System.Collections.Generic;
+﻿using Terraria; 
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
-using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Texture;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-
-namespace BossRush.Contents.Artifacts
-{
-    internal class OrbOfAlchemistArtifact : Artifact
-    {
-        public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
+using BossRush.Common.Systems.ArtifactSystem;
+namespace BossRush.Contents.Artifacts {
+	internal class OrbOfAlchemistArtifact : Artifact {
+		public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
 		public override Color DisplayNameColor => Color.PaleVioletRed;
 	}
 
-    class AlchemistKnowledgePlayer : ModPlayer
-    {
-        bool Alchemist = false;
-        public override void ResetEffects()
-        {
-            Alchemist = Player.HasArtifact<OrbOfAlchemistArtifact>();
-        }
-        public override void PostUpdate()
-        {
-            if (Alchemist)
-            {
-                Player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 5;
-                for (int i = 0; i < Player.inventory.Length; i++)
-                {
-                    if (TerrariaArrayID.MovementPotion.Any(l => l == Player.inventory[i].type) || TerrariaArrayID.NonMovementPotion.Any(l => l == Player.inventory[i].type))
-                    {
-                        Player.inventory[i].active = false;
-                        Player.inventory[i].stack = 0;
-                    }
-                    if (i >= 50)
-                        break;
-                }
-            }
-        }
-    }
+	class AlchemistKnowledgePlayer : ModPlayer {
+		bool Alchemist = false;
+		public override void ResetEffects() {
+			Alchemist = Player.HasArtifact<OrbOfAlchemistArtifact>();
+		}
+		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			AlchemistOverCharged(target, ref modifiers);
+		}
+		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			AlchemistOverCharged(target, ref modifiers);
+		}
+		private void AlchemistOverCharged(NPC target, ref NPC.HitModifiers modifiers) {
+			if (Alchemist) {
+				int lengthNPC = target.buffType.Where(i => i != 0).Count();
+				int lengthPlayer = Player.buffType.Where(i => i != 0).Count();
+				modifiers.FinalDamage *= lengthNPC + Player.buffType.Where(i => i != 0).Count();
+				if (lengthNPC > 0) {
+					for (int i = target.buffType.Length - 1; i >= 0; i--) {
+						if (target.buffType[i] == 0)
+							continue;
+						target.buffTime[i] = 0;
+						target.DelBuff(i);
+					}
+				}
+				if (lengthPlayer > 0) {
+					for (int i = Player.buffType.Length - 1; i >= 0; i--) {
+						if (Player.buffType[i] == 0)
+							continue;
+						Player.buffTime[i] = 0;
+						Player.DelBuff(i);
+					}
+				}
+			}
+		}
+	}
 }

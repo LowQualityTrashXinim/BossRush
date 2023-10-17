@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 	internal class MoonStarBow : SynergyModItem {
@@ -38,6 +38,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 		}
 	}
 	class MoonStarProjectile : SynergyModProjectile {
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+		}
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 46;
 			Projectile.wet = false;
@@ -48,8 +52,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 			Projectile.extraUpdates = 6;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.timeLeft = 3000;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 100;
 		}
@@ -123,6 +125,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 	}
 	class MoonStarProjectileSmaller : SynergyModProjectile {
 		public override string Texture => BossRushUtils.GetTheSameTextureAs<MoonStarBow>("MoonStarProjectile");
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+			base.SetStaticDefaults();
+		}
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 46;
 			Projectile.light = .5f;
@@ -133,8 +140,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 			Projectile.friendly = true;
 			Projectile.tileCollide = false;
 			Projectile.extraUpdates = 6;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 50;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
 		}
 		int ExtraUpdaterReCounter = 0;
 		float speedMultiplier = 2;

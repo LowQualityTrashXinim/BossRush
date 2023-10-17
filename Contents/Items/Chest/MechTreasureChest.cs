@@ -6,9 +6,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	class MechTreasureChest : LootBoxBase {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Right click to open chest");
-		}
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;

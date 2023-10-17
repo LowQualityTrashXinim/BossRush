@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.WeaponModification {
 	/// <summary>
@@ -29,8 +30,6 @@ namespace BossRush.Contents.WeaponModification {
 		public float shootspeed = 1;
 		public int critChance = 0;
 		public float critDamage = 1;
-
-		public bool IsOnRecharge = false;
 		public override void PostUpdate() {
 			if (item == null || item != Player.HeldItem) {
 				item = Player.HeldItem;
@@ -109,7 +108,7 @@ namespace BossRush.Contents.WeaponModification {
 					//Debugging purpose
 					WeaponModification_inventory[0] = ModWeaponParticle.GetWeaponModType<DoubleOutput>();
 					WeaponModification_inventory[1] = ModWeaponParticle.GetWeaponModType<IncreaseDamage>();
-					WeaponModification_inventory[2] = ModWeaponParticle.GetWeaponModType<Arrow>();
+					WeaponModification_inventory[2] = ModWeaponParticle.GetWeaponModType<MagicBolt>();
 					uiSystemInstance.WM_uiState.whoAmI = Player.whoAmI;
 					uiSystemInstance.userInterface.SetState(uiSystemInstance.WM_uiState);
 				}

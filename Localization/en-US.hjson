@@ -169,6 +169,9 @@ Mods: {
 			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
 			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
 			HeavenBolt.DisplayName: Heaven Bolt
+			MagicboltProjectile.DisplayName: Magicbolt Projectile
+			OreBowAttackOne.DisplayName: Ore Bow Attack One
+			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
 		}
 
 		NPCs: {

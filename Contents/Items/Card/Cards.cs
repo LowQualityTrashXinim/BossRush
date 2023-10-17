@@ -214,7 +214,7 @@ namespace BossRush.Contents.Items.Card {
 				}
 			}
 			else {
-				if (!modplayer.listCursesID.Contains(CursedID)) {
+				if (!modplayer.listCursesID.Contains(cursesID)) {
 					modplayer.listCursesID.Add(cursesID);
 				}
 			}

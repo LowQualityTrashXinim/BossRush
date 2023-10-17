@@ -231,7 +231,7 @@ namespace BossRush.Common.RoguelikeChange {
 		/// </summary>
 		public int BaseProjectileAmountModifier = 0;
 		/// <summary>
-		/// Use this to change globaly, do not use "=" as that set and is not the correct way to use
+		/// Use this to change globaly and when you are using a accessories or something of similar, do not use "=" as that set and is not the correct way to use
 		/// </summary>
 		public float SpreadModify = 1;
 		/// <summary>

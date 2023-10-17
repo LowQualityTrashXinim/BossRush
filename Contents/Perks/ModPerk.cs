@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Items;
+using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
@@ -8,6 +9,8 @@ using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -17,17 +20,15 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
 		public override void SetDefaults() {
-			Tooltip =
-					"+ Increase damage by 10%";
 			CanBeStack = true;
 			StackLimit = 3;
 		}
 		public override string ModifyToolTip() {
-			if (StackAmount == 3)
+			if (StackAmount == 2)
 				return "Increases damage by 30%" +
 					"\nIncreases attack speed by 10%" +
 					"\nIncreases critical strike chance by 10";
-			if (StackAmount == 2)
+			if (StackAmount == 1)
 				return "Increases damage by 20%" +
 					"\nIncreases attack speed by 10%";
 			return
@@ -153,6 +154,32 @@ namespace BossRush.Contents.Perks {
 			player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
 		}
 	}
+	public class UnstableImbue : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			Tooltip = 
+				"+ Your melee attack randomly give out debuff that last 30s" +
+				"\n If that enemy already have that debuff, you will inflict different debuff instead";
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			bool Opportunity = Main.rand.NextBool(10);
+			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Electrified, BuffID.Midas };
+			if (!debuffArray.Where(d => !target.HasBuff(d)).Any())
+				return;
+			for (int i = 0; i < debuffArray.Length; i++) {
+				if (Opportunity && !target.HasBuff(debuffArray[i])) {
+					target.AddBuff(debuffArray[i], 1800);
+					break;
+				}
+				else {
+					if (!Opportunity)
+						Opportunity = Main.rand.NextBool(10);
+				}
+				if (i == debuffArray.Length - 1 && Opportunity)
+					i = 0;
+			}
+		}
+	}
 	public class AlchemistKnowledge : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -171,9 +198,10 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			base.ResetEffect(player);
-			if (player.HasItem(ItemID.DirtBlock))
+			if (player.HasItem(ItemID.DirtBlock)) {
 				player.statDefense += 15;
-			player.AddBuff(BuffID.WellFed3, 1);
+				player.AddBuff(BuffID.WellFed3, 60);
+			}
 		}
 	}
 	public class PotionExpert : Perk {
@@ -271,7 +299,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 5;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Main.rand.NextFloat() <= .1f * StackAmount)
+			if (Main.rand.NextFloat() <= .1f * StackAmount && type != ModContent.ProjectileType<ArenaMakerProj>())
 				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
 		}
 	}
@@ -338,21 +366,17 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
-			Tooltip =
-				"+ 78% increased odds for range" +
-				"\n+ 5% range critical strike chance" +
-				"\nYou have 0.2% chance to deal 4x damage";
 			StackLimit = 5;
 		}
 		public override string ModifyToolTip() {
 			if (StackAmount > 0)
 				return "+ 78% increased odds for range" +
 				"\n+ 5% range critical strike chance" +
-				"\nIncrease chance to deal 4x damage by 1%";
+				"\nIncrease chance to deal 4x damage by 0.2%";
 			return
 				"+ 78% increased odds for range" +
 				"\n+ 5% range critical strike chance" +
-				"\nYou have 1% chance to deal 4x damage";
+				"\nYou have 0.2% chance to deal 4x damage";
 		}
 
 		public override void Update(Player player) {
@@ -372,10 +396,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
-			Tooltip =
-				"+ 78% increased odds for magic" +
-				"\n+ 5% magic cost reduction" +
-				"\nMana star can spawn from hitting NPC with magic projectile (start at 2.5%)";
 			StackLimit = 5;
 		}
 		public override string ModifyToolTip() {
