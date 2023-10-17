@@ -38,10 +38,10 @@ namespace BossRush.Common {
 				if ((npc.boss || npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) && npc.active) {
 					HowManyBossIsAlive++;
 				}
-				if (i == Main.maxNPCs - 1 && HowManyBossIsAlive == 0) // What happen when boss is inactive
-				{
-					amountoftimegothit = 0;
-				}
+			}
+			if (HowManyBossIsAlive == 0) // What happen when boss is inactive
+			{
+				amountOfTimeGotHit = 0;
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace BossRush.Common {
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 			itemsByMod["Terraria"].Clear();
 		}
-		public int amountoftimegothit = 0;
+		public int amountOfTimeGotHit = 0;
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
 			if (Player.HasBuff(ModContent.BuffType<Protection>())) {
 				Player.Heal(Player.statLifeMax2);
@@ -161,7 +161,7 @@ namespace BossRush.Common {
 					return;
 				}
 				else {
-					amountoftimegothit++;
+					amountOfTimeGotHit++;
 				}
 			}
 		}
@@ -170,26 +170,6 @@ namespace BossRush.Common {
 			SpawnItem();
 			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				DeleteCardItem();
-			}
-		}
-		private void DeleteCardItem() {
-			for (int i = 0; i < Main.item.Length; i++) {
-				Item item = Main.item[i];
-				if (item is null || item.ModItem is null) {
-					continue;
-				}
-				if (item.ModItem is CardPacketBase) {
-					item.active = false;
-				}
-			}
-			foreach (var item in Player.inventory) {
-				if (item is null || item.ModItem is null) {
-					continue;
-				}
-				if (item.ModItem is CardPacketBase) {
-					item.stack = 0;
-					item.active = false;
-				}
 			}
 		}
 		private void SpawnItem() {

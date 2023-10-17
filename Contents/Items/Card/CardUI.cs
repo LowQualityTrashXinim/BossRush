@@ -74,10 +74,7 @@ namespace BossRush.Contents.Items.Card {
 						if (list.Contains(item))
 							list.Remove(item);
 					}
-					if (list.Count > 1)
 						CursedID = Main.rand.Next(list);
-					else
-						CursedID = list[0];
 					modplayer.listCursesID.Add(CursedID);
 					//BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
 					modplayer.ListIsChange = true;

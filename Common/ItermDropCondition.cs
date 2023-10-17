@@ -140,7 +140,7 @@ namespace BossRush.Common
         {
             if (!info.IsInSimulation)
             {
-                return info.player.GetModPlayer<ModdedPlayer>().amountoftimegothit == 0
+                return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
                     || info.player.GetModPlayer<ModdedPlayer>().gitGud > 0;
             }
             return false;
