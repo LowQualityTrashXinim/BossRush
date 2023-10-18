@@ -1,9 +1,11 @@
-﻿using Terraria; 
+﻿using Terraria;
 using System.Linq;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Items.Chest;
+
 namespace BossRush.Contents.Artifacts {
 	internal class OrbOfAlchemistArtifact : Artifact {
 		public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
@@ -14,6 +16,10 @@ namespace BossRush.Contents.Artifacts {
 		bool Alchemist = false;
 		public override void ResetEffects() {
 			Alchemist = Player.HasArtifact<OrbOfAlchemistArtifact>();
+		}
+		public override void PostUpdate() {
+			Player.GetModPlayer<ChestLootDropPlayer>().PotionNumberAmountAddition += 5;
+			Player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += 7;
 		}
 		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			AlchemistOverCharged(target, ref modifiers);

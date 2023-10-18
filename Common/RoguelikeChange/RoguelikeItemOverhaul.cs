@@ -11,63 +11,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.RoguelikeChange {
-	enum TypeItem {
-		//generalize
-		Water,
-		Ice,
-		Nature,
-		Fire,
-		Corruption,
-		Crimson,
-		Hallow,
-		Light,
-		Dark,
-		Life,//Weapon that give life
-		Chaotic,
-		Energy,
-		//Generalize type 2
-		HeavyWeight,
-		LightWeight,
-		Technology,
-		Chemical,
-		Biological,
-		//Sword
-		Sword,
-		ShortSword,
-		GreatSword,
-		LongSword,
-		//Spear
-		Pike,
-		Trident,
-		Glaive,
-		Naginata,
-		//Gun
-		Pistol,
-		Rifle,
-		Sniper,
-		Shotgun,
-		//Bow
-		ShortBow,
-		LongBow,
-		CrossBow,
-		//Magic
-		TomeSpell,
-		Wand,
-		Staff,
-		//Summon
-		Whip,
-		SummonStaff,
-		MiscSummon,
-		//Special
-		Synergy,
-		Terra,
-		True,
-		Omega,
-		Alpha,
-		Delta,
-		Beta,
-		Pure
-	}
 	/// <summary>
 	/// This is where we should modify vanilla item
 	/// </summary>
@@ -338,16 +281,18 @@ namespace BossRush.Common.RoguelikeChange {
 				modplayer.pearlWoodArmor = true;
 				if (Main.dayTime)
 					player.GetDamage(DamageClass.Generic) += 0.15f;
-
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PlatinumHelmet, ItemID.PlatinumChainmail, ItemID.PlatinumGreaves)) {
 				modplayer.PlatinumArmor = true;
 			}
 		}
+		public override void UpdateEquip(Item item, Player player) {
+			if (item.type == ItemID.NightVisionHelmet)
+				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+		}
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
-			if (item.type == ItemID.EoCShield) {
+			if (item.type == ItemID.EoCShield)
 				player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
-			}
 		}
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			VanillaChange(item, player, ref damage);
@@ -359,7 +304,6 @@ namespace BossRush.Common.RoguelikeChange {
 			if (item.type == ItemID.Sandgun) {
 				damage -= .55f;
 			}
-
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
