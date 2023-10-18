@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BossRush.Common.RoguelikeChange {
 	public class BossRushUseStyle {
@@ -358,7 +360,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
 				TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction" +
-					"\nHold down right mouse to make your normal slash push you back and allow you to dash toward your cursor on 3rd attack");
+					"\nHold down right mouse to make your normal slash push you back and allow you to dash toward the direction you are facing on 3rd attack");
 				line.OverrideColor = Color.Yellow;
 				tooltips.Add(line);
 				if (SwingType == BossRushUseStyle.Swipe) {
@@ -460,7 +462,7 @@ namespace BossRush.Common.RoguelikeChange {
 							if (Main.mouseRight)
 								WideSwingAttack(player, modPlayer);
 							else
-								SwipeAttack(player, modPlayer, 1);
+								SwipeAttack(player, modPlayer, -1);
 							break;
 						case 2:
 							StrongThrust(player, modPlayer);
@@ -502,7 +504,7 @@ namespace BossRush.Common.RoguelikeChange {
 			float angle = MathHelper.ToRadians(baseAngle + 145) * player.direction;
 			float start = baseAngle + angle;
 			float end = baseAngle - angle;
-			Swipe(start, end, percentDone, player);
+			Swipe(start, end, percentDone, player, 1);
 		}
 		private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
@@ -511,19 +513,19 @@ namespace BossRush.Common.RoguelikeChange {
 			float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
-			Swipe(start, end, percentDone, player);
+			Swipe(start, end, percentDone, player, direct);
 		}
 		private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			float baseAngle = modPlayer.data.ToRotation() - MathHelper.Pi;
 			float start = baseAngle + (MathHelper.Pi + MathHelper.PiOver2) * player.direction;
 			float end = baseAngle - MathHelper.TwoPi * player.direction;
-			Swipe(start, end, percentDone, player);
+			Swipe(start, end, percentDone, player, 1);
 		}
-		private void Swipe(float start, float end, float percentDone, Player player) {
+		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
 			player.itemRotation = currentAngle;
-			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
+				player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3f;
 			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
 			player.itemLocation = player.Center + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
 		}
@@ -595,6 +597,23 @@ namespace BossRush.Common.RoguelikeChange {
 				CanPlayerBeDamage = true;
 			}
 		}
+		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+			base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
+		}
+		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
+			//Item item = Player.HeldItem;
+			//if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+			//	if (ComboNumber == 1 && meleeItem.SwingType == BossRushUseStyle.Poke) {
+			//		if (Player.direction == -1) {
+			//			drawInfo.itemEffect = SpriteEffects.None;
+			//		}
+			//		else {
+			//			drawInfo.itemEffect = SpriteEffects.FlipHorizontally;
+			//		}
+			//		//drawInfo.ItemLocation += new Vector2(item.width, 0) * Player.direction;
+			//	}
+			//}
+		}
 		private void ExecuteSpecialComboOnActive(Item item) {
 			if (ComboConditionChecking()) {
 				return;
@@ -664,8 +683,7 @@ namespace BossRush.Common.RoguelikeChange {
 				JustHitANPC = true;
 			}
 		}
-		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
-		{
+		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
 				return;
 			}
