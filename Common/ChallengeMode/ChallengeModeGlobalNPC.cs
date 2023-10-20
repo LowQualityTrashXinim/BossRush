@@ -8,11 +8,11 @@ using Terraria.ModLoader;
 namespace BossRush.Common.ChallengeMode {
 	internal class ChallengeModeGlobalNPC : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
-			int amount = BossRushUtils.AmountOfModCurrentlyEnable();
-			entity.lifeMax *= amount;
-			entity.life = entity.lifeMax;
-			entity.damage *= amount;
-			entity.defense *= amount;
+			//int amount = BossRushUtils.AmountOfModCurrentlyEnable();
+			//entity.lifeMax *= amount;
+			//entity.life = entity.lifeMax;
+			//entity.damage *= amount;
+			//entity.defense *= amount;
 		}
 		public override bool PreAI(NPC npc) {
 			return true;

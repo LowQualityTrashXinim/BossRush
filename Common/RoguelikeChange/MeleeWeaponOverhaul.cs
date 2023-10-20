@@ -381,9 +381,7 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-				MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 				BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
-				modPlayer.SwordHitBox = hitbox;
 			}
 		}
 		public override void ModifyItemScale(Item item, Player player, ref float scale) {
@@ -478,15 +476,6 @@ namespace BossRush.Common.RoguelikeChange {
 					break;
 			}
 		}
-		public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
-				return;
-			}
-			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)) {
-				modifiers.CritDamage.Base += modifiers.CritDamage.Base * .5f;
-			}
-			base.ModifyHitNPC(item, player, target, ref modifiers);
-		}
 		private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			Poke2(player, modPlayer, percentDone);
@@ -576,7 +565,6 @@ namespace BossRush.Common.RoguelikeChange {
 	public class MeleeOverhaulPlayer : ModPlayer {
 		public Vector2 data;
 		public int ComboNumber = 0;
-		public Rectangle SwordHitBox;
 		public int delaytimer = 10;
 		public int oldHeldItem;
 		public int CountDownToResetCombo = 0;
@@ -639,17 +627,6 @@ namespace BossRush.Common.RoguelikeChange {
 					ComboHandleSystem();
 				}
 				CanPlayerBeDamage = true;
-			}
-		}
-		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
-			base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-			Item item = Player.HeldItem;
-			for (int i = 0; i < drawInfo.DrawDataCache.Count; i++) {
-				if (drawInfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
-					DrawData drawdata = drawInfo.DrawDataCache[i];
-					drawdata.rotation = CustomItemRotation;
-					drawInfo.DrawDataCache[i] = drawdata;
-				}
 			}
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
