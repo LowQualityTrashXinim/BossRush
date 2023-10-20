@@ -1,11 +1,12 @@
-﻿using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Terraria;
-using Terraria.GameContent;
+using System.Linq;
 using Terraria.ID;
+using BossRush.Texture;
+using Terraria.ModLoader;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -43,6 +44,22 @@ namespace BossRush {
 				}
 			}
 			return false;
+		}
+		public static int AmountOfModCurrentlyEnable() {
+			int HowManyModIsEnable = ModLoader.Mods.Length;
+			if (Main.LocalPlayer.IsDebugPlayer()) {
+				if (ModLoader.HasMod("ModdersToolkit"))
+					HowManyModIsEnable--;
+				if (ModLoader.HasMod("RecipeBrowser"))
+					HowManyModIsEnable--;
+				if (ModLoader.HasMod("HEROsMod"))
+					HowManyModIsEnable--;
+				if (ModLoader.HasMod("CheatSheet"))
+					HowManyModIsEnable--;
+				if (ModLoader.HasMod("HPAware"))
+					HowManyModIsEnable--;
+			}
+			return HowManyModIsEnable;
 		}
 		/// <summary>
 		/// Spawn combat text above player without the random Y position

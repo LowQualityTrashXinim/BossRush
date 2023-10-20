@@ -5,6 +5,7 @@ using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -49,7 +50,7 @@ namespace BossRush.Contents.Perks {
 			int amount = listOfPerk.Count;
 			Vector2 originDefault = new Vector2(26, 26);
 			for (int i = 0; i < modplayer.PerkAmountModified(); i++) {
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmountModified(), 360, i) * modplayer.PerkAmountModified() * 20;
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmountModified(), 360, i) * Math.Clamp(modplayer.PerkAmountModified() * 20, 0, 200);
 				if (i >= amount || i >= modplayer.PerkAmountModified() - 1) {
 					UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
 					{ new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),

@@ -7,6 +7,13 @@ using Terraria.ModLoader;
 
 namespace BossRush.Common.ChallengeMode {
 	internal class ChallengeModeGlobalNPC : GlobalNPC {
+		public override void SetDefaults(NPC entity) {
+			int amount = BossRushUtils.AmountOfModCurrentlyEnable();
+			entity.lifeMax *= amount;
+			entity.life = entity.lifeMax;
+			entity.damage *= amount;
+			entity.defense *= amount;
+		}
 		public override bool PreAI(NPC npc) {
 			return true;
 		}
@@ -341,7 +348,7 @@ namespace BossRush.Common.ChallengeMode {
 			npc.spriteDirection = -(int)npc.ai[0];
 			if (!Main.npc[(int)npc.ai[1]].active || Main.npc[(int)npc.ai[1]].aiStyle != 11) {
 				npc.ai[2] += 10f;
-				if (npc.ai[2] > 50f || Main.netMode != 2) {
+				if (npc.ai[2] > 50f || Main.netMode != NetmodeID.Server) {
 					npc.life = -1;
 					npc.HitEffect();
 					npc.active = false;
@@ -560,10 +567,10 @@ namespace BossRush.Common.ChallengeMode {
 			float halfWidth = npc.width * .5f, halfHeight = npc.height * .5f;
 			npc.reflectsProjectiles = false;
 			npc.defense = npc.defDefense;
-			if (npc.ai[0] == 0f && Main.netMode != 1) {
+			if (npc.ai[0] == 0f && Main.netMode != NetmodeID.MultiplayerClient) {
 				npc.TargetClosest();
 				npc.ai[0] = 1f;
-				if (npc.type != 68) {
+				if (npc.type != NPCID.DungeonGuardian) {
 					int num148 = NPC.NewNPC(npc.GetSource_FromAI(), (int)(npc.position.X + halfWidth), (int)(npc.position.Y + halfHeight), 36, npc.whoAmI);
 					Main.npc[num148].ai[0] = -1f;
 					Main.npc[num148].ai[1] = npc.whoAmI;
@@ -578,7 +585,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 			}
 
-			if ((npc.type == 68 || Main.netMode == 1) && npc.localAI[0] == 0f) {
+			if ((npc.type == NPCID.DungeonGuardian || Main.netMode == NetmodeID.MultiplayerClient) && npc.localAI[0] == 0f) {
 				npc.localAI[0] = 1f;
 				SoundEngine.PlaySound(SoundID.Roar, npc.position);
 			}
@@ -589,7 +596,7 @@ namespace BossRush.Common.ChallengeMode {
 					npc.ai[1] = 3f;
 			}
 
-			if ((npc.type == 68 || Main.IsItDay()) && npc.ai[1] != 3f && npc.ai[1] != 2f) {
+			if ((npc.type == NPCID.DungeonGuardian || Main.IsItDay()) && npc.ai[1] != 3f && npc.ai[1] != 2f) {
 				npc.ai[1] = 2f;
 				SoundEngine.PlaySound(SoundID.Roar, npc.position);
 			}
@@ -610,7 +617,7 @@ namespace BossRush.Common.ChallengeMode {
 					if (Main.getGoodWorld)
 						num151 *= 0.8f;
 
-					if (Main.netMode != 1 && npc.ai[2] % num151 == 0f) {
+					if (Main.netMode != NetmodeID.MultiplayerClient && npc.ai[2] % num151 == 0f) {
 						Vector2 center3 = npc.Center;
 						float num152 = Main.player[npc.target].position.X + Main.player[npc.target].width * .5f - center3.X;
 						float num153 = Main.player[npc.target].position.Y + Main.player[npc.target].height * .5f - center3.Y;
@@ -711,7 +718,7 @@ namespace BossRush.Common.ChallengeMode {
 					if (num149 > 0) {
 						npc.reflectsProjectiles = true;
 					}
-					else if (Main.netMode != 1 && npc.ai[2] % 200f == 0f && NPC.CountNPCS(32) < 6) {
+					else if (Main.netMode != NetmodeID.MultiplayerClient && npc.ai[2] % 200f == 0f && NPC.CountNPCS(32) < 6) {
 						int num165 = 1;
 						for (int num166 = 0; num166 < num165; num166++) {
 							int num167 = 1000;
@@ -821,14 +828,14 @@ namespace BossRush.Common.ChallengeMode {
 				npc.EncourageDespawn(50);
 			}
 
-			if (npc.ai[1] != 2f && npc.ai[1] != 3f && npc.type != 68 && (num149 != 0 || !Main.expertMode)) {
-				int num179 = Dust.NewDust(new Vector2(npc.position.X + halfWidth - 15f - npc.velocity.X * 5f, npc.position.Y + halfHeight), 30, 10, 5, (0f - npc.velocity.X) * 0.2f, 3f, 0, default(Color), 2f);
+			if (npc.ai[1] != 2f && npc.ai[1] != 3f && npc.type != NPCID.DungeonGuardian && (num149 != 0 || !Main.expertMode)) {
+				int num179 = Dust.NewDust(new Vector2(npc.position.X + halfWidth - 15f - npc.velocity.X * 5f, npc.position.Y + halfHeight), 30, 10, DustID.Blood, (0f - npc.velocity.X) * 0.2f, 3f, 0, default(Color), 2f);
 				Main.dust[num179].noGravity = true;
 				Main.dust[num179].velocity.X *= 1.3f;
 				Main.dust[num179].velocity.X += npc.velocity.X * 0.4f;
 				Main.dust[num179].velocity.Y += 2f + npc.velocity.Y;
 				for (int num180 = 0; num180 < 2; num180++) {
-					num179 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y + 120f), npc.width, 60, 5, npc.velocity.X, npc.velocity.Y, 0, default(Color), 2f);
+					num179 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y + 120f), npc.width, 60, DustID.Blood, npc.velocity.X, npc.velocity.Y, 0, default(Color), 2f);
 					Main.dust[num179].noGravity = true;
 					Dust dust = Main.dust[num179];
 					dust.velocity -= npc.velocity;

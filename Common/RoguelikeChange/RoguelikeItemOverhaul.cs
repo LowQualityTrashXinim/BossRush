@@ -1,14 +1,14 @@
-using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
+using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Projectiles;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-using Terraria.Audio;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Audio;
+using System.Linq;
+using Terraria.ID;
+using Terraria;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
