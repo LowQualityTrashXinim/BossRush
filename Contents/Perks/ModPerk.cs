@@ -25,11 +25,10 @@ namespace BossRush.Contents.Perks {
 		}
 		public override string ModifyToolTip() {
 			if (StackAmount == 2)
-				return "Increases damage by 30%" +
-					"\nIncreases attack speed by 10%" +
+				return "Increases damage by another 10%" +
 					"\nIncreases critical strike chance by 10";
 			if (StackAmount == 1)
-				return "Increases damage by 20%" +
+				return "Increases damage by another 10%" +
 					"\nIncreases attack speed by 10%";
 			return
 				"+ Increases damage by 10%";
@@ -154,10 +153,10 @@ namespace BossRush.Contents.Perks {
 			player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
 		}
 	}
-	public class UnstableImbue : Perk {
+	public class ChaoticImbue : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip = 
+			Tooltip =
 				"+ Your melee attack randomly give out debuff that last 30s" +
 				"\n If that enemy already have that debuff, you will inflict different debuff instead";
 		}
@@ -183,17 +182,21 @@ namespace BossRush.Contents.Perks {
 	public class AlchemistKnowledge : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip = "+ Mysterious potion are slightly better than before";
+			Tooltip = "" +
+				"+ Mysterious potion are slightly better than before" +
+				"+ Increases amount of potion drop from lootbox by 1";
 			StackLimit = 3;
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 1 * StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += 1 * StackAmount;
 		}
 	}
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip = "+ Having a single dirt in your inventory increase defense by 15" +
+			Tooltip =
+				"+ Having a single dirt in your inventory increase defense by 15" +
 				"\nAnd permanent exquisitely stuffed buff";
 		}
 		public override void ResetEffect(Player player) {
@@ -209,7 +212,7 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PotionExpert>();
 			CanBeStack = false;
 			Tooltip =
-				"+ Potion have 35% to not be consumed";
+				"+ Potion have 35% to not be consumed when not using Quick Buff key";
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
@@ -465,6 +468,36 @@ namespace BossRush.Contents.Perks {
 			Tooltip =
 				"+Increases perk range amount by 1";
 			StackLimit = 999;
+		}
+	}
+	public class ArenaBlessing : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 4;
+		}
+		public override string ModifyToolTip() {
+			switch (StackAmount) {
+				case 1:
+					return "+ Grant permanent Star in bottle buff";
+				case 2:
+					return "+ Grant permanent Heart Lamp buff";
+				case 3:
+					return "+ Grant permanent Cat Bast buff";
+				default:
+					return "+ Grant permanent Camp fire buff";
+			}
+		}
+		public override void ResetEffect(Player player) {
+			base.ResetEffect(player);
+			if(StackAmount >= 1) {
+				player.AddBuff(BuffID.Campfire, 10);
+				if (StackAmount > 1)
+					player.AddBuff(BuffID.StarInBottle, 10);
+				if (StackAmount > 2)
+					player.AddBuff(BuffID.HeartLamp, 10);
+				if (StackAmount > 3)
+					player.AddBuff(BuffID.CatBast, 10);
+			}
 		}
 	}
 	public class GodGiveDice : Perk {

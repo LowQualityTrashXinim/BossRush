@@ -29,6 +29,10 @@ namespace BossRush.Common.Nightmare {
 				npc.lifeMax += 15000;
 				npc.defense += 30;
 			}
+			if (npc.type == NPCID.KingSlime) {
+				npc.defense += 10;
+				npc.lifeRegen += 1;
+			}
 			if (npc.type == NPCID.EyeofCthulhu) {
 				npc.scale -= 0.25f;
 				npc.Size -= new Vector2(25, 25);
@@ -102,30 +106,39 @@ namespace BossRush.Common.Nightmare {
 		}
 		public override void AI(NPC npc) {
 			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
-				if (npc.type == NPCID.KingSlime) {
-					KingSlimeAI(npc);
-				}
-				return;
+				//if (npc.aiStyle == 15) {
+				//	KingSlimeAI(npc);
+				//}
+				//return;
 			}
 			base.AI(npc);
 		}
+		/// <summary>
+		/// We need to deeply interfere with KS ai and so I port entire KS code from vanilla<br/>
+		/// We could have done it like fargo but I don't like that approach cause it is too limiting
+		/// </summary>
+		/// <param name="npc"></param>
 		private void KingSlimeAI(NPC npc) {
 			float num236 = 1f;
 			float num237 = 1f;
-			bool flag6 = false;
 			bool flag7 = false;
 			bool flag8 = false;
-			float num238 = 2f;
+			bool flag6 = false;
+			// I have comment out flag6 cause it seem to do nothing beside allowing KS to resize ?
+			// Maybe terraria dev plan to at some point to reuse King slime AI onto other slime ?
+			// I have look at wiki and found at no point this ai is reuse so idk https://terraria.wiki.gg/wiki/AI
+			//Not sure what num 238 even do tbh
 			if (Main.getGoodWorld) {
-				num238 -= 1f - npc.life / (float)npc.lifeMax;
-				num237 *= num238;
+				num237 *= 2 - 1f - npc.life / (float)npc.lifeMax;
 			}
 
 			npc.aiAction = 0;
 			if (npc.ai[3] == 0f && npc.life > 0)
 				npc.ai[3] = npc.lifeMax;
 
+			//On first AI
 			if (npc.localAI[3] == 0f) {
+				OnFirstSpawnKingSlime(npc);
 				npc.localAI[3] = 1f;
 				flag6 = true;
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
@@ -135,10 +148,10 @@ namespace BossRush.Common.Nightmare {
 				}
 			}
 
-			int num239 = 3000;
-			if (Main.player[npc.target].dead || Vector2.Distance(npc.Center, Main.player[npc.target].Center) > num239) {
+			int distance = 3000;
+			if (Main.player[npc.target].dead || BossRushUtils.CompareSquareFloatValue(npc.Center, Main.player[npc.target].Center, distance)) {
 				npc.TargetClosest();
-				if (Main.player[npc.target].dead || Vector2.Distance(npc.Center, Main.player[npc.target].Center) > num239) {
+				if (Main.player[npc.target].dead || BossRushUtils.CompareSquareFloatValue(npc.Center, Main.player[npc.target].Center, distance)) {
 					npc.EncourageDespawn(10);
 					if (Main.player[npc.target].Center.X < npc.Center.X)
 						npc.direction = 1;
@@ -255,6 +268,7 @@ namespace BossRush.Common.Nightmare {
 					Gore.NewGore(npc.GetSource_FromAI(), npc.Center + new Vector2(-40f, -npc.height / 2), npc.velocity, 734);
 
 				if (npc.ai[0] >= 60f && Main.netMode != NetmodeID.MultiplayerClient) {
+					KingSlimeTeleport(npc);
 					npc.Bottom = new Vector2(npc.localAI[1], npc.localAI[2]);
 					npc.ai[1] = 6f;
 					npc.ai[0] = 0f;
@@ -304,26 +318,37 @@ namespace BossRush.Common.Nightmare {
 
 			npc.dontTakeDamage = npc.hide = flag8;
 			if (npc.velocity.Y == 0f) {
+				KingSlimeStandingStill(npc);
 				npc.velocity.X *= 0.8f;
 				if (npc.velocity.X > -0.1 && npc.velocity.X < 0.1)
 					npc.velocity.X = 0f;
 
 				if (!flag7) {
 					npc.ai[0] += 2f;
-					if (npc.life < npc.lifeMax * 0.8f)
+					if (npc.life < npc.lifeMax * 0.8f) {
 						npc.ai[0] += 1f;
+						KingSlimePhase1(npc);
+					}
 
-					if (npc.life < npc.lifeMax * 0.6f)
+					if (npc.life < npc.lifeMax * 0.6f) {
 						npc.ai[0] += 1f;
+						KingSlimePhase2(npc);
+					}
 
-					if (npc.life < npc.lifeMax * 0.4f)
+					if (npc.life < npc.lifeMax * 0.4f) {
 						npc.ai[0] += 2f;
+						KingSlimePhase3(npc);
+					}
 
-					if (npc.life < npc.lifeMax * 0.2f)
+					if (npc.life < npc.lifeMax * 0.2f) {
 						npc.ai[0] += 3f;
+						KingSlimePhase4(npc);
+					}
 
-					if (npc.life < npc.lifeMax * 0.1f)
+					if (npc.life < npc.lifeMax * 0.1f) {
 						npc.ai[0] += 4f;
+						KingSlimePhase5(npc);
+					}
 
 					if (npc.ai[0] >= 0f) {
 						npc.netUpdate = true;
@@ -339,10 +364,10 @@ namespace BossRush.Common.Nightmare {
 								npc.ai[1] += 1f;
 								break;
 							case 3:
-								KingSlimeStartOfBigJump(npc, ref jumpStrength, ref MoveSpeed, ref DelayAttack);
 								jumpStrength = -13f;
 								MoveSpeed = 3.5f;
 								DelayAttack = -200f;
+								KingSlimeStartOfBigJump(npc, ref jumpStrength, ref MoveSpeed, ref DelayAttack);
 								npc.ai[1] = 0f;
 								break;
 							default:
@@ -402,8 +427,8 @@ namespace BossRush.Common.Nightmare {
 				return;
 
 			npc.ai[3] = npc.life;
-			int num257 = Main.rand.Next(1, 4);
-			for (int num258 = 0; num258 < num257; num258++) {
+			int RandomSpawnNPCamount = Main.rand.Next(1, 4);
+			for (int i = 0; i < RandomSpawnNPCamount; i++) {
 				int x = (int)(npc.position.X + Main.rand.NextFloat(npc.width - 32));
 				int y = (int)(npc.position.Y + Main.rand.NextFloat(npc.height - 32));
 				int num259 = 1;
@@ -420,13 +445,46 @@ namespace BossRush.Common.Nightmare {
 					NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, slimeMinion);
 			}
 		}
-		private void KingSlimeAttackSwitcher(NPC npc) {
+		private void OnFirstSpawnKingSlime(NPC npc) {
 
 		}
+		private void KingSlimeStandingStill(NPC npc) {
+
+		}
+		private void KingSlimePhase1(NPC npc) {
+
+		}
+		private void KingSlimePhase2(NPC npc) {
+
+		}
+		private void KingSlimePhase3(NPC npc) {
+
+		}
+		private void KingSlimePhase4(NPC npc) {
+
+		}
+		private void KingSlimePhase5(NPC npc) {
+
+		}
+		private void KingSlimeTeleport(NPC npc) {
+
+		}
+		/// <summary>
+		/// This is where King slime would do a massive jump, only when 
+		/// </summary>
+		/// <param name="npc">The king slime himself</param>
+		/// <param name="JumpStrength">This dictate how much velocity.Y will KS gain, must be negative</param>
+		/// <param name="MoveSpeed">This dictate how much velocity.X will KS gain</param>
+		/// <param name="DelayAttack">This is a timer that count upward, so setting negative mean it will delay his attack even longer</param>
 		private void KingSlimeStartOfBigJump(NPC npc, ref float JumpStrength, ref float MoveSpeed, ref float DelayAttack) {
 			for (int i = 0; i < 16; i++) {
 				Vector2 spreadoutring = Vector2.One.Vector2DistributeEvenly(16, 360, i) * 10f;
 				Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, spreadoutring, ProjectileID.SpikedSlimeSpike, npc.damage, 4f);
+			}
+			if (npc.life < npc.lifeMax * .5f) {
+				JumpStrength -= 3;
+				MoveSpeed += 2f;
+				DelayAttack += 30;
 			}
 		}
 		public override void PostAI(NPC npc) {
