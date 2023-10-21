@@ -26,6 +26,7 @@ namespace BossRush.Contents.Artifacts
 				Player.runAcceleration += .5f;
 				Player.jumpSpeed += 3f;
 				Player.noFallDmg = true;
+				Player.accRunSpeed += 5f;
 			}
 		}
 		public override void PostUpdate() {

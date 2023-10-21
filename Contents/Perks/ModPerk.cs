@@ -184,7 +184,7 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			Tooltip = "" +
 				"+ Mysterious potion are slightly better than before" +
-				"+ Increases amount of potion drop from lootbox by 1";
+				"\n+ Increases amount of potion drop from lootbox by 1";
 			StackLimit = 3;
 		}
 		public override void ResetEffect(Player player) {
