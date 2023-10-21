@@ -208,7 +208,7 @@ namespace BossRush.Contents.Items.Weapon {
 					Deagle_DaedalusStormBow_coolDown = BossRushUtils.CoolDown(Deagle_DaedalusStormBow_coolDown);
 				}
 			}
-			if (item.type == ModContent.ItemType<IceStorm>()) {
+			if (item.type != ModContent.ItemType<IceStorm>()) {
 				IceStorm_SpeedMultiplier = 1;
 			}
 		}

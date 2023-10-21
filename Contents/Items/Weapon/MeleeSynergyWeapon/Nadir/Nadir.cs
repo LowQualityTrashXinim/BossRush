@@ -1,12 +1,12 @@
-﻿using BossRush.Common.Utils;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Utils;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 	internal class Nadir : SynergyModItem {
@@ -72,7 +72,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
 			if (Projectile.timeLeft == 999) {
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
-				maxProgress += (int)(MaxLengthX * .1f);
+				maxProgress += (int)(MaxLengthX * .075f);
 				progression = maxProgress;
 				MouseXPosDirection = Main.rand.NextBool().BoolOne() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
 				MaxLengthY = -(MaxLengthX + Main.rand.NextFloat(-10, 80)) * .25f * MouseXPosDirection;
@@ -81,9 +81,9 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			if (progression <= 0) {
-				if (Projectile.timeLeft > 30)
-					Projectile.timeLeft = 30;
-				Projectile.alpha = (int)MathHelper.Lerp(0, 255, (30 - Projectile.timeLeft) / 30f);
+				if (Projectile.timeLeft > 10)
+					Projectile.timeLeft = 10;
+				Projectile.alpha = (int)MathHelper.Lerp(0, 255, (10 - Projectile.timeLeft) / 10f);
 				Projectile.velocity = Vector2.Zero;
 				Projectile.Center = player.Center + offset;
 				return;

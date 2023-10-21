@@ -14,9 +14,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy {
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			base.ModifySynergyToolTips(ref tooltips, modplayer);
 			if (modplayer.OrbOfEnergy_BookOfSkulls)
-				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.BookofSkulls}] Energy lighting can home in toward enemy"));
+				tooltips.Add(new TooltipLine(Mod, "OrbOfEnergy_BookOfSkulls", $"[i:{ItemID.BookofSkulls}] Energy lighting can home in toward enemy"));
 			if (modplayer.OrbOfEnergy_DD2LightningAuraT1Popper)
-				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.DD2LightningAuraT1Popper}] Energy lighting are much more deadly"));
+				tooltips.Add(new TooltipLine(Mod, "OrbOfEnergy_DD2LightningAuraT1Popper", $"[i:{ItemID.DD2LightningAuraT1Popper}] Energy lighting are much more deadly"));
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			if (player.HasItem(ItemID.BookofSkulls)) {
