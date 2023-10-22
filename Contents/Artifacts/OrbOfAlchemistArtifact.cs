@@ -18,8 +18,10 @@ namespace BossRush.Contents.Artifacts {
 			Alchemist = Player.HasArtifact<OrbOfAlchemistArtifact>();
 		}
 		public override void PostUpdate() {
-			Player.GetModPlayer<ChestLootDropPlayer>().PotionNumberAmountAddition += 5;
-			Player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += 7;
+			if (Alchemist) {
+				Player.GetModPlayer<ChestLootDropPlayer>().PotionNumberAmountAddition += 5;
+				Player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += 7;
+			}
 		}
 		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			AlchemistOverCharged(target, ref modifiers);

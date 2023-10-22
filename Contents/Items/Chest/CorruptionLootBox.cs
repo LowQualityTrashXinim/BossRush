@@ -58,13 +58,6 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
-			player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
-			player.QuickSpawnItem(entitySource, ItemID.Hellforge);
-			player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystalStand);
-			player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<NeoDynamite>());
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<TowerDestruction>());
-			player.QuickSpawnItem(entitySource, Main.rand.Next(new int[] { ItemID.DiamondHook, ItemID.RubyHook }));
 		}
 	}
 }

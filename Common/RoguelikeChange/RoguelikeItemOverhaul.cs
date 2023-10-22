@@ -34,9 +34,13 @@ namespace BossRush.Common.RoguelikeChange {
 				return;
 			}
 			if (item.type == ItemID.Sandgun) {
-				tooltips.Add(new TooltipLine(Mod, "SandGunChange",
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun",
 					"The sand projectile no longer spawn upon kill" +
 					"\nDecrease damage by 55%"));
+			}
+			if (item.type == ItemID.NightVisionHelmet) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet",
+					"Increases gun accurancy by 25%"));
 			}
 			int[] armorSet = new int[] { player.armor[0].type, player.armor[1].type, player.armor[2].type };
 			foreach (TooltipLine tooltipLine in tooltips) {
@@ -289,6 +293,13 @@ namespace BossRush.Common.RoguelikeChange {
 		public override void UpdateEquip(Item item, Player player) {
 			if (item.type == ItemID.NightVisionHelmet)
 				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+			if (item.type == ItemID.VikingHelmet) {
+				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
+			}
+		}
+		public override void ModifyItemScale(Item item, Player player, ref float scale) {
+			if (player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee)
+				scale += .1f;
 		}
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
 			if (item.type == ItemID.EoCShield)
@@ -300,6 +311,9 @@ namespace BossRush.Common.RoguelikeChange {
 		private void VanillaChange(Item item, Player player, ref StatModifier damage) {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
+			}
+			if (player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
+				damage += .15f;
 			}
 			if (item.type == ItemID.Sandgun) {
 				damage -= .55f;
@@ -330,6 +344,8 @@ namespace BossRush.Common.RoguelikeChange {
 		public bool TungstenArmor = false;
 		public bool PlatinumArmor = false;
 		int PlatinumArmorCountEffect = 0;
+
+		public bool RoguelikeOverhaul_VikingHelmet = false;
 		public override void ResetEffects() {
 			WoodArmor = false;
 			BorealWoodArmor = false;
@@ -347,6 +363,8 @@ namespace BossRush.Common.RoguelikeChange {
 			LeadArmor = false;
 			TungstenArmor = false;
 			PlatinumArmor = false;
+
+			RoguelikeOverhaul_VikingHelmet = false;
 		}
 		public override void PreUpdate() {
 			ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
