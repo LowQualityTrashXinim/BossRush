@@ -56,6 +56,7 @@ namespace BossRush.Common {
 				//normal drop
 				lifecrystal += 2;
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
+				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
 			}
 			if (npc.type == NPCID.BrainofCthulhu) {
@@ -66,6 +67,7 @@ namespace BossRush.Common {
 				//Normal mode drop
 				lifecrystal += 2;
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
+				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
 			}
 			if (npc.type == NPCID.QueenBee) {

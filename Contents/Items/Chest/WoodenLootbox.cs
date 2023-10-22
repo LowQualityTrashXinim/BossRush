@@ -90,9 +90,6 @@ namespace BossRush.Contents.Items.Chest {
 			player.QuickSpawnItem(entitySource, ItemID.SlimeCrown);
 			player.QuickSpawnItem(entitySource, ItemID.GrapplingHook);
 			player.QuickSpawnItem(entitySource, ItemID.LesserHealingPotion, 5);
-			player.QuickSpawnItem(entitySource, ItemID.MagicConch);
-			player.QuickSpawnItem(entitySource, ItemID.MagicMirror);
-			player.QuickSpawnItem(entitySource, ItemID.DemonConch);
 		}
 	}
 }

@@ -66,7 +66,6 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
 			player.QuickSpawnItem(entitySource, ItemID.IronAnvil);
-			player.QuickSpawnItem(entitySource, ItemID.Campfire, 10);
 		}
 	}
 }

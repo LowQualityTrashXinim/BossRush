@@ -21,7 +21,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Projectile.light = 1f;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			Player player = Main.player[Projectile.owner];
 			Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
+			if(!Projectile.Center.IsCloseToPosition(player.Center, 750f)) {
+				Rotate += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * ((player.Center - Projectile.Center).Length() -750f) * .1f;
+			}
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
 		}
 		public override void AI() {
@@ -31,6 +35,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			if (RicochetOff(out Vector2 pos2)) {
 				Projectile.netUpdate = true;
 				Projectile.damage += 3;
+				Projectile.CritChance += 2;
 				if (pos2 != Vector2.Zero) {
 					Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
 				}

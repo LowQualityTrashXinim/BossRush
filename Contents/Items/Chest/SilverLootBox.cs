@@ -68,8 +68,6 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
-			player.QuickSpawnItem(entitySource, ItemID.StickyDynamite, 50);
-			player.QuickSpawnItem(entitySource, ItemID.Campfire, 10);
 			player.QuickSpawnItem(entitySource, Main.rand.Next(new int[] { ItemID.AmethystHook, ItemID.TopazHook, ItemID.SapphireHook, ItemID.EmeraldHook }));
 		}
 	}

@@ -22,6 +22,9 @@ namespace BossRush.Contents.Items.Chest {
 			player.QuickSpawnItem(entitySource, ItemID.VortexChest);
 			player.QuickSpawnItem(entitySource, ItemID.SolarChest);
 			player.QuickSpawnItem(entitySource, ItemID.NebulaChest);
+			player.QuickSpawnItem(entitySource, ItemID.MagicConch);
+			player.QuickSpawnItem(entitySource, ItemID.MagicMirror);
+			player.QuickSpawnItem(entitySource, ItemID.DemonConch);
 		}
 	}
 }
