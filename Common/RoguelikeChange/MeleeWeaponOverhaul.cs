@@ -27,9 +27,217 @@ namespace BossRush.Common.RoguelikeChange {
 			if (item.noMelee) {
 				return;
 			}
+			#region Vanilla Fixes
+			switch (item.type) {
+				case ItemID.WoodenSword:
+				case ItemID.BorealWoodSword:
+				case ItemID.RichMahoganySword:
+				case ItemID.PalmWoodSword:
+				case ItemID.EbonwoodSword:
+				case ItemID.ShadewoodSword:
+				case ItemID.PearlwoodSword:
+					item.width = item.height = 32;
+					break;
+				case ItemID.BluePhaseblade:
+				case ItemID.RedPhaseblade:
+				case ItemID.GreenPhaseblade:
+				case ItemID.PurplePhaseblade:
+				case ItemID.OrangePhaseblade:
+				case ItemID.YellowPhaseblade:
+				case ItemID.WhitePhaseblade:
+					item.width = item.height = 48;
+					break;
+				case ItemID.BluePhasesaber:
+				case ItemID.RedPhasesaber:
+				case ItemID.GreenPhasesaber:
+				case ItemID.PurplePhasesaber:
+				case ItemID.OrangePhasesaber:
+				case ItemID.YellowPhasesaber:
+				case ItemID.WhitePhasesaber:
+					item.width = item.height = 56;
+					break;
+				case ItemID.CopperBroadsword:
+				case ItemID.TinBroadsword:
+				case ItemID.LeadBroadsword:
+				case ItemID.IronBroadsword:
+					item.width = item.height = 38;
+					break;
+				case ItemID.SilverBroadsword:
+				case ItemID.TungstenBroadsword:
+					item.width = item.height = 39;
+					break;
+				case ItemID.GoldBroadsword:
+				case ItemID.PlatinumBroadsword:
+					item.width = item.height = 42;
+					break;
+				case ItemID.CobaltSword:
+					item.width = 56;
+					item.height = 58;
+					break;
+				case ItemID.PalladiumSword:
+					item.width = 50;
+					item.height = 60;
+					break;
+				case ItemID.MythrilSword:
+					item.width = item.height = 58;
+					break;
+				case ItemID.OrichalcumSword:
+					item.width = item.height = 54;
+					break;
+				case ItemID.AdamantiteSword:
+				case ItemID.TitaniumSword:
+					item.width = item.height = 60;
+					break;
+				case ItemID.Muramasa:
+					item.width = 50;
+					item.height = 64;
+					break;
+				case ItemID.LightsBane:
+					item.width = item.height = 50;
+					break;
+				case ItemID.BloodButcherer:
+					item.width = 50;
+					item.height = 58;
+					break;
+				case ItemID.BladeofGrass:
+					item.width = item.height = 70;
+					break;
+				case ItemID.FieryGreatsword:
+					item.width = 54;
+					item.height = 54;
+					break;
+				case ItemID.TheHorsemansBlade:
+					item.width = item.height = 54;
+					break;
+				case ItemID.Frostbrand:
+					item.width = 50;
+					item.height = 58;
+					break;
+				case ItemID.CactusSword:
+					item.width = item.height = 48;
+					break;
+				case ItemID.TerraBlade:
+					item.width = 48;
+					item.height = 52;
+					break;
+				case ItemID.BeamSword:
+					item.width = item.height = 52;
+					break;
+				case ItemID.Meowmere:
+					item.width = 50;
+					item.height = 58;
+					break;
+				case ItemID.Starfury:
+					item.width = item.height = 42;
+					break;
+				case ItemID.StarWrath:
+					item.width = 46;
+					item.height = 54;
+					break;
+				case ItemID.BatBat:
+					item.width = item.height = 52;
+					break;
+				case ItemID.TentacleSpike:
+					item.width = 44;
+					item.height = 40;
+					break;
+				case ItemID.NightsEdge:
+					item.width = 50;
+					item.height = 54;
+					break;
+				case ItemID.TrueNightsEdge:
+					item.width = 48;
+					item.height = 56;
+					break;
+				case ItemID.Excalibur:
+					item.width = item.height = 48;
+					break;
+				case ItemID.TrueExcalibur:
+					item.width = item.height = 52;
+					break;
+				case ItemID.InfluxWaver:
+					item.width = item.height = 50;
+					break;
+				case ItemID.Seedler:
+					item.width = 48;
+					item.height = 68;
+					break;
+				case ItemID.Keybrand:
+					item.width = 58;
+					item.height = 62;
+					break;
+				case ItemID.ChlorophyteSaber:
+					item.width += 10;
+					item.height += 10;
+					break;
+				case ItemID.BreakerBlade:
+					item.width = 80;
+					item.height = 92;
+					break;
+				case ItemID.BoneSword:
+					item.width = item.height = 50;
+					break;
+				case ItemID.ChlorophyteClaymore:
+					item.width = item.height = 68;
+					break;
+				case ItemID.Bladetongue:
+					item.width = item.height = 50;
+					break;
+				case ItemID.DyeTradersScimitar:
+					item.width = 40;
+					item.height = 48;
+					break;
+				case ItemID.BeeKeeper:
+					item.width = item.height = 44;
+					break;
+				case ItemID.EnchantedSword:
+					item.width = item.height = 34;
+					break;
+				case ItemID.ZombieArm:
+					item.width = 38;
+					item.height = 40;
+					break;
+				case ItemID.FalconBlade:
+					item.width = 36;
+					item.height = 40;
+					break;
+				case ItemID.Cutlass:
+					item.width = 40;
+					item.height = 48;
+					break;
+				case ItemID.CandyCaneSword:
+					item.width = 44;
+					item.height = 75;
+					break;
+				case ItemID.IceBlade:
+					item.width = 38;
+					item.height = 34;
+					break;
+				case ItemID.HamBat:
+					item.width = 44;
+					item.height = 40;
+					break;
+				case ItemID.DD2SquireBetsySword:
+					item.width = 66; item.height = 66;
+					break;
+				case ItemID.PurpleClubberfish:
+					item.width = item.height = 50;
+					break;
+				case ItemID.AntlionClaw:
+					item.width = item.height = 32;
+					break;
+				case ItemID.Katana:
+					item.width = 48;
+					item.height = 54;
+					break;
+				case ItemID.DD2SquireDemonSword:
+				case ItemID.ChristmasTreeSword:
+					item.width = item.height = 60;
+					break;
+			}
 			item.width += 10;
 			item.height += 10;
-
+			#endregion
 			switch (item.type) {
 				#region BossRushUseStyle.Swipe
 				//Sword that have even end
@@ -290,7 +498,7 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			//percentDone = BossRushUtils.InOutExpo(percentDone);
+			percentDone = BossRushUtils.InOutExpo(percentDone);
 			float baseAngle = modPlayer.data.ToRotation();
 			float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
 			float start = baseAngle + angle * direct;
@@ -305,7 +513,7 @@ namespace BossRush.Common.RoguelikeChange {
 			Swipe(start, end, percentDone, player, 1);
 		}
 		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
-			float currentAngle = MathHelper.SmoothStep(start, end, percentDone);
+			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			player.itemRotation = currentAngle;
 			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
