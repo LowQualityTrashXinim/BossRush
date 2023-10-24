@@ -21,6 +21,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Projectile.light = 1f;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			if(target.type == NPCID.TargetDummy) {
+				return;
+			}
 			Player player = Main.player[Projectile.owner];
 			Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
 			if(!Projectile.Center.IsCloseToPosition(player.Center, 750f)) {
@@ -34,8 +37,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Main.dust[dustnumber].fadeIn = 1f;
 			if (RicochetOff(out Vector2 pos2)) {
 				Projectile.netUpdate = true;
-				Projectile.damage += 3;
-				Projectile.CritChance += 2;
+				Projectile.damage += 10;
+				Projectile.CritChance += 5;
 				if (pos2 != Vector2.Zero) {
 					Projectile.velocity = (pos2 - Projectile.position).SafeNormalize(Vector2.UnitX) * 10;
 				}
@@ -84,7 +87,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 				if (list.Count == 1) {
 					if (Vector2.DistanceSquared(Projectile.Center, list[0].Center) <= 225) {
 						list[0].Kill();
-						Pos2 = Projectile.Center.LookForHostileNPCPositionClosest(1000);
+						Pos2 = Main.player[Projectile.owner].Center.LookForHostileNPCPositionClosest(1000);
+						if(Pos2 == Vector2.Zero)
+							Pos2 = Projectile.Center.LookForHostileNPCPositionClosest(1000);
 						return true;
 					}
 				}

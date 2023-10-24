@@ -117,7 +117,8 @@ namespace BossRush {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
 		}
 		public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Player player, int width, int height, float offset = 0) {
-			float length = new Vector2(width, height).Length() * player.GetAdjustedItemScale(player.HeldItem);
+			float scale = player.GetAdjustedItemScale(player.HeldItem);
+			float length = new Vector2(width, height).Length() * scale;
 			Vector2 handPos = Vector2.UnitY.RotatedBy(player.compositeFrontArm.rotation);
 			Vector2 endPos = handPos;
 			endPos *= length;
