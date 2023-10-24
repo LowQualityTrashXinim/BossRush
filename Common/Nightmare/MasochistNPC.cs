@@ -104,6 +104,9 @@ namespace BossRush.Common.Nightmare {
 				spawnRate -= 10;
 			}
 		}
+		public override bool PreAI(NPC npc) {
+			return base.PreAI(npc);
+		}
 		public override void AI(NPC npc) {
 			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				//if (npc.aiStyle == 15) {
@@ -123,8 +126,8 @@ namespace BossRush.Common.Nightmare {
 			float num237 = 1f;
 			bool flag7 = false;
 			bool flag8 = false;
-			bool flag6 = false;
-			// I have comment out flag6 cause it seem to do nothing beside allowing KS to resize ?
+			//bool flag6 = false;
+			// I have comment out flag6 cause it seem to do nothing beside allowing KS to resize ( which always is true ???) ?
 			// Maybe terraria dev plan to at some point to reuse King slime AI onto other slime ?
 			// I have look at wiki and found at no point this ai is reuse so idk https://terraria.wiki.gg/wiki/AI
 			//Not sure what num 238 even do tbh
@@ -140,7 +143,7 @@ namespace BossRush.Common.Nightmare {
 			if (npc.localAI[3] == 0f) {
 				OnFirstSpawnKingSlime(npc);
 				npc.localAI[3] = 1f;
-				flag6 = true;
+				//flag6 = true;
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
 					npc.ai[0] = -100f;
 					npc.TargetClosest();
@@ -409,7 +412,7 @@ namespace BossRush.Common.Nightmare {
 			num255 = num255 * 0.5f + 0.75f;
 			num255 *= num236;
 			num255 *= num237;
-			if (num255 != npc.scale || flag6) {
+			if (num255 != npc.scale /*|| flag6*/) {
 				npc.position.X += npc.width / 2;
 				npc.position.Y += npc.height;
 				npc.scale = num255;

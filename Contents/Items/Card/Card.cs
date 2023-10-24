@@ -198,6 +198,7 @@ namespace BossRush.Contents.Items.Card {
 				}
 			}
 		}
+		public const string DEFAULT_CURSES_CARD_ERROR = "Error ! You shouldn't be getting this unless you done something horribly wrong";
 		public string CursedStringStats(int curseID) {
 			string CursedString;
 			switch (curseID) {
@@ -238,7 +239,7 @@ namespace BossRush.Contents.Items.Card {
 					CursedString = "Cards stats are halved";
 					break;
 				default:
-					CursedString = "Error ! You shouldn't be getting this unless you done something horribly wrong";
+					CursedString = DEFAULT_CURSES_CARD_ERROR;
 					break;
 			}
 			return CursedString;
