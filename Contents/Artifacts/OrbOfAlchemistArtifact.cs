@@ -33,7 +33,15 @@ namespace BossRush.Contents.Artifacts {
 			if (Alchemist) {
 				int lengthNPC = target.buffType.Where(i => i != 0).Count();
 				int lengthPlayer = Player.buffType.Where(i => i != 0).Count();
-				modifiers.FinalDamage *= lengthNPC + Player.buffType.Where(i => i != 0).Count();
+				int finalLength = lengthNPC + Player.buffType.Where(i => i != 0).Count();
+				if (finalLength <= 0) {
+					modifiers.FinalDamage *= 0;
+				}
+				else {
+					for (int i = 1; i < finalLength; i++) {
+						modifiers.FinalDamage *= 2;
+					}
+				}
 				if (lengthNPC > 0) {
 					for (int i = target.buffType.Length - 1; i >= 0; i--) {
 						if (target.buffType[i] == 0)

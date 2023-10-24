@@ -74,9 +74,13 @@ namespace BossRush.Contents.Perks {
 			player.buffImmune[BuffID.Poisoned] = true;
 		}
 		public override void Update(Player player) {
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 150);
-			for (int i = 0; i < 2; i++) {
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(100, 100), 0, 0, DustID.Poisoned);
+			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 350);
+			for (int i = 0; i < 6; i++) {
+				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(350, 350), 0, 0, DustID.Poisoned);
+				Main.dust[dustRing].noGravity = true;
+				Main.dust[dustRing].velocity = Vector2.Zero;
+				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(350, 350), 0, 0, DustID.Poisoned);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = Vector2.Zero;
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
@@ -99,9 +103,13 @@ namespace BossRush.Contents.Perks {
 			player.buffImmune[BuffID.OnFire] = true;
 		}
 		public override void Update(Player player) {
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 150);
-			for (int i = 0; i < 2; i++) {
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(100, 100), 0, 0, DustID.Torch);
+			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 350);
+			for (int i = 0; i < 4; i++) {
+				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(350, 350), 0, 0, DustID.Torch);
+				Main.dust[dustRing].noGravity = true;
+				Main.dust[dustRing].velocity = Vector2.Zero;
+				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(350, 350), 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);

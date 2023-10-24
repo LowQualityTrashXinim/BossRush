@@ -172,6 +172,7 @@ Mods: {
 			MagicboltProjectile.DisplayName: Magicbolt Projectile
 			OreBowAttackOne.DisplayName: Ore Bow Attack One
 			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
+			LeafProjectile.DisplayName: Leaf Projectile
 		}
 
 		NPCs: {
@@ -1537,6 +1538,11 @@ Mods: {
 
 			BundleHelper: {
 				DisplayName: Bundle Helper
+				Tooltip: ""
+			}
+
+			ItemBundle: {
+				DisplayName: Item Bundle
 				Tooltip: ""
 			}
 		}

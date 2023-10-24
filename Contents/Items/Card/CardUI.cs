@@ -47,6 +47,7 @@ namespace BossRush.Contents.Items.Card {
 					cardUI.CardStats.AddRange(CardStats);
 					cardUI.CardStatsNumber.AddRange(CardStatsNumber);
 					cardUI.PostTierModify = PostTierModify;
+					cardUI.CurseID = CursedID;
 					cardUI.UISetPosition(player.Center - new Vector2(-100 + 100 * l, 40), new Vector2(26, 26));
 					cardUI.UISetWidthHeight(52, 52);
 					Append(cardUI);
@@ -198,6 +199,8 @@ namespace BossRush.Contents.Items.Card {
 						string text = "";
 						for (int i = 0; i < CardStats.Count; i++) {
 							text += StatNumberAsText(CardStats[i], CardStatsNumber[i]);
+							if (CurseID >= 1 && CurseID <= 12)
+								text += modplayer.CursedStringStats(CurseID);
 							if (i != CardStats.Count - 1)
 								text += "\n";
 						}
@@ -215,6 +218,7 @@ namespace BossRush.Contents.Items.Card {
 		/// </summary>
 		public List<float> CardStatsNumber = new List<float>();
 		public int PostTierModify = 0;
+		public int CurseID = -1;
 		PlayerCardHandle modplayer;
 		public CardStatsIncreasesSelection(Asset<Texture2D> texture, PlayerCardHandle Modplayer) : base(texture) {
 			modplayer = Modplayer;
@@ -227,13 +231,6 @@ namespace BossRush.Contents.Items.Card {
 			}
 			CardSystem uiSystemInstance = ModContent.GetInstance<CardSystem>();
 			uiSystemInstance.userInterface.SetState(null);
-		}
-		private void ShowColorText() {
-			//Color textcolor = Color.Green;
-			//if (CardStatsNumber[i] < 0) {
-			//	textcolor = Color.Red;
-			//}
-			//BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(CardStats[i], CardStatsNumber[i]), offsetPos, 110 + 10 * PostTierModify);
 		}
 		private void AddStatsToPlayer(PlayerCardHandle modplayer, PlayerStats stats, float amount) {
 			switch (stats) {
