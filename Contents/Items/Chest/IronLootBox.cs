@@ -5,7 +5,6 @@ using Terraria.ID;
 namespace BossRush.Contents.Items.Chest {
 	class IronLootBox : LootBoxBase {
 		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Good Luck!");
 		}
 		public override void SetDefaults() {
 			Item.width = 54;

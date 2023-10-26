@@ -507,10 +507,8 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			float baseAngle = modPlayer.data.ToRotation() - MathHelper.Pi;
-			float start = baseAngle + (MathHelper.Pi + MathHelper.PiOver2) * player.direction;
-			float end = baseAngle - MathHelper.TwoPi * player.direction;
-			Swipe(start, end, percentDone, player, 1);
+			float end = (MathHelper.TwoPi + MathHelper.Pi) * -player.direction;
+			Swipe(0, end, percentDone, player, 1);
 		}
 		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
@@ -573,6 +571,7 @@ namespace BossRush.Common.RoguelikeChange {
 		Vector2 lastPlayerPositionBeforeAnimation = Vector2.Zero;
 		bool IsAlreadyHeldDown = false;
 		public float CustomItemRotation = 0;
+		public float itemProgress = 0;
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
