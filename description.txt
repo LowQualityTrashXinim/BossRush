@@ -1,20 +1,19 @@
-Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished. If you spot any bug, please consider reporting it in our Discord server.
-Note: Multiplayer is currently in the works, so it will not work.
+Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished, unfinished. If you spot any bug, please consider reporting it in our Discord server.
+Note: Multiplayer is currently in the works, so it may not work as expect.
 
+[OUTDATED]
 Roguelike Terraria is an expansive boss rush which aims to offer a fair and diverse randomised experience, all while eliminating the need for grinding.
 Your goal is to defeat Moon Lord by making use of the limited resources from special randomised treasure chests inside a simulated, simplified world.
 
-If you are dissatisfied with the intended gameplay flow, you may disable relevant functions in the 'Main Experience' section, as well as enable extra gameplay gimmicks under the 'Difficulty' section inside the mod's config.
+If you are dissatisfied with the intended gameplay flow, you may disable relevant functions in the config or change your config, the config are made to be customizable that you can learn at your own pace or add extra challenge for yourself
 
 You may use this mod in any playthrough or modpack as long as you credit 'LowQualityTrash' for the mod. If you have further questions, don't hesitate to join our Discord server:
 https://discord.gg/YqN5z5WVaS
 
-Special thanks to :
-DanielTheDragon helping with sprite work !
-pototo spending your time play testing, helping me with the problem in the mod and play testing the mod !
-psuedofaux helping the mod massively with the sprite work !
-sorrow994 helping me in anyway that is possible !
-Papyro for sticking with me from the beginning of the mod to now and your constant support !
+[SPECIAL THANK]
+{currently updating}
 
 Note from the main dev :
 - The mod is as the name suggest, in beta and also a demo, the mod as right now act like a boss rush, so please play the mod with open mind, cause this mod isn't like your regular terraria
+- Another thing I want to add on is that this mod is not meant for average player that play calamity or a newcommer mod, this mod do not follow your usual terraria gameplay and should not be treated as such, if you are planning to play this with calamity/thorium/terraria mindset then either change your mindset or don't play this mod at all, this mod will have no mercy on you
+- Also I want to say is that the mod also change a lot of item in vanilla, if you dislike this change, please disable Roguelike Overhaul in the config

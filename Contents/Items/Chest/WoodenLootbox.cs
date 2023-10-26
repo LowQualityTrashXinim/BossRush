@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
 using System.Collections.Generic;
 using Terraria;
@@ -13,7 +14,12 @@ namespace BossRush.Contents.Items.Chest {
 			Item.rare = 0;
 		}
 		public override List<int> FlagNumber() => new List<int> { 0, 1, 2 };
-
+		public override void LootPoolSetStaticDefaults() {
+			DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
+			DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
+			DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
+			DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
+		}
 		public override List<int> FlagNumAcc() => new List<int> { 2 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

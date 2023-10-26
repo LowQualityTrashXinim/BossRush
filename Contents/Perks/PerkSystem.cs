@@ -49,7 +49,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
-		public int PerkAmount = 3;
+		public int PerkAmount = 4;
 		/// <summary>
 		/// Keys : Perk type<br/>
 		/// Values : Stack value
@@ -83,8 +83,8 @@ namespace BossRush.Contents.Perks {
 				ModPerkLoader.GetPerk(i).StackAmount = 0;
 			}
 			foreach (int perk in perks.Keys) {
-				ModPerkLoader.GetPerk(perk).ResetEffect(Player);
 				ModPerkLoader.GetPerk(perk).StackAmount = perks[perk];
+				ModPerkLoader.GetPerk(perk).ResetEffect(Player);
 			}
 		}
 		public override void PostUpdateEquips() {

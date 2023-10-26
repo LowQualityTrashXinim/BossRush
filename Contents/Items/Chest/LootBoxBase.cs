@@ -2,6 +2,7 @@
 using Terraria;
 using System.IO;
 using Terraria.ID;
+using System.Linq;
 using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.GameContent;
@@ -13,35 +14,60 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
-		private List<int> DropItemMelee = new List<int>();
-		private List<int> DropItemRange = new List<int>();
-		private List<int> DropItemMagic = new List<int>();
-		private List<int> DropItemSummon = new List<int>();
-		private List<int> DropItemMisc = new List<int>();
-		private List<int> AllOfLootPossiblity = new List<int>();
-		public virtual bool CanLootRNGbeRandomize() => true;
+		/// <summary>
+		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
+		/// </summary>
+		public HashSet<int> DropItemMelee = new HashSet<int>();
+		/// <summary>
+		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
+		/// </summary>
+		public HashSet<int> DropItemRange = new HashSet<int>();
+		/// <summary>
+		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
+		/// </summary>
+		public HashSet<int> DropItemMagic = new HashSet<int>();
+		/// <summary>
+		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
+		/// </summary>
+		public HashSet<int> DropItemSummon = new HashSet<int>();
+		/// <summary>
+		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
+		/// </summary>
+		public HashSet<int> DropItemMisc = new HashSet<int>();
+		public HashSet<int> AllOfLootPossiblity = new HashSet<int>();
+		public override void SetStaticDefaults() {
+			base.SetStaticDefaults();
+			LootPoolSetStaticDefaults();
+			AllOfLootPossiblity.UnionWith(DropItemMelee);
+			AllOfLootPossiblity.UnionWith(DropItemRange);
+			AllOfLootPossiblity.UnionWith(DropItemMagic);
+			AllOfLootPossiblity.UnionWith(DropItemSummon);
+			AllOfLootPossiblity.UnionWith(DropItemMisc);
+		}
+		/// <summary>
+		/// Set your lootbox loot pool here<br/>
+		/// Add loot pool into this <see cref="DropItemMelee"/><see cref="DropItemRange"/><see cref="DropItemMagic"/><see cref="DropItemSummon"/><see cref="DropItemMisc"/>
+		/// </summary>
+		public virtual void LootPoolSetStaticDefaults() {
+
+		}
 		public virtual bool ChestUseOwnLogic => false;
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
 			if (!ChestUseOwnLogic) {
-				if (AllOfLootPossiblity.Count < 1) {
-					AddLoot(FlagNumber());
-				}
 				chestplayer.GetAmount();
 				List<int> potiontotal = new List<int>();
 				potiontotal.AddRange(TerrariaArrayID.NonMovementPotion);
 				potiontotal.AddRange(TerrariaArrayID.MovementPotion);
 				TooltipLine chestline = new TooltipLine(Mod, "ChestLoot",
-					$"Weapon : [i:{Main.rand.Next(AllOfLootPossiblity)}] x {chestplayer.weaponAmount}\n" +
+					$"Weapon : [i:{Main.rand.NextFromList(AllOfLootPossiblity)}] x {chestplayer.weaponAmount}\n" +
 					$"Potion type : [i:{Main.rand.Next(potiontotal)}] x {chestplayer.potionTypeAmount}\n" +
 					$"Amount of potion : [i:{ItemID.RegenerationPotion}][i:{ItemID.SwiftnessPotion}][i:{ItemID.IronskinPotion}] x {chestplayer.potionNumAmount}");
 				tooltips.Add(chestline);
 			}
-
 			PostModifyTooltips(ref tooltips);
 		}
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
@@ -83,175 +109,10 @@ namespace BossRush.Contents.Items.Chest {
 			return 0;
 		}
 		/// <summary>
-		/// Allow for safely add extra loot, this will be called After all the loot is added
+		/// Use this to modify the item pool before the process of choosing weapon is made<br/>
+		/// Use <see cref="DropItemMelee"/> <see cref="DropItemRange"/> <see cref="DropItemMagic"/> <see cref="DropItemSummon"/> <see cref="DropItemMisc"/> to modify loot pool
 		/// </summary>
-		protected virtual List<int> SafePostAddLootMelee() => new List<int> { };
-
-		/// <summary>
-		/// Allow for safely add extra loot, this will be called After all the loot is added
-		/// </summary>
-		protected virtual List<int> SafePostAddLootRange() => new List<int> { };
-
-		/// <summary>
-		/// Allow for safely add extra loot, this will be called After all the loot is added
-		/// </summary>
-		protected virtual List<int> SafePostAddLootMagic() => new List<int> { };
-
-		/// <summary>
-		/// Allow for safely add extra loot, this will be called After all the loot is added
-		/// </summary>
-		protected virtual List<int> SafePostAddLootSummon() => new List<int> { };
-
-		/// <summary>
-		/// Allow for safely add extra loot, this will be called After all the loot is added
-		/// </summary>
-		protected virtual List<int> SafePostAddLootMisc() => new List<int> { };
-		public static List<int> SetUpRNGTier(List<int> FlagNum) {
-			if (FlagNum.Count < 2) {
-				return FlagNum;
-			}
-			List<int> FlagNumNew = new List<int> { FlagNum[0] };
-			float GetOnePercentChance = 100 / (float)FlagNum.Count;
-			for (int i = 1; i < FlagNum.Count; ++i) {
-				if (Main.rand.Next(101) < GetOnePercentChance * i) {
-					FlagNumNew.Add(FlagNum[^i]);//get element from the last of the list
-				}
-			}
-			return FlagNumNew;
-		}
-		private void AddLoot(List<int> flagNumber) {
-			if (CanLootRNGbeRandomize()) {
-				flagNumber = SetUpRNGTier(flagNumber);
-				flagNumber = flagNumber.RemoveDupeInList();
-				flagNumber.Sort();
-			}
-			for (int i = 0; i < flagNumber.Count; ++i) {
-				switch (flagNumber[i]) {
-					case 0://PreBoss
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
-						DropItemRange.AddRange(TerrariaArrayID.RangePreBoss);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
-						DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
-						break;
-					case 1://PreEoC
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
-						DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
-						DropItemMisc.AddRange(TerrariaArrayID.Special);
-						break;
-					case 2://EoC
-						DropItemMelee.Add(ItemID.Code1);
-						DropItemMagic.Add(ItemID.ZapinatorGray);
-						break;
-					case 3://Evil boss
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
-						DropItemRange.Add(ItemID.MoltenFury);
-						DropItemRange.Add(ItemID.StarCannon);
-						DropItemRange.Add(ItemID.AleThrowingGlove);
-						DropItemRange.Add(ItemID.Harpoon);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
-						DropItemSummon.Add(ItemID.ImpStaff);
-						break;
-					case 4://Skeletron
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
-						DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
-						break;
-					case 5://Queen bee
-						DropItemMelee.Add(ItemID.BeeKeeper);
-						DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
-						DropItemMagic.Add(ItemID.BeeGun);
-						DropItemSummon.Add(ItemID.HornetStaff);
-						DropItemMisc.Add(ItemID.Beenade);
-						break;
-					case 6://Deerclop
-						DropItemRange.Add(ItemID.PewMaticHorn);
-						DropItemMagic.Add(ItemID.WeatherPain);
-						DropItemSummon.Add(ItemID.HoundiusShootius);
-						break;
-					case 7://Wall of flesh
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
-						DropItemRange.AddRange(TerrariaArrayID.RangeHM);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
-						break;
-					case 8://Queen slime
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
-						DropItemSummon.Add(ItemID.Smolstar);
-						break;
-					case 9://First mech
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
-						DropItemRange.Add(ItemID.SuperStarCannon);
-						DropItemRange.Add(ItemID.DD2PhoenixBow);
-						DropItemMagic.Add(ItemID.UnholyTrident);
-						break;
-					case 10://All three mech
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
-						DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
-						break;
-					case 11://Plantera
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
-						DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
-						break;
-					case 12://Golem
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
-						DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
-						break;
-					case 13://Pre lunatic (Duke fishron, EoL, ect)
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
-						DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
-						break;
-					case 14://Lunatic Cultist
-						DropItemMelee.Add(ItemID.DayBreak);
-						DropItemMelee.Add(ItemID.SolarEruption);
-						DropItemRange.Add(ItemID.Phantasm);
-						DropItemRange.Add(ItemID.VortexBeater);
-						DropItemMagic.Add(ItemID.NebulaArcanum);
-						DropItemMagic.Add(ItemID.NebulaBlaze);
-						DropItemSummon.Add(ItemID.StardustCellStaff);
-						DropItemSummon.Add(ItemID.StardustDragonStaff);
-						break;
-					case 15://MoonLord
-						DropItemMelee.Add(ItemID.StarWrath);
-						DropItemMelee.Add(ItemID.Meowmere);
-						DropItemMelee.Add(ItemID.Terrarian);
-						DropItemRange.Add(ItemID.SDMG);
-						DropItemRange.Add(ItemID.Celeb2);
-						DropItemMagic.Add(ItemID.LunarFlareBook);
-						DropItemMagic.Add(ItemID.LastPrism);
-						DropItemSummon.Add(ItemID.RainbowCrystalStaff);
-						DropItemSummon.Add(ItemID.MoonlordTurretStaff);
-						break;
-				}
-			}
-			if (SafePostAddLootMelee().Count > 0) DropItemMelee.AddRange(SafePostAddLootMelee());
-			if (SafePostAddLootRange().Count > 0) DropItemRange.AddRange(SafePostAddLootRange());
-			if (SafePostAddLootMagic().Count > 0) DropItemMagic.AddRange(SafePostAddLootMagic());
-			if (SafePostAddLootSummon().Count > 0) DropItemSummon.AddRange(SafePostAddLootSummon());
-			if (SafePostAddLootMisc().Count > 0) DropItemMisc.AddRange(SafePostAddLootMisc());
-			if (ItemGraveYard.Count > 0) {
-				DropItemMelee = DropItemMelee.Where(x => !ItemGraveYard.Contains(x)).ToList();
-				DropItemRange = DropItemRange.Where(x => !ItemGraveYard.Contains(x)).ToList();
-				DropItemMagic = DropItemMagic.Where(x => !ItemGraveYard.Contains(x)).ToList();
-				DropItemSummon = DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToList();
-			}
-			AllOfLootPossiblity.AddRange(DropItemMagic);
-			AllOfLootPossiblity.AddRange(DropItemRange);
-			AllOfLootPossiblity.AddRange(DropItemMagic);
-			AllOfLootPossiblity.AddRange(DropItemSummon);
-			AllOfLootPossiblity.AddRange(DropItemMisc);
-		}
+		public virtual void ModifyLootAdd() { }
 		/// <summary>
 		///      Allow user to return a list of number that contain different data to insert into chest <br/>
 		///      0 : Pre Boss <br/>
@@ -272,7 +133,7 @@ namespace BossRush.Contents.Items.Chest {
 		///      15 : Post Moon lord <br/>
 		/// </summary>
 		public virtual List<int> FlagNumber() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-		private static List<int> ItemGraveYard = new List<int>();
+		private static HashSet<int> ItemGraveYard = new HashSet<int>();
 		/// <summary>
 		/// Return a random weapon and if the weapon consumable then return many ammount
 		/// </summary>
@@ -296,7 +157,7 @@ namespace BossRush.Contents.Items.Chest {
 			rng = ModifyRNG(rng, player);
 			//adding stuff here
 			if (rng < 6 && rng > 0) {
-				AddLoot(FlagNumber());
+				ModifyLootAdd();
 			}
 			//actual choosing item
 			ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
@@ -315,8 +176,8 @@ namespace BossRush.Contents.Items.Chest {
 				int RemoveAmount = 1 + ItemGraveYard.Count / 10;
 				for (int i = 0; i < RemoveAmount; i++) {
 					int index = Main.rand.Next(ItemGraveYard.Count);
-					Main.NewText($"[DEBUG] Removing [i:{ItemGraveYard[index]}] from item graveyard");
-					ItemGraveYard.RemoveAt(index);
+					Main.NewText($"[DEBUG] Removing [i:{ItemGraveYard.ElementAt(index)}] from item graveyard");
+					ItemGraveYard.Remove(ItemGraveYard.ElementAt(index));
 				}
 			}
 			OnRightClick(player, player.GetModPlayer<ChestLootDropPlayer>());
@@ -324,14 +185,12 @@ namespace BossRush.Contents.Items.Chest {
 			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 				if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
-				if (Main.rand.NextBool(1500))
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowTreasureChest>());
 				if (player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
 			}
 			//Card dropping
-			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
+			if (!Main.masterMode && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
 				return;
 			}
 			PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
@@ -352,60 +211,65 @@ namespace BossRush.Contents.Items.Chest {
 		public void ChooseWeapon(int rng, ref int weapon, ref int amount) {
 			weapon = ItemID.None;
 			amount = 1;
+			HashSet<int> DummyMeleeData = DropItemMelee.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyRangeData = DropItemRange.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMagicData = DropItemMagic.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummySummonData = DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMiscsData = DropItemMisc;
 			switch (rng) {
 				case 0:
 					weapon = ItemID.None;
 					return;
 				case 1:
-					if (DropItemMelee.Count <= 0) {
+					if (DummyMeleeData.Count <= 0) {
 						GetWeapon(out int Weapon, out int Amount, rng);
 						weapon = Weapon;
 						amount = Amount;
 						return;
 					}
-					weapon = Main.rand.NextFromCollection(DropItemMelee);
+					weapon = DummyMeleeData.ElementAt(Main.rand.Next(DummyMeleeData.Count));
 					ItemGraveYard.Add(weapon);
 					return;
 				case 2:
-					if (DropItemRange.Count <= 0) {
+					if (DummyRangeData.Count <= 0) {
 						GetWeapon(out int Weapon, out int Amount, rng);
 						weapon = Weapon;
 						amount = Amount;
 						return;
 					}
-					weapon = Main.rand.NextFromCollection(DropItemRange);
+					weapon = DummyRangeData.ElementAt(Main.rand.Next(DummyRangeData.Count));
 					ItemGraveYard.Add(weapon);
 					return;
 				case 3:
-					if (DropItemMagic.Count <= 0) {
+					if (DummyMagicData.Count <= 0) {
 						GetWeapon(out int Weapon, out int Amount, rng);
 						weapon = Weapon;
 						amount = Amount;
 						return;
 					}
-					weapon = Main.rand.NextFromCollection(DropItemMagic);
+					weapon = DummyMagicData.ElementAt(Main.rand.Next(DummyMagicData.Count));
 					ItemGraveYard.Add(weapon);
 					return;
 				case 4:
-					if (DropItemSummon.Count <= 0) {
+					if (DummySummonData.Count <= 0) {
 						GetWeapon(out int Weapon, out int Amount, rng);
 						weapon = Weapon;
 						amount = Amount;
 						return;
 					}
-					weapon = Main.rand.NextFromCollection(DropItemSummon);
+					weapon = DummySummonData.ElementAt(Main.rand.Next(DummySummonData.Count));
 					ItemGraveYard.Add(weapon);
 					return;
 				case 5:
-					if (DropItemMisc.Count < 1) {
+					if (DummyMiscsData.Count < 1) {
 						ChooseWeapon(Main.rand.Next(1, 5), ref weapon, ref amount);
 						break;
 					}
 					amount += 199;
 					if (Main.masterMode) {
-						amount += 300;
+						amount += 150;
 					}
-					weapon = Main.rand.NextFromCollection(DropItemMisc);
+					weapon = DummyMiscsData.ElementAt(Main.rand.Next(DummyMiscsData.Count));
 					return;
 				case 6:
 					weapon = ModContent.ItemType<WonderDrug>();
@@ -423,168 +287,111 @@ namespace BossRush.Contents.Items.Chest {
 			List<int> DropItemMagic = new List<int>();
 			List<int> DropItemSummon = new List<int>();
 			List<int> DropItemMisc = new List<int>();
-			List<int> list = new() { 0 };
+			DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
+			DropItemRange.AddRange(TerrariaArrayID.RangePreBoss);
+			DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
+			DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
+			DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
 			if (NPC.downedSlimeKing) {
-				list.Add(1);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
+				DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
+				DropItemMisc.AddRange(TerrariaArrayID.Special);
 			}
 			if (NPC.downedBoss1) {
-				list.Add(2);
+				DropItemMelee.Add(ItemID.Code1);
+				DropItemMagic.Add(ItemID.ZapinatorGray);
 			}
 			if (NPC.downedBoss2) {
-				list.Add(3);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
+				DropItemRange.Add(ItemID.MoltenFury);
+				DropItemRange.Add(ItemID.StarCannon);
+				DropItemRange.Add(ItemID.AleThrowingGlove);
+				DropItemRange.Add(ItemID.Harpoon);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
+				DropItemSummon.Add(ItemID.ImpStaff);
 			}
 			if (NPC.downedBoss3) {
-				list.Add(4);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
+				DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
 			}
 			if (NPC.downedQueenBee) {
-				list.Add(5);
+				DropItemMelee.Add(ItemID.BeeKeeper);
+				DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
+				DropItemMagic.Add(ItemID.BeeGun);
+				DropItemSummon.Add(ItemID.HornetStaff);
+				DropItemMisc.Add(ItemID.Beenade);
 			}
 			if (NPC.downedDeerclops) {
-				list.Add(6);
+				DropItemRange.Add(ItemID.PewMaticHorn);
+				DropItemMagic.Add(ItemID.WeatherPain);
+				DropItemSummon.Add(ItemID.HoundiusShootius);
 			}
 			if (Main.hardMode) {
-				list.Add(7);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
+				DropItemRange.AddRange(TerrariaArrayID.RangeHM);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
 			}
 			if (NPC.downedQueenSlime) {
-				list.Add(8);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
+				DropItemSummon.Add(ItemID.Smolstar);
 			}
 			if (NPC.downedMechBoss1 || NPC.downedMechBoss2 || NPC.downedMechBoss3) {
-				list.Add(9);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
+				DropItemRange.Add(ItemID.SuperStarCannon);
+				DropItemRange.Add(ItemID.DD2PhoenixBow);
+				DropItemMagic.Add(ItemID.UnholyTrident);
 			}
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-				list.Add(10);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
+				DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
 			}
 			if (NPC.downedPlantBoss) {
-				list.Add(11);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
+				DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
 			}
 			if (NPC.downedGolemBoss) {
-				list.Add(12);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
+				DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
 			}
 			if (NPC.downedEmpressOfLight) {
-				list.Add(13);
+				DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
+				DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
+				DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
+				DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
 			}
 			if (NPC.downedAncientCultist) {
-				list.Add(14);
+				DropItemMelee.Add(ItemID.DayBreak);
+				DropItemMelee.Add(ItemID.SolarEruption);
+				DropItemRange.Add(ItemID.Phantasm);
+				DropItemRange.Add(ItemID.VortexBeater);
+				DropItemMagic.Add(ItemID.NebulaArcanum);
+				DropItemMagic.Add(ItemID.NebulaBlaze);
+				DropItemSummon.Add(ItemID.StardustCellStaff);
+				DropItemSummon.Add(ItemID.StardustDragonStaff);
 			}
 			if (NPC.downedMoonlord) {
-				list.Add(15);
-			}
-			if (rng < 6 && rng > 0) {
-				AddLoot(list, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon, DropItemMisc);
+				DropItemMelee.Add(ItemID.StarWrath);
+				DropItemMelee.Add(ItemID.Meowmere);
+				DropItemMelee.Add(ItemID.Terrarian);
+				DropItemRange.Add(ItemID.SDMG);
+				DropItemRange.Add(ItemID.Celeb2);
+				DropItemMagic.Add(ItemID.LunarFlareBook);
+				DropItemMagic.Add(ItemID.LastPrism);
+				DropItemSummon.Add(ItemID.RainbowCrystalStaff);
+				DropItemSummon.Add(ItemID.MoonlordTurretStaff);
 			}
 			ChooseWeapon(rng, ref ReturnWeapon, ref Amount, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon, DropItemMisc);
-		}
-		private static void AddLoot(List<int> FlagNumber, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon, List<int> DropItemMisc) {
-			for (int i = 0; i < FlagNumber.Count; ++i) {
-				switch (FlagNumber[i]) {
-					case 0://PreBoss
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePreBoss);
-						DropItemRange.AddRange(TerrariaArrayID.RangePreBoss);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPreBoss);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPreBoss);
-						DropItemMisc.AddRange(TerrariaArrayID.SpecialPreBoss);
-						break;
-					case 1://PreEoC
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePreEoC);
-						DropItemRange.AddRange(TerrariaArrayID.RangePreEoC);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPreEoC);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonerPreEoC);
-						DropItemMisc.AddRange(TerrariaArrayID.Special);
-						break;
-					case 2://EoC
-						DropItemMelee.Add(ItemID.Code1);
-						DropItemMagic.Add(ItemID.ZapinatorGray);
-						break;
-					case 3://Evil boss
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeEvilBoss);
-						DropItemRange.Add(ItemID.MoltenFury);
-						DropItemRange.Add(ItemID.StarCannon);
-						DropItemRange.Add(ItemID.AleThrowingGlove);
-						DropItemRange.Add(ItemID.Harpoon);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicEvilBoss);
-						DropItemSummon.Add(ItemID.ImpStaff);
-						break;
-					case 4://Skeletron
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeSkel);
-						DropItemRange.AddRange(TerrariaArrayID.RangeSkele);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicSkele);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonSkele);
-						break;
-					case 5://Queen bee
-						DropItemMelee.Add(ItemID.BeeKeeper);
-						DropItemRange.Add(ItemID.BeesKnees); DropItemRange.Add(ItemID.Blowgun);
-						DropItemMagic.Add(ItemID.BeeGun);
-						DropItemSummon.Add(ItemID.HornetStaff);
-						DropItemMisc.Add(ItemID.Beenade);
-						break;
-					case 6://Deerclop
-						DropItemRange.Add(ItemID.PewMaticHorn);
-						DropItemMagic.Add(ItemID.WeatherPain);
-						DropItemSummon.Add(ItemID.HoundiusShootius);
-						break;
-					case 7://Wall of flesh
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeHM);
-						DropItemRange.AddRange(TerrariaArrayID.RangeHM);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicHM);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonHM);
-						break;
-					case 8://Queen slime
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
-						DropItemSummon.Add(ItemID.Smolstar);
-						break;
-					case 9://First mech
-						DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
-						DropItemRange.Add(ItemID.SuperStarCannon);
-						DropItemRange.Add(ItemID.DD2PhoenixBow);
-						DropItemMagic.Add(ItemID.UnholyTrident);
-						break;
-					case 10://All three mech
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePostAllMechs);
-						DropItemRange.AddRange(TerrariaArrayID.RangePostAllMech);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPostAllMech);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPostAllMech);
-						break;
-					case 11://Plantera
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePostPlant);
-						DropItemRange.AddRange(TerrariaArrayID.RangePostPlant);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPostPlant);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPostPlant);
-						break;
-					case 12://Golem
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePostGolem);
-						DropItemRange.AddRange(TerrariaArrayID.RangePostGolem);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPostGolem);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPostGolem);
-						break;
-					case 13://Pre lunatic (Duke fishron, EoL, ect)
-						DropItemMelee.AddRange(TerrariaArrayID.MeleePreLuna);
-						DropItemRange.AddRange(TerrariaArrayID.RangePreLuna);
-						DropItemMagic.AddRange(TerrariaArrayID.MagicPreLuna);
-						DropItemSummon.AddRange(TerrariaArrayID.SummonPreLuna);
-						break;
-					case 14://Lunatic Cultist
-						DropItemMelee.Add(ItemID.DayBreak);
-						DropItemMelee.Add(ItemID.SolarEruption);
-						DropItemRange.Add(ItemID.Phantasm);
-						DropItemRange.Add(ItemID.VortexBeater);
-						DropItemMagic.Add(ItemID.NebulaArcanum);
-						DropItemMagic.Add(ItemID.NebulaBlaze);
-						DropItemSummon.Add(ItemID.StardustCellStaff);
-						DropItemSummon.Add(ItemID.StardustDragonStaff);
-						break;
-					case 15://MoonLord
-						DropItemMelee.Add(ItemID.StarWrath);
-						DropItemMelee.Add(ItemID.Meowmere);
-						DropItemMelee.Add(ItemID.Terrarian);
-						DropItemRange.Add(ItemID.SDMG);
-						DropItemRange.Add(ItemID.Celeb2);
-						DropItemMagic.Add(ItemID.LunarFlareBook);
-						DropItemMagic.Add(ItemID.LastPrism);
-						DropItemSummon.Add(ItemID.RainbowCrystalStaff);
-						DropItemSummon.Add(ItemID.MoonlordTurretStaff);
-						break;
-				}
-			}
 		}
 		private static void ChooseWeapon(int rng, ref int weapon, ref int amount, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon, List<int> DropItemMisc) {
 			switch (rng) {
@@ -614,7 +421,6 @@ namespace BossRush.Contents.Items.Chest {
 					break;
 			}
 		}
-
 		List<int> DropArrowAmmo = new List<int>();
 		List<int> DropBulletAmmo = new List<int>();
 		List<int> DropDartAmmo = new List<int>();

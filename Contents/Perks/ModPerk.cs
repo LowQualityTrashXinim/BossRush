@@ -74,13 +74,13 @@ namespace BossRush.Contents.Perks {
 			player.buffImmune[BuffID.Poisoned] = true;
 		}
 		public override void Update(Player player) {
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 350);
+			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
 			for (int i = 0; i < 6; i++) {
-				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(350, 350), 0, 0, DustID.Poisoned);
+				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Poisoned);
 				Main.dust[dustRing].noGravity = true;
 				Main.dust[dustRing].velocity = Vector2.Zero;
 				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(350, 350), 0, 0, DustID.Poisoned);
+				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Poisoned);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = Vector2.Zero;
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
@@ -103,13 +103,13 @@ namespace BossRush.Contents.Perks {
 			player.buffImmune[BuffID.OnFire] = true;
 		}
 		public override void Update(Player player) {
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 350);
+			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
 			for (int i = 0; i < 4; i++) {
-				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(350, 350), 0, 0, DustID.Torch);
+				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Torch);
 				Main.dust[dustRing].noGravity = true;
 				Main.dust[dustRing].velocity = Vector2.Zero;
 				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(350, 350), 0, 0, DustID.Torch);
+				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
@@ -318,12 +318,11 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			Tooltip =
-				"+ Gain 10% movement speed in exchange for -2 defenses";
-			StackLimit = 5;
+				"+ The faster you are, the better your armor is";
+			StackLimit = 2;
 		}
 		public override void ResetEffect(Player player) {
-			player.moveSpeed += .1f * StackAmount;
-			player.statDefense -= 2 * StackAmount;
+			player.statDefense += (int)Math.Round(player.velocity.Length()) * StackAmount;
 		}
 	}
 	public class CelestialRage : Perk {
