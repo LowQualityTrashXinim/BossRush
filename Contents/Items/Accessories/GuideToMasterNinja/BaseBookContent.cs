@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja {
 			NinjaWeeb = false;
 		}
 		public override void UpdateEquips() {
-			if (Player.head == 22 && Player.body == 14 && Player.legs == 14) {
+			if (Player.head == ArmorIDs.Head.NinjaHood && Player.body == ArmorIDs.Body.NinjaShirt && Player.legs == ArmorIDs.Legs.NinjaPants) {
 				NinjaWeeb = true;
 			}
 		}

@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.Enraged;
 using BossRush.Contents.Artifacts;
+using Terraria.ID;
 
 namespace BossRush.Common {
 	public class IsPlayerAlreadyHaveASpawner : IItemDropRuleCondition {
@@ -47,7 +48,7 @@ namespace BossRush.Common {
 	public class SynergyDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<BossRushModConfig>().SynergyMode || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
+				return ModContent.GetInstance<BossRushModConfig>().SynergyMode && (info.player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature);
 			}
 			return false;
 		}
@@ -107,13 +108,24 @@ namespace BossRush.Common {
 	public class GitGudMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
-					|| info.player.GetModPlayer<ModdedPlayer>().gitGud > 0;
+				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0 
+					&& (info.player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature);
 			}
 			return false;
 		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Drop if player beat boss in no hit aka git gud mode";
+	}
+	public class HardcoreExclusive : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return info.player.difficulty == PlayerDifficultyID.Hardcore
+					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
+			}
+			return false;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => "Only available if your player character is in hardcore";
 	}
 	public class NightmareMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {

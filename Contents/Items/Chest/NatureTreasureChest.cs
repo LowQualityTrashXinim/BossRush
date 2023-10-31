@@ -1,18 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Common.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
 	class NatureTreasureChest : LootBoxBase {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Right click to open chest");
-		}
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
 			Item.rare = 9;
 		}
-		public override List<int> FlagNumber() => new List<int> { 7, 8, 9, 10, 11 };
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostAllMechs);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostAllMech);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostAllMech);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostAllMech);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostPlant);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostPlant);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostPlant);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostPlant);
+			LootboxSystem.AddItemPool(itempool);
+		}
 		public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
 using System.Collections.Generic;
 using Terraria;
@@ -7,15 +8,23 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	class LihzahrdTreasureChest : LootBoxBase {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Good Luck !");
-		}
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
 			Item.rare = 10;
 		}
-		public override List<int> FlagNumber() => new List<int> { 8, 9, 10, 11, 12 };
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostPlant);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostPlant);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostPlant);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostPlant);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostGolem);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostGolem);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostGolem);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostGolem);
+			LootboxSystem.AddItemPool(itempool);
+		}
 		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
@@ -36,7 +45,7 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, GetAccessory());
 			}
 			player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode && player.difficulty == PlayerDifficultyID.Hardcore) {
 				int RandomModdedBuff = Main.rand.Next(new int[] {
 					ModContent.ItemType<BerserkerElixir>(),
 					ModContent.ItemType<GunslingerElixir>(),

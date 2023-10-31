@@ -17,39 +17,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
-		/// <summary>
-		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
-		/// </summary>
-		public HashSet<int> DropItemMelee = new HashSet<int>();
-		/// <summary>
-		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
-		/// </summary>
-		public HashSet<int> DropItemRange = new HashSet<int>();
-		/// <summary>
-		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
-		/// </summary>
-		public HashSet<int> DropItemMagic = new HashSet<int>();
-		/// <summary>
-		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
-		/// </summary>
-		public HashSet<int> DropItemSummon = new HashSet<int>();
-		/// <summary>
-		/// Set your own loot pool of each lootbox in <see cref="LootPoolSetStaticDefaults"/><br/>
-		/// </summary>
-		public HashSet<int> DropItemMisc = new HashSet<int>();
-		public HashSet<int> AllOfLootPossiblity = new HashSet<int>();
 		public override void SetStaticDefaults() {
-			base.SetStaticDefaults();
 			LootPoolSetStaticDefaults();
-			AllOfLootPossiblity.UnionWith(DropItemMelee);
-			AllOfLootPossiblity.UnionWith(DropItemRange);
-			AllOfLootPossiblity.UnionWith(DropItemMagic);
-			AllOfLootPossiblity.UnionWith(DropItemSummon);
-			AllOfLootPossiblity.UnionWith(DropItemMisc);
 		}
 		/// <summary>
 		/// Set your lootbox loot pool here<br/>
-		/// Add loot pool into this <see cref="DropItemMelee"/><see cref="DropItemRange"/><see cref="DropItemMagic"/><see cref="DropItemSummon"/><see cref="DropItemMisc"/>
+		/// Add loot pool into this <see cref="LootboxSystem.LootBoxDropPool"/> and use <see cref="LootBoxItemPool"/> to add your pool in, all of them is hashset
 		/// </summary>
 		public virtual void LootPoolSetStaticDefaults() {
 
@@ -58,12 +31,16 @@ namespace BossRush.Contents.Items.Chest {
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
 			if (!ChestUseOwnLogic) {
+				if (LootboxSystem.GetItemPool(Type) == null)
+					return;
+				if (LootboxSystem.GetItemPool(Type).AllItemPool().Count <= 0)
+					return;
 				chestplayer.GetAmount();
 				List<int> potiontotal = new List<int>();
 				potiontotal.AddRange(TerrariaArrayID.NonMovementPotion);
 				potiontotal.AddRange(TerrariaArrayID.MovementPotion);
 				TooltipLine chestline = new TooltipLine(Mod, "ChestLoot",
-					$"Weapon : [i:{Main.rand.NextFromList(AllOfLootPossiblity)}] x {chestplayer.weaponAmount}\n" +
+					$"Weapon : [i:{Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(Type).AllItemPool())}] x {chestplayer.weaponAmount}\n" +
 					$"Potion type : [i:{Main.rand.Next(potiontotal)}] x {chestplayer.potionTypeAmount}\n" +
 					$"Amount of potion : [i:{ItemID.RegenerationPotion}][i:{ItemID.SwiftnessPotion}][i:{ItemID.IronskinPotion}] x {chestplayer.potionNumAmount}");
 				tooltips.Add(chestline);
@@ -110,58 +87,9 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		/// <summary>
 		/// Use this to modify the item pool before the process of choosing weapon is made<br/>
-		/// Use <see cref="DropItemMelee"/> <see cref="DropItemRange"/> <see cref="DropItemMagic"/> <see cref="DropItemSummon"/> <see cref="DropItemMisc"/> to modify loot pool
+		/// Use  <see cref="LootboxSystem.GetItemPool"/> to modify loot pool
 		/// </summary>
-		public virtual void ModifyLootAdd() { }
-		/// <summary>
-		///      Allow user to return a list of number that contain different data to insert into chest <br/>
-		///      0 : Pre Boss <br/>
-		///      1 : Pre EoC <br/>
-		///      2 : Post EoC <br/>
-		///      3 : Post Evil boss <br/>
-		///      4 : Post Skeletron <br/>
-		///      5 : Post Queen bee <br/>
-		///      6 : Post Deerclop <br/>
-		///      7 : Post WoF <br/>
-		///      8 : Post Queen slime <br/>
-		///      9 : 1 mech boss loot <br/>
-		///      10 : Post all mech <br/>
-		///      11 : Post Plantera <br/>
-		///      12 : Post Golem <br/>
-		///      13 : Pre lunatic cultist ( EoL, Duke Fishron ) <br/>
-		///      14 : Post lunatic cultist <br/>
-		///      15 : Post Moon lord <br/>
-		/// </summary>
-		public virtual List<int> FlagNumber() => new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-		private static HashSet<int> ItemGraveYard = new HashSet<int>();
-		/// <summary>
-		/// Return a random weapon and if the weapon consumable then return many ammount
-		/// </summary>
-		/// <param name="player">Player player</param>
-		/// <param name="ReturnWeapon">Weapon get return</param>
-		/// <param name="specialAmount">Ammount of that weapon get return</param>
-		/// <param name="rng">Set the rng number to return a specific type of weapon
-		/// <br/>1 : Melee weapon
-		/// <br/>2 : Range weapon
-		/// <br/>3 : Magic weapon
-		/// <br/> 4 : Summon weapon
-		/// <br/>5 : Misc weapon
-		/// <br/> 6 : Drug
-		/// <br/> 7 : Rainbow Chest</param>
-		public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0) {
-			specialAmount = 1;
-			ReturnWeapon = ItemID.None;
-			if (rng == 0) {
-				rng = RNGManage(player);
-			}
-			rng = ModifyRNG(rng, player);
-			//adding stuff here
-			if (rng < 6 && rng > 0) {
-				ModifyLootAdd();
-			}
-			//actual choosing item
-			ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
-		}
+		public virtual void ModifyLootAdd(Player player) { }
 		/// <summary>
 		/// Use this to add condition to chest
 		/// </summary>
@@ -208,14 +136,43 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
+		private static HashSet<int> ItemGraveYard = new HashSet<int>();
+		/// <summary>
+		/// Return a random weapon and if the weapon consumable then return many ammount
+		/// </summary>
+		/// <param name="player">Player player</param>
+		/// <param name="ReturnWeapon">Weapon get return</param>
+		/// <param name="specialAmount">Ammount of that weapon get return</param>
+		/// <param name="rng">Set the rng number to return a specific type of weapon
+		/// <br/>1 : Melee weapon
+		/// <br/>2 : Range weapon
+		/// <br/>3 : Magic weapon
+		/// <br/> 4 : Summon weapon
+		/// <br/>5 : Misc weapon
+		/// <br/> 6 : Drug
+		/// <br/> 7 : Rainbow Chest</param>
+		public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0) {
+			specialAmount = 1;
+			ReturnWeapon = ItemID.None;
+			if (rng == 0) {
+				rng = RNGManage(player);
+			}
+			rng = ModifyRNG(rng, player);
+			//adding stuff here
+			if (rng < 6 && rng > 0) {
+				ModifyLootAdd(player);
+			}
+			//actual choosing item
+			ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
+		}
 		public void ChooseWeapon(int rng, ref int weapon, ref int amount) {
 			weapon = ItemID.None;
 			amount = 1;
-			HashSet<int> DummyMeleeData = DropItemMelee.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyRangeData = DropItemRange.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyMagicData = DropItemMagic.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummySummonData = DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyMiscsData = DropItemMisc;
+			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(Type).DropItemMelee.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(Type).DropItemRange.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(Type).DropItemMagic.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(Type).DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(Type).DropItemMisc;
 			switch (rng) {
 				case 0:
 					weapon = ItemID.None;
@@ -696,6 +653,58 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public override void Unload() {
 			ItemGraveYard = null;
+		}
+	}
+	public class LootboxSystem : ModSystem {
+		private static List<LootBoxItemPool> LootBoxDropPool = new List<LootBoxItemPool>();
+		/// <summary>
+		/// Direct modify maybe unstable, unsure how this will work <br/>
+		/// For a more direct way of modify, please refer to <see cref="ReplaceItemPool(LootBoxItemPool)"/>
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public static LootBoxItemPool GetItemPool(int type) => LootBoxDropPool.Where(i => i.PoolID == type).FirstOrDefault();
+		public static void AddItemPool(LootBoxItemPool pool) {
+			pool.IndexID = LootBoxDropPool.Count;
+			LootBoxDropPool.Add(pool);
+		}
+		public static void ReplaceItemPool(LootBoxItemPool pool) {
+			LootBoxItemPool itempool = LootBoxDropPool.Where(i => i.PoolID == pool.PoolID).FirstOrDefault();
+			int index = itempool.IndexID;
+			LootBoxDropPool[index] = pool;
+			LootBoxDropPool[index].IndexID = index;
+		}
+		public override void Unload() {
+			LootBoxDropPool = null;
+		}
+	}
+	public class LootBoxItemPool {
+		public LootBoxItemPool(int ID) {
+			_poolid = ID;
+		}
+		int _poolid = 0;
+		/// <summary>
+		/// Return the Item ID that own this <see cref="LootBoxItemPool"/>
+		/// </summary>
+		public int PoolID { get => _poolid; }
+		/// <summary>
+		/// Return the index of <see cref="LootBoxItemPool"/> that current at
+		/// </summary>
+		public int IndexID = -1;
+		public HashSet<int> DropItemMelee = new HashSet<int>();
+		public HashSet<int> DropItemRange = new HashSet<int>();
+		public HashSet<int> DropItemMagic = new HashSet<int>();
+		public HashSet<int> DropItemSummon = new HashSet<int>();
+		public HashSet<int> DropItemMisc = new HashSet<int>();
+
+		public HashSet<int> AllItemPool() {
+			List<int> pool = new List<int>();
+			pool.AddRange(DropItemMelee);
+			pool.AddRange(DropItemRange);
+			pool.AddRange(DropItemMagic);
+			pool.AddRange(DropItemSummon);
+			pool.AddRange(DropItemMisc);
+			return pool.ToHashSet();
 		}
 	}
 	public class ChestLootDropPlayer : ModPlayer {

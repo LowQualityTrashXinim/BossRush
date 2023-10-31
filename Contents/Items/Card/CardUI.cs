@@ -58,7 +58,7 @@ namespace BossRush.Contents.Items.Card {
 				ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
 				itemtextbox.SetTextMaxLength(1000);
 				string lines = "";
-				itemtextbox.ImprovisedUIpanel_Height= 80;
+				itemtextbox.ImprovisedUIpanel_Height = 200;
 				itemtextbox.SetText(lines);
 				itemtextbox.Recalculate();
 				itemtextbox.IgnoresMouseInteraction = true;
@@ -75,7 +75,7 @@ namespace BossRush.Contents.Items.Card {
 						if (list.Contains(item))
 							list.Remove(item);
 					}
-						CursedID = Main.rand.Next(list);
+					CursedID = Main.rand.Next(list);
 					modplayer.listCursesID.Add(CursedID);
 					//BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
 					modplayer.ListIsChange = true;

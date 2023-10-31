@@ -1,18 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Common.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
 	class GoldLootBox : LootBoxBase {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Good Luck!");
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
+
+			itempool.DropItemMelee.Add(ItemID.Code1);
+			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeEvilBoss);
+			itempool.DropItemRange.Add(ItemID.MoltenFury);
+			itempool.DropItemRange.Add(ItemID.StarCannon);
+			itempool.DropItemRange.Add(ItemID.AleThrowingGlove);
+			itempool.DropItemRange.Add(ItemID.Harpoon);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicEvilBoss);
+			itempool.DropItemSummon.Add(ItemID.ImpStaff);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeSkel);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangeSkele);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicSkele);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonSkele);
+			LootboxSystem.AddItemPool(itempool);
 		}
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
 			Item.rare = 5;
 		}
-		public override List<int> FlagNumber() => new List<int>() { 3, 4, 5, 6 };
 		public override List<int> FlagNumAcc() {
 			List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5, 7 };
 			if (NPC.downedQueenBee) {

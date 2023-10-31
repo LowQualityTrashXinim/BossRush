@@ -1,18 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Common.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
 	class SilverLootBox : LootBoxBase {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Good Luck!");
-		}
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
 			Item.rare = 2;
 		}
-		public override List<int> FlagNumber() => new List<int> { 0, 1, 2, 3 };
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
+
+			itempool.DropItemMelee.Add(ItemID.Code1);
+			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
+
+			LootboxSystem.AddItemPool(itempool);
+		}
 		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

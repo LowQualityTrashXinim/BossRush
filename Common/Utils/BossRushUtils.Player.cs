@@ -1,8 +1,6 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria;
-using System;
-using System.Collections.Generic;
 using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush
@@ -61,29 +59,13 @@ namespace BossRush
     {
         public const float PLAYERARMLENGTH = 12f;
         public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
-        public bool IsPlayerStillUsingTheSameItem = false;
-        private int oldHeldItem = 0;
-        Item item;
-        public override void PreUpdate()
-        {
-            item = Player.HeldItem;
-            if (oldHeldItem != item.type)
-            {
-                IsPlayerStillUsingTheSameItem = false;
-            }
-            else
-            {
-                IsPlayerStillUsingTheSameItem = true;
-            }
-            base.PreUpdate();
-        }
+		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryDB.FindEntryByNPCID(NPCtype).Info.Count > 0;
         public override void PostUpdate()
         {
             if(!Player.ItemAnimationActive)
             {
                 MouseLastPositionBeforeAnimation = Main.MouseWorld;
             }
-            oldHeldItem = item.type;
         }
     }
 }

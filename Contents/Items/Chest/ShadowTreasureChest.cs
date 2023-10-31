@@ -1,22 +1,34 @@
 ﻿using Terraria;
 using Terraria.ID;
-using System.Collections.Generic;
-using Terraria.ModLoader;
 using BossRush.Common;
+using Terraria.ModLoader;
+using BossRush.Common.Utils;
+using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BossRush.Contents.Items.Chest
 {
     class ShadowTreasureChest : LootBoxBase
     {
-        public override void SetDefaults()
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeSkel);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangeSkele);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicSkele);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonSkele);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeHM);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangeHM);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicHM);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonHM);
+			LootboxSystem.AddItemPool(itempool);
+		}
+		public override void SetDefaults()
         {
             Item.width = 54;
             Item.height = 38;
             Item.rare = 6;
         }
-        public override List<int> FlagNumber() => new List<int>() { 7, 8 };
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {
@@ -161,7 +173,7 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
             }
-            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode)
+            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode && player.difficulty == PlayerDifficultyID.Hardcore)
             {
                 int RandomModdedBuff = Main.rand.Next(new int[] {
                     ModContent.ItemType<BerserkerElixir>(),

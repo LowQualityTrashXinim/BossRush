@@ -24,6 +24,8 @@ namespace BossRush.Common {
 		public override void OnEnterWorld() {
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
+			if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature)
+				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature");
 			if (Main.ActiveWorldFileData.GameMode == 0) {
 				Main.NewText("Yo this guys playing on easy mode lol, skill issues spotted !");
 			}
@@ -33,10 +35,12 @@ namespace BossRush.Common {
 		}
 		private void CheckHowManyHit() {
 			HowManyBossIsAlive = 0;
+			bool FoundEater = false;
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC npc = Main.npc[i];
-				if ((npc.boss || npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) && npc.active) {
+				if ((npc.boss || npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) && npc.active && !FoundEater) {
 					HowManyBossIsAlive++;
+					FoundEater = true;
 				}
 			}
 			// What happen when boss is inactive
@@ -57,7 +61,6 @@ namespace BossRush.Common {
 			}
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
-
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			yield return new Item(ModContent.ItemType<LunchBox>());
 			yield return new Item(ItemID.Safe);
@@ -65,73 +68,68 @@ namespace BossRush.Common {
 			yield return new Item(ItemID.PlatinumPickaxe);
 			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
-				yield return new Item(ItemID.ManaCrystal, 5);
-				yield return new Item(ModContent.ItemType<DayTimeCycle>());
-				yield return new Item(ModContent.ItemType<CursedSkull>());
-				yield return new Item(ModContent.ItemType<BiomeToggle>());
-			}
-			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
-				yield return new Item(ModContent.ItemType<StarterPerkChooser>());
-				yield return new Item(ModContent.ItemType<SynergyEnergy>());
-			}
-			if (ModContent.GetInstance<BossRushModConfig>().Nightmare)//gitgudlol
-			{
-				yield return new Item(ModContent.ItemType<PremiumCardPacket>());
-				yield return new Item(ItemID.RedPotion, 10);
-			}
-			if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
-				yield return new Item(ModContent.ItemType<RainbowTreasureChest>());
-			}
-			if (Player.name == "FeelingLucky") {
-				yield return new Item(ModContent.ItemType<GodDice>());
-			}
-			if (Player.name.ToLower().Trim() == "drugaddict") {
-				yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
-			}
-			if (Player.name.Contains("Ninja")) {
-				yield return new Item(ItemID.Katana);
-				yield return new Item(ItemID.Shuriken, 100);
-				yield return new Item(ItemID.ThrowingKnife, 100);
-				yield return new Item(ItemID.PoisonedKnife, 100);
-				yield return new Item(ItemID.BoneDagger, 100);
-				yield return new Item(ItemID.FrostDaggerfish, 100);
-				yield return new Item(ItemID.NinjaHood);
-				yield return new Item(ItemID.NinjaShirt);
-				yield return new Item(ItemID.NinjaPants);
-				yield return new Item(ModContent.ItemType<GuideToMasterNinja>());
-				yield return new Item(ModContent.ItemType<GuideToMasterNinja2>());
-			}
-			if (Player.name == "HMdebug") {
-				yield return new Item(ModContent.ItemType<IronLootBox>());
-				yield return new Item(ModContent.ItemType<SilverLootBox>());
-				yield return new Item(ModContent.ItemType<GoldLootBox>());
-				yield return new Item(ModContent.ItemType<CorruptionLootBox>());
-				yield return new Item(ModContent.ItemType<CrimsonLootBox>());
-				yield return new Item(ModContent.ItemType<IceLootBox>());
-				yield return new Item(ModContent.ItemType<HoneyTreasureChest>());
-				yield return new Item(ModContent.ItemType<LootboxLordSummon>());
-				yield return new Item(ModContent.ItemType<PerkChooser>(), 8);
-				yield return new Item(ItemID.LifeCrystal, 15);
-				yield return new Item(ItemID.ManaCrystal, 4);
-				yield return new Item(ItemID.KingSlimeBossBag);
-				yield return new Item(ItemID.EyeOfCthulhuBossBag);
-				yield return new Item(ItemID.EaterOfWorldsBossBag);
-				yield return new Item(ItemID.BrainOfCthulhuBossBag);
-				yield return new Item(ItemID.SkeletronBossBag);
-				yield return new Item(ItemID.QueenBeeBossBag);
-				yield return new Item(ItemID.DeerclopsBossBag);
-				yield return new Item(ItemID.GuideVoodooDoll);
-			}
-			if (Player.name == "I want to die" || Player.name == "Give me hell") {
-				yield return new Item(ModContent.ItemType<WoodenLootBox>());
-				yield return new Item(ModContent.ItemType<CursedSkull>());
-				yield return new Item(ModContent.ItemType<CardPacket>());
-				yield return new Item(ModContent.ItemType<PowerEnergy>());
-			}
-			if (Player.IsDebugPlayer()) {
-				yield return new Item(ModContent.ItemType<ModStatsDebugger>());
-				yield return new Item(ModContent.ItemType<ShowPlayerStats>());
+			if (Player.difficulty == PlayerDifficultyID.Hardcore) {
+				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+					yield return new Item(ItemID.ManaCrystal, 5);
+					yield return new Item(ModContent.ItemType<DayTimeCycle>());
+					yield return new Item(ModContent.ItemType<CursedSkull>());
+					yield return new Item(ModContent.ItemType<BiomeToggle>());
+				}
+				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
+					yield return new Item(ModContent.ItemType<SynergyEnergy>());
+					yield return new Item(ModContent.ItemType<PremiumCardPacket>());
+				}
+				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+					yield return new Item(ItemID.RedPotion, 10);
+				}
+				if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
+					yield return new Item(ModContent.ItemType<RainbowTreasureChest>());
+				}
+				if (Player.name == "FeelingLucky") {
+					yield return new Item(ModContent.ItemType<GodDice>());
+				}
+				if (Player.name.ToLower().Trim() == "drugaddict") {
+					yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
+				}
+				if (Player.name.Contains("Ninja")) {
+					yield return new Item(ItemID.Katana);
+					yield return new Item(ItemID.Shuriken, 100);
+					yield return new Item(ItemID.ThrowingKnife, 100);
+					yield return new Item(ItemID.PoisonedKnife, 100);
+					yield return new Item(ItemID.BoneDagger, 100);
+					yield return new Item(ItemID.FrostDaggerfish, 100);
+					yield return new Item(ItemID.NinjaHood);
+					yield return new Item(ItemID.NinjaShirt);
+					yield return new Item(ItemID.NinjaPants);
+					yield return new Item(ModContent.ItemType<GuideToMasterNinja>());
+					yield return new Item(ModContent.ItemType<GuideToMasterNinja2>());
+				}
+				if (Player.name == "HMdebug") {
+					yield return new Item(ModContent.ItemType<IronLootBox>());
+					yield return new Item(ModContent.ItemType<SilverLootBox>());
+					yield return new Item(ModContent.ItemType<GoldLootBox>());
+					yield return new Item(ModContent.ItemType<CorruptionLootBox>());
+					yield return new Item(ModContent.ItemType<CrimsonLootBox>());
+					yield return new Item(ModContent.ItemType<IceLootBox>());
+					yield return new Item(ModContent.ItemType<HoneyTreasureChest>());
+					yield return new Item(ModContent.ItemType<LootboxLordSummon>());
+					yield return new Item(ModContent.ItemType<PerkChooser>(), 8);
+					yield return new Item(ItemID.LifeCrystal, 15);
+					yield return new Item(ItemID.ManaCrystal, 4);
+					yield return new Item(ItemID.KingSlimeBossBag);
+					yield return new Item(ItemID.EyeOfCthulhuBossBag);
+					yield return new Item(ItemID.EaterOfWorldsBossBag);
+					yield return new Item(ItemID.BrainOfCthulhuBossBag);
+					yield return new Item(ItemID.SkeletronBossBag);
+					yield return new Item(ItemID.QueenBeeBossBag);
+					yield return new Item(ItemID.DeerclopsBossBag);
+					yield return new Item(ItemID.GuideVoodooDoll);
+				}
+				if (Player.IsDebugPlayer()) {
+					yield return new Item(ModContent.ItemType<ModStatsDebugger>());
+					yield return new Item(ModContent.ItemType<ShowPlayerStats>());
+				}
 			}
 		}
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {

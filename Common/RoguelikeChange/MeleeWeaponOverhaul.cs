@@ -17,6 +17,7 @@ namespace BossRush.Common.RoguelikeChange {
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
 		public int SwingType = 0;
+		public float offset = 0;
 		public override bool InstancePerEntity => true;
 		public override void SetDefaults(Item item) {
 			base.SetDefaults(item);
@@ -91,6 +92,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.Muramasa:
 					item.width = 50;
 					item.height = 64;
+					offset += 12;
 					break;
 				case ItemID.LightsBane:
 					item.width = item.height = 50;
@@ -235,8 +237,6 @@ namespace BossRush.Common.RoguelikeChange {
 					item.width = item.height = 60;
 					break;
 			}
-			item.width += 10;
-			item.height += 10;
 			#endregion
 			switch (item.type) {
 				#region BossRushUseStyle.Swipe
@@ -439,13 +439,13 @@ namespace BossRush.Common.RoguelikeChange {
 				case BossRushUseStyle.Swipe:
 					switch (modPlayer.ComboNumber) {
 						case 0:
-							SwipeAttack(player, modPlayer, 1);
+							SwipeAttack(player, 1);
 							break;
 						case 1:
-							SwipeAttack(player, modPlayer, -1);
+							SwipeAttack(player, -1);
 							break;
 						case 2:
-							CircleSwingAttack(player, modPlayer);
+							CircleSwingAttack(player);
 							break;
 					}
 					break;
@@ -453,15 +453,15 @@ namespace BossRush.Common.RoguelikeChange {
 					switch (modPlayer.ComboNumber) {
 						case 0:
 							if (Main.mouseRight)
-								WideSwingAttack(player, modPlayer, 1);
+								WideSwingAttack(player, 1);
 							else
-								SwipeAttack(player, modPlayer, 1);
+								SwipeAttack(player, 1);
 							break;
 						case 1:
 							if (Main.mouseRight)
-								WideSwingAttack(player, modPlayer, -1);
+								WideSwingAttack(player, -1);
 							else
-								SwipeAttack(player, modPlayer, -1);
+								SwipeAttack(player, -1);
 							break;
 						case 2:
 							StrongThrust(player, modPlayer);
@@ -469,7 +469,7 @@ namespace BossRush.Common.RoguelikeChange {
 					}
 					break;
 				case BossRushUseStyle.GenericSwingDownImprove:
-					SwipeAttack(player, modPlayer, 1);
+					SwipeAttack(player, 1);
 					break;
 				default:
 					break;
@@ -487,28 +487,29 @@ namespace BossRush.Common.RoguelikeChange {
 			player.compositeFrontArm = new Player.CompositeArmData(true, Player.CompositeArmStretchAmount.Full, poke.ToRotation() - MathHelper.PiOver2);
 			player.itemLocation = player.Center + poke - poke.SafeNormalize(Vector2.Zero) * 20f;
 		}
-		private void WideSwingAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct) {
+		private void WideSwingAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InOutExpo(percentDone);
-			float baseAngle = modPlayer.data.ToRotation();
+			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().data.ToRotation();
 			float angle = MathHelper.ToRadians(baseAngle + 145) * player.direction;
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
 		}
-		private void SwipeAttack(Player player, MeleeOverhaulPlayer modPlayer, int direct) {
+		private void SwipeAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InOutExpo(percentDone);
-			float baseAngle = modPlayer.data.ToRotation();
+			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().data.ToRotation();
 			float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
 		}
-		private void CircleSwingAttack(Player player, MeleeOverhaulPlayer modPlayer) {
+		private void CircleSwingAttack(Player player) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			float end = (MathHelper.TwoPi + MathHelper.Pi) * -player.direction;
-			Swipe(0, end, percentDone, player, 1);
+			float addition = player.direction > 0 ? MathHelper.Pi : 0;
+			Swipe(addition, end + addition, percentDone, player, 1);
 		}
 		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
@@ -541,22 +542,27 @@ namespace BossRush.Common.RoguelikeChange {
 			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer)) {
 				if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
 					if (modplayer.ComboNumber == 1 && meleeItem.SwingType == BossRushUseStyle.Poke) {
-						for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
-							if (drawinfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
-								DrawData drawdata = drawinfo.DrawDataCache[i];
-								Vector2 origin = drawdata.texture.Size() * .5f;
-								drawdata.sourceRect = null;
-								drawdata.ignorePlayerRotation = true;
-								drawdata.rotation = modplayer.CustomItemRotation;
-								drawdata.position += Vector2.UnitX.RotatedBy(modplayer.CustomItemRotation) * (origin.Length() * drawdata.scale.X + BossRushUtilsPlayer.PLAYERARMLENGTH) * -player.direction;
-								drawinfo.DrawDataCache[i] = drawdata;
-							}
-						}
+						AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 					}
 				}
 			}
 			orig.Invoke(ref drawinfo);
-
+		}
+		private void AdjustDrawingInfo(ref PlayerDrawSet drawinfo, MeleeOverhaulPlayer modplayer, MeleeWeaponOverhaul meleeItem, Player player, Item item) {
+			DrawData drawdata;
+			if (modplayer.ComboNumber == 1 && meleeItem.SwingType == BossRushUseStyle.Poke) {
+				for (int i = 0; i < drawinfo.DrawDataCache.Count; i++) {
+					if (drawinfo.DrawDataCache[i].texture == TextureAssets.Item[item.type].Value) {
+						drawdata = drawinfo.DrawDataCache[i];
+						Vector2 origin = drawdata.texture.Size() * .5f;
+						drawdata.sourceRect = null;
+						drawdata.ignorePlayerRotation = true;
+						drawdata.rotation = modplayer.CustomItemRotation;
+						drawdata.position += Vector2.UnitX.RotatedBy(modplayer.CustomItemRotation) * (origin.Length() * drawdata.scale.X + BossRushUtilsPlayer.PLAYERARMLENGTH + meleeItem.offset) * -player.direction;
+						drawinfo.DrawDataCache[i] = drawdata;
+					}
+				}
+			}
 		}
 	}
 	public class MeleeOverhaulPlayer : ModPlayer {

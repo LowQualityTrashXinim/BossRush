@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Spawner;
+﻿using BossRush.Common.Utils;
+using BossRush.Contents.Items.Spawner;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -11,15 +12,26 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = 7;
 		}
-		public override List<int> FlagNumber() {
-			List<int> list = new List<int>() { 7, 8, 9 };
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeHM);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangeHM);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicHM);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonHM);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeMech);
+			itempool.DropItemRange.Add(ItemID.SuperStarCannon);
+			itempool.DropItemRange.Add(ItemID.DD2PhoenixBow);
+			itempool.DropItemMagic.Add(ItemID.UnholyTrident);
+			LootboxSystem.AddItemPool(itempool);
+		}
+		public override void ModifyLootAdd(Player player) {
+			LootBoxItemPool itempool = LootboxSystem.GetItemPool(Type);
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-				list.RemoveAt(1);
-				list.RemoveAt(0);
-				list.Add(10);
-				list.Add(11);
+				itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostAllMechs);
+				itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostAllMech);
+				itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostAllMech);
+				itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostAllMech);
 			}
-			return list;
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {

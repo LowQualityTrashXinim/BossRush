@@ -1,21 +1,20 @@
-﻿using BossRush.Contents.Items;
-using BossRush.Contents.Items.BuilderItem;
+﻿using System;
+using Terraria;
+using Terraria.ID;
+using System.Linq;
+using Terraria.Audio;
+using BossRush.Texture;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using BossRush.Contents.Items;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Projectiles;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
+using BossRush.Contents.Items.BuilderItem;
 
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
@@ -66,14 +65,16 @@ namespace BossRush.Contents.Perks {
 	public class ImmunityToPoison : Perk {
 		public override void SetDefaults() {
 			Tooltip =
-				"+ Give you immunity to poison" +
-				"\n+ Make a poison aura around player";
+				"+ Give you Bezoar" +
+				"\n+ While you have poisoned immunity, create a poison aura around player";
 			CanBeStack = false;
 		}
-		public override void UpdateEquip(Player player) {
-			player.buffImmune[BuffID.Poisoned] = true;
+		public override void OnChoose(Player player) {
+			player.QuickSpawnItem(player.GetSource_Loot(), ItemID.Bezoar);
 		}
 		public override void Update(Player player) {
+			if (!player.buffImmune[BuffID.Poisoned])
+				return;
 			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
 			for (int i = 0; i < 6; i++) {
 				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Poisoned);
@@ -95,14 +96,16 @@ namespace BossRush.Contents.Perks {
 	public class ImmunityToOnFire : Perk {
 		public override void SetDefaults() {
 			Tooltip =
-				"+ Give you immunity to On Fire !" +
-				"\n+ Make a fiery aura around player";
+				"+ Give you Obsidian Rose" +
+				"\n+ While you have on fire immunity, create a fiery aura around player";
 			CanBeStack = false;
 		}
-		public override void UpdateEquip(Player player) {
-			player.buffImmune[BuffID.OnFire] = true;
+		public override void OnChoose(Player player) {
+			player.QuickSpawnItem(player.GetSource_Loot(), ItemID.ObsidianRose);
 		}
 		public override void Update(Player player) {
+			if (!player.buffImmune[BuffID.OnFire])
+				return;
 			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
 			for (int i = 0; i < 4; i++) {
 				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Torch);
@@ -338,36 +341,25 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfSolar : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
-			CanBeStack = true;
-			StackLimit = 5;
-		}
-		public override string ModifyToolTip() {
-			if (StackAmount > 0)
-				return "+ 78% increased odds for melee" +
-				"\n+ 15% thorn damage" +
-				"\n+ 2% melee size increases" +
-				"\nIncreases 1 armor penetration" +
-				"\nHeart appear more when attacking enemy with melee item";
-			return
-				"+ 78% increased odds for melee" +
-				"\n+ 15% thorn damage" +
-				"\n+ 2% melee size increases" +
-				"\nIncreases 1 armor penetration" +
-				"\nAttacking enemy have a 0.5% with melee item have a chance to drop a heart";
+			CanBeStack = false;
+			Tooltip = "+ 78% increased odds for melee" +
+				"\n+ 12% melee size increases" +
+				"\nIncreases 10 armor penetration" +
+				"\nAttacking enemy have a 5% with melee item have a chance to drop a heart";
+			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
-			player.thorns += .15f * StackAmount;
-			player.GetArmorPenetration(DamageClass.Melee) += 2 * StackAmount;
+			player.GetArmorPenetration(DamageClass.Melee) += 10;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .78f * StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .78f;
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			if (item.DamageType == DamageClass.Melee)
-				scale += .02f * StackAmount;
+				scale += .12f;
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Main.rand.NextFloat() <= .005f * StackAmount && (item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed)) {
+			if (Main.rand.NextFloat() <= .05f && (item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed)) {
 				Item.NewItem(item.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Heart));
 			}
 		}
@@ -375,70 +367,42 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfVortex : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
-			CanBeStack = true;
-			StackLimit = 5;
+			CanBeStack = false;
+			Tooltip = "+ 78% increased odds for range" +
+				"\n+ 15% range critical strike chance" +
+				"\nYou have 1% chance to deal 4x damage";
+			CanBeChoosen = false;
 		}
-		public override string ModifyToolTip() {
-			if (StackAmount > 0)
-				return "+ 78% increased odds for range" +
-				"\n+ 5% range critical strike chance" +
-				"\nIncrease chance to deal 4x damage by 0.2%";
-			return
-				"+ 78% increased odds for range" +
-				"\n+ 5% range critical strike chance" +
-				"\nYou have 0.2% chance to deal 4x damage";
-		}
-
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f * StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f;
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			base.OnHitNPCWithProj(player, proj, target, hit, damageDone);
-			if (Main.rand.NextFloat() <= .002f * StackAmount)
+			if (Main.rand.NextFloat() <= .01f)
 				hit.Damage *= 4;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
 			if (item.DamageType == DamageClass.Ranged)
-				crit += 5 * StackAmount;
+				crit += 15;
 		}
 	}
 	public class BlessingOfNebula : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
-			CanBeStack = true;
-			StackLimit = 5;
-		}
-		public override string ModifyToolTip() {
-			//if (StackAmount >= 5)
-			//    return "+ 78% increased odds for magic" +
-			//    "\n+ 5% magic cost reduction" +
-			//    "\nMore Mana star can be spawn from hitting NPC with magic projectile" +
-			//    "\nYou will now use 100 mana for each time you uses magic weapon, the mana that consumes will contribute to more damage";
-			if (StackAmount > 0)
-				return "+ 78% increased odds for magic" +
-				"\n+ 5% magic cost reduction" +
-				"\nMana star spawn more frequent from hitting NPC with magic projectile";
-			return
-				"+ 78% increased odds for magic" +
-				"\n+ 5% magic cost reduction" +
-				"\nMana star can spawn from hitting NPC with magic projectile (start at 2.5%)";
+			CanBeStack = false;
+			Tooltip = "+ 78% increased odds for magic" +
+				"\n+ 15% magic cost reduction" +
+				"\nMana star have 5% to spawn from NPC when hitting them with magic projectile";
+			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += .78f * StackAmount;
-		}
-		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			//if (StackAmount >= 5)
-			//{
-			//    player.statMana = Math.Clamp(player.statMana - 100, 0, player.statManaMax2);
-			//    if (player.statMana >= 100)
-			//        damage *= 2;
-			//}
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += .78f;
 		}
 		public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) {
-			multi -= .05f * StackAmount;
+			multi -= .15f;
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Main.rand.NextFloat() <= .025f * StackAmount && proj.DamageType == DamageClass.Magic) {
+			if (Main.rand.NextFloat() <= .05f && proj.DamageType == DamageClass.Magic) {
 				Item.NewItem(proj.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Star));
 			}
 		}
@@ -446,25 +410,24 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfStarDust : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
-			CanBeStack = true;
-			CanBeChoosen = false;
+			CanBeStack = false;
 			Tooltip =
 				"+ 78% increased odds for summoner" +
 				"\n+ 5% summoner damage" +
 				"\n+ 1 minion slot" +
 				"\n+ 1 sentry slot";
-			StackLimit = 5;
+			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
-			player.maxMinions += 1 * StackAmount;
-			player.maxTurrets += 1 * StackAmount;
+			player.maxMinions += 1;
+			player.maxTurrets += 1;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += .78f * StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += .78f;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			if (item.DamageType == DamageClass.Summon || item.DamageType == DamageClass.SummonMeleeSpeed)
-				damage += .05f * StackAmount;
+				damage += .05f;
 		}
 	}
 	public class BlessingOfPerk : Perk {

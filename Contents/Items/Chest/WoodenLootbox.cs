@@ -13,12 +13,14 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = 0;
 		}
-		public override List<int> FlagNumber() => new List<int> { 0, 1, 2 };
 		public override void LootPoolSetStaticDefaults() {
-			DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
-			DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
-			DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
-			DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
+			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 2 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
@@ -84,7 +86,7 @@ namespace BossRush.Contents.Items.Chest {
 				int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });
 				player.QuickSpawnItem(entitySource, RandomAssArmor);
 			}
-			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode && player.difficulty == PlayerDifficultyID.Hardcore) {
 				int RandomModdedBuff = Main.rand.Next(new int[] {
 					ModContent.ItemType<BerserkerElixir>(),
 					ModContent.ItemType<GunslingerElixir>(),

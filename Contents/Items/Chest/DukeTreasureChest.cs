@@ -1,7 +1,20 @@
-﻿using Terraria;
+﻿using BossRush.Common.Utils;
+using Terraria;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class DukeTreasureChest : LootBoxBase {
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostPlant);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostPlant);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostPlant);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostPlant);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostGolem);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePostGolem);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPostGolem);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPostGolem);
+			LootboxSystem.AddItemPool(itempool);
+		}
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;

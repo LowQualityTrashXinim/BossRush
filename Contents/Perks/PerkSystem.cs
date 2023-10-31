@@ -205,7 +205,9 @@ namespace BossRush.Contents.Perks {
 		/// </summary>
 		public string textureString = null;
 		public string Tooltip = null;
-
+		/// <summary>
+		/// This will prevent from perk being able to be choose
+		/// </summary>
 		public bool CanBeChoosen = true;
 		public int Type { get; private set; }
 		protected sealed override void Register() {

@@ -1779,7 +1779,7 @@ Mods: {
 						Highly not recommend for inexperience player
 						- Enemy are much more brutal, and is immune to lava and trap
 						- NPC will gain randomize health and damage buff that range from 0% to 100%
-						- Spawn rate are increases even during boss fight
+						- Spawn rate stay the same even during boss fight
 						- Some bosses receive minor AI change and buff
 						- The mode will force Veteran mode to be activate
 						'''
@@ -1809,14 +1809,9 @@ Mods: {
 					Tooltip: Make boss drop outside of challenge mode
 				}
 
-				DisableBundleHepler: {
-					Label: Disable Bundle Hepler
-					Tooltip: ""
-				}
-
 				WorldGenTest: {
 					Label: World Gen Test
-					Tooltip: ""
+					Tooltip: "Do not mess with this, only for testing only"
 				}
 			}
 		}
@@ -1824,7 +1819,7 @@ Mods: {
 		Prefixes.BasePrefix.DisplayName: Base Prefix
 
 		Keybinds: {
-			"Weapon Modification.DisplayName": Weapon  Modification
+			"Weapon Modification.DisplayName": Weapon Modification
 			WeaponModification.DisplayName: Weapon Modification
 		}
 	}
