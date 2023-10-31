@@ -308,12 +308,14 @@ namespace BossRush.Contents.Items.Weapon {
 	public abstract class SynergyModItem : ModItem {
 		public override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
+			CustomColor = new ColorInfo(new List<Color> { new Color(255, 50, 255), new Color(100, 50, 100) });
 		}
+		ColorInfo CustomColor;
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
 			TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy item");
-			line.OverrideColor = BossRushUtils.MultiColor(new List<Color> { new Color(25, 150, 150), Color.White }, 5);
+			line.OverrideColor = CustomColor.MultiColor(5);
 			tooltips.Add(line);
 		}
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }

@@ -9,6 +9,7 @@ using Terraria.Audio;
 using System.Linq;
 using Terraria.ID;
 using Terraria;
+using static BossRush.Common.RoguelikeChange.RoguelikeItemOverhaulData;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -42,134 +43,25 @@ namespace BossRush.Common.RoguelikeChange {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet",
 					"Increases gun accurancy by 25%"));
 			}
+			if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose",
+					"Grant immunity to OnFire debuff !"));
+			}
+			if (item.type == ItemID.VikingHelmet) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
+					"Increases melee damage by 15%" +
+					"\nIncreases melee weapon size by 10%"));
+			}
 			int[] armorSet = new int[] { player.armor[0].type, player.armor[1].type, player.armor[2].type };
 			foreach (TooltipLine tooltipLine in tooltips) {
 				if (tooltipLine.Name != "SetBonus") {
 					continue;
 				}
 				if (armorSet.Contains(item.type)) {
-					tooltips.Add(new TooltipLine(Mod, ArmorSet.ConvertIntoArmorSetFormat(armorSet), GetToolTip(item.type)));
+					tooltips.Add(new TooltipLine(Mod, ArmorSet.ConvertIntoArmorSetFormat(armorSet), GetToolTip(item.type, armorSet)));
 					return;
 				}
 			}
-		}
-		private string GetToolTip(int type) {
-			if (type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves) {
-				return "When in forest biome :" +
-					   "\nIncrease defense by 11" +
-					   "\nIncrease movement speed by 25%" +
-					   "\nYour attack have 25% chance to drop down a acorn dealing 10 damage";
-			}
-			if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves) {
-				return "When in snow biome :" +
-					   "\nIncrease defense by 13" +
-					   "\nIncrease movement speed by 20%" +
-					   "\nYou are immune to Chilled" +
-					   "\nYour attack have 10% chance to inflict frost burn for 10 second";
-			}
-			if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves) {
-				return "When in jungle biome :" +
-					   "\nIncrease defense by 12" +
-					   "\nIncrease movement speed by 30%" +
-					   "\nGetting hit release sharp leaf around you that deal 12 damage";
-			}
-			if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves) {
-				return "When in crimson biome :" +
-					   "\nIncrease defense by 17" +
-					   "\nIncrease movement speed by 15%" +
-					   "\nIncrease critical strike chance by 5" +
-					   "\nIncrease life regen by 1" +
-					   "\nWhenever you strike a enemy :" +
-					   "\nA ring of crimson burst out that deal fixed 10 damage and heal you for each enemy hit and debuff them with ichor";
-			}
-			if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
-				return "When in corruption biome :" +
-						"\nIncrease defense by 6" +
-						"\nIncrease movement speed by 35%" +
-						"\nIncrease damage by 5%" +
-						"\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s";
-			}
-			if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves) {
-				return "Increase defense by 16" +
-					   "\nIncrease damage by 10%" +
-					   "\nWhen in underworld or underground caven level :" +
-					   "\nGetting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage" +
-					   "\nAll attacks inflicts On Fire! for 5 seconds" +
-					   "\nIncreased life regen by 1";
-			}
-			if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings) {
-				return "Increase defenses by 10" +
-					   "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
-					   "\nGetting hit will shoot out 8 cactus spike that is friendly deal 15 damage";
-			}
-			if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves) {
-				return "Increase defense by 10" +
-					   "\nIncrease movement speed by 17%" +
-					   "\nJumping will leave a trail of sand that deal 12 damage";
-			}
-			if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings) {
-				return "When in overworld :" +
-					   "\nGrant well fed buff for 5s on getting hit" +
-					   "\nhitting enemies has 25% to inflict pumpkin overdose" +
-					   "\ninflicting the same debuff to an enemy who already has it " +
-					   "\ncauses an explosion, dealing 5 + 5% of damage dealt" +
-					   "\nWhile below 20% HP, you gain 5x health regen";
-			}
-			if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves) {
-				return "Increase defense by 5" +
-						"\nIncrease movement speed by 21%" +
-						"\nVanilla tin weapon are stronger";
-			}
-			if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves) {
-				return "Increase defense by 7" +
-						"\nYour attack can inflict irradiation poison" +
-						"\nLead irradiation increase enemy defense by 20 but deal 50 DoT";
-			}
-			if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves) {
-				return "Increase movement speed by 15%" +
-					   "\nEvery 50 hit to enemy grants you the over charged for 3s" +
-					   "\nDuring the rain, your hit requirement reduce by half" +
-					   "\nOver charged: Increases movement speed, weapon speed, damage by 10%";
-			}
-			if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
-				return "Increase movement speed by 35%" +
-						"\nAttacking an enemy summons 6 hallow Swords that deals 5 damage with 4 seconds cooldown" +
-						"\nIncrease damage by 15% during day" +
-						"\nIncrease defense By 12" +
-						"\nWhen in Hallow biome:" +
-						"\n Hallow Swords deal 15 damage";
-			}
-			if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
-				return "Increase damage reduction 2.5%" +
-					   "\nIncrease defense effectivness by 10%" +
-					   "\nIncrease damage by 5%" +
-					   "\nDecrease movement speed 5%" +
-					   "\nWhile under 50% HP, gain 15 bonus defense, but -10% less attack speed";
-			}
-			if (type == ItemID.SilverHelmet || type == ItemID.SilverChainmail || type == ItemID.SilverGreaves) {
-				return "During the day :" +
-					   "\nGain 10 defense" +
-					   "\nDuring the night :" +
-					   "\nIncrease damage by 10%" +
-					   "\nAt full life, these effects are multiply by 2";
-			}
-			if (type == ItemID.TungstenHelmet || type == ItemID.TungstenChainmail || type == ItemID.TungstenGreaves) {
-				return "Increase defense by 15" +
-					   "\nWhen at full hp :" +
-					   "\nReduce your defense down to 0" +
-					   "\nIncrease speed by 30%" +
-					   "\nThe closer your enemy is, the more damage increases";
-			}
-			if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves) {
-				return "Your attack have 15% to inflict Midas for 10 seconds" +
-					   "\nAttacking enemies with midas debuff will : " +
-					   "\nDeal additional damage based on their defense";
-			}
-			if (type == ItemID.PlatinumHelmet || type == ItemID.PlatinumChainmail || type == ItemID.PlatinumGreaves) {
-				return "Increase weapon uses speed by 35%" +
-					   "\nAttacking too much will lit on fire";
-			}
-			return "";
 		}
 		public override string IsArmorSet(Item head, Item body, Item legs) {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
@@ -177,9 +69,17 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			return new ArmorSet(head.type, body.type, legs.type).ToString();
 		}
+		//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
+		private string GetToolTip(int type, int[] armorSet) {
+			ArmorSet set = new ArmorSet(armorSet[0], armorSet[1], armorSet[2]);
+			if (set.ContainAnyOfArmorPiece(type)) {
+				return set.AttemptToGetToolTip();
+			}
+			return "";
+		}
 		public override void UpdateArmorSet(Player player, string set) {
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves)) {
+			if (set == new WoodArmorSet().ToString()) {
 				if (player.ZoneForest) {
 					player.statDefense += 11;
 					player.moveSpeed += .25f;
@@ -296,10 +196,11 @@ namespace BossRush.Common.RoguelikeChange {
 			if (item.type == ItemID.VikingHelmet) {
 				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
 			}
+			if (player.lavaRose)
+				player.buffImmune[BuffID.OnFire] = true;
 		}
 		public override void ModifyItemScale(Item item, Player player, ref float scale) {
-			if (player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee)
-				scale += .1f;
+
 		}
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
 			if (item.type == ItemID.EoCShield)
@@ -308,12 +209,10 @@ namespace BossRush.Common.RoguelikeChange {
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			VanillaChange(item, player, ref damage);
 		}
+		//Add buff or change if this a item not a accessories or equipment
 		private void VanillaChange(Item item, Player player, ref StatModifier damage) {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
-			}
-			if (player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
-				damage += .15f;
 			}
 			if (item.type == ItemID.Sandgun) {
 				damage -= .55f;
@@ -446,6 +345,8 @@ namespace BossRush.Common.RoguelikeChange {
 			if (TinArmor)
 				if (item.type == ItemID.TinBroadsword)
 					scale += .5f;
+			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee)
+				scale += .1f;
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss) {
@@ -466,6 +367,9 @@ namespace BossRush.Common.RoguelikeChange {
 						damage += .15f;
 						break;
 				}
+			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
+				damage += .15f;
+			}
 		}
 		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
 			OnHitEffect_RichMahoganyArmor(proj);
@@ -621,7 +525,7 @@ namespace BossRush.Common.RoguelikeChange {
 			if (Player.ZoneRain)
 				CopperArmorChargeCounter++;
 			if (CopperArmorChargeCounter >= 50) {
-				Player.AddBuff(ModContent.BuffType<OverCharged>(), 180);
+				Player.AddBuff(ModContent.BuffType<OverCharged>(), 300);
 				CopperArmorChargeCounter = 0;
 			}
 		}
@@ -666,23 +570,5 @@ namespace BossRush.Common.RoguelikeChange {
 			if (npc.HasBuff(ModContent.BuffType<LeadIrradiation>()))
 				modifiers.Defense.Base += 20;
 		}
-	}
-	class ArmorSet {
-		int headID, bodyID, legID;
-		public ArmorSet(int headID, int bodyID, int legID) {
-			this.headID = headID;
-			this.bodyID = bodyID;
-			this.legID = legID;
-		}
-		public static string ConvertIntoArmorSetFormat(int headID, int bodyID, int legID) => $"{headID}:{bodyID}:{legID}";
-		/// <summary>
-		/// Expect there is only 3 item in a array
-		/// </summary>
-		/// <param name="armor"></param>
-		/// <returns></returns>
-		public static string ConvertIntoArmorSetFormat(int[] armor) => $"{armor[0]}:{armor[1]}:{armor[2]}";
-		public override string ToString() => $"{headID}:{bodyID}:{legID}";
-	}
-	public class RoguelikeOverhaulSystem : ModSystem {
 	}
 }

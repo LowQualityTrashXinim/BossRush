@@ -1,14 +1,14 @@
 ﻿using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Chest;
 //EnragedStuff
-using BossRush.Contents.Perks;
-using Terraria;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
+using BossRush.Contents.Perks;
 using Terraria.ModLoader;
+using Terraria.ID;
+using Terraria;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
@@ -21,14 +21,12 @@ namespace BossRush.Common {
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
+				noHit.OnSuccess(ItemDropRule.ByCondition(new HardcoreExclusive(),ModContent.ItemType<KSNoHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.SuspiciousLookingEye));
 				//Enraged boss drop
-				LeadingConditionRule KSE = new LeadingConditionRule(new BossIsEnragedBySpecialSpawner());
-				KSE.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<KingSlimeDelight>()));
-				npcLoot.Add(KSE);
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ModContent.ItemType<KingSlimeDelight>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IronLootBox>()));
 			}
@@ -41,10 +39,7 @@ namespace BossRush.Common {
 				DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
 				npcLoot.Add(DropOnce);
 				//Enraged boss drop
-				LeadingConditionRule EOCE = new LeadingConditionRule(new BossIsEnragedBySpecialSpawner());
-				EOCE.OnSuccess(ItemDropRule.BossBag(ItemID.TheEyeOfCthulhu));
-				EOCE.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<EvilEye>()));
-				npcLoot.Add(EOCE);
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ItemID.TheEyeOfCthulhu).OnSuccess(ItemDropRule.Common(ModContent.ItemType<EvilEye>())));
 				//Expert Mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
 			}
@@ -76,9 +71,7 @@ namespace BossRush.Common {
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>()));
 				//Enraged boss drop
-				LeadingConditionRule EnragedQB = new LeadingConditionRule(new QueenBeeEnranged());
-				EnragedQB.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>(), 1, 3, 3));
-				npcLoot.Add(EnragedQB);
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new QueenBeeEnranged(), ModContent.ItemType<HoneyTreasureChest>()));
 				//Expert drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<HoneyTreasureChest>()));
 			}
@@ -174,9 +167,7 @@ namespace BossRush.Common {
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
 				//Enraged boss drop
-				LeadingConditionRule rule = new LeadingConditionRule(new Conditions.EmpressOfLightIsGenuinelyEnraged());
-				rule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<EmpressTreasureChest>()));
-				npcLoot.Add(rule);
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressTreasureChest>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
 			}

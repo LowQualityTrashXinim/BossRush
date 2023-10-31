@@ -1,8 +1,7 @@
-﻿using BossRush.Contents.Items.BuilderItem;
-using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using BossRush.Common.Utils;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Chest {
 	class CorruptionLootBox : LootBoxBase {
@@ -11,7 +10,32 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = 3;
 		}
-		public override List<int> FlagNumber() => new List<int>() { 1, 2, 3, 5 };
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
+
+			itempool.DropItemMelee.Add(ItemID.Code1);
+			itempool.DropItemMagic.Add(ItemID.ZapinatorGray);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
+
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeEvilBoss);
+			itempool.DropItemRange.Add(ItemID.MoltenFury);
+			itempool.DropItemRange.Add(ItemID.StarCannon);
+			itempool.DropItemRange.Add(ItemID.AleThrowingGlove);
+			itempool.DropItemRange.Add(ItemID.Harpoon);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicEvilBoss);
+			itempool.DropItemSummon.Add(ItemID.ImpStaff);
+
+			LootboxSystem.AddItemPool(itempool);
+		}
 		public override List<int> FlagNumAcc() => new List<int> { 0, 1, 2, 3, 4, 5 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

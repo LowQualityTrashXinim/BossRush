@@ -14,6 +14,13 @@ namespace BossRush.Contents.BuffAndDebuff {
 			player.moveSpeed += .1f;
 			player.GetDamage(DamageClass.Generic) += 0.1f;
 			player.GetAttackSpeed(DamageClass.Generic) += .1f;
+			if (player.Center.LookForHostileNPCNotImmune(out NPC npc, 300, player.whoAmI)) {
+				for (int i = 0; i < 20; i++) {
+					int electic = Dust.NewDust(BossRushUtils.NextPointOn2Vector2(player.Center, npc.Center) + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.Electric);
+					Main.dust[electic].noGravity = true;
+				}
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(10, 0, damageVariation: true));
+			}
 		}
 	}
 }

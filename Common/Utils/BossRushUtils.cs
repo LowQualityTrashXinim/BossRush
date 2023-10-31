@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.Utilities;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -59,7 +60,17 @@ namespace BossRush {
 				if (ModLoader.HasMod("HPAware"))
 					HowManyModIsEnable--;
 			}
+			//Below are special mod that we partner or will later on partner, currently all these mod are the mod that I'm working with.
+			//By all mean, do not speak of this to outsider, only announce or say that we don't want to do mod addon.
+			//Also hardcode this shit so that people have a hard time IL this stuff
+			if (ModLoader.HasMod("Malignant"))
+				HowManyModIsEnable--;
+			if (ModLoader.HasMod("TheSkeletronMod"))
+				HowManyModIsEnable--;
 			return HowManyModIsEnable;
+		}
+		public static int NextFromHashSet(this UnifiedRandom r, HashSet<int> hashset) {
+			return hashset.ElementAt(r.Next(hashset.Count));
 		}
 		/// <summary>
 		/// Spawn combat text above player without the random Y position
@@ -89,7 +100,12 @@ namespace BossRush {
 		/// <param name="v2"></param>
 		/// <returns></returns>
 		public static (int, int) Order(float v1, float v2) => v1 < v2 ? ((int)v1, (int)v2) : ((int)v2, (int)v1);
-
+		/// <summary>
+		/// Check if there any NPC that is within radius 
+		/// </summary>
+		/// <param name="position"></param>
+		/// <param name="distance"></param>
+		/// <returns></returns>
 		public static bool LookForAnyHostileNPC(this Vector2 position, float distance) {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				if (Main.npc[i].active && Main.npc[i].friendly) {
@@ -115,7 +131,7 @@ namespace BossRush {
 			}
 			return hostilePos;
 		}
-		public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLockThroughTile = false) {
+		public static bool LookForHostileNPC(this Vector2 position, out NPC npc, float distance, bool CanLookThroughTile = false) {
 			float maxDistanceSquare = distance * distance;
 			npc = null;
 			for (int i = 0; i < Main.maxNPCs; i++) {
@@ -124,7 +140,25 @@ namespace BossRush {
 					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
-					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLockThroughTile)
+					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLookThroughTile)
+					) {
+					maxDistanceSquare = dis;
+					npc = mainnpc;
+				}
+			}
+			return npc != null;
+		}
+		public static bool LookForHostileNPCNotImmune(this Vector2 position, out NPC npc, float distance,int whoAmI, bool CanLookThroughTile = false) {
+			float maxDistanceSquare = distance * distance;
+			npc = null;
+			for (int i = 0; i < Main.maxNPCs; i++) {
+				NPC mainnpc = Main.npc[i];
+				if (mainnpc.active
+					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
+					&& mainnpc.CanBeChasedBy()
+					&& !mainnpc.friendly
+					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLookThroughTile)
+					&& mainnpc.immune[whoAmI] <= 0
 					) {
 					maxDistanceSquare = dis;
 					npc = mainnpc;
@@ -133,7 +167,12 @@ namespace BossRush {
 			return npc != null;
 		}
 		public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance) {
-			npc = Main.npc.Where(npc => npc.active && npc.CanBeChasedBy() && npc.type != NPCID.TargetDummy && !npc.friendly && CompareSquareFloatValueWithHitbox(position, npc.position, npc.Hitbox, distance)).ToList();
+			npc = new List<NPC>();
+			for (int i = 0;i < Main.maxNPCs;i++) {
+				NPC Npc = Main.npc[i];
+				if (Npc.active && Npc.CanBeChasedBy() && Npc.type != NPCID.TargetDummy && !Npc.friendly && CompareSquareFloatValueWithHitbox(position, Npc.position, Npc.Hitbox, distance))
+					npc.Add(Npc);
+			}
 		}
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
 		public static float OutExpo(float t) => 1 - InExpo(1 - t);
@@ -259,52 +298,42 @@ namespace BossRush {
 			tile.TileType = TileType;
 			tile.Get<TileWallWireStateData>().HasTile = true;
 		}
-		public static List<int> RemoveDupeInList(this List<int> flag) {
-			HashSet<int> HashsetRemoveDup = new(flag);
-			return HashsetRemoveDup.ToList();
+	}
+	/// <summary>
+	/// Use this to set up your own logic for multi color changing effect, could done this with shader but well
+	/// </summary>
+	public class ColorInfo {
+		public ColorInfo(List<Color> colorlist) {
+			listcolor = colorlist;
 		}
-		public static List<T> RemoveDupeInList<T>(this List<T> flag) where T : Enum {
-			HashSet<T> HashsetRemoveDup = new(flag);
-			return HashsetRemoveDup.ToList();
-		}
-		public static Color MultiColor(List<Color> color, int speed) {
-			if (progress >= 255) {
+		int currentIndex = 0, progress = 0;
+		Color color1 = new Color(), color2 = new Color(), color3 = new Color();
+		List<Color> listcolor = new List<Color>();
+
+		public Color MultiColor(int speed) {
+			if (progress >= 255)
 				progress = 0;
-			}
-			else {
+			else
 				progress = Math.Clamp(progress + 1 * speed, 0, 255);
-			}
-			if (color.Count < 1) {
+
+			if (listcolor.Count < 1)
 				return Color.White;
-			}
-			if (color.Count < 2) {
-				return color[0];
-			}
-			int count = 0;
-			foreach (Color c in listcolor) {
-				if (color.Contains(c)) {
-					count++;
-				}
-			}
-			if (count != color.Count) {
-				listcolor = color;
-				color1 = new Color();
-				color2 = new Color();
-			}
+
+			if (listcolor.Count < 2)
+				return listcolor[0];
+
 			if (color1.Equals(color2)) {
-				color1 = color[currentIndex];
-				color3 = color[currentIndex];
-				currentIndex = Math.Clamp((currentIndex + 1 >= color.Count) ? 0 : currentIndex + 1, 0, color.Count - 1);
-				color2 = color[currentIndex];
+				color1 = listcolor[currentIndex];
+				color3 = listcolor[currentIndex];
+				currentIndex = Math.Clamp((currentIndex + 1 >= listcolor.Count) ? 0 : currentIndex + 1, 0, listcolor.Count - 1);
+				color2 = listcolor[currentIndex];
 				progress = 0;
 			}
-			if (!color1.Equals(color2)) {
+
+			if (!color1.Equals(color2))
 				color1 = Color.Lerp(color3, color2, Math.Clamp(progress / 255f, 0, 1f));
-			}
+
 			return color1;
 		}
-		private static int currentIndex = 0, progress = 0;
-		static Color color1 = new Color(), color2 = new Color(), color3 = new Color();
-		static List<Color> listcolor = new List<Color>();
 	}
 }
