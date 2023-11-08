@@ -31,31 +31,28 @@ namespace BossRush.Contents.Artifacts {
 		}
 		private void AlchemistOverCharged(NPC target, ref NPC.HitModifiers modifiers) {
 			if (Alchemist) {
+				int damage = modifiers.FinalDamage.StatModifierDamageValue();
 				int lengthNPC = target.buffType.Where(i => i != 0).Count();
 				int lengthPlayer = Player.buffType.Where(i => i != 0).Count();
 				int finalLength = lengthNPC + Player.buffType.Where(i => i != 0).Count();
-				if (finalLength <= 0) {
+				if (finalLength == 0) {
 					modifiers.FinalDamage *= 0;
 				}
 				else {
-					for (int i = 1; i < finalLength; i++) {
-						modifiers.FinalDamage *= 2;
-					}
+					modifiers.FinalDamage *= finalLength;
 				}
 				if (lengthNPC > 0) {
 					for (int i = target.buffType.Length - 1; i >= 0; i--) {
 						if (target.buffType[i] == 0)
 							continue;
-						target.buffTime[i] = 0;
-						target.DelBuff(i);
+						target.buffTime[i] = (int)(target.buffTime[i] * .5f);
 					}
 				}
 				if (lengthPlayer > 0) {
 					for (int i = Player.buffType.Length - 1; i >= 0; i--) {
 						if (Player.buffType[i] == 0)
 							continue;
-						Player.buffTime[i] = 0;
-						Player.DelBuff(i);
+						Player.buffTime[i] = (int)(Player.buffTime[i] * .5f);
 					}
 				}
 			}

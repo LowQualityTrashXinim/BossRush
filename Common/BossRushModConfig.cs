@@ -30,5 +30,7 @@ namespace BossRush.Common {
 		public bool ForceBossDropRegadless { get; set; }
 		[DefaultValue(false)]
 		public bool WorldGenTest { get; set; }
+		[DefaultValue(false)]
+		public bool NoMoreChestFromBuilderLootbox { get; set; }
 	}
 }

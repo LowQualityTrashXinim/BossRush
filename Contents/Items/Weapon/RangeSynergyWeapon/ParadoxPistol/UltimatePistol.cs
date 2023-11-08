@@ -22,7 +22,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol {
 			Item.rare = ItemRarityID.Red;
 			Item.UseSound = SoundID.Item11;
 			Item.autoReuse = true;
-			Item.shoot = 5;
+			Item.shoot = ProjectileID.JestersArrow;
 			Item.shootSpeed = 15f;
 			Item.useAmmo = AmmoID.Bullet;
 		}

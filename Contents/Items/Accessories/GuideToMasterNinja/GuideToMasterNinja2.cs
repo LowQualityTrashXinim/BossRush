@@ -11,10 +11,10 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja {
 			Item.accessory = true;
 			Item.height = 24;
 			Item.width = 32;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = 10000000;
 		}
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja2 && (player.HasItem(ItemID.Shuriken) || player.HasItem(ItemID.ThrowingKnife) || player.HasItem(ItemID.PoisonedKnife))) {
 				tooltips.Add(new TooltipLine(Mod, "Weeb2", $"[i:{ItemID.Shuriken}][i:{ItemID.ThrowingKnife}][i:{ItemID.PoisonedKnife}] Increase shuriken damage flat by 5 and have a chance to spawn itself ontop of the enemy"));

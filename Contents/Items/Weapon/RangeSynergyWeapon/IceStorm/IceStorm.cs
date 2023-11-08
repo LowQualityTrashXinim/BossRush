@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 98, 50, 1f, 75, 75, ItemUseStyleID.Shoot, ProjectileID.FrostArrow, 10f, true, AmmoID.Arrow);
 			Item.crit = 5;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.scale = 0.7f;
 			Item.UseSound = SoundID.Item5;

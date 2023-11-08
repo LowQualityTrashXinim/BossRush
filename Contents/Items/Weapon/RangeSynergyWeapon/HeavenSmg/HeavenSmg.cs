@@ -207,8 +207,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 					Projectile.Kill();
 			}
 		}
-		public override void OnKill(int timeLeft) {
-			Player player = Main.player[Projectile.owner];
+		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			player.reuseDelay = 30;
 			if (targetHit)
 				for (int i = 1; i < oldposFrameAmount; i++) {

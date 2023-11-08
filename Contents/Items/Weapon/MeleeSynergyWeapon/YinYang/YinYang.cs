@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.YinYang {
 			Item.shootSpeed = 16f;
 			Item.knockBack = 2.5f;
 			Item.damage = 52;
-			Item.rare = 6;
+			Item.rare = ItemRarityID.LightPurple;
 
 			Item.DamageType = DamageClass.Melee;
 			Item.channel = true;

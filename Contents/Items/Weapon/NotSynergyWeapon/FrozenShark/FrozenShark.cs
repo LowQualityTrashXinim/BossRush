@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark {
 	internal class FrozenShark : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(64, 20, 16, 1f, 9, 9, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

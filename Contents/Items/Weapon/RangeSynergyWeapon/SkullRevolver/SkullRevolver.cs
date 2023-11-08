@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SkullRevolver {
 
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(26, 52, 25, 3f, 10, 60, ItemUseStyleID.Shoot, ProjectileID.Bullet, 20f, false, AmmoID.Bullet);
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item11;
 			Item.crit = 15;
 			Item.reuseDelay = 57;

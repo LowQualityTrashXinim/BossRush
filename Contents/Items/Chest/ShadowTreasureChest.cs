@@ -27,8 +27,8 @@ namespace BossRush.Contents.Items.Chest
         {
             Item.width = 54;
             Item.height = 38;
-            Item.rare = 6;
-        }
+			Item.rare = ItemRarityID.LightPurple;
+		}
         public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
         public override void OnRightClick(Player player, ChestLootDropPlayer modplayer)
         {

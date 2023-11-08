@@ -5,12 +5,10 @@ using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
 	class IronLootBox : LootBoxBase {
-		public override void SetStaticDefaults() {
-		}
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
-			Item.rare = 1;
+			Item.rare = ItemRarityID.Blue;
 		}
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);

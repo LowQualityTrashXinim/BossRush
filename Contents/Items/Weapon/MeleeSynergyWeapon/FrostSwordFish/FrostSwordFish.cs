@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FrostSwordFish {
 			BossRushUtils.BossRushSetDefault(Item, 60, 64, 37, 1f, 18, 18, ItemUseStyleID.Swing, true);
 			Item.DamageType = DamageClass.Melee;
 
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.crit = 5;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.useTurn = false;

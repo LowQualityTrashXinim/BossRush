@@ -9,12 +9,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 		static int counter = 0;
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(32, 66, 40, 3f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 20, true, AmmoID.Arrow);
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item5;
 		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			Vector2 RotatePos = Main.rand.NextVector2Circular(75f, 75f) * 2 + position;
 			Vector2 AimPos = Main.MouseWorld - RotatePos;
 			Vector2 safeAim = AimPos.SafeNormalize(Vector2.UnitX) * Main.rand.Next(14, 21);
@@ -45,7 +44,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 			if (counter > 5) {
 				counter = 0;
 			}
-			return true;
+			CanShootItem = true;
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-4, 0);

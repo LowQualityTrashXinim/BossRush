@@ -462,7 +462,6 @@ namespace BossRush.Contents.WeaponModification {
 	}
 	public class WeaponModificationUIslot : UIImage {
 		public Item item = null;
-		public bool active = false;
 		public int WhoAmI = -1;
 		public int ModificationType = -1;
 		public Texture2D textureDraw;
@@ -546,7 +545,7 @@ namespace BossRush.Contents.WeaponModification {
 					ModificationType = player.GetModPlayer<WeaponModificationPlayer>().WeaponModification_inventory[WhoAmI];
 				}
 			}
-			catch (Exception ex) {
+			catch {
 
 			}
 		}
@@ -586,9 +585,102 @@ namespace BossRush.Contents.WeaponModification {
 			WeaponModificationSystem.SelectedModifySlot = -1;
 		}
 	}
+	/// <summary>
+	/// To not be confused with <see cref="WeaponModificationUI"/>
+	/// </summary>
+	public class PowerWeaponState : UIState {
+		public int whoAmI = -1;
+		public override void OnActivate() {
+			Elements.Clear();
+			if (whoAmI == -1)
+				return;
+			Player player = Main.player[whoAmI];
+			Vector2 originDefault = new Vector2(26, 26);
+			PowerWeaponSlot wpUI = new PowerWeaponSlot(TextureAssets.InventoryBack2, player);
+			wpUI.UISetPosition(player.Center + new Vector2(100, -10), originDefault);
+			Append(wpUI);
+			PowerWeaponButton wpBtn = new PowerWeaponButton(TextureAssets.InventoryBack10);
+			wpBtn.UISetPosition(player.Center + new Vector2(100, 40), originDefault);
+			Append(wpBtn);
+		}
+	}
+	public class PowerWeaponSlot : UIImage {
+		Player player;
+		public Item item = null;
+		Texture2D thisTexture = null;
+		public PowerWeaponSlot(Asset<Texture2D> texture, Player player) : base(texture) {
+			this.player = player;
+			thisTexture = texture.Value;
+		}
+		public override void LeftMouseDown(UIMouseEvent evt) {
+			if (Main.mouseItem.type != ItemID.None) {
+				if (Main.mouseItem.consumable)
+					return;
+				item = Main.mouseItem.Clone();
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+			}
+			else {
+				if (item == null)
+					return;
+				Main.mouseItem = item;
+				item = null;
+			}
+		}
+		public override void OnDeactivate() {
+			if (item == null) {
+				return;
+			}
+			for (int i = 0; i < 50; i++) {
+				if (player.CanItemSlotAccept(player.inventory[i], item)) {
+					player.inventory[i] = item;
+					return;
+				}
+			}
+			player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+			item = null;
+		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			base.Draw(spriteBatch);
+			if (item != null) {
+				Main.instance.LoadItem(item.type);
+				Texture2D texture = TextureAssets.Item[item.type].Value;
+				Vector2 origin = texture.Size() * .5f;
+				spriteBatch.Draw(texture, new Vector2(Left.Pixels, Top.Pixels) + origin, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+			}
+		}
+		private float ScaleCalculation(Vector2 textureSize) => thisTexture.Size().Length() / textureSize.Length();
+	}
+	public class PowerWeaponButton : UIImageButton {
+		public PowerWeaponButton(Asset<Texture2D> texture) : base(texture) {
+		}
+		public override void LeftClick(UIMouseEvent evt) {
+			int count = Parent.Children.Count();
+			for (int i = count - 1; i >= 0; i--) {
+				UIElement child = Parent.Children.ElementAt(i);
+				if (child is PowerWeaponSlot wmslot) {
+					if (wmslot.item == null)
+						continue;
+					Item item = wmslot.item;
+					if (item.TryGetGlobalItem(out WeaponModificationGlobalItem globalItem)) {
+						globalItem.Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime * 2);
+						globalItem.Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation * 3);
+						globalItem.ModWeaponSlotType = new int[Main.rand.Next(2, 10)];
+						Array.Fill(globalItem.ModWeaponSlotType, -1);
+					}
+					child.Deactivate();
+					Deactivate();
+					ModContent.GetInstance<WeaponModificationSystem>().userInterface.SetState(null);
+					return;
+				}
+			}
+		}
+	}
+
 	public class WeaponModificationSystem : ModSystem {
 		internal UserInterface userInterface;
 		internal WeaponModificationUI WM_uiState;
+		internal PowerWeaponState WM_PowerUp;
 		public static ModKeybind WeaponModificationKeybind { get; private set; }
 		public static int SelectedInventorySlot = -1;
 		public static int SelectedModifySlot = -1;
@@ -599,6 +691,7 @@ namespace BossRush.Contents.WeaponModification {
 			if (!Main.dedServ) {
 				WM_uiState = new();
 				userInterface = new();
+				WM_PowerUp = new();
 			}
 		}
 		public override void Unload() {

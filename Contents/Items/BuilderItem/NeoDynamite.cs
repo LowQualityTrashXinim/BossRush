@@ -107,7 +107,7 @@ namespace BossRush.Contents.Items.BuilderItem {
 				count = i / 100;
 				float ToRotation = MathHelper.ToRadians(90 * count + rngRotate);
 				Vector2 circle = Main.rand.NextVector2CircularEdge(4f, 22.5f).RotatedBy(ToRotation);
-				int dust = Dust.NewDust(Projectile.Center, 0, 0, 229, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.2f));
+				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Vortex, 0, 0, 0, default, Main.rand.NextFloat(.9f, 1.2f));
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].fadeIn = 1.5f;
 				Main.dust[dust].velocity = circle;

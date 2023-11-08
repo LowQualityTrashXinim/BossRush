@@ -10,17 +10,16 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MFrozenEnchantedSwor
 			Item.BossRushSetDefault(34, 40, 29, 7f, 15, 15, ItemUseStyleID.Swing, true);
 
 			Item.DamageType = DamageClass.Melee;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.shoot = ProjectileID.EnchantedBeam;
 			Item.shootSpeed = 15;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item1;
 		}
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.IceBolt, damage, knockback, player.whoAmI);
-			return true;
+			CanShootItem = true;
 		}
-
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.EnchantedSword)

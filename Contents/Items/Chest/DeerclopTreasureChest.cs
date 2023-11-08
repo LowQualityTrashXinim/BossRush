@@ -6,7 +6,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void SetDefaults() {
 			Item.width = 42;
 			Item.height = 36;
-			Item.rare = 5;
+			Item.rare = ItemRarityID.Pink;
 		}
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

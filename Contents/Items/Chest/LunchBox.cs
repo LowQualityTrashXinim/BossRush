@@ -1,16 +1,14 @@
 ﻿using BossRush.Common.Utils;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class LunchBox : ModItem {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Made with love \n-From your mom and your crush " + $"[i:{58}]");
-		}
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 46;
-			Item.rare = 5;
+			Item.rare = ItemRarityID.Pink;
 		}
 
 		public override bool CanRightClick() {

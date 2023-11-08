@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Accessories.Crystal {
 			Item.accessory = true;
 			Item.height = 30;
 			Item.width = 28;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = 1000000;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {

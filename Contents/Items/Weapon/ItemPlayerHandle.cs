@@ -5,6 +5,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
 using BossRush.Contents.NPCs;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -311,15 +312,16 @@ namespace BossRush.Contents.Items.Weapon {
 			CustomColor = new ColorInfo(new List<Color> { new Color(255, 50, 255), new Color(100, 50, 100) });
 		}
 		ColorInfo CustomColor;
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
 			TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy item");
-			line.OverrideColor = CustomColor.MultiColor(5);
+			if (CustomColor != null)
+				line.OverrideColor = CustomColor.MultiColor(5);
 			tooltips.Add(line);
 		}
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
-		public override void HoldItem(Player player) {
+		public override sealed void HoldItem(Player player) {
 			base.HoldItem(player);
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
 			if (modplayer.SynergyBonusBlock) {
@@ -327,11 +329,11 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			HoldSynergyItem(player, modplayer);
 		}
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		public override sealed void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
 			ModifySynergyShootStats(player, player.GetModPlayer<PlayerSynergyItemHandle>(), ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
-		public override void UpdateInventory(Player player) {
+		public override sealed void UpdateInventory(Player player) {
 			base.UpdateInventory(player);
 			SynergyUpdateInventory(player, player.GetModPlayer<PlayerSynergyItemHandle>());
 		}
@@ -347,12 +349,12 @@ namespace BossRush.Contents.Items.Weapon {
 		/// <param name="player"></param>
 		/// <param name="modplayer"></param>
 		public virtual void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) { }
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override sealed bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			SynergyShoot(player, player.GetModPlayer<PlayerSynergyItemHandle>(), source, position, velocity, type, damage, knockback, out bool CanShootItem);
 			return CanShootItem;
 		}
 		public virtual void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) { CanShootItem = true; }
-		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+		public override sealed void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
 			base.OnHitNPC(player, target, hit, damageDone);
 			OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
 		}
@@ -414,7 +416,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public virtual void SpawnDustPostPreAI(Player player) { }
 		public virtual void SpawnDustPostAI(Player player) { }
 		public virtual void SpawnDustPostPostAI(Player player) { }
-		public override bool PreAI() {
+		public override sealed bool PreAI() {
 			Player player = Main.player[Projectile.owner];
 			SynergyPreAI(player, player.GetModPlayer<PlayerSynergyItemHandle>(), out bool stopAI);
 			SpawnDustPostPreAI(player);
@@ -428,7 +430,6 @@ namespace BossRush.Contents.Items.Weapon {
 		/// <param name="runAI"></param>
 		public virtual void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) { runAI = true; }
 		public override void AI() {
-			base.AI();
 			Player player = Main.player[Projectile.owner];
 			SynergyAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
 			SpawnDustPostAI(player);
@@ -439,8 +440,7 @@ namespace BossRush.Contents.Items.Weapon {
 		/// <param name="player"></param>
 		/// <param name="modplayer"></param>
 		public virtual void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) { }
-		public override void PostAI() {
-			base.PostAI();
+		public override sealed void PostAI() {
 			Player player = Main.player[Projectile.owner];
 			SynergyPostAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
 			SpawnDustPostPostAI(player);
@@ -451,24 +451,48 @@ namespace BossRush.Contents.Items.Weapon {
 		/// <param name="player"></param>
 		/// <param name="modplayer"></param>
 		public virtual void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) { }
-		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		public override sealed void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 			base.ModifyHitNPC(target, ref modifiers);
 			Player player = Main.player[Projectile.owner];
 			ModifyHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, ref modifiers);
 		}
 		public virtual void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) { }
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			base.OnHitNPC(target, hit, damageDone);
 			Player player = Main.player[Projectile.owner];
 			OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
 		}
 		public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) { }
-		public override void OnKill(int timeLeft) {
+		public override sealed void OnKill(int timeLeft) {
 			base.OnKill(timeLeft);
 			Player player = Main.player[Projectile.owner];
 			SynergyKill(player, player.GetModPlayer<PlayerSynergyItemHandle>(), timeLeft);
 		}
 		public virtual void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		}
+	}
+	public abstract class SynergyBuff : ModBuff {
+		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override sealed void SetStaticDefaults() {
+			base.SetStaticDefaults();
+			SynergySetStaticDefaults();
+		}
+		public virtual void SynergySetStaticDefaults() {
+
+		}
+		public override sealed void Update(Player player, ref int buffIndex) {
+			base.Update(player, ref buffIndex);
+			UpdatePlayer(player, ref buffIndex);
+		}
+		public virtual void UpdatePlayer(Player player, ref int buffIndex) {
+
+		}
+		public override sealed void Update(NPC npc, ref int buffIndex) {
+			base.Update(npc, ref buffIndex);
+			UpdateNPC(npc, ref buffIndex);
+		}
+		public virtual void UpdateNPC(NPC npc, ref int buffIndex) {
+
 		}
 	}
 }

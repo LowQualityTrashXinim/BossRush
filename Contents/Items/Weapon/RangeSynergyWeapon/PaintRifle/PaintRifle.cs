@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle {
 		public float Spread { get; set; }
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(114, 40, 36, 4f, 4, 16, ItemUseStyleID.Shoot, ModContent.ProjectileType<CustomPaintProj>(), 7, true);
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.crit = 7;
 			Item.reuseDelay = 11;
 			Item.UseSound = SoundID.Item5;

@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Accessories {
 	internal class EmblemofProgress : ModItem {
@@ -7,7 +8,7 @@ namespace BossRush.Contents.Items.Accessories {
 			Item.accessory = true;
 			Item.height = 28;
 			Item.width = 28;
-			Item.rare = 7;
+			Item.rare = ItemRarityID.Lime;
 			Item.value = 10000000;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {

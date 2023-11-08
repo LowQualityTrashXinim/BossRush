@@ -15,6 +15,7 @@ using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
+using BossRush.Contents.WeaponModification;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -78,6 +79,7 @@ namespace BossRush.Common {
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
+					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					yield return new Item(ModContent.ItemType<PremiumCardPacket>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {

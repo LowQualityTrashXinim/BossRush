@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.CorruptedFl
 			Item.accessory = true;
 			Item.height = 40;
 			Item.width = 40;
-			Item.rare = 7;
+			Item.rare = ItemRarityID.Lime;
 			Item.value = 10000000;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {

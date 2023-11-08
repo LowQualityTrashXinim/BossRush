@@ -13,12 +13,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Item.shoot = shoot;
 			Item.shootSpeed = shootspeed;
 			Item.mana = mana;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item75;
 			Item.DamageType = Terraria.ModLoader.DamageClass.Ranged;
 		}
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			for (int i = 0; i < 20; i++) {
 				Vector2 CircularRan = new Vector2(velocity.X, velocity.Y).RotatedByRandom(MathHelper.ToRadians(20)) + Main.rand.NextVector2Circular(3f, 3f);
 				Dust.NewDustPerfect(position, DustType, CircularRan, 100, default, 0.5f);

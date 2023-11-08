@@ -17,7 +17,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 			Item.UseSound = SoundID.Item75;
 		}
 		int count = 0;
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			count++;
 			position.Y += Main.rand.Next(-900, -800);
 			position.X += Main.rand.Next(-300, 300);
@@ -27,7 +27,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 				count = 0;
 			}
 			Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100f, 200f), velocity * .5f, ModContent.ProjectileType<MoonStarProjectileSmaller>(), damage, knockback, player.whoAmI);
-			return false;
+			CanShootItem = false;
 		}
 		public override void AddRecipes() {
 			CreateRecipe()
@@ -98,7 +98,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 			Main.EntitySpriteDraw(thisProjectiletexture, thisProjectiledrawPos, null, fullwhite, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 			return false;
 		}
-		public override void OnKill(int timeLeft) {
+		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			Vector2 Rotate;
 			float randomRotation = Main.rand.NextFloat(90);
 			for (int i = 0; i < 25; i++) {
@@ -191,7 +191,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 			Main.EntitySpriteDraw(textureThis, drawPosThis, null, Projectile.GetAlpha(new Color(255, 255, 255)), 0, origin, Projectile.scale, SpriteEffects.None, 0);
 			return false;
 		}
-		public override void OnKill(int timeLeft) {
+		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			for (int i = 0; i < 30; i++) {
 				Vector2 vec = Main.rand.NextVector2Unit(MathHelper.PiOver4, MathHelper.PiOver2) * Main.rand.NextFloat(3, 5) * -1f;
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Electric, 0, 0, 0, Color.Blue, Main.rand.NextFloat(.9f, 1.1f));

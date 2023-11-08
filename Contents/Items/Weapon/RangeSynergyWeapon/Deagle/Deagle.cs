@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(56, 30, 70, 5f, 21, 21, ItemUseStyleID.Shoot, ProjectileID.Bullet, 40, false, AmmoID.Bullet);
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.sellPrice(silver: 1000);
 			Item.scale -= 0.25f;
 			Item.UseSound = SoundID.Item38;

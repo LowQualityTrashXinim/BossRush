@@ -31,10 +31,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 			DrawOffsetX = -30;
 			player.heldProj = Projectile.whoAmI;
 
+			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
 			if (Projectile.timeLeft > duration) {
 				Projectile.timeLeft = duration;
+				for (int i = 0; i < 20; i++) {
+					int dust = Dust.NewDust(Projectile.Center + Projectile.velocity.Vector2DistributeEvenly(20, 30, i), 0, 0, DustID.GemDiamond);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = Projectile.velocity * 5f;
+				}
 			}
-			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
 			float halfDuration = duration * 0.5f;
 			float progress;
 			if (Projectile.timeLeft < halfDuration) {

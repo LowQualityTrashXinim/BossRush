@@ -79,5 +79,8 @@ namespace BossRush {
 				}
 			}
 		}
+		public static void ProjectileAlphaDecay(this Projectile projectile, float timeCountdown) {
+			projectile.alpha = (int)MathHelper.Lerp(0, 255, (timeCountdown - projectile.timeLeft) / timeCountdown);
+		}
 	}
 }

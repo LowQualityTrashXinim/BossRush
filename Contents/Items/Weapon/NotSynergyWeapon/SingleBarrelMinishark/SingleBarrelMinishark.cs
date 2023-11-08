@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark 
 			Item.useAmmo = AmmoID.Bullet;
 			Item.useTime = 7;
 			Item.useAnimation = 7;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 
 			Item.width = 82;
 			Item.height = 20;

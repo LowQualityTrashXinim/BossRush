@@ -1,10 +1,9 @@
-﻿using BossRush.Common;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Terraria;
-using Terraria.DataStructures;
+using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponModification {
 	internal class WeaponModificationGlobalItem : GlobalItem {
@@ -13,49 +12,27 @@ namespace BossRush.Contents.WeaponModification {
 		public int Recharge = 0;
 		public int[] ModWeaponSlotType;
 
-		public override void OnCreated(Item item, ItemCreationContext context) {
-			if (!Main.LocalPlayer.IsDebugPlayer())
-				return;
-			if (item.damage > 0 && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
-				Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime * 2);
-				Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation * 3);
-				ModWeaponSlotType = new int[Main.rand.Next(2, 10)];
-				Array.Fill(ModWeaponSlotType, -1);
-			}
-		}
-		public override void UpdateInventory(Item item, Player player) {
-			if (!player.IsDebugPlayer())
-				return;
-			if (item.damage > 0 && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
-				if (ModWeaponSlotType == null) {
-					Delay = item.useTime + Main.rand.Next(-item.useTime, item.useTime);
-					Recharge = item.useAnimation + Main.rand.Next(-item.useAnimation, item.useAnimation);
-					ModWeaponSlotType = new int[Main.rand.Next(2, 10)];
-					Array.Fill(ModWeaponSlotType, -1);
-				}
-			}
-		}
 		public string GetWeaponModificationStats() =>
 			$"Item's modification delay : {Math.Round(Delay / 60f, 2)}s\n" +
 			$"Item's modification recharge : {Math.Round(Recharge / 60f, 2)}s\n" +
 			$"Item's modification slot : {ModWeaponSlotType.Length}";
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if (item.damage > 0 && ModWeaponSlotType != null && Main.LocalPlayer.IsDebugPlayer()) {
+			if (item.damage > 0 && ModWeaponSlotType != null) {
 				tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification delay : {Math.Round(Delay / 60f, 2)}s"));
 				tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification recharge : {Math.Round(Recharge / 60f, 2)}s"));
 				tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification slot : {ModWeaponSlotType.Length}"));
 			}
 		}
 		public override void SaveData(Item item, TagCompound tag) {
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
 				tag.Add("ItemDelay", Delay);
 				tag.Add("ItemRecharge", Recharge);
 				tag.Add("ModWeaponSlotType", ModWeaponSlotType);
 			}
 		}
 		public override void LoadData(Item item, TagCompound tag) {
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
 				if (tag.TryGet("ItemDelay", out int DelayValue))
 					Delay = DelayValue;
 				if (tag.TryGet("ItemRecharge", out int RechargeValue))

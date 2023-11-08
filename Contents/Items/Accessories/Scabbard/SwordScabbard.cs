@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard {
 	internal class SwordScabbard : SynergyModItem {
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<ParryPlayer>().Parry) {
 				tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<ParryScabbard>()}] Increase parry duration and increase wind slash speed"));
@@ -17,7 +17,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard {
 			Item.accessory = true;
 			Item.height = 42;
 			Item.width = 66;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = 10000000;
 		}
 		public override void UpdateEquip(Player player) {

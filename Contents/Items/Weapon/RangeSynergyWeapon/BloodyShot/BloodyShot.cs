@@ -9,13 +9,12 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 	internal class BloodyShot : SynergyModItem, IRogueLikeRangeGun {
 		public float OffSetPosition => 30f;
-
 		public float Spread { get; set; }
 
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
-			Item.scale = 0.7f;
-			Item.rare = 3;
+			Item.scale = 0.9f;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
 			Spread = 5;
@@ -84,6 +83,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+			if (!npc.HasBuff(ModContent.BuffType<BoilingBlood>())) {
+				npc.AddBuff(ModContent.BuffType<BoilingBlood>(), 90);
+			}
+			else {
+				hit.Damage += (int)(Projectile.damage * .25f);
+				int randNum2 = 1 + Main.rand.Next(4, 6);
+				for (int i = 0; i < randNum2; i++) {
+					Vector2 newPos = npc.Center + Main.rand.NextVector2CircularEdge(npc.width, npc.height) * 1.1f;
+					Vector2 vel = (newPos - npc.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(4,7);
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, vel, ProjectileID.BloodArrow, (int)(hit.Damage * 0.75f), hit.Knockback, player.whoAmI);
+				}
+			}
 			int randNum = 1 + Main.rand.Next(3, 6);
 			for (int i = 0; i < randNum; i++) {
 				Vector2 newPos = new Vector2(Projectile.position.X + Main.rand.Next(-200, 200) + 5, Projectile.position.Y - (600 + Main.rand.Next(1, 200)) + 5);
@@ -97,6 +108,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.DrawTrail(lightColor);
 			return true;
+		}
+	}
+	public class BoilingBlood : SynergyBuff {
+		public override void SynergySetStaticDefaults() {
+			Main.debuff[Type] = true;
+		}
+		public override void UpdateNPC(NPC npc, ref int buffIndex) {
+			npc.lifeRegen -= 20;
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 				return;
 			}
 		}
-		public override void OnKill(int timeLeft) {
+		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			if (timeLeft <= 0) {
 				for (int i = 0; i < 3; i++) {
 					Vector2 vec = Vector2.One.Vector2DistributeEvenly(3, 360, i).RotatedBy(MathHelper.ToRadians(Projectile.ai[2] * 10)) * 3f;
@@ -73,7 +73,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
 			}
-			base.OnKill(timeLeft);
 		}
 	}
 	class RubyGemProjectileSwotaff : SynergyModProjectile {

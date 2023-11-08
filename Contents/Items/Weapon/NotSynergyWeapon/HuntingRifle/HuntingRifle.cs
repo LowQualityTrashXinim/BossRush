@@ -22,7 +22,7 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.HuntingRifle {
 			Item.useAmmo = AmmoID.Bullet;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.DamageType = DamageClass.Ranged;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 		}
 

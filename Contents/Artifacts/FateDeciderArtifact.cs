@@ -1,17 +1,12 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Projectiles;
 using BossRush.Texture;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using BossRush.Contents.Projectiles;
+using BossRush.Contents.BuffAndDebuff;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts {
 	internal class FateDeciderArtifact : Artifact {
@@ -19,7 +14,7 @@ namespace BossRush.Contents.Artifacts {
 		public override Color DisplayNameColor => Color.LimeGreen;
 	}
 
-	class FateDeciderPlayer : ModPlayer {
+	public class FateDeciderPlayer : ModPlayer {
 		bool FateDice = false;
 		bool IsBuffCurrentlyActive = false;
 		public int GoodBuffIndex = -1;

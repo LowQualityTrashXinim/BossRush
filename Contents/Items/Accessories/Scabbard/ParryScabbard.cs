@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Accessories.Scabbard {
 	internal class ParryScabbard : SynergyModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SwordPlayer>().SwordSlash) {
 				tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()}] Increase parry duration and increase wind slash speed"));
@@ -19,7 +20,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard {
 			Item.accessory = true;
 			Item.height = 30;
 			Item.width = 28;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = 1000000;
 		}
 

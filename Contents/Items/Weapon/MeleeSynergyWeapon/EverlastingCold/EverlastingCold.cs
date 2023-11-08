@@ -15,8 +15,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EverlastingCold {
 			if (Item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem))
 				meleeItem.SwingType = BossRushUseStyle.Swipe;
 		}
-
-		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 			for (int i = 0; i < 5; i++) {
 				Vector2 GetPostDirect2 = new Vector2(player.Center.X + Main.rand.Next(300, 1000) * player.direction, player.Center.Y - Main.rand.Next(300, 700));
 				Vector2 GoTo = (new Vector2(target.Center.X + Main.rand.Next(-200, 200), target.Center.Y + Main.rand.Next(-200, 200)) - GetPostDirect2).SafeNormalize(Vector2.UnitX);

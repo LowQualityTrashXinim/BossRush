@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 			Item.shoot = ProjectileID.EnchantedBeam;
 			Item.shootSpeed = 20f;
 
-			Item.rare = 4;
+			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item1;
 
@@ -171,7 +171,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 				modifiers.SourceDamage.Base += 2.5f * Projectile.damage;
 			}
 		}
-		public override void OnKill(int timeLeft) {
+		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			for (int i = 0; i < 60; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.Smoke);
 				Main.dust[dust].noGravity = true;

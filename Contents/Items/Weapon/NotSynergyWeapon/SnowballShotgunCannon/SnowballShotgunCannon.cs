@@ -25,13 +25,13 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballShotgunCannon 
 			Item.shoot = ProjectileID.SnowBallFriendly;
 			Item.shootSpeed = 15f;
 
-			Item.rare = 1;
+			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(gold: 50);
 
 			Item.useTime = 25;
 			Item.useAnimation = 25;
 
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 
 			Item.UseSound = SoundID.Item11;
 		}

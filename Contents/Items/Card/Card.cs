@@ -577,9 +577,11 @@ namespace BossRush.Contents.Items.Card {
 	}
 	class CardNPCdrop : GlobalNPC {
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			LeadingConditionRule HardcoreMode = new LeadingConditionRule(new HardcoreExclusive());
-			HardcoreMode.OnSuccess(ItemDropRule.BossBagByCondition(new HardcoreExclusive(), ModContent.ItemType<PremiumCardPacket>()));
-			npcLoot.Add(HardcoreMode);
+			if (npc.boss) {
+				LeadingConditionRule HardcoreMode = new LeadingConditionRule(new Conditions.LegacyHack_IsABoss());
+				HardcoreMode.OnSuccess(ItemDropRule.BossBagByCondition(new HardcoreExclusive(), ModContent.ItemType<PremiumCardPacket>()));
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new HardcoreExclusive(), ModContent.ItemType<PremiumCardPacket>()));
+			}
 		}
 	}
 }

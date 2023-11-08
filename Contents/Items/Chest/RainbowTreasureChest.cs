@@ -6,14 +6,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class RainbowTreasureChest : LootBoxBase {
-		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Rainbow Treasure chest");
-			// Tooltip.SetDefault("Blessed");
-		}
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;
-			Item.rare = 11;
+			Item.rare = ItemRarityID.Purple;
 		}
 		public override bool ChestUseOwnLogic => true;
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {

@@ -128,7 +128,7 @@ namespace BossRush.Common {
 		}
 		private void EnragedBossSpawnerRecipe(Recipe recipe) {
 			if (recipe.createItem.ModItem is EnragedSpawner) {
-				recipe.AddIngredient(ModContent.ItemType<PowerEnergy>());
+
 			}
 		}
 		private void ChallengeModeRecipe(Recipe recipe) {

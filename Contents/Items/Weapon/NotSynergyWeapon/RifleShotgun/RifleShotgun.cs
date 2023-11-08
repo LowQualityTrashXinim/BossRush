@@ -6,10 +6,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.RifleShotgun {
 	class RifleShotgun : ModItem {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("is it a shotgun or a rifle ?");
-			base.SetStaticDefaults();
-		}
 		public override void SetDefaults() {
 			Item.damage = 42;
 			Item.knockBack = 1.5f;
@@ -18,12 +14,12 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.RifleShotgun {
 			Item.width = 100;
 
 			Item.useAmmo = AmmoID.Bullet;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.value = Item.buyPrice(gold: 50);
-			Item.rare = 4;
+			Item.rare = ItemRarityID.LightRed;
 
 			Item.useTime = 10;
-			Item.shoot = 10;
+			Item.shoot = ProjectileID.Bullet;
 			Item.useAnimation = 30;
 			Item.reuseDelay = 15;
 			Item.DamageType = DamageClass.Ranged;
