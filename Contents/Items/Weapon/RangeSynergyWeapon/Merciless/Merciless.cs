@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless {
 		public float Spread { get; set; }
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(102, 26, 20, 5f, 15, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 8, true, AmmoID.Bullet);
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.crit = 10;
 			Item.reuseDelay = 30;

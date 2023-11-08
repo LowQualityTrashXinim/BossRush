@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword {
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item1;
 		}
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			count++;
 			float num = 10f;
 			float rotation = MathHelper.ToRadians(10);
@@ -49,7 +49,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword {
 				Vector2 rotate = new Vector2(velocity.X, velocity.Y).RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (num - 1)));
 				Projectile.NewProjectile(source, position, rotate * 0.6f, ProjectileID.IceBolt, (int)(damage * 0.9), knockback, player.whoAmI);
 			}
-			return false;
+			CanShootItem = false;
 		}
 		public override void AddRecipes() {
 			CreateRecipe().AddIngredient(ItemID.MoonLordPetItem).Register();

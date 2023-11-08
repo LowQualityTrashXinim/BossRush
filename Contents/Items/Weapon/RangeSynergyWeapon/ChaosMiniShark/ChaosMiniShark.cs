@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(72, 32, 24, 2f, 6, 6, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10f, true, AmmoID.Bullet);
 
-			Item.rare = 4;
+			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item11;
 

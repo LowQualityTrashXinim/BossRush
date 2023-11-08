@@ -148,7 +148,7 @@ namespace BossRush {
 			}
 			return npc != null;
 		}
-		public static bool LookForHostileNPCNotImmune(this Vector2 position, out NPC npc, float distance,int whoAmI, bool CanLookThroughTile = false) {
+		public static bool LookForHostileNPCNotImmune(this Vector2 position, out NPC npc, float distance, int whoAmI, bool CanLookThroughTile = false) {
 			float maxDistanceSquare = distance * distance;
 			npc = null;
 			for (int i = 0; i < Main.maxNPCs; i++) {
@@ -168,12 +168,13 @@ namespace BossRush {
 		}
 		public static void LookForHostileNPC(this Vector2 position, out List<NPC> npc, float distance) {
 			npc = new List<NPC>();
-			for (int i = 0;i < Main.maxNPCs;i++) {
+			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC Npc = Main.npc[i];
 				if (Npc.active && Npc.CanBeChasedBy() && Npc.type != NPCID.TargetDummy && !Npc.friendly && CompareSquareFloatValueWithHitbox(position, Npc.position, Npc.Hitbox, distance))
 					npc.Add(Npc);
 			}
 		}
+		public static int StatModifierDamageValue(this StatModifier modifier) => (int)(modifier.Base * modifier.Additive * modifier.Multiplicative + modifier.Flat);
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
 		public static float OutExpo(float t) => 1 - InExpo(1 - t);
 		public static float InOutExpo(float t) {

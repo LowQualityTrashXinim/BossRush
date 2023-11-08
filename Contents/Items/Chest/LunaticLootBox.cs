@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;
-			Item.rare = 10;
+			Item.rare = ItemRarityID.Red;
 		}
 
 		public override bool CanRightClick() {

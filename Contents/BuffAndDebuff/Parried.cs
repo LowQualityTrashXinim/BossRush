@@ -11,7 +11,7 @@ namespace BossRush.Contents.BuffAndDebuff {
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetDamage(DamageClass.Melee) += 0.1f;
+			player.GetDamage(DamageClass.Melee) += 5f;
 			if (player.buffTime[buffIndex] == 0) {
 				player.AddBuff(ModContent.BuffType<CoolDownParried>(), 360);
 			}

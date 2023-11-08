@@ -1,9 +1,9 @@
-﻿using BossRush.Common.Utils;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Utils;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth {
 	internal class ForceOfEarth : SynergyModItem {
@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth {
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item5;
 		}
-		public override void HoldItem(Player player) {
+		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			player.AddBuff(ModContent.BuffType<EarthPower>(), 2);
 			if (player.ownedProjectileCounts[ModContent.ProjectileType<CopperBowP>()] < 1) {
 				for (int i = 0; i < TerrariaArrayID.FoEProjectileCustom.Length; i++) {
@@ -22,7 +22,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth {
 				}
 			}
 		}
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			for (int i = 0; i < 8; i++) {
 				Vector2 Rotate = new Vector2(1, 1).RotatedBy(MathHelper.ToRadians(45 * i));
 				Vector2 newpostion = position + Rotate * 40;
@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth {
 				Vector2 SafeAim = Aim.SafeNormalize(Vector2.UnitX);
 				Projectile.NewProjectile(source, newpostion, SafeAim * Item.shootSpeed, type, damage, knockback, player.whoAmI);
 			}
-			return true;
+			CanShootItem = true;
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

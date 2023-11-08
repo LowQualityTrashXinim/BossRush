@@ -23,7 +23,7 @@ namespace BossRush.Contents.Perks {
 			userInterface?.Update(gameTime);
 		}
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
 			if (resourceBarIndex != -1) {
 				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
 					"BossRush: PerkSystem",

@@ -11,10 +11,10 @@ namespace BossRush.Contents.Items.Accessories.GuideToMasterNinja {
 			Item.accessory = true;
 			Item.height = 24;
 			Item.width = 32;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.value = 10000000;
 		}
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<PlayerNinjaBook>().NinjaWeeb) {
 				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ItemID.NinjaHood}][i:{ItemID.NinjaShirt}][i:{ItemID.NinjaPants}]Increase thrown damage by 20%, Melee attack is faster by 15% and increase melee damage by 25%"));

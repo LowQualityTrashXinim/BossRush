@@ -11,7 +11,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 15, 30, false);
 			Item.scale = .75f;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			if (modplayer.MagicHandCannon_Flamelash)

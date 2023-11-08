@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Accessories.Crystal {
 			Item.accessory = true;
 			Item.height = 30;
 			Item.width = 28;
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = 1000000;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {
@@ -22,8 +22,7 @@ namespace BossRush.Contents.Items.Accessories.Crystal {
 			player.statManaMax2 += 40;
 			if (player.HeldItem.type == ModContent.ItemType<NatureSelection>()) player.GetModPlayer<NatureSelectionPlayer>().PowerUP = true;
 		}
-
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			Player player = Main.player[Main.myPlayer];
 			if (player.GetModPlayer<NatureSelectionPlayer>().PowerUP) {
 				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ModContent.ItemType<NatureSelection>()}] Nature Selection will also shoot out star and heart"));

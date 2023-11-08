@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick {
 			Item.shootSpeed = 16f;
 			Item.knockBack = 2.5f;
 			Item.damage = 25;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 
 			Item.DamageType = DamageClass.Melee;
 			Item.channel = true;

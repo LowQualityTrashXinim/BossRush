@@ -59,7 +59,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 				scale += 1.5f;
 			}
 		}
-		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
+		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
 			for (int i = 0; i < 2; i++) {
 				Vector2 getPos2 = new Vector2(40 * player.direction + Main.rand.Next(-50, 50), -700) + player.Center;
 				Vector2 aimto2 = new Vector2(player.Center.X + 60 * player.direction, player.Center.Y) - getPos2;

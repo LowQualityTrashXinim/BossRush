@@ -117,7 +117,5 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 				return;
 			}
 		}
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		}
 	}
 }

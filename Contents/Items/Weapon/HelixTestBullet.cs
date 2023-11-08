@@ -6,10 +6,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon {
 	class HelixTestBullet : ModItem {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Very weird worm bullet");
-			base.SetStaticDefaults();
-		}
 		public override void SetDefaults() {
 			Item.damage = 150000;
 			Item.knockBack = 1.5f;
@@ -18,9 +14,9 @@ namespace BossRush.Contents.Items.Weapon {
 			Item.width = 100;
 
 			Item.useAmmo = AmmoID.Bullet;
-			Item.useStyle = 5;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.value = 1000000;
-			Item.rare = 4;
+			Item.rare = ItemRarityID.LightRed;
 
 			Item.useTime = 10;
 			Item.shoot = ModContent.ProjectileType<HelixBullet>();

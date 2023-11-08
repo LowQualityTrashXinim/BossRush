@@ -539,11 +539,9 @@ namespace BossRush.Common.RoguelikeChange {
 		private void On_PlayerDrawLayers_DrawPlayer_RenderAllLayers(On_PlayerDrawLayers.orig_DrawPlayer_RenderAllLayers orig, ref PlayerDrawSet drawinfo) {
 			Player player = Main.LocalPlayer;
 			Item item = player.HeldItem;
-			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer)) {
-				if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
-					if (modplayer.ComboNumber == 1 && meleeItem.SwingType == BossRushUseStyle.Poke) {
-						AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
-					}
+			if (player.TryGetModPlayer(out MeleeOverhaulPlayer modplayer) && item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
+				if (modplayer.ComboNumber == 1 && meleeItem.SwingType == BossRushUseStyle.Poke) {
+					AdjustDrawingInfo(ref drawinfo, modplayer, meleeItem, player, item);
 				}
 			}
 			orig.Invoke(ref drawinfo);

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Contents.WeaponModification;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,12 +14,12 @@ namespace BossRush.Contents.Items.Spawner {
 		}
 		public override int BossToSpawn => NPCID.KingSlime;
 
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.SlimeCrown)
-				.AddIngredient(ModContent.ItemType<PowerEnergy>())
-				.Register();
-		}
+		//public override void AddRecipes() {
+		//	CreateRecipe()
+		//		.AddIngredient(ItemID.SlimeCrown)
+		//		.AddIngredient(ModContent.ItemType<PowerEnergy>())
+		//		.Register();
+		//}
 	}
 	public class EyeOfCthulhuSpecialSpawner : EnragedSpawner {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SuspiciousLookingEye);
@@ -33,12 +34,12 @@ namespace BossRush.Contents.Items.Spawner {
 			base.OnUseItem(player);
 			Main.bloodMoon = true;
 		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.SuspiciousLookingEye)
-				.AddIngredient(ModContent.ItemType<PowerEnergy>())
-				.Register();
-		}
+		//public override void AddRecipes() {
+		//	CreateRecipe()
+		//		.AddIngredient(ItemID.SuspiciousLookingEye)
+		//		.AddIngredient(ModContent.ItemType<PowerEnergy>())
+		//		.Register();
+		//}
 	}
 	public class EaterOfWorldSpecialSpawner : EnragedSpawner {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.WormFood);
@@ -51,12 +52,12 @@ namespace BossRush.Contents.Items.Spawner {
 			return player.ZoneCorrupt;
 		}
 		public override int BossToSpawn => NPCID.EaterofWorldsHead;
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.WormFood)
-				.AddIngredient(ModContent.ItemType<PowerEnergy>())
-				.Register();
-		}
+		//public override void AddRecipes() {
+		//	CreateRecipe()
+		//		.AddIngredient(ItemID.WormFood)
+		//		.AddIngredient(ModContent.ItemType<PowerEnergy>())
+		//		.Register();
+		//}
 	}
 	public class BrainOfCthulhuSpecialSpawner : EnragedSpawner {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.BloodySpine);
@@ -68,12 +69,12 @@ namespace BossRush.Contents.Items.Spawner {
 			return player.ZoneCrimson;
 		}
 		public override int BossToSpawn => NPCID.BrainofCthulhu;
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.BloodySpine)
-				.AddIngredient(ModContent.ItemType<PowerEnergy>())
-				.Register();
-		}
+		//public override void AddRecipes() {
+		//	CreateRecipe()
+		//		.AddIngredient(ItemID.BloodySpine)
+		//		.AddIngredient(ModContent.ItemType<PowerEnergy>())
+		//		.Register();
+		//}
 	}
 	public class QueenBeeSpecialSpawner : EnragedSpawner {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Abeemination);
@@ -81,11 +82,11 @@ namespace BossRush.Contents.Items.Spawner {
 			NPCID.Sets.MPAllowedEnemies[NPCID.QueenBee] = true;
 		}
 		public override int BossToSpawn => NPCID.QueenBee;
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Abeemination)
-				.AddIngredient(ModContent.ItemType<PowerEnergy>())
-				.Register();
-		}
+		//public override void AddRecipes() {
+		//	CreateRecipe()
+		//		.AddIngredient(ItemID.Abeemination)
+		//		.AddIngredient(ModContent.ItemType<PowerEnergy>())
+		//		.Register();
+		//}
 	}
 }

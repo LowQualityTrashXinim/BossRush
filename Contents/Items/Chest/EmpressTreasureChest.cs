@@ -2,6 +2,7 @@
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EmpressDelight;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class EmpressTreasureChest : LootBoxBase {
@@ -20,7 +21,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void SetDefaults() {
 			Item.width = 37;
 			Item.height = 35;
-			Item.rare = 10;
+			Item.rare = ItemRarityID.Red;
 		}
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

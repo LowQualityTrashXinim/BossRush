@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Spawner {
 	class PlanteraEssence : ModItem {
@@ -7,7 +8,7 @@ namespace BossRush.Contents.Items.Spawner {
 			Item.height = 30;
 			Item.width = 30;
 			Item.material = true;
-			Item.rare = 6;
+			Item.rare = ItemRarityID.LightPurple;
 			Item.value = 0;
 			Item.maxStack = 999;
 		}

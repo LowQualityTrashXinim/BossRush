@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 			Item.accessory = true;
 			Item.height = 40;
 			Item.width = 40;
-			Item.rare = 7;
+			Item.rare = ItemRarityID.Lime;
 			Item.value = 10000000;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {

@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 			Item.UseSound = SoundID.Item1;
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 5;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			base.ModifySynergyToolTips(ref tooltips, modplayer);

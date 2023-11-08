@@ -8,14 +8,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(68, 68, 93, 6f, 36, 36, ItemUseStyleID.Shoot, true);
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<SuperShortSwordP>(), 2.4f);
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item1;
 		}
 		public override bool CanUseItem(Player player) {
 			return player.ownedProjectileCounts[Item.shoot] < 1;
 		}
-		public override void HoldItem(Player player) {
+		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			player.AddBuff(ModContent.BuffType<SuperShortSwordPower>(), 2);
 			if (player.ownedProjectileCounts[ModContent.ProjectileType<SuperShortSwordOrbitShortSword>()] < 1) {
 				for (int i = 0; i < 8; i++) {

@@ -73,22 +73,22 @@ namespace BossRush.Contents.Perks {
 			player.QuickSpawnItem(player.GetSource_Loot(), ItemID.Bezoar);
 		}
 		public override void Update(Player player) {
-			if (!player.buffImmune[BuffID.Poisoned])
-				return;
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
-			for (int i = 0; i < 6; i++) {
-				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Poisoned);
-				Main.dust[dustRing].noGravity = true;
-				Main.dust[dustRing].velocity = Vector2.Zero;
-				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Poisoned);
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity = Vector2.Zero;
-				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-			}
-			if (npclist.Count > 0) {
-				foreach (NPC npc in npclist) {
-					npc.AddBuff(BuffID.Poisoned, 1);
+			if (player.buffImmune[BuffID.Poisoned]) {
+				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
+				for (int i = 0; i < 6; i++) {
+					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Poisoned);
+					Main.dust[dustRing].noGravity = true;
+					Main.dust[dustRing].velocity = Vector2.Zero;
+					Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Poisoned);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = Vector2.Zero;
+					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+				}
+				if (npclist.Count > 0) {
+					foreach (NPC npc in npclist) {
+						npc.AddBuff(BuffID.Poisoned, 1);
+					}
 				}
 			}
 		}
@@ -104,22 +104,22 @@ namespace BossRush.Contents.Perks {
 			player.QuickSpawnItem(player.GetSource_Loot(), ItemID.ObsidianRose);
 		}
 		public override void Update(Player player) {
-			if (!player.buffImmune[BuffID.OnFire])
-				return;
-			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
-			for (int i = 0; i < 4; i++) {
-				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Torch);
-				Main.dust[dustRing].noGravity = true;
-				Main.dust[dustRing].velocity = Vector2.Zero;
-				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Torch);
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
-				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-			}
-			if (npclist.Count > 0) {
-				foreach (NPC npc in npclist) {
-					npc.AddBuff(BuffID.OnFire, 1);
+			if (player.buffImmune[BuffID.OnFire]) {
+				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
+				for (int i = 0; i < 4; i++) {
+					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Torch);
+					Main.dust[dustRing].noGravity = true;
+					Main.dust[dustRing].velocity = Vector2.Zero;
+					Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Torch);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = -Vector2.UnitY * 4f;
+					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+				}
+				if (npclist.Count > 0) {
+					foreach (NPC npc in npclist) {
+						npc.AddBuff(BuffID.OnFire, 1);
+					}
 				}
 			}
 		}
@@ -155,7 +155,7 @@ namespace BossRush.Contents.Perks {
 	public class PeaceWithGod : Perk {
 		public override void SetDefaults() {
 			Tooltip =
-				"+ God no longer angry at you and now opening lootbox give you syngery weapon" +
+				"+ God no longer angry at you and now opening lootbox give you synergy weapon" +
 				"\n- Synergy bonus no longer available";
 			CanBeStack = false;
 		}
@@ -199,8 +199,8 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void ResetEffect(Player player) {
-			player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += 1 * StackAmount;
-			player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += 1 * StackAmount;
+			player.GetModPlayer<MysteriousPotionPlayer>().PotionPointAddition += StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += StackAmount;
 		}
 	}
 	public class Dirt : Perk {
@@ -342,7 +342,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip = "+ 78% increased odds for melee" +
+			Tooltip = "+ 192% increased odds for melee" +
 				"\n+ 12% melee size increases" +
 				"\nIncreases 10 armor penetration" +
 				"\nAttacking enemy have a 5% with melee item have a chance to drop a heart";
@@ -352,7 +352,7 @@ namespace BossRush.Contents.Perks {
 			player.GetArmorPenetration(DamageClass.Melee) += 10;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += .78f;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += 1.92f;
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			if (item.DamageType == DamageClass.Melee)
@@ -368,17 +368,17 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip = "+ 78% increased odds for range" +
+			Tooltip = "+ 192% increased odds for range" +
 				"\n+ 15% range critical strike chance" +
-				"\nYou have 1% chance to deal 4x damage";
+				"\nYou have 4% chance to deal 4x damage";
 			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += .78f;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1.92f;
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			base.OnHitNPCWithProj(player, proj, target, hit, damageDone);
-			if (Main.rand.NextFloat() <= .01f)
+			if (Main.rand.NextFloat() <= .04f)
 				hit.Damage *= 4;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
@@ -390,16 +390,16 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip = "+ 78% increased odds for magic" +
-				"\n+ 15% magic cost reduction" +
+			Tooltip = "+ 192% increased odds for magic" +
+				"\n+ 21% magic cost reduction" +
 				"\nMana star have 5% to spawn from NPC when hitting them with magic projectile";
 			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += .78f;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1.92f;
 		}
 		public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) {
-			multi -= .15f;
+			multi -= .21f;
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (Main.rand.NextFloat() <= .05f && proj.DamageType == DamageClass.Magic) {
@@ -412,8 +412,8 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
 			Tooltip =
-				"+ 78% increased odds for summoner" +
-				"\n+ 5% summoner damage" +
+				"+ 192% increased odds for summoner" +
+				"\n+ For 1 minion/sentry slot you have, you gain 1 flat damage" +
 				"\n+ 1 minion slot" +
 				"\n+ 1 sentry slot";
 			CanBeChoosen = false;
@@ -423,11 +423,10 @@ namespace BossRush.Contents.Perks {
 			player.maxTurrets += 1;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += .78f;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += 1.92f;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			if (item.DamageType == DamageClass.Summon || item.DamageType == DamageClass.SummonMeleeSpeed)
-				damage += .05f;
+			damage.Flat += player.maxMinions + player.maxTurrets;
 		}
 	}
 	public class BlessingOfPerk : Perk {
@@ -459,7 +458,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			base.ResetEffect(player);
-			if(StackAmount >= 1) {
+			if (StackAmount >= 1) {
 				player.AddBuff(BuffID.Campfire, 10);
 				if (StackAmount > 1)
 					player.AddBuff(BuffID.StarInBottle, 10);

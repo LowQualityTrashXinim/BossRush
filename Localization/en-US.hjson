@@ -173,6 +173,7 @@ Mods: {
 			OreBowAttackOne.DisplayName: Ore Bow Attack One
 			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
 			LeafProjectile.DisplayName: Leaf Projectile
+			Coconut.DisplayName: Coconut
 		}
 
 		NPCs: {
@@ -927,7 +928,7 @@ Mods: {
 					"For displays of skill"
 					Getting hit during the attack swing will grant you 2s of immunity of damage
 					Have 6s cool down before you able to parry again
-					During parry period, you gain 10% damage
+					During parry period, you gain 500% damage
 					Only works if weapon is a sword
 					'''
 				DisplayName: Parry Scabbard
@@ -1697,6 +1698,11 @@ Mods: {
 				DisplayName: Heaven Smg Buff
 				Description: Mods.BossRush.Buffs.HeavenSmgBuff.Description
 			}
+
+			BoilingBlood: {
+				DisplayName: Boiling Blood
+				Description: Mods.BossRush.Buffs.BoilingBlood.Description
+			}
 		}
 
 		Configs: {
@@ -1811,7 +1817,12 @@ Mods: {
 
 				WorldGenTest: {
 					Label: World Gen Test
-					Tooltip: "Do not mess with this, only for testing only"
+					Tooltip: Do not mess with this, only for testing only
+				}
+
+				NoMoreChestFromBuilderLootbox: {
+					Label: No More Chest From Builder Lootbox
+					Tooltip: ""
 				}
 			}
 		}
@@ -1821,6 +1832,7 @@ Mods: {
 		Keybinds: {
 			"Weapon Modification.DisplayName": Weapon Modification
 			WeaponModification.DisplayName: Weapon Modification
+			"Enchantment UI.DisplayName": Enchantment  U I
 		}
 	}
 }

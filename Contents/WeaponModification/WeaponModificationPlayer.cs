@@ -99,12 +99,7 @@ namespace BossRush.Contents.WeaponModification {
 		public override void ProcessTriggers(TriggersSet triggersSet) {
 			if (WeaponModificationSystem.WeaponModificationKeybind.JustPressed) {
 				WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
-				//if ((uiSystemInstance.userInterface.CurrentState == null)
-				//{
-				//    BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You must hold a weapon !");
-				//    return;
-				//}
-				if (uiSystemInstance.userInterface.CurrentState is null) {
+				if (uiSystemInstance.userInterface.CurrentState == null) {
 					//Debugging purpose
 					WeaponModification_inventory[0] = ModWeaponParticle.GetWeaponModType<DoubleOutput>();
 					WeaponModification_inventory[1] = ModWeaponParticle.GetWeaponModType<IncreaseDamage>();
@@ -119,7 +114,7 @@ namespace BossRush.Contents.WeaponModification {
 		}
 		public override bool CanUseItem(Item item) {
 			WeaponModificationSystem uiSystemInstance = ModContent.GetInstance<WeaponModificationSystem>();
-			if (uiSystemInstance.userInterface.CurrentState is not null) {
+			if (uiSystemInstance.userInterface.CurrentState != null) {
 				return false;
 			}
 			return base.CanUseItem(item);

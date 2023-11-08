@@ -6,15 +6,11 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury {
 	internal class ManaStarFury : ModItem {
-		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("don't actually give you more mana or consume mana when use");
-			base.SetStaticDefaults();
-		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 40, 35, 6f, 20, 20, ItemUseStyleID.Swing, true);
 			Item.DamageType = DamageClass.Melee;
 			Item.useTurn = true;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.shoot = ProjectileID.Starfury;
 			Item.shootSpeed = 15;
 			Item.value = Item.buyPrice(gold: 50);

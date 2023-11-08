@@ -38,7 +38,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
-			Item.rare = 5;
+			Item.rare = ItemRarityID.Pink;
 		}
 		public override List<int> FlagNumAcc() {
 			List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5, 7 };

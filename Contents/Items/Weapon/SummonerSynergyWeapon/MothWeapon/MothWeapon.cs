@@ -10,13 +10,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 	public class StreetLamp : SynergyModItem {
-
 		public override void SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(15, 6));
-
 		}
-
-		int lampY = -64;
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(62, 62, 20, 0, 32, 32, ItemUseStyleID.HoldUp, true);
 			Item.DamageType = DamageClass.Summon;
@@ -24,7 +20,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			Item.mana = 15;
 			Item.noMelee = true;
 			Item.holdStyle = ItemHoldStyleID.HoldUp;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item46;
 		}
 
@@ -49,8 +45,8 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			LampHold(player);
 		}
 		public override void PostUpdate() {
-			Lighting.AddLight(Item.Center + new Vector2(0, lampY), 1f, 1f, 1f);
-			Lighting.AddLight(Item.Center + new Vector2(0, lampY * .5f), 1f, 1f, 0f);
+			Lighting.AddLight(Item.Center + new Vector2(0, -64), 1f, 1f, 1f);
+			Lighting.AddLight(Item.Center + new Vector2(0, -64 * .5f), 1f, 1f, 0f);
 		}
 
 		// custom hold and use style to fit the theme :D
@@ -70,18 +66,15 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 					$"[i:{ItemID.FireWhip}] Moth's Dash attacks have 10% chance to do small explosion that deal 3 time the damage and inflict Hellfire for 5 seconds"));
 			}
 		}
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			//modify the moths spawn location to be at the lamp
-			position = player.Center + new Vector2(0, lampY);
+			position = player.Center + new Vector2(0, -64);
 		}
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			player.AddBuff(ModContent.BuffType<MothBuff>(), 1000);
 			Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
-			return false;
+			CanShootItem = false;
 		}
-
-
-
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.FlinxStaff)

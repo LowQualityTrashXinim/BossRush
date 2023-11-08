@@ -9,15 +9,15 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnhancedKatana {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(50, 52, 43, 4, 20, 20, ItemUseStyleID.Swing, true);
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<KatanaSlash>(), 3);
-			Item.rare = 1;
+			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item1;
 		}
 		int count = 0;
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, count);
 			count++;
-			return false;
+			CanShootItem = false;
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

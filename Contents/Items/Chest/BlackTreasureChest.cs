@@ -10,7 +10,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
-			Item.rare = 11;
+			Item.rare = ItemRarityID.Purple;
 		}
 
 		public override void PostModifyTooltips(ref List<TooltipLine> tooltips) {

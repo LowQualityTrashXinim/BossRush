@@ -16,7 +16,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(54, 24, 14, 2f, 11, 11, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
 
-			Item.rare = 2;
+			Item.rare = ItemRarityID.Green;
 			Item.value = Item.sellPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
 			Spread = 7;

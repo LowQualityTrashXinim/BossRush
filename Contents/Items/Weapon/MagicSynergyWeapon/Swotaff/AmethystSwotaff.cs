@@ -61,13 +61,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			}
 		}
-		public override void OnKill(int timeLeft) {
+		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			for (int i = 0; i < 20; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemAmethyst);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].scale = Main.rand.NextFloat(1.25f, 1.75f);
 			}
-			base.OnKill(timeLeft);
 		}
 	}
 }

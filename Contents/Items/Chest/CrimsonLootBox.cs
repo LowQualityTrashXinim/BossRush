@@ -8,7 +8,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 		}
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);

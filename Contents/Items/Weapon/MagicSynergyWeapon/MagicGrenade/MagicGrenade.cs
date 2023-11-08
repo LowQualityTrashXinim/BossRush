@@ -184,7 +184,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Projectile.extraUpdates = 10;
 			Projectile.penetrate = 1;
 		}
-		int direction = 0;
 		public override void AI() {
 			int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.GemAmethyst);
 			Main.dust[dust].velocity = Vector2.Zero;
@@ -228,7 +227,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Projectile.extraUpdates = 5;
 			Projectile.penetrate = 1;
 		}
-		int direction = 0;
 		public override void AI() {
 			int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(2, 2), 0, 0, DustID.GemAmethyst);
 			Main.dust[dust].velocity = Vector2.Zero;

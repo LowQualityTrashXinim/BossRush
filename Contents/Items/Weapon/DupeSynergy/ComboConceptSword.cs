@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Weapon.DupeSynergy {
 			Item.useTime = 15;
 			Item.useAnimation = 15;
 
-			Item.rare = 1;
+			Item.rare = ItemRarityID.Blue;
 			Item.autoReuse = true;
 			Item.shoot = ProjectileID.WoodenArrowFriendly;
 			Item.DamageType = DamageClass.Melee;

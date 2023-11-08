@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 			Item.BossRushDefaultRange(84, 24, 21, 3f, 30, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);
 			Item.crit = 10;
 			Item.scale = 0.85f;
-			Item.rare = 4;
+			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(gold: 50);
 			Spread = 1;
 		}

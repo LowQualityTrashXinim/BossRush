@@ -9,11 +9,9 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime {
 	internal class StickyFlower : SynergyModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetStaticDefaults() {
-			// Tooltip.SetDefault("Quite a sticky ghost");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
-
 		public override void SetDefaults() {
 			Item.damage = 20;
 			Item.mana = 10;
@@ -32,21 +30,14 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime {
 
 			Item.shoot = ModContent.ProjectileType<GhostSlime>();
 		}
-
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = Main.MouseWorld;
 		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			player.AddBuff(Item.buffType, 2);
-
-
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
-
-
-			return false;
+			CanShootItem = false;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

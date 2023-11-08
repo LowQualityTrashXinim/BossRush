@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 namespace BossRush.Common.ChallengeMode {
 	internal class ChallengeModeGlobalNPC : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
+			// TODO : remember to un-comment this before release
 			//int amount = BossRushUtils.AmountOfModCurrentlyEnable();
 			//entity.lifeMax *= amount;
 			//entity.life = entity.lifeMax;

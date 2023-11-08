@@ -3,9 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Card
 {

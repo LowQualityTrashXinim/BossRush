@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark {
 	internal class DeathBySpark : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(34, 24, 15, 1f, 84, 84, ItemUseStyleID.Shoot, ModContent.ProjectileType<SparkFlare>(), 12, false, AmmoID.Flare);
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.Item11;
 			Item.value = Item.buyPrice(gold: 50);
 		}
