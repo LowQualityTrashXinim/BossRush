@@ -4,7 +4,7 @@ using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
-
+//TODO : remove the current weapon modification system
 namespace BossRush.Contents.WeaponModification {
 	internal class WeaponModificationGlobalItem : GlobalItem {
 		public override bool InstancePerEntity => true;

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-
+//TODO : remove the current weapon modification system
 namespace BossRush.Contents.WeaponModification {
 	public class ImprovisedUIpanel : UIElement {
 		public int _cornerSize = 12;

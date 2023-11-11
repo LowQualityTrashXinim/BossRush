@@ -17,5 +17,9 @@ namespace BossRush {
 			ui.Left.Pixels = drawpos.X + (drawpos.X * (1 - Main.UIScale));
 			ui.Top.Pixels = drawpos.Y + (drawpos.X * (1 - Main.UIScale));
 		}
+		public static void UISetPosition(this UIElement ui, Vector2 position) {
+			ui.Left.Pixels = position.X + (position.X * (1 - Main.UIScale));
+			ui.Top.Pixels = position.Y + (position.X * (1 - Main.UIScale));
+		}
 	}
 }

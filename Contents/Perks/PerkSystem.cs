@@ -1,41 +1,15 @@
-﻿using BossRush.Contents.Items.NohitReward;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using Terraria;
 using System.Linq;
-using Terraria;
-using Terraria.DataStructures;
+using BossRush.Common;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.UI;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Perks {
-	class PerkUISystem : ModSystem {
-		public UserInterface userInterface;
-		public PerkUIState perkUIstate;
-		public override void Load() {
-			if (!Main.dedServ) {
-				perkUIstate = new();
-				userInterface = new();
-			}
-		}
-		public override void UpdateUI(GameTime gameTime) {
-			userInterface?.Update(gameTime);
-		}
-		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-			if (resourceBarIndex != -1) {
-				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
-					"BossRush: PerkSystem",
-					delegate {
-						userInterface.Draw(Main.spriteBatch, new GameTime());
-						return true;
-					},
-					InterfaceScaleType.UI)
-				);
-			}
-		}
-	}
 	public class PerkItem : GlobalItem {
 		public override bool? UseItem(Item item, Player player) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
@@ -60,13 +34,10 @@ namespace BossRush.Contents.Perks {
 		public bool PotionExpert_perk_CanConsume = false;
 
 		private int[] _perks;
-		public override void OnEnterWorld() {
-			PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
-			uiSystemInstance.userInterface.SetState(null);
-		}
 		public override void Initialize() {
 			_perks = new int[ModPerkLoader.TotalCount];
 			perks = new Dictionary<int, int>();
+			PerkAmount = 4;
 		}
 		public int PerkAmountModified() {
 			if (perks.ContainsKey(Perk.GetPerkType<BlessingOfPerk>())) {
@@ -78,7 +49,7 @@ namespace BossRush.Contents.Perks {
 		public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
 		public override void ResetEffects() {
 			perk_PotionExpert = false;
-			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + 3;
+			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 				ModPerkLoader.GetPerk(i).StackAmount = 0;
 			}
@@ -91,13 +62,6 @@ namespace BossRush.Contents.Perks {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).UpdateEquip(Player);
 			}
-		}
-		public override bool CanUseItem(Item item) {
-			PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
-			if (uiSystemInstance.userInterface.CurrentState is not null) {
-				return false;
-			}
-			return base.CanUseItem(item);
 		}
 		public override void PostUpdate() {
 			foreach (int perk in perks.Keys) {
@@ -313,7 +277,7 @@ namespace BossRush.Contents.Perks {
 		public override bool? UseItem(Player player) {
 			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
 			if (player.altFunctionUse != 2) {
-				PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
+				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 				uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
 				uiSystemInstance.perkUIstate.StateofState = PerkUIState.DefaultState;
 				uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
@@ -334,7 +298,7 @@ namespace BossRush.Contents.Perks {
 		public override bool? UseItem(Player player) {
 			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
 			if (player.altFunctionUse != 2) {
-				PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
+				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 				uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
 				uiSystemInstance.perkUIstate.StateofState = PerkUIState.StarterPerkState;
 				uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);

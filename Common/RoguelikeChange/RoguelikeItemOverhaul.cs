@@ -146,7 +146,7 @@ namespace BossRush.Common.RoguelikeChange {
 					   "\nEvery 50 hit to enemy give you the over charged for 5s" +
 					   "\nDuring the rain, your hit requirement reduce by half" +
 					   "\nOver charged: Increases movement speed, weapon speed, damage by 10%" +
-					   "Create a electic charge that target the closest enemy deal 30 damage";
+					   "\nCreate a electric charge that target the closest enemy deal 30 damage";
 			}
 			if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
 				return "Increase movement speed by 35%" +
