@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+//TODO : remove the current weapon modification system
 namespace BossRush.Contents.WeaponModification {
 	public class Arrow : ModWeaponParticle {
 		public override void SetDefault() {

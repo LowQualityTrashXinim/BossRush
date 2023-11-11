@@ -7,7 +7,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
-
+//TODO : remove the current weapon modification system
 namespace BossRush.Contents.WeaponModification {
 	/// <summary>
 	/// This should be where all the effect of Weapon Modification be handle and activate

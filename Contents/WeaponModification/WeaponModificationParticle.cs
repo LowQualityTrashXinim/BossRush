@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-
+//TODO : remove the current weapon modification system
 namespace BossRush.Contents.WeaponModification {
 	public abstract class ModWeaponParticle : ModType {
 		public virtual string ParticleTexture => BossRushTexture.MISSINGTEXTURE;

@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Card;
+﻿using BossRush.Common;
+using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Texture;
@@ -49,9 +50,10 @@ namespace BossRush.Contents.Perks {
 			}
 			int amount = listOfPerk.Count;
 			Vector2 originDefault = new Vector2(26, 26);
-			for (int i = 0; i < modplayer.PerkAmountModified(); i++) {
-				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(modplayer.PerkAmountModified(), 360, i) * Math.Clamp(modplayer.PerkAmountModified() * 20, 0, 200);
-				if (i >= amount || i >= modplayer.PerkAmountModified() - 1) {
+			int perkamount = modplayer.PerkAmountModified();
+			for (int i = 0; i < perkamount; i++) {
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
+				if (i >= amount || i >= perkamount - 1) {
 					UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
 					{ new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
 						 new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
@@ -124,7 +126,7 @@ namespace BossRush.Contents.Perks {
 				if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
 				perkplayer.perks[perkType] = perkplayer.perks[perkType] + 1;
 			ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
-			PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
+			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.userInterface.SetState(null);
 		}
 		public override void Update(GameTime gameTime) {
@@ -165,7 +167,7 @@ namespace BossRush.Contents.Perks {
 		public override void LeftClick(UIMouseEvent evt) {
 			base.LeftClick(evt);
 			OnLeftClick(Main.LocalPlayer);
-			PerkUISystem uiSystemInstance = ModContent.GetInstance<PerkUISystem>();
+			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.userInterface.SetState(null);
 		}
 		public override void Update(GameTime gameTime) {

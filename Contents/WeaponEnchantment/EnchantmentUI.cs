@@ -3,12 +3,12 @@ using Terraria;
 using Terraria.UI;
 using Terraria.ID;
 using ReLogic.Content;
-using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.WeaponModification;
+using System.Linq;
 
 namespace BossRush.Contents.WeaponEnchantment;
 internal class EnchantmentUIState : UIState {
@@ -38,25 +38,42 @@ public class EnchantmentUIslot : UIImage {
 		if (Main.mouseItem.type != ItemID.None) {
 			if (Main.mouseItem.consumable)
 				return;
+			item = Main.mouseItem.Clone();
 			Main.mouseItem.TurnToAir();
 			player.inventory[58].TurnToAir();
-			if (player.HeldItem.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
+			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				int length = globalItem.EnchantmenStlot.Length;
 				Vector2 pos = new Vector2(Left.Pixels, Top.Pixels + 60);
 				for (int i = 0; i < length; i++) {
-					WeaponEnchantmentUIslot slot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack10, player);
+					WeaponEnchantmentUIslot slot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack, player);
 					slot.UISetWidthHeight(52, 52);
-					slot.UISetPosition(pos + Vector2.UnitX * 60 * i, new Vector2(26, 26));
+					slot.UISetPosition(player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i, new Vector2(26, 26));
 					slot.WhoAmI = i;
+					slot.itemOwner = item;
+					Parent.Append(slot);
 				}
 			}
 		}
-		else
-		{
+		else {
 			if (item == null)
 				return;
 			Main.mouseItem = item;
 			item = null;
+			int count = Parent.Children.Count();
+			for (int i = count - 1; i >= 0; i--) {
+				UIElement child = Parent.Children.ElementAt(i);
+				if (child is WeaponEnchantmentUIslot wmslot) {
+					if (wmslot.itemOwner == null)
+						continue;
+					//if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
+					//	globalItem.EnchantmenStlot[wmslot.WhoAmI] = 
+					//}
+				}
+				if (child is WeaponEnchantmentUIslot { itemOwner: not null }) {
+					child.Deactivate();
+					child.Remove();
+				}
+			}
 		}
 	}
 	public override void OnDeactivate() {
@@ -78,18 +95,19 @@ public class EnchantmentUIslot : UIImage {
 				Main.instance.LoadItem(item.type);
 				Texture2D texture = TextureAssets.Item[item.type].Value;
 				Vector2 origin = texture.Size() * .5f;
-				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
+				float scaling = ScaleCalculation(texture.Size());
+				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
 			}
 		}
 		catch (Exception ex) {
 			Main.NewText(ex.Message);
 		}
 	}
+	private float ScaleCalculation(Vector2 textureSize) =>  textureSize.Length() / texture.Size().Length();
 }
 public class WeaponEnchantmentUIslot : UIImage {
 	public int itemType = 0;
 	public int WhoAmI = -1;
-	public Texture2D textureDraw;
 
 	public Item itemOwner = null;
 	private Texture2D texture;
@@ -113,55 +131,20 @@ public class WeaponEnchantmentUIslot : UIImage {
 		}
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
-		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
 		base.Draw(spriteBatch);
 		try {
 			if (itemOwner == null)
 				return;
 			if (itemType != 0) {
+				Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
 				Main.instance.LoadItem(itemType);
-				Texture2D texture = TextureAssets.Item[itemType].Value;
-				Vector2 origin = texture.Size() * .5f;
-				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
+				Texture2D texture1 = TextureAssets.Item[itemType].Value;
+				Vector2 origin = texture1.Size() * .5f;
+				spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
 			}
 		}
 		catch (Exception ex) {
 			Main.NewText(ex.Message);
-		}
-	}
-}
-public class EnchantmentSystem : ModSystem {
-	internal UserInterface userInterface;
-	internal EnchantmentUIState Enchant_uiState;
-	public static ModKeybind EnchantmentKeyBind { get; private set; }
-	public static int SelectedInventorySlot = -1;
-	public static int SelectedModifySlot = -1;
-	public override void Load() {
-		EnchantmentKeyBind = KeybindLoader.RegisterKeybind(Mod, "Enchantment UI", "L");
-
-		//UI stuff
-		if (!Main.dedServ) {
-			Enchant_uiState = new();
-			userInterface = new();
-		}
-	}
-	public override void Unload() {
-		EnchantmentKeyBind = null;
-	}
-	public override void UpdateUI(GameTime gameTime) {
-		userInterface?.Update(gameTime);
-	}
-	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-		if (InventoryIndex != -1) {
-			layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
-				"BossRush: Weapon Enchantment",
-				delegate {
-					userInterface.Draw(Main.spriteBatch, new GameTime());
-					return true;
-				},
-				InterfaceScaleType.UI)
-			);
 		}
 	}
 }
