@@ -188,7 +188,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (type == ItemID.JungleHat || type == ItemID.JungleShirt || type == ItemID.JunglePants) {
 				return "When using magic weapon, you will shoot out magical leaf hover around player up to max of 10" +
-					   "\nWhen you have max of 10 leaf, the next magic attack, all the leaf will activate";
+					   "\nWhen there are 10 leafs exist in world, the leaf will home into the closest enemy when possible";
 			}
 			return "";
 		}

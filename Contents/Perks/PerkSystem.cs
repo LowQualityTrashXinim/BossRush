@@ -118,6 +118,7 @@ namespace BossRush.Contents.Perks {
 		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).OnHitByAnything(Player);
+				ModPerkLoader.GetPerk(perk).OnHitByNPC(Player, npc, hurtInfo);
 			}
 		}
 		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
@@ -206,40 +207,18 @@ namespace BossRush.Contents.Perks {
 			if (CanBeStack)
 				Tooltip += "\n( Can be stack ! )";
 		}
-		public virtual void SetDefaults() {
-
-		}
-		public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-
-		}
-		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-
-		}
-		/// <summary>
-		/// This will run in <see cref="ModPlayer.PostUpdate"/>
-		/// </summary>
-		public virtual void Update(Player player) {
-
-		}
-		public virtual void UpdateEquip(Player player) {
-
-		}
-		public virtual void ResetEffect(Player player) {
-
-		}
-		public virtual void OnMissingMana(Player player, Item item, int neededMana) {
-
-		}
-		public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-
-		}
-		public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-
-		}
-		public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-
-		}
+		public virtual void SetDefaults() { }
+		public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
+		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
+		public virtual void Update(Player player) { }
+		public virtual void UpdateEquip(Player player) { }
+		public virtual void ResetEffect(Player player) { }
+		public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
+		public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) { }
+		public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
+		public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitByAnything(Player player) { }
+		public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 		public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
 		public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }

@@ -7,19 +7,19 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.WeaponModification;
 using System.Linq;
 
 namespace BossRush.Contents.WeaponEnchantment;
 internal class EnchantmentUIState : UIState {
 	public int WhoAmI = -1;
 	public override void OnActivate() {
+		Elements.Clear();
 		if (WhoAmI == -1)
 			return;
 		Player player = Main.player[WhoAmI];
 		EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack, player);
 		slot.UISetWidthHeight(52, 52);
-		slot.UISetPosition(player.Center + Vector2.UnitX * 100, new Vector2(26, 26));
+		slot.UISetPosition(player.Center + Vector2.UnitX * 120, new Vector2(26, 26));
 		Append(slot);
 	}
 }
@@ -43,13 +43,13 @@ public class EnchantmentUIslot : UIImage {
 			player.inventory[58].TurnToAir();
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				int length = globalItem.EnchantmenStlot.Length;
-				Vector2 pos = new Vector2(Left.Pixels, Top.Pixels + 60);
 				for (int i = 0; i < length; i++) {
 					WeaponEnchantmentUIslot slot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack, player);
 					slot.UISetWidthHeight(52, 52);
 					slot.UISetPosition(player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i, new Vector2(26, 26));
 					slot.WhoAmI = i;
 					slot.itemOwner = item;
+					slot.itemType = globalItem.EnchantmenStlot[i];
 					Parent.Append(slot);
 				}
 			}
@@ -103,7 +103,7 @@ public class EnchantmentUIslot : UIImage {
 			Main.NewText(ex.Message);
 		}
 	}
-	private float ScaleCalculation(Vector2 textureSize) =>  textureSize.Length() / texture.Size().Length();
+	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);
 }
 public class WeaponEnchantmentUIslot : UIImage {
 	public int itemType = 0;
@@ -121,6 +121,8 @@ public class WeaponEnchantmentUIslot : UIImage {
 			return;
 		if (Main.mouseItem.type != ItemID.None) {
 			if (Main.mouseItem.consumable)
+				return;
+			if (itemType != 0)
 				return;
 			itemType = Main.mouseItem.type;
 			Main.mouseItem.TurnToAir();
