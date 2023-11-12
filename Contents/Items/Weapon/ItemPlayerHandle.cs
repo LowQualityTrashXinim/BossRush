@@ -1,21 +1,21 @@
-﻿using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
-using BossRush.Contents.NPCs;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
+﻿using Terraria;
 using Terraria.ID;
+using System.Linq;
+using Terraria.Audio;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using BossRush.Contents.NPCs;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
+using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -309,16 +309,16 @@ namespace BossRush.Contents.Items.Weapon {
 	public abstract class SynergyModItem : ModItem {
 		public override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
-			CustomColor = new ColorInfo(new List<Color> { new Color(255, 50, 255), new Color(100, 50, 100) });
+			CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(50, 100, 100) });
 		}
-		ColorInfo CustomColor;
+		ColorInfo CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(100, 150, 150) });
 		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
 			TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy item");
-			if (CustomColor != null)
-				line.OverrideColor = CustomColor.MultiColor(5);
-			tooltips.Add(line);
+			if(CustomColor != null) {
+				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = CustomColor.MultiColor(5);
+			}
 		}
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {

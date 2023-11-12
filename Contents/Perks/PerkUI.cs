@@ -1,17 +1,17 @@
-﻿using BossRush.Common;
+﻿using System;
+using Terraria;
+using Terraria.UI;
+using ReLogic.Content;
+using BossRush.Common;
+using BossRush.Texture;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
-using Terraria.UI;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Perks {
 	internal class PerkUIState : UIState {
