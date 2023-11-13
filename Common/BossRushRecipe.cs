@@ -114,7 +114,6 @@ namespace BossRush.Common {
 			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
 			foreach (Recipe recipe in Main.recipe) {
 				SynergyRecipe(recipe);
-				EnragedBossSpawnerRecipe(recipe);
 				if (config.EnableChallengeMode) {
 					continue;
 				}
@@ -124,11 +123,6 @@ namespace BossRush.Common {
 		private void SynergyRecipe(Recipe recipe) {
 			if (recipe.createItem.ModItem is SynergyModItem) {
 				recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
-			}
-		}
-		private void EnragedBossSpawnerRecipe(Recipe recipe) {
-			if (recipe.createItem.ModItem is EnragedSpawner) {
-
 			}
 		}
 		private void ChallengeModeRecipe(Recipe recipe) {

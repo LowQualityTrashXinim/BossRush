@@ -532,7 +532,6 @@ namespace BossRush.Common.RoguelikeChange {
 	}
 	public class MeleeOverhaulSystem : ModSystem {
 		public override void Load() {
-			base.Load();
 			On_PlayerDrawLayers.DrawPlayer_RenderAllLayers += On_PlayerDrawLayers_DrawPlayer_RenderAllLayers;
 		}
 
@@ -632,7 +631,6 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
-			base.ModifyDrawInfo(ref drawInfo);
 			Item item = Player.HeldItem;
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
 				if (ComboNumber == 1 && meleeItem.SwingType == BossRushUseStyle.Poke) {
