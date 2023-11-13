@@ -4,10 +4,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public abstract class CommonGunEnchantment : ModEnchantment {
-		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			damage += .1f;
 		}
-		public override void ModifyWeaponCrit(Item item, Player player, ref float crit) {
+		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
 			crit += 5;
 		}
 	}
@@ -25,8 +25,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.Minishark;
 		}
-		public override void UseSpeedMultiplier(Item item, Player player, ref float speed) {
-			speed += .25f;
+		public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
+			base.ModifyUseSpeed(player, item, ref useSpeed);
+			useSpeed += .25f;
 		}
 	}
 	public class TheUndertaker : CommonGunEnchantment {
