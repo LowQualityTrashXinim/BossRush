@@ -9,6 +9,7 @@ using Terraria.Audio;
 using System.Linq;
 using Terraria.ID;
 using Terraria;
+using System;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -559,6 +560,8 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+				return;
 			OnHitNPC_ShadewoodArmor();
 			OnHitNPC_BorealWoodArmor(target);
 			OnHitNPC_WoodArmor(target, proj);
@@ -570,6 +573,8 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_PearlWoodArmor(target);
 		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+				return;
 			OnHitNPC_ShadewoodArmor();
 			OnHitNPC_BorealWoodArmor(target);
 			OnHitNPC_WoodArmor(target);
@@ -583,6 +588,14 @@ namespace BossRush.Common.RoguelikeChange {
 				}
 			OnHitNPC_LeadArmor(target);
 			OnHitNPC_PearlWoodArmor(target);
+		}
+		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+				modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+		}
+		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+				modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
 		}
 		private void OnHitNPC_LeadArmor(NPC npc) {
 			if (LeadArmor)
