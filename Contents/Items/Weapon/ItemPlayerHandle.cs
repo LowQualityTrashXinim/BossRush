@@ -291,7 +291,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 
 		public override void UpdateEquips() {
-			if (Player.head == 6 && Player.body == 6 && Player.legs == 6) {
+			if (Player.head == ArmorIDs.Head.MeteorHelmet && Player.body == ArmorIDs.Body.MeteorSuit && Player.legs == ArmorIDs.Legs.MeteorLeggings) {
 				StarLightDistributer_MeteorArmor = true;
 			}
 		}
@@ -315,7 +315,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
-			TooltipLine line = new TooltipLine(Mod, "Synergy", "Synergy item");
 			if(CustomColor != null) {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = CustomColor.MultiColor(5);
 			}

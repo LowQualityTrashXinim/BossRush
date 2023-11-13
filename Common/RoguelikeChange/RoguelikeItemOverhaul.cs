@@ -39,15 +39,15 @@ namespace BossRush.Common.RoguelikeChange {
 					"The sand projectile no longer spawn upon kill" +
 					"\nDecrease damage by 55%"));
 			}
-			if (item.type == ItemID.NightVisionHelmet) {
+			else if (item.type == ItemID.NightVisionHelmet) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet",
 					"Increases gun accurancy by 25%"));
 			}
-			if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
+			else if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose",
 					"Grant immunity to OnFire debuff !"));
 			}
-			if (item.type == ItemID.VikingHelmet) {
+			else if (item.type == ItemID.VikingHelmet) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
 					"Increases melee damage by 15%" +
 					"\nIncreases melee weapon size by 10%"));
@@ -195,19 +195,20 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		public override void UpdateArmorSet(Player player, string set) {
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			WoodAndFruitTypeArmor(player, modplayer, set);
-			OreTypeArmor(player, modplayer, set);
-			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.JungleHat, ItemID.JungleShirt, ItemID.JunglePants)) {
+			if (WoodAndFruitTypeArmor(player, modplayer, set)) { return; }
+			else if (OreTypeArmor(player, modplayer, set)) { return; }
+			else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.JungleHat, ItemID.JungleShirt, ItemID.JunglePants)) {
 				modplayer.JungleArmor = true;
 			}
 		}
-		private void WoodAndFruitTypeArmor(Player player, GlobalItemPlayer modplayer, string set) {
+		private bool WoodAndFruitTypeArmor(Player player, GlobalItemPlayer modplayer, string set) {
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.WoodHelmet, ItemID.WoodBreastplate, ItemID.WoodGreaves)) {
 				if (player.ZoneForest) {
 					player.statDefense += 11;
 					player.moveSpeed += .25f;
 					modplayer.WoodArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves)) {
 				if (player.ZoneSnow) {
@@ -216,6 +217,7 @@ namespace BossRush.Common.RoguelikeChange {
 					player.buffImmune[BuffID.Chilled] = true;
 					modplayer.BorealWoodArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.RichMahoganyHelmet, ItemID.RichMahoganyBreastplate, ItemID.RichMahoganyGreaves)) {
 				if (player.ZoneJungle) {
@@ -223,6 +225,7 @@ namespace BossRush.Common.RoguelikeChange {
 					player.moveSpeed += .30f;
 					modplayer.RichMahoganyArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.ShadewoodHelmet, ItemID.ShadewoodBreastplate, ItemID.ShadewoodGreaves)) {
 				if (player.ZoneCrimson) {
@@ -232,6 +235,7 @@ namespace BossRush.Common.RoguelikeChange {
 					player.GetCritChance(DamageClass.Generic) += 5f;
 					modplayer.ShadewoodArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.EbonwoodHelmet, ItemID.EbonwoodBreastplate, ItemID.EbonwoodGreaves)) {
 				if (player.ZoneCorrupt) {
@@ -240,6 +244,7 @@ namespace BossRush.Common.RoguelikeChange {
 					player.GetDamage(DamageClass.Generic) += .05f;
 					modplayer.EbonWoodArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.AshWoodHelmet, ItemID.AshWoodBreastplate, ItemID.AshWoodGreaves)) {
 				player.statDefense += 16;
@@ -248,20 +253,24 @@ namespace BossRush.Common.RoguelikeChange {
 					player.lifeRegen++;
 					modplayer.AshWoodArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CactusHelmet, ItemID.CactusBreastplate, ItemID.CactusLeggings)) {
 				player.statDefense += 10;
 				modplayer.CactusArmor = true;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PalmWoodHelmet, ItemID.PalmWoodBreastplate, ItemID.PalmWoodGreaves)) {
 				player.statDefense += 10;
 				player.moveSpeed += .17f;
 				modplayer.PalmWoodArmor = true;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PumpkinHelmet, ItemID.PumpkinBreastplate, ItemID.PumpkinLeggings)) {
 				if (player.ZoneOverworldHeight) {
 					modplayer.PumpkinArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PearlwoodHelmet, ItemID.PearlwoodBreastplate, ItemID.PearlwoodGreaves)) {
 				player.moveSpeed += 0.35f;
@@ -269,17 +278,21 @@ namespace BossRush.Common.RoguelikeChange {
 				modplayer.pearlWoodArmor = true;
 				if (Main.dayTime)
 					player.GetDamage(DamageClass.Generic) += 0.15f;
+				return true;
 			}
+			return false;
 		}
-		private void OreTypeArmor(Player player, GlobalItemPlayer modplayer, string set) {
+		private bool OreTypeArmor(Player player, GlobalItemPlayer modplayer, string set) {
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves)) {
 				player.statDefense += 5;
 				player.moveSpeed += .21f;
 				modplayer.TinArmor = true;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves)) {
 				player.moveSpeed += 0.25f;
 				modplayer.CopperArmor = true;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves)) {
 				player.moveSpeed -= 0.05f;
@@ -289,16 +302,19 @@ namespace BossRush.Common.RoguelikeChange {
 				if (player.statLife <= player.statLifeMax * 0.5f) {
 					player.statDefense += 25;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.LeadHelmet, ItemID.LeadChainmail, ItemID.LeadGreaves)) {
 				player.statDefense += 7;
 				modplayer.LeadArmor = true;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves)) {
 				if (Main.dayTime)
 					player.statDefense += player.statLife < player.statLifeMax2 ? 10 : 20;
 				else
 					player.GetDamage(DamageClass.Generic) += player.statLife < player.statLifeMax2 ? .1f : .2f;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TungstenHelmet, ItemID.TungstenChainmail, ItemID.TungstenGreaves)) {
 				player.statDefense += 15;
@@ -306,13 +322,17 @@ namespace BossRush.Common.RoguelikeChange {
 					player.moveSpeed += .3f;
 					modplayer.TungstenArmor = true;
 				}
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.GoldHelmet, ItemID.GoldChainmail, ItemID.GoldGreaves)) {
 				modplayer.GoldArmor = true;
+				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PlatinumHelmet, ItemID.PlatinumChainmail, ItemID.PlatinumGreaves)) {
 				modplayer.PlatinumArmor = true;
+				return true;
 			}
+			return false;
 		}
 		public override void UpdateEquip(Item item, Player player) {
 			if (item.type == ItemID.NightVisionHelmet)
