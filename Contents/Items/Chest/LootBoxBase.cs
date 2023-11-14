@@ -85,9 +85,10 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return 0;
 		}
+		//Note this method stillsuffer from slight performance problem
 		/// <summary>
-		/// Use this to modify the item pool before the process of choosing weapon is made<br/>
-		/// Use  <see cref="LootboxSystem.GetItemPool"/> to modify loot pool
+		/// Use this to modify the item pool before the process of choosing weapon is proceed<br/>
+		/// Use <see cref="LootboxSystem.GetItemPool"/> to modify loot pool
 		/// </summary>
 		public virtual void ModifyLootAdd(Player player) { }
 		/// <summary>
@@ -697,14 +698,29 @@ namespace BossRush.Contents.Items.Chest {
 		public HashSet<int> DropItemSummon = new HashSet<int>();
 		public HashSet<int> DropItemMisc = new HashSet<int>();
 
+		private int _cachedAllItemCount => _cachedAllItems.Count;
+		private HashSet<int> _cachedAllItems = null;
+		/// <summary>
+		/// Call this when you know it will get update 
+		/// </summary>
+		public void UpdateAllItemPool() {
+			_cachedAllItems = new HashSet<int>();
+			_cachedAllItems.UnionWith(DropItemMelee);
+			_cachedAllItems.UnionWith(DropItemRange);
+			_cachedAllItems.UnionWith(DropItemMagic);
+			_cachedAllItems.UnionWith(DropItemSummon);
+			_cachedAllItems.UnionWith(DropItemMisc);
+		}
+
 		public HashSet<int> AllItemPool() {
-			List<int> pool = new List<int>();
-			pool.AddRange(DropItemMelee);
-			pool.AddRange(DropItemRange);
-			pool.AddRange(DropItemMagic);
-			pool.AddRange(DropItemSummon);
-			pool.AddRange(DropItemMisc);
-			return pool.ToHashSet();
+			if (_cachedAllItems == null) {
+				UpdateAllItemPool();
+			}
+			else if(DropItemMagic.Count + DropItemRange.Count + DropItemMagic.Count + DropItemSummon.Count + DropItemMisc.Count != _cachedAllItemCount) {
+				UpdateAllItemPool();
+			}
+
+			return _cachedAllItems;
 		}
 	}
 	public class ChestLootDropPlayer : ModPlayer {
