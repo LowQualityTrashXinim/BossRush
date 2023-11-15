@@ -15,7 +15,6 @@ using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.GuideToMasterNinja;
-using BossRush.Contents.WeaponModification;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {

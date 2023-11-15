@@ -16,6 +16,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 			}
 		}
+		
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Spider Caves")));

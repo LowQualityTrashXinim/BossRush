@@ -1,6 +1,4 @@
-﻿using System;
-using Terraria;
-using System.Linq;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
@@ -348,6 +346,9 @@ namespace BossRush.Common.RoguelikeChange {
 		private void VanillaBuff(Item item) {
 			if (item.type == ItemID.TrueNightsEdge) {
 				item.useTime = item.useAnimation = 25;
+			}
+			if(item.type == ItemID.TrueExcalibur) {
+				item.damage += 10;
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

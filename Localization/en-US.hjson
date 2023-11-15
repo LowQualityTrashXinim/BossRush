@@ -1546,6 +1546,11 @@ Mods: {
 				DisplayName: Item Bundle
 				Tooltip: ""
 			}
+
+			CardSacrifice: {
+				DisplayName: Card Sacrifice
+				Tooltip: Use this to open a UI that allow you to destroy accessories and weapon to gain card packet or even rare card
+			}
 		}
 
 		Buffs: {

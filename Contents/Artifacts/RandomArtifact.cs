@@ -1,10 +1,5 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BossRush.Texture;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts
 {
