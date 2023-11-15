@@ -7,6 +7,7 @@ using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Common;
 internal class UniversalSystem : ModSystem {
@@ -26,6 +27,9 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface userInterface;
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
+
+	public CardUI cardUIstate;
+	public DeCardUIState DeCardUIState;
 	public static ModKeybind EnchantmentKeyBind { get; private set; }
 	public override void Load() {
 		EnchantmentKeyBind = KeybindLoader.RegisterKeybind(Mod, "Enchantment UI", "L");
@@ -35,6 +39,9 @@ internal class UniversalSystem : ModSystem {
 			//Mod custom UI
 			Enchant_uiState = new();
 			perkUIstate = new();
+
+			DeCardUIState = new();
+			cardUIstate = new();
 
 			userInterface = new();
 		}
@@ -82,7 +89,7 @@ public class UniversalModPlayer : ModPlayer {
 	}
 	public override bool CanUseItem(Item item) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null) {
+		if (uiSystemInstance.userInterface.CurrentState != null && uiSystemInstance.userInterface.CurrentState != uiSystemInstance.DeCardUIState) {
 			return false;
 		}
 		return base.CanUseItem(item);

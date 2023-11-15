@@ -3,21 +3,21 @@ using Terraria;
 using Terraria.UI;
 using ReLogic.Content;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using BossRush.Contents.WeaponModification;
-using System.Linq;
-using BossRush.Contents.Perks;
+using Terraria.ID;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Card {
 	internal class CardUI : UIState {
 		public List<PlayerStats> CardStats = new List<PlayerStats>();
 		public List<float> CardStatsNumber = new List<float>();
 		public float Multiplier = 1f;
+		public UIText toolTip;
 		/// <summary>
 		/// 1 = Copper<br/>
 		/// 2 = Silver<br/>
@@ -42,7 +42,7 @@ namespace BossRush.Contents.Items.Card {
 						offset++;
 					int cardlength = Math.Clamp(PostTierModify + offset, 0, 19);
 					AddCardStatsAndValue(modplayer, offset, cardlength);
-					CursedHandle(modplayer);
+					//CursedHandle(modplayer);
 					CardStatsIncreasesSelection cardUI = new CardStatsIncreasesSelection(TextureAssets.InventoryBack10, modplayer);
 					cardUI.CardStats.AddRange(CardStats);
 					cardUI.CardStatsNumber.AddRange(CardStatsNumber);
@@ -55,17 +55,9 @@ namespace BossRush.Contents.Items.Card {
 					CardStatsNumber.Clear();
 					CursedID = -1;
 				}
-				ImprovisedUITextBox itemtextbox = new ImprovisedUITextBox("");
-				itemtextbox.SetTextMaxLength(1000);
-				string lines = "";
-				itemtextbox.ImprovisedUIpanel_Height = 200;
-				itemtextbox.SetText(lines);
-				itemtextbox.Recalculate();
-				itemtextbox.IgnoresMouseInteraction = true;
-				itemtextbox.ShowInputTicker = false;
-				itemtextbox.UISetPosition(player.Center + new Vector2(0, 100), new Vector2(26, 26));
-				Append(itemtextbox);
 			}
+			toolTip = new UIText("");
+			Append(toolTip);
 		}
 		private void CursedHandle(PlayerCardHandle modplayer) {
 			if (CursedID != -1) {
@@ -93,11 +85,11 @@ namespace BossRush.Contents.Items.Card {
 				return;
 			}
 			int RandomNumberGen = Main.rand.Next(101 + modplayer.CardLuck / Tier);
-			if (RandomNumberGen < modplayer.CardLuck || (hasMagicDeck && RandomNumberGen < modplayer.CardLuck * (2 + Tier))) {
-				RandomNumberGen = Main.rand.Next(101);
-				if (RandomNumberGen < modplayer.CardLuck - 100) {
-					CursedID = 0;
-				}
+			if (RandomNumberGen < modplayer.CardLuck || hasMagicDeck && RandomNumberGen < modplayer.CardLuck * (2 + Tier)) {
+				//RandomNumberGen = Main.rand.Next(101);
+				//if (RandomNumberGen < modplayer.CardLuck - 100) {
+				//	CursedID = 0;
+				//}
 				PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
 				CardStats.Add(badstat);
 				CardStatsNumber.Add(statsCalculator(modplayer, badstat, -Tier));
@@ -179,6 +171,19 @@ namespace BossRush.Contents.Items.Card {
 			}
 			return Main.rand.Next(stats);
 		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			if (IsMouseHovering) {
+			}
+			foreach (var element in Elements) {
+				if (element.IsMouseHovering && element is CardStatsIncreasesSelection cardUI) {
+					toolTip.Left = element.Left;
+					toolTip.Top.Pixels = element.Top.Pixels + 70;
+					toolTip.SetText(cardUI.CardStatsText());
+					return;
+				}
+			}
+		}
 	}
 	class CardStatsIncreasesSelection : UIImageButton {
 		private string StatNumberAsText(PlayerStats stat, float number) {
@@ -191,23 +196,19 @@ namespace BossRush.Contents.Items.Card {
 			}
 			return value + $"{(int)(number * 100)}% {stat}";
 		}
+		public string CardStatsText() {
+			string text = "";
+			for (int i = 0; i < CardStats.Count; i++) {
+				text += StatNumberAsText(CardStats[i], CardStatsNumber[i]);
+				if (CurseID >= 1 && CurseID <= 12)
+					text += modplayer.CursedStringStats(CurseID);
+				if (i != CardStats.Count - 1)
+					text += "\n";
+			}
+			return text;
+		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (IsMouseHovering) {
-				foreach (UIElement element in Parent.Children) {
-					if (element is ImprovisedUITextBox textbox) {
-						string text = "";
-						for (int i = 0; i < CardStats.Count; i++) {
-							text += StatNumberAsText(CardStats[i], CardStatsNumber[i]);
-							if (CurseID >= 1 && CurseID <= 12)
-								text += modplayer.CursedStringStats(CurseID);
-							if (i != CardStats.Count - 1)
-								text += "\n";
-						}
-						textbox.SetText(text);
-					}
-				}
-			}
 		}
 		/// <summary>
 		/// We assume the length is always = to <see cref="CardStatsNumber"/>
@@ -229,7 +230,7 @@ namespace BossRush.Contents.Items.Card {
 			for (int i = 0; i < CardStats.Count; i++) {
 				AddStatsToPlayer(modplayer, CardStats[i], CardStatsNumber[i]);
 			}
-			CardSystem uiSystemInstance = ModContent.GetInstance<CardSystem>();
+			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.userInterface.SetState(null);
 		}
 		private void AddStatsToPlayer(PlayerCardHandle modplayer, PlayerStats stats, float amount) {
@@ -293,32 +294,6 @@ namespace BossRush.Contents.Items.Card {
 					break;
 				default:
 					break;
-			}
-		}
-	}
-	class CardSystem : ModSystem {
-		public UserInterface userInterface;
-		public CardUI cardUIstate;
-		public override void Load() {
-			if (!Main.dedServ) {
-				cardUIstate = new();
-				userInterface = new();
-			}
-		}
-		public override void UpdateUI(GameTime gameTime) {
-			userInterface?.Update(gameTime);
-		}
-		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
-			if (resourceBarIndex != -1) {
-				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
-					"BossRush: CardSystem",
-					delegate {
-						userInterface.Draw(Main.spriteBatch, new GameTime());
-						return true;
-					},
-					InterfaceScaleType.UI)
-				);
 			}
 		}
 	}

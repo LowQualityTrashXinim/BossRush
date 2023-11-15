@@ -61,7 +61,7 @@ namespace BossRush.Contents.Items.Card {
 			OnUseItem(player, modplayer);
 			if (Tier <= 0)
 				return true;
-			CardSystem uiSystemInstance = ModContent.GetInstance<CardSystem>();
+			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.cardUIstate.Tier = Tier;
 			uiSystemInstance.userInterface.SetState(uiSystemInstance.cardUIstate);
 			return true;
@@ -259,8 +259,6 @@ namespace BossRush.Contents.Items.Card {
 			if (WeaponCanKick && Player.statLife < Player.GetWeaponDamage(item)) {
 				return false;
 			}
-			if (ModContent.GetInstance<CardSystem>().userInterface.CurrentState != null)
-				return false;
 			return base.CanUseItem(item);
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -572,15 +570,6 @@ namespace BossRush.Contents.Items.Card {
 				|| ListIsChange) {
 				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 				ListIsChange = false;
-			}
-		}
-	}
-	class CardNPCdrop : GlobalNPC {
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			if (npc.boss) {
-				LeadingConditionRule HardcoreMode = new LeadingConditionRule(new Conditions.LegacyHack_IsABoss());
-				HardcoreMode.OnSuccess(ItemDropRule.BossBagByCondition(new HardcoreExclusive(), ModContent.ItemType<PremiumCardPacket>()));
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new HardcoreExclusive(), ModContent.ItemType<PremiumCardPacket>()));
 			}
 		}
 	}

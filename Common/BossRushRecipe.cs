@@ -127,7 +127,8 @@ namespace BossRush.Common {
 		}
 		private void ChallengeModeRecipe(Recipe recipe) {
 			if (recipe.HasResult(ItemID.FlamingArrow) ||
-				recipe.HasResult(ItemID.FrostburnArrow)) {
+				recipe.HasResult(ItemID.FrostburnArrow) ||
+				recipe.HasResult(ItemID.CursedArrow)) {
 				recipe.DisableRecipe();
 			}
 		}

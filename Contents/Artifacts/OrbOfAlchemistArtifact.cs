@@ -31,7 +31,6 @@ namespace BossRush.Contents.Artifacts {
 		}
 		private void AlchemistOverCharged(NPC target, ref NPC.HitModifiers modifiers) {
 			if (Alchemist) {
-				int damage = modifiers.FinalDamage.StatModifierDamageValue();
 				int lengthNPC = target.buffType.Where(i => i != 0).Count();
 				int lengthPlayer = Player.buffType.Where(i => i != 0).Count();
 				int finalLength = lengthNPC + Player.buffType.Where(i => i != 0).Count();
