@@ -70,7 +70,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			if (Projectile.timeLeft == 999) {
 				if (Projectile.ai[0] == 0)
-					Projectile.ai[0] = Main.rand.NextBool().BoolOne();
+					Projectile.ai[0] = Main.rand.NextBool().ToDirectionInt();
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
 				maxProgress += (int)(MaxLengthX * .05f);
 				progression = maxProgress;

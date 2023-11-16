@@ -13,11 +13,19 @@ namespace BossRush.Common;
 internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
 	public const string CHALLENGE_MODE = "ChallengeModeEnable";
+	public const string NIGHTMARE_MODE = "NightmareEnable";
+	/// <summary>
+	/// Use this to lock content behind hardcore
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="context">Use <see cref="UniversalSystem.CHALLENGE_MODE"/> or any kind of mode that seem fit</param>
+	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
-		if (ModContent.GetInstance<BossRushModConfig>().HardEnableFeature)
+		if (ModContent.GetInstance<BossRushModConfig>().HardEnableFeature || player.IsDebugPlayer())
 			return true;
-		if (player.IsDebugPlayer())
-			return true;
+		//This is ugly but it shall work for now
+		if (context == NIGHTMARE_MODE)
+			return ModContent.GetInstance<BossRushModConfig>().Nightmare;
 		if (context == CHALLENGE_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode;
 		if (context == SYNERGY_MODE)

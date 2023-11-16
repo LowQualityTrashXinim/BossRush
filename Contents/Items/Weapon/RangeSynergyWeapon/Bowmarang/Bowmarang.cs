@@ -62,7 +62,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 			}
 			if (Projectile.timeLeft == 999) {
 				if (Projectile.ai[0] == 0)
-					Projectile.ai[0] = Main.rand.NextBool().BoolOne();
+					Projectile.ai[0] = Main.rand.NextBool().ToDirectionInt();
 				MaxLengthX = (Main.MouseWorld - player.Center).Length() * 1.5f;
 				maxProgress += (int)(MaxLengthX * .05f);
 				progression = maxProgress;

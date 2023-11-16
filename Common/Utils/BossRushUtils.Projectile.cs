@@ -64,21 +64,6 @@ namespace BossRush {
 				}
 			}
 		}
-		public static void DrawTrailWithColorAdjustmentHaveFade(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0) {
-			projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
-			if (ProjectileID.Sets.TrailingMode[projectile.type] != 2) {
-				for (int k = 0; k < projectile.oldPos.Length; k++) {
-					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
-					Main.EntitySpriteDraw(texture, drawPos, null, lightColor, projectile.oldRot[k], origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
-				}
-			}
-			else {
-				for (int k = 0; k < projectile.oldPos.Length; k++) {
-					Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, projectile.gfxOffY);
-					Main.EntitySpriteDraw(texture, drawPos, null, lightColor, projectile.oldRot[k], origin, projectile.scale - k * ManualScaleAccordinglyToLength, SpriteEffects.None, 0);
-				}
-			}
-		}
 		public static void ProjectileAlphaDecay(this Projectile projectile, float timeCountdown) {
 			projectile.alpha = (int)MathHelper.Lerp(0, 255, (timeCountdown - projectile.timeLeft) / timeCountdown);
 		}

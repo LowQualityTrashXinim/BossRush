@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook {
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			for (int i = 0; i < Main.rand.Next(3, 5); i++) {
-				Vector2 vel = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(80, 120) * Main.rand.NextBool().BoolOne()));
+				Vector2 vel = velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(80, 120) * Main.rand.NextBool().ToDirectionInt()));
 				Projectile.NewProjectile(source, position, vel, ModContent.ProjectileType<SinisterBolt>(), damage, knockback, player.whoAmI);
 			}
 			if (modplayer.SinisterBook_DemonScythe_Counter >= 20) {
