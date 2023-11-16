@@ -73,7 +73,7 @@ namespace BossRush.Contents.Projectiles {
 			if (Projectile.timeLeft == 999) {
 				MaxLengthX = 90;
 				progression = maxProgress;
-				MouseXPosDirection = Main.rand.NextBool().BoolOne() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
+				MouseXPosDirection = Main.rand.NextBool().ToDirectionInt() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
 				MaxLengthY = -MaxLengthX * .5f * MouseXPosDirection;
 			}
 			if (progression <= 0) {

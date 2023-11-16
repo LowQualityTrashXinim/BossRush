@@ -74,7 +74,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
 				maxProgress += (int)(MaxLengthX * .075f);
 				progression = maxProgress;
-				MouseXPosDirection = Main.rand.NextBool().BoolOne() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
+				MouseXPosDirection = Main.rand.NextBool().ToDirectionInt() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
 				MaxLengthY = -(MaxLengthX + Main.rand.NextFloat(-10, 80)) * .25f * MouseXPosDirection;
 			}
 			base.SynergyPreAI(player, modplayer, out runAI);

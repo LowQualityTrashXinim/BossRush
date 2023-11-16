@@ -1,8 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Terraria;
 using Terraria.Utilities;
+using Microsoft.Xna.Framework;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -12,31 +11,18 @@ namespace BossRush {
 			velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
 			return velocity;
 		}
-		public static Vector2 LimitedPosition(this Vector2 position, Vector2 position2, float limited) {
-			position.X = Math.Clamp(position.X, -limited + position2.X, limited + position2.X);
-			position.Y = Math.Clamp(position.Y, -limited + position2.Y, limited + position2.Y);
-			return position;
-		}
-		/// <summary>
-		/// Take a bool and return a int number base on true or false
-		/// </summary>
-		/// <param name="Num"></param>
-		/// <returns>Return 1 if true
-		/// <br/>Otherwise return 0</returns>
-		public static int BoolZero(this bool Num) => Num ? 1 : 0;
-		public static int BoolOne(this bool Num) => Num ? 1 : -1;
 		public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, float RectangleWidthHalf, float RectangleHeightHalf) {
 			float X = r.NextFloat(-RectangleWidthHalf, RectangleWidthHalf);
 			float Y = r.NextFloat(-RectangleHeightHalf, RectangleHeightHalf);
 			bool Randomdecider = r.NextBool();
-			Vector2 RandomPointOnEdge = new Vector2(X * Randomdecider.BoolZero(), Y * (!Randomdecider).BoolZero());
+			Vector2 RandomPointOnEdge = new Vector2(X * Randomdecider.ToInt(), Y * (!Randomdecider).ToInt());
 			if (RandomPointOnEdge.X == 0) {
 				RandomPointOnEdge.X = RectangleWidthHalf;
 			}
 			else {
 				RandomPointOnEdge.Y = RectangleHeightHalf;
 			}
-			return RandomPointOnEdge * r.NextBool().BoolOne();
+			return RandomPointOnEdge * r.NextBool().ToDirectionInt();
 		}
 		public static Vector2 NextPointOn2Vector2(Vector2 point1, Vector2 point2) {
 			float length = Vector2.Distance(point1, point2);
@@ -90,7 +76,7 @@ namespace BossRush {
 			} while (!Collision.CanHitLine(positionCurrent, 0, 0, pos, 0, 0) || counter < 50);
 			return pos;
 		}
-		public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => (Position - CurrentPosition).LengthSquared() <= distance * distance;
+		public static bool IsCloseToPosition(this Vector2 CurrentPosition, Vector2 Position, float distance) => Vector2.DistanceSquared(CurrentPosition, Position) <= distance * distance;
 		/// <summary>
 		/// This will take a approximation of the rough position that it need to go and then stop the npc from moving when it reach that position 
 		/// </summary>
@@ -122,17 +108,6 @@ namespace BossRush {
 			}
 			projectile.velocity = distance.SafeNormalize(Vector2.Zero) * speed;
 			return false;
-		}
-		public static Vector2 Vector2SmallestInList(List<Vector2> flag) {
-			if (flag.Count == 0)
-				return Vector2.Zero;
-
-			Vector2 smallest = flag[0];
-			for (int i = 1; i < flag.Count; i++) {
-				if (flag[i].LengthSquared() < smallest.LengthSquared())
-					smallest = flag[i];
-			}
-			return smallest;
 		}
 		/// <summary>
 		/// The higher the number, the heavier this method become, NOT RECOMMEND USING IT AT ALL COST

@@ -565,7 +565,7 @@ namespace BossRush.Common.RoguelikeChange {
 				if (CactusArmorCD <= 0) {
 					bool manualDirection = Player.Center.X < entity.Center.X;
 					Vector2 AbovePlayer = Player.Center + new Vector2(Main.rand.NextFloat(-500, 500), -1000);
-					int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), AbovePlayer, Vector2.UnitX * .1f * manualDirection.BoolOne(), ProjectileID.RollingCactus, 150, 0, Player.whoAmI);
+					int projectile = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), AbovePlayer, Vector2.UnitX * .1f * manualDirection.ToDirectionInt(), ProjectileID.RollingCactus, 150, 0, Player.whoAmI);
 					Main.projectile[projectile].friendly = true;
 					Main.projectile[projectile].hostile = false;
 					CactusArmorCD = 300;

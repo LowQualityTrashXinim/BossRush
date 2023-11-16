@@ -92,7 +92,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			}
 			if (modplayer.MagicGrenade_MagicMissle) {
 				for (int i = 0; i < 4; i++) {
-					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i).Vector2RotateByRandom(120), ModContent.ProjectileType<MagicalExplosionBolt>(), Projectile.damage, 1, Projectile.owner, 0, Main.rand.NextBool().BoolOne());
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i).Vector2RotateByRandom(120), ModContent.ProjectileType<MagicalExplosionBolt>(), Projectile.damage, 1, Projectile.owner, 0, Main.rand.NextBool().ToDirectionInt());
 				}
 			}
 			Projectile.Center.LookForHostileNPC(out List<NPC> npc, 200);
@@ -100,7 +100,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 				return;
 			}
 			for (int i = 0; i < npc.Count; i++) {
-				npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack * 2, Projectile.DamageType, true, player.luck));
+				npc[i].StrikeNPC(npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).ToDirectionInt(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack * 2, Projectile.DamageType, true, player.luck));
 				player.dpsDamage += Projectile.damage;
 			}
 		}
@@ -169,7 +169,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 				return;
 			}
 			for (int i = 0; i < npc.Count; i++) {
-				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).ToDirectionInt(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
 			}
 		}
 	}
@@ -199,7 +199,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Player player = Main.player[Projectile.owner];
 			Projectile.Center.LookForHostileNPC(out List<NPC> npc, 50);
 			for (int i = 0; i < 4; i++) {
-				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i), ModContent.ProjectileType<SmallerMagicalExplosionBolt>(), (int)(Projectile.damage * .5f), 1, Projectile.owner, 0, Main.rand.NextBool().BoolOne());
+				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i), ModContent.ProjectileType<SmallerMagicalExplosionBolt>(), (int)(Projectile.damage * .5f), 1, Projectile.owner, 0, Main.rand.NextBool().ToDirectionInt());
 			}
 			for (int i = 0; i < 50; i++) {
 				int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.GemAmethyst);
@@ -212,7 +212,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 				return;
 			}
 			for (int i = 0; i < npc.Count; i++) {
-				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).ToDirectionInt(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
 			}
 		}
 	}
@@ -252,7 +252,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 				return;
 			}
 			for (int i = 0; i < npc.Count; i++) {
-				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).BoolOne(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
+				player.StrikeNPCDirect(npc[i], npc[i].CalculateHitInfo(Projectile.damage, (Projectile.Center.X < npc[i].Center.X).ToDirectionInt(), Main.rand.NextBool(Projectile.CritChance), Projectile.knockBack, Projectile.DamageType, true, player.luck));
 			}
 		}
 	}

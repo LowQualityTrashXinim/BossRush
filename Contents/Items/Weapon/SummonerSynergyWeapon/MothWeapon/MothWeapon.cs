@@ -162,7 +162,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 					npc.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 					foreach (var entity in npclist) {
 						SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot);
-						entity.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 3, (Projectile.Center.X <= entity.Center.X).BoolOne(), false, 8, DamageClass.Summon, true));
+						entity.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 3, (Projectile.Center.X <= entity.Center.X).ToDirectionInt(), false, 8, DamageClass.Summon, true));
 						entity.AddBuff(BuffID.OnFire3, 300);
 						player.addDPS(Projectile.damage * 3);
 					}
@@ -175,7 +175,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 				}
 				state = State.hit;
 				Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(160, 200))) * Main.rand.NextFloat(1, 3);
-				npc.StrikeNPC(npc.CalculateHitInfo(DashBonusDamage, (Projectile.Center.X <= npc.Center.X).BoolOne(), false));
+				npc.StrikeNPC(npc.CalculateHitInfo(DashBonusDamage, (Projectile.Center.X <= npc.Center.X).ToDirectionInt(), false));
 				player.addDPS(DashBonusDamage);
 			}
 		}

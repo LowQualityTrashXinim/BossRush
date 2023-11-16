@@ -79,12 +79,12 @@ namespace BossRush.Contents.Items.BuilderItem {
 				Vector2 pos = Projectile.Center + new Vector2(0, i * 16);
 				for (int l = 0; l < 25; l++) {
 					int dust = Dust.NewDust(pos + new Vector2(Main.rand.NextFloat(20), Main.rand.NextFloat(20)), 0, 0, DustID.Torch);
-					Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(8, 25), 0) * directionOfMoving.BoolOne();
+					Main.dust[dust].velocity = new Vector2(Main.rand.NextFloat(8, 25), 0) * directionOfMoving.ToDirectionInt();
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].scale = Main.rand.NextFloat(3f, 5f);
 					Main.dust[dust].fadeIn = Main.rand.NextFloat(1f, 2f);
 					int dust2 = Dust.NewDust(pos + new Vector2(Main.rand.NextFloat(20), Main.rand.NextFloat(20)), 0, 0, DustID.Obsidian);
-					Main.dust[dust2].velocity = new Vector2(Main.rand.NextFloat(5, 9), 0) * directionOfMoving.BoolOne();
+					Main.dust[dust2].velocity = new Vector2(Main.rand.NextFloat(5, 9), 0) * directionOfMoving.ToDirectionInt();
 					Main.dust[dust2].noGravity = true;
 					Main.dust[dust2].scale = Main.rand.NextFloat(3f, 5f);
 					Main.dust[dust].fadeIn = Main.rand.NextFloat(1f, 2f);
