@@ -1,4 +1,6 @@
-﻿using BossRush.Contents.BuffAndDebuff;
+﻿using BossRush.Common.RoguelikeChange;
+using BossRush.Contents.BuffAndDebuff;
+using BossRush.Texture;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,6 +19,18 @@ namespace BossRush.Contents.Items.Potion {
 			Item.rare = ItemRarityID.Orange;
 			Item.buffType = ModContent.BuffType<GodVision>();
 			Item.buffTime = 12000;
+		}
+	}
+	internal class GodVision : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			Main.debuff[Type] = false;
+			Main.buffNoSave[Type] = true;
+		}
+
+		public override void Update(Player player, ref int buffIndex) {
+			player.GetCritChance(DamageClass.Generic) += 70;
+			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= 100;
 		}
 	}
 }

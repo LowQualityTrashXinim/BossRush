@@ -1,14 +1,9 @@
-﻿using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.NohitReward;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Terraria;
 using Terraria.ModLoader;
-using Terraria;
-using BossRush.Common.Systems.ArtifactSystem;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.NohitReward;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -28,7 +23,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (Pride) {
-				float reward = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count * .1f;
+				float reward = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count * .05f;
 				damage += .45f + reward;
 			}
 		}

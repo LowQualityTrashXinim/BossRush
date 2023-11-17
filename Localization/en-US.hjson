@@ -1567,7 +1567,7 @@ Mods: {
 
 			Trinket_of_Perpetuation: {
 				DisplayName: Trinket of Perpetuation
-				Tooltip: 
+				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
 					Increases your attack speed by 15%
