@@ -48,7 +48,7 @@ namespace BossRush.Common {
 	public class SynergyDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<BossRushModConfig>().SynergyMode && (info.player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature);
+				return UniversalSystem.CanAccessContent(info.player, UniversalSystem.SYNERGY_MODE);
 			}
 			return false;
 		}
@@ -115,17 +115,6 @@ namespace BossRush.Common {
 		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Drop if player beat boss in no hit aka git gud mode";
-	}
-	public class HardcoreExclusive : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Only available if your player character is in hardcore";
 	}
 	public class NightmareMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {

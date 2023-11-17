@@ -1556,12 +1556,15 @@ Mods: {
 				DisplayName: Trinket of Swift Health
 				Tooltip:
 					'''
+					[[c/8888ea:Passive]]
 					Increases your hp by 20%
-					When dealing damage to enemy, you are buff with [c/b7bf5c:Swift Steal]
-					[c/b7bf5c:Swift Steal] make you run faster by 25% and you can gain point
-					For each point you gain :
-					4 defenses and increase your damage by 6% (capped at 6 point)
-					After the buff end, there are 25s cooldown
+					[[c/8888ea:Active]]
+					When dealing damage to enemy, you are gain [c/b7bf5c:Swift Steal] buff which last for 15 second
+					While [c/b7bf5c:Swift Steal] is active :
+					Increases your movement speed by 25% and attack speed by 10%
+					The more health you currently have, the more damage you gain
+					Allow you to gain stack, for each stack you gain : 4 defenses and 3% critical strike chance (capped at 6 stack)
+					After the buff end, you receive 25 second cooldown before you can active your buff again
 					'''
 			}
 
@@ -1572,11 +1575,11 @@ Mods: {
 					[[c/8888ea:Passive]]
 					Increases your attack speed by 15%
 					[[c/8888ea:Active]]
-					Hitting enemy will inflict them with [c/b7bf5c:Samsara of Retribution] for 1s
-					[c/b7bf5c:Samsara of Retribution] by default will do 20 damage over time (DoT) 
-					Hitting enemy multiple time will strength the effect (Capped at 10 time)
-					Dealing critical strike to enemy that already have debuff will spread the debuff to near by enemies
-					[c/b7bf5c:Samsara of Retribution] will be at half the strength and will be applied for 4s
+					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
+					[c/b7bf5c:Samsara of Retribution] debuff will do 20 damage over time
+					Hitting enemy multiple time will refresh and strengthen the debuff (Capped at 10 stack)
+					Dealing critical strike to enemy that already have debuff will spread out to nearby enemies
+					Enemy that got [c/b7bf5c:Samsara of Retribution] via spread will have the debuff that last for 4s
 					'''
 			}
 		}
