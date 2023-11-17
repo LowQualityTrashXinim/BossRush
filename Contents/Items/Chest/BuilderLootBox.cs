@@ -2,7 +2,6 @@
 using Terraria.ID;
 using BossRush.Common;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Accessories;
 using BossRush.Contents.Items.BuilderItem;
 
 namespace BossRush.Contents.Items.Chest {

@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Accessories.Crystal {
+namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Crystal {
 	class EnergeticCrystal : ModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetDefaults() {

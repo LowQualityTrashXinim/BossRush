@@ -1,10 +1,10 @@
-﻿using BossRush.Common.RoguelikeChange;
-using BossRush.Contents.Items.Weapon;
-using BossRush.Texture;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
+using BossRush.Contents.Items.Weapon;
+using BossRush.Common.RoguelikeChange;
 
-namespace BossRush.Contents.Items.Accessories {
+namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
 	internal class PlusOneBullet : SynergyModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetDefaults() {
@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.Accessories {
 			Item.value = 1000000;
 		}
 		public override void UpdateEquip(Player player) {
-			RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+			var modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
 			modplayer.ProjectileAmountModify += 1;
 			modplayer.SpreadModify += .35f;
 		}

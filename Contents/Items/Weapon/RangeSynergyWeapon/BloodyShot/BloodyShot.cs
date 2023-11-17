@@ -10,7 +10,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 	internal class BloodyShot : SynergyModItem, IRogueLikeRangeGun {
 		public float OffSetPosition => 30f;
 		public float Spread { get; set; }
-
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
 			Item.scale = 0.9f;
@@ -83,7 +82,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			if (!npc.HasBuff(ModContent.BuffType<BoilingBlood>())) {
+			if (!npc.HasBuff(ModContent.BuffType<BoilingBlood>()) && Main.rand.NextBool(10)) {
 				npc.AddBuff(ModContent.BuffType<BoilingBlood>(), 90);
 			}
 			else {
@@ -91,7 +90,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 				int randNum2 = 1 + Main.rand.Next(4, 6);
 				for (int i = 0; i < randNum2; i++) {
 					Vector2 newPos = npc.Center + Main.rand.NextVector2CircularEdge(npc.width, npc.height) * 1.1f;
-					Vector2 vel = (newPos - npc.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(4,7);
+					Vector2 vel = (newPos - npc.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(4, 7);
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), newPos, vel, ProjectileID.BloodArrow, (int)(hit.Damage * 0.75f), hit.Knockback, player.whoAmI);
 				}
 			}
@@ -115,7 +114,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			Main.debuff[Type] = true;
 		}
 		public override void UpdateNPC(NPC npc, ref int buffIndex) {
-			npc.lifeRegen -= 20;
+			npc.lifeRegen -= 50;
+			for (int i = 0; i < 3; i++) {
+				int dust = Dust.NewDust(npc.Center + Main.rand.NextVector2Circular(npc.width, npc.height) * .75f, 0, 0, DustID.Blood);
+				Main.dust[dust].velocity = Vector2.Zero;
+			}
 		}
 	}
 }

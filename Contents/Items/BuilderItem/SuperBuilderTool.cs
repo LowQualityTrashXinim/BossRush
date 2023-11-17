@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.GameContent;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Contents.Items.Accessories {
+namespace BossRush.Contents.Items.BuilderItem {
 	internal class SuperBuilderTool : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.ArchitectGizmoPack);
 		public override void SetDefaults() {
@@ -23,8 +23,8 @@ namespace BossRush.Contents.Items.Accessories {
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
-			Color redAlpha = new Color(0, 255, 255, 30);
+			var texture = TextureAssets.Item[Item.type].Value;
+			var redAlpha = new Color(0, 255, 255, 30);
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, position + new Vector2(2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
 				spriteBatch.Draw(texture, position + new Vector2(-2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
@@ -39,10 +39,10 @@ namespace BossRush.Contents.Items.Accessories {
 			//    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 			//}
 			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
-			Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
-			Vector2 drawPos = Item.position - Main.screenPosition + origin;
-			Color redAlpha = new Color(0, 255, 255, 30);
+			var texture = TextureAssets.Item[Item.type].Value;
+			var origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+			var drawPos = Item.position - Main.screenPosition + origin;
+			var redAlpha = new Color(0, 255, 255, 30);
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);
 				spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, redAlpha, 0, origin, scale, SpriteEffects.None, 0);

@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Items.Accessories.FuryEmblem;
+﻿using BossRush.Contents.Items.Accessories.SynergyAccessories.FuryEmblem;
 using Terraria;
 using Terraria.ModLoader;
 
