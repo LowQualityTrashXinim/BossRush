@@ -1,20 +1,18 @@
-﻿using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Items.Weapon;
-using BossRush.Texture;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.BuffAndDebuff;
 
-namespace BossRush.Contents.Items.Accessories.Scabbard {
+namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Scabbard {
 	internal class ParryScabbard : SynergyModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			Player player = Main.LocalPlayer;
-			if (player.GetModPlayer<SwordPlayer>().SwordSlash) {
-				tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()}] Increase parry duration and increase wind slash speed"));
-			}
+			var player = Main.LocalPlayer;
+			if (player.GetModPlayer<SwordPlayer>().SwordSlash) tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<SwordScabbard>()}] Increase parry duration and increase wind slash speed"));
 		}
 		public override void SetDefaults() {
 			Item.accessory = true;
@@ -42,7 +40,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard {
 		}
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
 		{
-			Item item = Player.HeldItem;
+			var item = Player.HeldItem;
 			if (!Player.HasBuff(ModContent.BuffType<Parried>())
 				&& item.DamageType == DamageClass.Melee
 				&& Player.ItemAnimationActive
@@ -54,9 +52,7 @@ namespace BossRush.Contents.Items.Accessories.Scabbard {
 			}
 		}
 		public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable) {
-			if (Player.HasBuff(ModContent.BuffType<Parried>())) {
-				return true;
-			}
+			if (Player.HasBuff(ModContent.BuffType<Parried>())) return true;
 			return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
 		}
 	}

@@ -95,6 +95,8 @@ namespace BossRush.Contents.Items.Weapon {
 
 		public bool MagicGrenade_MagicMissle = false;
 
+		public bool DeathBySpark_AleThrowingGlove = false;
+
 		public int HeavenSmg_Stacks = 0;
 
 		public bool GodAreEnraged = false;
@@ -187,6 +189,8 @@ namespace BossRush.Contents.Items.Weapon {
 
 			ZapSnapper_WeatherPain = false;
 			ZapSnapper_ThunderStaff = false;
+
+			DeathBySpark_AleThrowingGlove = false;
 		}
 		int check = 1;
 		public override void PostUpdate() {

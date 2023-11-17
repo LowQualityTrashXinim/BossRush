@@ -14,10 +14,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark {
 			Item.value = Item.buyPrice(gold: 50);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			base.ModifySynergyToolTips(ref tooltips, modplayer);
+			if(modplayer.DeathBySpark_AleThrowingGlove) {
+				tooltips.Add(new TooltipLine(Mod, "DeathBySpark_AleThrowingGlove", $"[i:{ItemID.AleThrowingGlove}] Flare will shoot out ale that deal 25% more damage"));
+			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			base.HoldSynergyItem(player, modplayer);
+			if (player.HasItem(ItemID.AleThrowingGlove)) {
+				modplayer.SynergyBonus++;
+				modplayer.DeathBySpark_AleThrowingGlove = true;
+			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
@@ -53,11 +58,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark {
 				}
 			}
 			Vector2 OppositeVelocity = Projectile.rotation.ToRotationVector2() * -4.5f;
-			int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, OppositeVelocity + Main.rand.NextVector2Circular(1f, 1f), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 0.65f), Projectile.owner, player.whoAmI);
+			int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, OppositeVelocity + Main.rand.NextVector2Circular(1f, 1f), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * 0.65f), 1f, player.whoAmI);
 			Main.projectile[proj].usesLocalNPCImmunity = true;
 			Main.projectile[proj].localNPCHitCooldown = 20;
 			Main.projectile[proj].timeLeft = 12;
-
+			if (modplayer.DeathBySpark_AleThrowingGlove && ++Projectile.ai[1] >= 30) {
+				Projectile.ai[1] = 0;
+				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, OppositeVelocity.Vector2RotateByRandom(15) * 4f, ProjectileID.Ale, (int)(Projectile.damage * 1.25f), 3f, player.whoAmI);
+			}
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 			npc.AddBuff(BuffID.OnFire, 300);

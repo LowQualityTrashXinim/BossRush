@@ -5,13 +5,11 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Accessories.Scabbard {
+namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Scabbard {
 	internal class SwordScabbard : SynergyModItem {
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			Player player = Main.LocalPlayer;
-			if (player.GetModPlayer<ParryPlayer>().Parry) {
-				tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<ParryScabbard>()}] Increase parry duration and increase wind slash speed"));
-			}
+			var player = Main.LocalPlayer;
+			if (player.GetModPlayer<ParryPlayer>().Parry) 				tooltips.Add(new TooltipLine(Mod, "SwordBrother", $"[i:{ModContent.ItemType<ParryScabbard>()}] Increase parry duration and increase wind slash speed"));
 		}
 		public override void SetDefaults() {
 			Item.accessory = true;
@@ -44,11 +42,9 @@ namespace BossRush.Contents.Items.Accessories.Scabbard {
 				&& Main.mouseLeft
 				&& Player.ItemAnimationJustStarted
 				&& Player.ItemAnimationActive) {
-				Vector2 speed = Player.direction == 1 ? new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? 3 : 1, 0) : new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? -3 : -1, 0);
-				Item item = Player.HeldItem;
-				if (Player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-					speed = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
-				}
+				var speed = Player.direction == 1 ? new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? 3 : 1, 0) : new Vector2(Player.GetModPlayer<ParryPlayer>().Parry ? -3 : -1, 0);
+				var item = Player.HeldItem;
+				if (Player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) 					speed = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
 				float length = new Vector2(item.width, item.height).Length() * Player.GetAdjustedItemScale(item);
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<SwordSlash>(), (int)(Player.HeldItem.damage * .75f), 2f, Player.whoAmI);
 			}
@@ -73,24 +69,16 @@ namespace BossRush.Contents.Items.Accessories.Scabbard {
 		public override void AI() {
 			Projectile.alpha += 255 / 50;
 			Projectile.Size += new Vector2(0.05f, 0.05f);
-			if (Projectile.velocity != Vector2.Zero) {
-				Projectile.rotation = Projectile.velocity.ToRotation();
-			}
-			if (Projectile.alpha >= 255) {
-				Projectile.Kill();
-			}
+			if (Projectile.velocity != Vector2.Zero) 				Projectile.rotation = Projectile.velocity.ToRotation();
+			if (Projectile.alpha >= 255) 				Projectile.Kill();
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Projectile.damage > 1) {
-				Projectile.damage = (int)(Projectile.damage * .8f);
-			}
+			if (Projectile.damage > 1) 				Projectile.damage = (int)(Projectile.damage * .8f);
 			target.immune[Projectile.owner] = 4;
 		}
 		bool hittile = false;
 		public override bool OnTileCollide(Vector2 oldVelocity) {
-			if (!hittile) {
-				Projectile.position += Projectile.velocity;
-			}
+			if (!hittile) 				Projectile.position += Projectile.velocity;
 			hittile = true;
 			Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
 			Projectile.velocity = Vector2.Zero;

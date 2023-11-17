@@ -1551,6 +1551,34 @@ Mods: {
 				DisplayName: Card Sacrifice
 				Tooltip: Use this to open a UI that allow you to destroy accessories and weapon to gain card packet or even rare card
 			}
+
+			Trinket1: {
+				DisplayName: Trinket of Swift Health
+				Tooltip:
+					'''
+					Increases your hp by 20%
+					When dealing damage to enemy, you are buff with [c/b7bf5c:Swift Steal]
+					[c/b7bf5c:Swift Steal] make you run faster by 25% and you can gain point
+					For each point you gain :
+					4 defenses and increase your damage by 6% (capped at 6 point)
+					After the buff end, there are 25s cooldown
+					'''
+			}
+
+			Trinket_of_Perpetuation: {
+				DisplayName: Trinket of Perpetuation
+				Tooltip: 
+					'''
+					[[c/8888ea:Passive]]
+					Increases your attack speed by 15%
+					[[c/8888ea:Active]]
+					Hitting enemy will inflict them with [c/b7bf5c:Samsara of Retribution] for 1s
+					[c/b7bf5c:Samsara of Retribution] by default will do 20 damage over time (DoT) 
+					Hitting enemy multiple time will strength the effect (Capped at 10 time)
+					Dealing critical strike to enemy that already have debuff will spread the debuff to near by enemies
+					[c/b7bf5c:Samsara of Retribution] will be at half the strength and will be applied for 4s
+					'''
+			}
 		}
 
 		Buffs: {
@@ -1707,6 +1735,26 @@ Mods: {
 			BoilingBlood: {
 				DisplayName: Boiling Blood
 				Description: Mods.BossRush.Buffs.BoilingBlood.Description
+			}
+
+			Trinket1_Buff: {
+				DisplayName: Trinket1_ Buff
+				Description: Mods.BossRush.Buffs.Trinket1_Buff.Description
+			}
+
+			Trinket2_Buff: {
+				DisplayName: Trinket2_ Buff
+				Description: Mods.BossRush.Buffs.Trinket2_Buff.Description
+			}
+
+			TrinketBuff: {
+				DisplayName: Trinket Buff
+				Description: Mods.BossRush.Buffs.TrinketBuff.Description
+			}
+
+			Samsara_of_Retribution: {
+				DisplayName: Samsara_of_ Retribution
+				Description: Mods.BossRush.Buffs.Samsara_of_Retribution.Description
 			}
 		}
 
