@@ -21,7 +21,7 @@ namespace BossRush.Common {
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.ByCondition(new HardcoreExclusive(),ModContent.ItemType<KSNoHitReward>()));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.SuspiciousLookingEye));

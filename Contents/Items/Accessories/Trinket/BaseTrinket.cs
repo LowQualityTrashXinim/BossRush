@@ -25,6 +25,7 @@ public class Trinketplayer : ModPlayer {
 	public StatModifier DamageStats;
 	public override void ResetEffects() {
 		Trinket1 = false;
+		Trinket_of_Perpetuation = false;
 		HPstats = default;
 		ManaStats = default;
 		DamageStats = default;
@@ -61,14 +62,14 @@ public class Trinketplayer : ModPlayer {
 			return;
 		if (Player.HasBuff(ModContent.BuffType<Trinket1_Buff>())) {
 			Trinket1_Point = Math.Clamp(++Trinket1_Point, 0, 6);
-			DamageStats += Trinket1_Point * .06f;
 			Trinket1_Delay = 1500;
+			DamageStats.Base += Player.statLife * .05f;
 		}
 		else {
 			if (Trinket1_Delay > 0) {
 				return;
 			}
-			Player.AddBuff(ModContent.BuffType<Trinket1_Buff>(), 720);
+			Player.AddBuff(ModContent.BuffType<Trinket1_Buff>(), 900);
 		}
 	}
 	public bool Trinket_of_Perpetuation = false;
@@ -79,7 +80,6 @@ public class Trinketplayer : ModPlayer {
 			target.Center.LookForHostileNPC(out List<NPC> npclist, 300);
 			foreach (NPC npc in npclist) {
 				npc.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), 240);
-				npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack += 5;
 			}
 		}
 		target.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), 60);
@@ -88,8 +88,13 @@ public class Trinketplayer : ModPlayer {
 public class Trinket_GlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 	public int Trinket_of_Perpetuation_PointStack = 0;
+	public override void OnKill(NPC npc) {
+		if(npc.HasBuff(ModContent.BuffType<Samsara_of_Retribution>())) {
+
+		}
+	}
 }
-public class TrinketBuff : ModBuff {
+public abstract class TrinketBuff : ModBuff {
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public sealed override void SetStaticDefaults() {
 		TrinketSetStaticDefaults();

@@ -14,9 +14,9 @@ namespace BossRush.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {
 		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 		public override void SetDefaults() {
-			NPC.lifeMax = 6000;
-			NPC.damage = 20;
-			NPC.defense = 20;
+			NPC.lifeMax = 8000;
+			NPC.damage = 50;
+			NPC.defense = 30;
 			NPC.width = 60;
 			NPC.height = 60;
 			NPC.HitSound = SoundID.NPCHit4;
@@ -36,6 +36,11 @@ namespace BossRush.Contents.NPCs {
 			Player player = Main.player[NPC.target];
 			if (player.dead || !player.active) {
 				NPC.active = false;
+			}
+			if (NPC.CountNPCS(Type) > 1) {
+				BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Red, "You are attempting to spawn more than one of me ?");
+				if (NPC.AnyNPCs(ModContent.NPCType<ElderGuardian>()))
+					NPC.NewNPC(NPC.GetSource_FromAI(), NPC.Hitbox.X, NPC.Hitbox.Y, ModContent.NPCType<ElderGuardian>());
 			}
 			//Move above the player
 			switch (NPC.ai[1]) {
@@ -106,8 +111,8 @@ namespace BossRush.Contents.NPCs {
 				if (projectile.active) {
 					projectile.Kill();
 				}
-				ProjectileWhoAmI.Clear();
 			}
+			ProjectileWhoAmI.Clear();
 		}
 		List<int> ProjectileWhoAmI = new List<int>();
 		private void Move(Player player) {
