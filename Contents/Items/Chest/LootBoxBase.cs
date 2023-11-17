@@ -110,18 +110,15 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			OnRightClick(player, player.GetModPlayer<ChestLootDropPlayer>());
-			var entitySource = player.GetSource_OpenItem(Type);
-			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
-				if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
-				if (player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
-			}
-			//Card dropping
-			if (!Main.masterMode && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
+			if (!UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				return;
 			}
+			var entitySource = player.GetSource_OpenItem(Type);
+			if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
+			if (player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
 			PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
 			int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
 			for (int i = 0; i < cardReRoll; i++) {
@@ -716,7 +713,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (_cachedAllItems == null) {
 				UpdateAllItemPool();
 			}
-			else if(DropItemMagic.Count + DropItemRange.Count + DropItemMagic.Count + DropItemSummon.Count + DropItemMisc.Count != _cachedAllItemCount) {
+			else if (DropItemMagic.Count + DropItemRange.Count + DropItemMagic.Count + DropItemSummon.Count + DropItemMisc.Count != _cachedAllItemCount) {
 				UpdateAllItemPool();
 			}
 

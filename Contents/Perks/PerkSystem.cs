@@ -49,6 +49,7 @@ namespace BossRush.Contents.Perks {
 		public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
 		public override void ResetEffects() {
 			perk_PotionExpert = false;
+			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 				ModPerkLoader.GetPerk(i).StackAmount = 0;

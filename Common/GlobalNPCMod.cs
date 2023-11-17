@@ -39,7 +39,8 @@ namespace BossRush.Common {
 				DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
 				npcLoot.Add(DropOnce);
 				//Enraged boss drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ItemID.TheEyeOfCthulhu).OnSuccess(ItemDropRule.Common(ModContent.ItemType<EvilEye>())));
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ModContent.ItemType<EvilEye>()));
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ItemID.TheEyeOfCthulhu));
 				//Expert Mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
 			}

@@ -7,9 +7,7 @@ namespace BossRush.Contents.BuffAndDebuff {
 	internal class EvilEyeProtection : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Evil Eye Protection");
-			// Description.SetDefault("live to see for another day");
-			Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
+			Main.debuff[Type] = false;
 			Main.buffNoSave[Type] = true;
 		}
 
