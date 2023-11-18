@@ -79,7 +79,7 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
-					yield return new Item(ModContent.ItemType<PremiumCardPacket>());
+					yield return new Item(ModContent.ItemType<CardSacrifice>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponEnchantment {
-	//ToDo : implement most of this stuff into Global Weapon instead of ModPlayer, modplayer should only hold data
+	//Todo : turn out modplayer is much better than global item, how funny
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
 		public int ItemIDType = ItemID.None;
@@ -37,6 +37,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		/// <param name="item"></param>
 		/// <param name="useSpeed">by default start at 1</param>
 		public virtual void ModifyUseSpeed(Player player, Item item, ref float useSpeed) { }
+		public virtual void OnKill(Player player) { }
 	}
 	public static class EnchantmentLoader {
 		private static readonly List<ModEnchantment> _enchantment = new();
@@ -52,7 +53,8 @@ namespace BossRush.Contents.WeaponEnchantment {
 			return type >= 0 && type < _enchantment.Count ? _enchantment[type] : null;
 		}
 		public static ModEnchantment GetEnchantmentItemID(int ItemID) {
-			return _enchantment[_enchantmentcacheID.IndexOf(ItemID)];
+			int index = _enchantmentcacheID.IndexOf(ItemID);
+			return index >= 0 && index < _enchantmentcacheID.Count ? _enchantment[_enchantmentcacheID.IndexOf(ItemID)] : null;
 		}
 	}
 }

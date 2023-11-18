@@ -190,6 +190,8 @@ namespace BossRush.Contents.Items.Weapon {
 			ZapSnapper_WeatherPain = false;
 			ZapSnapper_ThunderStaff = false;
 
+			MagicGrenade_MagicMissle = false;
+
 			DeathBySpark_AleThrowingGlove = false;
 		}
 		int check = 1;
