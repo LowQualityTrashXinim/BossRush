@@ -50,22 +50,18 @@ public class UICardItemKill : UIImageButton {
 				return;
 			Main.mouseItem.TurnToAir();
 			Main.LocalPlayer.inventory[58].TurnToAir();
-			Deactivate();
-			ModContent.GetInstance<UniversalSystem>().userInterface.SetState(null);
+			int type = ModContent.ItemType<CopperCard>();
+			PlayerCardHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
+			if (Main.rand.Next(201) < cardplayer.CardLuck) {
+				type = ModContent.ItemType<PlatinumCard>();
+			}
+			if (Main.rand.Next(201) < cardplayer.CardLuck * 1.5f) {
+				type = ModContent.ItemType<GoldCard>();
+			}
+			if (Main.rand.Next(201) < cardplayer.CardLuck * 3) {
+				type = ModContent.ItemType<SilverCard>();
+			}
+			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), type);
 		}
-	}
-	public override void OnDeactivate() {
-		int type = ModContent.ItemType<CopperCard>();
-		PlayerCardHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
-		if (Main.rand.Next(201) < cardplayer.CardLuck) {
-			type = ModContent.ItemType<PlatinumCard>();
-		}
-		if (Main.rand.Next(201) < cardplayer.CardLuck * 1.5f) {
-			type  = ModContent.ItemType<GoldCard>();
-		}
-		if (Main.rand.Next(201) < cardplayer.CardLuck * 3) {
-			type = ModContent.ItemType<SilverCard>();
-		}
-		Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), type);
 	}
 }

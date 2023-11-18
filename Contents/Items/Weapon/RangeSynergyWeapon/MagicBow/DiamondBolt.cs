@@ -21,9 +21,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Projectile.light = 1f;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			if(target.type == NPCID.TargetDummy) {
-				return;
-			}
 			Player player = Main.player[Projectile.owner];
 			Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
 			if(!Projectile.Center.IsCloseToPosition(player.Center, 750f)) {

@@ -1,6 +1,6 @@
 ﻿using Terraria;
-using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.WeaponEnchantment;

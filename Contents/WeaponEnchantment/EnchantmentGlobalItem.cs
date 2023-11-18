@@ -205,4 +205,15 @@ public class EnchantmentModplayer : ModPlayer {
 		}
 		return useSpeed;
 	}
+	public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
+		if (globalItem == null)
+			return;
+		if (globalItem.EnchantmenStlot != null) {
+			for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+				if (globalItem.EnchantmenStlot[i] == 0)
+					continue;
+				EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnKill(Player);
+			}
+		}
+	}
 }
