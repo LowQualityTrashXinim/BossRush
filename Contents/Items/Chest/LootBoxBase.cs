@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -97,9 +98,9 @@ namespace BossRush.Contents.Items.Chest {
 		/// <returns></returns>
 		public virtual bool CanBeRightClick() => false;
 		public override bool CanRightClick() => true;
-
 		public override void RightClick(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen++;
+			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			modplayer.CurrentSectionAmountOfChestOpen++;
 			base.RightClick(player);
 			if (ItemGraveYard.Count > 0) {
 				int RemoveAmount = 1 + ItemGraveYard.Count / 10;
@@ -109,16 +110,21 @@ namespace BossRush.Contents.Items.Chest {
 					ItemGraveYard.Remove(ItemGraveYard.ElementAt(index));
 				}
 			}
-			OnRightClick(player, player.GetModPlayer<ChestLootDropPlayer>());
+			OnRightClick(player, modplayer);
 			if (!UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				return;
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount > 0)
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), player.GetModPlayer<ChestLootDropPlayer>().potionNumAmount);
-			if (player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+			if (modplayer.potionNumAmount > 0)
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), modplayer.potionNumAmount);
+			if (modplayer.CanDropSynergyEnergy)
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
+			//This is very bulky but gotta make it work
+			if(modplayer.CanGetTrinket && player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count == 3) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
+				modplayer.CanGetTrinket = false;
+			}
 			PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
 			int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
 			for (int i = 0; i < cardReRoll; i++) {
@@ -722,8 +728,11 @@ namespace BossRush.Contents.Items.Chest {
 	}
 	public class ChestLootDropPlayer : ModPlayer {
 		public bool CanDropSynergyEnergy = true;
-
 		public int CurrentSectionAmountOfChestOpen = 0;
+		public bool CanGetTrinket = true;
+		public override void OnEnterWorld() {
+			CanGetTrinket = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count < 3;
+		}
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
 		//Alternatively we can use this to handle all the data itself
 

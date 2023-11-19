@@ -1552,7 +1552,21 @@ Mods: {
 				Tooltip: Use this to open a UI that allow you to destroy accessories and weapon to gain card packet or even rare card
 			}
 
-			Trinket1: {
+			Trinket_of_Perpetuation: {
+				DisplayName: Trinket of Perpetuation
+				Tooltip:
+					'''
+					[[c/8888ea:Passive]]
+					Increases your attack speed by 15%
+					[[c/8888ea:Active]]
+					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
+					[c/b7bf5c:Samsara of Retribution] debuff : deal 10 damage over time
+					Hitting enemy multiple time will strengthen the debuff (Capped at 10 stack)
+					Dealing critical strike to enemy that already have debuff will do damage based on the debuff strength
+					'''
+			}
+
+			Trinket_of_Swift_Health: {
 				DisplayName: Trinket of Swift Health
 				Tooltip:
 					'''
@@ -1565,21 +1579,6 @@ Mods: {
 					The more health you currently have, the more damage you gain
 					Allow you to gain stack, for each stack you gain : 4 defenses and 3% critical strike chance (capped at 6 stack)
 					After the buff end, you receive 25 second cooldown before you can active your buff again
-					'''
-			}
-
-			Trinket_of_Perpetuation: {
-				DisplayName: Trinket of Perpetuation
-				Tooltip:
-					'''
-					[[c/8888ea:Passive]]
-					Increases your attack speed by 15%
-					[[c/8888ea:Active]]
-					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
-					[c/b7bf5c:Samsara of Retribution] debuff will do 20 damage over time
-					Hitting enemy multiple time will refresh and strengthen the debuff (Capped at 10 stack)
-					Dealing critical strike to enemy that already have debuff will spread out to nearby enemies
-					Enemy that got [c/b7bf5c:Samsara of Retribution] via spread will have the debuff that last for 4s
 					'''
 			}
 		}
@@ -1758,6 +1757,11 @@ Mods: {
 			Samsara_of_Retribution: {
 				DisplayName: Samsara_of_ Retribution
 				Description: Mods.BossRush.Buffs.Samsara_of_Retribution.Description
+			}
+
+			SwiftSteal_Buff: {
+				DisplayName: Swift Steal_ Buff
+				Description: Mods.BossRush.Buffs.SwiftSteal_Buff.Description
 			}
 		}
 

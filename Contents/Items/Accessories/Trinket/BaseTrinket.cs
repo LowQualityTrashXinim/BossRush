@@ -1,7 +1,6 @@
-﻿using BossRush.Texture;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Terraria;
+using BossRush.Texture;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
@@ -18,8 +17,6 @@ public abstract class BaseTrinket : ModItem {
 }
 //This will store all the information about the trinket and how they will interact with player
 public class Trinketplayer : ModPlayer {
-
-
 	public StatModifier HPstats;
 	public StatModifier ManaStats;
 	public StatModifier DamageStats;
@@ -28,10 +25,10 @@ public class Trinketplayer : ModPlayer {
 		Trinket_of_Perpetuation = false;
 		HPstats = default;
 		ManaStats = default;
-		DamageStats = default;
+		DamageStats = new StatModifier();
 	}
 	public override void PreUpdate() {
-		if (!Player.HasBuff(ModContent.BuffType<Trinket1_Buff>())) {
+		if (!Player.HasBuff(ModContent.BuffType<SwiftSteal_Buff>())) {
 			Trinket1_Point = 0;
 			Trinket1_Delay = BossRushUtils.CoolDown(Trinket1_Delay);
 		}
@@ -44,7 +41,7 @@ public class Trinketplayer : ModPlayer {
 		mana.CombineWith(ManaStats);
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		damage.CombineWith(DamageStats);
+		damage = damage.CombineWith(DamageStats);
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		Trinket1Effect();
@@ -56,43 +53,36 @@ public class Trinketplayer : ModPlayer {
 	}
 	public bool Trinket1 = false;
 	public int Trinket1_Point = 0;
-	int Trinket1_Delay = 0;
+	public int Trinket1_Delay = 0;
 	private void Trinket1Effect() {
 		if (!Trinket1)
 			return;
-		if (Player.HasBuff(ModContent.BuffType<Trinket1_Buff>())) {
+		if (Player.HasBuff(ModContent.BuffType<SwiftSteal_Buff>())) {
 			Trinket1_Point = Math.Clamp(++Trinket1_Point, 0, 6);
-			Trinket1_Delay = 1500;
-			DamageStats.Base += Player.statLife * .05f;
 		}
 		else {
 			if (Trinket1_Delay > 0) {
 				return;
 			}
-			Player.AddBuff(ModContent.BuffType<Trinket1_Buff>(), 900);
+			Player.AddBuff(ModContent.BuffType<SwiftSteal_Buff>(), 900);
 		}
 	}
 	public bool Trinket_of_Perpetuation = false;
 	private void Trinket_of_Perpetuation_Effect(NPC target, NPC.HitInfo hit) {
 		if (!Trinket_of_Perpetuation)
 			return;
-		if(hit.Crit && target.HasBuff(ModContent.BuffType<Samsara_of_Retribution>())) {
-			target.Center.LookForHostileNPC(out List<NPC> npclist, 300);
-			foreach (NPC npc in npclist) {
-				npc.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), 240);
-			}
-		}
 		target.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), 60);
+		if (hit.Crit) {
+			NPC.HitInfo hitExtra = hit;
+			hitExtra.Crit = false;
+			hitExtra.Damage += (int)(hitExtra.Damage * target.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack * .1f);
+			Player.StrikeNPCDirect(target,hitExtra);
+		}
 	}
 }
 public class Trinket_GlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 	public int Trinket_of_Perpetuation_PointStack = 0;
-	public override void OnKill(NPC npc) {
-		if(npc.HasBuff(ModContent.BuffType<Samsara_of_Retribution>())) {
-
-		}
-	}
 }
 public abstract class TrinketBuff : ModBuff {
 	public override string Texture => BossRushTexture.EMPTYBUFF;
@@ -100,12 +90,22 @@ public abstract class TrinketBuff : ModBuff {
 		TrinketSetStaticDefaults();
 	}
 	public virtual void TrinketSetStaticDefaults() { }
-	public override void Update(NPC npc, ref int buffIndex) {
+	public sealed override void Update(NPC npc, ref int buffIndex) {
 		base.Update(npc, ref buffIndex);
+		UpdateTrinketNPC(npc);
+		if (npc.buffTime[buffIndex] <= 0) {
+			OnEnded(npc);
+		}
 	}
+	public virtual void UpdateTrinketNPC(NPC npc) { }
 	public sealed override void Update(Player player, ref int buffIndex) {
 		base.Update(player, ref buffIndex);
 		UpdateTrinketPlayer(player, player.GetModPlayer<Trinketplayer>(), ref buffIndex);
+		if (player.buffTime[buffIndex] <= 0) {
+			OnEnded(player, player.GetModPlayer<Trinketplayer>());
+		}
 	}
+	public virtual void OnEnded(Player player, Trinketplayer modplayer) { }
+	public virtual void OnEnded(NPC npc) { }
 	public virtual void UpdateTrinketPlayer(Player player, Trinketplayer modplayer, ref int buffIndex) { }
 }
