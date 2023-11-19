@@ -19,7 +19,10 @@ public class Samsara_of_Retribution : TrinketBuff {
 		npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack = Math.Clamp(++npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack, 0, 10);
 		return base.ReApply(npc, time, buffIndex);
 	}
-	public override void Update(NPC npc, ref int buffIndex) {
-		npc.lifeRegen -= 20 + npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack * 20;
+	public override void UpdateTrinketNPC(NPC npc) {
+		npc.lifeRegen -= 10 + npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack * 10;
+	}
+	public override void OnEnded(NPC npc) {
+		npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack = 0;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
+﻿using BossRush.Contents.Items.Accessories.Trinket;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -185,6 +186,11 @@ namespace BossRush.Common.Utils {
 				ModContent.ProjectileType<EnchantedTungstenSwordP>(),
 				ModContent.ProjectileType<EnchantedGoldSwordP>(),
 				ModContent.ProjectileType<EnchantedPlatinumSwordP>() };
+
+		public readonly static int[] Trinket = new int[] {
+			ModContent.ItemType<Trinket_of_Swift_Health>(),
+			ModContent.ItemType<Trinket_of_Perpetuation>()
+		};
 
 		public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };
 		public readonly static int[] Smallmeal = new int[] { ItemID.CookedMarshmallow, ItemID.RoastedBird, ItemID.SauteedFrogLegs, ItemID.GrilledSquirrel, ItemID.FruitSalad, ItemID.CookedFish, ItemID.BunnyStew, ItemID.PotatoChips, ItemID.ShuckedOyster };
