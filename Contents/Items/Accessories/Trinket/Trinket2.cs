@@ -9,7 +9,7 @@ internal class Trinket_of_Perpetuation : BaseTrinket {
 	public override void SetDefaults() {
 		Item.DefaultToAccessory();
 	}
-	public override void UpdateTrinket(Player player, Trinketplayer modplayer) {
+	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		modplayer.Trinket_of_Perpetuation = true;
 		player.GetAttackSpeed(DamageClass.Generic) += .15f;
 	}

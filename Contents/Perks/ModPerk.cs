@@ -19,30 +19,23 @@ using BossRush.Contents.Items.BuilderItem;
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
 		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 3;
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<PowerUp>();
+			CanBeStack = false;
 		}
 		public override string ModifyToolTip() {
-			if (StackAmount == 2)
-				return "Increases damage by another 10%" +
-					"\nIncreases critical strike chance by 10";
-			if (StackAmount == 1)
-				return "Increases damage by another 10%" +
-					"\nIncreases attack speed by 10%";
 			return
-				"+ Increases damage by 10%";
+				"+ Increases damage by 25%" +
+				"\n+ Increases damage by another 10%" +
+				"\n+Increases critical strike chance by 10";
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage += .1f * StackAmount;
+			damage += .25f;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-			if (StackAmount >= 3)
-				crit += 10;
-
+			crit += 10;
 		}
 		public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
-			if (StackAmount >= 2)
-				useSpeed += .1f;
+			useSpeed += .1f;
 		}
 	}
 	public class LifeForceOrb : Perk {
@@ -129,14 +122,14 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			Tooltip =
 				"+ Increase amount of weapon drop from chest by 1 !" +
-				"\n- Decrease your damage by 10%";
+				"\n- Decrease your damage by 5%";
 			StackLimit = 5;
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 1 * StackAmount;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage -= .1f * StackAmount;
+			damage -= .05f * StackAmount;
 		}
 	}
 	public class BackUpMana : Perk {
@@ -208,7 +201,7 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = false;
 			Tooltip =
 				"+ Having a single dirt in your inventory increase defense by 15" +
-				"\nAnd permanent exquisitely stuffed buff";
+				"\n+ Permanent exquisitely stuffed buff";
 		}
 		public override void ResetEffect(Player player) {
 			base.ResetEffect(player);
@@ -262,7 +255,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			Tooltip =
-				"+ When a enemy hit you, you will do self explosion that deal 75 damage to surrounding enemies";
+				"+ When a enemy hit you, you create a explosion that do 75 damage to surrounding enemies";
 			StackLimit = 5;
 		}
 		public override void OnHitByAnything(Player player) {
@@ -287,7 +280,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			Tooltip =
-				"+ Grant you 1 random special potion";
+				"+ Give you 1 random special potion";
 		}
 		public override void OnChoose(Player player) {
 			int type = Main.rand.Next(new int[] { ModContent.ItemType<TitanElixir>(), ModContent.ItemType<BerserkerElixir>(), ModContent.ItemType<GunslingerElixir>(), ModContent.ItemType<CommanderElixir>(), ModContent.ItemType<SageElixir>(), });
@@ -309,7 +302,8 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			Tooltip =
-				"+ Your weapon have a chance to shoot out duplicate projectile ( warning : may work weirdly on many weapon due to terraria code )";
+				"+ Your weapon have a chance to shoot out duplicate projectile " +
+				"\n( warning : may work weirdly on many weapon due to terraria code )";
 			StackLimit = 5;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -321,7 +315,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			Tooltip =
-				"+ The faster you are, the better your armor is";
+				"+ The faster you are, the better your armor become";
 			StackLimit = 2;
 		}
 		public override void ResetEffect(Player player) {

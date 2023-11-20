@@ -1552,6 +1552,23 @@ Mods: {
 				Tooltip: Use this to open a UI that allow you to destroy accessories and weapon to gain card packet or even rare card
 			}
 
+			Trinket_of_Swift_Health: {
+				DisplayName: Trinket of Swift Health
+				Tooltip:
+					'''
+					[[c/8888ea:Passive]]
+					Increases your hp by 20%
+					[[c/8888ea:Active]]
+					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
+					While you have [c/b7bf5c:Swift Steal] :
+					Increases your movement speed by 25% and attack speed by 10% 
+					And increases your damage by 1 for each 5 health you currently have
+					You can get an additional stack every 2.5 seconds when hitting enemy
+					A stack increases your max health by 5% and critical strike chance by 3% (capped at 6 stack)
+					After the buff end, you receive 60 second cooldown before you can receive [c/b7bf5c:Swift Steal] again
+					'''
+			}
+
 			Trinket_of_Perpetuation: {
 				DisplayName: Trinket of Perpetuation
 				Tooltip:
@@ -1561,24 +1578,22 @@ Mods: {
 					[[c/8888ea:Active]]
 					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
 					[c/b7bf5c:Samsara of Retribution] debuff : deal 10 damage over time
-					Hitting enemy multiple time will strengthen the debuff (Capped at 10 stack)
-					Dealing critical strike to enemy that already have debuff will do damage based on the debuff strength
+					Hitting enemy that already have [c/b7bf5c:Samsara of Retribution] will strengthen the debuff
+					Dealing critical strike to enemy that have [c/b7bf5c:Samsara of Retribution] deal extra damage
 					'''
 			}
 
-			Trinket_of_Swift_Health: {
-				DisplayName: Trinket of Swift Health
-				Tooltip:
+			Trinket3: {
+				DisplayName: Trinket3
+				Tooltip: 
 					'''
 					[[c/8888ea:Passive]]
-					Increases your hp by 20%
+					Increases your critical strike chance by 12%
 					[[c/8888ea:Active]]
-					When dealing damage to enemy, you are gain [c/b7bf5c:Swift Steal] buff which last for 15 second
-					While [c/b7bf5c:Swift Steal] is active :
-					Increases your movement speed by 25% and attack speed by 10%
-					The more health you currently have, the more damage you gain
-					Allow you to gain stack, for each stack you gain : 4 defenses and 3% critical strike chance (capped at 6 stack)
-					After the buff end, you receive 25 second cooldown before you can active your buff again
+					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Sample name]
+					[c/b7bf5c:Sample name] increases your critical strike chance by 3% and damage by 6% (capped at 4 [c/b7bf5c:Sample name])
+					You can get an additional [c/b7bf5c:Sample name] every 2 seconds when hitting enemy
+					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Sample name] is lost
 					'''
 			}
 		}
