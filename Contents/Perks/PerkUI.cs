@@ -12,6 +12,12 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.UI.Chat;
+using System.Reflection;
+using ReLogic.Graphics;
+using Terraria.GameContent;
+using static tModPorter.ProgressUpdate;
+using System.Drawing.Drawing2D;
 
 namespace BossRush.Contents.Perks {
 	internal class PerkUIState : UIState {
@@ -19,6 +25,7 @@ namespace BossRush.Contents.Perks {
 		public const short StarterPerkState = 1;
 		public int whoAmI = -1;
 		public short StateofState = 0;
+		public UIText toolTip;
 		public override void OnActivate() {
 			base.OnActivate();
 			Elements.Clear();
@@ -33,6 +40,8 @@ namespace BossRush.Contents.Perks {
 					ActivateStarterPerkUI(modplayer, player);
 				}
 			}
+			toolTip = new UIText("");
+			Append(toolTip);
 		}
 		private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player) {
 			List<int> listOfPerk = new List<int>();
@@ -78,7 +87,6 @@ namespace BossRush.Contents.Perks {
 				btn.perkType = newperk;
 				Append(btn);
 			}
-
 		}
 		private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
 			Vector2 originDefault = new Vector2(26, 26);
@@ -109,15 +117,8 @@ namespace BossRush.Contents.Perks {
 	class PerkUIImageButton : UIImageButton {
 		PerkPlayer perkplayer;
 		public int perkType;
-		private UIText toolTip;
 		public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer) : base(texture) {
 			perkplayer = perkPlayer;
-		}
-		public override void OnActivate() {
-			base.OnActivate();
-			toolTip = new UIText("");
-			toolTip.HAlign = .5f;
-			Append(toolTip);
 		}
 		public override void LeftClick(UIMouseEvent evt) {
 			if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perkType))
@@ -131,16 +132,26 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (toolTip is null) {
-				return;
+			try {
+				foreach (var el in Parent.Children) {
+					if (el is UIText toolTip) {
+						if (toolTip is null) {
+							return;
+						}
+						if (IsMouseHovering) {
+							FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
+							DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
+							string tooltipText = ModPerkLoader.GetPerk(perkType).PerkNameToolTip;
+							Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
+							size.X *= .5f;
+							toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
+							toolTip.SetText(tooltipText);
+						}
+					}
+				}
 			}
-			if (IsMouseHovering) {
-				toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
-				toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-				toolTip.SetText(ModPerkLoader.GetPerk(perkType).PerkNameToolTip);
-			}
-			else {
-				toolTip.SetText("");
+			catch (Exception ex) {
+				Main.NewText(ex.Message);
 			}
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
@@ -157,9 +168,6 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnActivate() {
 			base.OnActivate();
-			toolTip = new UIText("");
-			toolTip.HAlign = .5f;
-			Append(toolTip);
 		}
 		public new virtual void OnLeftClick(Player player) {
 
@@ -172,13 +180,26 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (IsMouseHovering) {
-				toolTip.Left.Pixels = Main.MouseScreen.X - Left.Pixels;
-				toolTip.Top.Pixels = Main.MouseScreen.Y - Top.Pixels - 20;
-				toolTip.SetText(TooltipText());
+			try {
+				foreach (var el in Parent.Children) {
+					if (el is UIText toolTip) {
+						if (toolTip is null) {
+							return;
+						}
+						if (IsMouseHovering) {
+							FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
+							DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
+							string tooltipText = TooltipText();
+							Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
+							size.X *= .5f;
+							toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
+							toolTip.SetText(tooltipText);
+						}
+					}
+				}
 			}
-			else {
-				toolTip.SetText("");
+			catch (Exception ex) {
+				Main.NewText(ex.Message);
 			}
 		}
 		public virtual string TooltipText() => "";

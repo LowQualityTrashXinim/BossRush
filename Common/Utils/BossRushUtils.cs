@@ -174,7 +174,13 @@ namespace BossRush {
 					npc.Add(Npc);
 			}
 		}
-		public static int StatModifierDamageValue(this StatModifier modifier) => (int)(modifier.Base * modifier.Additive * modifier.Multiplicative + modifier.Flat);
+		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
+		public static int ToSecond(float second) => (int)(second * 60);
+		public static int ToIntValue(this StatModifier modifier) => (int)((modifier.Base + 1) * modifier.Additive * modifier.Multiplicative + modifier.Flat);
+		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1) 
+			=> round == -1 ?  
+			((modifier.Base + 1) * modifier.Additive * modifier.Multiplicative + modifier.Flat) * additionalMulti :
+			(float)Math.Round(((modifier.Base + 1) * modifier.Additive * modifier.Multiplicative + modifier.Flat) * additionalMulti, round);
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
 		public static float OutExpo(float t) => 1 - InExpo(1 - t);
 		public static float InOutExpo(float t) {

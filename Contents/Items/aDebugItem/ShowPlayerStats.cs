@@ -19,12 +19,11 @@ namespace BossRush.Contents.Items.aDebugItem {
 			}
 			TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
 				"The below are card's bonus stats" +
-				$"\nMelee Damage : {cardplayer.MeleeDMG}" +
-				$"\nRange Damage : {cardplayer.RangeDMG}" +
-				$"\nMagic Damage : {cardplayer.MagicDMG}" +
-				$"\nSummon Damage : {cardplayer.SummonDMG}" +
-				$"\nPure/Generic Damage : {cardplayer.DamagePure}" +
-				$"\nCrit chance : {cardplayer.CritStrikeChance}" +
+				$"\nMelee Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Melee).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Melee)}%" +
+				$"\nRange Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Ranged)}%" +
+				$"\nMagic Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Magic).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Magic)}%" +
+				$"\nSummon Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Summon).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Summon)}%" +
+				$"\nGeneric Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Generic).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Generic)}%" +
 				$"\nCrit damage : {cardplayer.CritDamage}" +
 				$"\nMax HP : {cardplayer.HPMax}" +
 				$"\nMax Mana : {cardplayer.ManaMax}" +

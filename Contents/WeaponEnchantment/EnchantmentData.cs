@@ -243,6 +243,134 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 	}
+	public class CopperBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.CopperBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class TinBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.TinBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class IronBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.IronBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class LeadBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.LeadBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class SilverBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.SilverBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class TungstenBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.TungstenBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class GoldBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.GoldBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
+	public class PlatinumBow : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.PlatinumBow;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .05f;
+			if (item.DamageType == DamageClass.Ranged) {
+				damage += .1f;
+			}
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (item.useAmmo == AmmoID.Arrow) {
+				velocity *= 1.1f;
+			}
+		}
+	}
 	public class AmethystStaff : ModEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.AmethystStaff;
