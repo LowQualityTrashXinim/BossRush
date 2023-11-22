@@ -163,7 +163,6 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	abstract class SpecialPerkUIImageButton : UIImageButton {
-		protected UIText toolTip;
 		protected SpecialPerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
 		}
 		public override void OnActivate() {

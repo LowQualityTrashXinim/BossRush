@@ -1,12 +1,11 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
-//TODO : in the future, there are chance that trinket will get even more connect to each other or there are something that will affect all trinket
-//and because of so,this base class is create to handle that problem, but at the moment, there are no need for this
-//but still, this is planned in the future
 public abstract class BaseTrinket : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public virtual void UpdateTrinket(Player player, TrinketPlayer modplayer) { }
@@ -27,17 +26,21 @@ public class TrinketPlayer : ModPlayer {
 		ManaStats = new StatModifier();
 		DamageStats = new StatModifier();
 	}
+	public int counterToFullPi = 0;
 	public override void PreUpdate() {
+		if (++counterToFullPi >= 360)
+			counterToFullPi = 0;
 		Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.CoolDown(Trinket_of_Swift_Health_DelayBetweenEachHit);
 		if (!Player.HasBuff(ModContent.BuffType<SwiftSteal_Buff>())) {
 			Trinket_of_Swift_Health_PointCounter = 0;
 			Trinket_of_Swift_Health_CoolDown = BossRushUtils.CoolDown(Trinket_of_Swift_Health_CoolDown);
 		}
-		Trinket3_PointTimeLeft = BossRushUtils.CoolDown(Trinket3_PointTimeLeft);
-		Trinket3_CoolDown = BossRushUtils.CoolDown(Trinket3_CoolDown);
-		if (Trinket3_PointTimeLeft <= 0 && Trinket3_PointCounter > 0) {
-			Trinket3_PointCounter--;
-			Trinket3_PointTimeLeft = BossRushUtils.ToSecond(7);
+		Trinket_of_Ample_Perception_LifeStealCoolDown = BossRushUtils.CoolDown(Trinket_of_Ample_Perception_LifeStealCoolDown);
+		Trinket_of_Ample_Perception_PointTimeLeft = BossRushUtils.CoolDown(Trinket_of_Ample_Perception_PointTimeLeft);
+		Trinket_of_Ample_Perception_CoolDown = BossRushUtils.CoolDown(Trinket_of_Ample_Perception_CoolDown);
+		if (Trinket_of_Ample_Perception_PointTimeLeft <= 0 && Trinket_of_Ample_Perception_PointCounter > 0) {
+			Trinket_of_Ample_Perception_PointCounter--;
+			Trinket_of_Ample_Perception_PointTimeLeft = BossRushUtils.ToSecond(7);
 		}
 	}
 	public override void PostUpdate() {
@@ -99,19 +102,25 @@ public class TrinketPlayer : ModPlayer {
 			Player.StrikeNPCDirect(target, hitExtra);
 		}
 	}
-
-	public bool Trinket3 = false;
-	public int Trinket3_PointCounter = 0;
-	public int Trinket3_PointTimeLeft = 0;
-	public int Trinket3_CoolDown = 0;
+	public bool Trinket_of_Ample_Perception = false;
+	public int Trinket_of_Ample_Perception_PointCounter = 0;
+	public int Trinket_of_Ample_Perception_PointTimeLeft = 0;
+	public int Trinket_of_Ample_Perception_LifeStealCoolDown = 0;
+	public int Trinket_of_Ample_Perception_CoolDown = 0;
 	private void Trinket3_OnHitNPCEffect(NPC.HitInfo hit) {
+		if (!Trinket_of_Ample_Perception)
+			return;
 		if (!hit.Crit)
 			return;
-		if (Trinket3_CoolDown > 0)
+		if (Trinket_of_Ample_Perception_LifeStealCoolDown <= 0) {
+			Player.Heal(15);
+			Trinket_of_Ample_Perception_LifeStealCoolDown = BossRushUtils.ToSecond(5);
+		}
+		if (Trinket_of_Ample_Perception_CoolDown > 0)
 			return;
-		Trinket3_PointCounter = Math.Clamp(++Trinket3_PointCounter, 0, 4);
-		Trinket3_PointTimeLeft = BossRushUtils.ToSecond(7);
-		Trinket3_CoolDown = BossRushUtils.ToSecond(2);
+		Trinket_of_Ample_Perception_PointCounter = Math.Clamp(++Trinket_of_Ample_Perception_PointCounter, 0, 4);
+		Trinket_of_Ample_Perception_PointTimeLeft = BossRushUtils.ToSecond(7);
+		Trinket_of_Ample_Perception_CoolDown = BossRushUtils.ToSecond(2);
 	}
 }
 public class Trinket_GlobalNPC : GlobalNPC {

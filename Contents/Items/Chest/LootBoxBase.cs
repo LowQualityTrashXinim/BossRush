@@ -60,10 +60,10 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
 			ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
-			meleeChance = (int)(modPlayer.MeleeChanceMutilplier * meleeChance);
-			rangeChance = (int)(modPlayer.RangeChanceMutilplier * rangeChance);
-			magicChance = (int)(modPlayer.MagicChanceMutilplier * magicChance);
-			summonChance = (int)(modPlayer.SummonChanceMutilplier * summonChance);
+			meleeChance = (int)((modPlayer.MeleeChanceMutilplier + modPlayer.UpdateMeleeChanceMutilplier) * meleeChance);
+			rangeChance = (int)((modPlayer.RangeChanceMutilplier + modPlayer.UpdateRangeChanceMutilplier) * rangeChance);
+			magicChance = (int)((modPlayer.MagicChanceMutilplier + modPlayer.UpdateMagicChanceMutilplier) * magicChance);
+			summonChance = (int)((modPlayer.SummonChanceMutilplier + modPlayer.UpdateSummonChanceMutilplier) * summonChance);
 			rangeChance += meleeChance;
 			magicChance += rangeChance;
 			summonChance += magicChance;
@@ -119,9 +119,9 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), modplayer.potionNumAmount);
 			if (modplayer.CanDropSynergyEnergy)
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<EmptyCard>());
+
 			//This is very bulky but gotta make it work
-			if(modplayer.CanGetTrinket && player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count == 3) {
+			if (modplayer.CanGetTrinket && player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count == 3) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
 				modplayer.CanGetTrinket = false;
 			}
@@ -789,19 +789,19 @@ namespace BossRush.Contents.Items.Chest {
 		/// <summary>
 		/// Use this if you gonna always update it
 		/// </summary>
-		public float UpdateMeleeChanceMutilplier = 1f;
+		public float UpdateMeleeChanceMutilplier = 0;
 		/// <summary>
 		/// Use this if you gonna always update it
 		/// </summary>
-		public float UpdateRangeChanceMutilplier = 1f;
+		public float UpdateRangeChanceMutilplier = 0;
 		/// <summary>
 		/// Use this if you gonna always update it
 		/// </summary>
-		public float UpdateMagicChanceMutilplier = 1f;
+		public float UpdateMagicChanceMutilplier = 0;
 		/// <summary>
 		/// Use this if you gonna always update it
 		/// </summary>
-		public float UpdateSummonChanceMutilplier = 1f;
+		public float UpdateSummonChanceMutilplier = 0;
 		private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 1;
 		/// <summary>
 		/// This must be called before using
@@ -834,10 +834,10 @@ namespace BossRush.Contents.Items.Chest {
 			WeaponAmountAddition = 0;
 			PotionTypeAmountAddition = 0;
 			PotionNumberAmountAddition = 0;
-			UpdateMeleeChanceMutilplier = 1f;
-			UpdateRangeChanceMutilplier = 1f;
-			UpdateMagicChanceMutilplier = 1f;
-			UpdateSummonChanceMutilplier = 1f;
+			UpdateMeleeChanceMutilplier = 0;
+			UpdateRangeChanceMutilplier = 0;
+			UpdateMagicChanceMutilplier = 0;
+			UpdateSummonChanceMutilplier = 0;
 			base.ResetEffects();
 		}
 		public override void Initialize() {

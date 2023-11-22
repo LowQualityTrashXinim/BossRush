@@ -338,8 +338,8 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = false;
 			Tooltip = "+ 192% increased odds for melee" +
 				"\n+ 12% melee size increases" +
-				"\nIncreases 10 armor penetration" +
-				"\nAttacking enemy have a 5% with melee item have a chance to drop a heart";
+				"\n+ Increases 10 armor penetration" +
+				"\n+ Attacking enemy have a 5% with melee item have a chance to drop a heart";
 			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
@@ -364,16 +364,15 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = false;
 			Tooltip = "+ 192% increased odds for range" +
 				"\n+ 15% range critical strike chance" +
-				"\nYou have 4% chance to deal 4x damage";
+				"\n+ You have 4% chance to deal 4x damage";
 			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1.92f;
 		}
-		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			base.OnHitNPCWithProj(player, proj, target, hit, damageDone);
-			if (Main.rand.NextFloat() <= .04f)
-				hit.Damage *= 4;
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextFloat() <= .04f && proj.DamageType == DamageClass.Ranged)
+				modifiers.SourceDamage *= 4;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
 			if (item.DamageType == DamageClass.Ranged)
@@ -386,7 +385,7 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = false;
 			Tooltip = "+ 192% increased odds for magic" +
 				"\n+ 21% magic cost reduction" +
-				"\nMana star have 5% to spawn from NPC when hitting them with magic projectile";
+				"\n+ Mana star have 5% to spawn from NPC when hitting them with magic projectile";
 			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
@@ -429,7 +428,7 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			CanBeChoosen = false;
 			Tooltip =
-				"+Increases perk range amount by 1";
+				"+ Increases perk range amount by 1";
 			StackLimit = 999;
 		}
 	}

@@ -1583,17 +1583,17 @@ Mods: {
 					'''
 			}
 
-			Trinket3: {
-				DisplayName: Trinket3
-				Tooltip: 
+			Trinket_of_Ample_Perception: {
+				DisplayName: Trinket of Ample Perception
+				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
 					Increases your critical strike chance by 12%
 					[[c/8888ea:Active]]
-					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Sample name]
-					[c/b7bf5c:Sample name] increases your critical strike chance by 3% and damage by 6% (capped at 4 [c/b7bf5c:Sample name])
-					You can get an additional [c/b7bf5c:Sample name] every 2 seconds when hitting enemy
-					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Sample name] is lost
+					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye] and heal you for 15 health (5 second delay between each heal)
+					[c/b7bf5c:Divine Eye] increases your critical strike chance by 3% and damage by 6% (capped at 4 [c/b7bf5c:Divine Eye])
+					You can get an additional [c/b7bf5c:Divine Eye] every 2 seconds when hitting enemy
+					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Divine Eye] is lost
 					'''
 			}
 		}
@@ -1752,21 +1752,6 @@ Mods: {
 			BoilingBlood: {
 				DisplayName: Boiling Blood
 				Description: Mods.BossRush.Buffs.BoilingBlood.Description
-			}
-
-			Trinket1_Buff: {
-				DisplayName: Trinket1_ Buff
-				Description: Mods.BossRush.Buffs.Trinket1_Buff.Description
-			}
-
-			Trinket2_Buff: {
-				DisplayName: Trinket2_ Buff
-				Description: Mods.BossRush.Buffs.Trinket2_Buff.Description
-			}
-
-			TrinketBuff: {
-				DisplayName: Trinket Buff
-				Description: Mods.BossRush.Buffs.TrinketBuff.Description
 			}
 
 			Samsara_of_Retribution: {
