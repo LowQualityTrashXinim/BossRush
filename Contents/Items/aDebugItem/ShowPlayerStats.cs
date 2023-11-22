@@ -25,7 +25,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 				$"\nSummon Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Summon).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Summon)}%" +
 				$"\nGeneric Damage : {Main.LocalPlayer.GetTotalDamage(DamageClass.Generic).ToFloatValue(100,1)}% Critical strike chance : {Main.LocalPlayer.GetTotalCritChance(DamageClass.Generic)}%" +
 				$"\nCrit damage : {cardplayer.CritDamage}" +
-				$"\nMax HP : {cardplayer.HPMax}" +
+				$"\nMax HP : {Main.LocalPlayer.statLifeMax} + ({Main.LocalPlayer.statLifeMax2 - Main.LocalPlayer.statLifeMax})" +
 				$"\nMax Mana : {cardplayer.ManaMax}" +
 				$"\nHP regen : {cardplayer.HPRegen}" +
 				$"\nMana regen : {cardplayer.ManaRegen}" +

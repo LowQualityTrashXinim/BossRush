@@ -106,6 +106,16 @@ namespace BossRush.Contents.Perks {
 				ModPerkLoader.GetPerk(perk).ModifyDamage(Player, item, ref damage);
 			}
 		}
+		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).ModifyHitNPCWithItem(Player, item, target, ref modifiers);
+			}
+		}
+		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
+			}
+		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).OnHitNPCWithItem(Player, item, target, hit, damageDone);
@@ -221,6 +231,8 @@ namespace BossRush.Contents.Perks {
 		public virtual void OnHitByAnything(Player player) { }
 		public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
+		public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+		public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 		public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
 		public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
 		public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }

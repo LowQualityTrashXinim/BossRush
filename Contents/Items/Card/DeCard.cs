@@ -45,8 +45,9 @@ public class UICardItemKill : UIImageButton {
 	public UICardItemKill(Asset<Texture2D> texture) : base(texture) {
 	}
 	public override void LeftMouseDown(UIMouseEvent evt) {
-		if (Main.mouseItem.type != ItemID.None) {
-			if (Main.mouseItem.consumable || !Main.mouseItem.accessory)
+		Item item = Main.mouseItem;
+		if (item.type != ItemID.None) {
+			if (item.consumable || (!item.accessory && item.damage < 1 && item.buffType == 0))
 				return;
 			Main.mouseItem.TurnToAir();
 			Main.LocalPlayer.inventory[58].TurnToAir();
