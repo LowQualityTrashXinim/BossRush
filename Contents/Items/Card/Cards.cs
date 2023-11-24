@@ -1,9 +1,10 @@
-﻿using BossRush.Texture;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {
 	internal class SolarCard : CardItem {
@@ -52,7 +53,6 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override bool CanBeCraft => false;
 		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
 			modplayer.ChestLoot.MeleeChanceMutilplier = 1;
 			modplayer.ChestLoot.RangeChanceMutilplier = 1;
@@ -78,7 +78,6 @@ namespace BossRush.Contents.Items.Card {
 			modplayer.SentrySlot = 0;
 			modplayer.Thorn = 0;
 			modplayer.CardLuck = 0;
-			modplayer.listCursesID.Clear();
 		}
 	}
 	internal class CopperCard : CardItem {
@@ -88,7 +87,6 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 		}
 		public override int Tier => 1;
-		public override bool CanBeCraft => false;
 	}
 	internal class SilverCard : CardItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SilverBar);
@@ -97,7 +95,6 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 		}
 		public override int Tier => 2;
-		public override bool CanBeCraft => false;
 	}
 	internal class GoldCard : CardItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldBar);
@@ -106,7 +103,6 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 		}
 		public override int Tier => 3;
-		public override bool CanBeCraft => false;
 	}
 	internal class PlatinumCard : CardItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumBar);
@@ -115,7 +111,6 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 		}
 		public override int Tier => 4;
-		public override bool CanBeCraft => false;
 	}
 	class CopperCardNormalizer : CardItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBrickWall);
@@ -177,49 +172,85 @@ namespace BossRush.Contents.Items.Card {
 				.Register();
 		}
 	}
-
-	internal class EmptyCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Glass);
+	//This was ported from a secret mod of mine, it is badly made, but it should work most of it
+	public abstract class BaseCard : ModItem {
 		public override void SetDefaults() {
-			Item.width = 0;
-			Item.height = 0;
-			Item.material = true;
-			Item.maxStack = 99;
-		}
-		public override bool CanBeCraft => false;
-	}
-	internal class CursedCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.HellstoneBar);
-		public override void SetDefaults() {
-			Item.width = 1;
-			Item.height = 1;
-			Item.material = true;
-			Item.maxStack = 99;
-			Item.useTime = Item.useAnimation = 15;
+			Item.width = 34;
+			Item.height = 64;
+			Item.maxStack = 999;
+			Item.autoReuse = true;
+			Item.consumable = true;
+			Item.noUseGraphic = true;
 			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.scale = .5f;
+			CardSetDefault();
 		}
-		int cursesID = 1;
-		public override void ModifyCardToolTip(ref List<TooltipLine> tooltips, PlayerCardHandle modplayer) {
-			tooltips.Add(new TooltipLine(Mod, "CursesShowcase", "Current cursed : " + modplayer.CursedStringStats(cursesID)));
+		public virtual void CardSetDefault() {
+
 		}
-		public override bool AltFunctionUse(Player player) {
-			return true;
+		public override bool? UseItem(Player player) {
+			OnUseCard(player, player.GetModPlayer<PlayerCardHandle>(), out bool Consumeable);
+			return Consumeable;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
-			if (player.altFunctionUse == 2) {
-				if (cursesID > 12) {
-					cursesID = 1;
-				}
-				else {
-					cursesID++;
-				}
+		public virtual void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+			Consumeable = true;
+		}
+	}
+	internal class AuraDamageCard : BaseCard {
+		public override string Texture => BossRushTexture.EMPTYCARD;
+		public override void CardSetDefault() {
+			Item.useAnimation = Item.useTime = 25;
+			Item.rare = 0;
+		}
+		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+			float radius = modplayer.AuraRadius;
+			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+			foreach (var npc in npclist) {
+				npc.StrikeNPC(npc.CalculateHitInfo(20, 0));
 			}
-			else {
-				if (!modplayer.listCursesID.Contains(cursesID)) {
-					modplayer.listCursesID.Add(cursesID);
-				}
+			for (int i = 0;i < 100; i++) {
+				int dust = Dust.NewDust(player.Center + Vector2.One.Vector2DistributeEvenly(100, 360, i) * radius, 0, 0, DustID.GemDiamond);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Vector2.Zero;
 			}
+			Consumeable = true;
 		}
-		public override bool CanBeCraft => false;
+	}
+	internal class ChaoticElementalCard : BaseCard {
+		public override string Texture => BossRushTexture.EMPTYCARD;
+		public override void CardSetDefault() {
+			Item.useAnimation = Item.useTime = 25;
+			Item.rare = 0;
+		}
+		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
+			player.Center.LookForHostileNPC(out NPC npc, modplayer.AuraRadius);
+			if (npc != null) {
+				npc.AddBuff(BuffID.OnFire, Main.rand.Next(debuffArray));
+			}
+			Consumeable = true;
+		}
+	}
+	internal class WeakHealingCard : BaseCard {
+		public override string Texture => BossRushTexture.EMPTYCARD;
+		public override void CardSetDefault() {
+			Item.useAnimation = Item.useTime = 10;
+			Item.rare = 0;
+		}
+		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+			player.Heal(1);
+			Consumeable = true;
+		}
+	}
+	internal class HealingCard : BaseCard {
+		public override string Texture => BossRushTexture.EMPTYCARD;
+		public override void CardSetDefault() {
+			Item.useAnimation = Item.useTime = 10;
+			Item.rare = 1;
+		}
+		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+			player.Heal(10);
+			Consumeable = true;
+		}
 	}
 }

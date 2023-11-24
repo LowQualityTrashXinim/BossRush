@@ -687,7 +687,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			else {
 				lastPlayerPositionBeforeAnimation = Player.Center;
-				positionToDash = Player.Center.PositionOffsetDynamic(Main.MouseWorld - Player.Center, 500f);
+				positionToDash = Player.Center.PositionOffsetDynamic(Main.MouseWorld - Player.Center, 500f, 10);
 			}
 			Player.attackCD = 0;
 			for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++) {

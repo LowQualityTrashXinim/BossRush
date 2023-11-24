@@ -124,7 +124,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 				return;
 			if (itemType != 0)
 				return;
-			if (EnchantmentLoader.GetEnchantmentItemID(itemType) == null)
+			if (EnchantmentLoader.GetEnchantmentItemID(Main.mouseItem.type) == null)
 				return;
 			itemType = Main.mouseItem.type;
 			Main.mouseItem.TurnToAir();

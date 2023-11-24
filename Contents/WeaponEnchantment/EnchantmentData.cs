@@ -66,7 +66,8 @@ namespace BossRush.Contents.WeaponEnchantment {
 			if (++counter >= 15) {
 				type = item.useAmmo == AmmoID.Bullet ? type : ProjectileID.Bullet;
 				for (int i = 0; i < 4; i++) {
-					Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+					Projectile.NewProjectile(source, position, 
+						velocity.Vector2RandomSpread(2,Main.rand.NextFloat(.9f, 1.1f)).Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI);
 				}
 				counter = 0;
 			}

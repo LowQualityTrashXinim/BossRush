@@ -95,7 +95,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 			}
 			projectile = (int)(modplayer.IceStorm_SpeedMultiplier * .2f);
 			for (int i = 0; i < projectile; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5).NextVector2Spread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(5).Vector2RandomSpread(4, Main.rand.NextFloat(0.5f, 1f)), ProjectileID.IceBolt, damage, knockback, player.whoAmI);
 			}
 			projectile = modplayer.IceStorm_SpeedMultiplier / 7f;
 			if (projectile >= 1) {
