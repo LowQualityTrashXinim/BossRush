@@ -13,5 +13,6 @@
 		public const string ACHIEVEMENTMENUBLUE = "BossRush/Texture/UI/horizmainblue";
 		public const string ACHIEVEMENTMENUWHITE = "BossRush/Texture/UI/horizmainwhite";
 		public const string SMALLWHITEBALL = "BossRush/Texture/smallwhiteball";
+		public const string EMPTYCARD = "BossRush/Texture/EmptyCard";
 	}
 }

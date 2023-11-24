@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
+using System;
 
 namespace BossRush
 {

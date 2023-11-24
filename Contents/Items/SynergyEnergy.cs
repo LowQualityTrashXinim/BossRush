@@ -10,10 +10,5 @@ namespace BossRush.Contents.Items {
 			Item.height = 20;
 			Item.material = true;
 		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddRecipeGroup("Synergy Item")
-				.Register();
-		}
 	}
 }

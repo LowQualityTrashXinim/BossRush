@@ -4,7 +4,11 @@ using Terraria.UI;
 using ReLogic.Content;
 using BossRush.Common;
 using BossRush.Texture;
+using Terraria.UI.Chat;
+using ReLogic.Graphics;
+using System.Reflection;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
@@ -12,12 +16,6 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.UI.Chat;
-using System.Reflection;
-using ReLogic.Graphics;
-using Terraria.GameContent;
-using static tModPorter.ProgressUpdate;
-using System.Drawing.Drawing2D;
 
 namespace BossRush.Contents.Perks {
 	internal class PerkUIState : UIState {
@@ -125,7 +123,7 @@ namespace BossRush.Contents.Perks {
 				perkplayer.perks.Add(perkType, 1);
 			else
 				if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
-				perkplayer.perks[perkType] = perkplayer.perks[perkType] + 1;
+				perkplayer.perks[perkType]++;
 			ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.userInterface.SetState(null);
@@ -154,22 +152,11 @@ namespace BossRush.Contents.Perks {
 				Main.NewText(ex.Message);
 			}
 		}
-		public override void Draw(SpriteBatch spriteBatch) {
-			base.Draw(spriteBatch);
-		}
-
-		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			base.DrawSelf(spriteBatch);
-		}
 	}
 	abstract class SpecialPerkUIImageButton : UIImageButton {
 		protected SpecialPerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
 		}
-		public override void OnActivate() {
-			base.OnActivate();
-		}
 		public new virtual void OnLeftClick(Player player) {
-
 		}
 		public override void LeftClick(UIMouseEvent evt) {
 			base.LeftClick(evt);

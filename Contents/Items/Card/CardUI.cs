@@ -26,7 +26,6 @@ namespace BossRush.Contents.Items.Card {
 		/// </summary>
 		public int Tier = 0;
 		public int PostTierModify = 0;
-		public int CursedID = -1;
 		public override void OnActivate() {
 			Elements.Clear();
 			Player player = Main.LocalPlayer;
@@ -41,43 +40,26 @@ namespace BossRush.Contents.Items.Card {
 					if (CardStats.Count > 0)
 						offset++;
 					int cardlength = Math.Clamp(PostTierModify + offset, 0, 19);
-					AddCardStatsAndValue(modplayer, offset, cardlength);
+					AddCardStatsAndValue(offset, cardlength);
 					//CursedHandle(modplayer);
 					CardStatsIncreasesSelection cardUI = new CardStatsIncreasesSelection(TextureAssets.InventoryBack10, modplayer);
 					cardUI.CardStats.AddRange(CardStats);
 					cardUI.CardStatsNumber.AddRange(CardStatsNumber);
 					cardUI.PostTierModify = PostTierModify;
-					cardUI.CurseID = CursedID;
 					cardUI.UISetPosition(player.Center - new Vector2(-100 + 100 * l, 40), new Vector2(26, 26));
 					cardUI.UISetWidthHeight(52, 52);
 					Append(cardUI);
 					CardStats.Clear();
 					CardStatsNumber.Clear();
-					CursedID = -1;
 				}
 			}
 			toolTip = new UIText("");
 			Append(toolTip);
 		}
-		private void CursedHandle(PlayerCardHandle modplayer) {
-			if (CursedID != -1) {
-				List<int> list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-				if (modplayer.listCursesID.Count < list.Count) {
-					foreach (var item in modplayer.listCursesID) {
-						if (list.Contains(item))
-							list.Remove(item);
-					}
-					CursedID = Main.rand.Next(list);
-					modplayer.listCursesID.Add(CursedID);
-					//BossRushUtils.CombatTextRevamp(player.Hitbox, Color.DarkRed, modplayer.CursedStringStats(CursedID), 0, 210);
-					modplayer.ListIsChange = true;
-				}
-			}
-		}
-		private void AddCardStatsAndValue(PlayerCardHandle modplayer, int offset, int length) {
+		private void AddCardStatsAndValue(int offset, int length) {
 			for (int i = offset; i < length; i++) {
 				CardStats.Add(SetStatsToAddBaseOnTier(CardStats, PostTierModify));
-				CardStatsNumber.Add(statsCalculator(modplayer, CardStats[i], Multiplier));
+				CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
 			}
 		}
 		private void SetBadStatsBaseOnTier(PlayerCardHandle modplayer, bool hasMagicDeck) {
@@ -92,13 +74,10 @@ namespace BossRush.Contents.Items.Card {
 				//}
 				PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
 				CardStats.Add(badstat);
-				CardStatsNumber.Add(statsCalculator(modplayer, badstat, -Tier));
+				CardStatsNumber.Add(statsCalculator(badstat, -Tier));
 			}
 		}
-		protected float statsCalculator(PlayerCardHandle modplayer, PlayerStats stats, float multi) {
-			if (CursedID != -1 && multi > 0) {
-				multi += 2 + PostTierModify;
-			}
+		protected float statsCalculator(PlayerStats stats, float multi) {
 			float statsNum = Main.rand.Next(1, 4);
 			if (BossRushUtils.DoesStatsRequiredWholeNumber(stats)) {
 				if (stats is PlayerStats.ChestLootDropIncrease
@@ -109,8 +88,6 @@ namespace BossRush.Contents.Items.Card {
 				else {
 					statsNum = (Main.rand.Next(PostTierModify) + 1) * PostTierModify;
 				}
-				if (modplayer.ReducePositiveCardStat && statsNum > 0)
-					statsNum *= .5f;
 				return (int)(statsNum * multi);
 			}
 			switch (PostTierModify) {
@@ -130,7 +107,7 @@ namespace BossRush.Contents.Items.Card {
 					statsNum = (statsNum + Main.rand.Next(7) + Main.rand.Next(1, 11)) * PostTierModify * multi * .01f;
 					break;
 			}
-			return statsNum * (statsNum > 0 && modplayer.ReducePositiveCardStat ? .5f : 1);
+			return statsNum;
 		}
 		public static PlayerStats SetStatsToAddBaseOnTier(List<PlayerStats> CardStats, int Tier) {
 			List<PlayerStats> stats = new List<PlayerStats>();
@@ -200,8 +177,8 @@ namespace BossRush.Contents.Items.Card {
 			string text = "";
 			for (int i = 0; i < CardStats.Count; i++) {
 				text += StatNumberAsText(CardStats[i], CardStatsNumber[i]);
-				if (CurseID >= 1 && CurseID <= 12)
-					text += modplayer.CursedStringStats(CurseID);
+				//if (CurseID >= 1 && CurseID <= 12)
+				//	text += modplayer.CursedStringStats(CurseID);
 				if (i != CardStats.Count - 1)
 					text += "\n";
 			}
@@ -219,7 +196,6 @@ namespace BossRush.Contents.Items.Card {
 		/// </summary>
 		public List<float> CardStatsNumber = new List<float>();
 		public int PostTierModify = 0;
-		public int CurseID = -1;
 		PlayerCardHandle modplayer;
 		public CardStatsIncreasesSelection(Asset<Texture2D> texture, PlayerCardHandle Modplayer) : base(texture) {
 			modplayer = Modplayer;

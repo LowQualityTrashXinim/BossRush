@@ -1596,6 +1596,31 @@ Mods: {
 					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Divine Eye] is lost
 					'''
 			}
+
+			AuraDamageCard: {
+				DisplayName: Aura Damage Card
+				Tooltip: ""
+			}
+
+			ChaoticElementalCard: {
+				DisplayName: Chaotic Elemental Card
+				Tooltip: ""
+			}
+
+			HealingCard: {
+				DisplayName: Healing Card
+				Tooltip: ""
+			}
+
+			WeakHealingCard: {
+				DisplayName: Weak Healing Card
+				Tooltip: ""
+			}
+
+			Trinket4: {
+				DisplayName: Trinket4
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
