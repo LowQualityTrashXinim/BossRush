@@ -22,6 +22,8 @@ namespace BossRush.Common {
 		public int gitGud = 0;
 		public int HowManyBossIsAlive = 0;
 		public override void OnEnterWorld() {
+			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore)
+				Player.difficulty = PlayerDifficultyID.Hardcore;
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
 			if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature)
@@ -66,9 +68,8 @@ namespace BossRush.Common {
 			yield return new Item(ItemID.Safe);
 			yield return new Item(ItemID.MoneyTrough);
 			yield return new Item(ItemID.PlatinumPickaxe);
-			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
-			if (Player.difficulty == PlayerDifficultyID.Hardcore) {
+			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
 					yield return new Item(ItemID.ManaCrystal, 5);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
@@ -127,10 +128,8 @@ namespace BossRush.Common {
 					yield return new Item(ItemID.DeerclopsBossBag);
 					yield return new Item(ItemID.GuideVoodooDoll);
 				}
-				if (Player.IsDebugPlayer()) {
-					yield return new Item(ModContent.ItemType<ModStatsDebugger>());
-					yield return new Item(ModContent.ItemType<ShowPlayerStats>());
-				}
+				yield return new Item(ModContent.ItemType<ModStatsDebugger>());
+				yield return new Item(ModContent.ItemType<ShowPlayerStats>());
 			}
 		}
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
