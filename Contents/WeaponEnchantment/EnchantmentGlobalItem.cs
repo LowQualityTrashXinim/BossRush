@@ -14,12 +14,21 @@ internal class EnchantmentGlobalItem : GlobalItem {
 	public override void OnCreated(Item item, ItemCreationContext context) {
 	}
 	public string GetWeaponModificationStats() =>
-		$"Item's modification slot : {EnchantmenStlot.Length}";
+		$"Item's enchantment slot : {EnchantmenStlot.Length}";
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE))
 			return;
 		if (item.damage > 0 && EnchantmenStlot != null) {
-			tooltips.Add(new TooltipLine(Mod, "ItemDelay", $"Item's modification slot : {EnchantmenStlot.Length}"));
+			tooltips.Add(new TooltipLine(Mod, "EnchantmentSlot", $"Item's enchantment slot : {EnchantmenStlot.Length}"));
+			string text = "";
+			for (int i = 0; i < EnchantmenStlot.Length; i++) {
+				if (EnchantmenStlot[i] == ItemID.None) {
+					text += $"[{i + 1}]";
+					continue;
+				}
+				text += $"[[i:{EnchantmenStlot[i]}]]";
+			}
+			tooltips.Add(new TooltipLine(Mod, "", $"{text}"));
 		}
 	}
 	public override void SaveData(Item item, TagCompound tag) {

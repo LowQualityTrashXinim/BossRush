@@ -25,7 +25,6 @@ namespace BossRush.Contents.Perks {
 		public short StateofState = 0;
 		public UIText toolTip;
 		public override void OnActivate() {
-			base.OnActivate();
 			Elements.Clear();
 			if (whoAmI == -1)
 				return;

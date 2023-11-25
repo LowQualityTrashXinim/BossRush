@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -17,6 +18,8 @@ namespace BossRush.Contents.WeaponEnchantment {
 			crit += 5;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			if (item.DamageType == DamageClass.Ranged)
+				damage += .05f;
 			damage += .1f;
 		}
 	}
@@ -35,6 +38,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 	public class Minishark : ModEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.Minishark;
+		}
+		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (Main.rand.NextBool(10)) {
+				type = item.useAmmo == AmmoID.Bullet ? type : ProjectileID.Bullet;
+				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+			}
 		}
 		public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
 			useSpeed += .05f;
@@ -83,6 +92,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
 		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
 	}
 	public class AshWoodSword : ModEnchantment {
 		public override void SetDefaults() {
@@ -90,6 +104,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
 		}
 	}
 	public class BorealWoodSword : ModEnchantment {
@@ -99,6 +118,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
 		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
 	}
 	public class PalmWoodSword : ModEnchantment {
 		public override void SetDefaults() {
@@ -106,6 +130,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
 		}
 	}
 	public class RichMahoganySword : ModEnchantment {
@@ -115,6 +144,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
 		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
 	}
 	public class ShadewoodSword : ModEnchantment {
 		public override void SetDefaults() {
@@ -123,6 +157,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
 		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
 	}
 	public class EbonwoodSword : ModEnchantment {
 		public override void SetDefaults() {
@@ -130,6 +169,115 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class CopperBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.CopperBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class TinBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.TinBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class IronBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.IronBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class LeadBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.LeadBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class SilverBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.SilverBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class TungstenBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.TungstenBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class GoldBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.GoldBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public class PlatinumBroadsword : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.PlatinumBroadsword;
+		}
+		public override void ModifyItemScale(Player player, Item item, ref float scale) {
+			scale += .1f;
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<WoodSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
+			if (Main.projectile[proj].ModProjectile is WoodSwordProjectile woodproj)
+				woodproj.ItemIDtextureValue = ItemIDType;
 		}
 	}
 	public class WoodenBow : ModEnchantment {

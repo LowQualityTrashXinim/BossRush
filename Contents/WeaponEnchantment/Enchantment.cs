@@ -4,12 +4,15 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Terraria.Localization;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	//Todo : turn out modplayer is much better than global item, how funny
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
 		public int ItemIDType = ItemID.None;
+		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.DisplayName");
+		public string Description => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.Description");
 		protected sealed override void Register() {
 			SetDefaults();
 			Type = EnchantmentLoader.Register(this);

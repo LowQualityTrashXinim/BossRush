@@ -174,6 +174,7 @@ Mods: {
 			OreBowAttackTwo.DisplayName: Ore Bow Attack Two
 			LeafProjectile.DisplayName: Leaf Projectile
 			Coconut.DisplayName: Coconut
+			WoodSwordProjectile.DisplayName: Wood Sword Projectile
 		}
 
 		NPCs: {
@@ -1917,6 +1918,11 @@ Mods: {
 
 				NoMoreChestFromBuilderLootbox: {
 					Label: No More Chest From Builder Lootbox
+					Tooltip: ""
+				}
+
+				AutoHardCore: {
+					Label: Auto Hard Core
 					Tooltip: ""
 				}
 			}
