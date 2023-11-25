@@ -1,0 +1,168 @@
+PowerUp: {
+	DisplayName: Power Up
+	Description:
+		'''
+		+ Increases damage by 25%
+		+ Increases attack speed by 10%
+		+ Increases critical strike chance by 10
+		'''
+}
+
+LifeForceOrb: {
+	DisplayName: Life Force Orb
+	Description: + Attacking enemy will periodically create a life orb that heal you
+}
+
+ImmunityToPoison: {
+	DisplayName: Immunity To Poison
+	Description:
+		'''
+		+ Give you Bezoar
+		+ While you have poisoned immunity, create a poison aura around player
+		'''
+}
+
+ImmunityToOnFire: {
+	DisplayName: Immunity To Fire
+	Description:
+		'''
+		+ Give you Obsidian Rose
+		+ While you have fire immunity, create a fiery aura around player
+		'''
+}
+
+IllegalTrading: {
+	DisplayName: Illegal Trading
+	Description:
+		'''
+		+ Increase amount of weapon drop from chest by 1 !
+		- Decrease your damage by 15%
+		'''
+}
+
+BackUpMana: {
+	DisplayName: Back Up Mana
+	Description:
+		'''
+		+ You can fire magic weapon forever
+		- When you are out of mana, mana cost reduce is by 50% and you use your life instead
+		'''
+}
+
+PeaceWithGod: {
+	DisplayName: Peace With God
+	Description:
+		'''
+		+ God no longer angry at you and now opening lootbox give you synergy weapon
+		- Synergy bonus no longer available
+		'''
+}
+
+ChaoticImbue: {
+	DisplayName: Chaotic Imbue
+	Description:
+		'''
+		+ Your melee attack randomly give out debuff that last 30s
+		If that enemy already have that debuff, you will inflict different debuff instead
+		'''
+}
+
+AlchemistKnowledge: {
+	DisplayName: Alchemist Knowledge
+	Description:
+		'''
+		+ Mysterious potion are slightly better than before
+		+ Increases amount of potion drop from lootbox by 1
+		'''
+}
+
+PotionExpert: {
+	DisplayName: Potion Expert
+	Description: + Potion have 35% to not be consumed when not using Quick Buff key
+}
+
+SniperCharge: {
+	DisplayName: Sniper Charge
+	Description: + Range weapon can deal 2x damage when it is ready
+}
+
+SelfExplosion: {
+	DisplayName: Self Explosion
+	Description: + When a enemy hit you, you create a explosion that do 75 damage to surrounding enemies
+}
+
+SpecialPotion: {
+	DisplayName: Special Potion
+	Description: + Give you 1 random special potion
+}
+
+ProjectileProtection: {
+	DisplayName: Projectile Protection
+	Description: + You are 15% more resistant to projectile
+}
+
+ProjectileDuplication: {
+	DisplayName: Projectile Duplication
+	Description:
+		'''
+		+ Your weapon have a chance to shoot out duplicate projectile
+		( warning : may work weirdly on many weapon due to terraria code )
+		'''
+}
+
+SpeedArmor: {
+	DisplayName: Projectile Armor
+	Description: + The faster you are, the better your armor become
+}
+
+CelestialRage: {
+	DisplayName: Celestial Rage
+	Description: + A gift from celestial being
+}
+
+BlessingOfSolar: {
+	DisplayName: Blessing Of Solar
+	Description:
+		'''
+		+ 192% increased odds for melee
+		+ 12% melee size increases
+		+ Increases 10 armor penetration
+		+ Attacking enemy have a 5% with melee item have a chance to drop a heart
+		'''
+}
+
+BlessingOfVortex: {
+	DisplayName: Blessing Of Vortex
+	Description:
+		'''
+		+ 192% increased odds for range
+		+ 15% range critical strike chance
+		+ You have 4% chance to deal 4x damage
+		'''
+}
+
+BlessingOfNebula: {
+	DisplayName: Blessing Of Nebula
+	Description:
+		'''
+		+ 192% increased odds for magic
+		+ 21% magic cost reduction
+		+ Mana star have 5% to spawn from NPC when hitting them with magic projectile
+		'''
+}
+
+BlessingOfStarDust: {
+	DisplayName: Blessing Of Stardust
+	Description:
+		'''
+		+ 192% increased odds for summoner
+		+ For 1 minion/sentry slot you have, you gain 1 flat damage
+		+ 1 minion slot
+		+ 1 sentry slot
+		'''
+}
+
+BlessingOfPerk: {
+	DisplayName: Blessing Of Perk
+	Description: + Increases perk range amount by 1
+}

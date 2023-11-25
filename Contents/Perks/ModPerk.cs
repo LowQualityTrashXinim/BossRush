@@ -22,12 +22,6 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PowerUp>();
 			CanBeStack = false;
 		}
-		public override string ModifyToolTip() {
-			return
-				"+ Increases damage by 25%" +
-				"\n+ Increases damage by another 10%" +
-				"\n+Increases critical strike chance by 10";
-		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			damage += .25f;
 		}
@@ -41,7 +35,6 @@ namespace BossRush.Contents.Perks {
 	public class LifeForceOrb : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<LifeForceOrb>();
-			Tooltip = "+ Attacking enemy will periodically create a life orb that heal you";
 			CanBeStack = false;
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -57,9 +50,6 @@ namespace BossRush.Contents.Perks {
 	}
 	public class ImmunityToPoison : Perk {
 		public override void SetDefaults() {
-			Tooltip =
-				"+ Give you Bezoar" +
-				"\n+ While you have poisoned immunity, create a poison aura around player";
 			CanBeStack = false;
 		}
 		public override void OnChoose(Player player) {
@@ -88,9 +78,6 @@ namespace BossRush.Contents.Perks {
 	}
 	public class ImmunityToOnFire : Perk {
 		public override void SetDefaults() {
-			Tooltip =
-				"+ Give you Obsidian Rose" +
-				"\n+ While you have on fire immunity, create a fiery aura around player";
 			CanBeStack = false;
 		}
 		public override void OnChoose(Player player) {
@@ -120,24 +107,18 @@ namespace BossRush.Contents.Perks {
 	public class IllegalTrading : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip =
-				"+ Increase amount of weapon drop from chest by 1 !" +
-				"\n- Decrease your damage by 5%";
 			StackLimit = 5;
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 1 * StackAmount;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage -= .05f * StackAmount;
+			damage -= .15f * StackAmount;
 		}
 	}
 	public class BackUpMana : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();
-			Tooltip =
-				  "+ You can fire magic weapon forever" +
-				  "\n- When you are out of mana, mana cost reduce is by 50% and you use your life instead";
 			CanBeStack = false;
 		}
 		public override void OnMissingMana(Player player, Item item, int neededMana) {
@@ -147,9 +128,6 @@ namespace BossRush.Contents.Perks {
 	}
 	public class PeaceWithGod : Perk {
 		public override void SetDefaults() {
-			Tooltip =
-				"+ God no longer angry at you and now opening lootbox give you synergy weapon" +
-				"\n- Synergy bonus no longer available";
 			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {
@@ -160,9 +138,6 @@ namespace BossRush.Contents.Perks {
 	public class ChaoticImbue : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip =
-				"+ Your melee attack randomly give out debuff that last 30s" +
-				"\n If that enemy already have that debuff, you will inflict different debuff instead";
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			bool Opportunity = Main.rand.NextBool(10);
@@ -186,9 +161,6 @@ namespace BossRush.Contents.Perks {
 	public class AlchemistKnowledge : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip = "" +
-				"+ Mysterious potion are slightly better than before" +
-				"\n+ Increases amount of potion drop from lootbox by 1";
 			StackLimit = 3;
 		}
 		public override void ResetEffect(Player player) {
@@ -199,9 +171,6 @@ namespace BossRush.Contents.Perks {
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip =
-				"+ Having a single dirt in your inventory increase defense by 15" +
-				"\n+ Permanent exquisitely stuffed buff";
 		}
 		public override void ResetEffect(Player player) {
 			base.ResetEffect(player);
@@ -215,8 +184,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PotionExpert>();
 			CanBeStack = false;
-			Tooltip =
-				"+ Potion have 35% to not be consumed when not using Quick Buff key";
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
@@ -225,8 +192,6 @@ namespace BossRush.Contents.Perks {
 	public class SniperCharge : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip =
-				"+ Range weapon can deal 2x damage when it is ready";
 		}
 		int RandomCountDown = 0;
 		int OpportunityWindow = 0;
@@ -254,8 +219,6 @@ namespace BossRush.Contents.Perks {
 	public class SelfExplosion : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip =
-				"+ When a enemy hit you, you create a explosion that do 75 damage to surrounding enemies";
 			StackLimit = 5;
 		}
 		public override void OnHitByAnything(Player player) {
@@ -279,8 +242,6 @@ namespace BossRush.Contents.Perks {
 	public class SpecialPotion : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip =
-				"+ Give you 1 random special potion";
 		}
 		public override void OnChoose(Player player) {
 			int type = Main.rand.Next(new int[] { ModContent.ItemType<TitanElixir>(), ModContent.ItemType<BerserkerElixir>(), ModContent.ItemType<GunslingerElixir>(), ModContent.ItemType<CommanderElixir>(), ModContent.ItemType<SageElixir>(), });
@@ -290,8 +251,6 @@ namespace BossRush.Contents.Perks {
 	public class ProjectileProtection : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip =
-				"+ You are 15% more resistant to projectile";
 			StackLimit = 5;
 		}
 		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
@@ -301,9 +260,6 @@ namespace BossRush.Contents.Perks {
 	public class ProjectileDuplication : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip =
-				"+ Your weapon have a chance to shoot out duplicate projectile " +
-				"\n( warning : may work weirdly on many weapon due to terraria code )";
 			StackLimit = 5;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -314,8 +270,6 @@ namespace BossRush.Contents.Perks {
 	public class SpeedArmor : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			Tooltip =
-				"+ The faster you are, the better your armor become";
 			StackLimit = 2;
 		}
 		public override void ResetEffect(Player player) {
@@ -325,8 +279,6 @@ namespace BossRush.Contents.Perks {
 	public class CelestialRage : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			Tooltip =
-				"+ A gift from celestial being";
 		}
 		public override void OnChoose(Player player) {
 			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CelestialWrath>());
@@ -336,10 +288,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip = "+ 192% increased odds for melee" +
-				"\n+ 12% melee size increases" +
-				"\n+ Increases 10 armor penetration" +
-				"\n+ Attacking enemy have a 5% with melee item have a chance to drop a heart";
 			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
@@ -362,9 +310,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip = "+ 192% increased odds for range" +
-				"\n+ 15% range critical strike chance" +
-				"\n+ You have 4% chance to deal 4x damage";
 			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
@@ -383,9 +328,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip = "+ 192% increased odds for magic" +
-				"\n+ 21% magic cost reduction" +
-				"\n+ Mana star have 5% to spawn from NPC when hitting them with magic projectile";
 			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
@@ -404,11 +346,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
-			Tooltip =
-				"+ 192% increased odds for summoner" +
-				"\n+ For 1 minion/sentry slot you have, you gain 1 flat damage" +
-				"\n+ 1 minion slot" +
-				"\n+ 1 sentry slot";
 			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {

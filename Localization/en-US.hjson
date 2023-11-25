@@ -1597,6 +1597,21 @@ Mods: {
 					'''
 			}
 
+			Trinket4: {
+				DisplayName: Trinket4
+				Tooltip:
+					'''
+					[[c/8888ea:Passive]]
+					Increases your max mana by 60
+					[[c/8888ea:Active]]
+					While current mana amount is above 50% max mana 
+					+ Strengthen your attack at the cost of 10 mana
+					+ When shooting, you also shoot a burst of Crystal Storm that deal 45% of your damage
+					When you got hit, if the damage taken is less than current amount of mana
+					+ You take 1 damage instead and your mana take a hit instead
+					'''
+			}
+
 			AuraDamageCard: {
 				DisplayName: Aura Damage Card
 				Tooltip: ""
@@ -1614,11 +1629,6 @@ Mods: {
 
 			WeakHealingCard: {
 				DisplayName: Weak Healing Card
-				Tooltip: ""
-			}
-
-			Trinket4: {
-				DisplayName: Trinket4
 				Tooltip: ""
 			}
 		}
@@ -1741,12 +1751,12 @@ Mods: {
 
 			OverCharged: {
 				DisplayName: Overcharged !
-				Description: Mods.BossRush.Buffs.copperRageMode.Description
+				Description: Electric power your vein
 			}
 
 			pumpkinOverdose: {
 				DisplayName: Pumpkin Overdose
-				Description: Mods.BossRush.Buffs.pumpkinOverdose.Description
+				Description: overdose with pumpkin
 			}
 
 			MothBuff: {
@@ -1765,8 +1775,8 @@ Mods: {
 			}
 
 			heavenSmgBuff: {
-				DisplayName: heaven Smg Buff
-				Description: Mods.BossRush.Buffs.heavenSmgBuff.Description
+				DisplayName: Heavenly power
+				Description: Give them grace
 			}
 
 			HeavenSmgBuff: {
@@ -1780,13 +1790,13 @@ Mods: {
 			}
 
 			Samsara_of_Retribution: {
-				DisplayName: Samsara_of_ Retribution
+				DisplayName: Samsara_of_Retribution
 				Description: Mods.BossRush.Buffs.Samsara_of_Retribution.Description
 			}
 
 			SwiftSteal_Buff: {
-				DisplayName: Swift Steal_ Buff
-				Description: Mods.BossRush.Buffs.SwiftSteal_Buff.Description
+				DisplayName: Swift Steal
+				Description: Increases health and crit chance
 			}
 		}
 
