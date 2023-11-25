@@ -10,19 +10,23 @@ public abstract class BaseTrinket : ModItem {
 	}
 	public virtual void UpdateTrinket(Player player, TrinketPlayer modplayer) { }
 	public sealed override void UpdateEquip(Player player) {
-		base.UpdateEquip(player);
 		UpdateTrinket(player, player.GetModPlayer<TrinketPlayer>());
 	}
 }
 //This will store all the information about the trinket and how they will interact with player
 public class TrinketPlayer : ModPlayer {
-	public StatModifier HPstats;
-	public StatModifier ManaStats;
-	public StatModifier DamageStats;
+	public StatModifier HPstats = StatModifier.Default;
+	public StatModifier ManaStats = StatModifier.Default;
+	public StatModifier DamageStats = StatModifier.Default;
+	public override void Initialize() {
+		HPstats = StatModifier.Default;
+		ManaStats = StatModifier.Default;
+		DamageStats = StatModifier.Default;
+	}
 	public override void ResetEffects() {
-		HPstats = new StatModifier();
-		ManaStats = new StatModifier();
-		DamageStats = new StatModifier();
+		HPstats = StatModifier.Default;
+		ManaStats = StatModifier.Default;
+		DamageStats = StatModifier.Default;
 	}
 	public int counterToFullPi = 0;
 	public override void PreUpdate() {
@@ -33,8 +37,8 @@ public class TrinketPlayer : ModPlayer {
 	}
 	public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 		base.ModifyMaxStats(out health, out mana);
-		health.CombineWith(HPstats);
-		mana.CombineWith(ManaStats);
+		health = health.CombineWith(HPstats);
+		mana = mana.CombineWith(ManaStats);
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		damage = damage.CombineWith(DamageStats);

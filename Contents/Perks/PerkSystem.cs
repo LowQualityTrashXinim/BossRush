@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.NohitReward;
+using Terraria.Localization;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -162,6 +163,9 @@ namespace BossRush.Contents.Perks {
 	}
 
 	public abstract class Perk : ModType {
+		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.DisplayName");
+		public string Description => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
+
 		public bool CanBeStack = false;
 		/// <summary>
 		/// Use this if <see cref="CanBeStack"/> is true
@@ -194,12 +198,16 @@ namespace BossRush.Contents.Perks {
 		}
 		public string PerkNameToolTip => ModifyName() + "\n" + ModifyToolTip();
 		public virtual string ModifyToolTip() {
+			if(Description != null)
+				return Description;
 			return Tooltip;
 		}
 		public virtual string ModifyName() {
 			return PerkName();
 		}
 		public string PerkName() {
+			if (DisplayName != null)
+				return DisplayName;
 			string Name = ModPerkLoader.GetPerk(Type).Name;
 			for (int i = Name.Length - 1; i > 0; i--) {
 				if (char.IsUpper(Name[i])) {
