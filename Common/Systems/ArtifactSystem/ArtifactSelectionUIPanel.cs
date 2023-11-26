@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Contents.Artifacts;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,65 +10,70 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 
-namespace BossRush.Common.Systems.ArtifactSystem
-{
-    internal class ArtifactSelectionUIPanel : UIPanel
-    {
-        public const int ARTIFACTS_PER_ROW = 4; // Set this up to 10 cuz reasons
-        public ArtifactSelectionUIPanel(Player player, int height, int top) 
-        {
-            Width = StyleDimension.FromPercent(1f);
-            Height = StyleDimension.FromPixels(height);
-            Top = StyleDimension.FromPixels(top);
-            BackgroundColor = new Color(33, 43, 79) * 0.8f;
+namespace BossRush.Common.Systems.ArtifactSystem {
+	internal class ArtifactSelectionUIPanel : UIPanel {
+		public const int ARTIFACTS_PER_ROW = 4; // Set this up to 10 cuz reasons
+		public ArtifactSelectionUIPanel(Player player, int height, int top) {
+			Width = StyleDimension.FromPercent(1f);
+			Height = StyleDimension.FromPixels(height);
+			Top = StyleDimension.FromPixels(top);
+			BackgroundColor = new Color(33, 43, 79) * 0.8f;
 
-            UIElement artifactSelectionElement = new()
-            {
-                Width = StyleDimension.FromPercent(ARTIFACTS_PER_ROW / 10f),
-                Height = StyleDimension.FromPercent(1f),
-            };
-            
-            for (int type = 0; type < Artifact.ArtifactCount; type++)
-            {
-                ArtifactSelectionUIButton button = new(type, player)
-                {
-                    Width = StyleDimension.FromPixels(44f),
-                    Height = StyleDimension.FromPixels(44f),
-                    Left = StyleDimension.FromPixels((type % ARTIFACTS_PER_ROW) * 46.0f + 6.0f),
-                    Top = StyleDimension.FromPixels((type / ARTIFACTS_PER_ROW) * 48.0f + 1.0f)
-                };
+			UIElement artifactSelectionElement = new() {
+				Width = StyleDimension.FromPercent(ARTIFACTS_PER_ROW / 10f),
+				Height = StyleDimension.FromPercent(1f),
+			};
 
-                artifactSelectionElement.Append(button);
-            }
+			//I mess with your code, hope ya don't mind
+			ArtifactSelectionUIButton normalbutton = new(Artifact.ArtifactType<NormalizeArtifact>(), player) {
+				Width = StyleDimension.FromPixels(44f),
+				Height = StyleDimension.FromPixels(44f),
+				Left = StyleDimension.FromPixels(0 % ARTIFACTS_PER_ROW * 46.0f + 6.0f),
+				Top = StyleDimension.FromPixels(0 / ARTIFACTS_PER_ROW * 48.0f + 1.0f)
+			};
+			artifactSelectionElement.Append(normalbutton);
 
-            Append(artifactSelectionElement);
+			int realtype = 0;
+			for (int type = 1; type < Artifact.ArtifactCount; type++) {
+				if (realtype == Artifact.ArtifactType<NormalizeArtifact>()) {
+					realtype++;
+				}
+				ArtifactSelectionUIButton button = new(realtype, player) {
+					Width = StyleDimension.FromPixels(44f),
+					Height = StyleDimension.FromPixels(44f),
+					Left = StyleDimension.FromPixels((type % ARTIFACTS_PER_ROW) * 46.0f + 6.0f),
+					Top = StyleDimension.FromPixels((type / ARTIFACTS_PER_ROW) * 48.0f + 1.0f)
+				};
 
-            UIPanel activeArtifactInfoPanel = new()
-            {
-                Left = StyleDimension.FromPercent(ARTIFACTS_PER_ROW / 10f),
-                Width = StyleDimension.FromPercent(1f - (ARTIFACTS_PER_ROW / 10f)),
-                Height = StyleDimension.FromPercent(1f)
-            };
+				artifactSelectionElement.Append(button);
+				realtype = Math.Clamp(++realtype, 0, Artifact.ArtifactCount - 1);
+			}
 
-            ActiveArtifactNameUI activeArtifactName = new(player)
-            {
-                Top = StyleDimension.FromPixels(-5f),
-                Width = StyleDimension.FromPercent(1f),
-                Height = StyleDimension.FromPixels(50f)
-            };
+			Append(artifactSelectionElement);
 
-            activeArtifactInfoPanel.Append(activeArtifactName);
+			UIPanel activeArtifactInfoPanel = new() {
+				Left = StyleDimension.FromPercent(ARTIFACTS_PER_ROW / 10f),
+				Width = StyleDimension.FromPercent(1f - (ARTIFACTS_PER_ROW / 10f)),
+				Height = StyleDimension.FromPercent(1f)
+			};
 
-            ActiveArtifactDescriptionUI activeArtifactDescription = new(player)
-            {
-                Top = StyleDimension.FromPixels(45f),
-                Width = StyleDimension.FromPercent(1f),
-                Height = StyleDimension.FromPixels(height - 50f)
-            };
+			ActiveArtifactNameUI activeArtifactName = new(player) {
+				Top = StyleDimension.FromPixels(-5f),
+				Width = StyleDimension.FromPercent(1f),
+				Height = StyleDimension.FromPixels(50f)
+			};
 
-            activeArtifactInfoPanel.Append(activeArtifactDescription);
+			activeArtifactInfoPanel.Append(activeArtifactName);
 
-            Append(activeArtifactInfoPanel);
-        }
-    }
+			ActiveArtifactDescriptionUI activeArtifactDescription = new(player) {
+				Top = StyleDimension.FromPixels(45f),
+				Width = StyleDimension.FromPercent(1f),
+				Height = StyleDimension.FromPixels(height - 50f)
+			};
+
+			activeArtifactInfoPanel.Append(activeArtifactDescription);
+
+			Append(activeArtifactInfoPanel);
+		}
+	}
 }
