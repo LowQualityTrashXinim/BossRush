@@ -22,7 +22,7 @@ namespace BossRush.Common {
 		public int gitGud = 0;
 		public int HowManyBossIsAlive = 0;
 		public override void OnEnterWorld() {
-			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore)
+			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore && !Player.IsDebugPlayer())
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
