@@ -6,10 +6,10 @@ using BossRush.Contents.Artifacts;
 
 namespace BossRush.Common.Systems.ArtifactSystem {
 	internal class ArtifactPlayer : ModPlayer {
-		public int ActiveArtifact { get; set; } = 0;
+		public int ActiveArtifact { get; set; } = Artifact.ArtifactType<NormalizeArtifact>();
 
 		public override void OnEnterWorld() {
-			if (Player.difficulty == PlayerDifficultyID.Hardcore) {
+			if (UniversalSystem.CanAccessContent(Player,UniversalSystem.SYNERGY_MODE)) {
 				while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>()) {
 					ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
 				}

@@ -59,15 +59,11 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TinBroadsword:
 				case ItemID.LeadBroadsword:
 				case ItemID.IronBroadsword:
-					item.width = item.height = 38;
-					break;
 				case ItemID.SilverBroadsword:
 				case ItemID.TungstenBroadsword:
-					item.width = item.height = 39;
-					break;
 				case ItemID.GoldBroadsword:
 				case ItemID.PlatinumBroadsword:
-					item.width = item.height = 42;
+					item.width = item.height = 46;
 					break;
 				case ItemID.CobaltSword:
 					item.width = 56;
@@ -687,7 +683,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			else {
 				lastPlayerPositionBeforeAnimation = Player.Center;
-				positionToDash = Player.Center.PositionOffsetDynamic(Main.MouseWorld - Player.Center, 500f, 10);
+				positionToDash = Player.Center.PositionOffsetDynamic(Main.MouseWorld - Player.Center, 500f);
 			}
 			Player.attackCD = 0;
 			for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++) {
