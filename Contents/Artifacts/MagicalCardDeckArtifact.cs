@@ -15,7 +15,7 @@ namespace BossRush.Contents.Artifacts
 {
     internal class MagicalCardDeckArtifact : Artifact
     {
-        public override int Frames => 9;
+        public override int Frames => 10;
 		public override Color DisplayNameColor => Color.DeepSkyBlue;
 	}
 

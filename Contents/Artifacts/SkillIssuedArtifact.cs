@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Terraria;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
-using Terraria;
-using BossRush.Common.Systems.ArtifactSystem;
+using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts {
 	internal class SkillIssuedArtifact : Artifact {
-		public override bool CanBeSelected(Player player) {
-			return player.name.ToLower().Contains("skillissue");
-		}
-
+		public override bool CanBeSelected(Player player) => player.name.ToLower().Contains("skillissue");
 		public override Color DisplayNameColor => Color.Orange;
 	}
 

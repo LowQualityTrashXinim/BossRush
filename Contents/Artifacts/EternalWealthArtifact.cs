@@ -17,6 +17,8 @@ namespace BossRush.Contents.Artifacts
     {
         public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
 		public override Color DisplayNameColor => Color.LightGoldenrodYellow;
+
+		public override bool CanBeSelected(Player player) => false;
 	}
 	class EternalWealthPlayer : ModPlayer {
 		bool EternalWealth = false;
