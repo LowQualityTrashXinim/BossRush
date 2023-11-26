@@ -54,6 +54,8 @@ namespace BossRush.Common.Systems.ArtifactSystem
 
         public static int ArtifactType<T>() where T : Artifact
         {
+			if (AllArtifacts == null)
+				return -1;
 			for (int i = 0; i < AllArtifacts.Count; i++) {
 				if (AllArtifacts[i] is T) {
 					return i;
