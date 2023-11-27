@@ -10,6 +10,7 @@ using System.Linq;
 using Terraria.ID;
 using Terraria;
 using System;
+using Terraria.Localization;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -27,7 +28,6 @@ namespace BossRush.Common.RoguelikeChange {
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal) {
 				entity.autoReuse = true;
 			}
-
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			Player player = Main.LocalPlayer;
@@ -72,32 +72,16 @@ namespace BossRush.Common.RoguelikeChange {
 		//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 		private string GetToolTip(int type) {
 			if (type == ItemID.WoodHelmet || type == ItemID.WoodBreastplate || type == ItemID.WoodGreaves) {
-				return "When in forest biome :" +
-					   "\nIncrease defense by 11" +
-					   "\nIncrease movement speed by 25%" +
-					   "\nYour attack have 25% chance to drop down a acorn dealing 10 damage";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.WoodArmor");
 			}
 			if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves) {
-				return "When in snow biome :" +
-					   "\nIncrease defense by 13" +
-					   "\nIncrease movement speed by 20%" +
-					   "\nYou are immune to Chilled" +
-					   "\nYour attack have 10% chance to inflict frost burn for 10 second";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.BorealWoodArmor");
 			}
 			if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves) {
-				return "When in jungle biome :" +
-					   "\nIncrease defense by 12" +
-					   "\nIncrease movement speed by 30%" +
-					   "\nGetting hit release sharp leaf around you that deal 12 damage";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.RichMahoganyArmor");
 			}
 			if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves) {
-				return "When in crimson biome :" +
-					   "\nIncrease defense by 17" +
-					   "\nIncrease movement speed by 15%" +
-					   "\nIncrease critical strike chance by 5" +
-					   "\nIncrease life regen by 1" +
-					   "\nWhenever you strike a enemy :" +
-					   "\nA ring of crimson burst out that deal fixed 10 damage and heal you for each enemy hit and debuff them with ichor";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.ShadewoodArmor");
 			}
 			if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
 				return "When in corruption biome :" +
@@ -151,11 +135,12 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
 				return "Increase movement speed by 35%" +
-						"\nAttacking an enemy summons 6 hallow Swords that deals 5 damage with 4 seconds cooldown" +
-						"\nIncrease damage by 15% during day" +
-						"\nIncrease defense By 12" +
+						"\nAttacking an enemy summons 6 hallow Swords that deals 12 damage with 4 seconds cooldown" +
+						"\nDuring the day :" +
+						"\nIncreases damage by 15%" +
+						"\nIncreases defense by 12" +
 						"\nWhen in Hallow biome:" +
-						"\n Hallow Swords deal 15 damage";
+						"\n Hallow Swords deal 35 more damage";
 			}
 			if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
 				return "Increase damage reduction 2.5%" +
@@ -215,6 +200,7 @@ namespace BossRush.Common.RoguelikeChange {
 					player.statDefense += 13;
 					player.moveSpeed += .20f;
 					player.buffImmune[BuffID.Chilled] = true;
+					player.buffImmune[BuffID.Slow] = true;
 					modplayer.BorealWoodArmor = true;
 				}
 				return true;
@@ -230,9 +216,7 @@ namespace BossRush.Common.RoguelikeChange {
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.ShadewoodHelmet, ItemID.ShadewoodBreastplate, ItemID.ShadewoodGreaves)) {
 				if (player.ZoneCrimson) {
 					player.statDefense += 17;
-					player.lifeRegen += 1;
 					player.moveSpeed += .15f;
-					player.GetCritChance(DamageClass.Generic) += 5f;
 					modplayer.ShadewoodArmor = true;
 				}
 				return true;
@@ -638,17 +622,17 @@ namespace BossRush.Common.RoguelikeChange {
 					}
 					Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
 					foreach (var npc in npclist) {
-						npc.StrikeNPC(npc.CalculateHitInfo(10, 1));
+						npc.StrikeNPC(npc.CalculateHitInfo(30, 1));
 						npc.AddBuff(BuffID.Ichor, 300);
 						Player.Heal(1);
 					}
-					ShadewoodArmorCD = 180;
+					ShadewoodArmorCD = BossRushUtils.ToSecond(3);
 				}
 		}
 		private void OnHitNPC_BorealWoodArmor(NPC target) {
 			if (BorealWoodArmor)
-				if (Main.rand.NextBool(10))
-					target.AddBuff(BuffID.Frostburn, 600);
+				if (Main.rand.NextFloat() <= .3f)
+					target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
 		}
 		private void OnHitNPC_PumpkinArmor(NPC npc, float damage) {
 			if (PumpkinArmor && Main.rand.NextBool(3)) {
@@ -674,18 +658,16 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		private void OnHitNPC_PearlWoodArmor(NPC npc) {
 			if (pearlWoodArmorCD <= 0 && pearlWoodArmor) {
-				int dmg = 5;
-				int projAmount = 6;
-				int Cooldown = 240;
+				int dmg = 12;
 				if (Player.ZoneHallow) {
-					dmg += 10;
+					dmg += 35;
 				}
-				for (int i = 0; i < projAmount; i++) {
-					Vector2 pos = npc.Center + new Vector2(0, -20).Vector2DistributeEvenly(projAmount, 360, i) * 10;
+				for (int i = 0; i < 6; i++) {
+					Vector2 pos = npc.Center + new Vector2(0, -20).Vector2DistributeEvenly(6, 360, i) * 10;
 					Vector2 vel = npc.Center - pos;
 					Projectile.NewProjectile(Player.GetSource_OnHit(npc), pos, vel.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<pearlSwordProj>(), dmg, 1, Player.whoAmI);
 				}
-				pearlWoodArmorCD = Cooldown;
+				pearlWoodArmorCD = 240;
 			}
 		}
 		private void OnHitNPC_CopperArmor() {
