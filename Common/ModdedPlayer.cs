@@ -64,13 +64,14 @@ namespace BossRush.Common {
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			yield return new Item(ModContent.ItemType<LunchBox>());
 			yield return new Item(ItemID.Safe);
 			yield return new Item(ItemID.MoneyTrough);
 			yield return new Item(ItemID.PlatinumPickaxe);
+			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+					yield return new Item(ModContent.ItemType<LunchBox>());
 					yield return new Item(ItemID.ManaCrystal, 5);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
 					yield return new Item(ModContent.ItemType<CursedSkull>());

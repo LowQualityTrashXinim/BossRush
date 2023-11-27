@@ -112,10 +112,10 @@ namespace BossRush {
 		/// <param name="offSetBy"></param>
 		/// <param name="accurancyCheck">off set this by 1, since the starting accurancy check is 1</param>
 		/// <returns></returns>
-		public static Vector2 PositionOffsetDynamic(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy, int accurancyCheck = 0) {
+		public static Vector2 PositionOffsetDynamic(this Vector2 position, Vector2 ProjectileVelocity, float offSetBy, int width1 = 0, int height1 = 0, int accurancyCheck = 0) {
 			Vector2 OFFSET = ProjectileVelocity.SafeNormalize(Vector2.Zero);
 			for (float i = offSetBy; i > 0; i--) {
-				if (Collision.CanHitLine(position, 0, 0, position + OFFSET * i, 0, 0)) {
+				if (Collision.CanHitLine(position, 16, 16, position + OFFSET * i, width1, height1)) {
 					return position += OFFSET * i;
 				}
 				i -= accurancyCheck;
