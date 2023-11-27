@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Nightmare {
-	internal class MasochistNPC : GlobalNPC {
+	internal class NightmareNPC : GlobalNPC {
 		public override void SetDefaults(NPC npc) {
 			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return;

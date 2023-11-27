@@ -40,7 +40,7 @@ namespace BossRush.Contents.Items.Chest {
 				GetArmorForPlayer(entitySource, player);
 			}
 			else {
-				int RandomNumber = Main.rand.Next(8);
+				int RandomNumber = Main.rand.Next(9);
 				switch (RandomNumber) {
 					case 0:
 						player.QuickSpawnItem(entitySource, ItemID.WoodHelmet);
@@ -81,6 +81,11 @@ namespace BossRush.Contents.Items.Chest {
 						player.QuickSpawnItem(entitySource, ItemID.AshWoodHelmet);
 						player.QuickSpawnItem(entitySource, ItemID.AshWoodBreastplate);
 						player.QuickSpawnItem(entitySource, ItemID.AshWoodGreaves);
+						break;
+					case 8:
+						player.QuickSpawnItem(entitySource, ItemID.PearlwoodHelmet);
+						player.QuickSpawnItem(entitySource, ItemID.PearlwoodBreastplate);
+						player.QuickSpawnItem(entitySource, ItemID.PearlwoodGreaves);
 						break;
 				}
 				int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });

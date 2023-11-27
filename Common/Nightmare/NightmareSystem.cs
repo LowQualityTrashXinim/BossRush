@@ -3,7 +3,7 @@ using Terraria.IO;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Nightmare {
-	internal class MasochistSystem : ModSystem {
+	internal class NightmareSystem : ModSystem {
 		public override string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData) {
 			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return "Master difficulty world required";

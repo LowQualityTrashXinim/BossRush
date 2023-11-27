@@ -49,6 +49,16 @@ BackUpMana: {
 		'''
 }
 
+Dirt:{
+	DisplayName: Dirt
+	Description:
+		'''
+		+ Increases defenses by 15
+		+ Give permanent Exquisitely Stuffed
+		'''
+
+}
+
 PeaceWithGod: {
 	DisplayName: Peace With God
 	Description:
