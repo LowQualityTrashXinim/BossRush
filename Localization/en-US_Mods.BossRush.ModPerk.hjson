@@ -49,14 +49,13 @@ BackUpMana: {
 		'''
 }
 
-Dirt:{
+Dirt: {
 	DisplayName: Dirt
 	Description:
 		'''
 		+ Increases defenses by 15
 		+ Give permanent Exquisitely Stuffed
 		'''
-
 }
 
 PeaceWithGod: {

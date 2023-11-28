@@ -121,9 +121,8 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 
 			//This is very bulky but gotta make it work
-			if (modplayer.CanGetTrinket && player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count == 3) {
+			if (Main.rand.NextBool(20)) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
-				modplayer.CanGetTrinket = false;
 			}
 			PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
 			int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
@@ -729,9 +728,7 @@ namespace BossRush.Contents.Items.Chest {
 	public class ChestLootDropPlayer : ModPlayer {
 		public bool CanDropSynergyEnergy = true;
 		public int CurrentSectionAmountOfChestOpen = 0;
-		public bool CanGetTrinket = true;
 		public override void OnEnterWorld() {
-			CanGetTrinket = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count < 3;
 		}
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
 		//Alternatively we can use this to handle all the data itself
@@ -739,7 +736,6 @@ namespace BossRush.Contents.Items.Chest {
 		//This is global modifier ( aka amount modifier to all )
 		public float finalMultiplier = 1f;
 		public int amountModifier = 0;
-
 
 		//This is inner modifier ( aka amount modifier to x stuff )
 		/// <summary>
@@ -838,7 +834,6 @@ namespace BossRush.Contents.Items.Chest {
 			UpdateRangeChanceMutilplier = 0;
 			UpdateMagicChanceMutilplier = 0;
 			UpdateSummonChanceMutilplier = 0;
-			base.ResetEffects();
 		}
 		public override void Initialize() {
 			MeleeChanceMutilplier = 1f;
@@ -881,8 +876,8 @@ namespace BossRush.Contents.Items.Chest {
 				ModifyPotionTypeAmountAddition = (int)tag["ModifyPotionTypeAmountAddition"];
 				ModifyPotionNumberAmountAddition = (int)tag["ModifyPotionNumberAmountAddition"];
 			}
-			catch {
-
+			catch (Exception ex) {
+				Main.NewText(ex.Message, Color.Red);
 			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {

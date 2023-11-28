@@ -98,40 +98,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool DeathBySpark_AleThrowingGlove = false;
 
 		public int HeavenSmg_Stacks = 0;
-
-		public bool GodAreEnraged = false;
-		public int CooldownCheck = 999;
-		private void SynergyEnergyCheckPlayer() {
-			int synergyCounter = 0;
-			foreach (var player in Main.player.Where(p => p != null && p.active)) {
-				synergyCounter += Player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
-				synergyCounter += player.inventory.Where(itemInv => itemInv.ModItem is SynergyModItem).Count();
-			}
-			int maxCount = NPC.GetActivePlayerCount() + 1;
-			if (synergyCounter >= maxCount) {
-				GodAreEnraged = true;
-			}
-		}
-		private void GodDecision() {
-			if (Main.netMode == NetmodeID.MultiplayerClient)
-				return;
-			if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || Player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
-				return;
-			if (Player.IsDebugPlayer())
-				return;
-			CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
-			//Main.NewText(CooldownCheck);
-			if (CooldownCheck <= 0) {
-				SynergyEnergyCheckPlayer();
-			}
-			if (GodAreEnraged) {
-				Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
-				NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Guardian>());
-				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "You have anger the God!");
-				CooldownCheck = 999;
-				GodAreEnraged = false;
-			}
-		}
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
 			SynergyBonus = 0;
@@ -196,7 +162,6 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		int check = 1;
 		public override void PostUpdate() {
-			GodDecision();
 			Item item = Player.HeldItem;
 			if (item.type == ModContent.ItemType<BurningPassion>()) {
 				if (!Player.ItemAnimationActive && check == 0) {
@@ -321,7 +286,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
-			if(CustomColor != null) {
+			if (CustomColor != null) {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = CustomColor.MultiColor(5);
 			}
 		}
@@ -498,6 +463,42 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public virtual void UpdateNPC(NPC npc, ref int buffIndex) {
 
+		}
+	}
+	public class SynergyModSystem : ModSystem {
+		public bool GodAreEnraged = false;
+		public int CooldownCheck = 999;
+		private void SynergyEnergyCheckPlayer(Player player) {
+			int synergyCounter = 0;
+			synergyCounter += player.CountItem(ModContent.ItemType<SynergyEnergy>(), 2);
+			synergyCounter += player.inventory.Where(itemInv => itemInv.ModItem is SynergyModItem).Count();
+			int maxCount = NPC.GetActivePlayerCount() + 1;
+			if (synergyCounter >= maxCount) {
+				GodAreEnraged = true;
+			}
+		}
+		private void GodDecision(Player player) {
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+				return;
+			if (NPC.AnyNPCs(ModContent.NPCType<Guardian>()) || player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy)
+				return;
+			if (player.IsDebugPlayer())
+				return;
+			CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
+			//Main.NewText(CooldownCheck);
+			if (CooldownCheck <= 0) {
+				SynergyEnergyCheckPlayer(player);
+			}
+			if (GodAreEnraged) {
+				Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + player.Center;
+				NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<Guardian>());
+				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "You have anger the God!");
+				CooldownCheck = 999;
+				GodAreEnraged = false;
+			}
+		}
+		public override void PostUpdateWorld() {
+			GodDecision(Main.LocalPlayer);
 		}
 	}
 }

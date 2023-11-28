@@ -72,7 +72,7 @@ public class Trinket4_ModPlayer : ModPlayer {
 	}
 	private void ManaShield(int damageValue, ref Player.HurtModifiers modifiers) {
 		if (!Trinket4)
-			return; ;
+			return;
 		if (Player.CheckMana(damageValue, true)) {
 			modifiers.SetMaxDamage(1);
 			SuccessfulBlockAHit = true;
