@@ -8,28 +8,32 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Contents.Items.Card;
+using BossRush.Contents.Items;
 
-namespace BossRush.Common;
+namespace BossRush.Common.Systems;
 internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
 	public const string CHALLENGE_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
+	public const string HARDCORE_MODE = "Hardcore";
 	/// <summary>
 	/// Use this to lock content behind hardcore
 	/// </summary>
 	/// <param name="player"></param>
-	/// <param name="context">Use <see cref="UniversalSystem.CHALLENGE_MODE"/> or any kind of mode that seem fit</param>
+	/// <param name="context">Use <see cref="CHALLENGE_MODE"/> or any kind of mode that seem fit</param>
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
-		if (ModContent.GetInstance<BossRushModConfig>().HardEnableFeature || player.IsDebugPlayer())
+		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (config.HardEnableFeature || player.IsDebugPlayer())
 			return true;
-		//This is ugly but it shall work for now
+		if (context == HARDCORE_MODE)
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.AutoHardCore;
 		if (context == NIGHTMARE_MODE)
-			return ModContent.GetInstance<BossRushModConfig>().Nightmare;
+			return config.Nightmare;
 		if (context == CHALLENGE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode;
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.EnableChallengeMode;
 		if (context == SYNERGY_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && ModContent.GetInstance<BossRushModConfig>().SynergyMode;
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode;
 		return false;
 	}
 	internal UserInterface userInterface;
@@ -62,7 +66,7 @@ internal class UniversalSystem : ModSystem {
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-		if (InventoryIndex != -1) {
+		if (InventoryIndex != -1)
 			layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
 				"BossRush: UI",
 				delegate {
@@ -71,32 +75,29 @@ internal class UniversalSystem : ModSystem {
 				},
 				InterfaceScaleType.UI)
 			);
-		}
 	}
 }
 
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
-		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null) {
+		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		if (uiSystemInstance.userInterface.CurrentState != null)
 			uiSystemInstance.userInterface.SetState(null);
-		}
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (UniversalSystem.EnchantmentKeyBind.JustPressed) {
-			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			if (uiSystemInstance.userInterface.CurrentState == null) {
 				//Debugging purpose
 				uiSystemInstance.Enchant_uiState.WhoAmI = Player.whoAmI;
 				uiSystemInstance.userInterface.SetState(uiSystemInstance.Enchant_uiState);
 			}
-			else {
+			else
 				uiSystemInstance.userInterface.SetState(null);
-			}
 		}
 	}
 	public override bool CanUseItem(Item item) {
-		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		if (!item.consumable && item.damage > 0)
 			if (uiSystemInstance.userInterface.CurrentState == uiSystemInstance.DeCardUIState)
 				return false;

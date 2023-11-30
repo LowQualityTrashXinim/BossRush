@@ -2,11 +2,10 @@
 using Terraria;
 using System.IO;
 using Terraria.ID;
-using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Chest;
@@ -24,9 +23,9 @@ namespace BossRush.Contents.Items.Card {
 			PostCardSetDefault();
 		}
 		public virtual void PostCardSetDefault() { }
-		public virtual void ModifyCardToolTip(ref List<TooltipLine> tooltips, PlayerCardHandle modplayer) { }
+		public virtual void ModifyCardToolTip(ref List<TooltipLine> tooltips, PlayerStatsHandle modplayer) { }
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			PlayerCardHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
+			PlayerStatsHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			ModifyCardToolTip(ref tooltips, modplayer);
 			if (Tier > 0) {
 				tooltips.Add(new TooltipLine(Mod, "HelpfulText", "Use the card to get choose from 1 of 3 stats bonus" +
@@ -49,9 +48,9 @@ namespace BossRush.Contents.Items.Card {
 		public override bool CanUseItem(Player player) {
 			return !BossRushUtils.IsAnyVanillaBossAlive();
 		}
-		public virtual void OnUseItem(Player player, PlayerCardHandle modplayer) { }
+		public virtual void OnUseItem(Player player, PlayerStatsHandle modplayer) { }
 		public override bool? UseItem(Player player) {
-			PlayerCardHandle modplayer = player.GetModPlayer<PlayerCardHandle>();
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			OnUseItem(player, modplayer);
 			if (Tier <= 0)
 				return true;
@@ -104,139 +103,105 @@ namespace BossRush.Contents.Items.Card {
 			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 	}
-	public class PlayerCardHandle : ModPlayer {
+	public class PlayerStatsHandle : ModPlayer {
 		public float AuraRadius = 300f;
 		public int CardTracker = 0;
-		//public bool DecreaseRateOfFire = false;// ID 1
-		//public bool NoHealing = false;// ID 2
-		//public bool SluggishDamage = false;// ID 3
-		//public bool FiveTimeDamageTaken = false;// ID 4
-		//public bool LimitedResource = false;// ID 5
-		//public bool PlayWithConstantLifeLost = false;// ID 6
-		//public bool ReduceIframe = false;// ID 7
-		//public bool WeaponCanJammed = false; // ID 8 sometime can't use weapon
-		//public bool WeaponCanKick = false; // ID 9 lose life on use weapon
-		//public bool NegativeDamageRandomize = false;// ID 10
-		//public bool CritDealNoDamage = false;// ID 11
-		//public bool ReducePositiveCardStat = false;// ID 12
-		//public bool AccessoriesDisable = false; // Will be implement much later
-		//public List<int> listCursesID = new List<int>();
-		//We handle no dupe curses in here
-		public override void PreUpdate() {
-			base.PreUpdate();
-			if (item != Player.HeldItem) {
-				SlowDown = 0;
-				CoolDown = 0;
-			}
-		}
-		float SlowDown = 1;
-		int CoolDown = 0;
-		public override bool CanUseItem(Item item) {
-			//if (WeaponCanJammed && CoolDown != 0) {
-			//	return SlowDown <= 1;
-			//}
-			//if (WeaponCanKick && Player.statLife < Player.GetWeaponDamage(item)) {
-			//	return false;
-			//}
-			return base.CanUseItem(item);
-		}
-		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			//if (WeaponCanKick) {
-			//	Player.statLife = Math.Clamp(Player.statLife - Player.GetWeaponDamage(item), 1, Player.statLifeMax2);
-			//}
-			//if (WeaponCanJammed && Main.mouseLeft) {
-			//	SlowDown += .2f;
-			//}
-			return base.Shoot(item, source, position, velocity, type, damage, knockback);
-		}
 		public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
 		public const int maxStatCanBeAchieved = 9999;
 		//Copper tier
 		public float MeleeDMG = 0;
+		public float UpdateMelee = 0;
+
 		public float RangeDMG = 0;
+		public float UpdateRange = 0;
+
 		public float MagicDMG = 0;
+		public float UpdateMagic = 0;
+
 		public float SummonDMG = 0;
+		public float UpdateSummon = 0;
+
 		public float Movement = 0;
+		public float UpdateMovement = 0;
+
 		public float JumpBoost = 0;
+		public float UpdateJumpBoost = 0;
+
 		public int HPMax = 0;
-		public float HPRegen = 0;
+		public int UpdateHPMax = 0;
+
+		public int HPRegen = 0;
+		public int UpdateHPRegen = 0;
+
 		public int ManaMax = 0;
-		public float ManaRegen = 0;
+		public int UpdateManaMax = 0;
+
+		public int ManaRegen = 0;
+		public int UpdateManaRegen = 0;
+
 		public int DefenseBase = 0;
-		//Silver Tier
+		public int UpdateDefenseBase = 0;
+
 		public float DamagePure = 0;
+		public float UpdateDamagePure = 0;
+
 		public int CritStrikeChance = 0;
+		public int UpdateCritStrikeChance = 0;
+
 		public float Thorn = 0;
-		public float CritDamage = 1;
-		public float DefenseEffectiveness = 1;
-		//Gold
+		public float UpdateThorn = 0;
+
+		public float CritDamage = 0;
+		public float UpdateCritDamage = 0;
+
+		public float DefenseEffectiveness = 0;
+		public float UpdateDefEff = 0;
+
 		public int DropAmountIncrease = 0;
+		public int UpdateDropAmount = 0;
+
 		public int MinionSlot = 0;
+		public int UpdateMinion = 0;
+
 		public int SentrySlot = 0;
+		public int UpdateSentry = 0;
+
 		public int CardLuck = 0;
-		Item item;
 		//Platinum
 		//public float LuckIncrease = 0;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (item.DamageType == DamageClass.Melee) {
-				damage.Base = Math.Clamp(MeleeDMG + damage.Base, 1, maxStatCanBeAchieved);
+				damage += Math.Clamp(UpdateMelee + MeleeDMG, 0, maxStatCanBeAchieved);
 			}
-			if (item.DamageType == DamageClass.Ranged) {
-				damage.Base = Math.Clamp(RangeDMG + damage.Base, 1, maxStatCanBeAchieved);
+			else if (item.DamageType == DamageClass.Ranged) {
+				damage += Math.Clamp(UpdateRange + RangeDMG, 0, maxStatCanBeAchieved);
 			}
-			if (item.DamageType == DamageClass.Magic) {
-				damage.Base = Math.Clamp(MagicDMG + damage.Base, 1, maxStatCanBeAchieved);
+			else if (item.DamageType == DamageClass.Magic) {
+				damage += Math.Clamp(UpdateMagic + MagicDMG, 0, maxStatCanBeAchieved);
 			}
-			if (item.DamageType == DamageClass.Summon) {
-				damage.Base = Math.Clamp(SummonDMG + damage.Base, 1, maxStatCanBeAchieved);
+			else if (item.DamageType == DamageClass.Summon) {
+				damage += Math.Clamp(UpdateSummon + SummonDMG, 0, maxStatCanBeAchieved);
 			}
-			damage.Base = Math.Clamp(DamagePure + damage.Base, 1, maxStatCanBeAchieved);
-			//if (SluggishDamage) {
-			//	damage *= .5f;
-			//}
-			//if (NegativeDamageRandomize) {
-			//	damage *= Main.rand.NextFloat();
-			//}
+			damage += Math.Clamp(UpdateDamagePure + DamagePure, 0, maxStatCanBeAchieved);
 		}
 		public override void ModifyWeaponCrit(Item item, ref float crit) {
-			crit = Math.Clamp(CritStrikeChance + crit, 0, maxStatCanBeAchieved);
+			crit = Math.Clamp(UpdateCritStrikeChance + CritStrikeChance + crit, 0, maxStatCanBeAchieved);
 		}
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			modifiers.CritDamage.Flat = Math.Clamp(CritDamage, -modifiers.CritDamage.Base + 1, 999999) * modifiers.CritDamage.Base;
-			//if (CritDealNoDamage) {
-			//	modifiers.CritDamage *= 0;
-			//}
+			modifiers.CritDamage.Flat = Math.Clamp(UpdateCritDamage + CritDamage + 1, -modifiers.CritDamage.Base + 1, 999999) * modifiers.CritDamage.Base;
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			health = StatModifier.Default;
 			mana = StatModifier.Default;
 
-			health.Base = Math.Clamp(HPMax + health.Base, -100, maxStatCanBeAchieved);
-			mana.Base = Math.Clamp(ManaMax + mana.Base, -20, maxStatCanBeAchieved);
+			health.Base = Math.Clamp(UpdateHPMax + HPMax + health.Base, -100, maxStatCanBeAchieved);
+			mana.Base = Math.Clamp(UpdateManaMax + ManaMax + mana.Base, -20, maxStatCanBeAchieved);
 		}
 		public override void PostUpdate() {
-			base.PostUpdate();
-			item = Player.HeldItem;
-			ChestLoot.amountModifier = Math.Clamp(DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
-			//if (NoHealing) {
-			//	Player.AddBuff(BuffID.PotionSickness, 999);
-			//}
-			//if (PlayWithConstantLifeLost) {
-			//	Player.statLife = Math.Clamp(Player.statLife - 1, 1, Player.statLifeMax2);
-			//}
-			//if (WeaponCanJammed) {
-			//	if (SlowDown >= 6) {
-			//		SlowDown = 6;
-			//		CoolDown = Player.itemAnimationMax * 10;
-			//	}
-			//	if (!Player.ItemAnimationActive) {
-			//		CoolDown = BossRushUtils.CoolDown(CoolDown);
-			//		SlowDown = Math.Clamp(SlowDown - .05f, 1, 6);
-			//	}
-			//}
-		}
-		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
-			base.ModifyHurt(ref modifiers);
+			ChestLoot.amountModifier = Math.Clamp(UpdateDropAmount + DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
+
+			Main.NewText($"Player's max minion : {Player.maxMinions}");
+			Main.NewText($"Player's max turret : {Player.maxTurrets}");
 		}
 		public override void PostHurt(Player.HurtInfo info) {
 			base.PostHurt(info);
@@ -245,15 +210,39 @@ namespace BossRush.Contents.Items.Card {
 			}
 		}
 		public override void ResetEffects() {
-			Player.statDefense += Math.Clamp(DefenseBase, -(maxStatCanBeAchieved + Player.statDefense), maxStatCanBeAchieved);
-			Player.moveSpeed = Math.Clamp(Movement + Player.moveSpeed, 0, maxStatCanBeAchieved);
-			Player.jumpSpeedBoost = Math.Clamp(JumpBoost + Player.jumpSpeedBoost, 0, maxStatCanBeAchieved);
-			Player.lifeRegen = (int)Math.Clamp(HPRegen * Player.lifeRegen, 0, maxStatCanBeAchieved);
-			Player.manaRegen = (int)Math.Clamp(ManaRegen * Player.manaRegen, 0, maxStatCanBeAchieved);
-			Player.DefenseEffectiveness *= Math.Clamp(DefenseEffectiveness, 0, maxStatCanBeAchieved);
-			Player.maxMinions = Math.Clamp(MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
-			Player.maxTurrets = Math.Clamp(SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
-			Player.thorns += Thorn;
+			Player.statDefense += Math.Clamp(UpdateDefenseBase + DefenseBase, -(maxStatCanBeAchieved + Player.statDefense), maxStatCanBeAchieved);
+			Player.moveSpeed = Math.Clamp(UpdateMovement + Movement + Player.moveSpeed, 0, maxStatCanBeAchieved);
+			Player.jumpSpeedBoost = Math.Clamp(UpdateJumpBoost + JumpBoost + Player.jumpSpeedBoost, 0, maxStatCanBeAchieved);
+			Player.lifeRegen = Math.Clamp(UpdateHPRegen + HPRegen + Player.lifeRegen, 0, maxStatCanBeAchieved);
+			Player.manaRegen = Math.Clamp(UpdateManaRegen + ManaRegen + Player.manaRegen, 0, maxStatCanBeAchieved);
+			Player.DefenseEffectiveness *= Math.Clamp(UpdateDefenseBase + DefenseEffectiveness + 1, 0, maxStatCanBeAchieved);
+			Player.thorns += UpdateThorn + Thorn;
+
+			Player.maxMinions = Math.Clamp(UpdateMinion + MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
+			Player.maxTurrets = Math.Clamp(UpdateSentry + SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
+
+			//Main.NewText($"Player's max minion : {Player.maxMinions}");
+			//Main.NewText($"Player's max turret : {Player.maxTurrets}");
+
+			UpdateMelee = 0;
+			UpdateRange = 0;
+			UpdateMagic = 0;
+			UpdateSummon = 0;
+			UpdateDamagePure = 0;
+			UpdateMovement = 0;
+			UpdateJumpBoost = 0;
+			UpdateHPMax = 0;
+			UpdateManaMax = 0;
+			UpdateHPRegen = 0;
+			UpdateManaRegen = 0;
+			UpdateDefenseBase = 0;
+			UpdateCritStrikeChance = 0;
+			UpdateCritDamage = 0;
+			UpdateDefEff = 0;
+			UpdateDropAmount = 0;
+			UpdateThorn = 0;
+			UpdateMinion = 0;
+			UpdateSentry = 0;
 		}
 		public override void Initialize() {
 			MeleeDMG = 0;
@@ -270,8 +259,8 @@ namespace BossRush.Contents.Items.Card {
 			DamagePure = 0;
 			CritStrikeChance = 0;
 			Thorn = 0;
-			CritDamage = 1;
-			DefenseEffectiveness = 1;
+			CritDamage = 0;
+			DefenseEffectiveness = 0;
 			DropAmountIncrease = 0;
 			MinionSlot = 0;
 			SentrySlot = 0;
@@ -279,81 +268,94 @@ namespace BossRush.Contents.Items.Card {
 			CardLuck = 0;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)BossRush.MessageType.CardEffect);
-			packet.Write((byte)Player.whoAmI);
-			packet.Write(MeleeDMG);
-			packet.Write(RangeDMG);
-			packet.Write(MagicDMG);
-			packet.Write(SummonDMG);
-			packet.Write(Movement);
-			packet.Write(JumpBoost);
-			packet.Write(HPMax);
-			packet.Write(HPRegen);
-			packet.Write(ManaMax);
-			packet.Write(ManaRegen);
-			packet.Write(DefenseBase);
-			packet.Write(DamagePure);
-			packet.Write(CritStrikeChance);
-			packet.Write(CritDamage);
-			packet.Write(DefenseEffectiveness);
-			packet.Write(DropAmountIncrease);
-			packet.Write(MinionSlot);
-			packet.Write(SentrySlot);
-			packet.Write(Thorn);
-			packet.Write(CardTracker);
-			packet.Write(CardLuck);
-			packet.Send(toWho, fromWho);
+			try {
+				ModPacket packet = Mod.GetPacket();
+				packet.Write((byte)BossRush.MessageType.CardEffect);
+				packet.Write((byte)Player.whoAmI);
+				packet.Write(MeleeDMG);
+				packet.Write(RangeDMG);
+				packet.Write(MagicDMG);
+				packet.Write(SummonDMG);
+				packet.Write(Movement);
+				packet.Write(JumpBoost);
+				packet.Write(HPMax);
+				packet.Write(HPRegen);
+				packet.Write(ManaMax);
+				packet.Write(ManaRegen);
+				packet.Write(DefenseBase);
+				packet.Write(DamagePure);
+				packet.Write(CritStrikeChance);
+				packet.Write(CritDamage);
+				packet.Write(DefenseEffectiveness);
+				packet.Write(DropAmountIncrease);
+				packet.Write(MinionSlot);
+				packet.Write(SentrySlot);
+				packet.Write(Thorn);
+				packet.Write(CardTracker);
+				packet.Write(CardLuck);
+				packet.Send(toWho, fromWho);
+			}
+			catch (Exception ex) {
+
+			}
 		}
 		public override void SaveData(TagCompound tag) {
-			tag["MeleeDMG"] = MeleeDMG;
-			tag["RangeDMG"] = RangeDMG;
-			tag["MagicDMG"] = MagicDMG;
-			tag["SummonDMG"] = SummonDMG;
-			tag["Movement"] = Movement;
-			tag["JumpBoost"] = JumpBoost;
-			tag["HPMax"] = HPMax;
-			tag["HPRegen"] = HPRegen;
-			tag["ManaMax"] = ManaMax;
-			tag["ManaRegen"] = ManaRegen;
-			tag["DefenseBase"] = DefenseBase;
-			tag["DamagePure"] = DamagePure;
-			tag["CritStrikeChance"] = CritStrikeChance;
-			tag["CritDamage"] = CritDamage;
-			tag["DefenseEffectiveness"] = DefenseEffectiveness;
-			tag["DropAmountIncrease"] = DropAmountIncrease;
-			tag["MinionSlot"] = MinionSlot;
-			tag["SentrySlot"] = SentrySlot;
-			tag["Thorn"] = Thorn;
-			tag["CardTracker"] = CardTracker;
-			tag["CardLuck"] = CardLuck;
+			try {
+				tag["MeleeDMG"] = MeleeDMG;
+				tag["RangeDMG"] = RangeDMG;
+				tag["MagicDMG"] = MagicDMG;
+				tag["SummonDMG"] = SummonDMG;
+				tag["Movement"] = Movement;
+				tag["JumpBoost"] = JumpBoost;
+				tag["HPMax"] = HPMax;
+				tag["HPRegen"] = HPRegen;
+				tag["ManaMax"] = ManaMax;
+				tag["ManaRegen"] = ManaRegen;
+				tag["DefenseBase"] = DefenseBase;
+				tag["DamagePure"] = DamagePure;
+				tag["CritStrikeChance"] = CritStrikeChance;
+				tag["CritDamage"] = CritDamage;
+				tag["DefenseEffectiveness"] = DefenseEffectiveness;
+				tag["DropAmountIncrease"] = DropAmountIncrease;
+				tag["MinionSlot"] = MinionSlot;
+				tag["SentrySlot"] = SentrySlot;
+				tag["Thorn"] = Thorn;
+				tag["CardTracker"] = CardTracker;
+				tag["CardLuck"] = CardLuck;
+			}
+			catch {
+			}
 		}
 		public override void LoadData(TagCompound tag) {
-			MeleeDMG = (float)tag["MeleeDMG"];
-			RangeDMG = (float)tag["RangeDMG"];
-			MagicDMG = (float)tag["MagicDMG"];
-			SummonDMG = (float)tag["SummonDMG"];
-			Movement = (float)tag["Movement"];
-			JumpBoost = (float)tag["JumpBoost"];
-			HPMax = (int)tag["HPMax"];
-			HPRegen = (float)tag["HPRegen"];
-			ManaMax = (int)tag["ManaMax"];
-			ManaRegen = (float)tag["ManaRegen"];
-			DefenseBase = (int)tag["DefenseBase"];
-			DamagePure = (float)tag["DamagePure"];
-			CritStrikeChance = (int)tag["CritStrikeChance"];
-			CritDamage = (float)tag["CritDamage"];
-			DefenseEffectiveness = (float)tag["DefenseEffectiveness"];
-			DropAmountIncrease = (int)tag["DropAmountIncrease"];
-			MinionSlot = (int)tag["MinionSlot"];
-			SentrySlot = (int)tag["SentrySlot"];
-			Thorn = (float)tag["Thorn"];
-			CardTracker = (int)tag["CardTracker"];
-			if (tag.TryGet<int>("CardLuck", out int cardluck)) {
-				CardLuck = cardluck;
+			try {
+				MeleeDMG = (float)tag["MeleeDMG"];
+				RangeDMG = (float)tag["RangeDMG"];
+				MagicDMG = (float)tag["MagicDMG"];
+				SummonDMG = (float)tag["SummonDMG"];
+				Movement = (float)tag["Movement"];
+				JumpBoost = (float)tag["JumpBoost"];
+				HPMax = (int)tag["HPMax"];
+				HPRegen = (int)tag["HPRegen"];
+				ManaMax = (int)tag["ManaMax"];
+				ManaRegen = (int)tag["ManaRegen"];
+				DefenseBase = (int)tag["DefenseBase"];
+				DamagePure = (float)tag["DamagePure"];
+				CritStrikeChance = (int)tag["CritStrikeChance"];
+				CritDamage = (float)tag["CritDamage"];
+				DefenseEffectiveness = (float)tag["DefenseEffectiveness"];
+				DropAmountIncrease = (int)tag["DropAmountIncrease"];
+				MinionSlot = (int)tag["MinionSlot"];
+				SentrySlot = (int)tag["SentrySlot"];
+				Thorn = (float)tag["Thorn"];
+				CardTracker = (int)tag["CardTracker"];
+				if (tag.TryGet("CardLuck", out int cardluck)) {
+					CardLuck = cardluck;
+				}
+				else {
+					CardLuck = 0;
+				}
 			}
-			else {
-				CardLuck = 0;
+			catch {
 			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {
@@ -364,9 +366,9 @@ namespace BossRush.Contents.Items.Card {
 			Movement = reader.ReadSingle();
 			JumpBoost = reader.ReadSingle();
 			HPMax = reader.ReadInt32();
-			HPRegen = reader.ReadSingle();
+			HPRegen = reader.ReadInt32();
 			ManaMax = reader.ReadInt32();
-			ManaRegen = reader.ReadSingle();
+			ManaRegen = reader.ReadInt32();
 			DefenseBase = reader.ReadInt32();
 			DamagePure = reader.ReadSingle();
 			CritStrikeChance = reader.ReadInt32();
@@ -380,7 +382,7 @@ namespace BossRush.Contents.Items.Card {
 			CardLuck = reader.ReadInt32();
 		}
 		public override void CopyClientState(ModPlayer targetCopy) {
-			PlayerCardHandle clone = (PlayerCardHandle)targetCopy;
+			PlayerStatsHandle clone = (PlayerStatsHandle)targetCopy;
 			clone.MeleeDMG = MeleeDMG;
 			clone.RangeDMG = RangeDMG;
 			clone.MagicDMG = MagicDMG;
@@ -404,7 +406,7 @@ namespace BossRush.Contents.Items.Card {
 			clone.CardLuck = CardLuck;
 		}
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			PlayerCardHandle clone = (PlayerCardHandle)clientPlayer;
+			PlayerStatsHandle clone = (PlayerStatsHandle)clientPlayer;
 			if (MeleeDMG != clone.MeleeDMG
 				|| RangeDMG != clone.RangeDMG
 				|| MagicDMG != clone.MagicDMG

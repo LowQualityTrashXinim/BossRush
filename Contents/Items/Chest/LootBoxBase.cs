@@ -3,7 +3,6 @@ using Terraria;
 using System.IO;
 using Terraria.ID;
 using System.Linq;
-using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using BossRush.Common.Utils;
@@ -15,6 +14,7 @@ using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.NohitReward;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -115,8 +115,6 @@ namespace BossRush.Contents.Items.Chest {
 				return;
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (modplayer.potionNumAmount > 0)
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<MysteriousPotion>(), modplayer.potionNumAmount);
 			if (modplayer.CanDropSynergyEnergy)
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 
@@ -124,7 +122,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (Main.rand.NextBool(20)) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
 			}
-			PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
+			PlayerStatsHandle cardplayer = player.GetModPlayer<PlayerStatsHandle>();
 			int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
 			for (int i = 0; i < cardReRoll; i++) {
 				if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck) {

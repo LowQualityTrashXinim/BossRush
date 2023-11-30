@@ -35,7 +35,7 @@ namespace BossRush.Contents.Items.Card {
 			base.RightClick(player);
 			var entitySource = player.GetSource_OpenItem(Type);
 			int amount = CardAmount;
-			PlayerCardHandle cardplayer = player.GetModPlayer<PlayerCardHandle>();
+			PlayerStatsHandle cardplayer = player.GetModPlayer<PlayerStatsHandle>();
 			if (player.HasArtifact<TokenOfGreedArtifact>() || player.HasArtifact<EternalWealthArtifact>())
 				amount += 2;
 			if (player.HasArtifact<MagicalCardDeckArtifact>())

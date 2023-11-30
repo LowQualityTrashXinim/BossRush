@@ -96,7 +96,7 @@ namespace BossRush.Contents.Items.Toggle {
 			Player.lifeRegen = (int)(GambleLifeRegen * Player.lifeRegen);
 			Player.manaRegen = (int)(Player.manaRegen * GambleManaRegen);
 			Player.maxMinions = Math.Clamp(GambleMinionSlot + Player.maxMinions, 0, 999999999);
-			Player.maxTurrets = Math.Clamp(GambleMinionSlot + Player.maxMinions, 0, 999999999);
+			Player.maxTurrets = Math.Clamp(GambleMinionSlot + Player.maxTurrets, 0, 999999999);
 			Player.GetCritChance(DamageClass.Generic) += GambleCrit;
 		}
 		public override void NaturalLifeRegen(ref float regen) {

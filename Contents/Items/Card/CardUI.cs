@@ -10,7 +10,7 @@ using BossRush.Contents.Artifacts;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ID;
-using BossRush.Common;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Card {
 	internal class CardUI : UIState {
@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.Card {
 		public override void OnActivate() {
 			Elements.Clear();
 			Player player = Main.LocalPlayer;
-			if (player.TryGetModPlayer(out PlayerCardHandle modplayer)) {
+			if (player.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 				if (Tier <= 0)
 					return;
 				bool hasMagicDeck = player.HasArtifact<MagicalCardDeckArtifact>();
@@ -62,7 +62,7 @@ namespace BossRush.Contents.Items.Card {
 				CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
 			}
 		}
-		private void SetBadStatsBaseOnTier(PlayerCardHandle modplayer, bool hasMagicDeck) {
+		private void SetBadStatsBaseOnTier(PlayerStatsHandle modplayer, bool hasMagicDeck) {
 			if (Tier <= 0) {
 				return;
 			}
@@ -196,8 +196,8 @@ namespace BossRush.Contents.Items.Card {
 		/// </summary>
 		public List<float> CardStatsNumber = new List<float>();
 		public int PostTierModify = 0;
-		PlayerCardHandle modplayer;
-		public CardStatsIncreasesSelection(Asset<Texture2D> texture, PlayerCardHandle Modplayer) : base(texture) {
+		PlayerStatsHandle modplayer;
+		public CardStatsIncreasesSelection(Asset<Texture2D> texture, PlayerStatsHandle Modplayer) : base(texture) {
 			modplayer = Modplayer;
 		}
 		public override void LeftClick(UIMouseEvent evt) {
@@ -209,7 +209,7 @@ namespace BossRush.Contents.Items.Card {
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.userInterface.SetState(null);
 		}
-		private void AddStatsToPlayer(PlayerCardHandle modplayer, PlayerStats stats, float amount) {
+		private void AddStatsToPlayer(PlayerStatsHandle modplayer, PlayerStats stats, float amount) {
 			switch (stats) {
 				case PlayerStats.MeleeDMG:
 					modplayer.MeleeDMG += amount;
@@ -233,13 +233,13 @@ namespace BossRush.Contents.Items.Card {
 					modplayer.HPMax += (int)amount;
 					break;
 				case PlayerStats.RegenHP:
-					modplayer.HPRegen += amount;
+					modplayer.HPRegen += (int)amount;
 					break;
 				case PlayerStats.MaxMana:
 					modplayer.ManaMax += (int)amount;
 					break;
 				case PlayerStats.RegenMana:
-					modplayer.ManaRegen += amount;
+					modplayer.ManaRegen += (int)amount;
 					break;
 				case PlayerStats.Defense:
 					modplayer.DefenseBase += (int)amount;

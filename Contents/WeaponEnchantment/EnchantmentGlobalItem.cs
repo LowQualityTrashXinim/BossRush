@@ -1,11 +1,11 @@
 ﻿using Terraria;
-using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Terraria.ID;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.WeaponEnchantment;
 internal class EnchantmentGlobalItem : GlobalItem {

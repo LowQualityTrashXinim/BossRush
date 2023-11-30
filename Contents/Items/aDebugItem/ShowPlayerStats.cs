@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			Player player = Main.LocalPlayer;
-			PlayerCardHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerCardHandle>();
+			PlayerStatsHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
 				$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
 				$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +

@@ -4,6 +4,7 @@ using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.Enraged;
 using BossRush.Contents.Artifacts;
 using Terraria.ID;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common {
 	public class IsPlayerAlreadyHaveASpawner : IItemDropRuleCondition {

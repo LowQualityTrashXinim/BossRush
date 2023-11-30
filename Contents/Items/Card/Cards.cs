@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.ChestLoot.MeleeChanceMutilplier += .5f;
 		}
 	}
@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.ChestLoot.RangeChanceMutilplier += .5f;
 		}
 	}
@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.ChestLoot.MagicChanceMutilplier += .5f;
 		}
 	}
@@ -43,7 +43,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.ChestLoot.SummonChanceMutilplier += .5f;
 		}
 	}
@@ -53,7 +53,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.maxStack = 99;
 			Item.rare = ItemRarityID.Red;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.ChestLoot.MeleeChanceMutilplier = 1;
 			modplayer.ChestLoot.RangeChanceMutilplier = 1;
 			modplayer.ChestLoot.MagicChanceMutilplier = 1;
@@ -118,7 +118,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.rare = ItemRarityID.Red;
 			Item.maxStack = 99;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(11), 0, 200);
 		}
 		public override void AddRecipes() {
@@ -133,7 +133,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.rare = ItemRarityID.Red;
 			Item.maxStack = 99;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(5, 21), 0, 200);
 		}
 		public override void AddRecipes() {
@@ -148,7 +148,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.rare = ItemRarityID.Red;
 			Item.maxStack = 99;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(15, 36), 0, 200);
 		}
 		public override void AddRecipes() {
@@ -163,7 +163,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.rare = ItemRarityID.Red;
 			Item.maxStack = 99;
 		}
-		public override void OnUseItem(Player player, PlayerCardHandle modplayer) {
+		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
 			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(25, 66), 0, 200);
 		}
 		public override void AddRecipes() {
@@ -189,10 +189,10 @@ namespace BossRush.Contents.Items.Card {
 
 		}
 		public override bool? UseItem(Player player) {
-			OnUseCard(player, player.GetModPlayer<PlayerCardHandle>(), out bool Consumeable);
+			OnUseCard(player, player.GetModPlayer<PlayerStatsHandle>(), out bool Consumeable);
 			return Consumeable;
 		}
-		public virtual void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+		public virtual void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			Consumeable = true;
 		}
 	}
@@ -202,7 +202,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.useAnimation = Item.useTime = 25;
 			Item.rare = 0;
 		}
-		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			float radius = modplayer.AuraRadius;
 			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 			foreach (var npc in npclist) {
@@ -222,7 +222,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.useAnimation = Item.useTime = 25;
 			Item.rare = 0;
 		}
-		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
 			player.Center.LookForHostileNPC(out NPC npc, modplayer.AuraRadius);
 			if (npc != null) {
@@ -237,7 +237,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.useAnimation = Item.useTime = 10;
 			Item.rare = 0;
 		}
-		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			player.Heal(1);
 			Consumeable = true;
 		}
@@ -248,7 +248,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.useAnimation = Item.useTime = 10;
 			Item.rare = 1;
 		}
-		public override void OnUseCard(Player player, PlayerCardHandle modplayer, out bool Consumeable) {
+		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			player.Heal(10);
 			Consumeable = true;
 		}
