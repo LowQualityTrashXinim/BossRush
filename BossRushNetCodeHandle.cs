@@ -73,7 +73,7 @@ namespace BossRush
                     }
                     break;
                 case MessageType.CardEffect:
-                    PlayerCardHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerCardHandle>();
+                    PlayerStatsHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerStatsHandle>();
                     cardplayer.ReceivePlayerSync(reader);
                     if (Main.netMode == NetmodeID.Server)
                     {

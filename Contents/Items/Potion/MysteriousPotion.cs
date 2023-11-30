@@ -1,10 +1,10 @@
-﻿using BossRush.Contents.Items.Weapon;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Terraria;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Items.Potion {
 	internal class MysteriousPotion : ModItem {
@@ -112,61 +112,62 @@ namespace BossRush.Contents.Items.Potion {
 		}
 		public override void Update(Player player, ref int buffIndex) {
 			MysteriousPotionPlayer modplayer = player.GetModPlayer<MysteriousPotionPlayer>();
+			PlayerStatsHandle statsplayer = player.GetModPlayer<PlayerStatsHandle>();
 			for (int i = 0; i < modplayer.Stats.Count; i++) {
 				switch (modplayer.Stats[i]) {
 					case PlayerStats.MeleeDMG:
-						player.GetDamage(DamageClass.Melee) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateMelee += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.RangeDMG:
-						player.GetDamage(DamageClass.Ranged) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateRange += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MagicDMG:
-						player.GetDamage(DamageClass.Magic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateMagic += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.SummonDMG:
-						player.GetDamage(DamageClass.Summon) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateSummon += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MovementSpeed:
-						player.moveSpeed += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateMovement += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.JumpBoost:
-						player.jumpSpeedBoost += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateJumpBoost += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MaxHP:
-						player.statLifeMax2 += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateHPMax += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.RegenHP:
-						player.lifeRegen += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateHPRegen += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MaxMana:
-						player.statManaMax2 += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateManaMax += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.RegenMana:
-						player.manaRegen += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateManaRegen += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.Defense:
-						player.statDefense += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateDefenseBase += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.DamageUniverse:
-						player.GetDamage(DamageClass.Generic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateDamagePure += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.CritChance:
-						player.GetCritChance(DamageClass.Generic) += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateCritStrikeChance += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.CritDamage:
-						modplayer.CritDMG += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateCritDamage += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.DefenseEffectiveness:
-						player.DefenseEffectiveness *= modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]) + 1;
+						statsplayer.UpdateDefEff *= modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]) + 1;
 						break;
 					case PlayerStats.Thorn:
-						player.thorns += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateThorn += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MaxMinion:
-						player.maxMinions += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateMinion += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MaxSentry:
-						player.maxTurrets += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.UpdateSentry += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					default:
 						break;
@@ -179,16 +180,9 @@ namespace BossRush.Contents.Items.Potion {
 		public List<int> StatsMulti = new List<int>();
 		public int PotionPointAddition = 0;
 		public int PotionPoint() => Math.Clamp(5 + PotionPointAddition, 1, 999);
-		public float CritDMG = 0;
-		public float CritChance = 0;
 		public float ToStatsNumFloat(PlayerStats stats, int multi) => lookupDictionary[stats] * multi * .01f;
 		public int ToStatsNumInt(PlayerStats stats, int multi) => lookupDictionary[stats] * multi;
-
-		public bool AuraShot = false;
 		public override void ResetEffects() {
-			base.ResetEffects();
-			CritDMG = 0;
-			CritChance = 0;
 			PotionPointAddition = 0;
 			if (!Player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>())) {
 				if (Stats.Count > 0)
@@ -196,7 +190,6 @@ namespace BossRush.Contents.Items.Potion {
 				if (StatsMulti.Count > 0)
 					StatsMulti.Clear();
 			}
-			AuraShot = false;
 		}
 		public Dictionary<PlayerStats, int> lookupDictionary = new Dictionary<PlayerStats, int>()
 		{
@@ -205,30 +198,19 @@ namespace BossRush.Contents.Items.Potion {
 			{ PlayerStats.RangeDMG, 15 },
 			{ PlayerStats.MagicDMG, 15 },
 			{ PlayerStats.SummonDMG, 15 },
-			{ PlayerStats.MovementSpeed,10 },
-			{ PlayerStats.JumpBoost, 10 },
-			{ PlayerStats.DefenseEffectiveness, 10 },
-			{ PlayerStats.CritDamage, 10 },
-			{ PlayerStats.MaxMana, 10 },
-			{ PlayerStats.MaxHP, 10 },
-			{ PlayerStats.Defense, 5 },
-			{ PlayerStats.CritChance, 5 },
-			{ PlayerStats.DamageUniverse, 5 },
-			{ PlayerStats.RegenHP, 4 },
+			{ PlayerStats.MovementSpeed,20 },
+			{ PlayerStats.JumpBoost, 20 },
+			{ PlayerStats.DefenseEffectiveness, 20 },
+			{ PlayerStats.CritDamage, 30 },
+			{ PlayerStats.MaxMana, 20 },
+			{ PlayerStats.MaxHP, 20 },
+			{ PlayerStats.Defense, 8 },
+			{ PlayerStats.CritChance, 8 },
+			{ PlayerStats.DamageUniverse, 8 },
+			{ PlayerStats.RegenHP, 6 },
 			{ PlayerStats.RegenMana, 4 },
 			{ PlayerStats.MaxMinion, 1 },
 			{ PlayerStats.MaxSentry, 1 },
 		};
-		public override void ModifyWeaponCrit(Item item, ref float crit) {
-			crit += CritChance;
-		}
-		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			modifiers.CritDamage += Math.Clamp(CritDMG * .01f, 0, 999999);
-		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (AuraShot && proj.DamageType == DamageClass.Ranged) {
-				Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox2>(), (int)(proj.damage * .25f), 0, Player.whoAmI);
-			}
-		}
 	}
 }

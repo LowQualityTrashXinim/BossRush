@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.UI;
 using ReLogic.Content;
-using BossRush.Common;
 using BossRush.Texture;
 using Terraria.UI.Chat;
 using ReLogic.Graphics;
@@ -16,6 +15,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Perks {
 	internal class PerkUIState : UIState {

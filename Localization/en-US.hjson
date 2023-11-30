@@ -1548,9 +1548,9 @@ Mods: {
 				Tooltip: ""
 			}
 
-			CardSacrifice: {
-				DisplayName: Card Sacrifice
-				Tooltip: Use this to open a UI that allow you to destroy accessories and weapon to gain card packet or even rare card
+			TransmuteTablet: {
+				DisplayName: Transmute Tablet
+				Tooltip: Use this to open a UI that allow you to transmute item into something else ( not shimmer )
 			}
 
 			Trinket_of_Swift_Health: {

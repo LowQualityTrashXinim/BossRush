@@ -14,11 +14,19 @@ namespace BossRush.Contents.Artifacts {
 	public class SkillIssuedArtifactPlayer : ModPlayer {
 		public int SkillIssue = 0;
 		public bool SkillIssuePlayer = false;
+		public int skillissueCallOut = 0;
 		public override void ResetEffects() {
 			SkillIssuePlayer = Player.HasArtifact<SkillIssuedArtifact>();
-			Player.GetDamage(DamageClass.Generic) *= SkillIssue * 0.01f + 1;
-			Player.statLifeMax2 += (int)(SkillIssue * 0.5f);
-			Player.thorns *= SkillIssue * 0.01f + 1;
+			if (SkillIssuePlayer) {
+				Player.GetDamage(DamageClass.Generic) *= SkillIssue * 0.01f + 1;
+				Player.statLifeMax2 += (int)(SkillIssue * 0.5f);
+				Player.thorns *= SkillIssue * 0.01f + 1;
+				skillissueCallOut = BossRushUtils.CoolDown(skillissueCallOut);
+				if (skillissueCallOut == 0) {
+					BossRushUtils.CombatTextRevamp(Player.Hitbox, Main.DiscoColor, "skill issue");
+					skillissueCallOut = Main.rand.Next(BossRushUtils.ToSecond(30), BossRushUtils.ToMinute(2));
+				}
+			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();

@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using System.Linq;
-using BossRush.Common;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -9,6 +8,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.NohitReward;
 using Terraria.Localization;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
