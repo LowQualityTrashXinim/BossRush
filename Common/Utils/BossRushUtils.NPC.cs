@@ -19,8 +19,9 @@ namespace BossRush {
 			npc.velocity = distance.SafeNormalize(Vector2.Zero) * speed;
 			return false;
 		}
-		public static int NewHostileProjectile(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static int NewHostileProjectile(IEntitySource source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int whoAmI = -1) {
 			int HostileProjectile = Projectile.NewProjectile(source, position, velocity, type, damage, knockback);
+			Main.projectile[HostileProjectile].whoAmI = whoAmI;
 			Main.projectile[HostileProjectile].hostile = true;
 			Main.projectile[HostileProjectile].friendly = false;
 			return HostileProjectile;

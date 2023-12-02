@@ -170,25 +170,11 @@ namespace BossRush.Contents.Items.Card {
 		//Platinum
 		//public float LuckIncrease = 0;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (item.DamageType == DamageClass.Melee) {
-				damage += Math.Clamp(UpdateMelee + MeleeDMG, 0, maxStatCanBeAchieved);
-			}
-			else if (item.DamageType == DamageClass.Ranged) {
-				damage += Math.Clamp(UpdateRange + RangeDMG, 0, maxStatCanBeAchieved);
-			}
-			else if (item.DamageType == DamageClass.Magic) {
-				damage += Math.Clamp(UpdateMagic + MagicDMG, 0, maxStatCanBeAchieved);
-			}
-			else if (item.DamageType == DamageClass.Summon) {
-				damage += Math.Clamp(UpdateSummon + SummonDMG, 0, maxStatCanBeAchieved);
-			}
-			damage += Math.Clamp(UpdateDamagePure + DamagePure, 0, maxStatCanBeAchieved);
 		}
 		public override void ModifyWeaponCrit(Item item, ref float crit) {
-			crit = Math.Clamp(UpdateCritStrikeChance + CritStrikeChance + crit, 0, maxStatCanBeAchieved);
 		}
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			modifiers.CritDamage.Flat = Math.Clamp(UpdateCritDamage + CritDamage + 1, -modifiers.CritDamage.Base + 1, 999999) * modifiers.CritDamage.Base;
+			modifiers.CritDamage += Math.Clamp(UpdateCritDamage + CritDamage, -1, 999999);
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			health = StatModifier.Default;
@@ -199,9 +185,6 @@ namespace BossRush.Contents.Items.Card {
 		}
 		public override void PostUpdate() {
 			ChestLoot.amountModifier = Math.Clamp(UpdateDropAmount + DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
-
-			Main.NewText($"Player's max minion : {Player.maxMinions}");
-			Main.NewText($"Player's max turret : {Player.maxTurrets}");
 		}
 		public override void PostHurt(Player.HurtInfo info) {
 			base.PostHurt(info);
@@ -210,6 +193,13 @@ namespace BossRush.Contents.Items.Card {
 			}
 		}
 		public override void ResetEffects() {
+			Player.GetDamage(DamageClass.Melee) += Math.Clamp(UpdateMelee + MeleeDMG, 0, maxStatCanBeAchieved);
+			Player.GetDamage(DamageClass.Ranged) += Math.Clamp(UpdateRange + RangeDMG, 0, maxStatCanBeAchieved);
+			Player.GetDamage(DamageClass.Magic) += Math.Clamp(UpdateMagic + MagicDMG, 0, maxStatCanBeAchieved);
+			Player.GetDamage(DamageClass.Summon) += Math.Clamp(UpdateSummon + SummonDMG, 0, maxStatCanBeAchieved);
+			Player.GetDamage(DamageClass.Generic) += Math.Clamp(UpdateDamagePure + DamagePure, 0, maxStatCanBeAchieved);
+			Player.GetCritChance(DamageClass.Generic) += Math.Clamp(UpdateCritStrikeChance + CritStrikeChance, 0, maxStatCanBeAchieved);
+
 			Player.statDefense += Math.Clamp(UpdateDefenseBase + DefenseBase, -(maxStatCanBeAchieved + Player.statDefense), maxStatCanBeAchieved);
 			Player.moveSpeed = Math.Clamp(UpdateMovement + Movement + Player.moveSpeed, 0, maxStatCanBeAchieved);
 			Player.jumpSpeedBoost = Math.Clamp(UpdateJumpBoost + JumpBoost + Player.jumpSpeedBoost, 0, maxStatCanBeAchieved);
@@ -220,9 +210,6 @@ namespace BossRush.Contents.Items.Card {
 
 			Player.maxMinions = Math.Clamp(UpdateMinion + MinionSlot + Player.maxMinions, 0, maxStatCanBeAchieved);
 			Player.maxTurrets = Math.Clamp(UpdateSentry + SentrySlot + Player.maxTurrets, 0, maxStatCanBeAchieved);
-
-			//Main.NewText($"Player's max minion : {Player.maxMinions}");
-			//Main.NewText($"Player's max turret : {Player.maxTurrets}");
 
 			UpdateMelee = 0;
 			UpdateRange = 0;

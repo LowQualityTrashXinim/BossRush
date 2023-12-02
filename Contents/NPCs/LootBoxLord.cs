@@ -40,13 +40,14 @@ namespace BossRush.Contents.NPCs {
 				NPC.active = false;
 			}
 			if (NPC.CountNPCS(Type) > 1) {
-				if(!AlreadySaidThat) {
+				if (!AlreadySaidThat) {
 					BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Red, "You are attempting to spawn more than one of me ?");
 					AlreadySaidThat = true;
 				}
 				if (!NPC.AnyNPCs(ModContent.NPCType<ElderGuardian>()))
 					NPC.NewNPC(NPC.GetSource_FromAI(), NPC.Hitbox.X, NPC.Hitbox.Y, ModContent.NPCType<ElderGuardian>());
 			}
+			//TODO : change phase when boss hp is below 50%
 			//Move above the player
 			switch (NPC.ai[1]) {
 				case 0:
@@ -82,6 +83,9 @@ namespace BossRush.Contents.NPCs {
 				case 10:
 					ShootOreBow2();
 					break;
+				case 11:
+					ShootGun(player);
+					break;
 			}
 			ActivateBroadSword();
 		}
@@ -91,7 +95,9 @@ namespace BossRush.Contents.NPCs {
 				Main.dust[dust1].noGravity = true;
 				Main.dust[dust1].velocity = (Main.dust[dust1].position - NPC.Center).SafeNormalize(Vector2.Zero) * 3f;
 			}
-			if (!BossRushUtils.CompareSquareFloatValue(NPC.Center, Main.player[NPC.target].Center, 1000 * 1000)) {
+			if (lastPlayerPosition == Vector2.Zero)
+				lastPlayerPosition = Main.player[NPC.target].Center;
+			if (!BossRushUtils.CompareSquareFloatValue(NPC.Center, lastPlayerPosition, 1000 * 1000)) {
 				Main.player[NPC.target].AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 120);
 				for (int i = 0; i < 3; i++) {
 					int dust = Dust.NewDust(Main.player[NPC.target].Center, 0, 0, DustID.SolarFlare);
@@ -147,15 +153,15 @@ namespace BossRush.Contents.NPCs {
 			}
 		}
 		private int MoveSetHandle() {
-			int Move = (int)Math.Clamp(++NPC.ai[3], 1, 11);
-			if (Move >= 11) {
+			int Move = (int)Math.Clamp(++NPC.ai[3], 1, 12);
+			if (Move >= 12) {
 				Move = 1;
 				NPC.ai[3] = 1;
 			}
 			return Move;
 		}
 		private void ResetEverything(int delayAttack = 90) {
-			lastPlayerPosition = Vector2.Zero;
+			lastPlayerPosition = Main.player[NPC.target].Center;
 			NPC.ai[0] = delayAttack;
 			NPC.ai[1] = 0;
 			NPC.ai[2] = 0;
@@ -165,10 +171,9 @@ namespace BossRush.Contents.NPCs {
 				return;
 			}
 			Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenly(8, 120, (int)NPC.ai[2]) * 15f;
-			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackOne>(), NPC.damage, 2);
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackOne>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
-			Main.projectile[proj].owner = NPC.target;
 			NPC.ai[2]++;
 		}
 		private void ShootShortSword2() {
@@ -183,12 +188,11 @@ namespace BossRush.Contents.NPCs {
 				return;
 			}
 			Vector2 vec = Vector2.UnitX * 20 * Main.rand.NextBool(2).ToDirectionInt();
-			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackTwo>(), NPC.damage, 2);
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<ShortSwordAttackTwo>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreShortSword[(int)NPC.ai[2]];
 			Main.projectile[proj].ai[1] = -20;
 			Main.projectile[proj].ai[0] = 2;
-			Main.projectile[proj].owner = NPC.target;
 			Main.projectile[proj].rotation = Main.projectile[proj].velocity.ToRotation() + MathHelper.PiOver4;
 			NPC.ai[2]++;
 		}
@@ -198,10 +202,9 @@ namespace BossRush.Contents.NPCs {
 			}
 			for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++) {
 				Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 160, i) * 20f;
-				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackOne>(), NPC.damage, 2);
+				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackOne>(), NPC.damage, 2, NPC.target);
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
-				Main.projectile[proj].owner = NPC.target;
 				if (Main.projectile[proj].ModProjectile is SwordBroadAttackOne swordProj) {
 					swordProj.OnSpawnDirection = vec.X > 0 ? 1 : -1;
 					swordProj.rememberThisPos = Main.player[NPC.target].Center + new Vector2(250 * swordProj.OnSpawnDirection, -120 + 40 * i);
@@ -219,19 +222,17 @@ namespace BossRush.Contents.NPCs {
 			for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++) {
 				Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 180, i) * 50f;
 				vec.Y = 5;
-				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2);
+				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2, NPC.target);
 				Main.projectile[proj].ai[1] = 35;
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
-				Main.projectile[proj].owner = NPC.target;
 			}
 			for (int i = 0; i < TerrariaArrayID.AllOreBroadSword.Length; i++) {
 				Vector2 vec = -Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllOreBroadSword.Length, 90, i) * 20f;
-				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2);
+				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<SwordBroadAttackTwo>(), NPC.damage, 2, NPC.target);
 				Main.projectile[proj].ai[1] = 50;
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 					projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBroadSword[i];
-				Main.projectile[proj].owner = NPC.target;
 			}
 			NPC.ai[2]++;
 			BossDelayAttack(0, 0, 0);
@@ -244,18 +245,16 @@ namespace BossRush.Contents.NPCs {
 			int length = TerrariaArrayID.AllWoodBowPHM.Length;
 			for (int i = 0; i < length; i++) {
 				if (TerrariaArrayID.AllWoodBowPHM[i] == ItemID.AshWoodBow) {
-					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * 5, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);
+					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * 5, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2, NPC.target);
 					if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 						projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
-					Main.projectile[proj].owner = NPC.target;
 					continue;
 				}
 				if (i < length / 2) {
 					Vector2 velocity = (Vector2.UnitX * 2).Vector2DistributeEvenlyPlus(3, 45, i) * 5;
-					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);
+					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2, NPC.target);
 					if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 						projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
-					Main.projectile[proj].owner = NPC.target;
 					if (i == length / 2 - 1)
 						Main.projectile[proj].ai[1] = -MathHelper.PiOver4;
 					if (i == 0)
@@ -263,10 +262,9 @@ namespace BossRush.Contents.NPCs {
 				}
 				else {
 					Vector2 velocity = (-Vector2.UnitX * 2).Vector2DistributeEvenlyPlus(3, 45, i - 3) * 5;
-					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2);
+					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2, NPC.target);
 					if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 						projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
-					Main.projectile[proj].owner = NPC.target;
 					if (i == length - 1)
 						Main.projectile[proj].ai[1] = -MathHelper.PiOver4;
 					if (i == length / 2)
@@ -282,10 +280,9 @@ namespace BossRush.Contents.NPCs {
 				return;
 			}
 			Vector2 vec = Vector2.UnitY.Vector2DistributeEvenlyPlus(TerrariaArrayID.AllWoodBowPHM.Length, 120, (int)NPC.ai[2]) * 30f;
-			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<WoodBowAttackTwo>(), NPC.damage, 2);
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<WoodBowAttackTwo>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[(int)NPC.ai[2]];
-			Main.projectile[proj].owner = NPC.target;
 			NPC.ai[2]++;
 		}
 		private void ShootStaff(Player player) {
@@ -294,10 +291,9 @@ namespace BossRush.Contents.NPCs {
 				return;
 			}
 			Vector2 vec = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(MathHelper.Lerp(0, 360, percent)));
-			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<GemStaffAttackOne>(), NPC.damage, 2);
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<GemStaffAttackOne>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllGemStaffPHM[(int)NPC.ai[2]];
-			Main.projectile[proj].owner = NPC.target;
 			if (Main.projectile[proj].ModProjectile is BaseHostileGemStaff gemstaffProj)
 				gemstaffProj.ProjectileType = TerrariaArrayID.AllGemStafProjectilePHM[(int)NPC.ai[2]];
 			NPC.ai[2]++;
@@ -309,11 +305,10 @@ namespace BossRush.Contents.NPCs {
 			for (int i = 0; i < TerrariaArrayID.AllGemStaffPHM.Length; i++) {
 				float lerpXPos = MathHelper.Lerp(-30, 30, i / (TerrariaArrayID.AllGemStaffPHM.Length - 1f));
 				Vector2 PosTo = new Vector2(lerpXPos, -2);
-				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, PosTo, ModContent.ProjectileType<GemStaffAttackTwo>(), NPC.damage, 2);
+				int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, PosTo, ModContent.ProjectileType<GemStaffAttackTwo>(), NPC.damage, 2, NPC.target);
 				if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 					projectile.ItemIDtextureValue = TerrariaArrayID.AllGemStaffPHM[i];
 				Main.projectile[proj].ai[2] = i;
-				Main.projectile[proj].owner = NPC.target;
 				Main.projectile[proj].rotation = MathHelper.PiOver4 + MathHelper.PiOver2;
 				if (Main.projectile[proj].ModProjectile is BaseHostileGemStaff gemstaffProj)
 					gemstaffProj.ProjectileType = TerrariaArrayID.AllGemStafProjectilePHM[i];
@@ -325,10 +320,9 @@ namespace BossRush.Contents.NPCs {
 				return;
 			}
 			Vector2 vec = Vector2.UnitY.Vector2DistributeEvenly(8, 360, (int)NPC.ai[2]) * 10f;
-			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<OreBowAttackOne>(), NPC.damage, 2);
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, vec, ModContent.ProjectileType<OreBowAttackOne>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
-			Main.projectile[proj].owner = NPC.target;
 			Main.projectile[proj].ai[1] = 60;
 			NPC.ai[2]++;
 		}
@@ -342,12 +336,25 @@ namespace BossRush.Contents.NPCs {
 			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreBowPHM.Length - 1, 20)) {
 				return;
 			}
-			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<OreBowAttackTwo>(), NPC.damage, 2);
+			int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<OreBowAttackTwo>(), NPC.damage, 2, NPC.target);
 			if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllOreBowPHM[(int)NPC.ai[2]];
-			Main.projectile[proj].owner = NPC.target;
 			NPC.ai[2]++;
 		}
+		private void ShootGun(Player player) {
+			if (BossDelayAttack(BossRushUtils.ToSecond(6), 0, 0, 90)) {
+				return;
+			}
+			int minishark = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMinishark>(), 10, 2, NPC.target);
+			if (Main.projectile[minishark].ModProjectile is BaseHostileGun minisharkproj) {
+				minisharkproj.ItemIDtextureValue = ItemID.Minishark;
+			}
+			int Musket = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMusket>(), 40, 2, NPC.target);
+			if (Main.projectile[Musket].ModProjectile is BaseHostileGun musketproj) {
+				musketproj.ItemIDtextureValue = ItemID.Musket;
+			}
+		}
+
 		Vector2 lastPlayerPosition = Vector2.Zero;
 		private void BossCircleMovement(Player player, int delayValue, int AttackEndValue, out float percent) {
 			if (lastPlayerPosition == Vector2.Zero)
@@ -682,6 +689,65 @@ namespace BossRush.Contents.NPCs {
 				Projectile.ai[0] = 0;
 				Projectile.velocity = (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 2f;
 			}
+		}
+	}
+	public abstract class BaseHostileSpecialBow : ModProjectile {
+
+	}
+	public abstract class BaseHostileGun : ModProjectile {
+		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public int ItemIDtextureValue = 1;
+		public override bool PreDraw(ref Color lightColor) {
+			Main.instance.LoadProjectile(Projectile.type);
+			Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
+			Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+			Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+			Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+			return false;
+		}
+	}
+	public class HostileMinishark : BaseHostileGun {
+		public override void SetDefaults() {
+			Projectile.width = 54;
+			Projectile.height = 20;
+			Projectile.penetrate = -1;
+			Projectile.tileCollide = false;
+			Projectile.timeLeft = 300;
+		}
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
+			Vector2 AbovePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50), -400 + Main.rand.Next(-25,25));
+			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+			Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity((AbovePlayer - Projectile.Center).Length() * .05f);
+			if (++Projectile.ai[0] >= 8) {
+				Projectile.ai[0] = 0;
+				TowardPlayer = TowardPlayer.Vector2RotateByRandom(15);
+				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * Main.rand.NextFloat(7,11), ProjectileID.Bullet, Projectile.damage, 1);
+			}
+			Projectile.rotation = TowardPlayer.ToRotation();
+		}
+	}
+	public class HostileMusket : BaseHostileGun {
+		public override void SetDefaults() {
+			Projectile.width = 56;
+			Projectile.height = 18;
+			Projectile.penetrate = -1;
+			Projectile.tileCollide = false;
+			Projectile.timeLeft = 300;
+		}
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
+			Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600, Main.rand.Next(-10,10));
+			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+			Projectile.velocity = (BesidePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity((BesidePlayer - Projectile.Center).Length() * .05f);
+			if (++Projectile.ai[0] >= 30) {
+				Projectile.ai[0] = 0;
+				TowardPlayer = TowardPlayer.Vector2RotateByRandom(2);
+				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * 15f, ProjectileID.Bullet, Projectile.damage, 1);
+			}
+			Projectile.rotation = TowardPlayer.ToRotation();
 		}
 	}
 }

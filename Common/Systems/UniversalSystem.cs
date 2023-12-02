@@ -98,7 +98,7 @@ public class UniversalModPlayer : ModPlayer {
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (!item.consumable && item.damage > 0)
+		if (!item.consumable || item.damage > 0 || item.buffType != 0)
 			if (uiSystemInstance.userInterface.CurrentState == uiSystemInstance.DeCardUIState)
 				return false;
 			else if (uiSystemInstance.userInterface.CurrentState != null)

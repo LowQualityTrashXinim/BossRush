@@ -5,14 +5,16 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 	abstract class EnchantedProjectileBase : SynergyModProjectile {
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+		}
 		public override void SetDefaults() {
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
 			Projectile.friendly = true;
 			Projectile.width = Projectile.height = 32;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
 		public virtual void PostSetDefault() { }
 		int counter = 0;
@@ -167,7 +169,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 			target.immune[Projectile.owner] = 3;
 			Projectile.Center += Main.rand.NextVector2CircularEdge(200, 200);
 			Projectile.velocity = (target.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 30f;
-			Projectile.rotation = Projectile.velocity.ToRotation();
 			Projectile.damage += 2;
 		}
 	}

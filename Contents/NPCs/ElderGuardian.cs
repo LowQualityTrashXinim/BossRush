@@ -34,6 +34,7 @@ namespace BossRush.Contents.NPCs {
 			Player player = Main.player[NPC.target];
 			NPC.velocity = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 7;
 			if (!player.active || player.dead) {
+				NPC.FindClosestPlayer();
 				return;
 			}
 			if (NPC.ai[0] >= 100) {
