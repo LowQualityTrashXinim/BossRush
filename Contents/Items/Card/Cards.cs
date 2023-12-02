@@ -71,8 +71,8 @@ namespace BossRush.Contents.Items.Card {
 			modplayer.DefenseBase = 0;
 			modplayer.DamagePure = 0;
 			modplayer.CritStrikeChance = 0;
-			modplayer.CritDamage = 1;
-			modplayer.DefenseEffectiveness = 1;
+			modplayer.CritDamage = 0;
+			modplayer.DefenseEffectiveness = 0;
 			modplayer.DropAmountIncrease = 0;
 			modplayer.MinionSlot = 0;
 			modplayer.SentrySlot = 0;

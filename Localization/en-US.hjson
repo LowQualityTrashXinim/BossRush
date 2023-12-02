@@ -175,6 +175,8 @@ Mods: {
 			LeafProjectile.DisplayName: Leaf Projectile
 			Coconut.DisplayName: Coconut
 			WoodSwordProjectile.DisplayName: Wood Sword Projectile
+			HostileMinishark.DisplayName: Hostile Minishark
+			HostileMusket.DisplayName: Hostile Musket
 		}
 
 		NPCs: {

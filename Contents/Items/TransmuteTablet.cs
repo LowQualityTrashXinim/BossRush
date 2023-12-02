@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Card;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.Potion;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items;
 public class DeCardUIState : UIState {
@@ -66,6 +67,10 @@ public class UICardItemKill : UIImageButton {
 	private bool CheckPotion(Item item) {
 		if (item.buffType == 0)
 			return false;
+		if(item.ModItem is MysteriousPotion) {
+			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), Main.rand.Next(TerrariaArrayID.NonMovementPotion));
+			return true;
+		}
 		Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<MysteriousPotion>());
 		return true;
 	}

@@ -107,7 +107,7 @@ namespace BossRush.Contents.Items.Card {
 					statsNum = (statsNum + Main.rand.Next(7) + Main.rand.Next(1, 11)) * PostTierModify * multi * .01f;
 					break;
 			}
-			return statsNum;
+			return (float)Math.Round(statsNum,2);
 		}
 		public static PlayerStats SetStatsToAddBaseOnTier(List<PlayerStats> CardStats, int Tier) {
 			List<PlayerStats> stats = new List<PlayerStats>();

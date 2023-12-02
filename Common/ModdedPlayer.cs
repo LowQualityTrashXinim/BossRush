@@ -68,6 +68,7 @@ namespace BossRush.Common {
 			yield return new Item(ItemID.MoneyTrough);
 			yield return new Item(ItemID.PlatinumPickaxe);
 			yield return new Item(ItemID.PlatinumAxe);
+			yield return new Item(ItemID.CopperShortsword);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {

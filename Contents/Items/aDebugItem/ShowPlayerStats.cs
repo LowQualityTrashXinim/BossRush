@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using System.Collections.Generic;
@@ -16,16 +17,16 @@ namespace BossRush.Contents.Items.aDebugItem {
 			Player player = Main.LocalPlayer;
 			PlayerStatsHandle cardplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
-				$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
-				$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
-				$"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
-				$"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
-				$"\nGeneric Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100,1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
-				$"\nCrit damage : {Math.Round(cardplayer.CritDamage * 100)}%" +
+				$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
+				$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
+				$"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
+				$"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
+				$"\nGeneric Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
+				$"\nCrit damage : {Math.Round((cardplayer.CritDamage + cardplayer.UpdateCritDamage) * 100)}%" +
 				$"\nHP regen : {player.lifeRegen}" +
 				$"\nMana regen : {player.manaRegen}" +
 				$"\nDefense effectiveness : {player.DefenseEffectiveness.Value}" +
-				$"\nMovement speed : {Math.Round(player.moveSpeed,2)}" +
+				$"\nMovement speed : {Math.Round(player.moveSpeed, 2)}" +
 				$"\nJump speed : {player.jumpSpeedBoost}" +
 				$"\nMax minion : {player.maxMinions}" +
 				$"\nMax sentry/turret : {player.maxTurrets}" +

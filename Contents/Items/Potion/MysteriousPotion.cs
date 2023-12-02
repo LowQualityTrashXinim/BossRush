@@ -12,6 +12,8 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultToConsume(1, 1);
 			Item.maxStack = 99;
+			Item.buffType = ModContent.BuffType<MysteriousPotionBuff>();
+			Item.buffTime = 14400;
 			base.SetDefaults();
 		}
 		public override bool CanUseItem(Player player) {
@@ -19,7 +21,6 @@ namespace BossRush.Contents.Items.Potion {
 		}
 		public override bool? UseItem(Player player) {
 			StatsCalculation(player, player.GetModPlayer<MysteriousPotionPlayer>());
-			player.AddBuff(ModContent.BuffType<MysteriousPotionBuff>(), 14400);
 			return true;
 		}
 		public PlayerStats SetStatsToAdd(MysteriousPotionPlayer modplayer) {
@@ -180,7 +181,7 @@ namespace BossRush.Contents.Items.Potion {
 		public List<int> StatsMulti = new List<int>();
 		public int PotionPointAddition = 0;
 		public int PotionPoint() => Math.Clamp(5 + PotionPointAddition, 1, 999);
-		public float ToStatsNumFloat(PlayerStats stats, int multi) => lookupDictionary[stats] * multi * .01f;
+		public float ToStatsNumFloat(PlayerStats stats, int multi) => (float)Math.Round(lookupDictionary[stats] * multi * .01f, 2);
 		public int ToStatsNumInt(PlayerStats stats, int multi) => lookupDictionary[stats] * multi;
 		public override void ResetEffects() {
 			PotionPointAddition = 0;
