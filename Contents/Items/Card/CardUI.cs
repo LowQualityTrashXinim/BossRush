@@ -68,10 +68,6 @@ namespace BossRush.Contents.Items.Card {
 			}
 			int RandomNumberGen = Main.rand.Next(101 + modplayer.CardLuck / Tier);
 			if (RandomNumberGen < modplayer.CardLuck || hasMagicDeck && RandomNumberGen < modplayer.CardLuck * (2 + Tier)) {
-				//RandomNumberGen = Main.rand.Next(101);
-				//if (RandomNumberGen < modplayer.CardLuck - 100) {
-				//	CursedID = 0;
-				//}
 				PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
 				CardStats.Add(badstat);
 				CardStatsNumber.Add(statsCalculator(badstat, -Tier));
@@ -150,8 +146,6 @@ namespace BossRush.Contents.Items.Card {
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (IsMouseHovering) {
-			}
 			foreach (var element in Elements) {
 				if (element.IsMouseHovering && element is CardStatsIncreasesSelection cardUI) {
 					toolTip.Left = element.Left;
@@ -177,8 +171,6 @@ namespace BossRush.Contents.Items.Card {
 			string text = "";
 			for (int i = 0; i < CardStats.Count; i++) {
 				text += StatNumberAsText(CardStats[i], CardStatsNumber[i]);
-				//if (CurseID >= 1 && CurseID <= 12)
-				//	text += modplayer.CursedStringStats(CurseID);
 				if (i != CardStats.Count - 1)
 					text += "\n";
 			}

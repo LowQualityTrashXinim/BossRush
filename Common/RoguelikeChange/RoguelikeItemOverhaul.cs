@@ -2,15 +2,15 @@ using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Projectiles;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using System.Linq;
 using Terraria.ID;
 using Terraria;
 using System;
-using Terraria.Localization;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -58,7 +58,7 @@ namespace BossRush.Common.RoguelikeChange {
 					continue;
 				}
 				if (armorSet.Contains(item.type)) {
-					tooltips.Add(new TooltipLine(Mod, ArmorSet.ConvertIntoArmorSetFormat(armorSet), GetToolTip(item.type)));
+					tooltipLine.Text += "\n" + GetToolTip(item.type);
 					return;
 				}
 			}
@@ -84,97 +84,49 @@ namespace BossRush.Common.RoguelikeChange {
 				return Language.GetTextValue($"Mods.BossRush.ArmorSet.ShadewoodArmor");
 			}
 			if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
-				return "When in corruption biome :" +
-						"\nIncrease defense by 6" +
-						"\nIncrease movement speed by 35%" +
-						"\nIncrease damage by 5%" +
-						"\nYou leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.EbonwoodArmor");
 			}
 			if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves) {
-				return "Increase defense by 16" +
-					   "\nIncrease damage by 10%" +
-					   "\nWhen in underworld or underground caven level :" +
-					   "\nGetting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage" +
-					   "\nAll attacks inflicts On Fire! for 5 seconds" +
-					   "\nIncreased life regen by 1";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.AshWoodArmor");
 			}
 			if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings) {
-				return "Increase defenses by 10" +
-					   "\nGetting hit will drop down a rolling cactus that is friendly with 5s cool down" +
-					   "\nGetting hit will shoot out 8 cactus spike that is friendly deal 15 damage";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.CactusArmor");
 			}
 			if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves) {
-				return "Increase defense by 10" +
-					   "\nIncrease movement speed by 17%" +
-					   "\nJumping will leave a trail of sand that deal 12 damage";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.PalmWoodArmor");
 			}
 			if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings) {
-				return "When in overworld :" +
-					   "\nGrant well fed buff for 5s on getting hit" +
-					   "\nhitting enemies has 25% to inflict pumpkin overdose" +
-					   "\ninflicting the same debuff to an enemy who already has it " +
-					   "\ncauses an explosion, dealing 5 + 5% of damage dealt" +
-					   "\nWhile below 20% HP, you gain 5x health regen";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.PumpkinArmor");
 			}
 			if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves) {
-				return "Increase defense by 5" +
-						"\nIncrease movement speed by 21%" +
-						"\nVanilla tin weapon are stronger";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.TinArmor");
 			}
 			if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves) {
-				return "Increase defense by 7" +
-						"\nYour attack can inflict irradiation poison" +
-						"\nLead irradiation increase enemy defense by 20 but deal 50 DoT";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.LeadArmor");
 			}
 			if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves) {
-				return "Increase movement speed by 25%" +
-					   "\nEvery 50 hit to enemy give you the over charged for 5s" +
-					   "\nDuring the rain, your hit requirement reduce by half" +
-					   "\nOver charged: Increases movement speed, weapon speed, damage by 10%" +
-					   "\nCreate a electric charge that target the closest enemy deal 30 damage";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.CopperArmor");
 			}
 			if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
-				return "Increase movement speed by 35%" +
-						"\nAttacking an enemy summons 6 hallow Swords that deals 12 damage with 4 seconds cooldown" +
-						"\nDuring the day :" +
-						"\nIncreases damage by 15%" +
-						"\nIncreases defense by 12" +
-						"\nWhen in Hallow biome:" +
-						"\n Hallow Swords deal 35 more damage";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.PearlArmor");
 			}
 			if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
-				return "Increase damage reduction 2.5%" +
-					   "\nIncrease defense effectivness by 10%" +
-					   "\nIncrease damage by 5%" +
-					   "\nDecrease movement speed 5%" +
-					   "\nWhile under 50% HP, gain 25 bonus defense";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.IronArmor");
 			}
 			if (type == ItemID.SilverHelmet || type == ItemID.SilverChainmail || type == ItemID.SilverGreaves) {
-				return "During the day :" +
-					   "\nGain 10 defense" +
-					   "\nDuring the night :" +
-					   "\nIncrease damage by 10%" +
-					   "\nAt full life, these effects are multiply by 2";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.SilverArmor");
 			}
 			if (type == ItemID.TungstenHelmet || type == ItemID.TungstenChainmail || type == ItemID.TungstenGreaves) {
-				return "Increase defense by 15" +
-					   "\nWhen at full hp :" +
-					   "\nReduce your defense down to 0" +
-					   "\nIncrease speed by 30%" +
-					   "\nThe closer your enemy is, the more damage increases";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.TungstenArmor");
 			}
 			if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves) {
-				return "Your attack have 15% to inflict Midas for 10 seconds" +
-					   "\nAttacking enemies with midas debuff will : " +
-					   "\nDeal additional damage based on their defense";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.GoldArmor");
 			}
 			if (type == ItemID.PlatinumHelmet || type == ItemID.PlatinumChainmail || type == ItemID.PlatinumGreaves) {
-				return "Increase weapon uses speed by 35%" +
-					   "\nAttacking too much will lit on fire";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.PlatinumArmor");
 			}
 			if (type == ItemID.JungleHat || type == ItemID.JungleShirt || type == ItemID.JunglePants) {
-				return "When using magic weapon, you will shoot out magical leaf hover around player up to max of 10" +
-					   "\nWhen there are 10 leafs exist in world, the leaf will home into the closest enemy when possible";
+				return Language.GetTextValue($"Mods.BossRush.ArmorSet.JungleArmor");
 			}
 			return "";
 		}
@@ -234,7 +186,6 @@ namespace BossRush.Common.RoguelikeChange {
 				player.statDefense += 16;
 				player.GetDamage(DamageClass.Generic) += .1f;
 				if (player.ZoneUnderworldHeight || player.ZoneUnderworldHeight) {
-					player.lifeRegen++;
 					modplayer.AshWoodArmor = true;
 				}
 				return true;
@@ -279,10 +230,8 @@ namespace BossRush.Common.RoguelikeChange {
 				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves)) {
-				player.moveSpeed -= 0.05f;
-				player.endurance += 0.05f;
-				player.DefenseEffectiveness *= 1.1f;
-				player.GetDamage(DamageClass.Generic) += 0.05f;
+				player.endurance += 0.1f;
+				player.DefenseEffectiveness *= 1.25f;
 				if (player.statLife <= player.statLifeMax * 0.5f) {
 					player.statDefense += 25;
 				}
@@ -294,10 +243,11 @@ namespace BossRush.Common.RoguelikeChange {
 				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves)) {
+				bool IsAbover = player.statLife < player.statLifeMax2 * .75f;
 				if (Main.dayTime)
-					player.statDefense += player.statLife < player.statLifeMax2 ? 10 : 20;
+					player.statDefense += IsAbover ? 10 : 20;
 				else
-					player.GetDamage(DamageClass.Generic) += player.statLife < player.statLifeMax2 ? .1f : .2f;
+					player.GetDamage(DamageClass.Generic) += IsAbover ? .1f : .2f;
 				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TungstenHelmet, ItemID.TungstenChainmail, ItemID.TungstenGreaves)) {
@@ -355,6 +305,7 @@ namespace BossRush.Common.RoguelikeChange {
 		public bool CactusArmor = false;
 		int CactusArmorCD = 0;
 		public bool PalmWoodArmor = false;
+		public int PalmWoodArmor_SandCounter = 0;
 		public bool PumpkinArmor = false;
 		public bool AshWoodArmor = false;
 		public bool CopperArmor = false;
@@ -469,6 +420,14 @@ namespace BossRush.Common.RoguelikeChange {
 					}
 					if (Player.ownedProjectileCounts[ModContent.ProjectileType<LeafProjectile>()] < 10) {
 						Projectile.NewProjectile(source, Player.Center, Vector2.Zero, ModContent.ProjectileType<LeafProjectile>(), (int)(damage * 1.25f), knockback, Player.whoAmI, indexThatIsMissing);
+					}
+				}
+			}
+			if (PalmWoodArmor) {
+				if (++PalmWoodArmor_SandCounter >= 7) {
+					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SandProjectile>(), (int)(damage * .5f), knockback, Player.whoAmI);
+					if (PalmWoodArmor_SandCounter >= 10) {
+						PalmWoodArmor_SandCounter = 0;
 					}
 				}
 			}
