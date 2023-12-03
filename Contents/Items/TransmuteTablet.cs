@@ -16,7 +16,7 @@ namespace BossRush.Contents.Items;
 public class DeCardUIState : UIState {
 	public override void OnActivate() {
 		Elements.Clear();
-		var cardUI = new UICardItemKill(TextureAssets.InventoryBack);
+		var cardUI = new TransmutationUI(TextureAssets.InventoryBack);
 		cardUI.UISetWidthHeight(52, 52);
 		cardUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(0, -80), new Vector2(26, 26));
 		Append(cardUI);
@@ -38,8 +38,8 @@ public class TransmuteTablet : ModItem {
 		return false;
 	}
 }
-public class UICardItemKill : UIImageButton {
-	public UICardItemKill(Asset<Texture2D> texture) : base(texture) {
+public class TransmutationUI : UIImageButton {
+	public TransmutationUI(Asset<Texture2D> texture) : base(texture) {
 	}
 	public override void LeftMouseDown(UIMouseEvent evt) {
 		var item = Main.mouseItem;
