@@ -49,16 +49,7 @@ namespace BossRush {
 		public static int AmountOfModCurrentlyEnable() {
 			int HowManyModIsEnable = ModLoader.Mods.Length;
 			if (Main.LocalPlayer.IsDebugPlayer()) {
-				if (ModLoader.HasMod("ModdersToolkit"))
-					HowManyModIsEnable--;
-				if (ModLoader.HasMod("RecipeBrowser"))
-					HowManyModIsEnable--;
-				if (ModLoader.HasMod("HEROsMod"))
-					HowManyModIsEnable--;
-				if (ModLoader.HasMod("CheatSheet"))
-					HowManyModIsEnable--;
-				if (ModLoader.HasMod("HPAware"))
-					HowManyModIsEnable--;
+				return 1;
 			}
 			//Below are special mod that we partner or will later on partner, currently all these mod are the mod that I'm working with.
 			//By all mean, do not speak of this to outsider, only announce or say that we don't want to do mod addon.

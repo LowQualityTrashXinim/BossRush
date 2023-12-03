@@ -1,19 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.ChallengeMode {
 	internal class ChallengeModeGlobalNPC : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
-			// TODO : remember to un-comment this before release
-			//int amount = BossRushUtils.AmountOfModCurrentlyEnable();
-			//entity.lifeMax *= amount;
-			//entity.life = entity.lifeMax;
-			//entity.damage *= amount;
-			//entity.defense *= amount;
+			int amount = BossRushUtils.AmountOfModCurrentlyEnable();
+			entity.lifeMax *= amount;
+			entity.life = entity.lifeMax;
+			entity.damage *= amount;
+			entity.defense *= amount;
 		}
 		public override bool PreAI(NPC npc) {
 			return true;

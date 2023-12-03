@@ -67,9 +67,23 @@ public class TransmutationUI : UIImageButton {
 	private bool CheckPotion(Item item) {
 		if (item.buffType == 0)
 			return false;
-		if(item.ModItem is MysteriousPotion) {
+		if (item.ModItem is MysteriousPotion) {
+			if (item.stack > 1) {
+				item.stack--;
+			}
+			else {
+				Main.mouseItem.TurnToAir();
+				Main.LocalPlayer.inventory[58].TurnToAir();
+			}
 			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), Main.rand.Next(TerrariaArrayID.NonMovementPotion));
 			return true;
+		}
+		if (item.stack > 1) {
+			item.stack--;
+		}
+		else {
+			Main.mouseItem.TurnToAir();
+			Main.LocalPlayer.inventory[58].TurnToAir();
 		}
 		Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<MysteriousPotion>());
 		return true;
