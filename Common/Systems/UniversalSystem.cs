@@ -81,8 +81,9 @@ internal class UniversalSystem : ModSystem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null)
+		if (uiSystemInstance.userInterface.CurrentState != null) {
 			uiSystemInstance.userInterface.SetState(null);
+		}
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (UniversalSystem.EnchantmentKeyBind.JustPressed) {
@@ -92,17 +93,21 @@ public class UniversalModPlayer : ModPlayer {
 				uiSystemInstance.Enchant_uiState.WhoAmI = Player.whoAmI;
 				uiSystemInstance.userInterface.SetState(uiSystemInstance.Enchant_uiState);
 			}
-			else
+			else {
 				uiSystemInstance.userInterface.SetState(null);
+			}
 		}
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (!item.consumable || item.damage > 0 || item.buffType != 0)
-			if (uiSystemInstance.userInterface.CurrentState == uiSystemInstance.DeCardUIState)
+		if (!item.consumable || item.damage > 0 || item.buffType != 0) {
+			if (uiSystemInstance.userInterface.CurrentState == uiSystemInstance.DeCardUIState) {
 				return false;
-			else if (uiSystemInstance.userInterface.CurrentState != null)
+			}
+			else if (uiSystemInstance.userInterface.CurrentState != null) {
 				return false;
+			}
+		}
 		return base.CanUseItem(item);
 	}
 }
