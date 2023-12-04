@@ -167,11 +167,9 @@ namespace BossRush {
 		}
 		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
 		public static int ToSecond(float second) => (int)(second * 60);
-		public static int ToIntValue(this StatModifier modifier) => (int)((modifier.Base + 1) * modifier.Additive * modifier.Multiplicative + modifier.Flat);
+		public static int ToIntValue(this StatModifier modifier) => (int)(modifier.ApplyTo(1));
 		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1) 
-			=> round == -1 ?  
-			((modifier.Base + 1) * modifier.Additive * modifier.Multiplicative + modifier.Flat) * additionalMulti :
-			(float)Math.Round(((modifier.Base + 1) * modifier.Additive * modifier.Multiplicative + modifier.Flat) * additionalMulti, round);
+			=> round == -1 ? modifier.ApplyTo(1) * additionalMulti : MathF.Round(modifier.ApplyTo(1) * additionalMulti, round);
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
 		public static float OutExpo(float t) => 1 - InExpo(1 - t);
 		public static float InOutExpo(float t) {
@@ -286,15 +284,6 @@ namespace BossRush {
 			if (disXWidth * disXWidth + disYHeight * disYHeight < maxDistanceDouble)
 				return true;
 			return false;
-		}
-		public static bool InWorld(int x, int y) => x >= 0 && y >= 0 && x < Main.maxTilesX && y < Main.maxTilesY;
-		public static void FastPlaceTile(int i, int j, ushort TileType) {
-			if (InWorld(i, j)) {
-				return;
-			}
-			Tile tile = Main.tile[i, j];
-			tile.TileType = TileType;
-			tile.Get<TileWallWireStateData>().HasTile = true;
 		}
 	}
 	/// <summary>
