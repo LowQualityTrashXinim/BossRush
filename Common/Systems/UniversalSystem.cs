@@ -5,10 +5,10 @@ using Terraria.GameInput;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using BossRush.Contents.WeaponEnchantment;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Card;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common.Systems;
 internal class UniversalSystem : ModSystem {

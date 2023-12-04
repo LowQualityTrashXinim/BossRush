@@ -63,7 +63,7 @@ namespace BossRush.Contents.Perks {
 					UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
 					{ new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
 						 new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
-						 new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT))
+						 new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<PerkUIState>("SuppliesDrop")))
 					});
 					buttonWeapon.UISetWidthHeight(52, 52);
 					buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
