@@ -7,21 +7,13 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.ChallengeMode {
 	internal class ChallengeModeGlobalNPC : GlobalNPC {
-		public override void SetDefaults(NPC entity) {
-			int amount = BossRushUtils.AmountOfModCurrentlyEnable();
-			entity.lifeMax *= amount;
-			entity.life = entity.lifeMax;
-			entity.damage *= amount;
-			entity.defense *= amount;
-		}
 		public override bool PreAI(NPC npc) {
 			return true;
 		}
 		public override void AI(NPC npc) {
-			//if (npc.type == NPCID.KingSlime)
-			//{
-			//    KingSlimeAI(npc);
-			//}
+			if (npc.type == NPCID.KingSlime) {
+				KingSlimeAI(npc);
+			}
 			base.AI(npc);
 		}
 		private void KingSlimeAI(NPC npc) {

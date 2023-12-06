@@ -11,15 +11,16 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.Musket;
 		}
-		public override void Update(Player player) {
+		public override void UpdateHeldItem(Item item, Player player) {
 			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
 			crit += 5;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			if (item.DamageType == DamageClass.Ranged)
+			if (item.DamageType == DamageClass.Ranged) {
 				damage += .05f;
+			}
 			damage += .1f;
 		}
 	}
@@ -75,8 +76,8 @@ namespace BossRush.Contents.WeaponEnchantment {
 			if (++counter >= 15) {
 				type = item.useAmmo == AmmoID.Bullet ? type : ProjectileID.Bullet;
 				for (int i = 0; i < 4; i++) {
-					Projectile.NewProjectile(source, position, 
-						velocity.Vector2RandomSpread(2,Main.rand.NextFloat(.9f, 1.1f)).Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI);
+					Projectile.NewProjectile(source, position,
+						velocity.Vector2RandomSpread(2, Main.rand.NextFloat(.9f, 1.1f)).Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI);
 				}
 				counter = 0;
 			}
@@ -286,12 +287,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			damage += .05f;
-			if(item.DamageType == DamageClass.Ranged) {
+			if (item.DamageType == DamageClass.Ranged) {
 				damage += .1f;
 			}
 		}
 		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if(item.useAmmo == AmmoID.Arrow) {
+			if (item.useAmmo == AmmoID.Arrow) {
 				velocity *= 1.1f;
 			}
 		}

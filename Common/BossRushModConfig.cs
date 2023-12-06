@@ -5,7 +5,7 @@ namespace BossRush.Common {
 	public class BossRushModConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[DefaultValue(true)]
+		[DefaultValue(false)]
 		public bool AutoHardCore { get; set; }
 
 		[DefaultValue(true)]

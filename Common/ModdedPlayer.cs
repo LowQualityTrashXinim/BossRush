@@ -6,6 +6,7 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
@@ -22,12 +23,18 @@ namespace BossRush.Common {
 		public int gitGud = 0;
 		public int HowManyBossIsAlive = 0;
 		public override void OnEnterWorld() {
-			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore && !Player.IsDebugPlayer())
+			if (Player.IsDebugPlayer()) {
+				Main.NewText("You have enter debug mode", Color.Red);
+				return;
+			}
+			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore && !Player.IsDebugPlayer()) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
+			}
+			else if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
+				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature");
+			}
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
-			if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature)
-				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature");
 			if (Main.ActiveWorldFileData.GameMode == 0) {
 				Main.NewText("Yo this guys playing on easy mode lol, skill issues spotted !");
 			}

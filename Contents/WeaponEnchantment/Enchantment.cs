@@ -21,6 +21,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
 		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 		public virtual void Update(Player player) { }
+		public virtual void UpdateHeldItem(Item item, Player player) { }
 		public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
 		public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) { }
 		public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }

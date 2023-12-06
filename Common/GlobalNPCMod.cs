@@ -12,6 +12,17 @@ using Terraria;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
+		public override void SetDefaults(NPC entity) {
+			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+			if (!config.SynergyMode && !config.EnableChallengeMode) {
+				return;
+			}
+			int amount = BossRushUtils.AmountOfModCurrentlyEnable();
+			entity.lifeMax *= amount;
+			entity.life = entity.lifeMax;
+			entity.damage *= amount;
+			entity.defense *= amount;
+		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			int lifecrystal = 1;
 			int manacrystal = 1;

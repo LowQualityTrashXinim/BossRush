@@ -269,8 +269,9 @@ namespace BossRush.Common.RoguelikeChange {
 			return false;
 		}
 		public override void UpdateEquip(Item item, Player player) {
-			if (item.type == ItemID.NightVisionHelmet)
+			if (item.type == ItemID.NightVisionHelmet) {
 				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+			}
 			if (item.type == ItemID.VikingHelmet) {
 				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
 			}
