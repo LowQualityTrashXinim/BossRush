@@ -343,6 +343,25 @@ namespace BossRush.Common.RoguelikeChange {
 			JungleArmor = false;
 			RoguelikeOverhaul_VikingHelmet = false;
 		}
+		public override void UpdateDead() {
+			WoodArmor = false;
+			BorealWoodArmor = false;
+			RichMahoganyArmor = false;
+			ShadewoodArmor = false;
+			EbonWoodArmor = false;
+			CactusArmor = false;
+			PalmWoodArmor = false;
+			PumpkinArmor = false;
+			AshWoodArmor = false;
+			CopperArmor = false;
+			GoldArmor = false;
+			pearlWoodArmor = false;
+			TinArmor = false;
+			LeadArmor = false;
+			TungstenArmor = false;
+			PlatinumArmor = false;
+			JungleArmor = false;
+		}
 		public override void PreUpdate() {
 			ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
 			EbonWoodArmorCD = BossRushUtils.CoolDown(EbonWoodArmorCD);

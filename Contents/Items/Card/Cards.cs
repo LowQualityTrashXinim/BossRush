@@ -200,7 +200,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 25;
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			float radius = modplayer.AuraRadius;
@@ -220,7 +220,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 25;
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
@@ -235,7 +235,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 10;
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			player.Heal(1);
@@ -246,7 +246,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 10;
-			Item.rare = 1;
+			Item.rare = ItemRarityID.Blue;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			player.Heal(10);

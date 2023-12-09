@@ -16,6 +16,8 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
+using System.Diagnostics.Metrics;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -96,6 +98,9 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool MagicGrenade_MagicMissle = false;
 
 		public bool DeathBySpark_AleThrowingGlove = false;
+
+		public int SuperShortSword_Counter = 0;
+		public int SuperShortSword_IsInAltAttack = 8;
 
 		public int HeavenSmg_Stacks = 0;
 		public override void ResetEffects() {
@@ -182,6 +187,20 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			if (item.type != ModContent.ItemType<IceStorm>()) {
 				IceStorm_SpeedMultiplier = 1;
+			}
+			if (item.type == ModContent.ItemType<SuperShortSword>()) {
+				if (Player.ItemAnimationActive)
+					return;
+				if (SuperShortSword_IsInAltAttack < 8)
+					return;
+				if (SuperShortSword_Counter == MathHelper.TwoPi * 100 || SuperShortSword_Counter == -MathHelper.TwoPi * 100) {
+					SuperShortSword_Counter = 0;
+				}
+				SuperShortSword_Counter += Player.direction;
+			}
+			else {
+				SuperShortSword_Counter = 0;
+				SuperShortSword_IsInAltAttack = 8;
 			}
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -399,7 +418,7 @@ namespace BossRush.Contents.Items.Weapon {
 		/// <param name="modplayer"></param>
 		/// <param name="runAI"></param>
 		public virtual void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) { runAI = true; }
-		public override void AI() {
+		public override sealed void AI() {
 			Player player = Main.player[Projectile.owner];
 			SynergyAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
 			SpawnDustPostAI(player);

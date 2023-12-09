@@ -58,7 +58,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 		int ExtraUpdaterReCounter = 0;
 		float speedMultiplier = 2;
 		int AlphaAdditionalCounter = 255;
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			ExtraUpdateRecounter();
 			Projectile.velocity = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * speedMultiplier;
 			Projectile.rotation += MathHelper.ToRadians(.5f);
@@ -143,7 +143,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 		}
 		int ExtraUpdaterReCounter = 0;
 		float speedMultiplier = 2;
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.scale = .5f;
 			ExtraUpdateRecounter();
 			AttackHomeIn();

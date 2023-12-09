@@ -88,7 +88,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Projectile.friendly = true;
 			Projectile.hide = true;
 		}
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			for (int i = 0; i < 3; i++) {
 				int dust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemDiamond);
 				Main.dust[dust].noGravity = true;

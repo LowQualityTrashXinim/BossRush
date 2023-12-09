@@ -177,6 +177,7 @@ Mods: {
 			WoodSwordProjectile.DisplayName: Wood Sword Projectile
 			HostileMinishark.DisplayName: Hostile Minishark
 			HostileMusket.DisplayName: Hostile Musket
+			StructureMakerProj.DisplayName: Structure Maker Proj
 		}
 
 		NPCs: {
@@ -1632,6 +1633,11 @@ Mods: {
 
 			WeakHealingCard: {
 				DisplayName: Weak Healing Card
+				Tooltip: ""
+			}
+
+			StructureMaker: {
+				DisplayName: Structure Maker
 				Tooltip: ""
 			}
 		}

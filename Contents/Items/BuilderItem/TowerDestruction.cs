@@ -1,8 +1,9 @@
-﻿using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.BuilderItem {
 	internal class TowerDestruction : ModItem {
@@ -56,14 +57,16 @@ namespace BossRush.Contents.Items.BuilderItem {
 		int explosionRadiusY = 10;
 		public override void OnKill(int timeLeft) {
 			SpawnExplosionDust();
-			float tileX = Projectile.position.X * .0625f; float tileY = Projectile.position.Y * .0625f;
+			int tileX = (int)(Projectile.position.X * .0625f);
+			int tileY = (int)(Projectile.position.Y * .0625f);
 			int minX = directionOfMoving ? -3 : -explosionRadiusX;
 			int maxX = directionOfMoving ? explosionRadiusX : 3;
 			for (int x = minX; x < maxX; x++) {
-				int xPos = (int)(x + tileX);
+				int xPos = x + tileX;
 				for (int y = -explosionRadiusY; y < explosionRadiusY; y++) {
-					int yPos = (int)(y + tileY);
-					if (canKillTiles(xPos, yPos)) {
+					int yPos = y + tileY;
+					if (WorldGen.CanKillTile(xPos, yPos, WorldGen.SpecialKillTileContext.None)) {
+						//GenerationHelper.FastRemoveTile(xPos, yPos);
 						WorldGen.KillTile(xPos, yPos, false, false, true);
 						if (Main.tile[xPos, yPos] != null && Main.netMode != NetmodeID.SinglePlayer) {
 							NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, xPos, yPos, 0f, 0, 0, 0);
@@ -91,36 +94,34 @@ namespace BossRush.Contents.Items.BuilderItem {
 				}
 			}
 		}
-		public bool canKillTiles(int i, int j) {
-			if (Main.tile[i, j] != null) {
-				if (Main.tileDungeon[Main.tile[i, j].TileType]
-					|| Main.tile[i, j].TileType == 88
-					|| Main.tile[i, j].TileType == 21
-					|| Main.tile[i, j].TileType == 26
-					|| Main.tile[i, j].TileType == 107
-					|| Main.tile[i, j].TileType == 108
-					|| Main.tile[i, j].TileType == 111
-					|| Main.tile[i, j].TileType == 226
-					|| Main.tile[i, j].TileType == 237
-					|| Main.tile[i, j].TileType == 221
-					|| Main.tile[i, j].TileType == 222
-					|| Main.tile[i, j].TileType == 223
-					|| Main.tile[i, j].TileType == 211
-					|| Main.tile[i, j].TileType == 404) {
-					return false;
-				}
-				if (!TileLoader.CanExplode(i, j)) {
-					return false;
-				}
-			}
-			return true;
-		}
+		//public bool canKillTiles(int i, int j) {
+		//	if (Main.tile[i, j] != null) {
+		//		if (Main.tileDungeon[Main.tile[i, j].TileType]
+		//			|| Main.tile[i, j].TileType == TileID.Dressers
+		//			|| Main.tile[i, j].TileType == TileID.Containers
+		//			|| Main.tile[i, j].TileType == TileID.DemonAltar
+		//			|| Main.tile[i, j].TileType == 107
+		//			|| Main.tile[i, j].TileType == 108
+		//			|| Main.tile[i, j].TileType == 111
+		//			|| Main.tile[i, j].TileType == 226
+		//			|| Main.tile[i, j].TileType == 237
+		//			|| Main.tile[i, j].TileType == 221
+		//			|| Main.tile[i, j].TileType == 222
+		//			|| Main.tile[i, j].TileType == 223
+		//			|| Main.tile[i, j].TileType == 211
+		//			|| Main.tile[i, j].TileType == 404) {
+		//			return false;
+		//		}
+		//		if (!TileLoader.CanExplode(i, j)) {
+		//			return false;
+		//		}
+		//	}
+		//	return true;
+		//}
 		public void killWall(int i, int j) {
 			for (int x = i - 1; x <= i + 1; x++) {
 				for (int y = j - 1; y <= j + 1; y++) {
-					if (Main.tile[x, y] != null
-						&& Main.tile[x, y].WallType > 0
-						&& WallLoader.CanExplode(x, y, Main.tile[x, y].WallType)) {
+					if (Main.tile[x, y] != null && Main.tile[x, y].WallType > 0 && Main.tile[i, j].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer) {
 						WorldGen.KillWall(x, y, false);
 						if (Main.tile[x, y].WallType == 0 && Main.netMode != NetmodeID.SinglePlayer) {
 							NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 2, x, y, 0f, 0, 0, 0);

@@ -97,7 +97,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity.Vector2RotateByRandom(5f), ProjectileID.Bat, (int)(Projectile.damage * .5f), 0, Projectile.owner);
 			}
 		}
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.ai[0] += 1f;
 			if (Projectile.ai[0] > 10) {
 				Projectile.netUpdate = true;

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.BuffAndDebuff;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BossRush.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {
@@ -716,14 +717,14 @@ namespace BossRush.Contents.NPCs {
 		}
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
-			Vector2 AbovePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50), -400 + Main.rand.Next(-25,25));
+			Vector2 AbovePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50), -400 + Main.rand.Next(-25, 25));
 			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
 			Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
 			Projectile.velocity = Projectile.velocity.LimitedVelocity((AbovePlayer - Projectile.Center).Length() * .05f);
 			if (++Projectile.ai[0] >= 8) {
 				Projectile.ai[0] = 0;
 				TowardPlayer = TowardPlayer.Vector2RotateByRandom(15);
-				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * Main.rand.NextFloat(7,11), ProjectileID.Bullet, Projectile.damage, 1);
+				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage, 1);
 			}
 			Projectile.rotation = TowardPlayer.ToRotation();
 		}
@@ -738,7 +739,7 @@ namespace BossRush.Contents.NPCs {
 		}
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
-			Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600, Main.rand.Next(-10,10));
+			Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600, Main.rand.Next(-10, 10));
 			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
 			Projectile.velocity = (BesidePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
 			Projectile.velocity = Projectile.velocity.LimitedVelocity((BesidePlayer - Projectile.Center).Length() * .05f);
