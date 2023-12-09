@@ -32,6 +32,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 		Vector2 RotatePosition = Vector2.Zero;
 		Vector2 FixedMousePosition;
 		Vector2 FixedProjectilePos;
+		Vector2 HitNPCPos = Vector2.Zero;
 		int timeLeft = 999;
 		bool RightMousePressed = false;
 		bool RightMouseReleased = false;
@@ -46,14 +47,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 				return;
 			}
 			else {
-				if (modplayer.SuperShortSword_IsInAltAttack >= 8) {
-					if (!RightMousePressed)
-						RightMousePressed = Main.mouseRight;
-					RightMouseReleased = true;
-					NormalAttackHandle(player);
-				}
+				if (!RightMousePressed)
+					RightMousePressed = Main.mouseRight;
+				RightMouseReleased = true;
+				NormalAttackHandle(player);
 			}
-			if (timeLeft == 0) {
+			if (timeLeft <= 0) {
 				timeLeft = 999;
 			}
 			runAI = !player.ItemAnimationActive;
@@ -101,8 +100,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 				}
 			}
 		}
+		bool HasHitNPC = false;
 		private void NormalAttackHandle(Player player) {
 			if (player.ItemAnimationJustStarted) {
+				HasHitNPC = false;
+				HitNPCPos = Vector2.Zero;
 				FixedMousePosition = Main.MouseWorld;
 				FixedProjectilePos = Projectile.Center;
 			}
@@ -121,9 +123,15 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 				else {
 					progress = (duration - timeLeft) / halfProgress;
 				}
-				Projectile.rotation = ToMouse.ToRotation() + MathHelper.PiOver4;
 				float length = PositionToMouse.Length();
-				Projectile.Center = RotatePosition + Vector2.SmoothStep(ToMouse, ToMouse * length, progress);
+				if (HasHitNPC) {
+					Projectile.Center = Vector2.SmoothStep(RotatePosition, HitNPCPos, progress);
+					Projectile.rotation = (RotatePosition - HitNPCPos).ToRotation() + MathHelper.PiOver4;
+				}
+				else {
+					Projectile.Center = RotatePosition + Vector2.SmoothStep(ToMouse, ToMouse * length, progress);
+					Projectile.rotation = ToMouse.ToRotation() + MathHelper.PiOver4;
+				}
 				timeLeft--;
 			}
 		}
@@ -133,6 +141,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 			Vector2 SafeDegree = Main.MouseWorld - Projectile.Center;
 			if (!player.ItemAnimationActive) Projectile.rotation = SafeDegree.ToRotation() + MathHelper.PiOver4;
 			Projectile.Center = RotatePosition;
+		}
+		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+			if (!HasHitNPC) {
+				HitNPCPos = npc.Center;
+				HasHitNPC = true;
+			}
 		}
 		public Vector2 getPosToReturn(Player player, float offSet, int Counter, float Distance = 50) => player.Center + Vector2.One.RotatedBy(offSet + Counter * 0.05f) * Distance;
 		public override bool PreDraw(ref Color lightColor) {
