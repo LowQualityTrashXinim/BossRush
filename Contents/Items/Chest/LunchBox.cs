@@ -1,7 +1,7 @@
-﻿using BossRush.Common.Utils;
-using Terraria;
-using Terraria.ModLoader;
+﻿using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class LunchBox : ModItem {
@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void RightClick(Player player) {
 			var entitysource = player.GetSource_OpenItem(Type);
 
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 2; i++) {
 				int Chooser = Main.rand.Next(new int[] { Main.rand.Next(TerrariaArrayID.WeakDrink), Main.rand.Next(TerrariaArrayID.Smallmeal), Main.rand.Next(TerrariaArrayID.fruit) });
 				if (Main.hardMode) {
 					Chooser = Main.rand.Next(new int[] { Main.rand.Next(TerrariaArrayID.MediumDrink), Main.rand.Next(TerrariaArrayID.MediumMeal) });

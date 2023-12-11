@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using Microsoft.Xna.Framework.Graphics;

@@ -1,10 +1,9 @@
 ﻿using System;
 using Terraria;
-using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Items.aDebugItem {
 	internal class ShowPlayerStats : ModItem {

@@ -1564,11 +1564,9 @@ Mods: {
 					Increases your hp by 20%
 					[[c/8888ea:Active]]
 					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
-					While you have [c/b7bf5c:Swift Steal] :
-					Increases your movement speed by 25% and attack speed by 10% 
-					And increases your damage by 1 for each 5 health you currently have
-					You can get an additional stack every 2.5 seconds when hitting enemy
-					A stack increases your max health by 5% and critical strike chance by 3% (capped at 6 stack)
+					During the [c/b7bf5c:Swift Steal] :
+					Increases your damage by 1 for each 5 health you currently have
+					Hitting a enemy will increases your max health by 5% and movement speed by 10% (max out at 6 time with 2s coold down between hit)
 					After the buff end, you receive 60 second cooldown before you can receive [c/b7bf5c:Swift Steal] again
 					'''
 			}
@@ -1578,12 +1576,13 @@ Mods: {
 				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
-					Increases your attack speed by 15%
+					Increases inflicting debuff time by 25%
 					[[c/8888ea:Active]]
 					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
 					[c/b7bf5c:Samsara of Retribution] debuff : deal 10 damage over time
 					Hitting enemy that already have [c/b7bf5c:Samsara of Retribution] will strengthen the debuff
 					Dealing critical strike to enemy that have [c/b7bf5c:Samsara of Retribution] deal extra damage
+					You will receive [c/b7bf5c:Samsara of Retribution Buff] which increases your damage base on how many you hit for 15s ( with 25s cooldown )
 					'''
 			}
 
@@ -1806,6 +1805,11 @@ Mods: {
 			SwiftSteal_Buff: {
 				DisplayName: Swift Steal
 				Description: Increases health and crit chance
+			}
+
+			Samsara_of_Retribution_Buff: {
+				DisplayName: Samsara_of_ Retribution_ Buff
+				Description: Mods.BossRush.Buffs.Samsara_of_Retribution_Buff.Description
 			}
 		}
 

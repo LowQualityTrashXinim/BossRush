@@ -128,6 +128,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class PeaceWithGod : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<PeaceWithGod>();
 			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {

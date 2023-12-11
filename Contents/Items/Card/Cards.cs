@@ -4,6 +4,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {

@@ -120,7 +120,7 @@ ProjectileDuplication: {
 }
 
 SpeedArmor: {
-	DisplayName: Projectile Armor
+	DisplayName: Speed Armor
 	Description: + The faster you are, the better your armor become
 }
 
@@ -174,4 +174,9 @@ BlessingOfStarDust: {
 BlessingOfPerk: {
 	DisplayName: Blessing Of Perk
 	Description: + Increases perk range amount by 1
+}
+
+ArenaBlessing: {
+	DisplayName: God of Battle Blessing
+	Description: + Grant permanent Camp fire buff
 }

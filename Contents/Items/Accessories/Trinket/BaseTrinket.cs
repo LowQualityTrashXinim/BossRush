@@ -43,12 +43,6 @@ public class TrinketPlayer : ModPlayer {
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		damage = damage.CombineWith(DamageStats);
 	}
-	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		base.OnHitByNPC(npc, hurtInfo);
-	}
-	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		base.OnHitByProjectile(proj, hurtInfo);
-	}
 }
 public class Trinket_GlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;

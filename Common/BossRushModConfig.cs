@@ -25,10 +25,6 @@ namespace BossRush.Common {
 		[DefaultValue(false)]
 		public bool Ascension { get; set; }
 
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool ExtraChallenge { get; set; }
-
 		[DefaultValue(true)]
 		public bool RoguelikeOverhaul { get; set; }
 

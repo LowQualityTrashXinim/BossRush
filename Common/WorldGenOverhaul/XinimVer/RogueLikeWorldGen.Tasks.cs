@@ -1,11 +1,7 @@
-﻿using BossRush.Common.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Common.Utils;
+using System.Threading.Tasks;
 
 namespace BossRush.Common.WorldGenOverhaul.XinimVer;
 public partial class RogueLikeWorldGen : ITaskCollection {

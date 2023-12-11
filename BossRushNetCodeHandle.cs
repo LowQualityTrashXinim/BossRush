@@ -1,15 +1,14 @@
 ﻿using Terraria;
 using System.IO;
 using Terraria.ID;
-using BossRush.Common.ExtraChallenge;
-using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Card;
 using BossRush.Common;
+using BossRush.Common.Systems;
+using BossRush.Contents.Artifacts;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Common.RoguelikeChange;
-using BossRush.Contents.Artifacts;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush
 {

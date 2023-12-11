@@ -8,12 +8,10 @@ using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
-using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNinja;
 
@@ -71,11 +69,8 @@ namespace BossRush.Common {
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			yield return new Item(ItemID.Safe);
-			yield return new Item(ItemID.MoneyTrough);
 			yield return new Item(ItemID.PlatinumPickaxe);
 			yield return new Item(ItemID.PlatinumAxe);
-			yield return new Item(ItemID.CopperShortsword);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
