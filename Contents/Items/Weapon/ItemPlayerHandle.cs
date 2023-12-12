@@ -100,7 +100,10 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool DeathBySpark_AleThrowingGlove = false;
 
 		public int SuperShortSword_Counter = 0;
-		public int SuperShortSword_IsInAltAttack = 8;
+		public int SuperShortSword_AttackType = 0;
+		public int SuperShortSword_Delay = 0;
+		public int SuperShortSword_ProjectileInReadyPosition = 0;
+		public bool SuperShortSword_IsHoldingDownRightMouse = false;
 
 		public int HeavenSmg_Stacks = 0;
 		public override void ResetEffects() {
@@ -166,6 +169,49 @@ namespace BossRush.Contents.Items.Weapon {
 			DeathBySpark_AleThrowingGlove = false;
 		}
 		int check = 1;
+		public override void PreUpdate() {
+			Item item = Player.HeldItem;
+			if (item.type == ModContent.ItemType<SuperShortSword>()) {
+				SuperShortSword_Delay = BossRushUtils.CoolDown(SuperShortSword_Delay);
+				if (Main.mouseLeft && SuperShortSword_AttackType == 0 && SuperShortSword_Delay <= 0) {
+					SuperShortSword_AttackType = 1;
+				}
+				if (SuperShortSword_ProjectileInReadyPosition >= 8 && SuperShortSword_AttackType == 1) {
+					SuperShortSword_ProjectileInReadyPosition = 0;
+					SuperShortSword_AttackType = 0;
+					SuperShortSword_Delay = 10;
+				}
+
+				if (Main.mouseRight && SuperShortSword_AttackType == 0 && SuperShortSword_Delay <= 0) {
+					SuperShortSword_AttackType = 2;
+					SuperShortSword_IsHoldingDownRightMouse = true;
+				}
+				if (SuperShortSword_AttackType == 2) {
+					if (SuperShortSword_IsHoldingDownRightMouse) {
+						if (Main.mouseRightRelease && !Main.mouseRight)
+							SuperShortSword_IsHoldingDownRightMouse = false;
+					}
+					if (!SuperShortSword_IsHoldingDownRightMouse && SuperShortSword_ProjectileInReadyPosition >= 8 && SuperShortSword_AttackType == 2) {
+						SuperShortSword_ProjectileInReadyPosition = 0;
+						SuperShortSword_AttackType = 0;
+						SuperShortSword_Delay = 10;
+					}
+				}
+				if (SuperShortSword_AttackType != 0) {
+					return;
+				}
+				if (SuperShortSword_Counter == MathHelper.TwoPi * 100 || SuperShortSword_Counter == -MathHelper.TwoPi * 100) {
+					SuperShortSword_Counter = 0;
+				}
+				SuperShortSword_Counter += Player.direction;
+			}
+			else {
+				SuperShortSword_AttackType = 0;
+				SuperShortSword_Delay = 10;
+				SuperShortSword_Counter = 0;
+				SuperShortSword_ProjectileInReadyPosition = 0;
+			}
+		}
 		public override void PostUpdate() {
 			Item item = Player.HeldItem;
 			if (item.type == ModContent.ItemType<BurningPassion>()) {
@@ -187,20 +233,6 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			if (item.type != ModContent.ItemType<IceStorm>()) {
 				IceStorm_SpeedMultiplier = 1;
-			}
-			if (item.type == ModContent.ItemType<SuperShortSword>()) {
-				if (Player.ItemAnimationActive)
-					return;
-				if (SuperShortSword_IsInAltAttack < 8)
-					return;
-				if (SuperShortSword_Counter == MathHelper.TwoPi * 100 || SuperShortSword_Counter == -MathHelper.TwoPi * 100) {
-					SuperShortSword_Counter = 0;
-				}
-				SuperShortSword_Counter += Player.direction;
-			}
-			else {
-				SuperShortSword_Counter = 0;
-				SuperShortSword_IsInAltAttack = 8;
 			}
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

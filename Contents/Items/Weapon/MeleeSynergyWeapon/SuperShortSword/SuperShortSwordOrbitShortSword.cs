@@ -33,40 +33,36 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 		Vector2 FixedMousePosition;
 		Vector2 FixedProjectilePos;
 		Vector2 HitNPCPos = Vector2.Zero;
-		int timeLeft = 999;
-		bool RightMousePressed = false;
-		bool RightMouseReleased = false;
+		int timeLeft = 9999;
+		bool IsInAtk2 = false;
 		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
 			if (player.dead || !player.active || !player.HasBuff(ModContent.BuffType<SuperShortSwordPower>()) || player.HeldItem.type != ModContent.ItemType<SuperShortSword>()) {
 				Projectile.Kill();
 			}
 			RotatePosition = getPosToReturn(player, MathHelper.PiOver4 * Index, modplayer.SuperShortSword_Counter);
-			if (RightMousePressed) {
+
+			if (modplayer.SuperShortSword_AttackType == 1) {
+				NormalAttackHandle(player, modplayer);
+				runAI = false;
+				return;
+			}
+			if (modplayer.SuperShortSword_AttackType == 2) {
 				AltAttackHandle(player, modplayer);
 				runAI = false;
 				return;
 			}
-			else {
-				if (!RightMousePressed)
-					RightMousePressed = Main.mouseRight;
-				RightMouseReleased = true;
-				NormalAttackHandle(player);
-			}
 			if (timeLeft <= 0) {
-				timeLeft = 999;
+				timeLeft = 9999;
 			}
-			runAI = !player.ItemAnimationActive;
+			runAI = true;
 		}
 		private void AltAttackHandle(Player player, PlayerSynergyItemHandle modplayer) {
-			if (RightMouseReleased) {
-				modplayer.SuperShortSword_IsInAltAttack = 0;
+			if (modplayer.SuperShortSword_IsHoldingDownRightMouse) {
 				Vector2 PositionThatNeedToBe = projPos[(int)Index].RotatedBy((Main.MouseWorld - player.Center).ToRotation()) * 12.5f + player.Center;
 				Vector2 ToPos = PositionThatNeedToBe - Projectile.Center;
 				Projectile.velocity = ToPos.SafeNormalize(Vector2.Zero) * ToPos.Length() * .25f;
 				Projectile.rotation = (Main.MouseWorld - Projectile.Center).ToRotation() + MathHelper.PiOver4;
-				if (Main.mouseRightRelease) {
-					RightMouseReleased = false;
-				}
+				IsInAtk2 = true;
 			}
 			else {
 				if (timeLeft > 20) {
@@ -76,15 +72,19 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 				if (timeLeft == 1) {
 					Projectile.velocity += Main.rand.NextVector2Circular(20, 20);
 				}
-				if (timeLeft == 0) {
+				if (timeLeft != 0) {
+					timeLeft = BossRushUtils.CoolDown(timeLeft);
+				}
+				else {
 					Vector2 dis = RotatePosition - Projectile.Center;
 					float length = dis.Length();
 					if (length <= 15) {
 						Projectile.velocity = Vector2.Zero;
-						RightMousePressed = false;
-						modplayer.SuperShortSword_IsInAltAttack++;
-						RotatePosition = getPosToReturn(player, MathHelper.PiOver4 * Index, modplayer.SuperShortSword_Counter);
 						Projectile.Center = RotatePosition;
+						if (IsInAtk2) {
+							modplayer.SuperShortSword_ProjectileInReadyPosition++;
+							IsInAtk2 = false;
+						}
 						return;
 					}
 					if (length > 2) {
@@ -95,44 +95,44 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 					Projectile.velocity = Projectile.velocity.LimitedVelocity(40);
 					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 				}
-				else {
-					timeLeft = BossRushUtils.CoolDown(timeLeft);
-				}
 			}
 		}
 		bool HasHitNPC = false;
-		private void NormalAttackHandle(Player player) {
-			if (player.ItemAnimationJustStarted) {
+		//Turn out this not all sync so again
+		private void NormalAttackHandle(Player player, PlayerSynergyItemHandle modplayer) {
+			float duration = player.itemAnimationMax;
+			if (timeLeft > duration) {
+				timeLeft = (int)duration;
 				HasHitNPC = false;
 				HitNPCPos = Vector2.Zero;
 				FixedMousePosition = Main.MouseWorld;
 				FixedProjectilePos = Projectile.Center;
+				IsInAtk2 = true;
 			}
-			if (player.ItemAnimationActive) {
-				Vector2 PositionToMouse = FixedMousePosition - FixedProjectilePos;
-				Vector2 ToMouse = PositionToMouse.SafeNormalize(Vector2.UnitX);
-				float duration = player.itemAnimationMax;
-				float halfProgress = duration * .5f;
-				float progress;
-				if (timeLeft > duration) {
-					timeLeft = (int)duration;
+			Vector2 PositionToMouse = FixedMousePosition - FixedProjectilePos;
+			Vector2 ToMouse = PositionToMouse.SafeNormalize(Vector2.UnitX);
+			float halfProgress = duration * .5f;
+			float progress;
+			if (timeLeft < halfProgress) {
+				progress = timeLeft / halfProgress;
+			}
+			else {
+				progress = (duration - timeLeft) / halfProgress;
+			}
+			float length = PositionToMouse.Length();
+			if (HasHitNPC) {
+				Projectile.Center = Vector2.SmoothStep(RotatePosition, HitNPCPos, progress);
+			}
+			else {
+				Projectile.Center = RotatePosition + Vector2.SmoothStep(ToMouse, ToMouse * length, progress);
+				Projectile.rotation = ToMouse.ToRotation() + MathHelper.PiOver4;
+			}
+			timeLeft = BossRushUtils.CoolDown(timeLeft);
+			if(timeLeft == 0) {
+				if (IsInAtk2) {
+					modplayer.SuperShortSword_ProjectileInReadyPosition++;
+					IsInAtk2 = false;
 				}
-				if (timeLeft < halfProgress) {
-					progress = timeLeft / halfProgress;
-				}
-				else {
-					progress = (duration - timeLeft) / halfProgress;
-				}
-				float length = PositionToMouse.Length();
-				if (HasHitNPC) {
-					Projectile.Center = Vector2.SmoothStep(RotatePosition, HitNPCPos, progress);
-					Projectile.rotation = (RotatePosition - HitNPCPos).ToRotation() + MathHelper.PiOver4;
-				}
-				else {
-					Projectile.Center = RotatePosition + Vector2.SmoothStep(ToMouse, ToMouse * length, progress);
-					Projectile.rotation = ToMouse.ToRotation() + MathHelper.PiOver4;
-				}
-				timeLeft--;
 			}
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
@@ -144,7 +144,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 			if (!HasHitNPC) {
-				HitNPCPos = npc.Center;
+				HitNPCPos = Projectile.Center;
 				HasHitNPC = true;
 			}
 		}
