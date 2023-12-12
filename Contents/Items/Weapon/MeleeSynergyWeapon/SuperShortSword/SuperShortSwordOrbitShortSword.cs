@@ -73,7 +73,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 					Projectile.velocity += Main.rand.NextVector2Circular(20, 20);
 				}
 				if (timeLeft != 0) {
-					timeLeft = BossRushUtils.CoolDown(timeLeft);
+					timeLeft = BossRushUtils.CountDown(timeLeft);
 				}
 				else {
 					Vector2 dis = RotatePosition - Projectile.Center;
@@ -127,7 +127,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 				Projectile.Center = RotatePosition + Vector2.SmoothStep(ToMouse, ToMouse * length, progress);
 				Projectile.rotation = ToMouse.ToRotation() + MathHelper.PiOver4;
 			}
-			timeLeft = BossRushUtils.CoolDown(timeLeft);
+			timeLeft = BossRushUtils.CountDown(timeLeft);
 			if(timeLeft == 0) {
 				if (IsInAtk2) {
 					modplayer.SuperShortSword_ProjectileInReadyPosition++;

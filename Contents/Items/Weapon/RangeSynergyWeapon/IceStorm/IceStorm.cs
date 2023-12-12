@@ -178,7 +178,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 					return;
 				}
 			}
-			timer = BossRushUtils.CoolDown(timer);
+			timer = BossRushUtils.CountDown(timer);
 		}
 	}
 	class IceStormFrostFlowerMinion : ModProjectile {
@@ -221,7 +221,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 					return;
 				}
 			}
-			timer = BossRushUtils.CoolDown(timer);
+			timer = BossRushUtils.CountDown(timer);
 		}
 	}
 }

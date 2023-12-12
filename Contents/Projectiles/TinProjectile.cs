@@ -17,7 +17,7 @@ namespace BossRush.Contents.Projectiles {
 		}
 		public override bool? CanHitNPC(NPC target) => Projectile.ai[1] <= 0;
 		public override void AI() {
-			Projectile.ai[1] = BossRushUtils.CoolDown(Projectile.ai[1]);
+			Projectile.ai[1] = BossRushUtils.CountDown((int)Projectile.ai[1]);
 			Projectile.rotation += MathHelper.ToRadians(20) * (Projectile.velocity.X > 0 ? 1 : -1);
 			Projectile.ai[0]++;
 			if (Projectile.ai[0] > 20) {

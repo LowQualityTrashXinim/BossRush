@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon {
+namespace BossRush.Contents.Projectiles {
 	internal class GhostHitBox : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.width = 100;

@@ -29,14 +29,14 @@ public class Trinket_of_Ample_Perception_ModPlayer : ModPlayer {
 	public int PointCounter = 0;
 	public int PointTimeLeft = 0;
 	public int LifeStealCoolDown = 0;
-	public int CoolDown = 0;
+	public int CountDown = 0;
 	public override void ResetEffects() {
 		Trinket_of_Ample_Perception = false;
 	}
 	public override void PreUpdate() {
-		LifeStealCoolDown = BossRushUtils.CoolDown(LifeStealCoolDown);
-		PointTimeLeft = BossRushUtils.CoolDown(PointTimeLeft);
-		CoolDown = BossRushUtils.CoolDown(CoolDown);
+		LifeStealCoolDown = BossRushUtils.CountDown(LifeStealCoolDown);
+		PointTimeLeft = BossRushUtils.CountDown(PointTimeLeft);
+		CountDown = BossRushUtils.CountDown(CountDown);
 		if (PointTimeLeft <= 0 && PointCounter > 0) {
 			PointCounter--;
 			PointTimeLeft = BossRushUtils.ToSecond(7);
@@ -57,10 +57,10 @@ public class Trinket_of_Ample_Perception_ModPlayer : ModPlayer {
 			Player.Heal(15);
 			LifeStealCoolDown = BossRushUtils.ToSecond(5);
 		}
-		if (CoolDown > 0)
+		if (CountDown > 0)
 			return;
 		PointCounter = Math.Clamp(++PointCounter, 0, 4);
 		PointTimeLeft = BossRushUtils.ToSecond(7);
-		CoolDown = BossRushUtils.ToSecond(2);
+		CountDown = BossRushUtils.ToSecond(2);
 	}
 }

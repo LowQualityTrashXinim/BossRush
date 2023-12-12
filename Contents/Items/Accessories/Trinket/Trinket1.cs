@@ -31,10 +31,10 @@ public class Trinket_of_Swift_Health_ModPlayer : ModPlayer {
 		Trinket_of_Swift_Health = false;
 	}
 	public override void PreUpdate() {
-		Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.CoolDown(Trinket_of_Swift_Health_DelayBetweenEachHit);
+		Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.CountDown(Trinket_of_Swift_Health_DelayBetweenEachHit);
 		if (!Player.HasBuff(ModContent.BuffType<SwiftSteal_Buff>())) {
 			Trinket_of_Swift_Health_PointCounter = 0;
-			Trinket_of_Swift_Health_CoolDown = BossRushUtils.CoolDown(Trinket_of_Swift_Health_CoolDown);
+			Trinket_of_Swift_Health_CoolDown = BossRushUtils.CountDown(Trinket_of_Swift_Health_CoolDown);
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {

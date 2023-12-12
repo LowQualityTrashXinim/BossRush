@@ -363,10 +363,10 @@ namespace BossRush.Common.RoguelikeChange {
 			JungleArmor = false;
 		}
 		public override void PreUpdate() {
-			ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
-			EbonWoodArmorCD = BossRushUtils.CoolDown(EbonWoodArmorCD);
-			CactusArmorCD = BossRushUtils.CoolDown(CactusArmorCD);
-			pearlWoodArmorCD = BossRushUtils.CoolDown(pearlWoodArmorCD);
+			ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
+			EbonWoodArmorCD = BossRushUtils.CountDown(EbonWoodArmorCD);
+			CactusArmorCD = BossRushUtils.CountDown(CactusArmorCD);
+			pearlWoodArmorCD = BossRushUtils.CountDown(pearlWoodArmorCD);
 			if (EbonWoodArmor)
 				if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero) {
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
@@ -382,7 +382,7 @@ namespace BossRush.Common.RoguelikeChange {
 				if (Player.ItemAnimationActive)
 					PlatinumArmorCountEffect++;
 				else
-					PlatinumArmorCountEffect = BossRushUtils.CoolDown(PlatinumArmorCountEffect);
+					PlatinumArmorCountEffect = BossRushUtils.CountDown(PlatinumArmorCountEffect);
 			}
 
 		}

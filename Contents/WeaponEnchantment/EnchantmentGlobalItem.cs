@@ -8,9 +8,11 @@ using Terraria.ID;
 using BossRush.Common.Systems;
 
 namespace BossRush.Contents.WeaponEnchantment;
-internal class EnchantmentGlobalItem : GlobalItem {
+public class EnchantmentGlobalItem : GlobalItem {
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[3];
+	public int[] Item_Counter1 = new int[3];
+	public int[] Item_Counter2 = new int[3];
 	public override void OnCreated(Item item, ItemCreationContext context) {
 	}
 	public override void HoldItem(Item item, Player player) {
@@ -21,7 +23,7 @@ internal class EnchantmentGlobalItem : GlobalItem {
 		for (int i = 0; i < EnchantmenStlot.Length; i++) {
 			if (EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[i]).UpdateHeldItem(item,player);
+			EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[i]).UpdateHeldItem(i, item, this, player);
 		}
 	}
 	public string GetWeaponModificationStats() =>
@@ -59,10 +61,8 @@ public class EnchantmentModplayer : ModPlayer {
 	public override void PreUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;
-		if (item != Player.HeldItem) {
-			item = Player.HeldItem;
-			globalItem = item.GetGlobalItem<EnchantmentGlobalItem>();
-		}
+		item = Player.HeldItem;
+		globalItem = item.GetGlobalItem<EnchantmentGlobalItem>();
 	}
 	private bool CommonEnchantmentCheck() => globalItem == null || globalItem.EnchantmenStlot == null;
 	public override void ResetEffects() {
@@ -85,7 +85,7 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyShootStat(Player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyShootStat(i, Player, globalItem, item, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
@@ -95,7 +95,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).Shoot(Player, item, source, position, velocity, type, damage, knockback);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).Shoot(i, Player, globalItem, item, source, position, velocity, type, damage, knockback);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
@@ -106,7 +107,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnMissingMana(Player, item, neededMana);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnMissingMana(i, Player, globalItem, item, neededMana);
 		}
 	}
 	public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
@@ -117,6 +119,7 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
+
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyMaxStats(Player, ref health, ref mana);
 		}
 	}
@@ -127,7 +130,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyCriticalStrikeChance(Player, item, ref crit);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyCriticalStrikeChance(i, Player, globalItem, item, ref crit);
 		}
 	}
 	public override void ModifyItemScale(Item item, ref float scale) {
@@ -137,7 +141,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyItemScale(Player, item, ref scale);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyItemScale(i, Player, globalItem, item, ref scale);
 		}
 	}
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
@@ -147,7 +152,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyDamage(Player, item, ref damage);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyDamage(i, Player, globalItem, item, ref damage);
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -157,7 +163,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithItem(Player, item, target, hit, damageDone);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithItem(i, Player, globalItem, item, target, hit, damageDone);
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -167,7 +174,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithProj(i, Player, proj, target, hit, damageDone);
 		}
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
@@ -177,6 +185,7 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
+
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByAnything(Player);
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByNPC(Player, npc, hurtInfo);
 		}
@@ -188,6 +197,7 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
+
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByAnything(Player);
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByProjectile(Player, proj, hurtInfo);
 		}
@@ -199,7 +209,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyManaCost(Player, item, ref reduce, ref mult);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyManaCost(i, Player, globalItem, item, ref reduce, ref mult);
 		}
 	}
 	public override float UseSpeedMultiplier(Item item) {
@@ -210,7 +221,8 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyUseSpeed(Player, item, ref useSpeed);
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyUseSpeed(i, Player, globalItem, item, ref useSpeed);
 		}
 		return useSpeed;
 	}
@@ -221,6 +233,7 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
+
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnKill(Player);
 		}
 

@@ -150,8 +150,6 @@ namespace BossRush {
 			(int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
 			hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
 		}
-		//Math.Clamp(--Trinket3_PointTimeLeft, 0, 600)
-		public static int CoolDown(int timer, int timeDecrease = 1, int maxValue = 999999) => Math.Clamp(timer - timeDecrease, 0, maxValue);
-		public static float CoolDown(float timer, int timeDecrease = 1) => timer > 0 ? timer - timeDecrease : 0;
+		public static int CountDown(int timer, int timeDecrease = 1, int maxValue = 999999) => Math.Clamp(timer - timeDecrease, 0, maxValue);
 	}
 }

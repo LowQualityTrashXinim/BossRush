@@ -576,8 +576,8 @@ namespace BossRush.Common.RoguelikeChange {
 				ComboNumber = 0;
 				CountDownToResetCombo = 0;
 			}
-			delaytimer = BossRushUtils.CoolDown(delaytimer);
-			CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
+			delaytimer = BossRushUtils.CountDown(delaytimer);
+			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
 			if (CountDownToResetCombo <= 0)
 				ComboNumber = 0;
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) || item.noMelee) {

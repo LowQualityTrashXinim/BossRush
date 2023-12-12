@@ -29,19 +29,19 @@ public class Samsara_of_Retribution_Buff : TrinketBuff {
 		player.GetDamage(DamageClass.Generic) += player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().NPCcounter;
 	}
 	public override void OnEnded(Player player) {
-		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().CoolDown = BossRushUtils.ToSecond(25);
+		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().CountDown = BossRushUtils.ToSecond(25);
 		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().NPCcounter = 0;
 	}
 }
 public class Trinket_of_Perpetuation_ModPlayer : ModPlayer {
 	public bool Trinket_of_Perpetuation = false;
 	public int NPCcounter = 0;
-	public int CoolDown = 0;
+	public int CountDown = 0;
 	public override void ResetEffects() {
 		Trinket_of_Perpetuation = false;
 	}
 	public override void PostUpdate() {
-		CoolDown = BossRushUtils.CoolDown(CoolDown);
+		CountDown = BossRushUtils.CountDown(CountDown);
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		Trinket_of_Perpetuation_OnHitNPCEffect(target, hit);
@@ -53,7 +53,7 @@ public class Trinket_of_Perpetuation_ModPlayer : ModPlayer {
 		if (!Trinket_of_Perpetuation) {
 			return;
 		}
-		if (CoolDown <= 0) {
+		if (CountDown <= 0) {
 			if (Player.HasBuff(ModContent.BuffType<Samsara_of_Retribution_Buff>())) {
 				NPCcounter++;
 			}

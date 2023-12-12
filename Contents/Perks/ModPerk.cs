@@ -198,7 +198,7 @@ namespace BossRush.Contents.Perks {
 		int OpportunityWindow = 0;
 		public override void Update(Player player) {
 			if (!player.ItemAnimationActive)
-				RandomCountDown = BossRushUtils.CoolDown(RandomCountDown);
+				RandomCountDown = BossRushUtils.CountDown(RandomCountDown);
 			if (RandomCountDown <= 0) {
 				if (OpportunityWindow == 0) {
 					BossRushUtils.CombatTextRevamp(player.Hitbox, Color.ForestGreen, "!");

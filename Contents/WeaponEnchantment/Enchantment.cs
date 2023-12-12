@@ -1,10 +1,10 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Localization;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.Localization;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	//Todo : turn out modplayer is much better than global item, how funny
@@ -18,21 +18,22 @@ namespace BossRush.Contents.WeaponEnchantment {
 			Type = EnchantmentLoader.Register(this);
 		}
 		public virtual void SetDefaults() { }
-		public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
-		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
+		//I couldn't figure out a way to implement WhoAmI type of stuff and can't even use globalItem to transfer the index over here to use, so I settle with this
+		public virtual void ModifyShootStat(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
+		public virtual void Shoot(int index,Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 		public virtual void Update(Player player) { }
-		public virtual void UpdateHeldItem(Item item, Player player) { }
-		public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
-		public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) { }
-		public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
-		public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
+		public virtual void UpdateHeldItem(int index,Item item, EnchantmentGlobalItem globalItem, Player player) { }
+		public virtual void OnMissingMana(int index,Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) { }
+		public virtual void ModifyDamage(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) { }
+		public virtual void OnHitNPCWithItem(int index,Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
+		public virtual void OnHitNPCWithProj(int index,Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitByAnything(Player player) { }
 		public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 		public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
-		public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
-		public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
-		public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
+		public virtual void ModifyCriticalStrikeChance(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) { }
+		public virtual void ModifyItemScale(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) { }
+		public virtual void ModifyManaCost(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) { }
 		/// <summary>
 		/// Subtract will make player use weapon slower
 		/// Additive will make player use weapon faster
@@ -40,7 +41,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		/// <param name="player"></param>
 		/// <param name="item"></param>
 		/// <param name="useSpeed">by default start at 1</param>
-		public virtual void ModifyUseSpeed(Player player, Item item, ref float useSpeed) { }
+		public virtual void ModifyUseSpeed(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) { }
 		public virtual void OnKill(Player player) { }
 	}
 	public static class EnchantmentLoader {
@@ -58,7 +59,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public static ModEnchantment GetEnchantmentItemID(int ItemID) {
 			int index = _enchantmentcacheID.IndexOf(ItemID);
-			return index >= 0 && index < _enchantmentcacheID.Count ? _enchantment[_enchantmentcacheID.IndexOf(ItemID)] : null;
+			return index >= 0 && index < _enchantmentcacheID.Count ? _enchantment[index] : null;
 		}
 	}
 }

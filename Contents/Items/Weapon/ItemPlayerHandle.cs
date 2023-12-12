@@ -172,7 +172,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (item.type == ModContent.ItemType<SuperShortSword>()) {
-				SuperShortSword_Delay = BossRushUtils.CoolDown(SuperShortSword_Delay);
+				SuperShortSword_Delay = BossRushUtils.CountDown(SuperShortSword_Delay);
 				if (Main.mouseLeft && SuperShortSword_AttackType == 0 && SuperShortSword_Delay <= 0) {
 					SuperShortSword_AttackType = 1;
 				}
@@ -228,7 +228,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			if (item.type == ModContent.ItemType<Deagle>()) {
 				if (Deagle_DaedalusStormBow) {
-					Deagle_DaedalusStormBow_coolDown = BossRushUtils.CoolDown(Deagle_DaedalusStormBow_coolDown);
+					Deagle_DaedalusStormBow_coolDown = BossRushUtils.CountDown(Deagle_DaedalusStormBow_coolDown);
 				}
 			}
 			if (item.type != ModContent.ItemType<IceStorm>()) {
@@ -535,7 +535,7 @@ namespace BossRush.Contents.Items.Weapon {
 				return;
 			if (player.IsDebugPlayer())
 				return;
-			CooldownCheck = BossRushUtils.CoolDown(CooldownCheck);
+			CooldownCheck = BossRushUtils.CountDown(CooldownCheck);
 			//Main.NewText(CooldownCheck);
 			if (CooldownCheck <= 0) {
 				SynergyEnergyCheckPlayer(player);

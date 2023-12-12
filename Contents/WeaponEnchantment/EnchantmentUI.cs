@@ -50,13 +50,17 @@ public class WeaponEnchantmentUIslot : UIImage {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				int length = globalItem.EnchantmenStlot.Length;
 				for (int i = 0; i < length; i++) {
+					Vector2 pos = player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
 					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack, player);
 					slot.UISetWidthHeight(52, 52);
-					slot.UISetPosition(player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i, new Vector2(26, 26));
+					slot.UISetPosition(pos, new Vector2(26, 26));
 					slot.WhoAmI = i;
 					slot.itemOwner = item;
 					slot.itemType = globalItem.EnchantmenStlot[i];
 					Parent.Append(slot);
+					UIText text = new UIText($"{i + 1}");
+					text.UISetPosition(pos + Vector2.UnitY * 56, new Vector2(26, 26));
+					Parent.Append(text);
 				}
 			}
 		}
@@ -71,11 +75,8 @@ public class WeaponEnchantmentUIslot : UIImage {
 				if (child is EnchantmentUIslot wmslot) {
 					if (wmslot.itemOwner == null)
 						continue;
-					//if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
-					//	globalItem.EnchantmenStlot[wmslot.WhoAmI] = 
-					//}
 				}
-				if (child is EnchantmentUIslot { itemOwner: not null }) {
+				if (child is EnchantmentUIslot { itemOwner: not null } || child is UIText) {
 					child.Deactivate();
 					child.Remove();
 				}

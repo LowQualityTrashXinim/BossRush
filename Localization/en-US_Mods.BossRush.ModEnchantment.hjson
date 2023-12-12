@@ -53,7 +53,7 @@ WoodenSword: {
 	DisplayName: Wooden Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -62,7 +62,7 @@ AshWoodSword: {
 	DisplayName: Ash Wood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -71,7 +71,7 @@ BorealWoodSword: {
 	DisplayName: Boreal Wood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -80,7 +80,7 @@ PalmWoodSword: {
 	DisplayName: Palm Wood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -89,7 +89,7 @@ RichMahoganySword: {
 	DisplayName: Rich Mahogany Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -98,7 +98,7 @@ ShadewoodSword: {
 	DisplayName: Shadewood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -107,7 +107,7 @@ EbonwoodSword: {
 	DisplayName: Ebonwood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -116,7 +116,7 @@ CopperBroadsword: {
 	DisplayName: Copper Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -125,7 +125,7 @@ TinBroadsword: {
 	DisplayName: Tin Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -134,7 +134,7 @@ IronBroadsword: {
 	DisplayName: Iron Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -143,7 +143,7 @@ LeadBroadsword: {
 	DisplayName: Lead Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -152,7 +152,7 @@ SilverBroadsword: {
 	DisplayName: Silver Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down
 		Increases weapon size by 10%
 		'''
 }
@@ -161,7 +161,7 @@ TungstenBroadsword: {
 	DisplayName: Tungsten Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -170,7 +170,7 @@ GoldBroadsword: {
 	DisplayName: Gold Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
 		'''
 }
@@ -179,8 +179,17 @@ PlatinumBroadsword: {
 	DisplayName: Platinum Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
+		Hitting a enemy with melee weapon will cause a wood sword to swing down 
 		Increases weapon size by 10%
+		'''
+}
+
+CactusSword: {
+	DisplayName: Cactus Sword
+	Description:
+		'''
+		On critical strike when hitting enemy with melee weapon
+		Shoot out a friendly rolling cactus that deal equal to 300% weapon damage ( trigger every 10 second )
 		'''
 }
 
