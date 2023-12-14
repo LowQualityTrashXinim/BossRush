@@ -9,7 +9,7 @@ internal class Trinket_of_Perpetuation : BaseTrinket {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().Trinket_of_Perpetuation = true;
-		player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .25f;
+		player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .55f;
 	}
 }
 public class Samsara_of_Retribution : TrinketBuff {

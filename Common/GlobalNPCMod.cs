@@ -1,5 +1,5 @@
-﻿using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
+﻿using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
+using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Chest;
@@ -13,6 +13,7 @@ using Terraria;
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
+			return;
 			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
 			if (!config.SynergyMode && !config.EnableChallengeMode) {
 				return;

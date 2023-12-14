@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -12,15 +13,18 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+			player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .5f;
 		}
 		public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 			crit += 5;
 		}
-		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .05f;
+		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (++globalItem.Item_Counter1[index] >= 25) {
+				type = item.useAmmo == AmmoID.Bullet ? type : ProjectileID.Bullet;
+				int proj = Projectile.NewProjectile(source, position, velocity * 2f, type, damage, knockback, player.whoAmI);
+				Main.projectile[proj].CritChance = 101;
+				globalItem.Item_Counter1[index] = 0;
 			}
-			damage += .1f;
 		}
 	}
 	public class FlintlockPistol : ModEnchantment {
@@ -28,7 +32,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.FlintlockPistol;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Main.rand.NextBool(10))
+			if (Main.rand.NextBool(4))
 				Projectile.NewProjectile(source, position, velocity, ProjectileID.Bullet, damage, knockback, player.whoAmI);
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {

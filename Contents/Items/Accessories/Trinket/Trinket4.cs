@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -39,8 +38,9 @@ public class Trinket4_ModPlayer : ModPlayer {
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (!Trinket4)
 			return;
-		if (Player.statMana >= Player.statLifeMax2 * .5f) {
+		if (Player.statMana >= Player.statManaMax2 * .5f) {
 			if (Player.CheckMana(10, true)) {
+				Player.manaRegenDelay = (int)Player.maxRegenDelay;
 				IsManaCheckSuccess = true;
 				velocity *= 1.2f;
 				damage = (int)(damage * 1.2f);
@@ -64,16 +64,11 @@ public class Trinket4_ModPlayer : ModPlayer {
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		ManaShield(proj.damage, ref modifiers);
 	}
-	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		base.OnHitByNPC(npc, hurtInfo);
-	}
-	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		base.OnHitByProjectile(proj, hurtInfo);
-	}
 	private void ManaShield(int damageValue, ref Player.HurtModifiers modifiers) {
 		if (!Trinket4)
 			return;
 		if (Player.CheckMana(damageValue, true)) {
+			Player.manaRegenDelay = Player.maxRegenDelay;
 			modifiers.SetMaxDamage(1);
 			SuccessfulBlockAHit = true;
 		}

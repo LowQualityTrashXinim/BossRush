@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using Terraria.ID;
 using BossRush.Common.Systems;
+using System;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentGlobalItem : GlobalItem {
@@ -14,6 +15,11 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public int[] Item_Counter1 = new int[3];
 	public int[] Item_Counter2 = new int[3];
 	public override void OnCreated(Item item, ItemCreationContext context) {
+	}
+	public override GlobalItem Clone(Item from, Item to) {
+		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
+		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 0);
+		return clone;
 	}
 	public override void HoldItem(Item item, Player player) {
 		base.HoldItem(item, player);
@@ -44,15 +50,11 @@ public class EnchantmentGlobalItem : GlobalItem {
 		}
 	}
 	public override void SaveData(Item item, TagCompound tag) {
-		if (UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE)) {
-			tag.Add("EnchantmentSlot", EnchantmenStlot);
-		}
+		tag.Add("EnchantmentSlot", EnchantmenStlot);
 	}
 	public override void LoadData(Item item, TagCompound tag) {
-		if (UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE)) {
-			if (tag.TryGet("EnchantmentSlot", out int[] TypeValue))
-				EnchantmenStlot = TypeValue;
-		}
+		if (tag.TryGet("EnchantmentSlot", out int[] TypeValue))
+			EnchantmenStlot = TypeValue;
 	}
 }
 public class EnchantmentModplayer : ModPlayer {
@@ -64,7 +66,7 @@ public class EnchantmentModplayer : ModPlayer {
 		item = Player.HeldItem;
 		globalItem = item.GetGlobalItem<EnchantmentGlobalItem>();
 	}
-	private bool CommonEnchantmentCheck() => globalItem == null || globalItem.EnchantmenStlot == null;
+	private bool CommonEnchantmentCheck() => globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
 	public override void ResetEffects() {
 		base.ResetEffects();
 	}
@@ -236,6 +238,5 @@ public class EnchantmentModplayer : ModPlayer {
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnKill(Player);
 		}
-
 	}
 }

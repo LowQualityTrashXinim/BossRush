@@ -3,9 +3,8 @@ Musket: {
 	Description:
 		'''
 		Decreases gun spread by 25%
-		Increases critical strike chance by 5
-		Increases range damage by 5%
-		Increases damage by 10%
+		Increases critical strike damage by 50%
+		For every 25 time this weapon get uses, shoot out a 100% critical strike chance bullet
 		'''
 }
 
@@ -13,7 +12,7 @@ FlintlockPistol: {
 	DisplayName: FlintlockPistol
 	Description:
 		'''
-		Weapon that can shoot projectile have 10% to shoot out a bullet dealing the same damage
+		Weapon that can shoot projectile have 25% to shoot out a bullet dealing the same damage
 		Increases damage by 10%
 		'''
 }
@@ -53,7 +52,7 @@ WoodenSword: {
 	DisplayName: Wooden Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -62,7 +61,7 @@ AshWoodSword: {
 	DisplayName: Ash Wood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -71,7 +70,7 @@ BorealWoodSword: {
 	DisplayName: Boreal Wood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -80,7 +79,7 @@ PalmWoodSword: {
 	DisplayName: Palm Wood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -89,7 +88,7 @@ RichMahoganySword: {
 	DisplayName: Rich Mahogany Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -98,7 +97,7 @@ ShadewoodSword: {
 	DisplayName: Shadewood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -107,7 +106,7 @@ EbonwoodSword: {
 	DisplayName: Ebonwood Sword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -116,7 +115,7 @@ CopperBroadsword: {
 	DisplayName: Copper Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -125,7 +124,7 @@ TinBroadsword: {
 	DisplayName: Tin Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -134,7 +133,7 @@ IronBroadsword: {
 	DisplayName: Iron Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -143,7 +142,7 @@ LeadBroadsword: {
 	DisplayName: Lead Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -152,7 +151,7 @@ SilverBroadsword: {
 	DisplayName: Silver Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -161,7 +160,7 @@ TungstenBroadsword: {
 	DisplayName: Tungsten Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -170,7 +169,9 @@ GoldBroadsword: {
 	DisplayName: Gold Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will :
+		+ 25% chance to inflict enemy with Midas for 6s
+		+ Create a ghost sword to swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -179,7 +180,7 @@ PlatinumBroadsword: {
 	DisplayName: Platinum Broadsword
 	Description:
 		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing down 
+		Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
 		Increases weapon size by 10%
 		'''
 }
@@ -191,6 +192,11 @@ CactusSword: {
 		On critical strike when hitting enemy with melee weapon
 		Shoot out a friendly rolling cactus that deal equal to 300% weapon damage ( trigger every 10 second )
 		'''
+}
+
+EnchantedSword: {
+	DisplayName: Enchanted Sword
+	Description: For every 3 weapon uses, shoot out enchanted beam
 }
 
 WoodenBow: {
@@ -347,8 +353,9 @@ AmethystStaff: {
 	DisplayName: Amethyst Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Amethyst Bolt
+		Your weapon have 17% chance to shoot out additional Amethyst Bolt random location
 		'''
 }
 
@@ -356,8 +363,9 @@ TopazStaff: {
 	DisplayName: Topaz Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Topaz Bolt
+		Your weapon have 17% chance to shoot out additional Topaz Bolt random location
 		'''
 }
 
@@ -365,8 +373,9 @@ SapphireStaff: {
 	DisplayName: Sapphire Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Sapphire Bolt
+		Your weapon have 17% chance to shoot out additional Sapphire Bolt random location
 		'''
 }
 
@@ -374,8 +383,9 @@ EmeraldStaff: {
 	DisplayName: Emerald Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Emerald Bolt
+		Your weapon have 17% chance to shoot out additional Emerald Bolt random location
 		'''
 }
 
@@ -383,8 +393,9 @@ RubyStaff: {
 	DisplayName: Ruby Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Ruby Bolt
+		Your weapon have 17% chance to shoot out additional Ruby Bolt random location
 		'''
 }
 
@@ -392,8 +403,9 @@ DiamondStaff: {
 	DisplayName: Diamond Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Diamond Bolt
+		Your weapon have 17% chance to shoot out additional Diamond Bolt random location
 		'''
 }
 
@@ -401,7 +413,28 @@ AmberStaff: {
 	DisplayName: Amber Staff
 	Description:
 		'''
-		Reduce mana cost by 5%
+		Reduce mana cost by 15%
 		Convert your projectile into Amber Bolt
+		Your weapon have 17% chance to shoot out additional Amber Bolt random location
+		'''
+}
+
+WandOfSparking: {
+	DisplayName: Wand Of Sparking
+	Description:
+		'''
+		Reduce mana cost by 10%
+		Magic projectile can inflict On Fire debuff for 3s
+		Magic projectile have 50% chance to shoot out additional fire spark upon hitting enemy
+		'''
+}
+
+WandOfFrosting: {
+	DisplayName: Wand Of Frosting
+	Description:
+		'''
+		Reduce mana cost by 10%
+		Magic projectile can inflict Frostburn debuff for 3s
+		Magic projectile have 50% chance to shoot out additional frost spark upon hitting enemy
 		'''
 }

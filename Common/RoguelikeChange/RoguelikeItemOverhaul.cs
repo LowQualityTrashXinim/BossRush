@@ -30,6 +30,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			//Note : Use look for tooltip with Defense if there are gonna be modification to defenses
 			Player player = Main.LocalPlayer;
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;

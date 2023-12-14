@@ -1608,7 +1608,7 @@ Mods: {
 					Increases your max mana by 60
 					[[c/8888ea:Active]]
 					While current mana amount is above 50% max mana 
-					+ Strengthen your attack at the cost of 10 mana
+					+ Strengthen your attack at the cost of 10 mana ( can be reduce )
 					+ When shooting, you also shoot a burst of Crystal Storm that deal 45% of your damage
 					When you got hit, if the damage taken is less than current amount of mana
 					+ You take 1 damage instead and your mana take a hit instead
