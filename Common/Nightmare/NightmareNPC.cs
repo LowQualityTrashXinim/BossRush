@@ -1,10 +1,10 @@
-﻿using BossRush.Contents.BuffAndDebuff;
-using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Common.Nightmare {
 	internal class NightmareNPC : GlobalNPC {
@@ -16,9 +16,7 @@ namespace BossRush.Common.Nightmare {
 			npc.lavaImmune = true;
 			BossChange(npc);
 			if (npc.type == NPCID.ServantofCthulhu) {
-				npc.scale += 1.5f;
-				npc.Size += new Vector2(50, 50);
-				npc.lifeMax += 300;
+				npc.lifeMax += 100;
 			}
 			npc.knockBackResist *= .5f;
 		}
@@ -105,6 +103,15 @@ namespace BossRush.Common.Nightmare {
 			}
 		}
 		public override bool PreAI(NPC npc) {
+			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+				return base.PreAI(npc);
+			}
+			if (npc.boss) {
+				npc.velocity /= 1.25f;
+			}
+			if (npc.type == NPCID.ServantofCthulhu) {
+				npc.velocity /= 3;
+			}
 			return base.PreAI(npc);
 		}
 		public override void AI(NPC npc) {
@@ -494,6 +501,12 @@ namespace BossRush.Common.Nightmare {
 			base.PostAI(npc);
 			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return;
+			}
+			if (npc.boss) {
+				npc.velocity *= 1.25f;
+			}
+			if (npc.type == NPCID.ServantofCthulhu) {
+				npc.velocity *= 3f;
 			}
 			if (npc.type == NPCID.CultistBoss) {
 				if (npc.ai[0] == 5f) {

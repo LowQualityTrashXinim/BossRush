@@ -28,12 +28,29 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	[Task]
-	public void Create_AirSocket() {
-		GenerationHelper.ForEachInRectangle(
-	0,
-	0,
-	512,
-	512,
+	public void Empty_AreaAroundPlayer() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(11, 11, 2, 2),
+		(i, j) => {
+			GenerationHelper.FastRemoveTile(i, j);
+		});
+	}
+	[Task]
+	public void Create_Crimson1() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(0, 4, 1, 10),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Crimstone);
+		});
+	}
+	[Task]
+	public void Create_Corruption1() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(23, 4, 1, 10),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
+		});
+	}
+	[Task]
+	public void Empty_Hell() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(0, 21, 23, 3),
 		(i, j) => {
 			GenerationHelper.FastRemoveTile(i, j);
 		});

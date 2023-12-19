@@ -42,7 +42,7 @@ Boomstick: {
 	DisplayName: Boomstick
 	Description:
 		'''
-		For each 15 time a weapon shoot projectile, shoot out 4 bullet projectile
+		For each 7 time a weapon shoot projectile, shoot out 4 bullet projectile
 		+ Weapon that use bullet ammo will instead shoot that the current uses bullet
 		Increases damage by 10%
 		'''
@@ -196,16 +196,106 @@ CactusSword: {
 
 EnchantedSword: {
 	DisplayName: Enchanted Sword
-	Description: For every 3 weapon uses, shoot out enchanted beam
+	Description:
+		'''
+		Weapon that can shoot :
+		+ Shoot out additional enchanted beam that deal 25% more damage ( trigger every 3 * item use time )
+		Weapon that can't shoot :
+		+ Upon hitting enemy will spawn enchanted beam that ignore tile collision around player
+		'''
+}
+
+StarFury: {
+	DisplayName: StarFury
+	Description:
+		'''
+		Weapon that can shoot :
+		+ Shoot down a Star that deal 50% more damage ( trigger every 3 * item use time )
+		Weapon that can't shoot :
+		+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( trigger every 1.5s)
+		'''
+}
+
+CopperShortSword: {
+	DisplayName: Copper ShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
+}
+
+TinShortSword: {
+	DisplayName: Tin ShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
+}
+
+IronShortSword: {
+	DisplayName: Iron ShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
+}
+
+LeadShortSword: {
+	DisplayName: Lead ShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
+}
+
+SilverShortSword: {
+	DisplayName: Silver ShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
+}
+
+TungstenShortSword: {
+	DisplayName: TungstenShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
+}
+
+GoldShortSword: {
+	DisplayName: Gold ShortSword
+	Description:
+		'''
+		Increases base damage by 5
+		Increases critical strike damage by 25%
+		Inflict Midas for 6 second upon critical hit via sword
+		'''
+}
+
+PlatinumShortSword: {
+	DisplayName: Platinum ShortSword
+	Description:
+		'''
+		Increases weapon base damage by 5
+		Increases critical strike damage by 25%
+		'''
 }
 
 WoodenBow: {
 	DisplayName: Wooden Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -213,9 +303,9 @@ AshWoodBow: {
 	DisplayName: Ash Wood Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -223,9 +313,9 @@ BorealWoodBow: {
 	DisplayName: Boreal Wood Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -233,9 +323,9 @@ RichMahoganyBow: {
 	DisplayName: Rich Mahogany Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -243,9 +333,9 @@ EbonwoodBow: {
 	DisplayName: Ebonwood Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -253,9 +343,9 @@ ShadewoodBow: {
 	DisplayName: Shadewood Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -263,9 +353,9 @@ PalmWoodBow: {
 	DisplayName: Palm Wood Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -273,9 +363,9 @@ CopperBow: {
 	DisplayName: Copper Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -283,9 +373,9 @@ TinBow: {
 	DisplayName: Tin Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -293,9 +383,9 @@ IronBow: {
 	DisplayName: Iron Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -303,9 +393,9 @@ LeadBow: {
 	DisplayName: Lead Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -313,9 +403,9 @@ SilverBow: {
 	DisplayName: Silver Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -323,9 +413,9 @@ TungstenBow: {
 	DisplayName: Tungsten Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -333,9 +423,9 @@ GoldBow: {
 	DisplayName: Gold Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 
@@ -343,9 +433,9 @@ PlatinumBow: {
 	DisplayName: Platinum Bow
 	Description:
 		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
+		Increases damage by 5
+		Increases range damage by 15%
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
 

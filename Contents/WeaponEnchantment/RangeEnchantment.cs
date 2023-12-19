@@ -13,7 +13,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
-			player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .5f;
+			player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
 		}
 		public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
 			crit += 5;
@@ -75,7 +75,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.Boomstick;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (++globalItem.Item_Counter1[index] >= 15) {
+			if (++globalItem.Item_Counter1[index] >= 7) {
 				type = item.useAmmo == AmmoID.Bullet ? type : ProjectileID.Bullet;
 				for (int i = 0; i < 4; i++) {
 					Projectile.NewProjectile(source, position,
@@ -93,9 +93,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.WoodenBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -109,9 +109,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.AshWoodBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -125,9 +125,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.BorealWoodBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -141,9 +141,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.RichMahoganyBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -157,9 +157,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.EbonwoodBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -173,9 +173,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.ShadewoodBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -189,9 +189,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.PalmWoodBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -205,14 +205,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.CopperBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -221,14 +221,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.TinBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -237,14 +237,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.IronBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -253,14 +253,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.LeadBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -269,14 +269,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.SilverBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -285,14 +285,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.TungstenBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -301,14 +301,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.GoldBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}
@@ -317,14 +317,14 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.PlatinumBow;
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .05f;
+			damage.Base += 5f;
 			if (item.DamageType == DamageClass.Ranged) {
-				damage += .1f;
+				damage += .15f;
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				velocity *= 1.2f;
 			}
 		}
 	}

@@ -14,6 +14,7 @@ using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNinja;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -85,6 +86,7 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					yield return new Item(ModContent.ItemType<TransmuteTablet>());
+					yield return new Item(ModContent.ItemType<WeaponEnchantment>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);

@@ -9,20 +9,19 @@ using BossRush.Contents.Perks;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
-			return;
-			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
-			if (!config.SynergyMode && !config.EnableChallengeMode) {
+			if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.TRUE_MODE)) {
 				return;
 			}
-			int amount = BossRushUtils.AmountOfModCurrentlyEnable();
-			entity.lifeMax *= amount;
+			float amount = 1 + BossRushUtils.AmountOfModCurrentlyEnable() * .05f;
+			entity.lifeMax = (int)(amount * entity.lifeMax);
 			entity.life = entity.lifeMax;
-			entity.damage *= amount;
-			entity.defense *= amount;
+			entity.damage = (int)(amount * entity.damage);
+			entity.defense = (int)(amount * entity.defense);
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			int lifecrystal = 1;

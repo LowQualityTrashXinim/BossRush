@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark {
 	internal class SingleBarrelMinishark : ModItem {
 		public override void SetDefaults() {
-			Item.damage = 30;
+			Item.damage = 8;
 			Item.knockBack = 4f;
 			Item.useAmmo = AmmoID.Bullet;
 			Item.useTime = 7;

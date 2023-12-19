@@ -1639,6 +1639,16 @@ Mods: {
 				DisplayName: Structure Maker
 				Tooltip: ""
 			}
+
+			WeaponEnchantment: {
+				DisplayName: Weapon Enchantment
+				Tooltip: Use this to open Weapon Enchantment UI
+			}
+
+			HorusEye: {
+				DisplayName: Horus Eye
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1811,6 +1821,15 @@ Mods: {
 				DisplayName: Samsara_of_ Retribution_ Buff
 				Description: Mods.BossRush.Buffs.Samsara_of_Retribution_Buff.Description
 			}
+
+			HorusEye_ShieldBuff: {
+				DisplayName: Horus's Shield
+				Description:
+					'''
+					Increases your defense effective by 100%
+					Increases your defense by 10 !
+					'''
+			}
 		}
 
 		Configs: {
@@ -1941,11 +1960,5 @@ Mods: {
 		}
 
 		Prefixes.BasePrefix.DisplayName: Base Prefix
-
-		Keybinds: {
-			"Weapon Modification.DisplayName": Weapon Modification
-			WeaponModification.DisplayName: Weapon Modification
-			"Enchantment UI.DisplayName": Enchantment  U I
-		}
 	}
 }

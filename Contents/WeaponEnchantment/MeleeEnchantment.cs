@@ -2,9 +2,9 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Projectiles;
+using BossRush.Common.Systems;
 using Terraria.DataStructures;
-using Terraria.ModLoader.UI.ModBrowser;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
@@ -265,7 +265,7 @@ public class GoldBroadsword : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if(Main.rand.NextBool(4)) {
+		if (Main.rand.NextBool(4)) {
 			target.AddBuff(BuffID.Midas, BossRushUtils.ToSecond(6));
 		}
 		if (globalItem.Item_Counter1[index] <= 0) {
@@ -304,7 +304,7 @@ public class CactusSword : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (hit.Crit && globalItem.Item_Counter1[index] <= 0) {
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(6, 8), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3, 0, player.whoAmI);
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10) * Main.rand.NextFloat(6, 8), ProjectileID.RollingCactus, player.GetWeaponDamage(item) * 3, item.knockBack, player.whoAmI);
 			Main.projectile[projectile].friendly = true;
 			Main.projectile[projectile].hostile = false;
 			Main.projectile[projectile].penetrate = -1;
@@ -316,11 +316,139 @@ public class EnchantedSword : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.EnchantedSword;
 	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (++globalItem.Item_Counter1[index] >= 3) {
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), position, velocity.Vector2RotateByRandom(10), ProjectileID.EnchantedBeam, damage, knockback, player.whoAmI);
-			globalItem.Item_Counter1[index] = 0;
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = player.itemAnimationMax * 3;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), position, velocity, ProjectileID.EnchantedBeam, (int)(damage * 1.25f), knockback, player.whoAmI);
 		}
-		base.Shoot(index, player, globalItem, item, source, position, velocity, type, damage, knockback);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (item.shoot == ProjectileID.None) {
+			Vector2 spawningPos = Main.rand.NextVector2Circular(650f, 650f) + player.Center;
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(item), spawningPos, (target.Center - spawningPos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.EnchantedBeam, (int)(player.GetWeaponDamage(item) * 1.25f), item.knockBack, player.whoAmI);
+			Main.projectile[projectile].tileCollide = false;
+		}
+	}
+}
+
+public class StarFury : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Starfury;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = player.itemAnimationMax * 3;
+			Vector2 positionAbovePlayer = position + new Vector2(Main.rand.Next(-200, 200), -1000);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), positionAbovePlayer, (Main.MouseWorld - positionAbovePlayer).SafeNormalize(Vector2.Zero) * 10, ProjectileID.Starfury, (int)(damage * 1.5f), knockback, player.whoAmI);
+		}
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (item.shoot == ProjectileID.None && globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1.5f);
+			Vector2 positionAbovePlayer = target.Center + new Vector2(Main.rand.Next(-200, 200), -1000) + Main.rand.NextVector2Circular(100, 100);
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), positionAbovePlayer,
+					((Main.MouseWorld - positionAbovePlayer).SafeNormalize(Vector2.Zero) * 17).Vector2RandomSpread(2, Main.rand.NextFloat(.95f, 1.12f)).Vector2RotateByRandom(2), ProjectileID.Starfury, (int)(player.GetWeaponDamage(item) * 1.5f), item.knockBack, player.whoAmI);
+			}
+		}
+	}
+}
+public class CopperShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CopperShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+}
+public class TinShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TinShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+}
+public class IronShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.IronShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+}
+public class LeadShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.LeadShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+}
+public class SilverShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SilverShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+}
+public class TungstenShortsword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TungstenShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+}
+public class GoldShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.GoldShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (hit.Crit) {
+			target.AddBuff(BuffID.Midas, BossRushUtils.ToSecond(6));
+		}
+	}
+}
+public class PlatinumShortSword : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PlatinumShortsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
 	}
 }

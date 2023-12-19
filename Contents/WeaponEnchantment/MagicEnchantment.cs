@@ -140,12 +140,40 @@ public class WandOfSparking : ModEnchantment {
 		}
 	}
 }
-public class WandOfFrosting: ModEnchantment {
+public class WandOfFrosting : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.WandofFrosting;
 	}
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .1f;
+	}
+	public override void OnHitNPCWithProj(int index, Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.DamageType == DamageClass.Magic) {
+			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(3));
+			if (Main.rand.NextBool()) {
+				Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2Circular(6, 6), ProjectileID.WandOfFrostingFrost, proj.damage, proj.knockBack, player.whoAmI);
+			}
+		}
+	}
+}
+
+public class WaterBolt : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.WaterBolt;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		reduce -= .2f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.WaterBolt, damage, knockback, player.whoAmI);
+			}
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(2);
+		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.DamageType == DamageClass.Magic) {

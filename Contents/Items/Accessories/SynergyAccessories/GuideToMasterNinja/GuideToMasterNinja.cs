@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNi
 			if (HasBoneDagger) {
 				tooltips.Add(new TooltipLine(Mod, "", BoneDagger + "Attack now inflict OnFire! and you sometime throw BoneDagger , fixed damage +5"));
 			}
-			if (player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja) {
+			if (player.GetModPlayer<PlayerNinjaBook>().GuidetoMasterNinja2) {
 				tooltips.Add(new TooltipLine(Mod, "FinalMaster", $"[i:{ModContent.ItemType<GuideToMasterNinja2>()}] You summon a ring of shuriken and knife"));
 			}
 		}

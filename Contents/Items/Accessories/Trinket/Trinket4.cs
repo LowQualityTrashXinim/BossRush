@@ -16,24 +16,9 @@ internal class Trinket4 : BaseTrinket {
 }
 public class Trinket4_ModPlayer : ModPlayer {
 	bool IsManaCheckSuccess = false;
-	bool SuccessfulBlockAHit = false;
 	public bool Trinket4 = false;
 	public override void ResetEffects() {
 		Trinket4 = false;
-	}
-	public override void PostUpdate() {
-		if (!Trinket4)
-			return;
-		if (!SuccessfulBlockAHit)
-			return;
-		for (int i = 0; i < 100; i++) {
-			Vector2 evenVec = Vector2.One.Vector2DistributeEvenly(100, 360, i) * 30;
-			int dust = Dust.NewDust(Player.Center + evenVec, 0, 0, DustID.ManaRegeneration);
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Vector2.Zero;
-			Main.dust[dust].scale = 1;
-		}
-		SuccessfulBlockAHit = false;
 	}
 	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		if (!Trinket4)
@@ -70,7 +55,13 @@ public class Trinket4_ModPlayer : ModPlayer {
 		if (Player.CheckMana(damageValue, true)) {
 			Player.manaRegenDelay = Player.maxRegenDelay;
 			modifiers.SetMaxDamage(1);
-			SuccessfulBlockAHit = true;
+			for (int i = 0; i < 100; i++) {
+				Vector2 evenVec = Vector2.One.Vector2DistributeEvenly(100, 360, i) * 30;
+				int dust = Dust.NewDust(Player.Center + evenVec, 0, 0, DustID.ManaRegeneration);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Vector2.Zero;
+				Main.dust[dust].scale = 1;
+			}
 		}
 	}
 }

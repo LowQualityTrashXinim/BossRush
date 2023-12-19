@@ -13,11 +13,12 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
-using System.Diagnostics.Metrics;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using Steamworks;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -105,6 +106,9 @@ namespace BossRush.Contents.Items.Weapon {
 		public int SuperShortSword_ProjectileInReadyPosition = 0;
 		public bool SuperShortSword_IsHoldingDownRightMouse = false;
 
+		public int HorusEye_ShieldChargeUp = 0;
+		public bool HorusEye_ShieldUp = false;
+		public int HoruseEye_ShieldHealthPoint = 0;
 		public int HeavenSmg_Stacks = 0;
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
@@ -167,10 +171,18 @@ namespace BossRush.Contents.Items.Weapon {
 			MagicGrenade_MagicMissle = false;
 
 			DeathBySpark_AleThrowingGlove = false;
+
+			if (!Player.HasBuff(ModContent.BuffType<HorusEye_ShieldBuff>()) && HorusEye_ShieldUp) {
+				HorusEye_ShieldUp = false;
+				HorusEye_ShieldChargeUp = 0;
+			}
 		}
 		int check = 1;
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
+			SuperShortSwordUpdate(item);
+		}
+		private void SuperShortSwordUpdate(Item item) {
 			if (item.type == ModContent.ItemType<SuperShortSword>()) {
 				SuperShortSword_Delay = BossRushUtils.CountDown(SuperShortSword_Delay);
 				if (Main.mouseLeft && SuperShortSword_AttackType == 0 && SuperShortSword_Delay <= 0) {
@@ -236,6 +248,13 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (item.type == ModContent.ItemType<HorusEye>()) {
+				if (++HorusEye_ShieldChargeUp >= 10 && !HorusEye_ShieldUp) {
+					HorusEye_ShieldUp = true;
+					HoruseEye_ShieldHealthPoint = 900;
+					Player.AddBuff(ModContent.BuffType<HorusEye_ShieldBuff>(), 9999999);
+				}
+			}
 			if (Swotaff_Spear && Player.altFunctionUse != 2) {
 				if (Swotaff_Spear_Counter < 2) {
 					Swotaff_Spear_Counter++;
@@ -250,8 +269,9 @@ namespace BossRush.Contents.Items.Weapon {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
+			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
 				ModPlayer_resetStacks();
+			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.Crit) {
@@ -274,12 +294,14 @@ namespace BossRush.Contents.Items.Weapon {
 					Deagle_DaedalusStormBow_coolDown = 600;
 				}
 			}
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
+			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
 				ModPlayer_resetStacks();
+			}
 		}
 		public void IncreaseStack() {
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 5; i++) {
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<HeavenBolt>(), 30, 0, Player.whoAmI, 1);
+			}
 			if (HeavenSmg_Stacks >= 40) {
 				SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
 				return;
@@ -288,8 +310,9 @@ namespace BossRush.Contents.Items.Weapon {
 			SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
 		}
 		public void ModPlayer_resetStacks() {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>())
+			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
 				SoundEngine.PlaySound(SoundID.NPCDeath7, Player.Center);
+			}
 			HeavenSmg_Stacks = 0;
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
@@ -315,6 +338,22 @@ namespace BossRush.Contents.Items.Weapon {
 		public override void UpdateEquips() {
 			if (Player.head == ArmorIDs.Head.MeteorHelmet && Player.body == ArmorIDs.Body.MeteorSuit && Player.legs == ArmorIDs.Legs.MeteorLeggings) {
 				StarLightDistributer_MeteorArmor = true;
+			}
+		}
+		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+			HorusEye_DamageShield(npc.damage);
+		}
+		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+			HorusEye_DamageShield(proj.damage);
+		}
+		private void HorusEye_DamageShield(int damagevalue) {
+			if (HorusEye_ShieldUp) {
+				HoruseEye_ShieldHealthPoint -= damagevalue;
+				if (HoruseEye_ShieldHealthPoint <= 0) {
+					HorusEye_ShieldChargeUp = 0;
+					HorusEye_ShieldUp = false;
+					Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<HorusEye_ShieldBuff>()));
+				}
 			}
 		}
 		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
@@ -379,9 +418,7 @@ namespace BossRush.Contents.Items.Weapon {
 			base.OnHitNPC(player, target, hit, damageDone);
 			OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
 		}
-		public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
-
-		}
+		public virtual void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) { }
 
 		private int countX = 0;
 		private float positionRotateX = 0;
