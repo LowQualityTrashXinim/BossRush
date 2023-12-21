@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
 
-namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Crystal {
+namespace BossRush.Contents.Items.Accessories.Crystal {
 	class NatureCrystal : ModItem {
 		public override void SetDefaults() {
 			Item.accessory = true;
@@ -24,13 +24,6 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Crystal {
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			if (Main.LocalPlayer.GetModPlayer<NatureSelectionPlayer>().PowerUP)
 				tooltips.Add(new TooltipLine(Mod, "", $"[i:{ModContent.ItemType<NatureSelection>()}] Nature Selection will also shoot out star and heart"));
-		}
-
-		public override void AddRecipes() {
-			CreateRecipe()
-		   .AddIngredient(ItemID.LifeCrystal, 1)
-		   .AddIngredient(ItemID.ManaCrystal, 1)
-		   .Register();
 		}
 	}
 	class NatureSelectionPlayer : ModPlayer {

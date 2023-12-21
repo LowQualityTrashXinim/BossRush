@@ -6,6 +6,7 @@ using Terraria.ModLoader.IO;
 using BossRush.Contents.Items.Chest;
 using MonoMod.RuntimeDetour;
 using MonoMod.Cil;
+using Terraria.ID;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -74,6 +75,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public int CardLuck = 0;
 
 	public StatModifier DebuffTime = new StatModifier();
+	public StatModifier BuffTime = new StatModifier();
 	//Platinum
 	//public float LuckIncrease = 0;
 
@@ -135,6 +137,7 @@ public class PlayerStatsHandle : ModPlayer {
 		UpdateMinion = 0;
 		UpdateSentry = 0;
 		DebuffTime = new StatModifier();
+		BuffTime = new StatModifier();
 	}
 	public override void Initialize() {
 		MeleeDMG = 0;
@@ -328,7 +331,20 @@ public class PlayerStatsHandleSystem : ModSystem {
 	public override void Load() {
 		base.Load();
 		On_NPC.AddBuff += HookBuffTimeModify;
+		On_Player.AddBuff += IncreasesPlayerBuffTime;
 	}
+
+	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
+		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			if (!Main.debuff[type]) {
+				orig(self, type, (int)modplayer.DebuffTime.ApplyTo(timeToAdd), quiet, foodHack);
+			}
+		}
+		else {
+			orig(self, type, timeToAdd, quiet, foodHack);
+		}
+	}
+
 	private void HookBuffTimeModify(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet) {
 		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, type, (int)modplayer.DebuffTime.ApplyTo(time), quiet);

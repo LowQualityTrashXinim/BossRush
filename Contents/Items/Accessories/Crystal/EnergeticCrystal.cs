@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Crystal {
+namespace BossRush.Contents.Items.Accessories.Crystal {
 	class EnergeticCrystal : ModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetDefaults() {
@@ -18,13 +18,6 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Crystal {
 			player.statManaMax2 += 50;
 			player.lifeRegen += 5;
 			player.manaRegen += 5;
-		}
-
-		public override void AddRecipes() {
-			CreateRecipe()
-		   .AddIngredient(ModContent.ItemType<NatureCrystal>(), 1)
-		   .AddIngredient(ItemID.ManaRegenerationBand, 1)
-		   .Register();
 		}
 	}
 }

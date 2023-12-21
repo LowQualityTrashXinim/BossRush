@@ -1,8 +1,9 @@
 ﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
 /// <summary>
@@ -45,6 +46,38 @@ internal class HorusEye : SynergyModItem {
 		for (int i = 0; i < 10; i++) {
 			Projectile.NewProjectile(source, position, Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(velocity.ToRotation()) * Main.rand.NextFloat(7f, 21f), type, damage, knockback, player.whoAmI);
 		}
+		Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HorusEye_Projectile>(), (int)(damage * 1.5f), knockback, player.whoAmI);
+	}
+	public override void AddRecipes() {
+		CreateRecipe()
+			.AddIngredient(ItemID.Shotgun)
+			.AddIngredient(ItemID.BouncingShield)
+			.AddIngredient(ItemID.PrincessWeapon)
+			.Register();
+	}
+}
+class HorusEye_Projectile : SynergyModProjectile {
+	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 20;
+		Projectile.penetrate = 1;
+		Projectile.friendly = true;
+		Projectile.tileCollide = true;
+		Projectile.hide = true;
+		Projectile.extraUpdates = 3;
+		Projectile.timeLeft = BossRushUtils.ToSecond(10);
+	}
+	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
+		base.SynergyAI(player, modplayer);
+		for (int i = 0; i < 3; i++) {
+			int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemDiamond);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Vector2.Zero;
+			Main.dust[dust].color = new Color(255, 0, 100);
+		}
+	}
+	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ProjectileID.PrincessWeapon, Projectile.damage, Projectile.knockBack, Projectile.owner);
 	}
 }
 class HorusEye_ShieldBuff : SynergyBuff {
@@ -70,5 +103,6 @@ class HorusEye_ShieldBuff : SynergyBuff {
 	public override void UpdatePlayer(Player player, ref int buffIndex) {
 		player.DefenseEffectiveness *= 1;
 		player.statDefense += 10;
+		player.noKnockback = true;
 	}
 }

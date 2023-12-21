@@ -6,7 +6,6 @@ using System.Linq;
 using ReLogic.Content;
 using Terraria.ModLoader;
 using Terraria.GameContent;
-using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using BossRush.Contents.Items.Accessories.Crystal;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
 
@@ -165,6 +165,17 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		}
 	}
 	private bool CheckForSpecialDrop(List<int> itemList) {
+		if (itemList.Contains(ItemID.LifeCrystal) && itemList.Contains(ItemID.ManaCrystal)) {
+			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
+			return true;
+		}
+		if (!Main.rand.NextBool(5)) {
+			return false;
+		}
+		if (itemList.Contains(ModContent.ItemType<NatureCrystal>()) && itemList.Contains(ItemID.ManaRegenerationBand)) {
+			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<EnergeticCrystal>());
+			return true;
+		}
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);
 		bool Musket = itemList.Contains(ItemID.Musket);
@@ -179,7 +190,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		return false;
 	}
 	private bool CheckWeapon(Item item) {
-		if (item.damage > 0 && !item.accessory) {
+		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
 			int type = ModContent.ItemType<CopperCard>();
 			var cardplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
 			if (Main.rand.Next(201) < cardplayer.CardLuck) type = ModContent.ItemType<PlatinumCard>();
@@ -191,11 +202,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		return false;
 	}
 	private bool CheckPotion(Item item) {
-		if (item.buffType != 0) {
-			if (item.ModItem is MysteriousPotion) {
-				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), Main.rand.Next(TerrariaArrayID.NonMovementPotion));
-				return true;
-			}
+		if (item.buffType != 0 && item.buffType != ModContent.BuffType<MysteriousPotionBuff>()) {
 			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<MysteriousPotion>());
 			return true;
 		}

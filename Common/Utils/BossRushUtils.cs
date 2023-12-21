@@ -46,20 +46,6 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static int AmountOfModCurrentlyEnable() {
-			int HowManyModIsEnable = ModLoader.Mods.Length;
-			if (Main.LocalPlayer.IsDebugPlayer()) {
-				return 0;
-			}
-			//Below are special mod that we partner or will later on partner, currently all these mod are the mod that I'm working with.
-			//By all mean, do not speak of this to outsider, only announce or say that we don't want to do mod addon.
-			//Also hardcode this shit so that people have a hard time IL this stuff
-			if (ModLoader.HasMod("Malignant"))
-				HowManyModIsEnable--;
-			if (ModLoader.HasMod("TheSkeletronMod"))
-				HowManyModIsEnable--;
-			return Math.Clamp(HowManyModIsEnable - 2, 0, 99999);
-		}
 		public static int NextFromHashSet(this UnifiedRandom r, HashSet<int> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
 		}

@@ -1,9 +1,9 @@
-﻿using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items {
 	internal class CelestialWrath : ModItem {

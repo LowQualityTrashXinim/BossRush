@@ -87,7 +87,11 @@ AlchemistKnowledge: {
 
 PotionExpert: {
 	DisplayName: Potion Expert
-	Description: + Potion have 35% to not be consumed when not using Quick Buff key
+	Description:
+		'''
+		+ Potion have 35% to not be consumed when not using Quick Buff key
+		+ Increases Potion duration by 25%
+		'''
 }
 
 SniperCharge: {
@@ -177,6 +181,11 @@ BlessingOfPerk: {
 }
 
 ArenaBlessing: {
-	DisplayName: God of Battle Blessing
+	DisplayName: Spirit of Adventure
 	Description: + Grant permanent Camp fire buff
+}
+
+StellarRetirement: {
+	DisplayName: Stellar Retirement
+	Description: + Fallen Star are now more common
 }

@@ -15,6 +15,7 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
@@ -188,6 +189,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
+			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .25f;
 		}
 	}
 	public class SniperCharge : Perk {
@@ -397,6 +399,16 @@ namespace BossRush.Contents.Perks {
 					player.AddBuff(BuffID.HeartLamp, 10);
 				if (StackAmount > 3)
 					player.AddBuff(BuffID.CatBast, 10);
+			}
+		}
+	}
+	public class StellarRetirement : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void Update(Player player) {
+			if (Main.rand.NextBool(100) && !Main.dayTime) {
+				Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.FallingStar, 1000, 5);
 			}
 		}
 	}
