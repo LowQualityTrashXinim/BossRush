@@ -11,12 +11,25 @@ namespace BossRush.Contents.WeaponEnchantment {
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
 		public int ItemIDType = ItemID.None;
+		/// <summary>
+		/// This will clean your counter automatically upon changing weapon
+		/// </summary>
+		public bool ForcedCleanCounter = false;
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.Description");
 		protected sealed override void Register() {
 			SetDefaults();
 			Type = EnchantmentLoader.Register(this);
 		}
+		/// <summary>
+		/// This will run before the counter from globalItem be wiped clean
+		/// Only use it if <see cref="ForcedCleanCounter"/> is true
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="player"></param>
+		/// <param name="globalItem"></param>
+		/// <param name="item"></param>
+		public virtual void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) { }
 		public virtual void SetDefaults() { }
 		//I couldn't figure out a way to implement WhoAmI type of stuff and can't even use globalItem to transfer the index over here to use, so I settle with this
 		public virtual void ModifyShootStat(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
@@ -26,7 +39,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public virtual void OnMissingMana(int index,Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) { }
 		public virtual void ModifyDamage(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) { }
 		public virtual void OnHitNPCWithItem(int index,Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
-		public virtual void OnHitNPCWithProj(int index,Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
+		public virtual void OnHitNPCWithProj(int index,Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitByAnything(Player player) { }
 		public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }

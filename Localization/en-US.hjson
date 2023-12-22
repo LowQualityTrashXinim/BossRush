@@ -1664,7 +1664,13 @@ Mods: {
 
 			HorusEye: {
 				DisplayName: Horus Eye
-				Tooltip: ""
+				Tooltip:
+					'''
+					"Uwaaaa"
+					Will knock you back slightly when using it
+					Shooting it enough time will generate a shield
+					The shield greatly increases defensive potential
+					'''
 			}
 		}
 

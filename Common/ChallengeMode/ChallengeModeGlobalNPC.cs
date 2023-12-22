@@ -331,6 +331,9 @@ namespace BossRush.Common.ChallengeMode {
 
 		}
 		private void KingSlimeStartOfBigJump(NPC npc, ref float JumpStrength, ref float MoveSpeed, ref float DelayAttack) {
+			if (!Main.masterMode) {
+				return;
+			}
 			for (int i = 0; i < 16; i++) {
 				Vector2 spreadoutring = Vector2.One.Vector2DistributeEvenly(16, 360, i) * 10f;
 				Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, spreadoutring, ProjectileID.SpikedSlimeSpike, npc.damage, 4f);
@@ -850,11 +853,6 @@ namespace BossRush.Common.ChallengeMode {
 			return (int)MathHelper.Lerp(normalDamage, expertDamage, amount);
 		}
 		public override void PostAI(NPC npc) {
-			if (BossRushUtils.IsAnyVanillaBossAlive()) {
-				if (npc.type == NPCID.Nurse) {
-					npc.StrikeInstantKill();
-				}
-			}
 		}
 		public override void ModifyShop(NPCShop shop) {
 			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {

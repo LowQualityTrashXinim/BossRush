@@ -414,7 +414,7 @@ public class SilverShortSword : ModEnchantment {
 		damage.Base += 5;
 	}
 }
-public class TungstenShortsword : ModEnchantment {
+public class TungstenShortSword : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.TungstenShortsword;
 	}

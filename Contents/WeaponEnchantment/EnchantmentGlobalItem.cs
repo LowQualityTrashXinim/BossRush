@@ -22,8 +22,11 @@ public class EnchantmentGlobalItem : GlobalItem {
 		return clone;
 	}
 	public override void HoldItem(Item item, Player player) {
-		base.HoldItem(item, player);
 		if (EnchantmenStlot == null) {
+			return;
+		}
+		//This is here to be consistent
+		if (player.HeldItem.type == ItemID.None || item.type == ItemID.None) {
 			return;
 		}
 		for (int i = 0; i < EnchantmenStlot.Length; i++) {
@@ -60,17 +63,25 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
-	public override void PreUpdate() {
+	private bool CommonEnchantmentCheck() => globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
+	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;
-		item = Player.HeldItem;
-		globalItem = item.GetGlobalItem<EnchantmentGlobalItem>();
-	}
-	private bool CommonEnchantmentCheck() => globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
-	public override void ResetEffects() {
-		base.ResetEffects();
-	}
-	public override void PostUpdate() {
+		if (item != Player.HeldItem) {
+			if (item != null) {
+				for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+					if (globalItem.EnchantmenStlot[i] == 0)
+						continue;
+					if (EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ForcedCleanCounter) {
+						EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).PreCleanCounter(i, Player, globalItem, item);
+						globalItem.Item_Counter1 = new int[3];
+						globalItem.Item_Counter2 = new int[3];
+					}
+				}
+			}
+			item = Player.HeldItem;
+			globalItem = item.GetGlobalItem<EnchantmentGlobalItem>();
+		}
 		if (CommonEnchantmentCheck()) {
 			return;
 		}
@@ -177,7 +188,7 @@ public class EnchantmentModplayer : ModPlayer {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
 
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithProj(i, Player, proj, target, hit, damageDone);
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithProj(i, Player, globalItem, proj, target, hit, damageDone);
 		}
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {

@@ -25,7 +25,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword {
 			target.AddBuff(BuffID.OnFire, 90);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			Projectile.NewProjectile(source, position, player.itemRotation.ToRotationVector2() * Item.shootSpeed * player.direction, type, (int)(damage * 0.45f), knockback, player.whoAmI);
+			Projectile.NewProjectile(source, position, (player.itemRotation + MathHelper.PiOver4 * -player.direction).ToRotationVector2() * Item.shootSpeed * player.direction, type, (int)(damage * 0.45f), knockback, player.whoAmI);
 			CanShootItem = false;
 		}
 		public override void AddRecipes() {
