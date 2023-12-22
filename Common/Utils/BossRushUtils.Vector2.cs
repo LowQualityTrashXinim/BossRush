@@ -145,5 +145,10 @@ namespace BossRush {
 			ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
 			return ToRotateAgain;
 		}
+		public static Vector2 Subtract(this Vector2 vec, float x, float y) {
+			vec.X -= x;
+			vec.Y -= y;
+			return vec;
+		}
 	}
 }

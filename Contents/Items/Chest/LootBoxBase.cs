@@ -119,7 +119,7 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 
 			//This is very bulky but gotta make it work
-			if (Main.rand.NextBool(20)) {
+			if (Main.rand.NextBool(10)) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
 			}
 			PlayerStatsHandle cardplayer = player.GetModPlayer<PlayerStatsHandle>();

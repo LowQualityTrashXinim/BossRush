@@ -181,8 +181,41 @@ BlessingOfPerk: {
 }
 
 ArenaBlessing: {
-	DisplayName: Spirit of Adventure
-	Description: + Grant permanent Camp fire buff
+	DisplayName: Adventure Spirit
+	Description: + Spawm a spirit lamp that follow you around and give you Campfire buff
+}
+
+ArenaBlessing1: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you heart lamp buff
+		Increases speed by 10%
+		Increases radius strength by 100
+		'''
+}
+
+ArenaBlessing2: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you Star in bottle buff
+		Increases speed by 10%
+		Increases radius strength by 100
+		'''
+}
+
+ArenaBlessing3: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you Bash statue buff
+		Increases speed by 10%
+		Increases radius strength by 100
+		'''
 }
 
 StellarRetirement: {

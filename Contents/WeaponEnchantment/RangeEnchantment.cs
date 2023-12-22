@@ -3,8 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Common.Systems;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -99,9 +99,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class AshWoodBow : ModEnchantment {
@@ -115,9 +117,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class BorealWoodBow : ModEnchantment {
@@ -131,9 +135,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class RichMahoganyBow : ModEnchantment {
@@ -147,9 +153,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class EbonwoodBow : ModEnchantment {
@@ -163,9 +171,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class ShadewoodBow : ModEnchantment {
@@ -179,9 +189,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class PalmWoodBow : ModEnchantment {
@@ -195,9 +207,11 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float multiply = 1.1f;
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.1f;
+				multiply += .1f;
 			}
+			velocity *= multiply;
 		}
 	}
 	public class CopperBow : ModEnchantment {
@@ -212,7 +226,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -228,7 +242,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -244,7 +258,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -260,7 +274,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -276,7 +290,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -292,7 +306,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -308,7 +322,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}
@@ -324,7 +338,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 1.2f;
+				velocity *= 1.25f;
 			}
 		}
 	}

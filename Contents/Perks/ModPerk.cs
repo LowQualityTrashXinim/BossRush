@@ -16,6 +16,7 @@ using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Common.Systems;
+using Terraria.Localization;
 
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
@@ -380,25 +381,17 @@ namespace BossRush.Contents.Perks {
 		public override string ModifyToolTip() {
 			switch (StackAmount) {
 				case 1:
-					return "+ Grant permanent Star in bottle buff";
+					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
 				case 2:
-					return "+ Grant permanent Heart Lamp buff";
+					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}2.Description");
 				case 3:
-					return "+ Grant permanent Cat Bast buff";
-				default:
-					return "+ Grant permanent Camp fire buff";
+					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}3.Description");
 			}
+			return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
 		}
-		public override void ResetEffect(Player player) {
-			base.ResetEffect(player);
-			if (StackAmount >= 1) {
-				player.AddBuff(BuffID.Campfire, 10);
-				if (StackAmount > 1)
-					player.AddBuff(BuffID.StarInBottle, 10);
-				if (StackAmount > 2)
-					player.AddBuff(BuffID.HeartLamp, 10);
-				if (StackAmount > 3)
-					player.AddBuff(BuffID.CatBast, 10);
+		public override void Update(Player player) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<AdventureSpirit>()] < 1) {
+				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<AdventureSpirit>(), 0, 0, player.whoAmI);
 			}
 		}
 	}

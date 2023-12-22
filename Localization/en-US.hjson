@@ -179,6 +179,7 @@ Mods: {
 			HostileMusket.DisplayName: Hostile Musket
 			StructureMakerProj.DisplayName: Structure Maker Proj
 			HorusEye_Projectile.DisplayName: Horus Eye_ Projectile
+			AdventureSpirit.DisplayName: Adventure Spirit
 		}
 
 		NPCs: {

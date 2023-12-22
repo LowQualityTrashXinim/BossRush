@@ -339,6 +339,9 @@ public class PlayerStatsHandleSystem : ModSystem {
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.DebuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
+			else {
+				orig(self, type, timeToAdd, quiet, foodHack);
+			}
 		}
 		else {
 			orig(self, type, timeToAdd, quiet, foodHack);

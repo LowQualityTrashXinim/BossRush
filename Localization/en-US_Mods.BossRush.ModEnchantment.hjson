@@ -295,6 +295,7 @@ WoodenBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -305,6 +306,7 @@ AshWoodBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -315,6 +317,7 @@ BorealWoodBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -325,6 +328,7 @@ RichMahoganyBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -335,6 +339,7 @@ EbonwoodBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -345,6 +350,7 @@ ShadewoodBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -355,6 +361,7 @@ PalmWoodBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
+		Multiply shooting velocity by 1.1
 		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
 		'''
 }
@@ -365,7 +372,7 @@ CopperBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -375,7 +382,7 @@ TinBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -385,7 +392,7 @@ IronBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -395,7 +402,7 @@ LeadBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -405,7 +412,7 @@ SilverBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -415,7 +422,7 @@ TungstenBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -425,7 +432,7 @@ GoldBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
@@ -435,7 +442,7 @@ PlatinumBow: {
 		'''
 		Increases damage by 5
 		Increases range damage by 15%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 		'''
 }
 
