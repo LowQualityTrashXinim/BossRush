@@ -11,6 +11,7 @@ using System.Linq;
 using Terraria.ID;
 using Terraria;
 using System;
+using Steamworks;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -557,8 +558,9 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_PearlWoodArmor(target);
 		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
+			}
 			OnHitNPC_ShadewoodArmor();
 			OnHitNPC_BorealWoodArmor(target);
 			OnHitNPC_WoodArmor(target);
@@ -574,67 +576,82 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_PearlWoodArmor(target);
 		}
 		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+			}
 		}
 		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+			}
 		}
 		private void OnHitNPC_LeadArmor(NPC npc) {
-			if (LeadArmor)
+			if (LeadArmor) {
 				npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
+			}
 		}
 		private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null) {
-			if (WoodArmor)
-				if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile))
-					Projectile.NewProjectile(Player.GetSource_FromThis(),
-						target.Center - new Vector2(0, 400),
-						Vector2.UnitY * 10,
-						ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+			if (!WoodArmor) {
+				return;
+			}
+			if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile)) {
+				Projectile.NewProjectile(Player.GetSource_FromThis(),
+					target.Center - new Vector2(0, 400),
+					Vector2.UnitY * 10,
+					ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+			}
 		}
 		private void OnHitNPC_ShadewoodArmor() {
-			if (ShadewoodArmor)
-				if (ShadewoodArmorCD <= 0) {
-					for (int i = 0; i < 75; i++) {
-						Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
-						Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
-					}
-					Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
-					foreach (var npc in npclist) {
-						npc.StrikeNPC(npc.CalculateHitInfo(30, 1));
-						npc.AddBuff(BuffID.Ichor, 300);
-						Player.Heal(1);
-					}
-					ShadewoodArmorCD = BossRushUtils.ToSecond(3);
+			if (!ShadewoodArmor) {
+				return;
+			}
+			if (ShadewoodArmorCD <= 0) {
+				for (int i = 0; i < 75; i++) {
+					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
+					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
 				}
+				Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
+				foreach (var npc in npclist) {
+					npc.StrikeNPC(npc.CalculateHitInfo(30, 1));
+					npc.AddBuff(BuffID.Ichor, 300);
+					Player.Heal(1);
+				}
+				ShadewoodArmorCD = BossRushUtils.ToSecond(3);
+			}
 		}
 		private void OnHitNPC_BorealWoodArmor(NPC target) {
-			if (BorealWoodArmor)
-				if (Main.rand.NextFloat() <= .3f)
-					target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
+			if (!BorealWoodArmor) {
+				return;
+			}
+			if (Main.rand.NextFloat() <= .3f) {
+				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
+			}
 		}
 		private void OnHitNPC_PumpkinArmor(NPC npc, float damage) {
-			if (PumpkinArmor && Main.rand.NextBool(3)) {
-				if (npc.HasBuff(ModContent.BuffType<pumpkinOverdose>())) {
-					int explosionRaduis = 75 + (int)MathHelper.Clamp(damage, 0, 125);
-					for (int i = 0; i < 35; i++) {
-						Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.Pumpkin);
-						Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.OrangeTorch);
-					}
-					npc.Center.LookForHostileNPC(out List<NPC> npclist, explosionRaduis);
-					foreach (var i in npclist) {
-						i.StrikeNPC(i.CalculateHitInfo(5 + (int)(damage * 0.05f), 1, Main.rand.NextBool(40)));
-					}
-					SoundEngine.PlaySound(SoundID.NPCDeath46);
-					npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+			if (!PumpkinArmor || !Main.rand.NextBool(3)) {
+				return;
+			}
+			if (npc.HasBuff(ModContent.BuffType<pumpkinOverdose>())) {
+				int explosionRaduis = 75 + (int)MathHelper.Clamp(damage, 0, 125);
+				for (int i = 0; i < 35; i++) {
+					Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.Pumpkin);
+					Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.OrangeTorch);
 				}
-				else npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+				npc.Center.LookForHostileNPC(out List<NPC> npclist, explosionRaduis);
+				foreach (var i in npclist) {
+					Player.StrikeNPCDirect(npc, i.CalculateHitInfo(5 + (int)(damage * 0.05f), 1, Main.rand.NextBool(40)));
+				}
+				SoundEngine.PlaySound(SoundID.NPCDeath46);
+				npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+			}
+			else {
+				npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
 			}
 		}
 		private void OnHitNPC_AshWoodArmor(NPC npc) {
-			if (AshWoodArmor)
+			if (AshWoodArmor) {
 				npc.AddBuff(BuffID.OnFire, 300);
+			}
 		}
 		private void OnHitNPC_PearlWoodArmor(NPC npc) {
 			if (pearlWoodArmorCD <= 0 && pearlWoodArmor) {

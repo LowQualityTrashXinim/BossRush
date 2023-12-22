@@ -32,8 +32,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.FlintlockPistol;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Main.rand.NextBool(4))
+			if (Main.rand.NextBool(4)) {
 				Projectile.NewProjectile(source, position, velocity, ProjectileID.Bullet, damage, knockback, player.whoAmI);
+			}
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage += .1f;
