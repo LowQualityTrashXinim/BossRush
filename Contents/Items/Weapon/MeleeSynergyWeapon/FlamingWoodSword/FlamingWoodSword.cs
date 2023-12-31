@@ -22,10 +22,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword {
 				meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC target, NPC.HitInfo hit, int damageDone) {
-			target.AddBuff(BuffID.OnFire, 90);
+			target.AddBuff(BuffID.OnFire, 180);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			Projectile.NewProjectile(source, position, (player.itemRotation + MathHelper.PiOver4 * -player.direction).ToRotationVector2() * Item.shootSpeed * player.direction, type, (int)(damage * 0.45f), knockback, player.whoAmI);
+			Vector2 vel = (player.itemRotation + MathHelper.PiOver4 * -player.direction).ToRotationVector2() * 3 * player.direction;
+			Projectile.NewProjectile(source, position.PositionOFFSET(vel, 30), vel, type, (int)(damage * 0.45f), knockback, player.whoAmI);
 			CanShootItem = false;
 		}
 		public override void AddRecipes() {

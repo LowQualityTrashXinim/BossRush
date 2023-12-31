@@ -75,6 +75,10 @@ internal class UniversalSystem : ModSystem {
 				InterfaceScaleType.UI)
 			);
 	}
+	//public override void SetStaticDefaults() {
+	//	//I am unsure why this is set to true
+	//	Main.debuff[BuffID.Campfire] = false;
+	//}
 }
 
 public class UniversalModPlayer : ModPlayer {

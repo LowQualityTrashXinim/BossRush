@@ -271,6 +271,10 @@ namespace BossRush {
 				return true;
 			return false;
 		}
+		//Todo : make a universal form of luck
+		public static bool RNGchance(this UnifiedRandom rand, float chance) {
+			return rand.NextFloat() > chance;
+		}
 	}
 	/// <summary>
 	/// Use this to set up your own logic for multi color changing effect, could done this with shader but well

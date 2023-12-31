@@ -26,7 +26,8 @@ namespace BossRush.Contents.Items.Weapon {
 	///Same with projectile unless it is a vanilla projectile then we can refer to global projectile<br/>
 	///This should only hold custom bool or data that we think should be hold/use/transfer<br/>
 	///We will name using the following format "Synergy item"_"vanilla item" to assign synergy power so that it is clear to read and easy to maintain<br/>
-	///Anything that relate to actual logic and how player interact from the item could or shoulds also go in here<br/>
+	///If a ability that require modplayer class, you can create your own custom player class with the item name, it should also follow a format which goes  "Synergy item"_ModPlayer
+	///This is class is only purpose is to serve as a central class where it contain bool and data and potential synergy manipulation
 	/// </summary>
 	public class PlayerSynergyItemHandle : ModPlayer {
 		public bool SynergyBonusBlock = false;

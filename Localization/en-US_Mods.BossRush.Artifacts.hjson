@@ -72,8 +72,7 @@ TokenOfGreedArtifact: {
 		'''
 		"Satisfied by just having, caring not for weapon quality."
 		[c/b7bf5c:Positive effect] : 
-			+ Increase amount of drop by 4 
-			+ Increase amount of card from packet by 2
+			+ Increase amount of drop by 2
 		[c/ab3e43:Negative effect] : 
 			- Decrease weapon damage globally by 35%
 		'''
@@ -85,11 +84,9 @@ TokenOfPrideArtifact: {
 		'''
 		"Having the skill to use whatever you are given."
 		[c/b7bf5c:Positive effect] : 
-			+ Increase weapon damage by 45%
+			+ Increase weapon damage by 25%
 		[c/ab3e43:Negative effect] : 
 			- Halves your drop from treasure chest
-		[c/546dc4:Secret Effect] : 
-			? Show me your skill that you are so prideful about, and I shall reward it!
 		'''
 }
 

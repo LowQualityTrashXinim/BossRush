@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BloodStar {
 	internal class BloodStar : SynergyModItem {

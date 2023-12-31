@@ -30,6 +30,10 @@ namespace BossRush.Contents.WeaponEnchantment {
 		/// <param name="globalItem"></param>
 		/// <param name="item"></param>
 		public virtual void PreCleanCounter(int index, Player player, EnchantmentGlobalItem globalItem, Item item) { }
+		/// <summary>
+		/// This is actually SetStaticDefault but uhh, I forgot
+		/// All the varible in this will be set upon Load
+		/// </summary>
 		public virtual void SetDefaults() { }
 		//I couldn't figure out a way to implement WhoAmI type of stuff and can't even use globalItem to transfer the index over here to use, so I settle with this
 		public virtual void ModifyShootStat(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }

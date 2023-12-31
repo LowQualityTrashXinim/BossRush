@@ -55,42 +55,51 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Empty_AreaAroundPlayer() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(11, 11, 2),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 11, 2),
 		(i, j) => {
 			GenerationHelper.FastRemoveTile(i, j);
 		});
 	}
 	[Task]
 	public void Create_Jungle() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(17, 9, 4, 4),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(17, 9, 4, 4),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Mud);
 		});
 	}
 	[Task]
 	public void Create_Tundra() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(3, 9, 4, 4),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(3, 9, 4, 4),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
 		});
 	}
 	[Task]
 	public void Create_Crimson1() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(0, 4, 2, 11),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 4, 2, 11),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Crimstone);
 		});
 	}
 	[Task]
 	public void Create_Corruption1() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(22, 4, 2, 11),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(22, 4, 2, 11),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
 		});
 	}
+
+	[Task]
+	public void Create_Sand() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(5, 0, 1, 11),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Sandstone);
+		});
+	}
+
 	[Task]
 	public void Empty_Hell() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld(0, 21, 24, 3),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 21, 24, 3),
 		(i, j) => {
 			GenerationHelper.FastRemoveTile(i, j);
 		});

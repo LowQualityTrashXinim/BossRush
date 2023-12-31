@@ -180,6 +180,8 @@ Mods: {
 			StructureMakerProj.DisplayName: Structure Maker Proj
 			HorusEye_Projectile.DisplayName: Horus Eye_ Projectile
 			AdventureSpirit.DisplayName: Adventure Spirit
+			SwordProjectile.DisplayName: Sword Projectile
+			SwordProjectile2.DisplayName: Sword Projectile2
 		}
 
 		NPCs: {
@@ -1204,10 +1206,10 @@ Mods: {
 				DisplayName: Berserker Elixir
 				Tooltip:
 					'''
-						"Let them witness the slaughter"
-						Multiply melee damage by 1.5
-						Multiply melee speed by 1.5
-						Multiply range, magic, summon Damage by 0.1
+					"Let them witness the slaughter"
+					Multiply melee damage by 1.5
+					Multiply melee speed by 1.5
+					Multiply range, magic, summon Damage by 0.1
 					'''
 			}
 
@@ -1215,11 +1217,11 @@ Mods: {
 				DisplayName: Commander Elixir
 				Tooltip:
 					'''
-						"Let your minion do your binding"
-						+5 Max Minions
-						Multiply whip Range by 1.5
-						Multiply summoner ship damage 1.5
-						Multiply range, magic, melee Damage by 0.1
+					"Let your minion do your binding"
+					+5 Max Minions
+					Multiply whip Range by 1.5
+					Multiply summoner ship damage 1.5
+					Multiply range, magic, melee Damage by 0.1
 					'''
 			}
 
@@ -1227,10 +1229,10 @@ Mods: {
 				DisplayName: Gunslinger Elixir
 				Tooltip:
 					'''
-						"High focus, stay alert"
-						Most gun shoot more stable
-						Increase critical strike chance by 70%
-						Getting hit will remove this buff
+					"High focus, stay alert"
+					Most gun shoot more stable
+					Increase critical strike chance by 70%
+					Getting hit will remove this buff
 					'''
 			}
 
@@ -1238,12 +1240,12 @@ Mods: {
 				DisplayName: Sage Elixir
 				Tooltip:
 					'''
-						"Side effects include becoming an explosive hazard"
-						Multiply mana cost by 0.1
-						Massively increases mana regen
-						+100 Max Mana
-						+50% Magic Damage 
-						Multiply range, summon, melee Damage by 0.1
+					"Side effects include becoming an explosive hazard"
+					Multiply mana cost by 0.1
+					Massively increases mana regen
+					+100 Max Mana
+					+50% Magic Damage 
+					Multiply range, summon, melee Damage by 0.1
 					'''
 			}
 
@@ -1251,13 +1253,14 @@ Mods: {
 				DisplayName: Titan Elixir
 				Tooltip:
 					'''
-						"Let your body be shield for the weak"
-						+45% Damage reduction
-						+400 Max life
-						Multiply all classes's damage by 0.65
-						Multiply Your movement, jumpspeed by 1.5
-						Gain a extra life while the buff active
-						You have knockback immunity !
+					"Let your body be shield for the weak"
+					+25 defenses
+					+45% Damage reduction
+					+400 Max life
+					Multiply all classes's damage by 0.65
+					Multiply Your movement, jumpspeed by 0.5
+					Gain a extra life while the buff active
+					You have knockback immunity !
 					'''
 			}
 
@@ -1480,11 +1483,6 @@ Mods: {
 					'''
 			}
 
-			Zenish: {
-				DisplayName: Zenish
-				Tooltip: ""
-			}
-
 			Nadir: {
 				DisplayName: Nadir
 				Tooltip: ""
@@ -1498,26 +1496,6 @@ Mods: {
 			AmberBoneSpear: {
 				DisplayName: Amber Bone Spear
 				Tooltip: ""
-			}
-
-			CopperCardNormalizer: {
-				DisplayName: Copper Card Normalizer
-				Tooltip: Have a chance to reduce the chance of getting bad stats by 0 to 10%
-			}
-
-			SilverCardNormalizer: {
-				DisplayName: Silver Card Normalizer
-				Tooltip: Have a chance to reduce the chance of getting bad stats by 5 to 20%
-			}
-
-			GoldCardNormalizer: {
-				DisplayName: Gold Card Normalizer
-				Tooltip: Have a chance to reduce the chance of getting bad stats by 15 to 35%
-			}
-
-			PlatinumCardNormalizer: {
-				DisplayName: Platinum Card Normalizer
-				Tooltip: Have a chance to reduce the chance of getting bad stats by 25 to 65%
 			}
 
 			BuilderLootBox: {
@@ -1555,17 +1533,12 @@ Mods: {
 
 			HeavenSmg: {
 				DisplayName: Heaven Smg
-				Tooltip: ""
-			}
-
-			BundleHelper: {
-				DisplayName: Bundle Helper
-				Tooltip: ""
+				Tooltip: Bring down heaven wrath
 			}
 
 			ItemBundle: {
 				DisplayName: Item Bundle
-				Tooltip: ""
+				Tooltip: Contain item that may be useful
 			}
 
 			TransmuteTablet: {
@@ -1593,7 +1566,7 @@ Mods: {
 				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
-					Increases inflicting debuff time by 25%
+					Increases inflicting debuff time by 35%
 					[[c/8888ea:Active]]
 					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
 					[c/b7bf5c:Samsara of Retribution] debuff : deal 10 damage over time
@@ -1624,12 +1597,36 @@ Mods: {
 					[[c/8888ea:Passive]]
 					Increases your max mana by 60
 					[[c/8888ea:Active]]
-					While current mana amount is above 50% max mana 
-					+ Strengthen your attack at the cost of 10 mana ( can be reduce )
-					+ When shooting, you also shoot a burst of Crystal Storm that deal 45% of your damage
+					While current mana amount is above 50% max mana :
+					+ Increases your projectile attack by 20% at the cost of 10 mana ( can be reduce )
+					While current mana amount is below 50% max mana :
+					+ Hitting a enemy with magic projectile will restore your mana by 1 but decreases your damage by 30%
 					When you got hit, if the damage taken is less than current amount of mana
 					+ You take 1 damage instead and your mana take a hit instead
 					'''
+			}
+
+			Trinket5: {
+				DisplayName: Trinket of Hardened Shell
+				Tooltip:
+					'''
+					[[c/8888ea:Passive]]
+					Increases defense by 25
+					[[c/8888ea:Active]]
+					Upon getting hit, grants [c/b7bf5c:Gradual Rockshell] for 10 seconds. (40s cooldown)
+					[c/b7bf5c:Gradual Rockshell]: increases defence by 1 every successful melee hit (stackable, 0.1 cooldown).
+					Heals the player at the end of the buff based on defense gained. Excess healing bursts into an AoE explosion.
+					'''
+			}
+
+			Trinket6: {
+				DisplayName: Trinket6
+				Tooltip: ""
+			}
+
+			Trinket7: {
+				DisplayName: Trinket7
+				Tooltip: ""
 			}
 
 			AuraDamageCard: {
@@ -1841,7 +1838,7 @@ Mods: {
 			}
 
 			Samsara_of_Retribution_Buff: {
-				DisplayName: Samsara_of_ Retribution_ Buff
+				DisplayName: Samsara of Retribution
 				Description: Mods.BossRush.Buffs.Samsara_of_Retribution_Buff.Description
 			}
 
@@ -1858,6 +1855,11 @@ Mods: {
 			HyperRegen: {
 				DisplayName: Hyper Regen
 				Description: Mods.BossRush.Buffs.HyperRegen.Description
+			}
+
+			Trinket5_Buff: {
+				DisplayName: Trinket5_ Buff
+				Description: Mods.BossRush.Buffs.Trinket5_Buff.Description
 			}
 		}
 

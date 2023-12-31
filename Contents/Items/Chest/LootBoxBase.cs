@@ -8,13 +8,12 @@ using Terraria.GameContent;
 using BossRush.Common.Utils;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.Items.NohitReward;
-using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -86,7 +85,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return 0;
 		}
-		//Note this method stillsuffer from slight performance problem
+		//Note this method still suffer from slight performance problem
 		/// <summary>
 		/// Use this to modify the item pool before the process of choosing weapon is proceed<br/>
 		/// Use <see cref="LootboxSystem.GetItemPool"/> to modify loot pool
@@ -121,19 +120,6 @@ namespace BossRush.Contents.Items.Chest {
 			//This is very bulky but gotta make it work
 			if (Main.rand.NextBool(10)) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
-			}
-			PlayerStatsHandle cardplayer = player.GetModPlayer<PlayerStatsHandle>();
-			int cardReRoll = (int)Math.Round(cardplayer.CardLuck * .1f, 2);
-			for (int i = 0; i < cardReRoll; i++) {
-				if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<BoxOfCard>());
-					continue;
-				}
-				if (Main.rand.NextFloat() * 100 < cardplayer.CardLuck * 2) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<BigCardPacket>());
-					continue;
-				}
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<CardPacket>());
 			}
 		}
 		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }

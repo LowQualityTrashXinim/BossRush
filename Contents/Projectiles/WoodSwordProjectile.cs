@@ -8,7 +8,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Projectiles;
-internal class WoodSwordProjectile : ModProjectile {
+internal class SwordProjectile : ModProjectile {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
@@ -56,6 +56,77 @@ internal class WoodSwordProjectile : ModProjectile {
 		Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		return false;
+	}
+}
+internal class SwordProjectile2 : ModProjectile {
+	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+		ProjectileID.Sets.TrailCacheLength[Type] = 10;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.penetrate = -1;
+		Projectile.friendly = true;
+		Projectile.tileCollide = true;
+		Projectile.DamageType = DamageClass.Melee;
+		Projectile.extraUpdates = 5;
+	}
+	public int ItemIDtextureValue = ItemID.WoodenSword;
+	Vector2 vel = Vector2.Zero;
+	public float Counter { get => Projectile.ai[0]; set => Projectile.ai[0] = value; }
+	public float State { get => Projectile.ai[1]; set => Projectile.ai[1] = value; }
+	public override bool? CanDamage() {
+		return State != 1;
+	}
+	public override void AI() {
+		if (State == 1) {
+			if (Projectile.timeLeft > 300) {
+				Projectile.timeLeft = 300;
+			}
+			Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / 300f);
+			Projectile.velocity = Vector2.Zero;
+			return;
+		}
+		if (Projectile.timeLeft > 900 && Counter >= 0) {
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+			vel = Projectile.velocity;
+			Projectile.timeLeft = 900;
+			Counter = 120;
+			Projectile.velocity = Vector2.Zero;
+		}
+		if (--Counter < 0) {
+			Projectile.timeLeft = 900;
+			Projectile.velocity += vel * .005f;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(9);
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+		}
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		State = 1;
+	}
+	public override bool OnTileCollide(Vector2 oldVelocity) {
+		if (State != 1) {
+			State = 1;
+			Projectile.position += Projectile.velocity * 2;
+			Projectile.velocity = Vector2.Zero;
+		}
+		return false;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Projectile.type);
+		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
+		Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+		if (State != 1) {
+			for (int k = 0; k < Projectile.oldPos.Length; k++) {
+				Vector2 drawPos2 = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) * .5f;
+				Main.EntitySpriteDraw(texture, drawPos2, null, color, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+			}
+		}
+		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+		Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
 	}
 }

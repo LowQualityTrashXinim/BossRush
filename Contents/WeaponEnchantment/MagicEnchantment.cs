@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Mono.Cecil;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -77,9 +78,6 @@ public class RubyStaff : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.RubyStaff;
 	}
-	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
-		reduce -= .15f;
-	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		type = ProjectileID.RubyBolt;
 	}
@@ -89,13 +87,23 @@ public class RubyStaff : ModEnchantment {
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.RubyBolt, damage, knockback, player.whoAmI);
 		}
 	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(10);
+		for (int i = 0; i < 5; i++) {
+			Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 7;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.DiamondBolt, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
+		}
+	}
 }
 public class DiamondStaff : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DiamondStaff;
-	}
-	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
-		reduce -= .15f;
 	}
 	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 		type = ProjectileID.DiamondBolt;
@@ -104,6 +112,19 @@ public class DiamondStaff : ModEnchantment {
 		if (Main.rand.NextFloat() <= .17f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.DiamondBolt, damage, knockback, player.whoAmI);
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(10);
+		for (int i = 0; i < 5; i++) {
+			Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 7;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.DiamondBolt, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
 		}
 	}
 }
@@ -135,11 +156,14 @@ public class WandOfSparking : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
 		if (proj.DamageType == DamageClass.Magic) {
 			target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(3));
-			if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfSparkingSpark) {
-				Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfSparkingSpark, proj.damage, proj.knockBack, player.whoAmI);
-			}
+		}
+		if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfSparkingSpark) {
+			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfSparkingSpark, proj.damage, proj.knockBack, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}
 	}
@@ -155,11 +179,14 @@ public class WandOfFrosting : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
 		if (proj.DamageType == DamageClass.Magic) {
 			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(3));
-			if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfFrostingFrost) {
-				Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfFrostingFrost, proj.damage, proj.knockBack, player.whoAmI);
-			}
+		}
+		if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfFrostingFrost) {
+			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfFrostingFrost, proj.damage, proj.knockBack, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}
 	}
@@ -175,10 +202,6 @@ public class WaterBolt : ModEnchantment {
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		damage += globalItem.Item_Counter2[index];
-		globalItem.Item_Counter2[index] = 0;
-	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			for (int i = 0; i < 3; i++) {
@@ -189,9 +212,14 @@ public class WaterBolt : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type == ProjectileID.WaterBolt) {
-			globalItem.Item_Counter2[index]++;
+		if (globalItem.Item_Counter2[index] > 0) {
+			return;
 		}
+		int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), 
+			player.Center + Main.rand.NextVector2Circular(700,700), 
+			Main.rand.NextVector2CircularEdge(4,4), ProjectileID.WaterBolt, damageDone, proj.knockBack, player.whoAmI);
+		Main.projectile[projectile].timeLeft = BossRushUtils.ToSecond(5);
+		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
 	}
 }
 

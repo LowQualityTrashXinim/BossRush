@@ -15,7 +15,6 @@ internal class Trinket4 : BaseTrinket {
 	}
 }
 public class Trinket4_ModPlayer : ModPlayer {
-	bool IsManaCheckSuccess = false;
 	public bool Trinket4 = false;
 	public override void ResetEffects() {
 		Trinket4 = false;
@@ -26,22 +25,15 @@ public class Trinket4_ModPlayer : ModPlayer {
 		if (Player.statMana >= Player.statManaMax2 * .5f) {
 			if (Player.CheckMana(10, true)) {
 				Player.manaRegenDelay = (int)Player.maxRegenDelay;
-				IsManaCheckSuccess = true;
-				velocity *= 1.2f;
 				damage = (int)(damage * 1.2f);
 			}
 		}
 	}
-	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (IsManaCheckSuccess) {
-			for (int i = 0; i < 5; i++) {
-				Projectile.NewProjectile(source, position,
-					velocity.Vector2RotateByRandom(25).Vector2RandomSpread(1, Main.rand.NextFloat(.95f, 1.1f)),
-					ProjectileID.CrystalStorm, (int)(damage * .45f), knockback, Player.whoAmI);
-			}
-			IsManaCheckSuccess = false;
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if(Player.statMana < Player.statManaMax2 * .5f) {
+			modifiers.FinalDamage -= .3f;
+			Player.statMana++;
 		}
-		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		ManaShield(npc.damage, ref modifiers);

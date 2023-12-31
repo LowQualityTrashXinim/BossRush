@@ -9,7 +9,7 @@ internal class Trinket_of_Perpetuation : BaseTrinket {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().Trinket_of_Perpetuation = true;
-		player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .55f;
+		player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .35f;
 	}
 }
 public class Samsara_of_Retribution : TrinketBuff {
@@ -26,7 +26,7 @@ public class Samsara_of_Retribution : TrinketBuff {
 }
 public class Samsara_of_Retribution_Buff : TrinketBuff {
 	public override void UpdateTrinketPlayer(Player player, TrinketPlayer modplayer, ref int buffIndex) {
-		player.GetDamage(DamageClass.Generic) += player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().NPCcounter;
+		player.GetDamage(DamageClass.Generic) += player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().NPCcounter * .01f;
 	}
 	public override void OnEnded(Player player) {
 		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().CountDown = BossRushUtils.ToSecond(25);

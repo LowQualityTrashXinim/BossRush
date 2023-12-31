@@ -11,7 +11,6 @@ using System.Linq;
 using Terraria.ID;
 using Terraria;
 using System;
-using Steamworks;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -246,10 +245,12 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves)) {
 				bool IsAbover = player.statLife < player.statLifeMax2 * .75f;
-				if (Main.dayTime)
+				if (Main.dayTime) {
 					player.statDefense += IsAbover ? 10 : 20;
-				else
+				}
+				else {
 					player.GetDamage(DamageClass.Generic) += IsAbover ? .1f : .2f;
+				}
 				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TungstenHelmet, ItemID.TungstenChainmail, ItemID.TungstenGreaves)) {
@@ -277,12 +278,14 @@ namespace BossRush.Common.RoguelikeChange {
 			if (item.type == ItemID.VikingHelmet) {
 				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
 			}
-			if (item.type == ItemID.ObsidianRose)
+			if (item.type == ItemID.ObsidianRose) {
 				player.buffImmune[BuffID.OnFire] = true;
+			}
 		}
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
-			if (item.type == ItemID.EoCShield)
+			if (item.type == ItemID.EoCShield) {
 				player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
+			}
 		}
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			VanillaChange(item, player, ref damage);
@@ -369,22 +372,27 @@ namespace BossRush.Common.RoguelikeChange {
 			EbonWoodArmorCD = BossRushUtils.CountDown(EbonWoodArmorCD);
 			CactusArmorCD = BossRushUtils.CountDown(CactusArmorCD);
 			pearlWoodArmorCD = BossRushUtils.CountDown(pearlWoodArmorCD);
-			if (EbonWoodArmor)
+			if (EbonWoodArmor) {
 				if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero) {
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
 					EbonWoodArmorCD = 45;
 				}
-			if (PalmWoodArmor)
-				if (Player.justJumped)
+			}
+			if (PalmWoodArmor) {
+				if (Player.justJumped) {
 					for (int i = 0; i < 4; i++) {
 						Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).Vector2RotateByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
 						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vec, ModContent.ProjectileType<SandProjectile>(), 12, 1f, Player.whoAmI);
 					}
+				}
+			}
 			if (PlatinumArmor) {
-				if (Player.ItemAnimationActive)
+				if (Player.ItemAnimationActive) {
 					PlatinumArmorCountEffect++;
-				else
+				}
+				else {
 					PlatinumArmorCountEffect = BossRushUtils.CountDown(PlatinumArmorCountEffect);
+				}
 			}
 
 		}
@@ -466,11 +474,14 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
-			if (TinArmor)
-				if (item.type == ItemID.TinBroadsword)
+			if (TinArmor) {
+				if (item.type == ItemID.TinBroadsword) {
 					scale += .5f;
-			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee)
+				}
+			}
+			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
 				scale += .1f;
+			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss) {
@@ -508,8 +519,9 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitEffect_PumpkinArmor();
 		}
 		private void OnHitEffect_PumpkinArmor() {
-			if (PumpkinArmor)
+			if (PumpkinArmor) {
 				Player.AddBuff(BuffID.WellFed3, 300);
+			}
 		}
 		private void OnHitEffect_AshWoodArmor(Entity entity) {
 			if (AshWoodArmor) {
@@ -518,12 +530,13 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		private void OnHitEffect_RichMahoganyArmor(Entity entity) {
-			if (RichMahoganyArmor)
+			if (RichMahoganyArmor) {
 				for (int i = 0; i < 10; i++) {
 					Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
 					int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
 					Main.projectile[proj].penetrate = -1;
 				}
+			}
 		}
 		private void OnHitEffect_CactusArmor(Entity entity) {
 			if (CactusArmor) {

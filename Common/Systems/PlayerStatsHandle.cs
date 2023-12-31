@@ -4,17 +4,17 @@ using System.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using BossRush.Contents.Items.Chest;
-using MonoMod.RuntimeDetour;
-using MonoMod.Cil;
-using Terraria.ID;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
 	public float AuraRadius = 300f;
+	/// <summary>
+	/// This only keep track of current session
+	/// </summary>
 	public int CardTracker = 0;
 	public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
 	public const int maxStatCanBeAchieved = 9999;
-	//Copper tier
+
 	public float MeleeDMG = 0;
 	public float UpdateMelee = 0;
 
@@ -76,7 +76,7 @@ public class PlayerStatsHandle : ModPlayer {
 
 	public StatModifier DebuffTime = new StatModifier();
 	public StatModifier BuffTime = new StatModifier();
-	//Platinum
+
 	//public float LuckIncrease = 0;
 
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
@@ -337,7 +337,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
 		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			if (!Main.debuff[type]) {
-				orig(self, type, (int)modplayer.DebuffTime.ApplyTo(timeToAdd), quiet, foodHack);
+				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
 			else {
 				orig(self, type, timeToAdd, quiet, foodHack);

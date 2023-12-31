@@ -10,6 +10,14 @@ using System;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentGlobalItem : GlobalItem {
+	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE))
+			return base.AppliesToEntity(entity, lateInstantiation);
+		if (entity.damage > 0 && !entity.accessory) {
+			return true;
+		}
+		return base.AppliesToEntity(entity, lateInstantiation);
+	}
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[3];
 	public int[] Item_Counter1 = new int[3];

@@ -1,11 +1,12 @@
-﻿using BossRush.Contents.Items;
-using BossRush.Contents.Items.Spawner;
-using BossRush.Contents.Items.Weapon;
-using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.Localization;
+using BossRush.Contents.Items;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
 
 namespace BossRush.Common {
 	internal class BossRushRecipe : ModSystem {
@@ -121,6 +122,10 @@ namespace BossRush.Common {
 			}
 		}
 		private void SynergyRecipe(Recipe recipe) {
+			if (recipe.createItem.ModItem is FlamingWoodSword) {
+				recipe.DisableRecipe();
+				return;
+			}
 			if (recipe.createItem.ModItem is SynergyModItem) {
 				recipe.AddIngredient(ModContent.ItemType<SynergyEnergy>());
 			}

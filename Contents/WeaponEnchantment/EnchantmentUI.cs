@@ -55,9 +55,18 @@ public class WeaponEnchantmentUIslot : UIImage {
 		if (Main.mouseItem.type != ItemID.None) {
 			if (Main.mouseItem.consumable)
 				return;
-			item = Main.mouseItem.Clone();
-			Main.mouseItem.TurnToAir();
-			player.inventory[58].TurnToAir();
+			Item itemcached;
+			if (item != null && item.type != ItemID.None) {
+				itemcached = item.Clone();
+				item = Main.mouseItem.Clone();
+				Main.mouseItem = itemcached.Clone();
+				player.inventory[58] = itemcached.Clone();
+			}
+			else {
+				item = Main.mouseItem.Clone();
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+			}
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				int length = globalItem.EnchantmenStlot.Length;
 				for (int i = 0; i < length; i++) {
@@ -143,9 +152,18 @@ public class EnchantmentInfoUI : UIImage {
 		if (Main.mouseItem.type != ItemID.None) {
 			if (Main.mouseItem.consumable)
 				return;
-			item = Main.mouseItem.Clone();
-			Main.mouseItem.TurnToAir();
-			player.inventory[58].TurnToAir();
+			Item itemcached;
+			if (item != null && item.type != ItemID.None) {
+				itemcached = item.Clone();
+				item = Main.mouseItem.Clone();
+				Main.mouseItem = itemcached.Clone();
+				player.inventory[58] = itemcached.Clone();
+			}
+			else {
+				item = Main.mouseItem.Clone();
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+			}
 		}
 		else {
 			if (item == null)

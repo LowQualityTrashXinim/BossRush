@@ -18,7 +18,7 @@ Minishark.Description:
 	'''
 TheUndertaker.Description:
 	'''
-	Weapon that can shoot projectile have 10% to shoot out a bullet
+	Weapon that can shoot projectile have 25% to shoot out a bullet
 	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
 	Increases damage by 10%
 	'''
@@ -30,38 +30,45 @@ Boomstick.Description:
 	'''
 WoodenSword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 AshWoodSword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 BorealWoodSword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 PalmWoodSword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 RichMahoganySword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 ShadewoodSword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 EbonwoodSword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases damage by 5
 	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 CopperBroadsword.Description:
 	'''
@@ -168,99 +175,130 @@ PlatinumShortSword.Description:
 WoodenBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 AshWoodBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 BorealWoodBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 RichMahoganyBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 EbonwoodBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 ShadewoodBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 PalmWoodBow.Description:
 	'''
 	Increases damage by 5
-	Increases range damage by 15%
 	Multiply shooting velocity by 1.1
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 CopperBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 TinBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 IronBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 LeadBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 SilverBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 TungstenBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 GoldBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 PlatinumBow.Description:
 	'''
 	Increases damage by 5
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+SnowballCannon.Description:
+	'''
+	Increases uses speed by 5%
+	Weapon that can shoot projectile will additionally shoot a snowball that deal 55% of original damage
+	'''
+Blowpipe.Description:
+	'''
+	Waiting for 4s will increases crit chance by 15%
+	Weapon that can shoot projectile will additionally shoot a seed that deal 35% of original damage
+	'''
+PainterPaintballGun.Description:
+	'''
+	Weapon that can shoot projectile will additionally shoot out arch of 3 paint projectile that deal 45% of original damage
+	( Note : trigger every 1s )
 	'''
 AmethystStaff.Description:
 	'''
@@ -288,15 +326,15 @@ EmeraldStaff.Description:
 	'''
 RubyStaff.Description:
 	'''
-	Reduce mana cost by 15%
 	Convert your projectile into Ruby Bolt
 	Your weapon have 17% chance to shoot out additional Ruby Bolt random location
+	When missing mana, Burst out 5 ruby bolt around you ( can be trigger every 10s )
 	'''
 DiamondStaff.Description:
 	'''
-	Reduce mana cost by 15%
 	Convert your projectile into Diamond Bolt
 	Your weapon have 17% chance to shoot out additional Diamond Bolt random location
+	When missing mana, Burst out 5 diamond bolt around you ( can be trigger every 10s )
 	'''
 AmberStaff.Description:
 	'''
@@ -307,27 +345,28 @@ AmberStaff.Description:
 WandOfSparking.Description:
 	'''
 	Reduce mana cost by 10%
-	Magic projectile can inflict On Fire debuff for 3s
-	Magic projectile have 50% chance to shoot out additional fire spark upon hitting enemy
+	Projectile can inflict On Fire debuff for 3s
+	Projectile have 50% chance to shoot out additional fire spark upon hitting enemy
 	( note : The effect above ignore Fire Spark projectile and trigger every 1 second )
 	'''
 WandOfFrosting.Description:
 	'''
 	Reduce mana cost by 10%
-	Magic projectile can inflict Frostburn debuff for 3s
-	Magic projectile have 50% chance to shoot out additional frost spark upon hitting enemy
+	Projectile can inflict Frostburn debuff for 3s
+	Projectile have 50% chance to shoot out additional frost spark upon hitting enemy
 	( note : The effect above ignore Frost Spark projectile and trigger every 1 second )
 	'''
 WaterBolt.Description:
 	'''
 	Reduce mana cost by 8%
 	Shoot out 3 short live water bolt ( trigger every 2s )
-	For everytime water bolt hit a enemy, increase your next shot damage by 1
+	When a projectile hit a enemy spawn additional water bolt that short live at random position
+	( note : The effect above ignore Water Bolt projectile and trigger every 5 second )
 	'''
 ThunderStaff.Description:
 	'''
 	Reduce mana cost by 12%
-	On hitting NPC with item or a projectile, spawn a thunder staff shot from random position
+	On hitting NPC with item or a projectile, spawn a thunder staff bolt from random position
 	( trigger every 0.2 second )
 	'''
 BabyBirdStaff.Description:
@@ -335,3 +374,9 @@ BabyBirdStaff.Description:
 	Spawn elite baby bird to aid you during fight
 	Elite baby bird also shoot whatever you are shooting dealing 25% of original damage
 	'''
+BabySlimeStaff.Description:
+	'''
+	Spawn spiked baby slime to aid you during fight
+	Spike baby bird shoot out 1 to 3 slime spike whenever it attack a enemy
+	'''
+FlinxStaff.Description: Spawn 2 flinx minions to aid you

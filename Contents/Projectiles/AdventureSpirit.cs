@@ -13,6 +13,7 @@ internal class AdventureSpirit : ModProjectile {
 		Projectile.penetrate = -1;
 		Projectile.timeLeft = 999;
 		Projectile.tileCollide = false;
+		Projectile.light = 4f;
 	}
 	public override bool? CanDamage() {
 		return false;
