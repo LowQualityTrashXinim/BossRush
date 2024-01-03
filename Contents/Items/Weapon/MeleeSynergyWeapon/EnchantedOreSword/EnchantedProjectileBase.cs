@@ -46,7 +46,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		public override void PostSetDefault() {
 			Projectile.light = .45f;
 		}
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.alpha += 2;
 		}
 	}
@@ -57,7 +57,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		}
 		int count = 0;
 		float rotate = -2.5f;
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.alpha += 2;
 			Projectile.ai[0] += 1f;
 			if (count == 2) {
@@ -86,7 +86,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		public override void PostSetDefault() {
 			Projectile.light = .55f;
 		}
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.alpha += 4;
 			Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
 		}
@@ -149,7 +149,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		public override void EnchantedProjectileOnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.immune[Projectile.owner] = 4;
 		}
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.UnitX);
 			Projectile.velocity = Projectile.velocity.LimitedVelocity(20);
 			Projectile.alpha += 2;
@@ -161,7 +161,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 			Projectile.light = .75f;
 			Projectile.knockBack = 0;
 		}
-		public override void AI() {
+		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 			Projectile.alpha += 2;
 			Projectile.knockBack = 0;
 		}

@@ -30,6 +30,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			//Note : Use look for tooltip with Defense if there are gonna be modification to defenses
 			Player player = Main.LocalPlayer;
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
@@ -244,10 +245,12 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.SilverHelmet, ItemID.SilverChainmail, ItemID.SilverGreaves)) {
 				bool IsAbover = player.statLife < player.statLifeMax2 * .75f;
-				if (Main.dayTime)
+				if (Main.dayTime) {
 					player.statDefense += IsAbover ? 10 : 20;
-				else
+				}
+				else {
 					player.GetDamage(DamageClass.Generic) += IsAbover ? .1f : .2f;
+				}
 				return true;
 			}
 			if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TungstenHelmet, ItemID.TungstenChainmail, ItemID.TungstenGreaves)) {
@@ -269,17 +272,20 @@ namespace BossRush.Common.RoguelikeChange {
 			return false;
 		}
 		public override void UpdateEquip(Item item, Player player) {
-			if (item.type == ItemID.NightVisionHelmet)
+			if (item.type == ItemID.NightVisionHelmet) {
 				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+			}
 			if (item.type == ItemID.VikingHelmet) {
 				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
 			}
-			if (item.type == ItemID.ObsidianRose)
+			if (item.type == ItemID.ObsidianRose) {
 				player.buffImmune[BuffID.OnFire] = true;
+			}
 		}
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
-			if (item.type == ItemID.EoCShield)
+			if (item.type == ItemID.EoCShield) {
 				player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
+			}
 		}
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			VanillaChange(item, player, ref damage);
@@ -342,27 +348,51 @@ namespace BossRush.Common.RoguelikeChange {
 			JungleArmor = false;
 			RoguelikeOverhaul_VikingHelmet = false;
 		}
+		public override void UpdateDead() {
+			WoodArmor = false;
+			BorealWoodArmor = false;
+			RichMahoganyArmor = false;
+			ShadewoodArmor = false;
+			EbonWoodArmor = false;
+			CactusArmor = false;
+			PalmWoodArmor = false;
+			PumpkinArmor = false;
+			AshWoodArmor = false;
+			CopperArmor = false;
+			GoldArmor = false;
+			pearlWoodArmor = false;
+			TinArmor = false;
+			LeadArmor = false;
+			TungstenArmor = false;
+			PlatinumArmor = false;
+			JungleArmor = false;
+		}
 		public override void PreUpdate() {
-			ShadewoodArmorCD = BossRushUtils.CoolDown(ShadewoodArmorCD);
-			EbonWoodArmorCD = BossRushUtils.CoolDown(EbonWoodArmorCD);
-			CactusArmorCD = BossRushUtils.CoolDown(CactusArmorCD);
-			pearlWoodArmorCD = BossRushUtils.CoolDown(pearlWoodArmorCD);
-			if (EbonWoodArmor)
+			ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
+			EbonWoodArmorCD = BossRushUtils.CountDown(EbonWoodArmorCD);
+			CactusArmorCD = BossRushUtils.CountDown(CactusArmorCD);
+			pearlWoodArmorCD = BossRushUtils.CountDown(pearlWoodArmorCD);
+			if (EbonWoodArmor) {
 				if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero) {
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
 					EbonWoodArmorCD = 45;
 				}
-			if (PalmWoodArmor)
-				if (Player.justJumped)
+			}
+			if (PalmWoodArmor) {
+				if (Player.justJumped) {
 					for (int i = 0; i < 4; i++) {
 						Vector2 vec = new Vector2(-Player.velocity.X, Player.velocity.Y).Vector2RotateByRandom(20).LimitedVelocity(Main.rand.NextFloat(2, 3));
 						Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, vec, ModContent.ProjectileType<SandProjectile>(), 12, 1f, Player.whoAmI);
 					}
+				}
+			}
 			if (PlatinumArmor) {
-				if (Player.ItemAnimationActive)
+				if (Player.ItemAnimationActive) {
 					PlatinumArmorCountEffect++;
-				else
-					PlatinumArmorCountEffect = BossRushUtils.CoolDown(PlatinumArmorCountEffect);
+				}
+				else {
+					PlatinumArmorCountEffect = BossRushUtils.CountDown(PlatinumArmorCountEffect);
+				}
 			}
 
 		}
@@ -444,11 +474,14 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
-			if (TinArmor)
-				if (item.type == ItemID.TinBroadsword)
+			if (TinArmor) {
+				if (item.type == ItemID.TinBroadsword) {
 					scale += .5f;
-			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee)
+				}
+			}
+			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
 				scale += .1f;
+			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss) {
@@ -486,8 +519,9 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitEffect_PumpkinArmor();
 		}
 		private void OnHitEffect_PumpkinArmor() {
-			if (PumpkinArmor)
+			if (PumpkinArmor) {
 				Player.AddBuff(BuffID.WellFed3, 300);
+			}
 		}
 		private void OnHitEffect_AshWoodArmor(Entity entity) {
 			if (AshWoodArmor) {
@@ -496,12 +530,13 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		private void OnHitEffect_RichMahoganyArmor(Entity entity) {
-			if (RichMahoganyArmor)
+			if (RichMahoganyArmor) {
 				for (int i = 0; i < 10; i++) {
 					Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
 					int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
 					Main.projectile[proj].penetrate = -1;
 				}
+			}
 		}
 		private void OnHitEffect_CactusArmor(Entity entity) {
 			if (CactusArmor) {
@@ -536,8 +571,9 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_PearlWoodArmor(target);
 		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
+			}
 			OnHitNPC_ShadewoodArmor();
 			OnHitNPC_BorealWoodArmor(target);
 			OnHitNPC_WoodArmor(target);
@@ -553,67 +589,82 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_PearlWoodArmor(target);
 		}
 		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+			}
 		}
 		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
+			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+			}
 		}
 		private void OnHitNPC_LeadArmor(NPC npc) {
-			if (LeadArmor)
+			if (LeadArmor) {
 				npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
+			}
 		}
 		private void OnHitNPC_WoodArmor(NPC target, Projectile proj = null) {
-			if (WoodArmor)
-				if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile))
-					Projectile.NewProjectile(Player.GetSource_FromThis(),
-						target.Center - new Vector2(0, 400),
-						Vector2.UnitY * 10,
-						ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+			if (!WoodArmor) {
+				return;
+			}
+			if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile)) {
+				Projectile.NewProjectile(Player.GetSource_FromThis(),
+					target.Center - new Vector2(0, 400),
+					Vector2.UnitY * 10,
+					ModContent.ProjectileType<AcornProjectile>(), 10, 1f, Player.whoAmI);
+			}
 		}
 		private void OnHitNPC_ShadewoodArmor() {
-			if (ShadewoodArmor)
-				if (ShadewoodArmorCD <= 0) {
-					for (int i = 0; i < 75; i++) {
-						Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
-						Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
-					}
-					Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
-					foreach (var npc in npclist) {
-						npc.StrikeNPC(npc.CalculateHitInfo(30, 1));
-						npc.AddBuff(BuffID.Ichor, 300);
-						Player.Heal(1);
-					}
-					ShadewoodArmorCD = BossRushUtils.ToSecond(3);
+			if (!ShadewoodArmor) {
+				return;
+			}
+			if (ShadewoodArmorCD <= 0) {
+				for (int i = 0; i < 75; i++) {
+					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
+					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
 				}
+				Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
+				foreach (var npc in npclist) {
+					npc.StrikeNPC(npc.CalculateHitInfo(30, 1));
+					npc.AddBuff(BuffID.Ichor, 300);
+					Player.Heal(1);
+				}
+				ShadewoodArmorCD = BossRushUtils.ToSecond(3);
+			}
 		}
 		private void OnHitNPC_BorealWoodArmor(NPC target) {
-			if (BorealWoodArmor)
-				if (Main.rand.NextFloat() <= .3f)
-					target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
+			if (!BorealWoodArmor) {
+				return;
+			}
+			if (Main.rand.NextFloat() <= .3f) {
+				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
+			}
 		}
 		private void OnHitNPC_PumpkinArmor(NPC npc, float damage) {
-			if (PumpkinArmor && Main.rand.NextBool(3)) {
-				if (npc.HasBuff(ModContent.BuffType<pumpkinOverdose>())) {
-					int explosionRaduis = 75 + (int)MathHelper.Clamp(damage, 0, 125);
-					for (int i = 0; i < 35; i++) {
-						Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.Pumpkin);
-						Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.OrangeTorch);
-					}
-					npc.Center.LookForHostileNPC(out List<NPC> npclist, explosionRaduis);
-					foreach (var i in npclist) {
-						i.StrikeNPC(i.CalculateHitInfo(5 + (int)(damage * 0.05f), 1, Main.rand.NextBool(40)));
-					}
-					SoundEngine.PlaySound(SoundID.NPCDeath46);
-					npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+			if (!PumpkinArmor || !Main.rand.NextBool(3)) {
+				return;
+			}
+			if (npc.HasBuff(ModContent.BuffType<pumpkinOverdose>())) {
+				int explosionRaduis = 75 + (int)MathHelper.Clamp(damage, 0, 125);
+				for (int i = 0; i < 35; i++) {
+					Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.Pumpkin);
+					Dust.NewDust(npc.Center + Main.rand.NextVector2CircularEdge(explosionRaduis, explosionRaduis), 0, 0, DustID.OrangeTorch);
 				}
-				else npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+				npc.Center.LookForHostileNPC(out List<NPC> npclist, explosionRaduis);
+				foreach (var i in npclist) {
+					Player.StrikeNPCDirect(npc, i.CalculateHitInfo(5 + (int)(damage * 0.05f), 1, Main.rand.NextBool(40)));
+				}
+				SoundEngine.PlaySound(SoundID.NPCDeath46);
+				npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
+			}
+			else {
+				npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
 			}
 		}
 		private void OnHitNPC_AshWoodArmor(NPC npc) {
-			if (AshWoodArmor)
+			if (AshWoodArmor) {
 				npc.AddBuff(BuffID.OnFire, 300);
+			}
 		}
 		private void OnHitNPC_PearlWoodArmor(NPC npc) {
 			if (pearlWoodArmorCD <= 0 && pearlWoodArmor) {

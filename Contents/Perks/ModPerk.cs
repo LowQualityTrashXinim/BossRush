@@ -15,6 +15,8 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
+using BossRush.Common.Systems;
+using Terraria.Localization;
 
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
@@ -128,6 +130,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class PeaceWithGod : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<PeaceWithGod>();
 			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {
@@ -187,6 +190,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
+			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .25f;
 		}
 	}
 	public class SniperCharge : Perk {
@@ -197,7 +201,7 @@ namespace BossRush.Contents.Perks {
 		int OpportunityWindow = 0;
 		public override void Update(Player player) {
 			if (!player.ItemAnimationActive)
-				RandomCountDown = BossRushUtils.CoolDown(RandomCountDown);
+				RandomCountDown = BossRushUtils.CountDown(RandomCountDown);
 			if (RandomCountDown <= 0) {
 				if (OpportunityWindow == 0) {
 					BossRushUtils.CombatTextRevamp(player.Hitbox, Color.ForestGreen, "!");
@@ -377,25 +381,27 @@ namespace BossRush.Contents.Perks {
 		public override string ModifyToolTip() {
 			switch (StackAmount) {
 				case 1:
-					return "+ Grant permanent Star in bottle buff";
+					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
 				case 2:
-					return "+ Grant permanent Heart Lamp buff";
+					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}2.Description");
 				case 3:
-					return "+ Grant permanent Cat Bast buff";
-				default:
-					return "+ Grant permanent Camp fire buff";
+					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}3.Description");
+			}
+			return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
+		}
+		public override void Update(Player player) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<AdventureSpirit>()] < 1) {
+				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<AdventureSpirit>(), 0, 0, player.whoAmI);
 			}
 		}
-		public override void ResetEffect(Player player) {
-			base.ResetEffect(player);
-			if (StackAmount >= 1) {
-				player.AddBuff(BuffID.Campfire, 10);
-				if (StackAmount > 1)
-					player.AddBuff(BuffID.StarInBottle, 10);
-				if (StackAmount > 2)
-					player.AddBuff(BuffID.HeartLamp, 10);
-				if (StackAmount > 3)
-					player.AddBuff(BuffID.CatBast, 10);
+	}
+	public class StellarRetirement : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void Update(Player player) {
+			if (Main.rand.NextBool(100) && !Main.dayTime) {
+				Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.FallingStar, 1000, 5);
 			}
 		}
 	}

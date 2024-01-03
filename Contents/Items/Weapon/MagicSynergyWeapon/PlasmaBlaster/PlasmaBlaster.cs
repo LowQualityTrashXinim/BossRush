@@ -135,8 +135,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.PlasmaBlaster {
 				return;
 			}
 			if (Main.rand.NextBool(4))
-				if (!player.CheckMana(player.GetManaCost(player.HeldItem), true))
+				if (!player.CheckMana(player.GetManaCost(player.HeldItem), true)) {
+					player.manaRegenDelay = player.maxRegenDelay;
 					Projectile.Kill();
+				}
 
 			Vector2 offset = Projectile.velocity * (MOVE_DISTANCE - 20);
 			Vector2 pos = player.Center + offset - new Vector2(10, 10);

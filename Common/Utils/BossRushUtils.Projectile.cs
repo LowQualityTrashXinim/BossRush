@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Texture;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -66,6 +68,34 @@ namespace BossRush {
 		}
 		public static void ProjectileAlphaDecay(this Projectile projectile, float timeCountdown) {
 			projectile.alpha = (int)MathHelper.Lerp(0, 255, (timeCountdown - projectile.timeLeft) / timeCountdown);
+		}
+		public static void BresenhamCircle(Vector2 pos, int radius) {
+			Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.WHITEDOT).Value;
+			int x = 0, y = radius;
+			int decesionParameter = 3 - 2 * radius;
+			DrawBresenhamCircle(texture, pos, x, y);
+			while (y >= x) {
+				x++;
+				if (decesionParameter > 0) {
+					y--;
+					decesionParameter = decesionParameter + 4 * (x - y) + 10;
+				}
+				else {
+					decesionParameter = decesionParameter + 4 * x + 6;//This is magic math value, don't ask me
+				}
+				DrawBresenhamCircle(texture, pos, x, y);
+			}
+		}
+		private static void DrawBresenhamCircle(Texture2D texture, Vector2 c, int x, int y) {
+			Vector2 drawPos = c - Main.screenPosition;
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(x, y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-x, y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(x, -y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-x, -y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(y, x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-y, x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(y, -x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-y, -x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
 		}
 	}
 }

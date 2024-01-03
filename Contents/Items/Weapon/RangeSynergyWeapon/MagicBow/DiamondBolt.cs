@@ -7,6 +7,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 	internal class DiamondBolt : ModProjectile {
+		public override void SetStaticDefaults() {
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+		}
 		public override void SetDefaults() {
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.width = 10;
@@ -16,15 +20,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Projectile.timeLeft = 1200;
 			Projectile.tileCollide = false;
 			Projectile.extraUpdates = 6;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100; // The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
 			Projectile.light = 1f;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Player player = Main.player[Projectile.owner];
 			Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
-			if(!Projectile.Center.IsCloseToPosition(player.Center, 750f)) {
-				Rotate += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * ((player.Center - Projectile.Center).Length() -750f) * .1f;
+			if (!Projectile.Center.IsCloseToPosition(player.Center, 750f)) {
+				Rotate += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * ((player.Center - Projectile.Center).Length() - 750f) * .1f;
 			}
 			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
 		}
@@ -85,7 +87,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 					if (Vector2.DistanceSquared(Projectile.Center, list[0].Center) <= 225) {
 						list[0].Kill();
 						Pos2 = Main.player[Projectile.owner].Center.LookForHostileNPCPositionClosest(1000);
-						if(Pos2 == Vector2.Zero)
+						if (Pos2 == Vector2.Zero)
 							Pos2 = Projectile.Center.LookForHostileNPCPositionClosest(1000);
 						return true;
 					}

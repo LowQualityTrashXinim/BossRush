@@ -75,29 +75,13 @@ namespace BossRush.Contents.Items.NohitReward {
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
-			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
 			Color color = new Color(255, 255, 0, 50);
-			spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-			spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-			spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-			spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, color, 0, origin, scale, SpriteEffects.None, 0);
+			Item.DrawAuraEffect(spriteBatch, position, positionRotateX, positionRotateY, color, 0, scale);
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-			//if (Item.whoAmI != whoAmI)
-			//{
-			//    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-			//}
-			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
-			Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
-			Vector2 drawPos = Item.position - Main.screenPosition + origin;
 			Color color = new Color(255, 255, 0, 50);
-			spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-			spriteBatch.Draw(texture, drawPos + new Vector2(positionRotateX, -positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-			spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, positionRotateY), null, color, 0, origin, scale, SpriteEffects.None, 0);
-			spriteBatch.Draw(texture, drawPos + new Vector2(-positionRotateX, -positionRotateX), null, color, 0, origin, scale, SpriteEffects.None, 0);
+			Item.DrawAuraEffect(spriteBatch, positionRotateX, positionRotateY, color, 0, scale);
 			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 	}

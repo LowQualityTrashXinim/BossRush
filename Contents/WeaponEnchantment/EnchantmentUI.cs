@@ -2,20 +2,18 @@
 using Terraria;
 using Terraria.UI;
 using Terraria.ID;
+using System.Linq;
 using ReLogic.Content;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items;
+using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
-using System.Reflection;
-using ReLogic.Graphics;
-using Terraria.UI.Chat;
 
 namespace BossRush.Contents.WeaponEnchantment;
 internal class EnchantmentUIState : UIState {
 	public int WhoAmI = -1;
-	public UIText toolTip;
 	public override void OnActivate() {
 		Elements.Clear();
 		if (WhoAmI == -1)
@@ -25,8 +23,14 @@ internal class EnchantmentUIState : UIState {
 		slot.UISetWidthHeight(52, 52);
 		slot.UISetPosition(player.Center + Vector2.UnitX * 120, new Vector2(26, 26));
 		Append(slot);
-		toolTip = new UIText("");
-		Append(toolTip);
+		var exitUI = new ExitUI(TextureAssets.InventoryBack13);
+		exitUI.UISetWidthHeight(52, 52);
+		exitUI.UISetPosition(player.Center + Vector2.UnitX * 178, new Vector2(26, 26));
+		Append(exitUI);
+		var InfoUI = new EnchantmentInfoUI(TextureAssets.InventoryBack14, player);
+		InfoUI.UISetWidthHeight(52, 52);
+		InfoUI.UISetPosition(player.Center + Vector2.UnitX * -120, new Vector2(26, 26));
+		Append(InfoUI);
 	}
 }
 public class WeaponEnchantmentUIslot : UIImage {
@@ -40,23 +44,38 @@ public class WeaponEnchantmentUIslot : UIImage {
 		this.player = player;
 		this.texture = texture.Value;
 	}
+	List<int> textUqID = new List<int>();
 	public override void LeftClick(UIMouseEvent evt) {
 		if (Main.mouseItem.type != ItemID.None) {
 			if (Main.mouseItem.consumable)
 				return;
-			item = Main.mouseItem.Clone();
-			Main.mouseItem.TurnToAir();
-			player.inventory[58].TurnToAir();
+			Item itemcached;
+			if (item != null && item.type != ItemID.None) {
+				itemcached = item.Clone();
+				item = Main.mouseItem.Clone();
+				Main.mouseItem = itemcached.Clone();
+				player.inventory[58] = itemcached.Clone();
+			}
+			else {
+				item = Main.mouseItem.Clone();
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+			}
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				int length = globalItem.EnchantmenStlot.Length;
 				for (int i = 0; i < length; i++) {
+					Vector2 pos = player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
 					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack, player);
 					slot.UISetWidthHeight(52, 52);
-					slot.UISetPosition(player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i, new Vector2(26, 26));
+					slot.UISetPosition(pos, new Vector2(26, 26));
 					slot.WhoAmI = i;
 					slot.itemOwner = item;
 					slot.itemType = globalItem.EnchantmenStlot[i];
 					Parent.Append(slot);
+					UIText text = new UIText($"{i + 1}");
+					text.UISetPosition(pos + Vector2.UnitY * 56, new Vector2(26, 26));
+					textUqID.Add(text.UniqueId);
+					Parent.Append(text);
 				}
 			}
 		}
@@ -71,11 +90,13 @@ public class WeaponEnchantmentUIslot : UIImage {
 				if (child is EnchantmentUIslot wmslot) {
 					if (wmslot.itemOwner == null)
 						continue;
-					//if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
-					//	globalItem.EnchantmenStlot[wmslot.WhoAmI] = 
-					//}
 				}
 				if (child is EnchantmentUIslot { itemOwner: not null }) {
+					child.Deactivate();
+					child.Remove();
+				}
+				if (child is UIText text && textUqID.Contains(text.UniqueId)) {
+					textUqID.Remove(text.UniqueId);
 					child.Deactivate();
 					child.Remove();
 				}
@@ -110,6 +131,100 @@ public class WeaponEnchantmentUIslot : UIImage {
 		}
 	}
 	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);
+}
+public class EnchantmentInfoUI : UIImage {
+	public Item item;
+	public int itemType = 0;
+	private Player player;
+	private Texture2D texture;
+	public EnchantmentInfoUI(Asset<Texture2D> texture, Player player) : base(texture) {
+		this.player = player;
+		this.texture = texture.Value;
+	}
+
+	public override void LeftClick(UIMouseEvent evt) {
+		if (Main.mouseItem.type != ItemID.None) {
+			if (Main.mouseItem.consumable)
+				return;
+			Item itemcached;
+			if (item != null && item.type != ItemID.None) {
+				itemcached = item.Clone();
+				item = Main.mouseItem.Clone();
+				Main.mouseItem = itemcached.Clone();
+				player.inventory[58] = itemcached.Clone();
+			}
+			else {
+				item = Main.mouseItem.Clone();
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+			}
+		}
+		else {
+			if (item == null)
+				return;
+			Main.mouseItem = item.Clone();
+			item = null;
+			foreach (var el in Parent.Children) {
+				if (el is UIText toolTip) {
+					if (toolTip is null)
+						return;
+					toolTip.SetText("");
+				}
+			}
+		}
+	}
+	public override void OnDeactivate() {
+		if (item == null)
+			return;
+		for (int i = 0; i < 50; i++) {
+			if (player.CanItemSlotAccept(player.inventory[i], item)) {
+				player.inventory[i] = item;
+				return;
+			}
+		}
+		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+		foreach (var el in Parent.Children) {
+			if (el is UIText toolTip) {
+				if (toolTip is null)
+					return;
+				toolTip.SetText("");
+			}
+		}
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
+		base.Draw(spriteBatch);
+		try {
+			if (item != null) {
+				Main.instance.LoadItem(item.type);
+				Texture2D texture = TextureAssets.Item[item.type].Value;
+				Vector2 origin = texture.Size() * .5f;
+				float scaling = ScaleCalculation(texture.Size());
+				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+			}
+		}
+		catch (Exception ex) {
+			Main.NewText(ex.Message);
+		}
+	}
+	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (item == null)
+			return;
+		if (IsMouseHovering) {
+			string tooltipText = "No enchantment can be found";
+			if (EnchantmentLoader.GetEnchantmentItemID(item.type) != null) {
+				tooltipText = EnchantmentLoader.GetEnchantmentItemID(item.type).Description;
+			}
+			Main.instance.MouseText(tooltipText);
+		}
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
+		}
+	}
 }
 public class EnchantmentUIslot : UIImage {
 	public int itemType = 0;
@@ -161,31 +276,17 @@ public class EnchantmentUIslot : UIImage {
 		base.Update(gameTime);
 		if (itemType == ItemID.None)
 			return;
-		try {
-			foreach (var el in Parent.Children) {
-				if (el is UIText toolTip) {
-					if (toolTip is null) {
-						return;
-					}
-					if (IsMouseHovering) {
-						FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
-						DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
-						string tooltipText = EnchantmentLoader.GetEnchantmentItemID(itemType).Description;
-						Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
-						size.X *= .5f;
-						toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
-						toolTip.SetText(tooltipText);
-					}
-					else {
-						if(!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-							toolTip.SetText("");
-						}
-					}
-				}
+		if (IsMouseHovering) {
+			string tooltipText = "No enchantment can be found";
+			if (EnchantmentLoader.GetEnchantmentItemID(itemType) != null) {
+				tooltipText = EnchantmentLoader.GetEnchantmentItemID(itemType).Description;
 			}
+			Main.instance.MouseText(tooltipText);
 		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
 		}
 	}
 }

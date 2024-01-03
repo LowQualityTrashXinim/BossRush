@@ -87,7 +87,11 @@ AlchemistKnowledge: {
 
 PotionExpert: {
 	DisplayName: Potion Expert
-	Description: + Potion have 35% to not be consumed when not using Quick Buff key
+	Description:
+		'''
+		+ Potion have 35% to not be consumed when not using Quick Buff key
+		+ Increases Potion duration by 25%
+		'''
 }
 
 SniperCharge: {
@@ -120,7 +124,7 @@ ProjectileDuplication: {
 }
 
 SpeedArmor: {
-	DisplayName: Projectile Armor
+	DisplayName: Speed Armor
 	Description: + The faster you are, the better your armor become
 }
 
@@ -174,4 +178,47 @@ BlessingOfStarDust: {
 BlessingOfPerk: {
 	DisplayName: Blessing Of Perk
 	Description: + Increases perk range amount by 1
+}
+
+ArenaBlessing: {
+	DisplayName: Adventure Spirit
+	Description: + Spawm a spirit lamp that follow you around and give you Campfire buff
+}
+
+ArenaBlessing1: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you heart lamp buff
+		Increases speed by 10%
+		Increases radius strength by 100
+		'''
+}
+
+ArenaBlessing2: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you Star in bottle buff
+		Increases speed by 10%
+		Increases radius strength by 100
+		'''
+}
+
+ArenaBlessing3: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you Bash statue buff
+		Increases speed by 10%
+		Increases radius strength by 100
+		'''
+}
+
+StellarRetirement: {
+	DisplayName: Stellar Retirement
+	Description: + Fallen Star are now more common
 }

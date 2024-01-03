@@ -46,20 +46,6 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static int AmountOfModCurrentlyEnable() {
-			int HowManyModIsEnable = ModLoader.Mods.Length;
-			if (Main.LocalPlayer.IsDebugPlayer()) {
-				return 1;
-			}
-			//Below are special mod that we partner or will later on partner, currently all these mod are the mod that I'm working with.
-			//By all mean, do not speak of this to outsider, only announce or say that we don't want to do mod addon.
-			//Also hardcode this shit so that people have a hard time IL this stuff
-			if (ModLoader.HasMod("Malignant"))
-				HowManyModIsEnable--;
-			if (ModLoader.HasMod("TheSkeletronMod"))
-				HowManyModIsEnable--;
-			return HowManyModIsEnable;
-		}
 		public static int NextFromHashSet(this UnifiedRandom r, HashSet<int> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
 		}
@@ -100,7 +86,9 @@ namespace BossRush {
 		public static bool LookForAnyHostileNPC(this Vector2 position, float distance) {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				if (Main.npc[i].active && Main.npc[i].friendly) {
-					if (CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance)) return true;
+					if (CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance)) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -168,7 +156,7 @@ namespace BossRush {
 		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
 		public static int ToSecond(float second) => (int)(second * 60);
 		public static int ToIntValue(this StatModifier modifier) => (int)(modifier.ApplyTo(1));
-		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1) 
+		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1)
 			=> round == -1 ? modifier.ApplyTo(1) * additionalMulti : MathF.Round(modifier.ApplyTo(1) * additionalMulti, round);
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
 		public static float OutExpo(float t) => 1 - InExpo(1 - t);
@@ -284,6 +272,10 @@ namespace BossRush {
 			if (disXWidth * disXWidth + disYHeight * disYHeight < maxDistanceDouble)
 				return true;
 			return false;
+		}
+		//Todo : make a universal form of luck
+		public static bool RNGchance(this UnifiedRandom rand, float chance) {
+			return rand.NextFloat() > chance;
 		}
 	}
 	/// <summary>

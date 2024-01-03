@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 	internal class IceStorm : SynergyModItem {
@@ -178,7 +178,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 					return;
 				}
 			}
-			timer = BossRushUtils.CoolDown(timer);
+			timer = BossRushUtils.CountDown(timer);
 		}
 	}
 	class IceStormFrostFlowerMinion : ModProjectile {
@@ -221,7 +221,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 					return;
 				}
 			}
-			timer = BossRushUtils.CoolDown(timer);
+			timer = BossRushUtils.CountDown(timer);
 		}
 	}
 }

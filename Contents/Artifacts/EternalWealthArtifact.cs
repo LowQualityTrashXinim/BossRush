@@ -33,7 +33,7 @@ namespace BossRush.Contents.Artifacts
 		public override void PostUpdate() {
 			if (EternalWealth) {
 				chestmodplayer.finalMultiplier += 2;
-				timer = BossRushUtils.CoolDown(timer);
+				timer = BossRushUtils.CountDown(timer);
 				if (timer <= 0) {
 					if (counterOldPos >= oldPos.Length - 1) {
 						counterOldPos = 0;
@@ -65,7 +65,7 @@ namespace BossRush.Contents.Artifacts
 					}
 				}
 				if (!IsInField)
-					MidasInfection = BossRushUtils.CoolDown(MidasInfection);
+					MidasInfection = BossRushUtils.CountDown(MidasInfection);
 			}
 		}
 	}

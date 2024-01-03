@@ -1,15 +1,10 @@
-﻿using BossRush.Contents.BuffAndDebuff;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
-using BossRush.Common.Systems.ArtifactSystem;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Contents.BuffAndDebuff;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {
@@ -43,7 +38,7 @@ namespace BossRush.Contents.Artifacts {
 			if (Vampire) {
 				vampirecountRange++;
 				if (vampirecountRange >= 3) {
-					LifeSteal(target, 1, 5);
+					LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
 					vampirecountRange = 0;
 				}
 			}

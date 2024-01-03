@@ -110,7 +110,7 @@ namespace BossRush.Contents.Projectiles {
 		public override void AI() {
 			Projectile.velocity -= Projectile.velocity * .05f;
 			if (timer > 0) {
-				timer = BossRushUtils.CoolDown(timer);
+				timer = BossRushUtils.CountDown(timer);
 			}
 			else {
 				if (Projectile.Center.LookForHostileNPC(out NPC npc, 800) && npc != null) {

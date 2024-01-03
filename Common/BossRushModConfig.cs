@@ -5,9 +5,10 @@ namespace BossRush.Common {
 	public class BossRushModConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		[DefaultValue(true)]
+		[DefaultValue(false)]
 		public bool AutoHardCore { get; set; }
-
+		//Do note delete reload required as it is to fix "Growing Spider Cave"
+		[ReloadRequired]
 		[DefaultValue(true)]
 		public bool EnableChallengeMode { get; set; }
 
@@ -24,10 +25,6 @@ namespace BossRush.Common {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Ascension { get; set; }
-
-		[ReloadRequired]
-		[DefaultValue(false)]
-		public bool ExtraChallenge { get; set; }
 
 		[DefaultValue(true)]
 		public bool RoguelikeOverhaul { get; set; }

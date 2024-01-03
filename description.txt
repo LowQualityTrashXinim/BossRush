@@ -1,27 +1,7 @@
 Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished, unfinished. If you spot any bug or gameplay issue, please consider reporting it in our Discord server.
 Note: Multiplayer is currently in the works, so it may not work as expect.
 
-[OUTDATED]
-Roguelike Terraria is an expansive rogue like ( not to be confused with rogue lite ) which aims to offer diverse randomised experience. 
-The mod focus on making every run/playthrough of your to not always be the same, the mod support multiple different play style that you can experience.
-The mod are best play completely blind
-
-If you are dissatisfied with the intended gameplay flow, you may disable relevant functions in the config or change your config, 
-the config are made to be customizable so that you can learn at your own pace or add extra challenge for yourself.
-
-You may use this mod in any playthrough or modpack as long as you credit 'Low Quality Trash' for the mod, however you aren't allow to make video of this mod ( I'm aware Gameraider, Diet Dirt and 2 more content creator already make
-a video about this mod and I won't request them to take the video down ), the mod is highly unfinished and is subject to change everyday, for that, if you are making a video about this mod, it will be outdated about a month later.
-
-If you have further questions, don't hesitate to join our Discord server: https://discord.gg/YqN5z5WVaS
+If you have questions, don't hesitate to join our Discord server: https://discord.gg/YqN5z5WVaS
 
 [SPECIAL THANK]
 {currently updating}
-
-Note from the main dev :
-- The mod is as the name suggest in beta and also a demo, as right now act and play like a boss rush, so please play the mod with open mind, cause the mod are subject to change in the future.
-- Another thing I want to add on is that this mod is not meant for average player that play calamity or a newcommer mod, this mod do not follow your usual terraria gameplay and should not be treated as such, 
-if you are planning to play this with calamity/thorium/terraria mindset then either change your mindset or don't play this mod at all, this mod is unforgiving and isn't meant for everyone.
-- The mod also change a lot of item in vanilla, if you dislike this change, please disable Roguelike Overhaul in the config.
-- We won't be supporting a wiki, because we believe if player have to rely on the wiki to get best experience is a bad game design and for that we have no future plan on making a wiki for the mod.
-- We also will be locking most of the content behind hardcore character, we believe this is the best way to experience the mod, and as such you should treat death as a common occurrence, if you however don't like this and still want
-the content outside of hardcore, then please enable HardEnableFeature in the config, do be aware that it will completely ruin your experience with the mod and such we aren't held responsible for you doing so.

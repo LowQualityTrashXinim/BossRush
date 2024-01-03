@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,9 +18,21 @@ namespace BossRush.Common.ChallengeMode {
 				}
 			}
 		}
-		
+		private static List<string> _tasksStringCache = new List<string>();
+		private static List<GenPass> _tasksCache = new List<GenPass>();
+		public override void Unload() {
+			_tasksStringCache = null;
+			_tasksCache = null;
+		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+				//This is disgusting but will do for now
+				if (_tasksStringCache == null || _tasksStringCache.Count < 1) {
+					_tasksStringCache = tasks.Select(t => t.Name).ToList();
+				}
+				if (_tasksCache == null || _tasksCache.Count < 1) {
+					_tasksCache = new List<GenPass>(tasks);
+				}
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Spider Caves")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Living Trees")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wood Tree Walls")));
@@ -72,6 +86,19 @@ namespace BossRush.Common.ChallengeMode {
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Glowing Mushrooms and Jungle Plants")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Small Holes")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Broken Traps")));
+			}
+			else {
+				//This could be implement to be much faster but I couldn't be bother with
+				//Here a reference link that I think it may work https://stackoverflow.com/questions/3669970/compare-two-listt-objects-for-equality-ignoring-order
+				if (_tasksCache.Count < 1) {
+					return;
+				}
+				foreach (var task in tasks) {
+					if (!_tasksStringCache.Contains(task.Name)) {
+						tasks = _tasksCache;
+						return;
+					}
+				}
 			}
 		}
 	}

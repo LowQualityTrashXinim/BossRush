@@ -13,10 +13,9 @@ public class Trinket_of_Swift_Health : BaseTrinket {
 }
 public class SwiftSteal_Buff : TrinketBuff {
 	public override void UpdateTrinketPlayer(Player player, TrinketPlayer modplayer, ref int buffIndex) {
-		modplayer.HPstats += .05f * player.GetModPlayer<Trinket_of_Swift_Health_ModPlayer>().Trinket_of_Swift_Health_PointCounter;
-		player.GetCritChance(DamageClass.Generic) += 3 * player.GetModPlayer<Trinket_of_Swift_Health_ModPlayer>().Trinket_of_Swift_Health_PointCounter;
-		player.GetAttackSpeed(DamageClass.Generic) += .1f;
-		player.moveSpeed += .25f;
+		int Point = player.GetModPlayer<Trinket_of_Swift_Health_ModPlayer>().Trinket_of_Swift_Health_PointCounter;
+		modplayer.HPstats += .05f * Point;
+		player.moveSpeed += .1f * Point;
 		modplayer.DamageStats.Base += player.statLife * .05f;
 	}
 	public override void OnEnded(Player player) {
@@ -32,10 +31,10 @@ public class Trinket_of_Swift_Health_ModPlayer : ModPlayer {
 		Trinket_of_Swift_Health = false;
 	}
 	public override void PreUpdate() {
-		Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.CoolDown(Trinket_of_Swift_Health_DelayBetweenEachHit);
+		Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.CountDown(Trinket_of_Swift_Health_DelayBetweenEachHit);
 		if (!Player.HasBuff(ModContent.BuffType<SwiftSteal_Buff>())) {
 			Trinket_of_Swift_Health_PointCounter = 0;
-			Trinket_of_Swift_Health_CoolDown = BossRushUtils.CoolDown(Trinket_of_Swift_Health_CoolDown);
+			Trinket_of_Swift_Health_CoolDown = BossRushUtils.CountDown(Trinket_of_Swift_Health_CoolDown);
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -53,7 +52,7 @@ public class Trinket_of_Swift_Health_ModPlayer : ModPlayer {
 		if (!Trinket_of_Swift_Health)
 			return;
 		if (Player.HasBuff(ModContent.BuffType<SwiftSteal_Buff>())) {
-			Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.ToSecond(2.5f);
+			Trinket_of_Swift_Health_DelayBetweenEachHit = BossRushUtils.ToSecond(2);
 			Trinket_of_Swift_Health_PointCounter = Math.Clamp(++Trinket_of_Swift_Health_PointCounter, 0, 6);
 		}
 		else {

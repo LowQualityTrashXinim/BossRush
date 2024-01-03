@@ -1,398 +1,382 @@
-Musket: {
-	DisplayName: Musket
-	Description:
-		'''
-		Decreases gun spread by 25%
-		Increases critical strike chance by 5
-		Increases range damage by 5%
-		Increases damage by 10%
-		'''
-}
-
-FlintlockPistol: {
-	DisplayName: FlintlockPistol
-	Description:
-		'''
-		Weapon that can shoot projectile have 10% to shoot out a bullet dealing the same damage
-		Increases damage by 10%
-		'''
-}
-
-Minishark: {
-	DisplayName: Minishark
-	Description:
-		'''
-		Weapon that can shoot projectile have 10% to shoot out a bullet
-		+ Weapon that use bullet ammo will instead shoot that the current uses bullet
-		Increases attack speed by 5%
-		Increases damage by 10%
-		'''
-}
-
-TheUndertaker: {
-	DisplayName: TheUndertaker
-	Description:
-		'''
-		Weapon that can shoot projectile have 10% to shoot out a bullet
-		+ Weapon that use bullet ammo will instead shoot that the current uses bullet
-		Increases damage by 10%
-		'''
-}
-
-Boomstick: {
-	DisplayName: Boomstick
-	Description:
-		'''
-		For each 15 time a weapon shoot projectile, shoot out 4 bullet projectile
-		+ Weapon that use bullet ammo will instead shoot that the current uses bullet
-		Increases damage by 10%
-		'''
-}
-
-WoodenSword: {
-	DisplayName: Wooden Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-AshWoodSword: {
-	DisplayName: Ash Wood Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-BorealWoodSword: {
-	DisplayName: Boreal Wood Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-PalmWoodSword: {
-	DisplayName: Palm Wood Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-RichMahoganySword: {
-	DisplayName: Rich Mahogany Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-ShadewoodSword: {
-	DisplayName: Shadewood Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-EbonwoodSword: {
-	DisplayName: Ebonwood Sword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-CopperBroadsword: {
-	DisplayName: Copper Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-TinBroadsword: {
-	DisplayName: Tin Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-IronBroadsword: {
-	DisplayName: Iron Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-LeadBroadsword: {
-	DisplayName: Lead Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-SilverBroadsword: {
-	DisplayName: Silver Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-TungstenBroadsword: {
-	DisplayName: Tungsten Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-GoldBroadsword: {
-	DisplayName: Gold Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-PlatinumBroadsword: {
-	DisplayName: Platinum Broadsword
-	Description:
-		'''
-		Hitting a enemy with melee weapon will cause a wood sword to swing downI'm rn in 
-		Increases weapon size by 10%
-		'''
-}
-
-WoodenBow: {
-	DisplayName: Wooden Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-AshWoodBow: {
-	DisplayName: Ash Wood Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-BorealWoodBow: {
-	DisplayName: Boreal Wood Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-RichMahoganyBow: {
-	DisplayName: Rich Mahogany Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-EbonwoodBow: {
-	DisplayName: Ebonwood Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-ShadewoodBow: {
-	DisplayName: Shadewood Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-PalmWoodBow: {
-	DisplayName: Palm Wood Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-CopperBow: {
-	DisplayName: Copper Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-TinBow: {
-	DisplayName: Tin Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-IronBow: {
-	DisplayName: Iron Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-LeadBow: {
-	DisplayName: Lead Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-SilverBow: {
-	DisplayName: Silver Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-TungstenBow: {
-	DisplayName: Tungsten Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-GoldBow: {
-	DisplayName: Gold Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-PlatinumBow: {
-	DisplayName: Platinum Bow
-	Description:
-		'''
-		Increases damage by 5%
-		Increases range damage by 10%
-		+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.1
-		'''
-}
-
-AmethystStaff: {
-	DisplayName: Amethyst Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Amethyst Bolt
-		'''
-}
-
-TopazStaff: {
-	DisplayName: Topaz Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Topaz Bolt
-		'''
-}
-
-SapphireStaff: {
-	DisplayName: Sapphire Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Sapphire Bolt
-		'''
-}
-
-EmeraldStaff: {
-	DisplayName: Emerald Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Emerald Bolt
-		'''
-}
-
-RubyStaff: {
-	DisplayName: Ruby Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Ruby Bolt
-		'''
-}
-
-DiamondStaff: {
-	DisplayName: Diamond Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Diamond Bolt
-		'''
-}
-
-AmberStaff: {
-	DisplayName: Amber Staff
-	Description:
-		'''
-		Reduce mana cost by 5%
-		Convert your projectile into Amber Bolt
-		'''
-}
+Musket.Description:
+	'''
+	Decreases gun spread by 25%
+	Increases critical strike damage by 50%
+	For every 25 time this weapon get uses, shoot out a 100% critical strike chance bullet
+	'''
+FlintlockPistol.Description:
+	'''
+	Weapon that can shoot projectile have 25% to shoot out a bullet dealing the same damage
+	Increases damage by 10%
+	'''
+Minishark.Description:
+	'''
+	Weapon that can shoot projectile have 10% to shoot out a bullet
+	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
+	Increases attack speed by 5%
+	Increases damage by 10%
+	'''
+TheUndertaker.Description:
+	'''
+	Weapon that can shoot projectile have 25% to shoot out a bullet
+	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
+	Increases damage by 10%
+	'''
+Boomstick.Description:
+	'''
+	For each 7 time a weapon shoot projectile, shoot out 4 bullet projectile
+	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
+	Increases damage by 10%
+	'''
+WoodenSword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+AshWoodSword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+BorealWoodSword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+PalmWoodSword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+RichMahoganySword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+ShadewoodSword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+EbonwoodSword.Description:
+	'''
+	Increases damage by 5
+	Increases weapon size by 10%
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	'''
+CopperBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+TinBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+IronBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+LeadBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+SilverBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+TungstenBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+GoldBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will :
+	+ 25% chance to inflict enemy with Midas for 6s
+	+ Create a ghost sword to swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+PlatinumBroadsword.Description:
+	'''
+	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Increases weapon size by 10%
+	'''
+CactusSword.Description:
+	'''
+	On critical strike when hitting enemy with melee weapon
+	Shoot out a friendly rolling cactus that deal equal to 300% weapon damage ( trigger every 10 second )
+	'''
+EnchantedSword.Description:
+	'''
+	Weapon that can shoot :
+	+ Shoot out additional enchanted beam that deal 25% more damage ( trigger every 3 * item use time )
+	Weapon that can't shoot :
+	+ Upon hitting enemy will spawn enchanted beam that ignore tile collision around player
+	'''
+StarFury.Description:
+	'''
+	Weapon that can shoot :
+	+ Shoot down a Star that deal 50% more damage ( trigger every 3 * item use time )
+	Weapon that can't shoot :
+	+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( trigger every 1.5s)
+	'''
+CopperShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+TinShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+IronShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+LeadShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+SilverShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+TungstenShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+GoldShortSword.Description:
+	'''
+	Increases base damage by 5
+	Increases critical strike damage by 25%
+	Inflict Midas for 6 second upon critical hit via sword
+	'''
+PlatinumShortSword.Description:
+	'''
+	Increases weapon base damage by 5
+	Increases critical strike damage by 25%
+	'''
+WoodenBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+AshWoodBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+BorealWoodBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+RichMahoganyBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+EbonwoodBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+ShadewoodBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+PalmWoodBow.Description:
+	'''
+	Increases damage by 5
+	Multiply shooting velocity by 1.1
+	Weapon will shoot additional out a special arrow
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	'''
+CopperBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+TinBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+IronBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+LeadBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+SilverBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+TungstenBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+GoldBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+PlatinumBow.Description:
+	'''
+	Increases damage by 5
+	Increases range damage by 15%
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
+	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+SnowballCannon.Description:
+	'''
+	Increases uses speed by 5%
+	Weapon that can shoot projectile will additionally shoot a snowball that deal 55% of original damage
+	'''
+Blowpipe.Description:
+	'''
+	Waiting for 4s will increases crit chance by 15%
+	Weapon that can shoot projectile will additionally shoot a seed that deal 35% of original damage
+	'''
+PainterPaintballGun.Description:
+	'''
+	Weapon that can shoot projectile will additionally shoot out arch of 3 paint projectile that deal 45% of original damage
+	( Note : trigger every 1s )
+	'''
+AmethystStaff.Description:
+	'''
+	Reduce mana cost by 15%
+	Convert your projectile into Amethyst Bolt
+	Your weapon have 17% chance to shoot out additional Amethyst Bolt random location
+	'''
+TopazStaff.Description:
+	'''
+	Reduce mana cost by 15%
+	Convert your projectile into Topaz Bolt
+	Your weapon have 17% chance to shoot out additional Topaz Bolt random location
+	'''
+SapphireStaff.Description:
+	'''
+	Reduce mana cost by 15%
+	Convert your projectile into Sapphire Bolt
+	Your weapon have 17% chance to shoot out additional Sapphire Bolt random location
+	'''
+EmeraldStaff.Description:
+	'''
+	Reduce mana cost by 15%
+	Convert your projectile into Emerald Bolt
+	Your weapon have 17% chance to shoot out additional Emerald Bolt random location
+	'''
+RubyStaff.Description:
+	'''
+	Convert your projectile into Ruby Bolt
+	Your weapon have 17% chance to shoot out additional Ruby Bolt random location
+	When missing mana, Burst out 5 ruby bolt around you ( can be trigger every 10s )
+	'''
+DiamondStaff.Description:
+	'''
+	Convert your projectile into Diamond Bolt
+	Your weapon have 17% chance to shoot out additional Diamond Bolt random location
+	When missing mana, Burst out 5 diamond bolt around you ( can be trigger every 10s )
+	'''
+AmberStaff.Description:
+	'''
+	Reduce mana cost by 15%
+	Convert your projectile into Amber Bolt
+	Your weapon have 17% chance to shoot out additional Amber Bolt random location
+	'''
+WandOfSparking.Description:
+	'''
+	Reduce mana cost by 10%
+	Projectile can inflict On Fire debuff for 3s
+	Projectile have 50% chance to shoot out additional fire spark upon hitting enemy
+	( note : The effect above ignore Fire Spark projectile and trigger every 1 second )
+	'''
+WandOfFrosting.Description:
+	'''
+	Reduce mana cost by 10%
+	Projectile can inflict Frostburn debuff for 3s
+	Projectile have 50% chance to shoot out additional frost spark upon hitting enemy
+	( note : The effect above ignore Frost Spark projectile and trigger every 1 second )
+	'''
+WaterBolt.Description:
+	'''
+	Reduce mana cost by 8%
+	Shoot out 3 short live water bolt ( trigger every 2s )
+	When a projectile hit a enemy spawn additional water bolt that short live at random position
+	( note : The effect above ignore Water Bolt projectile and trigger every 5 second )
+	'''
+ThunderStaff.Description:
+	'''
+	Reduce mana cost by 12%
+	On hitting NPC with item or a projectile, spawn a thunder staff bolt from random position
+	( trigger every 0.2 second )
+	'''
+BabyBirdStaff.Description:
+	'''
+	Spawn elite baby bird to aid you during fight
+	Elite baby bird also shoot whatever you are shooting dealing 25% of original damage
+	'''
+BabySlimeStaff.Description:
+	'''
+	Spawn spiked baby slime to aid you during fight
+	Spike baby bird shoot out 1 to 3 slime spike whenever it attack a enemy
+	'''
+FlinxStaff.Description: Spawn 2 flinx minions to aid you

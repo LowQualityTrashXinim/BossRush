@@ -12,14 +12,10 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = ItemRarityID.Purple;
 		}
-
 		public override void PostModifyTooltips(ref List<TooltipLine> tooltips) {
 			tooltips.Add(new TooltipLine(Mod, "SynergyOnly", "Is limited to synergy mode only"));
 		}
-
 		public override bool CanBeRightClick() => ModContent.GetInstance<BossRushModConfig>().SynergyMode;
-
-
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (NPC.downedEmpressOfLight) {

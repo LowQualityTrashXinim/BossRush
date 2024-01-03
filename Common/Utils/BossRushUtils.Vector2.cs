@@ -55,6 +55,13 @@ namespace BossRush {
 			}
 			return vec;
 		}
+		/// <summary>
+		/// Short hand for <see cref="Utils.RotatedByRandom(Vector2, double)"/>
+		/// If weapon are affected by spread modifier then use method provide in BossRush.Common.RoguelikeChange.RangerOverhaulPlayer
+		/// </summary>
+		/// <param name="Vec2ToRotate"></param>
+		/// <param name="ToRadians"></param>
+		/// <returns></returns>
 		public static Vector2 Vector2RotateByRandom(this Vector2 Vec2ToRotate, float ToRadians) => Vec2ToRotate.RotatedByRandom(MathHelper.ToRadians(ToRadians));
 		/// <summary>
 		/// Only use this if you know the projectile can get spawn into a tile<br/>
@@ -137,6 +144,11 @@ namespace BossRush {
 			ToRotateAgain.X += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
 			ToRotateAgain.Y += Main.rand.NextFloat(-Spread, Spread) * additionalMultiplier;
 			return ToRotateAgain;
+		}
+		public static Vector2 Subtract(this Vector2 vec, float x, float y) {
+			vec.X -= x;
+			vec.Y -= y;
+			return vec;
 		}
 	}
 }

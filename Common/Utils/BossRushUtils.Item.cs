@@ -23,12 +23,12 @@ namespace BossRush {
 			item.useStyle = useStyle;
 			item.autoReuse = autoReuse;
 		}
-		public static void BossRushDefaultToConsume(this Item item, int width, int height) {
+		public static void BossRushDefaultToConsume(this Item item, int width, int height, int useStyle = ItemUseStyleID.HoldUp) {
 			item.width = width;
 			item.height = height;
 			item.useTime = 15;
 			item.useAnimation = 15;
-			item.useStyle = ItemUseStyleID.HoldUp;
+			item.useStyle = useStyle;
 			item.autoReuse = false;
 			item.consumable = true;
 		}
@@ -123,24 +123,24 @@ namespace BossRush {
 		public static void DrawAuraEffect(this Item item, SpriteBatch spriteBatch,Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
 			Main.instance.LoadItem(item.type);
 			Texture2D texture = TextureAssets.Item[item.type].Value;
-			Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+			Vector2 origin = texture.Size() * .5f;
 			for (int i = 0; i < 3; i++) {
-				spriteBatch.Draw(texture, drawPos + new Vector2(offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(-offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(-offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
 			}
 		}
 		public static void DrawAuraEffect(this Item item, SpriteBatch spriteBatch, float offsetX, float offsetY, Color color, float rotation, float scale) {
 			Main.instance.LoadItem(item.type);
 			Texture2D texture = TextureAssets.Item[item.type].Value;
-			Vector2 origin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+			Vector2 origin = texture.Size() * .5f;
 			Vector2 drawPos = item.position - Main.screenPosition + origin;
 			for (int i = 0; i < 3; i++) {
-				spriteBatch.Draw(texture, drawPos + new Vector2(offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(-offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(-offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
 			}
 		}
 	}

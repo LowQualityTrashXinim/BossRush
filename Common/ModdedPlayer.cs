@@ -6,15 +6,15 @@ using Terraria.ModLoader.IO;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
-using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNinja;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -22,12 +22,18 @@ namespace BossRush.Common {
 		public int gitGud = 0;
 		public int HowManyBossIsAlive = 0;
 		public override void OnEnterWorld() {
-			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore && !Player.IsDebugPlayer())
+			if (Player.IsDebugPlayer()) {
+				Main.NewText("You have enter debug mode", Color.Red);
+				return;
+			}
+			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore && !Player.IsDebugPlayer()) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
+			}
+			else if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
+				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature");
+			}
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
-			if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature)
-				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature");
 			if (Main.ActiveWorldFileData.GameMode == 0) {
 				Main.NewText("Yo this guys playing on easy mode lol, skill issues spotted !");
 			}
@@ -53,9 +59,6 @@ namespace BossRush.Common {
 
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			health = StatModifier.Default; mana = StatModifier.Default;
-			if (Main.ActiveWorldFileData.GameMode == 0) {
-				health.Base = 100;
-			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
 			if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee) {
@@ -64,11 +67,8 @@ namespace BossRush.Common {
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			yield return new Item(ItemID.Safe);
-			yield return new Item(ItemID.MoneyTrough);
 			yield return new Item(ItemID.PlatinumPickaxe);
 			yield return new Item(ItemID.PlatinumAxe);
-			yield return new Item(ItemID.CopperShortsword);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
@@ -83,6 +83,7 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					yield return new Item(ModContent.ItemType<TransmuteTablet>());
+					yield return new Item(ModContent.ItemType<WeaponEnchantment>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);

@@ -23,8 +23,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (Pride) {
-				float reward = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count * .05f;
-				damage += .45f + reward;
+				damage += .25f;
 			}
 		}
 	}

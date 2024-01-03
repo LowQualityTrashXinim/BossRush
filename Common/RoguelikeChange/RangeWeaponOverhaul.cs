@@ -241,7 +241,6 @@ namespace BossRush.Common.RoguelikeChange {
 		public override void ResetEffects() {
 			SpreadModify = 1;
 			ProjectileAmountModify = 0;
-			base.ResetEffects();
 		}
 		/// <summary>
 		/// Use this if your weapon have spread or not

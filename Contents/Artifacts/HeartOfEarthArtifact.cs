@@ -41,7 +41,7 @@ namespace BossRush.Contents.Artifacts {
 				ShortStanding = 0;
 			}
 			if (Earth) {
-				EarthCD = BossRushUtils.CoolDown(EarthCD);
+				EarthCD = BossRushUtils.CountDown(EarthCD);
 				if (EarthCD > 0) {
 					for (int i = 0; i < 5; i++) {
 						int dust = Dust.NewDust(Player.Center + Main.rand.NextVector2Circular(10, 30), 0, 0, DustID.Blood);

@@ -38,7 +38,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 					Main.dust[dust].scale = Main.rand.NextFloat(1.5f, 2.75f);
 					Main.dust[dust].fadeIn = 1;
 				}
-			modplayer.BurningPassion_Cooldown = BossRushUtils.CoolDown(modplayer.BurningPassion_Cooldown);
+			modplayer.BurningPassion_Cooldown = BossRushUtils.CountDown(modplayer.BurningPassion_Cooldown);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			if (player.altFunctionUse == 2 && modplayer.BurningPassion_Cooldown <= 0) {

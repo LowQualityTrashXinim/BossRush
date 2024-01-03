@@ -1,10 +1,9 @@
 ﻿using System;
 using Terraria;
-using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Items.aDebugItem {
 	internal class ShowPlayerStats : ModItem {
@@ -25,7 +24,9 @@ namespace BossRush.Contents.Items.aDebugItem {
 				$"\nCrit damage : {Math.Round((cardplayer.CritDamage + cardplayer.UpdateCritDamage) * 100)}%" +
 				$"\nHP regen : {player.lifeRegen}" +
 				$"\nMana regen : {player.manaRegen}" +
+				$"\nMana reduction : {player.manaCost}" +
 				$"\nDefense effectiveness : {player.DefenseEffectiveness.Value}" +
+				$"\nDamage reduction: {Math.Round(player.endurance, 2)}" +
 				$"\nMovement speed : {Math.Round(player.moveSpeed, 2)}" +
 				$"\nJump speed : {player.jumpSpeedBoost}" +
 				$"\nMax minion : {player.maxMinions}" +

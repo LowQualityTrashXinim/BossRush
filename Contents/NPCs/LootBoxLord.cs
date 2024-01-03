@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.BuffAndDebuff;
+using System.Security.Cryptography.X509Certificates;
+using Terraria.Audio;
 
 namespace BossRush.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {
@@ -90,20 +92,11 @@ namespace BossRush.Contents.NPCs {
 			ActivateBroadSword();
 		}
 		public override void PostAI() {
-			for (int i = 0; i < 300; i++) {
-				int dust1 = Dust.NewDust(NPC.Center + Main.rand.NextVector2CircularEdge(1000f, 1000f), 0, 0, DustID.SolarFlare);
-				Main.dust[dust1].noGravity = true;
-				Main.dust[dust1].velocity = (Main.dust[dust1].position - NPC.Center).SafeNormalize(Vector2.Zero) * 3f;
-			}
-			if (lastPlayerPosition == Vector2.Zero)
-				lastPlayerPosition = Main.player[NPC.target].Center;
-			if (!BossRushUtils.CompareSquareFloatValue(NPC.Center, lastPlayerPosition, 1000 * 1000)) {
-				Main.player[NPC.target].AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 120);
-				for (int i = 0; i < 3; i++) {
-					int dust = Dust.NewDust(Main.player[NPC.target].Center, 0, 0, DustID.SolarFlare);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(7f, 7f);
-					Main.dust[dust].fadeIn = 2f;
+			if (!BossRushUtils.CompareSquareFloatValue(NPC.Center, Main.player[NPC.target].Center, 500 * 500)) {
+				NPC.life = Math.Clamp(NPC.life + 1, 0, NPC.lifeMax);
+				if (Main.rand.NextBool(5)) {
+					int dust = Dust.NewDust(NPC.Center + Main.rand.NextVector2Circular(30, 30), 0, 0, DustID.HealingPlus, Scale: Main.rand.NextFloat(1, 1.5f));
+					Main.dust[dust].velocity = Vector2.UnitY * Main.rand.NextFloat(1, 3);
 				}
 			}
 		}
@@ -142,11 +135,12 @@ namespace BossRush.Contents.NPCs {
 			ProjectileWhoAmI.Clear();
 		}
 		List<int> ProjectileWhoAmI = new List<int>();
+		Vector2 offsetPos = Vector2.Zero;
 		private void Move(Player player) {
 			if (BossDelayAttack(0, 0, 0)) {
 				return;
 			}
-			Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 300);
+			Vector2 positionAbovePlayer = new Vector2(player.Center.X, player.Center.Y - 200) + offsetPos;
 			if (NPC.NPCMoveToPosition(positionAbovePlayer, 30f)) {
 				NPC.ai[0] = 20;
 				NPC.ai[1] = MoveSetHandle();
@@ -162,9 +156,11 @@ namespace BossRush.Contents.NPCs {
 		}
 		private void ResetEverything(int delayAttack = 90) {
 			lastPlayerPosition = Main.player[NPC.target].Center;
+			HasReachPos = false;
 			NPC.ai[0] = delayAttack;
 			NPC.ai[1] = 0;
 			NPC.ai[2] = 0;
+			offsetPos = Vector2.Zero;
 		}
 		private void ShootShortSword() {
 			if (BossDelayAttack(10, 0, TerrariaArrayID.AllOreShortSword.Length - 1)) {
@@ -245,7 +241,7 @@ namespace BossRush.Contents.NPCs {
 			int length = TerrariaArrayID.AllWoodBowPHM.Length;
 			for (int i = 0; i < length; i++) {
 				if (TerrariaArrayID.AllWoodBowPHM[i] == ItemID.AshWoodBow) {
-					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * 5, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2, NPC.target);
+					int proj = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, -Vector2.UnitY * 5, ModContent.ProjectileType<WoodBowAttackOne>(), NPC.damage, 2, NPC.target);
 					if (Main.projectile[proj].ModProjectile is BaseHostileProjectile projectile)
 						projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[i];
 					continue;
@@ -285,9 +281,19 @@ namespace BossRush.Contents.NPCs {
 				projectile.ItemIDtextureValue = TerrariaArrayID.AllWoodBowPHM[(int)NPC.ai[2]];
 			NPC.ai[2]++;
 		}
+		bool HasReachPos = false;
 		private void ShootStaff(Player player) {
+			if (lastPlayerPosition == Vector2.Zero) {
+				lastPlayerPosition = player.Center;
+			}
+			if (!NPC.Center.IsCloseToPosition(lastPlayerPosition - new Vector2(0, 350), 30) && !HasReachPos) {
+				NPC.NPCMoveToPosition(lastPlayerPosition - new Vector2(0, 350), 10, 30);
+				return;
+			}
+			HasReachPos = true;
 			BossCircleMovement(player, 5, TerrariaArrayID.AllGemStaffPHM.Length, out float percent);
 			if (BossDelayAttack(5, 0, TerrariaArrayID.AllGemStaffPHM.Length - 1)) {
+				NPC.velocity = Vector2.Zero;
 				return;
 			}
 			Vector2 vec = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(MathHelper.Lerp(0, 360, percent)));
@@ -327,7 +333,7 @@ namespace BossRush.Contents.NPCs {
 			NPC.ai[2]++;
 		}
 		private void ShootOreBow2() {
-			Vector2 positionAbovePlayer = new Vector2(Main.player[NPC.target].Center.X, Main.player[NPC.target].Center.Y - 350);
+			Vector2 positionAbovePlayer = Main.player[NPC.target].Center + new Vector2(0, -350);
 			NPC.NPCMoveToPosition(positionAbovePlayer, 5f);
 			if (NPC.ai[2] >= TerrariaArrayID.AllOreBowPHM.Length - 1) {
 				ResetEverything();
@@ -342,7 +348,7 @@ namespace BossRush.Contents.NPCs {
 			NPC.ai[2]++;
 		}
 		private void ShootGun(Player player) {
-			if (BossDelayAttack(BossRushUtils.ToSecond(6), 0, 0, 90)) {
+			if (BossDelayAttack(BossRushUtils.ToSecond(5), 0, 0)) {
 				return;
 			}
 			int minishark = BossRushUtils.NewHostileProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HostileMinishark>(), 10, 2, NPC.target);
@@ -353,12 +359,11 @@ namespace BossRush.Contents.NPCs {
 			if (Main.projectile[Musket].ModProjectile is BaseHostileGun musketproj) {
 				musketproj.ItemIDtextureValue = ItemID.Musket;
 			}
+			NPC.ai[2]++;
 		}
 
 		Vector2 lastPlayerPosition = Vector2.Zero;
 		private void BossCircleMovement(Player player, int delayValue, int AttackEndValue, out float percent) {
-			if (lastPlayerPosition == Vector2.Zero)
-				lastPlayerPosition = player.Center;
 			float total = delayValue * AttackEndValue;
 			percent = Math.Clamp(((delayValue - NPC.ai[0] >= 0 ? delayValue - NPC.ai[0] : 0) + delayValue * NPC.ai[2]) / total, 0, 1f);
 			float rotation = MathHelper.Lerp(0, 360, percent);
@@ -585,7 +590,7 @@ namespace BossRush.Contents.NPCs {
 			else {
 				Projectile.rotation = (Main.player[Projectile.owner].Center - Projectile.Center).ToRotation();
 			}
-			if (++Projectile.ai[0] >= 25) {
+			if (++Projectile.ai[0] >= 45) {
 				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 10f, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
 				Projectile.ai[0] = 0;
 			}
@@ -629,7 +634,7 @@ namespace BossRush.Contents.NPCs {
 			Vector2 vel = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
 			if (Projectile.timeLeft > 150)
 				Projectile.timeLeft = 150;
-			if (++Projectile.ai[0] >= 25) {
+			if (++Projectile.ai[0] >= 50) {
 				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel * 15, ProjectileID.WoodenArrowHostile, Projectile.damage, 1); ;
 				Projectile.ai[0] = 0;
 			}
@@ -644,7 +649,7 @@ namespace BossRush.Contents.NPCs {
 				Projectile.timeLeft = 150;
 			Vector2 vel = (new Vector2(player.Center.X + Main.rand.Next(-100, 100), 0) - new Vector2(Projectile.Center.X, 0)).SafeNormalize(Vector2.Zero);
 			Projectile.velocity += vel;
-			if (++Projectile.ai[0] >= 15) {
+			if (++Projectile.ai[0] >= 30) {
 				BossRushUtils.NewHostileProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 15, ProjectileID.WoodenArrowHostile, Projectile.damage, 1);
 				Projectile.ai[0] = 0;
 			}
@@ -716,14 +721,14 @@ namespace BossRush.Contents.NPCs {
 		}
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
-			Vector2 AbovePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50), -400 + Main.rand.Next(-25,25));
-			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-			Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+			Vector2 AbovePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50), -450 + Main.rand.Next(-25, 25));
+			Vector2 TowardPlayer = Vector2.UnitY;
+			Projectile.velocity = (AbovePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 4.5f;
 			Projectile.velocity = Projectile.velocity.LimitedVelocity((AbovePlayer - Projectile.Center).Length() * .05f);
 			if (++Projectile.ai[0] >= 8) {
 				Projectile.ai[0] = 0;
 				TowardPlayer = TowardPlayer.Vector2RotateByRandom(15);
-				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * Main.rand.NextFloat(7,11), ProjectileID.Bullet, Projectile.damage, 1);
+				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * Main.rand.NextFloat(7, 11), ProjectileID.Bullet, Projectile.damage, 1);
 			}
 			Projectile.rotation = TowardPlayer.ToRotation();
 		}
@@ -738,14 +743,23 @@ namespace BossRush.Contents.NPCs {
 		}
 		public override void AI() {
 			Player player = Main.player[Projectile.owner];
-			Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600, Main.rand.Next(-10,10));
+			Vector2 BesidePlayer = player.Center + new Vector2(Main.rand.Next(-50, 50) - 600, Main.rand.Next(-10, 10));
 			Vector2 TowardPlayer = (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
 			Projectile.velocity = (BesidePlayer - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
 			Projectile.velocity = Projectile.velocity.LimitedVelocity((BesidePlayer - Projectile.Center).Length() * .05f);
 			if (++Projectile.ai[0] >= 30) {
+				SoundEngine.PlaySound(SoundID.Item38 with {
+					Pitch = 1f
+				}, Projectile.Center);
 				Projectile.ai[0] = 0;
 				TowardPlayer = TowardPlayer.Vector2RotateByRandom(2);
 				BossRushUtils.SpawnHostileProjectile(Projectile.Center, TowardPlayer * 15f, ProjectileID.Bullet, Projectile.damage, 1);
+				for (int i = 0; i < 30; i++) {
+					int dust = Dust.NewDust(Projectile.Center.PositionOFFSET(TowardPlayer, 10), 0, 0, DustID.Torch);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(Projectile.rotation) * Main.rand.NextFloat(7f, 19f);
+					Main.dust[dust].scale = Main.rand.NextFloat(.9f, 1.5f);
+				}
 			}
 			Projectile.rotation = TowardPlayer.ToRotation();
 		}

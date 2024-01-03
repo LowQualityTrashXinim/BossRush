@@ -4,13 +4,12 @@ using Terraria.UI;
 using ReLogic.Content;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.ID;
-using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Card {
 	internal class CardUI : UIState {
@@ -35,10 +34,11 @@ namespace BossRush.Contents.Items.Card {
 				bool hasMagicDeck = player.HasArtifact<MagicalCardDeckArtifact>();
 				PostTierModify = hasMagicDeck ? Tier + 1 : Tier;
 				for (int l = 0; l < 3; l++) {
-					SetBadStatsBaseOnTier(modplayer, hasMagicDeck);
+					SetBadStatsBaseOnTier(modplayer);
 					int offset = 0;
-					if (CardStats.Count > 0)
-						offset++;
+					if (CardStats.Count > 0) {
+						offset = CardStats.Count;
+					}
 					int cardlength = Math.Clamp(PostTierModify + offset, 0, 19);
 					AddCardStatsAndValue(offset, cardlength);
 					//CursedHandle(modplayer);
@@ -62,27 +62,28 @@ namespace BossRush.Contents.Items.Card {
 				CardStatsNumber.Add(statsCalculator(CardStats[i], Multiplier));
 			}
 		}
-		private void SetBadStatsBaseOnTier(PlayerStatsHandle modplayer, bool hasMagicDeck) {
+		private void SetBadStatsBaseOnTier(PlayerStatsHandle modplayer) {
 			if (Tier <= 0) {
 				return;
 			}
 			int RandomNumberGen = Main.rand.Next(101 + modplayer.CardLuck / Tier);
-			if (RandomNumberGen < modplayer.CardLuck || hasMagicDeck && RandomNumberGen < modplayer.CardLuck * (2 + Tier)) {
-				PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
-				CardStats.Add(badstat);
-				CardStatsNumber.Add(statsCalculator(badstat, -Tier));
+			if (RandomNumberGen >= modplayer.CardLuck) {
+				for (int i = 0; i < Tier; i++) {
+					PlayerStats badstat = SetStatsToAddBaseOnTier(CardStats, PostTierModify);
+					CardStats.Add(badstat);
+					CardStatsNumber.Add(statsCalculator(badstat, -1));
+				}
 			}
 		}
 		protected float statsCalculator(PlayerStats stats, float multi) {
 			float statsNum = Main.rand.Next(1, 4);
 			if (BossRushUtils.DoesStatsRequiredWholeNumber(stats)) {
-				if (stats is PlayerStats.ChestLootDropIncrease
-			|| stats is PlayerStats.MaxMinion
-			|| stats is PlayerStats.MaxSentry) {
-					statsNum = Main.rand.Next((int)(PostTierModify * .5f)) + 1;
+				if (stats is PlayerStats.MaxMinion
+				|| stats is PlayerStats.MaxSentry) {
+					statsNum /= 2;
 				}
-				else {
-					statsNum = (Main.rand.Next(PostTierModify) + 1) * PostTierModify;
+				if (statsNum == 0) {
+					statsNum += multi;
 				}
 				return (int)(statsNum * multi);
 			}
@@ -91,19 +92,19 @@ namespace BossRush.Contents.Items.Card {
 					statsNum = statsNum * multi * .01f;
 					break;
 				case 2:
-					statsNum = (statsNum + Main.rand.Next(1, 3) + 1) * PostTierModify * multi * .01f;
+					statsNum = (statsNum + Main.rand.Next(1, 3) + 1) * multi * .01f;
 					break;
 				case 3:
-					statsNum = (statsNum + Main.rand.Next(2, 5) + 1) * PostTierModify * multi * .01f;
+					statsNum = (statsNum + Main.rand.Next(2, 5) + 1) * multi * .01f;
 					break;
 				case 4:
-					statsNum = (statsNum + Main.rand.Next(4, 7) + 1) * PostTierModify * multi * .01f;
+					statsNum = (statsNum + Main.rand.Next(4, 7) + 1) * multi * .01f;
 					break;
 				default:
-					statsNum = (statsNum + Main.rand.Next(7) + Main.rand.Next(1, 11)) * PostTierModify * multi * .01f;
+					statsNum = (statsNum + Main.rand.Next(7) + Main.rand.Next(1, 11 + PostTierModify)) * multi * .01f;
 					break;
 			}
-			return (float)Math.Round(statsNum,2);
+			return (float)Math.Round(statsNum, 2);
 		}
 		public static PlayerStats SetStatsToAddBaseOnTier(List<PlayerStats> CardStats, int Tier) {
 			List<PlayerStats> stats = new List<PlayerStats>();
@@ -113,7 +114,6 @@ namespace BossRush.Contents.Items.Card {
 			if (Tier >= 3) {
 				stats.Add(PlayerStats.MaxSentry);
 				stats.Add(PlayerStats.MaxMinion);
-				stats.Add(PlayerStats.ChestLootDropIncrease);
 			}
 			if (Tier >= 2) {
 				stats.Add(PlayerStats.Thorn);
@@ -250,9 +250,6 @@ namespace BossRush.Contents.Items.Card {
 					break;
 				case PlayerStats.Thorn:
 					modplayer.Thorn += amount;
-					break;
-				case PlayerStats.ChestLootDropIncrease:
-					modplayer.DropAmountIncrease += (int)amount;
 					break;
 				case PlayerStats.MaxMinion:
 					modplayer.MinionSlot += (int)amount;

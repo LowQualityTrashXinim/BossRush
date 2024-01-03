@@ -34,6 +34,7 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] RangePreBoss = {
 				ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow,
 				ItemID.CopperBow, ItemID.TinBow, ItemID.IronBow, ItemID.LeadBow, ItemID.SilverBow,ItemID.TungstenBow, ItemID.GoldBow, ItemID.PlatinumBow,
+				ItemID.Blowpipe, ItemID.SnowballCannon,ItemID.PainterPaintballGun,ItemID.FlareGun,ItemID.RedRyder, ItemID.FlintlockPistol
 		};
 		public readonly static int[] MagicPreBoss = { ItemID.WandofFrosting, ItemID.WandofSparking, ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff };
 		public readonly static int[] SummonPreBoss = { ItemID.BabyBirdStaff, ItemID.SlimeStaff, ItemID.FlinxStaff };
@@ -49,8 +50,7 @@ namespace BossRush.Common.Utils {
 				ItemID.ChainKnife, ItemID.Mace, ItemID.FlamingMace, ItemID.BallOHurt,ItemID.Terragrim, ItemID.DyeTradersScimitar
 			};
 		public readonly static int[] RangePreEoC = {
-				ItemID.RedRyder, ItemID.FlintlockPistol,ItemID.Musket, ItemID.TheUndertaker, ItemID.Revolver, ItemID.Minishark, ItemID.Boomstick,
-				ItemID.Sandgun, ItemID.FlareGun, ItemID.Blowpipe, ItemID.SnowballCannon, ItemID.PainterPaintballGun
+				ItemID.Musket, ItemID.TheUndertaker, ItemID.Revolver, ItemID.Minishark, ItemID.Boomstick, ItemID.Sandgun, ItemID.FlareGun
 		};
 		public readonly static int[] MagicPreEoC = {
 				ItemID.ThunderStaff, ItemID.AmberStaff,ItemID.RubyStaff, ItemID.DiamondStaff

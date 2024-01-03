@@ -19,12 +19,5 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.Crystal {
 			player.lifeRegen += 5;
 			player.manaRegen += 5;
 		}
-
-		public override void AddRecipes() {
-			CreateRecipe()
-		   .AddIngredient(ModContent.ItemType<NatureCrystal>(), 1)
-		   .AddIngredient(ItemID.ManaRegenerationBand, 1)
-		   .Register();
-		}
 	}
 }

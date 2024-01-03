@@ -497,7 +497,7 @@ namespace BossRush.Common.RoguelikeChange {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			percentDone = BossRushUtils.InOutExpo(percentDone);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
-			float angle = MathHelper.ToRadians(baseAngle + 120) * player.direction;
+			float angle = MathHelper.ToRadians(135) * player.direction;
 			float start = baseAngle + angle * direct;
 			float end = baseAngle - angle * direct;
 			Swipe(start, end, percentDone, player, direct);
@@ -576,8 +576,8 @@ namespace BossRush.Common.RoguelikeChange {
 				ComboNumber = 0;
 				CountDownToResetCombo = 0;
 			}
-			delaytimer = BossRushUtils.CoolDown(delaytimer);
-			CountDownToResetCombo = BossRushUtils.CoolDown(CountDownToResetCombo);
+			delaytimer = BossRushUtils.CountDown(delaytimer);
+			CountDownToResetCombo = BossRushUtils.CountDown(CountDownToResetCombo);
 			if (CountDownToResetCombo <= 0)
 				ComboNumber = 0;
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault) || item.noMelee) {

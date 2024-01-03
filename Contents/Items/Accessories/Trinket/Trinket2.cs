@@ -2,13 +2,14 @@
 using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket_of_Perpetuation : BaseTrinket {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().Trinket_of_Perpetuation = true;
-		player.GetAttackSpeed(DamageClass.Generic) += .15f;
+		player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .35f;
 	}
 }
 public class Samsara_of_Retribution : TrinketBuff {
@@ -23,10 +24,24 @@ public class Samsara_of_Retribution : TrinketBuff {
 		npc.GetGlobalNPC<Trinket_GlobalNPC>().Trinket_of_Perpetuation_PointStack = 0;
 	}
 }
+public class Samsara_of_Retribution_Buff : TrinketBuff {
+	public override void UpdateTrinketPlayer(Player player, TrinketPlayer modplayer, ref int buffIndex) {
+		player.GetDamage(DamageClass.Generic) += player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().NPCcounter * .01f;
+	}
+	public override void OnEnded(Player player) {
+		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().CountDown = BossRushUtils.ToSecond(25);
+		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().NPCcounter = 0;
+	}
+}
 public class Trinket_of_Perpetuation_ModPlayer : ModPlayer {
 	public bool Trinket_of_Perpetuation = false;
+	public int NPCcounter = 0;
+	public int CountDown = 0;
 	public override void ResetEffects() {
 		Trinket_of_Perpetuation = false;
+	}
+	public override void PostUpdate() {
+		CountDown = BossRushUtils.CountDown(CountDown);
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		Trinket_of_Perpetuation_OnHitNPCEffect(target, hit);
@@ -35,8 +50,17 @@ public class Trinket_of_Perpetuation_ModPlayer : ModPlayer {
 		Trinket_of_Perpetuation_OnHitNPCEffect(target, hit);
 	}
 	private void Trinket_of_Perpetuation_OnHitNPCEffect(NPC target, NPC.HitInfo hit) {
-		if (!Trinket_of_Perpetuation)
+		if (!Trinket_of_Perpetuation) {
 			return;
+		}
+		if (CountDown <= 0) {
+			if (Player.HasBuff(ModContent.BuffType<Samsara_of_Retribution_Buff>())) {
+				NPCcounter++;
+			}
+			else {
+				Player.AddBuff(ModContent.BuffType<Samsara_of_Retribution_Buff>(), BossRushUtils.ToSecond(15));
+			}
+		}
 		target.AddBuff(ModContent.BuffType<Samsara_of_Retribution>(), BossRushUtils.ToSecond(1));
 		if (hit.Crit) {
 			NPC.HitInfo hitExtra = hit;

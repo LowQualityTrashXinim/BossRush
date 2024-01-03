@@ -1,13 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 	class PhantasmalEye : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
 		public override void SetDefaults() {
 			Projectile.DamageType = DamageClass.Generic;
@@ -17,16 +19,13 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 			Projectile.height = 24;
 			Projectile.timeLeft = 500;
 			Projectile.penetrate = -1;
-			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.immune[Projectile.owner] = 3;
 		}
 		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
-			Projectile.ai[0] += 1f;
-			if (Projectile.ai[0] < 30) {
+			if (++Projectile.ai[0] < 30) {
 				return;
 			}
 			Projectile.netUpdate = true;
@@ -35,22 +34,10 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 				if (Projectile.timeLeft % 50 == 0) {
 					Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 20;
 				}
-				if (Projectile.velocity.X > 40) {
-					Projectile.velocity.X = 40;
-				}
-				else if (Projectile.velocity.X < -40) {
-					Projectile.velocity.X = -40;
-				}
-				if (Projectile.velocity.Y > 40) {
-					Projectile.velocity.Y = 40;
-				}
-				else if (Projectile.velocity.Y < -40) {
-					Projectile.velocity.Y = -40;
-				}
+				Projectile.velocity = Projectile.velocity.LimitedVelocity(40);
 				return;
 			}
 			Projectile.velocity.Y += 0.3f;
-
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);

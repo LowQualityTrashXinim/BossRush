@@ -4,6 +4,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {
@@ -112,66 +113,6 @@ namespace BossRush.Contents.Items.Card {
 		}
 		public override int Tier => 4;
 	}
-	class CopperCardNormalizer : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBrickWall);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(11), 0, 200);
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<CopperCard>(), 10)
-				.Register();
-		}
-	}
-	class SilverCardNormalizer : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SilverBrickWall);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(5, 21), 0, 200);
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<SilverCard>(), 10)
-				.Register();
-		}
-	}
-	class GoldCardNormalizer : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldBrickWall);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(15, 36), 0, 200);
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<GoldCard>(), 10)
-				.Register();
-		}
-	}
-	class PlatinumCardNormalizer : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumBrickWall);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.CardLuck = Math.Clamp(modplayer.CardLuck - Main.rand.Next(25, 66), 0, 200);
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<PlatinumCard>(), 10)
-				.Register();
-		}
-	}
 	//This was ported from a secret mod of mine, it is badly made, but it should work most of it
 	public abstract class BaseCard : ModItem {
 		public override void SetDefaults() {
@@ -200,7 +141,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 25;
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			float radius = modplayer.AuraRadius;
@@ -220,7 +161,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 25;
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
@@ -235,7 +176,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 10;
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			player.Heal(1);
@@ -246,7 +187,7 @@ namespace BossRush.Contents.Items.Card {
 		public override string Texture => BossRushTexture.EMPTYCARD;
 		public override void CardSetDefault() {
 			Item.useAnimation = Item.useTime = 10;
-			Item.rare = 1;
+			Item.rare = ItemRarityID.Blue;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			player.Heal(10);

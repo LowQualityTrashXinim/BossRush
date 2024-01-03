@@ -2,9 +2,9 @@
 using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Items.Potion {
 	internal class MysteriousPotion : ModItem {

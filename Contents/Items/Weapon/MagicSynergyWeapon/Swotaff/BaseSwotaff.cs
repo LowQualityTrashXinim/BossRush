@@ -217,7 +217,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			if (Projectile.ai[1] == 1) {
 				if (timeToSpin >= 24) {
 					if (player.CheckMana(player.GetManaCost(item), true)) {
-						player.statMana -= (int)(player.GetManaCost(item) * (420 - AbsoluteCountDown) * .01f);
+						player.manaRegenDelay = player.maxRegenDelay;
 					}
 					else {
 						Projectile.ai[1] = -1;

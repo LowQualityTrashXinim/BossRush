@@ -10,15 +10,6 @@ internal class Trinket_of_Ample_Perception : BaseTrinket {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		Trinket_of_Ample_Perception_ModPlayer trinketplayer = player.GetModPlayer<Trinket_of_Ample_Perception_ModPlayer>();
-		for (int i = 0; i < trinketplayer.PointCounter; i++) {
-			Vector2 pos = player.Center +
-				Vector2.One.Vector2DistributeEvenly(trinketplayer.PointCounter, 360, i)
-				.RotatedBy(MathHelper.ToRadians(modplayer.counterToFullPi)) * 30;
-			int dust = Dust.NewDust(pos, 0, 0, DustID.GemAmber);
-			Main.dust[dust].velocity = Vector2.Zero;
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].fadeIn = 0;
-		}
 		trinketplayer.Trinket_of_Ample_Perception = true;
 		player.GetCritChance(DamageClass.Generic) += 12 + 3 * trinketplayer.PointCounter;
 		modplayer.DamageStats += .06f * trinketplayer.PointCounter;
@@ -29,17 +20,26 @@ public class Trinket_of_Ample_Perception_ModPlayer : ModPlayer {
 	public int PointCounter = 0;
 	public int PointTimeLeft = 0;
 	public int LifeStealCoolDown = 0;
-	public int CoolDown = 0;
+	public int CountDown = 0;
 	public override void ResetEffects() {
 		Trinket_of_Ample_Perception = false;
 	}
 	public override void PreUpdate() {
-		LifeStealCoolDown = BossRushUtils.CoolDown(LifeStealCoolDown);
-		PointTimeLeft = BossRushUtils.CoolDown(PointTimeLeft);
-		CoolDown = BossRushUtils.CoolDown(CoolDown);
+		LifeStealCoolDown = BossRushUtils.CountDown(LifeStealCoolDown);
+		PointTimeLeft = BossRushUtils.CountDown(PointTimeLeft);
+		CountDown = BossRushUtils.CountDown(CountDown);
 		if (PointTimeLeft <= 0 && PointCounter > 0) {
 			PointCounter--;
 			PointTimeLeft = BossRushUtils.ToSecond(7);
+		}
+		for (int i = 0; i < PointCounter; i++) {
+			Vector2 pos = Player.Center +
+				Vector2.One.Vector2DistributeEvenly(PointCounter, 360, i)
+				.RotatedBy(MathHelper.ToRadians(Player.GetModPlayer<TrinketPlayer>().counterToFullPi)) * 30;
+			int dust = Dust.NewDust(pos, 0, 0, DustID.GemAmber);
+			Main.dust[dust].velocity = Vector2.Zero;
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].fadeIn = 0;
 		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -57,10 +57,10 @@ public class Trinket_of_Ample_Perception_ModPlayer : ModPlayer {
 			Player.Heal(15);
 			LifeStealCoolDown = BossRushUtils.ToSecond(5);
 		}
-		if (CoolDown > 0)
+		if (CountDown > 0)
 			return;
 		PointCounter = Math.Clamp(++PointCounter, 0, 4);
 		PointTimeLeft = BossRushUtils.ToSecond(7);
-		CoolDown = BossRushUtils.ToSecond(2);
+		CountDown = BossRushUtils.ToSecond(2);
 	}
 }

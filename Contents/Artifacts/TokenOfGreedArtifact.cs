@@ -1,13 +1,8 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items.Chest;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Chest;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts
 {
@@ -24,7 +19,7 @@ namespace BossRush.Contents.Artifacts
 		}
 		public override void PostUpdate() {
 			if (Greed)
-				chestmodplayer.amountModifier += 4;
+				chestmodplayer.amountModifier += 2;
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (Greed)

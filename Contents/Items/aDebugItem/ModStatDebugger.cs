@@ -33,10 +33,10 @@ namespace BossRush.Contents.Items.aDebugItem
                 $"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
                 $"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
                 $"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
-                $"\nMelee drop chance : {chestplayer.MeleeChanceMutilplier}" +
-                $"\nRange drop chance : {chestplayer.RangeChanceMutilplier}" +
-                $"\nMagic drop chance : {chestplayer.MagicChanceMutilplier}" +
-                $"\nSummon drop chance : {chestplayer.SummonChanceMutilplier}" +
+                $"\nMelee drop chance : {chestplayer.MeleeChanceMutilplier + chestplayer.UpdateMeleeChanceMutilplier}" +
+                $"\nRange drop chance : {chestplayer.RangeChanceMutilplier + chestplayer.UpdateRangeChanceMutilplier}" +
+                $"\nMagic drop chance : {chestplayer.MagicChanceMutilplier + chestplayer.UpdateMagicChanceMutilplier}" +
+                $"\nSummon drop chance : {chestplayer.SummonChanceMutilplier + chestplayer.UpdateSummonChanceMutilplier}" +
                 $"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
                 $"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
                 $"\nCurrent active artifact : Broken for now"
