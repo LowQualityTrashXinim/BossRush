@@ -86,7 +86,9 @@ namespace BossRush {
 		public static bool LookForAnyHostileNPC(this Vector2 position, float distance) {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				if (Main.npc[i].active && Main.npc[i].friendly) {
-					if (CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance)) return true;
+					if (CompareSquareFloatValue(position, Main.npc[i].Center, distance * distance)) {
+						return true;
+					}
 				}
 			}
 			return false;

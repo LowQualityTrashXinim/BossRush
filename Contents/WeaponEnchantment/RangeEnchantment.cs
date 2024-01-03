@@ -476,7 +476,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (globalItem.Item_Counter1[index] <= 0) {
 				for (int i = 0; i < 3; i++) {
-					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 30, i), ProjectileID.PainterPaintball, (int)(damage * .45f), knockback, player.whoAmI, Main.rand.Next(0, 255), Main.rand.Next(0, 255), Main.rand.Next(0, 255));
+					Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 30, i), ProjectileID.PainterPaintball, (int)(damage * .45f), knockback, player.whoAmI, 0, Main.rand.NextFloat());
 				}
 				globalItem.Item_Counter1[index] = 60;
 			}

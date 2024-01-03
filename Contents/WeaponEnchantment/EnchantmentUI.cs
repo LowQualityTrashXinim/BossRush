@@ -4,9 +4,6 @@ using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
 using ReLogic.Content;
-using ReLogic.Graphics;
-using Terraria.UI.Chat;
-using System.Reflection;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
@@ -17,7 +14,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace BossRush.Contents.WeaponEnchantment;
 internal class EnchantmentUIState : UIState {
 	public int WhoAmI = -1;
-	public UIText toolTip;
 	public override void OnActivate() {
 		Elements.Clear();
 		if (WhoAmI == -1)
@@ -27,8 +23,6 @@ internal class EnchantmentUIState : UIState {
 		slot.UISetWidthHeight(52, 52);
 		slot.UISetPosition(player.Center + Vector2.UnitX * 120, new Vector2(26, 26));
 		Append(slot);
-		toolTip = new UIText("");
-		Append(toolTip);
 		var exitUI = new ExitUI(TextureAssets.InventoryBack13);
 		exitUI.UISetWidthHeight(52, 52);
 		exitUI.UISetPosition(player.Center + Vector2.UnitX * 178, new Vector2(26, 26));
@@ -218,34 +212,17 @@ public class EnchantmentInfoUI : UIImage {
 		base.Update(gameTime);
 		if (item == null)
 			return;
-		try {
-			foreach (var el in Parent.Children) {
-				if (el is UIText toolTip) {
-					if (toolTip is null) {
-						return;
-					}
-					if (IsMouseHovering) {
-						FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
-						DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
-						string tooltipText = "No enchantment can be found";
-						if (EnchantmentLoader.GetEnchantmentItemID(item.type) != null) {
-							tooltipText = EnchantmentLoader.GetEnchantmentItemID(item.type).Description;
-						}
-						Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
-						size.X *= .5f;
-						toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
-						toolTip.SetText(tooltipText);
-					}
-					else {
-						if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-							toolTip.SetText("");
-						}
-					}
-				}
+		if (IsMouseHovering) {
+			string tooltipText = "No enchantment can be found";
+			if (EnchantmentLoader.GetEnchantmentItemID(item.type) != null) {
+				tooltipText = EnchantmentLoader.GetEnchantmentItemID(item.type).Description;
 			}
+			Main.instance.MouseText(tooltipText);
 		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
 		}
 	}
 }
@@ -299,31 +276,17 @@ public class EnchantmentUIslot : UIImage {
 		base.Update(gameTime);
 		if (itemType == ItemID.None)
 			return;
-		try {
-			foreach (var el in Parent.Children) {
-				if (el is UIText toolTip) {
-					if (toolTip is null) {
-						return;
-					}
-					if (IsMouseHovering) {
-						FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
-						DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
-						string tooltipText = EnchantmentLoader.GetEnchantmentItemID(itemType).Description;
-						Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
-						size.X *= .5f;
-						toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
-						toolTip.SetText(tooltipText);
-					}
-					else {
-						if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-							toolTip.SetText("");
-						}
-					}
-				}
+		if (IsMouseHovering) {
+			string tooltipText = "No enchantment can be found";
+			if (EnchantmentLoader.GetEnchantmentItemID(itemType) != null) {
+				tooltipText = EnchantmentLoader.GetEnchantmentItemID(itemType).Description;
 			}
+			Main.instance.MouseText(tooltipText);
 		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
 		}
 	}
 }

@@ -12,10 +12,8 @@
 //using Terraria.ModLoader;
 //using Terraria.WorldBuilding;
 
-//namespace BossRush.Common.WorldGenOverhaul
-//{
-//    internal partial class WorldGenOverhaulSystem : ITaskCollection
-//    {
+//namespace BossRush.Common.WorldGenOverhaul {
+//	internal partial class WorldGenOverhaulSystem : ITaskCollection {
 //		[Task]
 //		public void Setup() {
 //			Main.worldSurface = 0;

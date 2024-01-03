@@ -14,11 +14,12 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDe
 		}
 
 		public override void AI() {
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
-			Projectile.ai[0] += 1f;
-			if (Projectile.ai[0] > 30) {
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			if (++Projectile.ai[0] > 30) {
 				Projectile.netUpdate = true;
-				if (Projectile.velocity.Y < 20) Projectile.velocity.Y += 0.3f;
+				if (Projectile.velocity.Y < 20) {
+					Projectile.velocity.Y += 0.3f;
+				}
 			}
 		}
 	}

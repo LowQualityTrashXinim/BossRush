@@ -11,6 +11,7 @@ namespace BossRush.Common.Utils
     internal partial class GenerationHelper
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		//Xinim : what the point of this ???
         private static int IntFloor(float x) => x < 0 ? (int)x - 1 : (int)x;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

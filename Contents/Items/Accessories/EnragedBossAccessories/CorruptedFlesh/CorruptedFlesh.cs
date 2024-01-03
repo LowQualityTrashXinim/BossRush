@@ -1,10 +1,9 @@
-﻿using BossRush.Contents.Items.Toggle;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.CorruptedFlesh {
 	internal class CorruptedFlesh : ModItem {
@@ -29,18 +28,18 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.CorruptedFl
 			CorruptedPower = false;
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (CorruptedPower && item.type != ModContent.ItemType<GodDice>()) Projectile.NewProjectile(source, Player.Center, Main.rand.NextVector2CircularEdge(10, 10), ProjectileID.TinyEater, damage, knockback, Player.whoAmI);
-			return true;
+			if (CorruptedPower) {
+				Projectile.NewProjectile(source, Player.Center, Main.rand.NextVector2CircularEdge(10, 10), ProjectileID.TinyEater, damage, knockback, Player.whoAmI);
+			}
+				return true;
 		}
 		public override void PostHurt(Player.HurtInfo info) {
 			CreateProjectile();
 		}
 		public void CreateProjectile() {
 			if (CorruptedPower) {
-				float rotation = MathHelper.ToRadians(180f);
-				float amount = 20f;
-				for (int i = 0; i < amount; i++) {
-					Vector2 Rotate = Vector2.One.RotatedBy(MathHelper.Lerp(rotation, -rotation, i / (amount - 1)));
+				for (int i = 0; i < 20; i++) {
+					Vector2 Rotate = Vector2.One.Vector2DistributeEvenly(20, 360, i);
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Rotate, ProjectileID.TinyEater, 30, 2f, Player.whoAmI);
 				}
 			}
