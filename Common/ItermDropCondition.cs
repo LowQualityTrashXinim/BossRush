@@ -131,7 +131,7 @@ namespace BossRush.Common {
 	public class LifeCrystalMax : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.statLifeMax < 400;
+				return true;
 			}
 			return false;
 		}
@@ -141,7 +141,7 @@ namespace BossRush.Common {
 	public class ManaCrystalMax : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.statManaMax < 200;
+				return true;
 			}
 			return false;
 		}

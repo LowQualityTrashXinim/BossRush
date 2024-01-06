@@ -169,7 +169,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
 			return true;
 		}
-		if (!Main.rand.NextBool(5)) {
+		if (Main.rand.NextBool()) {
 			return false;
 		}
 		if (itemList.Contains(ModContent.ItemType<NatureCrystal>()) && itemList.Contains(ItemID.ManaRegenerationBand)) {

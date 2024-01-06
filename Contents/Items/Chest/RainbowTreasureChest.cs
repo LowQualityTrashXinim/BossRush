@@ -62,15 +62,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 
 			int randomAmount = Main.rand.Next(10, 25);
-			for (int i = 0; i < randomAmount; i++) {
-				GetWeapon(player, out int Weapon, out int specialAmount);
-				AmmoForWeapon(out int Ammo, out int Amount, Weapon, 10);
-				player.QuickSpawnItem(entitySource, Weapon, specialAmount);
-				player.QuickSpawnItem(entitySource, Ammo, Amount);
-				if (Main.rand.NextBool(10)) {
-					randomAmount++;
-				}
-			}
+			GetWeapon(entitySource, player, randomAmount);
 			int randomRareStuff = Main.rand.Next(10);
 			switch (randomRareStuff) {
 				case 0:

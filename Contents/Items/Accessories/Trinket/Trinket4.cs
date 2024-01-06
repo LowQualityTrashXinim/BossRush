@@ -2,7 +2,6 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket4 : BaseTrinket {

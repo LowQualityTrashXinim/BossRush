@@ -11,7 +11,6 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -85,7 +84,6 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return 0;
 		}
-		//Note this method still suffer from slight performance problem
 		/// <summary>
 		/// Use this to modify the item pool before the process of choosing weapon is proceed<br/>
 		/// Use <see cref="LootboxSystem.GetItemPool"/> to modify loot pool
@@ -125,101 +123,108 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
 		private static HashSet<int> ItemGraveYard = new HashSet<int>();
 		/// <summary>
-		/// Return a random weapon and if the weapon consumable then return many ammount
+		/// Return weapon
 		/// </summary>
-		/// <param name="player">Player player</param>
-		/// <param name="ReturnWeapon">Weapon get return</param>
-		/// <param name="specialAmount">Ammount of that weapon get return</param>
-		/// <param name="rng">Set the rng number to return a specific type of weapon
-		/// <br/>1 : Melee weapon
-		/// <br/>2 : Range weapon
-		/// <br/>3 : Magic weapon
-		/// <br/> 4 : Summon weapon
-		/// <br/>5 : Misc weapon
-		/// <br/> 6 : Drug
-		/// <br/> 7 : Rainbow Chest</param>
-		public void GetWeapon(Player player, out int ReturnWeapon, out int specialAmount, int rng = 0) {
-			specialAmount = 1;
-			ReturnWeapon = ItemID.None;
-			if (rng == 0) {
-				rng = RNGManage(player);
-			}
-			rng = ModifyRNG(rng, player);
+		/// <param name="entitySource"></param>
+		/// <param name="player"></param>
+		/// <param name="LoopAmount"></param>
+		/// <param name="rng"></param>
+		public void GetWeapon(IEntitySource entitySource, Player player, int LoopAmount, int rng = 0) {
+			int SpecialAmount = 1;
+			int ReturnWeapon = ItemID.None;
 			//adding stuff here
-			if (rng < 6 && rng > 0) {
-				ModifyLootAdd(player);
-			}
+
+			ModifyLootAdd(player);
 			//actual choosing item
-			ChooseWeapon(rng, ref ReturnWeapon, ref specialAmount);
-		}
-		public void ChooseWeapon(int rng, ref int weapon, ref int amount) {
-			weapon = ItemID.None;
-			amount = 1;
+
 			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(Type).DropItemMelee.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(Type).DropItemRange.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(Type).DropItemMagic.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(Type).DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(Type).DropItemMisc;
-			switch (rng) {
-				case 0:
-					weapon = ItemID.None;
-					return;
-				case 1:
-					if (DummyMeleeData.Count <= 0) {
-						GetWeapon(out int Weapon, out int Amount, rng);
-						weapon = Weapon;
-						amount = Amount;
-						return;
-					}
-					weapon = DummyMeleeData.ElementAt(Main.rand.Next(DummyMeleeData.Count));
-					ItemGraveYard.Add(weapon);
-					return;
-				case 2:
-					if (DummyRangeData.Count <= 0) {
-						GetWeapon(out int Weapon, out int Amount, rng);
-						weapon = Weapon;
-						amount = Amount;
-						return;
-					}
-					weapon = DummyRangeData.ElementAt(Main.rand.Next(DummyRangeData.Count));
-					ItemGraveYard.Add(weapon);
-					return;
-				case 3:
-					if (DummyMagicData.Count <= 0) {
-						GetWeapon(out int Weapon, out int Amount, rng);
-						weapon = Weapon;
-						amount = Amount;
-						return;
-					}
-					weapon = DummyMagicData.ElementAt(Main.rand.Next(DummyMagicData.Count));
-					ItemGraveYard.Add(weapon);
-					return;
-				case 4:
-					if (DummySummonData.Count <= 0) {
-						GetWeapon(out int Weapon, out int Amount, rng);
-						weapon = Weapon;
-						amount = Amount;
-						return;
-					}
-					weapon = DummySummonData.ElementAt(Main.rand.Next(DummySummonData.Count));
-					ItemGraveYard.Add(weapon);
-					return;
-				case 5:
-					if (DummyMiscsData.Count < 1) {
-						ChooseWeapon(Main.rand.Next(1, 5), ref weapon, ref amount);
+			for (int i = 0; i < LoopAmount; i++) {
+				SpecialAmount = 1;
+				rng = RNGManage(player);
+				rng = ModifyRNG(rng, player);
+				switch (rng) {
+					case 0:
 						break;
-					}
-					amount += 199;
-					if (Main.masterMode) {
-						amount += 150;
-					}
-					weapon = DummyMiscsData.ElementAt(Main.rand.Next(DummyMiscsData.Count));
-					return;
-				case 6:
-					weapon = ModContent.ItemType<WonderDrug>();
-					return;
+					case 1:
+						if (DummyMeleeData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							break;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMeleeData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						ItemGraveYard.Add(ReturnWeapon);
+						DummyMeleeData.Remove(ReturnWeapon);
+						break;
+					case 2:
+						if (DummyRangeData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							AmmoForWeapon(entitySource, player, Weapon);
+							break;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyRangeData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						AmmoForWeapon(entitySource, player, ReturnWeapon);
+						ItemGraveYard.Add(ReturnWeapon);
+						DummyRangeData.Remove(ReturnWeapon);
+						break;
+					case 3:
+						if (DummyMagicData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							AmmoForWeapon(entitySource, player, Weapon);
+							break;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						ItemGraveYard.Add(ReturnWeapon);
+						DummyMagicData.Remove(ReturnWeapon);
+						AmmoForWeapon(entitySource, player, ReturnWeapon);
+						break;
+					case 4:
+						if (DummySummonData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							AmmoForWeapon(entitySource, player, Weapon);
+							break;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						AmmoForWeapon(entitySource, player, ReturnWeapon);
+						ItemGraveYard.Add(ReturnWeapon);
+						DummySummonData.Remove(ReturnWeapon);
+						break;
+					case 5:
+						if (DummyMiscsData.Count < 1) {
+							ChooseWeapon(Main.rand.Next(1, 5), ref ReturnWeapon, ref SpecialAmount, DummyMeleeData.ToList(), DummyRangeData.ToList(), DummyMagicData.ToList(), DummySummonData.ToList(), DummyMiscsData.ToList());
+							break;
+						}
+						SpecialAmount += 199;
+						if (Main.masterMode) {
+							SpecialAmount += 150;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMiscsData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						ItemGraveYard.Add(ReturnWeapon);
+						DummyMiscsData.Remove(ReturnWeapon);
+						break;
+					case 6:
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>(), SpecialAmount);
+						break;
+				}
 			}
 		}
+		/// <summary>
+		/// Return weapon base on progression
+		/// </summary>
+		/// <param name="ReturnWeapon"></param>
+		/// <param name="Amount"></param>
+		/// <param name="rng"></param>
 		public static void GetWeapon(out int ReturnWeapon, out int Amount, int rng = 0) {
 			if (rng > 6 || rng <= 0) {
 				rng = Main.rand.Next(1, 6);
@@ -284,7 +289,7 @@ namespace BossRush.Contents.Items.Chest {
 				DropItemMelee.AddRange(TerrariaArrayID.MeleeQS);
 				DropItemSummon.Add(ItemID.Smolstar);
 			}
-			if (NPC.downedMechBoss1 || NPC.downedMechBoss2 || NPC.downedMechBoss3) {
+			if (NPC.downedMechBossAny) {
 				DropItemMelee.AddRange(TerrariaArrayID.MeleeMech);
 				DropItemRange.Add(ItemID.SuperStarCannon);
 				DropItemRange.Add(ItemID.DD2PhoenixBow);
@@ -370,21 +375,21 @@ namespace BossRush.Contents.Items.Chest {
 		List<int> DropDartAmmo = new List<int>();
 
 		/// <summary>
-		/// Return ammo of weapon accordingly to weapon parameter
+		/// Automatically quick drop player ammo item accordingly to weapon ammo type
 		/// </summary>
-		/// <param name="Ammo">Return ammo type accordingly to weapon type</param>
-		/// <param name="Amount">Return the ammount of ammo</param>
+		/// /// <param name="player">The player</param>
 		/// <param name="weapon">Weapon need to be checked</param>
 		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
-		public void AmmoForWeapon(out int Ammo, out int Amount, int weapon, float AmountModifier = 1) {
-			Amount = (int)(200 * AmountModifier);
-			Item weapontoCheck = new Item(weapon);
+		public void AmmoForWeapon(IEntitySource source, Player player, int weapon, float AmountModifier = 1) {
+			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
+			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
+				return;
+			}
+			//The most ugly code
+			int Amount = (int)(200 * AmountModifier);
+			int Ammo;
 			if (Main.masterMode) {
 				Amount += 150;
-			}
-			if (weapontoCheck.consumable) {
-				Ammo = ItemID.WoodenArrow;
-				return;
 			}
 			DropArrowAmmo.Clear();
 			DropBulletAmmo.Clear();
@@ -463,6 +468,7 @@ namespace BossRush.Contents.Items.Chest {
 			else {
 				Ammo = ItemID.WoodenArrow;
 			}
+			player.QuickSpawnItem(source, Ammo, Amount);
 		}
 
 		List<int> Accessories = new List<int>();
@@ -712,8 +718,6 @@ namespace BossRush.Contents.Items.Chest {
 	public class ChestLootDropPlayer : ModPlayer {
 		public bool CanDropSynergyEnergy = true;
 		public int CurrentSectionAmountOfChestOpen = 0;
-		public override void OnEnterWorld() {
-		}
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
 		//Alternatively we can use this to handle all the data itself
 

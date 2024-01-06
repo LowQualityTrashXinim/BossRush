@@ -32,7 +32,7 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemSummon.Add(ItemID.ImpStaff);
 
 			itempool.DropItemMelee.Add(ItemID.BeeKeeper);
-			itempool.DropItemRange.Add(ItemID.BeesKnees); 
+			itempool.DropItemRange.Add(ItemID.BeesKnees);
 			itempool.DropItemRange.Add(ItemID.Blowgun);
 			itempool.DropItemMagic.Add(ItemID.BeeGun);
 			itempool.DropItemSummon.Add(ItemID.HornetStaff);
@@ -79,12 +79,7 @@ namespace BossRush.Contents.Items.Chest {
 						break;
 				}
 			}
-			for (int i = 0; i < 5; i++) {
-				GetWeapon(player, out int weapon, out int specialAmount);
-				AmmoForWeapon(out int ammo, out int num, weapon);
-				player.QuickSpawnItem(entitySource, weapon, specialAmount);
-				player.QuickSpawnItem(entitySource, ammo, num);
-			}
+			GetWeapon(entitySource, player, 5);
 			player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
 			player.QuickSpawnItem(entitySource, GetPotion(), 3);
 		}

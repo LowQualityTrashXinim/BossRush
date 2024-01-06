@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Terraria;
 using System.IO;
-using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.RoguelikeChange {
 	//public readonly static int[] GunType = {

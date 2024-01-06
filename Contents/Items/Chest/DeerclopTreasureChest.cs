@@ -21,9 +21,8 @@ namespace BossRush.Contents.Items.Chest {
 				if (Main.rand.NextBool(3)) {
 					int rand = Main.rand.Next(new int[] { ItemID.NorthPole, ItemID.Amarok, ItemID.Frostbrand, ItemID.SnowmanCannon, ItemID.CoolWhip, ItemID.IceBlade, ItemID.SnowballCannon, ItemID.IceBoomerang, ItemID.FrostDaggerfish, ItemID.FrostStaff, ItemID.FlowerofFrost, ItemID.IceBow, ItemID.BlizzardStaff, ItemID.IceSickle, ItemID.IceRod, ItemID.StaffoftheFrostHydra });
 					player.QuickSpawnItem(entitySource, rand);
-					AmmoForWeapon(out int ammo, out int amount, rand, 2.75f);
 					player.QuickSpawnItem(entitySource, rand);
-					player.QuickSpawnItem(entitySource, ammo, amount);
+					AmmoForWeapon(entitySource, player, rand, 2.75f);
 				}
 			}
 		}

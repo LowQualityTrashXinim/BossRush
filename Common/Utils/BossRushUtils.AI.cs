@@ -150,6 +150,27 @@ namespace BossRush {
 			(int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
 			hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
 		}
+		/// <summary>
+		/// Please applied the rotation to that is not <see cref="Projectile.rotation"/>
+		/// </summary>
+		/// <param name="hitbox"></param>
+		/// <param name="player"></param>
+		/// <param name="rotation"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="offset"></param>
+		public static void ModifyProjectileDamageHitbox(ref Rectangle hitbox, Vector2 position, float rotation, int width, int height, float offset = 0) {
+			float length = new Vector2(width, height).Length();
+			Vector2 handPos = Vector2.UnitX.RotatedBy(rotation);
+			Vector2 endPos = handPos;
+			endPos *= length;
+			Vector2 offsetVector = handPos * offset - handPos;
+			handPos += position + offsetVector;
+			endPos += position + offsetVector;
+			(int X1, int X2) XVals = Order(handPos.X, endPos.X);
+			(int Y1, int Y2) YVals = Order(handPos.Y, endPos.Y);
+			hitbox = new Rectangle(XVals.X1 - 2, YVals.Y1 - 2, XVals.X2 - XVals.X1 + 2, YVals.Y2 - YVals.Y1 + 2);
+		}
 		public static int CountDown(int timer, int timeDecrease = 1, int maxValue = 999999) => Math.Clamp(timer - timeDecrease, 0, maxValue);
 	}
 }

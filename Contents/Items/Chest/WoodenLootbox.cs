@@ -26,12 +26,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			modplayer.GetAmount();
-			for (int i = 0; i < modplayer.weaponAmount; i++) {
-				GetWeapon(player, out int ReturnWeapon, out int SpecialAmount);
-				AmmoForWeapon(out int ammo, out int num, ReturnWeapon);
-				player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
-				player.QuickSpawnItem(entitySource, ammo, num);
-			}
+			GetWeapon(entitySource, player, modplayer.weaponAmount);
 			player.QuickSpawnItem(entitySource, GetAccessory());
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(true), modplayer.potionNumAmount);

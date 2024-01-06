@@ -182,6 +182,7 @@ Mods: {
 			AdventureSpirit.DisplayName: Adventure Spirit
 			SwordProjectile.DisplayName: Sword Projectile
 			SwordProjectile2.DisplayName: Sword Projectile2
+			ManaReleaseOrb.DisplayName: Mana Release Orb
 		}
 
 		NPCs: {
@@ -1669,6 +1670,11 @@ Mods: {
 					The shield greatly increases defensive potential
 					'''
 			}
+
+			SlipGun: {
+				DisplayName: Slip Gun
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1860,6 +1866,11 @@ Mods: {
 			Trinket5_Buff: {
 				DisplayName: Trinket5_ Buff
 				Description: Mods.BossRush.Buffs.Trinket5_Buff.Description
+			}
+
+			ManaReleaseBuff: {
+				DisplayName: Mana release
+				Description: Increases mana consumption rate
 			}
 		}
 

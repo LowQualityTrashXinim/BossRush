@@ -381,7 +381,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyItemScale(Item item, Player player, ref float scale) {
-			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
+			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) && player.GetModPlayer<MeleeOverhaulPlayer>().ComboNumber != 2) {
 				int duration = player.itemAnimationMax;
 				float thirdduration = duration / 3;
 				float progress;
@@ -617,8 +617,9 @@ namespace BossRush.Common.RoguelikeChange {
 			if (ComboConditionChecking()) {
 				return;
 			}
-			if (CanPlayerBeDamage)
+			if (CanPlayerBeDamage) {
 				Player.velocity += (positionToDash - Player.Center).SafeNormalize(Vector2.Zero) * 20;
+			}
 			Player.noFallDmg = true;
 			CanPlayerBeDamage = false;
 		}

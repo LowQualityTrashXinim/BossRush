@@ -39,7 +39,12 @@ namespace BossRush.Contents.NPCs {
 		public override void AI() {
 			Player player = Main.player[NPC.target];
 			if (player.dead || !player.active) {
-				NPC.active = false;
+				NPC.FindClosestPlayer();
+				NPC.TargetClosest();
+				player = Main.player[NPC.target];
+				if (player.dead || !player.active) {
+					NPC.active = false;
+				}
 			}
 			if (NPC.CountNPCS(Type) > 1) {
 				if (!AlreadySaidThat) {

@@ -190,7 +190,9 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] Trinket = new int[] {
 			ModContent.ItemType<Trinket_of_Swift_Health>(),
 			ModContent.ItemType<Trinket_of_Perpetuation>(),
-			ModContent.ItemType<Trinket_of_Ample_Perception>()
+			ModContent.ItemType<Trinket_of_Ample_Perception>(),
+			ModContent.ItemType<Trinket4>(),
+			ModContent.ItemType<Trinket5>()
 		};
 
 		public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };

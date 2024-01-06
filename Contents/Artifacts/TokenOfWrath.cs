@@ -11,7 +11,7 @@ internal class TokenOfWrathArtifact : Artifact {
 	public override Color DisplayNameColor => Color.LimeGreen;
 }
 public class TokenOfWrathPlayer : ModPlayer {
-	public bool TokenOfWrath = false;
+	bool TokenOfWrath = false;
 	float critrate = 0;
 	public override void ResetEffects() {
 		TokenOfWrath = Player.HasArtifact<TokenOfWrathArtifact>();

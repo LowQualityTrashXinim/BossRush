@@ -63,20 +63,20 @@ namespace BossRush.Contents.WeaponEnchantment {
 	}
 	public static class EnchantmentLoader {
 		private static readonly List<ModEnchantment> _enchantment = new();
-		private static readonly List<int> _enchantmentcacheID = new();
+		public static readonly List<int> EnchantmentcacheID = new();
 		public static int TotalCount => _enchantment.Count;
 		public static int Register(ModEnchantment enchant) {
 			ModTypeLookup<ModEnchantment>.Register(enchant);
 			_enchantment.Add(enchant);
-			_enchantmentcacheID.Add(enchant.ItemIDType);
+			EnchantmentcacheID.Add(enchant.ItemIDType);
 			return _enchantment.Count - 1;
 		}
 		public static ModEnchantment GetEnchantment(int type) {
 			return type >= 0 && type < _enchantment.Count ? _enchantment[type] : null;
 		}
 		public static ModEnchantment GetEnchantmentItemID(int ItemID) {
-			int index = _enchantmentcacheID.IndexOf(ItemID);
-			return index >= 0 && index < _enchantmentcacheID.Count ? _enchantment[index] : null;
+			int index = EnchantmentcacheID.IndexOf(ItemID);
+			return index >= 0 && index < EnchantmentcacheID.Count ? _enchantment[index] : null;
 		}
 	}
 }

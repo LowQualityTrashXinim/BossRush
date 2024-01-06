@@ -77,12 +77,7 @@ namespace BossRush.Contents.Items.Chest {
 				GetArmorForPlayer(entitySource, player);
 			}
 			player.QuickSpawnItem(entitySource, GetAccessory());
-			for (int i = 0; i < 5; i++) {
-				GetWeapon(player, out int weapon, out int specialAmount);
-				AmmoForWeapon(out int ammo, out int num, weapon);
-				player.QuickSpawnItem(entitySource, weapon, specialAmount);
-				player.QuickSpawnItem(entitySource, ammo, num);
-			}
+			GetWeapon(entitySource, player, 5);
 			for (int i = 0; i < 5; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), 3);
 			}
