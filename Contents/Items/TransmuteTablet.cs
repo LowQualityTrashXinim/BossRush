@@ -16,6 +16,7 @@ using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.Accessories.Crystal;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Items;
 public class TransmuteTablet : ModItem {
@@ -165,26 +166,30 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		}
 	}
 	private bool CheckForSpecialDrop(List<int> itemList) {
+		Player player = Main.LocalPlayer;
 		if (itemList.Contains(ItemID.LifeCrystal) && itemList.Contains(ItemID.ManaCrystal)) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
 			return true;
 		}
 		if (Main.rand.NextBool()) {
 			return false;
 		}
 		if (itemList.Contains(ModContent.ItemType<NatureCrystal>()) && itemList.Contains(ItemID.ManaRegenerationBand)) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<EnergeticCrystal>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<EnergeticCrystal>());
 			return true;
 		}
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);
 		bool Musket = itemList.Contains(ItemID.Musket);
+		if(itemList.Contains(ModContent.ItemType<CelestialWrath>()) && itemList.Contains(ModContent.ItemType<MysteriousPotion>())) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
+		}
 		if (MiniShark && IceBlade) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
 			return true;
 		}
 		if (Musket && MiniShark) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<SingleBarrelMinishark>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SingleBarrelMinishark>());
 			return true;
 		}
 		return false;

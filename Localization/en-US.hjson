@@ -1872,6 +1872,11 @@ Mods: {
 				DisplayName: Mana release
 				Description: Increases mana consumption rate
 			}
+
+			ManaBlock: {
+				DisplayName: Mana Block
+				Description: Mods.BossRush.Buffs.ManaBlock.Description
+			}
 		}
 
 		Configs: {
