@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.NohitReward;
 using Terraria.Localization;
 using BossRush.Common.Systems;
+using BossRush.Contents.Items.Chest;
+using System;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -21,7 +23,67 @@ namespace BossRush.Contents.Perks {
 			}
 			return base.UseItem(item, player);
 		}
+
+
+		// how is drinking a potion with left click works differently from quick heal?... talking about a fresh spaghetti serving right there.
+		public override void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue) {
+			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+			if(perkplayer.perk_PotionCleanse) {
+				
+				healValue /= 2;
+			}
+		}
+
+		public override bool ConsumeItem(Item item, Player player) {
+
+			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+
+			if(perkplayer.perk_PotionCleanse && item.healLife > 0)
+				foreach(int i in player.buffType) {
+					if(Main.debuff[i]) {
+						player.ClearBuff(i);
+
+					}
+				}
+
+			return base.ConsumeItem(item, player);
+		}
 	}
+	public class PerkGlobalNpc : GlobalNPC {
+	
+		
+		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
+			
+			var perkPlayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
+		
+
+			// when talking to npc with the shopPerk
+			if(perkPlayer.perks.ContainsKey(Perk.GetPerkType<ShopPerk>())) {
+				
+				
+				items[^1] = getExtraItemValue(npc.type);
+
+				//check if the npc already talked to with shopPerk, if not, generate an item for that specific npc
+				foreach(int npcID in perkPlayer.hasExtraWeapon.Keys) {
+					if(npcID == npc.type)
+						return;
+				}
+
+				LootBoxBase.GetWeapon(out int weapon, out int amount);
+
+				// store the npc and their item in a dict, which the dict gets saved and loaded inside perkPlayer
+				perkPlayer.hasExtraWeapon.Add(npc.type,weapon);
+				items[^1] = getExtraItemValue(npc.type);
+
+					
+			}
+		} 
+		private Item getExtraItemValue(int key) {
+			return new Item(Main.LocalPlayer.GetModPlayer<PerkPlayer>().hasExtraWeapon.GetValueOrDefault(key)) { shopCustomPrice = Item.buyPrice(gold: 25)};
+		}
+
+	}
+
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
 		public int PerkAmount = 4;
@@ -32,7 +94,11 @@ namespace BossRush.Contents.Perks {
 		public Dictionary<int, int> perks = new Dictionary<int, int>();
 
 		public bool perk_PotionExpert = false;
-		public bool PotionExpert_perk_CanConsume = false;
+		public bool perk_PotionCleanse = false;
+		public bool PotionExpert_perk_CanConsume = false;         
+
+		// ShopPerk
+		public Dictionary<int, int> hasExtraWeapon = new Dictionary<int, int>();
 
 		private int[] _perks;
 		public override void Initialize() {
@@ -50,6 +116,7 @@ namespace BossRush.Contents.Perks {
 		public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
 		public override void ResetEffects() {
 			perk_PotionExpert = false;
+			perk_PotionCleanse = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
@@ -151,17 +218,26 @@ namespace BossRush.Contents.Perks {
 			}
 			return useSpeed;
 		}
+
+
+	
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
+			//save the dict hasExtraWeapon
+			tag["npcShop"] = hasExtraWeapon.Keys.ToList();
+			tag["npcWeapon"] = hasExtraWeapon.Values.ToList();
 		}
 		public override void LoadData(TagCompound tag) {
 			var PlayerPerks = tag.Get<List<int>>("PlayerPerks");
 			var PlayerPerkStack = tag.Get<List<int>>("PlayerPerkStack");
 			perks = PlayerPerks.Zip(PlayerPerkStack, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+
+			var npcShop = tag.Get<List<int>>("npcShop");
+			var npcWeapon = tag.Get<List<int>>("npcWeapon");
+			hasExtraWeapon = npcShop.Zip(npcWeapon, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		}
 	}
-
 	public abstract class Perk : ModType {
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");

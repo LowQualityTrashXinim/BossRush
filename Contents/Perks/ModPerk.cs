@@ -17,6 +17,10 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Common.Systems;
 using Terraria.Localization;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.Social.Base;
+using Terraria.Net;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
@@ -398,6 +402,7 @@ namespace BossRush.Contents.Perks {
 	public class StellarRetirement : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
+			textureString = BossRushTexture.ACCESSORIESSLOT;
 		}
 		public override void Update(Player player) {
 			if (Main.rand.NextBool(100) && !Main.dayTime) {
@@ -414,6 +419,132 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnChoose(Player player) {
 			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
+		}
+	}
+	public class PotionCleanse : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			Tooltip =
+				"+ Quick Potion heal is halved, but also cleanses almost all debuffs";
+		}
+		public override void Update(Player player) {
+			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
+		}
+	}
+	public class OverchargedMana : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			Tooltip =
+				"+ your max mana is halved \n+ deal AOE damage and gain +33% Magic Damage when at max current mana";
+		}
+		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
+			mana /= 2;
+		}
+		public override void UpdateEquip(Player player) {
+			
+			if(player.statMana == player.statManaMax)
+				player.GetDamage(DamageClass.Magic) += 0.33f;
+		}
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+				if(hit.DamageType == DamageClass.Magic) {
+					target.Center.LookForHostileNPC(out List<NPC> npclist, 64);
+					for (int i = 0; i < 120; i++) {
+						if(Main.netMode == NetmodeID.MultiplayerClient) {
+							var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
+							Main.dust[d].noGravity = true;
+
+						}
+					}
+					foreach (var i in npclist) {
+						player.StrikeNPCDirect(target, i.CalculateHitInfo(5 + (int)(damageDone * 0.1f), 1, Main.rand.NextBool(10)));
+					}
+				}
+		}
+	}
+	
+	public class ShopPerk : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 2;
+			Tooltip =
+				"+ Each Shop can now sell an Extra weapon based on progression\n+ mobs drops more coins";
+		}
+		public override void Update(Player player) {
+			player.coinLuck *= StackAmount;
+		}
+	}
+	public class CritPerk : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+			Tooltip =
+				"+ Gain a chance to ignore 90% target hit defense, the chance is based on critical strike chance\n+ gain +7% critcal strike chance per stack";
+		}
+		public override void Update(Player player) {
+			player.GetCritChance(DamageClass.Generic) += 5 * StackAmount;
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if(Main.rand.NextFloat(1,101) <= proj.CritChance)
+				modifiers.ScalingArmorPenetration += 0.9f;
+		}
+	}
+
+	public class SummonBuffPerk : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 4;
+			Tooltip =
+				"+ gain +2 minion slot for every stack you have\n- non-summon projectiles damage dealt decreased by 5% per stack";
+		}
+
+		public override void Update(Player player) {
+			player.maxMinions += StackAmount * 2;
+		}
+
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if(hit.DamageType != DamageClass.Summon)
+				hit.SourceDamage -= (int)(hit.SourceDamage * 0.05f) * StackAmount;
+		}
+	}
+
+	public class TrueMeleeBuffPerk : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 4;
+			Tooltip =
+				"+ Melee Damage is no longer random\n+ Melee Attacks that arent a projectile deals 25% bonus damage per stack\n (note that during iframes, this ability is deactivated)";
+
+		
+		}
+
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if(modifiers.DamageType == DamageClass.Melee) {
+				modifiers.DamageVariationScale *= 0f;
+				if(!player.immune)
+					modifiers.ScalingBonusDamage += 1.25f * StackAmount;
+				
+				}
+		}
+	}
+	public class knockpackPerk : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 1;
+			Tooltip =
+				"+ Most projectiles knockback dealt becomes upward\n+ Gain Increased Knockback\n+ Hit against Enemies that cant be knockbacked converts the knockback into flat armor penetration instead";
+
+		}
+
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			modifiers.HitDirectionOverride = 0;
+			modifiers.Knockback *= 10;
+
+			if(target.knockBackResist >= 1f) {
+				modifiers.Defense -= proj.knockBack;
+
+			} 
 		}
 	}
 }
