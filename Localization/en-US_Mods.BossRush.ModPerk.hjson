@@ -222,3 +222,66 @@ StellarRetirement: {
 	DisplayName: Stellar Retirement
 	Description: + Fallen Star are now more common
 }
+
+PotionCleanse: {
+	DisplayName: Cleansing Potion
+	Description: + Quick Potion heal is halved, but also cleanses almost all debuffs
+}
+
+OverchargedMana: {
+	DisplayName: Overcharged Mana
+	Description:
+		'''
+		+ your max mana is halved
+		+ deal AOE damage and gain +33% Magic Damage when at max current mana
+		'''
+}
+
+ShopPerk: {
+	DisplayName: VIP Section
+	Description:
+		'''
+		+ Each Shop can now sell an Extra weapon based on progression
+		+ mobs drops more coins
+		'''
+}
+
+CritPerk: {
+	DisplayName: Beyond Critcal
+	Description:
+		'''
+		+ Gain a chance to ignore 90% target hit defense, the chance is based on critical strike chance
+		+ gain +7% critcal strike chance per stack
+		'''
+}
+
+SummonBuffPerk: {
+	DisplayName: Crowd Control
+	Description:
+		'''
+		+ gain +2 minion slot for every stack you have
+		- non-summon projectiles damage dealt decreased by 5% per stack
+		'''
+}
+
+TrueMeleeBuffPerk: {
+	DisplayName: BloodShed
+	Description:
+		'''
+		+ Melee Damage is no longer random
+		+ Melee Attacks that arent a projectile deals 25% bonus damage per stack
+		(note that during iframes, this ability is deactivated)
+		'''
+}
+
+knockpackPerk: {
+	DisplayName: Physics Enjoyer
+	Description:
+		'''
+		+ Most projectiles knockback dealt always becomes upward
+		+ Gain Increased Knockback
+		+ Hit against Enemies that cant be knockbacked converts the knockback into flat armor penetration instead
+		"NOOOOOOOOO!!!! THIS IS NOT HOW PHYSICS WORK! THIS DOSEN'T MAKE ANY SENSE!!!" 
+		"haha, they are flying"
+		'''
+}
