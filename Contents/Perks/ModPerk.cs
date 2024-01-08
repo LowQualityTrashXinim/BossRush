@@ -451,11 +451,8 @@ namespace BossRush.Contents.Perks {
 				if(hit.DamageType == DamageClass.Magic) {
 					target.Center.LookForHostileNPC(out List<NPC> npclist, 64);
 					for (int i = 0; i < 120; i++) {
-						if(Main.netMode == NetmodeID.MultiplayerClient) {
-							var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
-							Main.dust[d].noGravity = true;
-
-						}
+						var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
+						Main.dust[d].noGravity = true;
 					}
 					foreach (var i in npclist) {
 						player.StrikeNPCDirect(target, i.CalculateHitInfo(5 + (int)(damageDone * 0.1f), 1, Main.rand.NextBool(10)));
