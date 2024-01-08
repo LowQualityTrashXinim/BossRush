@@ -29,7 +29,9 @@ public class Trinket4_ModPlayer : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if(Player.statMana < Player.statManaMax2 * .5f) {
+		if (!Trinket4)
+			return;
+		if (Player.statMana < Player.statManaMax2 * .5f) {
 			modifiers.FinalDamage -= .3f;
 			Player.statMana++;
 		}
