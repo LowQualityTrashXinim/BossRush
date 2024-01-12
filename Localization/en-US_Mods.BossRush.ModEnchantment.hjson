@@ -119,6 +119,7 @@ CactusSword.Description:
 	'''
 EnchantedSword.Description:
 	'''
+	Increases melee item use speed by 10%
 	Weapon that can shoot :
 	+ Shoot out additional enchanted beam that deal 25% more damage ( trigger every 3 * item use time )
 	Weapon that can't shoot :
@@ -130,6 +131,23 @@ StarFury.Description:
 	+ Shoot down a Star that deal 50% more damage ( trigger every 3 * item use time )
 	Weapon that can't shoot :
 	+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( trigger every 1.5s)
+	'''
+IceBlade.Description:
+	'''
+	Shoot out a ice bolt ( trigger every 3 * item use time )
+	On hitting enemy with melee item, inflict Frost Burn debuff for 3s to 6s
+	While in snow biome, increases damage by 12% and critical strike chance by 3%
+	'''
+BatBat.Description:
+	'''
+	Increases player movement speed by 12% and jump boost by 30% when held the item 
+	On hitting enemy, heal for 1 HP ( trigger every 0.2s )
+	'''
+BoneSword.Description:
+	'''
+	Increases weapon size by 15%
+	Attacking enemy have 25% chance to shoot out a infinite piercing bone
+	( trigger every 1s )
 	'''
 CopperShortSword.Description:
 	'''

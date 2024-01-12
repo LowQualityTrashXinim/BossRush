@@ -25,8 +25,21 @@ namespace BossRush.Common.RoguelikeChange {
 			if (entity.type == ItemID.Sandgun) {
 				entity.shoot = ModContent.ProjectileType<SandProjectile>();
 			}
+			if(entity.type == ItemID.Stynger) {
+				entity.useTime = 5;
+				entity.useAnimation = 40;
+				entity.reuseDelay = 30;
+				entity.damage += 10;
+			}
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal) {
 				entity.autoReuse = true;
+			}
+		}
+		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			base.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+			if (item.type == ItemID.Stynger) {
+				SoundEngine.PlaySound(item.UseSound);
+				position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
@@ -278,7 +291,7 @@ namespace BossRush.Common.RoguelikeChange {
 			if (item.type == ItemID.VikingHelmet) {
 				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
 			}
-			if (item.type == ItemID.ObsidianRose) {
+			if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
 				player.buffImmune[BuffID.OnFire] = true;
 			}
 		}

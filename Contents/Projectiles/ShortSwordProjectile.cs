@@ -12,7 +12,7 @@ internal class ShortSwordProjectile : ModProjectile {
 		Projectile.width = Projectile.height = 32;
 		Projectile.penetrate = -1;
 		Projectile.friendly = true;
-		Projectile.tileCollide = false;
+		Projectile.tileCollide = true;
 		Projectile.DamageType = DamageClass.Melee;
 		Projectile.usesLocalNPCImmunity = true;
 		Projectile.timeLeft = 120;
@@ -22,6 +22,9 @@ internal class ShortSwordProjectile : ModProjectile {
 	public override void AI() {
 		Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / 120f);
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+		if (++Projectile.ai[0] >= 20) {
+			Projectile.velocity.Y += .5f;
+		}
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);

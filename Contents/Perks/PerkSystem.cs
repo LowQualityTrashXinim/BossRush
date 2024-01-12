@@ -1,85 +1,114 @@
 ﻿using Terraria;
+using Terraria.ID;
 using System.Linq;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using System.Collections.Generic;
-using BossRush.Contents.Items.NohitReward;
-using Terraria.Localization;
 using BossRush.Common.Systems;
+using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using System;
+using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
 		public override bool? UseItem(Item item, Player player) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
-			if (player.ItemAnimationJustStarted)
-				perkplayer.PotionExpert_perk_CanConsume = Main.rand.NextFloat() <= .35f;
 			if (perkplayer.perk_PotionExpert && item.buffType > 0) {
+				if (player.ItemAnimationJustStarted) {
+					perkplayer.PotionExpert_perk_CanConsume = Main.rand.NextFloat() <= .35f;
+				}
 				return perkplayer.PotionExpert_perk_CanConsume;
 			}
 			return base.UseItem(item, player);
 		}
 
-
 		// how is drinking a potion with left click works differently from quick heal?... talking about a fresh spaghetti serving right there.
 		public override void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
-			if(perkplayer.perk_PotionCleanse) {
-				
+			if (perkplayer.perk_PotionCleanse) {
 				healValue /= 2;
 			}
 		}
 
 		public override bool ConsumeItem(Item item, Player player) {
-
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
-
-			if(perkplayer.perk_PotionCleanse && item.healLife > 0)
-				foreach(int i in player.buffType) {
-					if(Main.debuff[i]) {
+			if (perkplayer.perk_PotionCleanse && item.healLife > 0) {
+				foreach (int i in player.buffType) {
+					if (Main.debuff[i]) {
 						player.ClearBuff(i);
 
 					}
 				}
-
+			}
 			return base.ConsumeItem(item, player);
 		}
 	}
+	class PerkModSystem : ModSystem {
+		public override void Load() {
+			base.Load();
+			On_Player.QuickMana += On_Player_QuickMana;
+		}
+		private void On_Player_QuickMana(On_Player.orig_QuickMana orig, Player self) {
+			PerkPlayer perkplayer = self.GetModPlayer<PerkPlayer>();
+			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.HasPerk<ImprovedManaPotion>()) {
+				return;
+			}
+			orig(self);
+		}
+	}
+	class MagicOverhaulBuff : GlobalBuff {
+		public override void Update(int type, Player player, ref int buffIndex) {
+			if (type == BuffID.ManaSickness && player.GetModPlayer<PerkPlayer>().HasPerk<ImprovedManaPotion>()) {
+				if (player.statMana < player.statManaMax2) {
+					player.statMana++;
+				}
+				if (player.buffTime[buffIndex] <= 0) {
+					player.AddBuff(ModContent.BuffType<ManaBlock>(), BossRushUtils.ToSecond(30));
+				}
+			}
+		}
+	}
+	class ManaBlock : ModBuff {
+		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override void SetStaticDefaults() {
+			Main.debuff[Type] = true;
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			base.Update(player, ref buffIndex);
+		}
+	}
 	public class PerkGlobalNpc : GlobalNPC {
-	
-		
+
+
 		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
-			
-			var perkPlayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
-		
+
+			PerkPlayer perkPlayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
+
 
 			// when talking to npc with the shopPerk
-			if(perkPlayer.perks.ContainsKey(Perk.GetPerkType<ShopPerk>())) {
-				
-				
+			if (perkPlayer.perks.ContainsKey(Perk.GetPerkType<ShopPerk>())) {
+
+
 				items[^1] = getExtraItemValue(npc.type);
 
 				//check if the npc already talked to with shopPerk, if not, generate an item for that specific npc
-				foreach(int npcID in perkPlayer.hasExtraWeapon.Keys) {
-					if(npcID == npc.type)
+				foreach (int npcID in perkPlayer.hasExtraWeapon.Keys) {
+					if (npcID == npc.type)
 						return;
 				}
 
 				LootBoxBase.GetWeapon(out int weapon, out int amount);
 
 				// store the npc and their item in a dict, which the dict gets saved and loaded inside perkPlayer
-				perkPlayer.hasExtraWeapon.Add(npc.type,weapon);
+				perkPlayer.hasExtraWeapon.Add(npc.type, weapon);
 				items[^1] = getExtraItemValue(npc.type);
-
-					
 			}
-		} 
+		}
 		private Item getExtraItemValue(int key) {
-			return new Item(Main.LocalPlayer.GetModPlayer<PerkPlayer>().hasExtraWeapon.GetValueOrDefault(key)) { shopCustomPrice = Item.buyPrice(gold: 25)};
+			return new Item(Main.LocalPlayer.GetModPlayer<PerkPlayer>().hasExtraWeapon.GetValueOrDefault(key)) { shopCustomPrice = Item.buyPrice(gold: 25) };
 		}
 
 	}
@@ -95,14 +124,11 @@ namespace BossRush.Contents.Perks {
 
 		public bool perk_PotionExpert = false;
 		public bool perk_PotionCleanse = false;
-		public bool PotionExpert_perk_CanConsume = false;         
+		public bool PotionExpert_perk_CanConsume = false;
 
 		// ShopPerk
 		public Dictionary<int, int> hasExtraWeapon = new Dictionary<int, int>();
-
-		private int[] _perks;
 		public override void Initialize() {
-			_perks = new int[ModPerkLoader.TotalCount];
 			perks = new Dictionary<int, int>();
 			PerkAmount = 4;
 		}
@@ -112,8 +138,13 @@ namespace BossRush.Contents.Perks {
 			}
 			return PerkAmount;
 		}
-		public bool HasPerk<T>() where T : Perk => _perks[Perk.GetPerkType<T>()] > 0;
-		public bool HasPerk(Perk perk) => _perks[perk.Type] > 0;
+		public bool HasPerk<T>() where T : Perk => perks.ContainsKey(Perk.GetPerkType<T>());
+		public override bool CanUseItem(Item item) {
+			if (item.buffType == BuffID.ManaSickness && Player.HasBuff(ModContent.BuffType<ManaBlock>())) {
+				return false;
+			}
+			return base.CanUseItem(item);
+		}
 		public override void ResetEffects() {
 			perk_PotionExpert = false;
 			perk_PotionCleanse = false;
@@ -218,9 +249,6 @@ namespace BossRush.Contents.Perks {
 			}
 			return useSpeed;
 		}
-
-
-	
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
@@ -241,7 +269,6 @@ namespace BossRush.Contents.Perks {
 	public abstract class Perk : ModType {
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
-
 		public bool CanBeStack = false;
 		/// <summary>
 		/// Use this if <see cref="CanBeStack"/> is true
@@ -274,7 +301,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public string PerkNameToolTip => ModifyName() + "\n" + ModifyToolTip();
 		public virtual string ModifyToolTip() {
-			if(Description != null)
+			if (Description != null)
 				return Description;
 			return Tooltip;
 		}

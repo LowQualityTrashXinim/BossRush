@@ -358,7 +358,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
 				TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction" +
-					"\nHold down right mouse to make your normal slash push you back and allow you to dash toward the direction you are facing on 3rd attack");
+					"\nHold down right mouse to do special attack");
 				line.OverrideColor = Color.Yellow;
 				tooltips.Add(line);
 				if (SwingType == BossRushUseStyle.Swipe) {

@@ -112,12 +112,8 @@ namespace BossRush.Contents.Items.Chest {
 				return;
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (modplayer.CanDropSynergyEnergy)
+			if (modplayer.CanDropSynergyEnergy) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
-
-			//This is very bulky but gotta make it work
-			if (Main.rand.NextBool(10)) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
 			}
 		}
 		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
@@ -383,6 +379,9 @@ namespace BossRush.Contents.Items.Chest {
 		public void AmmoForWeapon(IEntitySource source, Player player, int weapon, float AmountModifier = 1) {
 			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
 			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
+				if(weapontoCheck.mana > 0) {
+					player.QuickSpawnItem(source, ItemID.LesserManaPotion, 5);
+				}
 				return;
 			}
 			//The most ugly code
