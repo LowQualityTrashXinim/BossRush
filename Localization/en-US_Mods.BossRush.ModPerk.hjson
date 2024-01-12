@@ -282,7 +282,8 @@ KnockpackPerk: {
 		+ Hit against enemies that have 100% KB resistance will converts knockback into flat armor penetration instead
 		'''
 }
-ImprovedManaPotion:{
+
+ImprovedManaPotion: {
 	DisplayName: Improved Mana Potion
 	Description:
 		'''

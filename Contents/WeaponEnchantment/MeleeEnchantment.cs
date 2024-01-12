@@ -499,7 +499,7 @@ public class EnchantedSword : ModEnchantment {
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = player.itemAnimationMax * 3;
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), position, velocity, ProjectileID.EnchantedBeam, (int)(damage * 1.25f), knockback, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), position, velocity.Vector2RotateByRandom(3), ProjectileID.EnchantedBeam, (int)(damage * 1.25f), knockback, player.whoAmI);
 		}
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {

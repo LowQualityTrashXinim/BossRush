@@ -183,6 +183,7 @@ Mods: {
 			SwordProjectile.DisplayName: Sword Projectile
 			SwordProjectile2.DisplayName: Sword Projectile2
 			ManaReleaseOrb.DisplayName: Mana Release Orb
+			CoconutProjectile.DisplayName: Coconut Projectile
 		}
 
 		NPCs: {
@@ -1876,6 +1877,11 @@ Mods: {
 			ManaBlock: {
 				DisplayName: Mana Block
 				Description: Mods.BossRush.Buffs.ManaBlock.Description
+			}
+
+			Stasis: {
+				DisplayName: Stasis
+				Description: Nothing can harm you and there is nothing you can do
 			}
 		}
 

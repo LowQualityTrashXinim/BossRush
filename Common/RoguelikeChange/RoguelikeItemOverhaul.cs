@@ -470,6 +470,7 @@ namespace BossRush.Common.RoguelikeChange {
 				if (++PalmWoodArmor_SandCounter >= 7) {
 					Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SandProjectile>(), (int)(damage * .5f), knockback, Player.whoAmI);
 					if (PalmWoodArmor_SandCounter >= 10) {
+						Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 20f, ModContent.ProjectileType<CoconutProjectile>(), (int)(damage * 1.25f), knockback, Player.whoAmI);
 						PalmWoodArmor_SandCounter = 0;
 					}
 				}
