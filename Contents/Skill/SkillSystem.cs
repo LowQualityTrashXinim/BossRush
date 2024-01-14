@@ -8,12 +8,14 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Skill;
 public abstract class ModSkill : ModType {
 	int Skill_CoolDown = 0;
 	int Skill_Duration = 0;
 	int Skill_EnergyRequire = 0;
+	public virtual string Texture => BossRushTexture.MISSINGTEXTURE;
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
 	public int EnergyRequire { get => Skill_EnergyRequire; }
@@ -57,6 +59,8 @@ public static class SkillLoader {
 	}
 }
 public class SkillModSystem : ModSystem {
+	public static int SelectInventoryIndex = -1;
+	public static int SelectSkillIndex = -1;
 	public static ModKeybind SkillActivation { get; private set; }
 
 	public override void Load() {
@@ -76,10 +80,133 @@ public class SkillHandlePlayer : ModPlayer {
 	public int[] SkillHolder3 = new int[10];
 	public int[] SkillInventory = new int[30];
 	public bool Activate = false;
-	public int CurrentActiveHolder = 1;
+	int CurrentActiveHolder = 1;
+
+	public int ActivateHolderIndex { get => CurrentActiveHolder; }
+	public override void Initialize() {
+		Array.Fill(SkillHolder1, -1);
+		Array.Fill(SkillHolder2, -1);
+		Array.Fill(SkillHolder3, -1);
+	}
+	public void AddSkillIntoCurrentActiveHolder(int SkillID, int whoAmI) {
+		if (whoAmI < 0 || whoAmI > 9) {
+			return;
+		}
+		switch (CurrentActiveHolder) {
+			case 1:
+				SkillHolder1[whoAmI] = SkillID;
+				break;
+			case 2:
+				SkillHolder2[whoAmI] = SkillID;
+				break;
+			case 3:
+				SkillHolder3[whoAmI] = SkillID;
+				break;
+		}
+	}
+	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
+		if (whoAmIskill < 0 || whoAmIskill > 9) {
+			return;
+		}
+		if (whoAmIInv < 0 || whoAmIInv > 30) {
+			return;
+		}
+		int cache;
+		switch (CurrentActiveHolder) {
+			case 1:
+				cache = SkillHolder1[whoAmIskill];
+				SkillHolder1[whoAmIskill] = SkillInventory[whoAmIInv];
+				SkillInventory[whoAmIInv] = cache;
+				break;
+			case 2:
+				cache = SkillHolder2[whoAmIskill];
+				SkillHolder2[whoAmIskill] = SkillInventory[whoAmIInv];
+				SkillInventory[whoAmIInv] = cache;
+				break;
+			case 3:
+				cache = SkillHolder3[whoAmIskill];
+				SkillHolder3[whoAmIskill] = SkillInventory[whoAmIInv];
+				SkillInventory[whoAmIInv] = cache;
+				break;
+		}
+	}
+	public void ReplaceSkillFromSkillHolderToInv(int whoAmIskill, int whoAmIInv) {
+		if (whoAmIskill < 0 || whoAmIskill > 9) {
+			return;
+		}
+		if (whoAmIInv < 0 || whoAmIInv > 30) {
+			return;
+		}
+		int cache;
+		switch (CurrentActiveHolder) {
+			case 1:
+				cache = SkillInventory[whoAmIInv];
+				SkillInventory[whoAmIInv] = SkillHolder1[whoAmIskill];
+				SkillHolder1[whoAmIskill] = cache;
+				break;
+			case 2:
+				cache = SkillInventory[whoAmIInv];
+				SkillInventory[whoAmIInv] = SkillHolder2[whoAmIskill];
+				SkillHolder2[whoAmIskill] = cache;
+				break;
+			case 3:
+				cache = SkillInventory[whoAmIInv];
+				SkillInventory[whoAmIInv] = SkillHolder3[whoAmIskill];
+				SkillHolder3[whoAmIskill] = cache;
+				break;
+		}
+	}
+	public int[] GetCurrentActiveSkillHolder() {
+		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
+		switch (CurrentActiveHolder) {
+			case 1:
+				return SkillHolder1;
+			case 2:
+				return SkillHolder2;
+			case 3:
+				return SkillHolder3;
+		}
+		//return null in case where somehow a very catastrophic event ever happen
+		return null;
+	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (SkillModSystem.SkillActivation.JustReleased) {
 			Activate = true;
+			int energyCost = 0;
+			switch (CurrentActiveHolder) {
+				case 1:
+					for (int i = 0; i < 10; i++) {
+						if (SkillHolder1[i] == -1) {
+							continue;
+						}
+						energyCost += SkillLoader.GetSkill(SkillHolder1[i]).EnergyRequire;
+						Duration += SkillLoader.GetSkill(SkillHolder1[i]).Duration;
+					}
+					break;
+				case 2:
+					for (int i = 0; i < 10; i++) {
+						if (SkillHolder1[i] == -1) {
+							continue;
+						}
+						energyCost += SkillLoader.GetSkill(SkillHolder2[i]).EnergyRequire;
+						Duration += SkillLoader.GetSkill(SkillHolder2[i]).Duration;
+					}
+					break;
+				case 3:
+					for (int i = 0; i < 10; i++) {
+						if (SkillHolder1[i] == -1) {
+							continue;
+						}
+						energyCost += SkillLoader.GetSkill(SkillHolder3[i]).EnergyRequire;
+						Duration += SkillLoader.GetSkill(SkillHolder3[i]).Duration;
+					}
+					break;
+			}
+			if (energyCost > Energy) {
+				Duration = 0;
+				return;
+			}
+			Energy -= energyCost;
 		}
 	}
 	public override void PreUpdate() {
@@ -89,6 +216,7 @@ public class SkillHandlePlayer : ModPlayer {
 		else {
 			Duration = BossRushUtils.CountDown(Duration);
 		}
+		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
 	}
 	public override void PostUpdate() {
 		if (!Activate) {
@@ -97,11 +225,17 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).Update(Player);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).Update(Player);
 				}
 				break;
@@ -119,16 +253,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).Shoot(Player, item, source, position, velocity, type, damage, knockback);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).Shoot(Player, item, source, position, velocity, type, damage, knockback);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).Shoot(Player, item, source, position, velocity, type, damage, knockback);
 				}
 				break;
@@ -142,16 +285,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).OnMissingMana(Player, item, neededMana);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).OnMissingMana(Player, item, neededMana);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnMissingMana(Player, item, neededMana);
 				}
 				break;
@@ -164,16 +316,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).ModifyDamage(Player, item, ref damage);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyDamage(Player, item, ref damage);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyDamage(Player, item, ref damage);
 				}
 				break;
@@ -186,16 +347,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 				}
 				break;
@@ -208,16 +378,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 				}
 				break;
@@ -230,16 +409,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).OnHitNPCWithItem(Player, item, target, hit, damageDone);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).OnHitNPCWithItem(Player, item, target, hit, damageDone);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnHitNPCWithItem(Player, item, target, hit, damageDone);
 				}
 				break;
@@ -252,16 +440,25 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
 				}
 				break;
@@ -275,21 +472,35 @@ public class SkillHandlePlayer : ModPlayer {
 		switch (CurrentActiveHolder) {
 			case 1:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder1[i]).ModifyUseSpeed(Player, item, ref useSpeed);
 				}
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyUseSpeed(Player, item, ref useSpeed);
 				}
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyUseSpeed(Player, item, ref useSpeed);
 				}
 				break;
 		}
 		return useSpeed;
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (!Activate) {
+			Energy = Math.Clamp(Math.Clamp(damageDone + Energy, 0, EnergyRechargeCap), 0, EnergyCap);
+		}
 	}
 	public override void UpdateDead() {
 		Activate = false;
@@ -315,5 +526,11 @@ public class SkillHandlePlayer : ModPlayer {
 		if (tag.TryGet("SkillInventory", out int[] SkillInventory)) {
 			Array.Copy(this.SkillInventory, SkillInventory, SkillInventory.Length);
 		}
+	}
+}
+public class SkillOrb : ModItem {
+	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override void SetDefaults() {
+		Item.width = Item.height = 30;
 	}
 }

@@ -2,11 +2,12 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using BossRush.Common.Utils;
 using Terraria.WorldBuilding;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Common.WorldGenOverhaul.XinimVer;
 
@@ -14,18 +15,24 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		return;
-		tasks.ForEach(g => g.Disable());
-		tasks.AddRange(((ITaskCollection)this).Tasks);
+		if (ModContent.GetInstance<BossRushModConfig>().WorldGenTest) {
+			tasks.ForEach(g => g.Disable());
+			tasks.AddRange(((ITaskCollection)this).Tasks);
+		}
 	}
-	
-	public static int[][] ResigsterPosition = new int[24][]; 
-	public static int ForestValue = 4;
-	public static int JungleValue = 4;
-	public static int CorruptionValue = 4;
-	public static int CrimsonValue = 4;
-	public static int DesertValue = 2;
-	public static int SnowValue = 2;
+	public static Dictionary<string, List<Rectangle>> Biome;
+	public override void OnWorldLoad() {
+		Biome = new Dictionary<string, List<Rectangle>>();
+	}
+	public override void LoadWorldData(TagCompound tag) {
+		base.LoadWorldData(tag);
+	}
+	public override void OnWorldUnload() {
+		Biome = null;
+	}
+	public override void SaveWorldData(TagCompound tag) {
+		base.SaveWorldData(tag);
+	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
 	/*
@@ -211,8 +218,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Create_CustomBiome2() {
 		//Minor Biome or soon to be
-		int random = WorldGen.genRand.Next(-1, 2);
-		int x = 9 + random;
+		int x = 10;
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(x, 0, 2, 2),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Cloud);

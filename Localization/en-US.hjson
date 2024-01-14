@@ -1676,6 +1676,11 @@ Mods: {
 				DisplayName: Slip Gun
 				Tooltip: ""
 			}
+
+			SkillOrb: {
+				DisplayName: Skill Orb
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2013,5 +2018,6 @@ Mods: {
 		}
 
 		Prefixes.BasePrefix.DisplayName: Base Prefix
+		"Keybinds.Skill activation.DisplayName": Skill activation
 	}
 }

@@ -45,7 +45,7 @@ namespace BossRush.Common.RoguelikeChange {
 			switch (entity.type) {
 				case ItemID.Minishark:
 					NumOfProjectile = 1;
-					OffSetPost = 20;
+					OffSetPost = 15;
 					SpreadAmount = 6.5f;
 					AdditionalSpread = 2;
 					break;

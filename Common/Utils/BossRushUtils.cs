@@ -64,6 +64,9 @@ namespace BossRush {
 				drama = 1;
 			}
 			int text = CombatText.NewText(new Rectangle(), color, combatMessage, dramatic, dot);
+			if(text < 0 || text > Main.maxCombatText) {
+				return;
+			}
 			CombatText cbtext = Main.combatText[text];
 			Vector2 vector = FontAssets.CombatText[drama].Value.MeasureString(cbtext.text);
 			cbtext.position.X = location.X + location.Width * 0.5f - vector.X * 0.5f;
@@ -276,6 +279,20 @@ namespace BossRush {
 		//Todo : make a universal form of luck
 		public static bool RNGchance(this UnifiedRandom rand, float chance) {
 			return rand.NextFloat() > chance;
+		}
+		public static void ReplaceElementInArray(int[] from, int index1, int[] destination, int index2) {
+			if (from == null || destination == null) {
+				throw new ArgumentNullException();
+			}
+			if (index1 < 0 || index1 >= from.Length) {
+				throw new IndexOutOfRangeException();
+			}
+			if(index2 < 0 || index1 >= destination.Length) {
+				throw new IndexOutOfRangeException();
+			}
+			int cache = from[index1];
+			from[index1] = destination[index2];
+			from[index2] = cache;
 		}
 	}
 	/// <summary>

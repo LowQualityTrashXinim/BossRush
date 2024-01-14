@@ -25,22 +25,46 @@ namespace BossRush.Common.RoguelikeChange {
 			if (entity.type == ItemID.Sandgun) {
 				entity.shoot = ModContent.ProjectileType<SandProjectile>();
 			}
-			if(entity.type == ItemID.Stynger) {
+			if (entity.type == ItemID.Stynger) {
 				entity.useTime = 5;
 				entity.useAnimation = 40;
 				entity.reuseDelay = 30;
 				entity.damage += 10;
+			}
+			if (entity.type == ItemID.ToxicFlask) {
+				entity.damage += 5;
+				entity.useTime = entity.useAnimation = 25;
 			}
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal) {
 				entity.autoReuse = true;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			base.ModifyShootStats(item, player, ref position, ref velocity, ref type, ref damage, ref knockback);
+			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return;
+			}
 			if (item.type == ItemID.Stynger) {
 				SoundEngine.PlaySound(item.UseSound);
 				position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 			}
+		}
+		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+			}
+			if (item.type == ItemID.ToxicFlask) {
+				GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
+				if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
+					for (int i = 0; i < 3; i++) {
+						Vector2 vel = velocity.Vector2DistributeEvenlyPlus(3, 45, i);
+						Projectile.NewProjectile(source, position, vel, type, damage, knockback, player.whoAmI);
+					}
+					modplayer.ToxicFlask_DelayWeaponUse = 60;
+					modplayer.ToxicFlask_SpecialCounter = -1;
+					return false;
+				}
+			}
+			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			//Note : Use look for tooltip with Defense if there are gonna be modification to defenses
@@ -341,6 +365,8 @@ namespace BossRush.Common.RoguelikeChange {
 		public bool JungleArmor = false;
 
 		public bool RoguelikeOverhaul_VikingHelmet = false;
+		public int ToxicFlask_SpecialCounter = -1;
+		public int ToxicFlask_DelayWeaponUse = 0;
 		public override void ResetEffects() {
 			WoodArmor = false;
 			BorealWoodArmor = false;
@@ -360,6 +386,12 @@ namespace BossRush.Common.RoguelikeChange {
 			PlatinumArmor = false;
 			JungleArmor = false;
 			RoguelikeOverhaul_VikingHelmet = false;
+		}
+		public override bool CanUseItem(Item item) {
+			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
+				return false;
+			}
+			return base.CanUseItem(item);
 		}
 		public override void UpdateDead() {
 			WoodArmor = false;
@@ -410,6 +442,9 @@ namespace BossRush.Common.RoguelikeChange {
 
 		}
 		public override void PostUpdate() {
+			if (!Player.ItemAnimationActive) {
+				ToxicFlask_DelayWeaponUse = BossRushUtils.CountDown(ToxicFlask_DelayWeaponUse);
+			}
 			if (TungstenArmor) {
 				Player.statDefense *= 0;
 			}
