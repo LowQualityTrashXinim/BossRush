@@ -20,7 +20,7 @@ namespace BossRush.Common {
 	public class ChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless;
+				return UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless;
 			}
 			return false;
 		}
@@ -30,7 +30,7 @@ namespace BossRush.Common {
 	public class EvilBossChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)
-				return (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2;
+				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2;
 			return false;
 		}
 		public bool CanShowItemDropInUI() => true;

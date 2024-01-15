@@ -8,11 +8,12 @@ using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Common.Systems;
 internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
-	public const string CHALLENGE_MODE = "ChallengeModeEnable";
+	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HARDCORE_MODE = "Hardcore";
 	public const string TRUE_MODE = "TrueMode";
@@ -20,7 +21,7 @@ internal class UniversalSystem : ModSystem {
 	/// Use this to lock content behind hardcore
 	/// </summary>
 	/// <param name="player"></param>
-	/// <param name="context">Use <see cref="CHALLENGE_MODE"/> or any kind of mode that seem fit</param>
+	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
 		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
@@ -30,17 +31,34 @@ internal class UniversalSystem : ModSystem {
 			return config.Nightmare;
 		if (context == HARDCORE_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore && config.AutoHardCore;
-		if (context == CHALLENGE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.EnableChallengeMode;
+		if (context == BOSSRUSH_MODE)
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.BossRushMode;
 		if (context == SYNERGY_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode;
 		if (context == TRUE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode && config.EnableChallengeMode;
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode && config.BossRushMode;
+		return false;
+	}
+	public static bool CanAccessContent(string context) {
+		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (config.HardEnableFeature)
+			return true;
+		if (context == NIGHTMARE_MODE)
+			return config.Nightmare;
+		if (context == HARDCORE_MODE)
+			return config.AutoHardCore;
+		if (context == BOSSRUSH_MODE)
+			return config.BossRushMode;
+		if (context == SYNERGY_MODE)
+			return config.SynergyMode;
+		if (context == TRUE_MODE)
+			return config.SynergyMode && config.BossRushMode;
 		return false;
 	}
 	internal UserInterface userInterface;
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
+	public SkillUI skillUIstate;
 
 	public CardUI cardUIstate;
 	public DeCardUIState DeCardUIState;
@@ -54,6 +72,7 @@ internal class UniversalSystem : ModSystem {
 
 			DeCardUIState = new();
 			cardUIstate = new();
+			skillUIstate = new();
 
 			userInterface = new();
 		}

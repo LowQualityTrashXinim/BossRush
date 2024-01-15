@@ -9,7 +9,7 @@ internal class SlipGun : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(30, 30, 50, 5f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.Bullet, 30, true, AmmoID.Bullet);
 
-		Item.rare = 5;
+		Item.rare = ItemRarityID.Pink;
 		Item.value = Item.sellPrice(gold: 50);
 	}
 }

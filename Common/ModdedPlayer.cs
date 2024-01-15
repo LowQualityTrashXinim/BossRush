@@ -15,6 +15,7 @@ using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNinja;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -71,19 +72,21 @@ namespace BossRush.Common {
 			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
-				if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					yield return new Item(ModContent.ItemType<LunchBox>());
 					yield return new Item(ItemID.ManaCrystal, 5);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
-					yield return new Item(ModContent.ItemType<CursedSkull>());
 					yield return new Item(ModContent.ItemType<BiomeToggle>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+					yield return new Item(ModContent.ItemType<CursedSkull>());
 					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
-					yield return new Item(ModContent.ItemType<TransmuteTablet>());
-					yield return new Item(ModContent.ItemType<WeaponEnchantment>());
+					if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+						yield return new Item(ModContent.ItemType<TransmuteTablet>());
+						yield return new Item(ModContent.ItemType<WeaponEnchantment>());
+					}
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);

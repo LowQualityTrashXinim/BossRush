@@ -1,17 +1,19 @@
 ﻿using Terraria;
 using Terraria.UI;
 using ReLogic.Content;
+using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
 
 namespace BossRush.Contents.Skill;
 internal class SkillUI : UIState {
 	public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
 	public List<btn_SkillSlotHolder> inventory = new List<btn_SkillSlotHolder>();
+	public ExitUI exitUI;
 	public const string UItype_SKILL = "skill";
 	public const string UIType_INVENTORY = "inventory";
 	public override void OnActivate() {
@@ -23,17 +25,40 @@ internal class SkillUI : UIState {
 			Vector2 textureSize = new Vector2(52, 52);
 			Vector2 OffSetPosition_Skill = player.Center;
 			OffSetPosition_Skill.X -= textureSize.X * 5;
-			for (int i = 0; i < 10; i++) {
-				btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, SkillHolder[i], UItype_SKILL);
-				skill.Add(skillslot);
-				Append(skill[i]);
+			if (skill.Count < 1) {
+				for (int i = 0; i < 10; i++) {
+					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, SkillHolder[i], UItype_SKILL);
+					skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
+					skill.Add(skillslot);
+					Append(skill[i]);
+				}
 			}
-			for (int i = 0; i < 30; i++) {
-				btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, SkillHolder[i], UIType_INVENTORY);
-				inventory.Add(skillslot);
-				Append(inventory[i]);
+			Vector2 InvOffSet = new Vector2(520, -55);
+			if (inventory.Count < 1) {
+				for (int i = 0; i < 30; i++) {
+					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, modplayer.SkillInventory[i], UIType_INVENTORY);
+					Vector2 InvPos = OffSetPosition_Skill + new Vector2(0, 72);
+					if (i >= 10) {
+						InvPos -= InvOffSet;
+					}
+					if (i >= 20) {
+						InvPos -= InvOffSet;
+					}
+					skillslot.UISetPosition(InvPos + new Vector2(52, 0) * i, textureSize);
+					inventory.Add(skillslot);
+					Append(inventory[i]);
+				}
+			}
+			if (exitUI == null) {
+				exitUI = new ExitUI(TextureAssets.InventoryBack10);
+				exitUI.UISetPosition(player.Center + new Vector2(300, 0), textureSize);
+				Append(exitUI);
 			}
 		}
+	}
+	public override void OnDeactivate() {
+		SkillModSystem.SelectInventoryIndex = -1;
+		SkillModSystem.SelectSkillIndex = -1;
 	}
 }
 class SkillUIpannel : UIPanel {
@@ -115,13 +140,26 @@ class btn_SkillSlotHolder : UIImageButton {
 				sKillID = skillholder[whoAmI];
 			}
 		}
+		if (IsMouseHovering) {
+			string tooltipText = "";
+			string Name = "";
+			if (SkillLoader.GetSkill(sKillID) != null) {
+				Name = SkillLoader.GetSkill(sKillID).DisplayName;
+				tooltipText = SkillLoader.GetSkill(sKillID).Description;
+			}
+			Main.instance.MouseText(Name + "\n" + tooltipText);
+		}
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
-		if (sKillID < 0 && sKillID >= SkillLoader.TotalCount) {
+		if (sKillID < 0 || sKillID >= SkillLoader.TotalCount) {
 			return;
 		}
 		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + Texture.Size() * .5f;
 		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillLoader.GetSkill(sKillID).Texture).Value;
+		Vector2 origin = skilltexture.Size() * .5f;
+		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
+		spriteBatch.Draw(skilltexture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
 	}
+	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }

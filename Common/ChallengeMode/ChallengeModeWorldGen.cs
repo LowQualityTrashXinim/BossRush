@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BossRush.Common.Systems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -9,7 +10,7 @@ using Terraria.WorldBuilding;
 namespace BossRush.Common.ChallengeMode {
 	internal class ChallengeModeWorldGen : ModSystem {
 		public override void OnWorldLoad() {
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				for (int i = 0; i < Main.maxNPCs; i++) {
 					NPC npc = Main.npc[i];
 					if (npc.type == NPCID.OldMan) {
@@ -25,7 +26,7 @@ namespace BossRush.Common.ChallengeMode {
 			_tasksCache = null;
 		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				//This is disgusting but will do for now
 				if (_tasksStringCache == null || _tasksStringCache.Count < 1) {
 					_tasksStringCache = tasks.Select(t => t.Name).ToList();

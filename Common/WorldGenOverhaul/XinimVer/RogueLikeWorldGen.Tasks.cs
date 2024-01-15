@@ -21,14 +21,8 @@ public partial class RogueLikeWorldGen : ModSystem {
 		}
 	}
 	public static Dictionary<string, List<Rectangle>> Biome;
-	public override void OnWorldLoad() {
-		Biome = new Dictionary<string, List<Rectangle>>();
-	}
 	public override void LoadWorldData(TagCompound tag) {
 		base.LoadWorldData(tag);
-	}
-	public override void OnWorldUnload() {
-		Biome = null;
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		base.SaveWorldData(tag);
@@ -63,6 +57,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	*/
 	[Task]
 	public void SetUp() {
+		Biome = new Dictionary<string, List<Rectangle>>();
 		GridPart_X = Main.maxTilesX / 24;
 		GridPart_Y = Main.maxTilesY / 24;
 		Main.worldSurface = 0;
@@ -91,18 +86,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				float distance = NormalizedSquaredDistanceFromCenter(i, j);
 				float jFloor = (Main.maxTilesY / 2f + 3f * MathF.Sin(i * 0.025f) * MathF.Cos(i * 0.065f + 0.354135f));
 				if (
-					j > jFloor && j < jFloor + 100 * WorldGen.genRand.NextFloat(0.95f, 1f)
-					&& distance < WorldGen.genRand.NextFloat(domeSize, domeSize + 0.0005f)
-					) {
-					GenerationHelper.FastPlaceTile(
-						i,
-						j,
-						j <= (int)(jFloor + WorldGen.genRand.NextFloat(1f, 3f)) ? TileID.Grass : TileID.Dirt
-					);
-					return;
-				}
-
-				if (
 					(
 					smallNoise.GetValue(i * 0.15f + MathF.Sin(i * j) * 0.05f, j * 0.15f + MathF.Sin(i * j) * 0.05f) > 0f - 0.4f * MathF.Abs(bigNoise.GetValue(i * 0.008f, j * 0.008f))
 					|| bigNoise.GetValue(i * 0.03f, j * 0.03f) > MathF.Sin((i + j) * 0.1f) * 0.1f + 0.2f
@@ -126,21 +109,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				Main.spawnTileX + WorldGen.genRand.Next((int)(Main.maxTilesX * 0.05f), Main.maxTilesX / 2) * (WorldGen.genRand.NextBool() ? 1 : -1),
 				Main.spawnTileY + WorldGen.genRand.Next((int)(Main.maxTilesY * 0.05f), Main.maxTilesY / 2) * (WorldGen.genRand.NextBool() ? 1 : -1)
 			);
-
-			int spread = 25;
-			for (int j = 0; j < 9; j++) {
-				GenerationHelper.ForEachInCircle(
-					randomPoint.X + Main.rand.Next(-spread, spread),
-					randomPoint.Y + Main.rand.Next(-spread, spread),
-					WorldGen.genRand.Next(5, 15),
-					(i, j) => {
-						if (Main.rand.NextFloat() < 0.55f) {
-							GenerationHelper.FastRemoveTile(i, j);
-						}
-					}
-				);
-			}
 		}
+
 
 		//small world  : x = 4200 | y = 1200
 		//medium world : x = 6400 | y = 1800
@@ -155,34 +125,43 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Create_Jungle() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(17, 9, 4, 4),
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 9, 4, 4));
+		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Mud);
+			Tile tile = Main.tile[i, j];
 		});
+		Biome.Add("Jungle", rectList);
 	}
 	[Task]
 	public void Create_Tundra() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(3, 9, 4, 4),
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 9, 4, 4));
+		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
 		});
+		Biome.Add("Tundra", rectList);
 	}
 	[Task]
-	public void Create_Crimson1() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 4, 2, 11),
+	public void Create_Crimson() {
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(0, 4, 2, 4));
+		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Crimstone);
 		});
+		Biome.Add("Crimson", rectList);
 	}
 	[Task]
-	public void Create_Corruption1() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(22, 4, 2, 11),
+	public void Create_Corruption() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(22, 4, 2, 4),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
 
 		});
 	}
-
 	[Task]
 	public void Create_Desert() {
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(5, 0, 3, 5),
@@ -190,25 +169,21 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Sandstone);
 		});
 	}
-
-
 	[Task]
 	public void Create_Dungeon() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(14, 0, 3, 5),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(16, 0, 3, 5),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.BlueDungeonBrick);
 			GenerationHelper.FastPlaceWall(i, j, WallID.BlueDungeonUnsafe);
 		});
 	}
-
 	[Task]//Test
 	public void Create_CustomBiome1() {
 		//Minor Biome or soon to be
 		int[] oreIDarr = new int[] { TileID.Copper, TileID.Tin, TileID.Iron, TileID.Lead, TileID.Silver, TileID.Tungsten, TileID.Gold, TileID.Platinum, TileID.Palladium, TileID.Cobalt, TileID.Orichalcum, TileID.Mythril, TileID.Adamantite, TileID.Titanium };
-		int random = WorldGen.genRand.Next(-1, 2);
-		int x = 14 + random;
-		int y = 18 + random;
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(x, y, 2, 2),
+		int x = 14;
+		int y = 17;
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(x, y, 3, 3),
 		(i, j) => {
 			int oreID = WorldGen.genRand.Next(oreIDarr);
 			GenerationHelper.FastPlaceTile(i, j, Main.rand.NextFloat() >= .45f ? TileID.Stone : oreID);
@@ -218,14 +193,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Create_CustomBiome2() {
 		//Minor Biome or soon to be
-		int x = 10;
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(x, 0, 2, 2),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 0, 2, 2),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Cloud);
 			GenerationHelper.FastPlaceWall(i, j, WallID.Cloud);
 		});
 	}
-
 	[Task]
 	public void Empty_Hell() {
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 22, 24, 2),

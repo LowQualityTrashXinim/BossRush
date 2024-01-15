@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common {
 	internal class BossRushRecipe : ModSystem {
@@ -115,10 +116,9 @@ namespace BossRush.Common {
 			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
 			foreach (Recipe recipe in Main.recipe) {
 				SynergyRecipe(recipe);
-				if (config.EnableChallengeMode) {
-					continue;
+				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+					ChallengeModeRecipe(recipe);
 				}
-				ChallengeModeRecipe(recipe);
 			}
 		}
 		private void SynergyRecipe(Recipe recipe) {

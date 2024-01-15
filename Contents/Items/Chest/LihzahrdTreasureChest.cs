@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Systems;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, GetAccessory());
 			}
 			player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode && player.difficulty == PlayerDifficultyID.Hardcore) {
+			if (UniversalSystem.CanAccessContent(player,UniversalSystem.BOSSRUSH_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(new int[] {
 					ModContent.ItemType<BerserkerElixir>(),
 					ModContent.ItemType<GunslingerElixir>(),

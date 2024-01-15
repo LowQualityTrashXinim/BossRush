@@ -87,7 +87,7 @@ TokenOfPrideArtifact: {
 		[c/b7bf5c:Positive effect] : 
 			+ Randomize your weapon enchantment 
 		[c/ab3e43:Negative effect] : 
-			- Halves your drop from treasure chest
+			- Lootbox only drop up to 1 weapon
 		'''
 }
 

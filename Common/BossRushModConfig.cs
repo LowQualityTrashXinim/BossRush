@@ -10,7 +10,7 @@ namespace BossRush.Common {
 		//Do note delete reload required as it is to fix "Growing Spider Cave"
 		[ReloadRequired]
 		[DefaultValue(true)]
-		public bool EnableChallengeMode { get; set; }
+		public bool BossRushMode { get; set; }
 
 		[DefaultValue(true)]
 		public bool SynergyMode { get; set; }

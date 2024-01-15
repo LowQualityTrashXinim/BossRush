@@ -1679,7 +1679,7 @@ Mods: {
 
 			SkillOrb: {
 				DisplayName: Skill Orb
-				Tooltip: ""
+				Tooltip: Allow tinkering with skill
 			}
 		}
 
@@ -1894,8 +1894,8 @@ Mods: {
 			BossRushModConfig: {
 				DisplayName: Boss Rush Mod Config
 
-				EnableChallengeMode: {
-					Label: Enable Challenge World ( On World Generation )
+				BossRushMode: {
+					Label: Boss Rush Mode
 					Tooltip:
 						'''
 						The intended way to play the mod
@@ -1919,15 +1919,6 @@ Mods: {
 						'''
 				}
 
-				VeteranMode: {
-					Label: Veteran Mode
-					Tooltip:
-						'''
-						Decrease amount of items you can get from chest
-						You start with 100 max hp instead of 200
-						'''
-				}
-
 				Enraged: {
 					Label: Enraged Mode (W.I.P)
 					Tooltip:
@@ -1935,18 +1926,6 @@ Mods: {
 						Challenge buffs for every boss that has them will activate
 						Will not drop the reward, however you can still get it by using power energy manually
 						recommended for practicing
-						'''
-				}
-
-				ExtraChallenge: {
-					Label: ExtraChallange(W.I.P)
-					Tooltip:
-						'''
-						The first time you kill a boss, you will get a challenge added into your game. This is irrevertible
-						The next time you kill a boss, the current challenge will be swap for a random challenge
-						These mode offer no real reward or benefit, only activate if you are bored and want an extra challenge
-						This do not work with in multiplayer
-						Warning : this may mess up a lot of item value, player value
 						'''
 				}
 
@@ -1969,10 +1948,8 @@ Mods: {
 						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
 						Highly not recommend for inexperience player
 						- Enemy are much more brutal, and is immune to lava and trap
-						- NPC will gain randomize health and damage buff that range from 0% to 100%
-						- Spawn rate stay the same even during boss fight
+						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
-						- The mode will force Veteran mode to be activate
 						'''
 				}
 

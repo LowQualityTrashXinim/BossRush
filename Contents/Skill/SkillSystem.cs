@@ -1,20 +1,28 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.GameInput;
 using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
-using BossRush.Texture;
 
 namespace BossRush.Contents.Skill;
 public abstract class ModSkill : ModType {
-	int Skill_CoolDown = 0;
-	int Skill_Duration = 0;
-	int Skill_EnergyRequire = 0;
+	/// <summary>
+	/// This is also handle itself so no worry
+	/// </summary>
+	protected int Skill_CoolDown = 0;
+	/// <summary>
+	/// This is handle automatically so no need to worry about doing it yourself
+	/// </summary>
+	protected int Skill_Duration = 0;
+	protected int Skill_EnergyRequire = 0;
 	public virtual string Texture => BossRushTexture.MISSINGTEXTURE;
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
@@ -24,7 +32,9 @@ public abstract class ModSkill : ModType {
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
 	protected sealed override void Register() {
 		Type = SkillLoader.Register(this);
+		SetDefault();
 	}
+	public virtual void SetDefault() { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void Update(Player player) { }
 	public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
@@ -73,8 +83,9 @@ public class SkillModSystem : ModSystem {
 public class SkillHandlePlayer : ModPlayer {
 	public int EnergyCap = 500;
 	public int Energy = 0;
-	public int EnergyRechargeCap = 0;
+	public int EnergyRechargeCap = 1;
 	public int Duration = 0;
+	public int CoolDown = 0;
 	public int[] SkillHolder1 = new int[10];
 	public int[] SkillHolder2 = new int[10];
 	public int[] SkillHolder3 = new int[10];
@@ -170,7 +181,14 @@ public class SkillHandlePlayer : ModPlayer {
 		return null;
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
+		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE)) {
+			return;
+		}
 		if (SkillModSystem.SkillActivation.JustReleased) {
+			if (CoolDown > 0) {
+				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Skill on cool down !");
+				return;
+			}
 			Activate = true;
 			int energyCost = 0;
 			switch (CurrentActiveHolder) {
@@ -181,6 +199,7 @@ public class SkillHandlePlayer : ModPlayer {
 						}
 						energyCost += SkillLoader.GetSkill(SkillHolder1[i]).EnergyRequire;
 						Duration += SkillLoader.GetSkill(SkillHolder1[i]).Duration;
+						CoolDown += SkillLoader.GetSkill(SkillHolder1[i]).CoolDown;
 					}
 					break;
 				case 2:
@@ -190,6 +209,7 @@ public class SkillHandlePlayer : ModPlayer {
 						}
 						energyCost += SkillLoader.GetSkill(SkillHolder2[i]).EnergyRequire;
 						Duration += SkillLoader.GetSkill(SkillHolder2[i]).Duration;
+						CoolDown += SkillLoader.GetSkill(SkillHolder1[i]).CoolDown;
 					}
 					break;
 				case 3:
@@ -199,14 +219,20 @@ public class SkillHandlePlayer : ModPlayer {
 						}
 						energyCost += SkillLoader.GetSkill(SkillHolder3[i]).EnergyRequire;
 						Duration += SkillLoader.GetSkill(SkillHolder3[i]).Duration;
+						CoolDown += SkillLoader.GetSkill(SkillHolder1[i]).CoolDown;
 					}
 					break;
 			}
 			if (energyCost > Energy) {
+				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
+				CoolDown = 0;
+				Activate = false;
 				return;
 			}
-			Energy -= energyCost;
+			else {
+				Energy -= energyCost;
+			}
 		}
 	}
 	public override void PreUpdate() {
@@ -217,6 +243,9 @@ public class SkillHandlePlayer : ModPlayer {
 			Duration = BossRushUtils.CountDown(Duration);
 		}
 		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
+		if (!Activate) {
+			CoolDown = BossRushUtils.CountDown(CoolDown);
+		}
 	}
 	public override void PostUpdate() {
 		if (!Activate) {
@@ -499,7 +528,7 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (!Activate) {
-			Energy = Math.Clamp(Math.Clamp(damageDone + Energy, 0, EnergyRechargeCap), 0, EnergyCap);
+			Energy = Math.Clamp(Math.Clamp(damageDone, 0, EnergyRechargeCap) + Energy, 0, EnergyCap);
 		}
 	}
 	public override void UpdateDead() {
@@ -532,5 +561,13 @@ public class SkillOrb : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void SetDefaults() {
 		Item.width = Item.height = 30;
+		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.useTime = Item.useAnimation = 15;
+	}
+	public override bool? UseItem(Player player) {
+		if (player.ItemAnimationJustStarted) {
+			ModContent.GetInstance<UniversalSystem>().userInterface.SetState(ModContent.GetInstance<UniversalSystem>().skillUIstate);
+		}
+		return base.UseItem(player);
 	}
 }
