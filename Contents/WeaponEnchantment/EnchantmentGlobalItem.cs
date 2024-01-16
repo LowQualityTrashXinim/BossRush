@@ -83,7 +83,7 @@ public class EnchantmentModplayer : ModPlayer {
 				}
 			}
 			item = Player.HeldItem;
-			if(item.TryGetGlobalItem(out EnchantmentGlobalItem localglobal)) {
+			if (item.TryGetGlobalItem(out EnchantmentGlobalItem localglobal)) {
 				globalItem = localglobal;
 			}
 		}
@@ -217,6 +217,17 @@ public class EnchantmentModplayer : ModPlayer {
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByAnything(Player);
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByProjectile(Player, proj, hurtInfo);
+		}
+	}
+	public override void OnConsumeMana(Item item, int manaConsumed) {
+		if (CommonEnchantmentCheck()) {
+			return;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			if (globalItem.EnchantmenStlot[i] == 0)
+				continue;
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnConsumeMana(i, Player, globalItem, item, manaConsumed);
 		}
 	}
 	public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {

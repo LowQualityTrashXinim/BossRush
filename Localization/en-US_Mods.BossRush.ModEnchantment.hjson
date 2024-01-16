@@ -330,17 +330,19 @@ AmethystStaff.Description:
 	'''
 	Reduce mana cost by 15%
 	Convert your projectile into Amethyst Bolt
-	Your weapon have 17% chance to shoot out additional Amethyst Bolt random location
+	Your weapon have 
+	+ 17% chance to shoot out additional Amethyst Bolt random location
+	+ 3% chance to shoot out spread of 3 Amethyst Bolt
 	'''
 TopazStaff.Description:
 	'''
-	Reduce mana cost by 15%
+	Reduce mana cost by 5%
 	Convert your projectile into Topaz Bolt
-	Your weapon have 17% chance to shoot out additional Topaz Bolt random location
+	Your weapon have 27% chance to shoot out additional Topaz Bolt random location
 	'''
 SapphireStaff.Description:
 	'''
-	Reduce mana cost by 15%
+	Magic weapon have 8% chance to not cost mana
 	Convert your projectile into Sapphire Bolt
 	Your weapon have 17% chance to shoot out additional Sapphire Bolt random location
 	'''
@@ -348,13 +350,16 @@ EmeraldStaff.Description:
 	'''
 	Reduce mana cost by 15%
 	Convert your projectile into Emerald Bolt
-	Your weapon have 17% chance to shoot out additional Emerald Bolt random location
+	Your weapon have 
+	+ 17% chance to shoot out additional Emerald Bolt random location
+	+ 32% to make additional Emerald Bolt stronger
 	'''
 RubyStaff.Description:
 	'''
+	Increases mana cost by 20%
 	Convert your projectile into Ruby Bolt
 	Your weapon have 17% chance to shoot out additional Ruby Bolt random location
-	When missing mana, Burst out 5 ruby bolt around you ( can be trigger every 10s )
+	When missing mana, Shoot out 3 ruby bolt and heal half of your mana instantly ( can be trigger every 25s )
 	'''
 DiamondStaff.Description:
 	'''

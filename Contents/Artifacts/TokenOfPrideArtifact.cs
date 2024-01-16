@@ -19,11 +19,11 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void PostUpdate() {
 			if (Pride) {
-				chestmodplayer.finalMultiplier -= 0;
+				chestmodplayer.finalMultiplier -= .9f;
 			}
 		}
 		public override void PreUpdate() {
-			if(!Pride) {
+			if (!Pride) {
 				return;
 			}
 			Item item = Player.HeldItem;

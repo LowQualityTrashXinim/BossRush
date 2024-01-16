@@ -47,6 +47,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public virtual void OnHitByAnything(Player player) { }
 		public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
+		public virtual void OnConsumeMana(int index, Player player, EnchantmentGlobalItem globalItem,Item item, int consumedMana) { }
 		public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
 		public virtual void ModifyCriticalStrikeChance(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) { }
 		public virtual void ModifyItemScale(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) { }

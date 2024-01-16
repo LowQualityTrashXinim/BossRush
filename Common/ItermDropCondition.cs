@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Common.Enraged;
 using BossRush.Contents.Artifacts;
 using Terraria.ID;
 using BossRush.Common.Systems;
@@ -55,16 +54,6 @@ namespace BossRush.Common {
 		}
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Exclusive to Synergy mode";
-	}
-	public class BossIsEnragedBySpecialSpawner : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return (info.player.GetModPlayer<EnragedPlayer>().Enraged || ModContent.GetInstance<BossRushModConfig>().Enraged) && info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Drops only if all the enraged bosses that is present is dead";
 	}
 	public class QueenBeeEnranged : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {

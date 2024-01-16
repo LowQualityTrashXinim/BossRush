@@ -335,7 +335,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
-		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
@@ -349,7 +349,8 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void HookBuffTimeModify(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet) {
-		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+		Player player = Main.player[self.lastInteraction];
+		if (player.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, type, (int)modplayer.DebuffTime.ApplyTo(time), quiet);
 		}
 		else {

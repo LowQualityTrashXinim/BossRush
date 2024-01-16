@@ -84,9 +84,11 @@ internal partial class GenerationHelper {
 	/// <returns></returns>
 	public static Rectangle GridPositionInTheWorld24x24(int x, int y, float dragX = 1, float dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, (int)(RogueLikeWorldGen.GridPart_X * dragX), (int)(RogueLikeWorldGen.GridPart_Y * dragY));
-
 	public static Rectangle GridPositionInTheWorld48x48(int x, int y, float dragX = 1, float dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, (int)(RogueLikeWorldGen.GridPart_X / 2 * dragX), (int)(RogueLikeWorldGen.GridPart_Y / 2 * dragY));
+	public static float ProgressOnAStrip(int minY, int maxY, int currentY) {
+		return MathHelper.Lerp(minY, maxY, currentY);
+	}
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}
