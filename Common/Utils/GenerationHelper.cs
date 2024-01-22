@@ -1,12 +1,16 @@
-﻿using BossRush.Common.WorldGenOverhaul.XinimVer;
+﻿using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework;
+using ReLogic.Utilities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.Utilities;
 
 namespace BossRush.Common.Utils;
 
-internal partial class GenerationHelper {
+internal static partial class GenerationHelper {
 	public static bool CoordinatesOutOfBounds(int i, int j) => i >= Main.maxTilesX || j >= Main.maxTilesY || i < 0 || j < 0;
 
 	public static void FastPlaceTile(int i, int j, ushort tileType) {
@@ -74,18 +78,57 @@ internal partial class GenerationHelper {
 			}
 		);
 	}
+	public static Point RandomizePossibleGridSelection(this UnifiedRandom r, HashSet<Point> selectionList, int limitX = 24, int limitY = 24) {
+		if (selectionList.Count < 1) {
+			return new Point(-1, -1);
+		}
+		Point currentPos = selectionList.ElementAt(selectionList.Count - 1);
+		if (selectionList.Count == 1) {
+			currentPos.X += r.NextBool().ToDirectionInt();
+			currentPos.Y += r.NextBool().ToDirectionInt();
+			return currentPos;
+		}
+		HashSet<Point> getallPosition = new HashSet<Point>();
+		if (!selectionList.Contains(currentPos + new Point(1, 0)) && currentPos.X > 0 && currentPos.X < limitX) {
+			getallPosition.Add(currentPos + new Point(1, 0));
+		}
+		if (!selectionList.Contains(currentPos - new Point(1, 0)) && currentPos.X > 0 && currentPos.X < limitX) {
+			getallPosition.Add(currentPos - new Point(1, 0));
+		}
+		if (!selectionList.Contains(currentPos + new Point(1, 0)) && currentPos.Y > 0 && currentPos.Y < limitY) {
+			getallPosition.Add(currentPos + new Point(0, -1));
+		}
+		if (!selectionList.Contains(currentPos - new Point(1, 0)) && currentPos.Y > 0 && currentPos.Y < limitY) {
+			getallPosition.Add(currentPos - new Point(1, -1));
+		}
+		if (getallPosition.Count < 1) {
+			return new Point(-1, -1);
+		}
+		else if (getallPosition.Count == 1) {
+			return getallPosition.ElementAt(0);
+		}
+		return r.NextFromHashSet(getallPosition);
+	}
 	/// <summary>
 	/// Use this for easy place tile in the world in 24x24 grid like
 	/// </summary>
 	/// <param name="x">The starting X position</param>
 	/// <param name="y">The Starting Y position</param>
-	/// <param name="dragX">Use this if you want to select multiple grid on X axis</param>
-	/// <param name="dragY">Use this if you want to select multiple grid on Y axis</param>
+	/// <param name="dragX">Select multiple grid on X axis</param>
+	/// <param name="dragY">Select multiple grid on Y axis</param>
 	/// <returns></returns>
-	public static Rectangle GridPositionInTheWorld24x24(int x, int y, float dragX = 1, float dragY = 1)
-		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, (int)(RogueLikeWorldGen.GridPart_X * dragX), (int)(RogueLikeWorldGen.GridPart_Y * dragY));
-	public static Rectangle GridPositionInTheWorld48x48(int x, int y, float dragX = 1, float dragY = 1)
-		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, (int)(RogueLikeWorldGen.GridPart_X / 2 * dragX), (int)(RogueLikeWorldGen.GridPart_Y / 2 * dragY));
+	public static Rectangle GridPositionInTheWorld24x24(int x, int y, int dragX = 1, int dragY = 1)
+		=> new Rectangle(RogueLikeWorldGen.GridPart_X * x, RogueLikeWorldGen.GridPart_Y * y, RogueLikeWorldGen.GridPart_X * dragX, RogueLikeWorldGen.GridPart_Y * dragY);
+	/// <summary>
+	/// Use this for easy place tile in the world in 48x48 grid like
+	/// </summary>
+	/// <param name="x">The starting X position</param>
+	/// <param name="y">The Starting Y position</param>
+	/// <param name="dragX">Select multiple grid on X axis</param>
+	/// <param name="dragY">Select multiple grid on Y axis</param>
+	/// <returns></returns>
+	public static Rectangle GridPositionInTheWorld48x48(int x, int y, int dragX = 1, int dragY = 1)
+		=> new Rectangle(RogueLikeWorldGen.GridPart_X / 2 * x, RogueLikeWorldGen.GridPart_Y / 2 * y, RogueLikeWorldGen.GridPart_X / 2 * dragX, RogueLikeWorldGen.GridPart_Y / 2 * dragY);
 	public static float ProgressOnAStrip(int minY, int maxY, int currentY) {
 		return MathHelper.Lerp(minY, maxY, currentY);
 	}

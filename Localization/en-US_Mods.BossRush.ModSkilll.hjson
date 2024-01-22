@@ -1,1 +1,9 @@
+HellFireArrowRain: {
+	DisplayName: Hell Fire Arrow Rain
+	Description: Rain down hellfire arrow
+}
 
+Increases_3xDamage: {
+	DisplayName: 3x Damage
+	Description: Increases your damage by 300%
+}

@@ -52,7 +52,7 @@ namespace BossRush.Contents.Items.Card {
 				return true;
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 			uiSystemInstance.cardUIstate.Tier = Tier;
-			uiSystemInstance.userInterface.SetState(uiSystemInstance.cardUIstate);
+			uiSystemInstance.SetState(uiSystemInstance.cardUIstate);
 			return true;
 		}
 		private int countX = 0;

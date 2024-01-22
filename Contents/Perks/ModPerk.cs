@@ -80,6 +80,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class ImmunityToOnFire : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<ImmunityToOnFire>();
 			CanBeStack = false;
 		}
 		public override void OnChoose(Player player) {

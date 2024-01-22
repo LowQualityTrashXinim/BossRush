@@ -53,7 +53,7 @@ internal class LeafProjectile : ModProjectile {
 			}
 			if (NPCpos != Vector2.Zero) {
 				Vector2 dis = NPCpos - Projectile.Center;
-				Projectile.velocity += dis.SafeNormalize(Vector2.Zero);
+				Projectile.velocity += dis.SafeNormalize(Vector2.Zero) * .5f;
 				float disLen = dis.Length() * 0.0625f;
 				if (disLen > 15) {
 					Projectile.velocity = Projectile.velocity.LimitedVelocity(dis.Length() * 0.0625f);

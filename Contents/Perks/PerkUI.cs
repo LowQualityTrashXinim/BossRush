@@ -125,7 +125,7 @@ namespace BossRush.Contents.Perks {
 				perkplayer.perks[perkType]++;
 			ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.userInterface.SetState(null);
+			uiSystemInstance.DeactivateState();
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
@@ -161,7 +161,7 @@ namespace BossRush.Contents.Perks {
 			base.LeftClick(evt);
 			OnLeftClick(Main.LocalPlayer);
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.userInterface.SetState(null);
+			uiSystemInstance.DeactivateState();
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);

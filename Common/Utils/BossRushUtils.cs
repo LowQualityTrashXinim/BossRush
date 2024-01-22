@@ -46,7 +46,7 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static int NextFromHashSet(this UnifiedRandom r, HashSet<int> hashset) {
+		public static T NextFromHashSet<T>(this UnifiedRandom r, HashSet<T> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
 		}
 		/// <summary>
@@ -64,7 +64,7 @@ namespace BossRush {
 				drama = 1;
 			}
 			int text = CombatText.NewText(new Rectangle(), color, combatMessage, dramatic, dot);
-			if(text < 0 || text > Main.maxCombatText) {
+			if (text < 0 || text >= Main.maxCombatText) {
 				return;
 			}
 			CombatText cbtext = Main.combatText[text];
@@ -139,7 +139,7 @@ namespace BossRush {
 					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
-					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLookThroughTile)
+					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || !CanLookThroughTile)
 					&& mainnpc.immune[whoAmI] <= 0
 					) {
 					maxDistanceSquare = dis;
@@ -287,7 +287,7 @@ namespace BossRush {
 			if (index1 < 0 || index1 >= from.Length) {
 				throw new IndexOutOfRangeException();
 			}
-			if(index2 < 0 || index1 >= destination.Length) {
+			if (index2 < 0 || index1 >= destination.Length) {
 				throw new IndexOutOfRangeException();
 			}
 			int cache = from[index1];

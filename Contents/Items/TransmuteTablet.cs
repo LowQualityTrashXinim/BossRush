@@ -67,7 +67,7 @@ public class ExitUI : UIImageButton {
 	}
 
 	public override void LeftClick(UIMouseEvent evt) {
-		ModContent.GetInstance<UniversalSystem>().userInterface.SetState(null);
+		ModContent.GetInstance<UniversalSystem>().DeactivateState();
 	}
 }
 public class TransmutationUI : UIImage {
@@ -181,7 +181,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);
 		bool Musket = itemList.Contains(ItemID.Musket);
-		if(itemList.Contains(ModContent.ItemType<CelestialWrath>()) && itemList.Contains(ModContent.ItemType<MysteriousPotion>())) {
+		if (itemList.Contains(ModContent.ItemType<CelestialWrath>()) && itemList.Contains(ModContent.ItemType<MysteriousPotion>())) {
 			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
 		}
 		if (MiniShark && IceBlade) {

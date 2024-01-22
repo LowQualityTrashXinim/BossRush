@@ -199,7 +199,7 @@ namespace BossRush.Contents.Items.Card {
 				AddStatsToPlayer(modplayer, CardStats[i], CardStatsNumber[i]);
 			}
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.userInterface.SetState(null);
+			uiSystemInstance.DeactivateState();
 		}
 		private void AddStatsToPlayer(PlayerStatsHandle modplayer, PlayerStats stats, float amount) {
 			switch (stats) {

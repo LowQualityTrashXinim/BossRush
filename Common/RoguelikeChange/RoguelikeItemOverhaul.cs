@@ -22,25 +22,42 @@ namespace BossRush.Common.RoguelikeChange {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
-			if (entity.type == ItemID.Sandgun) {
-				entity.shoot = ModContent.ProjectileType<SandProjectile>();
-			}
-			if (entity.type == ItemID.Stynger) {
-				entity.useTime = 5;
-				entity.useAnimation = 40;
-				entity.reuseDelay = 30;
-				entity.damage += 10;
-			}
-			if (entity.type == ItemID.ToxicFlask) {
-				entity.damage += 5;
-				entity.useTime = entity.useAnimation = 25;
-			}
+			VanillaBuff(entity);
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal) {
 				entity.autoReuse = true;
 			}
 		}
+		private void VanillaBuff(Item item) {
+			switch (item.type) {
+				case ItemID.Sandgun:
+					item.shoot = ModContent.ProjectileType<SandProjectile>();
+					break;
+				case ItemID.Stynger:
+					item.useTime = 5;
+					item.useAnimation = 40;
+					item.reuseDelay = 30;
+					item.damage += 10;
+					break;
+				case ItemID.ToxicFlask:
+					item.damage += 5;
+					item.useTime = item.useAnimation = 25;
+					break;
+				case ItemID.BeamSword:
+					item.useTime = item.useAnimation;
+					item.damage += 5;
+					item.crit += 10;
+					break;
+				case ItemID.TrueNightsEdge:
+					item.useTime = item.useAnimation = 25;
+					break;
+				case ItemID.TrueExcalibur:
+					item.damage += 10;
+					break;
+
+			}
+		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
 			if (item.type == ItemID.Stynger) {
@@ -74,7 +91,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun",
-					"The sand projectile no longer spawn upon kill" +
+					"Sand projectile no longer spawn upon kill" +
 					"\nDecrease damage by 55%"));
 			}
 			else if (item.type == ItemID.NightVisionHelmet) {
@@ -433,7 +450,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (PlatinumArmor) {
 				if (Player.ItemAnimationActive) {
-					PlatinumArmorCountEffect++;
+					PlatinumArmorCountEffect = Math.Clamp(PlatinumArmorCountEffect + 1, 0, 1200);
 				}
 				else {
 					PlatinumArmorCountEffect = BossRushUtils.CountDown(PlatinumArmorCountEffect);

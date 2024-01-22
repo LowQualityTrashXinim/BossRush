@@ -1,14 +1,16 @@
 ﻿using Terraria;
 using Terraria.UI;
 using Terraria.ID;
+using System.Reflection;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
+using BossRush.Contents.Skill;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
+using Terraria.GameContent.UI.States;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Contents.Skill;
 
 namespace BossRush.Common.Systems;
 internal class UniversalSystem : ModSystem {
@@ -30,7 +32,7 @@ internal class UniversalSystem : ModSystem {
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
 		if (context == HARDCORE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.AutoHardCore;
+			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
 		if (context == BOSSRUSH_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore && config.BossRushMode;
 		if (context == SYNERGY_MODE)
@@ -59,6 +61,7 @@ internal class UniversalSystem : ModSystem {
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
 	public SkillUI skillUIstate;
+	public SkillBarUI skillUIBarstate;
 
 	public CardUI cardUIstate;
 	public DeCardUIState DeCardUIState;
@@ -73,8 +76,21 @@ internal class UniversalSystem : ModSystem {
 			DeCardUIState = new();
 			cardUIstate = new();
 			skillUIstate = new();
+			skillUIBarstate = new();
 
 			userInterface = new();
+		}
+		On_UIElement.OnActivate += On_UIElement_OnActivate;
+	}
+	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
+		try {
+			if (self is UICharacterCreation el) {
+				MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
+				method.Invoke(self, new object[] { null, null });
+			}
+		}
+		finally {
+			orig(self);
 		}
 	}
 	public override void Unload() {
@@ -94,6 +110,16 @@ internal class UniversalSystem : ModSystem {
 				InterfaceScaleType.UI)
 			);
 	}
+	public void SetState(UIState state) {
+		if (userInterface.CurrentState == null || userInterface.CurrentState == skillUIBarstate) {
+			userInterface.SetState(state);
+		}
+	}
+	public void DeactivateState() {
+		if (userInterface.CurrentState != null) {
+			userInterface.SetState(skillUIBarstate);
+		}
+	}
 	//public override void SetStaticDefaults() {
 	//	//I am unsure why this is set to true
 	//	Main.debuff[BuffID.Campfire] = false;
@@ -103,13 +129,11 @@ internal class UniversalSystem : ModSystem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null) {
-			uiSystemInstance.userInterface.SetState(null);
-		}
+		uiSystemInstance.SetState(uiSystemInstance.skillUIBarstate);
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null) {
+		if (uiSystemInstance.userInterface.CurrentState != null && uiSystemInstance.userInterface.CurrentState != uiSystemInstance.skillUIBarstate) {
 			return false;
 		}
 		return base.CanUseItem(item);

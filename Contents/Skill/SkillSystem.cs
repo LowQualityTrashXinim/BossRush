@@ -86,18 +86,21 @@ public class SkillHandlePlayer : ModPlayer {
 	public int EnergyRechargeCap = 1;
 	public int Duration = 0;
 	public int CoolDown = 0;
-	public int[] SkillHolder1 = new int[10];
-	public int[] SkillHolder2 = new int[10];
-	public int[] SkillHolder3 = new int[10];
+	int[] SkillHolder1 = new int[10];
+	int[] SkillHolder2 = new int[10];
+	int[] SkillHolder3 = new int[10];
 	public int[] SkillInventory = new int[30];
 	public bool Activate = false;
 	int CurrentActiveHolder = 1;
-
-	public int ActivateHolderIndex { get => CurrentActiveHolder; }
+	int RechargeDelay = 0;
 	public override void Initialize() {
 		Array.Fill(SkillHolder1, -1);
 		Array.Fill(SkillHolder2, -1);
 		Array.Fill(SkillHolder3, -1);
+		Array.Fill(SkillInventory, -1);
+	}
+	public void ChangeHolder(int index) {
+		CurrentActiveHolder = Math.Clamp(index, 1, 3);
 	}
 	public void AddSkillIntoCurrentActiveHolder(int SkillID, int whoAmI) {
 		if (whoAmI < 0 || whoAmI > 9) {
@@ -204,7 +207,7 @@ public class SkillHandlePlayer : ModPlayer {
 					break;
 				case 2:
 					for (int i = 0; i < 10; i++) {
-						if (SkillHolder1[i] == -1) {
+						if (SkillHolder2[i] == -1) {
 							continue;
 						}
 						energyCost += SkillLoader.GetSkill(SkillHolder2[i]).EnergyRequire;
@@ -214,7 +217,7 @@ public class SkillHandlePlayer : ModPlayer {
 					break;
 				case 3:
 					for (int i = 0; i < 10; i++) {
-						if (SkillHolder1[i] == -1) {
+						if (SkillHolder3[i] == -1) {
 							continue;
 						}
 						energyCost += SkillLoader.GetSkill(SkillHolder3[i]).EnergyRequire;
@@ -236,6 +239,7 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public override void PreUpdate() {
+		RechargeDelay = BossRushUtils.CountDown(RechargeDelay);
 		if (Duration <= 0) {
 			Activate = false;
 		}
@@ -262,7 +266,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).Update(Player);
@@ -270,6 +274,9 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
+					if (SkillHolder3[i] == -1) {
+						continue;
+					}
 					SkillLoader.GetSkill(SkillHolder3[i]).Update(Player);
 				}
 				break;
@@ -290,7 +297,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).Shoot(Player, item, source, position, velocity, type, damage, knockback);
@@ -298,7 +305,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).Shoot(Player, item, source, position, velocity, type, damage, knockback);
@@ -322,7 +329,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).OnMissingMana(Player, item, neededMana);
@@ -330,7 +337,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnMissingMana(Player, item, neededMana);
@@ -353,7 +360,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyDamage(Player, item, ref damage);
@@ -361,7 +368,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyDamage(Player, item, ref damage);
@@ -384,7 +391,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyHitNPCWithItem(Player, item, target, ref modifiers);
@@ -392,7 +399,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyHitNPCWithItem(Player, item, target, ref modifiers);
@@ -415,7 +422,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
@@ -423,7 +430,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
@@ -446,7 +453,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).OnHitNPCWithItem(Player, item, target, hit, damageDone);
@@ -454,7 +461,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnHitNPCWithItem(Player, item, target, hit, damageDone);
@@ -477,7 +484,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
@@ -485,7 +492,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnHitNPCWithProj(Player, proj, target, hit, damageDone);
@@ -509,7 +516,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 2:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder2[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder2[i]).ModifyUseSpeed(Player, item, ref useSpeed);
@@ -517,7 +524,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 			case 3:
 				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
+					if (SkillHolder3[i] == -1) {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).ModifyUseSpeed(Player, item, ref useSpeed);
@@ -527,14 +534,16 @@ public class SkillHandlePlayer : ModPlayer {
 		return useSpeed;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (!Activate) {
+		if (!Activate && RechargeDelay <= 0) {
 			Energy = Math.Clamp(Math.Clamp(damageDone, 0, EnergyRechargeCap) + Energy, 0, EnergyCap);
+			RechargeDelay = 10;
 		}
 	}
 	public override void UpdateDead() {
 		Activate = false;
 		Energy = 0;
 		Duration = 0;
+		RechargeDelay = 0;
 	}
 	public override void SaveData(TagCompound tag) {
 		tag.Add("SkillHolder1", SkillHolder1);
@@ -544,16 +553,16 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public override void LoadData(TagCompound tag) {
 		if (tag.TryGet("SkillHolder1", out int[] SkillHolder1)) {
-			Array.Copy(this.SkillHolder1, SkillHolder1, SkillHolder1.Length);
+			Array.Copy(SkillHolder1, this.SkillHolder1, 10);
 		}
 		if (tag.TryGet("SkillHolder2", out int[] SkillHolder2)) {
-			Array.Copy(this.SkillHolder2, SkillHolder2, SkillHolder2.Length);
+			Array.Copy(SkillHolder2, this.SkillHolder2, 10);
 		}
 		if (tag.TryGet("SkillHolder3", out int[] SkillHolder3)) {
-			Array.Copy(this.SkillHolder3, SkillHolder3, SkillHolder3.Length);
+			Array.Copy(SkillHolder3, this.SkillHolder3, 10);
 		}
 		if (tag.TryGet("SkillInventory", out int[] SkillInventory)) {
-			Array.Copy(this.SkillInventory, SkillInventory, SkillInventory.Length);
+			Array.Copy(SkillInventory, this.SkillInventory, SkillInventory.Length);
 		}
 	}
 }
@@ -566,7 +575,8 @@ public class SkillOrb : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().userInterface.SetState(ModContent.GetInstance<UniversalSystem>().skillUIstate);
+			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+			uiSystemInstance.SetState(uiSystemInstance.skillUIstate);
 		}
 		return base.UseItem(player);
 	}

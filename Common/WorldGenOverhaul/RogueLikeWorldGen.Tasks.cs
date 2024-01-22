@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace BossRush.Common.WorldGenOverhaul.XinimVer;
+namespace BossRush.Common.WorldGenOverhaul;
 
 public partial class RogueLikeWorldGen : ModSystem {
 	public static int GridPart_X = Main.maxTilesX / 24;
@@ -71,12 +70,25 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Main.maxTilesX,
 			Main.maxTilesY,
 			(i, j) => {
-				// Generates basic caves and the dome in the middle.
 				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 			}
 			);
-
-
+		for (int a = 1; a < 24; a++) {
+			GenerationHelper.ForEachInRectangle(
+				0,
+				0,
+				Main.maxTilesX,
+				Main.maxTilesY,
+				(i, j) => {
+					if (i == GridPart_X * a) {
+						GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
+					}
+					if (j == GridPart_Y * a) {
+						GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
+					}
+				}
+			);
+		}
 		//small world  : x = 4200 | y = 1200
 		//medium world : x = 6400 | y = 1800
 		//large world  : x = 8400 | y = 2400
@@ -87,6 +99,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		(i, j) => {
 			GenerationHelper.FastRemoveTile(i, j);
 		});
+	}
+	[Task]
+	public void Create_Path() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 23, 23, 1), GenerationHelper.FastRemoveTile);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(24, 22, 23, 1), GenerationHelper.FastRemoveTile);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(22, 0, 1, 24), GenerationHelper.FastRemoveTile);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(26, 23, 1, 22), GenerationHelper.FastRemoveTile);
 	}
 	[Task]
 	public void Create_Hell() {
@@ -216,7 +235,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Create_FleshRealm() {
 		//Minor Biome or soon to be
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(16, 14, 2, 2),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(16, 13, 3, 3),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.FleshBlock);
 			GenerationHelper.FastPlaceWall(i, j, WallID.Flesh);

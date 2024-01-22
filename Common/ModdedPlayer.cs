@@ -71,9 +71,9 @@ namespace BossRush.Common {
 			yield return new Item(ItemID.PlatinumPickaxe);
 			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
-			if (Player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
-				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 					yield return new Item(ModContent.ItemType<LunchBox>());
+				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					yield return new Item(ItemID.ManaCrystal, 5);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
 					yield return new Item(ModContent.ItemType<BiomeToggle>());

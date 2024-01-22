@@ -383,7 +383,7 @@ namespace BossRush.Contents.Perks {
 				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 				uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
 				uiSystemInstance.perkUIstate.StateofState = PerkUIState.DefaultState;
-				uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
+				uiSystemInstance.SetState(uiSystemInstance.perkUIstate);
 			}
 			else if (player.IsDebugPlayer()) {
 				modplayer.perks.Clear();
@@ -404,7 +404,7 @@ namespace BossRush.Contents.Perks {
 				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 				uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
 				uiSystemInstance.perkUIstate.StateofState = PerkUIState.StarterPerkState;
-				uiSystemInstance.userInterface.SetState(uiSystemInstance.perkUIstate);
+				uiSystemInstance.SetState(uiSystemInstance.perkUIstate);
 			}
 			else if (player.IsDebugPlayer()) {
 				modplayer.perks.Clear();

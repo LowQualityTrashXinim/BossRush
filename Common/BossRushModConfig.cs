@@ -15,9 +15,6 @@ namespace BossRush.Common {
 		[DefaultValue(true)]
 		public bool SynergyMode { get; set; }
 
-		[DefaultValue(false)]
-		public bool Enraged { get; set; }
-
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Nightmare { get; set; }
