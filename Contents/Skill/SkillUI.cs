@@ -84,7 +84,7 @@ class SkillBarUI : UIState {
 
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		// Setting the text per tick to update and show our resource values.
-		text.SetText($"{modPlayer.Energy}/{modPlayer.EnergyCap}");
+		text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
 		base.Update(gameTime);
 	}
 }

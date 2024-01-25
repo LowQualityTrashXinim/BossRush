@@ -1,15 +1,13 @@
-﻿using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Contents.Items.NohitReward;
+﻿using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Chest;
 //EnragedStuff
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Perks;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
-using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {

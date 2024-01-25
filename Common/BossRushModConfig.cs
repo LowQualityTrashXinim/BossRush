@@ -36,6 +36,9 @@ namespace BossRush.Common {
 
 		[DefaultValue(false)]
 		public bool WorldGenTest { get; set; }
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool AutoRandomizeCharacter{ get; set; }
 
 		[DefaultValue(false)]
 		public bool NoMoreChestFromBuilderLootbox { get; set; }

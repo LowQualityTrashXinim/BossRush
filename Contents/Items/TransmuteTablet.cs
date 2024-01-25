@@ -196,12 +196,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	}
 	private bool CheckWeapon(Item item) {
 		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
-			int type = ModContent.ItemType<CopperCard>();
-			var cardplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			if (Main.rand.Next(201) < cardplayer.CardLuck) type = ModContent.ItemType<PlatinumCard>();
-			if (Main.rand.Next(201) < cardplayer.CardLuck * 1.5f) type = ModContent.ItemType<GoldCard>();
-			if (Main.rand.Next(201) < cardplayer.CardLuck * 3) type = ModContent.ItemType<SilverCard>();
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), type);
+			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<CopperCard>());
 			return true;
 		}
 		return false;

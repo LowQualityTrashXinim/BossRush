@@ -22,8 +22,7 @@ namespace BossRush
             GambleAddiction,
             ChanceMultiplayer,
             CardEffect,
-            GodUltimateChallenge,
-            RangerOverhaul
+            GodUltimateChallenge
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -85,14 +84,6 @@ namespace BossRush
                     if (Main.netMode == NetmodeID.Server)
                     {
                         moddedplayer.SyncPlayer(-1, whoAmI, false);
-                    }
-                    break;
-                case MessageType.RangerOverhaul:
-                    RangerOverhaulPlayer rangePlayer = Main.player[playernumber].GetModPlayer<RangerOverhaulPlayer>();
-                    rangePlayer.ReceivePlayerSync(reader);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        rangePlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
             }

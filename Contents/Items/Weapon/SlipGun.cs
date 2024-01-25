@@ -1,7 +1,10 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon;
 internal class SlipGun : ModItem {
@@ -11,5 +14,45 @@ internal class SlipGun : ModItem {
 
 		Item.rare = ItemRarityID.Pink;
 		Item.value = Item.sellPrice(gold: 50);
+	}
+	public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		SlipGun_ModPlayer modplayer = player.GetModPlayer<SlipGun_ModPlayer>();
+		for (int i = 0; i < modplayer.Chamber; i++) {
+			Projectile.NewProjectile(source, position, velocity.RotatedBy(5), type, damage, knockback, player.whoAmI);
+			return false;
+		}
+		return base.Shoot(player, source, position, velocity, type, damage, knockback);
+	}
+	public override void OnConsumeAmmo(Item ammo, Player player) {
+		base.OnConsumeAmmo(ammo, player);
+	}
+}
+class SlipGun_ModPlayer : ModPlayer {
+	/// <summary>
+	/// Represent the amount of ammo in the chamber
+	/// </summary>
+	public int Chamber = 0;
+	public int Reload_CoolDown = 0;
+	public override void PreUpdate() {
+		if (Player.HeldItem.type != ModContent.ItemType<SlipGun>()) {
+			return;
+		}
+		Reload_CoolDown = BossRushUtils.CountDown(Reload_CoolDown);
+		if (Main.mouseRight && CanConsumeAmmo(Player.HeldItem, Player.ChooseAmmo(Player.HeldItem))) {
+			Chamber = Math.Clamp(++Chamber, 0, 6);
+			Reload_CoolDown = 60;
+		}
+	}
+	public override bool CanConsumeAmmo(Item weapon, Item ammo) {
+		if (ammo.stack > 0) {
+			return base.CanConsumeAmmo(weapon, ammo);
+		}
+		return false;
+	}
+	public override bool CanUseItem(Item item) {
+		if (item.ModItem is SlipGun) {
+			return Reload_CoolDown == 0;
+		}
+		return base.CanUseItem(item);
 	}
 }

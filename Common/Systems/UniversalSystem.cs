@@ -84,9 +84,11 @@ internal class UniversalSystem : ModSystem {
 	}
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
-			if (self is UICharacterCreation el) {
-				MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
-				method.Invoke(self, new object[] { null, null });
+			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
+				if (self is UICharacterCreation el && Main.MenuUI.CurrentState is UICharacterCreation) {
+					MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
+					method.Invoke(el, new object[] { null, null });
+				}
 			}
 		}
 		finally {

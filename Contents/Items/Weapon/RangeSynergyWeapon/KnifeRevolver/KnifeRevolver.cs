@@ -1,22 +1,21 @@
-﻿using BossRush.Common.RoguelikeChange;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
-	internal class KnifeRevolver : SynergyModItem, IRogueLikeRangeGun {
-		public float OffSetPosition => 40;
-
-		public float Spread { get; set; }
-
+	internal class KnifeRevolver : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(84, 24, 21, 3f, 30, 30, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10, false, AmmoID.Bullet);
 			Item.crit = 10;
 			Item.scale = 0.85f;
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(gold: 50);
-			Spread = 1;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 1;
+				weapon.OffSetPost = 40;
+			}
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-3, 4);

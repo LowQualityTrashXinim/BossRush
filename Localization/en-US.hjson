@@ -1681,6 +1681,51 @@ Mods: {
 				DisplayName: Skill Orb
 				Tooltip: Allow tinkering with skill
 			}
+
+			BlessedCharm: {
+				DisplayName: Blessed Charm
+				Tooltip: ""
+			}
+
+			GalaticFruit: {
+				DisplayName: Galatic Fruit
+				Tooltip: ""
+			}
+
+			MeatyMeat: {
+				DisplayName: Meaty Meat
+				Tooltip: ""
+			}
+
+			OldBook: {
+				DisplayName: Old Book
+				Tooltip: ""
+			}
+
+			SageOrb: {
+				DisplayName: Sage Orb
+				Tooltip: ""
+			}
+
+			ScopedCarrot: {
+				DisplayName: Scoped Carrot
+				Tooltip: ""
+			}
+
+			UpgradeItem7: {
+				DisplayName: Upgrade Item7
+				Tooltip: ""
+			}
+
+			UpgradeItem8: {
+				DisplayName: Upgrade Item8
+				Tooltip: ""
+			}
+
+			UpgradeItem9: {
+				DisplayName: Upgrade Item9
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1989,6 +2034,11 @@ Mods: {
 
 				AutoHardCore: {
 					Label: Auto Hard Core
+					Tooltip: ""
+				}
+
+				AutoRandomizeCharacter: {
+					Label: Auto Randomize Character
 					Tooltip: ""
 				}
 			}

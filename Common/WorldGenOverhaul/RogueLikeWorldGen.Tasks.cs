@@ -94,21 +94,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		//large world  : x = 8400 | y = 2400
 	}
 	[Task]
-	public void Empty_Hell() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 22, 24, 2),
-		(i, j) => {
-			GenerationHelper.FastRemoveTile(i, j);
-		});
-	}
-	[Task]
-	public void Create_Path() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 23, 23, 1), GenerationHelper.FastRemoveTile);
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(24, 22, 23, 1), GenerationHelper.FastRemoveTile);
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(22, 0, 1, 24), GenerationHelper.FastRemoveTile);
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(26, 23, 1, 22), GenerationHelper.FastRemoveTile);
-	}
-	[Task]
 	public void Create_Hell() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 22, 24, 1), GenerationHelper.FastRemoveTile);
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 23, 24, 1),
 		(i, j) => {
 			if (j == GridPart_Y * 23) {
@@ -204,10 +191,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	[Task]//Test
-	public void Create_CustomBiome1() {
+	public void Create_MinerParadise() {
 		//Minor Biome or soon to be
 		int[] oreIDarr = new int[] { TileID.Copper, TileID.Tin, TileID.Iron, TileID.Lead, TileID.Silver, TileID.Tungsten, TileID.Gold, TileID.Platinum, TileID.Palladium, TileID.Cobalt, TileID.Orichalcum, TileID.Mythril, TileID.Adamantite, TileID.Titanium };
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(14, 17, 4, 4),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(5, 17, 4, 4),
 		(i, j) => {
 			int oreID = WorldGen.genRand.Next(oreIDarr);
 			GenerationHelper.FastPlaceTile(i, j, Main.rand.NextFloat() >= .45f ? TileID.Stone : oreID);
@@ -215,7 +202,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	[Task]
-	public void Create_CustomBiome2() {
+	public void Create_CloudBiome() {
 		//Minor Biome or soon to be
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(10, 0, 4, 3),
 		(i, j) => {
@@ -242,6 +229,19 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	[Task]
+	public void Create_SlimeWorld() {
+		//Minor Biome or soon to be
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(10, 14, 2, 6),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.SlimeBlock);
+			GenerationHelper.FastPlaceWall(i, j, WallID.Slime);
+		});
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(10, 20, 2, 1),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.PinkSlimeBlock);
+		});
+	}
+	[Task]
 	public void Create_TheBoneZone() {
 		//Minor Biome or soon to be
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 22, 3, 2),
@@ -250,4 +250,17 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			GenerationHelper.FastPlaceWall(i, j, WallID.Bone);
 		});
 	}
+	[Task]
+	public void Create_Path() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 23, 23, 1), GenerationHelper.FastRemoveTile);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(24, 22, 24, 1), GenerationHelper.FastRemoveTile);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(22, 0, 1, 24), GenerationHelper.FastRemoveTile);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(26, 23, 1, 22), GenerationHelper.FastRemoveTile);
+		//Create path from hel-la-va-tor through slime biome to miner paradise
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(13, 36, 14, 1), GenerationHelper.FastRemoveTile);
+	}
+	[Task]
+	public void Final_CleanUp() {
+	}
+
 }

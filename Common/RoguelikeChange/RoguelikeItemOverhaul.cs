@@ -31,6 +31,7 @@ namespace BossRush.Common.RoguelikeChange {
 			switch (item.type) {
 				case ItemID.Sandgun:
 					item.shoot = ModContent.ProjectileType<SandProjectile>();
+					item.damage = 22;
 					break;
 				case ItemID.Stynger:
 					item.useTime = 5;
@@ -53,7 +54,6 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TrueExcalibur:
 					item.damage += 10;
 					break;
-
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -349,9 +349,6 @@ namespace BossRush.Common.RoguelikeChange {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
-			if (item.type == ItemID.Sandgun) {
-				damage -= .55f;
-			}
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
@@ -476,10 +473,17 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			return base.UseSpeedMultiplier(item);
 		}
+		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (TinArmor) {
+				if (item.useAmmo == AmmoID.Arrow) {
+					velocity *= 2;
+				}
+			}
+		}
 		public float[] Projindex = new float[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (TinArmor) {
-				if (item.type == ItemID.TinBow) {
+				if (item.useAmmo == AmmoID.Arrow) {
 					Vector2 pos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 50, 50);
 					Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * velocity.Length();
 					Projectile.NewProjectile(source, pos, vel, ModContent.ProjectileType<TinOreProjectile>(), damage, knockback, Player.whoAmI);
@@ -489,7 +493,7 @@ namespace BossRush.Common.RoguelikeChange {
 						TinArmorCountEffect = 0;
 					}
 				}
-				if (item.type == ItemID.TopazStaff) {
+				if (item.mana > 0 && Item.staff[item.type]) {
 					for (int i = 0; i < 3; i++) {
 						Vector2 vec = velocity.Vector2DistributeEvenly(3, 10, i);
 						int proj = Projectile.NewProjectile(source, position, vec, type, damage, knockback, Player.whoAmI);
@@ -497,7 +501,7 @@ namespace BossRush.Common.RoguelikeChange {
 					}
 					return false;
 				}
-				if (item.type == ItemID.TinShortsword) {
+				if (item.useStyle == ItemUseStyleID.Rapier) {
 					Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
 					Projectile.NewProjectile(source, pos, Main.MouseWorld - pos, ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
 				}
@@ -529,22 +533,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
-		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (TinArmor) {
-				if (item.type == ItemID.TinBow) {
-					velocity *= 2;
-				}
-				if (item.type == ItemID.TopazStaff) {
-					position = position.PositionOFFSET(velocity, 50);
-				}
-			}
-		}
 		public override void ModifyItemScale(Item item, ref float scale) {
-			if (TinArmor) {
-				if (item.type == ItemID.TinBroadsword) {
-					scale += .5f;
-				}
-			}
 			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
 				scale += .1f;
 			}
@@ -553,21 +542,6 @@ namespace BossRush.Common.RoguelikeChange {
 			if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss) {
 				damage *= .5f;
 			}
-			if (TinArmor)
-				switch (item.type) {
-					case ItemID.TinBow:
-						damage += .85f;
-						break;
-					case ItemID.TinBroadsword:
-						damage += 1.75f;
-						break;
-					case ItemID.TinShortsword:
-						damage += 1.25f;
-						break;
-					case ItemID.TopazStaff:
-						damage += .15f;
-						break;
-				}
 			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
 				damage += .15f;
 			}
@@ -648,7 +622,7 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_CopperArmor();
 			OnHitNPC_GoldArmor(target, damageDone);
 			if (TinArmor)
-				if (item.type == ItemID.TinBroadsword) {
+				if (item.DamageType == DamageClass.Melee) {
 					Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TinBroadSwordProjectile>(), 12, 1f, Player.whoAmI);
 				}
 			OnHitNPC_LeadArmor(target);

@@ -8,46 +8,6 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {
-	internal class SolarCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentSolar);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.MeleeChanceMutilplier += .5f;
-		}
-	}
-	internal class VortexCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentVortex);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.RangeChanceMutilplier += .5f;
-		}
-	}
-	internal class NebulaCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentNebula);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.MagicChanceMutilplier += .5f;
-		}
-	}
-	internal class StarDustCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentStardust);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.SummonChanceMutilplier += .5f;
-		}
-	}
 	internal class ResetCard : CardItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.LunarBar);
 		public override void PostCardSetDefault() {
@@ -89,30 +49,6 @@ namespace BossRush.Contents.Items.Card {
 		}
 		public override int Tier => 1;
 	}
-	internal class SilverCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SilverBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 2;
-	}
-	internal class GoldCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 3;
-	}
-	internal class PlatinumCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 4;
-	}
 	//This was ported from a secret mod of mine, it is badly made, but it should work most of it
 	public abstract class BaseCard : ModItem {
 		public override void SetDefaults() {
@@ -125,6 +61,9 @@ namespace BossRush.Contents.Items.Card {
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.scale = .5f;
 			CardSetDefault();
+		}
+		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
+			tooltips.Add(new TooltipLine(Mod, "FunCardItem", $"[c/{Main.DiscoColor.Hex3()}:Fun Item]"));
 		}
 		public virtual void CardSetDefault() {
 
