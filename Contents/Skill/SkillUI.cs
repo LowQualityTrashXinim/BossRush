@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Texture;
+using System;
 
 namespace BossRush.Contents.Skill;
 class SkillBarUI : UIState {
@@ -19,6 +20,11 @@ class SkillBarUI : UIState {
 	private UIImage barFrame;
 	private Color gradientA;
 	private Color gradientB;
+	private UIText text2;
+	private UIElement area2;
+	private UIImage barFrame2;
+	private Color gradientA2;
+	private Color gradientB2;
 	public override void OnInitialize() {
 		// Create a UIElement for all the elements to sit on top of, this simplifies the numbers as nested elements can be positioned relative to the top left corner of this element. 
 		// UIElement is invisible and has no padding.
@@ -46,6 +52,31 @@ class SkillBarUI : UIState {
 		area.Append(text);
 		area.Append(barFrame);
 		Append(area);
+
+		area2 = new UIElement();
+		area2.Left.Set(-area2.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
+		area2.Top.Set(80, 0f); // Placing it just a bit below the top of the screen.
+		area2.Width.Set(182, 0f); // We will be placing the following 2 UIElements within this 182x60 area.
+		area2.Height.Set(60, 0f);
+
+		barFrame2 = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.EXAMPLEUI)); // Frame of our resource bar
+		barFrame2.Left.Set(22, 0f);
+		barFrame2.Top.Set(0, 0f);
+		barFrame2.Width.Set(138, 0f);
+		barFrame2.Height.Set(34, 0f);
+
+		text2 = new UIText("0/0", 0.8f); // text to show stat
+		text2.Width.Set(138, 0f);
+		text2.Height.Set(34, 0f);
+		text2.Top.Set(40, 0f);
+		text2.Left.Set(0, 0f);
+
+		gradientA2 = new Color(123, 25, 138); // A dark purple
+		gradientB2 = new Color(187, 91, 201); // A light purple
+
+		area2.Append(text2);
+		area2.Append(barFrame2);
+		Append(area2);
 	}
 
 	public override void Draw(SpriteBatch spriteBatch) {
@@ -78,6 +109,28 @@ class SkillBarUI : UIState {
 			float percent = (float)i / (right - left);
 			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
 		}
+
+		if (modPlayer.CoolDown > 0 && modPlayer.MaximumCoolDown > 0) {
+			float quotient2 = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
+			quotient2 = Utils.Clamp(quotient2, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
+
+			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
+			Rectangle hitbox2 = barFrame2.GetInnerDimensions().ToRectangle();
+			hitbox2.X += 12;
+			hitbox2.Width -= 24;
+			hitbox2.Y += 8;
+			hitbox2.Height -= 16;
+
+			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
+			int left2 = hitbox2.Left;
+			int right2 = hitbox2.Right;
+			int steps2 = (int)((right2 - left2) * quotient2);
+			for (int i = 0; i < steps2; i += 1) {
+				// float percent = (float)i / steps; // Alternate Gradient Approach
+				float percent = (float)i / (right2 - left2);
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left2 + i, hitbox2.Y, 1, hitbox2.Height), Color.Lerp(gradientA2, gradientB2, percent));
+			}
+		}
 	}
 
 	public override void Update(GameTime gameTime) {
@@ -85,6 +138,12 @@ class SkillBarUI : UIState {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		// Setting the text per tick to update and show our resource values.
 		text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
+		if (modPlayer.CoolDown > 0) {
+			text2.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f,2)}");
+		}
+		else {
+			text2.SetText("");
+		}
 		base.Update(gameTime);
 	}
 }

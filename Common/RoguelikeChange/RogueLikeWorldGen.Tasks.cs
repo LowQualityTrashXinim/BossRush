@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Utils;
@@ -10,6 +11,17 @@ using System.Collections.Generic;
 
 namespace BossRush.Common.WorldGenOverhaul;
 
+public class RogueLike_BiomeAreaID {
+	public const short None = 0;
+	public const short Forest = 1;
+	public const short Jungle = 2;
+	public const short Tundra = 3;
+	public const short Desert = 4;
+	public const short Crimson = 5;
+	public const short Corruption = 6;
+	public const short Dungeon = 7;
+}
+
 public partial class RogueLikeWorldGen : ModSystem {
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;
@@ -19,12 +31,21 @@ public partial class RogueLikeWorldGen : ModSystem {
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
 	}
-	public static Dictionary<string, List<Rectangle>> Biome;
-	public override void LoadWorldData(TagCompound tag) {
-		base.LoadWorldData(tag);
-	}
+	public static Dictionary<short, List<Rectangle>> Biome;
 	public override void SaveWorldData(TagCompound tag) {
-		base.SaveWorldData(tag);
+		if (Biome == null) {
+			return;
+		}
+		tag["BiomeType"] = Biome.Keys.ToList();
+		tag["BiomeArea"] = Biome.Values.ToList();
+	}
+	public override void LoadWorldData(TagCompound tag) {
+		var Type = tag.Get<List<short>>("BiomeType");
+		var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
+		if (Type == null || Area == null) {
+			return;
+		}
+		Biome = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 	}
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
@@ -56,7 +77,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	*/
 	[Task]
 	public void SetUp() {
-		Biome = new Dictionary<string, List<Rectangle>>();
+		Biome = new Dictionary<short, List<Rectangle>>();
 		GridPart_X = Main.maxTilesX / 24;
 		GridPart_Y = Main.maxTilesY / 24;
 		Main.worldSurface = 0;
@@ -73,22 +94,22 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 			}
 			);
-		for (int a = 1; a < 24; a++) {
-			GenerationHelper.ForEachInRectangle(
-				0,
-				0,
-				Main.maxTilesX,
-				Main.maxTilesY,
-				(i, j) => {
-					if (i == GridPart_X * a) {
-						GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
-					}
-					if (j == GridPart_Y * a) {
-						GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
-					}
-				}
-			);
-		}
+		//for (int a = 1; a < 24; a++) {
+		//	GenerationHelper.ForEachInRectangle(
+		//		0,
+		//		0,
+		//		Main.maxTilesX,
+		//		Main.maxTilesY,
+		//		(i, j) => {
+		//			if (i == GridPart_X * a) {
+		//				GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
+		//			}
+		//			if (j == GridPart_Y * a) {
+		//				GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
+		//			}
+		//		}
+		//	);
+		//}
 		//small world  : x = 4200 | y = 1200
 		//medium world : x = 6400 | y = 1800
 		//large world  : x = 8400 | y = 2400
@@ -120,9 +141,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
-			Tile tile = Main.tile[i, j];
 		});
-		Biome.Add("Jungle", rectList);
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(35, 17, 6, 5),
+		(i, j) => {
+			GenerationHelper.FastRemoveTile(i, j);
+		});
+		Biome.Add(RogueLike_BiomeAreaID.Jungle, rectList);
 	}
 	[Task]
 	public void Create_Tundra() {
@@ -132,7 +156,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
 		});
-		Biome.Add("Tundra", rectList);
+		Biome.Add(RogueLike_BiomeAreaID.Tundra, rectList);
 	}
 	[Task]
 	public void Create_Crimson() {
@@ -142,22 +166,28 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Crimstone);
 		});
-		Biome.Add("Crimson", rectList);
+		Biome.Add(RogueLike_BiomeAreaID.Crimson, rectList);
 	}
 	[Task]
 	public void Create_Corruption() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(21, 2, 3, 5),
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(21, 2, 3, 5));
+		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
 
 		});
+		Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
 	}
 	[Task]
 	public void Create_Desert() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(5, 0, 3, 5),
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(5, 0, 3, 5));
+		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Sandstone);
 		});
+		Biome.Add(RogueLike_BiomeAreaID.Desert, rectList);
 	}
 	[Task]
 	public void Create_BlueShroom() {

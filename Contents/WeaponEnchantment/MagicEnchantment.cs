@@ -4,6 +4,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System.Diagnostics.Contracts;
+using Mono.Cecil;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -182,7 +184,7 @@ public class WandOfSparking : ModEnchantment {
 			target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(3));
 		}
 		if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfSparkingSpark) {
-			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfSparkingSpark, proj.damage, proj.knockBack, player.whoAmI);
+			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfSparkingSpark, player.GetWeaponDamage(player.HeldItem), proj.knockBack, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}
 	}
@@ -205,12 +207,11 @@ public class WandOfFrosting : ModEnchantment {
 			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(3));
 		}
 		if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfFrostingFrost) {
-			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfFrostingFrost, proj.damage, proj.knockBack, player.whoAmI);
+			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfFrostingFrost, player.GetWeaponDamage(player.HeldItem), proj.knockBack, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}
 	}
 }
-
 public class WaterBolt : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.WaterBolt;
@@ -236,12 +237,11 @@ public class WaterBolt : ModEnchantment {
 		}
 		int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
 			player.Center + Main.rand.NextVector2Circular(700, 700),
-			Main.rand.NextVector2CircularEdge(4, 4), ProjectileID.WaterBolt, damageDone, proj.knockBack, player.whoAmI);
+			Main.rand.NextVector2CircularEdge(4, 4), ProjectileID.WaterBolt, player.GetWeaponDamage(player.HeldItem), proj.knockBack, player.whoAmI);
 		Main.projectile[projectile].timeLeft = BossRushUtils.ToSecond(5);
 		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
 	}
 }
-
 public class ThunderStaff : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.ThunderStaff;
@@ -255,15 +255,109 @@ public class ThunderStaff : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(150, 150);
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, damageDone, 4, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, player.GetWeaponDamage(player.HeldItem), 4, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(0.2f);
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(150, 150);
-			Projectile.NewProjectile(player.GetSource_FromAI(), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, damageDone, 4, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_FromAI(), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, player.GetWeaponDamage(player.HeldItem), 4, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(0.2f);
 		}
+	}
+}
+public class ZapinatorGray : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.ZapinatorGray;
+	}
+	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		if (Main.rand.NextBool(20)) {
+			damage += 100;
+		}
+		if (Main.rand.NextBool(20)) {
+			damage *= 10;
+		}
+		if (Main.rand.NextBool(20)) {
+			position = position.PositionOFFSET(velocity.Vector2RotateByRandom(360), Main.rand.Next(100, 150));
+		}
+		if (Main.rand.NextBool(20)) {
+			velocity *= .1f;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Main.rand.NextBool(20)) {
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+		}
+	}
+}
+public class SpaceGun : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.SpaceGun;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		if (player.spaceGun) {
+			multi *= 0;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] >= 3) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.GreenLaser, damage, knockback, player.whoAmI);
+			if (globalItem.Item_Counter1[index] >= 6) {
+				globalItem.Item_Counter1[index] = 0;
+			}
+		}
+	}
+}
+public class BeeGun : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BeeGun;
+	}
+	public override void OnHitByAnything(Player player) {
+		player.AddBuff(BuffID.Honey, 360);
+		int damage = (int)(30 + player.GetWeaponDamage(player.HeldItem) * .1f);
+		for (int i = 0; i < 5; i++) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(5, 5), ProjectileID.Bee, damage, 4f, player.whoAmI);
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		int damage2 = (int)(20 + damage * .1f);
+		if (Main.rand.NextBool(5) || player.strongBees && Main.rand.NextBool(2)) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.Bee, damage2, knockback, player.whoAmI);
+		}
+	}
+}
+public class Vilethorn : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Vilethorn;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi -= .05f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type != ProjectileID.VilethornBase && proj.type != ProjectileID.VilethornTip && globalItem.Item_Counter1[index] <= 0) {
+			Vector2 velocity = Main.rand.NextVector2CircularEdge(14, 14);
+			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornBase, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornTip, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
+			globalItem.Item_Counter1[index] = 60;
+		}
+	}
+}
+public class CrimsonRod : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CrimsonRod;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		if (player.ItemAnimationActive && globalItem.Item_Counter1[index] <= 0) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), Main.MouseWorld, Main.rand.NextVector2Circular(5, 5), ProjectileID.BloodRain, player.GetWeaponDamage(item), .2f, player.whoAmI);
+			globalItem.Item_Counter1[index] = 9;
+		}
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi -= .08f;
 	}
 }

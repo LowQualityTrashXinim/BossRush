@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -33,7 +34,23 @@ public class Increases_3xDamage : ModSkill {
 		Skill_Duration = BossRushUtils.ToSecond(.1f);
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 	}
-	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-		damage += 3f;
+	public override void Update(Player player) {
+		base.Update(player);
+		player.GetDamage(DamageClass.Generic) += 3f;
+	}
+}
+public class SpiritRelease : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 110;
+		Skill_Duration = BossRushUtils.ToSecond(.5f);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
+	}
+	public override void Update(Player player) {
+		if (!Main.rand.NextBool(2)) {
+			return;
+		}
+		int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(40);
+		float knockback = (int)player.GetKnockback(DamageClass.Magic).ApplyTo(2);
+		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
 	}
 }

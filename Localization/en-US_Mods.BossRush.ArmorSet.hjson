@@ -71,7 +71,7 @@ TinArmor:
 	'''
 	Increase defense by 5
 	Increase movement speed by 21%
-	Vanilla tin weapon are stronger
+	Buff most weapon with tin power
 	'''
 LeadArmor:
 	'''
@@ -128,4 +128,32 @@ JungleArmor:
 	'''
 	When using magic weapon, you will shoot out magical leaf hover around player up to max of 10
 	When there are 10 leafs exist in world, the leaf will home into the closest enemy when possible
+	'''
+BeeHeadgear:
+	'''
+	Increases your damage by 4%
+	Increases your critical strike chance by 3%
+	'''
+BeeBreastplate:
+	'''
+	Increases your damage by 5%
+	Increases your melee attack speed by 6%
+	'''
+BeeGreaves:
+	'''
+	Increases your damage by 5%
+	Increases your movement speed by 5%
+	Increases your mana reduction by 16%
+	'''
+BeeHeadgear_Defense: 10 defenses
+BeeBreastplate_Defense: 11 defenses
+BeeGreaves_Defense: 9 defenses
+BeeArmorModified:
+	'''
+	Set bonus: Increases damage by 10%
+	Borrow power of queen bee
+	+ Shoot out stringer when using range weapon
+	+ Shoot out queen stringer when using magic weapon
+	+ Holding melee weapon will allow dash
+	+ Increases your max number of minions by 1
 	'''

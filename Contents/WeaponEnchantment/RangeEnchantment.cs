@@ -104,8 +104,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class AshWoodBow : ModEnchantment {
@@ -123,8 +122,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class BorealWoodBow : ModEnchantment {
@@ -142,8 +140,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class RichMahoganyBow : ModEnchantment {
@@ -161,8 +158,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class EbonwoodBow : ModEnchantment {
@@ -180,8 +176,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class ShadewoodBow : ModEnchantment {
@@ -199,8 +194,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class PalmWoodBow : ModEnchantment {
@@ -218,8 +212,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			velocity *= multiply;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int proj = Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
-			Main.projectile[proj].extraUpdates = 2;
+			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 	}
 	public class CopperBow : ModEnchantment {
@@ -246,7 +239,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class TinBow : ModEnchantment {
@@ -273,7 +266,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class IronBow : ModEnchantment {
@@ -300,7 +293,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class LeadBow : ModEnchantment {
@@ -327,7 +320,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class SilverBow : ModEnchantment {
@@ -354,7 +347,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class TungstenBow : ModEnchantment {
@@ -381,7 +374,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class GoldBow : ModEnchantment {
@@ -408,7 +401,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			}
 			globalItem.Item_Counter1[index] = 12;
 			Vector2 pos = player.Center + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, damageDone, 2, player.whoAmI, 0, 0, 9999);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 15, ProjectileID.WoodenArrowFriendly, player.GetWeaponDamage(player.HeldItem), 2, player.whoAmI, 0, 0, 9999);
 		}
 	}
 	public class PlatinumBow : ModEnchantment {

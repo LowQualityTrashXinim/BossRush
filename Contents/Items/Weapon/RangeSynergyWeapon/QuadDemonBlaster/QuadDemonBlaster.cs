@@ -18,7 +18,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
 				weapon.SpreadAmount = 0;
 				weapon.OffSetPost = 30;
 				weapon.NumOfProjectile = 1;
-				weapon.itemIsAShotgun = true;
+				weapon.itemIsAShotgun = false;
 			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
@@ -28,8 +28,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
 			modplayer.QuadDemonBlaster_SpeedMultiplier -= modplayer.QuadDemonBlaster_SpeedMultiplier == 1 ? 0 : .25f;
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			var weapon = Item.GetGlobalItem<RangeWeaponOverhaul>();
-			float rotation = MathHelper.ToRadians(weapon.SpreadAmount);
+			float rotation = modplayer.QuadDemonBlaster_SpeedMultiplier;
 			for (int i = 0; i < 10; i++) {
 				Vector2 Rotate = velocity.Vector2DistributeEvenly(10, rotation, i);
 				float RandomSpeadx = Main.rand.NextFloat(0.5f, 1f);
@@ -40,8 +39,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
 					type, damage, knockback, player.whoAmI);
 			}
 			modplayer.QuadDemonBlaster_SpeedMultiplier += modplayer.QuadDemonBlaster_SpeedMultiplier < 45 ? 20 : 1;
-			weapon.SpreadAmount = modplayer.QuadDemonBlaster_SpeedMultiplier;
-			CanShootItem = true;
+			CanShootItem = false;
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-4, 2);

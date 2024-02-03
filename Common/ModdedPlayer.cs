@@ -3,6 +3,7 @@ using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
@@ -10,12 +11,11 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Consumable;
 using BossRush.Contents.Items.aDebugItem;
-using BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNinja;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Common.Systems;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -36,7 +36,7 @@ namespace BossRush.Common {
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
 			if (Main.ActiveWorldFileData.GameMode == 0) {
-				Main.NewText("Yo this guys playing on easy mode lol, skill issues spotted !");
+				Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
 			}
 		}
 		public override void PreUpdate() {
@@ -72,7 +72,7 @@ namespace BossRush.Common {
 			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
-					yield return new Item(ModContent.ItemType<LunchBox>());
+				yield return new Item(ModContent.ItemType<LunchBox>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					yield return new Item(ItemID.ManaCrystal, 5);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
@@ -82,6 +82,7 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<CursedSkull>());
 					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
+					yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 						yield return new Item(ModContent.ItemType<TransmuteTablet>());
@@ -110,8 +111,6 @@ namespace BossRush.Common {
 					yield return new Item(ItemID.NinjaHood);
 					yield return new Item(ItemID.NinjaShirt);
 					yield return new Item(ItemID.NinjaPants);
-					yield return new Item(ModContent.ItemType<GuideToMasterNinja>());
-					yield return new Item(ModContent.ItemType<GuideToMasterNinja2>());
 				}
 				if (Player.name == "HMdebug") {
 					yield return new Item(ModContent.ItemType<IronLootBox>());

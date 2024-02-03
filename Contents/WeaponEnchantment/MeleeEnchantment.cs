@@ -23,7 +23,7 @@ public class WoodenSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -33,7 +33,7 @@ public class WoodenSword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -57,7 +57,7 @@ public class AshWoodSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -67,7 +67,7 @@ public class AshWoodSword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -91,7 +91,7 @@ public class BorealWoodSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -101,7 +101,7 @@ public class BorealWoodSword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -125,7 +125,7 @@ public class PalmWoodSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -135,7 +135,7 @@ public class PalmWoodSword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -159,7 +159,7 @@ public class RichMahoganySword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -169,7 +169,7 @@ public class RichMahoganySword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -193,7 +193,7 @@ public class ShadewoodSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -203,7 +203,7 @@ public class ShadewoodSword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -227,7 +227,7 @@ public class EbonwoodSword : ModEnchantment {
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0 && proj.type != ModContent.ProjectileType<SwordProjectile2>()) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int projec = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[projec].ModProjectile is SwordProjectile2 woodproj)
@@ -237,7 +237,7 @@ public class EbonwoodSword : ModEnchantment {
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
-			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 90;
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenly(3, 360, index) * 60;
 			Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 12;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
@@ -613,6 +613,25 @@ public class BoneSword : ModEnchantment {
 			Main.projectile[proj].friendly = true;
 			Main.projectile[proj].hostile = false;
 		}
+	}
+}
+public class BladedGlove : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BladedGlove;
+	}
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		useSpeed -= .05f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		NPC.HitInfo sample = hit;
+		sample.Crit = false;
+		player.StrikeNPCDirect(target, sample);
 	}
 }
 public class CopperShortSword : ModEnchantment {

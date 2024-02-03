@@ -93,6 +93,7 @@ public class SkillHandlePlayer : ModPlayer {
 	public bool Activate = false;
 	int CurrentActiveHolder = 1;
 	int RechargeDelay = 0;
+	public int MaximumCoolDown = 0;
 	public override void Initialize() {
 		Array.Fill(SkillHolder1, -1);
 		Array.Fill(SkillHolder2, -1);
@@ -183,6 +184,26 @@ public class SkillHandlePlayer : ModPlayer {
 		//return null in case where somehow a very catastrophic event ever happen
 		return null;
 	}
+	public void SwitchSkill(int whoAmIsource, int whoAmIdestination) {
+		int cache;
+		switch (CurrentActiveHolder) {
+			case 1:
+				cache = SkillHolder1[whoAmIsource];
+				SkillHolder1[whoAmIsource] = SkillHolder1[whoAmIdestination];
+				SkillHolder1[whoAmIdestination] = cache;
+				break;
+			case 2:
+				cache = SkillHolder2[whoAmIsource];
+				SkillHolder2[whoAmIsource] = SkillHolder2[whoAmIdestination];
+				SkillHolder2[whoAmIdestination] = cache;
+				break;
+			case 3:
+				cache = SkillHolder2[whoAmIsource];
+				SkillHolder2[whoAmIsource] = SkillHolder2[whoAmIdestination];
+				SkillHolder2[whoAmIdestination] = cache;
+				break;
+		}
+	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE)) {
 			return;
@@ -231,12 +252,17 @@ public class SkillHandlePlayer : ModPlayer {
 				Duration = 0;
 				CoolDown = 0;
 				Activate = false;
+				MaximumCoolDown = 0;
 				return;
 			}
 			else {
+				MaximumCoolDown = CoolDown;
 				Energy -= energyCost;
 			}
 		}
+	}
+	public void Modify_EnergyAmount(int amount) {
+		Energy = Math.Clamp(Energy + amount, 0, EnergyCap);
 	}
 	public override void PreUpdate() {
 		RechargeDelay = BossRushUtils.CountDown(RechargeDelay);

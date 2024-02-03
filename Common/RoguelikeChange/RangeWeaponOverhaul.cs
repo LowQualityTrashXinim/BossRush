@@ -234,12 +234,72 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 	}
-	/// <summary>
-	/// This will auto handle base shooting for you, but if you want to shoot custom projectile<br/>
-	/// you must do it in <see cref="ModItem.Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/>
-	/// </summary>
+	public class BowOverhaulWeapon : GlobalItem {
+		public const short NORMAL = 0;
+		public const short HEAVY = 1;
+		public const short QUICK = 2;
+		public const short TRIPLET = 3;
+		public const short BURST = 4;
+
+		public short[] ShootStyle = new short[5];
+		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
+			if (entity.damage > 0 && !entity.accessory && entity.useAmmo == AmmoID.Arrow) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		public override float UseTimeMultiplier(Item item, Player player) {
+			var modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+			float speed = base.UseTimeMultiplier(item, player);
+			switch (ShootStyle[modplayer.CurrentBowIndex]) {
+				case BURST:
+					return speed - .75f;
+				default:
+					return speed;
+			}
+		}
+		public override float UseSpeedMultiplier(Item item, Player player) {
+			var modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+			float speed = base.UseSpeedMultiplier(item, player);
+			switch (ShootStyle[modplayer.CurrentBowIndex]) {
+				case NORMAL:
+					return speed;
+				case HEAVY:
+					return speed - .25f;
+				case QUICK:
+					return speed + .5f;
+				case TRIPLET:
+					return speed - .15f;
+				case BURST:
+					return speed - .2f;
+				default:
+					return speed;
+			}
+		}
+		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			var modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+			if (ShootStyle[modplayer.CurrentBowIndex] == HEAVY) {
+				damage = (int)(damage * 1.5f);
+				velocity += velocity.SafeNormalize(Vector2.Zero) * 4;
+			}
+			else if (ShootStyle[modplayer.CurrentBowIndex] == QUICK) {
+				damage = (int)(damage * .75f);
+			}
+		}
+		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			var modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
+			if (ShootStyle[modplayer.CurrentBowIndex] == TRIPLET) {
+				for (int i = 0; i < 3; i++) {
+					Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+				}
+			}
+			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+		}
+		public override bool InstancePerEntity => true;
+	}
 	public class RangerOverhaulPlayer : ModPlayer {
-		public int[] ShootStyle = new int[5];
 		/// <summary>
 		/// Use this to change globaly and when you are using a accessories or something of similar, do not use "=" as that set and is not the correct way to use
 		/// </summary>
@@ -249,6 +309,11 @@ namespace BossRush.Common.RoguelikeChange {
 		/// Default to 0
 		/// </summary>
 		public int ProjectileAmountModify = 0;
+		public int CurrentBowIndex = 0;
+		public int Bow_Delay = 0;
+		public override bool CanUseItem(Item item) {
+			return base.CanUseItem(item);
+		}
 		public override void ResetEffects() {
 			SpreadModify = new();
 			ProjectileAmountModify = 0;

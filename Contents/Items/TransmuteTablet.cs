@@ -29,9 +29,7 @@ public class TransmuteTablet : ModItem {
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
 			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			if (uiSystemInstance.userInterface.CurrentState == null) {
-				uiSystemInstance.userInterface.SetState(uiSystemInstance.DeCardUIState);
-			}
+			uiSystemInstance.SetState(uiSystemInstance.DeCardUIState);
 		}
 		return false;
 	}

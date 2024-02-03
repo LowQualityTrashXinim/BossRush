@@ -43,14 +43,14 @@ internal class UniversalSystem : ModSystem {
 	}
 	public static bool CanAccessContent(string context) {
 		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (context == BOSSRUSH_MODE)
+			return config.BossRushMode;
 		if (config.HardEnableFeature)
 			return true;
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
 		if (context == HARDCORE_MODE)
 			return config.AutoHardCore;
-		if (context == BOSSRUSH_MODE)
-			return config.BossRushMode;
 		if (context == SYNERGY_MODE)
 			return config.SynergyMode;
 		if (context == TRUE_MODE)

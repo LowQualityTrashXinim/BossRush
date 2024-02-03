@@ -392,8 +392,8 @@ class PostBossFightGlobalNPC : GlobalNPC {
 			pool.Add(NPCID.GreenEye2, 0.75f);
 			pool.Add(NPCID.PurpleEye, 0.75f);
 			pool.Add(NPCID.PurpleEye2, 0.75f);
-			pool.Add(NPCID.WanderingEye, 0.65f);
-			pool.Add(NPCID.EyeballFlyingFish, 0.45f);
+			//pool.Add(NPCID.WanderingEye, 0.65f);
+			//pool.Add(NPCID.EyeballFlyingFish, 0.45f);
 		}
 		//if (NPC.downedBoss2) {
 		//	pool.Add(NPCID.Corruptor, 0.25f);
@@ -415,11 +415,13 @@ class PostBossFightGlobalNPC : GlobalNPC {
 			pool.Add(NPCID.HornetSpikey, 0.7f);
 			pool.Add(NPCID.HornetStingy, 0.7f);
 			//MossHornet
-			pool.Add(NPCID.MossHornet, 0.5f);
-			pool.Add(NPCID.BigMossHornet, 0.5f);
-			pool.Add(NPCID.GiantMossHornet, 0.5f);
-			pool.Add(NPCID.LittleMossHornet, 0.5f);
-			pool.Add(NPCID.TinyMossHornet, 0.5f);
+			if (Main.hardMode) {
+				pool.Add(NPCID.MossHornet, 0.5f);
+				pool.Add(NPCID.BigMossHornet, 0.5f);
+				pool.Add(NPCID.GiantMossHornet, 0.5f);
+				pool.Add(NPCID.LittleMossHornet, 0.5f);
+				pool.Add(NPCID.TinyMossHornet, 0.5f);
+			}
 		}
 	}
 }

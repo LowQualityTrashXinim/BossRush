@@ -184,6 +184,7 @@ Mods: {
 			SwordProjectile2.DisplayName: Sword Projectile2
 			ManaReleaseOrb.DisplayName: Mana Release Orb
 			CoconutProjectile.DisplayName: Coconut Projectile
+			SpiritProjectile.DisplayName: Spirit Projectile
 		}
 
 		NPCs: {
@@ -1209,9 +1210,9 @@ Mods: {
 				Tooltip:
 					'''
 					"Let them witness the slaughter"
-					Multiply melee damage by 1.5
-					Multiply melee speed by 1.5
-					Multiply range, magic, summon Damage by 0.1
+					Increases melee damage by 30%
+					Increases melee speed by 15%
+					Decreases range, magic, summon damage by 10%
 					'''
 			}
 
@@ -1221,9 +1222,9 @@ Mods: {
 					'''
 					"Let your minion do your binding"
 					+5 Max Minions
-					Multiply whip Range by 1.5
-					Multiply summoner ship damage 1.5
-					Multiply range, magic, melee Damage by 0.1
+					Increases whip range by 25%
+					Increases summoner base damage by 5
+					Decreases range, magic, summon damage by 10%
 					'''
 			}
 
@@ -1233,7 +1234,7 @@ Mods: {
 					'''
 					"High focus, stay alert"
 					Most gun shoot more stable
-					Increase critical strike chance by 70%
+					Increase critical strike chance by 50%
 					Getting hit will remove this buff
 					'''
 			}
@@ -1243,11 +1244,10 @@ Mods: {
 				Tooltip:
 					'''
 					"Side effects include becoming an explosive hazard"
-					Multiply mana cost by 0.1
+					Increases mana cost by 50% but also increases damage effective by 50%
 					Massively increases mana regen
-					+100 Max Mana
-					+50% Magic Damage 
-					Multiply range, summon, melee Damage by 0.1
+					Increases max mana by 100
+					Decreases range, summon, melee damage by 10%
 					'''
 			}
 
@@ -1256,11 +1256,11 @@ Mods: {
 				Tooltip:
 					'''
 					"Let your body be shield for the weak"
-					+25 defenses
-					+45% Damage reduction
-					+400 Max life
-					Multiply all classes's damage by 0.65
-					Multiply Your movement, jumpspeed by 0.5
+					Increases defenses by 45
+					Increases damage reduction by 45%
+					Increases max life by 400
+					Decreases all classes's damage by 0.25
+					Multiply Your movement, jumpspeed by 0.75
 					Gain a extra life while the buff active
 					You have knockback immunity !
 					'''
@@ -1270,8 +1270,9 @@ Mods: {
 				DisplayName: Hyper Regen Elixir
 				Tooltip:
 					'''
+					"Absorb..."
 					Increases your health regeneration by 50
-					Decreases your defenese by 35
+					Decreases your defenese by 25
 					'''
 			}
 
@@ -1725,6 +1726,16 @@ Mods: {
 			UpgradeItem9: {
 				DisplayName: Upgrade Item9
 				Tooltip: ""
+			}
+
+			EnergyRechargeStation: {
+				DisplayName: Energy Recharge Station
+				Tooltip: ""
+			}
+
+			ConfrontTrueGod: {
+				DisplayName: Confront True God
+				Tooltip: End this run so early ?
 			}
 		}
 

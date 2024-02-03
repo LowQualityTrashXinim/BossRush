@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Systems;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
 using System.Collections.Generic;
@@ -86,13 +87,15 @@ namespace BossRush.Contents.Items.Chest {
 				int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });
 				player.QuickSpawnItem(entitySource, RandomAssArmor);
 			}
-			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode && player.difficulty == PlayerDifficultyID.Hardcore) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(new int[] {
 					ModContent.ItemType<BerserkerElixir>(),
 					ModContent.ItemType<GunslingerElixir>(),
 					ModContent.ItemType<SageElixir>(),
 					ModContent.ItemType<CommanderElixir>(),
-					ModContent.ItemType<TitanElixir>() });
+					ModContent.ItemType<TitanElixir>(),
+					ModContent.ItemType<HyperRegenElixir>()
+				});
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			}
 			player.QuickSpawnItem(entitySource, ItemID.SlimeCrown);

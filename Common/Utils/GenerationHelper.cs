@@ -1,12 +1,11 @@
-﻿using BossRush.Common.WorldGenOverhaul;
-using Microsoft.Xna.Framework;
-using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Terraria;
 using Terraria.ID;
+using System.Linq;
 using Terraria.Utilities;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.Utils;
 
@@ -129,6 +128,9 @@ internal static partial class GenerationHelper {
 	/// <returns></returns>
 	public static Rectangle GridPositionInTheWorld48x48(int x, int y, int dragX = 1, int dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X / 2 * x, RogueLikeWorldGen.GridPart_Y / 2 * y, RogueLikeWorldGen.GridPart_X / 2 * dragX, RogueLikeWorldGen.GridPart_Y / 2 * dragY);
+	public static void SquareInRectangleCalculation(Rectangle rect,int SquareAmountX, int SquareAmountY) {
+
+	}
 	public static float ProgressOnAStrip(int minY, int maxY, int currentY) {
 		return MathHelper.Lerp(minY, maxY, currentY);
 	}

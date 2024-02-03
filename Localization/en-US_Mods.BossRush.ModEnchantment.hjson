@@ -114,8 +114,9 @@ PlatinumBroadsword.Description:
 	'''
 CactusSword.Description:
 	'''
-	On critical strike when hitting enemy with melee weapon
-	Shoot out a friendly rolling cactus that deal equal to 300% weapon damage ( trigger every 10 second )
+	Hitting a enemy on critical strike will shoot out a friendly rolling cactus 
+	+ Rolling cactus deal equal to 300% weapon damage 
+	( Can be trigger every 10 second )
 	'''
 EnchantedSword.Description:
 	'''
@@ -134,7 +135,7 @@ StarFury.Description:
 	'''
 IceBlade.Description:
 	'''
-	Shoot out a ice bolt ( trigger every 3 * item use time )
+	Weapon that can shoot will shoot additional ice bolt ( trigger every 3 * item use time )
 	On hitting enemy with melee item, inflict Frost Burn debuff for 3s to 6s
 	While in snow biome, increases damage by 12% and critical strike chance by 3%
 	'''
@@ -148,6 +149,12 @@ BoneSword.Description:
 	Increases weapon size by 15%
 	Attacking enemy have 25% chance to shoot out a infinite piercing bone
 	( trigger every 1s )
+	'''
+BladedGlove.Description:
+	'''
+	Increases attack speed by 5%
+	Hitting a enemy with melee sword will strike them twice
+	( note : the second strike will never be critical and this effect trigger every 1s )
 	'''
 CopperShortSword.Description:
 	'''
@@ -202,49 +209,49 @@ WoodenBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 AshWoodBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 BorealWoodBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 RichMahoganyBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 EbonwoodBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 ShadewoodBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 PalmWoodBow.Description:
 	'''
 	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 CopperBow.Description:
@@ -400,6 +407,39 @@ ThunderStaff.Description:
 	On hitting NPC with item or a projectile, spawn a thunder staff bolt from random position
 	( trigger every 0.2 second )
 	'''
+ZapinatorGray.Description:
+	'''
+	Have 1 in 20 chance to do following effect:
+	+ Offset position randomly
+	+ Multiply damage by 10
+	+ Increases damage by 100
+	+ Decreases velocity by 90%
+	+ Shoot out addition projectile
+	'''
+SpaceGun.Description:
+	'''
+	Every time weapon shoot 3 time, shoot out green lazer for 3 time
+	If space armor is fully on, this weapon will inherit space gun effect
+	'''
+BeeGun.Description:
+	'''
+	Shooting weapon have 20% to shoot out a friendly bee that deal 20 damage 
+	( note : increases to 50% if player have Have Pack )
+	When player are hitted, put player in honey buff for 6s and release 5 bees that deal 30 damage
+	( note : 10% of your weapon damage will contribute to bee damage exclusive to enchantment )
+	'''
+Vilethorn.Description:
+	'''
+	Reduce mana cost by 5%
+	Create vilethorn from the enemy when a projectile hit
+	( Can be trigger every 1s )
+	'''
+CrimsonRod.Description:
+	'''
+	Reduce mana cost by 8%
+	Create blood rain that shoot out randomly at cursor position
+	( Can be trigger every 0.12s )
+	'''
 BabyBirdStaff.Description:
 	'''
 	Spawn elite baby bird to aid you during fight
@@ -408,6 +448,6 @@ BabyBirdStaff.Description:
 BabySlimeStaff.Description:
 	'''
 	Spawn spiked baby slime to aid you during fight
-	Spike baby bird shoot out 1 to 3 slime spike whenever it attack a enemy
+	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
 FlinxStaff.Description: Spawn 2 flinx minions to aid you

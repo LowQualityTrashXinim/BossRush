@@ -52,7 +52,7 @@ namespace BossRush.Common.RoguelikeChange {
 					item.useTime = item.useAnimation = 25;
 					break;
 				case ItemID.TrueExcalibur:
-					item.damage += 10;
+					item.damage += 15;
 					break;
 			}
 		}
@@ -110,7 +110,32 @@ namespace BossRush.Common.RoguelikeChange {
 			int[] armorSet = new int[] { player.armor[0].type, player.armor[1].type, player.armor[2].type };
 			foreach (TooltipLine tooltipLine in tooltips) {
 				if (tooltipLine.Name != "SetBonus") {
+					if (tooltipLine.Name == "Tooltip0") {
+						if (item.type == ItemID.BeeHeadgear) {
+							tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear");
+						}
+						if (item.type == ItemID.BeeBreastplate) {
+							tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeBreastplate");
+						}
+						if (item.type == ItemID.BeeGreaves) {
+							tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeGreaves");
+						}
+					}
+					else if (tooltipLine.Name == "Defense") {
+						if (item.type == ItemID.BeeHeadgear) {
+							tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear_Defense");
+						}
+						if (item.type == ItemID.BeeBreastplate) {
+							tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeBreastplate_Defense");
+						}
+						if (item.type == ItemID.BeeGreaves) {
+							tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeGreaves_Defense");
+						}
+					}
 					continue;
+				}
+				if (armorSet.Contains(ItemID.BeeHeadgear) || armorSet.Contains(ItemID.BeeBreastplate) || armorSet.Contains(ItemID.BeeGreaves)) {
+					tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeArmorModified");
 				}
 				if (armorSet.Contains(item.type)) {
 					tooltipLine.Text += "\n" + GetToolTip(item.type);
@@ -191,6 +216,13 @@ namespace BossRush.Common.RoguelikeChange {
 			else if (OreTypeArmor(player, modplayer, set)) { return; }
 			else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.JungleHat, ItemID.JungleShirt, ItemID.JunglePants)) {
 				modplayer.JungleArmor = true;
+			}
+			else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BeeHeadgear, ItemID.BeeBreastplate, ItemID.BeeGreaves)) {
+				player.GetDamage(DamageClass.Melee) += .1f;
+				player.GetDamage(DamageClass.Ranged) += .1f;
+				player.GetDamage(DamageClass.Magic) += .1f;
+				modplayer.BeeArmor = true;
+				player.maxMinions++;
 			}
 		}
 		private bool WoodAndFruitTypeArmor(Player player, GlobalItemPlayer modplayer, string set) {
@@ -326,6 +358,27 @@ namespace BossRush.Common.RoguelikeChange {
 			return false;
 		}
 		public override void UpdateEquip(Item item, Player player) {
+			if (item.type == ItemID.BeeHeadgear) {
+				player.GetDamage(DamageClass.Melee) += .04f;
+				player.GetDamage(DamageClass.Ranged) += .04f;
+				player.GetDamage(DamageClass.Magic) += .04f;
+				player.GetCritChance(DamageClass.Generic) += 3;
+				player.statDefense += 6;
+			}
+			if (item.type == ItemID.BeeBreastplate) {
+				player.GetDamage(DamageClass.Melee) += .05f;
+				player.GetDamage(DamageClass.Ranged) += .05f;
+				player.GetDamage(DamageClass.Magic) += .05f;
+				player.GetAttackSpeed(DamageClass.Melee) += .06f;
+				player.statDefense += 6;
+			}
+			if (item.type == ItemID.BeeGreaves) {
+				player.GetDamage(DamageClass.Melee) += .05f;
+				player.GetDamage(DamageClass.Ranged) += .05f;
+				player.GetDamage(DamageClass.Magic) += .05f;
+				player.manaCost -= .16f;
+				player.statDefense += 5;
+			}
 			if (item.type == ItemID.NightVisionHelmet) {
 				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
 			}
@@ -377,6 +430,7 @@ namespace BossRush.Common.RoguelikeChange {
 		public bool PlatinumArmor = false;
 		int PlatinumArmorCountEffect = 0;
 		public bool JungleArmor = false;
+		public bool BeeArmor = false;
 
 		public bool RoguelikeOverhaul_VikingHelmet = false;
 		public int ToxicFlask_SpecialCounter = -1;
@@ -399,7 +453,20 @@ namespace BossRush.Common.RoguelikeChange {
 			TungstenArmor = false;
 			PlatinumArmor = false;
 			JungleArmor = false;
+			BeeArmor = false;
 			RoguelikeOverhaul_VikingHelmet = false;
+			// ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
+			// When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
+			// If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
+			if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
+				DashDir = DashRight;
+			}
+			else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15) {
+				DashDir = DashLeft;
+			}
+			else {
+				DashDir = -1;
+			}
 		}
 		public override bool CanUseItem(Item item) {
 			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
@@ -425,6 +492,55 @@ namespace BossRush.Common.RoguelikeChange {
 			TungstenArmor = false;
 			PlatinumArmor = false;
 			JungleArmor = false;
+			BeeArmor = false;
+		}
+
+		public const int DashRight = 2;
+		public const int DashLeft = 3;
+
+		public const int DashCooldown = 50;
+		public const int DashDuration = 35;
+
+		public const float DashVelocity = 12.5f;
+
+		public int DashDir = -1;
+
+		public int DashDelay = 0;
+		public int DashTimer = 0;
+
+		public override void PreUpdateMovement() {
+			if (CanUseDash() && DashDir != -1 && DashDelay == 0 && BeeArmor && Player.HeldItem.DamageType == DamageClass.Melee) {
+				Vector2 newVelocity = Player.velocity;
+
+				switch (DashDir) {
+					case DashLeft when Player.velocity.X > -DashVelocity:
+					case DashRight when Player.velocity.X < DashVelocity: {
+							float dashDirection = DashDir == DashRight ? 1 : -1;
+							newVelocity.X = dashDirection * DashVelocity;
+							break;
+						}
+					default:
+						return;
+				}
+				DashDelay = DashCooldown;
+				DashTimer = DashDuration;
+				Player.velocity = newVelocity;
+			}
+
+			if (DashDelay > 0)
+				DashDelay--;
+
+			if (DashTimer > 0) {
+				Player.eocDash = DashTimer;
+				Player.armorEffectDrawShadowEOCShield = true;
+				DashTimer--;
+			}
+		}
+
+		private bool CanUseDash() {
+			return Player.dashType == DashID.None
+				&& !Player.setSolar
+				&& !Player.mount.Active;
 		}
 		public override void PreUpdate() {
 			ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
@@ -453,7 +569,6 @@ namespace BossRush.Common.RoguelikeChange {
 					PlatinumArmorCountEffect = BossRushUtils.CountDown(PlatinumArmorCountEffect);
 				}
 			}
-
 		}
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
@@ -531,6 +646,19 @@ namespace BossRush.Common.RoguelikeChange {
 					}
 				}
 			}
+			if (BeeArmor) {
+				if (item.DamageType == DamageClass.Ranged) {
+					int proj = Projectile.NewProjectile(source, position, velocity, ProjectileID.Stinger, damage, knockback, Player.whoAmI);
+					Main.projectile[proj].friendly = true;
+					Main.projectile[proj].hostile = false;
+					Main.projectile[proj].penetrate = 1;
+				}
+				if (item.DamageType == DamageClass.Magic) {
+					int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), ProjectileID.QueenBeeStinger, damage, knockback, Player.whoAmI);
+					Main.projectile[proj].friendly = true;
+					Main.projectile[proj].hostile = false;
+				}
+			}
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
@@ -598,8 +726,6 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul)
-				return;
 			OnHitNPC_ShadewoodArmor();
 			OnHitNPC_BorealWoodArmor(target);
 			OnHitNPC_WoodArmor(target, proj);
@@ -611,9 +737,6 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_PearlWoodArmor(target);
 		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
-				return;
-			}
 			OnHitNPC_ShadewoodArmor();
 			OnHitNPC_BorealWoodArmor(target);
 			OnHitNPC_WoodArmor(target);

@@ -23,7 +23,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (Earth) {
-				damage *= Player.statLife / Player.statLifeMax2;
+				damage *= Player.statLife / (float)Player.statLifeMax2;
 			}
 		}
 		public override void PostUpdate() {

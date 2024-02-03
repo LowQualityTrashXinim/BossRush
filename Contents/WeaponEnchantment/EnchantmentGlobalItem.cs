@@ -22,7 +22,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public int[] Item_Counter2 = new int[3];
 	public override GlobalItem Clone(Item from, Item to) {
 		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
-		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 0);
+		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 3);
 		return clone;
 	}
 	public override void HoldItem(Item item, Player player) {
@@ -126,18 +126,6 @@ public class EnchantmentModplayer : ModPlayer {
 				continue;
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnMissingMana(i, Player, globalItem, item, neededMana);
-		}
-	}
-	public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
-		base.ModifyMaxStats(out health, out mana);
-		if (CommonEnchantmentCheck()) {
-			return;
-		}
-		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
-			if (globalItem.EnchantmenStlot[i] == 0)
-				continue;
-
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyMaxStats(Player, ref health, ref mana);
 		}
 	}
 	public override void ModifyWeaponCrit(Item item, ref float crit) {

@@ -7,17 +7,8 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Potion {
 	internal class TitanElixir : ModItem {
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 26;
-			Item.useStyle = ItemUseStyleID.DrinkLiquid;
-			Item.useAnimation = 15;
-			Item.useTime = 15;
-			Item.useTurn = true;
-			Item.maxStack = 30;
-			Item.consumable = true;
+			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<Protection>(), 12000);
 			Item.rare = ItemRarityID.Orange;
-			Item.buffType = ModContent.BuffType<Protection>();
-			Item.buffTime = 12000;
 		}
 	}
 	internal class Protection : ModBuff {
@@ -32,15 +23,15 @@ namespace BossRush.Contents.Items.Potion {
 		public override void Update(Player player, ref int buffIndex) {
 			player.endurance += 0.45f;
 			player.statLifeMax2 += 400;
-			player.statDefense += 25;
+			player.statDefense += 45;
 
-			player.GetDamage(DamageClass.Generic) *= 0.65f;
+			player.GetDamage(DamageClass.Generic) -= 0.25f;
 
-			player.moveSpeed *= 0.5f;
-			player.maxRunSpeed = 0.5f;
-			player.runAcceleration *= 0.5f;
-			player.jumpSpeedBoost *= 0.5f;
-			player.accRunSpeed *= 0.5f;
+			player.moveSpeed *= .75f;
+			player.maxRunSpeed = .75f;
+			player.runAcceleration *= .75f;
+			player.jumpSpeedBoost *= .75f;
+			player.accRunSpeed *= .75f;
 		}
 	}
 }
