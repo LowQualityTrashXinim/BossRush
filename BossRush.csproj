@@ -28,7 +28,7 @@
     <None Remove="Localization\en-US_Mods.BossRush.Artifacts.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModEnchantment.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModPerk.hjson" />
-    <None Remove="Localization\en-US_Mods.BossRush.ModSkilll.hjson" />
+    <None Remove="Localization\en-US_Mods.BossRush.ModSkill.hjson" />
     <None Remove="Texture\EmptyCard.png" />
     <None Remove="Texture\ExampleFrame.png" />
     <None Remove="Texture\UI\DiamondBolt.png" />

@@ -1737,6 +1737,11 @@ Mods: {
 				DisplayName: Confront True God
 				Tooltip: End this run so early ?
 			}
+
+			ChocolateTreasure: {
+				DisplayName: Chocolate Treasure
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

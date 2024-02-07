@@ -1,6 +1,8 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.UI;
 using ReLogic.Content;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
@@ -8,8 +10,6 @@ using BossRush.Contents.Items;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
-using BossRush.Texture;
-using System;
 
 namespace BossRush.Contents.Skill;
 class SkillBarUI : UIState {
@@ -42,12 +42,11 @@ class SkillBarUI : UIState {
 
 		text = new UIText("0/0", 0.8f); // text to show stat
 		text.Width.Set(138, 0f);
-		text.Height.Set(34, 0f);
 		text.Top.Set(40, 0f);
 		text.Left.Set(0, 0f);
 
 		gradientA = new Color(123, 25, 138); // A dark purple
-		gradientB = new Color(187, 91, 201); // A light purple
+		gradientB = new Color(207, 111, 221); // A light purple
 
 		area.Append(text);
 		area.Append(barFrame);
@@ -72,16 +71,11 @@ class SkillBarUI : UIState {
 		text2.Left.Set(0, 0f);
 
 		gradientA2 = new Color(123, 25, 138); // A dark purple
-		gradientB2 = new Color(187, 91, 201); // A light purple
+		gradientB2 = new Color(207, 111, 221); // A light purple
 
 		area2.Append(text2);
 		area2.Append(barFrame2);
 		Append(area2);
-	}
-
-	public override void Draw(SpriteBatch spriteBatch) {
-
-		base.Draw(spriteBatch);
 	}
 
 	// Here we draw our UI
@@ -139,7 +133,7 @@ class SkillBarUI : UIState {
 		// Setting the text per tick to update and show our resource values.
 		text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
 		if (modPlayer.CoolDown > 0) {
-			text2.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f,2)}");
+			text2.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f, 2)}");
 		}
 		else {
 			text2.SetText("");
@@ -151,6 +145,7 @@ internal class SkillUI : UIState {
 	public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
 	public List<btn_SkillSlotHolder> inventory = new List<btn_SkillSlotHolder>();
 	public ExitUI exitUI;
+	public btn_SkillDeletion btn_delete;
 	public const string UItype_SKILL = "skill";
 	public const string UIType_INVENTORY = "inventory";
 
@@ -199,6 +194,11 @@ internal class SkillUI : UIState {
 				exitUI.UISetPosition(player.Center + new Vector2(300, 0), textureSize);
 				Append(exitUI);
 			}
+			if (btn_delete == null) {
+				btn_delete = new btn_SkillDeletion(TextureAssets.InventoryBack, modplayer);
+				btn_delete.UISetPosition(player.Center - new Vector2(330, 0), textureSize);
+				Append(btn_delete);
+			}
 		}
 	}
 	public override void OnDeactivate() {
@@ -220,9 +220,42 @@ class btn_SkillSlotSelection : UIImage {
 		}
 		modplayer.ChangeHolder(SelectionIndex);
 	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		if (SelectionIndex != modplayer.CurrentActiveIndex) {
+			Color = new Color(255, 255, 255, 100);
+		}
+		else {
+			Color = Color.White;
+		}
+		base.Draw(spriteBatch);
+	}
 }
-class SkillUIpannel : UIPanel {
-
+class btn_SkillDeletion : UIImage {
+	SkillHandlePlayer modplayer;
+	Vector2 size;
+	public btn_SkillDeletion(Asset<Texture2D> texture, SkillHandlePlayer modplayer) : base(texture) {
+		this.modplayer = modplayer;
+		size = texture.Size();
+	}
+	public override void LeftClick(UIMouseEvent evt) {
+		if (SkillModSystem.SelectInventoryIndex != -1) {
+			modplayer.RequestSkillRemoval_SkillInventory(SkillModSystem.SelectInventoryIndex);
+			SkillModSystem.SelectInventoryIndex = -1;
+		}
+		if (SkillModSystem.SelectSkillIndex != -1) {
+			modplayer.RequestSkillRemoval_SkillHolder(SkillModSystem.SelectSkillIndex);
+			SkillModSystem.SelectSkillIndex = -1;
+		}
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + size * .5f;
+		Texture2D trashbin = TextureAssets.Trash.Value;
+		float scaling = ScaleCalculation(size, trashbin.Size());
+		Vector2 origin = trashbin.Size() * .5f;
+		spriteBatch.Draw(trashbin, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+	}
+	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
 class btn_SkillSlotHolder : UIImageButton {
 	public int whoAmI = -1;
@@ -255,14 +288,12 @@ class btn_SkillSlotHolder : UIImageButton {
 				}
 			}
 			else {
-				if (SkillModSystem.SelectSkillIndex == -1) {
-					//Player are moving skill around their inventory
-					int cache = modplayer.SkillInventory[whoAmI];
-					modplayer.SkillInventory[whoAmI] = modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex];
-					modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex] = cache;
-					SkillModSystem.SelectInventoryIndex = -1;
-				}
-				//It is impossible where SelectSkillIndex can be other than -1
+				//Player are moving skill around their inventory
+				int cache = modplayer.SkillInventory[whoAmI];
+				modplayer.SkillInventory[whoAmI] = modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex];
+				modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex] = cache;
+				SkillModSystem.SelectInventoryIndex = -1;
+				//It is impossible where SelectSkillIndex can't be equal to -1
 			}
 		}
 		else if (uitype == SkillUI.UItype_SKILL) {
@@ -278,13 +309,9 @@ class btn_SkillSlotHolder : UIImageButton {
 				}
 			}
 			else {
-				if (SkillModSystem.SelectInventoryIndex == -1) {
-					//Player are moving skill around their skill holder
-					int cache = modplayer.SkillInventory[whoAmI];
-					modplayer.SkillInventory[whoAmI] = modplayer.SkillInventory[SkillModSystem.SelectSkillIndex];
-					modplayer.SkillInventory[SkillModSystem.SelectSkillIndex] = cache;
-					SkillModSystem.SelectSkillIndex = -1;
-				}
+				//Player are moving skill around their skill holder
+				modplayer.SwitchSkill(whoAmI, SkillModSystem.SelectSkillIndex);
+				SkillModSystem.SelectSkillIndex = -1;
 			}
 		}
 	}

@@ -92,6 +92,9 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void PostUpdate() {
 		ChestLoot.amountModifier = Math.Clamp(UpdateDropAmount + DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
 	}
+	public override void UpdateLifeRegen() {
+		Player.lifeRegen = Math.Clamp(UpdateHPRegen + HPRegen + Player.lifeRegen, 0, maxStatCanBeAchieved);
+	}
 	public override void PostHurt(Player.HurtInfo info) {
 		base.PostHurt(info);
 		if (info.PvP) {
@@ -109,7 +112,6 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statDefense += Math.Clamp(UpdateDefenseBase + DefenseBase, -(maxStatCanBeAchieved + Player.statDefense), maxStatCanBeAchieved);
 		Player.moveSpeed = Math.Clamp(UpdateMovement + Movement + Player.moveSpeed, 0, maxStatCanBeAchieved);
 		Player.jumpSpeedBoost = Math.Clamp(UpdateJumpBoost + JumpBoost + Player.jumpSpeedBoost, 0, maxStatCanBeAchieved);
-		Player.lifeRegen = Math.Clamp(UpdateHPRegen + HPRegen + Player.lifeRegen, 0, maxStatCanBeAchieved);
 		Player.manaRegen = Math.Clamp(UpdateManaRegen + ManaRegen + Player.manaRegen, 0, maxStatCanBeAchieved);
 		Player.DefenseEffectiveness *= Math.Clamp(UpdateDefenseBase + DefenseEffectiveness + 1, 0, maxStatCanBeAchieved);
 		Player.thorns += UpdateThorn + Thorn;

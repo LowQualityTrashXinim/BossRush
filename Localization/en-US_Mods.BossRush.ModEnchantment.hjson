@@ -318,6 +318,16 @@ PlatinumBow.Description:
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
+DemonBow.Description:
+	'''
+	Weapon that use arrow will and is using wooden arrow will convert wooden arrow to unholy arrow
+	While player are in corruption, shoot out Corruption Trail
+	'''
+TendonBow.Description: 
+	'''
+	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( can be trigger every 1s )
+	Hitting any enemy 4 times will heal player for 1 hp
+	'''
 SnowballCannon.Description:
 	'''
 	Increases uses speed by 5%

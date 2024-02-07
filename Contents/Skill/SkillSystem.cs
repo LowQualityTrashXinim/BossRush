@@ -36,6 +36,7 @@ public abstract class ModSkill : ModType {
 	}
 	public virtual void SetDefault() { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
+	public virtual void ResetEffect(Player player) { }
 	public virtual void Update(Player player) { }
 	public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
 	public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) { }
@@ -92,6 +93,7 @@ public class SkillHandlePlayer : ModPlayer {
 	public int[] SkillInventory = new int[30];
 	public bool Activate = false;
 	int CurrentActiveHolder = 1;
+	public int CurrentActiveIndex { get => CurrentActiveHolder; }
 	int RechargeDelay = 0;
 	public int MaximumCoolDown = 0;
 	public override void Initialize() {
@@ -204,6 +206,34 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 		}
 	}
+	/// <summary>
+	/// idk, this name sound cool, so I'm keeping it
+	/// This will remove a skill from skill holder
+	/// It won't actually request anything network wise
+	/// </summary>
+	/// <param name="whoAmI"></param>
+	public void RequestSkillRemoval_SkillHolder(int whoAmI) {
+		switch (CurrentActiveHolder) {
+			case 1:
+				SkillHolder1[whoAmI] = -1;
+				break;
+			case 2:
+				SkillHolder2[whoAmI] = -1;
+				break;
+			case 3:
+				SkillHolder3[whoAmI] = -1;
+				break;
+		}
+	}
+	/// <summary>
+	/// idk, this name sound cool, so I'm keeping it
+	/// This will remove a skill from skill inventory
+	/// It won't actually request anything network wise
+	/// </summary>
+	/// <param name="whoAmI"></param>
+	public void RequestSkillRemoval_SkillInventory(int whoAmI) {
+		SkillInventory[whoAmI] = -1;
+	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
 		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE)) {
 			return;
@@ -275,6 +305,37 @@ public class SkillHandlePlayer : ModPlayer {
 		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
 		if (!Activate) {
 			CoolDown = BossRushUtils.CountDown(CoolDown);
+		}
+	}
+	public override void ResetEffects() {
+		if (!Activate) {
+			return;
+		}
+		switch (CurrentActiveHolder) {
+			case 1:
+				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
+					SkillLoader.GetSkill(SkillHolder1[i]).ResetEffect(Player);
+				}
+				break;
+			case 2:
+				for (int i = 0; i < 10; i++) {
+					if (SkillHolder2[i] == -1) {
+						continue;
+					}
+					SkillLoader.GetSkill(SkillHolder2[i]).ResetEffect(Player);
+				}
+				break;
+			case 3:
+				for (int i = 0; i < 10; i++) {
+					if (SkillHolder3[i] == -1) {
+						continue;
+					}
+					SkillLoader.GetSkill(SkillHolder3[i]).ResetEffect(Player);
+				}
+				break;
 		}
 	}
 	public override void PostUpdate() {

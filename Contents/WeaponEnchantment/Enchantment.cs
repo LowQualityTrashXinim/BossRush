@@ -15,14 +15,13 @@ namespace BossRush.Contents.WeaponEnchantment {
 		/// This will clean your counter automatically upon changing weapon
 		/// </summary>
 		public bool ForcedCleanCounter = false;
-		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.Description");
 		protected sealed override void Register() {
 			SetDefaults();
 			Type = EnchantmentLoader.Register(this);
 		}
 		/// <summary>
-		/// This will run before the counter from globalItem be wiped clean
+		/// This will run before the counter from globalItem be wiped clean<br/>
 		/// Only use it if <see cref="ForcedCleanCounter"/> is true
 		/// </summary>
 		/// <param name="index"></param>

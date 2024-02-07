@@ -30,12 +30,11 @@ public class HellFireArrowRain : ModSkill {
 }
 public class Increases_3xDamage : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 330;
-		Skill_Duration = BossRushUtils.ToSecond(.1f);
+		Skill_EnergyRequire = 230;
+		Skill_Duration = 8;
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 	}
-	public override void Update(Player player) {
-		base.Update(player);
+	public override void ResetEffect(Player player) {
 		player.GetDamage(DamageClass.Generic) += 3f;
 	}
 }
@@ -52,5 +51,20 @@ public class SpiritRelease : ModSkill {
 		int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(40);
 		float knockback = (int)player.GetKnockback(DamageClass.Magic).ApplyTo(2);
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
+	}
+}
+public class InfiniteManaSupply : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 60;
+		Skill_Duration = BossRushUtils.ToSecond(.5f);
+		Skill_CoolDown = BossRushUtils.ToSecond(2);
+	}
+	public override void Update(Player player) {
+		if (player.statMana < player.statManaMax2) {
+			player.statMana++;
+		}
+	}
+	public override void OnMissingMana(Player player, Item item, int neededMana) {
+		player.statMana += neededMana;
 	}
 }
