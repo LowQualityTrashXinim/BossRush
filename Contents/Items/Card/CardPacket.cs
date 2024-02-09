@@ -44,7 +44,7 @@ namespace BossRush.Contents.Items.Card {
 			if (PacketType == 4)
 				amount = 1;
 			for (int i = 0; i < amount; i++) {
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<CopperCard>());
+				//player.QuickSpawnItem(entitySource, ModContent.ItemType<CopperCard>());
 			}
 		}
 		Color auraColor;

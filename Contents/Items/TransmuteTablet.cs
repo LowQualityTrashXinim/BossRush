@@ -29,12 +29,12 @@ public class TransmuteTablet : ModItem {
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
 			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.SetState(uiSystemInstance.DeCardUIState);
+			uiSystemInstance.SetState(uiSystemInstance.transmutation_uiState);
 		}
 		return false;
 	}
 }
-public class DeCardUIState : UIState {
+public class TransmutationUIState : UIState {
 	public override void OnActivate() {
 		Elements.Clear();
 		var panalUI = new UIPanel();
@@ -194,7 +194,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	}
 	private bool CheckWeapon(Item item) {
 		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<CopperCard>());
+			//Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<CopperCard>());
 			return true;
 		}
 		return false;

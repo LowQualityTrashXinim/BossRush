@@ -323,7 +323,7 @@ DemonBow.Description:
 	Weapon that use arrow will and is using wooden arrow will convert wooden arrow to unholy arrow
 	While player are in corruption, shoot out Corruption Trail
 	'''
-TendonBow.Description: 
+TendonBow.Description:
 	'''
 	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( can be trigger every 1s )
 	Hitting any enemy 4 times will heal player for 1 hp

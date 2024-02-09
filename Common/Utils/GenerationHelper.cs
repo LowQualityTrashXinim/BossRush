@@ -58,6 +58,8 @@ internal static partial class GenerationHelper {
 		}
 	}
 
+	public static int PointOnRectX(this Rectangle rect, float scale) => (int)(rect.X + rect.Width * scale);
+	public static int PointOnRectY(this Rectangle rect, float scale) => (int)(rect.Y + rect.Height * scale);
 	public static void ForEachInRectangle(int i, int j, int width, int height, Action<int, int> action) {
 		ForEachInRectangle(new Rectangle(i, j, width, height), action);
 	}
@@ -128,7 +130,7 @@ internal static partial class GenerationHelper {
 	/// <returns></returns>
 	public static Rectangle GridPositionInTheWorld48x48(int x, int y, int dragX = 1, int dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X / 2 * x, RogueLikeWorldGen.GridPart_Y / 2 * y, RogueLikeWorldGen.GridPart_X / 2 * dragX, RogueLikeWorldGen.GridPart_Y / 2 * dragY);
-	public static void SquareInRectangleCalculation(Rectangle rect,int SquareAmountX, int SquareAmountY) {
+	public static void SquareInRectangleCalculation(Rectangle rect, int SquareAmountX, int SquareAmountY) {
 
 	}
 	public static float ProgressOnAStrip(int minY, int maxY, int currentY) {

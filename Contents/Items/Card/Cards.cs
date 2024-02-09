@@ -8,13 +8,16 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {
-	internal class ResetCard : CardItem {
+	internal class StatsResetCard : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.LunarBar);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
+		public override void SetDefaults() {
+			Item.BossRushDefaultToConsume(30, 24);
+			Item.UseSound = SoundID.Item35;
 			Item.rare = ItemRarityID.Red;
+			Item.maxStack = 99;
 		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
+		public override bool? UseItem(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.ChestLoot.MeleeChanceMutilplier = 1;
 			modplayer.ChestLoot.RangeChanceMutilplier = 1;
 			modplayer.ChestLoot.MagicChanceMutilplier = 1;
@@ -39,15 +42,8 @@ namespace BossRush.Contents.Items.Card {
 			modplayer.SentrySlot = 0;
 			modplayer.Thorn = 0;
 			modplayer.CardLuck = 0;
+			return true;
 		}
-	}
-	internal class CopperCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 1;
 	}
 	//This was ported from a secret mod of mine, it is badly made, but it should work most of it
 	public abstract class BaseCard : ModItem {
@@ -88,7 +84,7 @@ namespace BossRush.Contents.Items.Card {
 			foreach (var npc in npclist) {
 				npc.StrikeNPC(npc.CalculateHitInfo(20, 0));
 			}
-			for (int i = 0;i < 100; i++) {
+			for (int i = 0; i < 100; i++) {
 				int dust = Dust.NewDust(player.Center + Vector2.One.Vector2DistributeEvenly(100, 360, i) * radius, 0, 0, DustID.GemDiamond);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = Vector2.Zero;

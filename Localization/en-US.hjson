@@ -1742,6 +1742,11 @@ Mods: {
 				DisplayName: Chocolate Treasure
 				Tooltip: ""
 			}
+
+			StatsResetCard: {
+				DisplayName: Stats Reset Card
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

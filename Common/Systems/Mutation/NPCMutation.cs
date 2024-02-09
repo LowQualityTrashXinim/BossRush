@@ -2,10 +2,12 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.Mutation;
 internal class NPCMutation : GlobalNPC {
-	public override bool InstancePerEntity => ModContent.GetInstance<BossRushModConfig>().Nightmare;
+	public List<ModMutation> mutationList;
+	public override bool InstancePerEntity => true;
 	public float MeleeDamageReduction = 1;
 	public float RangeDamageReduction = 1;
 	public float MagicDamageReduction = 1;
@@ -17,9 +19,18 @@ internal class NPCMutation : GlobalNPC {
 		return base.AppliesToEntity(entity, lateInstantiation);
 	}
 	public override void OnSpawn(NPC npc, IEntitySource source) {
-		base.OnSpawn(npc, source);
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.OnSpawn(npc, source);
+			}
+		}
 	}
 	public override void SetDefaults(NPC entity) {
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.SetDefaults(entity);
+			}
+		}
 		if (Main.masterMode) {
 			return;
 		}
@@ -34,7 +45,6 @@ internal class NPCMutation : GlobalNPC {
 			DamageReductionPoint++;
 		}
 		if (DamageReductionPoint >= 4) {
-			Main.NewText("Just what you just done ???");
 			MeleeDamageReduction = 0;
 			RangeDamageReduction = 0;
 			MagicDamageReduction = 0;
@@ -90,20 +100,43 @@ internal class NPCMutation : GlobalNPC {
 		}
 		return reducePointType;
 	}
+	public override void PostAI(NPC npc) {
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.PostAI(npc);
+			}
+		}
+	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
-		base.OnHitPlayer(npc, target, hurtInfo);
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.OnHitPlayer(npc, target, hurtInfo);
+			}
+		}
 	}
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
-		base.OnHitByItem(npc, player, item, hit, damageDone);
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.OnHitByItem(npc, player, item, hit, damageDone);
+			}
+		}
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
-		base.OnHitByProjectile(npc, projectile, hit, damageDone);
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.OnHitByProjectile(npc, projectile, hit, damageDone);
+			}
+		}
 	}
 	public override void OnKill(NPC npc) {
-		base.OnKill(npc);
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.OnKill(npc);
+			}
+		}
 	}
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
-		if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+		if (!Main.masterMode) {
 			return;
 		}
 		if (projectile.DamageType == DamageClass.Melee) {
@@ -120,7 +153,7 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-		if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+		if (!Main.masterMode) {
 			return;
 		}
 		if (item.DamageType == DamageClass.Melee) {

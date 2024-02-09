@@ -61,10 +61,9 @@ internal class UniversalSystem : ModSystem {
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
 	public SkillUI skillUIstate;
-	public SkillBarUI skillUIBarstate;
+	public SkillBarUI defaultUI;
 
-	public CardUI cardUIstate;
-	public DeCardUIState DeCardUIState;
+	public TransmutationUIState transmutation_uiState;
 	public override void Load() {
 
 		//UI stuff
@@ -73,10 +72,9 @@ internal class UniversalSystem : ModSystem {
 			Enchant_uiState = new();
 			perkUIstate = new();
 
-			DeCardUIState = new();
-			cardUIstate = new();
+			transmutation_uiState = new();
 			skillUIstate = new();
-			skillUIBarstate = new();
+			defaultUI = new();
 
 			userInterface = new();
 		}
@@ -113,13 +111,13 @@ internal class UniversalSystem : ModSystem {
 			);
 	}
 	public void SetState(UIState state) {
-		if (userInterface.CurrentState == null || userInterface.CurrentState == skillUIBarstate) {
+		if (userInterface.CurrentState == null || userInterface.CurrentState == defaultUI) {
 			userInterface.SetState(state);
 		}
 	}
 	public void DeactivateState() {
 		if (userInterface.CurrentState != null) {
-			userInterface.SetState(skillUIBarstate);
+			userInterface.SetState(defaultUI);
 		}
 	}
 	//public override void SetStaticDefaults() {
@@ -131,11 +129,11 @@ internal class UniversalSystem : ModSystem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		uiSystemInstance.SetState(uiSystemInstance.skillUIBarstate);
+		uiSystemInstance.SetState(uiSystemInstance.defaultUI);
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null && uiSystemInstance.userInterface.CurrentState != uiSystemInstance.skillUIBarstate) {
+		if (uiSystemInstance.userInterface.CurrentState != null && uiSystemInstance.userInterface.CurrentState != uiSystemInstance.defaultUI) {
 			return false;
 		}
 		return base.CanUseItem(item);

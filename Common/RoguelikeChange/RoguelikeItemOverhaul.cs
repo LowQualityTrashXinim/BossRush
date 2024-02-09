@@ -11,6 +11,7 @@ using System.Linq;
 using Terraria.ID;
 using Terraria;
 using System;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -89,18 +90,15 @@ namespace BossRush.Common.RoguelikeChange {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
+			//We are using name format RoguelikeOverhaul_+ item name
 			if (item.type == ItemID.Sandgun) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun",
-					"Sand projectile no longer spawn upon kill" +
-					"\nDecrease damage by 55%"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
 			}
 			else if (item.type == ItemID.NightVisionHelmet) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet",
-					"Increases gun accurancy by 25%"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases gun accurancy by 25%"));
 			}
 			else if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose",
-					"Grant immunity to OnFire debuff !"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_ObsidianRose", "Grant immunity to OnFire debuff !"));
 			}
 			else if (item.type == ItemID.VikingHelmet) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_VikingHelmet",
@@ -358,6 +356,18 @@ namespace BossRush.Common.RoguelikeChange {
 			return false;
 		}
 		public override void UpdateEquip(Item item, Player player) {
+			BeeArmorRework(player, item);
+			if (item.type == ItemID.NightVisionHelmet) {
+				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
+			}
+			if (item.type == ItemID.VikingHelmet) {
+				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
+			}
+			if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
+				player.buffImmune[BuffID.OnFire] = true;
+			}
+		}
+		private void BeeArmorRework(Player player, Item item) {
 			if (item.type == ItemID.BeeHeadgear) {
 				player.GetDamage(DamageClass.Melee) += .04f;
 				player.GetDamage(DamageClass.Ranged) += .04f;
@@ -378,15 +388,6 @@ namespace BossRush.Common.RoguelikeChange {
 				player.GetDamage(DamageClass.Magic) += .05f;
 				player.manaCost -= .16f;
 				player.statDefense += 5;
-			}
-			if (item.type == ItemID.NightVisionHelmet) {
-				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
-			}
-			if (item.type == ItemID.VikingHelmet) {
-				player.GetModPlayer<GlobalItemPlayer>().RoguelikeOverhaul_VikingHelmet = true;
-			}
-			if (item.type == ItemID.ObsidianRose || item.type == ItemID.ObsidianSkullRose) {
-				player.buffImmune[BuffID.OnFire] = true;
 			}
 		}
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
