@@ -10,13 +10,10 @@ namespace BossRush.Common {
 		//Do note delete reload required as it is to fix "Growing Spider Cave"
 		[ReloadRequired]
 		[DefaultValue(true)]
-		public bool EnableChallengeMode { get; set; }
+		public bool BossRushMode { get; set; }
 
 		[DefaultValue(true)]
 		public bool SynergyMode { get; set; }
-
-		[DefaultValue(false)]
-		public bool Enraged { get; set; }
 
 		[ReloadRequired]
 		[DefaultValue(false)]
@@ -39,6 +36,9 @@ namespace BossRush.Common {
 
 		[DefaultValue(false)]
 		public bool WorldGenTest { get; set; }
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool AutoRandomizeCharacter{ get; set; }
 
 		[DefaultValue(false)]
 		public bool NoMoreChestFromBuilderLootbox { get; set; }

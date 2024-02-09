@@ -16,10 +16,8 @@ internal class WeaponEnchantment : ModItem {
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
 			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			if (uiSystemInstance.userInterface.CurrentState == null) {
-				uiSystemInstance.Enchant_uiState.WhoAmI = player.whoAmI;
-				uiSystemInstance.userInterface.SetState(uiSystemInstance.Enchant_uiState);
-			}
+			uiSystemInstance.Enchant_uiState.WhoAmI = player.whoAmI;
+			uiSystemInstance.SetState(uiSystemInstance.Enchant_uiState);
 		}
 		return false;
 	}

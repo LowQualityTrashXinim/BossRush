@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BossRush.Common.Systems.ArtifactSystem;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts
 {

@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Systems;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Potion;
 using System.Collections.Generic;
@@ -35,17 +36,12 @@ namespace BossRush.Contents.Items.Chest {
 			int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
 			player.QuickSpawnItem(entitySource, wing);
 			modplayer.GetAmount();
-			for (int i = 0; i < modplayer.weaponAmount; i++) {
-				GetWeapon(player, out int weapon, out int specialAmount, RNGManage(player, 25, 25, 25, 25, 0));
-				AmmoForWeapon(out int ammo, out int num, weapon, 3.5f);
-				player.QuickSpawnItem(entitySource, weapon, specialAmount);
-				player.QuickSpawnItem(entitySource, ammo, num);
-			}
+			GetWeapon(entitySource, player, modplayer.weaponAmount, RNGManage(player, 25, 25, 25, 25, 0));
 			for (int i = 0; i < 3; i++) {
 				player.QuickSpawnItem(entitySource, GetAccessory());
 			}
 			player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode && player.difficulty == PlayerDifficultyID.Hardcore) {
+			if (UniversalSystem.CanAccessContent(player,UniversalSystem.BOSSRUSH_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(new int[] {
 					ModContent.ItemType<BerserkerElixir>(),
 					ModContent.ItemType<GunslingerElixir>(),

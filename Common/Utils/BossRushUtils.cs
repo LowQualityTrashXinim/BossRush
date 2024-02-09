@@ -46,7 +46,7 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static int NextFromHashSet(this UnifiedRandom r, HashSet<int> hashset) {
+		public static T NextFromHashSet<T>(this UnifiedRandom r, HashSet<T> hashset) {
 			return hashset.ElementAt(r.Next(hashset.Count));
 		}
 		/// <summary>
@@ -64,6 +64,9 @@ namespace BossRush {
 				drama = 1;
 			}
 			int text = CombatText.NewText(new Rectangle(), color, combatMessage, dramatic, dot);
+			if (text < 0 || text >= Main.maxCombatText) {
+				return;
+			}
 			CombatText cbtext = Main.combatText[text];
 			Vector2 vector = FontAssets.CombatText[drama].Value.MeasureString(cbtext.text);
 			cbtext.position.X = location.X + location.Width * 0.5f - vector.X * 0.5f;
@@ -136,7 +139,7 @@ namespace BossRush {
 					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
-					&& (Collision.CanHitLine(position, 10, 10, mainnpc.position, mainnpc.width, mainnpc.height) || !CanLookThroughTile)
+					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || !CanLookThroughTile)
 					&& mainnpc.immune[whoAmI] <= 0
 					) {
 					maxDistanceSquare = dis;
@@ -155,7 +158,6 @@ namespace BossRush {
 		}
 		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
 		public static int ToSecond(float second) => (int)(second * 60);
-		public static int ToIntValue(this StatModifier modifier) => (int)(modifier.ApplyTo(1));
 		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1)
 			=> round == -1 ? modifier.ApplyTo(1) * additionalMulti : MathF.Round(modifier.ApplyTo(1) * additionalMulti, round);
 		public static float InExpo(float t) => (float)Math.Pow(2, 5 * (t - 1));
@@ -276,6 +278,20 @@ namespace BossRush {
 		//Todo : make a universal form of luck
 		public static bool RNGchance(this UnifiedRandom rand, float chance) {
 			return rand.NextFloat() > chance;
+		}
+		public static void ReplaceElementInArray(int[] from, int index1, int[] destination, int index2) {
+			if (from == null || destination == null) {
+				throw new ArgumentNullException();
+			}
+			if (index1 < 0 || index1 >= from.Length) {
+				throw new IndexOutOfRangeException();
+			}
+			if (index2 < 0 || index1 >= destination.Length) {
+				throw new IndexOutOfRangeException();
+			}
+			int cache = from[index1];
+			from[index1] = destination[index2];
+			from[index2] = cache;
 		}
 	}
 	/// <summary>

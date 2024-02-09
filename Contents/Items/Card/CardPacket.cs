@@ -44,19 +44,7 @@ namespace BossRush.Contents.Items.Card {
 			if (PacketType == 4)
 				amount = 1;
 			for (int i = 0; i < amount; i++) {
-				if (Main.rand.Next(201) < cardplayer.CardLuck || PacketType == 4) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<PlatinumCard>());
-					continue;
-				}
-				if (Main.rand.Next(201) < cardplayer.CardLuck * 1.5f) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldCard>());
-					continue;
-				}
-				if (Main.rand.Next(201) < cardplayer.CardLuck * 3) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<SilverCard>());
-					continue;
-				}
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<CopperCard>());
+				//player.QuickSpawnItem(entitySource, ModContent.ItemType<CopperCard>());
 			}
 		}
 		Color auraColor;

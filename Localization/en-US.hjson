@@ -182,6 +182,9 @@ Mods: {
 			AdventureSpirit.DisplayName: Adventure Spirit
 			SwordProjectile.DisplayName: Sword Projectile
 			SwordProjectile2.DisplayName: Sword Projectile2
+			ManaReleaseOrb.DisplayName: Mana Release Orb
+			CoconutProjectile.DisplayName: Coconut Projectile
+			SpiritProjectile.DisplayName: Spirit Projectile
 		}
 
 		NPCs: {
@@ -613,7 +616,7 @@ Mods: {
 			}
 
 			SynergyEnergy: {
-				Tooltip: the possibility is only limited to our own mind
+				Tooltip: Hold hidden potential ...
 				DisplayName: Synergy Energy
 			}
 
@@ -1207,9 +1210,9 @@ Mods: {
 				Tooltip:
 					'''
 					"Let them witness the slaughter"
-					Multiply melee damage by 1.5
-					Multiply melee speed by 1.5
-					Multiply range, magic, summon Damage by 0.1
+					Increases melee damage by 30%
+					Increases melee speed by 15%
+					Decreases range, magic, summon damage by 10%
 					'''
 			}
 
@@ -1219,9 +1222,9 @@ Mods: {
 					'''
 					"Let your minion do your binding"
 					+5 Max Minions
-					Multiply whip Range by 1.5
-					Multiply summoner ship damage 1.5
-					Multiply range, magic, melee Damage by 0.1
+					Increases whip range by 25%
+					Increases summoner base damage by 5
+					Decreases range, magic, summon damage by 10%
 					'''
 			}
 
@@ -1231,7 +1234,7 @@ Mods: {
 					'''
 					"High focus, stay alert"
 					Most gun shoot more stable
-					Increase critical strike chance by 70%
+					Increase critical strike chance by 50%
 					Getting hit will remove this buff
 					'''
 			}
@@ -1241,11 +1244,10 @@ Mods: {
 				Tooltip:
 					'''
 					"Side effects include becoming an explosive hazard"
-					Multiply mana cost by 0.1
+					Increases mana cost by 50% but also increases damage effective by 50%
 					Massively increases mana regen
-					+100 Max Mana
-					+50% Magic Damage 
-					Multiply range, summon, melee Damage by 0.1
+					Increases max mana by 100
+					Decreases range, summon, melee damage by 10%
 					'''
 			}
 
@@ -1254,11 +1256,11 @@ Mods: {
 				Tooltip:
 					'''
 					"Let your body be shield for the weak"
-					+25 defenses
-					+45% Damage reduction
-					+400 Max life
-					Multiply all classes's damage by 0.65
-					Multiply Your movement, jumpspeed by 0.5
+					Increases defenses by 45
+					Increases damage reduction by 45%
+					Increases max life by 400
+					Decreases all classes's damage by 0.25
+					Multiply Your movement, jumpspeed by 0.75
 					Gain a extra life while the buff active
 					You have knockback immunity !
 					'''
@@ -1268,8 +1270,9 @@ Mods: {
 				DisplayName: Hyper Regen Elixir
 				Tooltip:
 					'''
+					"Absorb..."
 					Increases your health regeneration by 50
-					Decreases your defenese by 35
+					Decreases your defenese by 25
 					'''
 			}
 
@@ -1669,6 +1672,81 @@ Mods: {
 					The shield greatly increases defensive potential
 					'''
 			}
+
+			SlipGun: {
+				DisplayName: Slip Gun
+				Tooltip: ""
+			}
+
+			SkillOrb: {
+				DisplayName: Skill Orb
+				Tooltip: Allow tinkering with skill
+			}
+
+			BlessedCharm: {
+				DisplayName: Blessed Charm
+				Tooltip: ""
+			}
+
+			GalaticFruit: {
+				DisplayName: Galatic Fruit
+				Tooltip: ""
+			}
+
+			MeatyMeat: {
+				DisplayName: Meaty Meat
+				Tooltip: ""
+			}
+
+			OldBook: {
+				DisplayName: Old Book
+				Tooltip: ""
+			}
+
+			SageOrb: {
+				DisplayName: Sage Orb
+				Tooltip: ""
+			}
+
+			ScopedCarrot: {
+				DisplayName: Scoped Carrot
+				Tooltip: ""
+			}
+
+			UpgradeItem7: {
+				DisplayName: Upgrade Item7
+				Tooltip: ""
+			}
+
+			UpgradeItem8: {
+				DisplayName: Upgrade Item8
+				Tooltip: ""
+			}
+
+			UpgradeItem9: {
+				DisplayName: Upgrade Item9
+				Tooltip: ""
+			}
+
+			EnergyRechargeStation: {
+				DisplayName: Energy Recharge Station
+				Tooltip: ""
+			}
+
+			ConfrontTrueGod: {
+				DisplayName: Confront True God
+				Tooltip: End this run so early ?
+			}
+
+			ChocolateTreasure: {
+				DisplayName: Chocolate Treasure
+				Tooltip: ""
+			}
+
+			StatsResetCard: {
+				DisplayName: Stats Reset Card
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1861,14 +1939,29 @@ Mods: {
 				DisplayName: Trinket5_ Buff
 				Description: Mods.BossRush.Buffs.Trinket5_Buff.Description
 			}
+
+			ManaReleaseBuff: {
+				DisplayName: Mana release
+				Description: Increases mana consumption rate
+			}
+
+			ManaBlock: {
+				DisplayName: Mana Block
+				Description: Mods.BossRush.Buffs.ManaBlock.Description
+			}
+
+			Stasis: {
+				DisplayName: Stasis
+				Description: Nothing can harm you and there is nothing you can do
+			}
 		}
 
 		Configs: {
 			BossRushModConfig: {
 				DisplayName: Boss Rush Mod Config
 
-				EnableChallengeMode: {
-					Label: Enable Challenge World ( On World Generation )
+				BossRushMode: {
+					Label: Boss Rush Mode
 					Tooltip:
 						'''
 						The intended way to play the mod
@@ -1892,15 +1985,6 @@ Mods: {
 						'''
 				}
 
-				VeteranMode: {
-					Label: Veteran Mode
-					Tooltip:
-						'''
-						Decrease amount of items you can get from chest
-						You start with 100 max hp instead of 200
-						'''
-				}
-
 				Enraged: {
 					Label: Enraged Mode (W.I.P)
 					Tooltip:
@@ -1908,18 +1992,6 @@ Mods: {
 						Challenge buffs for every boss that has them will activate
 						Will not drop the reward, however you can still get it by using power energy manually
 						recommended for practicing
-						'''
-				}
-
-				ExtraChallenge: {
-					Label: ExtraChallange(W.I.P)
-					Tooltip:
-						'''
-						The first time you kill a boss, you will get a challenge added into your game. This is irrevertible
-						The next time you kill a boss, the current challenge will be swap for a random challenge
-						These mode offer no real reward or benefit, only activate if you are bored and want an extra challenge
-						This do not work with in multiplayer
-						Warning : this may mess up a lot of item value, player value
 						'''
 				}
 
@@ -1942,10 +2014,8 @@ Mods: {
 						Will enable ForTheWorthy seeds regardless of world type, required you to play in master mode
 						Highly not recommend for inexperience player
 						- Enemy are much more brutal, and is immune to lava and trap
-						- NPC will gain randomize health and damage buff that range from 0% to 100%
-						- Spawn rate stay the same even during boss fight
+						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
-						- The mode will force Veteran mode to be activate
 						'''
 				}
 
@@ -1987,9 +2057,15 @@ Mods: {
 					Label: Auto Hard Core
 					Tooltip: ""
 				}
+
+				AutoRandomizeCharacter: {
+					Label: Auto Randomize Character
+					Tooltip: ""
+				}
 			}
 		}
 
 		Prefixes.BasePrefix.DisplayName: Base Prefix
+		"Keybinds.Skill activation.DisplayName": Skill activation
 	}
 }

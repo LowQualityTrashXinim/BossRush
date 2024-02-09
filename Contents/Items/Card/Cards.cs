@@ -8,53 +8,16 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {
-	internal class SolarCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentSolar);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.MeleeChanceMutilplier += .5f;
-		}
-	}
-	internal class VortexCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentVortex);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.RangeChanceMutilplier += .5f;
-		}
-	}
-	internal class NebulaCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentNebula);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.MagicChanceMutilplier += .5f;
-		}
-	}
-	internal class StarDustCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.FragmentStardust);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
-			Item.rare = ItemRarityID.Red;
-		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
-			modplayer.ChestLoot.SummonChanceMutilplier += .5f;
-		}
-	}
-	internal class ResetCard : CardItem {
+	internal class StatsResetCard : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.LunarBar);
-		public override void PostCardSetDefault() {
-			Item.maxStack = 99;
+		public override void SetDefaults() {
+			Item.BossRushDefaultToConsume(30, 24);
+			Item.UseSound = SoundID.Item35;
 			Item.rare = ItemRarityID.Red;
+			Item.maxStack = 99;
 		}
-		public override void OnUseItem(Player player, PlayerStatsHandle modplayer) {
+		public override bool? UseItem(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.ChestLoot.MeleeChanceMutilplier = 1;
 			modplayer.ChestLoot.RangeChanceMutilplier = 1;
 			modplayer.ChestLoot.MagicChanceMutilplier = 1;
@@ -79,39 +42,8 @@ namespace BossRush.Contents.Items.Card {
 			modplayer.SentrySlot = 0;
 			modplayer.Thorn = 0;
 			modplayer.CardLuck = 0;
+			return true;
 		}
-	}
-	internal class CopperCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 1;
-	}
-	internal class SilverCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.SilverBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 2;
-	}
-	internal class GoldCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.GoldBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 3;
-	}
-	internal class PlatinumCard : CardItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.PlatinumBar);
-		public override void PostCardSetDefault() {
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override int Tier => 4;
 	}
 	//This was ported from a secret mod of mine, it is badly made, but it should work most of it
 	public abstract class BaseCard : ModItem {
@@ -125,6 +57,9 @@ namespace BossRush.Contents.Items.Card {
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.scale = .5f;
 			CardSetDefault();
+		}
+		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
+			tooltips.Add(new TooltipLine(Mod, "FunCardItem", $"[c/{Main.DiscoColor.Hex3()}:Fun Item]"));
 		}
 		public virtual void CardSetDefault() {
 
@@ -149,7 +84,7 @@ namespace BossRush.Contents.Items.Card {
 			foreach (var npc in npclist) {
 				npc.StrikeNPC(npc.CalculateHitInfo(20, 0));
 			}
-			for (int i = 0;i < 100; i++) {
+			for (int i = 0; i < 100; i++) {
 				int dust = Dust.NewDust(player.Center + Vector2.One.Vector2DistributeEvenly(100, 360, i) * radius, 0, 0, DustID.GemDiamond);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = Vector2.Zero;

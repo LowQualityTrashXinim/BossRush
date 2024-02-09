@@ -68,7 +68,17 @@ namespace BossRush {
 			item.noMelee = true;
 			item.DamageType = DamageClass.Ranged;
 		}
-
+		public static void BossRushDefaultPotion(this Item item, int width, int height, int BuffType, int BuffTime) {
+			item.width = width;
+			item.height = height;
+			item.useStyle = ItemUseStyleID.DrinkLiquid;
+			item.useAnimation = item.useTime = 15;
+			item.useTurn = true;
+			item.maxStack = 30;
+			item.consumable = true;
+			item.buffType = BuffType;
+			item.buffTime = BuffTime;
+		}
 		public static void BossRushDefaultMagic(this Item item, int width, int height, int damage, float knockback, int useTime, int useAnimation, int useStyle, int shoot, float shootSpeed, int manaCost, bool autoReuse
 			) {
 			BossRushSetDefault(item, width, height, damage, knockback, useTime, useAnimation, useStyle, autoReuse);

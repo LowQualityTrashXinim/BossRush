@@ -1,10 +1,9 @@
-﻿using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
-using BossRush.Contents.Items.NohitReward;
+﻿using BossRush.Contents.Items.NohitReward;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Chest;
 //EnragedStuff
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Perks;
 using Terraria.ModLoader;
 using Terraria.ID;
@@ -25,8 +24,6 @@ namespace BossRush.Common {
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.SuspiciousLookingEye));
-				//Enraged boss drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ModContent.ItemType<KingSlimeDelight>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IronLootBox>()));
 			}
@@ -38,9 +35,6 @@ namespace BossRush.Common {
 				DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.WormFood));
 				DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
 				npcLoot.Add(DropOnce);
-				//Enraged boss drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ModContent.ItemType<EvilEye>()));
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new BossIsEnragedBySpecialSpawner(), ItemID.TheEyeOfCthulhu));
 				//Expert Mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
 			}
@@ -192,7 +186,6 @@ namespace BossRush.Common {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>(), 1, 2, 2));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<MoonLordEnrage>()));
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
 			}
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
@@ -201,6 +194,16 @@ namespace BossRush.Common {
 			npcLoot.Add(noHit);
 			npcLoot.Add(ExpertVSnormal);
 			npcLoot.Add(IsABoss);
+		}
+		public override void OnKill(NPC npc) {
+			if (npc.boss) {
+				int playerIndex = npc.lastInteraction;
+				if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
+					playerIndex = npc.FindClosestPlayer();
+				}
+				Player player = Main.player[playerIndex];
+				player.GetModPlayer<GamblePlayer>().Roll++;
+			}
 		}
 	}
 }

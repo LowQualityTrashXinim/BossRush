@@ -7,11 +7,8 @@ using BossRush.Common.RoguelikeChange;
 namespace BossRush.Contents.Items.Potion {
 	internal class GunslingerElixir : ModItem {
 		public override void SetDefaults() {
-			Item.BossRushDefaultToConsume(20, 26, ItemUseStyleID.DrinkLiquid);
-			Item.maxStack = 30;
+			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<GodVision>(), 12000);
 			Item.rare = ItemRarityID.Orange;
-			Item.buffType = ModContent.BuffType<GodVision>();
-			Item.buffTime = 12000;
 		}
 	}
 	internal class GodVision : ModBuff {
@@ -22,7 +19,7 @@ namespace BossRush.Contents.Items.Potion {
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetCritChance(DamageClass.Generic) += 70;
+			player.GetCritChance(DamageClass.Generic) += 50;
 			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= 100;
 		}
 	}

@@ -15,14 +15,13 @@ namespace BossRush.Contents.WeaponEnchantment {
 		/// This will clean your counter automatically upon changing weapon
 		/// </summary>
 		public bool ForcedCleanCounter = false;
-		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModEnchantment.{Name}.Description");
 		protected sealed override void Register() {
 			SetDefaults();
 			Type = EnchantmentLoader.Register(this);
 		}
 		/// <summary>
-		/// This will run before the counter from globalItem be wiped clean
+		/// This will run before the counter from globalItem be wiped clean<br/>
 		/// Only use it if <see cref="ForcedCleanCounter"/> is true
 		/// </summary>
 		/// <param name="index"></param>
@@ -47,7 +46,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public virtual void OnHitByAnything(Player player) { }
 		public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 		public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
-		public virtual void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) { }
+		public virtual void OnConsumeMana(int index, Player player, EnchantmentGlobalItem globalItem,Item item, int consumedMana) { }
 		public virtual void ModifyCriticalStrikeChance(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) { }
 		public virtual void ModifyItemScale(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) { }
 		public virtual void ModifyManaCost(int index,Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) { }
@@ -63,20 +62,20 @@ namespace BossRush.Contents.WeaponEnchantment {
 	}
 	public static class EnchantmentLoader {
 		private static readonly List<ModEnchantment> _enchantment = new();
-		private static readonly List<int> _enchantmentcacheID = new();
+		public static readonly List<int> EnchantmentcacheID = new();
 		public static int TotalCount => _enchantment.Count;
 		public static int Register(ModEnchantment enchant) {
 			ModTypeLookup<ModEnchantment>.Register(enchant);
 			_enchantment.Add(enchant);
-			_enchantmentcacheID.Add(enchant.ItemIDType);
+			EnchantmentcacheID.Add(enchant.ItemIDType);
 			return _enchantment.Count - 1;
 		}
 		public static ModEnchantment GetEnchantment(int type) {
 			return type >= 0 && type < _enchantment.Count ? _enchantment[type] : null;
 		}
 		public static ModEnchantment GetEnchantmentItemID(int ItemID) {
-			int index = _enchantmentcacheID.IndexOf(ItemID);
-			return index >= 0 && index < _enchantmentcacheID.Count ? _enchantment[index] : null;
+			int index = EnchantmentcacheID.IndexOf(ItemID);
+			return index >= 0 && index < EnchantmentcacheID.Count ? _enchantment[index] : null;
 		}
 	}
 }

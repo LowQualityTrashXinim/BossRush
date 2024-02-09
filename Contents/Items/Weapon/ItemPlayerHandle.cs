@@ -511,13 +511,11 @@ namespace BossRush.Contents.Items.Weapon {
 		/// <param name="modplayer"></param>
 		public virtual void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-			base.ModifyHitNPC(target, ref modifiers);
 			Player player = Main.player[Projectile.owner];
 			ModifyHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, ref modifiers);
 		}
 		public virtual void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) { }
 		public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			base.OnHitNPC(target, hit, damageDone);
 			Player player = Main.player[Projectile.owner];
 			OnHitNPCSynergy(player, player.GetModPlayer<PlayerSynergyItemHandle>(), target, hit, damageDone);
 		}

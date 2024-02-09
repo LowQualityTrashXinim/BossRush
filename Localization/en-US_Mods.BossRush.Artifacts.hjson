@@ -33,7 +33,7 @@ HeartOfEarthArtifact: {
 			+ Multiply your max HP by 1.5 and add a additional 100 max hp
 			+ Standing still for a short moment massively boost your regen
 		[c/ab3e43:Negative effect] : 
-			- Getting hit will make you unable to use your weapon for 5s
+			- Your damage effectiveness is depended on your current hp
 		'''
 }
 
@@ -72,9 +72,10 @@ TokenOfGreedArtifact: {
 		'''
 		"Satisfied by just having, caring not for weapon quality."
 		[c/b7bf5c:Positive effect] : 
-			+ Increase amount of drop by 2
+			+ Increase amount of drop by 4
 		[c/ab3e43:Negative effect] : 
-			- Decrease weapon damage globally by 35%
+			- If the weapon type have been uses more than 1 time, damage effective will be decreases by 35%
+			Note : this can be reset by switching to other weapon
 		'''
 }
 
@@ -84,9 +85,21 @@ TokenOfPrideArtifact: {
 		'''
 		"Having the skill to use whatever you are given."
 		[c/b7bf5c:Positive effect] : 
-			+ Increase weapon damage by 25%
+			+ Randomize your weapon enchantment 
 		[c/ab3e43:Negative effect] : 
-			- Halves your drop from treasure chest
+			- Lootbox only drop up to 1 weapon
+		'''
+}
+
+TokenOfWrathArtifact: {
+	DisplayName: Token Of Wrath
+	Description:
+		'''
+		"Ruthless..."
+		[c/b7bf5c:Positive effect] : 
+			+ Increases your weapon damage base on crit chance and crit damage ( doesn't count the 100% damage increases )
+		[c/ab3e43:Negative effect] : 
+			- You will never be able to deal a critical hit
 		'''
 }
 
@@ -103,17 +116,18 @@ VampirismCrystalArtifact: {
 		'''
 }
 
-FateDeciderArtifact: {
-	DisplayName: Fate Decider
+ManaOverloaderArtifact: {
+	DisplayName: Mana Overloader
 	Description:
 		'''
-		"Make your weapon a little bit more interesting."
+		"Unlimited potential"
 		[c/b7bf5c:Positive effect] :
-			+ Randomly make your weapon better than before.
+			+ You constantly regen Mana regardless of mana regen cooldown
 		[c/ab3e43:Negative effect] : 
-			- Randomly make your weapon worse than before.
-		[c/757480:The positive effect and negative effect can't stack.
-		After a certain amount of time is pass, the effect will change.]
+			- When you are at max mana, damage dealt to you will be increases base on your mana
+		[c/9b9c76:Neutral effect] :
+			= Spawn special orb that can increases your mana consumption rate
+			= Mana cost reduction can decreases your weapon damage and vice versa
 		'''
 }
 

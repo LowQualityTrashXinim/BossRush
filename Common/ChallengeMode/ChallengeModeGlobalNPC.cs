@@ -525,10 +525,5 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		public override void PostAI(NPC npc) {
 		}
-		public override void ModifyShop(NPCShop shop) {
-			if (ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
-				//Re add removing shop soon
-			}
-		}
 	}
 }

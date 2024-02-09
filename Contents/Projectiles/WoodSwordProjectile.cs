@@ -24,6 +24,7 @@ internal class SwordProjectile : ModProjectile {
 	Player player;
 	float outrotation = 0;
 	int directionLooking = 1;
+	Vector2 oldCenter = Vector2.Zero;
 	public override void AI() {
 		EnergySword_Code1AI();
 	}
@@ -31,8 +32,9 @@ internal class SwordProjectile : ModProjectile {
 		if (Projectile.timeLeft > 30) {
 			player = Main.player[Projectile.owner];
 			directionToMouse = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
+			oldCenter = Projectile.Center.PositionOFFSET(directionToMouse, -30);
 			Projectile.timeLeft = 30;
-			directionLooking = player.direction;
+			directionLooking = Main.rand.NextBool().ToDirectionInt();
 		}
 		float percentDone = Projectile.timeLeft / 30f;
 		percentDone = Math.Clamp(BossRushUtils.InExpo(percentDone), 0, 1);
@@ -45,10 +47,10 @@ internal class SwordProjectile : ModProjectile {
 		outrotation = rotation;
 		Projectile.rotation = rotation + MathHelper.PiOver4;
 		Projectile.velocity.X = directionLooking;
-		Projectile.Center = player.Center + Vector2.UnitX.RotatedBy(rotation) * 60f;
+		Projectile.Center = oldCenter + Vector2.UnitX.RotatedBy(rotation) * 60f;
 	}
 	public override void ModifyDamageHitbox(ref Rectangle hitbox) {
-		BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, outrotation, Projectile.width, Projectile.height, 10f);
+		BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, oldCenter, outrotation, Projectile.width, Projectile.height, 10f);
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);

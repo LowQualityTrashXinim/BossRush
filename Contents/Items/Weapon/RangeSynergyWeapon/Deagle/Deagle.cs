@@ -7,18 +7,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
-	internal class Deagle : SynergyModItem, IRogueLikeRangeGun {
-		float IRogueLikeRangeGun.OffSetPosition => 50;
-
-		public float Spread { get; set; }
-
+	internal class Deagle : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(56, 30, 70, 5f, 21, 21, ItemUseStyleID.Shoot, ProjectileID.Bullet, 40, false, AmmoID.Bullet);
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.sellPrice(silver: 1000);
 			Item.scale -= 0.25f;
 			Item.UseSound = SoundID.Item38;
-			Spread = 0;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 0;
+				weapon.OffSetPost = 50;
+			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			if (player.HasItem(ItemID.PhoenixBlaster)) {
@@ -40,12 +39,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			var weapon = Item.GetGlobalItem<RangeWeaponOverhaul>();
 			if (player.velocity != Vector2.Zero) {
-				Spread = 120;
-				velocity = velocity.RotateRandom(120);
+				weapon.SpreadAmount = 120;
 			}
 			else {
-				Spread = 0;
+				weapon.SpreadAmount = 0;
 				velocity *= 1.5f;
 				damage = (int)(damage * 1.5f);
 				knockback *= 2f;

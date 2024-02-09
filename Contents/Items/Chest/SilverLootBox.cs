@@ -73,12 +73,8 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			modplayer.GetAmount();
-			for (int i = 0; i < modplayer.weaponAmount; i++) {
-				GetWeapon(player, out int weapon, out int specialamount);
-				AmmoForWeapon(out int ammo, out int num, weapon);
-				player.QuickSpawnItem(entitySource, weapon, specialamount);
-				player.QuickSpawnItem(entitySource, ammo, num);
-			}
+			GetWeapon(entitySource, player, modplayer.weaponAmount);
+
 			player.QuickSpawnItem(entitySource, GetAccessory());
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);

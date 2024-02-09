@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<AmberBoneSpearProjectile>(), 25);
 			Item.UseSound = SoundID.Item1;
 			Item.DamageType = DamageClass.Magic;
-			Item.mana = 5;
+			Item.mana = 15;
 			Item.rare = ItemRarityID.Orange;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {

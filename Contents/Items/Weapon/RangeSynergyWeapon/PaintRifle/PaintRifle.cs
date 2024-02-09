@@ -6,19 +6,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle {
-	internal class PaintRifle : SynergyModItem, IRogueLikeRangeGun {
-		public float OffSetPosition => 42;
-
-		public float Spread { get; set; }
+	internal class PaintRifle : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(114, 40, 36, 4f, 4, 16, ItemUseStyleID.Shoot, ModContent.ProjectileType<CustomPaintProj>(), 7, true);
 			Item.rare = ItemRarityID.Orange;
 			Item.crit = 7;
 			Item.reuseDelay = 11;
 			Item.UseSound = SoundID.Item5;
-			Item.value = Item.sellPrice(silver: 1000);
+			Item.value = Item.sellPrice(gold: 1000);
 			Item.scale -= 0.25f;
-			Spread = 1;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 1;
+				weapon.OffSetPost = 42;
+			}
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-33, 3.5f);
@@ -48,7 +48,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle {
 				}
 			}
 			if (player.altFunctionUse == 2) {
-				Spread = 15;
+				Item.GetGlobalItem<RangeWeaponOverhaul>().SpreadAmount = 15;
 				for (int i = 0; i < 3; i++) {
 					velocity = velocity.Vector2RotateByRandom(15).Vector2RandomSpread(2, 1.2f);
 					Projectile.NewProjectile(source, position, velocity, type, (int)(damage * .7f), knockback, player.whoAmI);
@@ -61,6 +61,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle {
 				CanShootItem = false;
 				return;
 			}
+			Item.GetGlobalItem<RangeWeaponOverhaul>().SpreadAmount = 1;
 			for (int i = 0; i < 15; i++) {
 				Vector2 spread = velocity.Vector2RotateByRandom(35).Vector2RandomSpread(3, .2f) + player.velocity;
 				int dust = Dust.NewDust(position, 0, 0, DustID.Paint, spread.X, spread.Y, 0, new Color(r, g, b), Main.rand.NextFloat(1f, 1.45f));

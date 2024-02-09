@@ -138,8 +138,7 @@ BlessingOfSolar: {
 	Description:
 		'''
 		+ 192% increased odds for melee
-		+ 12% melee size increases
-		+ Increases 10 armor penetration
+		+ 8% melee size increases
 		+ Attacking enemy have a 5% with melee item have a chance to drop a heart
 		'''
 }
@@ -149,8 +148,8 @@ BlessingOfVortex: {
 	Description:
 		'''
 		+ 192% increased odds for range
-		+ 15% range critical strike chance
-		+ You have 4% chance to deal 4x damage
+		+ 5% range critical strike chance
+		+ You have 1% chance to deal 4x damage
 		'''
 }
 
@@ -159,7 +158,7 @@ BlessingOfNebula: {
 	Description:
 		'''
 		+ 192% increased odds for magic
-		+ 21% magic cost reduction
+		+ 6% magic cost reduction
 		+ Mana star have 5% to spawn from NPC when hitting them with magic projectile
 		'''
 }
@@ -169,7 +168,7 @@ BlessingOfStarDust: {
 	Description:
 		'''
 		+ 192% increased odds for summoner
-		+ For 1 minion/sentry slot you have, you gain 1 flat damage
+		+ For 2 minion/sentry slot you have, you gain 1 damage
 		+ 1 minion slot
 		+ 1 sentry slot
 		'''
@@ -232,8 +231,8 @@ OverchargedMana: {
 	DisplayName: Overcharged Mana
 	Description:
 		'''
-		+ your max mana is halved
-		+ deal AOE damage and gain +33% Magic Damage when at max current mana
+		+ Your max mana is halved
+		+ Deal AOE damage and gain +33% magic damage when at max current mana
 		'''
 }
 
@@ -242,7 +241,7 @@ ShopPerk: {
 	Description:
 		'''
 		+ Each Shop can now sell an Extra weapon based on progression
-		+ mobs drops more coins
+		+ Mobs drops more coins
 		'''
 }
 
@@ -251,7 +250,7 @@ CritPerk: {
 	Description:
 		'''
 		+ Gain a chance to ignore 90% target hit defense, the chance is based on critical strike chance
-		+ gain +7% critcal strike chance per stack
+		+ Increases +5% critcal strike chance
 		'''
 }
 
@@ -259,8 +258,8 @@ SummonBuffPerk: {
 	DisplayName: Crowd Control
 	Description:
 		'''
-		+ gain +2 minion slot for every stack you have
-		- non-summon projectiles damage dealt decreased by 5% per stack
+		+ Gain +2 minion slot for every stack you have
+		- Non-summon projectiles decreased damage by 5%
 		'''
 }
 
@@ -268,20 +267,27 @@ TrueMeleeBuffPerk: {
 	DisplayName: BloodShed
 	Description:
 		'''
-		+ Melee Damage is no longer random
+		+ Melee Damage is less random random
 		+ Melee Attacks that arent a projectile deals 25% bonus damage per stack
 		(note that during iframes, this ability is deactivated)
 		'''
 }
 
-knockpackPerk: {
+KnockpackPerk: {
 	DisplayName: Physics Enjoyer
 	Description:
 		'''
 		+ Most projectiles knockback dealt always becomes upward
 		+ Gain Increased Knockback
-		+ Hit against Enemies that cant be knockbacked converts the knockback into flat armor penetration instead
-		"NOOOOOOOOO!!!! THIS IS NOT HOW PHYSICS WORK! THIS DOSEN'T MAKE ANY SENSE!!!" 
-		"haha, they are flying"
+		+ Hit against enemies that have 100% KB resistance will converts knockback into flat armor penetration instead
+		'''
+}
+
+ImprovedManaPotion: {
+	DisplayName: Improved Mana Potion
+	Description:
+		'''
+		+ During mana sickness, increases mana regen capability
+		- After mana sicnkess duration is over, you can't no longer consume a mana potion for 30s
 		'''
 }

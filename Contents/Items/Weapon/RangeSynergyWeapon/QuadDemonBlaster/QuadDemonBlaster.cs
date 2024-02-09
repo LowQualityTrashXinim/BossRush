@@ -7,17 +7,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
-	class QuadDemonBlaster : SynergyModItem, IRogueLikeRangeGun {
-		public float OffSetPosition => 30;
-		public float Spread { get; set; }
-
+	class QuadDemonBlaster : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(40, 30, 29, 3f, 15, 15, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
 			Item.value = Item.buyPrice(gold: 50);
 			Item.rare = ItemRarityID.Orange;
 			Item.reuseDelay = 15;
 			Item.UseSound = SoundID.Item41;
-			Spread = 0;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 0;
+				weapon.OffSetPost = 30;
+				weapon.NumOfProjectile = 1;
+				weapon.itemIsAShotgun = false;
+			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			base.ModifySynergyToolTips(ref tooltips, modplayer);
@@ -26,7 +28,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
 			modplayer.QuadDemonBlaster_SpeedMultiplier -= modplayer.QuadDemonBlaster_SpeedMultiplier == 1 ? 0 : .25f;
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			float rotation = MathHelper.ToRadians(modplayer.QuadDemonBlaster_SpeedMultiplier);
+			float rotation = modplayer.QuadDemonBlaster_SpeedMultiplier;
 			for (int i = 0; i < 10; i++) {
 				Vector2 Rotate = velocity.Vector2DistributeEvenly(10, rotation, i);
 				float RandomSpeadx = Main.rand.NextFloat(0.5f, 1f);
@@ -37,8 +39,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
 					type, damage, knockback, player.whoAmI);
 			}
 			modplayer.QuadDemonBlaster_SpeedMultiplier += modplayer.QuadDemonBlaster_SpeedMultiplier < 45 ? 20 : 1;
-			Spread = modplayer.QuadDemonBlaster_SpeedMultiplier;
-			CanShootItem = true;
+			CanShootItem = false;
 		}
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-4, 2);

@@ -30,6 +30,7 @@ namespace BossRush.Common.Utils {
 			ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.CactusSword,
 			ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,
 			ItemID.LeadBroadsword, ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword,
+			ItemID.Flymeal
 		};
 		public readonly static int[] RangePreBoss = {
 				ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow,
@@ -190,7 +191,9 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] Trinket = new int[] {
 			ModContent.ItemType<Trinket_of_Swift_Health>(),
 			ModContent.ItemType<Trinket_of_Perpetuation>(),
-			ModContent.ItemType<Trinket_of_Ample_Perception>()
+			ModContent.ItemType<Trinket_of_Ample_Perception>(),
+			ModContent.ItemType<Trinket4>(),
+			ModContent.ItemType<Trinket5>()
 		};
 
 		public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };

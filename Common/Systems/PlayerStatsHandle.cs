@@ -92,6 +92,9 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void PostUpdate() {
 		ChestLoot.amountModifier = Math.Clamp(UpdateDropAmount + DropAmountIncrease + ChestLoot.amountModifier, 0, maxStatCanBeAchieved);
 	}
+	public override void UpdateLifeRegen() {
+		Player.lifeRegen = Math.Clamp(UpdateHPRegen + HPRegen + Player.lifeRegen, 0, maxStatCanBeAchieved);
+	}
 	public override void PostHurt(Player.HurtInfo info) {
 		base.PostHurt(info);
 		if (info.PvP) {
@@ -109,7 +112,6 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statDefense += Math.Clamp(UpdateDefenseBase + DefenseBase, -(maxStatCanBeAchieved + Player.statDefense), maxStatCanBeAchieved);
 		Player.moveSpeed = Math.Clamp(UpdateMovement + Movement + Player.moveSpeed, 0, maxStatCanBeAchieved);
 		Player.jumpSpeedBoost = Math.Clamp(UpdateJumpBoost + JumpBoost + Player.jumpSpeedBoost, 0, maxStatCanBeAchieved);
-		Player.lifeRegen = Math.Clamp(UpdateHPRegen + HPRegen + Player.lifeRegen, 0, maxStatCanBeAchieved);
 		Player.manaRegen = Math.Clamp(UpdateManaRegen + ManaRegen + Player.manaRegen, 0, maxStatCanBeAchieved);
 		Player.DefenseEffectiveness *= Math.Clamp(UpdateDefenseBase + DefenseEffectiveness + 1, 0, maxStatCanBeAchieved);
 		Player.thorns += UpdateThorn + Thorn;
@@ -335,7 +337,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
-		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
@@ -349,7 +351,8 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void HookBuffTimeModify(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet) {
-		if (Main.LocalPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+		Player player = Main.player[self.lastInteraction];
+		if (player.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, type, (int)modplayer.DebuffTime.ApplyTo(time), quiet);
 		}
 		else {

@@ -3,9 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using BossRush.Contents.Items;
+using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
 
 namespace BossRush.Common {
@@ -16,28 +16,6 @@ namespace BossRush.Common {
 			Recipe recipe = Recipe.Create(ItemID.FallenStar, 5);
 			recipe.AddIngredient(ItemID.ManaCrystal);
 			recipe.Register();
-
-			//enraged covert to normal
-			Recipe KingSlimeEnraged = Recipe.Create(ItemID.SlimeCrown);
-			KingSlimeEnraged.AddIngredient(ModContent.ItemType<KingSlimeSpecialSpawner>());
-
-			Recipe EoCEnraged = Recipe.Create(ItemID.SuspiciousLookingEye);
-			EoCEnraged.AddIngredient(ModContent.ItemType<EyeOfCthulhuSpecialSpawner>());
-
-			Recipe EoWEnraged = Recipe.Create(ItemID.WormFood);
-			EoWEnraged.AddIngredient(ModContent.ItemType<EaterOfWorldSpecialSpawner>());
-
-			Recipe BoWEnraged = Recipe.Create(ItemID.BloodySpine);
-			BoWEnraged.AddIngredient(ModContent.ItemType<BrainOfCthulhuSpecialSpawner>());
-
-			Recipe MoonLordEnraged = Recipe.Create(ItemID.CelestialSigil);
-			MoonLordEnraged.AddIngredient(ModContent.ItemType<MoonLordEnrage>());
-
-			KingSlimeEnraged.Register();
-			EoCEnraged.Register();
-			EoWEnraged.Register();
-			BoWEnraged.Register();
-			MoonLordEnraged.Register();
 		}
 		public override void AddRecipeGroups() {
 			foreach (var item in ContentSamples.ItemsByType) {
@@ -115,10 +93,9 @@ namespace BossRush.Common {
 			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
 			foreach (Recipe recipe in Main.recipe) {
 				SynergyRecipe(recipe);
-				if (config.EnableChallengeMode) {
-					continue;
+				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+					ChallengeModeRecipe(recipe);
 				}
-				ChallengeModeRecipe(recipe);
 			}
 		}
 		private void SynergyRecipe(Recipe recipe) {

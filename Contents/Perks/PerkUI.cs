@@ -44,7 +44,7 @@ namespace BossRush.Contents.Perks {
 			List<int> listOfPerk = new List<int>();
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 				if (modplayer.perks.ContainsKey(i)) {
-					if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+					if (!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0
 						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
 						continue;
 					}
@@ -98,7 +98,7 @@ namespace BossRush.Contents.Perks {
 				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
 				//After that we assign perk
 				if (modplayer.perks.ContainsKey(starterPerk[i])) {
-					if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(i).StackLimit) {
+					if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(starterPerk[i]).StackLimit) {
 						continue;
 					}
 				}
@@ -125,7 +125,7 @@ namespace BossRush.Contents.Perks {
 				perkplayer.perks[perkType]++;
 			ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.userInterface.SetState(null);
+			uiSystemInstance.DeactivateState();
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
@@ -161,7 +161,7 @@ namespace BossRush.Contents.Perks {
 			base.LeftClick(evt);
 			OnLeftClick(Main.LocalPlayer);
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.userInterface.SetState(null);
+			uiSystemInstance.DeactivateState();
 		}
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);

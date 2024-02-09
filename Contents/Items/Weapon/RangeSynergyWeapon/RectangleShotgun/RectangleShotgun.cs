@@ -1,24 +1,23 @@
-﻿using BossRush.Common.RoguelikeChange;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun {
-	class RectangleShotgun : SynergyModItem, IRogueLikeRangeGun {
-		public float OffSetPosition => 40;
-
-		public float Spread { get; set; }
-
+	class RectangleShotgun : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(12, 74, 50, 4f, 10, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<RectangleBullet>(), 100f, true, AmmoID.Bullet);
 			Item.value = Item.buyPrice(gold: 50);
 			Item.rare = ItemRarityID.LightRed;
 			Item.reuseDelay = 30;
 			Item.UseSound = SoundID.Item38;
-			Spread = 0;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 0;
+				weapon.OffSetPost = 40;
+			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			if (modplayer.RectangleShotgun_QuadBarrelShotgun)
@@ -66,11 +65,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun {
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 40;
 		}
-		int count = 0;
 		public override void AI() {
-			if (count == 0) {
+			if (Projectile.ai[0] == 0) {
 				Projectile.rotation = Projectile.velocity.ToRotation();
-				count++;
+				Projectile.ai[0]++;
 			}
 			Projectile.velocity *= .97f;
 		}

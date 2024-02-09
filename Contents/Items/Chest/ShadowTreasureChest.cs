@@ -142,14 +142,8 @@ namespace BossRush.Contents.Items.Chest
                     break;
             }
             modplayer.GetAmount();
-            for (int i = 0; i < modplayer.weaponAmount; i++)
-            {
-                GetWeapon(player, out int weapon, out int specialAmount);
-                AmmoForWeapon(out int ammo, out int num, weapon);
-                player.QuickSpawnItem(entitySource, weapon, specialAmount);
-                player.QuickSpawnItem(entitySource, ammo, num);
-            }
-            for (int i = 0; i < 2; i++)
+			GetWeapon(entitySource, player, modplayer.weaponAmount);
+			for (int i = 0; i < 2; i++)
             {
                 player.QuickSpawnItem(entitySource, GetAccessory());
             }

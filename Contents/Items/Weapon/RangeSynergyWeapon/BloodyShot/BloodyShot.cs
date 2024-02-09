@@ -7,16 +7,17 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
-	internal class BloodyShot : SynergyModItem, IRogueLikeRangeGun {
-		public float OffSetPosition => 30f;
-		public float Spread { get; set; }
+	internal class BloodyShot : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
 			Item.scale = 0.9f;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item11;
-			Spread = 5;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 5;
+				weapon.OffSetPost = 30;
+			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			if (modplayer.BloodyShoot_AquaScepter)

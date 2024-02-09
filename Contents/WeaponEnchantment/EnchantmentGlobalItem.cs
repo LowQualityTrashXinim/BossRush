@@ -1,32 +1,28 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using System.Collections.Generic;
-using Terraria.ID;
 using BossRush.Common.Systems;
-using System;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentGlobalItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE))
-			return base.AppliesToEntity(entity, lateInstantiation);
-		if (entity.damage > 0 && !entity.accessory) {
+		if (entity.damage > 0 && !entity.accessory && !entity.consumable) {
 			return true;
 		}
-		return base.AppliesToEntity(entity, lateInstantiation);
+		return false;
 	}
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[3];
 	public int[] Item_Counter1 = new int[3];
 	public int[] Item_Counter2 = new int[3];
-	public override void OnCreated(Item item, ItemCreationContext context) {
-	}
 	public override GlobalItem Clone(Item from, Item to) {
 		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
-		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 0);
+		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 3);
 		return clone;
 	}
 	public override void HoldItem(Item item, Player player) {
@@ -43,8 +39,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 			EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[i]).UpdateHeldItem(i, item, this, player);
 		}
 	}
-	public string GetWeaponModificationStats() =>
-		$"Item's enchantment slot : {EnchantmenStlot.Length}";
+	public string GetWeaponModificationStats() => $"Item's enchantment slot : {EnchantmenStlot.Length}";
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE))
 			return;
@@ -71,12 +66,12 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
-	private bool CommonEnchantmentCheck() => globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
+	private bool CommonEnchantmentCheck() => Player.HeldItem.damage <= 0 || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;
 		if (item != Player.HeldItem) {
-			if (item != null) {
+			if (item != null && !CommonEnchantmentCheck()) {
 				for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 					if (globalItem.EnchantmenStlot[i] == 0)
 						continue;
@@ -88,7 +83,9 @@ public class EnchantmentModplayer : ModPlayer {
 				}
 			}
 			item = Player.HeldItem;
-			globalItem = item.GetGlobalItem<EnchantmentGlobalItem>();
+			if (item.TryGetGlobalItem(out EnchantmentGlobalItem localglobal)) {
+				globalItem = localglobal;
+			}
 		}
 		if (CommonEnchantmentCheck()) {
 			return;
@@ -116,7 +113,6 @@ public class EnchantmentModplayer : ModPlayer {
 		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
 			if (globalItem.EnchantmenStlot[i] == 0)
 				continue;
-
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).Shoot(i, Player, globalItem, item, source, position, velocity, type, damage, knockback);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -130,18 +126,6 @@ public class EnchantmentModplayer : ModPlayer {
 				continue;
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnMissingMana(i, Player, globalItem, item, neededMana);
-		}
-	}
-	public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
-		base.ModifyMaxStats(out health, out mana);
-		if (CommonEnchantmentCheck()) {
-			return;
-		}
-		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
-			if (globalItem.EnchantmenStlot[i] == 0)
-				continue;
-
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyMaxStats(Player, ref health, ref mana);
 		}
 	}
 	public override void ModifyWeaponCrit(Item item, ref float crit) {
@@ -221,6 +205,17 @@ public class EnchantmentModplayer : ModPlayer {
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByAnything(Player);
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByProjectile(Player, proj, hurtInfo);
+		}
+	}
+	public override void OnConsumeMana(Item item, int manaConsumed) {
+		if (CommonEnchantmentCheck()) {
+			return;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			if (globalItem.EnchantmenStlot[i] == 0)
+				continue;
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnConsumeMana(i, Player, globalItem, item, manaConsumed);
 		}
 	}
 	public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {

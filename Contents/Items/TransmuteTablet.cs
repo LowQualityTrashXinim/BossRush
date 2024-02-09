@@ -16,6 +16,7 @@ using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.Accessories.Crystal;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
+using BossRush.Contents.Items.Toggle;
 
 namespace BossRush.Contents.Items;
 public class TransmuteTablet : ModItem {
@@ -28,14 +29,12 @@ public class TransmuteTablet : ModItem {
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
 			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			if (uiSystemInstance.userInterface.CurrentState == null) {
-				uiSystemInstance.userInterface.SetState(uiSystemInstance.DeCardUIState);
-			}
+			uiSystemInstance.SetState(uiSystemInstance.transmutation_uiState);
 		}
 		return false;
 	}
 }
-public class DeCardUIState : UIState {
+public class TransmutationUIState : UIState {
 	public override void OnActivate() {
 		Elements.Clear();
 		var panalUI = new UIPanel();
@@ -66,7 +65,7 @@ public class ExitUI : UIImageButton {
 	}
 
 	public override void LeftClick(UIMouseEvent evt) {
-		ModContent.GetInstance<UniversalSystem>().userInterface.SetState(null);
+		ModContent.GetInstance<UniversalSystem>().DeactivateState();
 	}
 }
 public class TransmutationUI : UIImage {
@@ -165,38 +164,37 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		}
 	}
 	private bool CheckForSpecialDrop(List<int> itemList) {
+		Player player = Main.LocalPlayer;
 		if (itemList.Contains(ItemID.LifeCrystal) && itemList.Contains(ItemID.ManaCrystal)) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
 			return true;
 		}
-		if (!Main.rand.NextBool(5)) {
+		if (Main.rand.NextBool()) {
 			return false;
 		}
 		if (itemList.Contains(ModContent.ItemType<NatureCrystal>()) && itemList.Contains(ItemID.ManaRegenerationBand)) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<EnergeticCrystal>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<EnergeticCrystal>());
 			return true;
 		}
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);
 		bool Musket = itemList.Contains(ItemID.Musket);
+		if (itemList.Contains(ModContent.ItemType<CelestialWrath>()) && itemList.Contains(ModContent.ItemType<MysteriousPotion>())) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
+		}
 		if (MiniShark && IceBlade) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
 			return true;
 		}
 		if (Musket && MiniShark) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<SingleBarrelMinishark>());
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SingleBarrelMinishark>());
 			return true;
 		}
 		return false;
 	}
 	private bool CheckWeapon(Item item) {
 		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
-			int type = ModContent.ItemType<CopperCard>();
-			var cardplayer = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			if (Main.rand.Next(201) < cardplayer.CardLuck) type = ModContent.ItemType<PlatinumCard>();
-			if (Main.rand.Next(201) < cardplayer.CardLuck * 1.5f) type = ModContent.ItemType<GoldCard>();
-			if (Main.rand.Next(201) < cardplayer.CardLuck * 3) type = ModContent.ItemType<SilverCard>();
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), type);
+			//Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<CopperCard>());
 			return true;
 		}
 		return false;

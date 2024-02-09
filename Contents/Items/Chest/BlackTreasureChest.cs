@@ -1,4 +1,5 @@
 ﻿using BossRush.Common;
+using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ParadoxPistol;
 using System.Collections.Generic;
 using Terraria;
@@ -54,7 +55,7 @@ namespace BossRush.Contents.Items.Chest {
 						break;
 				}
 			}
-			if (Main.rand.NextBool(25) && ModContent.GetInstance<BossRushModConfig>().EnableChallengeMode) {
+			if (Main.rand.NextBool(25) && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<UltimatePistol>());
 			}
 			switch (Main.rand.Next(11)) {

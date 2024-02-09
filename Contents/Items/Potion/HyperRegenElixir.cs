@@ -7,11 +7,8 @@ namespace BossRush.Contents.Items.Potion;
 internal class HyperRegenElixir : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
-		Item.BossRushDefaultToConsume(32, 32, ItemUseStyleID.DrinkLiquid);
-		Item.maxStack = 30;
-		Item.buffTime = 12000;
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<HyperRegen>(), 12000);
 		Item.rare = ItemRarityID.Orange;
-		Item.buffType = ModContent.BuffType<HyperRegen>();
 	}
 }
 internal class HyperRegen : ModBuff {
@@ -23,6 +20,6 @@ internal class HyperRegen : ModBuff {
 
 	public override void Update(Player player, ref int buffIndex) {
 		player.lifeRegen += 50;
-		player.statDefense -= 35;
+		player.statDefense -= 25;
 	}
 }

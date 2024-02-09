@@ -1,18 +1,21 @@
 ﻿using Terraria;
 using Terraria.UI;
 using Terraria.ID;
+using System.Reflection;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
+using BossRush.Contents.Skill;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Card;
+using Terraria.GameContent.UI.States;
 using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common.Systems;
 internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
-	public const string CHALLENGE_MODE = "ChallengeModeEnable";
+	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HARDCORE_MODE = "Hardcore";
 	public const string TRUE_MODE = "TrueMode";
@@ -20,7 +23,7 @@ internal class UniversalSystem : ModSystem {
 	/// Use this to lock content behind hardcore
 	/// </summary>
 	/// <param name="player"></param>
-	/// <param name="context">Use <see cref="CHALLENGE_MODE"/> or any kind of mode that seem fit</param>
+	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
 		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
@@ -29,21 +32,38 @@ internal class UniversalSystem : ModSystem {
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
 		if (context == HARDCORE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.AutoHardCore;
-		if (context == CHALLENGE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.EnableChallengeMode;
+			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
+		if (context == BOSSRUSH_MODE)
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.BossRushMode;
 		if (context == SYNERGY_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode;
 		if (context == TRUE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode && config.EnableChallengeMode;
+			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode && config.BossRushMode;
+		return false;
+	}
+	public static bool CanAccessContent(string context) {
+		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (context == BOSSRUSH_MODE)
+			return config.BossRushMode;
+		if (config.HardEnableFeature)
+			return true;
+		if (context == NIGHTMARE_MODE)
+			return config.Nightmare;
+		if (context == HARDCORE_MODE)
+			return config.AutoHardCore;
+		if (context == SYNERGY_MODE)
+			return config.SynergyMode;
+		if (context == TRUE_MODE)
+			return config.SynergyMode && config.BossRushMode;
 		return false;
 	}
 	internal UserInterface userInterface;
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
+	public SkillUI skillUIstate;
+	public SkillBarUI defaultUI;
 
-	public CardUI cardUIstate;
-	public DeCardUIState DeCardUIState;
+	public TransmutationUIState transmutation_uiState;
 	public override void Load() {
 
 		//UI stuff
@@ -52,10 +72,25 @@ internal class UniversalSystem : ModSystem {
 			Enchant_uiState = new();
 			perkUIstate = new();
 
-			DeCardUIState = new();
-			cardUIstate = new();
+			transmutation_uiState = new();
+			skillUIstate = new();
+			defaultUI = new();
 
 			userInterface = new();
+		}
+		On_UIElement.OnActivate += On_UIElement_OnActivate;
+	}
+	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
+		try {
+			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
+				if (self is UICharacterCreation el && Main.MenuUI.CurrentState is UICharacterCreation) {
+					MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
+					method.Invoke(el, new object[] { null, null });
+				}
+			}
+		}
+		finally {
+			orig(self);
 		}
 	}
 	public override void Unload() {
@@ -75,6 +110,16 @@ internal class UniversalSystem : ModSystem {
 				InterfaceScaleType.UI)
 			);
 	}
+	public void SetState(UIState state) {
+		if (userInterface.CurrentState == null || userInterface.CurrentState == defaultUI) {
+			userInterface.SetState(state);
+		}
+	}
+	public void DeactivateState() {
+		if (userInterface.CurrentState != null) {
+			userInterface.SetState(defaultUI);
+		}
+	}
 	//public override void SetStaticDefaults() {
 	//	//I am unsure why this is set to true
 	//	Main.debuff[BuffID.Campfire] = false;
@@ -84,13 +129,11 @@ internal class UniversalSystem : ModSystem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null) {
-			uiSystemInstance.userInterface.SetState(null);
-		}
+		uiSystemInstance.SetState(uiSystemInstance.defaultUI);
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null) {
+		if (uiSystemInstance.userInterface.CurrentState != null && uiSystemInstance.userInterface.CurrentState != uiSystemInstance.defaultUI) {
 			return false;
 		}
 		return base.CanUseItem(item);

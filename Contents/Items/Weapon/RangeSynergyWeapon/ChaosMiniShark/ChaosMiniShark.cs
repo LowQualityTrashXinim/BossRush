@@ -1,16 +1,12 @@
-﻿using BossRush.Common.RoguelikeChange;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark {
-	internal class ChaosMiniShark : SynergyModItem, IRogueLikeRangeGun {
+	internal class ChaosMiniShark : SynergyModItem {
 		int counter = 0;
-
-		public float OffSetPosition => 70;
-
-		public float Spread { get; set; }
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(72, 32, 24, 2f, 6, 6, ItemUseStyleID.Shoot, ProjectileID.Bullet, 10f, true, AmmoID.Bullet);
 
@@ -18,7 +14,10 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ChaosMiniShark {
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item11;
 
-			Spread = 10;
+			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
+				weapon.SpreadAmount = 10;
+				weapon.OffSetPost = 70;
+			}
 		}
 
 		public override bool CanConsumeAmmo(Item ammo, Player player) {

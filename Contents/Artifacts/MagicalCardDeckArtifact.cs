@@ -17,6 +17,9 @@ namespace BossRush.Contents.Artifacts
     {
         public override int Frames => 10;
 		public override Color DisplayNameColor => Color.DeepSkyBlue;
+		public override bool CanBeSelected(Player player) {
+			return false;
+		}
 	}
 
 	class MagicalCardDeckPlayer : ModPlayer {

@@ -30,95 +30,97 @@ Boomstick.Description:
 	'''
 WoodenSword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 AshWoodSword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 BorealWoodSword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 PalmWoodSword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 RichMahoganySword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 ShadewoodSword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 EbonwoodSword.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases weapon size by 10%
 	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
 	'''
 CopperBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 TinBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 IronBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 LeadBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 SilverBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 TungstenBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 GoldBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will :
+	Hitting a enemy will :
 	+ 25% chance to inflict enemy with Midas for 6s
-	+ Create a ghost sword to swing ( trigger every 5s )
+	+ Create a ghost sword to swing ( trigger every 0.75s  )
 	Increases weapon size by 10%
 	'''
 PlatinumBroadsword.Description:
 	'''
-	Hitting a enemy with melee weapon will create a ghost sword that swing ( trigger every 5s )
+	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s )
 	Increases weapon size by 10%
 	'''
 CactusSword.Description:
 	'''
-	On critical strike when hitting enemy with melee weapon
-	Shoot out a friendly rolling cactus that deal equal to 300% weapon damage ( trigger every 10 second )
+	Hitting a enemy on critical strike will shoot out a friendly rolling cactus 
+	+ Rolling cactus deal equal to 300% weapon damage 
+	( Can be trigger every 10 second )
 	'''
 EnchantedSword.Description:
 	'''
+	Increases melee item use speed by 10%
 	Weapon that can shoot :
 	+ Shoot out additional enchanted beam that deal 25% more damage ( trigger every 3 * item use time )
 	Weapon that can't shoot :
@@ -131,99 +133,130 @@ StarFury.Description:
 	Weapon that can't shoot :
 	+ Upon hitting enemy will spawn 3 Star fall down with inaccurancy that deal 50% damage ( trigger every 1.5s)
 	'''
+IceBlade.Description:
+	'''
+	Weapon that can shoot will shoot additional ice bolt ( trigger every 3 * item use time )
+	On hitting enemy with melee item, inflict Frost Burn debuff for 3s to 6s
+	While in snow biome, increases damage by 12% and critical strike chance by 3%
+	'''
+BatBat.Description:
+	'''
+	Increases player movement speed by 12% and jump boost by 30% when held the item 
+	On hitting enemy, heal for 1 HP ( trigger every 0.2s )
+	'''
+BoneSword.Description:
+	'''
+	Increases weapon size by 15%
+	Attacking enemy have 25% chance to shoot out a infinite piercing bone
+	( trigger every 1s )
+	'''
+BladedGlove.Description:
+	'''
+	Increases attack speed by 5%
+	Hitting a enemy with melee sword will strike them twice
+	( note : the second strike will never be critical and this effect trigger every 1s )
+	'''
 CopperShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 TinShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 IronShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 LeadShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 SilverShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 TungstenShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 GoldShortSword.Description:
 	'''
-	Increases base damage by 5
+	Increases base damage by 2
 	Increases critical strike damage by 25%
 	Inflict Midas for 6 second upon critical hit via sword
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 PlatinumShortSword.Description:
 	'''
-	Increases weapon base damage by 5
+	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
+	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
 WoodenBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 AshWoodBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 BorealWoodBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 RichMahoganyBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 EbonwoodBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 ShadewoodBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 PalmWoodBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Multiply shooting velocity by 1.1
-	Weapon will shoot additional out a special arrow
+	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
 	'''
 CopperBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -231,7 +264,7 @@ CopperBow.Description:
 	'''
 TinBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -239,7 +272,7 @@ TinBow.Description:
 	'''
 IronBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -247,7 +280,7 @@ IronBow.Description:
 	'''
 LeadBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -255,7 +288,7 @@ LeadBow.Description:
 	'''
 SilverBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -263,7 +296,7 @@ SilverBow.Description:
 	'''
 TungstenBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -271,7 +304,7 @@ TungstenBow.Description:
 	'''
 GoldBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
@@ -279,11 +312,21 @@ GoldBow.Description:
 	'''
 PlatinumBow.Description:
 	'''
-	Increases damage by 5
+	Increases damage by 1
 	Increases range damage by 15%
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
 	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
+	'''
+DemonBow.Description:
+	'''
+	Weapon that use arrow will and is using wooden arrow will convert wooden arrow to unholy arrow
+	While player are in corruption, shoot out Corruption Trail
+	'''
+TendonBow.Description:
+	'''
+	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( can be trigger every 1s )
+	Hitting any enemy 4 times will heal player for 1 hp
 	'''
 SnowballCannon.Description:
 	'''
@@ -304,17 +347,19 @@ AmethystStaff.Description:
 	'''
 	Reduce mana cost by 15%
 	Convert your projectile into Amethyst Bolt
-	Your weapon have 17% chance to shoot out additional Amethyst Bolt random location
+	Your weapon have 
+	+ 17% chance to shoot out additional Amethyst Bolt random location
+	+ 3% chance to shoot out spread of 3 Amethyst Bolt
 	'''
 TopazStaff.Description:
 	'''
-	Reduce mana cost by 15%
+	Reduce mana cost by 5%
 	Convert your projectile into Topaz Bolt
-	Your weapon have 17% chance to shoot out additional Topaz Bolt random location
+	Your weapon have 27% chance to shoot out additional Topaz Bolt random location
 	'''
 SapphireStaff.Description:
 	'''
-	Reduce mana cost by 15%
+	Magic weapon have 8% chance to not cost mana
 	Convert your projectile into Sapphire Bolt
 	Your weapon have 17% chance to shoot out additional Sapphire Bolt random location
 	'''
@@ -322,13 +367,16 @@ EmeraldStaff.Description:
 	'''
 	Reduce mana cost by 15%
 	Convert your projectile into Emerald Bolt
-	Your weapon have 17% chance to shoot out additional Emerald Bolt random location
+	Your weapon have 
+	+ 17% chance to shoot out additional Emerald Bolt random location
+	+ 32% to make additional Emerald Bolt stronger
 	'''
 RubyStaff.Description:
 	'''
+	Increases mana cost by 20%
 	Convert your projectile into Ruby Bolt
 	Your weapon have 17% chance to shoot out additional Ruby Bolt random location
-	When missing mana, Burst out 5 ruby bolt around you ( can be trigger every 10s )
+	When missing mana, Shoot out 3 ruby bolt and heal half of your mana instantly ( can be trigger every 25s )
 	'''
 DiamondStaff.Description:
 	'''
@@ -369,6 +417,39 @@ ThunderStaff.Description:
 	On hitting NPC with item or a projectile, spawn a thunder staff bolt from random position
 	( trigger every 0.2 second )
 	'''
+ZapinatorGray.Description:
+	'''
+	Have 1 in 20 chance to do following effect:
+	+ Offset position randomly
+	+ Multiply damage by 10
+	+ Increases damage by 100
+	+ Decreases velocity by 90%
+	+ Shoot out addition projectile
+	'''
+SpaceGun.Description:
+	'''
+	Every time weapon shoot 3 time, shoot out green lazer for 3 time
+	If space armor is fully on, this weapon will inherit space gun effect
+	'''
+BeeGun.Description:
+	'''
+	Shooting weapon have 20% to shoot out a friendly bee that deal 20 damage 
+	( note : increases to 50% if player have Have Pack )
+	When player are hitted, put player in honey buff for 6s and release 5 bees that deal 30 damage
+	( note : 10% of your weapon damage will contribute to bee damage exclusive to enchantment )
+	'''
+Vilethorn.Description:
+	'''
+	Reduce mana cost by 5%
+	Create vilethorn from the enemy when a projectile hit
+	( Can be trigger every 1s )
+	'''
+CrimsonRod.Description:
+	'''
+	Reduce mana cost by 8%
+	Create blood rain that shoot out randomly at cursor position
+	( Can be trigger every 0.12s )
+	'''
 BabyBirdStaff.Description:
 	'''
 	Spawn elite baby bird to aid you during fight
@@ -377,6 +458,6 @@ BabyBirdStaff.Description:
 BabySlimeStaff.Description:
 	'''
 	Spawn spiked baby slime to aid you during fight
-	Spike baby bird shoot out 1 to 3 slime spike whenever it attack a enemy
+	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
 FlinxStaff.Description: Spawn 2 flinx minions to aid you

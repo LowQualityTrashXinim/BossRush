@@ -52,6 +52,36 @@ namespace BossRush.Common.Nightmare {
 			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return;
 			}
+			switch (npc.type) {
+				case NPCID.KingSlime:
+					target.AddBuff(BuffID.BrokenArmor, 90);
+					break;
+				case NPCID.EyeofCthulhu:
+					target.AddBuff(BuffID.Cursed, 90);
+					target.AddBuff(BuffID.Bleeding, 150);
+					target.AddBuff(BuffID.Obstructed, 180);
+					target.AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 30);
+					break;
+				case NPCID.BrainofCthulhu:
+					target.AddBuff(164, 60);
+					target.AddBuff(BuffID.Ichor, 180);
+					break;
+				case NPCID.EaterofWorldsHead:
+					target.AddBuff(BuffID.Weak, 180);
+					target.AddBuff(BuffID.CursedInferno, 300);
+					target.AddBuff(BuffID.BrokenArmor, 180);
+					break;
+				case NPCID.EaterofWorldsBody:
+				case NPCID.EaterofWorldsTail:
+					target.AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 30);
+					break;
+				case NPCID.QueenBee:
+					target.AddBuff(BuffID.Venom, 180);
+					target.AddBuff(BuffID.Bleeding, 180);
+					break;
+				default:
+					break;
+			}
 			if (Main.rand.NextBool(10))
 				target.AddBuff(BuffID.BrokenArmor, Main.rand.Next(1, 901));
 			if (Main.rand.NextBool(10))
