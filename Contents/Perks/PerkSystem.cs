@@ -11,7 +11,6 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;
-
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
 		public override bool? UseItem(Item item, Player player) {
@@ -249,6 +248,9 @@ namespace BossRush.Contents.Perks {
 			}
 			return useSpeed;
 		}
+
+
+	
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
