@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria;
 using System;
 using BossRush.Contents.Perks;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -783,13 +784,14 @@ namespace BossRush.Common.RoguelikeChange {
 				return;
 			}
 			if (ShadewoodArmorCD <= 0) {
+				float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius();
 				for (int i = 0; i < 75; i++) {
-					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.Crimson);
-					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(300, 300), 0, 0, DustID.GemRuby);
+					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Crimson);
+					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.GemRuby);
 				}
-				Player.Center.LookForHostileNPC(out List<NPC> npclist, 325f);
+				Player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 				foreach (var npc in npclist) {
-					npc.StrikeNPC(npc.CalculateHitInfo(30, 1));
+					Player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)Player.GetDamage(DamageClass.Generic).ApplyTo(30), 1));
 					npc.AddBuff(BuffID.Ichor, 300);
 					Player.Heal(1);
 				}

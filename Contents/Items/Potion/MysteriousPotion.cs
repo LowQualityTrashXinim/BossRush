@@ -117,16 +117,16 @@ namespace BossRush.Contents.Items.Potion {
 			for (int i = 0; i < modplayer.Stats.Count; i++) {
 				switch (modplayer.Stats[i]) {
 					case PlayerStats.MeleeDMG:
-						statsplayer.UpdateMelee += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						player.GetDamage(DamageClass.Melee) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.RangeDMG:
-						statsplayer.UpdateRange += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						player.GetDamage(DamageClass.Ranged) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MagicDMG:
-						statsplayer.UpdateMagic += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						player.GetDamage(DamageClass.Magic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.SummonDMG:
-						statsplayer.UpdateSummon += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						player.GetDamage(DamageClass.Summon) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.MovementSpeed:
 						statsplayer.UpdateMovement += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
@@ -150,10 +150,10 @@ namespace BossRush.Contents.Items.Potion {
 						statsplayer.UpdateDefenseBase += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.DamageUniverse:
-						statsplayer.UpdateDamagePure += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						player.GetDamage(DamageClass.Generic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.CritChance:
-						statsplayer.UpdateCritStrikeChance += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						player.GetCritChance(DamageClass.Generic) += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.CritDamage:
 						statsplayer.UpdateCritDamage += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);

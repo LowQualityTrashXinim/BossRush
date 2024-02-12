@@ -48,19 +48,21 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 			if (player.ItemAnimationActive) {
-				if (globalItem.Item_Counter1[index] <= 0 && item.useAmmo == AmmoID.Arrow) {
-					player.PickAmmo(item, out int proj, out float speed, out int damage, out float knockback, out int ammoID);
-					Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(10);
-					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(item, ammoID), player.Center, vel * speed, proj, damage, knockback, player.whoAmI);
+				if (globalItem.Item_Counter1[index] <= 0) {
+					int type = ProjectileID.Bullet;
+					if (player.PickAmmo(item, out int proj, out float speed, out int damage, out float knockback, out int ammoID)) {
+						if (item.useAmmo == AmmoID.Bullet) {
+							type = proj;
+						}
+					}
+					Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15);
+					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(item, ammoID), player.Center, vel * speed, type, damage, knockback, player.whoAmI);
 					globalItem.Item_Counter1[index] = 8;
 				}
 			}
 		}
 		public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
 			useSpeed += .05f;
-		}
-		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .1f;
 		}
 	}
 	public class TheUndertaker : ModEnchantment {
@@ -227,20 +229,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -254,20 +248,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -281,20 +267,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -308,20 +286,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -335,20 +305,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -362,20 +324,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -389,20 +343,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -416,20 +362,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
-			if (item.DamageType == DamageClass.Ranged) {
-				damage += .15f;
-			}
-		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity += velocity.SafeNormalize(Vector2.Zero) * 1.25f;
-			}
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999) {
+			if (globalItem.Item_Counter1[index] > 0 || proj.type == ProjectileID.WoodenArrowFriendly && proj.ai[2] == 9999 || !proj.arrow) {
 				return;
 			}
 			globalItem.Item_Counter1[index] = 12;
@@ -460,6 +398,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.minion) {
+				return;
+			}
 			if (globalItem.Item_Counter1[index] <= 0) {
 				target.AddBuff(BuffID.Ichor, 240);
 				globalItem.Item_Counter1[index] = 60;

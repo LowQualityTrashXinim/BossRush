@@ -11,7 +11,7 @@ internal class ChocolateTreasure : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.DropAmountIncrease++;
+		//modplayer.DropAmountIncrease++;
 		return true;
 	}
 }

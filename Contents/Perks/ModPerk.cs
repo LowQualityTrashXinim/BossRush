@@ -59,20 +59,21 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(Player player) {
 			if (player.buffImmune[BuffID.Poisoned]) {
-				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
+				float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius();
+				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
 				for (int i = 0; i < 6; i++) {
-					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Poisoned);
+					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Poisoned);
 					Main.dust[dustRing].noGravity = true;
 					Main.dust[dustRing].velocity = Vector2.Zero;
 					Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Poisoned);
+					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Poisoned);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity = Vector2.Zero;
 					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 				}
 				if (npclist.Count > 0) {
 					foreach (NPC npc in npclist) {
-						npc.AddBuff(BuffID.Poisoned, 1);
+						npc.AddBuff(BuffID.Poisoned, 180);
 					}
 				}
 			}
@@ -88,20 +89,21 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(Player player) {
 			if (player.buffImmune[BuffID.OnFire]) {
-				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, 250);
+				float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius();
+				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
 				for (int i = 0; i < 4; i++) {
-					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(250, 250), 0, 0, DustID.Torch);
+					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
 					Main.dust[dustRing].noGravity = true;
 					Main.dust[dustRing].velocity = Vector2.Zero;
 					Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(250, 250), 0, 0, DustID.Torch);
+					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity = -Vector2.UnitY * 4f;
 					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 				}
 				if (npclist.Count > 0) {
 					foreach (NPC npc in npclist) {
-						npc.AddBuff(BuffID.OnFire, 1);
+						npc.AddBuff(BuffID.OnFire, 180);
 					}
 				}
 			}
@@ -227,7 +229,8 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 5;
 		}
 		public override void OnHitByAnything(Player player) {
-			player.Center.LookForHostileNPC(out List<NPC> npclist, 300);
+			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius() * 2;
+			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 			foreach (NPC npc in npclist) {
 				int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
 				npc.StrikeNPC(npc.CalculateHitInfo(75 * StackAmount, direction, false, 10));
@@ -235,11 +238,11 @@ namespace BossRush.Contents.Perks {
 			for (int i = 0; i < 150; i++) {
 				int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
 				Main.dust[smokedust].noGravity = true;
-				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(25, 25);
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 				int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity = Main.rand.NextVector2Circular(25, 25);
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 			}
 		}

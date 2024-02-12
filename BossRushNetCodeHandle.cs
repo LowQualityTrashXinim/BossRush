@@ -2,12 +2,10 @@
 using System.IO;
 using Terraria.ID;
 using BossRush.Common;
-using BossRush.Common.Systems;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush
@@ -21,7 +19,6 @@ namespace BossRush
             NoHitBossNum,
             GambleAddiction,
             ChanceMultiplayer,
-            CardEffect,
             GodUltimateChallenge
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -68,14 +65,6 @@ namespace BossRush
                     if (Main.netMode == NetmodeID.Server)
                     {
                         chestplayer.SyncPlayer(-1, whoAmI, false);
-                    }
-                    break;
-                case MessageType.CardEffect:
-                    PlayerStatsHandle cardplayer = Main.player[playernumber].GetModPlayer<PlayerStatsHandle>();
-                    cardplayer.ReceivePlayerSync(reader);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        cardplayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
                 case MessageType.GodUltimateChallenge:

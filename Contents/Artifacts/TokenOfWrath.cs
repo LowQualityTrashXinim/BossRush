@@ -20,7 +20,7 @@ public class TokenOfWrathPlayer : ModPlayer {
 	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		if (TokenOfWrath) {
 			damage += critrate * .01f;
-			damage += Player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage + Player.GetModPlayer<PlayerStatsHandle>().CritDamage;
+			damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage);
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {

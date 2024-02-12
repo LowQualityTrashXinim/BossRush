@@ -27,7 +27,7 @@ namespace BossRush.Common {
 				Main.NewText("You have enter debug mode", Color.Red);
 				return;
 			}
-			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore && !Player.IsDebugPlayer()) {
+			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}
 			else if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {

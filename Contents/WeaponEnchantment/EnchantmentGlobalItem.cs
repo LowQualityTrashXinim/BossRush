@@ -20,6 +20,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public int[] EnchantmenStlot = new int[3];
 	public int[] Item_Counter1 = new int[3];
 	public int[] Item_Counter2 = new int[3];
+	public int[] Item_Counter3 = new int[3];
 	public override GlobalItem Clone(Item from, Item to) {
 		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
 		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 3);
@@ -79,6 +80,7 @@ public class EnchantmentModplayer : ModPlayer {
 						EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).PreCleanCounter(i, Player, globalItem, item);
 						globalItem.Item_Counter1 = new int[3];
 						globalItem.Item_Counter2 = new int[3];
+						globalItem.Item_Counter3 = new int[3];
 					}
 				}
 			}

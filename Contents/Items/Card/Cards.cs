@@ -22,26 +22,6 @@ namespace BossRush.Contents.Items.Card {
 			modplayer.ChestLoot.RangeChanceMutilplier = 1;
 			modplayer.ChestLoot.MagicChanceMutilplier = 1;
 			modplayer.ChestLoot.SummonChanceMutilplier = 1;
-			modplayer.MeleeDMG = 0;
-			modplayer.RangeDMG = 0;
-			modplayer.MagicDMG = 0;
-			modplayer.SummonDMG = 0;
-			modplayer.Movement = 0;
-			modplayer.JumpBoost = 0;
-			modplayer.HPMax = 0;
-			modplayer.HPRegen = 0;
-			modplayer.ManaMax = 0;
-			modplayer.ManaRegen = 0;
-			modplayer.DefenseBase = 0;
-			modplayer.DamagePure = 0;
-			modplayer.CritStrikeChance = 0;
-			modplayer.CritDamage = 0;
-			modplayer.DefenseEffectiveness = 0;
-			modplayer.DropAmountIncrease = 0;
-			modplayer.MinionSlot = 0;
-			modplayer.SentrySlot = 0;
-			modplayer.Thorn = 0;
-			modplayer.CardLuck = 0;
 			return true;
 		}
 	}

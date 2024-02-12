@@ -27,10 +27,12 @@ namespace BossRush {
 					|| stats is PlayerStats.ChestLootDropIncrease;
 	}
 	public enum PlayerStats {
+		None,
 		MeleeDMG,
 		RangeDMG,
 		MagicDMG,
 		SummonDMG,
+		DamageUniverse,
 		MovementSpeed,
 		JumpBoost,
 		MaxHP,
@@ -38,14 +40,17 @@ namespace BossRush {
 		MaxMana,
 		RegenMana,
 		Defense,
-		DamageUniverse,
 		CritChance,
 		CritDamage,
 		DefenseEffectiveness,
 		ChestLootDropIncrease,
 		MaxMinion,
 		MaxSentry,
-		Thorn
+		Thorn,
+		ShieldHealth,
+		ShieldEffectiveness,
+		AttackSpeed,
+		AuraRadius
 		//Luck
 	}
 

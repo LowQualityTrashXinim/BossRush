@@ -11,10 +11,10 @@ FlintlockPistol.Description:
 	'''
 Minishark.Description:
 	'''
-	Weapon that can shoot projectile have 10% to shoot out a bullet
-	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
+	During item animation, weapon will shoot bullet toward cursor position
+	+ If player in their inventory have ammo then it will instead shoot that
+	( trigger every 8 tick )
 	Increases attack speed by 5%
-	Increases damage by 10%
 	'''
 TheUndertaker.Description:
 	'''
@@ -257,65 +257,49 @@ PalmWoodBow.Description:
 CopperBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 TinBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 IronBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 LeadBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 SilverBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 TungstenBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 GoldBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 PlatinumBow.Description:
 	'''
 	Increases damage by 1
-	Increases range damage by 15%
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.25
-	Hitting NPC with projectile will spawn a wooden arrow around you to shoot toward the NPC
+	Hitting NPC with arrow will create a wooden arrow to shoot toward the NPC
 	( Note : trigger every 0.2s and the wooden arrow spawn from this enchantment don't count )
 	'''
 DemonBow.Description:
@@ -327,6 +311,7 @@ TendonBow.Description:
 	'''
 	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( can be trigger every 1s )
 	Hitting any enemy 4 times will heal player for 1 hp
+	( Note : projectile that is a minion will is not accepted )
 	'''
 SnowballCannon.Description:
 	'''
@@ -348,18 +333,18 @@ AmethystStaff.Description:
 	Reduce mana cost by 15%
 	Convert your projectile into Amethyst Bolt
 	Your weapon have 
-	+ 17% chance to shoot out additional Amethyst Bolt random location
-	+ 3% chance to shoot out spread of 3 Amethyst Bolt
+	+ 55% chance to shoot out additional Amethyst Bolt random location
+	+ 17% chance to shoot out spread of 3 Amethyst Bolt
 	'''
 TopazStaff.Description:
 	'''
-	Reduce mana cost by 5%
+	Reduce mana cost by 25%
 	Convert your projectile into Topaz Bolt
 	Your weapon have 27% chance to shoot out additional Topaz Bolt random location
 	'''
 SapphireStaff.Description:
 	'''
-	Magic weapon have 8% chance to not cost mana
+	Magic weapon have 18% chance to not use mana
 	Convert your projectile into Sapphire Bolt
 	Your weapon have 17% chance to shoot out additional Sapphire Bolt random location
 	'''
@@ -368,7 +353,7 @@ EmeraldStaff.Description:
 	Reduce mana cost by 15%
 	Convert your projectile into Emerald Bolt
 	Your weapon have 
-	+ 17% chance to shoot out additional Emerald Bolt random location
+	+ 47% chance to shoot out additional Emerald Bolt random location
 	+ 32% to make additional Emerald Bolt stronger
 	'''
 RubyStaff.Description:
@@ -382,12 +367,13 @@ DiamondStaff.Description:
 	'''
 	Convert your projectile into Diamond Bolt
 	Your weapon have 17% chance to shoot out additional Diamond Bolt random location
-	When missing mana, Burst out 5 diamond bolt around you ( can be trigger every 10s )
+	When missing mana, Burst out 5 slow moving diamond bolt around you ( can be trigger every 10s )
 	'''
 AmberStaff.Description:
 	'''
+	Increases magic damage by 15% and flat damage by 5
 	Reduce mana cost by 15%
-	Convert your projectile into Amber Bolt
+	Convert your projectile into Amber Bolt, if your weapon don't shoot then it will shoot amber bolt
 	Your weapon have 17% chance to shoot out additional Amber Bolt random location
 	'''
 WandOfSparking.Description:
@@ -419,7 +405,7 @@ ThunderStaff.Description:
 	'''
 ZapinatorGray.Description:
 	'''
-	Have 1 in 20 chance to do following effect:
+	Weapon that shoot have 1 in 20 chance to do following effect:
 	+ Offset position randomly
 	+ Multiply damage by 10
 	+ Increases damage by 100
