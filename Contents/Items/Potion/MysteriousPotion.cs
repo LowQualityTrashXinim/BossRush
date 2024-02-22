@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Potion {
 			Item.maxStack = 99;
 			Item.buffType = ModContent.BuffType<MysteriousPotionBuff>();
 			Item.buffTime = 14400;
-			base.SetDefaults();
+			Item.value = Item.sellPrice(gold: 1);
 		}
 		public override bool CanUseItem(Player player) {
 			return !player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>());
@@ -42,7 +42,8 @@ namespace BossRush.Contents.Items.Potion {
 			PlayerStats.SummonDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.RangeDMG,
-			PlayerStats.MeleeDMG };
+			PlayerStats.MeleeDMG,
+			PlayerStats.AttackSpeed};
 			if (modplayer.Stats.Count > 0 && modplayer.Stats.Count != stats.Count) {
 				foreach (var item in modplayer.Stats) {
 					if (stats.Contains(item)) {
@@ -170,6 +171,9 @@ namespace BossRush.Contents.Items.Potion {
 					case PlayerStats.MaxSentry:
 						statsplayer.UpdateSentry += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
+					case PlayerStats.AttackSpeed:
+						statsplayer.AttackSpeed += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						break;
 					default:
 						break;
 				}
@@ -212,6 +216,7 @@ namespace BossRush.Contents.Items.Potion {
 			{ PlayerStats.RegenMana, 4 },
 			{ PlayerStats.MaxMinion, 1 },
 			{ PlayerStats.MaxSentry, 1 },
+			{ PlayerStats.AttackSpeed, 10 },
 		};
 	}
 }

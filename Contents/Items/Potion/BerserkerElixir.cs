@@ -10,6 +10,13 @@ namespace BossRush.Contents.Items.Potion {
 			Item.rare = ItemRarityID.Orange;
 		}
 	}
+	public class BerserkerElixir_ModPlayer : ModPlayer {
+		public override void ModifyItemScale(Item item, ref float scale) {
+			if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee) {
+				scale += .3f;
+			}
+		}
+	}
 	internal class BerserkBuff : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {

@@ -202,17 +202,17 @@ namespace BossRush.Contents.Perks {
 		public MaterialCardUIImageButton(Asset<Texture2D> texture) : base(texture) {
 		}
 		public override void OnLeftClick(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<BoxOfCard>(), 3);
+			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CardPacket>(), 3);
 		}
-		public override string TooltipText() => "Give you 3 box of card";
+		public override string TooltipText() => "Give you 3 card packets";
 	}
 	class MaterialPotionUIImageButton : SpecialPerkUIImageButton {
 		public MaterialPotionUIImageButton(Asset<Texture2D> texture) : base(texture) {
 		}
 
 		public override void OnLeftClick(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<MysteriousPotion>(), 5);
+			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<MysteriousPotion>());
 		}
-		public override string TooltipText() => "Give you 5 mysterious potions";
+		public override string TooltipText() => "Give you a mysterious potions";
 	}
 }

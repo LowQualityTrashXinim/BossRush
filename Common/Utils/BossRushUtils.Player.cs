@@ -5,6 +5,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		public static bool ComparePlayerHealthInPercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
 		public static bool IsDebugPlayer(this Player player) =>
 			player.name.Contains("Test") ||
 			player.name.Contains("Debug") ||
@@ -26,7 +27,7 @@ namespace BossRush {
 					|| stats is PlayerStats.RegenMana
 					|| stats is PlayerStats.ChestLootDropIncrease;
 	}
-	public enum PlayerStats {
+	public enum PlayerStats : byte {
 		None,
 		MeleeDMG,
 		RangeDMG,
@@ -50,7 +51,8 @@ namespace BossRush {
 		ShieldHealth,
 		ShieldEffectiveness,
 		AttackSpeed,
-		AuraRadius
+		AuraRadius,
+		LifeStealEffectiveness
 		//Luck
 	}
 

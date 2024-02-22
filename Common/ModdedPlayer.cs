@@ -31,7 +31,7 @@ namespace BossRush.Common {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}
 			else if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
-				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature");
+				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature", Color.Red);
 			}
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
 			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
@@ -57,15 +57,6 @@ namespace BossRush.Common {
 				amountOfTimeGotHit = 0;
 			}
 		}
-
-		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
-			health = StatModifier.Default; mana = StatModifier.Default;
-		}
-		public override void ModifyItemScale(Item item, ref float scale) {
-			if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee) {
-				scale += .3f;
-			}
-		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			yield return new Item(ItemID.PlatinumPickaxe);
@@ -86,7 +77,7 @@ namespace BossRush.Common {
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 						yield return new Item(ModContent.ItemType<TransmuteTablet>());
-						yield return new Item(ModContent.ItemType<WeaponEnchantment>());
+						yield return new Item(ModContent.ItemType<SpawnMerchant>());
 					}
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
@@ -133,26 +124,13 @@ namespace BossRush.Common {
 					yield return new Item(ItemID.DeerclopsBossBag);
 					yield return new Item(ItemID.GuideVoodooDoll);
 				}
-				yield return new Item(ModContent.ItemType<ModStatsDebugger>());
-				yield return new Item(ModContent.ItemType<ShowPlayerStats>());
 			}
 		}
 		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 			itemsByMod["Terraria"].Clear();
 		}
 		public int amountOfTimeGotHit = 0;
-		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-			if (Player.HasBuff(ModContent.BuffType<Protection>())) {
-				Player.Heal(Player.statLifeMax2);
-				Player.ClearBuff(ModContent.BuffType<Protection>());
-				return false;
-			}
-			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
-		}
 		public override void OnHurt(Player.HurtInfo info) {
-			if (Player.HasBuff(ModContent.BuffType<GodVision>())) {
-				Player.ClearBuff(ModContent.BuffType<GodVision>());
-			}
 			if (BossRushUtils.IsAnyVanillaBossAlive()) {
 				if (gitGud > 0) {
 					PlayerDeathReason reason = new PlayerDeathReason();

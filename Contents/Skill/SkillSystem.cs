@@ -105,6 +105,21 @@ public class SkillHandlePlayer : ModPlayer {
 	public void ChangeHolder(int index) {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
 	}
+	public bool RequestAddSkill_Inventory(int skillType) {
+		if(skillType >= SkillLoader.TotalCount) {
+			return false;
+		}
+		for (int i = 0; i < SkillInventory.Length; i++) {
+			if (SkillInventory[i] != -1) {
+				continue;
+			}
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
+			SkillInventory[i] = skillType;
+			return true;
+		}
+		BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.IndianRed, "Fail to add a skill");
+		return false;
+	}
 	public void AddSkillIntoCurrentActiveHolder(int SkillID, int whoAmI) {
 		if (whoAmI < 0 || whoAmI > 9) {
 			return;

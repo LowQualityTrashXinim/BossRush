@@ -8,23 +8,6 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card {
-	internal class StatsResetCard : ModItem {
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.LunarBar);
-		public override void SetDefaults() {
-			Item.BossRushDefaultToConsume(30, 24);
-			Item.UseSound = SoundID.Item35;
-			Item.rare = ItemRarityID.Red;
-			Item.maxStack = 99;
-		}
-		public override bool? UseItem(Player player) {
-			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.ChestLoot.MeleeChanceMutilplier = 1;
-			modplayer.ChestLoot.RangeChanceMutilplier = 1;
-			modplayer.ChestLoot.MagicChanceMutilplier = 1;
-			modplayer.ChestLoot.SummonChanceMutilplier = 1;
-			return true;
-		}
-	}
 	//This was ported from a secret mod of mine, it is badly made, but it should work most of it
 	public abstract class BaseCard : ModItem {
 		public override void SetDefaults() {

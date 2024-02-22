@@ -80,29 +80,3 @@ class HorusEye_Projectile : SynergyModProjectile {
 		Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ProjectileID.PrincessWeapon, Projectile.damage, Projectile.knockBack, Projectile.owner);
 	}
 }
-class HorusEye_ShieldBuff : SynergyBuff {
-	public override void SynergySetStaticDefaults() {
-		Main.debuff[Type] = false;
-		Main.buffNoSave[Type] = true;
-		Main.buffNoTimeDisplay[Type] = true;
-	}
-	public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare) {
-		string hexColor;
-		PlayerSynergyItemHandle modplayer = Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>();
-		if (modplayer.HoruseEye_ShieldHealthPoint >= 550) {
-			hexColor = Color.LawnGreen.Hex3();
-		}
-		else if (modplayer.HoruseEye_ShieldHealthPoint >= 250) {
-			hexColor = Color.Yellow.Hex3();
-		}
-		else {
-			hexColor = Color.Red.Hex3();
-		}
-		tip += $"\nShield remain Health : [c/{hexColor}:{modplayer.HoruseEye_ShieldHealthPoint}]";
-	}
-	public override void UpdatePlayer(Player player, ref int buffIndex) {
-		player.DefenseEffectiveness *= 1;
-		player.statDefense += 10;
-		player.noKnockback = true;
-	}
-}

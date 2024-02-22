@@ -31,7 +31,7 @@ namespace BossRush.Contents.Perks {
 			crit += 10;
 		}
 		public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
-			useSpeed += .1f;
+			useSpeed -= .1f;
 		}
 	}
 	public class LifeForceOrb : Perk {
@@ -50,7 +50,7 @@ namespace BossRush.Contents.Perks {
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
-	public class ImmunityToPoison : Perk {
+	public class PoisonAura : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
 		}
@@ -79,9 +79,9 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class ImmunityToOnFire : Perk {
+	public class OnFireAura : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<ImmunityToOnFire>();
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<OnFireAura>();
 			CanBeStack = false;
 		}
 		public override void OnChoose(Player player) {

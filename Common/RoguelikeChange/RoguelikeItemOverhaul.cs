@@ -753,16 +753,6 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_LeadArmor(target);
 			OnHitNPC_PearlWoodArmor(target);
 		}
-		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
-				modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
-			}
-		}
-		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
-				modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
-			}
-		}
 		private void OnHitNPC_LeadArmor(NPC npc) {
 			if (LeadArmor) {
 				npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
@@ -883,7 +873,6 @@ namespace BossRush.Common.RoguelikeChange {
 	}
 	public class GlobalItemProjectile : GlobalProjectile {
 		public override void OnSpawn(Projectile projectile, IEntitySource source) {
-			base.OnSpawn(projectile, source);
 			if (projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile) {
 				projectile.friendly = parentProjectile.friendly;
 				projectile.hostile = parentProjectile.hostile;

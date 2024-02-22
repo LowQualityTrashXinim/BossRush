@@ -189,12 +189,26 @@ Mods: {
 
 		NPCs: {
 			TrueEoC.DisplayName: True EoC
-			TestBossNPCDoNotLook.DisplayName: Test Boss N P C Do Not Look
 			ChestLord.DisplayName: Chest Lord
 			Servant.DisplayName: Servant
 			ElderGuardian.DisplayName: Elder Guardian
 			Guardian.DisplayName: Guardian
 			LootBoxLord.DisplayName: Loot Box Lord
+
+			M_018T: {
+				DisplayName: M_018 T
+
+				TownNPCMood: {
+					Content: I am content.
+					NoHome: I hate not having a home.
+					FarFromHome: I am too far from home.
+					LoveSpace: I love having so much space.
+					DislikeCrowded: I dislike how crowded I am.
+					HateCrowded: I hate how crowded I am.
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
 		}
 
 		Items: {
@@ -1516,10 +1530,10 @@ Mods: {
 			}
 
 			StarterPerkChooser: {
-				DisplayName: Starter Perk Chooser
+				DisplayName: Classes Perk Chooser
 				Tooltip:
 					'''
-					Use this to choose a starter perk
+					Use this to choose to upgrade a classes via perk
 					When choosing a perk, you can't use anything so be wary of where you are choosing
 					'''
 			}
@@ -1747,6 +1761,48 @@ Mods: {
 				DisplayName: Stats Reset Card
 				Tooltip: ""
 			}
+
+			ModCardItem: {
+				DisplayName: Mod Card Item
+				Tooltip: ""
+			}
+
+			WeaponLootBox: {
+				DisplayName: Weapon Loot Box
+				Tooltip: ""
+			}
+
+			ProofOfEmpowered: {
+				DisplayName: Proof Of Empowered
+				Tooltip:
+					'''
+					Grant the following effect :
+					+ Slime become friendly
+					+ Allows the player to dash into the enemy
+					+ Reduces damage taken by 17%
+					+ Has a chance to create illusions and dodge an attack
+					+ Temporarily increase critical chance after dodge
+					+ May confuse nearby enemies after being struck
+					+ Increases the strength of friendly bees
+					+ Shoots crossbones at enemies while you are attacking
+					+ Summons shadow hands to attack your foes
+					'''
+			}
+
+			SkillLootBox: {
+				DisplayName: Skill Loot Box
+				Tooltip: ""
+			}
+
+			SpawnMerchant: {
+				DisplayName: Spawn Merchant
+				Tooltip: ""
+			}
+
+			EnchantmentTablet: {
+				DisplayName: Enchantment Tablet
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1920,16 +1976,6 @@ Mods: {
 				Description: Mods.BossRush.Buffs.Samsara_of_Retribution_Buff.Description
 			}
 
-			HorusEye_ShieldBuff: {
-				DisplayName: Horus's Shield
-				Description:
-					'''
-					Increases your defense effective by 100%
-					Increases your defense by 10 !
-					You have knockback immunity !
-					'''
-			}
-
 			HyperRegen: {
 				DisplayName: Hyper Regen
 				Description: Mods.BossRush.Buffs.HyperRegen.Description
@@ -1947,12 +1993,17 @@ Mods: {
 
 			ManaBlock: {
 				DisplayName: Mana Block
-				Description: Mods.BossRush.Buffs.ManaBlock.Description
+				Description: You can't drink mana potion
 			}
 
 			Stasis: {
 				DisplayName: Stasis
 				Description: Nothing can harm you and there is nothing you can do
+			}
+
+			Shield_ModBuff: {
+				DisplayName: Shield
+				Description: Increases your defenses effectiveness
 			}
 		}
 
@@ -1964,14 +2015,12 @@ Mods: {
 					Label: Boss Rush Mode
 					Tooltip:
 						'''
-						The intended way to play the mod
 						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD, THIS WILL MESS WITH YOUR WORLD GEN
 						it is recommended to enable this if you want to experience what the mod have to offer along with Synergy Mode
 						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
 						What this mode do :
 						-Pot drop nothing
 						-World gen change so you could easily build arena and chest gone
-						-Unlock special mechanic
 						'''
 				}
 
@@ -1979,19 +2028,9 @@ Mods: {
 					Label: "[BETA] Synergy Mode"
 					Tooltip:
 						'''
-						Enables Synergy Items and Artifacts.
+						Enables Synergy Items, Artifacts, and a lot more.
 						This config adds optional content which can be ignored if necessary. 
 						Warning: This config might not be compatible or balanced with other content mods.
-						'''
-				}
-
-				Enraged: {
-					Label: Enraged Mode (W.I.P)
-					Tooltip:
-						'''
-						Challenge buffs for every boss that has them will activate
-						Will not drop the reward, however you can still get it by using power energy manually
-						recommended for practicing
 						'''
 				}
 

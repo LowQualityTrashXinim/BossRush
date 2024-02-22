@@ -1,6 +1,7 @@
 ﻿using BossRush.Contents.BuffAndDebuff;
 using BossRush.Texture;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,6 +10,16 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<Protection>(), 12000);
 			Item.rare = ItemRarityID.Orange;
+		}
+	}
+	public class TitanElixir_ModPlayer : ModPlayer {
+		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			if (Player.HasBuff(ModContent.BuffType<Protection>())) {
+				Player.Heal(Player.statLifeMax2);
+				Player.ClearBuff(ModContent.BuffType<Protection>());
+				return false;
+			}
+			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
 		}
 	}
 	internal class Protection : ModBuff {

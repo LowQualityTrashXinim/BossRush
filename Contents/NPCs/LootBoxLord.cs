@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Contents.Items;
 
 namespace BossRush.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {
@@ -67,6 +68,7 @@ namespace BossRush.Contents.NPCs {
 			for (int i = 0; i < TerrariaArrayID.SummonSkele.Length; i++) {
 				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonSkele[i]));
 			}
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PowerEnergy>()));
 		}
 		public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment) {
 		}

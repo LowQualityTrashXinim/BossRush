@@ -19,6 +19,7 @@ using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
 using Steamworks;
+using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -108,8 +109,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool SuperShortSword_IsHoldingDownRightMouse = false;
 
 		public int HorusEye_ShieldChargeUp = 0;
-		public bool HorusEye_ShieldUp = false;
-		public int HoruseEye_ShieldHealthPoint = 0;
+
 		public int HeavenSmg_Stacks = 0;
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
@@ -172,11 +172,6 @@ namespace BossRush.Contents.Items.Weapon {
 			MagicGrenade_MagicMissle = false;
 
 			DeathBySpark_AleThrowingGlove = false;
-
-			if (!Player.HasBuff(ModContent.BuffType<HorusEye_ShieldBuff>()) && HorusEye_ShieldUp) {
-				HorusEye_ShieldUp = false;
-				HorusEye_ShieldChargeUp = 0;
-			}
 		}
 		int check = 1;
 		public override void PreUpdate() {
@@ -250,10 +245,12 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (item.type == ModContent.ItemType<HorusEye>()) {
-				if (++HorusEye_ShieldChargeUp >= 10 && !HorusEye_ShieldUp) {
-					HorusEye_ShieldUp = true;
-					HoruseEye_ShieldHealthPoint = 900;
-					Player.AddBuff(ModContent.BuffType<HorusEye_ShieldBuff>(), 9999999);
+				Shield_ModPlayer shieldplayer = Player.GetModPlayer<Shield_ModPlayer>();
+				if (++HorusEye_ShieldChargeUp >= 10 && !shieldplayer.Shield_IsUp) {
+					shieldplayer.Shield_IsUp = true;
+					shieldplayer.Shield_MaxHealth += 900;
+					shieldplayer.Shield_ResPoint += 1.5f;
+					Player.AddBuff(ModContent.BuffType<Shield_ModBuff>(), 9999999);
 				}
 			}
 			if (Swotaff_Spear && Player.altFunctionUse != 2) {
@@ -339,22 +336,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public override void UpdateEquips() {
 			if (Player.head == ArmorIDs.Head.MeteorHelmet && Player.body == ArmorIDs.Body.MeteorSuit && Player.legs == ArmorIDs.Legs.MeteorLeggings) {
 				StarLightDistributer_MeteorArmor = true;
-			}
-		}
-		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
-			HorusEye_DamageShield(npc.damage);
-		}
-		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-			HorusEye_DamageShield(proj.damage);
-		}
-		private void HorusEye_DamageShield(int damagevalue) {
-			if (HorusEye_ShieldUp) {
-				HoruseEye_ShieldHealthPoint -= damagevalue;
-				if (HoruseEye_ShieldHealthPoint <= 0) {
-					HorusEye_ShieldChargeUp = 0;
-					HorusEye_ShieldUp = false;
-					Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<HorusEye_ShieldBuff>()));
-				}
 			}
 		}
 		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {

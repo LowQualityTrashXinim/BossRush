@@ -7,3 +7,28 @@ Increases_3xDamage: {
 	DisplayName: 3x Damage
 	Description: Increases your damage by 300%
 }
+
+SpiritBurst: {
+	DisplayName: Spirit Burst
+	Description: Burst out spirit that home into enemy
+}
+
+InfiniteManaSupply: {
+	DisplayName: Infinite Mana Supply
+	Description: Mana overflow
+}
+
+GuaranteedCrit: {
+	DisplayName: Guaranteed Critical
+	Description: Ensure every attack you did during skill duration is critical
+}
+
+RapidHealing: {
+	DisplayName: Rapid Healing
+	Description: Every 0.1s heal player for 6 health
+}
+
+FireBall: {
+	DisplayName: Fire ball
+	Description: Shoot out a fire ball every 10 tick that aim toward cursor
+}

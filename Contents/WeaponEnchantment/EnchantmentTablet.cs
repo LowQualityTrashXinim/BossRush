@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 
 namespace BossRush.Contents.WeaponEnchantment;
-internal class WeaponEnchantment : ModItem {
+internal class EnchantmentTablet : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void SetDefaults() {
 		Item.width = Item.height = 20;

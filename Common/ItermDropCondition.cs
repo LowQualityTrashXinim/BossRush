@@ -98,8 +98,11 @@ namespace BossRush.Common {
 	public class GitGudMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0 
-					&& (info.player.difficulty == PlayerDifficultyID.Hardcore || ModContent.GetInstance<BossRushModConfig>().HardEnableFeature);
+				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
+					&& (
+					info.player.difficulty == PlayerDifficultyID.Hardcore 
+					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature 
+					|| info.player.IsDebugPlayer());
 			}
 			return false;
 		}

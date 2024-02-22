@@ -334,6 +334,10 @@ class btn_SkillSlotHolder : UIImageButton {
 			if (SkillLoader.GetSkill(sKillID) != null) {
 				Name = SkillLoader.GetSkill(sKillID).DisplayName;
 				tooltipText = SkillLoader.GetSkill(sKillID).Description;
+				tooltipText +=
+					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillLoader.GetSkill(sKillID).Duration / 60f, 2)}" +
+					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillLoader.GetSkill(sKillID).EnergyRequire}" +
+					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillLoader.GetSkill(sKillID).CoolDown /60f, 2)}";
 			}
 			Main.instance.MouseText(Name + "\n" + tooltipText);
 		}

@@ -11,6 +11,13 @@ namespace BossRush.Contents.Items.Potion {
 			Item.rare = ItemRarityID.Orange;
 		}
 	}
+	public class GunslingerElixir_ModPlayer : ModPlayer {
+		public override void OnHurt(Player.HurtInfo info) {
+			if (Player.HasBuff(ModContent.BuffType<GodVision>())) {
+				Player.ClearBuff(ModContent.BuffType<GodVision>());
+			}
+		}
+	}
 	internal class GodVision : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {

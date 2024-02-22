@@ -103,7 +103,6 @@ namespace BossRush.Contents.Items.Chest {
 				int RemoveAmount = 1 + ItemGraveYard.Count / 10;
 				for (int i = 0; i < RemoveAmount; i++) {
 					int index = Main.rand.Next(ItemGraveYard.Count);
-					Main.NewText($"[DEBUG] Removing [i:{ItemGraveYard.ElementAt(index)}] from item graveyard");
 					ItemGraveYard.Remove(ItemGraveYard.ElementAt(index));
 				}
 			}
