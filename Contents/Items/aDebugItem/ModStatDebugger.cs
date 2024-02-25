@@ -1,15 +1,10 @@
-﻿using BossRush.Contents.Items.Card;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Potion;
+﻿using Terraria;
 using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
-using Terraria;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.NohitReward;
 using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Items.aDebugItem

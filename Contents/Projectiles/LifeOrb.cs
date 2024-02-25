@@ -1,8 +1,8 @@
-﻿using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Projectiles {
 	internal class LifeOrb : ModProjectile {
@@ -32,14 +32,14 @@ namespace BossRush.Contents.Projectiles {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Vector2.Zero;
 			if (Projectile.Center.IsCloseToPosition(player.Center, 125)) {
-				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .1f;
+				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .25f;
 				Projectile.velocity = Projectile.velocity.LimitedVelocity(2);
 			}
 			else {
 				Projectile.velocity *= .98f;
 			}
 			if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25)) {
-				player.Heal(2);
+				player.Heal(5);
 				Projectile.Kill();
 			}
 		}

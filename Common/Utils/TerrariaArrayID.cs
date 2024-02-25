@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Items.Accessories.Trinket;
+using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using Terraria.ID;
@@ -12,6 +13,8 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] AllOreBroadSword = {
 			ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,ItemID.LeadBroadsword,
 			ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword };
+		public readonly static int[] AllWoodSword = {
+			ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.AshWoodSword };
 		public readonly static int[] AllWoodBowPHM = {
 			ItemID.WoodenBow, ItemID.BorealWoodBow, ItemID.RichMahoganyBow,ItemID.PalmWoodBow, ItemID.EbonwoodBow, ItemID.ShadewoodBow, ItemID.AshWoodBow };
 		public readonly static int[] AllGemStaffPHM = {
@@ -28,7 +31,7 @@ namespace BossRush.Common.Utils {
 			ItemID.CopperShortsword, ItemID.TinShortsword, ItemID.IronShortsword, ItemID.LeadShortsword,
 			ItemID.SilverShortsword, ItemID.TungstenShortsword, ItemID.GoldShortsword, ItemID.PlatinumShortsword,
 			ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.CactusSword,
-			ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,
+			ItemID.EbonwoodSword, ItemID.ShadewoodSword,ItemID.AshWoodSword, ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,
 			ItemID.LeadBroadsword, ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword,
 			ItemID.Flymeal
 		};
@@ -222,5 +225,13 @@ namespace BossRush.Common.Utils {
 		};
 		public readonly static int[] LegArmorPostEvil ={ItemID.ShadowGreaves,ItemID.MeteorLeggings,ItemID.FossilPants,ItemID.MoltenGreaves,ItemID.ObsidianPants,ItemID.CrimsonGreaves
 		};
+		public readonly static int[] SpecialPotion = {
+					ModContent.ItemType<BerserkerElixir>(),
+					ModContent.ItemType<GunslingerElixir>(),
+					ModContent.ItemType<SageElixir>(),
+					ModContent.ItemType<CommanderElixir>(),
+					ModContent.ItemType<TitanElixir>(),
+					ModContent.ItemType<HyperRegenElixir>()
+	};
 	}
 }

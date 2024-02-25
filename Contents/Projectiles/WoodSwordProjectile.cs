@@ -4,7 +4,6 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Projectiles;
@@ -55,7 +54,7 @@ internal class SwordProjectile : ModProjectile {
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);
 		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
-		Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+		Vector2 origin = texture.Size() * .5f;
 		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
@@ -119,7 +118,7 @@ internal class SwordProjectile2 : ModProjectile {
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);
 		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
-		Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+		Vector2 origin = texture.Size() * .5f;
 		if (State != 1) {
 			for (int k = 0; k < Projectile.oldPos.Length; k++) {
 				Vector2 drawPos2 = Projectile.oldPos[k] - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
@@ -129,6 +128,40 @@ internal class SwordProjectile2 : ModProjectile {
 		}
 		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 		Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		return false;
+	}
+}
+internal class SwordProjectile3 : ModProjectile {
+	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.penetrate = -1;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 999;
+		Projectile.tileCollide = false;
+		Projectile.DamageType = DamageClass.Melee;
+		Projectile.scale = 1.5f;
+		Projectile.usesLocalNPCImmunity = true;
+	}
+	public int ItemIDtextureValue = ItemID.WoodenSword;
+	public float ProjectileIndex { get => Projectile.ai[2]; set => Projectile.ai[2] = value; }
+	public float RotationValue { get => Projectile.ai[1]; set => Projectile.ai[1] = value; }
+	public override void AI() {
+		if (Projectile.timeLeft == 999) {
+			Projectile.velocity = Vector2.Zero;
+		}
+		RotationValue += 10;
+		Vector2 RotationPos = Vector2.One.RotatedBy(MathHelper.ToRadians(ProjectileIndex * 120 + RotationValue)) * 50f;
+		Vector2 NewPos = Main.player[Projectile.owner].Center + RotationPos;
+		Projectile.Center = NewPos;
+		Projectile.rotation = RotationPos.ToRotation() + MathHelper.PiOver4;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Projectile.type);
+		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
 	}
 }

@@ -3,6 +3,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Contents.Skill;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.Chest;
 internal class WeaponLootBox : ModItem {
@@ -14,8 +15,12 @@ internal class WeaponLootBox : ModItem {
 	}
 	public override bool CanRightClick() => true;
 	public override void RightClick(Player player) {
-		LootBoxBase.GetWeapon(out int Weapon, out int amount);
 		var entitySource = player.GetSource_OpenItem(Type);
+		if(Main.rand.NextBool(100)) {
+			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.Trinket));
+			return;
+		}
+		LootBoxBase.GetWeapon(out int Weapon, out int amount);
 		player.QuickSpawnItem(entitySource, Weapon, amount);
 	}
 }

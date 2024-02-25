@@ -78,8 +78,14 @@ internal class UniversalSystem : ModSystem {
 
 			userInterface = new();
 		}
+		On_Projectile.NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float += On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float;
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
+
+	private int On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float(On_Projectile.orig_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float orig, Terraria.DataStructures.IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner, float ai0, float ai1, float ai2) {
+		return orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+	}
+
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
 			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {

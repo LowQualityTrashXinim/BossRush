@@ -76,7 +76,6 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-						yield return new Item(ModContent.ItemType<TransmuteTablet>());
 						yield return new Item(ModContent.ItemType<SpawnMerchant>());
 					}
 				}

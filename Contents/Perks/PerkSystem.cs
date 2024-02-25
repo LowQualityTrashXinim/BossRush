@@ -80,27 +80,17 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	public class PerkGlobalNpc : GlobalNPC {
-
-
 		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
-
 			PerkPlayer perkPlayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
-
-
 			// when talking to npc with the shopPerk
 			if (perkPlayer.perks.ContainsKey(Perk.GetPerkType<ShopPerk>())) {
-
-
 				items[^1] = getExtraItemValue(npc.type);
-
 				//check if the npc already talked to with shopPerk, if not, generate an item for that specific npc
 				foreach (int npcID in perkPlayer.hasExtraWeapon.Keys) {
 					if (npcID == npc.type)
 						return;
 				}
-
 				LootBoxBase.GetWeapon(out int weapon, out int amount);
-
 				// store the npc and their item in a dict, which the dict gets saved and loaded inside perkPlayer
 				perkPlayer.hasExtraWeapon.Add(npc.type, weapon);
 				items[^1] = getExtraItemValue(npc.type);
@@ -109,7 +99,6 @@ namespace BossRush.Contents.Perks {
 		private Item getExtraItemValue(int key) {
 			return new Item(Main.LocalPlayer.GetModPlayer<PerkPlayer>().hasExtraWeapon.GetValueOrDefault(key)) { shopCustomPrice = Item.buyPrice(gold: 25) };
 		}
-
 	}
 
 	public class PerkPlayer : ModPlayer {
@@ -248,9 +237,6 @@ namespace BossRush.Contents.Perks {
 			}
 			return useSpeed;
 		}
-
-
-	
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();

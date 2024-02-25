@@ -251,6 +251,28 @@ public class WaterBolt : ModEnchantment {
 		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(5);
 	}
 }
+public class DemonScythe : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DemonScythe;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage *= 1.1f;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		reduce += .1f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			for (int i = 0; i < 3; i++) {
+				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.WaterBolt, damage, knockback, player.whoAmI);
+			}
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+		}
+	}
+}
 public class ThunderStaff : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.ThunderStaff;

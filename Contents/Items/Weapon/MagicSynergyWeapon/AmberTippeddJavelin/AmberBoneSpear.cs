@@ -146,7 +146,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 						Projectile.damage,
 						Projectile.knockBack,
 						Projectile.owner);
-			base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
 		}
 	}
 	class AntlionMandibleModProjectile : ModProjectile {

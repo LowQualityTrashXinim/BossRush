@@ -2,6 +2,7 @@ using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Projectiles;
 using System.Collections.Generic;
+using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Terraria.Localization;
@@ -11,8 +12,6 @@ using System.Linq;
 using Terraria.ID;
 using Terraria;
 using System;
-using BossRush.Contents.Perks;
-using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -56,6 +55,9 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TrueExcalibur:
 					item.damage += 15;
 					break;
+				case ItemID.TheUndertaker:
+					item.autoReuse = true;
+					break;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -94,6 +96,9 @@ namespace BossRush.Common.RoguelikeChange {
 			//We are using name format RoguelikeOverhaul_+ item name
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
+			}
+			if (item.type == ItemID.TheUndertaker) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_TheUndertaker", "Hitting your shot heal you for 1hp"));
 			}
 			else if (item.type == ItemID.NightVisionHelmet) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_NightVisionHelmet", "Increases gun accurancy by 25%"));
@@ -737,6 +742,13 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_GoldArmor(target, damageDone);
 			OnHitNPC_LeadArmor(target);
 			OnHitNPC_PearlWoodArmor(target);
+			OnHitNPC_TheUnderTaker(proj, target);
+		}
+		private void OnHitNPC_TheUnderTaker(Projectile proj, NPC npc) {
+			if(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {
+				Player.Heal(1);
+				npc.AddBuff(ModContent.BuffType<CrimsonAbsorbtion>(), 240);
+			}
 		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			OnHitNPC_ShadewoodArmor();
@@ -774,7 +786,7 @@ namespace BossRush.Common.RoguelikeChange {
 				return;
 			}
 			if (ShadewoodArmorCD <= 0) {
-				float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius();
+				float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
 				for (int i = 0; i < 75; i++) {
 					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Crimson);
 					Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.GemRuby);

@@ -1,13 +1,8 @@
-﻿using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.IO.Pipes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket5 : BaseTrinket {

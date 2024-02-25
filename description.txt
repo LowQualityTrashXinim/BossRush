@@ -3,5 +3,4 @@ Note: Multiplayer is currently in the works, so it may not work as expect.
 
 If you have questions, don't hesitate to join our Discord server: https://discord.gg/YqN5z5WVaS
 
-[SPECIAL THANK]
-{currently updating}
+This mod is no longer maintained and will recieve no update, postpone indefinitely

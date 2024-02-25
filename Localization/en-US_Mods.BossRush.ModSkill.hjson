@@ -32,3 +32,8 @@ FireBall: {
 	DisplayName: Fire ball
 	Description: Shoot out a fire ball every 10 tick that aim toward cursor
 }
+
+StarFury: {
+	DisplayName: Fury of Star
+	Description: Not to be confused with Star Fury, a Star shoot down every 2s
+}

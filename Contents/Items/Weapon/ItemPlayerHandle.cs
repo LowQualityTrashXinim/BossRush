@@ -108,8 +108,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public int SuperShortSword_ProjectileInReadyPosition = 0;
 		public bool SuperShortSword_IsHoldingDownRightMouse = false;
 
-		public int HorusEye_ShieldChargeUp = 0;
-
 		public int HeavenSmg_Stacks = 0;
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
@@ -244,15 +242,6 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (item.type == ModContent.ItemType<HorusEye>()) {
-				Shield_ModPlayer shieldplayer = Player.GetModPlayer<Shield_ModPlayer>();
-				if (++HorusEye_ShieldChargeUp >= 10 && !shieldplayer.Shield_IsUp) {
-					shieldplayer.Shield_IsUp = true;
-					shieldplayer.Shield_MaxHealth += 900;
-					shieldplayer.Shield_ResPoint += 1.5f;
-					Player.AddBuff(ModContent.BuffType<Shield_ModBuff>(), 9999999);
-				}
-			}
 			if (Swotaff_Spear && Player.altFunctionUse != 2) {
 				if (Swotaff_Spear_Counter < 2) {
 					Swotaff_Spear_Counter++;

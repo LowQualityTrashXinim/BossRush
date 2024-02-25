@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -89,7 +90,7 @@ public class FireBall : ModSkill {
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if(modplayer.Duration % 10 != 0) {
+		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
 		int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(70);
@@ -98,6 +99,7 @@ public class FireBall : ModSkill {
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity, ProjectileID.Fireball, damage, knockback, player.whoAmI);
 		Main.projectile[proj].friendly = true;
 		Main.projectile[proj].hostile = false;
+		Main.projectile[proj].timeLeft = 120;
 	}
 }
 public class RapidHealing : ModSkill {
@@ -112,5 +114,70 @@ public class RapidHealing : ModSkill {
 			return;
 		}
 		player.Heal(6);
+	}
+}
+public class StarFury : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 225;
+		Skill_Duration = 6;
+		Skill_CoolDown = BossRushUtils.ToSecond(20);
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 120 != 0) {
+			return;
+		}
+		int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
+		float knockback = (int)player.GetKnockback(DamageClass.Generic).ApplyTo(10);
+		Vector2 position = player.Center.Subtract(0, 1000);
+		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 20f;
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ProjectileID.StarWrath, damage, knockback, player.whoAmI);
+		Main.projectile[proj].friendly = true;
+		Main.projectile[proj].hostile = false;
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 600;
+	}
+}
+public class WoodSwordSpirit : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 245;
+		Skill_Duration = BossRushUtils.ToSecond(3);
+		Skill_CoolDown = BossRushUtils.ToSecond(6);
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		ShootingSword(player);
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		ShootingSword(player);
+	}
+	private void ShootingSword(Player player) {
+		Vector2 position = player.Center + Main.rand.NextVector2Circular(50, 50);
+		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero);
+		int damage = (int)player.GetDamage(DamageClass.Melee).ApplyTo(24);
+		float knockback = (int)player.GetKnockback(DamageClass.Melee).ApplyTo(10);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI);
+		if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
+			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllWoodSword);
+	}
+}
+public class BroadSwordSpirit : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 145;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(3);
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
+			for (int i = 0; i < 3; i++) {
+				SummonSword(player, i);
+			}
+		}
+	}
+	private void SummonSword(Player player, int index) {
+		int damage = (int)player.GetDamage(DamageClass.Melee).ApplyTo(34);
+		float knockback = (int)player.GetKnockback(DamageClass.Melee).ApplyTo(3);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI,0,0, index);
+		if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
+			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
 	}
 }

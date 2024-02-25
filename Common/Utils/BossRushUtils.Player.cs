@@ -15,7 +15,7 @@ namespace BossRush {
 		public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
 		public static bool HasArtifact<T>(this Player player)
 			where T : Artifact => Artifact.GetArtifact(player.GetModPlayer<ArtifactPlayer>().ActiveArtifact) is T;
-
+		public static int DirectionFromPlayerToNPC(float playerX, float npcX) => playerX > npcX ? 1 : -1;
 		public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
 					stats is PlayerStats.Defense
 					|| stats is PlayerStats.MaxMinion
@@ -25,7 +25,7 @@ namespace BossRush {
 					|| stats is PlayerStats.CritChance
 					|| stats is PlayerStats.RegenHP
 					|| stats is PlayerStats.RegenMana
-					|| stats is PlayerStats.ChestLootDropIncrease;
+					|| stats is PlayerStats.LootDropIncrease;
 	}
 	public enum PlayerStats : byte {
 		None,
@@ -33,7 +33,7 @@ namespace BossRush {
 		RangeDMG,
 		MagicDMG,
 		SummonDMG,
-		DamageUniverse,
+		PureDamage,
 		MovementSpeed,
 		JumpBoost,
 		MaxHP,
@@ -44,7 +44,7 @@ namespace BossRush {
 		CritChance,
 		CritDamage,
 		DefenseEffectiveness,
-		ChestLootDropIncrease,
+		LootDropIncrease,
 		MaxMinion,
 		MaxSentry,
 		Thorn,
@@ -52,7 +52,10 @@ namespace BossRush {
 		ShieldEffectiveness,
 		AttackSpeed,
 		AuraRadius,
-		LifeStealEffectiveness
+		LifeStealEffectiveness,
+		MysteriousPotionEffectiveness,
+		EnergyCap,
+		EnergyRechargeCap
 		//Luck
 	}
 

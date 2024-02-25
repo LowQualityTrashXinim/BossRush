@@ -31,7 +31,7 @@ namespace BossRush.Contents.Items.Potion {
 			PlayerStats.DefenseEffectiveness,
 			PlayerStats.CritDamage,
 			PlayerStats.CritChance,
-			PlayerStats.DamageUniverse,
+			PlayerStats.PureDamage,
 			PlayerStats.Defense,
 			PlayerStats.RegenMana,
 			PlayerStats.MaxMana,
@@ -150,7 +150,7 @@ namespace BossRush.Contents.Items.Potion {
 					case PlayerStats.Defense:
 						statsplayer.UpdateDefenseBase += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
-					case PlayerStats.DamageUniverse:
+					case PlayerStats.PureDamage:
 						player.GetDamage(DamageClass.Generic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
 						break;
 					case PlayerStats.CritChance:
@@ -183,12 +183,10 @@ namespace BossRush.Contents.Items.Potion {
 	public class MysteriousPotionPlayer : ModPlayer {
 		public List<PlayerStats> Stats = new List<PlayerStats>();
 		public List<int> StatsMulti = new List<int>();
-		public int PotionPointAddition = 0;
-		public int PotionPoint() => Math.Clamp(5 + PotionPointAddition, 1, 999);
+		public int PotionPoint() => Math.Clamp((int)Player.GetModPlayer<PlayerStatsHandle>().MysteriousPotionEffectiveness.ApplyTo(5), 1, 9999);
 		public float ToStatsNumFloat(PlayerStats stats, int multi) => (float)Math.Round(lookupDictionary[stats] * multi * .01f, 2);
 		public int ToStatsNumInt(PlayerStats stats, int multi) => lookupDictionary[stats] * multi;
 		public override void ResetEffects() {
-			PotionPointAddition = 0;
 			if (!Player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>())) {
 				if (Stats.Count > 0)
 					Stats.Clear();
@@ -203,7 +201,7 @@ namespace BossRush.Contents.Items.Potion {
 			{ PlayerStats.RangeDMG, 15 },
 			{ PlayerStats.MagicDMG, 15 },
 			{ PlayerStats.SummonDMG, 15 },
-			{ PlayerStats.MovementSpeed,20 },
+			{ PlayerStats.MovementSpeed, 20 },
 			{ PlayerStats.JumpBoost, 20 },
 			{ PlayerStats.DefenseEffectiveness, 20 },
 			{ PlayerStats.CritDamage, 30 },
@@ -211,9 +209,9 @@ namespace BossRush.Contents.Items.Potion {
 			{ PlayerStats.MaxHP, 20 },
 			{ PlayerStats.Defense, 8 },
 			{ PlayerStats.CritChance, 8 },
-			{ PlayerStats.DamageUniverse, 8 },
-			{ PlayerStats.RegenHP, 6 },
-			{ PlayerStats.RegenMana, 4 },
+			{ PlayerStats.PureDamage, 8 },
+			{ PlayerStats.RegenHP, 7 },
+			{ PlayerStats.RegenMana, 5 },
 			{ PlayerStats.MaxMinion, 1 },
 			{ PlayerStats.MaxSentry, 1 },
 			{ PlayerStats.AttackSpeed, 10 },

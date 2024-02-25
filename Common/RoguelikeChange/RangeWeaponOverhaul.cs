@@ -82,7 +82,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TheUndertaker:
 					NumOfProjectile = 1;
 					OffSetPost = 20;
-					SpreadAmount = 6;
+					SpreadAmount = 3;
 					AdditionalSpread = 2;
 					break;
 				case ItemID.Revolver:

@@ -6,6 +6,8 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using BossRush.Contents.Projectiles;
 using BossRush.Common.RoguelikeChange;
+using BossRush.Common;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -75,8 +77,13 @@ namespace BossRush.Contents.WeaponEnchantment {
 				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
 			}
 		}
-		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-			damage += .1f;
+		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {
+				if (Main.rand.NextBool(10)) {
+					player.Heal(1);
+				}
+				target.AddBuff(ModContent.BuffType<CrimsonAbsorbtion>(), 240);
+			}
 		}
 	}
 	public class Boomstick : ModEnchantment {
@@ -91,6 +98,19 @@ namespace BossRush.Contents.WeaponEnchantment {
 						velocity.Vector2RandomSpread(2, Main.rand.NextFloat(.9f, 1.1f)).Vector2RotateByRandom(30), type, damage, knockback, player.whoAmI);
 				}
 				globalItem.Item_Counter1[index] = 0;
+			}
+		}
+		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+			damage += .1f;
+		}
+	}
+	public class Handgun : ModEnchantment {
+		public override void SetDefaults() {
+			ItemIDType = ItemID.Handgun;
+		}
+		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (Main.rand.NextBool()) {
+				Projectile.NewProjectile(source, position, velocity, ProjectileID.Bullet, damage, knockback, player.whoAmI);
 			}
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {

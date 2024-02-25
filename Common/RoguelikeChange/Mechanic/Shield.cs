@@ -4,7 +4,6 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
-using BossRush.Contents.Items.Weapon;
 using System;
 
 namespace BossRush.Common.RoguelikeChange.Mechanic;
@@ -108,9 +107,12 @@ public class Shield_ModPlayer : ModPlayer {
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<Shield_ModBuff>()) && Shield_IsUp) {
 			Shield_IsUp = false;
+			Shield_CoolDown = 0;
+			Shield_Health = 0;
 		}
 		if (Shield_CoolDown <= 0 && Shield_Health <= 0) {
-			Shield_Health = Shield_MaxHealth;
+			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
+			Shield_Health = (int)modplayer.ShieldHealth.ApplyTo(Shield_MaxHealth);
 		}
 		Shield_MaxHealth = 0;
 		Shield_CoolDown = BossRushUtils.CountDown(Shield_CoolDown);
@@ -128,7 +130,10 @@ public class Shield_ModPlayer : ModPlayer {
 	}
 	private void DamageShield(int damagevalue) {
 		if (Shield_IsUp) {
-			Shield_Health -= damagevalue;
+			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
+			int damageDone = (int)(damagevalue / modplayer.ShieldEffectiveness.ApplyTo(1));
+			Shield_Health -= damageDone;
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.RoyalBlue, $"{damageDone}", Main.rand.Next(30,40), 5);
 			if (Shield_Health <= 0) {
 				Shield_IsUp = false;
 				Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<Shield_ModBuff>()));

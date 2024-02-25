@@ -194,7 +194,7 @@ public class EnchantmentModplayer : ModPlayer {
 				continue;
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByAnything(Player);
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByNPC(Player, npc, hurtInfo);
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByNPC(i, globalItem, Player, npc, hurtInfo);
 		}
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
@@ -206,7 +206,7 @@ public class EnchantmentModplayer : ModPlayer {
 				continue;
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByAnything(Player);
-			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByProjectile(Player, proj, hurtInfo);
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitByProjectile(i, globalItem, Player, proj, hurtInfo);
 		}
 	}
 	public override void OnConsumeMana(Item item, int manaConsumed) {

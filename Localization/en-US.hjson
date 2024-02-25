@@ -185,6 +185,7 @@ Mods: {
 			ManaReleaseOrb.DisplayName: Mana Release Orb
 			CoconutProjectile.DisplayName: Coconut Projectile
 			SpiritProjectile.DisplayName: Spirit Projectile
+			SwordProjectile3.DisplayName: Sword Projectile3
 		}
 
 		NPCs: {
@@ -1803,6 +1804,11 @@ Mods: {
 				DisplayName: Enchantment Tablet
 				Tooltip: ""
 			}
+
+			Relic: {
+				DisplayName: Relic
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2004,6 +2010,11 @@ Mods: {
 			Shield_ModBuff: {
 				DisplayName: Shield
 				Description: Increases your defenses effectiveness
+			}
+
+			CrimsonAbsorbtion: {
+				DisplayName: Crimson Absorbtion
+				Description: Mods.BossRush.Buffs.CrimsonAbsorbtion.Description
 			}
 		}
 

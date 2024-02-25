@@ -10,7 +10,7 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Card;
-public class ModCardItem : ModItem {
+public class Relic : ModItem {
 	public override string Texture => BossRushTexture.ACCESSORIESSLOT;
 	//List<CardTemplate> templatelist = new List<CardTemplate>();
 	//List<StatModifier> value = new List<StatModifier>();

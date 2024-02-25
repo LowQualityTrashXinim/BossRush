@@ -42,7 +42,7 @@ namespace BossRush.Contents.Items.Card {
 			Item.rare = ItemRarityID.White;
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
-			float radius = modplayer.AuraRadius;
+			float radius = modplayer.GetAuraRadius(50);
 			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 			foreach (var npc in npclist) {
 				npc.StrikeNPC(npc.CalculateHitInfo(20, 0));
@@ -63,7 +63,7 @@ namespace BossRush.Contents.Items.Card {
 		}
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
-			player.Center.LookForHostileNPC(out NPC npc, modplayer.AuraRadius);
+			player.Center.LookForHostileNPC(out NPC npc, modplayer.GetAuraRadius(50));
 			if (npc != null) {
 				npc.AddBuff(BuffID.OnFire, Main.rand.Next(debuffArray));
 			}

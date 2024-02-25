@@ -1,10 +1,10 @@
 PowerUp: {
-	DisplayName: Power Up
+	DisplayName: Stronger Attack
 	Description:
 		'''
 		+ Increases damage by 25%
-		+ Increases attack speed by 10%
 		+ Increases critical strike chance by 10
+		- Decreases attack speed by 35%
 		'''
 }
 
@@ -13,8 +13,8 @@ LifeForceOrb: {
 	Description: + Attacking enemy will periodically create a life orb that heal you
 }
 
-ImmunityToPoison: {
-	DisplayName: Immunity To Poison
+PoisonAura: {
+	DisplayName: Poison Aura
 	Description:
 		'''
 		+ Give you Bezoar
@@ -22,8 +22,8 @@ ImmunityToPoison: {
 		'''
 }
 
-ImmunityToOnFire: {
-	DisplayName: Immunity To Fire
+OnFireAura: {
+	DisplayName: On Fire Aura
 	Description:
 		'''
 		+ Give you Obsidian Rose
@@ -53,6 +53,7 @@ Dirt: {
 	DisplayName: Dirt
 	Description:
 		'''
+		When you have dirt in your inventory
 		+ Increases defenses by 15
 		+ Give permanent Exquisitely Stuffed
 		'''
@@ -290,4 +291,14 @@ ImprovedManaPotion: {
 		+ During mana sickness, increases mana regen capability
 		- After mana sicnkess duration is over, you can't no longer consume a mana potion for 30s
 		'''
+}
+
+ExtraCritical: {
+	DisplayName: Extra Critical
+	Description: + You have 1% to dealt 4x damage
+}
+
+ExtraCritical1: {
+	DisplayName: Extra Critical
+	Description: + Increases chance to dealt 4x damage by 1%
 }

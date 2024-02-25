@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin;
+using Microsoft.CodeAnalysis;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
@@ -480,7 +483,7 @@ public class CactusSword : ModEnchantment {
 			Main.projectile[projectile].friendly = true;
 			Main.projectile[projectile].hostile = false;
 			Main.projectile[projectile].penetrate = -1;
-			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(10);
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(6);
 		}
 	}
 }
@@ -510,7 +513,6 @@ public class EnchantedSword : ModEnchantment {
 		}
 	}
 }
-
 public class StarFury : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Starfury;
@@ -632,6 +634,200 @@ public class BladedGlove : ModEnchantment {
 		NPC.HitInfo sample = hit;
 		sample.Crit = false;
 		player.StrikeNPCDirect(target, sample);
+	}
+}
+public class ZombieArm : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.ZombieArm;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		if (!Main.dayTime) {
+			crit += 10;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(500);
+		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		foreach (NPC target in npclist) {
+			player.StrikeNPCDirect(target, npc.CalculateHitInfo((int)(player.GetWeaponDamage(player.HeldItem) * .55f),
+				BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+	}
+}
+public class MandibleBlade : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.AntlionClaw;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (player.velocity.Length() > 2) {
+			damage += .1f;
+		}
+	}
+	public override void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		for (int i = 0; i < 3; i++) {
+			Projectile.NewProjectile(
+				player.GetSource_FromThis(),
+				player.Center,
+				Main.rand.NextVector2Circular(4f, 4f) * 5f,
+				ModContent.ProjectileType<AntlionMandibleModProjectile>(),
+				(int)(player.GetWeaponDamage(player.HeldItem) * .75f),
+				(int)(player.HeldItem.knockBack * .5f),
+				player.whoAmI);
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+	}
+}
+public class TentacleSpike : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TentacleSpike;
+	}
+	public override void ModifyCriticalStrikeChance(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float crit) {
+		if (player.ZoneCorrupt) {
+			crit += 10;
+		}
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		target.AddBuff(BuffID.TentacleSpike, 900);
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		target.AddBuff(BuffID.TentacleSpike, 900);
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+	}
+}
+public class LightsBane : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.LightsBane;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		Vector2 vel = Main.rand.NextVector2CircularEdge(5, 5);
+		Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center.PositionOFFSET(vel, -60), vel, ProjectileID.LightsBane, player.GetWeaponDamage(player.HeldItem), player.HeldItem.knockBack, player.whoAmI, 1);
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(3);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		Vector2 vel = Main.rand.NextVector2CircularEdge(5, 5);
+		Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center.PositionOFFSET(vel, -60), vel, ProjectileID.LightsBane, player.GetWeaponDamage(item), player.HeldItem.knockBack, player.whoAmI, 1);
+		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(1);
+	}
+}
+public class BladeOfGlass : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BladeofGrass;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (player.ZoneJungle) {
+			damage += .1f;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Main.rand.NextBool()) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.BladeOfGrass, (int)(damage * .45f), knockback, player.whoAmI,
+				MathHelper.ToRadians(Main.rand.Next(3, 7)), Main.rand.Next(4, 8));
+		}
+		else {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.BladeOfGrass, (int)(damage * .45f), knockback, player.whoAmI, 0, Main.rand.Next(4, 8));
+		}
+	}
+}
+public class Volcano : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FieryGreatsword;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(6));
+		if (globalItem.Item_Counter1[index] > 0) {
+			return;
+		}
+		float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(125);
+		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		foreach (NPC npc in npclist) {
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(player.HeldItem) * .55f),
+				BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+		}
+		for (int i = 0; i < 35; i++) {
+			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
+			Main.dust[smokedust].noGravity = true;
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+		}
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(4);
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(6));
+		if (globalItem.Item_Counter2[index] > 0) {
+			return;
+		}
+		float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(125);
+		player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
+		foreach (NPC npc in npclist) {
+			player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)(player.GetWeaponDamage(item) * .55f),
+				BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+		}
+		for (int i = 0; i < 35; i++) {
+			int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
+			Main.dust[smokedust].noGravity = true;
+			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+			int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
+			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+		}
+		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(1);
+	}
+}
+public class NightsEdge : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.NightsEdge;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if(item.shoot == ProjectileID.None) {
+			item.shoot = ProjectileID.NightsEdge;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+		Projectile.NewProjectile(source, player.Center, vel, ProjectileID.NightsEdge, damage, knockback, player.whoAmI, -.1f, 30, 1);
 	}
 }
 public class CopperShortSword : ModEnchantment {

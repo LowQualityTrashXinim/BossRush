@@ -194,7 +194,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	}
 	private bool CheckWeapon(Item item) {
 		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
-			//Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<CopperCard>());
+			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<Relic>());
 			return true;
 		}
 		return false;

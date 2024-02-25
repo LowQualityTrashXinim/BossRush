@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
 /// <summary>
@@ -34,12 +35,10 @@ internal class HorusEye : SynergyModItem {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2CircularEdge(1.5f, 10f).RotatedBy(velocity.ToRotation());
 			Main.dust[dust].scale = Main.rand.NextFloat(.9f, 1.5f);
-		}
-		for (int i = 0; i < 30; i++) {
-			int dust = Dust.NewDust(position, 0, 0, DustID.Firework_Pink);
-			Main.dust[dust].noGravity = true;
-			Main.dust[dust].velocity = Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(velocity.ToRotation()) * Main.rand.NextFloat(7f, 19f);
-			Main.dust[dust].scale = Main.rand.NextFloat(.9f, 1.5f);
+			int dust1 = Dust.NewDust(position, 0, 0, DustID.Firework_Pink);
+			Main.dust[dust1].noGravity = true;
+			Main.dust[dust1].velocity = Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(velocity.ToRotation()) * Main.rand.NextFloat(7f, 19f);
+			Main.dust[dust1].scale = Main.rand.NextFloat(.9f, 1.5f);
 		}
 		player.velocity += -velocity * .35f;
 		CanShootItem = false;
