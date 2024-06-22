@@ -76,7 +76,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
-		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive;
+		Player.statDefense += (int)UpdateDefenseBase.Base;
 		Player.statDefense.FinalMultiplier *= UpdateDefenseBase.Multiplicative;
 		Player.DefenseEffectiveness *= UpdateDefEff.ApplyTo(Player.DefenseEffectiveness.Value);
 		Player.thorns = UpdateThorn.ApplyTo(Player.thorns);
@@ -87,6 +87,8 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statLifeMax2 = (int)UpdateHPMax.ApplyTo(Player.statLifeMax2);
 		Player.statManaMax2 = (int)UpdateManaMax.ApplyTo(Player.statManaMax2);
 
+		UpdateMinion = new StatModifier();
+		UpdateSentry = new StatModifier();
 		MysteriousPotionEffectiveness = new StatModifier();
 		UpdateMovement = new StatModifier();
 		UpdateJumpBoost = new StatModifier();
@@ -114,6 +116,14 @@ public class PlayerStatsHandle : ModPlayer {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
 		return useSpeed;
 	}
+	/// <summary>
+	/// This should be uses in always update code
+	/// </summary>
+	/// <param name="stat"></param>
+	/// <param name="Additive"></param>
+	/// <param name="Multiplicative"></param>
+	/// <param name="Flat"></param>
+	/// <param name="Base"></param>
 	public void AddStatsToPlayer(PlayerStats stat, StatModifier StatMod) {
 		if (stat == PlayerStats.None) {
 			return;
@@ -201,11 +211,25 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
+	/// <summary>
+	/// This should be uses in always update code
+	/// </summary>
+	/// <param name="stat"></param>
+	/// <param name="Additive"></param>
+	/// <param name="Multiplicative"></param>
+	/// <param name="Flat"></param>
+	/// <param name="Base"></param>
 	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatModifier StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
+		StatModifier StatMod;
+		if(Additive == 1) {
+			StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
+		}
+		else {
+			StatMod = new StatModifier(Additive + 1, Multiplicative, Flat, Base);
+		}
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);

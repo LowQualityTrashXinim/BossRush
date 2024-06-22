@@ -157,10 +157,6 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				result.item = null;
 				continue;
 			}
-			if (CheckPotion(result.item)) {
-				result.item = null;
-				continue;
-			}
 		}
 	}
 	private bool CheckForSpecialDrop(List<int> itemList) {
@@ -179,7 +175,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);
 		bool Musket = itemList.Contains(ItemID.Musket);
-		if (itemList.Contains(ModContent.ItemType<CelestialWrath>()) && itemList.Contains(ModContent.ItemType<MysteriousPotion>())) {
+		if (itemList.Contains(ModContent.ItemType<CelestialWrath>())) {
 			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
 		}
 		if (MiniShark && IceBlade) {
@@ -195,13 +191,6 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	private bool CheckWeapon(Item item) {
 		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
 			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<Relic>());
-			return true;
-		}
-		return false;
-	}
-	private bool CheckPotion(Item item) {
-		if (item.buffType != 0 && item.buffType != ModContent.BuffType<MysteriousPotionBuff>()) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<MysteriousPotion>());
 			return true;
 		}
 		return false;

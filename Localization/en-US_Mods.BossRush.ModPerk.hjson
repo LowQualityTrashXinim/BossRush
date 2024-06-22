@@ -10,7 +10,7 @@ PowerUp: {
 
 LifeForceOrb: {
 	DisplayName: Life Force Orb
-	Description: + Attacking enemy will periodically create a life orb that heal you
+	Description: + Attacking enemy will periodically create a short lived life orb that heal you
 }
 
 PoisonAura: {
@@ -35,8 +35,8 @@ IllegalTrading: {
 	DisplayName: Illegal Trading
 	Description:
 		'''
-		+ Increase amount of weapon drop from chest by 1 !
-		- Decrease your damage by 15%
+		+ Increase amount of weapon drop from chest by 3 !
+		- Decrease your damage by 7%
 		'''
 }
 
@@ -45,6 +45,7 @@ BackUpMana: {
 	Description:
 		'''
 		+ You can fire magic weapon forever
+		+ Increases your maximum mana by 67
 		- When you are out of mana, mana cost reduce is by 50% and you use your life instead
 		'''
 }
@@ -81,8 +82,8 @@ AlchemistKnowledge: {
 	DisplayName: Alchemist Knowledge
 	Description:
 		'''
-		+ Mysterious potion are slightly better than before
-		+ Increases amount of potion drop from lootbox by 1
+		+ Drinking any buff potion have chance to give you additional helpful buff
+		- Decrease buff duration by 35%
 		'''
 }
 
@@ -90,14 +91,14 @@ PotionExpert: {
 	DisplayName: Potion Expert
 	Description:
 		'''
-		+ Potion have 35% to not be consumed when not using Quick Buff key
-		+ Increases Potion duration by 25%
+		+ Potion have 55% to not be consumed when not using Quick Buff key
+		+ Increases Potion duration by 35%
 		'''
 }
 
 SniperCharge: {
 	DisplayName: Sniper Charge
-	Description: + Range weapon can deal 2x damage when it is ready
+	Description: + Weapon can deal 2x damage when it is ready
 }
 
 SelfExplosion: {

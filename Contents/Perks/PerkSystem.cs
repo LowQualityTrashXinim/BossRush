@@ -10,14 +10,16 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.NohitReward;
+
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
 		public override bool? UseItem(Item item, Player player) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
 			if (perkplayer.perk_PotionExpert && item.buffType > 0) {
 				if (player.ItemAnimationJustStarted) {
-					perkplayer.PotionExpert_perk_CanConsume = Main.rand.NextFloat() <= .35f;
+					perkplayer.PotionExpert_perk_CanConsume = Main.rand.NextFloat() <= .55f;
 				}
 				return perkplayer.PotionExpert_perk_CanConsume;
 			}
@@ -41,6 +43,10 @@ namespace BossRush.Contents.Perks {
 
 					}
 				}
+			}
+			if(perkplayer.perk_AlchemistPotion && item.buffType > 0 && !player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>())) {
+				MysteriousPotion.StatsCalculation(player, player.GetModPlayer<MysteriousPotionPlayer>());
+				player.AddBuff(ModContent.BuffType<MysteriousPotionBuff>(), BossRushUtils.ToMinute(4));
 			}
 			return base.ConsumeItem(item, player);
 		}
@@ -112,6 +118,7 @@ namespace BossRush.Contents.Perks {
 
 		public bool perk_PotionExpert = false;
 		public bool perk_PotionCleanse = false;
+		public bool perk_AlchemistPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 
 		// ShopPerk

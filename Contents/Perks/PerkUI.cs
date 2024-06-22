@@ -61,7 +61,7 @@ namespace BossRush.Contents.Perks {
 				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
 				if (i >= amount || i >= perkamount - 1) {
 					UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
-					{ new MaterialPotionUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
+					{
 						 new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
 						 new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushUtils.GetTheSameTextureAs<PerkUIState>("SuppliesDrop")))
 					});
@@ -205,14 +205,5 @@ namespace BossRush.Contents.Perks {
 			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CardPacket>(), 3);
 		}
 		public override string TooltipText() => "Give you 3 card packets";
-	}
-	class MaterialPotionUIImageButton : SpecialPerkUIImageButton {
-		public MaterialPotionUIImageButton(Asset<Texture2D> texture) : base(texture) {
-		}
-
-		public override void OnLeftClick(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<MysteriousPotion>());
-		}
-		public override string TooltipText() => "Give you a mysterious potions";
 	}
 }

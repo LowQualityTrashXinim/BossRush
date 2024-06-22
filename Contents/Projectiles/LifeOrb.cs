@@ -9,7 +9,7 @@ namespace BossRush.Contents.Projectiles {
 		public override string Texture => BossRushTexture.SMALLWHITEBALL;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 10;
-			Projectile.timeLeft = 999;
+			Projectile.timeLeft = 150;
 			Projectile.tileCollide = true;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
@@ -20,7 +20,7 @@ namespace BossRush.Contents.Projectiles {
 		}
 		Player player;
 		public override void AI() {
-			if (Projectile.timeLeft == 999) {
+			if (Projectile.timeLeft == 150) {
 				player = Main.player[Projectile.owner];
 				for (int i = 0; i < 50; i++) {
 					int startdust = Dust.NewDust(Projectile.Center, 0, 0, DustID.GemEmerald);
@@ -39,7 +39,7 @@ namespace BossRush.Contents.Projectiles {
 				Projectile.velocity *= .98f;
 			}
 			if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25)) {
-				player.Heal(5);
+				player.Heal(35);
 				Projectile.Kill();
 			}
 		}

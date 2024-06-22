@@ -47,7 +47,7 @@ namespace BossRush.Contents.Perks {
 			LifeForceSpawn(player, target);
 		}
 		private void LifeForceSpawn(Player player, NPC target) {
-			if (Main.rand.NextBool(20))
+			if (Main.rand.NextBool(10))
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
@@ -116,10 +116,10 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 5;
 		}
 		public override void ResetEffect(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 1 * StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage -= .15f * StackAmount;
+			damage -= .07f * StackAmount;
 		}
 	}
 	public class BackUpMana : Perk {
@@ -127,9 +127,12 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();
 			CanBeStack = false;
 		}
+		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
+			mana.Base += 67;
+		}
 		public override void OnMissingMana(Player player, Item item, int neededMana) {
 			player.statMana += neededMana;
-			player.statLife = Math.Clamp(player.statLife - (int)(neededMana * .5f), 0, player.statLifeMax2);
+			player.statLife = Math.Clamp(player.statLife - (int)(neededMana * .5f), 1, player.statLifeMax2);
 		}
 	}
 	public class PeaceWithGod : Perk {
@@ -148,7 +151,9 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			bool Opportunity = Main.rand.NextBool(10);
-			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
+			int[] debuffArray = 
+				{ BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame,
+				BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
 			if (!debuffArray.Where(d => !target.HasBuff(d)).Any())
 				return;
 			for (int i = 0; i < debuffArray.Length; i++) {
@@ -167,12 +172,12 @@ namespace BossRush.Contents.Perks {
 	}
 	public class AlchemistKnowledge : Perk {
 		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 3;
+			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: StackAmount);
-			player.GetModPlayer<ChestLootDropPlayer>().PotionTypeAmountAddition += StackAmount;
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
+			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
+			player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .35f;
 		}
 	}
 	public class Dirt : Perk {
@@ -193,7 +198,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
-			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .25f;
+			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .35f;
 		}
 	}
 	public class SniperCharge : Perk {
@@ -382,7 +387,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 999;
 		}
 		public override string ModifyToolTip() {
-			if(StackAmount == 10) {
+			if (StackAmount == 10) {
 				return "don't you think it is enough now ?";
 			}
 			return base.ModifyToolTip();

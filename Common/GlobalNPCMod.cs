@@ -107,6 +107,7 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
+				IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.BloodNautilus) {
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodTreasureChest>()));
@@ -168,6 +169,7 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressTreasureChest>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
+				IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.DukeFishron) {
 				//NoHit mode drop
@@ -197,7 +199,6 @@ namespace BossRush.Common {
 			}
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(), ItemID.ManaCrystal, 1, manacrystal, manacrystal));
-			IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			npcLoot.Add(noHit);
 			npcLoot.Add(ExpertVSnormal);
 			npcLoot.Add(IsABoss);

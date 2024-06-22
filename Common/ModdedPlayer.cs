@@ -34,7 +34,7 @@ namespace BossRush.Common {
 				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature", Color.Red);
 			}
 			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
-			Main.NewText("We are currently working hard on the mod, if you spotted any isssue such as bug please report them in our discord server");
+			Main.NewText("The mod is postpone indefinitely");
 			if (Main.ActiveWorldFileData.GameMode == 0) {
 				Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
 			}

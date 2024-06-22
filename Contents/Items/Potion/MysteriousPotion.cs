@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Potion {
 			StatsCalculation(player, player.GetModPlayer<MysteriousPotionPlayer>());
 			return true;
 		}
-		public PlayerStats SetStatsToAdd(MysteriousPotionPlayer modplayer) {
+		public static PlayerStats SetStatsToAdd(MysteriousPotionPlayer modplayer) {
 			List<PlayerStats> stats = new List<PlayerStats>
 			{ PlayerStats.MaxSentry,
 			PlayerStats.MaxMinion,
@@ -53,7 +53,7 @@ namespace BossRush.Contents.Items.Potion {
 			}
 			return Main.rand.Next(stats);
 		}
-		private void StatsCalculation(Player player, MysteriousPotionPlayer modplayer) {
+		public static void StatsCalculation(Player player, MysteriousPotionPlayer modplayer) {
 			int potionPoint = modplayer.PotionPoint();
 			if (potionPoint <= 0) {
 				return;
@@ -117,64 +117,32 @@ namespace BossRush.Contents.Items.Potion {
 			PlayerStatsHandle statsplayer = player.GetModPlayer<PlayerStatsHandle>();
 			for (int i = 0; i < modplayer.Stats.Count; i++) {
 				switch (modplayer.Stats[i]) {
-					case PlayerStats.MeleeDMG:
-						player.GetDamage(DamageClass.Melee) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.RangeDMG:
-						player.GetDamage(DamageClass.Ranged) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.MagicDMG:
-						player.GetDamage(DamageClass.Magic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.SummonDMG:
-						player.GetDamage(DamageClass.Summon) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.MovementSpeed:
-						statsplayer.UpdateMovement += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.JumpBoost:
-						statsplayer.UpdateJumpBoost += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
 					case PlayerStats.MaxHP:
-						statsplayer.UpdateHPMax += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					case PlayerStats.RegenHP:
-						statsplayer.UpdateHPRegen += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					case PlayerStats.MaxMana:
-						statsplayer.UpdateManaMax += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					case PlayerStats.RegenMana:
-						statsplayer.UpdateManaRegen += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.Defense:
-						statsplayer.UpdateDefenseBase += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.PureDamage:
-						player.GetDamage(DamageClass.Generic) += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					case PlayerStats.CritChance:
-						player.GetCritChance(DamageClass.Generic) += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.CritDamage:
-						statsplayer.UpdateCritDamage += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.DefenseEffectiveness:
-						statsplayer.UpdateDefEff *= modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]) + 1;
-						break;
-					case PlayerStats.Thorn:
-						statsplayer.UpdateThorn += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					case PlayerStats.MaxMinion:
-						statsplayer.UpdateMinion += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
+						break;
+					case PlayerStats.Defense:
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					case PlayerStats.MaxSentry:
-						statsplayer.UpdateSentry += modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]);
-						break;
-					case PlayerStats.AttackSpeed:
-						statsplayer.AttackSpeed += modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]);
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					default:
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Additive: modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 				}
 			}

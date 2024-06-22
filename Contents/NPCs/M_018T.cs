@@ -73,7 +73,6 @@ internal class M_018T : ModNPC {
 			shop.Add(new Item(ModContent.ItemType<SkillOrb>()) { shopCustomPrice = 0 });
 			shop.Add(new Item(ModContent.ItemType<TransmuteTablet>()) { shopCustomPrice = 0 });
 		}
-		shop.Add(new Item(ModContent.ItemType<MysteriousPotion>()) { shopCustomPrice = Item.buyPrice(gold: 1) });
 		shop.Add(new Item(ModContent.ItemType<CardPacket>()) { shopCustomPrice = Item.buyPrice(gold: 20) });
 		shop.Add(new Item(ModContent.ItemType<WeaponLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 40) });
 		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 55) });
