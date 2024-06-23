@@ -14,6 +14,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BossRush.Contents.Skill;
 public abstract class ModSkill : ModType {
+	public static int GetSkillType<T>() where T : ModSkill {
+		return ModContent.GetInstance<T>().Type;
+	}
 	/// <summary>
 	/// This is also handle itself so no worry
 	/// </summary>
@@ -23,10 +26,12 @@ public abstract class ModSkill : ModType {
 	/// </summary>
 	protected int Skill_Duration = 0;
 	protected int Skill_EnergyRequire = 0;
+	protected bool Skill_CanBeSelect = true;
 	public virtual string Texture => BossRushTexture.MISSINGTEXTURE;
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
 	public int EnergyRequire { get => Skill_EnergyRequire; }
+	public bool CanBeSelect { get => Skill_CanBeSelect; }
 	public int Type { get; private set; }
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
@@ -35,6 +40,7 @@ public abstract class ModSkill : ModType {
 		SetDefault();
 	}
 	public virtual void SetDefault() { }
+	public virtual void OnTrigger(Player player) { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void ResetEffect(Player player) { }
 	public virtual void Update(Player player) { }
@@ -105,20 +111,36 @@ public class SkillHandlePlayer : ModPlayer {
 	public void ChangeHolder(int index) {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
 	}
-	public bool RequestAddSkill_Inventory(int skillType) {
-		if(skillType >= SkillLoader.TotalCount) {
+	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true) {
+		if (skillType < 0 && skillType >= SkillLoader.TotalCount) {
 			return false;
 		}
+		int availableIndex = -1;
 		for (int i = 0; i < SkillInventory.Length; i++) {
 			if (SkillInventory[i] != -1) {
 				continue;
 			}
-			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
-			SkillInventory[i] = skillType;
-			return true;
+			availableIndex = i;
+			break;
 		}
-		BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.IndianRed, "Fail to add a skill");
-		return false;
+		if (availableIndex == -1) {
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.IndianRed, "Fail to add a skill");
+			return false;
+		}
+		if (!SkillLoader.GetSkill(skillType).CanBeSelect) {
+			if (OnRandomizeChoose) {
+				skillType = Main.rand.Next(SkillLoader.TotalCount);
+			}
+			else {
+				SkillInventory[availableIndex] = skillType;
+				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillLoader.GetSkill(skillType).DisplayName}");
+				return true;
+
+			}
+		}
+		SkillInventory[availableIndex] = skillType;
+		BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
+		return true;
 	}
 	public void AddSkillIntoCurrentActiveHolder(int SkillID, int whoAmI) {
 		if (whoAmI < 0 || whoAmI > 9) {
@@ -303,6 +325,32 @@ public class SkillHandlePlayer : ModPlayer {
 			else {
 				MaximumCoolDown = CoolDown;
 				Energy -= energyCost;
+				switch (CurrentActiveHolder) {
+					case 1:
+						for (int i = 0; i < 10; i++) {
+							if (SkillHolder1[i] == -1) {
+								continue;
+							}
+							SkillLoader.GetSkill(SkillHolder1[i]).OnTrigger(Player);
+						}
+						break;
+					case 2:
+						for (int i = 0; i < 10; i++) {
+							if (SkillHolder2[i] == -1) {
+								continue;
+							}
+							SkillLoader.GetSkill(SkillHolder2[i]).OnTrigger(Player);
+						}
+						break;
+					case 3:
+						for (int i = 0; i < 10; i++) {
+							if (SkillHolder3[i] == -1) {
+								continue;
+							}
+							SkillLoader.GetSkill(SkillHolder3[i]).OnTrigger(Player);
+						}
+						break;
+				}
 			}
 		}
 	}
@@ -321,6 +369,41 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			CoolDown = BossRushUtils.CountDown(CoolDown);
 		}
+	}
+	/// <summary>
+	/// </summary>
+	/// <returns>
+	/// Return a skill in skill holder
+	/// Return null when it can't recognize a skill
+	/// </returns>
+	public ModSkill GetSkillInHolder() {
+		switch (CurrentActiveHolder) {
+			case 1:
+				for (int i = 0; i < 10; i++) {
+					if (SkillHolder1[i] == -1) {
+						continue;
+					}
+					SkillLoader.GetSkill(SkillHolder1[i]).ResetEffect(Player);
+				}
+				break;
+			case 2:
+				for (int i = 0; i < 10; i++) {
+					if (SkillHolder2[i] == -1) {
+						continue;
+					}
+					SkillLoader.GetSkill(SkillHolder2[i]).ResetEffect(Player);
+				}
+				break;
+			case 3:
+				for (int i = 0; i < 10; i++) {
+					if (SkillHolder3[i] == -1) {
+						continue;
+					}
+					SkillLoader.GetSkill(SkillHolder3[i]).ResetEffect(Player);
+				}
+				break;
+		}
+		return null;
 	}
 	public override void ResetEffects() {
 		if (!Activate) {

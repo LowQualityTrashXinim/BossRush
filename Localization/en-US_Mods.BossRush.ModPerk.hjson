@@ -1,3 +1,12 @@
+LethalKnockBack: {
+	DisplayName: Lethal Knock Back
+	Description:
+		'''
+		+ You deal additional damage base on your knockback and target's knockback resistance
+		+ Increases melee knockback by 15%
+		'''
+}
+
 PowerUp: {
 	DisplayName: Stronger Attack
 	Description:
@@ -93,22 +102,23 @@ PotionExpert: {
 		'''
 		+ Potion have 55% to not be consumed when not using Quick Buff key
 		+ Increases Potion duration by 35%
+		+ Give you 1 random special potion
+		+ Opening Lootbox will drop you 1 random special potion
 		'''
 }
 
 SniperCharge: {
-	DisplayName: Sniper Charge
+	DisplayName: Weapon Charge
 	Description: + Weapon can deal 2x damage when it is ready
 }
 
 SelfExplosion: {
 	DisplayName: Self Explosion
-	Description: + When a enemy hit you, you create a explosion that do 75 damage to surrounding enemies
-}
-
-SpecialPotion: {
-	DisplayName: Special Potion
-	Description: + Give you 1 random special potion
+	Description:
+		'''
+		+ When you got hit, you explode damaging surrounding enemies
+		+ After you explode, you gain a small buff that increases your life regenaration
+		'''
 }
 
 ProjectileProtection: {

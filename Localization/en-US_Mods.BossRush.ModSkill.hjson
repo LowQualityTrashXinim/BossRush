@@ -37,3 +37,8 @@ StarFury: {
 	DisplayName: Fury of Star
 	Description: Not to be confused with Star Fury, a Star shoot down every 2s
 }
+
+AllOrNothing: {
+	DisplayName: All Or Nothing
+	Description: Luck given you one more opportunity !
+}

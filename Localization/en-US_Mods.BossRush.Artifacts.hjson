@@ -150,6 +150,21 @@ OrbOfAlchemistArtifact: {
 		'''
 }
 
+GamblerSoulArtifact: {
+	DisplayName: Gambler's Soul
+	Description:
+		'''
+		"Playing the RNG game"
+		[c/b7bf5c:Positive effect] :
+			+ Right at the start you gain exclusive spell and perk
+			+ Increases lootbox drop by 1
+		[c/ab3e43:Negative effect] : 
+			- Your right to access Enchantment system is revoke
+		[c/9b9c76:Neutral effect] :
+			= Damage variant increases from 15% to 65%
+		'''
+}
+
 RandomArtifact: {
 	DisplayName: Random Artifact
 	Description: Randomly chooses an artifact.

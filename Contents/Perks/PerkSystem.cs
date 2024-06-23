@@ -10,7 +10,6 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.NohitReward;
 
 namespace BossRush.Contents.Perks {
@@ -44,9 +43,8 @@ namespace BossRush.Contents.Perks {
 					}
 				}
 			}
-			if(perkplayer.perk_AlchemistPotion && item.buffType > 0 && !player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>())) {
-				MysteriousPotion.StatsCalculation(player, player.GetModPlayer<MysteriousPotionPlayer>());
-				player.AddBuff(ModContent.BuffType<MysteriousPotionBuff>(), BossRushUtils.ToMinute(4));
+			if (perkplayer.perk_AlchemistPotion && item.buffType > 0 && !player.HasBuff(ModContent.BuffType<MysteriousPotionBuff>())) {
+				MysteriousPotionBuff.SetBuff(7, BossRushUtils.ToMinute(4), player);
 			}
 			return base.ConsumeItem(item, player);
 		}
@@ -58,7 +56,7 @@ namespace BossRush.Contents.Perks {
 		}
 		private void On_Player_QuickMana(On_Player.orig_QuickMana orig, Player self) {
 			PerkPlayer perkplayer = self.GetModPlayer<PerkPlayer>();
-			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.HasPerk<ImprovedManaPotion>()) {
+			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.perk_ImprovedManaPotion) {
 				return;
 			}
 			orig(self);
@@ -119,6 +117,7 @@ namespace BossRush.Contents.Perks {
 		public bool perk_PotionExpert = false;
 		public bool perk_PotionCleanse = false;
 		public bool perk_AlchemistPotion = false;
+		public bool perk_ImprovedManaPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 
 		// ShopPerk
@@ -143,6 +142,8 @@ namespace BossRush.Contents.Perks {
 		public override void ResetEffects() {
 			perk_PotionExpert = false;
 			perk_PotionCleanse = false;
+			perk_AlchemistPotion = false;
+			perk_ImprovedManaPotion = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
@@ -198,6 +199,11 @@ namespace BossRush.Contents.Perks {
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).ModifyDamage(Player, item, ref damage);
+			}
+		}
+		public override void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).ModifyKnockBack(Player, item, ref knockback);
 			}
 		}
 		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
@@ -332,6 +338,7 @@ namespace BossRush.Contents.Perks {
 		public virtual void ResetEffect(Player player) { }
 		public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
 		public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) { }
+		public virtual void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) { }
 		public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitByAnything(Player player) { }

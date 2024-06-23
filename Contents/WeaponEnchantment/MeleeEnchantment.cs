@@ -7,7 +7,6 @@ using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin;
-using Microsoft.CodeAnalysis;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {

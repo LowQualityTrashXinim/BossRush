@@ -228,7 +228,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]//Test
 	public void Create_MinerParadise() {
 		//Minor Biome or soon to be
-		int[] oreIDarr = new int[] { TileID.Copper, TileID.Tin, TileID.Iron, TileID.Lead, TileID.Silver, TileID.Tungsten, TileID.Gold, TileID.Platinum, TileID.Palladium, TileID.Cobalt, TileID.Orichalcum, TileID.Mythril, TileID.Adamantite, TileID.Titanium };
+		int[] oreIDarr = { TileID.Copper, TileID.Tin, TileID.Iron, TileID.Lead, TileID.Silver, TileID.Tungsten, TileID.Gold, TileID.Platinum, TileID.Palladium, TileID.Cobalt, TileID.Orichalcum, TileID.Mythril, TileID.Adamantite, TileID.Titanium };
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(5, 17, 4, 4),
 		(i, j) => {
 			int oreID = WorldGen.genRand.Next(oreIDarr);

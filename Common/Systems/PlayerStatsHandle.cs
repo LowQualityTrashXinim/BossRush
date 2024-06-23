@@ -48,8 +48,6 @@ public class PlayerStatsHandle : ModPlayer {
 
 	public StatModifier LifeStealEffectiveness = new StatModifier();
 
-	public StatModifier MysteriousPotionEffectiveness = new StatModifier();
-
 	public StatModifier EnergyCap = new StatModifier();
 
 	public StatModifier RechargeEnergyCap = new StatModifier();
@@ -77,6 +75,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
 		Player.statDefense += (int)UpdateDefenseBase.Base;
+		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive;
 		Player.statDefense.FinalMultiplier *= UpdateDefenseBase.Multiplicative;
 		Player.DefenseEffectiveness *= UpdateDefEff.ApplyTo(Player.DefenseEffectiveness.Value);
 		Player.thorns = UpdateThorn.ApplyTo(Player.thorns);
@@ -89,7 +88,6 @@ public class PlayerStatsHandle : ModPlayer {
 
 		UpdateMinion = new StatModifier();
 		UpdateSentry = new StatModifier();
-		MysteriousPotionEffectiveness = new StatModifier();
 		UpdateMovement = new StatModifier();
 		UpdateJumpBoost = new StatModifier();
 		UpdateHPMax = new StatModifier();
@@ -198,9 +196,6 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.LifeStealEffectiveness:
 				LifeStealEffectiveness = LifeStealEffectiveness.CombineWith(StatMod);
 				break;
-			case PlayerStats.MysteriousPotionEffectiveness:
-				MysteriousPotionEffectiveness = MysteriousPotionEffectiveness.CombineWith(StatMod);
-				break;
 			case PlayerStats.EnergyCap:
 				EnergyCap = EnergyCap.CombineWith(StatMod);
 				break;
@@ -299,9 +294,6 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.LifeStealEffectiveness:
 				LifeStealEffectiveness = LifeStealEffectiveness.CombineWith(StatMod);
-				break;
-			case PlayerStats.MysteriousPotionEffectiveness:
-				MysteriousPotionEffectiveness = MysteriousPotionEffectiveness.CombineWith(StatMod);
 				break;
 			default:
 				break;

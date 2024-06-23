@@ -44,6 +44,8 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE))
 			return;
+		if (UniversalSystem.EnchantingState)
+			return;
 		if (item.damage > 0 && EnchantmenStlot != null) {
 			string text = "";
 			for (int i = 0; i < EnchantmenStlot.Length; i++) {

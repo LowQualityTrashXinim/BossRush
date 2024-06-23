@@ -16,5 +16,6 @@
 		public const string SMALLWHITEBALL = "BossRush/Texture/smallwhiteball";
 		public const string EMPTYCARD = "BossRush/Texture/EmptyCard";
 		public const string EXAMPLEUI = "BossRush/Texture/ExampleFrame";
+		public const string SUPPILESDROP = "BossRush/Texture/SuppliesDrop";
 	}
 }

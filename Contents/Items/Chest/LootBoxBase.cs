@@ -111,6 +111,9 @@ namespace BossRush.Contents.Items.Chest {
 				return;
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
+			if(modplayer.LootboxCanDropSpecialPotion) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
+			}
 			if (modplayer.CanDropSynergyEnergy) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 			}
@@ -784,6 +787,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// Use this if you gonna always update it
 		/// </summary>
 		public float UpdateSummonChanceMutilplier = 0;
+		public bool LootboxCanDropSpecialPotion = false;
 		private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 1;
 		/// <summary>
 		/// This must be called before using
@@ -810,6 +814,7 @@ namespace BossRush.Contents.Items.Chest {
 			potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition + PotionNumberAmountAddition);
 		}
 		public override void ResetEffects() {
+			LootboxCanDropSpecialPotion = false;
 			CanDropSynergyEnergy = false;
 			amountModifier = 0;
 			finalMultiplier = 1f;

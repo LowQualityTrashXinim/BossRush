@@ -10,6 +10,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush {
 	public partial class BossRushUtils {
+		public static void BossRushSetDefaultBuff(this ModBuff buff) {
+			Main.debuff[buff.Type] = false;
+			Main.buffNoSave[buff.Type] = true;
+		}
 		/// <summary>
 		/// Set your own DamageClass type
 		/// </summary>

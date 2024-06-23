@@ -33,6 +33,4 @@
     <None Remove="Texture\UI\DiamondBolt.png" />
     <None Remove="Texture\UI\lock.png" />
   </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
 </Project>

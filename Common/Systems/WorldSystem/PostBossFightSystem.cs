@@ -361,6 +361,9 @@ class PostBossFightGlobalNPC : GlobalNPC {
 	}
 
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
+		if(!UniversalSystem.CanAccessContent(UniversalSystem.TRUE_MODE)) {
+			return;
+		}
 		if (NPC.downedSlimeKing) {
 			//Slime
 			pool.Add(NPCID.GreenSlime, 1);

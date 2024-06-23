@@ -4,6 +4,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
 using BossRush.Common.Utils;
+using System.Collections.Generic;
+using BossRush.Texture;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -176,8 +178,34 @@ public class BroadSwordSpirit : ModSkill {
 	private void SummonSword(Player player, int index) {
 		int damage = (int)player.GetDamage(DamageClass.Melee).ApplyTo(34);
 		float knockback = (int)player.GetKnockback(DamageClass.Melee).ApplyTo(3);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI,0,0, index);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, index);
 		if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
 			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
+	}
+}
+public class AllOrNothing : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 500;
+		Skill_Duration = 1;
+		Skill_CoolDown = BossRushUtils.ToMinute(15);
+		Skill_CanBeSelect = false;
+	}
+	public override void OnTrigger(Player player) {
+		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));
+	}
+}
+public class AllOrNothingBuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		if (player.buffTime[buffIndex] <= 0) {
+			player.Center.LookForHostileNPC(out List<NPC> npclist, 1000);
+			foreach (NPC npc in npclist) {
+				int direction = player.Center.X > npc.Center.X ? 1 : -1;
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Main.rand.Next(1, 10000000), direction));
+			}
+		}
 	}
 }

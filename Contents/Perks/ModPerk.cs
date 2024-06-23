@@ -20,6 +20,19 @@ using BossRush.Contents.Items.BuilderItem;
 using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Perks {
+	public class LethalKnockBack : Perk {
+		public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
+			if(item.DamageType == DamageClass.Melee) {
+				knockback += .15f;
+			}
+		}
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+				modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+				modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+		}
+	}
 	public class PowerUp : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PowerUp>();
@@ -183,6 +196,7 @@ namespace BossRush.Contents.Perks {
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
+			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
 			if (player.HasItem(ItemID.DirtBlock)) {
@@ -199,6 +213,11 @@ namespace BossRush.Contents.Perks {
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
 			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .35f;
+			player.GetModPlayer<ChestLootDropPlayer>().LootboxCanDropSpecialPotion = true;
+		}
+		public override void OnChoose(Player player) {
+			int type = Main.rand.Next(TerrariaArrayID.SpecialPotion);
+			player.QuickSpawnItem(player.GetSource_FromThis(), type);
 		}
 	}
 	public class SniperCharge : Perk {
@@ -235,14 +254,14 @@ namespace BossRush.Contents.Perks {
 	public class SelfExplosion : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			StackLimit = 5;
+			StackLimit = 2;
 		}
 		public override void OnHitByAnything(Player player) {
 			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(250) * 2;
 			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 			foreach (NPC npc in npclist) {
 				int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
-				npc.StrikeNPC(npc.CalculateHitInfo(75 * StackAmount, direction, false, 10));
+				npc.StrikeNPC(npc.CalculateHitInfo(120 * StackAmount, direction, false, 10));
 			}
 			for (int i = 0; i < 150; i++) {
 				int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
@@ -254,11 +273,24 @@ namespace BossRush.Contents.Perks {
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 			}
+			player.AddBuff(ModContent.BuffType<ExplosionHealing>(), BossRushUtils.ToSecond(3));
+		}
+	}
+	public class ExplosionHealing : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			player.lifeRegen += 15;
 		}
 	}
 	public class SpecialPotion : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
+		}
+		public override void Update(Player player) {
+			player.GetModPlayer<ChestLootDropPlayer>().LootboxCanDropSpecialPotion = true;
 		}
 		public override void OnChoose(Player player) {
 			int type = Main.rand.Next(TerrariaArrayID.SpecialPotion);
@@ -418,6 +450,7 @@ namespace BossRush.Contents.Perks {
 	public class StellarRetirement : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
+			CanBeChoosen = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 		}
 		public override void Update(Player player) {
@@ -475,6 +508,7 @@ namespace BossRush.Contents.Perks {
 	public class ShopPerk : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
+			CanBeChoosen = false;
 			StackLimit = 2;
 		}
 		public override void Update(Player player) {
@@ -567,6 +601,9 @@ namespace BossRush.Contents.Perks {
 	public class ImprovedManaPotion : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
+		}
+		public override void ResetEffect(Player player) {
+			player.GetModPlayer<PerkPlayer>().perk_ImprovedManaPotion = true;
 		}
 	}
 }
