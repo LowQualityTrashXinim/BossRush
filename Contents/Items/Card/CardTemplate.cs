@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Card;
 public class CombatTemplate : CardTemplate {
@@ -246,6 +247,7 @@ public class HealthV3Template : CardTemplate {
 			}
 			if (Main.debuff[player.buffType[i]]) {
 				modplayer.AddStatsToPlayer(stat, value);
+				break;
 			}
 		}
 	}

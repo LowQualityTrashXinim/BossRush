@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 
-namespace BossRush.Contents.Items.aDebugItem {
+namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 	internal class ShowPlayerStats : ModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetDefaults() {
@@ -13,9 +13,9 @@ namespace BossRush.Contents.Items.aDebugItem {
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
-			Player player = Main.LocalPlayer;
-			PlayerStatsHandle statshandle = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
-			TooltipLine line = new TooltipLine(Mod, "StatsShowcase",
+			var player = Main.LocalPlayer;
+			var statshandle = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>();
+			var line = new TooltipLine(Mod, "StatsShowcase",
 				$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
 				$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
 				$"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1)}% Critical strike chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +

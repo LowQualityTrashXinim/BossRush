@@ -75,7 +75,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
 		Player.statDefense += (int)UpdateDefenseBase.Base;
-		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive;
+		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive - 1;
 		Player.statDefense.FinalMultiplier *= UpdateDefenseBase.Multiplicative;
 		Player.DefenseEffectiveness *= UpdateDefEff.ApplyTo(Player.DefenseEffectiveness.Value);
 		Player.thorns = UpdateThorn.ApplyTo(Player.thorns);

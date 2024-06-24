@@ -12,6 +12,5 @@ internal class SkillCoolDownRemove : ModItem {
 	public override void HoldItem(Player player) {
 		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.CoolDown = 0;
-
 	}
 }

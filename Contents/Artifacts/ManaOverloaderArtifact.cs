@@ -79,9 +79,7 @@ namespace BossRush.Contents.Artifacts {
 			if (!ManaOverLoader) {
 				return;
 			}
-			if (Player.statMana >= Player.statManaMax2) {
-				modifiers.SourceDamage += Player.statMana * 0.01f;
-			}
+			modifiers.SourceDamage += Player.statMana * 0.01f;
 		}
 	}
 	class ManaReleaseOrb : ModProjectile {

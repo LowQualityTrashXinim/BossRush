@@ -23,6 +23,9 @@ using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common.Systems;
+/// <summary>
+/// This not only include main stuff that make everything work but also contain some fixes to vanilla
+/// </summary>
 internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
@@ -130,12 +133,18 @@ internal class UniversalSystem : ModSystem {
 			userInterface.SetState(defaultUI);
 		}
 	}
-	//public override void SetStaticDefaults() {
-	//	//I am unsure why this is set to true
-	//	Main.debuff[BuffID.Campfire] = false;
-	//}
 }
-
+public class UniversalGlobalBuff : GlobalBuff {
+	public override void SetStaticDefaults() {
+		//I am unsure why this is set to true
+		Main.debuff[BuffID.Campfire] = false;
+		Main.debuff[BuffID.Honey] = false;
+		Main.debuff[BuffID.StarInBottle] = false;
+		Main.debuff[BuffID.HeartLamp] = false;
+		Main.debuff[BuffID.CatBast] = false;
+		Main.debuff[BuffID.Sunflower] = false;
+	}
+}
 public class UniversalGlobalItem : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (!UniversalSystem.EnchantingState)

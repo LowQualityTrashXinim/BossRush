@@ -186,6 +186,7 @@ Mods: {
 			CoconutProjectile.DisplayName: Coconut Projectile
 			SpiritProjectile.DisplayName: Spirit Projectile
 			SwordProjectile3.DisplayName: Sword Projectile3
+			EssenceProjectile.DisplayName: Essence Projectile
 		}
 
 		NPCs: {
@@ -2035,6 +2036,56 @@ Mods: {
 			AllOrNothingBuff: {
 				DisplayName: All Or Nothing Buff
 				Description: Mods.BossRush.Buffs.AllOrNothingBuff.Description
+			}
+
+			EssenceOfCalmness: {
+				DisplayName: Essence Of Calmness
+				Description: Mods.BossRush.Buffs.EssenceOfCalmness.Description
+			}
+
+			EssenceOfDrowsy: {
+				DisplayName: Essence Of Drowsy
+				Description: Mods.BossRush.Buffs.EssenceOfDrowsy.Description
+			}
+
+			EssenceOfKindness: {
+				DisplayName: Essence Of Kindness
+				Description: Mods.BossRush.Buffs.EssenceOfKindness.Description
+			}
+
+			EssenceOfRage: {
+				DisplayName: Essence Of Rage
+				Description: Mods.BossRush.Buffs.EssenceOfRage.Description
+			}
+
+			EssenceOfRejuvenate: {
+				DisplayName: Essence Of Rejuvenate
+				Description: Mods.BossRush.Buffs.EssenceOfRejuvenate.Description
+			}
+
+			EssenceOfSwift: {
+				DisplayName: Essence Of Swift
+				Description: Mods.BossRush.Buffs.EssenceOfSwift.Description
+			}
+
+			EssenceOfTitan: {
+				DisplayName: Essence Of Titan
+				Description: Mods.BossRush.Buffs.EssenceOfTitan.Description
+			}
+
+			EssenceOfWeakness: {
+				DisplayName: Essence Of Weakness
+				Description: Mods.BossRush.Buffs.EssenceOfWeakness.Description
+			}
+
+			EssenceOfWither: {
+				DisplayName: Essence Of Wither
+				Description: Mods.BossRush.Buffs.EssenceOfWither.Description
+			}
+
+			EssenceOfWrath: {
+				DisplayName: Essence Of Wrath
+				Description: Mods.BossRush.Buffs.EssenceOfWrath.Description
 			}
 		}
 

@@ -11,10 +11,10 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Contents.Items.aDebugItem;
 using BossRush.Common.Systems;
 using BossRush.Common;
 using BossRush.Contents.Skill;
+using BossRush.Contents.Items.aDebugItem.StatsInform;
 
 namespace BossRush.Contents.NPCs;
 internal class M_018T : ModNPC {

@@ -58,6 +58,11 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TheUndertaker:
 					item.autoReuse = true;
 					break;
+				case ItemID.BoneSword:
+					item.damage = 23;
+					item.crit = 4;
+					item.ArmorPenetration = 5;
+					break;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {

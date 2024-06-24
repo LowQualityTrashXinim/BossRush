@@ -104,7 +104,7 @@ TokenOfWrathArtifact: {
 }
 
 VampirismCrystalArtifact: {
-	DisplayName: Vampirism Crystal Artifact
+	DisplayName: Vampirism Crystal
 	Description:
 		'''
 		"Unpure, relentess crystal."
@@ -124,7 +124,7 @@ ManaOverloaderArtifact: {
 		[c/b7bf5c:Positive effect] :
 			+ You constantly regen Mana regardless of mana regen cooldown
 		[c/ab3e43:Negative effect] : 
-			- When you are at max mana, damage dealt to you will be increases base on your mana
+			- Damage dealt to you will be increases base on your mana
 		[c/9b9c76:Neutral effect] :
 			= Spawn special orb that can increases your mana consumption rate
 			= Mana cost reduction can decreases your weapon damage and vice versa
@@ -137,7 +137,7 @@ NormalizeArtifact: {
 }
 
 OrbOfAlchemistArtifact: {
-	DisplayName: Orb Of Alchemist Artifact
+	DisplayName: Orb Of Alchemist
 	Description:
 		'''
 		"The orb whisper secret of alchemist, the world that revolve around it"
@@ -162,6 +162,21 @@ GamblerSoulArtifact: {
 			- Your right to access Enchantment system is revoke
 		[c/9b9c76:Neutral effect] :
 			= Damage variant increases from 15% to 65%
+		'''
+}
+
+EssenceLanternArtifact: {
+	DisplayName: Essence Lantern
+	Description:
+		'''
+		"Enable new world perspective"
+		[c/9b9c76:Neutral effect] :
+			= Weapon damage type become generic
+			= Sometime spawn Essence Orb on hitting enemy
+		[c/b7bf5c:Positive effect] :
+			+ Some essence orb have positive effect
+		[c/ab3e43:Negative effect] : 
+			+ Some essence orb have negative effect
 		'''
 }
 
