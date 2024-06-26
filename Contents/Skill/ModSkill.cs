@@ -204,7 +204,14 @@ public class AllOrNothingBuff : ModBuff {
 			player.Center.LookForHostileNPC(out List<NPC> npclist, 1000);
 			foreach (NPC npc in npclist) {
 				int direction = player.Center.X > npc.Center.X ? 1 : -1;
-				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Main.rand.Next(1, 10000000), direction));
+				int originDmg = (int)(npc.lifeMax * .1f);
+				int dmg = originDmg;
+				for (int i = 2; i < 17; i++) {
+					if (Main.rand.NextBool(i)) {
+						dmg += (int)(originDmg * Main.rand.NextFloat(.85f, 1.15f));
+					}
+				}
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(dmg, direction));
 			}
 		}
 	}
