@@ -71,6 +71,10 @@ internal class UniversalSystem : ModSystem {
 		return false;
 	}
 	internal UserInterface userInterface;
+	internal UserInterface perkInterface;
+	internal UserInterface skillInterface;
+	internal UserInterface enchantInterface;
+
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
 	public SkillUI skillUIstate;
@@ -89,6 +93,9 @@ internal class UniversalSystem : ModSystem {
 			defaultUI = new();
 
 			userInterface = new();
+			perkInterface = new();
+			skillInterface = new();
+			enchantInterface = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
@@ -107,9 +114,22 @@ internal class UniversalSystem : ModSystem {
 		}
 	}
 	public override void Unload() {
+		Enchant_uiState = null;
+		perkUIstate = null;
+
+		skillUIstate = null;
+		defaultUI = null;
+
+		userInterface = null;
+		perkInterface = null;
+		skillInterface = null;
+		enchantInterface = null;
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
+		perkInterface?.Update(gameTime);
+		skillInterface?.Update(gameTime);
+		enchantInterface?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -118,20 +138,28 @@ internal class UniversalSystem : ModSystem {
 				"BossRush: UI",
 				delegate {
 					userInterface.Draw(Main.spriteBatch, new GameTime());
+					perkInterface.Draw(Main.spriteBatch, new GameTime());
+					skillInterface.Draw(Main.spriteBatch, new GameTime());
+					enchantInterface.Draw(Main.spriteBatch, new GameTime());
 					return true;
 				},
 				InterfaceScaleType.UI)
 			);
 	}
-	public void SetState(UIState state) {
-		if (userInterface.CurrentState == null || userInterface.CurrentState == defaultUI) {
-			userInterface.SetState(state);
-		}
+	public void ActivatePerkUI(short state) {
+		perkUIstate.StateofState = state;
+		perkInterface.SetState(perkUIstate);
 	}
-	public void DeactivateState() {
-		if (userInterface.CurrentState != null) {
-			userInterface.SetState(defaultUI);
-		}
+	public void ActivateSkillUI() {
+		skillInterface.SetState(skillUIstate);
+	}
+	public void ActivateEnchantmentUI() {
+		enchantInterface.SetState(Enchant_uiState);
+	}
+	public void DeactivateUI() {
+		perkInterface.SetState(null);
+		skillInterface.SetState(null);
+		enchantInterface.SetState(null);
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -165,11 +193,13 @@ public class UniversalGlobalItem : GlobalItem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		uiSystemInstance.SetState(uiSystemInstance.defaultUI);
+		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.userInterface.CurrentState != null && uiSystemInstance.userInterface.CurrentState != uiSystemInstance.defaultUI) {
+		if (uiSystemInstance.perkInterface.CurrentState != null 
+			|| uiSystemInstance.enchantInterface.CurrentState != null 
+			|| uiSystemInstance.skillInterface.CurrentState != null) {
 			return false;
 		}
 		return base.CanUseItem(item);
@@ -194,48 +224,7 @@ class DefaultUI : UIState {
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
-		//CreateDefaultSkillBTN();
 	}
-	//private void CreateDefaultSkillBTN() {
-	//	Player player = Main.LocalPlayer;
-	//	if (player.TryGetModPlayer(out SkillHandlePlayer modplayer)) {
-
-	//		Vector2 textureSize = new Vector2(52, 52);
-	//		Vector2 OffSetPosition_Skill = player.Center;
-	//		OffSetPosition_Skill.X -= textureSize.X * 5;
-	//		if (skill.Count < 1) {
-	//			Vector2 customOffSet = OffSetPosition_Skill;
-	//			customOffSet.Y -= 60;
-	//			for (int i = 0; i < 3; i++) {
-	//				btn_SkillSlotSelection btn_Selection = new btn_SkillSlotSelection(TextureAssets.InventoryBack7, modplayer, i + 1);
-	//				btn_Selection.UISetPosition(customOffSet + new Vector2(52, 0) * i, textureSize);
-	//				Append(btn_Selection);
-	//			}
-	//			for (int i = 0; i < 10; i++) {
-	//				btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, SkillHolder[i], UItype_SKILL);
-	//				skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
-	//				skill.Add(skillslot);
-	//				Append(skill[i]);
-	//			}
-	//		}
-	//		Vector2 InvOffSet = new Vector2(520, -55);
-	//		if (inventory.Count < 1) {
-	//			for (int i = 0; i < 30; i++) {
-	//				btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, modplayer.SkillInventory[i], UIType_INVENTORY);
-	//				Vector2 InvPos = OffSetPosition_Skill + new Vector2(0, 72);
-	//				if (i >= 10) {
-	//					InvPos -= InvOffSet;
-	//				}
-	//				if (i >= 20) {
-	//					InvPos -= InvOffSet;
-	//				}
-	//				skillslot.UISetPosition(InvPos + new Vector2(52, 0) * i, textureSize);
-	//				inventory.Add(skillslot);
-	//				Append(inventory[i]);
-	//			}
-	//		}
-	//	}
-	//}
 	private void CreateEnergyBar() {
 		area = new UIElement();
 		area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
@@ -350,73 +339,6 @@ class DefaultUI : UIState {
 		}
 		base.Update(gameTime);
 	}
-
-
-	//public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
-	//public List<btn_SkillSlotHolder> inventory = new List<btn_SkillSlotHolder>();
-	//private ExitUI exitUI;
-	//private btn_SkillDeletion btn_delete;
-	//public const string UItype_SKILL = "skill";
-	//public const string UIType_INVENTORY = "inventory";
-	//private void ActivateSkillUI(Player player) {
-	//	if (player.TryGetModPlayer(out SkillHandlePlayer modplayer)) {
-	//		//Explain : since most likely in the future we aren't gonna expand the skill slot, we just hard set it to 10
-	//		//We are also pre render these UI first
-	//		int[] SkillHolder = modplayer.GetCurrentActiveSkillHolder();
-	//		Vector2 textureSize = new Vector2(52, 52);
-	//		Vector2 OffSetPosition_Skill = player.Center;
-	//		OffSetPosition_Skill.X -= textureSize.X * 5;
-	//		if (skill.Count < 1) {
-	//			Vector2 customOffSet = OffSetPosition_Skill;
-	//			customOffSet.Y -= 60;
-	//			for (int i = 0; i < 3; i++) {
-	//				btn_SkillSlotSelection btn_Selection = new btn_SkillSlotSelection(TextureAssets.InventoryBack7, modplayer, i + 1);
-	//				btn_Selection.UISetPosition(customOffSet + new Vector2(52, 0) * i, textureSize);
-	//				Append(btn_Selection);
-	//			}
-	//			for (int i = 0; i < 10; i++) {
-	//				btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, SkillHolder[i], UItype_SKILL);
-	//				skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
-	//				skill.Add(skillslot);
-	//				Append(skill[i]);
-	//			}
-	//		}
-	//		Vector2 InvOffSet = new Vector2(520, -55);
-	//		if (inventory.Count < 1) {
-	//			for (int i = 0; i < 30; i++) {
-	//				btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, modplayer.SkillInventory[i], UIType_INVENTORY);
-	//				Vector2 InvPos = OffSetPosition_Skill + new Vector2(0, 72);
-	//				if (i >= 10) {
-	//					InvPos -= InvOffSet;
-	//				}
-	//				if (i >= 20) {
-	//					InvPos -= InvOffSet;
-	//				}
-	//				skillslot.UISetPosition(InvPos + new Vector2(52, 0) * i, textureSize);
-	//				inventory.Add(skillslot);
-	//				Append(inventory[i]);
-	//			}
-	//		}
-	//		if (exitUI == null) {
-	//			exitUI = new ExitUI(TextureAssets.InventoryBack10);
-	//			exitUI.UISetPosition(player.Center + new Vector2(300, 0), textureSize);
-	//			Append(exitUI);
-	//		}
-	//		if (btn_delete == null) {
-	//			btn_delete = new btn_SkillDeletion(TextureAssets.InventoryBack, modplayer);
-	//			btn_delete.UISetPosition(player.Center - new Vector2(330, 0), textureSize);
-	//			Append(btn_delete);
-	//		}
-	//	}
-	//}
-	//public override void OnActivate() {
-	//	Player player = Main.LocalPlayer;
-	//	ActivateSkillUI(player);
-	//}
-	//public override void OnDeactivate() {
-	//	SkillModSystem.SelectInventoryIndex = -1;
-	//	SkillModSystem.SelectSkillIndex = -1;
-	//}
 }
 internal class SkillUI : UIState {
 	public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
@@ -638,14 +560,11 @@ internal class PerkUIState : UIState {
 	public const short DefaultState = 0;
 	public const short StarterPerkState = 1;
 	public const short DebugState = 2;
-	public int whoAmI = -1;
 	public short StateofState = 0;
 	public UIText toolTip;
 	public override void OnActivate() {
 		Elements.Clear();
-		if (whoAmI == -1)
-			return;
-		Player player = Main.player[whoAmI];
+		Player player = Main.LocalPlayer;
 		if (player.TryGetModPlayer(out PerkPlayer modplayer)) {
 			if (StateofState == DefaultState) {
 				ActivateNormalPerkUI(modplayer, player);
@@ -778,7 +697,7 @@ class PerkUIImageButton : UIImageButton {
 			perkplayer.perks[perkType]++;
 		ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		uiSystemInstance.DeactivateState();
+		uiSystemInstance.DeactivateUI();
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
@@ -814,7 +733,7 @@ abstract class SpecialPerkUIImageButton : UIImageButton {
 		base.LeftClick(evt);
 		OnLeftClick(Main.LocalPlayer);
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		uiSystemInstance.DeactivateState();
+		uiSystemInstance.DeactivateUI();
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
@@ -860,22 +779,18 @@ class MaterialCardUIImageButton : SpecialPerkUIImageButton {
 	public override string TooltipText() => "Give you 3 card packets";
 }
 internal class EnchantmentUIState : UIState {
-	public int WhoAmI = -1;
 	WeaponEnchantmentUIslot weaponEnchantmentUIslot;
 	ExitUI weaponEnchantmentUIExit;
-	public override void OnActivate() {
-		Elements.Clear();
-		if (WhoAmI == -1)
-			return;
-		Player player = Main.player[WhoAmI];
-		WeaponEnchantmentUIslot slot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack, player);
-		slot.UISetWidthHeight(52, 52);
-		slot.UISetPosition(player.Center + Vector2.UnitX * 120, new Vector2(26, 26));
-		Append(slot);
-		var exitUI = new ExitUI(TextureAssets.InventoryBack13);
-		exitUI.UISetWidthHeight(52, 52);
-		exitUI.UISetPosition(player.Center + Vector2.UnitX * 178, new Vector2(26, 26));
-		Append(exitUI);
+	public override void OnInitialize() {
+		Player player = Main.LocalPlayer;
+		weaponEnchantmentUIslot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack, player);
+		weaponEnchantmentUIslot.UISetWidthHeight(52, 52);
+		weaponEnchantmentUIslot.UISetPosition(player.Center + Vector2.UnitX * 120, new Vector2(26, 26));
+		Append(weaponEnchantmentUIslot);
+		weaponEnchantmentUIExit = new ExitUI(TextureAssets.InventoryBack13);
+		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
+		weaponEnchantmentUIExit.UISetPosition(player.Center + Vector2.UnitX * 178, new Vector2(26, 26));
+		Append(weaponEnchantmentUIExit);
 	}
 }
 public class WeaponEnchantmentUIslot : UIImage {

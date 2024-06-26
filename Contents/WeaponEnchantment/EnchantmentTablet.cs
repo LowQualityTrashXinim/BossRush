@@ -15,9 +15,8 @@ internal class EnchantmentTablet : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.Enchant_uiState.WhoAmI = player.whoAmI;
-			uiSystemInstance.SetState(uiSystemInstance.Enchant_uiState);
+			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+			uiSystemInstance.ActivateEnchantmentUI();
 		}
 		return false;
 	}

@@ -64,7 +64,7 @@ public class ExitUI : UIImageButton {
 	}
 
 	public override void LeftClick(UIMouseEvent evt) {
-		ModContent.GetInstance<UniversalSystem>().DeactivateState();
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}
 }
 public class TransmutationUI : UIImage {

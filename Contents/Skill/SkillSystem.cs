@@ -761,7 +761,7 @@ public class SkillOrb : ModItem {
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
 			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.SetState(uiSystemInstance.skillUIstate);
+			uiSystemInstance.ActivateSkillUI();
 		}
 		return base.UseItem(player);
 	}

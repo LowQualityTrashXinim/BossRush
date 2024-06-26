@@ -11,9 +11,7 @@ internal class PerkDebugItem : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
-		uiSystemInstance.perkUIstate.StateofState = PerkUIState.DebugState;
-		uiSystemInstance.SetState(uiSystemInstance.perkUIstate);
+		uiSystemInstance.ActivatePerkUI(PerkUIState.DebugState);
 		return true;
 	}
 }

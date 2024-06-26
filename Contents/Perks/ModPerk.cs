@@ -6,6 +6,7 @@ using Terraria.Audio;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using BossRush.Common.Utils;
 using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Common.Systems;
@@ -13,14 +14,15 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Projectiles;
-using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
-using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Perks {
 	public class LethalKnockBack : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
 		public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
 			if(item.DamageType == DamageClass.Melee) {
 				knockback += .15f;

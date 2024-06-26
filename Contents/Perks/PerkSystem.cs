@@ -383,9 +383,7 @@ namespace BossRush.Contents.Perks {
 			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
 			if (player.altFunctionUse != 2) {
 				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-				uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
-				uiSystemInstance.perkUIstate.StateofState = PerkUIState.DefaultState;
-				uiSystemInstance.SetState(uiSystemInstance.perkUIstate);
+				uiSystemInstance.ActivatePerkUI(PerkUIState.DefaultState);
 			}
 			else if (player.IsDebugPlayer()) {
 				modplayer.perks.Clear();
@@ -404,9 +402,7 @@ namespace BossRush.Contents.Perks {
 			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
 			if (player.altFunctionUse != 2) {
 				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-				uiSystemInstance.perkUIstate.whoAmI = player.whoAmI;
-				uiSystemInstance.perkUIstate.StateofState = PerkUIState.StarterPerkState;
-				uiSystemInstance.SetState(uiSystemInstance.perkUIstate);
+				uiSystemInstance.ActivatePerkUI(PerkUIState.StarterPerkState);
 			}
 			else if (player.IsDebugPlayer()) {
 				modplayer.perks.Clear();
