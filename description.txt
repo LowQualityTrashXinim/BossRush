@@ -1,6 +1,14 @@
-Disclaimer: This game is in a beta demo state. While this mod is playable until Moon Lord, its contents are unpolished, unfinished. If you spot any bug or gameplay issue, please consider reporting it in our Discord server.
+Disclaimer: This game is in a beta state. While this mod is playable until Moon Lord, it's contents are unpolished, unfinished and aimless.
+
+! For the intended experience, please create a new Hardcore character !
+
+Roguelike Terraria is a challenging mod that offers an entirely new experience built around having just one life. Make it count!
+• Strategise your way to Moon Lord using fairly randomised yet limited resources.
+• Contruct thousands of possible builds using brand new interactive systems affecting both the player and their weapons.
+• Customize your experience via various configurations.
+
+If you spot any bug or gameplay issue, please consider reporting it in our Discord server.
+
 Note: Multiplayer is currently in the works, so it may not work as expect.
 
 If you have questions, don't hesitate to join our Discord server: https://discord.gg/YqN5z5WVaS
-
-This mod is no longer maintained and will recieve no update, postpone indefinitely

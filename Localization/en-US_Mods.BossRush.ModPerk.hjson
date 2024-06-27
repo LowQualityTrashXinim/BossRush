@@ -1,3 +1,21 @@
+StrokeOfLuck: {
+	DisplayName: Stroke Of Luck
+	Description:
+		'''
+		You have 1 in 25 chance to 
+		+ Have your output damage increases when hitting NPC from 15% to 100%
+		+ Damage dealt onto you may be reduce from 15% to dealing 1 damage
+		'''
+}
+
+UncertainStrike: {
+	DisplayName: Uncertain Strike
+	Description:
+		'''
+		+ Damage dealt onto NPC may increases up to 45% or decreases down by 15%
+		'''
+}
+
 LethalKnockBack: {
 	DisplayName: Lethal Knock Back
 	Description:

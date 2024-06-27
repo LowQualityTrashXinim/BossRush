@@ -19,20 +19,60 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 
 namespace BossRush.Contents.Perks {
+	public class StrokeOfLuck : Perk {
+		public override void SetDefaults() {
+			CanBeChoosen = false;
+			CanBeStack = false;
+		}
+		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+			if (Main.rand.NextBool(25)) {
+				hurtInfo.Damage = Main.rand.Next(1, (int)(hurtInfo.Damage * .85f));
+			}
+		}
+		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+			if (Main.rand.NextBool(25)) {
+				hurtInfo.Damage = Main.rand.Next(1, (int)(hurtInfo.Damage * .85f));
+			}
+		}
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextBool(25)) {
+				modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
+			}
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextBool(25)) {
+				modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
+			}
+		}
+	}
+	public class UncertainStrike : Perk {
+		public override void SetDefaults() {
+			CanBeChoosen = false;
+			CanBeStack = false;
+		}
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextBool(3))
+				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .45f);
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextBool(3))
+				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .45f);
+		}
+	}
 	public class LethalKnockBack : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
 		}
 		public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
-			if(item.DamageType == DamageClass.Melee) {
+			if (item.DamageType == DamageClass.Melee) {
 				knockback += .15f;
 			}
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-				modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+			modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-				modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+			modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
 		}
 	}
 	public class PowerUp : Perk {
@@ -166,7 +206,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			bool Opportunity = Main.rand.NextBool(10);
-			int[] debuffArray = 
+			int[] debuffArray =
 				{ BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame,
 				BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
 			if (!debuffArray.Where(d => !target.HasBuff(d)).Any())

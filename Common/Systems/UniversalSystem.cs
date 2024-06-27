@@ -21,6 +21,7 @@ using Terraria.GameContent.UI.States;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.WeaponEnchantment;
+using System.Drawing.Drawing2D;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -197,8 +198,8 @@ public class UniversalModPlayer : ModPlayer {
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.perkInterface.CurrentState != null 
-			|| uiSystemInstance.enchantInterface.CurrentState != null 
+		if (uiSystemInstance.perkInterface.CurrentState != null
+			|| uiSystemInstance.enchantInterface.CurrentState != null
 			|| uiSystemInstance.skillInterface.CurrentState != null) {
 			return false;
 		}
@@ -560,6 +561,7 @@ internal class PerkUIState : UIState {
 	public const short DefaultState = 0;
 	public const short StarterPerkState = 1;
 	public const short DebugState = 2;
+	public const short GamblerState = 3;
 	public short StateofState = 0;
 	public UIText toolTip;
 	public override void OnActivate() {
@@ -574,6 +576,9 @@ internal class PerkUIState : UIState {
 			}
 			if (StateofState == DebugState) {
 				ActivateDebugPerkUI(modplayer, player);
+			}
+			if (StateofState == GamblerState) {
+				ActivateGamblerUI(modplayer, player);
 			}
 		}
 		toolTip = new UIText("");
@@ -664,6 +669,27 @@ internal class PerkUIState : UIState {
 			Perk.GetPerkType<BlessingOfVortex>(),
 			Perk.GetPerkType<BlessingOfNebula>(),
 			Perk.GetPerkType<BlessingOfStarDust>(),
+		};
+		for (int i = 0; i < starterPerk.Length; i++) {
+			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
+			//After that we assign perk
+			if (modplayer.perks.ContainsKey(starterPerk[i])) {
+				if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(starterPerk[i]).StackLimit) {
+					continue;
+				}
+			}
+			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString), modplayer);
+			btn.UISetWidthHeight(52, 52);
+			btn.UISetPosition(player.Center + offsetPos, originDefault);
+			btn.perkType = starterPerk[i];
+			Append(btn);
+		}
+	}
+	private void ActivateGamblerUI(PerkPlayer modplayer, Player player) {
+		Vector2 originDefault = new Vector2(26, 26);
+		int[] starterPerk = new int[]
+		{ Perk.GetPerkType<UncertainStrike>(),
+			Perk.GetPerkType<StrokeOfLuck>(),
 			Perk.GetPerkType<BlessingOfPerk>()
 		};
 		for (int i = 0; i < starterPerk.Length; i++) {
@@ -701,26 +727,13 @@ class PerkUIImageButton : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
-		try {
-			foreach (var el in Parent.Children) {
-				if (el is UIText toolTip) {
-					if (toolTip is null) {
-						return;
-					}
-					if (IsMouseHovering) {
-						FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
-						DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
-						string tooltipText = ModPerkLoader.GetPerk(perkType).PerkNameToolTip;
-						Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
-						size.X *= .5f;
-						toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
-						toolTip.SetText(tooltipText);
-					}
-				}
-			}
+		if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
+			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).Description);
 		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
 		}
 	}
 }
@@ -737,26 +750,13 @@ abstract class SpecialPerkUIImageButton : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
-		try {
-			foreach (var el in Parent.Children) {
-				if (el is UIText toolTip) {
-					if (toolTip is null) {
-						return;
-					}
-					if (IsMouseHovering) {
-						FieldInfo textIsLarge = typeof(UIText).GetField("_isLarge", BindingFlags.NonPublic | BindingFlags.Instance);
-						DynamicSpriteFont font = ((bool)textIsLarge.GetValue(el) ? FontAssets.DeathText : FontAssets.MouseText).Value;
-						string tooltipText = TooltipText();
-						Vector2 size = ChatManager.GetStringSize(font, tooltipText, Vector2.One);
-						size.X *= .5f;
-						toolTip.UISetPosition(new Vector2(Left.Pixels, Top.Pixels) - size);
-						toolTip.SetText(tooltipText);
-					}
-				}
-			}
+		if (IsMouseHovering) {
+			Main.instance.MouseText(TooltipText());
 		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
 		}
 	}
 	public virtual string TooltipText() => "";

@@ -410,4 +410,23 @@ namespace BossRush.Contents.Perks {
 			return true;
 		}
 	}
+	class GamblerPerk: ModItem {
+		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override void SetDefaults() {
+			Item.BossRushDefaultToConsume(32, 23);
+			Item.maxStack = 999;
+		}
+		public override bool AltFunctionUse(Player player) => true;
+		public override bool? UseItem(Player player) {
+			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
+			if (player.altFunctionUse != 2) {
+				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+				uiSystemInstance.ActivatePerkUI(PerkUIState.GamblerState);
+			}
+			else if (player.IsDebugPlayer()) {
+				modplayer.perks.Clear();
+			}
+			return true;
+		}
+	}
 }
