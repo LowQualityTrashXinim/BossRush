@@ -24,12 +24,20 @@ public class Relic : ModItem {
 		Item.value = Item.buyPrice(silver: 50);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		if (template == null) {
+
+		TooltipLine line = tooltips.FirstOrDefault(l => l.Name == "Tooltip0");
+		if (template == null || line == null) {
+			tooltips.Add(new TooltipLine(Mod,"","Something gone wrong"));
 			return;
 		}
-		TooltipLine line = tooltips.FirstOrDefault(l => l.Name == "Tooltip0");
-		if (line != null) {
-			line.Text = template.ModifyToolTip(stat, modifier);
+		line.Text = template.ModifyToolTip(stat, modifier);
+		if (Main.LocalPlayer.IsDebugPlayer()) {
+			line.Text += 
+				$"\nTemplate Name : {CardTemplateLoader.GetTemplate(template.Type).FullName}" +
+				$"\nTemplate Desc : {CardTemplateLoader.GetTemplate(template.Type).Description}" +
+				$"\nTemplate ID : {template.Type}" +
+				$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats),stat)}" +
+				$"\nIncreases value : Additive[{modifier.Additive}] Multiplicative[{modifier.Multiplicative}] Base[{modifier.Base}] Flat[{modifier.Flat}]";
 		}
 	}
 	public override void UpdateInventory(Player player) {

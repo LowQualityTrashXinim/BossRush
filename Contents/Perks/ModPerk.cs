@@ -21,6 +21,7 @@ using BossRush.Contents.Items.BuilderItem;
 namespace BossRush.Contents.Perks {
 	public class StrokeOfLuck : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeChoosen = false;
 			CanBeStack = false;
 		}
@@ -47,6 +48,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class UncertainStrike : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeChoosen = false;
 			CanBeStack = false;
 		}

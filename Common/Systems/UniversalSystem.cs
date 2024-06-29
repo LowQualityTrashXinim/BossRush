@@ -22,6 +22,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.WeaponEnchantment;
 using System.Drawing.Drawing2D;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -195,6 +196,12 @@ public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
+		uiSystemInstance.perkInterface.SetState(null);
+		uiSystemInstance.skillInterface.SetState(null);
+		uiSystemInstance.enchantInterface.SetState(null);
+		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE) && WarnAlready == 0) {
+			WarnAlready = 1;
+		}
 	}
 	public override bool CanUseItem(Item item) {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
@@ -204,6 +211,13 @@ public class UniversalModPlayer : ModPlayer {
 			return false;
 		}
 		return base.CanUseItem(item);
+	}
+	int WarnAlready = 0;
+	public override void SaveData(TagCompound tag) {
+		tag.Add("WarnAlready", WarnAlready);
+	}
+	public override void LoadData(TagCompound tag) {
+		WarnAlready = (int)tag["WarnAlready"];
 	}
 }
 
@@ -221,11 +235,34 @@ class DefaultUI : UIState {
 	private Color gradientA2;
 	private Color gradientB2;
 
+	private UITextPanel<string> popUpWarning;
+	private UITextPanel<string> popUpWarningClose;
+
 	private List<UIImage> perkShowcase;
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
 	}
+	public override void OnActivate() {
+		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
+			popUpWarning = new UITextPanel<string>("Terraria: Roguelike is only compatible with freshly created Hardcore characters\nAs a result, the mod will be temporarily disabled until you leave the world.");
+			popUpWarning.Height.Set(66, 0);
+			popUpWarning.HAlign = .5f;
+			popUpWarning.VAlign = .5f;
+			Append(popUpWarning);
+			popUpWarningClose = new UITextPanel<string>("Close Disclaimer");
+			popUpWarningClose.HAlign = .5f;
+			popUpWarningClose.VAlign = .6f;
+			popUpWarningClose.OnLeftClick += PopUpWarning_OnLeftClick;
+			Append(popUpWarningClose);
+		}
+	}
+
+	private void PopUpWarning_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		Elements.Remove(popUpWarning);
+		Elements.Remove(popUpWarningClose);
+	}
+
 	private void CreateEnergyBar() {
 		area = new UIElement();
 		area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
@@ -328,7 +365,6 @@ class DefaultUI : UIState {
 	}
 
 	public override void Update(GameTime gameTime) {
-
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		// Setting the text per tick to update and show our resource values.
 		text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
@@ -728,7 +764,7 @@ class PerkUIImageButton : UIImageButton {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
-			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).Description);
+			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).Description);
 		}
 		else {
 			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {

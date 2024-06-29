@@ -27,14 +27,6 @@ namespace BossRush.Common {
 				Main.NewText("You have enter debug mode", Color.Red);
 				return;
 			}
-			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
-				Player.difficulty = PlayerDifficultyID.Hardcore;
-			}
-			else if (Player.difficulty != PlayerDifficultyID.Hardcore && !ModContent.GetInstance<BossRushModConfig>().HardEnableFeature) {
-				Main.NewText("Most of the mod content are locked behind hardcore, please play in hardcore or enable HardEnableFeature", Color.Red);
-			}
-			Main.NewText("Currently the mod are still lacking a lot of planned feature but we are focusing on pre hardmode content");
-			Main.NewText("The mod is postpone indefinitely");
 			if (Main.ActiveWorldFileData.GameMode == 0) {
 				Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
 			}

@@ -10,10 +10,7 @@ StrokeOfLuck: {
 
 UncertainStrike: {
 	DisplayName: Uncertain Strike
-	Description:
-		'''
-		+ Damage dealt onto NPC may increases up to 45% or decreases down by 15%
-		'''
+	Description: + Damage dealt onto NPC may increases up to 45% or decreases down by 15%
 }
 
 LethalKnockBack: {

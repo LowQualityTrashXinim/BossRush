@@ -607,20 +607,6 @@ Mods: {
 				DisplayName: Diamond Swotaff
 			}
 
-			HelixTestBullet: {
-				Tooltip: ""
-				DisplayName: Helix Test Bullet
-			}
-
-			ComboConceptSword: {
-				Tooltip: ""
-				DisplayName: Combo Concept Sword
-			}
-
-			OverhaulWeapon: {
-				Tooltip: ""
-				DisplayName: Overhaul Weapon
-			}
 
 			CursedSkull: {
 				Tooltip:
@@ -721,26 +707,6 @@ Mods: {
 				DisplayName: True Brain Of Cthulhu Trophy
 			}
 
-			VortexCard: {
-				Tooltip: Increase your chance to get range weapon from chest by 50 !
-				DisplayName: Vortex Card
-			}
-
-			StarDustCard: {
-				Tooltip: Increase your chance to get summoner weapon from chest by 50 !
-				DisplayName: Star Dust Card
-			}
-
-			SolarCard: {
-				Tooltip: Increase your chance to get melee weapon from chest by 50 !
-				DisplayName: Solar Card
-			}
-
-			NebulaCard: {
-				Tooltip: Increase your chance to get magic weapon from chest by 50 !
-				DisplayName: Nebula Card
-			}
-
 			ResetCard: {
 				Tooltip:
 					'''
@@ -766,52 +732,6 @@ Mods: {
 				DisplayName: Arena Maker
 			}
 
-			VampirismCrystal: {
-				Tooltip:
-					'''
-					"Unpure, relentess crystal"
-					Positive effect : 
-					+ Attack heal player
-					+ You can survive 1 fatal attack ( 5 minute cooldown )
-					Negative Effect : reduce max life by 55% and permanent potion sickness
-					'''
-				DisplayName: Vampirism Crystal
-			}
-
-			TokenofPride: {
-				Tooltip:
-					'''
-					"Having the skill to use whatever you are given"
-					Positive effect : Increase weapon damage by 45%
-					Negative effect : Halves your drop from treasure chest
-					Additional Effect : Show me your skill that you so prideful about, and I shall reward it
-					'''
-				DisplayName: Token of pride
-			}
-
-			TokenofGreed: {
-				Tooltip:
-					'''
-					"Satisfied by just having, caring not for weapon quality"
-					Positive effect : 
-					+ Increase amount of drop by 4 
-					+ Increase amount of card from packet by 2
-					Negative effect : Decrease weapon damage globally by 35%
-					'''
-				DisplayName: Token of greed
-			}
-
-			SkillIssuedArtifact: {
-				Tooltip:
-					'''
-					"with this, nothing is impossible, even with skill issue in bloodstream"
-					For each monster killed, your MaxHP will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative)
-					To further increase progress, this accessory will make monster spawns increase by CRAZY amount
-					Capped at 10 million kills so your game don't break, you can thank me for that
-					Only works with people have skill issue. lives up to the name
-					'''
-				DisplayName: Infinite Growth
-			}
 
 			GodDice: {
 				Tooltip:
@@ -820,83 +740,6 @@ Mods: {
 					Neutral effect : Gives you a roll for each boss kill, consume 1 roll to roll a random stats
 					'''
 				DisplayName: God Dice
-			}
-
-			FateDecider: {
-				Tooltip:
-					'''
-					"Make your weapon a little bit more interesting"
-					Positive effect : Randomly make your weapon better than before
-					Negative effect : Randomly make your weapon worse than before
-					The positive effect and negative effect can't stack
-					After a certain amount of time is pass, the effect will change
-					'''
-				DisplayName: Fate Decider
-			}
-
-			BrokenArtifact: {
-				DisplayName: Broken Artifact
-				Tooltip: A far cry from its former glory, maybe you can make something with this
-			}
-
-			HeartOfEarth: {
-				DisplayName: Heart Of Earth
-				Tooltip:
-					'''
-					"Protected by the Earth"
-					Positive effect : 
-					+ Multiply your max HP by 1.5 and add a additional 100 max hp
-					+ Standing still for a short moment massively boost your regen
-					Negative effect : Getting hit will make you unable to use your weapon for 5s
-					'''
-			}
-
-			RandomArtifactChooser: {
-				DisplayName: Random Artifact Chooser
-				Tooltip: Randomly choose 1 of any artifact
-			}
-
-			BootOfSpeedManipulation: {
-				DisplayName: Boot Of Speed Manipulation
-				Tooltip:
-					'''
-					"Run like how you want"
-					Positive effect : Increase your movement capacity massively
-					Negative effect : 
-					- You can't fly with wing
-					- Randomize your damage to be worse when moving
-					'''
-			}
-
-			MagicalCardDeck: {
-				DisplayName: Magical Card Deck
-				Tooltip:
-					'''
-					"I Summon pot of greed ! it allow me to draw 2 card from the deck"
-					Banned for many reason
-					Postive effect : 
-					+ Card packet can drop potentially more cards ( up to 3 )
-					Negative effect : 
-					- Increase the chance to get faulty card
-					Neutral effect :
-					= Accelerate card luck stats
-					'''
-			}
-
-			OrbOfAlchemist: {
-				DisplayName: Orb Of Alchemist
-				Tooltip: ""
-			}
-
-			EternalWealth: {
-				DisplayName: Eternal Wealth
-				Tooltip:
-					'''
-					"Regardless of anything, wealth is all that matters"
-					+ Multiply your lootbox drop by 3
-					- A field of damage curses will be spawn and disappear after few seconds at where you are 
-					Field of damage will only damage you if you are in it for more than 3 second
-					'''
 			}
 
 			totalcritacc: {
@@ -909,24 +752,9 @@ Mods: {
 				DisplayName: Real Vitamin
 			}
 
-			MoreItemChestDebug: {
-				Tooltip: ""
-				DisplayName: More Item Chest Debug
-			}
-
-			ExtraChallengeChanger: {
-				Tooltip: ""
-				DisplayName: Extra Challenge Changer
-			}
-
 			DayTimeCycle: {
 				Tooltip: ""
 				DisplayName: Day Time Cycle
-			}
-
-			ArtifactRemover: {
-				Tooltip: Removes the effect of artifact that you choose, allowing you to rechoose your artifact
-				DisplayName: Artifact Remover
 			}
 
 			EmblemofProgress: {
@@ -1097,39 +925,9 @@ Mods: {
 				DisplayName: Tower Destruction
 			}
 
-			CopperCard: {
-				DisplayName: Copper Card
-				Tooltip: ""
-			}
-
-			GoldCard: {
-				DisplayName: Gold Card
-				Tooltip: ""
-			}
-
-			PlatinumCard: {
-				DisplayName: Platinum Card
-				Tooltip: ""
-			}
-
-			SilverCard: {
-				DisplayName: Silver Card
-				Tooltip: ""
-			}
-
-			BigCardPacket: {
-				DisplayName: Big Card Packet
-				Tooltip: Right click to get 3 cards
-			}
-
 			CardPacket: {
-				DisplayName: Card Packet
-				Tooltip: Right click to get a card
-			}
-
-			BoxOfCard: {
-				DisplayName: Box Of Card
-				Tooltip: Right click to get 5 cards
+				DisplayName: Relic Container
+				Tooltip: Right click to get a relic
 			}
 
 			KSNoHitReward: {
@@ -1173,7 +971,7 @@ Mods: {
 			}
 
 			ClearAllNoHit: {
-				DisplayName: Clear All No Hit
+				DisplayName: Wipe NoHit history
 				Tooltip: ""
 			}
 
@@ -1205,15 +1003,6 @@ Mods: {
 			QueenBeeSpecialSpawner: {
 				DisplayName: Queen Bee Special Spawner
 				Tooltip: ""
-			}
-
-			PremiumCardPacket: {
-				DisplayName: Premium Card Packet
-				Tooltip:
-					'''
-					Always drop Tier 4 card !
-					Right click to get Tier 4 card
-					'''
 			}
 
 			BiomeToggle: {
@@ -1290,11 +1079,6 @@ Mods: {
 					Increases your health regeneration by 50
 					Decreases your defenese by 25
 					'''
-			}
-
-			CursedCard: {
-				DisplayName: Cursed Card
-				Tooltip: ""
 			}
 
 			ModStatsDebugger: {
@@ -1673,11 +1457,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			WeaponEnchantment: {
-				DisplayName: Weapon Enchantment
-				Tooltip: Use this to open Weapon Enchantment UI
-			}
-
 			HorusEye: {
 				DisplayName: Horus Eye
 				Tooltip:
@@ -1764,11 +1543,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			ModCardItem: {
-				DisplayName: Mod Card Item
-				Tooltip: ""
-			}
-
 			WeaponLootBox: {
 				DisplayName: Weapon Loot Box
 				Tooltip: ""
@@ -1803,7 +1577,7 @@ Mods: {
 
 			EnchantmentTablet: {
 				DisplayName: Enchantment Tablet
-				Tooltip: ""
+				Tooltip: "Enable ability to tinker with weapon"
 			}
 
 			Relic: {
@@ -1818,6 +1592,11 @@ Mods: {
 
 			SkillCoolDownRemove: {
 				DisplayName: Skill Cool Down Remove
+				Tooltip: ""
+			}
+
+			GamblerPerk: {
+				DisplayName: Gambler Perk
 				Tooltip: ""
 			}
 		}

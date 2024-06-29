@@ -33,4 +33,7 @@
     <None Remove="Texture\UI\DiamondBolt.png" />
     <None Remove="Texture\UI\lock.png" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />
+  </ItemGroup>
 </Project>

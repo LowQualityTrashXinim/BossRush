@@ -126,13 +126,20 @@ public class CombatV4Template : CardTemplate {
 			PlayerStats.SummonDMG,
 		});
 	}
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		if(stat == PlayerStats.PureDamage) {
+			return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString(), });
+		}
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%", });
+	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		StatModifier value = new StatModifier();
 		if (stat == PlayerStats.PureDamage) {
 			value.Base += Main.rand.Next(1, 11);
 			return value;
 		}
-		value.Base *= 1.5f;
+		value.Base += Main.rand.Next(8,21);
 		return value;
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
@@ -320,7 +327,7 @@ public class MovementTemplate : CardTemplate {
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%", });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
