@@ -1,9 +1,10 @@
 ﻿using Terraria;
+using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
-using Terraria.ID;
 using BossRush.Contents.Items.Accessories.Trinket;
 
 namespace BossRush.Contents.Artifacts {
@@ -20,6 +21,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void PostUpdate() {
 			if (ManaOverLoader) {
+				Player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1f;
 				if (!Player.HasBuff(ModContent.BuffType<ManaReleaseBuff>())) {
 					StackPoint = 0;
 				}

@@ -1,10 +1,10 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.WeaponEnchantment;
-using System;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -33,7 +33,7 @@ namespace BossRush.Contents.Artifacts {
 				}
 				int length = globalitem.EnchantmenStlot.Length;
 				int[] dummyEnchantment = new int[length];
-				for (int i = 0; i < length; i++) {
+				for (int i = 0; i < 1; i++) {
 					if (globalitem.EnchantmenStlot[i] != 0) {
 						return;
 					}

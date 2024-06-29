@@ -50,7 +50,6 @@ public class EnchantmentGlobalItem : GlobalItem {
 			string text = "";
 			for (int i = 0; i < EnchantmenStlot.Length; i++) {
 				if (EnchantmenStlot[i] == ItemID.None) {
-					text += $"[{i + 1}]\n";
 					continue;
 				}
 				text += $"[[i:{EnchantmenStlot[i]}]]\n{EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[i]).Description}\n";

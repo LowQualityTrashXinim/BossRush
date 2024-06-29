@@ -741,7 +741,7 @@ public class LightsBane : ModEnchantment {
 		globalItem.Item_Counter2[index] = BossRushUtils.ToSecond(1);
 	}
 }
-public class BladeOfGlass : ModEnchantment {
+public class BladeOfGrass : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BladeofGrass;
 	}

@@ -607,7 +607,6 @@ Mods: {
 				DisplayName: Diamond Swotaff
 			}
 
-
 			CursedSkull: {
 				Tooltip:
 					'''
@@ -731,7 +730,6 @@ Mods: {
 					'''
 				DisplayName: Arena Maker
 			}
-
 
 			GodDice: {
 				Tooltip:
@@ -1577,7 +1575,7 @@ Mods: {
 
 			EnchantmentTablet: {
 				DisplayName: Enchantment Tablet
-				Tooltip: "Enable ability to tinker with weapon"
+				Tooltip: Enable ability to tinker with weapon
 			}
 
 			Relic: {

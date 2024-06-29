@@ -5,11 +5,10 @@ using Terraria.ID;
 using System.Linq;
 using ReLogic.Content;
 using BossRush.Texture;
-using ReLogic.Graphics;
-using Terraria.UI.Chat;
 using System.Reflection;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using Terraria.ModLoader.IO;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
@@ -21,8 +20,6 @@ using Terraria.GameContent.UI.States;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.WeaponEnchantment;
-using System.Drawing.Drawing2D;
-using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -704,7 +701,8 @@ internal class PerkUIState : UIState {
 		{ Perk.GetPerkType<BlessingOfSolar>(),
 			Perk.GetPerkType<BlessingOfVortex>(),
 			Perk.GetPerkType<BlessingOfNebula>(),
-			Perk.GetPerkType<BlessingOfStarDust>(),
+			Perk.GetPerkType<BlessingOfStarDust>(),         
+			Perk.GetPerkType<BlessingOfSynergy>(),
 		};
 		for (int i = 0; i < starterPerk.Length; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;

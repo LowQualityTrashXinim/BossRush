@@ -17,6 +17,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
+using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Perks {
 	public class StrokeOfLuck : Perk {
@@ -451,6 +452,19 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			damage.Base += (player.maxMinions + player.maxTurrets) / 2 * StackAmount;
+		}
+	}
+	public class BlessingOfSynergy : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			CanBeStack = true;
+			StackLimit = 10;
+			CanBeChoosen = false;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
+				damage.Flat += 10;
+			}
 		}
 	}
 	public class BlessingOfPerk : Perk {

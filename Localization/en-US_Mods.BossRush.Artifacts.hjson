@@ -85,7 +85,7 @@ TokenOfPrideArtifact: {
 		'''
 		"Having the skill to use whatever you are given."
 		[c/b7bf5c:Positive effect] : 
-			+ Randomize your weapon enchantment 
+			+ Randomize 1 of your weapon's enchantment
 		[c/ab3e43:Negative effect] : 
 			- Lootbox only drop up to 1 weapon
 		'''
@@ -126,6 +126,7 @@ ManaOverloaderArtifact: {
 		[c/ab3e43:Negative effect] : 
 			- Damage dealt to you will be increases base on your mana
 		[c/9b9c76:Neutral effect] :
+			= Increases chance to get magic weapon from LootBox
 			= Spawn special orb that can increases your mana consumption rate
 			= Mana cost reduction can decreases your weapon damage and vice versa
 		'''

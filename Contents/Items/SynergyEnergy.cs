@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,23 +13,27 @@ namespace BossRush.Contents.Items {
 			Item.accessory = true;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetModPlayer<SynergyEnergyModPlayer>().EnableSwitch = true;
+			player.GetModPlayer<SynergyModPlayer>().acc_SynergyEnergy = true;
 		}
 	}
-	public class SynergyEnergyModPlayer : ModPlayer {
-		public int ItemType = 0;
-		public bool EnableSwitch = false;
-		public bool JustChangeWeapon = false;
+	public class SynergyModPlayer : ModPlayer {
+		public int ItemTypeCurrent = 0;
+		public int ItemTypeOld = 0;
+		public bool acc_SynergyEnergy = false;
 		public override void ResetEffects() {
-			EnableSwitch = false;
-		}
-		public override void PostUpdate() {
-			if(Player.ItemAnimationActive) {
-				ItemType = Player.HeldItem.type;
+			acc_SynergyEnergy = false;
+			if(ItemTypeCurrent != Player.HeldItem.type) {
+				int cache = ItemTypeCurrent;
+				ItemTypeCurrent = Player.HeldItem.type;
+				ItemTypeOld = cache;
+			}
+			if(Player.itemAnimation == 1) {
+				ItemTypeOld = ItemTypeCurrent;
 			}
 		}
+		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if(EnableSwitch && ItemType != item.type) {
+			if(ItemTypeOld != ItemTypeCurrent && acc_SynergyEnergy) {
 				damage.Base += 5;
 			}
 		}

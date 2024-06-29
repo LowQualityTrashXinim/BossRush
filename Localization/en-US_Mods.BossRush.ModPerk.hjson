@@ -201,6 +201,11 @@ BlessingOfStarDust: {
 		'''
 }
 
+BlessingOfSynergy: {
+	DisplayName: Blessing Of Synergy
+	Description: + Increases weapon flat damage by 10 when switch to a different weapon
+}
+
 BlessingOfPerk: {
 	DisplayName: Blessing Of Perk
 	Description: + Increases perk range amount by 1
