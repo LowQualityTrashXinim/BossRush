@@ -39,14 +39,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 			if (player.dead || !player.active || !player.HasBuff(ModContent.BuffType<SuperShortSwordPower>()) || player.HeldItem.type != ModContent.ItemType<SuperShortSword>()) {
 				Projectile.Kill();
 			}
-			RotatePosition = getPosToReturn(player, MathHelper.PiOver4 * Index, modplayer.SuperShortSword_Counter);
+			RotatePosition = getPosToReturn(player, MathHelper.PiOver4 * Index, player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_Counter);
 
-			if (modplayer.SuperShortSword_AttackType == 1) {
+			if (player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_AttackType == 1) {
 				NormalAttackHandle(player, modplayer);
 				runAI = false;
 				return;
 			}
-			if (modplayer.SuperShortSword_AttackType == 2) {
+			if (player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_AttackType == 2) {
 				AltAttackHandle(player, modplayer);
 				runAI = false;
 				return;
@@ -57,7 +57,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 			runAI = true;
 		}
 		private void AltAttackHandle(Player player, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.SuperShortSword_IsHoldingDownRightMouse) {
+			if (player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_IsHoldingDownRightMouse) {
 				Vector2 PositionThatNeedToBe = projPos[(int)Index].RotatedBy((Main.MouseWorld - player.Center).ToRotation()) * 12.5f + player.Center;
 				Vector2 ToPos = PositionThatNeedToBe - Projectile.Center;
 				Projectile.velocity = ToPos.SafeNormalize(Vector2.Zero) * ToPos.Length() * .25f;
@@ -82,7 +82,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 						Projectile.velocity = Vector2.Zero;
 						Projectile.Center = RotatePosition;
 						if (IsInAtk2) {
-							modplayer.SuperShortSword_ProjectileInReadyPosition++;
+							player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_ProjectileInReadyPosition++;
 							IsInAtk2 = false;
 						}
 						return;
@@ -130,7 +130,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 			timeLeft = BossRushUtils.CountDown(timeLeft);
 			if(timeLeft == 0) {
 				if (IsInAtk2) {
-					modplayer.SuperShortSword_ProjectileInReadyPosition++;
+					player.GetModPlayer<SuperShortSwordPlayer>().SuperShortSword_ProjectileInReadyPosition++;
 					IsInAtk2 = false;
 				}
 			}

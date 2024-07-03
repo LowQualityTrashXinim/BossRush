@@ -46,12 +46,13 @@ public abstract class EssenceBuff : ModBuff {
 }
 public class EssenceOfWrath : EssenceBuff {
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: 1.2f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1.2f);
 	}
 }
 public class EssenceOfRage : EssenceBuff {
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritChance, Additive: .1f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: .35f);
 	}
 }
 public class EssenceOfRejuvenate : EssenceBuff {
@@ -190,7 +191,7 @@ public class EssenceProjectile : ModProjectile {
 					player.AddBuff(ModContent.BuffType<EssenceOfCalmness>(), BossRushUtils.ToSecond(6));
 					break;
 				default:
-					Math.Clamp(player.statLife - 25, 0, player.statLifeMax2);
+					player.statLife = Math.Clamp(player.statLife - 25, 0, player.statLifeMax2);
 					break;
 			}
 			Projectile.Kill();

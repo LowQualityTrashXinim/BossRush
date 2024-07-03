@@ -1,15 +1,16 @@
-﻿using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Graphics;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Audio;
+using BossRush.Texture;
+using Terraria.Graphics;
 using Terraria.ModLoader;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 	public class HeavenSmg : SynergyModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
@@ -173,7 +174,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		private void resetStacks() {
 			Player player = Main.player[Projectile.owner];
 			var modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
-			modplayer.ModPlayer_resetStacks();
+			player.GetModPlayer<HeavenSmgPlayer>().ModPlayer_resetStacks();
 		}
 		private void returnToPlayer() {
 			if (!returningToOwner) {
@@ -227,7 +228,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			player.jumpSpeedBoost = 5;
 
 			if (player.buffTime[buffIndex] == 2) {
-				player.GetModPlayer<PlayerSynergyItemHandle>().IncreaseStack();
+				player.GetModPlayer<HeavenSmgPlayer>().IncreaseStack();
 			}
 		}
 	}
@@ -322,6 +323,48 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 					proj.timeLeft = 600;
 				}
 			}
+		}
+	}
+	public class HeavenSmgPlayer : ModPlayer {
+		public int HeavenSmg_Stacks = 0;
+		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
+				ModPlayer_resetStacks();
+			}
+		}
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
+				ModPlayer_resetStacks();
+			}
+		}
+		public void IncreaseStack() {
+			for (int i = 0; i < 5; i++) {
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<HeavenBolt>(), 30, 0, Player.whoAmI, 1);
+			}
+			if (HeavenSmg_Stacks >= 40) {
+				SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
+				return;
+			}
+			HeavenSmg_Stacks++;
+			SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
+		}
+		public void ModPlayer_resetStacks() {
+			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
+				SoundEngine.PlaySound(SoundID.NPCDeath7, Player.Center);
+			}
+			HeavenSmg_Stacks = 0;
+		}
+		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+			if (item.type == ModContent.ItemType<HeavenSmg>()) {
+				damage += HeavenSmg_Stacks * 0.05f;
+			}
+		}
+		public override float UseSpeedMultiplier(Item item) {
+			float multiplier = base.UseAnimationMultiplier(item);
+			if (item.type == ModContent.ItemType<HeavenSmg>()) {
+				return multiplier + HeavenSmg_Stacks * 0.01f;
+			}
+			return base.UseSpeedMultiplier(item);
 		}
 	}
 }

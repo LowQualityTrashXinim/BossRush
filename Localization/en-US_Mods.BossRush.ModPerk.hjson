@@ -32,6 +32,15 @@ PowerUp: {
 		'''
 }
 
+WindSlash: {
+	DisplayName: Wind Slash
+	Description:
+		'''
+		"For people who complain their sword isn't special"
+		 + Release a short wind slash upon swing that deal 75% of that weapon damage
+		'''
+}
+
 LifeForceOrb: {
 	DisplayName: Life Force Orb
 	Description: + Attacking enemy will periodically create a short lived life orb that heal you
@@ -150,9 +159,23 @@ ProjectileDuplication: {
 		'''
 }
 
+BloodStrike: {
+	DisplayName: Blood Strike
+	Description:
+		'''
+		+ Increases your global damage by 36%
+		+ Increases your flat damage by 7
+		- Using weapon will eat your hp by 5% of that weapon damage
+		'''
+}
+
 SpeedArmor: {
 	DisplayName: Speed Armor
-	Description: + The faster you are, the better your armor become
+	Description:
+		'''
+		+ The faster you are, the better your armor become
+		+ Increases your movement speed by 15%
+		'''
 }
 
 CelestialRage: {

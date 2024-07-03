@@ -5,4 +5,5 @@ psuedofaux helping the mod massively with the sprite work
 pototo spending your time play testing, helping me with the problem in the mod and play testing the mod
 sorrow helping me in anyway that is possible
 skulltheeevee help in grammar aspect
+StarDust for giving me the custom sword swing code
 Papyro for always sticking with me since the beginning

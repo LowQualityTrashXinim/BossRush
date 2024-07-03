@@ -187,6 +187,9 @@ Mods: {
 			SpiritProjectile.DisplayName: Spirit Projectile
 			SwordProjectile3.DisplayName: Sword Projectile3
 			EssenceProjectile.DisplayName: Essence Projectile
+			MoCCopperOre.DisplayName: Mo C Copper Ore
+			MoCShortSwordP.DisplayName: Mo C Short Sword P
+			WindSlashProjectile.DisplayName: Wind Slash Projectile
 		}
 
 		NPCs: {
@@ -763,28 +766,6 @@ Mods: {
 			SuperBuilderTool: {
 				Tooltip: This will make your building progress much faster
 				DisplayName: Super Builder Tool
-			}
-
-			SwordScabbard: {
-				Tooltip:
-					'''
-					"For people who complain their sword isn't special"
-					Increase melee speed by 25%
-					Release a sword slash upon swing
-					'''
-				DisplayName: Sword Scabbard
-			}
-
-			ParryScabbard: {
-				Tooltip:
-					'''
-					"For displays of skill"
-					Getting hit during the attack swing will grant you 2s of immunity of damage
-					Have 6s cool down before you able to parry again
-					During parry period, you gain 500% damage
-					Only works if weapon is a sword
-					'''
-				DisplayName: Parry Scabbard
 			}
 
 			PlusOneBullet: {
@@ -1597,6 +1578,23 @@ Mods: {
 				DisplayName: Gambler Perk
 				Tooltip: ""
 			}
+
+			MashedOfCopper: {
+				DisplayName: Mashed Of Copper
+				Tooltip:
+					'''
+					"Relic of a long gone past ..."
+					Power of copper are active
+					Increase defense by 6
+					Have a chance to shoot out a copper dagger
+					Burst out 5 copper when damaged
+					'''
+			}
+
+			LunaticTablet: {
+				DisplayName: Lunatic Tablet
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1611,7 +1609,7 @@ Mods: {
 			}
 
 			SuperShortSwordPower: {
-				Description: Mods.BossRush.Buffs.SuperShortSwordPower.Description
+				Description: The hidden power ...
 				DisplayName: Super Short Sword Power
 			}
 
@@ -1635,19 +1633,9 @@ Mods: {
 				DisplayName: Rotting
 			}
 
-			Regen: {
-				Description: You are not suppose to get this, contact dev
-				DisplayName: Regen
-			}
-
 			Protection: {
 				Description: This newfound aegis is almost... suffocating...
 				DisplayName: The Titan's Protection
-			}
-
-			Parried: {
-				Description: Successfully blocking a attack grant you strenght
-				DisplayName: Parried
 			}
 
 			MoonLordWrath: {
@@ -1695,11 +1683,6 @@ Mods: {
 				DisplayName: Evil Eye Protection
 			}
 
-			CoolDownParried: {
-				Description: The impact is a bit great
-				DisplayName: Cool Down Parried
-			}
-
 			BerserkBuff: {
 				Description: You lose ability to think clearly...
 				DisplayName: Berserker's Frenzy
@@ -1722,7 +1705,7 @@ Mods: {
 
 			pumpkinOverdose: {
 				DisplayName: Pumpkin Overdose
-				Description: overdose with pumpkin
+				Description: Overdose with pumpkin deliciousness
 			}
 
 			MothBuff: {
@@ -1733,11 +1716,6 @@ Mods: {
 			LeadIrradiation: {
 				DisplayName: Lead Irradiation
 				Description: Mods.BossRush.Buffs.LeadIrradiation.Description
-			}
-
-			FateDeciderBuff: {
-				DisplayName: Fate Decider Buff
-				Description: Mods.BossRush.Buffs.FateDeciderBuff.Description
 			}
 
 			heavenSmgBuff: {
@@ -1756,7 +1734,7 @@ Mods: {
 			}
 
 			Samsara_of_Retribution: {
-				DisplayName: Samsara_of_Retribution
+				DisplayName: Samsara of Retribution
 				Description: Mods.BossRush.Buffs.Samsara_of_Retribution.Description
 			}
 
@@ -1772,7 +1750,7 @@ Mods: {
 
 			HyperRegen: {
 				DisplayName: Hyper Regen
-				Description: Mods.BossRush.Buffs.HyperRegen.Description
+				Description: Rapidly regen your wound
 			}
 
 			Trinket5_Buff: {
@@ -1807,62 +1785,74 @@ Mods: {
 
 			ExplosionHealing: {
 				DisplayName: Explosion Healing
-				Description: Mods.BossRush.Buffs.ExplosionHealing.Description
+				Description: Healing
 			}
 
 			AllOrNothingBuff: {
 				DisplayName: All Or Nothing Buff
-				Description: Mods.BossRush.Buffs.AllOrNothingBuff.Description
+				Description: It is all or nothing
 			}
 
 			EssenceOfCalmness: {
 				DisplayName: Essence Of Calmness
-				Description: Mods.BossRush.Buffs.EssenceOfCalmness.Description
+				Description: Decreases your crit damage by 50%
 			}
 
 			EssenceOfDrowsy: {
 				DisplayName: Essence Of Drowsy
-				Description: Mods.BossRush.Buffs.EssenceOfDrowsy.Description
+				Description:
+					'''
+					Decreases your movement speed by 44%
+					Decreases your attack speed by 24%
+					'''
 			}
 
 			EssenceOfKindness: {
 				DisplayName: Essence Of Kindness
-				Description: Mods.BossRush.Buffs.EssenceOfKindness.Description
+				Description: Decreases your damage by 50%
 			}
 
 			EssenceOfRage: {
 				DisplayName: Essence Of Rage
-				Description: Mods.BossRush.Buffs.EssenceOfRage.Description
+				Description:
+					'''
+					Increases your crit chance by 10%
+					Increases your crit damage by 35%
+					'''
 			}
 
 			EssenceOfRejuvenate: {
 				DisplayName: Essence Of Rejuvenate
-				Description: Mods.BossRush.Buffs.EssenceOfRejuvenate.Description
+				Description:
+					'''
+					Increases your life regen by 67%
+					When this buff end, heal you for 100 hp
+					'''
 			}
 
 			EssenceOfSwift: {
 				DisplayName: Essence Of Swift
-				Description: Mods.BossRush.Buffs.EssenceOfSwift.Description
+				Description: Increases your movement speed by 34% and attack speed by 14%
 			}
 
 			EssenceOfTitan: {
 				DisplayName: Essence Of Titan
-				Description: Mods.BossRush.Buffs.EssenceOfTitan.Description
+				Description: Increases your defense by 20%
 			}
 
 			EssenceOfWeakness: {
 				DisplayName: Essence Of Weakness
-				Description: Mods.BossRush.Buffs.EssenceOfWeakness.Description
+				Description: Decreases your defense by 20
 			}
 
 			EssenceOfWither: {
 				DisplayName: Essence Of Wither
-				Description: Mods.BossRush.Buffs.EssenceOfWither.Description
+				Description: Decreases your regeneration ability by 100% and you slowly lose life
 			}
 
 			EssenceOfWrath: {
-				DisplayName: Essence Of Wrath
-				Description: Mods.BossRush.Buffs.EssenceOfWrath.Description
+				DisplayName: Wrath
+				Description: Increases your damage by 20%
 			}
 		}
 

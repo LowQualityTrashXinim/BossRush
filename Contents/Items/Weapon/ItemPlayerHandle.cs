@@ -13,29 +13,20 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
-using Steamworks;
-using BossRush.Common.RoguelikeChange.Mechanic;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
 	///This mod player should hold all the logic require for the item, if the item is shooting out the projectile, it should be doing that itself !<br/>
 	///Same with projectile unless it is a vanilla projectile then we can refer to global projectile<br/>
 	///This should only hold custom bool or data that we think should be hold/use/transfer<br/>
-	///We will name using the following format "Synergy item"_"vanilla item" to assign synergy power so that it is clear to read and easy to maintain<br/>
-	///If a ability that require modplayer class, you can create your own custom player class with the item name, it should also follow a format which goes  "Synergy item"_ModPlayer
-	///This is class is only purpose is to serve as a central class where it contain bool and data and potential synergy manipulation
 	/// </summary>
 	public class PlayerSynergyItemHandle : ModPlayer {
 		public bool SynergyBonusBlock = false;
 		public int SynergyBonus = 0;
 
 		public bool BurningPassion_WandofFrosting = false;
-		public int BurningPassion_Cooldown = 0;
 
 		public bool DarkCactus_BatScepter = false;
 		public bool DarkCactus_BladeOfGrass = false;
@@ -102,18 +93,9 @@ namespace BossRush.Contents.Items.Weapon {
 
 		public bool DeathBySpark_AleThrowingGlove = false;
 
-		public int SuperShortSword_Counter = 0;
-		public int SuperShortSword_AttackType = 0;
-		public int SuperShortSword_Delay = 0;
-		public int SuperShortSword_ProjectileInReadyPosition = 0;
-		public bool SuperShortSword_IsHoldingDownRightMouse = false;
-
-		public int HeavenSmg_Stacks = 0;
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
 			SynergyBonus = 0;
-
-			BurningPassion_WandofFrosting = false;
 
 			DarkCactus_BatScepter = false;
 			DarkCactus_BladeOfGrass = false;
@@ -171,72 +153,8 @@ namespace BossRush.Contents.Items.Weapon {
 
 			DeathBySpark_AleThrowingGlove = false;
 		}
-		int check = 1;
-		public override void PreUpdate() {
-			Item item = Player.HeldItem;
-			SuperShortSwordUpdate(item);
-		}
-		private void SuperShortSwordUpdate(Item item) {
-			if (item.type == ModContent.ItemType<SuperShortSword>()) {
-				SuperShortSword_Delay = BossRushUtils.CountDown(SuperShortSword_Delay);
-				if (Main.mouseLeft && SuperShortSword_AttackType == 0 && SuperShortSword_Delay <= 0) {
-					SuperShortSword_AttackType = 1;
-				}
-				if (SuperShortSword_ProjectileInReadyPosition >= 8 && SuperShortSword_AttackType == 1) {
-					SuperShortSword_ProjectileInReadyPosition = 0;
-					SuperShortSword_AttackType = 0;
-					SuperShortSword_Delay = 10;
-				}
-
-				if (Main.mouseRight && SuperShortSword_AttackType == 0 && SuperShortSword_Delay <= 0) {
-					SuperShortSword_AttackType = 2;
-					SuperShortSword_IsHoldingDownRightMouse = true;
-				}
-				if (SuperShortSword_AttackType == 2) {
-					if (SuperShortSword_IsHoldingDownRightMouse) {
-						if (Main.mouseRightRelease && !Main.mouseRight)
-							SuperShortSword_IsHoldingDownRightMouse = false;
-					}
-					if (!SuperShortSword_IsHoldingDownRightMouse && SuperShortSword_ProjectileInReadyPosition >= 8 && SuperShortSword_AttackType == 2) {
-						SuperShortSword_ProjectileInReadyPosition = 0;
-						SuperShortSword_AttackType = 0;
-						SuperShortSword_Delay = 10;
-					}
-				}
-				if (SuperShortSword_AttackType != 0) {
-					return;
-				}
-				if (SuperShortSword_Counter == MathHelper.TwoPi * 100 || SuperShortSword_Counter == -MathHelper.TwoPi * 100) {
-					SuperShortSword_Counter = 0;
-				}
-				SuperShortSword_Counter += Player.direction;
-			}
-			else {
-				SuperShortSword_AttackType = 0;
-				SuperShortSword_Delay = 10;
-				SuperShortSword_Counter = 0;
-				SuperShortSword_ProjectileInReadyPosition = 0;
-			}
-		}
 		public override void PostUpdate() {
 			Item item = Player.HeldItem;
-			if (item.type == ModContent.ItemType<BurningPassion>()) {
-				if (!Player.ItemAnimationActive && check == 0) {
-					Player.velocity *= .25f;
-					check++;
-				}
-				else if (Player.ItemAnimationActive && Main.mouseRight) {
-					Player.gravity = 0;
-					Player.velocity.Y -= 0.3f;
-					Player.ignoreWater = true;
-					check = 0;
-				}
-			}
-			if (item.type == ModContent.ItemType<Deagle>()) {
-				if (Deagle_DaedalusStormBow) {
-					Deagle_DaedalusStormBow_coolDown = BossRushUtils.CountDown(Deagle_DaedalusStormBow_coolDown);
-				}
-			}
 			if (item.type != ModContent.ItemType<IceStorm>()) {
 				IceStorm_SpeedMultiplier = 1;
 			}
@@ -255,71 +173,8 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
-		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
-				ModPlayer_resetStacks();
-			}
-		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (hit.Crit) {
-				if (Deagle_PhoenixBlaster) {
-					Deagle_PhoenixBlaster_Critical = true;
-				}
-				if (Deagle_DaedalusStormBow && Deagle_DaedalusStormBow_coolDown <= 0) {
-					for (int i = 0; i < 15; i++) {
-						Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100, 100), Main.rand.Next(-1100, -1000));
-						int projectile = Projectile.NewProjectile(
-							Player.GetSource_ItemUse_WithPotentialAmmo(Player.HeldItem, Player.HeldItem.ammo),
-							positionAboveSky,
-							(target.Center - positionAboveSky).SafeNormalize(Vector2.Zero) * 20f,
-							ProjectileID.BulletHighVelocity,
-							hit.Damage,
-							0,
-							Player.whoAmI);
-						Main.projectile[projectile].usesLocalNPCImmunity = true;
-					}
-					Deagle_DaedalusStormBow_coolDown = 600;
-				}
-			}
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
-				ModPlayer_resetStacks();
-			}
-		}
-		public void IncreaseStack() {
-			for (int i = 0; i < 5; i++) {
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<HeavenBolt>(), 30, 0, Player.whoAmI, 1);
-			}
-			if (HeavenSmg_Stacks >= 40) {
-				SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
-				return;
-			}
-			HeavenSmg_Stacks++;
-			SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
-		}
-		public void ModPlayer_resetStacks() {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
-				SoundEngine.PlaySound(SoundID.NPCDeath7, Player.Center);
-			}
-			HeavenSmg_Stacks = 0;
-		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			damage += SynergyBonus * .5f;
-			if (item.type == ModContent.ItemType<HeavenSmg>()) {
-				damage += HeavenSmg_Stacks * 0.05f;
-			}
-		}
-		public override float UseSpeedMultiplier(Item item) {
-			float multiplier = base.UseAnimationMultiplier(item);
-			if (item.type == ModContent.ItemType<HeavenSmg>()) {
-				return multiplier + HeavenSmg_Stacks * 0.01f;
-			}
-			return base.UseSpeedMultiplier(item);
-		}
-		public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable) {
-			if (Player.ItemAnimationActive && Player.HeldItem.ModItem is BurningPassion && Player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] > 0) {
-				return true;
-			}
-			return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
 		}
 
 		public override void UpdateEquips() {
@@ -328,7 +183,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
-			if (StarLightDistributer_MeteorArmor && item.ModItem is StarLightDistributer) {
+			if (StarLightDistributer_MeteorArmor && item.type == ModContent.ItemType<StarLightDistributer>()) {
 				mult = 0f;
 			}
 		}
@@ -555,7 +410,6 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override void PostUpdateWorld() {
-			GodDecision(Main.LocalPlayer);
 		}
 	}
 }

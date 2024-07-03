@@ -1,137 +1,159 @@
+using BossRush.Achievement;
 using BossRush.Contents.Items.Chest;
 using BossRush.Texture;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
-		public Dictionary<int, BossRushAchivement> achievementData = new Dictionary<int, BossRushAchivement>();
+		public static string AchievementFilePath { get; private set; }
+		public const string AchievementFileName = "\\AchievementData.json";
+		public override void PostSetupContent() {
+			LoadAchievementData();
+		}
 		public override void Load() {
 			base.Load();
-			AddAchievement();
-			string path = GeneratePathToAchievement();
-			CheckIfFileExist(path);
+			AchievementFilePath = GeneratePathToAchievement();
+			On_Main.Main_Exiting += On_Main_Main_Exiting;
 		}
+
+		private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
+			string jsondata = File.ReadAllText(AchievementFilePath + AchievementFileName);
+			dynamic jsonObj = JsonConvert.DeserializeObject(jsondata);
+			for (int i = 0; i < AchievementLoader.TotalCount; i++) {
+				jsonObj[i]["Condition"] = AchievementLoader.Achievement[i].Condition;
+			}
+			string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+			File.WriteAllText(AchievementFilePath + AchievementFileName, output);
+			orig(self, sender, e);
+		}
+
 		public override void Unload() {
-			base.Unload();
 		}
 		public string GeneratePathToAchievement() {
 			string autoPathfinding = Program.SavePathShared;
-			autoPathfinding += "\\BossRushAchievement";
+			autoPathfinding += "\\RogueLikeData";
 			return autoPathfinding;
 		}
-		private void CheckIfFileExist(string path) {
+		private void LoadAchievementData() {
+			AchievementLoader.Achievement.Sort();
 			try {
-				if (File.Exists(path)) {
-					using (StreamWriter sw = File.CreateText(path + "\\AchievementData.json")) {
-						string json = JsonConvert.SerializeObject(achievementData);
-						sw.WriteLine(json);
+				string json = JsonConvert.SerializeObject(AchievementLoader.Achievement, Formatting.Indented);
+				if (File.Exists(AchievementFilePath + AchievementFileName)) {
+					//it is required that we should check the data in the file first
+					//using (StreamWriter sw = File.CreateText(AchievementFilePath + AchievementFileName)) {
+					//	sw.WriteLine(json);
+					//}
+					string jsondata = File.ReadAllText(AchievementFilePath + AchievementFileName);
+					dynamic jsonObj = JsonConvert.DeserializeObject(jsondata);
+					
+					//JArray jObj = (JArray)JsonConvert.DeserializeObject(jsondata);
+					//int count = jObj.Count;
+
+					for (int i = 0; i < AchievementLoader.TotalCount; i++) {
+						AchievementLoader.Achievement[i].Condition = jsonObj[i]["Condition"];
 					}
 				}
 				else {
-					Directory.CreateDirectory(path).Create();
-					using (StreamWriter sw = File.CreateText(path + "\\AchievementData.json")) {
-						string json = JsonConvert.SerializeObject(achievementData);
+					//This is when we know that player are on a new run
+					Directory.CreateDirectory(AchievementFilePath).Create();
+					using (StreamWriter sw = File.CreateText(AchievementFilePath + AchievementFileName)) {
 						sw.WriteLine(json);
 					}
 				}
-
 			}
 			catch (Exception ex) {
 				Console.WriteLine(ex);
 			}
 		}
-		private void AddAchievement() {
-			achievementData.Add(1, new BossRushAchivement() {
-				Name = "The beginning of endless",
-				Description = "This mark the beginning of where it all start",
-				ConditionText = "Open your first lootboxs",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
-			achievementData.Add(2, new BossRushAchivement() {
-				Name = "The first artifact holder",
-				Description = "Thing about to get spicy",
-				ConditionText = "Use the first artifact (beside Broken artifact)",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
-			achievementData.Add(3, new BossRushAchivement() {
-				Name = "The first of many",
-				Description = "First time is always the best",
-				ConditionText = "Kill king slime boss",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
-			achievementData.Add(4, new BossRushAchivement() {
-				Name = "The start of addiction",
-				Description = "",
-				ConditionText = "Open 100 lootbox",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
-			achievementData.Add(5, new BossRushAchivement() {
-				Name = "There are many more",
-				Description = "",
-				ConditionText = "Open 1000 lootbox",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
-			achievementData.Add(6, new BossRushAchivement() {
-				Name = "Skill check",
-				Description = "",
-				ConditionText = "Beat a boss without getting hit",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
-			achievementData.Add(7, new BossRushAchivement() {
-				Name = "First success",
-				Description = "",
-				ConditionText = "Beat the mod from start to finish ( Pre boss to post moonlord )",
-				textureString = BossRushTexture.MISSINGTEXTURE
-			});
+		public static void SaveAchievementData() {
 		}
 	}
 	public class BossRushModSystem : ModSystem {
+		public static int AmountOfLootBoxOpenDuringThisSection = 0;
 		public override void OnWorldLoad() {
 			base.OnWorldLoad();
 		}
 		public override void OnWorldUnload() {
-			base.OnWorldUnload();
+			AmountOfLootBoxOpenDuringThisSection += Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
+		}
+		public override void OnModLoad() {
+		}
+		public override void OnModUnload() {
+			AmountOfLootBoxOpenDuringThisSection = 0;
+		}
+		public override void Unload() {
+		}
+		public override void PostUpdateEverything() {
+			foreach (var achieve in AchievementLoader.Achievement) {
+				bool condition = achieve.ConditionCheck();
+				if (condition) {
+					achieve.Condition = true;
+				}
+			}
+		}
+		public int AmountOfLootboxOpenInCurrentSection() {
+			if (Main.netMode == NetmodeID.SinglePlayer) {
+				return Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
+			}
+			return -1;
+		}
+	}
+	public static class AchievementLoader {
+		public static readonly List<ModAchivement> Achievement = new();
+		public static int TotalCount => Achievement.Count;
+		public static void Register(ModAchivement achieve) {
+			Achievement.Add(achieve);
+		}
+		public static ModAchivement GetAchievement(int type) {
+			return type >= 0 && type < Achievement.Count ? Achievement[type] : null;
 		}
 	}
 	/// <summary>
 	/// This should and will be run on client side only, this should never work in multiplayer no matter what
 	/// </summary>
-	public class BossRushAchivement : BossRushCondition, AchievementDataHolder {
-		public string Name, Description, ConditionText, textureString;
-		public bool ConditionMet = false;
-
-		public AchievementHolder dataholder() => Main.LocalPlayer.GetModPlayer<AchievementHolder>();
-
-		public BossRushAchivement() {
-
+	public abstract class ModAchivement : ILoadable, IEquatable<ModAchivement>, IComparable<ModAchivement> {
+		[JsonIgnore]
+		public string DisplayName => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.DisplayName");
+		public bool Condition = false;
+		public int Type;
+		public string Name => GetType().Name;
+		[JsonIgnore]
+		public string Description => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.Description");
+		[JsonIgnore]
+		public string ConditionTip => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.ConditionTip");
+		[JsonIgnore]
+		public string ConditionTipAfterAchieve => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.ConditionTipAfterAchieve");
+		void ILoadable.Load(Mod mod) {
+			Register();
 		}
-		public BossRushAchivement(string name, string description, string conditionText, bool ConditionMet) {
-			Name = name;
-			Description = description;
-			ConditionText = conditionText;
-			this.ConditionMet = ConditionMet;
+		protected void Register() {
+			AchievementLoader.Register(this);
+			SetDefault();
 		}
-		protected int HowManyChestHasPlayerOpenInCurrentSection() {
-			if (Main.netMode == NetmodeID.SinglePlayer) {
-				return dataholder().chestplayer.CurrentSectionAmountOfChestOpen;
-			}
-			return -1;
+		public void Unload() {
+			textureString = null;
 		}
-		public bool Condition() => false;
-	}
-	public class AchievementHolder : ModPlayer {
-		public ChestLootDropPlayer chestplayer => Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
-	}
-	public interface BossRushCondition {
-		public bool Condition();
-	}
-	public interface AchievementDataHolder {
-		public AchievementHolder dataholder() => null;
+		protected virtual void SetDefault() { }
+		[JsonIgnore]
+		public string textureString = BossRushTexture.MISSINGTEXTURE;
+		public virtual bool ConditionCheck() => false;
+
+		public int CompareTo(ModAchivement other) {
+			return other == null ? 1 : Type.CompareTo(other.Type);
+		}
+		public bool Equals(ModAchivement other) {
+			return other == null ? false : Type.Equals(other.Type);
+		}
 	}
 }

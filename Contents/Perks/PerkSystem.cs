@@ -134,6 +134,9 @@ namespace BossRush.Contents.Perks {
 		}
 		public bool HasPerk<T>() where T : Perk => perks.ContainsKey(Perk.GetPerkType<T>());
 		public override bool CanUseItem(Item item) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).OnUseItem(Player, item);
+			}
 			if (item.buffType == BuffID.ManaSickness && Player.HasBuff(ModContent.BuffType<ManaBlock>())) {
 				return false;
 			}
@@ -332,6 +335,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public virtual void SetDefaults() { }
 		public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
+		public virtual void OnUseItem(Player player, Item item) { }
 		public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 		public virtual void Update(Player player) { }
 		public virtual void UpdateEquip(Player player) { }

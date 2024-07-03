@@ -6,6 +6,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
 using BossRush.Texture;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -37,8 +38,8 @@ public class Increases_3xDamage : ModSkill {
 		Skill_Duration = 8;
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 	}
-	public override void ResetEffect(Player player) {
-		player.GetDamage(DamageClass.Generic) += 3f;
+	public override void Update(Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 3f);
 	}
 }
 public class SpiritBurst : ModSkill {

@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			Item.value = Item.sellPrice(silver: 1000);
 		}
 		public override bool AltFunctionUse(Player player) {
-			return player.GetModPlayer<PlayerSynergyItemHandle>().BurningPassion_Cooldown <= 0;
+			return player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown <= 0;
 		}
 		public override bool CanUseItem(Player player) {
 			return player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] < 1;
@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 				modplayer.BurningPassion_WandofFrosting = true;
 				modplayer.SynergyBonus++;
 			}
-			if (modplayer.BurningPassion_Cooldown == 1)
+			if (player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown == 1)
 				for (int i = 0; i < 25; i++) {
 					int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
 					Main.dust[dust].noGravity = true;
@@ -38,11 +38,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 					Main.dust[dust].scale = Main.rand.NextFloat(1.5f, 2.75f);
 					Main.dust[dust].fadeIn = 1;
 				}
-			modplayer.BurningPassion_Cooldown = BossRushUtils.CountDown(modplayer.BurningPassion_Cooldown);
+			player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown = BossRushUtils.CountDown(player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown);
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (player.altFunctionUse == 2 && modplayer.BurningPassion_Cooldown <= 0) {
-				modplayer.BurningPassion_Cooldown = 120;
+			if (player.altFunctionUse == 2 && player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown <= 0) {
+				player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown = 120;
 				player.velocity = velocity * 5f;
 			}
 			CanShootItem = true;
@@ -114,5 +114,31 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			npc.AddBuff(BuffID.OnFire, 90);
 			npc.immune[Projectile.owner] = 5;
 		}
+	}
+	public class BurningPassionPlayer : ModPlayer {
+		public int BurningPassion_Cooldown = 0;
+		int check = 0;
+		public override void PostUpdate() {
+			Item item = Player.HeldItem;
+			if (item.type == ModContent.ItemType<BurningPassion>()) {
+				if (!Player.ItemAnimationActive && check == 0) {
+					Player.velocity *= .25f;
+					check++;
+				}
+				else if (Player.ItemAnimationActive && Main.mouseRight) {
+					Player.gravity = 0;
+					Player.velocity.Y -= 0.3f;
+					Player.ignoreWater = true;
+					check = 0;
+				}
+			}
+		}
+		public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable) {
+			if (Player.ItemAnimationActive && Player.HeldItem.type == ModContent.ItemType<BurningPassion>() && Player.ownedProjectileCounts[ModContent.ProjectileType<BurningPassionP>()] > 0) {
+				return true;
+			}
+			return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
+		}
+
 	}
 }

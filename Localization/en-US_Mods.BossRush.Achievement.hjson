@@ -1,0 +1,15 @@
+TheBeginningOfEndless: {
+	DisplayName: The Beginning Of Endless
+	Description: This mark the beginning of where it all start
+	ConditionTip: Open your first lootboxs
+}
+
+TheFirstOfMany: {
+	DisplayName: The first of many
+	Description:
+		'''
+		First time is always the best
+		Even though it is just a King Slime
+		'''
+	ConditionTip: Slay king slime boss
+}

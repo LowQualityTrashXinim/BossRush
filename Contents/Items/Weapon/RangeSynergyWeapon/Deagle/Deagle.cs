@@ -85,4 +85,35 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 				.Register();
 		}
 	}
+	public class DeaglePlayer : ModPlayer {
+		public override void PostUpdate() {
+			if (Player.HeldItem.type == ModContent.ItemType<Deagle>()) {
+				if (Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow) {
+					Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown = BossRushUtils.CountDown(Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown);
+				}
+			}
+		}
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (hit.Crit) {
+				if (Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_PhoenixBlaster) {
+					Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_PhoenixBlaster_Critical = true;
+				}
+				if (Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow && Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown <= 0) {
+					for (int i = 0; i < 15; i++) {
+						Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100, 100), Main.rand.Next(-1100, -1000));
+						int projectile = Projectile.NewProjectile(
+							Player.GetSource_ItemUse_WithPotentialAmmo(Player.HeldItem, Player.HeldItem.ammo),
+							positionAboveSky,
+							(target.Center - positionAboveSky).SafeNormalize(Vector2.Zero) * 20f,
+							ProjectileID.BulletHighVelocity,
+							hit.Damage,
+							0,
+							Player.whoAmI);
+						Main.projectile[projectile].usesLocalNPCImmunity = true;
+					}
+					Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown = 600;
+				}
+			}
+		}
+	}
 }

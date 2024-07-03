@@ -1,10 +1,8 @@
-﻿using BossRush.Texture;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Spawner {
-	internal class LunaticCultistSpawner : BaseSpawnerItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	internal class LunaticTablet : BaseSpawnerItem {
 		public override int[] NPCtypeToSpawn => new int[] { NPCID.CultistBoss };
 		public override bool UseSpecialSpawningMethod => true;
 		public override void SpecialSpawningLogic(Player player) {

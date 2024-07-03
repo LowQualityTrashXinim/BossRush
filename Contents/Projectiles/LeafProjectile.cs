@@ -74,10 +74,6 @@ internal class LeafProjectile : ModProjectile {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(5f, 5f);
 		}
-		if (!player.active || player.dead) {
-			Projectile.Kill();
-			return;
-		}
 		player.GetModPlayer<GlobalItemPlayer>().Projindex[(int)Projectile.ai[0]] = -1;
 	}
 }

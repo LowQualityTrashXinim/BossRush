@@ -17,7 +17,6 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
-using BossRush.Contents.Items.Card;
 
 namespace BossRush.Contents.Perks {
 	public class StrokeOfLuck : Perk {
@@ -76,6 +75,24 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
+		}
+	}
+	public class WindSlash : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void Update(Player player) {
+			if (player.HeldItem.DamageType == DamageClass.Melee
+				&& player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
+				&& Main.mouseLeft
+				&& player.itemAnimation == player.itemAnimationMax) {
+				Vector2 speed = Vector2.UnitX * player.direction;
+				if (player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
+					speed = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				}
+				float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), (int)(player.HeldItem.damage * .75f), 2f, player.whoAmI);
+			}
 		}
 	}
 	public class PowerUp : Perk {
@@ -318,7 +335,7 @@ namespace BossRush.Contents.Perks {
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 			}
-			player.AddBuff(ModContent.BuffType<ExplosionHealing>(), BossRushUtils.ToSecond(3));
+			player.AddBuff(ModContent.BuffType<ExplosionHealing>(), BossRushUtils.ToSecond(5));
 		}
 	}
 	public class ExplosionHealing : ModBuff {
@@ -327,19 +344,7 @@ namespace BossRush.Contents.Perks {
 			this.BossRushSetDefaultBuff();
 		}
 		public override void Update(Player player, ref int buffIndex) {
-			player.lifeRegen += 15;
-		}
-	}
-	public class SpecialPotion : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override void Update(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().LootboxCanDropSpecialPotion = true;
-		}
-		public override void OnChoose(Player player) {
-			int type = Main.rand.Next(TerrariaArrayID.SpecialPotion);
-			player.QuickSpawnItem(player.GetSource_FromThis(), type);
+			player.lifeRegen += 47;
 		}
 	}
 	public class ProjectileProtection : Perk {
@@ -361,6 +366,22 @@ namespace BossRush.Contents.Perks {
 				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
 		}
 	}
+	public class BloodStrike : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage *= 1.36f;
+			damage.Flat += 7;
+		}
+		public override void OnUseItem(Player player, Item item) {
+			if (player.itemAnimation == player.itemAnimationMax) {
+				int damage = (int)Math.Round(player.GetWeaponDamage(player.HeldItem) * .05f);
+				player.statLife = Math.Clamp(player.statLife - damage, 0, player.statLifeMax2);
+				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "-" + damage, Main.rand.Next(-10,40));
+			}
+		}
+	}
 	public class SpeedArmor : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -368,6 +389,9 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			player.statDefense += (int)Math.Round(player.velocity.Length()) * StackAmount;
+		}
+		public override void Update(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: .15f);
 		}
 	}
 	public class CelestialRage : Perk {

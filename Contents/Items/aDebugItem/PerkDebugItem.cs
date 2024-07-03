@@ -8,6 +8,7 @@ internal class PerkDebugItem : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
+		Item.maxStack = 999;
 	}
 	public override bool? UseItem(Player player) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();

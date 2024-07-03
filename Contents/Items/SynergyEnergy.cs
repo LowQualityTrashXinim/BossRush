@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,9 +22,7 @@ namespace BossRush.Contents.Items {
 		public override void ResetEffects() {
 			acc_SynergyEnergy = false;
 			if(ItemTypeCurrent != Player.HeldItem.type) {
-				int cache = ItemTypeCurrent;
 				ItemTypeCurrent = Player.HeldItem.type;
-				ItemTypeOld = cache;
 			}
 			if(Player.itemAnimation == 1) {
 				ItemTypeOld = ItemTypeCurrent;
@@ -33,7 +30,7 @@ namespace BossRush.Contents.Items {
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if(ItemTypeOld != ItemTypeCurrent && acc_SynergyEnergy) {
+			if(CompareOldvsNewItemType && acc_SynergyEnergy) {
 				damage.Base += 5;
 			}
 		}

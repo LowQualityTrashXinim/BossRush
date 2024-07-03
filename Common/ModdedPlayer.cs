@@ -185,7 +185,7 @@ namespace BossRush.Common {
 				Player.QuickSpawnItem(null, ItemID.EmpressButterfly);
 			}
 			if (NPC.AnyNPCs(NPCID.CultistBoss)) {
-				Player.QuickSpawnItem(null, ModContent.ItemType<LunaticCultistSpawner>());
+				Player.QuickSpawnItem(null, ModContent.ItemType<LunaticTablet>());
 			}
 			if (NPC.AnyNPCs(NPCID.MoonLordCore)) {
 				Player.QuickSpawnItem(null, ItemID.CelestialSigil);
