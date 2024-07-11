@@ -75,7 +75,7 @@ namespace BossRush.Common {
 					yield return new Item(ItemID.RedPotion, 10);
 				}
 				if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
-					yield return new Item(ModContent.ItemType<RainbowTreasureChest>());
+					yield return new Item(ModContent.ItemType<RainbowLootBox>());
 				}
 				if (Player.name == "FeelingLucky") {
 					yield return new Item(ModContent.ItemType<GodDice>());

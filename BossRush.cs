@@ -76,8 +76,6 @@ namespace BossRush {
 				Console.WriteLine(ex);
 			}
 		}
-		public static void SaveAchievementData() {
-		}
 	}
 	public class BossRushModSystem : ModSystem {
 		public static int AmountOfLootBoxOpenDuringThisSection = 0;

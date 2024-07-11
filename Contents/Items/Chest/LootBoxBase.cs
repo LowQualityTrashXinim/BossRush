@@ -35,9 +35,7 @@ namespace BossRush.Contents.Items.Chest {
 				if (LootboxSystem.GetItemPool(Type).AllItemPool().Count <= 0)
 					return;
 				chestplayer.GetAmount();
-				List<int> potiontotal = new List<int>();
-				potiontotal.AddRange(TerrariaArrayID.NonMovementPotion);
-				potiontotal.AddRange(TerrariaArrayID.MovementPotion);
+				List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
 				TooltipLine chestline = new TooltipLine(Mod, "ChestLoot",
 					$"Weapon : [i:{Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(Type).AllItemPool())}] x {chestplayer.weaponAmount}\n" +
 					$"Potion type : [i:{Main.rand.Next(potiontotal)}] x {chestplayer.potionTypeAmount}\n" +
@@ -128,10 +126,12 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="LoopAmount"></param>
 		/// <param name="rng"></param>
 		public void GetWeapon(IEntitySource entitySource, Player player, int LoopAmount, int rng = 0) {
-			int SpecialAmount = 1;
+			int SpecialAmount = 200;
 			int ReturnWeapon = ItemID.None;
 			//adding stuff here
-
+			if (Main.masterMode) {
+				SpecialAmount += 150;
+			}
 			ModifyLootAdd(player);
 			//actual choosing item
 
@@ -141,7 +141,6 @@ namespace BossRush.Contents.Items.Chest {
 			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(Type).DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(Type).DropItemMisc;
 			for (int i = 0; i < LoopAmount; i++) {
-				SpecialAmount = 1;
 				rng = RNGManage(player);
 				rng = ModifyRNG(rng, player);
 				switch (rng) {
@@ -154,7 +153,7 @@ namespace BossRush.Contents.Items.Chest {
 							break;
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMeleeData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						ItemGraveYard.Add(ReturnWeapon);
 						DummyMeleeData.Remove(ReturnWeapon);
 						break;
@@ -166,7 +165,7 @@ namespace BossRush.Contents.Items.Chest {
 							break;
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyRangeData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						AmmoForWeapon(entitySource, player, ReturnWeapon);
 						ItemGraveYard.Add(ReturnWeapon);
 						DummyRangeData.Remove(ReturnWeapon);
@@ -179,7 +178,7 @@ namespace BossRush.Contents.Items.Chest {
 							break;
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						ItemGraveYard.Add(ReturnWeapon);
 						DummyMagicData.Remove(ReturnWeapon);
 						AmmoForWeapon(entitySource, player, ReturnWeapon);
@@ -192,7 +191,7 @@ namespace BossRush.Contents.Items.Chest {
 							break;
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
-						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						AmmoForWeapon(entitySource, player, ReturnWeapon);
 						ItemGraveYard.Add(ReturnWeapon);
 						DummySummonData.Remove(ReturnWeapon);
@@ -202,17 +201,13 @@ namespace BossRush.Contents.Items.Chest {
 							ChooseWeapon(Main.rand.Next(1, 5), ref ReturnWeapon, ref SpecialAmount, DummyMeleeData.ToList(), DummyRangeData.ToList(), DummyMagicData.ToList(), DummySummonData.ToList(), DummyMiscsData.ToList());
 							break;
 						}
-						SpecialAmount += 199;
-						if (Main.masterMode) {
-							SpecialAmount += 150;
-						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMiscsData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
 						ItemGraveYard.Add(ReturnWeapon);
 						DummyMiscsData.Remove(ReturnWeapon);
 						break;
 					case 6:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>(), SpecialAmount);
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>());
 						break;
 				}
 			}

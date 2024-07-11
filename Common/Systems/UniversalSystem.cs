@@ -11,15 +11,16 @@ using Terraria.GameContent;
 using Terraria.ModLoader.IO;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items;
 using BossRush.Contents.Skill;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using Terraria.GameContent.UI.States;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
+using System.Drawing.Drawing2D;
+using Terraria.Localization;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -73,11 +74,15 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface perkInterface;
 	internal UserInterface skillInterface;
 	internal UserInterface enchantInterface;
+	internal UserInterface systemMenuInterface;
+	internal UserInterface transmutationInterface;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
 	public SkillUI skillUIstate;
 	public DefaultUI defaultUI;
+	public UISystemMenu UIsystemmenu;
+	public TransmutationUIState transmutationUI;
 
 	public static bool EnchantingState = false;
 	public override void Load() {
@@ -86,15 +91,22 @@ internal class UniversalSystem : ModSystem {
 		if (!Main.dedServ) {
 			//Mod custom UI
 			Enchant_uiState = new();
+			enchantInterface = new();
+
 			perkUIstate = new();
+			perkInterface = new();
 
 			skillUIstate = new();
-			defaultUI = new();
-
-			userInterface = new();
-			perkInterface = new();
 			skillInterface = new();
-			enchantInterface = new();
+
+			defaultUI = new();
+			userInterface = new();
+
+			UIsystemmenu = new();
+			systemMenuInterface = new();
+
+			transmutationUI = new();
+			transmutationInterface = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
@@ -123,12 +135,18 @@ internal class UniversalSystem : ModSystem {
 		perkInterface = null;
 		skillInterface = null;
 		enchantInterface = null;
+		UIsystemmenu = null;
+		systemMenuInterface = null;
+		transmutationUI = null;
+		transmutationInterface = null;
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
 		perkInterface?.Update(gameTime);
 		skillInterface?.Update(gameTime);
 		enchantInterface?.Update(gameTime);
+		systemMenuInterface?.Update(gameTime);
+		transmutationInterface?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -140,25 +158,36 @@ internal class UniversalSystem : ModSystem {
 					perkInterface.Draw(Main.spriteBatch, new GameTime());
 					skillInterface.Draw(Main.spriteBatch, new GameTime());
 					enchantInterface.Draw(Main.spriteBatch, new GameTime());
+					systemMenuInterface.Draw(Main.spriteBatch, new GameTime());
+					transmutationInterface.Draw(Main.spriteBatch, new GameTime());
 					return true;
 				},
 				InterfaceScaleType.UI)
 			);
 	}
 	public void ActivatePerkUI(short state) {
+		DeactivateUI();
 		perkUIstate.StateofState = state;
 		perkInterface.SetState(perkUIstate);
 	}
 	public void ActivateSkillUI() {
+		DeactivateUI();
 		skillInterface.SetState(skillUIstate);
 	}
 	public void ActivateEnchantmentUI() {
+		DeactivateUI();
 		enchantInterface.SetState(Enchant_uiState);
+	}
+	public void ActivateTransmutationUI() {
+		DeactivateUI();
+		transmutationInterface.SetState(transmutationUI);
 	}
 	public void DeactivateUI() {
 		perkInterface.SetState(null);
 		skillInterface.SetState(null);
 		enchantInterface.SetState(null);
+		systemMenuInterface.SetState(null);
+		transmutationInterface.SetState(null);
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -235,11 +264,27 @@ class DefaultUI : UIState {
 	private UITextPanel<string> popUpWarning;
 	private UITextPanel<string> popUpWarningClose;
 
-	private List<UIImage> perkShowcase;
+	private UIImageButton staticticUI;
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
+		staticticUI = new UIImageButton(TextureAssets.InventoryBack);
+		staticticUI.UISetWidthHeight(52, 52);
+		staticticUI.HAlign = .67f;
+		staticticUI.VAlign = .06f;
+		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
+		Append(staticticUI);
 	}
+
+	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (ModContent.GetInstance<UniversalSystem>().systemMenuInterface.CurrentState == null) {
+			ModContent.GetInstance<UniversalSystem>().systemMenuInterface.SetState(ModContent.GetInstance<UniversalSystem>().UIsystemmenu);
+		}
+		else {
+			ModContent.GetInstance<UniversalSystem>().systemMenuInterface.SetState(null);
+		}
+	}
+
 	public override void OnActivate() {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
 			popUpWarning = new UITextPanel<string>("Terraria: Roguelike is only compatible with freshly created Hardcore characters\nAs a result, the mod will be temporarily disabled until you leave the world.");
@@ -371,7 +416,170 @@ class DefaultUI : UIState {
 		else {
 			text2.SetText("");
 		}
+
+		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		base.Update(gameTime);
+	}
+}
+class UISystemMenu : UIState {
+	UIPanel panel;
+	UITextPanel<string> uitextpanel;
+	UIImageButton show_playerMod_Info;
+	UIImageButton open_skill_UI;
+	UIImageButton open_Enchantment_UI;
+	UIImageButton open_Transmutation_UI;
+	bool EnchantmentHover = false;
+	bool SkillHover = false;
+	bool InfoHover = false;
+	bool Transmutation = false;
+	public override void OnInitialize() {
+		panel = new UIPanel();
+		panel.HAlign = .5f;
+		panel.VAlign = .4f;
+		panel.UISetWidthHeight(260, 80);
+		Append(panel);
+
+		uitextpanel = new UITextPanel<string>(" ");
+		uitextpanel.HAlign = .5f;
+		uitextpanel.VAlign = .7f;
+		uitextpanel.UISetWidthHeight(450, 350);
+		Append(uitextpanel);
+
+		show_playerMod_Info = new UIImageButton(TextureAssets.InventoryBack);
+		show_playerMod_Info.UISetWidthHeight(52, 52);
+		show_playerMod_Info.VAlign = .4f;
+		show_playerMod_Info.HAlign = .45f;
+		show_playerMod_Info.SetVisibility(1f, 67f);
+		show_playerMod_Info.OnLeftClick += Show_playerMod_Info_OnLeftClick;
+		show_playerMod_Info.OnUpdate += Show_playerMod_Info_OnUpdate;
+		Append(show_playerMod_Info);
+
+		open_skill_UI = new UIImageButton(TextureAssets.InventoryBack);
+		open_skill_UI.UISetWidthHeight(52, 52);
+		open_skill_UI.VAlign = .4f;
+		open_skill_UI.HAlign = .5f;
+		open_skill_UI.SetVisibility(1f, 67f);
+		open_skill_UI.OnLeftClick += Open_skill_UI_OnLeftClick;
+		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
+		Append(open_skill_UI);
+
+		open_Enchantment_UI = new UIImageButton(TextureAssets.InventoryBack);
+		open_Enchantment_UI.UISetWidthHeight(52, 52);
+		open_Enchantment_UI.VAlign = .4f;
+		open_Enchantment_UI.HAlign = .55f;
+		open_Enchantment_UI.SetVisibility(1f, 67f);
+		open_Enchantment_UI.OnLeftClick += Open_Enchantment_UI_OnLeftClick;
+		open_Enchantment_UI.OnUpdate += Open_Enchantment_UI_OnUpdate;
+		Append(open_Enchantment_UI);
+
+		open_Transmutation_UI = new UIImageButton(TextureAssets.InventoryBack);
+		open_Transmutation_UI.UISetWidthHeight(52, 52);
+		open_Transmutation_UI.VAlign = .4f;
+		open_Transmutation_UI.HAlign = .6f;
+		open_Transmutation_UI.SetVisibility(1f, 67f);
+		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick; ;
+		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate; ;
+		Append(open_Transmutation_UI);
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (EnchantmentHover) {
+			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
+		}
+		else if (SkillHover) {
+			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
+		}
+		else if (InfoHover) {
+			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.ShowPlayerInfo.Tooltip"));
+		}
+		else if (Transmutation) {
+			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Transmutation.Tooltip"));
+		}
+		else {
+			uitextpanel.SetText("");
+		}
+	}
+
+	private void Open_Transmutation_UI_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		// Otherwise, we can check a child element instead
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (affectedElement.IsMouseHovering) {
+			Transmutation = true;
+		}
+		else {
+			Transmutation = false;
+		}
+	}
+
+	private void Open_skill_UI_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		// Otherwise, we can check a child element instead
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (affectedElement.IsMouseHovering) {
+			SkillHover = true;
+		}
+		else {
+			SkillHover = false;
+		}
+	}
+
+	private void Open_Transmutation_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateTransmutationUI();
+	}
+
+	private void Open_Enchantment_UI_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		// Otherwise, we can check a child element instead
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (affectedElement.IsMouseHovering) {
+			EnchantmentHover = true;
+		}
+		else {
+			EnchantmentHover = false;
+		}
+	}
+
+	private void Show_playerMod_Info_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		// Otherwise, we can check a child element instead
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (affectedElement.IsMouseHovering) {
+			InfoHover = true;
+		}
+		else {
+			InfoHover = false;
+		}
+	}
+
+	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
+	}
+
+	private void Open_skill_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
+	}
+
+	private void Show_playerMod_Info_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+
 	}
 }
 internal class SkillUI : UIState {
@@ -701,7 +909,7 @@ internal class PerkUIState : UIState {
 		{ Perk.GetPerkType<BlessingOfSolar>(),
 			Perk.GetPerkType<BlessingOfVortex>(),
 			Perk.GetPerkType<BlessingOfNebula>(),
-			Perk.GetPerkType<BlessingOfStarDust>(),         
+			Perk.GetPerkType<BlessingOfStarDust>(),
 			Perk.GetPerkType<BlessingOfSynergy>(),
 		};
 		for (int i = 0; i < starterPerk.Length; i++) {
@@ -808,7 +1016,7 @@ class MaterialCardUIImageButton : SpecialPerkUIImageButton {
 	public MaterialCardUIImageButton(Asset<Texture2D> texture) : base(texture) {
 	}
 	public override void OnLeftClick(Player player) {
-		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<CardPacket>(), 3);
+		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<RelicContainer>(), 3);
 	}
 	public override string TooltipText() => "Give you 3 card packets";
 }

@@ -31,7 +31,7 @@ public class WindSlashProjectile : ModProjectile {
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Projectile.damage > 1) {
-			Projectile.damage = (int)(Projectile.damage * .8f);
+			Projectile.damage = (int)(Projectile.damage * .95f);
 		}
 		target.immune[Projectile.owner] = 4;
 	}

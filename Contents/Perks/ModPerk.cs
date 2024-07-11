@@ -70,6 +70,9 @@ namespace BossRush.Contents.Perks {
 				knockback += .15f;
 			}
 		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage -= .17f;
+		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			modifiers.SourceDamage += item.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
 		}
@@ -90,9 +93,29 @@ namespace BossRush.Contents.Perks {
 				if (player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
 					speed = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
 				}
+				int damage = (int)(player.HeldItem.damage * .75f);
 				float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
-				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), (int)(player.HeldItem.damage * .75f), 2f, player.whoAmI);
+				if (player.GetModPlayer<WindSlashPerkPlayer>().StrikeOpportunity) {
+					speed *= 1.5f;
+					damage *= 3;
+				}
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), damage, 2f, player.whoAmI);
 			}
+		}
+	}
+	public class WindSlashPerkPlayer : ModPlayer {
+		public int OpportunityWindow = 0;
+		public bool StrikeOpportunity = false;
+		public override void PostUpdate() {
+			if (Player.ItemAnimationActive) {
+				OpportunityWindow = 0;
+				StrikeOpportunity = false;
+			}
+			if (OpportunityWindow >= BossRushUtils.ToSecond(3)) {
+				StrikeOpportunity = true;
+				return;
+			}
+			OpportunityWindow++;
 		}
 	}
 	public class PowerUp : Perk {
@@ -126,65 +149,65 @@ namespace BossRush.Contents.Perks {
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
-	public class PoisonAura : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(player.GetSource_Loot(), ItemID.Bezoar);
-		}
-		public override void Update(Player player) {
-			if (player.buffImmune[BuffID.Poisoned]) {
-				float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
-				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
-				for (int i = 0; i < 6; i++) {
-					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Poisoned);
-					Main.dust[dustRing].noGravity = true;
-					Main.dust[dustRing].velocity = Vector2.Zero;
-					Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Poisoned);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = Vector2.Zero;
-					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-				}
-				if (npclist.Count > 0) {
-					foreach (NPC npc in npclist) {
-						npc.AddBuff(BuffID.Poisoned, 180);
-					}
-				}
-			}
-		}
-	}
-	public class OnFireAura : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<OnFireAura>();
-			CanBeStack = false;
-		}
-		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(player.GetSource_Loot(), ItemID.ObsidianRose);
-		}
-		public override void Update(Player player) {
-			if (player.buffImmune[BuffID.OnFire]) {
-				float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
-				BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
-				for (int i = 0; i < 4; i++) {
-					int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
-					Main.dust[dustRing].noGravity = true;
-					Main.dust[dustRing].velocity = Vector2.Zero;
-					Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-					int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = -Vector2.UnitY * 4f;
-					Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-				}
-				if (npclist.Count > 0) {
-					foreach (NPC npc in npclist) {
-						npc.AddBuff(BuffID.OnFire, 180);
-					}
-				}
-			}
-		}
-	}
+	//public class PoisonAura : Perk {
+	//	public override void SetDefaults() {
+	//		CanBeStack = false;
+	//	}
+	//	public override void OnChoose(Player player) {
+	//		player.QuickSpawnItem(player.GetSource_Loot(), ItemID.Bezoar);
+	//	}
+	//	public override void Update(Player player) {
+	//		if (player.buffImmune[BuffID.Poisoned]) {
+	//			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
+	//			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
+	//			for (int i = 0; i < 6; i++) {
+	//				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Poisoned);
+	//				Main.dust[dustRing].noGravity = true;
+	//				Main.dust[dustRing].velocity = Vector2.Zero;
+	//				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+	//				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Poisoned);
+	//				Main.dust[dust].noGravity = true;
+	//				Main.dust[dust].velocity = Vector2.Zero;
+	//				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+	//			}
+	//			if (npclist.Count > 0) {
+	//				foreach (NPC npc in npclist) {
+	//					npc.AddBuff(BuffID.Poisoned, 180);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	//public class OnFireAura : Perk {
+	//	public override void SetDefaults() {
+	//		textureString = BossRushUtils.GetTheSameTextureAsEntity<OnFireAura>();
+	//		CanBeStack = false;
+	//	}
+	//	public override void OnChoose(Player player) {
+	//		player.QuickSpawnItem(player.GetSource_Loot(), ItemID.ObsidianRose);
+	//	}
+	//	public override void Update(Player player) {
+	//		if (player.buffImmune[BuffID.OnFire]) {
+	//			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
+	//			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
+	//			for (int i = 0; i < 4; i++) {
+	//				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
+	//				Main.dust[dustRing].noGravity = true;
+	//				Main.dust[dustRing].velocity = Vector2.Zero;
+	//				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+	//				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
+	//				Main.dust[dust].noGravity = true;
+	//				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
+	//				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+	//			}
+	//			if (npclist.Count > 0) {
+	//				foreach (NPC npc in npclist) {
+	//					npc.AddBuff(BuffID.OnFire, 180);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 	public class IllegalTrading : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -245,16 +268,6 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class AlchemistKnowledge : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override void ResetEffect(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
-			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
-			player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .35f;
-		}
-	}
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
@@ -267,50 +280,19 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class PotionExpert : Perk {
+	public class AlchemistEmpowerment : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<PotionExpert>();
+			textureString = BossRushUtils.GetTheSameTextureAs<PeaceWithGod>("PotionExpert");
 			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
+			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
+			player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .35f;
+			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
 			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .35f;
 			player.GetModPlayer<ChestLootDropPlayer>().LootboxCanDropSpecialPotion = true;
-		}
-		public override void OnChoose(Player player) {
-			int type = Main.rand.Next(TerrariaArrayID.SpecialPotion);
-			player.QuickSpawnItem(player.GetSource_FromThis(), type);
-		}
-	}
-	public class SniperCharge : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		int RandomCountDown = 0;
-		int OpportunityWindow = 0;
-		public override void Update(Player player) {
-			if (!player.ItemAnimationActive)
-				RandomCountDown = BossRushUtils.CountDown(RandomCountDown);
-			if (RandomCountDown <= 0) {
-				if (OpportunityWindow == 0) {
-					BossRushUtils.CombatTextRevamp(player.Hitbox, Color.ForestGreen, "!");
-					SoundEngine.PlaySound(SoundID.MaxMana);
-					for (int i = 0; i < 20; i++) {
-						Dust dust = Dust.NewDustDirect(player.Center, 0, 0, DustID.GemEmerald);
-						dust.velocity = Vector2.UnitY.RotatedBy(MathHelper.ToRadians(i % 4 * 90)) * Main.rand.NextFloat(1f, 3f);
-						dust.noGravity = true;
-					}
-				}
-				if (++OpportunityWindow >= 600 || player.ItemAnimationActive) {
-					OpportunityWindow = 0;
-					RandomCountDown = Main.rand.Next(150, 210);
-				}
-			}
-		}
-		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			if (item.DamageType == DamageClass.Ranged && RandomCountDown <= 0 && OpportunityWindow < 600) {
-				damage *= 2;
-			}
 		}
 	}
 	public class SelfExplosion : Perk {
@@ -359,11 +341,28 @@ namespace BossRush.Contents.Perks {
 	public class ProjectileDuplication : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			StackLimit = 5;
+			StackLimit = 3;
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			modifiers.SourceDamage -= (StackLimit - StackAmount + 1) * .15f;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Main.rand.NextFloat() <= .1f * StackAmount && type != ModContent.ProjectileType<ArenaMakerProj>())
-				Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
+			if (type != ModContent.ProjectileType<ArenaMakerProj>()) {
+				player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = StackAmount;
+				player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange = 10;
+			}
+		}
+	}
+	public class ScatterShot : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<ScatterShot>();
+			CanBeStack = false;
+		}
+		public override void ResetEffect(Player player) {
+			player.GetModPlayer<PerkPlayer>().perk_ScatterShot = true;
+		}
+		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			
 		}
 	}
 	public class BloodStrike : Perk {
@@ -378,7 +377,7 @@ namespace BossRush.Contents.Perks {
 			if (player.itemAnimation == player.itemAnimationMax) {
 				int damage = (int)Math.Round(player.GetWeaponDamage(player.HeldItem) * .05f);
 				player.statLife = Math.Clamp(player.statLife - damage, 0, player.statLifeMax2);
-				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "-" + damage, Main.rand.Next(-10,40));
+				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "-" + damage, Main.rand.Next(-10, 40));
 			}
 		}
 	}
@@ -550,15 +549,6 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnChoose(Player player) {
 			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
-		}
-	}
-	public class PotionCleanse : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			textureString = BossRushTexture.ACCESSORIESSLOT;
-		}
-		public override void Update(Player player) {
-			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
 		}
 	}
 	public class OverchargedMana : Perk {

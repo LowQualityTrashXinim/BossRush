@@ -3,9 +3,8 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
-using Terraria.ID;
 
-namespace BossRush.Contents.Items.Card;
+namespace BossRush.Contents.Items.RelicItem;
 public class CombatTemplate : CardTemplate {
 	public override PlayerStats StatCondition(Player player) {
 		return Main.rand.Next(new PlayerStats[] {
@@ -62,20 +61,16 @@ public class CombatV2Template : CardTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.35f), 2), 1);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (player.ComparePlayerHealthInPercentage(.9f)) {
-			modplayer.AddStatsToPlayer(stat, value);
-		}
+		if (player.ComparePlayerHealthInPercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV3Template : CardTemplate {
 	public override PlayerStats StatCondition(Player player) {
-		if (Main.rand.NextFloat() <= .25f) {
-			return Main.rand.Next(new PlayerStats[] {
+		if (Main.rand.NextFloat() <= .25f) return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.PureDamage,
 			PlayerStats.CritChance,
 			PlayerStats.AttackSpeed
 		});
-		}
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
@@ -107,18 +102,14 @@ public class CombatV3Template : CardTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.35f, 1.5f), 2), 1);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.45f)) {
-			modplayer.AddStatsToPlayer(stat, value);
-		}
+		if (!player.ComparePlayerHealthInPercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV4Template : CardTemplate {
 	public override PlayerStats StatCondition(Player player) {
-		if (Main.rand.NextFloat() <= .25f) {
-			return Main.rand.Next(new PlayerStats[] {
+		if (Main.rand.NextFloat() <= .25f) return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.PureDamage,
 		});
-		}
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
@@ -128,18 +119,18 @@ public class CombatV4Template : CardTemplate {
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		if(stat == PlayerStats.PureDamage) {
-			return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString(), });
+		if (stat == PlayerStats.PureDamage) {
+			return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1), 2).ToString(), });
 		}
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%", });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1), 2).ToString(), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		StatModifier value = new StatModifier();
+		var value = new StatModifier();
 		if (stat == PlayerStats.PureDamage) {
 			value.Base += Main.rand.Next(1, 11);
 			return value;
 		}
-		value.Base += Main.rand.Next(8,21);
+		value.Base += Main.rand.Next(8, 21);
 		return value;
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
@@ -162,12 +153,8 @@ public class HealthTemplate : CardTemplate {
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
-		if (stat == PlayerStats.DefenseEffectiveness || stat == PlayerStats.ShieldEffectiveness) {
-			valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
-		}
-		else {
-			valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-		}
+		if (stat == PlayerStats.DefenseEffectiveness || stat == PlayerStats.ShieldEffectiveness) valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
+		else valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
 		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
@@ -218,9 +205,7 @@ public class HealthV2Template : CardTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.4f, 1.85f), 2), 1);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.35f)) {
-			modplayer.AddStatsToPlayer(stat, value);
-		}
+		if (!player.ComparePlayerHealthInPercentage(.35f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class HealthV3Template : CardTemplate {
@@ -249,9 +234,7 @@ public class HealthV3Template : CardTemplate {
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		for (int i = 0; i < player.buffType.Length; i++) {
-			if (player.buffType[i] == 0) {
-				continue;
-			}
+			if (player.buffType[i] == 0) continue;
 			if (Main.debuff[player.buffType[i]]) {
 				modplayer.AddStatsToPlayer(stat, value);
 				break;

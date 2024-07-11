@@ -1,7 +1,7 @@
 CombatTemplate.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}%]
 CombatV2Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}] when above 90% health
 CombatV3Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}] when below 45% health
-CombatV4Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}]
+CombatV4Template.Description: Increases your [c/{0}:{1}] base by [c/{0}:{2}]
 HealthTemplate.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}]
 HealthV2Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}] when below 35% health
 HealthV3Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}] while under debuff effect

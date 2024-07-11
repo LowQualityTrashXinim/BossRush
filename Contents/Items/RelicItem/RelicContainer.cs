@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Artifacts;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Contents.Items.Card {
-	public class CardPacket : ModItem {
+namespace BossRush.Contents.Items.RelicItem {
+	public class RelicContainer : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Chest);
 		private int countX = 0;
 		private float positionRotateX = 0;
@@ -34,15 +34,13 @@ namespace BossRush.Contents.Items.Card {
 			int amount = 1;
 			if (player.HasArtifact<TokenOfGreedArtifact>() || player.HasArtifact<EternalWealthArtifact>())
 				amount++;
-			for (int i = 0; i < amount; i++) {
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
-			}
+			for (int i = 0; i < amount; i++) player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
 		}
 		Color auraColor = new Color(255, 100, 0, 30);
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
 			Main.instance.LoadItem(Type);
-			Texture2D texture = TextureAssets.Item[Type].Value;
+			var texture = TextureAssets.Item[Type].Value;
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
 				spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);

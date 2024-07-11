@@ -1,5 +1,12 @@
 Mods: {
 	BossRush: {
+		SystemTooltip: {
+			WeaponEnchantment.Tooltip: Enchantment tooltip text
+			ShowPlayerInfo.Tooltip: ShowPlayerInfo tooltip text
+			Transmutation.Tooltip: Transmutation tooltip text
+			Skill.Tooltip: Skill tooltip text
+		}
+
 		Projectiles: {
 			SuperFlareP.DisplayName: Super Flare
 			ExplodeProjectile.DisplayName: Explosion
@@ -1595,6 +1602,26 @@ Mods: {
 				DisplayName: Lunatic Tablet
 				Tooltip: ""
 			}
+
+			BlackLootBox: {
+				DisplayName: Black Loot Box
+				Tooltip: ""
+			}
+
+			BloodLootBox: {
+				DisplayName: Blood Loot Box
+				Tooltip: ""
+			}
+
+			RelicContainer: {
+				DisplayName: Relic Container
+				Tooltip: ""
+			}
+
+			RainbowLootBox: {
+				DisplayName: Rainbow Loot Box
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1854,6 +1881,11 @@ Mods: {
 				DisplayName: Wrath
 				Description: Increases your damage by 20%
 			}
+
+			LifeForce: {
+				DisplayName: Life Force
+				Description: Mods.BossRush.Buffs.LifeForce.Description
+			}
 		}
 
 		Configs: {
@@ -1953,7 +1985,6 @@ Mods: {
 			}
 		}
 
-		Prefixes.BasePrefix.DisplayName: Base Prefix
 		"Keybinds.Skill activation.DisplayName": Skill activation
 	}
 }

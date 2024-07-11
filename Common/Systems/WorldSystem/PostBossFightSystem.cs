@@ -192,7 +192,7 @@ class PostBossFightGlobalNPC : GlobalNPC {
 
 			if (Main.rand.NextBool(40)) {
 				npc.position += npc.netOffset;
-				int num = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y + npc.height * 0.25f), npc.width, (int)(npc.height * 0.5f), 5, npc.velocity.X, 2f);
+				int num = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y + npc.height * 0.25f), npc.width, (int)(npc.height * 0.5f), DustID.Blood, npc.velocity.X, 2f);
 				Main.dust[num].velocity.X *= 0.5f;
 				Main.dust[num].velocity.Y *= 0.1f;
 				npc.position -= npc.netOffset;
@@ -361,7 +361,7 @@ class PostBossFightGlobalNPC : GlobalNPC {
 	}
 
 	public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo) {
-		if(!UniversalSystem.CanAccessContent(UniversalSystem.TRUE_MODE)) {
+		if (!UniversalSystem.CanAccessContent(UniversalSystem.TRUE_MODE)) {
 			return;
 		}
 		if (NPC.downedSlimeKing) {
@@ -395,8 +395,10 @@ class PostBossFightGlobalNPC : GlobalNPC {
 			pool.Add(NPCID.GreenEye2, 0.75f);
 			pool.Add(NPCID.PurpleEye, 0.75f);
 			pool.Add(NPCID.PurpleEye2, 0.75f);
-			//pool.Add(NPCID.WanderingEye, 0.65f);
-			//pool.Add(NPCID.EyeballFlyingFish, 0.45f);
+			if (Main.hardMode) {
+				pool.Add(NPCID.WanderingEye, 0.65f);
+				pool.Add(NPCID.EyeballFlyingFish, 0.45f);
+			}
 		}
 		//if (NPC.downedBoss2) {
 		//	pool.Add(NPCID.Corruptor, 0.25f);

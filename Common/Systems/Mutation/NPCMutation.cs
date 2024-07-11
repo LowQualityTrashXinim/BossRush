@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.Mutation;
 internal class NPCMutation : GlobalNPC {
-	public List<ModMutation> mutationList;
+	public List<ModMutation> mutationList = new List<ModMutation>();
 	public override bool InstancePerEntity => true;
 	public float MeleeDamageReduction = 1;
 	public float RangeDamageReduction = 1;

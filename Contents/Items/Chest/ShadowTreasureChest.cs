@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Chest
 {
@@ -167,16 +168,10 @@ namespace BossRush.Contents.Items.Chest
             {
                 player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
             }
-            if (ModContent.GetInstance<BossRushModConfig>().SynergyMode && player.difficulty == PlayerDifficultyID.Hardcore)
-            {
-                int RandomModdedBuff = Main.rand.Next(new int[] {
-                    ModContent.ItemType<BerserkerElixir>(),
-                    ModContent.ItemType<GunslingerElixir>(),
-                    ModContent.ItemType<SageElixir>(),
-                    ModContent.ItemType<CommanderElixir>(),
-                    ModContent.ItemType<TitanElixir>() });
-                player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
-            }
-        }
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
+				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
+				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
+			}
+		}
     }
 }

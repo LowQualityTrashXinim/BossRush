@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
-	internal class BloodTreasureChest : LootBoxBase {
+	internal class BloodLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;

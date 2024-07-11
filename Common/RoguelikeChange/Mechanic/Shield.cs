@@ -21,6 +21,9 @@ public class Shield_GlobalItem : GlobalItem {
 			entity.type == ItemID.HeroShield;
 	}
 	public override void SetDefaults(Item entity) {
+		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			return;
+		}
 		switch (entity.type) {
 			case ItemID.EoCShield:
 				ShieldPoint = 200;
@@ -53,6 +56,9 @@ public class Shield_GlobalItem : GlobalItem {
 		}
 	}
 	public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
+		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			return;
+		}
 		Shield_ModPlayer shieldplayer = player.GetModPlayer<Shield_ModPlayer>();
 		switch (item.type) {
 			case ItemID.EoCShield:

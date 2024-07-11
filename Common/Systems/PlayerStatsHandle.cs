@@ -2,6 +2,9 @@
 using Terraria.ModLoader;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Skill;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -206,6 +209,8 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
+	public int requestShootExtra = 0;
+	public float requestVelocityChange = 0;
 	/// <summary>
 	/// This should be uses in always update code
 	/// </summary>
@@ -219,7 +224,7 @@ public class PlayerStatsHandle : ModPlayer {
 			return;
 		}
 		StatModifier StatMod;
-		if(Additive == 1) {
+		if (Additive == 1) {
 			StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
 		}
 		else {
@@ -305,7 +310,81 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_NPC.AddBuff += HookBuffTimeModify;
 		On_Player.AddBuff += IncreasesPlayerBuffTime;
 		On_Player.Heal += On_Player_Heal;
+		On_Projectile.NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float += On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float;
+		On_Projectile.NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float += On_Projectile_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float;
+		On_Projectile.NewProjectileDirect += On_Projectile_NewProjectileDirect;
 	}
+
+	private Projectile On_Projectile_NewProjectileDirect(On_Projectile.orig_NewProjectileDirect orig, IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0, float ai1, float ai2) {
+		if (owner < 0 || owner > 255) {
+			return orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
+		}
+		Player player = Main.player[owner];
+		int shootExtra = player.GetModPlayer<PlayerStatsHandle>().requestShootExtra;
+		if (shootExtra > 0) {
+			player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = 0;
+			for (int i = 0; i < shootExtra; i++) {
+				Projectile proj = orig(spawnSource, position, velocity.Vector2RotateByRandom(player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange), type, damage, knockback, owner, ai0, ai1, ai2);
+				if (CheckProjectile_ScatterShotCondition(player, proj)) {
+					proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+				}
+			}
+		}
+		Projectile projectile = orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
+		if (CheckProjectile_ScatterShotCondition(player, projectile)) {
+			projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+		}
+		return projectile;
+	}
+
+	private int On_Projectile_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float(On_Projectile.orig_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float orig, IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner, float ai0, float ai1, float ai2) {
+		if (Owner < 0 || Owner > 255) {
+			return orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+		}
+		Player player = Main.player[Owner];
+		int shootExtra = player.GetModPlayer<PlayerStatsHandle>().requestShootExtra;
+		if (shootExtra > 0) {
+			player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = 0;
+			for (int i = 0; i < shootExtra; i++) {
+				Vector2 newSpeed = new Vector2(SpeedX, SpeedY).Vector2RotateByRandom(player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange);
+				int proj = orig(spawnSource, X, Y, newSpeed.X, newSpeed.Y, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+				if (CheckProjectile_ScatterShotCondition(player, proj)) {
+					Main.projectile[proj].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+				}
+			}
+		}
+		int projectile = orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+		if (CheckProjectile_ScatterShotCondition(player, projectile)) {
+			Main.projectile[projectile].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+		}
+		return projectile;
+	}
+
+	private int On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float(On_Projectile.orig_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float orig,
+		IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner, float ai0, float ai1, float ai2) {
+		if (Owner < 0 || Owner > 255) {
+			return orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+		}
+		Player player = Main.player[Owner];
+		int shootExtra = player.GetModPlayer<PlayerStatsHandle>().requestShootExtra;
+		if (shootExtra > 0) {
+			player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = 0;
+			for (int i = 0; i < shootExtra; i++) {
+				int proj = orig(spawnSource, position, velocity.Vector2RotateByRandom(player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange), Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+				if (CheckProjectile_ScatterShotCondition(player, proj)) {
+					Main.projectile[proj].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+				}
+			}
+		}
+		int projectile = orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+		if (CheckProjectile_ScatterShotCondition(player, projectile)) {
+			Main.projectile[projectile].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+		}
+		return projectile;
+	}
+	public static bool CheckProjectile_ScatterShotCondition(Player player, Projectile proj) => player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
+	public static bool CheckProjectile_ScatterShotCondition(Player player, int proj) => player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
+
 
 	private void On_Player_Heal(On_Player.orig_Heal orig, Player self, int amount) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {

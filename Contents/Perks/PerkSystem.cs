@@ -119,7 +119,7 @@ namespace BossRush.Contents.Perks {
 		public bool perk_AlchemistPotion = false;
 		public bool perk_ImprovedManaPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
-
+		public bool perk_ScatterShot = false;
 		// ShopPerk
 		public Dictionary<int, int> hasExtraWeapon = new Dictionary<int, int>();
 		public override void Initialize() {
@@ -147,6 +147,7 @@ namespace BossRush.Contents.Perks {
 			perk_PotionCleanse = false;
 			perk_AlchemistPotion = false;
 			perk_ImprovedManaPotion = false;
+			perk_ScatterShot = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
@@ -265,9 +266,17 @@ namespace BossRush.Contents.Perks {
 			var PlayerPerkStack = tag.Get<List<int>>("PlayerPerkStack");
 			perks = PlayerPerks.Zip(PlayerPerkStack, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 
+			int count = perks.Count;
+			for (int i = count - 1; i >= 0; i--) {
+				if (ModPerkLoader.GetPerk(perks.Keys.ElementAt(i)) == null) {
+					perks.Remove(perks.Keys.ElementAt(i));
+				}
+			}
+
 			var npcShop = tag.Get<List<int>>("npcShop");
 			var npcWeapon = tag.Get<List<int>>("npcWeapon");
 			hasExtraWeapon = npcShop.Zip(npcWeapon, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+
 		}
 	}
 	public abstract class Perk : ModType {
@@ -414,7 +423,7 @@ namespace BossRush.Contents.Perks {
 			return true;
 		}
 	}
-	class GamblerPerk: ModItem {
+	class GamblerPerk : ModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetDefaults() {
 			Item.BossRushDefaultToConsume(32, 23);

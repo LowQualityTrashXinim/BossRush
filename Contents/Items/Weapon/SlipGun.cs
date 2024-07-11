@@ -19,7 +19,6 @@ internal class SlipGun : ModItem {
 		SlipGun_ModPlayer modplayer = player.GetModPlayer<SlipGun_ModPlayer>();
 		for (int i = 0; i < modplayer.Chamber; i++) {
 			Projectile.NewProjectile(source, position, velocity.RotatedBy(5), type, damage, knockback, player.whoAmI);
-			return false;
 		}
 		return base.Shoot(player, source, position, velocity, type, damage, knockback);
 	}

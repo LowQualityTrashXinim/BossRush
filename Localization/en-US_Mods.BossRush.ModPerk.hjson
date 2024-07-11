@@ -19,6 +19,7 @@ LethalKnockBack: {
 		'''
 		+ You deal additional damage base on your knockback and target's knockback resistance
 		+ Increases melee knockback by 15%
+		- Decreases weapon damage by 17%
 		'''
 }
 
@@ -38,12 +39,19 @@ WindSlash: {
 		'''
 		"For people who complain their sword isn't special"
 		 + Release a short wind slash upon swing that deal 75% of that weapon damage
+		 + Waiting for 3s will result in stronger wind slash !
 		'''
 }
 
 LifeForceOrb: {
 	DisplayName: Life Force Orb
-	Description: + Attacking enemy will periodically create a short lived life orb that heal you
+	Description:
+		'''
+		+ Attacking enemy will periodically create a short lived life orb
+		+ Life Orb heal you and temporary increases your max life
+		+ The lower your health, the better healing effect life force have
+
+		'''
 }
 
 PoisonAura: {
@@ -111,29 +119,17 @@ ChaoticImbue: {
 		'''
 }
 
-AlchemistKnowledge: {
-	DisplayName: Alchemist Knowledge
+AlchemistEmpowerment: {
+	DisplayName: Alchemist Empowerment
 	Description:
 		'''
 		+ Drinking any buff potion have chance to give you additional helpful buff
-		- Decrease buff duration by 35%
-		'''
-}
-
-PotionExpert: {
-	DisplayName: Potion Expert
-	Description:
-		'''
+		+ Quick Potion heal is halved, but also cleanses almost all debuffs
 		+ Potion have 55% to not be consumed when not using Quick Buff key
-		+ Increases Potion duration by 35%
-		+ Give you 1 random special potion
 		+ Opening Lootbox will drop you 1 random special potion
+		+ Increases Potion duration by 35%
+		"Knowledge that was lost to time."
 		'''
-}
-
-SniperCharge: {
-	DisplayName: Weapon Charge
-	Description: + Weapon can deal 2x damage when it is ready
 }
 
 SelfExplosion: {
@@ -141,7 +137,7 @@ SelfExplosion: {
 	Description:
 		'''
 		+ When you got hit, you explode damaging surrounding enemies
-		+ After you explode, you gain a small buff that increases your life regenaration
+		+ After you explode, you gain a small buff that massively increases your life regenaration
 		'''
 }
 
@@ -157,6 +153,11 @@ ProjectileDuplication: {
 		+ Your weapon have a chance to shoot out duplicate projectile
 		( warning : may work weirdly on many weapon due to terraria code )
 		'''
+}
+
+ScatterShot: {
+	DisplayName: Scatter Shot
+	Description: + When a projectile die, it will shoot out a weaker version of itself
 }
 
 BloodStrike: {
@@ -246,7 +247,7 @@ ArenaBlessing1: {
 		+ Strength your spirit lamp
 		Now can give you heart lamp buff
 		Increases speed by 10%
-		Increases radius strength by 100
+		Increases radius strength
 		'''
 }
 
@@ -257,7 +258,7 @@ ArenaBlessing2: {
 		+ Strength your spirit lamp
 		Now can give you Star in bottle buff
 		Increases speed by 10%
-		Increases radius strength by 100
+		Increases radius strength
 		'''
 }
 
@@ -268,18 +269,13 @@ ArenaBlessing3: {
 		+ Strength your spirit lamp
 		Now can give you Bash statue buff
 		Increases speed by 10%
-		Increases radius strength by 100
+		Increases radius strength
 		'''
 }
 
 StellarRetirement: {
 	DisplayName: Stellar Retirement
 	Description: + Fallen Star are now more common
-}
-
-PotionCleanse: {
-	DisplayName: Cleansing Potion
-	Description: + Quick Potion heal is halved, but also cleanses almost all debuffs
 }
 
 OverchargedMana: {

@@ -88,14 +88,7 @@ namespace BossRush.Contents.Items.Chest {
 				player.QuickSpawnItem(entitySource, RandomAssArmor);
 			}
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
-				int RandomModdedBuff = Main.rand.Next(new int[] {
-					ModContent.ItemType<BerserkerElixir>(),
-					ModContent.ItemType<GunslingerElixir>(),
-					ModContent.ItemType<SageElixir>(),
-					ModContent.ItemType<CommanderElixir>(),
-					ModContent.ItemType<TitanElixir>(),
-					ModContent.ItemType<HyperRegenElixir>()
-				});
+				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			}
 			player.QuickSpawnItem(entitySource, ItemID.SlimeCrown);

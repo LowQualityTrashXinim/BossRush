@@ -110,8 +110,8 @@ namespace BossRush.Common {
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.BloodNautilus) {
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodTreasureChest>()));
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BloodTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodLootBox>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BloodLootBox>()));
 			}
 			if (npc.type == NPCID.QueenSlimeBoss) {
 				//NoHit mode drop
@@ -162,26 +162,26 @@ namespace BossRush.Common {
 			}
 			if (npc.type == NPCID.HallowBoss) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>(), 1, 2, 2));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressTreasureChest>()));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.DukeFishron) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DukeTreasureChest>(), 1, 2, 2));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
 				LeadingConditionRule rule = new LeadingConditionRule(new DukeIsEnrage());
 				rule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DukeTreasureChest>()));
 				npcLoot.Add(rule);
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));
 			}
 			if (npc.type == NPCID.CultistBoss) {
 				//NoHit mode drop
@@ -193,7 +193,7 @@ namespace BossRush.Common {
 			}
 			if (npc.type == NPCID.MoonLordCore) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>(), 1, 2, 2));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
 			}

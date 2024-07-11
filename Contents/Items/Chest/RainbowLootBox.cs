@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
-	internal class RainbowTreasureChest : LootBoxBase {
+	internal class RainbowLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;

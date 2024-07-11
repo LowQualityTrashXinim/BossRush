@@ -6,7 +6,6 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Potion;
@@ -15,6 +14,7 @@ using BossRush.Common.Systems;
 using BossRush.Common;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.aDebugItem.StatsInform;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Contents.NPCs;
 internal class M_018T : ModNPC {
@@ -50,9 +50,9 @@ internal class M_018T : ModNPC {
 		}
 		else if (player.HeldItem.ModItem is CelestialWrath) {
 			chat.Add("Get that thing away from me");
-			chat.Add("Do not throw it here, throw it somewhere that not close us");
+			chat.Add("Do not throw it here, throw it somewhere that not close to us");
 			chat.Add("You gonna throw it here ? please don't");
-			chat.Add("Do not sell that thing to me, where do I even put it ?");
+			chat.Add("Do not sell that thing to me, no mortal would want to buy that !");
 		}
 		else {
 			if(ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
@@ -68,14 +68,9 @@ internal class M_018T : ModNPC {
 	}
 	public override void AddShops() {
 		NPCShop shop = new NPCShop(Type, ShopName);
-		if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-			shop.Add(new Item(ModContent.ItemType<EnchantmentTablet>()) { shopCustomPrice = 0 });
-			shop.Add(new Item(ModContent.ItemType<SkillOrb>()) { shopCustomPrice = 0 });
-			shop.Add(new Item(ModContent.ItemType<TransmuteTablet>()) { shopCustomPrice = 0 });
-		}
-		shop.Add(new Item(ModContent.ItemType<CardPacket>()) { shopCustomPrice = Item.buyPrice(gold: 20) });
-		shop.Add(new Item(ModContent.ItemType<WeaponLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 40) });
-		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 55) });
+		shop.Add(new Item(ModContent.ItemType<RelicContainer>()) { shopCustomPrice = Item.buyPrice(gold: 7) });
+		shop.Add(new Item(ModContent.ItemType<WeaponLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 15) });
+		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 17) });
 		shop.Add(new Item(ModContent.ItemType<PerkChooser>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
 		shop.Add(new Item(ModContent.ItemType<StarterPerkChooser>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
 		shop.Add(new Item(ModContent.ItemType<ModStatsDebugger>()) { shopCustomPrice = Item.buyPrice(gold: 50) });

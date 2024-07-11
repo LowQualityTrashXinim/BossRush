@@ -38,6 +38,16 @@ StarFury: {
 	Description: Not to be confused with Star Fury, a Star shoot down every 2s
 }
 
+WoodSwordSpirit: {
+	DisplayName: Wood Sword Spirit
+	Description: Hitting a enemy will shoot out a wood sword toward the enemy dealing 24 damage
+}
+
+BroadSwordSpirit: {
+	DisplayName: Broad Sword Spirit
+	Description: Summon 3 broad sword that spin around player dealing 34 damage
+}
+
 AllOrNothing: {
 	DisplayName: All Or Nothing
 	Description: Luck given you one more opportunity !

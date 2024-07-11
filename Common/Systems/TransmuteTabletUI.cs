@@ -7,32 +7,18 @@ using ReLogic.Content;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Card;
 using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Toggle;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
+using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Accessories.Crystal;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
-using BossRush.Contents.Items.Toggle;
+using BossRush.Contents.Items;
 
-namespace BossRush.Contents.Items;
-public class TransmuteTablet : ModItem {
-	public override void SetDefaults() {
-		Item.width = Item.height = 20;
-		Item.useTime = Item.useAnimation = 15;
-		Item.useStyle = ItemUseStyleID.HoldUp;
-		Item.rare = ItemRarityID.Red;
-	}
-	public override bool? UseItem(Player player) {
-		if (player.ItemAnimationJustStarted) {
-			var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		}
-		return false;
-	}
-}
+namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {
 	public override void OnActivate() {
 		Elements.Clear();
@@ -41,7 +27,7 @@ public class TransmutationUIState : UIState {
 		panalUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(0, -150), new Vector2(100, 100));
 		Append(panalUI);
 		var cardUI = new TransmutationUI(TextureAssets.InventoryBack, Main.LocalPlayer);
-		Vector2 origin = new Vector2(26, 26);
+		var origin = new Vector2(26, 26);
 		cardUI.UISetWidthHeight(52, 52);
 		cardUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(52, -150), origin);
 		Append(cardUI);
@@ -66,6 +52,12 @@ public class ExitUI : UIImageButton {
 	public override void LeftClick(UIMouseEvent evt) {
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
 }
 public class TransmutationUI : UIImage {
 	public int WhoAmI = -1;
@@ -79,51 +71,48 @@ public class TransmutationUI : UIImage {
 		this.player = player;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
-		if (item == null) {
-			if (Main.mouseItem.type != ItemID.None) {
-				if (Main.mouseItem.accessory) {
-
-				}
-				else if (Main.mouseItem.damage > 0) {
-
-				}
-				else if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
-					Main.mouseItem.stack--;
-					item = Main.mouseItem.Clone();
-					item.stack = 1;
-					return;
-				}
-				item = Main.mouseItem.Clone();
-				Main.mouseItem.TurnToAir();
-				player.inventory[58].TurnToAir();
-			}
+		if (item != null) {
+			return;
 		}
-		else {
-			if (Main.mouseItem.type == ItemID.None) {
-				Main.mouseItem = item.Clone();
-				item = null;
+		if (Main.mouseItem.type != ItemID.None) {
+			if (Main.mouseItem.accessory) {
+
 			}
+			else if (Main.mouseItem.damage > 0) {
+
+			}
+			else if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
+				Main.mouseItem.stack--;
+				item = Main.mouseItem.Clone();
+				item.stack = 1;
+				return;
+			}
+			item = Main.mouseItem.Clone();
+			Main.mouseItem.TurnToAir();
+			player.inventory[58].TurnToAir();
+		}
+		else if (Main.mouseItem.type == ItemID.None) {
+			Main.mouseItem = item.Clone();
+			item = null;
 		}
 	}
 	public override void OnDeactivate() {
 		if (item == null)
 			return;
-		for (int i = 0; i < 50; i++) {
-			if (player.CanItemSlotAccept(player.inventory[i], item)) {
+		for (int i = 0; i < 50; i++) if (player.CanItemSlotAccept(player.inventory[i], item)) {
 				player.inventory[i] = item;
 				return;
 			}
-		}
 		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
-		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
+		var drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
 		base.Draw(spriteBatch);
 		try {
 			if (item != null) {
 				Main.instance.LoadItem(item.type);
-				Texture2D texture = TextureAssets.Item[item.type].Value;
-				Vector2 origin = texture.Size() * .5f;
+				var texture = TextureAssets.Item[item.type].Value;
+				var origin = texture.Size() * .5f;
 				float scaling = ScaleCalculation(texture.Size());
 				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
 			}
@@ -138,28 +127,48 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	public TransmutationUIConfirmButton(Asset<Texture2D> texture) : base(texture) {
 	}
 	public override void LeftMouseDown(UIMouseEvent evt) {
-		List<TransmutationUI> resultlist = new List<TransmutationUI>();
-		foreach (var element in Parent.Children) {
-			if (element is TransmutationUI transmutateResult) {
+		var resultlist = new List<TransmutationUI>();
+		foreach (var element in Parent.Children) if (element is TransmutationUI transmutateResult) {
 				if (transmutateResult.item == null || transmutateResult.item.type == ItemID.None)
 					continue;
 				resultlist.Add(transmutateResult);
 			}
-		}
-		List<int> itemList = resultlist.Select(i => i.item.type).ToList();
+		var itemList = resultlist.Select(i => i.item).ToList();
 		if (CheckForSpecialDrop(itemList)) {
 			resultlist.ForEach(i => i.item = null);
 			return;
 		}
-		foreach (var result in resultlist) {
-			if (CheckWeapon(result.item)) {
+		foreach (var result in resultlist) if (CheckWeapon(result.item)) {
 				result.item = null;
 				continue;
 			}
-		}
 	}
-	private bool CheckForSpecialDrop(List<int> itemList) {
-		Player player = Main.LocalPlayer;
+	private bool CheckForSpecialDrop(List<Item> item) {
+		var player = Main.LocalPlayer;
+		if (item.Where(i => i.ModItem is Relic).Count() > 1) {
+			Relic relic1 = null;
+			Relic relic2 = null;
+			foreach (var it in item) if (it.ModItem is Relic re) {
+					if (relic1 == null) {
+						relic1 = re;
+						continue;
+					}
+					if (relic2 == null) {
+						relic2 = re;
+						break;
+					}
+				}
+			int count = relic1.TemplateCount + relic2.TemplateCount;
+			if (relic1 != null && relic2 != null && count <= 4) {
+				CardTemplateLoader.MergeStat(relic1, relic2);
+				player.QuickSpawnItem(player.GetSource_FromThis(), relic1.Item);
+				return true;
+			}
+		}
+		var itemList = new List<int>();
+		item.ForEach(i => {
+			itemList.Add(i.type);
+		});
 		if (itemList.Contains(ItemID.LifeCrystal) && itemList.Contains(ItemID.ManaCrystal)) {
 			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
 			return true;
@@ -174,9 +183,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);
 		bool Musket = itemList.Contains(ItemID.Musket);
-		if (itemList.Contains(ModContent.ItemType<CelestialWrath>())) {
-			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
-		}
+		if (itemList.Contains(ModContent.ItemType<CelestialWrath>())) player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
 		if (MiniShark && IceBlade) {
 			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
 			return true;
