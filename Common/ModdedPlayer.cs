@@ -62,10 +62,10 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<BiomeToggle>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
-					yield return new Item(ModContent.ItemType<CursedSkull>());
-					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
+					//yield return new Item(ModContent.ItemType<CursedSkull>());
+					yield return new Item(ModContent.ItemType<PerkChooser>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
-					yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
+					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 						yield return new Item(ModContent.ItemType<SpawnMerchant>());

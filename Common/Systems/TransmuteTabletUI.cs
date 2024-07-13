@@ -71,10 +71,15 @@ public class TransmutationUI : UIImage {
 		this.player = player;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
-		if (item != null) {
-			return;
+		if (item != null && Main.mouseItem.type != ItemID.None) {
+			//Swap item here
+			Item itemcache = Main.mouseItem.Clone();
+			Main.mouseItem = item.Clone();
+			player.inventory[58] = item.Clone();
+			item = itemcache.Clone();
 		}
-		if (Main.mouseItem.type != ItemID.None) {
+		else if (Main.mouseItem.type != ItemID.None && item == null) {
+			//When the slot is available
 			if (Main.mouseItem.accessory) {
 
 			}
@@ -91,9 +96,14 @@ public class TransmutationUI : UIImage {
 			Main.mouseItem.TurnToAir();
 			player.inventory[58].TurnToAir();
 		}
-		else if (Main.mouseItem.type == ItemID.None) {
+		else if (Main.mouseItem.type == ItemID.None && item != null) {
+			//When player want to change item
 			Main.mouseItem = item.Clone();
+			player.inventory[58] = item.Clone();
 			item = null;
+		}
+		else {
+			//Do nothing lmao
 		}
 	}
 	public override void OnDeactivate() {

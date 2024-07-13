@@ -46,9 +46,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool EnergyBlade_Code2 = false;
 		public int EnergyBlade_Code1_Energy = 0;
 
-		public bool Swotaff_Spear = false;
-		public int Swotaff_Spear_Counter = 0;
-
 		public bool AmberBoneSpear_MandibleBlade = false;
 
 		public bool Deagle_PhoenixBlaster = false;
@@ -92,6 +89,8 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool MagicGrenade_MagicMissle = false;
 
 		public bool DeathBySpark_AleThrowingGlove = false;
+
+		public bool Swotaff_Spear = false;
 
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
@@ -158,20 +157,6 @@ namespace BossRush.Contents.Items.Weapon {
 			if (item.type != ModContent.ItemType<IceStorm>()) {
 				IceStorm_SpeedMultiplier = 1;
 			}
-		}
-		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Swotaff_Spear && Player.altFunctionUse != 2) {
-				if (Swotaff_Spear_Counter < 2) {
-					Swotaff_Spear_Counter++;
-				}
-				else {
-					Vector2 cirRanPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 30, 90, velocity.ToRotation());
-					Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero) * 10;
-					Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI, 2);
-					Swotaff_Spear_Counter = 0;
-				}
-			}
-			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			damage += SynergyBonus * .5f;

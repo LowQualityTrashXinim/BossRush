@@ -2,7 +2,18 @@ Mods: {
 	BossRush: {
 		SystemTooltip: {
 			WeaponEnchantment.Tooltip: Enchantment tooltip text
-			ShowPlayerInfo.Tooltip: ShowPlayerInfo tooltip text
+			BlockWeaponEnchantment.Tooltip: A Force beyond your realm has block you from accessing it's system
+			ShowPlayerInfo.Tooltip:
+				'''
+				We are current working on show player info UI.
+				It is under working progress
+				expect it to arrive in future update !
+				What to expect in this UI:
+				Perk selected
+				Artifact selected
+				Player vanilla stats info
+				Player modded stat info (this mod stats)
+				'''
 			Transmutation.Tooltip: Transmutation tooltip text
 			Skill.Tooltip: Skill tooltip text
 		}
@@ -197,6 +208,7 @@ Mods: {
 			MoCCopperOre.DisplayName: Mo C Copper Ore
 			MoCShortSwordP.DisplayName: Mo C Short Sword P
 			WindSlashProjectile.DisplayName: Wind Slash Projectile
+			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
 		}
 
 		NPCs: {
@@ -1592,9 +1604,9 @@ Mods: {
 					'''
 					"Relic of a long gone past ..."
 					Power of copper are active
-					Increase defense by 6
+					Increase defenses by 6
 					Have a chance to shoot out a copper dagger
-					Burst out 5 copper when damaged
+					Burst out 5 coppers when damaged
 					'''
 			}
 
@@ -1885,6 +1897,16 @@ Mods: {
 			LifeForce: {
 				DisplayName: Life Force
 				Description: Mods.BossRush.Buffs.LifeForce.Description
+			}
+
+			StarGaze: {
+				DisplayName: Star Gaze
+				Description: Mods.BossRush.Buffs.StarGaze.Description
+			}
+
+			ThrownShortSwordCoolDown: {
+				DisplayName: Thrown Short Sword Cool Down
+				Description: Mods.BossRush.Buffs.ThrownShortSwordCoolDown.Description
 			}
 		}
 

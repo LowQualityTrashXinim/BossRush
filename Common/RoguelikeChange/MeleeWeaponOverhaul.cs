@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Common.RoguelikeChange {
 	public class BossRushUseStyle {
@@ -231,7 +232,6 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			#endregion
 			switch (item.type) {
-				#region BossRushUseStyle.Swipe
 				//Sword that have even end
 				//WoodSword
 				case ItemID.PearlwoodSword:
@@ -332,7 +332,6 @@ namespace BossRush.Common.RoguelikeChange {
 					SwingType = BossRushUseStyle.GenericSwingDownImprove;
 					item.useTurn = false;
 					break;
-				#endregion
 				default:
 					break;
 			}
@@ -556,7 +555,6 @@ namespace BossRush.Common.RoguelikeChange {
 		public override void Load() {
 			On_PlayerDrawLayers.DrawPlayer_RenderAllLayers += On_PlayerDrawLayers_DrawPlayer_RenderAllLayers;
 		}
-
 		private void On_PlayerDrawLayers_DrawPlayer_RenderAllLayers(On_PlayerDrawLayers.orig_DrawPlayer_RenderAllLayers orig, ref PlayerDrawSet drawinfo) {
 			Player player = Main.LocalPlayer;
 			Item item = player.HeldItem;

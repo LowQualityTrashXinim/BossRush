@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			return base.UseSpeedMultiplier(player);
 		}
 		public override bool CanUseItem(Player player) {
-			if (player.GetModPlayer<PlayerSynergyItemHandle>().Swotaff_Spear_Counter >= 2) {
+			if (player.GetModPlayer<SwotaffPlayer>().Swotaff_Spear_Counter >= 2) {
 				return player.ownedProjectileCounts[ProjectileType] < 2;
 			}
 			return player.ownedProjectileCounts[ProjectileType] < 1;
@@ -51,7 +51,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 		}
 		public override bool AltFunctionUse(Player player) {
 			CanShootProjectile = -1;
-			if (player.GetModPlayer<PlayerSynergyItemHandle>().Swotaff_Spear_Counter >= 2) {
+			if (player.GetModPlayer<SwotaffPlayer>().Swotaff_Spear_Counter >= 2) {
 				return player.ownedProjectileCounts[ProjectileType] < 2;
 			}
 			return player.ownedProjectileCounts[ProjectileType] < 1;
@@ -118,8 +118,18 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 		}
 		Vector2 PosToGo;
 		float AltAttackAmountProjectile;
-		int AltAttackProjectileType, NormalBoltProjectile, DustType, ManaCost, countdownBeforeReturn = 100, AbsoluteCountDown = 420, timeToSpin = 0, projectileBelongToItem;
-		bool isAlreadyHeldDown = false, isAlreadyReleased = false, isAlreadySpinState = false, ProjectileAlreadyExist = false;
+		int AltAttackProjectileType, 
+			NormalBoltProjectile,
+			DustType, 
+			ManaCost, 
+			countdownBeforeReturn = 100, 
+			AbsoluteCountDown = 420, 
+			timeToSpin = 0, 
+			projectileBelongToItem;
+		bool isAlreadyHeldDown = false, 
+			isAlreadyReleased = false,
+			isAlreadySpinState = false, 
+			ProjectileAlreadyExist = false;
 		public override void OnSpawn(IEntitySource source) {
 			base.OnSpawn(source);
 			for (int i = 0; i < Main.maxProjectiles; i++) {
@@ -270,6 +280,23 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Main.dust[dust].fadeIn = 1.5f;
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
+		}
+	}
+	public class SwotaffPlayer : ModPlayer {
+		public int Swotaff_Spear_Counter = 0;
+		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (Player.GetModPlayer<PlayerSynergyItemHandle>().Swotaff_Spear && Player.altFunctionUse != 2) {
+				if (Swotaff_Spear_Counter < 2) {
+					Swotaff_Spear_Counter++;
+				}
+				else {
+					Vector2 cirRanPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 30, 90, velocity.ToRotation());
+					Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero) * 10;
+					Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI, 2);
+					Swotaff_Spear_Counter = 0;
+				}
+			}
+			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 	}
 }

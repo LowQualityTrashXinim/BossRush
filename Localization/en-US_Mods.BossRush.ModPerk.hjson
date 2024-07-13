@@ -115,7 +115,7 @@ ChaoticImbue: {
 	Description:
 		'''
 		+ Your melee attack randomly give out debuff that last 30s
-		If that enemy already have that debuff, you will inflict different debuff instead
+		+ Occasionally you shoot out random projectile that dealt the same damage as your current weapon
 		'''
 }
 
@@ -188,9 +188,9 @@ BlessingOfSolar: {
 	DisplayName: Blessing Of Solar
 	Description:
 		'''
-		+ 192% increased odds for melee
-		+ 8% melee size increases
-		+ Attacking enemy have a 5% with melee item have a chance to drop a heart
+		+ 12% melee size increases
+		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
+		+ Hitting a enemy with melee damage have a chance to inflict Daybreak
 		'''
 }
 
@@ -198,9 +198,9 @@ BlessingOfVortex: {
 	DisplayName: Blessing Of Vortex
 	Description:
 		'''
-		+ 192% increased odds for range
-		+ 5% range critical strike chance
+		+ 7% range critical strike chance
 		+ You have 1% chance to deal 4x damage
+		+ Increases critical strike damage by 150%
 		'''
 }
 
@@ -208,9 +208,9 @@ BlessingOfNebula: {
 	DisplayName: Blessing Of Nebula
 	Description:
 		'''
-		+ 192% increased odds for magic
-		+ 6% magic cost reduction
-		+ Mana star have 5% to spawn from NPC when hitting them with magic projectile
+		+ 11% magic cost reduction
+		+ Increases max mana by 78
+		+ Mana star have 6% to spawn from hitting NPC with magic projectile
 		'''
 }
 
@@ -218,7 +218,7 @@ BlessingOfStarDust: {
 	DisplayName: Blessing Of Stardust
 	Description:
 		'''
-		+ 192% increased odds for summoner
+		+ Your whip inflict Star gaze
 		+ For 2 minion/sentry slot you have, you gain 1 damage
 		+ 1 minion slot
 		+ 1 sentry slot
@@ -227,7 +227,7 @@ BlessingOfStarDust: {
 
 BlessingOfSynergy: {
 	DisplayName: Blessing Of Synergy
-	Description: + Increases weapon flat damage by 10 when switch to a different weapon
+	Description: + Increases weapon flat damage by 10 when switch to a different weapon after used
 }
 
 BlessingOfPerk: {

@@ -45,7 +45,6 @@ public abstract class ModSkill : ModType {
 	public virtual void ResetEffect(Player player) { }
 	public virtual void Update(Player player) { }
 	public virtual void OnMissingMana(Player player, Item item, int neededMana) { }
-	public virtual void ModifyDamage(Player player, Item item, ref StatModifier damage) { }
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
@@ -102,6 +101,7 @@ public class SkillHandlePlayer : ModPlayer {
 	public int CurrentActiveIndex { get => CurrentActiveHolder; }
 	int RechargeDelay = 0;
 	public int MaximumCoolDown = 0;
+	public int BloodToPower = 0;
 	public override void Initialize() {
 		Array.Fill(SkillHolder1, -1);
 		Array.Fill(SkillHolder2, -1);
@@ -436,7 +436,7 @@ public class SkillHandlePlayer : ModPlayer {
 				break;
 		}
 	}
-	public override void PostUpdate() {
+	public override void UpdateEquips() {
 		if (!Activate) {
 			return;
 		}
@@ -526,37 +526,6 @@ public class SkillHandlePlayer : ModPlayer {
 						continue;
 					}
 					SkillLoader.GetSkill(SkillHolder3[i]).OnMissingMana(Player, item, neededMana);
-				}
-				break;
-		}
-	}
-	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		if (!Activate) {
-			return;
-		}
-		switch (CurrentActiveHolder) {
-			case 1:
-				for (int i = 0; i < 10; i++) {
-					if (SkillHolder1[i] == -1) {
-						continue;
-					}
-					SkillLoader.GetSkill(SkillHolder1[i]).ModifyDamage(Player, item, ref damage);
-				}
-				break;
-			case 2:
-				for (int i = 0; i < 10; i++) {
-					if (SkillHolder2[i] == -1) {
-						continue;
-					}
-					SkillLoader.GetSkill(SkillHolder2[i]).ModifyDamage(Player, item, ref damage);
-				}
-				break;
-			case 3:
-				for (int i = 0; i < 10; i++) {
-					if (SkillHolder3[i] == -1) {
-						continue;
-					}
-					SkillLoader.GetSkill(SkillHolder3[i]).ModifyDamage(Player, item, ref damage);
 				}
 				break;
 		}

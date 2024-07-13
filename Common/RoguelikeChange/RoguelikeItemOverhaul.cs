@@ -63,6 +63,30 @@ namespace BossRush.Common.RoguelikeChange {
 					item.crit = 4;
 					item.ArmorPenetration = 5;
 					break;
+				case ItemID.CopperBow:
+					item.useTime = item.useAnimation = 12;
+					break;
+				case ItemID.TinBow:
+					item.useTime = item.useAnimation = 12;
+					break;
+				case ItemID.PlatinumBow:
+				case ItemID.GoldBow:
+					item.useTime = item.useAnimation = 42;
+					item.damage += 10;
+					item.shootSpeed += 1;
+					item.crit += 6;
+					break;
+				case ItemID.CopperShortsword:
+				case ItemID.TinShortsword:
+				case ItemID.IronShortsword:
+				case ItemID.LeadShortsword:
+				case ItemID.SilverShortsword:
+				case ItemID.TungstenShortsword:
+				case ItemID.GoldShortsword:
+				case ItemID.PlatinumShortsword:
+					item.crit += 21;
+					item.useTime = item.useAnimation = 9;
+					break;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -74,9 +98,39 @@ namespace BossRush.Common.RoguelikeChange {
 				position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
 			}
 		}
+		public override bool AltFunctionUse(Item item, Player player) {
+			switch (item.type) {
+				case ItemID.CopperShortsword:
+				case ItemID.GoldShortsword:
+				case ItemID.IronShortsword:
+				case ItemID.LeadShortsword:
+				case ItemID.PlatinumShortsword:
+				case ItemID.SilverShortsword:
+				case ItemID.TinShortsword:
+				case ItemID.TungstenShortsword:
+					return true;
+			}
+			return base.AltFunctionUse(item, player);
+		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+			}
+			switch (item.type) {
+				case ItemID.CopperShortsword:
+				case ItemID.GoldShortsword:
+				case ItemID.IronShortsword:
+				case ItemID.LeadShortsword:
+				case ItemID.PlatinumShortsword:
+				case ItemID.SilverShortsword:
+				case ItemID.TinShortsword:
+				case ItemID.TungstenShortsword:
+					if (player.altFunctionUse == 2 && !player.GetModPlayer<ThrownShortSwordPlayer>().OnCoolDown) {
+						Projectile.NewProjectile(source, position, velocity * 7, ModContent.ProjectileType<ThrownShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
+						player.AddBuff(ModContent.BuffType<ThrownShortSwordCoolDown>(), BossRushUtils.ToSecond(3));
+						return false;
+					}
+					return true;
 			}
 			if (item.type == ItemID.ToxicFlask) {
 				GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
@@ -94,15 +148,29 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			//Note : Use look for tooltip with Defense if there are gonna be modification to defenses
-			Player player = Main.LocalPlayer;
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
+			Player player = Main.LocalPlayer;
 			//We are using name format RoguelikeOverhaul_+ item name
+			switch (item.type) {
+				case ItemID.CopperShortsword:
+				case ItemID.GoldShortsword:
+				case ItemID.IronShortsword:
+				case ItemID.LeadShortsword:
+				case ItemID.PlatinumShortsword:
+				case ItemID.SilverShortsword:
+				case ItemID.TinShortsword:
+				case ItemID.TungstenShortsword:
+					TooltipLine line = new TooltipLine(Mod, "Roguelike_ShortSword", "Alt click to thrown short sword ( 3s cool down ) ");
+					line.OverrideColor = Color.Yellow;
+					tooltips.Add(line);
+					break;
+			}
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
 			}
-			if (item.type == ItemID.TheUndertaker) {
+			else if (item.type == ItemID.TheUndertaker) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_TheUndertaker", "Hitting your shot heal you for 1hp"));
 			}
 			else if (item.type == ItemID.NightVisionHelmet) {
@@ -750,7 +818,7 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_TheUnderTaker(proj, target);
 		}
 		private void OnHitNPC_TheUnderTaker(Projectile proj, NPC npc) {
-			if(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {
+			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {
 				Player.Heal(1);
 				npc.AddBuff(ModContent.BuffType<CrimsonAbsorbtion>(), 240);
 			}

@@ -62,7 +62,7 @@ namespace BossRush.Contents.Items.RelicItem {
 		public override void OnUseCard(Player player, PlayerStatsHandle modplayer, out bool Consumeable) {
 			int[] debuffArray = new int[] { BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame, BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
 			player.Center.LookForHostileNPC(out NPC npc, modplayer.GetAuraRadius(50));
-			if (npc != null) npc.AddBuff(BuffID.OnFire, Main.rand.Next(debuffArray));
+			if (npc != null) npc.AddBuff(Main.rand.Next(debuffArray), BossRushUtils.ToMinute(3));
 			Consumeable = true;
 		}
 	}

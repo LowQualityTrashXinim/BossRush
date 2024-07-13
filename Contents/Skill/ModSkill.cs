@@ -7,6 +7,7 @@ using BossRush.Common.Utils;
 using System.Collections.Generic;
 using BossRush.Texture;
 using BossRush.Common.Systems;
+using System;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -19,8 +20,8 @@ public class HellFireArrowRain : ModSkill {
 		if (!Main.rand.NextBool(3)) {
 			return;
 		}
-		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(20);
-		float knockback = (int)player.GetKnockback(DamageClass.Ranged).ApplyTo(2);
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(20);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
@@ -39,7 +40,7 @@ public class Increases_3xDamage : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 	}
 	public override void Update(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 3f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 3);
 	}
 }
 public class SpiritBurst : ModSkill {
@@ -52,9 +53,9 @@ public class SpiritBurst : ModSkill {
 		if (!Main.rand.NextBool(2)) {
 			return;
 		}
-		int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(40);
-		float knockback = (int)player.GetKnockback(DamageClass.Magic).ApplyTo(2);
-		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(40);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
+		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
 	}
 }
 public class InfiniteManaSupply : ModSkill {
@@ -96,10 +97,10 @@ public class FireBall : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(70);
-		float knockback = (int)player.GetKnockback(DamageClass.Magic).ApplyTo(4);
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(70);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(4);
 		Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15f;
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity, ProjectileID.Fireball, damage, knockback, player.whoAmI);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity, ProjectileID.Flamelash, damage, knockback, player.whoAmI);
 		Main.projectile[proj].friendly = true;
 		Main.projectile[proj].hostile = false;
 		Main.projectile[proj].timeLeft = 120;
@@ -119,6 +120,16 @@ public class RapidHealing : ModSkill {
 		player.Heal(6);
 	}
 }
+public class HealthSacrifice : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 245;
+		Skill_Duration = BossRushUtils.ToSecond(5);
+		Skill_CoolDown = BossRushUtils.ToSecond(120);
+	}
+	public override void OnTrigger(Player player) {
+		int lifeTaken = player.statLife / 2;
+	}
+}
 public class StarFury : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 225;
@@ -130,8 +141,8 @@ public class StarFury : ModSkill {
 		if (modplayer.Duration % 120 != 0) {
 			return;
 		}
-		int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
-		float knockback = (int)player.GetKnockback(DamageClass.Generic).ApplyTo(10);
+		int damage = (int)player.GetTotalDamage(DamageClass.Generic).ApplyTo(1000);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
 		Vector2 position = player.Center.Subtract(0, 1000);
 		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 20f;
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ProjectileID.StarWrath, damage, knockback, player.whoAmI);
@@ -156,8 +167,8 @@ public class WoodSwordSpirit : ModSkill {
 	private void ShootingSword(Player player) {
 		Vector2 position = player.Center + Main.rand.NextVector2Circular(50, 50);
 		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero);
-		int damage = (int)player.GetDamage(DamageClass.Melee).ApplyTo(24);
-		float knockback = (int)player.GetKnockback(DamageClass.Melee).ApplyTo(10);
+		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(24);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(10);
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI);
 		if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
 			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllWoodSword);
@@ -177,11 +188,26 @@ public class BroadSwordSpirit : ModSkill {
 		}
 	}
 	private void SummonSword(Player player, int index) {
-		int damage = (int)player.GetDamage(DamageClass.Melee).ApplyTo(34);
-		float knockback = (int)player.GetKnockback(DamageClass.Melee).ApplyTo(3);
+		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(34);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(3);
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, index);
 		if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
 			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
+	}
+}
+public class BloodToPower : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 170;
+		Skill_Duration = BossRushUtils.ToSecond(2);
+		Skill_CoolDown = BossRushUtils.ToSecond(9);
+	}
+	public override void OnTrigger(Player player) {
+		int blood = player.statLife / 2;
+		player.statLife -= blood;
+		player.GetModPlayer<SkillHandlePlayer>().BloodToPower = blood;
+	}
+	public override void Update(Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: player.GetModPlayer<SkillHandlePlayer>().BloodToPower * .01f);
 	}
 }
 public class AllOrNothing : ModSkill {

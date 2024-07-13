@@ -21,6 +21,8 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
 using System.Drawing.Drawing2D;
 using Terraria.Localization;
+using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Artifacts;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -278,6 +280,7 @@ class DefaultUI : UIState {
 
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (ModContent.GetInstance<UniversalSystem>().systemMenuInterface.CurrentState == null) {
+			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			ModContent.GetInstance<UniversalSystem>().systemMenuInterface.SetState(ModContent.GetInstance<UniversalSystem>().UIsystemmenu);
 		}
 		else {
@@ -438,7 +441,7 @@ class UISystemMenu : UIState {
 		panel = new UIPanel();
 		panel.HAlign = .5f;
 		panel.VAlign = .4f;
-		panel.UISetWidthHeight(260, 80);
+		panel.UISetWidthHeight(360, 80);
 		Append(panel);
 
 		uitextpanel = new UITextPanel<string>(" ");
@@ -450,7 +453,7 @@ class UISystemMenu : UIState {
 		show_playerMod_Info = new UIImageButton(TextureAssets.InventoryBack);
 		show_playerMod_Info.UISetWidthHeight(52, 52);
 		show_playerMod_Info.VAlign = .4f;
-		show_playerMod_Info.HAlign = .45f;
+		show_playerMod_Info.HAlign = .43f;
 		show_playerMod_Info.SetVisibility(1f, 67f);
 		show_playerMod_Info.OnLeftClick += Show_playerMod_Info_OnLeftClick;
 		show_playerMod_Info.OnUpdate += Show_playerMod_Info_OnUpdate;
@@ -459,7 +462,7 @@ class UISystemMenu : UIState {
 		open_skill_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_skill_UI.UISetWidthHeight(52, 52);
 		open_skill_UI.VAlign = .4f;
-		open_skill_UI.HAlign = .5f;
+		open_skill_UI.HAlign = .475f;
 		open_skill_UI.SetVisibility(1f, 67f);
 		open_skill_UI.OnLeftClick += Open_skill_UI_OnLeftClick;
 		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
@@ -468,7 +471,7 @@ class UISystemMenu : UIState {
 		open_Enchantment_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Enchantment_UI.UISetWidthHeight(52, 52);
 		open_Enchantment_UI.VAlign = .4f;
-		open_Enchantment_UI.HAlign = .55f;
+		open_Enchantment_UI.HAlign = .525f;
 		open_Enchantment_UI.SetVisibility(1f, 67f);
 		open_Enchantment_UI.OnLeftClick += Open_Enchantment_UI_OnLeftClick;
 		open_Enchantment_UI.OnUpdate += Open_Enchantment_UI_OnUpdate;
@@ -477,7 +480,7 @@ class UISystemMenu : UIState {
 		open_Transmutation_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Transmutation_UI.UISetWidthHeight(52, 52);
 		open_Transmutation_UI.VAlign = .4f;
-		open_Transmutation_UI.HAlign = .6f;
+		open_Transmutation_UI.HAlign = .57f;
 		open_Transmutation_UI.SetVisibility(1f, 67f);
 		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick; ;
 		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate; ;
@@ -486,7 +489,12 @@ class UISystemMenu : UIState {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (EnchantmentHover) {
-			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
+			if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()) {
+				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
+			}
+			else {
+				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.BlockWeaponEnchantment.Tooltip"));
+			}
 		}
 		else if (SkillHover) {
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
@@ -571,7 +579,9 @@ class UISystemMenu : UIState {
 	}
 
 	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
+		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()) {
+			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
+		}
 	}
 
 	private void Open_skill_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -1024,14 +1034,13 @@ internal class EnchantmentUIState : UIState {
 	WeaponEnchantmentUIslot weaponEnchantmentUIslot;
 	ExitUI weaponEnchantmentUIExit;
 	public override void OnInitialize() {
-		Player player = Main.LocalPlayer;
-		weaponEnchantmentUIslot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack, player);
+		weaponEnchantmentUIslot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack);
 		weaponEnchantmentUIslot.UISetWidthHeight(52, 52);
-		weaponEnchantmentUIslot.UISetPosition(player.Center + Vector2.UnitX * 120, new Vector2(26, 26));
+		weaponEnchantmentUIslot.UISetPosition(Main.LocalPlayer.Center + Vector2.UnitX * 120, new Vector2(26, 26));
 		Append(weaponEnchantmentUIslot);
 		weaponEnchantmentUIExit = new ExitUI(TextureAssets.InventoryBack13);
 		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
-		weaponEnchantmentUIExit.UISetPosition(player.Center + Vector2.UnitX * 178, new Vector2(26, 26));
+		weaponEnchantmentUIExit.UISetPosition(Main.LocalPlayer.Center + Vector2.UnitX * 178, new Vector2(26, 26));
 		Append(weaponEnchantmentUIExit);
 	}
 }
@@ -1041,13 +1050,12 @@ public class WeaponEnchantmentUIslot : UIImage {
 	public Item item;
 
 	private Texture2D texture;
-	private Player player;
-	public WeaponEnchantmentUIslot(Asset<Texture2D> texture, Player player) : base(texture) {
-		this.player = player;
+	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
 	}
 	List<int> textUqID = new List<int>();
 	public override void LeftClick(UIMouseEvent evt) {
+		Player player = Main.LocalPlayer;
 		if (Main.mouseItem.type != ItemID.None) {
 			if (Main.mouseItem.consumable)
 				return;
@@ -1108,6 +1116,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 		}
 	}
 	public override void OnDeactivate() {
+		Player player = Main.LocalPlayer;
 		UniversalSystem.EnchantingState = false;
 		if (item == null)
 			return;
@@ -1127,7 +1136,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 				Main.instance.LoadItem(item.type);
 				Texture2D texture = TextureAssets.Item[item.type].Value;
 				Vector2 origin = texture.Size() * .5f;
-				float scaling = ScaleCalculation(texture.Size());
+				float scaling = ScaleCalculation(texture.Size()) * .78f;
 				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
 			}
 		}

@@ -32,16 +32,16 @@ namespace BossRush.Contents.Projectiles {
 			int dust = Dust.NewDust(Projectile.Center - new Vector2(5, 5) + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemEmerald);
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Vector2.Zero;
-			if (Projectile.Center.IsCloseToPosition(player.Center, 125)) {
-				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .25f;
-				Projectile.velocity = Projectile.velocity.LimitedVelocity(2);
+			if (Projectile.Center.IsCloseToPosition(player.Center, 225)) {
+				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .5f;
+				Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
 			}
 			else {
 				Projectile.velocity *= .98f;
 			}
 			if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25)) {
-				float playerRemainHpPercentage = 1 - player.statLife / player.statLifeMax2;
-				int healing = (int)(player.statLife * playerRemainHpPercentage) + 35;
+				float playerRemainHpPercentage = 1 - player.statLife / (float)player.statLifeMax2;
+				int healing = (int)(player.statLifeMax2 * .25f * playerRemainHpPercentage) + 5;
 				player.Heal(healing);
 				player.AddBuff(ModContent.BuffType<LifeForce>(), BossRushUtils.ToSecond(2));
 				Projectile.Kill();
@@ -60,7 +60,7 @@ namespace BossRush.Contents.Projectiles {
 			return base.ReApply(player, time, buffIndex);
 		}
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, Additive: .1f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, Additive: .101f);
 		}
 	}
 }

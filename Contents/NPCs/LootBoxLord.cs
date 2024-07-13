@@ -87,7 +87,7 @@ namespace BossRush.Contents.NPCs {
 				}
 				else if (NPC.ai[1] == 0) {
 					if (NPC.ai[0] > 120) {
-						BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "I see...");
+						BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "I see... you seek for the treasure");
 						NPC.ai[1] = 1;
 					}
 					else {
@@ -96,7 +96,7 @@ namespace BossRush.Contents.NPCs {
 				}
 				else if (NPC.ai[2] == 0) {
 					if (NPC.ai[1] > 120) {
-						BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "Very well");
+						BossRushUtils.CombatTextRevamp(NPC.Hitbox, Color.Yellow, "Very well, prove thy worthiness");
 						NPC.ai[2] = 1;
 						BeforeAttack = false;
 						NPC.dontTakeDamage = false;
@@ -365,7 +365,7 @@ namespace BossRush.Contents.NPCs {
 		}
 		bool HasReachPos = false;
 		private void ShootStaff(Player player) {
-			if (lastPlayerPosition == Vector2.Zero) {
+			if (!HasReachPos) {
 				lastPlayerPosition = player.Center;
 			}
 			if (!NPC.Center.IsCloseToPosition(lastPlayerPosition - new Vector2(0, 350), 30) && !HasReachPos) {
@@ -373,7 +373,7 @@ namespace BossRush.Contents.NPCs {
 				return;
 			}
 			HasReachPos = true;
-			BossCircleMovement(player, 5, TerrariaArrayID.AllGemStaffPHM.Length, out float percent);
+			BossCircleMovement(5, TerrariaArrayID.AllGemStaffPHM.Length, out float percent);
 			if (BossDelayAttack(5, 0, TerrariaArrayID.AllGemStaffPHM.Length - 1)) {
 				NPC.velocity = Vector2.Zero;
 				return;
@@ -387,7 +387,7 @@ namespace BossRush.Contents.NPCs {
 			NPC.ai[2]++;
 		}
 		private void ShootStaff2() {
-			if (BossDelayAttack(210, 0, 0)) {
+			if (BossDelayAttack(120, 0, 0)) {
 				return;
 			}
 			for (int i = 0; i < TerrariaArrayID.AllGemStaffPHM.Length; i++) {
@@ -474,7 +474,7 @@ namespace BossRush.Contents.NPCs {
 			return base.PreDraw(spriteBatch, screenPos, drawColor);
 		}
 		Vector2 lastPlayerPosition = Vector2.Zero;
-		private void BossCircleMovement(Player player, int delayValue, int AttackEndValue, out float percent) {
+		private void BossCircleMovement(int delayValue, int AttackEndValue, out float percent) {
 			float total = delayValue * AttackEndValue;
 			percent = Math.Clamp(((delayValue - NPC.ai[0] >= 0 ? delayValue - NPC.ai[0] : 0) + delayValue * NPC.ai[2]) / total, 0, 1f);
 			float rotation = MathHelper.Lerp(0, 360, percent);
@@ -512,6 +512,12 @@ namespace BossRush.Contents.NPCs {
 	}
 	//This code did not follow the above rule and it should be change to follow the above rule
 	public abstract class BaseHostileProjectile : ModProjectile {
+		public override void SetDefaults() {
+			Projectile.hostile = true;
+			Projectile.friendly = false;
+			SetHostileDefaults();
+		}
+		public virtual void SetHostileDefaults() { }
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public int ItemIDtextureValue = 1;
 		public override bool PreDraw(ref Color lightColor) {
@@ -530,7 +536,7 @@ namespace BossRush.Contents.NPCs {
 		}
 	}
 	public abstract class BaseHostileShortSword : BaseHostileProjectile {
-		public override void SetDefaults() {
+		public override void SetHostileDefaults() {
 			Projectile.width = Projectile.height = 32;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
@@ -607,7 +613,7 @@ namespace BossRush.Contents.NPCs {
 		}
 	}
 	public abstract class BaseHostileSwordBroad : BaseHostileProjectile {
-		public override void SetDefaults() {
+		public override void SetHostileDefaults() {
 			Projectile.width = Projectile.height = 36;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = -1;
@@ -685,7 +691,7 @@ namespace BossRush.Contents.NPCs {
 		}
 	}
 	public abstract class BaseHostileBow : BaseHostileProjectile {
-		public override void SetDefaults() {
+		public override void SetHostileDefaults() {
 			Projectile.width = 16;
 			Projectile.height = 32;
 			Projectile.tileCollide = true;
@@ -771,7 +777,7 @@ namespace BossRush.Contents.NPCs {
 	}
 	public abstract class BaseHostileGemStaff : BaseHostileProjectile {
 		public int ProjectileType = ProjectileID.AmethystBolt;
-		public override void SetDefaults() {
+		public override void SetHostileDefaults() {
 			Projectile.width = 40;
 			Projectile.height = 42;
 			Projectile.tileCollide = true;

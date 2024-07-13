@@ -13,10 +13,12 @@ using Terraria;
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
 		public override void OnSpawn(NPC npc, IEntitySource source) {
-			npc.damage += Main.rand.Next((int)(npc.damage * .5f) + 1);
-			npc.lifeMax += Main.rand.Next((int)(npc.lifeMax * .5f) + 1);
-			npc.defense  += Main.rand.Next((int)(npc.defense * .5f) + 1);
-			npc.life = npc.lifeMax;
+			if (!npc.boss) {
+				npc.damage += Main.rand.Next((int)(npc.damage * .5f) + 1);
+				npc.lifeMax += Main.rand.Next((int)(npc.lifeMax * .5f) + 1);
+				npc.defense += Main.rand.Next((int)(npc.defense * .5f) + 1);
+				npc.life = npc.lifeMax;
+			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			int lifecrystal = 1;

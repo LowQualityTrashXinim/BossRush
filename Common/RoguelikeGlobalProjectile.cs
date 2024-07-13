@@ -1,7 +1,11 @@
-﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
+using BossRush.Contents.Projectiles;
+using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Items.BuilderItem;
 
 namespace BossRush.Common;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -18,12 +22,30 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
-		if (Source_FromDeathScatterShot 
+		if (Source_FromDeathScatterShot
 			|| OnKill_ScatterShot <= 0
-			|| projectile.aiStyle == 99
+			|| projectile.hostile
+			|| !projectile.friendly
+			|| projectile.aiStyle == 4
 			|| projectile.aiStyle == 19
+			|| projectile.aiStyle == 39
+			|| projectile.aiStyle == 46
+			|| projectile.aiStyle == 75
+			|| projectile.aiStyle == 99
+			|| projectile.aiStyle == 101
 			|| projectile.minion
-			|| projectile.type == ModContent.ProjectileType<DiamondGemP>()) {
+			|| projectile.sentry
+			|| projectile.type == ProjectileID.PhantasmArrow
+			|| projectile.type == ProjectileID.IchorDart
+			|| projectile.type == ProjectileID.ExplosiveBunny
+			|| projectile.type == ProjectileID.FinalFractal
+			|| projectile.type == ProjectileID.PortalGun
+			|| projectile.type == ProjectileID.PortalGunBolt
+			|| projectile.type == ProjectileID.PortalGunGate
+			|| projectile.type == ProjectileID.LightsBane
+			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
+			|| projectile.type == ModContent.ProjectileType<DiamondGemP>()
+			|| projectile.type == ModContent.ProjectileType<ArenaMakerProj>()) {
 			return;
 		}
 		for (int i = 0; i < OnKill_ScatterShot; i++) {
