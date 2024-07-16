@@ -64,8 +64,6 @@ namespace BossRush.Common.RoguelikeChange {
 					item.ArmorPenetration = 5;
 					break;
 				case ItemID.CopperBow:
-					item.useTime = item.useAnimation = 12;
-					break;
 				case ItemID.TinBow:
 					item.useTime = item.useAnimation = 12;
 					break;
@@ -87,6 +85,17 @@ namespace BossRush.Common.RoguelikeChange {
 					item.crit += 21;
 					item.useTime = item.useAnimation = 9;
 					break;
+				case ItemID.WoodenBow:
+				case ItemID.AshWoodBow:
+				case ItemID.BorealWoodBow:
+				case ItemID.RichMahoganyBow:
+				case ItemID.PalmWoodBow:
+				case ItemID.EbonwoodBow:
+				case ItemID.ShadewoodBow:
+					item.useTime = item.useAnimation = 15;
+					item.crit += 6;
+					break;
+
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -126,8 +135,8 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TinShortsword:
 				case ItemID.TungstenShortsword:
 					if (player.altFunctionUse == 2 && !player.GetModPlayer<ThrownShortSwordPlayer>().OnCoolDown) {
-						Projectile.NewProjectile(source, position, velocity * 7, ModContent.ProjectileType<ThrownShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
-						player.AddBuff(ModContent.BuffType<ThrownShortSwordCoolDown>(), BossRushUtils.ToSecond(3));
+						Projectile.NewProjectile(source, position, velocity * 7, ModContent.ProjectileType<ThrowShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
+						player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), BossRushUtils.ToSecond(3));
 						return false;
 					}
 					return true;
@@ -162,8 +171,20 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.SilverShortsword:
 				case ItemID.TinShortsword:
 				case ItemID.TungstenShortsword:
-					TooltipLine line = new TooltipLine(Mod, "Roguelike_ShortSword", "Alt click to thrown short sword ( 3s cool down ) ");
+					TooltipLine line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 3s cool down )");
 					line.OverrideColor = Color.Yellow;
+					tooltips.Add(line);
+					break;
+			}
+			switch (item.type) {
+				case ItemID.WoodenBow:
+				case ItemID.AshWoodBow:
+				case ItemID.BorealWoodBow:
+				case ItemID.RichMahoganyBow:
+				case ItemID.PalmWoodBow:
+				case ItemID.EbonwoodBow:
+				case ItemID.ShadewoodBow:
+					TooltipLine line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Holding the item increases user's movement speed by 15%");
 					tooltips.Add(line);
 					break;
 			}
@@ -474,13 +495,17 @@ namespace BossRush.Common.RoguelikeChange {
 				player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
 			}
 		}
-		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
-			VanillaChange(item, player, ref damage);
-		}
-		//Add buff or change if this a item not a accessories or equipment
-		private void VanillaChange(Item item, Player player, ref StatModifier damage) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
-				return;
+		public override void HoldItem(Item item, Player player) {
+			switch (item.type) {
+				case ItemID.WoodenBow:
+				case ItemID.AshWoodBow:
+				case ItemID.BorealWoodBow:
+				case ItemID.RichMahoganyBow:
+				case ItemID.PalmWoodBow:
+				case ItemID.EbonwoodBow:
+				case ItemID.ShadewoodBow:
+					player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, .15f);
+					break;
 			}
 		}
 	}
@@ -573,6 +598,7 @@ namespace BossRush.Common.RoguelikeChange {
 			PlatinumArmor = false;
 			JungleArmor = false;
 			BeeArmor = false;
+			RoguelikeOverhaul_VikingHelmet = false;
 		}
 
 		public const int DashRight = 2;
@@ -616,7 +642,6 @@ namespace BossRush.Common.RoguelikeChange {
 				DashTimer--;
 			}
 		}
-
 		private bool CanUseDash() {
 			return Player.dashType == DashID.None
 				&& !Player.setSolar
@@ -816,6 +841,12 @@ namespace BossRush.Common.RoguelikeChange {
 			OnHitNPC_LeadArmor(target);
 			OnHitNPC_PearlWoodArmor(target);
 			OnHitNPC_TheUnderTaker(proj, target);
+
+		}
+		private void OnHitNPC_AshWoodBow(Projectile proj, NPC target) {
+			if(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool()) {
+				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(10));
+			}
 		}
 		private void OnHitNPC_TheUnderTaker(Projectile proj, NPC npc) {
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {

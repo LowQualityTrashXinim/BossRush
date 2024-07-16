@@ -7,7 +7,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StickySlime {
 	internal class StickyFlower : SynergyModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetStaticDefaults() {
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;

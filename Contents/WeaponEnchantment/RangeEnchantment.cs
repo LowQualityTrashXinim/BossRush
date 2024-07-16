@@ -121,6 +121,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.WoodenBow;
 		}
+		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, .1f);
+		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
 		}
@@ -143,14 +146,20 @@ namespace BossRush.Contents.WeaponEnchantment {
 			damage.Base += 1;
 		}
 		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			float multiply = 1.1f;
-			if (item.useAmmo == AmmoID.Arrow) {
-				multiply += .1f;
-			}
-			velocity *= multiply;
+			velocity *= 1.1f;
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
+		}
+		public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if(target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
+				modifiers.SourceDamage += .25f;
+			}
+		}
+		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.type == ProjectileID.WoodenArrowFriendly && Main.rand.NextFloat() <= .3f) {
+				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(5));
+			}
 		}
 	}
 	public class BorealWoodBow : ModEnchantment {

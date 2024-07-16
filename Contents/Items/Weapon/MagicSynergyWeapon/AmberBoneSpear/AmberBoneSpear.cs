@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using System.Collections.Generic;
 
-namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin {
+namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 	public class AmberBoneSpear : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(42, 42, 30, 5, 20, 20, ItemUseStyleID.Shoot, true);
@@ -42,9 +42,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 				Item.useStyle = ItemUseStyleID.Swing;
 				SoundEngine.PlaySound(SoundID.Item71);
 			}
-			else {
-				Item.useStyle = ItemUseStyleID.Shoot;
-			}
+			else Item.useStyle = ItemUseStyleID.Shoot;
 			return true;
 		}
 		public override bool AltFunctionUse(Player player) => true;
@@ -76,9 +74,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 				Projectile.ai[0] = 0;
 			}
 			Projectile.ai[1]++;
-			if (Projectile.ai[1] > 10) {
-				Projectile.velocity.Y += Projectile.velocity.Y > 20 ? 0 : .5f;
-			}
+			if (Projectile.ai[1] > 10) Projectile.velocity.Y += Projectile.velocity.Y > 20 ? 0 : .5f;
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
 			for (int i = 0; i < 40; i++) {
@@ -164,24 +160,20 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 		Vector2 rememberThisNPCPosition = Vector2.Zero;
 		public override void AI() {
 			if (rememberThisNPCPosition == Vector2.Zero) {
-				if (Projectile.velocity != Vector2.Zero) {
-					Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * 2.5f) * (Projectile.velocity.X > 0 ? 1 : -1);
-				}
+				if (Projectile.velocity != Vector2.Zero) Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.Length() * 2.5f) * (Projectile.velocity.X > 0 ? 1 : -1);
 				Projectile.velocity *= .96f;
 			}
 			if (!Projectile.velocity.IsLimitReached(.1f)) {
 				Projectile.ai[0]++;
-				if (Projectile.ai[0] <= 30) {
-					return;
-				}
+				if (Projectile.ai[0] <= 30) return;
 				if (rememberThisNPCPosition != Vector2.Zero) {
 					if (Projectile.timeLeft >= 100)
 						Projectile.timeLeft = 100;
 					Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / 100f);
 					return;
 				}
-				Player player = Main.player[Projectile.owner];
-				if (player.Center.LookForHostileNPC(out NPC npc, 2000, true)) {
+				var player = Main.player[Projectile.owner];
+				if (player.Center.LookForHostileNPC(out var npc, 2000, true)) {
 					rememberThisNPCPosition = npc.Center;
 					Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 20;
 					Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
@@ -197,9 +189,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberTippeddJavelin 
 			return false;
 		}
 		public override bool PreDraw(ref Color lightColor) {
-			if (rememberThisNPCPosition != Vector2.Zero) {
-				Projectile.DrawTrail(lightColor);
-			}
+			if (rememberThisNPCPosition != Vector2.Zero) Projectile.DrawTrail(lightColor);
 			return base.PreDraw(ref lightColor);
 		}
 	}

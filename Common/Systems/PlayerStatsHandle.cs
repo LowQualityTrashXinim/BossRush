@@ -54,9 +54,14 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier EnergyCap = new StatModifier();
 
 	public StatModifier RechargeEnergyCap = new StatModifier();
+
+	public StatModifier UpdateFullHPDamage = new StatModifier();
 	//public float LuckIncrease = 0;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
+		if (target.life >= target.lifeMax) {
+			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
+		}
 	}
 	public override void PostUpdate() {
 		ChestLoot.amountModifier = (int)UpdateDropAmount.ApplyTo(ChestLoot.amountModifier);
@@ -89,6 +94,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statLifeMax2 = (int)UpdateHPMax.ApplyTo(Player.statLifeMax2);
 		Player.statManaMax2 = (int)UpdateManaMax.ApplyTo(Player.statManaMax2);
 
+		UpdateFullHPDamage = new StatModifier();
 		UpdateMinion = new StatModifier();
 		UpdateSentry = new StatModifier();
 		UpdateMovement = new StatModifier();
@@ -117,8 +123,13 @@ public class PlayerStatsHandle : ModPlayer {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
 		return useSpeed;
 	}
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	}
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	}
 	/// <summary>
 	/// This should be uses in always update code
+	/// when creating a new stat modifier, pleases uses the default and increases from there
 	/// </summary>
 	/// <param name="stat"></param>
 	/// <param name="Additive"></param>
@@ -204,6 +215,9 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.EnergyRechargeCap:
 				RechargeEnergyCap = RechargeEnergyCap.CombineWith(StatMod);
+				break;
+			case PlayerStats.FullHPDamage:
+				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
 				break;
 			default:
 				break;
@@ -299,6 +313,9 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.LifeStealEffectiveness:
 				LifeStealEffectiveness = LifeStealEffectiveness.CombineWith(StatMod);
+				break;
+			case PlayerStats.FullHPDamage:
+				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
 				break;
 			default:
 				break;

@@ -74,6 +74,7 @@ public class Trinket5_Buff : TrinketBuff {
 	}
 	public override void UpdateTrinketPlayer(Player player, TrinketPlayer modplayer, ref int buffIndex) {
 		player.statDefense += player.GetModPlayer<Trinket5_ModPlayer>().HitCount;
+		modplayer.DamageStats += player.statDefense * .001f;
 	}
 	public override void OnEnded(Player player) {
 		player.GetModPlayer<Trinket5_ModPlayer>().HitCount = 0;

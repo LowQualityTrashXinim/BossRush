@@ -63,7 +63,7 @@ namespace BossRush.Common {
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 					//yield return new Item(ModContent.ItemType<CursedSkull>());
-					yield return new Item(ModContent.ItemType<PerkChooser>());
+					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
@@ -95,6 +95,7 @@ namespace BossRush.Common {
 					yield return new Item(ItemID.NinjaPants);
 				}
 				if (Player.name == "HMdebug") {
+					yield return new Item(ModContent.ItemType<LootboxLordSummon>());
 					yield return new Item(ModContent.ItemType<IronLootBox>());
 					yield return new Item(ModContent.ItemType<SilverLootBox>());
 					yield return new Item(ModContent.ItemType<GoldLootBox>());
@@ -102,8 +103,9 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<CrimsonLootBox>());
 					yield return new Item(ModContent.ItemType<IceLootBox>());
 					yield return new Item(ModContent.ItemType<HoneyTreasureChest>());
-					yield return new Item(ModContent.ItemType<LootboxLordSummon>());
-					yield return new Item(ModContent.ItemType<PerkChooser>(), 8);
+					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
+					yield return new Item(ModContent.ItemType<PerkChooser>());
+					yield return new Item(ItemID.PlatinumCoin, 2);
 					yield return new Item(ItemID.LifeCrystal, 15);
 					yield return new Item(ItemID.ManaCrystal, 4);
 					yield return new Item(ItemID.KingSlimeBossBag);

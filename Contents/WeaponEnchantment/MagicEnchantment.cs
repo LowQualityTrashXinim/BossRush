@@ -267,7 +267,7 @@ public class DemonScythe : ModEnchantment {
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (globalItem.Item_Counter1[index] <= 0) {
 			for (int i = 0; i < 3; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.WaterBolt, damage, knockback, player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.DemonScythe, damage, knockback, player.whoAmI);
 			}
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}

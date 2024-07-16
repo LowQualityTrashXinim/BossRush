@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria;
 
 namespace BossRush.Contents.Projectiles;
-public class ThrownShortSwordProjectile : ModProjectile {
+public class ThrowShortSwordProjectile : ModProjectile {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperShortsword);
 	public override void SetDefaults() {
 		Projectile.width = 32;
@@ -30,7 +30,7 @@ public class ThrownShortSwordProjectile : ModProjectile {
 		return false;
 	}
 }
-class ThrownShortSwordCoolDown : ModBuff {
+class ThrowShortSwordCoolDown : ModBuff {
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		Main.debuff[Type] = true;

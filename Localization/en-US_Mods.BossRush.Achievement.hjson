@@ -1,15 +1,23 @@
 TheBeginningOfEndless: {
 	DisplayName: The Beginning Of Endless
-	Description: This mark the beginning of where it all start
-	ConditionTip: Open your first lootboxs
+	Description: This mark the beginning of where it all start.
+	ConditionTip: Open your first lootboxs.
 }
 
 TheFirstOfMany: {
 	DisplayName: The first of many
-	Description:
-		'''
-		First time is always the best
-		Even though it is just a King Slime
-		'''
-	ConditionTip: Slay king slime boss
+	Description: From this point nothing stopping you
+	ConditionTip: Slay down moon lord.
+}
+
+BountifulHarvest: {
+	DisplayName: Bountiful Harvest
+	Description: Enrich your future with many blessings.
+	ConditionTip: Open a total of 100 lootboxes.
+}
+
+OceanOfFortune: {
+	DisplayName: Ocean of Fortune
+	Description: Overwhelm yourself with countless blessings.
+	ConditionTip: Open a total of 1000 lootboxes.
 }

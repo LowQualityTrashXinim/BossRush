@@ -61,7 +61,6 @@ SkillIssuedArtifact: {
 			+ For each monster killed, your MaxHP will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
 		[c/ab3e43:Negative effect] :
 			- make monster spawns increase by CRAZY amount
-
 		[c/757480:Only works with people have skill issue. Lives up to the name]
 		'''
 }
@@ -143,11 +142,13 @@ OrbOfAlchemistArtifact: {
 		'''
 		"The orb whisper secret of alchemist, the world that revolve around it"
 		[c/b7bf5c:Positive effect] :
-			+ Attacking a NPC that have debuff active on them will increases your damage
-			+ Active buff that you have will also increase your damage
-			+ Lootbox drop more potion
+			+ Having active buff will increase your stats
+			+ Attacking enemy that have :
+			1 debuff active will increases your damage
+			3 debuff active or more will heal you
+			5 debuff active or more causes a explosion that damage and spread debuff to nearby NPC
 		[c/ab3e43:Negative effect] : 
-			- You deal next to no damage when don't have any active buff
+			- None
 		'''
 }
 

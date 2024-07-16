@@ -42,6 +42,8 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public virtual void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) { }
 		public virtual void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) { }
 		public virtual void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
+		public virtual void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+		public virtual void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 		public virtual void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 		public virtual void OnHitByAnything(Player player) { }
 		public virtual void OnHitByNPC(int index, EnchantmentGlobalItem globalItem, Player player, NPC npc, Player.HurtInfo hurtInfo) { }

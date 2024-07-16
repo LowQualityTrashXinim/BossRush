@@ -48,6 +48,11 @@ BroadSwordSpirit: {
 	Description: Summon 3 broad sword that spin around player dealing 34 damage
 }
 
+BloodToPower: {
+	DisplayName: Blood To Power
+	Description: Take half of your current health to increases your damage
+}
+
 AllOrNothing: {
 	DisplayName: All Or Nothing
 	Description: Luck given you one more opportunity !

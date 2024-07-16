@@ -16,84 +16,104 @@ using Terraria.ModLoader.Core;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
-		public static string AchievementFilePath { get; private set; }
+		public static string ModFilePath { get; private set; }
 		public const string AchievementFileName = "\\AchievementData.json";
+		public const string ModDataFileName = "\\ModData.json";
 		public override void PostSetupContent() {
 			LoadAchievementData();
+			LoadModData();
 		}
 		public override void Load() {
 			base.Load();
-			AchievementFilePath = GeneratePathToAchievement();
+			ModFilePath = GeneratePathToModData();
 			On_Main.Main_Exiting += On_Main_Main_Exiting;
 		}
 
 		private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
-			string jsondata = File.ReadAllText(AchievementFilePath + AchievementFileName);
-			dynamic jsonObj = JsonConvert.DeserializeObject(jsondata);
-			for (int i = 0; i < AchievementLoader.TotalCount; i++) {
-				jsonObj[i]["Condition"] = AchievementLoader.Achievement[i].Condition;
-			}
-			string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-			File.WriteAllText(AchievementFilePath + AchievementFileName, output);
+			SaveAchievementData();
 			orig(self, sender, e);
 		}
 
 		public override void Unload() {
 		}
-		public string GeneratePathToAchievement() {
+		public string GeneratePathToModData() {
 			string autoPathfinding = Program.SavePathShared;
 			autoPathfinding += "\\RogueLikeData";
 			return autoPathfinding;
 		}
 		private void LoadAchievementData() {
-			AchievementLoader.Achievement.Sort();
 			try {
 				string json = JsonConvert.SerializeObject(AchievementLoader.Achievement, Formatting.Indented);
-				if (File.Exists(AchievementFilePath + AchievementFileName)) {
-					//it is required that we should check the data in the file first
-					//using (StreamWriter sw = File.CreateText(AchievementFilePath + AchievementFileName)) {
-					//	sw.WriteLine(json);
-					//}
-					string jsondata = File.ReadAllText(AchievementFilePath + AchievementFileName);
+				if (File.Exists(ModFilePath + AchievementFileName)) {
+
+					string jsondata = File.ReadAllText(ModFilePath + AchievementFileName);
 					dynamic jsonObj = JsonConvert.DeserializeObject(jsondata);
-					
-					//JArray jObj = (JArray)JsonConvert.DeserializeObject(jsondata);
-					//int count = jObj.Count;
 
 					for (int i = 0; i < AchievementLoader.TotalCount; i++) {
-						AchievementLoader.Achievement[i].Condition = jsonObj[i]["Condition"];
+						AchievementLoader.Achievement[AchievementLoader.AchievementName[i]].Condition = jsonObj[AchievementLoader.AchievementName[i]]["Condition"];
 					}
 				}
 				else {
 					//This is when we know that player are on a new run
-					Directory.CreateDirectory(AchievementFilePath).Create();
-					using (StreamWriter sw = File.CreateText(AchievementFilePath + AchievementFileName)) {
+					Directory.CreateDirectory(ModFilePath).Create();
+					using (StreamWriter sw = File.CreateText(ModFilePath + AchievementFileName)) {
 						sw.WriteLine(json);
 					}
 				}
 			}
 			catch (Exception ex) {
 				Console.WriteLine(ex);
+				Logger.Error(ex);
+			}
+		}
+		private void SaveAchievementData() {
+			string jsondata = File.ReadAllText(ModFilePath + AchievementFileName);
+			dynamic jsonObj = JsonConvert.DeserializeObject(jsondata);
+			for (int i = 0; i < AchievementLoader.TotalCount; i++) {
+				jsonObj[AchievementLoader.AchievementName[i]]["Condition"] = AchievementLoader.Achievement[AchievementLoader.AchievementName[i]].Condition;
+			}
+			string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
+			File.WriteAllText(ModFilePath + AchievementFileName, output);
+		}
+		private void LoadModData() {
+			try {
+				BossRushModSystem.roguelikedata = new RogueLikeData();
+				string json = JsonConvert.SerializeObject(BossRushModSystem.roguelikedata, Formatting.Indented);
+				if (File.Exists(ModFilePath + ModDataFileName)) {
+					using (StreamWriter sw = File.CreateText(ModFilePath + ModDataFileName)) {
+						sw.WriteLine();
+					}
+				}
+				else {
+					Directory.CreateDirectory(ModFilePath).Create();
+					using (StreamWriter sw = File.CreateText(ModFilePath + ModDataFileName)) {
+						sw.WriteLine();
+					}
+				}
+			}
+			catch (Exception ex) {
+				Console.WriteLine(ex);
+				Logger.Error(ex);
 			}
 		}
 	}
+	public class RogueLikeData {
+		public int AmountOfRun = 0;
+		public int AmountOfLootBoxOpen = 0;
+		public List<int> SynergyItemTouch = new List<int>();
+	}
 	public class BossRushModSystem : ModSystem {
-		public static int AmountOfLootBoxOpenDuringThisSection = 0;
-		public override void OnWorldLoad() {
-			base.OnWorldLoad();
-		}
-		public override void OnWorldUnload() {
-			AmountOfLootBoxOpenDuringThisSection += Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
-		}
+		public static RogueLikeData roguelikedata;
 		public override void OnModLoad() {
 		}
-		public override void OnModUnload() {
-			AmountOfLootBoxOpenDuringThisSection = 0;
+		public override void OnWorldUnload() {
+			roguelikedata.AmountOfLootBoxOpen += Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
 		}
-		public override void Unload() {
+		public override void OnModUnload() {
+			roguelikedata = null;
 		}
 		public override void PostUpdateEverything() {
-			foreach (var achieve in AchievementLoader.Achievement) {
+			foreach (var achieve in AchievementLoader.Achievement.Values) {
 				bool condition = achieve.ConditionCheck();
 				if (condition) {
 					achieve.Condition = true;
@@ -108,30 +128,37 @@ namespace BossRush {
 		}
 	}
 	public static class AchievementLoader {
-		public static readonly List<ModAchivement> Achievement = new();
+		public static readonly Dictionary<string,ModAchivement> Achievement = new();
+		public static readonly List<string> AchievementName = new();
 		public static int TotalCount => Achievement.Count;
 		public static void Register(ModAchivement achieve) {
-			Achievement.Add(achieve);
+			Achievement.Add(achieve.Name,achieve);
+			AchievementName.Add(achieve.Name);
 		}
-		public static ModAchivement GetAchievement(int type) {
-			return type >= 0 && type < Achievement.Count ? Achievement[type] : null;
+		public static ModAchivement GetAchievement(string type) {
+			Achievement.TryGetValue(type, out ModAchivement value);
+			return value;
 		}
 	}
 	/// <summary>
 	/// This should and will be run on client side only, this should never work in multiplayer no matter what
 	/// </summary>
 	public abstract class ModAchivement : ILoadable, IEquatable<ModAchivement>, IComparable<ModAchivement> {
+		public bool Condition = false;
+		[JsonIgnore]
+		public int Type;
+		[JsonIgnore]
+		public string Name => GetType().Name;
 		[JsonIgnore]
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.DisplayName");
-		public bool Condition = false;
-		public int Type;
-		public string Name => GetType().Name;
 		[JsonIgnore]
 		public string Description => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.Description");
 		[JsonIgnore]
 		public string ConditionTip => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.ConditionTip");
 		[JsonIgnore]
 		public string ConditionTipAfterAchieve => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.ConditionTipAfterAchieve");
+		[JsonIgnore]
+		public string textureString = BossRushTexture.MISSINGTEXTURE;
 		void ILoadable.Load(Mod mod) {
 			Register();
 		}
@@ -143,8 +170,6 @@ namespace BossRush {
 			textureString = null;
 		}
 		protected virtual void SetDefault() { }
-		[JsonIgnore]
-		public string textureString = BossRushTexture.MISSINGTEXTURE;
 		public virtual bool ConditionCheck() => false;
 
 		public int CompareTo(ModAchivement other) {

@@ -143,7 +143,7 @@ SelfExplosion: {
 
 ProjectileProtection: {
 	DisplayName: Projectile Protection
-	Description: + You are 15% more resistant to projectile
+	Description: + You are 30% more resistant to projectile
 }
 
 ProjectileDuplication: {
@@ -199,7 +199,7 @@ BlessingOfVortex: {
 	Description:
 		'''
 		+ 7% range critical strike chance
-		+ You have 1% chance to deal 4x damage
+		+ You have 1% chance to deal 4x damage when using range weapon
 		+ Increases critical strike damage by 150%
 		'''
 }

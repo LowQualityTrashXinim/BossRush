@@ -8,7 +8,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using static BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon.MothProj;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -39,14 +38,14 @@ public class Relic : ModItem {
 		line.Text = "";
 		for (int i = 0; i < templatelist.Count; i++) {
 			line.Text += CardTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(statlist[i], valuelist[i]);
-			//if (Main.LocalPlayer.IsDebugPlayer()) {
-			//	line.Text +=
-			//		$"\nTemplate Name : {CardTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
-			//		$"\nTemplate Desc : {CardTemplateLoader.GetTemplate(templatelist[i]).Description}" +
-			//		$"\nTemplate ID : {templatelist[i]}" +
-			//		$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
-			//		$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
-			//}
+			if (Main.LocalPlayer.IsDebugPlayer()) {
+				line.Text +=
+					$"\nTemplate Name : {CardTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
+					$"\nTemplate Desc : {CardTemplateLoader.GetTemplate(templatelist[i]).Description}" +
+					$"\nTemplate ID : {templatelist[i]}" +
+					$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
+					$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
+			}
 			if (i + 1 != templatelist.Count) {
 				line.Text += "\n";
 			}

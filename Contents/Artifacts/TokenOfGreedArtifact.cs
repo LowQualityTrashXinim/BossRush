@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfGreedArtifact : Artifact {
@@ -11,25 +12,21 @@ namespace BossRush.Contents.Artifacts {
 
 	public class GreedPlayer : ModPlayer {
 		bool Greed = false;
-		public int ItemType = 0;
 		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
 		public override void ResetEffects() {
 			Greed = Player.HasArtifact<TokenOfGreedArtifact>();
 		}
 		public override void PostUpdate() {
 			if (Greed) {
-				chestmodplayer.amountModifier += 4;
-			}
-			if (Player.ItemAnimationActive) {
-				ItemType = Player.HeldItem.type;
+				chestmodplayer.amountModifier += 1;
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if(!Greed) {
 				return;
 			}
-			if (item.type == ItemType) {
-				damage *= .65f;
+			if (Player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
+				damage *= .70f;
 			}
 		}
 	}

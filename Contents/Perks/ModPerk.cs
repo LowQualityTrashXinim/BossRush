@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using System.Linq;
-using Terraria.Audio;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Localization;
@@ -212,6 +211,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 5;
+			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount;
@@ -338,10 +338,10 @@ namespace BossRush.Contents.Perks {
 	public class ProjectileProtection : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			StackLimit = 5;
+			StackLimit = 3;
 		}
 		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-			hurtInfo.SourceDamage = (int)(hurtInfo.SourceDamage * (1 - .15f * StackAmount));
+			hurtInfo.SourceDamage = (int)(hurtInfo.SourceDamage * (1 - .3f * StackAmount));
 		}
 	}
 	public class ProjectileDuplication : Perk {

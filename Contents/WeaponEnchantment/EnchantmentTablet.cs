@@ -14,10 +14,6 @@ internal class EnchantmentTablet : ModItem {
 		Item.rare = ItemRarityID.Red;
 	}
 	public override bool? UseItem(Player player) {
-		if (player.ItemAnimationJustStarted) {
-			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.ActivateEnchantmentUI();
-		}
 		return false;
 	}
 }

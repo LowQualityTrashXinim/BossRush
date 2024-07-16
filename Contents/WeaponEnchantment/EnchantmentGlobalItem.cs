@@ -164,6 +164,17 @@ public class EnchantmentModplayer : ModPlayer {
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyDamage(i, Player, globalItem, item, ref damage);
 		}
 	}
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (CommonEnchantmentCheck()) {
+			return;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			if (globalItem.EnchantmenStlot[i] == 0)
+				continue;
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyHitNPCWithItem(i, Player, globalItem, item, target, ref modifiers);
+		}
+	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (CommonEnchantmentCheck()) {
 			return;
@@ -173,6 +184,17 @@ public class EnchantmentModplayer : ModPlayer {
 				continue;
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnHitNPCWithItem(i, Player, globalItem, item, target, hit, damageDone);
+		}
+	}
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (CommonEnchantmentCheck()) {
+			return;
+		}
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			if (globalItem.EnchantmenStlot[i] == 0)
+				continue;
+
+			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ModifyHitNPCWithProj(i, Player, globalItem, proj, target, ref modifiers);
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {

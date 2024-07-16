@@ -94,7 +94,7 @@ public class CombatV3Template : CardTemplate {
 			return new StatModifier(1, 1, 0, Main.rand.Next(5, 16));
 		}
 		if (stat == PlayerStats.AttackSpeed) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.2f)), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.2f), 2), 1);
 		}
 		if (stat == PlayerStats.PureDamage) {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.35f), 2), 1);
@@ -120,9 +120,9 @@ public class CombatV4Template : CardTemplate {
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		if (stat == PlayerStats.PureDamage) {
-			return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1), 2).ToString(), });
+			return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round(value.ApplyTo(1) - 1, 2).ToString(), });
 		}
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1), 2).ToString(), });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round(value.ApplyTo(1) - 1, 2).ToString(), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		var value = new StatModifier();
@@ -132,6 +132,18 @@ public class CombatV4Template : CardTemplate {
 		}
 		value.Base += Main.rand.Next(8, 21);
 		return value;
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value);
+	}
+}
+public class StrikeFullHPTemplate : CardTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.FullHPDamage;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), "Damage", Math.Round((value.ApplyTo(1) - 1) * 100f, 2).ToString() + "%", });
+	}
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier((float)Math.Round(Main.rand.NextFloat(.5f, 1f) + 1, 2), 1, 0, 0);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);

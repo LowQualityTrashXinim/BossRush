@@ -262,17 +262,17 @@ PlatinumShortSword.Description:
 	'''
 WoodenBow.Description:
 	'''
-	Increases damage by 1
-	Multiply shooting velocity by 1.1
+	Increases damage by 1 and multiply shooting velocity by 1.1
 	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Wooden arrow have 30% to light enemy on fire
+	Deal extra 25% damage to enemy on fire
 	'''
 AshWoodBow.Description:
 	'''
-	Increases damage by 1
-	Multiply shooting velocity by 1.1
+	Increases damage by 1 and multiply shooting velocity by 1.1
 	Weapon will shoot additional wooden arrow
 	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Holding weapon will increases user's movement speed by 10%
 	'''
 BorealWoodBow.Description:
 	'''

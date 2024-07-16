@@ -100,16 +100,12 @@ Mods: {
 			DiamondSwotaffOrb.DisplayName: Diamond Swotaff Orb
 			DiamondBoltSpecial.DisplayName: Diamond Bolt Special
 			AmethystSwotaffP.DisplayName: Amethyst Swotaff
-			HelixFade.DisplayName: Helix Fade
-			HelixBullet.DisplayName: Helix Bullet
 			GhostHitBox2.DisplayName: Ghost Hit Box
 			GhostHitBox.DisplayName: Ghost Hit Box
 			ArenaMakerProj.DisplayName: Arena Maker Proj
-			SwordSlash.DisplayName: Sword Slash
-			ThrowingKnifeCustom.DisplayName: Throwing Knife Custom
-			ShurikenCustom.DisplayName: Shuriken Custom
+			ThrowingKnifeCustom.DisplayName: Throwing Knife
+			ShurikenCustom.DisplayName: Shuriken
 			FriendlySlimeProjectile.DisplayName: Friendly Slime Projectile
-			PhantasmalEyeAfterImage.DisplayName: Phantasmal Eye After Image
 			PhantasmalEye.DisplayName: Phantasmal Eye
 			EoCServant.DisplayName: EoC Servant
 			GhostSlime.DisplayName: Ghost Slime
@@ -136,7 +132,7 @@ Mods: {
 			SwordBroadProjectile.DisplayName: Sword Broad Projectile
 			CompoundGrenadeProjectile.DisplayName: Compound Grenade Projectile
 			MagicGrenadeProjectile.DisplayName: Magic Grenade Projectile
-			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Overgrown Mini Shark Platinum Short Sword Projectile
+			OvergrownMiniSharkPlatinumShortSwordProjectile.DisplayName: Platinum Short Sword Projectile
 			AmberTippedSpearProj.DisplayName: Amber Tipped Spear Proj
 			AcornProjectile.DisplayName: Acorn Projectile
 			SandProjectile.DisplayName: Sand Projectile
@@ -161,8 +157,6 @@ Mods: {
 			AmberBoneSpearProjectile.DisplayName: Amber Bone Spear Projectile
 			AntlionMandibleModProjectile.DisplayName: Antlion Mandible Mod Projectile
 			LifeOrb.DisplayName: Life Orb
-			ExChallengeProjectile_BeingHuntDown.DisplayName: Ex Challenge Projectile_ Being Hunt Down
-			ExChallengeProjectile_BossShootHomeIn.DisplayName: Ex Challenge Projectile_ Boss Shoot Home In
 			BloodWater.DisplayName: Blood Water
 			ExplosiveMineProjectile.DisplayName: Explosive Mine Projectile
 			CelestialWrathBeamProjectile.DisplayName: Celestial Wrath Beam Projectile
@@ -180,9 +174,9 @@ Mods: {
 			GemStaffAttackOne.DisplayName: Gem Staff Attack One
 			GemStaffAttackTwo.DisplayName: Gem Staff Attack Two
 			ShadowMagicMissle.DisplayName: Shadow Magic Missle
-			pearlSwordProj.DisplayName: pearl Sword Proj
+			pearlSwordProj.DisplayName: Pearl Sword
 			LightningStrike.DisplayName: Lightning Strike
-			heavenBolt.DisplayName: heaven Bolt
+			heavenBolt.DisplayName: Heaven Bolt
 			HeavenSmgThrow.DisplayName: Heaven Smg Throw
 			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
 			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
@@ -195,8 +189,7 @@ Mods: {
 			WoodSwordProjectile.DisplayName: Wood Sword Projectile
 			HostileMinishark.DisplayName: Hostile Minishark
 			HostileMusket.DisplayName: Hostile Musket
-			StructureMakerProj.DisplayName: Structure Maker Proj
-			HorusEye_Projectile.DisplayName: Horus Eye_ Projectile
+			HorusEye_Projectile.DisplayName: Horus Eye Projectile
 			AdventureSpirit.DisplayName: Adventure Spirit
 			SwordProjectile.DisplayName: Sword Projectile
 			SwordProjectile2.DisplayName: Sword Projectile2
@@ -205,8 +198,8 @@ Mods: {
 			SpiritProjectile.DisplayName: Spirit Projectile
 			SwordProjectile3.DisplayName: Sword Projectile3
 			EssenceProjectile.DisplayName: Essence Projectile
-			MoCCopperOre.DisplayName: Mo C Copper Ore
-			MoCShortSwordP.DisplayName: Mo C Short Sword P
+			MoCCopperOre.DisplayName: Copper Ore
+			MoCShortSwordP.DisplayName: Short Sword P
 			WindSlashProjectile.DisplayName: Wind Slash Projectile
 			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
 		}
@@ -237,7 +230,7 @@ Mods: {
 
 		Items: {
 			StickyFlower: {
-				Tooltip: ""
+				Tooltip: A long lost sticky friend
 				DisplayName: Sticky Flower
 			}
 
@@ -643,16 +636,6 @@ Mods: {
 				DisplayName: Synergy Energy
 			}
 
-			WormFeast: {
-				Tooltip: Caution : Using this will gather unwanted attention
-				DisplayName: Worm Feast
-			}
-
-			RoyalWax: {
-				Tooltip: Stolen from royal treasure
-				DisplayName: Royal Wax
-			}
-
 			PocketPortal: {
 				Tooltip: Portal to another world!
 				DisplayName: Pocket Portal
@@ -668,34 +651,14 @@ Mods: {
 				DisplayName: Plantera Essence
 			}
 
-			MoonLordEnrage: {
-				Tooltip: Beyond help, do not
-				DisplayName: Moon Lord Enrage
-			}
-
-			KingSlimeCall: {
-				Tooltip: Something feel slimy
-				DisplayName: King's Scepter
-			}
-
 			CursedDoll: {
 				DisplayName: Cursed Doll
 				Tooltip: Summon Skeletron !
 			}
 
-			BloodyEye: {
-				Tooltip: WHAT DID YOU SHOW TO THE EYE OF CTHULHU
-				DisplayName: Bloody Eye
-			}
-
 			BleedingWorm: {
 				Tooltip: Attract a certain monster from ocean
 				DisplayName: Bleeding Worm
-			}
-
-			AttackOnTheMind: {
-				Tooltip: Caution : Using this may collapse your mind
-				DisplayName: Attack On The Mind
 			}
 
 			PowerEnergy: {
@@ -706,40 +669,6 @@ Mods: {
 			WonderDrug: {
 				Tooltip: Surprisingly Legal
 				DisplayName: Wonder Drug
-			}
-
-			TrueKingSlimeTrophy: {
-				Tooltip: ""
-				DisplayName: True King Slime Trophy
-			}
-
-			TrueEyeOfCthulhuTrophy: {
-				Tooltip: ""
-				DisplayName: True Eye Of Cthulhu Trophy
-			}
-
-			TrueEaterOfWorldTrophy: {
-				Tooltip: ""
-				DisplayName: True Eater Of World Trophy
-			}
-
-			TrueBrainOfCthulhuTrophy: {
-				Tooltip: ""
-				DisplayName: True Brain Of Cthulhu Trophy
-			}
-
-			ResetCard: {
-				Tooltip:
-					'''
-					For Debug purpose only !
-					Reset all of the card stats
-					'''
-				DisplayName: Reset Card
-			}
-
-			EmptyCard: {
-				Tooltip: Empty card, you can craft something from it
-				DisplayName: Empty Card
 			}
 
 			ArenaMaker: {
@@ -978,31 +907,6 @@ Mods: {
 				Tooltip: "[DEBUG] for purpose of showing Effect"
 			}
 
-			BrainOfCthulhuSpecialSpawner: {
-				DisplayName: Brain Of Cthulhu Special Spawner
-				Tooltip: ""
-			}
-
-			EaterOfWorldSpecialSpawner: {
-				DisplayName: Eater Of World Special Spawner
-				Tooltip: ""
-			}
-
-			EyeOfCthulhuSpecialSpawner: {
-				DisplayName: Eye Of Cthulhu Special Spawner
-				Tooltip: ""
-			}
-
-			KingSlimeSpecialSpawner: {
-				DisplayName: King Slime Special Spawner
-				Tooltip: ""
-			}
-
-			QueenBeeSpecialSpawner: {
-				DisplayName: Queen Bee Special Spawner
-				Tooltip: ""
-			}
-
 			BiomeToggle: {
 				DisplayName: Biome Manipulation
 				Tooltip: Use this item to force change your current biome
@@ -1125,8 +1029,8 @@ Mods: {
 			}
 
 			UnderworldTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Underworld Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			StarTreasureChest: {
@@ -1135,63 +1039,58 @@ Mods: {
 			}
 
 			ShadowTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Shadow Treasure Chest
-			}
-
-			RainbowTreasureChest: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Rainbow Treasure Chest
 			}
 
 			NatureTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Nature Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			MoonTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Moon Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			MechTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Mech Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			LunchBox: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen} from your mom [i:58]"
 				DisplayName: Lunch Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen} from your mom [i:58]"
 			}
 
 			LunaticTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Lunatic Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			LihzahrdTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Lihzahrd Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			HoneyTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Honey Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			EmpressTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Empress Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			DukeTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Duke Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			DeerclopTreasureChest: {
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Deerclop Treasure Chest
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			CrystalTreasureChest: {
@@ -1202,16 +1101,31 @@ Mods: {
 			BuilderTreasureChest: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Builder Treasure Chest
+			}	
+			
+			BlackLootBox: {
+				DisplayName: Black LootBox
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			BloodTreasureChest: {
+			BloodLootBox: {
+				DisplayName: Blood LootBox
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Blood Treasure Chest
 			}
 
-			BlackTreasureChest: {
+			RelicContainer: {
+				DisplayName: Relic Container
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Black Treasure Chest
+			}
+
+			RainbowLootBox: {
+				DisplayName: Rainbow Loot Box
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			LunaticLootBox: {
+				DisplayName: Lunatic LootBox
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			HardModeBossBundle: {
@@ -1227,7 +1141,7 @@ Mods: {
 				DisplayName: Pre Hardmode Boss Bundle
 				Tooltip:
 					'''
-						"{$CommonItemTooltip.RightClickToOpen}"
+						{$CommonItemTooltip.RightClickToOpen}
 						Open this bundle to get almost all pre wall of flesh bosses spawner
 					'''
 			}
@@ -1237,42 +1151,14 @@ Mods: {
 				Tooltip: ""
 			}
 
-			LunaticLootBox: {
-				DisplayName: Lunatic Loot Box
-				Tooltip: ""
-			}
-
-			LunaticCultistSpawner: {
-				DisplayName: Lunatic Cultist Spawner
-				Tooltip: ""
-			}
-
 			WallOfFleshSpawner: {
 				DisplayName: Wall Of Flesh Spawner
 				Tooltip: With this, you no longer need to care for the guide to respawn
 			}
 
-			NormalizeArtifact: {
-				DisplayName: Normalize Artifact
-				Tooltip:
-					'''
-					"Offer no tactical advantage what so ever"
-					Grant no effect !
-					'''
-			}
-
 			OrbOfEnergy: {
 				DisplayName: Orb Of Energy
 				Tooltip: ""
-			}
-
-			MysteriousPotion: {
-				DisplayName: Mysterious Potion
-				Tooltip:
-					'''
-					"What it do is a complete mystery..."
-					Drink the potion to gain randomize buff, only 1 buff can active
-					'''
 			}
 
 			Resolve: {
@@ -1342,11 +1228,6 @@ Mods: {
 				Tooltip: Contain item that may be useful
 			}
 
-			TransmuteTablet: {
-				DisplayName: Transmute Tablet
-				Tooltip: Use this to open a UI that allow you to transmute item into something else ( not shimmer )
-			}
-
 			Trinket_of_Swift_Health: {
 				DisplayName: Trinket of Swift Health
 				Tooltip:
@@ -1384,7 +1265,7 @@ Mods: {
 					[[c/8888ea:Passive]]
 					Increases your critical strike chance by 12%
 					[[c/8888ea:Active]]
-					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye] and heal you for 15 health (5 second delay between each heal)
+					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye]
 					[c/b7bf5c:Divine Eye] increases your critical strike chance by 3% and damage by 6% (capped at 4 [c/b7bf5c:Divine Eye])
 					You can get an additional [c/b7bf5c:Divine Eye] every 2 seconds when hitting enemy
 					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Divine Eye] is lost
@@ -1417,6 +1298,7 @@ Mods: {
 					Upon getting hit, grants [c/b7bf5c:Gradual Rockshell] for 10 seconds. (40s cooldown)
 					[c/b7bf5c:Gradual Rockshell]: increases defence by 1 every successful melee hit (stackable, 0.1 cooldown).
 					Heals the player at the end of the buff based on defense gained. Excess healing bursts into an AoE explosion.
+					During [c/b7bf5c:Gradual Rockshell], your defense also increases your damage output for each 10 defenses you have.
 					'''
 			}
 
@@ -1476,51 +1358,6 @@ Mods: {
 				Tooltip: Allow tinkering with skill
 			}
 
-			BlessedCharm: {
-				DisplayName: Blessed Charm
-				Tooltip: ""
-			}
-
-			GalaticFruit: {
-				DisplayName: Galatic Fruit
-				Tooltip: ""
-			}
-
-			MeatyMeat: {
-				DisplayName: Meaty Meat
-				Tooltip: ""
-			}
-
-			OldBook: {
-				DisplayName: Old Book
-				Tooltip: ""
-			}
-
-			SageOrb: {
-				DisplayName: Sage Orb
-				Tooltip: ""
-			}
-
-			ScopedCarrot: {
-				DisplayName: Scoped Carrot
-				Tooltip: ""
-			}
-
-			UpgradeItem7: {
-				DisplayName: Upgrade Item7
-				Tooltip: ""
-			}
-
-			UpgradeItem8: {
-				DisplayName: Upgrade Item8
-				Tooltip: ""
-			}
-
-			UpgradeItem9: {
-				DisplayName: Upgrade Item9
-				Tooltip: ""
-			}
-
 			EnergyRechargeStation: {
 				DisplayName: Energy Recharge Station
 				Tooltip: ""
@@ -1531,19 +1368,9 @@ Mods: {
 				Tooltip: End this run so early ?
 			}
 
-			ChocolateTreasure: {
-				DisplayName: Chocolate Treasure
-				Tooltip: ""
-			}
-
-			StatsResetCard: {
-				DisplayName: Stats Reset Card
-				Tooltip: ""
-			}
-
 			WeaponLootBox: {
-				DisplayName: Weapon Loot Box
-				Tooltip: ""
+				DisplayName: Weapon LootBox
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			ProofOfEmpowered: {
@@ -1565,7 +1392,7 @@ Mods: {
 
 			SkillLootBox: {
 				DisplayName: Skill Loot Box
-				Tooltip: ""
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
 			SpawnMerchant: {
@@ -1614,36 +1441,16 @@ Mods: {
 				DisplayName: Lunatic Tablet
 				Tooltip: ""
 			}
-
-			BlackLootBox: {
-				DisplayName: Black Loot Box
-				Tooltip: ""
-			}
-
-			BloodLootBox: {
-				DisplayName: Blood Loot Box
-				Tooltip: ""
-			}
-
-			RelicContainer: {
-				DisplayName: Relic Container
-				Tooltip: ""
-			}
-
-			RainbowLootBox: {
-				DisplayName: Rainbow Loot Box
-				Tooltip: ""
-			}
 		}
 
 		Buffs: {
 			StickyFriend: {
-				Description: Mods.BossRush.Buffs.StickyFriend.Description
+				Description: Sticky
 				DisplayName: Sticky Friend
 			}
 
 			EarthPower: {
-				Description: Mods.BossRush.Buffs.EarthPower.Description
+				Description: ...
 				DisplayName: Earth Power
 			}
 
@@ -1896,7 +1703,7 @@ Mods: {
 
 			LifeForce: {
 				DisplayName: Life Force
-				Description: Mods.BossRush.Buffs.LifeForce.Description
+				Description: Temporary increases your max life by 10%
 			}
 
 			StarGaze: {
@@ -1904,9 +1711,9 @@ Mods: {
 				Description: Mods.BossRush.Buffs.StarGaze.Description
 			}
 
-			ThrownShortSwordCoolDown: {
-				DisplayName: Thrown Short Sword Cool Down
-				Description: Mods.BossRush.Buffs.ThrownShortSwordCoolDown.Description
+			ThrowShortSwordCoolDown: {
+				DisplayName: Throw Cool Down
+				Description: " "
 			}
 		}
 

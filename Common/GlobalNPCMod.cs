@@ -27,6 +27,7 @@ namespace BossRush.Common {
 			LeadingConditionRule noHit = new LeadingConditionRule(new GitGudMode());
 			LeadingConditionRule DropOnce = new LeadingConditionRule(new IsPlayerAlreadyHaveASpawner());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
+			LeadingConditionRule SynergyRule = new(new SynergyDrop());
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
@@ -57,6 +58,7 @@ namespace BossRush.Common {
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
+				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.BrainofCthulhu) {
 				//NoHit mode drop
@@ -68,6 +70,7 @@ namespace BossRush.Common {
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
+				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.QueenBee) {
 				//NoHit mode drop
@@ -109,7 +112,6 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
-				IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.BloodNautilus) {
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodLootBox>()));
@@ -150,6 +152,7 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdAltar));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureTreasureChest>()));
+				SynergyRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.Golem) {
 				//NoHit mode drop
@@ -171,7 +174,6 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressTreasureChest>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));
-				IsABoss.OnSuccess(ItemDropRule.ByCondition(new SynergyDrop(), ModContent.ItemType<PerkChooser>()));
 			}
 			if (npc.type == NPCID.DukeFishron) {
 				//NoHit mode drop

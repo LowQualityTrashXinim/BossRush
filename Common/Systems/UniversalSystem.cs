@@ -1043,6 +1043,25 @@ internal class EnchantmentUIState : UIState {
 		weaponEnchantmentUIExit.UISetPosition(Main.LocalPlayer.Center + Vector2.UnitX * 178, new Vector2(26, 26));
 		Append(weaponEnchantmentUIExit);
 	}
+	public override void OnDeactivate() {
+		int count = Children.Count();
+		for (int i = count - 1; i >= 0; i--) {
+			UIElement child = Children.ElementAt(i);
+			if (child is EnchantmentUIslot wmslot) {
+				if (wmslot.itemOwner == null) {
+					continue;
+				}
+				else {
+					child.Deactivate();
+					child.Remove();
+				}
+			}
+			if (child is UIText) {
+				child.Deactivate();
+				child.Remove();
+			}
+		}
+	}
 }
 public class WeaponEnchantmentUIslot : UIImage {
 	public int WhoAmI = -1;
@@ -1076,7 +1095,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 				int length = globalItem.EnchantmenStlot.Length;
 				for (int i = 0; i < length; i++) {
 					Vector2 pos = player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
-					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack, player);
+					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack);
 					slot.UISetWidthHeight(52, 52);
 					slot.UISetPosition(pos, new Vector2(26, 26));
 					slot.WhoAmI = i;
@@ -1116,13 +1135,15 @@ public class WeaponEnchantmentUIslot : UIImage {
 		}
 	}
 	public override void OnDeactivate() {
+		textUqID.Clear();
 		Player player = Main.LocalPlayer;
 		UniversalSystem.EnchantingState = false;
 		if (item == null)
 			return;
 		for (int i = 0; i < 50; i++) {
 			if (player.CanItemSlotAccept(player.inventory[i], item)) {
-				player.inventory[i] = item;
+				player.inventory[i] = item.Clone();
+				item = null;
 				return;
 			}
 		}
@@ -1131,17 +1152,12 @@ public class WeaponEnchantmentUIslot : UIImage {
 	public override void Draw(SpriteBatch spriteBatch) {
 		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
 		base.Draw(spriteBatch);
-		try {
-			if (item != null) {
-				Main.instance.LoadItem(item.type);
-				Texture2D texture = TextureAssets.Item[item.type].Value;
-				Vector2 origin = texture.Size() * .5f;
-				float scaling = ScaleCalculation(texture.Size()) * .78f;
-				spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
-			}
-		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
+		if (item != null) {
+			Main.instance.LoadItem(item.type);
+			Texture2D texture = TextureAssets.Item[item.type].Value;
+			Vector2 origin = texture.Size() * .5f;
+			float scaling = ScaleCalculation(texture.Size()) * .78f;
+			spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
 		}
 	}
 	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);
@@ -1152,9 +1168,7 @@ public class EnchantmentUIslot : UIImage {
 
 	public Item itemOwner = null;
 	private Texture2D texture;
-	private Player player;
-	public EnchantmentUIslot(Asset<Texture2D> texture, Player player) : base(texture) {
-		this.player = player;
+	public EnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
@@ -1169,7 +1183,7 @@ public class EnchantmentUIslot : UIImage {
 				return;
 			itemType = Main.mouseItem.type;
 			Main.mouseItem.TurnToAir();
-			player.inventory[58].TurnToAir();
+			Main.LocalPlayer.inventory[58].TurnToAir();
 			if (itemOwner.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				globalItem.EnchantmenStlot[WhoAmI] = itemType;
 			}

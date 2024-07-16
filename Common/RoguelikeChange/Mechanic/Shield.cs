@@ -11,39 +11,46 @@ public class Shield_GlobalItem : GlobalItem {
 	public int ShieldPoint = 0;
 	public float ShieldRes = 0;
 	public override bool InstancePerEntity => true;
+	public static bool IsAShield(int type) =>
+			type == ItemID.SquireShield ||
+			type == ItemID.EoCShield ||
+			type == ItemID.CobaltShield ||
+			type == ItemID.ObsidianShield ||
+			type == ItemID.PaladinsShield ||
+			type == ItemID.AnkhShield ||
+			type == ItemID.FrozenShield ||
+			type == ItemID.HeroShield;
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return entity.type == ItemID.EoCShield ||
-			entity.type == ItemID.CobaltShield ||
-			entity.type == ItemID.ObsidianShield ||
-			entity.type == ItemID.PaladinsShield ||
-			entity.type == ItemID.AnkhShield ||
-			entity.type == ItemID.FrozenShield ||
-			entity.type == ItemID.HeroShield;
+		return IsAShield(entity.type);
 	}
 	public override void SetDefaults(Item entity) {
 		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 			return;
 		}
 		switch (entity.type) {
-			case ItemID.EoCShield:
-				ShieldPoint = 200;
-				ShieldRes = .5f;
+			case ItemID.SquireShield:
+				ShieldPoint = 125;
+				ShieldRes = .35f;
 				break;
 			case ItemID.CobaltShield:
-				ShieldPoint = 150;
-				ShieldRes = .25f;
+				ShieldPoint = 175;
+				ShieldRes = .4f;
 				break;
 			case ItemID.ObsidianShield:
 				ShieldPoint = 200;
-				ShieldRes = .35f;
-				break;
-			case ItemID.PaladinsShield:
-				ShieldPoint = 250;
-				ShieldRes = .5f;
+				ShieldRes = .45f;
 				break;
 			case ItemID.AnkhShield:
 				ShieldPoint = 200;
-				ShieldRes = .35f;
+				ShieldRes = .5f;
+				break;
+			case ItemID.EoCShield:
+				ShieldPoint = 225;
+				ShieldRes = .5f;
+				break;
+			case ItemID.PaladinsShield:
+				ShieldPoint = 250;
+				ShieldRes = .55f;
 				break;
 			case ItemID.FrozenShield:
 				ShieldPoint = 500;
@@ -60,35 +67,9 @@ public class Shield_GlobalItem : GlobalItem {
 			return;
 		}
 		Shield_ModPlayer shieldplayer = player.GetModPlayer<Shield_ModPlayer>();
-		switch (item.type) {
-			case ItemID.EoCShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
-			case ItemID.CobaltShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
-			case ItemID.ObsidianShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
-			case ItemID.PaladinsShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
-			case ItemID.AnkhShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
-			case ItemID.FrozenShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
-			case ItemID.HeroShield:
-				shieldplayer.Shield_MaxHealth += ShieldPoint;
-				shieldplayer.Shield_ResPoint += ShieldRes;
-				break;
+		if (IsAShield(item.type)) {
+			shieldplayer.Shield_MaxHealth += ShieldPoint;
+			shieldplayer.Shield_ResPoint += ShieldRes;
 		}
 	}
 }
@@ -139,7 +120,7 @@ public class Shield_ModPlayer : ModPlayer {
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			int damageDone = (int)(damagevalue / modplayer.ShieldEffectiveness.ApplyTo(1));
 			Shield_Health -= damageDone;
-			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.RoyalBlue, $"{damageDone}", Main.rand.Next(30,40), 5);
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.RoyalBlue, $"{damageDone}", Main.rand.Next(30, 40), 5);
 			if (Shield_Health <= 0) {
 				Shield_IsUp = false;
 				Player.DelBuff(Player.FindBuffIndex(ModContent.BuffType<Shield_ModBuff>()));

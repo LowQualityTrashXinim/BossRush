@@ -728,10 +728,6 @@ public class SkillOrb : ModItem {
 		Item.useTime = Item.useAnimation = 15;
 	}
 	public override bool? UseItem(Player player) {
-		if (player.ItemAnimationJustStarted) {
-			UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-			uiSystemInstance.ActivateSkillUI();
-		}
 		return base.UseItem(player);
 	}
 }
