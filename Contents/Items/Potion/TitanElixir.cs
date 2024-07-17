@@ -10,13 +10,14 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<Protection>(), 12000);
 			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.sellPrice(gold: 25);
 		}
 	}
 	public class TitanElixir_ModPlayer : ModPlayer {
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
 			if (Player.HasBuff(ModContent.BuffType<Protection>())) {
-				Player.Heal(Player.statLifeMax2);
 				Player.ClearBuff(ModContent.BuffType<Protection>());
+				Player.Heal(Player.statLifeMax2);
 				return false;
 			}
 			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
@@ -25,9 +26,7 @@ namespace BossRush.Contents.Items.Potion {
 	internal class Protection : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("The Titan's Protection");
-			// Description.SetDefault("This newfound aegis is almost... suffocating...");
-			Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
+			Main.debuff[Type] = false;
 			Main.buffNoSave[Type] = true;
 		}
 

@@ -93,8 +93,14 @@ public class TransmutationUI : UIImage {
 				return;
 			}
 			item = Main.mouseItem.Clone();
-			Main.mouseItem.TurnToAir();
-			player.inventory[58].TurnToAir();
+			if (Main.mouseItem.stack > 1) {
+				Main.mouseItem.stack--;
+				player.inventory[58].stack--;
+			}
+			else {
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+			}
 		}
 		else if (Main.mouseItem.type == ItemID.None && item != null) {
 			//When player want to change item

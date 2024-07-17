@@ -1,7 +1,18 @@
 Mods: {
 	BossRush: {
 		SystemTooltip: {
-			WeaponEnchantment.Tooltip: Enchantment tooltip text
+			WeaponEnchantment.Tooltip:
+				'''
+				[Weapon Enchantment]
+				This is where you can enchant your weapon ! Customize your weapon 
+				through enchanting, empowered your weapon and slay your enemies.
+				Enchanting weapon make weapon stronger at the cost of sacrificing 
+				another weapon of your.
+				Every weapon only have 3 slots for enchanting so uses them
+				wisely, once you sacrifice your weapon you can't get it back so
+				hover over your weapon in your inventory to read what effect they can give
+				before enchanting your weapon.
+				'''
 			BlockWeaponEnchantment.Tooltip: A Force beyond your realm has block you from accessing it's system
 			ShowPlayerInfo.Tooltip:
 				'''
@@ -14,8 +25,26 @@ Mods: {
 				Player vanilla stats info
 				Player modded stat info (this mod stats)
 				'''
-			Transmutation.Tooltip: Transmutation tooltip text
-			Skill.Tooltip: Skill tooltip text
+			Transmutation.Tooltip:
+				'''
+				[Transmutation]
+				This is where you can merge your relic !
+				Relic can be merge up to have 4 effects
+				Merge relic together to create a even stronger relic
+				Find and create your own suitable relic,
+				You can find relic in [c/b7bf5c:Relic Container] !
+				'''
+			Skill.Tooltip:
+				'''
+				[Skill]
+				Plan out your strategy, customize your skill, dominate your enemy !
+				you can get skill from [c/b7bf5c:Skill LootBox] which will automatically added 
+				a skill into your skill inventory ui, move your skill into 1 of 3 active holder
+				to uses the skill, skill can be activate using your hotkey which is in control.
+				Upon using skill, you will uses your energy and skill duration will be set and after
+				skill active duration end then skill cool down will set in, you can't gain energy during
+				skill cool down nor skill active so make your activation count !
+				'''
 		}
 
 		Projectiles: {

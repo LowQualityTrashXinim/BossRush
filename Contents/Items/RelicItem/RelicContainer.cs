@@ -16,6 +16,7 @@ namespace BossRush.Contents.Items.RelicItem {
 			Item.height = 28;
 			Item.maxStack = 30;
 			Item.value = Item.buyPrice(gold: 10);
+			auraColor = new Color(255, 100, 0, 30);
 		}
 		public override bool CanRightClick() => true;
 		private void PositionHandle() {
@@ -32,9 +33,12 @@ namespace BossRush.Contents.Items.RelicItem {
 			base.RightClick(player);
 			var entitySource = player.GetSource_OpenItem(Type);
 			int amount = 1;
-			if (player.HasArtifact<TokenOfGreedArtifact>() || player.HasArtifact<EternalWealthArtifact>())
+			if (player.HasArtifact<TokenOfGreedArtifact>() || player.HasArtifact<EternalWealthArtifact>()) {
 				amount++;
-			for (int i = 0; i < amount; i++) player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+			}
+			for (int i = 0; i < amount; i++) {
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+			}
 		}
 		Color auraColor = new Color(255, 100, 0, 30);
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {

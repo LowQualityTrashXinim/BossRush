@@ -49,7 +49,13 @@ namespace BossRush.Common.Systems {
 			PlayerStats.RangeDMG,
 			PlayerStats.MeleeDMG,
 			PlayerStats.AttackSpeed};
-			if (modplayer.Stats.Count > 0 && modplayer.Stats.Count != stats.Count) 				foreach (var item in modplayer.Stats) 					if (stats.Contains(item)) 						stats.Remove(item);
+			if (modplayer.Stats.Count > 0 && modplayer.Stats.Count != stats.Count) {
+				foreach (var item in modplayer.Stats) {
+					if (stats.Contains(item)) {
+						stats.Remove(item);
+					}
+				}
+			}
 			return Main.rand.Next(stats);
 		}
 		/// <summary>
@@ -82,14 +88,14 @@ namespace BossRush.Common.Systems {
 			}
 			for (int i = 0; i < modplayer.Stats.Count; i++) {
 				var textcolor = Color.Green;
-				if (modplayer.StatsMulti[i] < 0) 					textcolor = Color.Red;
+				if (modplayer.StatsMulti[i] < 0) textcolor = Color.Red;
 				BossRushUtils.CombatTextRevamp(player.Hitbox, textcolor, StatNumberAsText(modplayer, i), i * 20, 180);
 			}
 		}
 		public static string StatNumberAsText(MysteriousPotionPlayer modplayer, int index) {
 			string value = "";
-			if (modplayer.StatsMulti[index] > 0) 				value = "+";
-			if (BossRushUtils.DoesStatsRequiredWholeNumber(modplayer.Stats[index])) 				return value + $"{modplayer.ToStatsNumInt(modplayer.Stats[index], modplayer.StatsMulti[index])} {modplayer.Stats[index]}";
+			if (modplayer.StatsMulti[index] > 0) value = "+";
+			if (BossRushUtils.DoesStatsRequiredWholeNumber(modplayer.Stats[index])) return value + $"{modplayer.ToStatsNumInt(modplayer.Stats[index], modplayer.StatsMulti[index])} {modplayer.Stats[index]}";
 			return value + $"{modplayer.ToStatsNumInt(modplayer.Stats[index], modplayer.StatsMulti[index])}% {modplayer.Stats[index]}";
 		}
 		public override string Texture => BossRushTexture.EMPTYBUFF;
@@ -118,7 +124,7 @@ namespace BossRush.Common.Systems {
 		public override void Update(Player player, ref int buffIndex) {
 			var modplayer = player.GetModPlayer<MysteriousPotionPlayer>();
 			var statsplayer = player.GetModPlayer<PlayerStatsHandle>();
-			for (int i = 0; i < modplayer.Stats.Count; i++) 				switch (modplayer.Stats[i]) {
+			for (int i = 0; i < modplayer.Stats.Count; i++) switch (modplayer.Stats[i]) {
 					case PlayerStats.MaxHP:
 						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;

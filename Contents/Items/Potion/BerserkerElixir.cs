@@ -8,6 +8,7 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<BerserkBuff>(), 12000);
 			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.sellPrice(gold: 25);
 		}
 	}
 	public class BerserkerElixir_ModPlayer : ModPlayer {
@@ -20,7 +21,7 @@ namespace BossRush.Contents.Items.Potion {
 	internal class BerserkBuff : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
-			Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
+			Main.debuff[Type] = false;
 			Main.buffNoSave[Type] = true;
 		}
 

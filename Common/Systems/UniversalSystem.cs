@@ -704,7 +704,7 @@ class btn_SkillDeletion : UIImage {
 		Texture2D trashbin = TextureAssets.Trash.Value;
 		float scaling = ScaleCalculation(size, trashbin.Size());
 		Vector2 origin = trashbin.Size() * .5f;
-		spriteBatch.Draw(trashbin, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+		spriteBatch.Draw(trashbin, drawpos, null, new Color(0,0,0,150), 0, origin, scaling, SpriteEffects.None, 0);
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
@@ -803,7 +803,7 @@ class btn_SkillSlotHolder : UIImageButton {
 		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillLoader.GetSkill(sKillID).Texture).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
-		spriteBatch.Draw(skilltexture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
@@ -1157,6 +1157,11 @@ public class WeaponEnchantmentUIslot : UIImage {
 			Vector2 origin = texture.Size() * .5f;
 			float scaling = ScaleCalculation(texture.Size()) * .78f;
 			spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+		}
+		else {
+
+			Texture2D backgroundtexture = TextureAssets.Item[ItemID.SilverBroadsword].Value;
+			spriteBatch.Draw(backgroundtexture, drawpos, null, new Color(0, 0, 0, 80), 0, texture.Size() * .35f, ScaleCalculation(backgroundtexture.Size()), SpriteEffects.None, 0);
 		}
 	}
 	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);

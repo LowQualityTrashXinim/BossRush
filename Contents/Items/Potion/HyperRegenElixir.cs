@@ -9,6 +9,7 @@ internal class HyperRegenElixir : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<HyperRegen>(), 12000);
 		Item.rare = ItemRarityID.Orange;
+		Item.value = Item.sellPrice(gold: 25);
 	}
 }
 internal class HyperRegen : ModBuff {

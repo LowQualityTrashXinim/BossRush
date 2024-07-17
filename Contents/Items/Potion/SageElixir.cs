@@ -8,6 +8,7 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<SageBuff>(), 12000);
 			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.sellPrice(gold: 25);
 		}
 	}
 	internal class SageBuff : ModBuff {

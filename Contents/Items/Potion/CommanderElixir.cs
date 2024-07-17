@@ -8,14 +8,13 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<LeaderShip>(), 12000);
 			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.sellPrice(gold: 25);
 		}
 	}
 	internal class LeaderShip : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("The Commander's Patience");
-			// Description.SetDefault("Fighting alongside a horde has never been easier!");
-			Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
+			Main.debuff[Type] = false;
 			Main.buffNoSave[Type] = true;
 		}
 

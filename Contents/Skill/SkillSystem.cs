@@ -690,7 +690,7 @@ public class SkillHandlePlayer : ModPlayer {
 		return useSpeed;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (!Activate && RechargeDelay <= 0) {
+		if (!Activate && RechargeDelay <= 0 && CoolDown <= 0) {
 			Energy = Math.Clamp(Math.Clamp(damageDone, 0, EnergyRechargeCap) + Energy, 0, EnergyCap);
 			RechargeDelay = 10;
 		}
@@ -700,6 +700,7 @@ public class SkillHandlePlayer : ModPlayer {
 		Energy = 0;
 		Duration = 0;
 		RechargeDelay = 0;
+		CoolDown = 0;
 	}
 	public override void SaveData(TagCompound tag) {
 		tag.Add("SkillHolder1", SkillHolder1);

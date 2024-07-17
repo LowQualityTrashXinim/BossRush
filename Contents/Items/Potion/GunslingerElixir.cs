@@ -9,6 +9,7 @@ namespace BossRush.Contents.Items.Potion {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<GodVision>(), 12000);
 			Item.rare = ItemRarityID.Orange;
+			Item.value = Item.sellPrice(gold: 25);
 		}
 	}
 	public class GunslingerElixir_ModPlayer : ModPlayer {
