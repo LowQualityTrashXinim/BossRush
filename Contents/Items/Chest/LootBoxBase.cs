@@ -13,6 +13,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -97,19 +98,21 @@ namespace BossRush.Contents.Items.Chest {
 			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			modplayer.CurrentSectionAmountOfChestOpen++;
 			base.RightClick(player);
-			if (ItemGraveYard.Count > 0) {
-				int RemoveAmount = 1 + ItemGraveYard.Count / 10;
+			if (modplayer.ItemGraveYard.Count > 0) {
+				int RemoveAmount = 1 + modplayer.ItemGraveYard.Count / 10;
 				for (int i = 0; i < RemoveAmount; i++) {
-					int index = Main.rand.Next(ItemGraveYard.Count);
-					ItemGraveYard.Remove(ItemGraveYard.ElementAt(index));
+					int index = Main.rand.Next(modplayer.ItemGraveYard.Count);
+					modplayer.ItemGraveYard.Remove(modplayer.ItemGraveYard.ElementAt(index));
 				}
 			}
 			OnRightClick(player, modplayer);
-			if (!UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
+			if (!UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
 				return;
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
-			if(modplayer.LootboxCanDropSpecialPotion) {
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
+			if (modplayer.LootboxCanDropSpecialPotion) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
 			}
 			if (modplayer.CanDropSynergyEnergy) {
@@ -117,7 +120,6 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
-		private static HashSet<int> ItemGraveYard = new HashSet<int>();
 		/// <summary>
 		/// Return weapon
 		/// </summary>
@@ -134,11 +136,11 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			ModifyLootAdd(player);
 			//actual choosing item
-
-			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(Type).DropItemMelee.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(Type).DropItemRange.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(Type).DropItemMagic.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
-			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(Type).DropItemSummon.Where(x => !ItemGraveYard.Contains(x)).ToHashSet();
+			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(Type).DropItemMelee.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(Type).DropItemRange.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(Type).DropItemMisc;
 			for (int i = 0; i < LoopAmount; i++) {
 				rng = RNGManage(player);
@@ -154,7 +156,7 @@ namespace BossRush.Contents.Items.Chest {
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMeleeData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						ItemGraveYard.Add(ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
 						DummyMeleeData.Remove(ReturnWeapon);
 						break;
 					case 2:
@@ -167,7 +169,7 @@ namespace BossRush.Contents.Items.Chest {
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyRangeData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						AmmoForWeapon(entitySource, player, ReturnWeapon);
-						ItemGraveYard.Add(ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
 						DummyRangeData.Remove(ReturnWeapon);
 						break;
 					case 3:
@@ -179,7 +181,7 @@ namespace BossRush.Contents.Items.Chest {
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						ItemGraveYard.Add(ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
 						DummyMagicData.Remove(ReturnWeapon);
 						AmmoForWeapon(entitySource, player, ReturnWeapon);
 						break;
@@ -193,7 +195,7 @@ namespace BossRush.Contents.Items.Chest {
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						AmmoForWeapon(entitySource, player, ReturnWeapon);
-						ItemGraveYard.Add(ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
 						DummySummonData.Remove(ReturnWeapon);
 						break;
 					case 5:
@@ -203,7 +205,7 @@ namespace BossRush.Contents.Items.Chest {
 						}
 						ReturnWeapon = Main.rand.NextFromHashSet(DummyMiscsData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
-						ItemGraveYard.Add(ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
 						DummyMiscsData.Remove(ReturnWeapon);
 						break;
 					case 6:
@@ -640,9 +642,6 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
-		public override void Unload() {
-			ItemGraveYard = null;
-		}
 	}
 	public class LootboxSystem : ModSystem {
 		private static List<LootBoxItemPool> LootBoxDropPool = new List<LootBoxItemPool>();
@@ -712,6 +711,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	public class ChestLootDropPlayer : ModPlayer {
+		public HashSet<int> ItemGraveYard = new HashSet<int>();
 		public bool CanDropSynergyEnergy = true;
 		public int CurrentSectionAmountOfChestOpen = 0;
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
@@ -821,6 +821,9 @@ namespace BossRush.Contents.Items.Chest {
 			UpdateMagicChanceMutilplier = 0;
 			UpdateSummonChanceMutilplier = 0;
 		}
+		public override void Unload() {
+			ItemGraveYard = null;
+		}
 		public override void Initialize() {
 			MeleeChanceMutilplier = 1f;
 			RangeChanceMutilplier = 1f;
@@ -863,7 +866,7 @@ namespace BossRush.Contents.Items.Chest {
 				ModifyPotionNumberAmountAddition = (int)tag["ModifyPotionNumberAmountAddition"];
 			}
 			catch (Exception ex) {
-				Main.NewText(ex.Message, Color.Red);
+				Mod.Logger.Error(ex.Message);
 			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {

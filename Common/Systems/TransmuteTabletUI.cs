@@ -115,6 +115,12 @@ public class TransmutationUI : UIImage {
 			}
 		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		var drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
 		base.Draw(spriteBatch);
@@ -135,6 +141,12 @@ public class TransmutationUI : UIImage {
 }
 public class TransmutationUIConfirmButton : UIImageButton {
 	public TransmutationUIConfirmButton(Asset<Texture2D> texture) : base(texture) {
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 	}
 	public override void LeftMouseDown(UIMouseEvent evt) {
 		var resultlist = new List<TransmutationUI>();

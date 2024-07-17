@@ -136,6 +136,11 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.ModifyHitByProjectile(npc, projectile, ref modifiers);
+			}
+		}
 		if (!Main.masterMode) {
 			return;
 		}
@@ -153,6 +158,11 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+		if (mutationList != null) {
+			foreach (var mutation in mutationList) {
+				mutation.ModifyHitByItem(npc,player,item,ref modifiers);
+			}
+		}
 		if (!Main.masterMode) {
 			return;
 		}

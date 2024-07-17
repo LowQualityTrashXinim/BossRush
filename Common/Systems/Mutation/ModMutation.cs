@@ -6,6 +6,10 @@ using Terraria.DataStructures;
 
 namespace BossRush.Common.Systems.Mutation;
 public abstract class ModMutation : ModType {
+	public bool NewGamePlus = false;
+	public bool MutationCondition(NPC npc, Player player) {
+		return false;
+	}
 	public int Type { get; private set; }
 	protected sealed override void Register() {
 		SetStaticDefaults();
@@ -15,7 +19,9 @@ public abstract class ModMutation : ModType {
 	public virtual void SetDefaults(NPC npc) { }
 	public virtual void PostAI(NPC npc) { }
 	public virtual void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) { }
+	public virtual void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) { }
+	public virtual void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) { }
 	public virtual void OnKill(NPC npc) { }
 }

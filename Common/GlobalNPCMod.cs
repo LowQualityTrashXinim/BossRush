@@ -2,6 +2,7 @@
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Chest;
 //EnragedStuff
+using BossRush.Contents.WeaponEnchantment;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Contents.Items.Toggle;
 using Terraria.DataStructures;
@@ -18,6 +19,16 @@ namespace BossRush.Common {
 				npc.lifeMax += Main.rand.Next((int)(npc.lifeMax * .5f) + 1);
 				npc.defense += Main.rand.Next((int)(npc.defense * .5f) + 1);
 				npc.life = npc.lifeMax;
+			}
+		}
+		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+			if (npc.HasBuff<Marked>()) {
+				modifiers.CritDamage += 1;
+			}
+		}
+		public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+			if(npc.HasBuff<Marked>()) {
+				modifiers.CritDamage += 1;
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {

@@ -71,9 +71,9 @@ TokenOfGreedArtifact: {
 		'''
 		"Satisfied by just having, caring not for weapon quality."
 		[c/b7bf5c:Positive effect] : 
-			+ Increase amount of drop by 4
+			+ Increase amount of drop by 1
 		[c/ab3e43:Negative effect] : 
-			- If the weapon type have been uses more than 1 time, damage effective will be decreases by 35%
+			- If the weapon type have been uses more than 1 time, damage effective will be decreases by 30%
 			Note : this can be reset by switching to other weapon
 		'''
 }

@@ -11,6 +11,8 @@ using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using BossRush.Contents.Perks;
+using System.IO;
 
 namespace BossRush.Contents.Skill;
 public abstract class ModSkill : ModType {
@@ -718,6 +720,60 @@ public class SkillHandlePlayer : ModPlayer {
 		if (tag.TryGet("SkillInventory", out int[] SkillInventory)) {
 			Array.Copy(SkillInventory, this.SkillInventory, SkillInventory.Length);
 		}
+	}
+	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+		ModPacket packet = Mod.GetPacket();
+		packet.Write((byte)BossRush.MessageType.Skill);
+		packet.Write((byte)Player.whoAmI);
+		packet.Write(SkillInventory.Length);
+		foreach (int item in SkillInventory) {
+			packet.Write(item);
+		}
+		packet.Write(SkillHolder1.Length);
+		foreach (int item in SkillHolder1) {
+			packet.Write(item);
+		}
+		foreach (int item in SkillHolder2) {
+			packet.Write(item);
+		}
+		foreach (int item in SkillHolder3) {
+			packet.Write(item);
+		}
+		packet.Send(toWho, fromWho);
+	}
+	public void ReceivePlayerSync(BinaryReader reader) {
+		Array.Fill(SkillInventory, -1);
+		Array.Fill(SkillHolder1, -1);
+		Array.Fill(SkillHolder2, -1);
+		Array.Fill(SkillHolder3, -1);
+		int countInventory = reader.ReadInt32();
+		for (int i = 0; i < countInventory; i++) {
+			SkillInventory[i] = reader.ReadInt32();
+		}
+		int countHolder = reader.ReadInt32();
+		for (int i = 0; i < countHolder; i++)
+			SkillHolder1[i] = reader.ReadInt32();
+		for (int i = 0; i < countHolder; i++)
+			SkillHolder2[i] = reader.ReadInt32();
+		for (int i = 0; i < countHolder; i++)
+			SkillHolder3[i] = reader.ReadInt32();
+	}
+
+	public override void CopyClientState(ModPlayer targetCopy) {
+		SkillHandlePlayer clone = (SkillHandlePlayer)targetCopy;
+		clone.SkillInventory = SkillInventory;
+		clone.SkillHolder1 = SkillHolder1;
+		clone.SkillHolder2 = SkillHolder2;
+		clone.SkillHolder3 = SkillHolder3;
+	}
+
+	public override void SendClientChanges(ModPlayer clientPlayer) {
+		SkillHandlePlayer clone = (SkillHandlePlayer)clientPlayer;
+		if (SkillInventory != clone.SkillInventory
+			|| SkillHolder1 != clone.SkillHolder1
+			|| SkillHolder2 != clone.SkillHolder2
+			|| SkillHolder3 != clone.SkillHolder3
+			) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 	}
 }
 public class SkillOrb : ModItem {

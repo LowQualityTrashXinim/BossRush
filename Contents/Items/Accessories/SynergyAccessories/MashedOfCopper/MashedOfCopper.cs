@@ -16,7 +16,7 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.MashedOfCopper 
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.statDefense += 6;
-			player.GetModPlayer<GlobalItemPlayer>().CopperArmor = true;
+			player.GetModPlayer<RoguelikeArmorPlayer>().CopperArmor = true;
 			player.GetModPlayer<MashedOfCopperPlayer>().MashedOfCopper = true;
 		}
 

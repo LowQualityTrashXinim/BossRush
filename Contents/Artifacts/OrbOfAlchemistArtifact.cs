@@ -28,11 +28,11 @@ namespace BossRush.Contents.Artifacts {
 			modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Base: lengthPlayer * 2);
 			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, Additive: lengthPlayer * .06f);
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: lengthPlayer);
-			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: lengthPlayer * 0.85f);
+			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: lengthPlayer * 0.085f);
 			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: lengthPlayer * 0.5f);
 			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, Additive: lengthPlayer * 0.15f);
-			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Additive: lengthPlayer * .25f);
-			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Additive: lengthPlayer * .25f);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: lengthPlayer * .25f);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: lengthPlayer * .25f);
 		}
 		public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			AlchemistOverCharged(target, ref modifiers);

@@ -611,12 +611,12 @@ internal class SkillUI : UIState {
 				Vector2 customOffSet = OffSetPosition_Skill;
 				customOffSet.Y -= 60;
 				for (int i = 0; i < 3; i++) {
-					btn_SkillSlotSelection btn_Selection = new btn_SkillSlotSelection(TextureAssets.InventoryBack7, modplayer, i + 1);
+					btn_SkillSlotSelection btn_Selection = new btn_SkillSlotSelection(TextureAssets.InventoryBack7, i + 1);
 					btn_Selection.UISetPosition(customOffSet + new Vector2(52, 0) * i, textureSize);
 					Append(btn_Selection);
 				}
 				for (int i = 0; i < 10; i++) {
-					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, SkillHolder[i], UItype_SKILL);
+					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, i, SkillHolder[i], UItype_SKILL);
 					skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
 					skill.Add(skillslot);
 					Append(skill[i]);
@@ -625,7 +625,7 @@ internal class SkillUI : UIState {
 			Vector2 InvOffSet = new Vector2(520, -55);
 			if (inventory.Count < 1) {
 				for (int i = 0; i < 30; i++) {
-					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, player, i, modplayer.SkillInventory[i], UIType_INVENTORY);
+					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, i, modplayer.SkillInventory[i], UIType_INVENTORY);
 					Vector2 InvPos = OffSetPosition_Skill + new Vector2(0, 72);
 					if (i >= 10) {
 						InvPos -= InvOffSet;
@@ -661,20 +661,18 @@ internal class SkillUI : UIState {
 }
 class btn_SkillSlotSelection : UIImage {
 	int SelectionIndex = 0;
-	SkillHandlePlayer modplayer;
-	public btn_SkillSlotSelection(Asset<Texture2D> texture, SkillHandlePlayer modplayer, int selection) : base(texture) {
+	public btn_SkillSlotSelection(Asset<Texture2D> texture, int selection) : base(texture) {
 		SelectionIndex = selection;
-		this.modplayer = modplayer;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		base.LeftClick(evt);
 		if (SelectionIndex == 0) {
 			return;
 		}
-		modplayer.ChangeHolder(SelectionIndex);
+		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().ChangeHolder(SelectionIndex);
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
-		if (SelectionIndex != modplayer.CurrentActiveIndex) {
+		if (SelectionIndex != Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().CurrentActiveIndex) {
 			Color = new Color(255, 255, 255, 100);
 		}
 		else {
@@ -714,19 +712,18 @@ class btn_SkillSlotHolder : UIImageButton {
 	public int whoAmI = -1;
 	public int sKillID = -1;
 	public string uitype = "";
-	Player player;
 	Texture2D Texture;
-	SkillHandlePlayer modplayer;
-	public btn_SkillSlotHolder(Asset<Texture2D> texture, Player Tplayer, int WhoAmI, int SkillID, string UItype) : base(texture) {
-		player = Tplayer;
+	public btn_SkillSlotHolder(Asset<Texture2D> texture, int WhoAmI, int SkillID, string UItype) : base(texture) {
+		//player = Tplayer;
 		whoAmI = WhoAmI;
 		sKillID = SkillID;
 		Texture = texture.Value;
 		uitype = UItype;
-		modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		SetVisibility(1, .67f);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
+		Player player = Main.LocalPlayer;
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		//Moving skill around in inventory
 		if (uitype == SkillUI.UIType_INVENTORY) {
 			if (SkillModSystem.SelectInventoryIndex == -1) {
@@ -770,6 +767,8 @@ class btn_SkillSlotHolder : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		Player player = Main.LocalPlayer;
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (uitype == SkillUI.UIType_INVENTORY) {
 			if (modplayer.SkillInventory[whoAmI] != sKillID) {
 				sKillID = modplayer.SkillInventory[whoAmI];

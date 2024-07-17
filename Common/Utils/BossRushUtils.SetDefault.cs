@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.RoguelikeChange;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -113,6 +114,9 @@ namespace BossRush {
 			player.QuickSpawnItem(null, Weapon, amount);
 		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
+			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return false;
+			}
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
 				switch (WhatToCheck) {
 					case MeleeStyle.CheckVanillaSwingWithModded:

@@ -202,6 +202,7 @@ Mods: {
 			MoCShortSwordP.DisplayName: Short Sword P
 			WindSlashProjectile.DisplayName: Wind Slash Projectile
 			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
+			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
 		}
 
 		NPCs: {
@@ -1101,8 +1102,8 @@ Mods: {
 			BuilderTreasureChest: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 				DisplayName: Builder Treasure Chest
-			}	
-			
+			}
+
 			BlackLootBox: {
 				DisplayName: Black LootBox
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
@@ -1441,6 +1442,11 @@ Mods: {
 				DisplayName: Lunatic Tablet
 				Tooltip: ""
 			}
+
+			PerkDebugShower: {
+				DisplayName: Perk Debug Shower
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1714,6 +1720,11 @@ Mods: {
 			ThrowShortSwordCoolDown: {
 				DisplayName: Throw Cool Down
 				Description: " "
+			}
+
+			Marked: {
+				DisplayName: Marked
+				Description: Mods.BossRush.Buffs.Marked.Description
 			}
 		}
 

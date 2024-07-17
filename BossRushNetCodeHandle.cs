@@ -7,6 +7,8 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Skill;
 
 namespace BossRush
 {
@@ -19,7 +21,9 @@ namespace BossRush
             NoHitBossNum,
             GambleAddiction,
             ChanceMultiplayer,
-            GodUltimateChallenge
+            GodUltimateChallenge,
+			Perk,
+			Skill,
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -75,6 +79,20 @@ namespace BossRush
                         moddedplayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
+				case MessageType.Perk:
+					PerkPlayer perkplayer = Main.player[playernumber].GetModPlayer<PerkPlayer>();
+					perkplayer.ReceivePlayerSync(reader);
+					if (Main.netMode == NetmodeID.Server) {
+						perkplayer.SyncPlayer(-1, whoAmI, false);
+					}
+					break;
+				case MessageType.Skill:
+					SkillHandlePlayer skillplayer = Main.player[playernumber].GetModPlayer<SkillHandlePlayer>();
+					skillplayer.ReceivePlayerSync(reader);
+					if (Main.netMode == NetmodeID.Server) {
+						skillplayer.SyncPlayer(-1, whoAmI, false);
+					}
+					break;
             }
         }
     }

@@ -603,16 +603,6 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class ShopPerk : Perk {
-		public override void SetDefaults() {
-			CanBeStack = true;
-			CanBeChoosen = false;
-			StackLimit = 2;
-		}
-		public override void Update(Player player) {
-			player.coinLuck *= StackAmount;
-		}
-	}
 	public class CritPerk : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;

@@ -9,12 +9,14 @@ FlintlockPistol.Description:
 	Weapon that can shoot :
 	+ Have 25% to shoot out additional bullet dealing the same damage
 	Increases damage by 10%
+	Enemy that are hit by this weapon projectile are Marked ( Marked increases crit damage by 100% )
 	'''
 Handgun.Description:
 	'''
 	Weapon that can shoot :
 	+ Have 50% to shoot out additional bullet dealing the same damage
 	Increases damage by 10%
+	Enemy that are hit by this weapon projectile are Marked ( Marked increases crit damage by 100% )
 	'''
 Minishark.Description:
 	'''
@@ -263,23 +265,23 @@ PlatinumShortSword.Description:
 WoodenBow.Description:
 	'''
 	Increases damage by 1 and multiply shooting velocity by 1.1
+	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Weapon will shoot additional wooden arrow
+	Holding weapon will increases user's movement speed by 10%
+	'''
+AshWoodBow.Description:
+	'''
+	Increases damage by 1
 	Weapon will shoot additional wooden arrow
 	Wooden arrow have 30% to light enemy on fire
 	Deal extra 25% damage to enemy on fire
 	'''
-AshWoodBow.Description:
-	'''
-	Increases damage by 1 and multiply shooting velocity by 1.1
-	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
-	Holding weapon will increases user's movement speed by 10%
-	'''
 BorealWoodBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
 	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Wooden arrow have 30% to inflict frost burn on enemy
+	Deal extra 25% damage to enemy have frost burn
 	'''
 RichMahoganyBow.Description:
 	'''

@@ -120,16 +120,6 @@ public class RapidHealing : ModSkill {
 		player.Heal(6);
 	}
 }
-public class HealthSacrifice : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 245;
-		Skill_Duration = BossRushUtils.ToSecond(5);
-		Skill_CoolDown = BossRushUtils.ToSecond(120);
-	}
-	public override void OnTrigger(Player player) {
-		int lifeTaken = player.statLife / 2;
-	}
-}
 public class StarFury : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 225;

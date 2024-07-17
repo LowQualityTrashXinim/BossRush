@@ -11,6 +11,8 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.Potion;
+using System.IO;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -83,27 +85,6 @@ namespace BossRush.Contents.Perks {
 			base.Update(player, ref buffIndex);
 		}
 	}
-	public class PerkGlobalNpc : GlobalNPC {
-		public override void ModifyActiveShop(NPC npc, string shopName, Item[] items) {
-			PerkPlayer perkPlayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
-			// when talking to npc with the shopPerk
-			if (perkPlayer.perks.ContainsKey(Perk.GetPerkType<ShopPerk>())) {
-				items[^1] = getExtraItemValue(npc.type);
-				//check if the npc already talked to with shopPerk, if not, generate an item for that specific npc
-				foreach (int npcID in perkPlayer.hasExtraWeapon.Keys) {
-					if (npcID == npc.type)
-						return;
-				}
-				LootBoxBase.GetWeapon(out int weapon, out int amount);
-				// store the npc and their item in a dict, which the dict gets saved and loaded inside perkPlayer
-				perkPlayer.hasExtraWeapon.Add(npc.type, weapon);
-				items[^1] = getExtraItemValue(npc.type);
-			}
-		}
-		private Item getExtraItemValue(int key) {
-			return new Item(Main.LocalPlayer.GetModPlayer<PerkPlayer>().hasExtraWeapon.GetValueOrDefault(key)) { shopCustomPrice = Item.buyPrice(gold: 25) };
-		}
-	}
 
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
@@ -120,8 +101,6 @@ namespace BossRush.Contents.Perks {
 		public bool perk_ImprovedManaPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 		public bool perk_ScatterShot = false;
-		// ShopPerk
-		public Dictionary<int, int> hasExtraWeapon = new Dictionary<int, int>();
 		public override void Initialize() {
 			perks = new Dictionary<int, int>();
 			PerkAmount = 4;
@@ -257,9 +236,6 @@ namespace BossRush.Contents.Perks {
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
-			//save the dict hasExtraWeapon
-			tag["npcShop"] = hasExtraWeapon.Keys.ToList();
-			tag["npcWeapon"] = hasExtraWeapon.Values.ToList();
 		}
 		public override void LoadData(TagCompound tag) {
 			var PlayerPerks = tag.Get<List<int>>("PlayerPerks");
@@ -272,11 +248,33 @@ namespace BossRush.Contents.Perks {
 					perks.Remove(perks.Keys.ElementAt(i));
 				}
 			}
+		}
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)BossRush.MessageType.Perk);
+			packet.Write((byte)Player.whoAmI);
+			packet.Write(perks.Keys.Count);
+			foreach (int item in perks.Keys) {
+				packet.Write(item);
+				packet.Write(perks[item]);
+			}
+			packet.Send(toWho, fromWho);
+		}
+		public void ReceivePlayerSync(BinaryReader reader) {
+			perks.Clear();
+			int count = reader.ReadInt32();
+			for (int i = 0; i < count; i++)
+				perks.Add(reader.ReadInt32(), reader.ReadInt32());
+		}
 
-			var npcShop = tag.Get<List<int>>("npcShop");
-			var npcWeapon = tag.Get<List<int>>("npcWeapon");
-			hasExtraWeapon = npcShop.Zip(npcWeapon, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		public override void CopyClientState(ModPlayer targetCopy) {
+			PerkPlayer clone = (PerkPlayer)targetCopy;
+			clone.perks = perks;
+		}
 
+		public override void SendClientChanges(ModPlayer clientPlayer) {
+			PerkPlayer clone = (PerkPlayer)clientPlayer;
+			if (perks != clone.perks) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}
 	public abstract class Perk : ModType {
