@@ -704,7 +704,7 @@ class btn_SkillDeletion : UIImage {
 		Texture2D trashbin = TextureAssets.Trash.Value;
 		float scaling = ScaleCalculation(size, trashbin.Size());
 		Vector2 origin = trashbin.Size() * .5f;
-		spriteBatch.Draw(trashbin, drawpos, null, new Color(0,0,0,150), 0, origin, scaling, SpriteEffects.None, 0);
+		spriteBatch.Draw(trashbin, drawpos, null, new Color(0, 0, 0, 150), 0, origin, scaling, SpriteEffects.None, 0);
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
@@ -837,30 +837,15 @@ internal class PerkUIState : UIState {
 	private void ActivateDebugPerkUI(PerkPlayer modplayer, Player player) {
 		int amount = ModPerkLoader.TotalCount;
 		Vector2 originDefault = new Vector2(26, 26);
-		for (int i = 0; i < amount + 1; i++) {
+		for (int i = 0; i < amount; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(amount + 1, 360, i) * Math.Clamp(amount * 20, 0, 260);
-			if (i >= ModPerkLoader.TotalCount) {
-				UIImageButton weapon =
-						 new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
-				weapon.UISetWidthHeight(52, 52);
-				weapon.UISetPosition(player.Center + offsetPos, originDefault);
-				Append(weapon);
-				i++;
-				offsetPos = Vector2.UnitY.Vector2DistributeEvenly(amount + 2, 360, i) * Math.Clamp(amount * 20, 0, 260);
-				UIImageButton weapon2 =
-						 new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.SUPPILESDROP));
-				weapon2.UISetWidthHeight(52, 52);
-				weapon2.UISetPosition(player.Center + offsetPos, originDefault);
-				Append(weapon2);
-				break;
-			}
 			Asset<Texture2D> texture;
 			if (ModPerkLoader.GetPerk(i).textureString is not null)
 				texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(i).textureString);
 			else
 				texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
 			//After that we assign perk
-			PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
+			PerkUIImageButton btn = new PerkUIImageButton(texture);
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = i;
@@ -871,7 +856,7 @@ internal class PerkUIState : UIState {
 		List<int> listOfPerk = new List<int>();
 		for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 			if (modplayer.perks.ContainsKey(i)) {
-				if (!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0
+				if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
 					|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
 					continue;
 				}
@@ -886,26 +871,23 @@ internal class PerkUIState : UIState {
 		int perkamount = modplayer.PerkAmountModified();
 		for (int i = 0; i < perkamount; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
-			if (i >= amount || i >= perkamount - 1) {
-				UIImageButton buttonWeapon = Main.rand.Next(new UIImageButton[]
-				{
-						 new MaterialCardUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT)),
-						 new MaterialWeaponUIImageButton(ModContent.Request<Texture2D>(BossRushTexture.SUPPILESDROP))
-				});
-				buttonWeapon.UISetWidthHeight(52, 52);
-				buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
-				Append(buttonWeapon);
-				continue;
-			}
 			int newperk = Main.rand.Next(listOfPerk);
 			Asset<Texture2D> texture;
 			if (ModPerkLoader.GetPerk(newperk).textureString is not null)
 				texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
 			else
 				texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+			if (i >= amount || i >= perkamount - 1) {
+				PerkUIImageButton buttonWeapon = new PerkUIImageButton(texture);
+				buttonWeapon.perkType = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
+				buttonWeapon.UISetWidthHeight(52, 52);
+				buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
+				Append(buttonWeapon);
+				continue;
+			}
 			listOfPerk.Remove(newperk);
 			//After that we assign perk
-			PerkUIImageButton btn = new PerkUIImageButton(texture, modplayer);
+			PerkUIImageButton btn = new PerkUIImageButton(texture);
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = newperk;
@@ -920,6 +902,7 @@ internal class PerkUIState : UIState {
 			Perk.GetPerkType<BlessingOfNebula>(),
 			Perk.GetPerkType<BlessingOfStarDust>(),
 			Perk.GetPerkType<BlessingOfSynergy>(),
+			Perk.GetPerkType<BlessingOfTitan>(),
 		};
 		for (int i = 0; i < starterPerk.Length; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
@@ -929,7 +912,7 @@ internal class PerkUIState : UIState {
 					continue;
 				}
 			}
-			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString), modplayer);
+			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString));
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = starterPerk[i];
@@ -951,7 +934,7 @@ internal class PerkUIState : UIState {
 					continue;
 				}
 			}
-			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString), modplayer);
+			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString));
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = starterPerk[i];
@@ -961,19 +944,25 @@ internal class PerkUIState : UIState {
 }
 //Do all the check in UI state since that is where the perk actually get create and choose
 class PerkUIImageButton : UIImageButton {
-	PerkPlayer perkplayer;
 	public int perkType;
-	public PerkUIImageButton(Asset<Texture2D> texture, PerkPlayer perkPlayer) : base(texture) {
-		perkplayer = perkPlayer;
+	public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
 	}
 	public override void LeftClick(UIMouseEvent evt) {
+		PerkPlayer perkplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
+		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		if(ModPerkLoader.GetPerk(perkType) != null) {
+			if (ModPerkLoader.GetPerk(perkType).StackLimit == -1 && ModPerkLoader.GetPerk(perkType).CanBeStack) {
+				ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
+				uiSystemInstance.DeactivateUI();
+				return;
+			}
+		}
 		if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perkType))
 			perkplayer.perks.Add(perkType, 1);
 		else
 			if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
 			perkplayer.perks[perkType]++;
 		ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
-		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.DeactivateUI();
 	}
 	public override void Update(GameTime gameTime) {
@@ -987,47 +976,6 @@ class PerkUIImageButton : UIImageButton {
 			}
 		}
 	}
-}
-abstract class SpecialPerkUIImageButton : UIImageButton {
-	protected SpecialPerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
-	}
-	public new virtual void OnLeftClick(Player player) {
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		base.LeftClick(evt);
-		OnLeftClick(Main.LocalPlayer);
-		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		uiSystemInstance.DeactivateUI();
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (IsMouseHovering) {
-			Main.instance.MouseText(TooltipText());
-		}
-		else {
-			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-				Main.instance.MouseText("");
-			}
-		}
-	}
-	public virtual string TooltipText() => "";
-}
-class MaterialWeaponUIImageButton : SpecialPerkUIImageButton {
-	public MaterialWeaponUIImageButton(Asset<Texture2D> texture) : base(texture) {
-	}
-	public override void OnLeftClick(Player player) {
-		LootBoxBase.GetWeapon(out int weapon, out int amount);
-		player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
-	}
-	public override string TooltipText() => "Give you 1 randomize weapon based on progression";
-}
-class MaterialCardUIImageButton : SpecialPerkUIImageButton {
-	public MaterialCardUIImageButton(Asset<Texture2D> texture) : base(texture) {
-	}
-	public override void OnLeftClick(Player player) {
-		player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<RelicContainer>(), 3);
-	}
-	public override string TooltipText() => "Give you 3 card packets";
 }
 internal class EnchantmentUIState : UIState {
 	WeaponEnchantmentUIslot weaponEnchantmentUIslot;

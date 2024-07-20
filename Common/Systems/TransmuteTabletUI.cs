@@ -188,7 +188,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				}
 			int count = relic1.TemplateCount + relic2.TemplateCount;
 			if (relic1 != null && relic2 != null && count <= 4) {
-				CardTemplateLoader.MergeStat(relic1, relic2);
+				RelicTemplateLoader.MergeStat(relic1, relic2);
 				player.QuickSpawnItem(player.GetSource_FromThis(), relic1.Item);
 				return true;
 			}

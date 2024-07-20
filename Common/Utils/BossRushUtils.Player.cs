@@ -56,7 +56,9 @@ namespace BossRush {
 		MysteriousPotionEffectiveness,
 		EnergyCap,
 		EnergyRechargeCap,
-		FullHPDamage
+		FullHPDamage,
+		StaticDefense,
+		DebuffDamage
 		//Luck
 	}
 

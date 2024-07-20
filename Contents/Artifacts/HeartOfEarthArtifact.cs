@@ -15,6 +15,7 @@ namespace BossRush.Contents.Artifacts {
 			Earth = Player.ActiveArtifact() == Artifact.ArtifactType<HeartOfEarthArtifact>();
 		}
 		int ShortStanding = 0;
+		int OnHitDelay = 0;
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
 			if (Earth) {
@@ -27,13 +28,14 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override void PostUpdate() {
-			if (!Earth) {
+			if (!Earth && OnHitDelay <= 0) {
+				OnHitDelay = BossRushUtils.CountDown(OnHitDelay);
 				return;
 			}
 			if (Player.velocity == Vector2.Zero) {
 				ShortStanding++;
 				if (ShortStanding > 120) {
-					if (ShortStanding % Math.Clamp((10 - ShortStanding / 100), 1, 10) == 0) {
+					if (ShortStanding % Math.Clamp(10 - ShortStanding / 100, 1, 10) == 0) {
 						Player.statLife = Math.Clamp(Player.statLife + 1, 0, Player.statLifeMax2);
 					}
 				}
@@ -41,6 +43,14 @@ namespace BossRush.Contents.Artifacts {
 			else {
 				ShortStanding = 0;
 			}
+		}
+		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+			ShortStanding = (int)(ShortStanding * .75f);
+			OnHitDelay = BossRushUtils.ToSecond(.5f);
+		}
+		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+			ShortStanding = (int)(ShortStanding * .75f);
+			OnHitDelay = BossRushUtils.ToSecond(.5f);
 		}
 	}
 }

@@ -1,0 +1,9 @@
+GenericTemplate.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}]
+CombatV2Template.Description: When your current life is above 90%, increases your [c/{0}:{1}] by [c/{0}:{2}]
+CombatV3Template.Description: When your current life is below 45%, increases your [c/{0}:{1}] by [c/{0}:{2}]
+CombatV4Template.Description: Increases your [c/{0}:{1}] base by [c/{0}:{2}]
+StrikeFullHPTemplate.Description: Undamaged enemy receive more damage by [c/{0}:{2}]
+HealthV2Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}] when below 35% health
+HealthV3Template.Description: While you under debuff effect, your [c/{0}:{1}] increases by [c/{0}:{2}]
+DebuffDamageIncreasesTemplate.Description: Enemy take more damage by [c/{0}:{1}] while enemy are under debuff effect
+StaticDefeneseTemplate.Description: Reduce damage receive by [c/{0}:{1}]

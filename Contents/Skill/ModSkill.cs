@@ -197,7 +197,7 @@ public class BloodToPower : ModSkill {
 		player.GetModPlayer<SkillHandlePlayer>().BloodToPower = blood;
 	}
 	public override void Update(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: player.GetModPlayer<SkillHandlePlayer>().BloodToPower * .01f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().BloodToPower * .01f);
 	}
 }
 public class AllOrNothing : ModSkill {

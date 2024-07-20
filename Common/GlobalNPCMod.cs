@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Items.NohitReward;
+﻿using BossRush.Contents.Items.SpecialReward;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.Chest;
 //EnragedStuff
@@ -36,12 +36,13 @@ namespace BossRush.Common {
 			int manacrystal = 1;
 			LeadingConditionRule ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			LeadingConditionRule noHit = new LeadingConditionRule(new GitGudMode());
-			LeadingConditionRule DropOnce = new LeadingConditionRule(new IsPlayerAlreadyHaveASpawner());
+			LeadingConditionRule dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
 			LeadingConditionRule SynergyRule = new(new SynergyDrop());
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IronLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.SuspiciousLookingEye));
@@ -51,17 +52,18 @@ namespace BossRush.Common {
 			if (npc.type == NPCID.EyeofCthulhu) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EoCDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SilverLootBox>()));
-				DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.WormFood));
-				DropOnce.OnSuccess(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
-				npcLoot.Add(DropOnce);
 				//Expert Mode drop
+				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.WormFood));
+				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
 			}
 			if (System.Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWDonHitReward>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CorruptionLootBox>()));
 				//normal drop
@@ -74,6 +76,7 @@ namespace BossRush.Common {
 			if (npc.type == NPCID.BrainofCthulhu) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BoCDonHitReward>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrimsonLootBox>()));
 				//Normal mode drop
@@ -86,6 +89,7 @@ namespace BossRush.Common {
 			if (npc.type == NPCID.QueenBee) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>()));
 				//Enraged boss drop
@@ -96,6 +100,7 @@ namespace BossRush.Common {
 			if (npc.type == NPCID.SkeletronHead) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SkeletronDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<GoldLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.GuideVoodooDoll));
@@ -105,6 +110,7 @@ namespace BossRush.Common {
 			if (npc.type == NPCID.Deerclops) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DeerclopDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<IceLootBox>()));
 				//Enraged boss drop
@@ -117,6 +123,7 @@ namespace BossRush.Common {
 			if (npc.type == NPCID.WallofFlesh) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
+				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));
 				lifecrystal += 5;

@@ -6,7 +6,7 @@ using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
-using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.SpecialReward;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 

@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using System.IO;
 using Terraria.ID;
 using System.Linq;
 using BossRush.Texture;
@@ -9,10 +10,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.NohitReward;
-using BossRush.Contents.Items.Potion;
-using System.IO;
+using BossRush.Contents.Items.SpecialReward;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {

@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 
-namespace BossRush.Contents.Items.NohitReward {
+namespace BossRush.Contents.Items.SpecialReward {
 	internal class KSNoHitReward : BaseNoHit {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.KingSlimePetItem);
 	}

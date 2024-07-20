@@ -21,7 +21,6 @@ public class ChaoticTransportation : ModMutation {
 		}
 	}
 }
-
 public class TouchOfGrim : ModMutation {
 	public override void SetDefaults(NPC npc) {
 		NewGamePlus = true;
@@ -30,7 +29,6 @@ public class TouchOfGrim : ModMutation {
 		target.statLife = 1;
 	}
 }
-
 public class ProjectileResistance : ModMutation {
 	public override void SetDefaults(NPC npc) {
 		NewGamePlus = true;
@@ -47,3 +45,12 @@ public class ItemResistance : ModMutation {
 		modifiers.SourceDamage -= .35f;
 	}
 }
+public class BreakItem : ModMutation {
+	public override void SetDefaults(NPC npc) {
+		NewGamePlus = true;
+	}
+	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
+		target.HeldItem.TurnToAir();
+	}
+}
+

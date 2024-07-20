@@ -34,6 +34,7 @@ HeartOfEarthArtifact: {
 			+ Standing still for a short moment massively boost your regen
 		[c/ab3e43:Negative effect] : 
 			- Your damage effectiveness is depended on your current hp
+			- Getting hit will cut your timer by 25% of it's current value and you will receive 0.5s delay before the healing kick off
 		'''
 }
 
@@ -96,9 +97,10 @@ TokenOfWrathArtifact: {
 		'''
 		"Ruthless..."
 		[c/b7bf5c:Positive effect] : 
-			+ Increases your weapon damage base on crit chance and crit damage ( doesn't count the 100% damage increases )
+			+ Increases your none-critical damage by 50%
+			+ Increases your critical strike chance by 50
 		[c/ab3e43:Negative effect] : 
-			- You will never be able to deal a critical hit
+			- Decreases your critical strike damage by 75%
 		'''
 }
 

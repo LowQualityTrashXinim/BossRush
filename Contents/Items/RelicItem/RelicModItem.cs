@@ -20,6 +20,55 @@ public class Relic : ModItem {
 		Item.rare = ItemRarityID.Gray;
 		Item.value = Item.buyPrice(silver: 50);
 	}
+	/// <summary>
+	/// Use this to add stats before the item automatic add stats
+	/// </summary>
+	/// <param name="templateid"></param>
+	/// <param name="value"></param>
+	/// <param name="stats"></param>
+	public void AddRelicTemplate(Player player, int templateid, StatModifier value, PlayerStats stats = PlayerStats.None) {
+		if (templatelist == null) {
+			templatelist = new List<int>();
+			statlist = new List<PlayerStats>();
+			valuelist = new List<StatModifier>();
+		}
+		templatelist.Add(templateid);
+		statlist.Add(stats);
+		valuelist.Add(value);
+	}
+	/// <summary>
+	/// Use this to add stats before the item automatic add stats
+	/// </summary>
+	/// <param name="templateid"></param>
+	/// <param name="value"></param>
+	/// <param name="stats"></param>
+	public void AddRelicTemplate(Player player, int templateid) {
+		if (templatelist == null) {
+			templatelist = new List<int>();
+			statlist = new List<PlayerStats>();
+			valuelist = new List<StatModifier>();
+		}
+		templatelist.Add(templateid);
+		PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(player);
+		statlist.Add(innerStats);
+		valuelist.Add(RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, innerStats));
+	}
+	/// <summary>
+	/// Use this to add stats before the item automatic add stats
+	/// </summary>
+	/// <param name="templateid"></param>
+	/// <param name="value"></param>
+	/// <param name="stats"></param>
+	public void AddRelicTemplate(Player player, int templateid, PlayerStats stats = PlayerStats.None) {
+		if (templatelist == null) {
+			templatelist = new List<int>();
+			statlist = new List<PlayerStats>();
+			valuelist = new List<StatModifier>();
+		}
+		templatelist.Add(templateid);
+		statlist.Add(stats);
+		valuelist.Add(RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, stats));
+	}
 	public override ModItem Clone(Item newEntity) {
 		Relic clone = (Relic)base.Clone(newEntity);
 		if (templatelist == null) {
@@ -37,11 +86,14 @@ public class Relic : ModItem {
 		}
 		line.Text = "";
 		for (int i = 0; i < templatelist.Count; i++) {
-			line.Text += CardTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(statlist[i], valuelist[i]);
+			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
+				continue;
+			}
+			line.Text += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(statlist[i], valuelist[i]);
 			if (Main.LocalPlayer.IsDebugPlayer()) {
 				line.Text +=
-					$"\nTemplate Name : {CardTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
-					$"\nTemplate Desc : {CardTemplateLoader.GetTemplate(templatelist[i]).Description}" +
+					$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
+					$"\nTemplate Desc : {RelicTemplateLoader.GetTemplate(templatelist[i]).Description}" +
 					$"\nTemplate ID : {templatelist[i]}" +
 					$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
 					$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
@@ -53,13 +105,25 @@ public class Relic : ModItem {
 	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		if(templatelist == null) {
+			templatelist = new List<int>();
+			statlist = new List<PlayerStats>();
+			valuelist = new List<StatModifier>();
+		}
 		if (templatelist.Count <= 0) {
-			templatelist.Add(Main.rand.Next(CardTemplateLoader.TotalCount));
-			statlist.Add(CardTemplateLoader.GetTemplate(templatelist[0]).StatCondition(player));
-			valuelist.Add(CardTemplateLoader.GetTemplate(templatelist[0]).ValueCondition(player, statlist[0]));
+			templatelist.Add(Main.rand.Next(RelicTemplateLoader.TotalCount));
+			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).StatCondition(player));
+			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).ValueCondition(player, statlist[0]));
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
-			CardTemplateLoader.GetTemplate(templatelist[i]).Effect(modplayer, player, valuelist[i], statlist[i]);
+			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
+				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(modplayer, player, valuelist[i], statlist[i]);
+			}
+			else {
+				templatelist[i] = Main.rand.Next(RelicTemplateLoader.TotalCount);
+				statlist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(player);
+				valuelist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(player, statlist[i]);
+			}
 		}
 	}
 	public void SetRelicData(List<int> type, List<PlayerStats> stat, List<StatModifier> value) {
@@ -99,11 +163,11 @@ public class Relic : ModItem {
 		valuelist = tag.Get<List<StatModifier>>("modifierList");
 	}
 }
-public abstract class CardTemplate : ModType {
-	public string Description => Language.GetTextValue($"Mods.BossRush.CardTemplate.{Name}.Description");
+public abstract class RelicTemplate : ModType {
+	public string Description => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
 	public int Type { get; private set; }
 	protected sealed override void Register() {
-		Type = CardTemplateLoader.Register(this);
+		Type = RelicTemplateLoader.Register(this);
 	}
 	public virtual string ModifyToolTip(PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Player player, PlayerStats stat) => new StatModifier();
@@ -112,15 +176,15 @@ public abstract class CardTemplate : ModType {
 
 	}
 }
-public static class CardTemplateLoader {
-	private static readonly List<CardTemplate> _template = new();
+public static class RelicTemplateLoader {
+	private static readonly List<RelicTemplate> _template = new();
 	public static int TotalCount => _template.Count;
-	public static int Register(CardTemplate template) {
-		ModTypeLookup<CardTemplate>.Register(template);
+	public static int Register(RelicTemplate template) {
+		ModTypeLookup<RelicTemplate>.Register(template);
 		_template.Add(template);
 		return _template.Count - 1;
 	}
-	public static CardTemplate GetTemplate(int type) {
+	public static RelicTemplate GetTemplate(int type) {
 		return type >= 0 && type < _template.Count ? _template[type] : null;
 	}
 	public static bool MergeStat(Relic relicItem1, Relic relicItem2) {
@@ -141,6 +205,9 @@ public static class CardTemplateLoader {
 		relicItem2.Item.TurnToAir();
 		return true;
 	}
+	public static string RelicValueToPercentage(StatModifier value) => Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
+	public static string RelicValueToNumber(StatModifier value) => Math.Round(value.ApplyTo(1) - 1, 2).ToString();
+
 }
 public class StatModifierSerializer : TagSerializer<StatModifier, TagCompound> {
 	public override TagCompound Serialize(StatModifier value) => new TagCompound {

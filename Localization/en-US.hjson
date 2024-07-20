@@ -1476,6 +1476,46 @@ Mods: {
 				DisplayName: Perk Debug Shower
 				Tooltip: ""
 			}
+
+			BoCDonHitReward: {
+				DisplayName: Bo C Don Hit Reward
+				Tooltip: ""
+			}
+
+			DeerclopDonHitReward: {
+				DisplayName: Deerclop Don Hit Reward
+				Tooltip: ""
+			}
+
+			EoCDonHitReward: {
+				DisplayName: Eo C Don Hit Reward
+				Tooltip: ""
+			}
+
+			EoWDonHitReward: {
+				DisplayName: Eo W Don Hit Reward
+				Tooltip: ""
+			}
+
+			KSDonHitReward: {
+				DisplayName: K S Don Hit Reward
+				Tooltip: ""
+			}
+
+			QueenBeeDonHitReward: {
+				DisplayName: Queen Bee Don Hit Reward
+				Tooltip: ""
+			}
+
+			SkeletronDonHitReward: {
+				DisplayName: Skeletron Don Hit Reward
+				Tooltip: ""
+			}
+
+			WallOfFleshDonHitReward: {
+				DisplayName: Wall Of Flesh Don Hit Reward
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1754,6 +1794,11 @@ Mods: {
 			Marked: {
 				DisplayName: Marked
 				Description: Mods.BossRush.Buffs.Marked.Description
+			}
+
+			TheUnderworldWrath: {
+				DisplayName: The Underworld Wrath
+				Description: Mods.BossRush.Buffs.TheUnderworldWrath.Description
 			}
 		}
 

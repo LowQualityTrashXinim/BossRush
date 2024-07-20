@@ -15,23 +15,16 @@ public class TokenOfWrathPlayer : ModPlayer {
 	float critrate = 0;
 	public override void ResetEffects() {
 		TokenOfWrath = Player.HasArtifact<TokenOfWrathArtifact>();
-		critrate = 0;
-	}
-	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		if (TokenOfWrath) {
-			damage += critrate * .01f;
-			damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage);
-		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		if (TokenOfWrath) {
-			modifiers.DisableCrit();
+			modifiers.NonCritDamage += .5f;
+			modifiers.CritDamage -= .75f;
 		}
 	}
 	public override void ModifyWeaponCrit(Item item, ref float crit) {
 		if (TokenOfWrath) {
-			critrate = crit;
-			crit -= crit * 10;
+			crit += 50;
 		}
 	}
 }

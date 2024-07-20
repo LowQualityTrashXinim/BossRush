@@ -5,23 +5,88 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.RelicItem;
-public class CombatTemplate : CardTemplate {
+public class GenericTemplate : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
 			PlayerStats.MagicDMG,
 			PlayerStats.SummonDMG,
-			PlayerStats.PureDamage
+			PlayerStats.PureDamage,
+
+			PlayerStats.RegenHP,
+			PlayerStats.RegenMana,
+			PlayerStats.MaxHP,
+			PlayerStats.MaxMana,
+			PlayerStats.Defense,
+			PlayerStats.DefenseEffectiveness,
+			PlayerStats.ShieldHealth,
+			PlayerStats.ShieldEffectiveness,
+
+			PlayerStats.MaxMinion,
+			PlayerStats.MaxSentry,
+
+			PlayerStats.EnergyCap,
+			PlayerStats.EnergyRechargeCap,
+
+			PlayerStats.MovementSpeed,
+			PlayerStats.JumpBoost
 		});
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString(), });
+		string valuestring;
+		if (stat == PlayerStats.ShieldHealth
+			|| stat == PlayerStats.Defense
+			|| stat == PlayerStats.MaxMana
+			|| stat == PlayerStats.MaxHP
+			|| stat == PlayerStats.RegenMana
+			|| stat == PlayerStats.RegenHP
+			|| stat == PlayerStats.MaxMinion
+			|| stat == PlayerStats.MaxSentry
+			|| stat == PlayerStats.EnergyCap
+			|| stat == PlayerStats.EnergyRechargeCap
+			) {
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
+		}
+		else {
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
+		}
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring, });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		if (stat == PlayerStats.JumpBoost || stat == PlayerStats.MovementSpeed) {
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
+		}
+		if (stat == PlayerStats.MaxMinion || stat == PlayerStats.MaxSentry) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 3));
+		}
+		if (stat == PlayerStats.RegenHP || stat == PlayerStats.RegenMana) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 3);
+		}
+		if (stat == PlayerStats.MaxHP || stat == PlayerStats.MaxMana) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10);
+		}
+		if (stat == PlayerStats.Defense) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 2);
+		}
+		if (stat == PlayerStats.ShieldHealth) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10 + 100);
+		}
 		if (stat == PlayerStats.PureDamage) {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.2f), 2), 1);
+		}
+		if (stat == PlayerStats.MeleeDMG
+			|| stat == PlayerStats.RangeDMG
+			|| stat == PlayerStats.MagicDMG
+			|| stat == PlayerStats.SummonDMG) {
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
+		}
+		if (stat == PlayerStats.EnergyCap) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 6) * 20);
+		}
+		if (stat == PlayerStats.EnergyRechargeCap) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 10));
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}
@@ -29,7 +94,7 @@ public class CombatTemplate : CardTemplate {
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class CombatV2Template : CardTemplate {
+public class CombatV2Template : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
@@ -44,10 +109,10 @@ public class CombatV2Template : CardTemplate {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
 		if (stat == PlayerStats.CritChance) {
-			valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
 		}
 		else {
-			valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
 		}
 		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
 	}
@@ -64,13 +129,15 @@ public class CombatV2Template : CardTemplate {
 		if (player.ComparePlayerHealthInPercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class CombatV3Template : CardTemplate {
+public class CombatV3Template : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
-		if (Main.rand.NextFloat() <= .25f) return Main.rand.Next(new PlayerStats[] {
+		if (Main.rand.NextFloat() <= .25f) {
+			return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.PureDamage,
 			PlayerStats.CritChance,
 			PlayerStats.AttackSpeed
 		});
+		}
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
@@ -82,10 +149,10 @@ public class CombatV3Template : CardTemplate {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
 		if (stat == PlayerStats.CritChance) {
-			valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
 		}
 		else {
-			valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
 		}
 		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
 	}
@@ -105,7 +172,7 @@ public class CombatV3Template : CardTemplate {
 		if (!player.ComparePlayerHealthInPercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class CombatV4Template : CardTemplate {
+public class CombatV4Template : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
 		if (Main.rand.NextFloat() <= .25f) return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.PureDamage,
@@ -119,10 +186,7 @@ public class CombatV4Template : CardTemplate {
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		if (stat == PlayerStats.PureDamage) {
-			return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round(value.ApplyTo(1) - 1, 2).ToString(), });
-		}
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round(value.ApplyTo(1) - 1, 2).ToString(), });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		var value = new StatModifier();
@@ -137,58 +201,19 @@ public class CombatV4Template : CardTemplate {
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class StrikeFullHPTemplate : CardTemplate {
+public class StrikeFullHPTemplate : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) => PlayerStats.FullHPDamage;
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), "Damage", Math.Round((value.ApplyTo(1) - 1) * 100f, 2).ToString() + "%", });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier((float)Math.Round(Main.rand.NextFloat(.5f, 1f) + 1, 2), 1, 0, 0);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.5f, 1f) + 1, 2), 1, 0, 0);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class HealthTemplate : CardTemplate {
-	public override PlayerStats StatCondition(Player player) {
-		return Main.rand.Next(new PlayerStats[] {
-			PlayerStats.RegenHP,
-			PlayerStats.RegenMana,
-			PlayerStats.MaxHP,
-			PlayerStats.MaxMana,
-			PlayerStats.Defense,
-			PlayerStats.DefenseEffectiveness,
-			PlayerStats.ShieldHealth,
-			PlayerStats.ShieldEffectiveness
-		});
-	}
-	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		string valuestring;
-		if (stat == PlayerStats.DefenseEffectiveness || stat == PlayerStats.ShieldEffectiveness) valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
-		else valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
-	}
-	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		if (stat == PlayerStats.RegenHP || stat == PlayerStats.RegenMana) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 3);
-		}
-		if (stat == PlayerStats.MaxHP || stat == PlayerStats.MaxMana) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10);
-		}
-		if (stat == PlayerStats.Defense) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 2);
-		}
-		if (stat == PlayerStats.ShieldHealth) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10 + 100);
-		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
-	}
-	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value);
-	}
-}
-public class HealthV2Template : CardTemplate {
+public class HealthV2Template : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.RegenHP,
@@ -200,10 +225,10 @@ public class HealthV2Template : CardTemplate {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		string valuestring;
 		if (stat == PlayerStats.DefenseEffectiveness) {
-			valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
+			valuestring = RelicTemplateLoader.RelicValueToPercentage(value);
 		}
 		else {
-			valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
+			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
 		}
 		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
 	}
@@ -220,7 +245,7 @@ public class HealthV2Template : CardTemplate {
 		if (!player.ComparePlayerHealthInPercentage(.35f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class HealthV3Template : CardTemplate {
+public class HealthV3Template : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.RegenHP,
@@ -229,20 +254,13 @@ public class HealthV3Template : CardTemplate {
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		string valuestring;
-		if (stat == PlayerStats.DefenseEffectiveness) {
-			valuestring = Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
-		}
-		else {
-			valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-		}
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(8, 11) * 5);
 		}
-		return new StatModifier(1, 1, 0, Main.rand.Next(4, 8) * 15);
+		return new StatModifier(1, 1, 0, Main.rand.Next(4, 8) * 3);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		for (int i = 0; i < player.buffType.Length; i++) {
@@ -254,78 +272,25 @@ public class HealthV3Template : CardTemplate {
 		}
 	}
 }
-public class SummonerTemplate : CardTemplate {
-	public override PlayerStats StatCondition(Player player) {
-		return Main.rand.Next(new PlayerStats[] {
-			PlayerStats.MaxMinion,
-			PlayerStats.MaxSentry
-		});
-	}
+public class DebuffDamageIncreasesTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.DebuffDamage;
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		string valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		if (stat == PlayerStats.MaxMinion || stat == PlayerStats.MaxSentry) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 3));
-		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.1f, .3f) + 1, 2), 1, 0, 0);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-public class UtilityTemplate : CardTemplate {
-	public override PlayerStats StatCondition(Player player) {
-		return PlayerStats.LootDropIncrease;
+public class StaticDefeneseTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.StaticDefense;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, 0, 1);
-	}
-	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		string valuestring = Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, valuestring });
-	}
-	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value);
-	}
-}
-public class SkillTemplate : CardTemplate {
-	public override PlayerStats StatCondition(Player player) {
-		return Main.rand.Next(new PlayerStats[] {
-				PlayerStats.EnergyCap,
-				PlayerStats.EnergyRechargeCap
-		});
-	}
-	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round(value.ApplyTo(1) - 1, 2).ToString() });
-	}
-	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		if (stat == PlayerStats.EnergyCap) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 6) * 20);
-		}
-		return new StatModifier(1, 1, 0, Main.rand.Next(1, 10));
-	}
-	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		modplayer.AddStatsToPlayer(stat, value);
-	}
-}
-public class MovementTemplate : CardTemplate {
-	public override PlayerStats StatCondition(Player player) {
-		return Main.rand.Next(new PlayerStats[] {
-				PlayerStats.MovementSpeed,
-				PlayerStats.JumpBoost
-		});
-	}
-	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() });
-	}
-	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
+		return new StatModifier(1, 1, 0, Main.rand.Next(1,13));
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);

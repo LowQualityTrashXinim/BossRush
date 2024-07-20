@@ -13,15 +13,14 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Spawner;
-using BossRush.Contents.Items.Consumable;
 using BossRush.Contents.Items.aDebugItem;
-using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
 		//NoHiter
 		public int gitGud = 0;
 		public int HowManyBossIsAlive = 0;
+		public bool ItemIsUsedDuringBossFight = false;
 		public override void OnEnterWorld() {
 			if (Player.IsDebugPlayer()) {
 				Main.NewText("You have enter debug mode", Color.Red);
@@ -33,6 +32,9 @@ namespace BossRush.Common {
 		}
 		public override void PreUpdate() {
 			CheckHowManyHit();
+			if(Player.ItemAnimationActive && HowManyBossIsAlive > 0) {
+				ItemIsUsedDuringBossFight = true;
+			}
 		}
 		private void CheckHowManyHit() {
 			HowManyBossIsAlive = 0;
@@ -46,6 +48,7 @@ namespace BossRush.Common {
 			}
 			// What happen when boss is inactive
 			if (HowManyBossIsAlive == 0) {
+				ItemIsUsedDuringBossFight = false;
 				amountOfTimeGotHit = 0;
 			}
 		}

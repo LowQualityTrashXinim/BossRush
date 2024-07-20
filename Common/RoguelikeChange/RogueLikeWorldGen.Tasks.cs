@@ -64,8 +64,8 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GridPart_Y = Main.maxTilesY / 24;
 		Main.worldSurface = 0;
 		Main.rockLayer = 0;
-		Main.spawnTileX = Main.maxTilesX / 2;
-		Main.spawnTileY = Main.maxTilesY / 2;
+		Main.spawnTileX = (int)(Main.maxTilesX / 2);
+		Main.spawnTileY = (int)(Main.maxTilesY * .22f);
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 		GenerationHelper.ForEachInRectangle(
@@ -110,7 +110,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Empty_AreaAroundPlayer() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 11, 2),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 5),
 		(i, j) => {
 			GenerationHelper.FastRemoveTile(i, j);
 		});
@@ -118,21 +118,21 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Create_Jungle() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 8, 4, 4));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 5, 4, 14));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
-			if (i <= rectList[0].PointOnRectX(.2f / WorldWidthHeight_Ratio) || i >= rectList[0].PointOnRectX(.8f + WorldHeightWidth_Ratio)) {
+			if (i <= rectList[0].PointOnRectX(.05f) || i >= rectList[0].PointOnRectX(.95f)) {
 				//only place block if I is between 20% and 80% of rect width
 				GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
 			}
-			else if (j <= rectList[0].PointOnRectY(.2f) || j >= rectList[0].PointOnRectY(.8f)) {
+			else if (j <= rectList[0].PointOnRectY(.05f) || j >= rectList[0].PointOnRectY(.95f)) {
 				//only place block if J is between 20% and 80% of rect height
 				{
 					GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
 				}
 			}
 			else {
-				GenerationHelper.FastRemoveTile(i, j);
+				GenerationHelper.FastPlaceTile(i, j, TileID.Mud);
 			}
 		});
 		Biome.Add(RogueLike_BiomeAreaID.Jungle, rectList);
@@ -140,17 +140,21 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void Create_Tundra() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 10, 4, 4));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 4, 14));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
-			if (i <= rectList[0].PointOnRectX(.2f) || i >= rectList[0].PointOnRectX(.8f)) {
+			if (i <= rectList[0].PointOnRectX(.05f) || i >= rectList[0].PointOnRectX(.95f)) {
+				//only place block if I is between 20% and 80% of rect width
 				GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
 			}
-			else if (j <= rectList[0].PointOnRectY(.2f) || j >= rectList[0].PointOnRectY(.8f)) {
-				GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
+			else if (j <= rectList[0].PointOnRectY(.05f) || j >= rectList[0].PointOnRectY(.95f)) {
+				//only place block if J is between 20% and 80% of rect height
+				{
+					GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
+				}
 			}
 			else {
-				GenerationHelper.FastRemoveTile(i, j);
+				GenerationHelper.FastPlaceTile(i, j, TileID.IceBlock);
 			}
 		});
 		Biome.Add(RogueLike_BiomeAreaID.Tundra, rectList);

@@ -6,16 +6,6 @@ using Terraria.ID;
 using BossRush.Common.Systems;
 
 namespace BossRush.Common {
-	public class IsPlayerAlreadyHaveASpawner : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return info.player.GetModPlayer<ModdedPlayer>().HowManyBossIsAlive <= 1;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Can drop only when all boss is dead";
-	}
 	public class ChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
@@ -102,6 +92,20 @@ namespace BossRush.Common {
 					&& (
 					info.player.difficulty == PlayerDifficultyID.Hardcore 
 					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature 
+					|| info.player.IsDebugPlayer());
+			}
+			return false;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => "Drop if player beat boss without getting hit";
+	}
+	public class DontHitBoss : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
+					&& (
+					info.player.difficulty == PlayerDifficultyID.Hardcore
+					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature
 					|| info.player.IsDebugPlayer());
 			}
 			return false;

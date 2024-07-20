@@ -286,9 +286,9 @@ BorealWoodBow.Description:
 RichMahoganyBow.Description:
 	'''
 	Increases damage by 1
-	Multiply shooting velocity by 1.1
 	Weapon will shoot additional wooden arrow
-	+ Weapon that use arrow ammo will have their arrow velocity multiply by 1.2 instead
+	Wooden arrow have 30% to poison enemy
+	Deal extra 15% damage to poisoned enemy 
 	'''
 EbonwoodBow.Description:
 	'''
@@ -361,14 +361,17 @@ PlatinumBow.Description:
 	'''
 DemonBow.Description:
 	'''
-	Weapon that use arrow will and is using wooden arrow will convert wooden arrow to unholy arrow
+	Bow that are using wooden arrow will convert wooden arrow to unholy arrow
 	While player are in corruption, shoot out Corruption Trail
+	Unholy arrow that is shot from this weapon have 15% to inflict shadow flame for 4s
+	While holding this weapon, unstriked enemy receive 150% more damage
 	'''
 TendonBow.Description:
 	'''
+	When shoot, consumes 5 hps to increases damage by 35% 
 	Hitting a enemy with a projectile will debuff them in Ichor for 4s ( can be trigger every 1s )
-	Hitting any enemy 4 times will heal player for 1 hp
-	( Note : projectile that is a minion will is not accepted )
+	Hitting any enemy 4 times will heal player for 1 hp ( Note : projectile that is a minion is not accepted )
+	While holding this weapon, unstriked enemy receive 150% more damage
 	'''
 SnowballCannon.Description:
 	'''

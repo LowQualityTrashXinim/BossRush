@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.NohitReward;
+using BossRush.Contents.Items.SpecialReward;
 using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform {
@@ -32,6 +32,7 @@ namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 				$"\nSummon drop chance : {chestplayer.SummonChanceMutilplier + chestplayer.UpdateSummonChanceMutilplier}" +
 				$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 				$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
+				$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
 				$"\nCurrent active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}"
 				);
 			tooltips.Add(line);

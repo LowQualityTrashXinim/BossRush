@@ -1,3 +1,13 @@
+SuppliesDrop: {
+	DisplayName: Supply Drop
+	Description: Give you 1 randomize weapon based on progression
+}
+
+GiftOfRelic: {
+	DisplayName: Gift of Relic
+	Description: Gift you a relic container
+}
+
 StrokeOfLuck: {
 	DisplayName: Stroke Of Luck
 	Description:
@@ -230,6 +240,16 @@ BlessingOfSynergy: {
 	Description: + Increases weapon flat damage by 10 when switch to a different weapon after used
 }
 
+BlessingOfTitan: {
+	DisplayName: Blessing Of Titan
+	Description:
+		'''
+		+ Increases defense by 15% and additional 10 defenses
+		+ Increases max hp by 100
+		+ Increases thorn by 200%
+		'''
+}
+
 BlessingOfPerk: {
 	DisplayName: Blessing Of Perk
 	Description: + Increases perk range amount by 1
@@ -287,21 +307,12 @@ OverchargedMana: {
 		'''
 }
 
-ShopPerk: {
-	DisplayName: VIP Section
-	Description:
-		'''
-		+ Each Shop can now sell an Extra weapon based on progression
-		+ Mobs drops more coins
-		'''
-}
-
 CritPerk: {
 	DisplayName: Beyond Critcal
 	Description:
 		'''
 		+ Gain a chance to ignore 90% target hit defense, the chance is based on critical strike chance
-		+ Increases +5% critcal strike chance
+		+ Increases critcal strike chance by 5%
 		'''
 }
 
@@ -318,9 +329,9 @@ TrueMeleeBuffPerk: {
 	DisplayName: BloodShed
 	Description:
 		'''
-		+ Melee Damage is less random random
-		+ Melee Attacks that arent a projectile deals 25% bonus damage per stack
-		(note that during iframes, this ability is deactivated)
+		+ Melee damage is no longer random
+		+ Melee weapon that can't shoot projectile deals 25% bonus damage
+		+ While player don't have i-frame, increases above damage by 44%
 		'''
 }
 
@@ -351,4 +362,23 @@ ExtraCritical: {
 ExtraCritical1: {
 	DisplayName: Extra Critical
 	Description: + Increases chance to dealt 4x damage by 1%
+}
+
+WeaponExpert: {
+	DisplayName: Weapon Expert
+	Description:
+		'''
+		+ If default weapon damage is below or equal to 20 damage then increases damage by 100% 
+		( Note : entering hard mode, requirement will be  change to 42 damage)
+		'''
+}
+
+AspectOfTheUnderworld: {
+	DisplayName: Aspect Of The Underworld
+	Description:
+		'''
+		+ You have a aura of fire and is immune to on fire
+		+ Enemy that have On Fire debuff will receive more critical damage
+		- While your life is above 66%, decreases life regen by 60 flat but your aura of fire is stronger
+		'''
 }

@@ -5,6 +5,8 @@ using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
+using System;
+using System.Linq;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -56,11 +58,18 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier RechargeEnergyCap = new StatModifier();
 
 	public StatModifier UpdateFullHPDamage = new StatModifier();
+
+	public StatModifier StaticDefense = new StatModifier();
+
+	public StatModifier DebuffDamage = new StatModifier();
 	//public float LuckIncrease = 0;
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		if (target.life >= target.lifeMax) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
+		}
+		if (target.buffType.Where(i => Main.debuff[i]).Any()) {
+			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage);
 		}
 	}
 	public override void PostUpdate() {
@@ -82,7 +91,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
-		Player.statDefense += (int)UpdateDefenseBase.Base;
+		Player.statDefense += (int)(UpdateDefenseBase.Base + UpdateDefenseBase.Flat);
 		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive - 1;
 		Player.statDefense.FinalMultiplier *= UpdateDefenseBase.Multiplicative;
 		Player.DefenseEffectiveness *= UpdateDefEff.ApplyTo(Player.DefenseEffectiveness.Value);
@@ -118,14 +127,18 @@ public class PlayerStatsHandle : ModPlayer {
 		LifeStealEffectiveness = new StatModifier();
 		EnergyCap = new StatModifier();
 		RechargeEnergyCap = new StatModifier();
+		StaticDefense = new StatModifier() - 1;
+		DebuffDamage = new StatModifier();
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
 		return useSpeed;
 	}
-	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
 	}
-	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
 	}
 	/// <summary>
 	/// This should be uses in always update code
@@ -219,6 +232,12 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.FullHPDamage:
 				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
 				break;
+			case PlayerStats.StaticDefense:
+				StaticDefense = StaticDefense.CombineWith(StatMod);
+				break;
+			case PlayerStats.DebuffDamage:
+				DebuffDamage = DebuffDamage.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
@@ -227,6 +246,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public float requestVelocityChange = 0;
 	/// <summary>
 	/// This should be uses in always update code
+	/// when creating a new stat modifier, pleases uses the default and increases from there
 	/// </summary>
 	/// <param name="stat"></param>
 	/// <param name="Additive"></param>
@@ -237,13 +257,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (stat == PlayerStats.None) {
 			return;
 		}
-		StatModifier StatMod;
-		if (Additive == 1) {
-			StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
-		}
-		else {
-			StatMod = new StatModifier(Additive + 1, Multiplicative, Flat, Base);
-		}
+		StatModifier StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
 		switch (stat) {
 			case PlayerStats.MeleeDMG:
 				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
@@ -316,6 +330,12 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.FullHPDamage:
 				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.StaticDefense:
+				StaticDefense = StaticDefense.CombineWith(StatMod);
+				break;
+			case PlayerStats.DebuffDamage:
+				DebuffDamage = DebuffDamage.CombineWith(StatMod);
 				break;
 			default:
 				break;

@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Items.NohitReward;
+﻿using BossRush.Contents.Items.SpecialReward;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;
@@ -11,6 +11,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 		}
 		public override bool? UseItem(Player player) {
 			player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Clear();
+			player.GetModPlayer<NoHitPlayerHandle>().DontHitBossNumber.Clear();
 			return true;
 		}
 	}

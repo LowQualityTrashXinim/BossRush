@@ -60,7 +60,7 @@ namespace BossRush.Contents.Projectiles {
 			return base.ReApply(player, time, buffIndex);
 		}
 		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, Additive: .101f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, Additive: 1.1f);
 		}
 	}
 }

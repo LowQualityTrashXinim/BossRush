@@ -9,6 +9,7 @@ using BossRush.Common.RoguelikeChange;
 using BossRush.Common;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Texture;
+using System;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -123,12 +124,12 @@ namespace BossRush.Contents.WeaponEnchantment {
 			damage += .1f;
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if(proj.type == ProjectileID.Bullet || proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
+			if (proj.type == ProjectileID.Bullet || proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 				target.AddBuff(ModContent.BuffType<Marked>(), BossRushUtils.ToSecond(10));
 			}
 		}
 	}
-	public class Marked : ModBuff{
+	public class Marked : ModBuff {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetStaticDefaults() {
 			Main.debuff[Type] = true;
@@ -139,7 +140,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			ItemIDType = ItemID.WoodenBow;
 		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, .1f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.1f);
 		}
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
@@ -166,7 +167,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
 		}
 		public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if(target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
+			if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
 				modifiers.SourceDamage += .25f;
 			}
 		}
@@ -204,15 +205,18 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 			damage.Base += 1;
 		}
-		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			float multiply = 1.1f;
-			if (item.useAmmo == AmmoID.Arrow) {
-				multiply += .1f;
-			}
-			velocity += velocity.SafeNormalize(Vector2.Zero) * multiply;
-		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			Projectile.NewProjectile(source, position.PositionOFFSET(velocity, 30) + Main.rand.NextVector2Circular(10, 10), velocity, ProjectileID.WoodenArrowFriendly, damage, knockback, player.whoAmI);
+		}
+		public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (target.HasBuff(BuffID.Poisoned)) {
+				modifiers.SourceDamage += .15f;
+			}
+		}
+		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.type == ProjectileID.WoodenArrowFriendly && Main.rand.NextFloat() <= .3f) {
+				target.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(5));
+			}
 		}
 	}
 	public class EbonwoodBow : ModEnchantment {
@@ -430,9 +434,17 @@ namespace BossRush.Contents.WeaponEnchantment {
 				type = ProjectileID.UnholyArrow;
 			}
 		}
+		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.FullHPDamage, Additive: 1.5f);
+		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (player.ZoneCorrupt) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<CorruptionTrail>(), damage, knockback, player.whoAmI);
+			}
+		}
+		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (proj.type == ProjectileID.UnholyArrow && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type && Main.rand.NextFloat() <= .15f) {
+				target.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(4));
 			}
 		}
 	}
@@ -440,8 +452,23 @@ namespace BossRush.Contents.WeaponEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.TendonBow;
 		}
+		public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			if (globalItem.Item_Counter3[index] == 0) {
+				player.statLife = Math.Clamp(player.statLife - 5, 100, player.statLifeMax2);
+				damage = (int)(damage * 1.35);
+				for (int i = 0; i < 15; i++) {
+					Vector2 vec = Main.rand.NextVector2Circular(7.5f, 7.5f);
+					int dust = Dust.NewDust(player.Center, 0, 0, DustID.Crimson, Scale: Main.rand.NextFloat(.75f, 1.25f));
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity = vec;
+				}
+				globalItem.Item_Counter3[index] = BossRushUtils.ToSecond(3);
+			}
+		}
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+			globalItem.Item_Counter3[index] = BossRushUtils.CountDown(globalItem.Item_Counter3[index]);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.FullHPDamage, Additive: 1.5f);
 		}
 		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (proj.minion) {

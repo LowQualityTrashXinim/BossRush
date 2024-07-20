@@ -16,8 +16,33 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
+using BossRush.Contents.BuffAndDebuff;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Contents.Perks {
+	public class SuppliesDrop : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.SUPPILESDROP;
+			CanBeStack = true;
+			StackLimit = -1;
+			CanBeChoosen = false;
+		}
+		public override void OnChoose(Player player) {
+			LootBoxBase.GetWeapon(out int weapon, out int amount);
+			player.QuickSpawnItem(player.GetSource_FromThis(), weapon, amount);
+		}
+	}
+	public class GiftOfRelic : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			CanBeStack = true;
+			StackLimit = -1;
+			CanBeChoosen = false;
+		}
+		public override void OnChoose(Player player) {
+			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<RelicContainer>());
+		}
+	}
 	public class StrokeOfLuck : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
@@ -294,7 +319,7 @@ namespace BossRush.Contents.Perks {
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
 			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
-			player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .35f;
+			player.GetModPlayer<PlayerStatsHandle>().DebuffTime -= .35f;
 			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
 			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .35f;
@@ -393,7 +418,7 @@ namespace BossRush.Contents.Perks {
 			player.statDefense += (int)Math.Round(player.velocity.Length()) * StackAmount;
 		}
 		public override void Update(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: .15f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1.15f);
 		}
 	}
 	public class CelestialRage : Perk {
@@ -482,7 +507,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (ProjectileID.Sets.IsAWhip[proj.type]) {
-				target.AddBuff(ModContent.BuffType<StarGaze>(),BossRushUtils.ToSecond(Main.rand.Next(1,4)));
+				target.AddBuff(ModContent.BuffType<StarGaze>(), BossRushUtils.ToSecond(Main.rand.Next(1, 4)));
 			}
 		}
 	}
@@ -496,7 +521,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(NPC npc, ref int buffIndex) {
 			npc.lifeRegen -= 15;
-			if(Main.hardMode) {
+			if (Main.hardMode) {
 				npc.lifeRegen -= 40;
 			}
 			if (npc.buffTime[Type] == 0) {
@@ -514,6 +539,19 @@ namespace BossRush.Contents.Perks {
 			if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
 				damage.Flat += 10 * StackAmount;
 			}
+		}
+	}
+	public class BlessingOfTitan : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 100 * StackAmount);
+			modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.15f * StackAmount, Flat: 10);
+			modplayer.AddStatsToPlayer(PlayerStats.Thorn, Flat: 2f * StackAmount);
 		}
 	}
 	public class BlessingOfPerk : Perk {
@@ -593,12 +631,12 @@ namespace BossRush.Contents.Perks {
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.DamageType == DamageClass.Magic) {
 				target.Center.LookForHostileNPC(out List<NPC> npclist, 64);
-				for (int i = 0; i < 120; i++) {
+				for (int i = 0; i < 65; i++) {
 					var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
 					Main.dust[d].noGravity = true;
 				}
 				foreach (var i in npclist) {
-					player.StrikeNPCDirect(target, i.CalculateHitInfo(5 + (int)(damageDone * 0.1f), 1, Main.rand.NextBool(10)));
+					player.StrikeNPCDirect(target, i.CalculateHitInfo(5 + (int)(proj.damage * 0.15f), 1, Main.rand.NextBool(10)));
 				}
 			}
 		}
@@ -656,13 +694,14 @@ namespace BossRush.Contents.Perks {
 	public class TrueMeleeBuffPerk : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
-			StackLimit = 4;
+			StackLimit = 2;
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (modifiers.DamageType == DamageClass.Melee && item.shoot == ProjectileID.None) {
 				modifiers.DamageVariationScale *= 0f;
+				modifiers.SourceDamage += .25f * StackAmount;
 				if (!player.immune) {
-					modifiers.ScalingBonusDamage += .25f * StackAmount;
+					modifiers.SourceDamage += .44f;
 				}
 			}
 		}
@@ -692,6 +731,63 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PerkPlayer>().perk_ImprovedManaPotion = true;
+		}
+	}
+	public class WeaponExpert : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			if (item.damage <= 20 || (Main.hardMode && item.damage <= 42)) {
+				damage += 1;
+			}
+		}
+	}
+	public class AspectOfTheUnderworld : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.15f, 1, 10);
+			if (player.ComparePlayerHealthInPercentage(.66f)) {
+				player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: -32);
+			}
+			player.buffImmune[BuffID.OnFire] = true;
+		}
+		public override void Update(Player player) {
+			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
+			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
+			for (int i = 0; i < 4; i++) {
+				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
+				Main.dust[dustRing].noGravity = true;
+				Main.dust[dustRing].velocity = Vector2.Zero;
+				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
+				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
+				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			}
+			if (npclist.Count > 0) {
+				foreach (NPC npc in npclist) {
+					npc.AddBuff(BuffID.OnFire, 180);
+					if (player.ComparePlayerHealthInPercentage(.67f)) {
+						npc.AddBuff(BuffID.OnFire3, 180);
+						npc.AddBuff(ModContent.BuffType<TheUnderworldWrath>(), 180);
+					}
+				}
+			}
+		}
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+				modifiers.CritDamage *= 1.15f;
+			}
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+				modifiers.CritDamage *= 1.15f;
+			}
 		}
 	}
 }
