@@ -10,11 +10,9 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentGlobalItem : GlobalItem {
+	public static bool CanBeEnchanted(Item entity) => entity.damage > 0 && !entity.accessory && !entity.consumable && entity.maxStack == 1;
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		if (entity.damage > 0 && !entity.accessory && !entity.consumable) {
-			return true;
-		}
-		return false;
+		return CanBeEnchanted(entity);
 	}
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[3];

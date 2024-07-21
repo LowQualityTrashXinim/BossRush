@@ -150,7 +150,7 @@ namespace BossRush.Common.Systems {
 						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 					default:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Additive: modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]));
+						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Additive: 1 + modplayer.ToStatsNumFloat(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;
 				}
 		}

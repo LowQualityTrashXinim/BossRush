@@ -28,7 +28,7 @@ namespace BossRush.Contents.Artifacts {
 			}
 			Item item = Player.HeldItem;
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1) {
+				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item)) {
 					return;
 				}
 				int length = globalitem.EnchantmenStlot.Length;

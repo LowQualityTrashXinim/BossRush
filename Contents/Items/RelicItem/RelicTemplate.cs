@@ -287,12 +287,29 @@ public class DebuffDamageIncreasesTemplate : RelicTemplate {
 public class StaticDefeneseTemplate : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) => PlayerStats.StaticDefense;
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value), });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToNumber(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, 0, Main.rand.Next(1,13));
+		return new StatModifier(1, 1, 0, Main.rand.Next(1, 13));
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);
+	}
+}
+public class MagicCostTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.MagicDMG;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) =>
+		string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			RelicTemplateLoader.RelicValueToPercentage(value.Multiplicative),
+			RelicTemplateLoader.RelicValueToNumber(value.Flat)
+		});
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier(1, MathF.Round(Main.rand.NextFloat(1.05f, 1.12f), 2), Main.rand.Next(3, 10), 0);
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value);
+		player.manaCost += 1.15f;
 	}
 }

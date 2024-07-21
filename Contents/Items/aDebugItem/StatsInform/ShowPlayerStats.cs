@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 	internal class ShowPlayerStats : ModItem {
@@ -21,8 +22,9 @@ namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 				$"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1)}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
 				$"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1)}% Crit chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
 				$"\nGeneric Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1)}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
-				$"\nCrit damage : {Math.Round(statshandle.UpdateCritDamage.ApplyTo(1) * 100, 2)}%" +
+				$"\nCrit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%" +
 				$"\nDamage against undamaged NPC : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%" +
+				$"\nAttack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}" +
 				$"\nHealth regenaration : {player.lifeRegen}" +
 				$"\nMana regenaration : {player.manaRegen}" +
 				$"\nMana reduction : {player.manaCost}" +

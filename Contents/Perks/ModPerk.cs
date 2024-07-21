@@ -18,6 +18,8 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.RelicItem;
+using Mono.Cecil;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -266,37 +268,6 @@ namespace BossRush.Contents.Perks {
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
 			player.GetModPlayer<ChestLootDropPlayer>().CanDropSynergyEnergy = true;
-		}
-	}
-	public class ChaoticImbue : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-		}
-		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			bool Opportunity = Main.rand.NextBool(10);
-			int[] debuffArray =
-				{ BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame,
-				BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
-			if (!debuffArray.Where(d => !target.HasBuff(d)).Any())
-				return;
-			for (int i = 0; i < debuffArray.Length; i++) {
-				if (Opportunity && !target.HasBuff(debuffArray[i])) {
-					target.AddBuff(debuffArray[i], 1800);
-					break;
-				}
-				else {
-					if (!Opportunity)
-						Opportunity = Main.rand.NextBool(10);
-				}
-				if (i == debuffArray.Length - 1 && Opportunity)
-					i = 0;
-			}
-		}
-		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!Main.rand.NextBool(4)) {
-				return;
-			}
-			Projectile.NewProjectile(source, position, velocity, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damage, knockback, player.whoAmI);
 		}
 	}
 	public class Dirt : Perk {
@@ -641,7 +612,7 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class CritPerk : Perk {
+	public class BeyondCritcal : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;
@@ -649,31 +620,16 @@ namespace BossRush.Contents.Perks {
 		public override void Update(Player player) {
 			player.GetCritChance(DamageClass.Generic) += 5 * StackAmount;
 		}
-		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat(1, 101) <= proj.CritChance) {
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextFloat() < .03f * StackLimit) {
+				modifiers.FinalDamage *= 2.5f;
 				modifiers.ScalingArmorPenetration += 0.9f;
 			}
 		}
-	}
-	public class ExtraCritical : Perk {
-		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 5;
-		}
-		public override string ModifyToolTip() {
-			if (StackAmount > 1) {
-				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
-			}
-			return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
-		}
-		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() < .01f * StackLimit) {
-				modifiers.FinalDamage *= 4;
-			}
-		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() < .01f * StackLimit) {
-				modifiers.FinalDamage *= 4;
+			if (Main.rand.NextFloat() < .03f * StackLimit) {
+				modifiers.FinalDamage *= 2.5f;
+				modifiers.ScalingArmorPenetration += 0.9f;
 			}
 		}
 	}
@@ -788,6 +744,85 @@ namespace BossRush.Contents.Perks {
 			if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
 				modifiers.CritDamage *= 1.15f;
 			}
+		}
+	}
+	public class AspectOfFirstChaos : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			int randcount = 1;
+			for (int i = 0; i < randcount; i++) {
+				if (Main.rand.NextBool(5)) {
+					randcount++;
+					player.StrikeNPCDirect(target, target.CalculateHitInfo(proj.damage, 0));
+				}
+			}
+			bool Opportunity = Main.rand.NextBool(10);
+			int[] debuffArray =
+				{ BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame,
+				BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
+			if (debuffArray.Where(d => !target.HasBuff(d)).Count() >= debuffArray.Length)
+				return;
+			for (int i = 0; i < debuffArray.Length; i++) {
+				if (Opportunity && !target.HasBuff(debuffArray[i])) {
+					target.AddBuff(debuffArray[i], 1800);
+					break;
+				}
+				else {
+					if (!Opportunity)
+						Opportunity = Main.rand.NextBool(10);
+				}
+				if (i == debuffArray.Length - 1 && Opportunity)
+					i = 0;
+			}
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int randcount = 1;
+			for (int i = 0; i < randcount; i++) {
+				if (Main.rand.NextBool(5)) {
+					randcount++;
+					player.StrikeNPCDirect(target, target.CalculateHitInfo(item.damage, 0));
+				}
+			}
+			if (!Main.rand.NextBool(4)) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 4, Main.rand.Next(TerrariaArrayID.UltimateProjPack), item.damage, item.knockBack, player.whoAmI);
+			}
+			bool Opportunity = Main.rand.NextBool(10);
+			int[] debuffArray =
+				{ BuffID.OnFire, BuffID.OnFire3, BuffID.Bleeding, BuffID.Frostburn, BuffID.Frostburn2, BuffID.ShadowFlame,
+				BuffID.CursedInferno, BuffID.Ichor, BuffID.Venom, BuffID.Poisoned, BuffID.Confused, BuffID.Midas };
+			if (debuffArray.Where(d => !target.HasBuff(d)).Count() >= debuffArray.Length)
+				return;
+			for (int i = 0; i < debuffArray.Length; i++) {
+				if (Opportunity && !target.HasBuff(debuffArray[i])) {
+					target.AddBuff(debuffArray[i], 1800);
+					break;
+				}
+				else {
+					if (!Opportunity)
+						Opportunity = Main.rand.NextBool(10);
+				}
+				if (i == debuffArray.Length - 1 && Opportunity)
+					i = 0;
+			}
+		}
+		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (!Main.rand.NextBool(4)) {
+				return;
+			}
+			Projectile.NewProjectile(source, position, velocity, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damage, knockback, player.whoAmI);
+		}
+	}
+	public class EnergyAbsorption : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void UpdateEquip(Player player) {
+			player.endurance += .1f;
+		}
+		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(hurtInfo.Damage * .25f));
 		}
 	}
 }

@@ -105,7 +105,7 @@ public class Relic : ModItem {
 	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if(templatelist == null) {
+		if (templatelist == null) {
 			templatelist = new List<int>();
 			statlist = new List<PlayerStats>();
 			valuelist = new List<StatModifier>();
@@ -207,14 +207,16 @@ public static class RelicTemplateLoader {
 	}
 	public static string RelicValueToPercentage(StatModifier value) => Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
 	public static string RelicValueToNumber(StatModifier value) => Math.Round(value.ApplyTo(1) - 1, 2).ToString();
+	public static string RelicValueToPercentage(float value) => Math.Round((value - 1) * 100, 2).ToString() + "%";
+	public static string RelicValueToNumber(float value) => Math.Round(value, 2).ToString();
 
 }
 public class StatModifierSerializer : TagSerializer<StatModifier, TagCompound> {
 	public override TagCompound Serialize(StatModifier value) => new TagCompound {
-		["Base"] = value.Base,
-		["Flat"] = value.Flat,
-		["Additive"] = value.Additive,
-		["Multiplicative"] = value.Multiplicative
+		["Base"] = MathF.Round(value.Base, 2),
+		["Flat"] = MathF.Round(value.Flat, 2),
+		["Additive"] = MathF.Round(value.Additive, 2),
+		["Multiplicative"] = MathF.Round(value.Multiplicative, 2)
 	};
 
 	public override StatModifier Deserialize(TagCompound tag) =>

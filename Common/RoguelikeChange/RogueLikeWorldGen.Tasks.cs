@@ -8,7 +8,6 @@ using Terraria.WorldBuilding;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.GameContent.UI.Elements;
 
 namespace BossRush.Common.WorldGenOverhaul;
 
@@ -26,6 +25,8 @@ public class RogueLike_BiomeAreaID {
 	public const short Marble = 10;
 	public const short BlueSlime = 11;
 	public const short FleshRealm = 12;
+	public const short Beaches = 13;
+	public const short Underground = 14;
 }
 
 public partial class RogueLikeWorldGen : ModSystem {
@@ -114,18 +115,27 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		(i, j) => {
 			GenerationHelper.FastRemoveTile(i, j);
 		});
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 5, 2, 1),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Grass);
+		});
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 7, 2, 1),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Stone);
+			GenerationHelper.FastPlaceWall(i, j, WallID.Stone);
+		});
 	}
 	[Task]
-	public void Create_Jungle() {
+	public void Create_Jungle() {//17 -> 21
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 5, 4, 14));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(15, 5, 2, 6));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
-			if (i <= rectList[0].PointOnRectX(.05f) || i >= rectList[0].PointOnRectX(.95f)) {
+			if (i <= rectList[0].PointOnRectX(.01f) || i >= rectList[0].PointOnRectX(.99f)) {
 				//only place block if I is between 20% and 80% of rect width
 				GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
 			}
-			else if (j <= rectList[0].PointOnRectY(.05f) || j >= rectList[0].PointOnRectY(.95f)) {
+			else if (j <= rectList[0].PointOnRectY(.01f) || j >= rectList[0].PointOnRectY(.99f)) {
 				//only place block if J is between 20% and 80% of rect height
 				{
 					GenerationHelper.FastPlaceTile(i, j, TileID.JungleGrass);
@@ -135,12 +145,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				GenerationHelper.FastPlaceTile(i, j, TileID.Mud);
 			}
 		});
-		Biome.Add(RogueLike_BiomeAreaID.Jungle, rectList);
+		//Biome.Add(RogueLike_BiomeAreaID.Jungle, rectList);
 	}
 	[Task]
 	public void Create_Tundra() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 4, 14));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(9, 5, 2, 6));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			if (i <= rectList[0].PointOnRectX(.05f) || i >= rectList[0].PointOnRectX(.95f)) {
@@ -157,83 +167,92 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				GenerationHelper.FastPlaceTile(i, j, TileID.IceBlock);
 			}
 		});
-		Biome.Add(RogueLike_BiomeAreaID.Tundra, rectList);
+		//Biome.Add(RogueLike_BiomeAreaID.Tundra, rectList);
 	}
 	[Task]
 	public void Create_Crimson() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(0, 2, 3, 5));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(4, 5, 3, 7));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Crimstone);
 		});
-		Biome.Add(RogueLike_BiomeAreaID.Crimson, rectList);
+		//Biome.Add(RogueLike_BiomeAreaID.Crimson, rectList);
 	}
 	[Task]
 	public void Create_Corruption() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(21, 2, 3, 5));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 5, 3, 7));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
 
 		});
-		Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
+		//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
 	}
 	[Task]
 	public void Create_Desert() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(5, 0, 3, 5));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 7));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Sandstone);
 		});
-		Biome.Add(RogueLike_BiomeAreaID.Desert, rectList);
+		//Biome.Add(RogueLike_BiomeAreaID.Desert, rectList);
 	}
 	[Task]
 	public void Create_BlueShroom() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(16, 0, 3, 5));
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(18, 14, 3, 3));
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.MushroomGrass);
 		});
-		Biome.Add(RogueLike_BiomeAreaID.BlueShroom, rectList);
+		//Biome.Add(RogueLike_BiomeAreaID.BlueShroom, rectList);
 	}
 	[Task]
-	public void Create_BigGraniteOrMarble() {
+	public void Create_BigGranite() {
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(22, 9, 2, 3));
-		if (WorldGen._genRand.NextBool()) {
-			GenerationHelper.ForEachInRectangle(rectList[0],
-			(i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, TileID.Granite);
-				GenerationHelper.FastPlaceWall(i, j, WallID.GraniteUnsafe);
-			});
-			Biome.Add(RogueLike_BiomeAreaID.Granite, rectList);
-		}
-		else {
-			GenerationHelper.ForEachInRectangle(rectList[0],
-			(i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, TileID.Marble);
-				GenerationHelper.FastPlaceWall(i, j, WallID.MarbleUnsafe);
-			});
-			Biome.Add(RogueLike_BiomeAreaID.Marble, rectList);
-		}
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(17, 12, 3, 1));
+		GenerationHelper.ForEachInRectangle(rectList[0],
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Granite);
+			GenerationHelper.FastPlaceWall(i, j, WallID.GraniteUnsafe);
+		});
+		//Biome.Add(RogueLike_BiomeAreaID.Granite, rectList);
+	}
+	[Task]
+	public void Create_Marble() {
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(13, 12, 2, 2));
+		GenerationHelper.ForEachInRectangle(rectList[0],
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Marble);
+			GenerationHelper.FastPlaceWall(i, j, WallID.MarbleUnsafe);
+		});
+		//Biome.Add(RogueLike_BiomeAreaID.Marble, rectList);
 	}
 	[Task]
 	public void Create_Dungeon() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(20, 16, 4, 5),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(9, 11, 2, 5),
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.BlueDungeonBrick);
 			GenerationHelper.FastPlaceWall(i, j, WallID.BlueDungeonUnsafe);
+		});
+	}
+	[Task]
+	public void Create_JungleTemple() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(15, 11, 2, 5),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
+			GenerationHelper.FastPlaceWall(i, j, WallID.LihzahrdBrickUnsafe);
 		});
 	}
 	[Task]//Test
 	public void Create_MinerParadise() {
 		//Minor Biome or soon to be
 		int[] oreIDarr = { TileID.Copper, TileID.Tin, TileID.Iron, TileID.Lead, TileID.Silver, TileID.Tungsten, TileID.Gold, TileID.Platinum, TileID.Palladium, TileID.Cobalt, TileID.Orichalcum, TileID.Mythril, TileID.Adamantite, TileID.Titanium };
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(5, 17, 4, 4),
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(11, 11, 2, 5),
 		(i, j) => {
 			int oreID = WorldGen.genRand.Next(oreIDarr);
 			GenerationHelper.FastPlaceTile(i, j, Main.rand.NextFloat() >= .45f ? TileID.Stone : oreID);
@@ -250,30 +269,27 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	[Task]
-	public void Create_SlimeWorldOrFleshRealm() {
+	public void Create_SlimeWorld() {
 		//Minor Biome or soon to be
 		List<Rectangle> rectList = new List<Rectangle>();
-		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(10, 14, 2, 3));
-		if (WorldGen._genRand.NextBool()) {
-			GenerationHelper.ForEachInRectangle(rectList[0],
-			(i, j) => {
-				if (j <= rectList[0].Y + rectList[0].Height * .75f) {
-					GenerationHelper.FastPlaceTile(i, j, TileID.PinkSlimeBlock);
-				}
-				else {
-					GenerationHelper.FastPlaceWall(i, j, WallID.Slime);
-				}
-				GenerationHelper.FastPlaceTile(i, j, TileID.SlimeBlock);
-			});
-			Biome.Add(RogueLike_BiomeAreaID.BlueSlime, rectList);
-		}
-		else {
-			GenerationHelper.ForEachInRectangle(rectList[0], (i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, TileID.FleshBlock);
-				GenerationHelper.FastPlaceWall(i, j, WallID.Flesh);
-			});
-			Biome.Add(RogueLike_BiomeAreaID.FleshRealm, rectList);
-		}
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(11, 8, 2, 3));
+		GenerationHelper.ForEachInRectangle(rectList[0],
+		(i, j) => {
+			GenerationHelper.FastPlaceWall(i, j, WallID.Slime);
+			GenerationHelper.FastPlaceTile(i, j, TileID.SlimeBlock);
+		});
+		//Biome.Add(RogueLike_BiomeAreaID.BlueSlime, rectList);
+	}
+	[Task]
+	public void Create_FleshRealm() {
+		//Minor Biome or soon to be
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3));
+		GenerationHelper.ForEachInRectangle(rectList[0], (i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.FleshBlock);
+			GenerationHelper.FastPlaceWall(i, j, WallID.Flesh);
+		});
+		//Biome.Add(RogueLike_BiomeAreaID.FleshRealm, rectList);
 	}
 	[Task]
 	public void Create_TheBoneZone() {
@@ -285,13 +301,37 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		});
 	}
 	[Task]
+	public void Create_Beach() {
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 3, 2));
+		GenerationHelper.ForEachInRectangle(rectList[0],
+		(i, j) => {
+			if (i <= rectList[0].PointOnRectX(.4f) && j <= rectList[0].PointOnRectY(.4f)) {
+				GenerationHelper.FastRemoveTile(i, j);
+			}
+			else {
+				GenerationHelper.FastPlaceTile(i, j, TileID.Sand);
+			}
+		});
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(21, 5, 3, 2));
+		GenerationHelper.ForEachInRectangle(rectList[1],
+		(i, j) => {
+			if (i >= rectList[1].PointOnRectX(.6f) && j <= rectList[1].PointOnRectY(.4f)) {
+				GenerationHelper.FastRemoveTile(i, j);
+			}
+			else {
+				GenerationHelper.FastPlaceTile(i, j, TileID.Sand);
+			}
+		});
+	}
+	[Task]
 	public void Create_Path() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 23, 23, 1), GenerationHelper.FastRemoveTile);
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(24, 22, 24, 1), GenerationHelper.FastRemoveTile);
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(22, 0, 1, 24), GenerationHelper.FastRemoveTile);
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(26, 23, 1, 22), GenerationHelper.FastRemoveTile);
-		//Create path from hel-la-va-tor through slime biome to miner paradise
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 36, 27, 1), GenerationHelper.FastRemoveTile);
+		//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 23, 23, 1), GenerationHelper.FastRemoveTile);
+		//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(24, 22, 24, 1), GenerationHelper.FastRemoveTile);
+		//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(22, 0, 1, 24), GenerationHelper.FastRemoveTile);
+		//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(26, 23, 1, 22), GenerationHelper.FastRemoveTile);
+		////Create path from hel-la-va-tor through slime biome to miner paradise
+		//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld48x48(0, 36, 27, 1), GenerationHelper.FastRemoveTile);
 	}
 	[Task]
 	public void Final_CleanUp() {

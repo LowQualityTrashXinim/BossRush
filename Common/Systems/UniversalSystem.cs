@@ -23,6 +23,7 @@ using System.Drawing.Drawing2D;
 using Terraria.Localization;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Artifacts;
+using BossRush.Contents.Items.aDebugItem.RelicDebug;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -78,6 +79,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface enchantInterface;
 	internal UserInterface systemMenuInterface;
 	internal UserInterface transmutationInterface;
+	internal UserInterface relicTest;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -85,6 +87,7 @@ internal class UniversalSystem : ModSystem {
 	public DefaultUI defaultUI;
 	public UISystemMenu UIsystemmenu;
 	public TransmutationUIState transmutationUI;
+	public RelicTransmuteUI relicUI;
 
 	public static bool EnchantingState = false;
 	public override void Load() {
@@ -109,6 +112,9 @@ internal class UniversalSystem : ModSystem {
 
 			transmutationUI = new();
 			transmutationInterface = new();
+
+			relicTest = new();
+			relicUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
@@ -141,6 +147,8 @@ internal class UniversalSystem : ModSystem {
 		systemMenuInterface = null;
 		transmutationUI = null;
 		transmutationInterface = null;
+		relicUI = null;
+		relicTest = null;
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
@@ -149,6 +157,7 @@ internal class UniversalSystem : ModSystem {
 		enchantInterface?.Update(gameTime);
 		systemMenuInterface?.Update(gameTime);
 		transmutationInterface?.Update(gameTime);
+		relicTest?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -162,6 +171,7 @@ internal class UniversalSystem : ModSystem {
 					enchantInterface.Draw(Main.spriteBatch, new GameTime());
 					systemMenuInterface.Draw(Main.spriteBatch, new GameTime());
 					transmutationInterface.Draw(Main.spriteBatch, new GameTime());
+					relicTest.Draw(Main.spriteBatch, new GameTime());
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -184,12 +194,17 @@ internal class UniversalSystem : ModSystem {
 		DeactivateUI();
 		transmutationInterface.SetState(transmutationUI);
 	}
+	public void ActivateRelicUI() {
+		DeactivateUI();
+		relicTest.SetState(relicUI);
+	}
 	public void DeactivateUI() {
 		perkInterface.SetState(null);
 		skillInterface.SetState(null);
 		enchantInterface.SetState(null);
 		systemMenuInterface.SetState(null);
 		transmutationInterface.SetState(null);
+		relicTest.SetState(null);
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -850,6 +865,7 @@ internal class PerkUIState : UIState {
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = i;
 			Append(btn);
+			ModPerkLoader.GetPerk(i);
 		}
 	}
 	private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player) {
@@ -878,8 +894,13 @@ internal class PerkUIState : UIState {
 			else
 				texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
 			if (i >= amount || i >= perkamount - 1) {
+				newperk = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
+				if (ModPerkLoader.GetPerk(newperk).textureString is not null)
+					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
+				else
+					texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
 				PerkUIImageButton buttonWeapon = new PerkUIImageButton(texture);
-				buttonWeapon.perkType = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
+				buttonWeapon.perkType = newperk;
 				buttonWeapon.UISetWidthHeight(52, 52);
 				buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
 				Append(buttonWeapon);
@@ -950,7 +971,7 @@ class PerkUIImageButton : UIImageButton {
 	public override void LeftClick(UIMouseEvent evt) {
 		PerkPlayer perkplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if(ModPerkLoader.GetPerk(perkType) != null) {
+		if (ModPerkLoader.GetPerk(perkType) != null) {
 			if (ModPerkLoader.GetPerk(perkType).StackLimit == -1 && ModPerkLoader.GetPerk(perkType).CanBeStack) {
 				ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
 				uiSystemInstance.DeactivateUI();

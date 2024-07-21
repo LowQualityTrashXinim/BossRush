@@ -59,7 +59,7 @@ SkillIssuedArtifact: {
 		'''
 		"with this, nothing is impossible, even with skill issue in bloodstream"
 		[c/b7bf5c:Positive effect] : 
-			+ For each monster killed, your MaxHP will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
+			+ For each monster killed, your maximum life will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
 		[c/ab3e43:Negative effect] :
 			- make monster spawns increase by CRAZY amount
 		[c/757480:Only works with people have skill issue. Lives up to the name]
@@ -87,7 +87,7 @@ TokenOfPrideArtifact: {
 		[c/b7bf5c:Positive effect] : 
 			+ Randomize 1 of your weapon's enchantment
 		[c/ab3e43:Negative effect] : 
-			- Lootbox only drop up to 1 weapon
+			- Lootbox weapon drop amount decreases by 90%
 		'''
 }
 

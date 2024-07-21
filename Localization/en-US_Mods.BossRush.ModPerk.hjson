@@ -120,15 +120,6 @@ PeaceWithGod: {
 		'''
 }
 
-ChaoticImbue: {
-	DisplayName: Chaotic Imbue
-	Description:
-		'''
-		+ Your melee attack randomly give out debuff that last 30s
-		+ Occasionally you shoot out random projectile that dealt the same damage as your current weapon
-		'''
-}
-
 AlchemistEmpowerment: {
 	DisplayName: Alchemist Empowerment
 	Description:
@@ -307,11 +298,11 @@ OverchargedMana: {
 		'''
 }
 
-CritPerk: {
+BeyondCritcal: {
 	DisplayName: Beyond Critcal
 	Description:
 		'''
-		+ Gain a chance to ignore 90% target hit defense, the chance is based on critical strike chance
+		+ You have 3% chance to ignore 90% target hit defense and increases damage by 2.5 time
 		+ Increases critcal strike chance by 5%
 		'''
 }
@@ -354,16 +345,6 @@ ImprovedManaPotion: {
 		'''
 }
 
-ExtraCritical: {
-	DisplayName: Extra Critical
-	Description: + You have 1% to dealt 4x damage
-}
-
-ExtraCritical1: {
-	DisplayName: Extra Critical
-	Description: + Increases chance to dealt 4x damage by 1%
-}
-
 WeaponExpert: {
 	DisplayName: Weapon Expert
 	Description:
@@ -380,5 +361,25 @@ AspectOfTheUnderworld: {
 		+ You have a aura of fire and is immune to on fire
 		+ Enemy that have On Fire debuff will receive more critical damage
 		- While your life is above 66%, decreases life regen by 60 flat but your aura of fire is stronger
+		'''
+}
+
+AspectOfFirstChaos: {
+	DisplayName: Aspect Of First Chaos
+	Description:
+		'''
+		+ Your attack randomly inflict debuff that last 30s
+		+ Occasionally you shoot out random projectile that dealt the same damage as your current weapon
+		+ Hitting enemy will also occasionally shoot out random projectile
+		+ You sometime hit enemy multiple time
+		'''
+}
+
+EnergyAbsorption: {
+	DisplayName: Energy Absorption
+	Description:
+		'''
+		+ Getting hit will recharge your energy for 25% of damage taken
+		+ Increases damage reduction by 10%
 		'''
 }
