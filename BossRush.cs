@@ -76,25 +76,25 @@ namespace BossRush {
 			File.WriteAllText(ModFilePath + AchievementFileName, output);
 		}
 		private void LoadModData() {
-			try {
-				BossRushModSystem.roguelikedata = new RogueLikeData();
-				string json = JsonConvert.SerializeObject(BossRushModSystem.roguelikedata, Formatting.Indented);
-				if (File.Exists(ModFilePath + ModDataFileName)) {
-					using (StreamWriter sw = File.CreateText(ModFilePath + ModDataFileName)) {
-						sw.WriteLine();
-					}
-				}
-				else {
-					Directory.CreateDirectory(ModFilePath).Create();
-					using (StreamWriter sw = File.CreateText(ModFilePath + ModDataFileName)) {
-						sw.WriteLine();
-					}
-				}
-			}
-			catch (Exception ex) {
-				Console.WriteLine(ex);
-				Logger.Error(ex);
-			}
+			//try {
+			//	BossRushModSystem.roguelikedata = new RogueLikeData();
+			//	string json = JsonConvert.SerializeObject(BossRushModSystem.roguelikedata, Formatting.Indented);
+			//	if (File.Exists(ModFilePath + ModDataFileName)) {
+			//		using (StreamWriter sw = File.CreateText(ModFilePath + ModDataFileName)) {
+			//			sw.WriteLine();
+			//		}
+			//	}
+			//	else {
+			//		Directory.CreateDirectory(ModFilePath).Create();
+			//		using (StreamWriter sw = File.CreateText(ModFilePath + ModDataFileName)) {
+			//			sw.WriteLine();
+			//		}
+			//	}
+			//}
+			//catch (Exception ex) {
+			//	Console.WriteLine(ex);
+			//	Logger.Error(ex);
+			//}
 		}
 	}
 	public class RogueLikeData {

@@ -13,3 +13,9 @@ MagicCostTemplate.Description:
 	Increases your magic damage multiply by [c/{0}:{1}]
 	And your flat magic damage by [c/{0}:{2}]
 	'''
+SynergyTemplate.Description:
+	'''
+	Increases your synergy flat damage by [c/{0}:{1}]
+	[c/{2}:Synergy damage is referred to damage when you switch your weapon and then attack]
+	[c/{2}:Synergy weapon will gain flat damage boost]
+	'''

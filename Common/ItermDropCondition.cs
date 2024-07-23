@@ -102,7 +102,7 @@ namespace BossRush.Common {
 	public class DontHitBoss : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
+				return !info.player.GetModPlayer<ModdedPlayer>().ItemIsUsedDuringBossFight
 					&& (
 					info.player.difficulty == PlayerDifficultyID.Hardcore
 					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature

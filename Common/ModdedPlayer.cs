@@ -32,7 +32,7 @@ namespace BossRush.Common {
 		}
 		public override void PreUpdate() {
 			CheckHowManyHit();
-			if(Player.ItemAnimationActive && HowManyBossIsAlive > 0) {
+			if(Player.ItemAnimationActive && HowManyBossIsAlive > 0 && Player.HeldItem.damage > 0) {
 				ItemIsUsedDuringBossFight = true;
 			}
 		}

@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using BossRush.Common.Systems;
+using BossRush.Contents.Items.Weapon;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,18 +23,25 @@ namespace BossRush.Contents.Items {
 		public bool acc_SynergyEnergy = false;
 		public override void ResetEffects() {
 			acc_SynergyEnergy = false;
-			if(ItemTypeCurrent != Player.HeldItem.type) {
+			if (ItemTypeCurrent != Player.HeldItem.type) {
 				ItemTypeCurrent = Player.HeldItem.type;
 			}
-			if(Player.itemAnimation == 1) {
+			if (Player.itemAnimation == 1) {
 				ItemTypeOld = ItemTypeCurrent;
 			}
 		}
 		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if(CompareOldvsNewItemType && acc_SynergyEnergy) {
+			if (!CompareOldvsNewItemType) {
+				if(item.ModItem is SynergyModItem) {
+					damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().SynergyDamage);
+				}
+				return;
+			}
+			if (acc_SynergyEnergy) {
 				damage.Base += 5;
 			}
+			damage = damage.CombineWith(Player.GetModPlayer<PlayerStatsHandle>().SynergyDamage);
 		}
 	}
 }

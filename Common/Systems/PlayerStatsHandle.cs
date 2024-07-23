@@ -62,7 +62,9 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier StaticDefense = new StatModifier();
 
 	public StatModifier DebuffDamage = new StatModifier();
-	//public float LuckIncrease = 0;
+
+	public StatModifier SynergyDamage = new StatModifier();
+	//public float LuckIncrease = 0; 
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		if (target.life >= target.lifeMax) {
@@ -129,6 +131,7 @@ public class PlayerStatsHandle : ModPlayer {
 		RechargeEnergyCap = new StatModifier();
 		StaticDefense = new StatModifier() - 1;
 		DebuffDamage = new StatModifier();
+		SynergyDamage = new StatModifier();
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
@@ -238,6 +241,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.DebuffDamage:
 				DebuffDamage = DebuffDamage.CombineWith(StatMod);
 				break;
+			case PlayerStats.SynergyDamage:
+				SynergyDamage = SynergyDamage.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
@@ -336,6 +342,9 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.DebuffDamage:
 				DebuffDamage = DebuffDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.SynergyDamage:
+				SynergyDamage = SynergyDamage.CombineWith(StatMod);
 				break;
 			default:
 				break;

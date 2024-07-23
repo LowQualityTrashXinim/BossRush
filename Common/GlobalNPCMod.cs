@@ -222,8 +222,10 @@ namespace BossRush.Common {
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(), ItemID.ManaCrystal, 1, manacrystal, manacrystal));
 			npcLoot.Add(noHit);
+			npcLoot.Add(dontHit);
 			npcLoot.Add(ExpertVSnormal);
 			npcLoot.Add(IsABoss);
+			npcLoot.Add(SynergyRule);
 		}
 		public override void OnKill(NPC npc) {
 			if (npc.boss) {

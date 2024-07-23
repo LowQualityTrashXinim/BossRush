@@ -58,7 +58,8 @@ namespace BossRush {
 		EnergyRechargeCap,
 		FullHPDamage,
 		StaticDefense,
-		DebuffDamage
+		DebuffDamage,
+		SynergyDamage
 		//Luck
 	}
 

@@ -313,3 +313,19 @@ public class MagicCostTemplate : RelicTemplate {
 		player.manaCost += 1.15f;
 	}
 }
+public class SynergyTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.SynergyDamage;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) =>
+		string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			RelicTemplateLoader.RelicValueToNumber(value.Flat),
+			new Color(100, 255, 255).Hex3()
+		});
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier(1, 1, Main.rand.Next(5, 21), 0);
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value);
+	}
+}

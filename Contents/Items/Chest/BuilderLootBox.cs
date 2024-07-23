@@ -23,6 +23,7 @@ namespace BossRush.Contents.Items.Chest {
 			player.QuickSpawnItem(entitySource, ItemID.Safe);
 			player.QuickSpawnItem(entitySource, ItemID.MoneyTrough);
 			player.QuickSpawnItem(entitySource, ItemID.DemonConch);
+			player.QuickSpawnItem(entitySource, ItemID.MagicMirror);
 		}
 	}
 }

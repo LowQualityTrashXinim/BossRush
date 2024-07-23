@@ -5,6 +5,16 @@ Roguelike Terraria is a challenging mod that offers an entirely new experience b
 • Contruct thousands of possible builds using brand new interactive systems affecting both the player and their weapons.
 • Customize your experience via various configurations.
 
+Special thx to :
+DanielTheDragon helping with sprite work
+MysteriousCharacter for helping with sprite work
+psuedofaux helping the mod massively with the sprite work
+halfelix for helping with sprite work and finding bug
+pototo spending your time play testing, helping me with the problem in the mod and play testing the mod
+sorrow helping me in anyway that is possible
+skulltheeevee help in grammar aspect
+StarDust for giving me the custom sword swing code
+Papyro for always sticking with me since the beginning
 
 If you spot any bug, gameplay issue or have any question, please consider reporting it in our Discord server which is https://discord.gg/YqN5z5WVaS
 
