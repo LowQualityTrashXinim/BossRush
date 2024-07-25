@@ -13,9 +13,9 @@ using BossRush.Contents.Items.Toggle;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.Items.Accessories.Crystal;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {

@@ -30,7 +30,9 @@ public class GenericTemplate : RelicTemplate {
 			PlayerStats.EnergyRechargeCap,
 
 			PlayerStats.MovementSpeed,
-			PlayerStats.JumpBoost
+			PlayerStats.JumpBoost,
+
+			PlayerStats.Thorn
 		});
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
@@ -87,6 +89,9 @@ public class GenericTemplate : RelicTemplate {
 		}
 		if (stat == PlayerStats.EnergyRechargeCap) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 10));
+		}
+		if (stat == PlayerStats.Thorn) {
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.36f), 2), 1, 0, 0);
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}

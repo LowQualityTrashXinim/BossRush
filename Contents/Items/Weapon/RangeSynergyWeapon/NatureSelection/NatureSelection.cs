@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -12,6 +13,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(platinum: 5);
 			Item.UseSound = SoundID.Item5;
+		}
+		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			Vector2 RotatePos = Main.rand.NextVector2Circular(75f, 75f) * 2 + position;
@@ -39,7 +42,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 					break;
 			}
 			Projectile.NewProjectile(source, RotatePos, safeAim, type, damage, knockback, player.whoAmI);
-			Projectile.NewProjectile(source, RotatePos, new Vector2(0, 0), bowType, damage, knockback, player.whoAmI);
+			Projectile.NewProjectile(source, RotatePos, Vector2.Zero, bowType, damage, knockback, player.whoAmI);
 			counter++;
 			if (counter > 5) {
 				counter = 0;
@@ -59,6 +62,20 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 			.AddIngredient(ItemID.ShadewoodBow, 1)
 			.AddIngredient(ItemID.PearlwoodBow, 1)
 			.Register();
+		}
+	}
+	class NatureSelectionPlayer : ModPlayer {
+
+		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (Player.GetModPlayer<PlayerSynergyItemHandle>().NatureSelection_NatureCrystal) {
+				for (int i = 0; i < 2; i++) {
+					var RandomPos = position + Main.rand.NextVector2Circular(100f, 100f);
+					var Aimto = (Main.MouseWorld - RandomPos).SafeNormalize(Vector2.UnitX) * 15;
+					if (i == 1) Projectile.NewProjectile(source, RandomPos, Aimto, ModContent.ProjectileType<HeartP>(), damage, knockback, Player.whoAmI);
+					else Projectile.NewProjectile(source, RandomPos, Aimto, ProjectileID.StarCannonStar, damage, knockback, Player.whoAmI);
+				}
+			}
+			return true;
 		}
 	}
 }

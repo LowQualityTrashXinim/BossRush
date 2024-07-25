@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 			Item.UseSound = SoundID.Item12;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.StarLightDistributer_MeteorArmor)
+			if (BossRushUtils.Player_MeteoriteArmorSet(Main.LocalPlayer))
 				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MeteorArmor", $"[i:{ItemID.MeteorHelmet}][i:{ItemID.MeteorSuit}][i:{ItemID.MeteorLeggings}]Attack now cost 0 mana"));
 			if (modplayer.StarLightDistributer_MagicMissile)
 				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.MagicMissile}] Shoot out magic missle"));
@@ -29,6 +29,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 			if (player.HasItem(ItemID.StarCannon)) {
 				modplayer.StarlightDistributer_StarCannon = true;
 				modplayer.SynergyBonus++;
+			}
+		}
+		public override void ModifyManaCost(Player player, ref float reduce, ref float mult) {
+			if(BossRushUtils.Player_MeteoriteArmorSet(player)) {
+				mult *= 0;
 			}
 		}
 		public override Vector2? HoldoutOffset() => new Vector2(-2, 0);

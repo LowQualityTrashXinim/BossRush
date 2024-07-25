@@ -1,7 +1,7 @@
-﻿using BossRush.Contents.Items.Accessories.SynergyAccessories.FuryEmblem;
+﻿using Terraria;
 using BossRush.Texture;
-using Terraria;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.BuffAndDebuff {
 	public class Furious : ModBuff {
@@ -12,15 +12,13 @@ namespace BossRush.Contents.BuffAndDebuff {
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			player.statDefense -= 100000;
-			player.lifeRegen = 0;
-			player.lifeRegenCount = 0;
-			player.lifeRegenTime = 0;
-			player.GetDamage(DamageClass.Generic) += 1.5f;
-			player.GetCritChance(DamageClass.Generic) += 50;
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.Defense, -.5f);
+			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, -.25f);
+			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.5f);
+			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 50);
 			if (player.buffTime[buffIndex] == 0) {
 				player.AddBuff(ModContent.BuffType<FuriousCoolDown>(), 420);
-				player.GetModPlayer<FuryPlayer>().CooldownFurious = true;
 			}
 		}
 	}

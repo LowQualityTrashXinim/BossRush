@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
 using System.Linq;
-using Terraria.Audio;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.GameContent;
@@ -11,10 +10,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -40,7 +36,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool IceStorm_SnowBallCannon = false;
 		public bool IceStorm_FlowerofFrost = false;
 		public bool IceStorm_BlizzardStaff = false;
-		public float IceStorm_SpeedMultiplier = 1;
 
 		public bool EnergyBlade_Code1 = false;
 		public bool EnergyBlade_Code2 = false;
@@ -92,6 +87,7 @@ namespace BossRush.Contents.Items.Weapon {
 
 		public bool Swotaff_Spear = false;
 
+		public bool NatureSelection_NatureCrystal = false;
 		public override void ResetEffects() {
 			SynergyBonusBlock = false;
 			SynergyBonus = 0;
@@ -151,31 +147,24 @@ namespace BossRush.Contents.Items.Weapon {
 			MagicGrenade_MagicMissle = false;
 
 			DeathBySpark_AleThrowingGlove = false;
-		}
-		public override void PostUpdate() {
-			Item item = Player.HeldItem;
-			if (item.type != ModContent.ItemType<IceStorm>()) {
-				IceStorm_SpeedMultiplier = 1;
-			}
+
+			NatureSelection_NatureCrystal = false;
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			damage += SynergyBonus * .5f;
 		}
-
-		public override void UpdateEquips() {
-			if (Player.head == ArmorIDs.Head.MeteorHelmet && Player.body == ArmorIDs.Body.MeteorSuit && Player.legs == ArmorIDs.Legs.MeteorLeggings) {
-				StarLightDistributer_MeteorArmor = true;
+	}
+	public class GlobalItemHandle : GlobalItem {
+		public override bool InstancePerEntity => true;
+		public bool LostAccessories = false;
+		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			if(item.ModItem is Relic relic && relic.relicColor != null) {
+				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = relic.relicColor.MultiColor(5);
 			}
-		}
-		public override void ModifyManaCost(Item item, ref float reduce, ref float mult) {
-			if (StarLightDistributer_MeteorArmor && item.type == ModContent.ItemType<StarLightDistributer>()) {
-				mult = 0f;
+			if (item.accessory && LostAccessories) {
+				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = Color.DarkGoldenrod;
+				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") {OverrideColor = Color.LightGoldenrodYellow });
 			}
-		}
-		public override void PostHurt(Player.HurtInfo info) {
-			float Modify = IceStorm_SpeedMultiplier <= 3 ? 1f : IceStorm_SpeedMultiplier - 2f;
-			IceStorm_SpeedMultiplier = Modify;
-			base.PostHurt(info);
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
@@ -183,7 +172,7 @@ namespace BossRush.Contents.Items.Weapon {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
 			CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(50, 100, 100) });
 		}
-		ColorInfo CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(100, 150, 150) });
+		public ColorInfo CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(100, 150, 150) });
 		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());

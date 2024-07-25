@@ -232,6 +232,7 @@ Mods: {
 			WindSlashProjectile.DisplayName: Wind Slash Projectile
 			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
 			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
+			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
 		}
 
 		NPCs: {
@@ -1521,6 +1522,25 @@ Mods: {
 				DisplayName: Relic Transmutator
 				Tooltip: ""
 			}
+
+			ReactiveBombing: {
+				DisplayName: Reactive Bombing
+				Tooltip:
+					'''
+					Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
+					Reduce damage receive by 10
+					'''
+			}
+
+			HeartOfBloodThorn: {
+				DisplayName: Heart Of Blood Thorn
+				Tooltip:
+					'''
+					Upon hit, Burst out 6 blood thorn that deal 45 magic damage
+					Blood thorn that is created by this item have life steal effect
+					Increases healing effective by 15% and maximum life by 15
+					'''
+			}
 		}
 
 		Buffs: {
@@ -1831,6 +1851,16 @@ Mods: {
 						Enables Synergy Items, Artifacts, and a lot more.
 						This config adds optional content which can be ignored if necessary. 
 						Warning: This config might not be compatible or balanced with other content mods.
+						'''
+				}
+
+				SynergyFeverMode: {
+					Label: Synergy Fever Mode
+					Tooltip:
+						'''
+						Make every lootbox default to drop a synergy item ( hard limit at 1 item )
+						If a weapon isn't a synergy item then damage will be reduce down to 1
+						Relic that is drop from lootbox will automatically have their template set to Synergy template
 						'''
 				}
 

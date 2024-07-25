@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.BuffAndDebuff;
 
@@ -14,7 +15,10 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.FuryEmblem {
 			Item.value = 10000000;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetDamage<GenericDamageClass>() += 0.1f;
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.05f);
+			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 5);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, 1.25f);
 			player.GetModPlayer<FuryPlayer>().Furious2 = true;
 		}
 		public override void AddRecipes() {
@@ -25,16 +29,15 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.FuryEmblem {
 		}
 	}
 	class FuryPlayer : ModPlayer {
-		public bool Furious2;
-		public bool CooldownFurious;
+		public bool Furious2 = false;
 		public override void ResetEffects() {
 			Furious2 = false;
 		}
 		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-			if (Furious2 && !CooldownFurious) Player.AddBuff(ModContent.BuffType<Furious>(), 600);
+			if (Furious2 && !Player.HasBuff<FuriousCoolDown>()) Player.AddBuff(ModContent.BuffType<Furious>(), 600);
 		}
 		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-			if (Furious2 && !CooldownFurious) Player.AddBuff(ModContent.BuffType<Furious>(), 600);
+			if (Furious2 && !Player.HasBuff<FuriousCoolDown>()) Player.AddBuff(ModContent.BuffType<Furious>(), 600);
 		}
 	}
 }

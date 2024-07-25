@@ -14,7 +14,6 @@ namespace BossRush.Contents.Artifacts {
 
 	public class VampirePlayer : ModPlayer {
 		bool Vampire = false;
-		int vampirecountRange = 0;
 		public override void ResetEffects() {
 			Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
 		}
@@ -36,11 +35,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (Vampire) {
-				vampirecountRange++;
-				if (vampirecountRange >= 3) {
-					LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
-					vampirecountRange = 0;
-				}
+				LifeSteal(target, 3, 6, Main.rand.NextFloat(1, 3));
 			}
 		}
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
@@ -54,13 +49,7 @@ namespace BossRush.Contents.Artifacts {
 		private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1) {
 			if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy) {
 				int HP = (int)(Main.rand.Next(rangeMin, rangeMax) * multiplier);
-				int HPsimulation = Player.statLife + HP;
-				if (HPsimulation < Player.statLifeMax2) {
-					Player.Heal(HP);
-				}
-				else {
-					Player.statLife = Player.statLifeMax2;
-				}
+				Player.Heal(HP);
 			}
 		}
 	}

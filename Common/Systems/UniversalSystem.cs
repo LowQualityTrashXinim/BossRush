@@ -35,8 +35,9 @@ internal class UniversalSystem : ModSystem {
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HARDCORE_MODE = "Hardcore";
 	public const string TRUE_MODE = "TrueMode";
+	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
 	/// <summary>
-	/// Use this to lock content behind hardcore
+	/// Use this to universally lock content behind hardcore, it basically act like a wrapper for <see cref="BossRushModConfig"/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
@@ -49,14 +50,23 @@ internal class UniversalSystem : ModSystem {
 			return config.Nightmare;
 		if (context == HARDCORE_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
+		if (player.difficulty != PlayerDifficultyID.Hardcore)
+			return false;
 		if (context == BOSSRUSH_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.BossRushMode;
+			return config.BossRushMode;
 		if (context == SYNERGY_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode;
+			return config.SynergyMode;
+		if (context == SYNERGYFEVER_MODE)
+			return config.SynergyMode && config.SynergyFeverMode;
 		if (context == TRUE_MODE)
-			return player.difficulty == PlayerDifficultyID.Hardcore && config.SynergyMode && config.BossRushMode;
+			return config.SynergyMode && config.BossRushMode;
 		return false;
 	}
+	/// <summary>
+	/// Use this to lock content behind certain config, it basically act like a wrapper for <see cref="BossRushModConfig"/>
+	/// </summary>
+	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
+	/// <returns></returns>
 	public static bool CanAccessContent(string context) {
 		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
 		if (context == BOSSRUSH_MODE)
@@ -69,6 +79,8 @@ internal class UniversalSystem : ModSystem {
 			return config.AutoHardCore;
 		if (context == SYNERGY_MODE)
 			return config.SynergyMode;
+		if (context == SYNERGYFEVER_MODE)
+			return config.SynergyMode && config.SynergyFeverMode;
 		if (context == TRUE_MODE)
 			return config.SynergyMode && config.BossRushMode;
 		return false;

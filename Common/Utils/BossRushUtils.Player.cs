@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
+using Terraria.ID;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -26,6 +27,10 @@ namespace BossRush {
 					|| stats is PlayerStats.RegenHP
 					|| stats is PlayerStats.RegenMana
 					|| stats is PlayerStats.LootDropIncrease;
+		public static bool Player_MeteoriteArmorSet(Player player) => 
+			player.head == ArmorIDs.Head.MeteorHelmet
+			&& player.body == ArmorIDs.Body.MeteorSuit
+			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
 	}
 	public enum PlayerStats : byte {
 		None,

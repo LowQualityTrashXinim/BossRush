@@ -8,6 +8,8 @@ using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using BossRush.Contents.Perks;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -15,6 +17,10 @@ public class Relic : ModItem {
 	List<int> templatelist = new List<int>();
 	List<PlayerStats> statlist = new List<PlayerStats>();
 	List<StatModifier> valuelist = new List<StatModifier>();
+	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue});
+	public override void SetStaticDefaults() {
+		relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
+	}
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
 		Item.rare = ItemRarityID.Gray;
@@ -164,6 +170,9 @@ public class Relic : ModItem {
 	}
 }
 public abstract class RelicTemplate : ModType {
+	public static int GetRelicType<T>() where T : RelicTemplate {
+		return ModContent.GetInstance<T>().Type;
+	}
 	public string Description => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
 	public int Type { get; private set; }
 	protected sealed override void Register() {

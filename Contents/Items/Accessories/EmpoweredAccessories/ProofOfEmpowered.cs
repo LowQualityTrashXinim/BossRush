@@ -1,16 +1,11 @@
-﻿using BossRush.Contents.Perks;
-using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
+using System.Reflection;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Accessories;
+namespace BossRush.Contents.Items.Accessories.EmpoweredAccessories;
 internal class ProofOfEmpowered : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	MethodInfo meth = null;
@@ -52,14 +47,12 @@ internal class ProofOfEmpowered : ModItem {
 		player.brainOfConfusionItem = Item;
 		player.boneGloveItem = Item;
 		player.strongBees = true;
-		if (meth != null) {
-			try {
+		if (meth != null) 			try {
 				meth.Invoke(player, new object[] { Item });
 			}
 			catch (Exception ex) {
 				Main.NewText(ex.Message);
 			}
-		}
 	}
 	public override void AddRecipes() {
 		CreateRecipe()

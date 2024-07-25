@@ -19,7 +19,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 			tooltips.Add(new TooltipLine(Mod, "DonHitReward",
 				"Overcoming a small challenge \n" +
 				"Increase max HP by 50 " +
-				"Can only be uses once \n"
+				"Can only be used once \n"
 				));
 		}
 		public override bool? UseItem(Player player) {
@@ -86,7 +86,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 			tooltips.Add(new TooltipLine(Mod, "NoHitReward",
 				"A small reward for displaying skill\n" +
 				"Increase perk range by 1\n" +
-				"Can only be uses once\n"
+				"Can only be used once\n"
 				));
 			foreach (TooltipLine line in tooltips) {
 				if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;

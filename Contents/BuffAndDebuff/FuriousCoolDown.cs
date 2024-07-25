@@ -12,9 +12,6 @@ namespace BossRush.Contents.BuffAndDebuff {
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
-			if (player.buffTime[buffIndex] == 0) {
-				player.GetModPlayer<FuryPlayer>().CooldownFurious = false;
-			}
 		}
 	}
 }

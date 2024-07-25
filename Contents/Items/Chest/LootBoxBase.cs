@@ -14,6 +14,10 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Common;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
+using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -110,7 +114,15 @@ namespace BossRush.Contents.Items.Chest {
 				return;
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+				if (relicitem.ModItem is Relic relic) {
+					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+				}
+			}
+			else {
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+			}
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
 			if (modplayer.LootboxCanDropSpecialPotion) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
@@ -133,6 +145,12 @@ namespace BossRush.Contents.Items.Chest {
 			//adding stuff here
 			if (Main.masterMode) {
 				SpecialAmount += 150;
+			}
+			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+				int weapon = Main.rand.Next(BossRush.SynergyItem).type;
+				player.QuickSpawnItemDirect(entitySource, weapon);
+				AmmoForWeapon(entitySource, player, weapon);
+				return;
 			}
 			ModifyLootAdd(player);
 			//actual choosing item
@@ -378,7 +396,7 @@ namespace BossRush.Contents.Items.Chest {
 		public void AmmoForWeapon(IEntitySource source, Player player, int weapon, float AmountModifier = 1) {
 			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
 			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
-				if(weapontoCheck.mana > 0) {
+				if (weapontoCheck.mana > 0) {
 					player.QuickSpawnItem(source, ItemID.LesserManaPotion, 5);
 				}
 				return;
@@ -807,6 +825,9 @@ namespace BossRush.Contents.Items.Chest {
 			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition + WeaponAmountAddition), 1, 999999);
 			potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition + PotionTypeAmountAddition);
 			potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition + PotionNumberAmountAddition);
+			if (ModContent.GetInstance<BossRushModConfig>().SynergyFeverMode && ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+				weaponAmount = 1;
+			}
 		}
 		public override void ResetEffects() {
 			LootboxCanDropSpecialPotion = false;

@@ -1,5 +1,6 @@
 using BossRush.Achievement;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,21 +8,23 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using Terraria;
+using System.Linq;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
+using Terraria.Localization;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
 		public static string ModFilePath { get; private set; }
 		public const string AchievementFileName = "\\AchievementData.json";
 		public const string ModDataFileName = "\\ModData.json";
+		private static List<Item> _synergyitem;
+		public static List<Item> SynergyItem => _synergyitem;
 		public override void PostSetupContent() {
 			LoadAchievementData();
 			LoadModData();
+			_synergyitem = ContentSamples.ItemsByType.Values.Where(i => i.ModItem is SynergyModItem).ToList();
 		}
 		public override void Load() {
 			base.Load();
@@ -35,6 +38,7 @@ namespace BossRush {
 		}
 
 		public override void Unload() {
+			_synergyitem = null;
 		}
 		public string GeneratePathToModData() {
 			string autoPathfinding = Program.SavePathShared;
@@ -105,6 +109,7 @@ namespace BossRush {
 	public class BossRushModSystem : ModSystem {
 		public static RogueLikeData roguelikedata;
 		public override void OnModLoad() {
+			roguelikedata = new RogueLikeData();
 		}
 		public override void OnWorldUnload() {
 			roguelikedata.AmountOfLootBoxOpen += Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
@@ -128,11 +133,11 @@ namespace BossRush {
 		}
 	}
 	public static class AchievementLoader {
-		public static readonly Dictionary<string,ModAchivement> Achievement = new();
+		public static readonly Dictionary<string, ModAchivement> Achievement = new();
 		public static readonly List<string> AchievementName = new();
 		public static int TotalCount => Achievement.Count;
 		public static void Register(ModAchivement achieve) {
-			Achievement.Add(achieve.Name,achieve);
+			Achievement.Add(achieve.Name, achieve);
 			AchievementName.Add(achieve.Name);
 		}
 		public static ModAchivement GetAchievement(string type) {
