@@ -790,7 +790,7 @@ Mods: {
 					Increase HP by 25%
 					Grant a buff upon getting hit that increase 50% damage and crits
 					But shatter your defense and cut your life regen
-					The buff will reset its time when you got hit again
+					The buff will reset its life time when you got hit again
 					'''
 				DisplayName: Fury Emblem
 			}
@@ -842,29 +842,11 @@ Mods: {
 				DisplayName: Corrupted Flesh
 			}
 
-			NatureCrystal: {
-				Tooltip:
-					'''
-					"A Mana and a Life Crystal, not much to say tbh"
-					Increase health and mana by 40
-					'''
-				DisplayName: Nature Crystal
-			}
-
-			EnergeticCrystal: {
-				Tooltip:
-					'''
-					"Bursting with life"
-					Increases your mana and health regenaration by 5
-					Increases your max mana and health by 50
-					'''
-				DisplayName: Life Stone
-			}
-
 			BouncyRelic: {
 				Tooltip:
 					'''
 					"A small ancient power left from god, said to be cursed"
+					Increases damage reduction by 15%
 					Most projectile can bounce off tile
 					Bouncing off a tile increase damage by 20%
 					Bouncing more than 10 time won't no longer increase damage
@@ -881,11 +863,6 @@ Mods: {
 					This will clear out 300 10 tile (X : 300 | Y : 10)
 					'''
 				DisplayName: Tower Destruction
-			}
-
-			CardPacket: {
-				DisplayName: Relic Container
-				Tooltip: Right click to get a relic
 			}
 
 			KSNoHitReward: {
@@ -1172,8 +1149,8 @@ Mods: {
 				DisplayName: Pre Hardmode Boss Bundle
 				Tooltip:
 					'''
-						{$CommonItemTooltip.RightClickToOpen}
-						Open this bundle to get almost all pre wall of flesh bosses spawner
+					{$CommonItemTooltip.RightClickToOpen}
+					Open this bundle to get almost all pre wall of flesh bosses spawner
 					'''
 			}
 
@@ -1203,7 +1180,7 @@ Mods: {
 
 			Nadir: {
 				DisplayName: Nadir
-				Tooltip: ""
+				Tooltip: '''"The low point of horizon"'''
 			}
 
 			StreetLamp: {
@@ -1251,7 +1228,7 @@ Mods: {
 
 			HeavenSmg: {
 				DisplayName: Heaven Smg
-				Tooltip: Bring down heaven wrath
+				Tooltip: Bring down heaven wrath with this smg
 			}
 
 			ItemBundle: {
@@ -1298,13 +1275,13 @@ Mods: {
 					[[c/8888ea:Active]]
 					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye]
 					[c/b7bf5c:Divine Eye] increases your critical strike chance by 3% and damage by 6% (capped at 4 [c/b7bf5c:Divine Eye])
-					You can get an additional [c/b7bf5c:Divine Eye] every 2 seconds when hitting enemy
+					You can get an additional [c/b7bf5c:Divine Eye] every 2 seconds when hitting enemy ( also reset the [c/b7bf5c:Divine Eye] duration )
 					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Divine Eye] is lost
 					'''
 			}
 
 			Trinket4: {
-				DisplayName: Trinket4
+				DisplayName: Trinket of Adaptive Mage
 				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
@@ -1384,11 +1361,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			SkillOrb: {
-				DisplayName: Skill Orb
-				Tooltip: Allow tinkering with skill
-			}
-
 			EnergyRechargeStation: {
 				DisplayName: Energy Recharge Station
 				Tooltip: ""
@@ -1429,6 +1401,11 @@ Mods: {
 			SpawnMerchant: {
 				DisplayName: Spawn Merchant
 				Tooltip: ""
+			}
+
+			SkillOrb: {
+				DisplayName: Skill Orb
+				Tooltip: Allow ability to tinker with skill
 			}
 
 			EnchantmentTablet: {
@@ -1479,42 +1456,42 @@ Mods: {
 			}
 
 			BoCDonHitReward: {
-				DisplayName: Bo C Don Hit Reward
+				DisplayName: Brain matter
 				Tooltip: ""
 			}
 
 			DeerclopDonHitReward: {
-				DisplayName: Deerclop Don Hit Reward
+				DisplayName: Deerclop Heart
 				Tooltip: ""
 			}
 
 			EoCDonHitReward: {
-				DisplayName: Eo C Don Hit Reward
+				DisplayName: Eye Flesh
 				Tooltip: ""
 			}
 
 			EoWDonHitReward: {
-				DisplayName: Eo W Don Hit Reward
+				DisplayName: Purple Meat
 				Tooltip: ""
 			}
 
 			KSDonHitReward: {
-				DisplayName: K S Don Hit Reward
+				DisplayName: Gel Sunday
 				Tooltip: ""
 			}
 
 			QueenBeeDonHitReward: {
-				DisplayName: Queen Bee Don Hit Reward
+				DisplayName: Queen's Honey
 				Tooltip: ""
 			}
 
 			SkeletronDonHitReward: {
-				DisplayName: Skeletron Don Hit Reward
+				DisplayName: Sturdy Bone
 				Tooltip: ""
 			}
 
 			WallOfFleshDonHitReward: {
-				DisplayName: Wall Of Flesh Don Hit Reward
+				DisplayName: Hell Feast
 				Tooltip: ""
 			}
 
@@ -1540,6 +1517,44 @@ Mods: {
 					Blood thorn that is created by this item have life steal effect
 					Increases healing effective by 15% and maximum life by 15
 					'''
+			}
+
+			SpectreQuiver: {
+				DisplayName: Spectre Quiver
+				Tooltip:
+					'''
+					Increases range base damage by 10 and arrow velocity by 10%
+					Shoot out a spread arch of 4 spectre arrow that deal 67% of weapon damage ( 1s delay )
+					'''
+			}
+
+			NatureCrystal: {
+				Tooltip:
+					'''
+					"A Mana and a Life Crystal merged into 1 single item"
+					Increase health and mana by 40
+					Getting hit both heal back your hp and mana for 10% of taken damage
+					'''
+				DisplayName: Nature Crystal
+			}
+
+			EnergeticOrb: {
+				Tooltip:
+					'''
+					"Bursting with energy"
+					Increases your mana regeneration, maximum mana by 30 and magic damage by 6%
+					Magic projectile upon hitting enemy will heal small amount of your mana
+					'''
+				DisplayName: Energetic Orb
+			}
+
+			StarStone: {
+				DisplayName: Star Stone
+				Tooltip: 
+				'''
+				Increases synergy damage by 15%
+				Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
+				'''
 			}
 		}
 

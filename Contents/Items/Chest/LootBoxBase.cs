@@ -39,11 +39,17 @@ namespace BossRush.Contents.Items.Chest {
 					return;
 				if (LootboxSystem.GetItemPool(Type).AllItemPool().Count <= 0)
 					return;
-				chestplayer.GetAmount();
+				//absolutely not recommend to do this
 				List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
+				if (chestplayer.weaponShowID == 0 || --chestplayer.counterShow <= 0) {
+					chestplayer.weaponShowID = Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(Type).AllItemPool());
+					chestplayer.potionShowID = Main.rand.Next(potiontotal);
+					chestplayer.counterShow = 6;
+				}
+				chestplayer.GetAmount();
 				TooltipLine chestline = new TooltipLine(Mod, "ChestLoot",
-					$"Weapon : [i:{Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(Type).AllItemPool())}] x {chestplayer.weaponAmount}\n" +
-					$"Potion type : [i:{Main.rand.Next(potiontotal)}] x {chestplayer.potionTypeAmount}\n" +
+					$"Weapon : [i:{chestplayer.weaponShowID}] x {chestplayer.weaponAmount}\n" +
+					$"Potion type : [i:{chestplayer.potionShowID}] x {chestplayer.potionTypeAmount}\n" +
 					$"Amount of potion : [i:{ItemID.RegenerationPotion}][i:{ItemID.SwiftnessPotion}][i:{ItemID.IronskinPotion}] x {chestplayer.potionNumAmount}");
 				tooltips.Add(chestline);
 			}
@@ -729,6 +735,9 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	public class ChestLootDropPlayer : ModPlayer {
+		public int counterShow = 0;
+		public int weaponShowID = 0, potionShowID = 0;
+
 		public HashSet<int> ItemGraveYard = new HashSet<int>();
 		public bool CanDropSynergyEnergy = true;
 		public int CurrentSectionAmountOfChestOpen = 0;

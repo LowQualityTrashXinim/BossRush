@@ -196,16 +196,8 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		item.ForEach(i => {
 			itemList.Add(i.type);
 		});
-		if (itemList.Contains(ItemID.LifeCrystal) && itemList.Contains(ItemID.ManaCrystal)) {
-			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<NatureCrystal>());
-			return true;
-		}
 		if (Main.rand.NextBool()) {
 			return false;
-		}
-		if (itemList.Contains(ModContent.ItemType<NatureCrystal>()) && itemList.Contains(ItemID.ManaRegenerationBand)) {
-			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<EnergeticCrystal>());
-			return true;
 		}
 		bool MiniShark = itemList.Contains(ItemID.Minishark);
 		bool IceBlade = itemList.Contains(ItemID.IceBlade);

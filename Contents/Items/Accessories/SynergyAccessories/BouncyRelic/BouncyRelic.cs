@@ -9,13 +9,11 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.BouncyRelic {
 	internal class BouncyRelic : SynergyModItem {
 		public override string Texture => BossRushTexture.MISSINGTEXTURE;
 		public override void SetDefaults() {
-			Item.accessory = true;
-			Item.height = 30;
-			Item.width = 28;
-			Item.rare = ItemRarityID.Green;
+			Item.DefaultToAccessory(30, 30);
 			Item.value = 1000000;
 		}
 		public override void UpdateEquip(Player player) {
+			player.endurance += .15f;
 			player.GetModPlayer<PlayerRelic>().Bouncy = true;
 		}
 		public override void AddRecipes() {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -110,8 +111,8 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve {
 	class ResolveGhostArrow : SynergyModProjectile {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.WoodenArrow);
 		public override void SetDefaults() {
-			Projectile.width = 14;
-			Projectile.height = 32;
+			Projectile.width = 12;
+			Projectile.height = 12;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.tileCollide = true;
 			Projectile.timeLeft = 180;
@@ -142,6 +143,12 @@ namespace BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve {
 			Projectile.ai[1]++;
 			if (Projectile.ai[1] > 20)
 				Projectile.velocity.Y += .25f;
+		}
+		public override bool PreDraw(ref Color lightColor) {
+			Projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
+			Vector2 drawPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
+			Main.spriteBatch.Draw(texture, drawPos, null, new Color(255, 255, 255, 0), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+			return false;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 			base.OnHitNPCSynergy(player, modplayer, npc, hit, damageDone);
