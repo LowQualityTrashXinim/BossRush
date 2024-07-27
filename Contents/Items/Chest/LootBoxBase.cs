@@ -153,7 +153,7 @@ namespace BossRush.Contents.Items.Chest {
 				SpecialAmount += 150;
 			}
 			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
-				int weapon = Main.rand.Next(BossRush.SynergyItem).type;
+				int weapon = Main.rand.Next(BossRushModSystem.SynergyItem).type;
 				player.QuickSpawnItemDirect(entitySource, weapon);
 				AmmoForWeapon(entitySource, player, weapon);
 				return;
@@ -533,6 +533,7 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual List<int> SafePostAddAcc() => new List<int>() { };
 
 		private void AddAcc(List<int> flag) {
+			Accessories.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
 			for (int i = 0; i < flag.Count; i++) {
 				switch (flag[i]) {
 					case 0:

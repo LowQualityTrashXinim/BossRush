@@ -1550,11 +1550,50 @@ Mods: {
 
 			StarStone: {
 				DisplayName: Star Stone
-				Tooltip: 
-				'''
-				Increases synergy damage by 15%
-				Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
-				'''
+				Tooltip:
+					'''
+					Increases synergy damage by 15%
+					Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
+					'''
+			}
+
+			TitanBlood: {
+				DisplayName: Titan Blood
+				Tooltip:
+					'''
+					Increases damage reduction by 10% when your life is under 50%
+					Increases additional damage reduction by 5% when your life is under 35%
+					Increases additional damage reduction by 5% when your life is under 15%
+					You have chance to resist a attack
+					When you resist a attack, damage taken reduce to 1 and you gain extra 1s of i-frame
+					'''
+			}
+
+			StealthCloak: {
+				DisplayName: Steath Cloak
+				Tooltip:
+					'''
+					You become invisible after 15s of not being invisible
+					While invisible your critical damage increases by 35% and you have chance to dodge an attack
+					'''
+			}
+
+			OverpoweringGem: {
+				DisplayName: Overpowering Gem
+				Tooltip:
+					'''
+					Minor increases to various stats
+					You have a small chance to dodge a attack, and small chance to life steal 
+					'''
+			}
+
+			GreatHolyCross: {
+				DisplayName: Great Holy Cross
+				Tooltip:
+					'''
+					Greatly increases length of invincibility after taking damage
+					Will also increases the strength of other item that grant invincibility
+					'''
 			}
 		}
 

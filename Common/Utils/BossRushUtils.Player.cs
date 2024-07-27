@@ -64,7 +64,8 @@ namespace BossRush {
 		FullHPDamage,
 		StaticDefense,
 		DebuffDamage,
-		SynergyDamage
+		SynergyDamage,
+		Iframe
 		//Luck
 	}
 

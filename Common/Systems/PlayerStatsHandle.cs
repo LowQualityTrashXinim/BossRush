@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using System;
 using System.Linq;
+using Terraria.ID;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -64,6 +65,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier DebuffDamage = new StatModifier();
 
 	public StatModifier SynergyDamage = new StatModifier();
+
+	public StatModifier Iframe = new StatModifier();
 	//public float LuckIncrease = 0; 
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
@@ -82,8 +85,8 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void PostHurt(Player.HurtInfo info) {
 		base.PostHurt(info);
-		if (info.PvP) {
-			return;
+		if (!info.PvP) {
+			Player.AddImmuneTime(info.CooldownCounter, (int)Iframe.ApplyTo(Player.immuneTime));
 		}
 	}
 	public override void ResetEffects() {
@@ -132,10 +135,17 @@ public class PlayerStatsHandle : ModPlayer {
 		StaticDefense = new StatModifier() - 1;
 		DebuffDamage = new StatModifier();
 		SynergyDamage = new StatModifier();
+		Iframe = new StatModifier() - 1;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
 		return useSpeed;
+	}
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		hurtInfo.CooldownCounter = (int)Iframe.ApplyTo(hurtInfo.CooldownCounter);
+	}
+	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+		hurtInfo.CooldownCounter = (int)Iframe.ApplyTo(hurtInfo.CooldownCounter);
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
@@ -244,6 +254,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.SynergyDamage:
 				SynergyDamage = SynergyDamage.CombineWith(StatMod);
 				break;
+			case PlayerStats.Iframe:
+				Iframe = Iframe.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
@@ -345,6 +358,9 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.SynergyDamage:
 				SynergyDamage = SynergyDamage.CombineWith(StatMod);
+				break;
+			case PlayerStats.Iframe:
+				Iframe = Iframe.CombineWith(StatMod);
 				break;
 			default:
 				break;

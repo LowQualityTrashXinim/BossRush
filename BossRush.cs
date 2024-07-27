@@ -19,26 +19,18 @@ namespace BossRush {
 		public static string ModFilePath { get; private set; }
 		public const string AchievementFileName = "\\AchievementData.json";
 		public const string ModDataFileName = "\\ModData.json";
-		private static List<Item> _synergyitem;
-		public static List<Item> SynergyItem => _synergyitem;
 		public override void PostSetupContent() {
 			LoadAchievementData();
 			LoadModData();
-			_synergyitem = ContentSamples.ItemsByType.Values.Where(i => i.ModItem is SynergyModItem).ToList();
 		}
 		public override void Load() {
 			base.Load();
 			ModFilePath = GeneratePathToModData();
 			On_Main.Main_Exiting += On_Main_Main_Exiting;
 		}
-
 		private void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
 			SaveAchievementData();
 			orig(self, sender, e);
-		}
-
-		public override void Unload() {
-			_synergyitem = null;
 		}
 		public string GeneratePathToModData() {
 			string autoPathfinding = Program.SavePathShared;
@@ -110,12 +102,16 @@ namespace BossRush {
 		public static RogueLikeData roguelikedata;
 		public override void OnModLoad() {
 			roguelikedata = new RogueLikeData();
+			_synergyitem = new List<Item>();
+			_lostAccs = new List<Item>();
 		}
 		public override void OnWorldUnload() {
 			roguelikedata.AmountOfLootBoxOpen += Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
 		}
 		public override void OnModUnload() {
 			roguelikedata = null;
+			_synergyitem = null;
+			_lostAccs = null;
 		}
 		public override void PostUpdateEverything() {
 			foreach (var achieve in AchievementLoader.Achievement.Values) {
@@ -131,6 +127,25 @@ namespace BossRush {
 			}
 			return -1;
 		}
+		public override void PostSetupContent() {
+			_synergyitem = new List<Item>();
+			_lostAccs = new List<Item>();
+			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
+			for (int i = 0; i < cacheitemList.Count; i++) {
+				if (cacheitemList[i].ModItem is SynergyModItem) {
+					_synergyitem.Add(cacheitemList[i]);
+				}
+				if (cacheitemList[i].TryGetGlobalItem<GlobalItemHandle>(out GlobalItemHandle globalItem)) {
+					if (globalItem.LostAccessories) {
+						_lostAccs.Add(cacheitemList[i]);
+					}
+				}
+			}
+		}
+		private static List<Item> _synergyitem;
+		public static List<Item> SynergyItem => _synergyitem;
+		private static List<Item> _lostAccs;
+		public static List<Item> LostAccessories => _lostAccs;
 	}
 	public static class AchievementLoader {
 		public static readonly Dictionary<string, ModAchivement> Achievement = new();
