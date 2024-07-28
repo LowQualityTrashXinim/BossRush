@@ -315,7 +315,7 @@ public class MagicCostTemplate : RelicTemplate {
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);
-		player.manaCost += 1.15f;
+		player.manaCost += .15f;
 	}
 }
 public class SynergyTemplate : RelicTemplate {

@@ -69,11 +69,11 @@ namespace BossRush {
 		public static void ProjectileAlphaDecay(this Projectile projectile, float timeCountdown) {
 			projectile.alpha = (int)MathHelper.Lerp(0, 255, (timeCountdown - projectile.timeLeft) / timeCountdown);
 		}
-		public static void BresenhamCircle(Vector2 pos, int radius) {
+		public static void BresenhamCircle(Vector2 pos, int radius, Color color) {
 			Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.WHITEDOT).Value;
 			int x = 0, y = radius;
 			int decesionParameter = 3 - 2 * radius;
-			DrawBresenhamCircle(texture, pos, x, y);
+			DrawBresenhamCircle(texture, pos, x, y, color);
 			while (y >= x) {
 				x++;
 				if (decesionParameter > 0) {
@@ -83,19 +83,19 @@ namespace BossRush {
 				else {
 					decesionParameter = decesionParameter + 4 * x + 6;//This is magic math value, don't ask me
 				}
-				DrawBresenhamCircle(texture, pos, x, y);
+				DrawBresenhamCircle(texture, pos, x, y, color);
 			}
 		}
-		private static void DrawBresenhamCircle(Texture2D texture, Vector2 c, int x, int y) {
+		private static void DrawBresenhamCircle(Texture2D texture, Vector2 c, int x, int y, Color color) {
 			Vector2 drawPos = c - Main.screenPosition;
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(x, y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(-x, y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(x, -y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(-x, -y), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(y, x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(-y, x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(y, -x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
-			Main.spriteBatch.Draw(texture, drawPos.Subtract(-y, -x), null, Color.White, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(x, y), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-x, y), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(x, -y), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-x, -y), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(y, x), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-y, x), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(y, -x), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
+			Main.spriteBatch.Draw(texture, drawPos.Subtract(-y, -x), null, color, 0, Vector2.One, 1, SpriteEffects.None, 0);
 		}
 	}
 }

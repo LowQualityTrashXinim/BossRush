@@ -31,6 +31,12 @@ namespace BossRush {
 			player.head == ArmorIDs.Head.MeteorHelmet
 			&& player.body == ArmorIDs.Body.MeteorSuit
 			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
+		/// <summary>
+		/// Check whenever or not is this item a weapon or not
+		/// </summary>
+		/// <param name="item"></param>
+		/// <returns>Return true if the item is a weapon</returns>
+		public static bool IsAWeapon(this Item item) => item.damage > 0 && item.useTime > 0 && item.useAnimation > 0 && !item.accessory;
 	}
 	public enum PlayerStats : byte {
 		None,

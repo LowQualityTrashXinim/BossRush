@@ -152,7 +152,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (Main.masterMode) {
 				SpecialAmount += 150;
 			}
-			if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
 				int weapon = Main.rand.Next(BossRushModSystem.SynergyItem).type;
 				player.QuickSpawnItemDirect(entitySource, weapon);
 				AmmoForWeapon(entitySource, player, weapon);
@@ -449,7 +449,7 @@ namespace BossRush.Contents.Items.Chest {
 				Amount = (int)(10 * AmountModifier);
 			}
 			else if (weapontoCheck.useAmmo == AmmoID.Rocket) {
-				Ammo = ItemID.RocketI;
+				Ammo = Main.rand.Next(new int[] { ItemID.RocketI,ItemID.RocketII, ItemID.RocketIII, ItemID.RocketIV });
 			}
 			else if (weapontoCheck.useAmmo == AmmoID.Snowball) {
 				Ammo = ItemID.Snowball;

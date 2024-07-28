@@ -40,6 +40,7 @@ namespace BossRush.Contents.Projectiles {
 				Projectile.velocity *= .98f;
 			}
 			if (player is not null & Projectile.Center.IsCloseToPosition(player.Center, 25)) {
+				Projectile.timeLeft = 150;
 				float playerRemainHpPercentage = 1 - player.statLife / (float)player.statLifeMax2;
 				int healing = (int)(player.statLifeMax2 * .25f * playerRemainHpPercentage) + 5;
 				player.Heal(healing);

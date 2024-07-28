@@ -1,9 +1,8 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.GameContent.ItemDropRules;
-using BossRush.Contents.Artifacts;
 using Terraria.ID;
+using Terraria.ModLoader;
 using BossRush.Common.Systems;
+using Terraria.GameContent.ItemDropRules;
 
 namespace BossRush.Common {
 	public class ChallengeModeException : IItemDropRuleCondition {
@@ -19,21 +18,11 @@ namespace BossRush.Common {
 	public class EvilBossChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)
-				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2;
+				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2 && info.npc.boss;
 			return false;
 		}
 		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Exclusive to challenge mode";
-	}
-	public class MagicalCardDeckException : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return info.player.HasArtifact<MagicalCardDeckArtifact>();
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "Magical card deck call in more card";
+		public string GetConditionDescription() => null;
 	}
 	public class SynergyDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {

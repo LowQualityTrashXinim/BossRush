@@ -349,7 +349,9 @@ namespace BossRush.Contents.Perks {
 			modifiers.SourceDamage -= (StackLimit - StackAmount + 1) * .15f;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (type != ModContent.ProjectileType<ArenaMakerProj>()) {
+			if (type != ModContent.ProjectileType<ArenaMakerProj>() 
+				|| type == ModContent.ProjectileType<NeoDynamiteExplosion>()
+				|| type == ModContent.ProjectileType<TowerDestructionProjectile>()) {
 				player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = StackAmount;
 				player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange = 10;
 			}
@@ -495,8 +497,9 @@ namespace BossRush.Contents.Perks {
 			if (Main.hardMode) {
 				npc.lifeRegen -= 40;
 			}
-			if (npc.buffTime[Type] == 0) {
-				npc.StrikeNPC(npc.CalculateHitInfo((int)(npc.lifeMax * .05f), 1));
+			if (npc.buffTime[buffIndex] == 0) {
+				int damage = Math.Clamp((int)(npc.lifeMax * .01f), 0, 1000);
+				npc.StrikeNPC(npc.CalculateHitInfo(damage, 1));
 			}
 		}
 	}

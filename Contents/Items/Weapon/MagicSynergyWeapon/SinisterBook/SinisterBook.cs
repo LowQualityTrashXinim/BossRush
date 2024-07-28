@@ -97,7 +97,9 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook {
 			}
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			modplayer.SinisterBook_DemonScythe_Counter++;
+			if (modplayer.SinisterBook_DemonScythe) {
+				modplayer.SinisterBook_DemonScythe_Counter++;
+			}
 			Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);
 			for (int i = 0; i < 25; i++) {
 				Vector2 Rotate = Main.rand.NextVector2Circular(9f, 9f);

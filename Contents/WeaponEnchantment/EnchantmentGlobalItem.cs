@@ -66,7 +66,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
-	private bool CommonEnchantmentCheck() => Player.HeldItem.damage <= 0 || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
+	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;

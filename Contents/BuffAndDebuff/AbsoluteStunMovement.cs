@@ -20,6 +20,7 @@ namespace BossRush.Contents.BuffAndDebuff {
 			player.controlLeft = false;
 			player.controlRight = false;
 			player.controlInv = false;
+			player.gravity = 0;
 		}
 	}
 }

@@ -214,7 +214,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.PalmWoodBow:
 				case ItemID.EbonwoodBow:
 				case ItemID.ShadewoodBow:
-					player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, .15f);
+					player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
 					break;
 			}
 		}

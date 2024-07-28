@@ -22,7 +22,7 @@ internal class OverpoweringGem : ModItem {
 		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.05f);
 		modplayer.AddStatsToPlayer(PlayerStats.Thorn, 1.15f);
 		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 1.2f);
-		modplayer.AddStatsToPlayer(PlayerStats.Defense, 3);
+		modplayer.AddStatsToPlayer(PlayerStats.Defense, Base:3);
 		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
 		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.15f);
 		modplayer.AddStatsToPlayer(PlayerStats.LifeStealEffectiveness, 1.05f);

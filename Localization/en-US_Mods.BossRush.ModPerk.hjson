@@ -151,7 +151,8 @@ ProjectileDuplication: {
 	DisplayName: Projectile Duplication
 	Description:
 		'''
-		+ Your weapon have a chance to shoot out duplicate projectile
+		+ Your projectile will duplicate itself upon spawn ( amount depend on the stack )
+		+ Decreases your projectile damage by 55% ( duplicate of this perk will increases damage by 15%, max out at 55% )
 		( warning : may work weirdly on many weapon due to terraria code )
 		'''
 }
@@ -360,7 +361,7 @@ AspectOfTheUnderworld: {
 		'''
 		+ You have a aura of fire and is immune to on fire
 		+ Enemy that have On Fire debuff will receive more critical damage
-		- While your life is above 66%, decreases life regen by 60 flat but your aura of fire is stronger
+		- While your life is above 66%, decreases life regen by 32 flat but your aura of fire is stronger
 		'''
 }
 

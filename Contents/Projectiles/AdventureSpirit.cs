@@ -67,7 +67,7 @@ internal class AdventureSpirit : ModProjectile {
 		Projectile.velocity = BossRushUtils.LimitedVelocity(Projectile.velocity, toPlayer.Length() * speed * 0.05f);
 	}
 	public override bool PreDraw(ref Color lightColor) {
-		BossRushUtils.BresenhamCircle(Projectile.Center, radius);
+		BossRushUtils.BresenhamCircle(Projectile.Center, radius, Color.White);
 		return base.PreDraw(ref lightColor);
 	}
 }

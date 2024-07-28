@@ -3,11 +3,12 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Common.Nightmare {
 	internal class NightmareNPC : GlobalNPC {
+		public override bool InstancePerEntity => true;
+		int aiTimer = 0;
 		public override void SetDefaults(NPC npc) {
 			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return;
@@ -15,12 +16,22 @@ namespace BossRush.Common.Nightmare {
 			npc.trapImmune = true;
 			npc.lavaImmune = true;
 			BossChange(npc);
+			if (npc.type == NPCID.VileSpitEaterOfWorlds) {
+				npc.scale += .5f;
+			}
 			if (npc.type == NPCID.ServantofCthulhu) {
 				npc.lifeMax += 100;
 			}
 			npc.knockBackResist *= .5f;
 		}
 		private void BossChange(NPC npc) {
+			if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody) {
+				npc.lifeMax += 250;
+				npc.scale += .25f;
+				if (npc.type == NPCID.EaterofWorldsHead) {
+					npc.damage *= 3;
+				}
+			}
 			if (!npc.boss)
 				return;
 			if (npc.type == NPCID.CultistBoss) {
@@ -29,15 +40,11 @@ namespace BossRush.Common.Nightmare {
 			}
 			if (npc.type == NPCID.KingSlime) {
 				npc.defense += 10;
+				npc.lifeMax += 1500;
 			}
 			if (npc.type == NPCID.EyeofCthulhu) {
 				npc.scale -= 0.25f;
 				npc.Size -= new Vector2(25, 25);
-			}
-			if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody) {
-				npc.scale += 2.5f;
-				npc.Size += new Vector2(200, 200);
-				npc.lifeMax += 1500;
 			}
 		}
 		public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
@@ -46,7 +53,8 @@ namespace BossRush.Common.Nightmare {
 			}
 			switch (npc.type) {
 				case NPCID.KingSlime:
-					target.AddBuff(BuffID.BrokenArmor, 90);
+					target.AddBuff(BuffID.BrokenArmor, 180);
+					target.AddBuff(ModContent.BuffType<KingSlimeRage>(), 240);
 					break;
 				case NPCID.EyeofCthulhu:
 					target.AddBuff(BuffID.Cursed, 90);
@@ -74,48 +82,48 @@ namespace BossRush.Common.Nightmare {
 				default:
 					break;
 			}
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.BrokenArmor, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Cursed, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Bleeding, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Burning, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Weak, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.CursedInferno, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Ichor, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Venom, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Poisoned, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Slow, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.ManaSickness, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.PotionSickness, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Obstructed, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Blackout, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Confused, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Darkness, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Electrified, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Stoned, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.WitheredArmor, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.WitheredWeapon, Main.rand.Next(1, 901));
-			if (Main.rand.NextBool(10))
-				target.AddBuff(BuffID.Suffocation, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.BrokenArmor, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Cursed, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Bleeding, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Burning, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Weak, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.CursedInferno, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Ichor, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Venom, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Poisoned, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Slow, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.ManaSickness, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.PotionSickness, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Obstructed, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Blackout, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Confused, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Darkness, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Electrified, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Stoned, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.WitheredArmor, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.WitheredWeapon, Main.rand.Next(1, 901));
+			//if (Main.rand.NextBool(10))
+			//	target.AddBuff(BuffID.Suffocation, Main.rand.Next(1, 901));
 		}
 		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
 			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
@@ -126,6 +134,22 @@ namespace BossRush.Common.Nightmare {
 		public override bool PreAI(NPC npc) {
 			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return base.PreAI(npc);
+			}
+			if (npc.type == NPCID.Spazmatism) {
+				if (npc.ai[0] == 3) {
+					npc.velocity /= 2;
+				}
+			}
+			if (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
+				npc.velocity /= 2;
+			}
+			if (npc.type == NPCID.BrainofCthulhu) {
+				if (npc.ai[0] < 0) {
+					npc.velocity /= 3f;
+				}
+			}
+			if (npc.type == NPCID.Creeper) {
+				npc.velocity /= 1.5f;
 			}
 			if (npc.type == NPCID.ServantofCthulhu) {
 				npc.velocity /= 3;
@@ -148,6 +172,10 @@ namespace BossRush.Common.Nightmare {
 		/// </summary>
 		/// <param name="npc"></param>
 		private void KingSlimeAI(NPC npc) {
+			aiTimer++;
+			if(aiTimer == int.MaxValue) {
+				aiTimer = 0;
+			}
 			float progress = 1f;
 			float num237 = 1f;
 			bool flag6 = false;
@@ -260,8 +288,9 @@ namespace BossRush.Common.Nightmare {
 			}
 			else if (Main.netMode != NetmodeID.MultiplayerClient) {
 				npc.localAI[0]--;
-				if (npc.localAI[0] < 0f)
+				if (npc.localAI[0] < 0f) {
 					npc.localAI[0] = 0f;
+				}
 			}
 
 			if (npc.timeLeft < 10 && (npc.ai[0] != 0f || npc.ai[1] != 0f)) {
@@ -281,14 +310,16 @@ namespace BossRush.Common.Nightmare {
 				if (npc.ai[0] >= 60f)
 					flag8 = true;
 
-				if (npc.ai[0] == 60f)
+				if (npc.ai[0] == 60f) {
 					Gore.NewGore(npc.GetSource_FromAI(), npc.Center + new Vector2(-40f, -npc.height / 2), npc.velocity, 734);
+				}
 
 				if (npc.ai[0] >= 60f && Main.netMode != NetmodeID.MultiplayerClient) {
 					npc.Bottom = new Vector2(npc.localAI[1], npc.localAI[2]);
 					npc.ai[1] = 6f;
 					npc.ai[0] = 0f;
 					npc.netUpdate = true;
+					KingSlimeTeleport(npc);
 				}
 
 				if (Main.netMode == NetmodeID.MultiplayerClient && npc.ai[0] >= 120f) {
@@ -474,10 +505,19 @@ namespace BossRush.Common.Nightmare {
 
 		}
 		private void KingSlimeTeleport(NPC npc) {
-
+			Vector2 towardPlayer = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero) * 15f;
+			for (int i = 0; i < 12; i++) {
+				Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, towardPlayer.Vector2RotateByRandom(30).Vector2RandomSpread(2, Main.rand.NextFloat(.75f,1.25f)), ProjectileID.SpikedSlimeSpike, npc.damage, 4f);
+			}
 		}
 		private void KingSlimeOnAir(NPC npc) {
-
+			if (aiTimer % 10 == 0) {
+				Vector2 towardPlayer = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero) * 15f;
+				if (Main.player[npc.target].Center.Y > npc.Center.Y) {
+					towardPlayer = towardPlayer.RotatedBy(MathHelper.ToRadians(-BossRushUtils.DirectionFromPlayerToNPC(Main.player[npc.target].Center.X, npc.Center.X) * 15));
+				}
+				Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, towardPlayer, ProjectileID.SpikedSlimeSpike, npc.damage, 4f);
+			}
 		}
 		private void KingSlimePostJumpModifier(NPC npc, ref float JumpStrength, ref float MoveSpeed, ref float DelayAttack) {
 			if (npc.life <= npc.lifeMax * .8f) {
@@ -525,6 +565,23 @@ namespace BossRush.Common.Nightmare {
 			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 				return;
 			}
+			if (npc.type == NPCID.Spazmatism) {
+				if (npc.ai[0] == 3) {
+					npc.velocity *= 2;
+				}
+			}
+			if (npc.type == NPCID.BrainofCthulhu) {
+				if (npc.ai[0] < 0) {
+					npc.velocity *= 3f;
+				}
+				npc.localAI[1] += 1;
+			}
+			if (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
+				npc.velocity *= 2;
+			}
+			if (npc.type == NPCID.Creeper) {
+				npc.velocity *= 1.5f;
+			}
 			if (npc.type == NPCID.KingSlime) {
 				npc.velocity *= 1.25f;
 			}
@@ -551,6 +608,9 @@ namespace BossRush.Common.Nightmare {
 					Main.player[npc.target].AddBuff(ModContent.BuffType<AbsoluteStunMovement>(), 120);
 				}
 			}
+		}
+		public override void OnKill(NPC npc) {
+			aiTimer = 0;
 		}
 	}
 }

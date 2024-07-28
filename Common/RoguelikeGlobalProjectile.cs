@@ -45,7 +45,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.type == ProjectileID.LightsBane
 			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
 			|| projectile.type == ModContent.ProjectileType<DiamondGemP>()
-			|| projectile.type == ModContent.ProjectileType<ArenaMakerProj>()) {
+			|| projectile.type == ModContent.ProjectileType<ArenaMakerProj>()
+			|| projectile.type == ModContent.ProjectileType<NeoDynamiteExplosion>()
+			|| projectile.type == ModContent.ProjectileType<TowerDestructionProjectile>()) {
 			return;
 		}
 		for (int i = 0; i < OnKill_ScatterShot; i++) {
