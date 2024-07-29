@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BossRush.Contents.Items.Weapon;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -7,43 +8,39 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace BossRush.Contents.Items.Toggle {
+namespace BossRush.Contents.Items.Accessories.LostAccessories {
 	internal class GodDice : ModItem {
 		public override void SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 14));
-			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 		}
 		public override void SetDefaults() {
-			Item.useTime = 10;
-			Item.useAnimation = 10;
 			Item.width = 46;
 			Item.height = 52;
-			Item.rare = ItemRarityID.Cyan;
-			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.accessory = true;
+			Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
 		}
-
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			Player player = Main.LocalPlayer;
+		public override void UpdateEquip(Player player) {
 			GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
-			tooltips.Add(new TooltipLine(Mod, "", "Damage Multiply : " + gamblePlayer.GambleDamage + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Defense Multiply : " + gamblePlayer.GambleDef + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Speed Multiply : " + gamblePlayer.GambleSpeed + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "HP Multiply : " + gamblePlayer.GambleHP + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "HP Regen Multiply : " + gamblePlayer.GambleLifeRegen + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Mana Multiply : " + gamblePlayer.GambleMana + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Mana Regen Multiply : " + gamblePlayer.GambleManaRegen + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Extra minion : " + gamblePlayer.GambleMinionSlot + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Crit chance : " + gamblePlayer.GambleCrit + ""));
-			tooltips.Add(new TooltipLine(Mod, "", "Rerolls Available : " + gamblePlayer.Roll + ""));
+			gamblePlayer.GodDice = true;
 		}
-		public override bool CanUseItem(Player player) {
-			return player.GetModPlayer<GamblePlayer>().Roll > 0 || player.IsDebugPlayer();
+		public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			var player = Main.LocalPlayer;
+			var gamblePlayer = player.GetModPlayer<GamblePlayer>();
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Damage", "Damage multiply : " + gamblePlayer.GambleDamage + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Defense", "Defense multiply : " + gamblePlayer.GambleDef + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Speed", "Speed multiply : " + gamblePlayer.GambleSpeed + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Max life", "Max life multiply : " + gamblePlayer.GambleHP + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Life regen", "Life regenaration multiply : " + gamblePlayer.GambleLifeRegen + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Mana", "Mana multiply : " + gamblePlayer.GambleMana + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Mana regen", "Mana regenaration multiply : " + gamblePlayer.GambleManaRegen + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Minion", "Extra minion slot : " + gamblePlayer.GambleMinionSlot + ""));
+			tooltips.Add(new TooltipLine(Mod, "GodDice_" + "Crit", "Crit chance increases : " + gamblePlayer.GambleCrit + ""));
 		}
 		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
 		public override bool? UseItem(Player player) {
-			GamblePlayer gamblePlayer = player.GetModPlayer<GamblePlayer>();
+			var gamblePlayer = player.GetModPlayer<GamblePlayer>();
 			if (player.IsDebugPlayer() && player.altFunctionUse == 2) {
 				gamblePlayer.Roll++;
 				gamblePlayer.GambleDamage = 1;
@@ -57,17 +54,6 @@ namespace BossRush.Contents.Items.Toggle {
 				gamblePlayer.GambleCrit = 0;
 				return true;
 			}
-			if (gamblePlayer.Roll > 0) gamblePlayer.Roll--;
-
-			gamblePlayer.GambleDamage = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
-			gamblePlayer.GambleDef = Main.rand.Next(-50, 50);
-			gamblePlayer.GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
-			gamblePlayer.GambleHP = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
-			gamblePlayer.GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
-			gamblePlayer.GambleMana = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
-			gamblePlayer.GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.5f, 1.5f), 2);
-			gamblePlayer.GambleMinionSlot = Main.rand.Next(-5, 5);
-			gamblePlayer.GambleCrit = Main.rand.Next(-50, 50);
 			return true;
 		}
 	}
@@ -82,15 +68,35 @@ namespace BossRush.Contents.Items.Toggle {
 		public int GambleMinionSlot = 0;
 		public int GambleCrit = 0;
 		public int Roll = 0;
+		public bool GodDice = false;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			damage *= GambleDamage;
+			if (GodDice) {
+				damage *= GambleDamage;
+			}
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
+			if (!GodDice)
+				return;
 			health *= GambleHP;
 			mana *= GambleMana;
 		}
 		public override void ResetEffects() {
+			if (!GodDice)
+				return;
+			GodDice = false;
+			if (Roll > 0) {
+				GambleDamage = (float)Math.Round(Main.rand.NextFloat(.85f, 1.15f), 2);
+				GambleDef = Main.rand.Next(-25, 25);
+				GambleSpeed = (float)Math.Round(Main.rand.NextFloat(.8f, 1.2f), 2);
+				GambleHP = (float)Math.Round(Main.rand.NextFloat(.85f, 1.15f), 2);
+				GambleLifeRegen = (float)Math.Round(Main.rand.NextFloat(.85f, 1.15f), 2);
+				GambleMana = (float)Math.Round(Main.rand.NextFloat(.85f, 1.15f), 2);
+				GambleManaRegen = (float)Math.Round(Main.rand.NextFloat(.85f, 1.15f), 2);
+				GambleMinionSlot = Main.rand.Next(-2, 2);
+				GambleCrit = Main.rand.Next(-15, 15);
+				Roll--;
+			}
 			Player.statDefense += GambleDef;
 			Player.accRunSpeed *= GambleSpeed;
 			Player.lifeRegen = (int)(GambleLifeRegen * Player.lifeRegen);
@@ -100,6 +106,8 @@ namespace BossRush.Contents.Items.Toggle {
 			Player.GetCritChance(DamageClass.Generic) += GambleCrit;
 		}
 		public override void NaturalLifeRegen(ref float regen) {
+			if (!GodDice)
+				return;
 			regen *= GambleLifeRegen;
 		}
 		public override void Initialize() {
@@ -114,7 +122,7 @@ namespace BossRush.Contents.Items.Toggle {
 			GambleCrit = 0;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
+			var packet = Mod.GetPacket();
 			packet.Write((byte)BossRush.MessageType.GambleAddiction);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(GambleDamage);
@@ -170,7 +178,7 @@ namespace BossRush.Contents.Items.Toggle {
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
-			GamblePlayer clone = (GamblePlayer)targetCopy;
+			var clone = (GamblePlayer)targetCopy;
 			clone.GambleDamage = GambleDamage;
 			clone.GambleDef = GambleDef;
 			clone.GambleSpeed = GambleSpeed;
@@ -183,7 +191,7 @@ namespace BossRush.Contents.Items.Toggle {
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			GamblePlayer clone = (GamblePlayer)clientPlayer;
+			var clone = (GamblePlayer)clientPlayer;
 			if (GambleDamage != clone.GambleDamage
 			|| GambleDef != clone.GambleDef
 			|| GambleSpeed != clone.GambleSpeed

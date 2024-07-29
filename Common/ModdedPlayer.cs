@@ -11,9 +11,9 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.aDebugItem;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {

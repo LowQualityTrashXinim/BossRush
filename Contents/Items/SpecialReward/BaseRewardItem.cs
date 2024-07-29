@@ -13,7 +13,6 @@ namespace BossRush.Contents.Items.SpecialReward {
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.LifeCrystal);
 			Item.rare = ItemRarityID.Expert;
-			Item.value = Item.sellPrice(platinum: 5, gold: 0, silver: 0, copper: 0);
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			tooltips.Add(new TooltipLine(Mod, "DonHitReward",
@@ -80,7 +79,6 @@ namespace BossRush.Contents.Items.SpecialReward {
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.LifeCrystal);
 			Item.rare = ItemRarityID.Expert;
-			Item.value = Item.sellPrice(platinum: 5, gold: 0, silver: 0, copper: 0);
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			tooltips.Add(new TooltipLine(Mod, "NoHitReward",

@@ -713,15 +713,6 @@ Mods: {
 				DisplayName: Arena Maker
 			}
 
-			GodDice: {
-				Tooltip:
-					'''
-					"The dice use by god to decide mortal fate"s
-					Neutral effect : Gives you a roll for each boss kill, consume 1 roll to roll a random stats
-					'''
-				DisplayName: God Dice
-			}
-
 			totalcritacc: {
 				Tooltip: 100% crits
 				DisplayName: totalcritacc
@@ -1504,6 +1495,7 @@ Mods: {
 				DisplayName: Reactive Bombing
 				Tooltip:
 					'''
+					"Miner self defense equipment"
 					Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
 					Reduce damage receive by 10
 					'''
@@ -1513,6 +1505,7 @@ Mods: {
 				DisplayName: Heart Of Blood Thorn
 				Tooltip:
 					'''
+					"A thorn in heart"
 					Upon hit, Burst out 6 blood thorn that deal 45 magic damage
 					Blood thorn that is created by this item have life steal effect
 					Increases healing effective by 15% and maximum life by 15
@@ -1523,8 +1516,9 @@ Mods: {
 				DisplayName: Spectre Quiver
 				Tooltip:
 					'''
+					"Grant the user with spectre archer knowledge"
 					Increases range base damage by 10 and arrow velocity by 10%
-					Shoot out a spread arch of 4 spectre arrow that deal 67% of weapon damage ( 1s delay )
+					Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( 1s delay )
 					'''
 			}
 
@@ -1552,6 +1546,7 @@ Mods: {
 				DisplayName: Star Stone
 				Tooltip:
 					'''
+					"Made from star that keep falling from the sky"
 					Increases synergy damage by 15%
 					Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
 					'''
@@ -1561,6 +1556,7 @@ Mods: {
 				DisplayName: Titan Blood
 				Tooltip:
 					'''
+					"A small snippet strength of the ancient god"
 					Increases damage reduction by 10% when your life is under 50%
 					Increases additional damage reduction by 5% when your life is under 35%
 					Increases additional damage reduction by 5% when your life is under 15%
@@ -1573,6 +1569,7 @@ Mods: {
 				DisplayName: Steath Cloak
 				Tooltip:
 					'''
+					"No one will live to tell the tale"
 					You become invisible after 15s of not being invisible
 					While invisible your critical damage increases by 35% and you have chance to dodge an attack
 					'''
@@ -1582,6 +1579,7 @@ Mods: {
 				DisplayName: Overpowering Gem
 				Tooltip:
 					'''
+					"Radiate with world energy"
 					Minor increases to various stats
 					You have a small chance to dodge a attack, and small chance to life steal 
 					'''
@@ -1591,9 +1589,39 @@ Mods: {
 				DisplayName: Great Holy Cross
 				Tooltip:
 					'''
+					"Made from pure gold"
 					Greatly increases length of invincibility after taking damage
 					Will also increases the strength of other item that grant invincibility
 					'''
+			}
+
+			VitalityDrainTotem: {
+				DisplayName: Vitality Drain Totem
+				Tooltip:
+					'''
+					Increases your life regeneration
+					Increases healing effectiveness by 25%
+					During your immunity frame, you drain life of enemies nearby you and heal you
+					'''
+			}
+
+			KillingThrill: {
+				DisplayName: Killing Thrill
+				Tooltip:
+					'''
+					Increases your damage against undamaged enemy by 300%
+					Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases and also 
+					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
+					'''
+			}
+			
+			GodDice: {
+				Tooltip:
+					'''
+					"The dice use by god to decide mortal fate"
+					Gives you a roll for each boss kill which will automatically roll for you
+					'''
+				DisplayName: God Dice
 			}
 		}
 

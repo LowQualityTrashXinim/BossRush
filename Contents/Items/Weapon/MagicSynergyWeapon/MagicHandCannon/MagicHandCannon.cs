@@ -65,7 +65,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 	}
 	class MagicHandCannonPlayer : ModPlayer {
 		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
-			if (Player.HeldItem.type == ModContent.ItemType<MagicHandCannon>() && Player.GetModPlayer<PlayerSynergyItemHandle>().MagicHandCannon_Flamelash) {
+			if (Player.HeldItem.type == ModContent.ItemType<MagicHandCannon>()) {
 				BossRushUtils.BresenhamCircle(Player.Center, 350, Color.MediumPurple);
 			}
 		}
@@ -97,10 +97,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 			else {
 				DrawOffsetX = 0;
 			}
+			bool outsideBorder = !Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center, 350);
 			SelectFrame();
 			if (modplayer.MagicHandCannon_Flamelash) {
 				bool ShootProjectile = false;
-				if (!Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center, 350)) {
+				if (!outsideBorder) {
 					Projectile.ai[0]++;
 					ShootProjectile = true;
 				}
@@ -110,8 +111,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 				}
 			}
 			float rotateTo = (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero).ToRotation();
-			float currentRotation = Projectile.velocity.ToRotation();
-			Projectile.velocity = Projectile.velocity.RotatedBy(rotateTo - currentRotation);
+			if (!outsideBorder) {
+				float currentRotation = Projectile.velocity.ToRotation();
+				Projectile.velocity = Projectile.velocity.RotatedBy(rotateTo - currentRotation);
+			}
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 		public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {

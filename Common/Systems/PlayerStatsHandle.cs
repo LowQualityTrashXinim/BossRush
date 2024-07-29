@@ -77,17 +77,17 @@ public class PlayerStatsHandle : ModPlayer {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage);
 		}
 	}
+	public override void PostHurt(Player.HurtInfo info) {
+		base.PostHurt(info);
+		if(!info.PvP) {
+			//Player.immuneTime += (int)(Iframe - 1).ApplyTo(Player.immuneTime);
+		}
+	}
 	public override void PostUpdate() {
 		ChestLoot.amountModifier = (int)UpdateDropAmount.ApplyTo(ChestLoot.amountModifier);
 	}
 	public override void UpdateLifeRegen() {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
-	}
-	public override void PostHurt(Player.HurtInfo info) {
-		base.PostHurt(info);
-		if (!info.PvP) {
-			Player.AddImmuneTime(info.CooldownCounter, (int)Iframe.ApplyTo(Player.immuneTime));
-		}
 	}
 	public override void ResetEffects() {
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
@@ -135,17 +135,16 @@ public class PlayerStatsHandle : ModPlayer {
 		StaticDefense = new StatModifier() - 1;
 		DebuffDamage = new StatModifier();
 		SynergyDamage = new StatModifier();
-		Iframe = new StatModifier() - 1;
+		Iframe = new StatModifier();
+		successfullyKillNPCcount = 0;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
 		return useSpeed;
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		hurtInfo.CooldownCounter = (int)Iframe.ApplyTo(hurtInfo.CooldownCounter);
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		hurtInfo.CooldownCounter = (int)Iframe.ApplyTo(hurtInfo.CooldownCounter);
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
@@ -261,6 +260,7 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
+	public int successfullyKillNPCcount = 0;
 	public int requestShootExtra = 0;
 	public float requestVelocityChange = 0;
 	/// <summary>
@@ -372,9 +372,39 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_NPC.AddBuff += HookBuffTimeModify;
 		On_Player.AddBuff += IncreasesPlayerBuffTime;
 		On_Player.Heal += On_Player_Heal;
+		On_Player.AddImmuneTime += On_Player_AddImmuneTime;
 		On_Projectile.NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float += On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float;
 		On_Projectile.NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float += On_Projectile_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float;
 		On_Projectile.NewProjectileDirect += On_Projectile_NewProjectileDirect;
+		On_Player.GiveImmuneTimeForCollisionAttack += On_Player_GiveImmuneTimeForCollisionAttack;
+		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
+	}
+
+	private void On_Player_SetImmuneTimeForAllTypes(On_Player.orig_SetImmuneTimeForAllTypes orig, Player self, int time) {
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			orig(self, (int)(modplayer.Iframe - 1).ApplyTo(time) + time);
+		}
+		else {
+			orig(self, time);
+		}
+	}
+
+	private void On_Player_GiveImmuneTimeForCollisionAttack(On_Player.orig_GiveImmuneTimeForCollisionAttack orig, Player self, int time) {
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			orig(self,(int)(modplayer.Iframe - 1).ApplyTo(time) + time);
+		}
+		else {
+			orig(self, time);
+		}
+	}
+
+	private void On_Player_AddImmuneTime(On_Player.orig_AddImmuneTime orig, Player self, int cooldownCounterId, int immuneTime) {
+		if(self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			orig(self, cooldownCounterId, (int)(modplayer.Iframe - 1).ApplyTo(immuneTime) + immuneTime);
+		}
+		else {
+			orig(self, cooldownCounterId, immuneTime);
+		}
 	}
 
 	private Projectile On_Projectile_NewProjectileDirect(On_Projectile.orig_NewProjectileDirect orig, IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0, float ai1, float ai2) {

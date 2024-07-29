@@ -13,13 +13,13 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Projectiles;
-using BossRush.Contents.Items.Toggle;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.RelicItem;
 using Mono.Cecil;
 using BossRush.Contents.Skill;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {

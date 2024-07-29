@@ -38,7 +38,7 @@ class SpectreQuiverPlayer : ModPlayer {
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (timer >= 60 && (item.ammo == AmmoID.Arrow || item.ammo == AmmoID.Stake) && SpectreQuiver) {
 			for (int i = 0; i < 4; i++) {
-				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(4, 40, i), ModContent.ProjectileType<ResolveGhostArrow>(), (int)(damage * .67f), knockback, Player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenlyPlus(4, 40, i), ModContent.ProjectileType<ResolveGhostArrow>(), (int)(damage * .34f), knockback, Player.whoAmI);
 			}
 			timer = 0;
 		}

@@ -227,15 +227,5 @@ namespace BossRush.Common {
 			npcLoot.Add(IsABoss);
 			npcLoot.Add(SynergyRule);
 		}
-		public override void OnKill(NPC npc) {
-			if (npc.boss) {
-				int playerIndex = npc.lastInteraction;
-				if (!Main.player[playerIndex].active || Main.player[playerIndex].dead) {
-					playerIndex = npc.FindClosestPlayer();
-				}
-				Player player = Main.player[playerIndex];
-				player.GetModPlayer<GamblePlayer>().Roll++;
-			}
-		}
 	}
 }

@@ -30,17 +30,16 @@ class TitanBloodPlayer : ModPlayer {
 	public override void ResetEffects() {
 		TitanBlood = false;
 	}
-	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		TitanBlock(ref hurtInfo);
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		TitanBlock(ref modifiers);
 	}
-	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		TitanBlock(ref hurtInfo);
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		TitanBlock(ref modifiers);
 	}
-	public void TitanBlock(ref Player.HurtInfo hurtInfo) {
+	public void TitanBlock(ref Player.HurtModifiers hurtInfo) {
 		if(Main.rand.NextBool(12) && TitanBlood) {
-			hurtInfo.SourceDamage = 1;
-			hurtInfo.CooldownCounter += 60;
-			hurtInfo.DustDisabled = true;
+			hurtInfo.SourceDamage *= 0;
+			Player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
 		}
 	}
 }

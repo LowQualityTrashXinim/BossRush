@@ -9,7 +9,6 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Toggle;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
