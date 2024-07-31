@@ -138,11 +138,11 @@ NormalizeArtifact: {
 	Description: Grants no effect.
 }
 
-OrbOfAlchemistArtifact: {
-	DisplayName: Orb Of Alchemist
+AlchemistKnowledgeArtifact: {
+	DisplayName: Alchemist Knowledge
 	Description:
 		'''
-		"The orb whisper secret of alchemist, the world that revolve around it"
+		"reveal secret of alchemist"
 		[c/b7bf5c:Positive effect] :
 			+ Having active buff will increase your stats
 			+ Attacking enemy that have :
@@ -150,7 +150,7 @@ OrbOfAlchemistArtifact: {
 			3 debuff active or more will heal you
 			5 debuff active or more causes a explosion that damage and spread debuff to nearby NPC
 		[c/ab3e43:Negative effect] : 
-			- None
+			- Decreases potion duration by 70%
 		'''
 }
 

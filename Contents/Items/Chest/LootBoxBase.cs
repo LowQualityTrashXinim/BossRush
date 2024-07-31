@@ -762,18 +762,6 @@ namespace BossRush.Contents.Items.Chest {
 		/// Use this if it is a always update item
 		/// </summary>
 		public int PotionNumberAmountAddition = 0;
-		/// <summary>
-		/// Use this if it is a consumable item
-		/// </summary>
-		public int ModifyWeaponAmountAddition = 0;
-		/// <summary>
-		/// Use this if it is a consumable item
-		/// </summary>
-		public int ModifyPotionTypeAmountAddition = 0;
-		/// <summary>
-		/// Use this if it is a consumable item
-		/// </summary>
-		public int ModifyPotionNumberAmountAddition = 0;
 		//Do not touch this
 		public int weaponAmount;
 		public int potionTypeAmount;
@@ -832,9 +820,9 @@ namespace BossRush.Contents.Items.Chest {
 				potionTypeAmount = 1;
 				potionNumAmount = 1;
 			}
-			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + ModifyWeaponAmountAddition + WeaponAmountAddition), 1, 999999);
-			potionTypeAmount = ModifyGetAmount(potionTypeAmount + ModifyPotionTypeAmountAddition + PotionTypeAmountAddition);
-			potionNumAmount = ModifyGetAmount(potionNumAmount + ModifyPotionNumberAmountAddition + PotionNumberAmountAddition);
+			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount  + WeaponAmountAddition), 1, 999999);
+			potionTypeAmount = ModifyGetAmount(potionTypeAmount  + PotionTypeAmountAddition);
+			potionNumAmount = ModifyGetAmount(potionNumAmount  + PotionNumberAmountAddition);
 			if (ModContent.GetInstance<BossRushModConfig>().SynergyFeverMode && ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 				weaponAmount = 1;
 			}
@@ -860,9 +848,6 @@ namespace BossRush.Contents.Items.Chest {
 			RangeChanceMutilplier = 1f;
 			MagicChanceMutilplier = 1f;
 			SummonChanceMutilplier = 1f;
-			ModifyWeaponAmountAddition = 0;
-			ModifyPotionTypeAmountAddition = 0;
-			ModifyPotionNumberAmountAddition = 0;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
@@ -872,9 +857,6 @@ namespace BossRush.Contents.Items.Chest {
 			packet.Write(RangeChanceMutilplier);
 			packet.Write(MagicChanceMutilplier);
 			packet.Write(SummonChanceMutilplier);
-			packet.Write(ModifyWeaponAmountAddition);
-			packet.Write(ModifyPotionTypeAmountAddition);
-			packet.Write(ModifyPotionNumberAmountAddition);
 			packet.Send(toWho, fromWho);
 		}
 		public override void SaveData(TagCompound tag) {
@@ -882,32 +864,18 @@ namespace BossRush.Contents.Items.Chest {
 			tag["RangeChanceMulti"] = RangeChanceMutilplier;
 			tag["MagicChanceMulti"] = MagicChanceMutilplier;
 			tag["SummonChanceMulti"] = SummonChanceMutilplier;
-			tag["ModifyWeaponAmountAddition"] = ModifyWeaponAmountAddition;
-			tag["ModifyPotionTypeAmountAddition"] = ModifyPotionTypeAmountAddition;
-			tag["ModifyPotionNumberAmountAddition"] = ModifyPotionNumberAmountAddition;
 		}
 		public override void LoadData(TagCompound tag) {
 			MeleeChanceMutilplier = (float)tag["MeleeChanceMulti"];
 			RangeChanceMutilplier = (float)tag["RangeChanceMulti"];
 			MagicChanceMutilplier = (float)tag["MagicChanceMulti"];
 			SummonChanceMutilplier = (float)tag["SummonChanceMulti"];
-			try {
-				ModifyWeaponAmountAddition = (int)tag["ModifyWeaponAmountAddition"];
-				ModifyPotionTypeAmountAddition = (int)tag["ModifyPotionTypeAmountAddition"];
-				ModifyPotionNumberAmountAddition = (int)tag["ModifyPotionNumberAmountAddition"];
-			}
-			catch (Exception ex) {
-				Mod.Logger.Error(ex.Message);
-			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {
 			MeleeChanceMutilplier = reader.ReadSingle();
 			RangeChanceMutilplier = reader.ReadSingle();
 			MagicChanceMutilplier = reader.ReadSingle();
 			SummonChanceMutilplier = reader.ReadSingle();
-			ModifyWeaponAmountAddition = reader.ReadInt32();
-			ModifyPotionTypeAmountAddition = reader.ReadInt32();
-			ModifyPotionNumberAmountAddition = reader.ReadInt32();
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
@@ -916,9 +884,6 @@ namespace BossRush.Contents.Items.Chest {
 			clone.RangeChanceMutilplier = RangeChanceMutilplier;
 			clone.MagicChanceMutilplier = MagicChanceMutilplier;
 			clone.SummonChanceMutilplier = SummonChanceMutilplier;
-			clone.ModifyWeaponAmountAddition = ModifyWeaponAmountAddition;
-			clone.ModifyPotionTypeAmountAddition = ModifyPotionTypeAmountAddition;
-			clone.ModifyPotionNumberAmountAddition = ModifyPotionNumberAmountAddition;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
@@ -927,9 +892,6 @@ namespace BossRush.Contents.Items.Chest {
 			|| RangeChanceMutilplier != clone.RangeChanceMutilplier
 			 || MagicChanceMutilplier != clone.MagicChanceMutilplier
 			 || SummonChanceMutilplier != clone.SummonChanceMutilplier
-			 || ModifyWeaponAmountAddition != clone.ModifyWeaponAmountAddition
-			 || ModifyPotionTypeAmountAddition != clone.ModifyPotionTypeAmountAddition
-			 || ModifyPotionNumberAmountAddition != clone.ModifyPotionNumberAmountAddition
 			 )
 				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}

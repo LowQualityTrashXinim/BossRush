@@ -307,7 +307,7 @@ namespace BossRush.Contents.Perks {
 			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 			foreach (NPC npc in npclist) {
 				int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
-				npc.StrikeNPC(npc.CalculateHitInfo(120 * StackAmount, direction, false, 10));
+				npc.StrikeNPC(npc.CalculateHitInfo((120 + player.statLife) * StackAmount, direction, false, 10));
 			}
 			for (int i = 0; i < 150; i++) {
 				int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
@@ -576,17 +576,6 @@ namespace BossRush.Contents.Perks {
 			if (Main.rand.NextBool(100) && !Main.dayTime) {
 				Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.FallingStar, 1000, 5);
 			}
-		}
-	}
-	public class GodGiveDice : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			Tooltip =
-				"+ God give you a dice";
-			CanBeChoosen = false;
-		}
-		public override void OnChoose(Player player) {
-			player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<GodDice>());
 		}
 	}
 	public class OverchargedMana : Perk {

@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using BossRush.Common;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -192,7 +193,7 @@ public class WandOfSparking : ModEnchantment {
 		if (proj.DamageType == DamageClass.Magic) {
 			target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(3));
 		}
-		if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfSparkingSpark) {
+		if (Main.rand.NextBool() && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfSparkingSpark, player.GetWeaponDamage(player.HeldItem), proj.knockBack, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}
@@ -215,7 +216,7 @@ public class WandOfFrosting : ModEnchantment {
 		if (proj.DamageType == DamageClass.Magic) {
 			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(3));
 		}
-		if (Main.rand.NextBool() && proj.type != ProjectileID.WandOfFrostingFrost) {
+		if (Main.rand.NextBool() && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			Projectile.NewProjectile(proj.GetSource_OnHit(target), proj.Center, Main.rand.NextVector2CircularEdge(6, 6), ProjectileID.WandOfFrostingFrost, player.GetWeaponDamage(player.HeldItem), proj.knockBack, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
 		}
@@ -241,7 +242,7 @@ public class WaterBolt : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter2[index] > 0) {
+		if (globalItem.Item_Counter2[index] > 0 && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			return;
 		}
 		int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
@@ -291,7 +292,7 @@ public class ThunderStaff : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] <= 0) {
+		if (globalItem.Item_Counter1[index] <= 0 && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(150, 150);
 			Projectile.NewProjectile(player.GetSource_FromAI(), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ProjectileID.ThunderStaffShot, player.GetWeaponDamage(player.HeldItem), 4, player.whoAmI);
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(0.2f);
@@ -369,7 +370,7 @@ public class Vilethorn : ModEnchantment {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type != ProjectileID.VilethornBase && proj.type != ProjectileID.VilethornTip && globalItem.Item_Counter1[index] <= 0) {
+		if (proj.type != ProjectileID.VilethornBase && proj.type != ProjectileID.VilethornTip && globalItem.Item_Counter1[index] <= 0 && proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 			Vector2 velocity = Main.rand.NextVector2CircularEdge(14, 14);
 			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornBase, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);
 			Projectile.NewProjectile(player.GetSource_FromThis(), target.Center, velocity, ProjectileID.VilethornTip, player.GetWeaponDamage(player.HeldItem), 1f, player.whoAmI);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Common.Utils;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
@@ -9,7 +10,18 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 30;
 			Item.rare = ItemRarityID.LightPurple;
 		}
-		//public override List<int> FlagNumber() => new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7 };
+		public override void LootPoolSetStaticDefaults() {
+			LootBoxItemPool itempool = new LootBoxItemPool(Type);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeHM);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangeHM);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicHM);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonHM);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeMech);
+			itempool.DropItemRange.Add(ItemID.SuperStarCannon);
+			itempool.DropItemRange.Add(ItemID.DD2PhoenixBow);
+			itempool.DropItemMagic.Add(ItemID.UnholyTrident);
+			LootboxSystem.AddItemPool(itempool);
+		}
 		public override List<int> FlagNumAcc() => new List<int>() { 8, 9, 10 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);

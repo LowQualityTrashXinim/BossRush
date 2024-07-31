@@ -128,7 +128,7 @@ public class CombatV2Template : RelicTemplate {
 		if (stat == PlayerStats.PureDamage) {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.15f), 2), 1);
 		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.35f), 2), 1);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.2f), 2), 1);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (player.ComparePlayerHealthInPercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
@@ -169,9 +169,9 @@ public class CombatV3Template : RelicTemplate {
 			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.2f), 2), 1);
 		}
 		if (stat == PlayerStats.PureDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.35f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.2f), 2), 1);
 		}
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.35f, 1.5f), 2), 1);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.25f), 2), 1);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (!player.ComparePlayerHealthInPercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
@@ -239,15 +239,17 @@ public class HealthV2Template : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(3, 7) * 5);
+			return new StatModifier(1, 1, 0, Main.rand.Next(3, 7) * 2);
 		}
 		if (stat == PlayerStats.Defense) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10);
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 5);
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.4f, 1.85f), 2), 1);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.35f)) modplayer.AddStatsToPlayer(stat, value);
+		if (!player.ComparePlayerHealthInPercentage(.35f)) {
+			modplayer.AddStatsToPlayer(stat, value);
+		}
 	}
 }
 public class HealthV3Template : RelicTemplate {
@@ -263,9 +265,9 @@ public class HealthV3Template : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(8, 11) * 5);
+			return new StatModifier(1, 1, 0, Main.rand.Next(4, 7) * 3);
 		}
-		return new StatModifier(1, 1, 0, Main.rand.Next(4, 8) * 3);
+		return new StatModifier(1, 1, 0, Main.rand.Next(4, 8) * 2);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		for (int i = 0; i < player.buffType.Length; i++) {
@@ -328,7 +330,7 @@ public class SynergyTemplate : RelicTemplate {
 		});
 
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, Main.rand.Next(5, 21), 0);
+		return new StatModifier(1, 1, Main.rand.Next(3, 11), 0);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);

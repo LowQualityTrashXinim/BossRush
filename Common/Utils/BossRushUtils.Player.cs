@@ -6,6 +6,14 @@ using Terraria.ID;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		/// <summary>
+		/// This check if player health/life is above x%
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="percent"></param>
+		/// <returns>
+		/// True if health is above said percentage
+		/// </returns>
 		public static bool ComparePlayerHealthInPercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
 		public static bool IsDebugPlayer(this Player player) =>
 			player.name.Contains("Test") ||

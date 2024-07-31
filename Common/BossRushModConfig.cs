@@ -4,17 +4,16 @@ using Terraria.ModLoader.Config;
 namespace BossRush.Common {
 	public class BossRushModConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
-
-		[DefaultValue(false)]
-		public bool AutoHardCore { get; set; }
-		//Do note delete reload required as it is to fix "Growing Spider Cave"
+		[Header($"BaseGameHeader")]
 		[ReloadRequired]
 		[DefaultValue(true)]
 		public bool BossRushMode { get; set; }
-
 		[DefaultValue(true)]
 		public bool SynergyMode { get; set; }
+		[DefaultValue(true)]
+		public bool RoguelikeOverhaul { get; set; }
 
+		[Header($"GameModeHeader")]
 		[DefaultValue(false)]
 		public bool SynergyFeverMode { get; set; }
 		[ReloadRequired]
@@ -25,24 +24,23 @@ namespace BossRush.Common {
 		[DefaultValue(false)]
 		public bool Ascension { get; set; }
 
-		[DefaultValue(true)]
-		public bool RoguelikeOverhaul { get; set; }
-
+		[Header($"QoLHeader")]
+		[DefaultValue(false)]
+		public bool AutoHardCore { get; set; }
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool HardEnableFeature { get; set; }
-
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool ForceBossDropRegadless { get; set; }
-
-		[DefaultValue(false)]
-		public bool WorldGenTest { get; set; }
 		[ReloadRequired]
 		[DefaultValue(false)]
-		public bool AutoRandomizeCharacter{ get; set; }
-
+		public bool AutoRandomizeCharacter { get; set; }
 		[DefaultValue(false)]
 		public bool NoMoreChestFromBuilderLootbox { get; set; }
+
+		[Header($"DebugHeader")]
+		[DefaultValue(false)]
+		public bool WorldGenTest { get; set; }
 	}
 }

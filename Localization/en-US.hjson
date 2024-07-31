@@ -233,6 +233,7 @@ Mods: {
 			ThrownShortSwordProjectile.DisplayName: Thrown Short Sword Projectile
 			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
 			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
+			GlassProjectile.DisplayName: Glass Projectile
 		}
 
 		NPCs: {
@@ -1614,7 +1615,7 @@ Mods: {
 					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
 					'''
 			}
-			
+
 			GodDice: {
 				Tooltip:
 					'''
@@ -1622,6 +1623,16 @@ Mods: {
 					Gives you a roll for each boss kill which will automatically roll for you
 					'''
 				DisplayName: God Dice
+			}
+
+			GlassCannon: {
+				DisplayName: Glass Cannon
+				Tooltip: ""
+			}
+
+			StimPack: {
+				DisplayName: Stim Pack
+				Tooltip: ""
 			}
 		}
 
@@ -2012,6 +2023,13 @@ Mods: {
 				AutoRandomizeCharacter: {
 					Label: Auto Randomize Character
 					Tooltip: ""
+				}
+
+				Headers: {
+					QoLHeader: Quality of Life
+					BaseGameHeader: Base game
+					GameModeHeader: Game Mode
+					DebugHeader: Debug
 				}
 			}
 		}

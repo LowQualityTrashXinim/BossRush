@@ -8,6 +8,7 @@ using Terraria.WorldBuilding;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System;
 
 namespace BossRush.Common.WorldGenOverhaul;
 
@@ -69,15 +70,44 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Main.spawnTileY = (int)(Main.maxTilesY * .22f);
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
-		GenerationHelper.ForEachInRectangle(
-			0,
-			0,
-			Main.maxTilesX,
-			Main.maxTilesY,
+		ushort dirt = TileID.Dirt;
+		ushort air0 = ushort.MaxValue;
+		ushort wood = TileID.WoodBlock;
+		StructureData testdata = new StructureData();
+		testdata.data = [
+			[air0,dirt,dirt,dirt,air0,air0,dirt,dirt,dirt,air0],
+			[dirt,air0,dirt,air0,dirt,air0,dirt,dirt,dirt,air0],
+			[dirt,dirt,air0,dirt,dirt,air0,dirt,dirt,dirt,air0],
+			[dirt,air0,dirt,air0,dirt,air0,air0,air0,air0,air0],
+			[air0,dirt,dirt,dirt,air0,air0,air0,air0,air0,air0],
+			[air0,dirt,dirt,dirt,air0,air0,air0,air0,air0,air0],
+			[dirt,air0,dirt,air0,dirt,air0,air0,air0,air0,air0],
+			[dirt,dirt,air0,dirt,dirt,air0,dirt,air0,dirt,air0],
+			[dirt,air0,dirt,air0,dirt,air0,dirt,air0,dirt,air0],
+			[air0,dirt,dirt,dirt,air0,air0,air0,dirt,air0,air0],
+		];
+		StructureData houseTest = new StructureData();
+		houseTest.data = [
+			[air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0],
+			[air0, air0, air0, air0, wood, wood, wood, wood, air0, air0, air0, air0],
+			[air0, air0, air0, wood, wood, air0, air0, wood, wood, air0, air0, air0],
+			[air0, air0, wood, wood, air0, air0, air0, air0, wood, wood, air0, air0],
+			[air0, wood, wood, air0, air0, air0, air0, air0, air0, wood, wood, air0],
+			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
+			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
+			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
+			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
+			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
+			[air0, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, air0],
+			[air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0],
+		];
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 22),
 			(i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
+				GenerationHelper.FastPlaceTile(i, j, dirt);
+				GenerationHelper.PlaceStructure(GridPart_X * 5, GridPart_Y * 5, i, j, houseTest);
+				GenerationHelper.PlaceStructure(GridPart_X * 10, GridPart_Y * 10, i, j, testdata);
 			}
-			);
+		);
 		//GenerationHelper.ForEachInRectangle(
 		//	0,
 		//	0,
@@ -98,7 +128,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void Create_Hell() {
-		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 22, 24, 1), GenerationHelper.FastRemoveTile);
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 23, 24, 1),
 		(i, j) => {
 			if (j == GridPart_Y * 23) {

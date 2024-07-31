@@ -1,11 +1,8 @@
-﻿using BossRush.Common;
-using BossRush.Common.Systems;
+﻿using BossRush.Common.Systems;
 using BossRush.Common.Utils;
-using BossRush.Contents.Items.Potion;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
@@ -21,6 +18,11 @@ namespace BossRush.Contents.Items.Chest {
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
 			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);
 			itempool.DropItemMisc.UnionWith(TerrariaArrayID.SpecialPreBoss);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreEoC);
+			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreEoC);
+			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreEoC);
+			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonerPreEoC);
+			itempool.DropItemMisc.UnionWith(TerrariaArrayID.Special);
 			LootboxSystem.AddItemPool(itempool);
 		}
 		public override List<int> FlagNumAcc() => new List<int> { 2 };

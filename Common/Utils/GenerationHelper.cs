@@ -13,7 +13,7 @@ internal static partial class GenerationHelper {
 	public static bool CoordinatesOutOfBounds(int i, int j) => i >= Main.maxTilesX || j >= Main.maxTilesY || i < 0 || j < 0;
 
 	public static void FastPlaceTile(int i, int j, ushort tileType) {
-		if (CoordinatesOutOfBounds(i, j)) {
+		if (CoordinatesOutOfBounds(i, j) || tileType < 0 || tileType >= TileID.Count) {
 			return;
 		}
 
@@ -130,13 +130,42 @@ internal static partial class GenerationHelper {
 	/// <returns></returns>
 	public static Rectangle GridPositionInTheWorld48x48(int x, int y, int dragX = 1, int dragY = 1)
 		=> new Rectangle(RogueLikeWorldGen.GridPart_X / 2 * x, RogueLikeWorldGen.GridPart_Y / 2 * y, RogueLikeWorldGen.GridPart_X / 2 * dragX, RogueLikeWorldGen.GridPart_Y / 2 * dragY);
-	public static void SquareInRectangleCalculation(Rectangle rect, int SquareAmountX, int SquareAmountY) {
-
-	}
 	public static float ProgressOnAStrip(int minY, int maxY, int currentY) {
 		return MathHelper.Lerp(minY, maxY, currentY);
 	}
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
+	}
+	public static void PlaceStructure(int startingX, int startingY, int currentX, int currentY, StructureData structureData) {
+		if(startingX > currentX || startingY > currentY) {
+			return;
+		}
+		if (currentX - startingX >= structureData.data[0].Length) {
+			return;
+		}
+		if (currentY - startingY >= structureData.data.Length) {
+			return;
+		}
+		if(structureData.data[currentY - startingY][currentX - startingX] >= TileID.Count) {
+			FastRemoveTile(currentX, currentY);
+		}
+		FastPlaceTile(currentX, currentY, structureData.data[currentY - startingY][currentX - startingX]);
+	}
+}
+/// <summary>
+/// It is extremely not recommended to uses this if you gonna make the same kind of world gen
+/// This is very much hardcoded
+/// </summary>
+public class StructureData {
+	public int Type;
+	/// <summary>
+	/// Beaware that when making this, the tile placement will be rotated by 90 degree clockwise
+	/// </summary>
+	public ushort[][] data;
+	public StructureData() {
+	}
+	public StructureData(int type, ushort[][] Data) {
+		Type = type;
+		data = Data;
 	}
 }
