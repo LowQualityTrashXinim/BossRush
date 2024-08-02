@@ -16,6 +16,7 @@ internal class StealthCloak : ModItem {
 		player.GetModPlayer<StealthCloakPlayer>().StealthCloak = true;
 		if(player.invis) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, 1.35f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
 		}
 	}
 }

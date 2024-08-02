@@ -28,7 +28,7 @@ class VitalityDrainTotemPlayer : ModPlayer {
 		VitalityDrainTotem = false;
 	}
 	public override void PostUpdate() {
-		if (!Player.immune) {
+		if (!Player.immune || !VitalityDrainTotem) {
 			return;
 		}
 		if (++cooldown <= 12) {

@@ -9,6 +9,7 @@ using BossRush.Contents.Items.SpecialReward;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush {
 	partial class BossRush
@@ -23,6 +24,7 @@ namespace BossRush {
             GodUltimateChallenge,
 			Perk,
 			Skill,
+			Artifact
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -92,7 +94,14 @@ namespace BossRush {
 						skillplayer.SyncPlayer(-1, whoAmI, false);
 					}
 					break;
-            }
+				case MessageType.Artifact:
+					ArtifactPlayer artifactPlayer = Main.player[playernumber].GetModPlayer<ArtifactPlayer>();
+					artifactPlayer.ReceivePlayerSync(reader);
+					if (Main.netMode == NetmodeID.Server) {
+						artifactPlayer.SyncPlayer(-1, whoAmI, false);
+					}
+					break;
+			}
         }
     }
 }

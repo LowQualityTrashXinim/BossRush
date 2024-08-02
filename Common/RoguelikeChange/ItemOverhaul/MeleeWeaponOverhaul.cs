@@ -507,7 +507,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (SwingType == BossRushUseStyle.Poke) {
 				if (modPlayer.ComboNumber == 2) {
-					return useSpeedMultiplierOnCombo += 2.5f;
+					return useSpeedMultiplierOnCombo += 1.5f;
 				}
 				if (Main.mouseRight) {
 					return useSpeedMultiplierOnCombo -= .5f;

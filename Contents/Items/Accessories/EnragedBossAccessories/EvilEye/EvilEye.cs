@@ -1,10 +1,10 @@
-﻿using BossRush.Contents.BuffAndDebuff;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 	internal class EvilEye : ModItem {
@@ -40,15 +40,20 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 			player.GetModPlayer<EvilEyePlayer>().EoCBless = true;
 		}
 	}
+	class EvilEyesPlayer : GlobalItem {
+		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
+			if (item.type == ItemID.EoCShield) {
+				player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
+			}
+		}
+	}
 	internal class EvilEyePlayer : ModPlayer {
-		//Eye of cthulhu
 		public int EoCCounter = 0;
 		public int EoCCounter2 = 0;
 		public int EoCCounter3 = 0;
 		public bool EyeProtection = true;
 		public bool EoCBless;
 		public bool EoCShieldUpgrade;
-
 		public override void ResetEffects() {
 			EyeProtection = true;
 			EoCBless = false;
@@ -63,7 +68,7 @@ namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye {
 				EoCCounter = 0;
 			}
 		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (EoCShieldUpgrade && EoCBless && Player.HeldItem.type == ItemID.TheEyeOfCthulhu && proj.type != ModContent.ProjectileType<EoCServant>() && proj.type != ModContent.ProjectileType<PhantasmalEye>()) {
 				EntitySource_ItemUse EoC = new EntitySource_ItemUse(Player, new Item(ModContent.ItemType<EvilEye>()));

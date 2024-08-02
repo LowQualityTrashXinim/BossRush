@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common;
+using Mono.Cecil;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -391,5 +392,62 @@ public class CrimsonRod : ModEnchantment {
 	}
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		multi -= .08f;
+	}
+}
+public class MagicMissile : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.MagicMissile;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi += .1f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (item.shoot != ProjectileID.None) {
+			return;
+		}
+		globalItem.Item_Counter2[index] = BossRushUtils.CountDown(globalItem.Item_Counter2[index]);
+		if (!player.CheckMana(14, true)) {
+			return;
+		}
+		if (player.ItemAnimationActive && globalItem.Item_Counter2[index] <= 0) {
+			Vector2 velToMouse = (player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero);
+			Vector2 positionBehindPlayer = player.Center.PositionOFFSET(velToMouse.Vector2RotateByRandom(25), Main.rand.Next(80, 110));
+			Vector2 vel = (Main.MouseWorld - positionBehindPlayer).SafeNormalize(Vector2.Zero) * 12;
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), positionBehindPlayer, vel, ProjectileID.MagicMissile, item.damage, item.knockBack, player.whoAmI);
+			Main.projectile[proj].tileCollide = false;
+			globalItem.Item_Counter2[index] = player.itemAnimationMax * 2;
+		}
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (globalItem.Item_Counter1[index] >= 3) {
+			if (!player.CheckMana(14, true)) {
+				return;
+			}
+			Vector2 velocityNew = velocity.SafeNormalize(Vector2.Zero) * 14;
+			Projectile.NewProjectile(source, position, velocityNew.Vector2RotateByRandom(30), ProjectileID.MagicMissile, damage, knockback, player.whoAmI);
+			globalItem.Item_Counter1[index] = 0;
+		}
+		else {
+			globalItem.Item_Counter1[index]++;
+		}
+	}
+}
+class WeatherPain : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.WeatherPain;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi += .11f;
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if(proj.DamageType == DamageClass.Magic) {
+			modifiers.SourceDamage += .12f;
+		}	
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.ownedProjectileCounts[ProjectileID.WeatherPainShot] < 1 && player.ItemAnimationActive) {
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ProjectileID.WeatherPainShot, item.damage, item.knockBack, player.whoAmI);
+			Main.projectile[proj].timeLeft = 120;
+		}
 	}
 }

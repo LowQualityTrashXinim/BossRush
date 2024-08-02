@@ -502,6 +502,19 @@ CrimsonRod.Description:
 	Create blood rain that shoot out randomly at cursor position
 	( Can be trigger every 0.12s )
 	'''
+MagicMissile.Description:
+	'''
+	Increases mana cost by 10%
+	Using weapon that can't shoot a projectile will have following effect :
+	shoot out magic missile behind player at the cost of 14 mana ( trigger cool down base on item animation time * 2 )
+	Using weapon that create projectile will have following effect :
+	every 3rd shot will shoot out a magic missile at the cost of 14 mana
+	'''
+WeatherPain.Description:
+	'''
+	Increases mana cost by 11% but enemy hit by magic projectile receive 12% more damage
+	If there are no Hurtnado active then shoot out Hurtnado with short live time ( this do not stack )
+	'''
 BabyBirdStaff.Description:
 	'''
 	Spawn elite baby bird to aid you during fight

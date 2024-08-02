@@ -27,8 +27,8 @@ public class GlassCannonPlayer : ModPlayer {
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (GlassCannon && cooldown == 0) {
 			cooldown = Player.itemAnimationMax * 2;
-			Vector2 reVelocity = velocity.SafeNormalize(Vector2.Zero) * 10;
-			Projectile.NewProjectile(source, position, reVelocity, ModContent.ProjectileType<GlassProjectile>(), (int)(damage * 1.15f), knockback, Player.whoAmI);
+			Vector2 reVelocity = velocity.SafeNormalize(Vector2.Zero) * 17;
+			Projectile.NewProjectile(source, position, reVelocity.Vector2RotateByRandom(5), ModContent.ProjectileType<GlassProjectile>(), (int)(damage * 1.15f), knockback, Player.whoAmI);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}

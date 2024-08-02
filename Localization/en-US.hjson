@@ -1572,7 +1572,9 @@ Mods: {
 					'''
 					"No one will live to tell the tale"
 					You become invisible after 15s of not being invisible
-					While invisible your critical damage increases by 35% and you have chance to dodge an attack
+					While invisible your critical damage increases by 35%
+					increases your movement speed by 15%
+					you have chance to dodge an attack
 					'''
 			}
 
@@ -1627,11 +1629,24 @@ Mods: {
 
 			GlassCannon: {
 				DisplayName: Glass Cannon
-				Tooltip: ""
+				Tooltip:
+					'''
+					When using a weapon that shoot projectile
+					Shoot out a glass that deal 125% of weapon damage
+					'''
 			}
 
 			StimPack: {
 				DisplayName: Stim Pack
+				Tooltip:
+					'''
+					When health fall below 40%, automatically give you stim pack buff
+					Stim pack buff increases attack speed by 12% and health regenaration by 50% and flat 10
+					'''
+			}
+
+			ArtifactDebug: {
+				DisplayName: Artifact Debug
 				Tooltip: ""
 			}
 		}
@@ -1917,6 +1932,15 @@ Mods: {
 			TheUnderworldWrath: {
 				DisplayName: The Underworld Wrath
 				Description: Mods.BossRush.Buffs.TheUnderworldWrath.Description
+			}
+
+			StimPackBuff: {
+				DisplayName: Stim Pack
+				Description:
+					'''
+					"Sudden rush"
+					Increases attack speed and health regenaration
+					'''
 			}
 		}
 

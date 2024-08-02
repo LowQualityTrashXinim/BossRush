@@ -144,6 +144,20 @@ public class SkillHandlePlayer : ModPlayer {
 		BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
 		return true;
 	}
+	public void SkillStatTotal(out int energy, out int duration, out int cooldown) {
+		int[] active = GetCurrentActiveSkillHolder();
+		energy = 0;
+		duration = 0;
+		cooldown = 0;
+		for (int i = 0; i < active.Length; i++) {
+			if( SkillLoader.GetSkill(active[i]) == null) {
+				continue;
+			}
+			energy += SkillLoader.GetSkill(active[i]).EnergyRequire;
+			duration += SkillLoader.GetSkill(active[i]).Duration;
+			cooldown += SkillLoader.GetSkill(active[i]).CoolDown;
+		}
+	}
 	public void AddSkillIntoCurrentActiveHolder(int SkillID, int whoAmI) {
 		if (whoAmI < 0 || whoAmI > 9) {
 			return;
@@ -283,40 +297,10 @@ public class SkillHandlePlayer : ModPlayer {
 				return;
 			}
 			Activate = true;
-			int energyCost = 0;
-			switch (CurrentActiveHolder) {
-				case 1:
-					for (int i = 0; i < 10; i++) {
-						if (SkillHolder1[i] == -1) {
-							continue;
-						}
-						energyCost += SkillLoader.GetSkill(SkillHolder1[i]).EnergyRequire;
-						Duration += SkillLoader.GetSkill(SkillHolder1[i]).Duration;
-						CoolDown += SkillLoader.GetSkill(SkillHolder1[i]).CoolDown;
-					}
-					break;
-				case 2:
-					for (int i = 0; i < 10; i++) {
-						if (SkillHolder2[i] == -1) {
-							continue;
-						}
-						energyCost += SkillLoader.GetSkill(SkillHolder2[i]).EnergyRequire;
-						Duration += SkillLoader.GetSkill(SkillHolder2[i]).Duration;
-						CoolDown += SkillLoader.GetSkill(SkillHolder1[i]).CoolDown;
-					}
-					break;
-				case 3:
-					for (int i = 0; i < 10; i++) {
-						if (SkillHolder3[i] == -1) {
-							continue;
-						}
-						energyCost += SkillLoader.GetSkill(SkillHolder3[i]).EnergyRequire;
-						Duration += SkillLoader.GetSkill(SkillHolder3[i]).Duration;
-						CoolDown += SkillLoader.GetSkill(SkillHolder1[i]).CoolDown;
-					}
-					break;
-			}
-			if (energyCost > Energy) {
+			SkillStatTotal(out int energy, out int duration, out int cooldown);
+			Duration = duration;
+			CoolDown = cooldown;
+			if (energy > Energy) {
 				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Red, "Not Enough energy !");
 				Duration = 0;
 				CoolDown = 0;
@@ -326,7 +310,7 @@ public class SkillHandlePlayer : ModPlayer {
 			}
 			else {
 				MaximumCoolDown = CoolDown;
-				Energy -= energyCost;
+				Energy -= energy;
 				switch (CurrentActiveHolder) {
 					case 1:
 						for (int i = 0; i < 10; i++) {

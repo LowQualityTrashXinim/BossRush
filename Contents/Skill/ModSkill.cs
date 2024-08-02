@@ -160,6 +160,7 @@ public class WoodSwordSpirit : ModSkill {
 		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(24);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(10);
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI);
+		Main.projectile[proj].timeLeft = Skill_Duration;
 		if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
 			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllWoodSword);
 	}

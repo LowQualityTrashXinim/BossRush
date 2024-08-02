@@ -95,6 +95,11 @@ namespace BossRush.Common.RoguelikeChange {
 					item.useTime = item.useAnimation = 15;
 					item.crit += 6;
 					break;
+				case ItemID.HeatRay:
+					item.useTime = item.useAnimation = 4;
+					item.mana = 4;
+					item.damage = 40;
+					break;
 
 			}
 		}
@@ -216,11 +221,6 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.ShadewoodBow:
 					player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
 					break;
-			}
-		}
-		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
-			if (item.type == ItemID.EoCShield) {
-				player.GetModPlayer<EvilEyePlayer>().EoCShieldUpgrade = true;
 			}
 		}
 	}

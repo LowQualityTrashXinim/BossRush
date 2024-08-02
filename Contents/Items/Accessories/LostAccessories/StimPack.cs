@@ -22,9 +22,18 @@ public class StimPackPlayer : ModPlayer {
 	}
 	public override void UpdateEquips() {
 		if(!Player.ComparePlayerHealthInPercentage(.4f) && StimPack) {
-			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, 1.5f, Flat: 10);
-			modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.12f);
+			Player.AddBuff(ModContent.BuffType<StimPackBuff>(), BossRushUtils.ToSecond(10));
 		}
+	}
+}
+class StimPackBuff : ModBuff {
+	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override void SetStaticDefaults() {
+		Main.debuff[Type] = false;
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.RegenHP, 1.5f, Flat: 10);
+		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.12f);
 	}
 }

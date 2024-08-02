@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.NPCs;
+﻿using BossRush.Contents.Items.SpecialReward;
+using BossRush.Contents.NPCs;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ID;
@@ -19,6 +20,17 @@ namespace BossRush.Contents.Items.Spawner {
 		public override void SpecialSpawningLogic(Player player) {
 			int spawnY = 250;
 			NPC.SpawnBoss((int)(player.Center.X), (int)(player.Center.Y - spawnY), NPCtypeToSpawn[0], player.whoAmI);
+		}
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<KSNoHitReward>())
+			.AddIngredient(ModContent.ItemType<EoCNoHitReward>())
+			.AddIngredient(ModContent.ItemType<EoWNoHitReward>())
+			.AddIngredient(ModContent.ItemType<BoCNoHitReward>())
+			.AddIngredient(ModContent.ItemType<SkeletronNoHitReward>())
+			.AddIngredient(ModContent.ItemType<QueenBeeNoHitReward>())
+			.AddIngredient(ModContent.ItemType<DeerclopNoHitReward>())
+			.Register();
 		}
 	}
 }

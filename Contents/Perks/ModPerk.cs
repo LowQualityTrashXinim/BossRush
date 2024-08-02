@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Items;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Skill;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Projectiles;
@@ -17,9 +18,6 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.RelicItem;
-using Mono.Cecil;
-using BossRush.Contents.Skill;
-using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -351,7 +349,8 @@ namespace BossRush.Contents.Perks {
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (type != ModContent.ProjectileType<ArenaMakerProj>() 
 				|| type == ModContent.ProjectileType<NeoDynamiteExplosion>()
-				|| type == ModContent.ProjectileType<TowerDestructionProjectile>()) {
+				|| type == ModContent.ProjectileType<TowerDestructionProjectile>()
+				|| !ContentSamples.ProjectilesByType[type].minion) {
 				player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = StackAmount;
 				player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange = 10;
 			}

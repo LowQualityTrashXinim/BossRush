@@ -26,6 +26,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| OnKill_ScatterShot <= 0
 			|| projectile.hostile
 			|| !projectile.friendly
+			|| projectile.minion
 			|| projectile.aiStyle == 4
 			|| projectile.aiStyle == 19
 			|| projectile.aiStyle == 39

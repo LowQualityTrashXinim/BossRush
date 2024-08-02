@@ -626,7 +626,41 @@ internal class SkillUI : UIState {
 	public btn_SkillDeletion btn_delete;
 	public const string UItype_SKILL = "skill";
 	public const string UIType_INVENTORY = "inventory";
+	public UIPanel panel;
+	public UIText energyCostText;
+	public UIText durationText;
+	public UIText cooldownText;
+	public override void OnInitialize() {
+		panel = new UIPanel();
+		Append(panel);
+		energyCostText = new UIText("");
+		Append(energyCostText);
+		durationText = new UIText("");
+		Append(durationText);
+		cooldownText = new UIText("");
+		Append(cooldownText);
+	}
+
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		SkillHandlePlayer modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
+		modplayer.SkillStatTotal(out int energy, out int duration, out int cooldown);
+		Color color =  energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
+		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
+		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
+		cooldownText.SetText($"Cool down = {MathF.Round(cooldown / 60f, 2)}s");
+	}
+
 	private void ActivateSkillUI(Player player) {
+		panel.UISetWidthHeight(200, 90);
+		panel.Left.Pixels = 860;
+		panel.Top.Pixels = 330;
+		energyCostText.Top.Pixels = 349;
+		energyCostText.Left.Pixels = 880;
+		durationText.Top.Pixels = 370;
+		durationText.Left.Pixels = 880;
+		cooldownText.Top.Pixels = 390;
+		cooldownText.Left.Pixels = 880;
 		if (player.TryGetModPlayer(out SkillHandlePlayer modplayer)) {
 			//Explain : since most likely in the future we aren't gonna expand the skill slot, we just hard set it to 10
 			//We are also pre render these UI first
@@ -649,8 +683,8 @@ internal class SkillUI : UIState {
 					Append(skill[i]);
 				}
 			}
-			Vector2 InvOffSet = new Vector2(520, -55);
 			if (inventory.Count < 1) {
+				Vector2 InvOffSet = new Vector2(520, -55);
 				for (int i = 0; i < 30; i++) {
 					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, i, modplayer.SkillInventory[i], UIType_INVENTORY);
 					Vector2 InvPos = OffSetPosition_Skill + new Vector2(0, 72);
