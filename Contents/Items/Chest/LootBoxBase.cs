@@ -3,6 +3,7 @@ using Terraria;
 using System.IO;
 using Terraria.ID;
 using System.Linq;
+using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using BossRush.Common.Utils;
@@ -14,10 +15,6 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Common;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection;
-using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -152,7 +149,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (Main.masterMode) {
 				SpecialAmount += 150;
 			}
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE) && !player.IsDebugPlayer()) {
 				int weapon = Main.rand.Next(BossRushModSystem.SynergyItem).type;
 				player.QuickSpawnItemDirect(entitySource, weapon);
 				AmmoForWeapon(entitySource, player, weapon);

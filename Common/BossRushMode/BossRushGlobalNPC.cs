@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.ChallengeMode {
-	internal class ChallengeModeGlobalNPC : GlobalNPC {
+	internal class BossRushGlobalNPC : GlobalNPC {
 		public override bool PreAI(NPC npc) {
 			return true;
 		}

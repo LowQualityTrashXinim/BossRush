@@ -70,42 +70,9 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		Main.spawnTileY = (int)(Main.maxTilesY * .22f);
 		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
-		ushort dirt = TileID.Dirt;
-		ushort air0 = ushort.MaxValue;
-		ushort wood = TileID.WoodBlock;
-		StructureData testdata = new StructureData();
-		testdata.data = [
-			[air0,dirt,dirt,dirt,air0,air0,dirt,dirt,dirt,air0],
-			[dirt,air0,dirt,air0,dirt,air0,dirt,dirt,dirt,air0],
-			[dirt,dirt,air0,dirt,dirt,air0,dirt,dirt,dirt,air0],
-			[dirt,air0,dirt,air0,dirt,air0,air0,air0,air0,air0],
-			[air0,dirt,dirt,dirt,air0,air0,air0,air0,air0,air0],
-			[air0,dirt,dirt,dirt,air0,air0,air0,air0,air0,air0],
-			[dirt,air0,dirt,air0,dirt,air0,air0,air0,air0,air0],
-			[dirt,dirt,air0,dirt,dirt,air0,dirt,air0,dirt,air0],
-			[dirt,air0,dirt,air0,dirt,air0,dirt,air0,dirt,air0],
-			[air0,dirt,dirt,dirt,air0,air0,air0,dirt,air0,air0],
-		];
-		StructureData houseTest = new StructureData();
-		houseTest.data = [
-			[air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0],
-			[air0, air0, air0, air0, wood, wood, wood, wood, air0, air0, air0, air0],
-			[air0, air0, air0, wood, wood, air0, air0, wood, wood, air0, air0, air0],
-			[air0, air0, wood, wood, air0, air0, air0, air0, wood, wood, air0, air0],
-			[air0, wood, wood, air0, air0, air0, air0, air0, air0, wood, wood, air0],
-			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
-			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
-			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
-			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
-			[air0, wood, air0, air0, air0, air0, air0, air0, air0, air0, wood, air0],
-			[air0, wood, wood, wood, wood, wood, wood, wood, wood, wood, wood, air0],
-			[air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0, air0],
-		];
 		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 0, 24, 22),
 			(i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, dirt);
-				GenerationHelper.PlaceStructure(GridPart_X * 5, GridPart_Y * 5, i, j, houseTest);
-				GenerationHelper.PlaceStructure(GridPart_X * 10, GridPart_Y * 10, i, j, testdata);
+				GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 			}
 		);
 		//GenerationHelper.ForEachInRectangle(
@@ -275,6 +242,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.LihzahrdBrick);
 			GenerationHelper.FastPlaceWall(i, j, WallID.LihzahrdBrickUnsafe);
+		});
+	}
+	public void Create_BeeNest() {
+		GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(15, 11, 2, 5),
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.BeeHive);
+			GenerationHelper.FastPlaceWall(i, j, WallID.Hive);
 		});
 	}
 	[Task]//Test

@@ -234,6 +234,7 @@ Mods: {
 			ThrowShortSwordProjectile.DisplayName: Throw Short Sword Projectile
 			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
 			GlassProjectile.DisplayName: Glass Projectile
+			MagicalBolt.DisplayName: Magical Bolt
 		}
 
 		NPCs: {
@@ -714,9 +715,9 @@ Mods: {
 				DisplayName: Arena Maker
 			}
 
-			totalcritacc: {
-				Tooltip: 100% crits
-				DisplayName: totalcritacc
+			ArtifactDebug: {
+				DisplayName: Artifact Debug
+				Tooltip: ""
 			}
 
 			ResetWonderDrug: {
@@ -1645,9 +1646,23 @@ Mods: {
 					'''
 			}
 
-			ArtifactDebug: {
-				DisplayName: Artifact Debug
-				Tooltip: ""
+			MagicalScroll: {
+				DisplayName: Magical Scroll
+				Tooltip:
+					'''
+					Increases mana cost by 5%
+					Have 1 in 5 chance to shoot out a magic orb that deal 42 magic damage
+					'''
+			}
+
+			BloodDiamond: {
+				DisplayName: Blood Diamond
+				Tooltip:
+					'''
+					Increases critical strike chance by 5
+					Upon critical hit a enemy, you gain a blood diamond stack
+					Blood diamond stack increases your attack speed by 6%, damage by 10% and critical damage by 20%
+					'''
 			}
 		}
 

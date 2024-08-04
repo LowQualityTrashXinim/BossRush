@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework;
 namespace BossRush.Common;
 public class ImageStructureLoader : ILoadable {
 	private static readonly Dictionary<string, ImageData> Images = new();
-
 	public void Load(Mod mod) {
 		foreach (string filePath in mod.GetFileNames()) {
 			if (!filePath.StartsWith("Assets/Images/Structures") || !filePath.EndsWith(".rawimg")) {
@@ -25,14 +24,20 @@ public class ImageStructureLoader : ILoadable {
 			Images[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
 		}
 	}
-
 	public static ImageData Get(string structureName) {
-		return Images[structureName];
+		return Images[structureName + ".rawimg"];
+	}
+	
+	public void Unload() {
 	}
 
-	public void Unload() { }
+	public const string OverworldArenaVar1 = "OverworldArena1";
+	public const string FleshArenaVar1 = "FleshArena1";
+	public const string JungleArenaVar1 = "JungleArena1";
+	public const string BeeNestArenaVar1 = "BeeNestArena1"; 
+	public const string SlimeArenaVar1 = "SlimeArena1";
+	public const string CrimsonArenaVar1 = "CrimsonArena1";
 }
-
 public record ImageData(int Width, Color[] Data) {
 	public int Height => Data.Length / Width;
 	public void EnumeratePixels(Action<int, int, Color> action) {

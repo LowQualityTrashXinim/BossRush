@@ -10,7 +10,6 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 		public override void SetDefaults() {
 			Item.DefaultToAccessory(28, 30);
 			Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
-			Item.value = 1000000;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.statManaMax2 += 30;

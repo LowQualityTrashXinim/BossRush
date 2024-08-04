@@ -5,6 +5,8 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon;
 internal class SlipGun : ModItem {
@@ -15,6 +17,10 @@ internal class SlipGun : ModItem {
 		Item.rare = ItemRarityID.Pink;
 		Item.value = Item.sellPrice(gold: 50);
 	}
+	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		SlipGun_ModPlayer modplayer = Main.LocalPlayer.GetModPlayer<SlipGun_ModPlayer>();
+		tooltips.Add(new TooltipLine(Mod, "Chamber", $"[c/{Color.Yellow.Hex3()}:Current ammo count {modplayer.Chamber}"));
+	}
 	public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		SlipGun_ModPlayer modplayer = player.GetModPlayer<SlipGun_ModPlayer>();
 		for (int i = 0; i < modplayer.Chamber; i++) {
@@ -24,6 +30,9 @@ internal class SlipGun : ModItem {
 	}
 	public override void OnConsumeAmmo(Item ammo, Player player) {
 		base.OnConsumeAmmo(ammo, player);
+	}
+	public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
+		
 	}
 }
 class SlipGun_ModPlayer : ModPlayer {

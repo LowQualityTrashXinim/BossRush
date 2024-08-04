@@ -428,7 +428,7 @@ class DefaultUI : UIState {
 			int left2 = hitbox2.Left;
 			int right2 = hitbox2.Right;
 			int steps2 = (int)((right2 - left2) * quotient2);
-			for (int i = 0; i < steps2; i += 1) {
+			for (int i = 0; i < steps2; i++) {
 				// float percent = (float)i / steps; // Alternate Gradient Approach
 				float percent = (float)i / (right2 - left2);
 				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left2 + i, hitbox2.Y, 1, hitbox2.Height), Color.Lerp(gradientA2, gradientB2, percent));
