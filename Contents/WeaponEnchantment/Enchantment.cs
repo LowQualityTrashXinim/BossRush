@@ -11,6 +11,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
 		public int ItemIDType = ItemID.None;
+		public bool EnchantmentBlock = true;
 		/// <summary>
 		/// This will clean your counter automatically upon changing weapon
 		/// </summary>

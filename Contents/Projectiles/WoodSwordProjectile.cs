@@ -94,7 +94,7 @@ internal class SwordProjectile2 : ModProjectile {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			vel = Projectile.velocity;
 			Projectile.timeLeft = 900;
-			Counter = 120;
+			Counter = 120 + Projectile.ai[2];
 			Projectile.velocity = Vector2.Zero;
 		}
 		if (--Counter < 0) {

@@ -1,6 +1,6 @@
 ﻿using Terraria;
 
-namespace BossRush.Achievement;
+namespace BossRush.Common.Achievement;
 
 class TheBeginningOfEndless : ModAchivement {
 	protected override void SetDefault() {

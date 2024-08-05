@@ -1,4 +1,4 @@
-﻿namespace BossRush.Achievement;
+﻿namespace BossRush.Common.Achievement;
 public static class RoguelikeAchievementID {
 	public const int TheBeginningOfEndless = 1;
 	public const int TheFirstOfMany = 2;

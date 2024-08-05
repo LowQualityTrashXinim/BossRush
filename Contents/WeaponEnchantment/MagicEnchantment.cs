@@ -1,11 +1,10 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
+using BossRush.Common;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using BossRush.Common;
-using Mono.Cecil;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -111,7 +110,7 @@ public class RubyStaff : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(25);
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(7);
 		Vector2 TowardMouse = Main.MouseWorld - player.Center;
 		for (int i = 0; i < 3; i++) {
 			Vector2 vel = Vector2.UnitX.RotatedBy(TowardMouse.ToRotation()) * 10;
@@ -142,7 +141,7 @@ public class DiamondStaff : ModEnchantment {
 		if (globalItem.Item_Counter1[index] > 0) {
 			return;
 		}
-		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(10);
+		globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(4);
 		for (int i = 0; i < 5; i++) {
 			Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 2;
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.DiamondBolt, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
@@ -272,6 +271,35 @@ public class DemonScythe : ModEnchantment {
 				Projectile.NewProjectile(source, position, velocity.Vector2DistributeEvenly(3, 12, i), ProjectileID.DemonScythe, damage, knockback, player.whoAmI);
 			}
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(1);
+		}
+	}
+}
+public class BookOfSkulls : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BookofSkulls;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi += .12f;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Main.rand.NextBool(3)) {
+			if (velocity == Vector2.Zero) {
+				velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
+			}
+			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), ProjectileID.BookOfSkullsSkull, damage, knockback, player.whoAmI);
+		}
+	}
+	public override void OnMissingMana(int index, Player player, EnchantmentGlobalItem globalItem, Item item, int neededMana) {
+		if (globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(5);
+			int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(item.damage);
+			for (int i = 0; i < 5; i++) {
+				Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.BookOfSkullsSkull, damage, item.knockBack, player.whoAmI);
+			}
 		}
 	}
 }
@@ -432,6 +460,55 @@ public class MagicMissile : ModEnchantment {
 		}
 	}
 }
+class Flamelash : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Flamelash;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (Main.rand.NextBool(5)) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.Flamelash, damage, knockback, player.whoAmI);
+		}
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
+			modifiers.SourceDamage += .33f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
+			modifiers.SourceDamage += .33f;
+		}
+	}
+}
+class AquaScepter : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.AquaScepter;
+	}
+	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
+		multi -= .09f;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		HitEnemy(player, target, (int)player.GetDamage(DamageClass.Magic).ApplyTo(item.damage * .5f), 3);
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type != ProjectileID.WaterStream) {
+			if(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
+			HitEnemy(player, target, (int)player.GetDamage(DamageClass.Magic).ApplyTo(proj.damage * .5f), 3);
+			}
+		}
+		else {
+			player.statMana += 10;
+		}
+	}
+	public void HitEnemy(Player player, NPC target, int damage, float knockback) {
+		if (!Main.rand.NextBool(3)) {
+			return;
+		}
+		Vector2 pos = target.Center + Main.rand.NextVector2CircularEdge(10, 10) * 30;
+		Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 15;
+		Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), pos, vel, ProjectileID.WaterStream, damage, knockback, player.whoAmI);
+	}
+}
 class WeatherPain : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.WeatherPain;
@@ -440,14 +517,35 @@ class WeatherPain : ModEnchantment {
 		multi += .11f;
 	}
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if(proj.DamageType == DamageClass.Magic) {
+		if (proj.DamageType == DamageClass.Magic) {
 			modifiers.SourceDamage += .12f;
-		}	
+		}
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		if (player.ownedProjectileCounts[ProjectileID.WeatherPainShot] < 1 && player.ItemAnimationActive) {
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Main.rand.NextVector2CircularEdge(5, 5), ProjectileID.WeatherPainShot, item.damage, item.knockBack, player.whoAmI);
 			Main.projectile[proj].timeLeft = 120;
+		}
+	}
+}
+class FlowerOfFire : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.FlowerofFire;
+	}
+	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (++globalItem.Item_Counter1[index] >= 2) {
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.BallofFire, damage, knockback, player.whoAmI);
+			globalItem.Item_Counter1[index] = 0;
+		}
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
+			modifiers.SourceDamage += .27f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
+			modifiers.SourceDamage += .27f;
 		}
 	}
 }

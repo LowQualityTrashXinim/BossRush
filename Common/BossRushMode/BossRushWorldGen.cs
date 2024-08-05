@@ -101,8 +101,14 @@ namespace BossRush.Common.ChallengeMode {
 			flesharena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
-				if (color.R == 255) {
+				if (color.R == 254) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Grass);
+				}
+				else if (color.G == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Glass);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
 					GenerationHelper.FastPlaceWall(a, b, WallID.Dirt);
 				}
 				else if (color.B == 255) {
@@ -111,7 +117,7 @@ namespace BossRush.Common.ChallengeMode {
 			});
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(1, 5, 2, 1),
 				(i, j) => {
-					GenerationHelper.FastPlaceTile(i, j, TileID.Grass);
+					GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 				});
 		}
 		[Task]
@@ -189,7 +195,7 @@ namespace BossRush.Common.ChallengeMode {
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
-				if(a > rect.Right || b > rect.Bottom) {
+				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
 				if (color.R == 255 && color.G == 255) {
@@ -210,19 +216,49 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_CorruptionArena() {
-			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(19, 5, 2, 4),
-			(i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
-
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(19, 5, 2, 4);
+			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.CorruptionAreanaVar1);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Ebonstone);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.CorruptionUnsafe1);
 			});
 			//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
 		}
 		[Task]
 		public void Create_DungeonArena() {
-			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(12, 5, 2, 5),
-			(i, j) => {
-				GenerationHelper.FastPlaceTile(i, j, TileID.BlueDungeonBrick);
-				GenerationHelper.FastPlaceWall(i, j, WallID.BlueDungeonUnsafe);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(12, 5, 2, 2);
+			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.DungeonAreanaVar1);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				if (color.G == 255 && color.R == 0) {
+					GenerationHelper.FastPlaceWall(a, b, WallID.PinkDungeon);
+				}
+				else {
+					GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeonUnsafe);
+				}
 			});
 		}
 		[Task]
@@ -235,7 +271,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
-				if (color.R == 255 && color.G == 255) {
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
 				else if (color.R == 255) {

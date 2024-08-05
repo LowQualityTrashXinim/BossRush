@@ -262,6 +262,12 @@ PlatinumShortSword.Description:
 	Increases critical strike damage by 25%
 	Have 10% to shoot out a piercing shortsword on hitting enemy
 	'''
+Gladius.Description:
+	'''
+	Increases weapon base damage by 5
+	Hitting enemy with item have 1 in 3 chance to spawn a gladius near enemy
+	Hitting enemy with projectile have 1 in 7 chance to spawn a gladius near enemy
+	'''
 WoodenBow.Description:
 	'''
 	Increases damage by 1 and multiply shooting velocity by 1.1
@@ -421,13 +427,13 @@ RubyStaff.Description:
 	Increases mana cost by 20%
 	Convert your projectile into Ruby Bolt
 	Your weapon have 17% chance to shoot out additional Ruby Bolt random location
-	When missing mana, Shoot out 3 ruby bolt and heal half of your mana instantly ( can be trigger every 25s )
+	When missing mana, Shoot out 3 ruby bolt and heal half of your mana instantly ( can be trigger every 7s )
 	'''
 DiamondStaff.Description:
 	'''
 	Convert your projectile into Diamond Bolt
 	Your weapon have 17% chance to shoot out additional Diamond Bolt random location
-	When missing mana, Burst out 5 slow moving diamond bolt around you ( can be trigger every 10s )
+	When missing mana, Burst out 5 slow moving diamond bolt around you ( can be trigger every 4s )
 	'''
 AmberStaff.Description:
 	'''
@@ -462,6 +468,12 @@ DemonScythe.Description:
 	Increases mana cost by 10% 
 	Increases universal damage by 1.1x
 	Shoot out 3 demon scythe ( trigger every 1s )
+	'''
+BookOfSkulls.Description:
+	'''
+	Increases mana cost by 12% 
+	Have 1 in 3 chance to shoot out a skull
+	When missing mana, shoot out 5 skull ( trigger every 5s )
 	'''
 ThunderStaff.Description:
 	'''
@@ -510,10 +522,26 @@ MagicMissile.Description:
 	Using weapon that create projectile will have following effect :
 	every 3rd shot will shoot out a magic missile at the cost of 14 mana
 	'''
+Flamelash.Description:
+	'''
+	Increases damage by 33% when hitting a enemy on fire
+	Shooting magic projectile have 1 in 5 chance to be accompany flamelash projectile
+	'''
+AquaScepter.Description:
+	'''
+	Decreases mana cost by 9%
+	Hitting enemy have 1 in 3 chance to shoot out water stream near the enemy
+	Enemy that is hit by water stream with regen your mana by 10
+	'''
 WeatherPain.Description:
 	'''
 	Increases mana cost by 11% but enemy hit by magic projectile receive 12% more damage
 	If there are no Hurtnado active then shoot out Hurtnado with short live time ( this do not stack )
+	'''
+FlowerOfFire.Description:
+	'''
+	Increases damage by 27% when hitting a enemy on fire
+	Every 2nd shot, shoot out a fire ball
 	'''
 BabyBirdStaff.Description:
 	'''

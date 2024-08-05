@@ -1048,3 +1048,29 @@ public class PlatinumShortSword : ModEnchantment {
 		}
 	}
 }
+public class Gladius : ModEnchantment {
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Gladius;
+	}
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage.Base += 5;
+	}
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(3)) {
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50, 50);
+			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 20;
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(50,50), vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
+			if (Main.projectile[proj].ModProjectile is SwordProjectile2 shortproj)
+				shortproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextBool(7) && proj.type != ModContent.ProjectileType<ShortSwordProjectile>()) {
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50, 50);
+			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 20;
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center + Main.rand.NextVector2CircularEdge(50, 50), vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
+			if (Main.projectile[projectile].ModProjectile is SwordProjectile2 shortproj)
+				shortproj.ItemIDtextureValue = ItemIDType;
+		}
+	}
+}
