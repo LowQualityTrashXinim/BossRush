@@ -13,7 +13,7 @@ public class AchievementSystem : ModSystem {
 	private static string FilePath => Path.Join(DirectoryPath, "Achievements");
 
 	public override void Load() {
-		// Loading achievements.
+		// Loading achievements
 		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(Achievement)))) {
 			var achievement = (Achievement)Activator.CreateInstance(type);
 			Achievements.Add(achievement);
@@ -27,17 +27,10 @@ public class AchievementSystem : ModSystem {
 				}
 			}
 		}
-
-		foreach (var achievement in Achievements) {
-			if (achievement.Achieved) {
-				Mod.Logger.Debug(achievement.Name);
-			}
-		}
-		// --------------------- //
 	}
 
 	public override void Unload() {
-		// Saving achievements.
+		// Saving achievements
 		var tag = new TagCompound();
 		foreach (var achievement in Achievements) {
 			if (achievement.Achieved) {
@@ -54,7 +47,6 @@ public class AchievementSystem : ModSystem {
 		}
 
 		TagIO.ToFile(tag, FilePath);
-		// --------------------- //
 	}
 
 	public override void PostUpdateEverything() {
