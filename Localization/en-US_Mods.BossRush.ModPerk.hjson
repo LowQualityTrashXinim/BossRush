@@ -64,24 +64,6 @@ LifeForceOrb: {
 		'''
 }
 
-PoisonAura: {
-	DisplayName: Poison Aura
-	Description:
-		'''
-		+ Give you Bezoar
-		+ While you have poisoned immunity, create a poison aura around player
-		'''
-}
-
-OnFireAura: {
-	DisplayName: On Fire Aura
-	Description:
-		'''
-		+ Give you Obsidian Rose
-		+ While you have fire immunity, create a fiery aura around player
-		'''
-}
-
 IllegalTrading: {
 	DisplayName: Illegal Trading
 	Description:
@@ -202,7 +184,7 @@ BlessingOfVortex: {
 		'''
 		+ 7% range critical strike chance
 		+ You have 1% chance to deal 4x damage when using range weapon
-		+ Increases critical strike damage by 150%
+		+ Increases critical strike damage by 50%
 		'''
 }
 
@@ -300,7 +282,7 @@ OverchargedMana: {
 }
 
 BeyondCritcal: {
-	DisplayName: Beyond Critcal
+	DisplayName: Beyond Critical
 	Description:
 		'''
 		+ You have 3% chance to ignore 90% target hit defense and increases damage by 2.5 time
@@ -331,8 +313,8 @@ KnockpackPerk: {
 	DisplayName: Physics Enjoyer
 	Description:
 		'''
+		+ Gain increases knockback
 		+ Most projectiles knockback dealt always becomes upward
-		+ Gain Increased Knockback
 		+ Hit against enemies that have 100% KB resistance will converts knockback into flat armor penetration instead
 		'''
 }

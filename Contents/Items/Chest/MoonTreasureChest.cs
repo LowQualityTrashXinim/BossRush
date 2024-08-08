@@ -16,7 +16,6 @@ namespace BossRush.Contents.Items.Chest {
 
 		public override void RightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			player.QuickSpawnItem(entitySource, ItemID.Zenith, 1);
 		}
 	}
 }

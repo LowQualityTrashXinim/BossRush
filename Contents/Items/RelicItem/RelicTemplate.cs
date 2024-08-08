@@ -3,10 +3,52 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
+using Terraria.ID;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class GenericTemplate : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
+		PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+		if (perkplayer.HasPerk<BlessingOfSolar>()) {
+			if (Main.rand.NextFloat() <= .35f) {
+				return PlayerStats.MeleeDMG;
+			}
+		}
+		else if (perkplayer.HasPerk<BlessingOfVortex>()) {
+			if (Main.rand.NextFloat() <= .35f) {
+				return PlayerStats.RangeDMG;
+			}
+		}
+		else if (perkplayer.HasPerk<BlessingOfNebula>()) {
+			if (Main.rand.NextFloat() <= .35f) {
+				return Main.rand.Next(new PlayerStats[] {
+					PlayerStats.MagicDMG,
+					PlayerStats.MaxMana,
+					PlayerStats.MaxHP,
+				});
+			}
+		}
+		else if (perkplayer.HasPerk<BlessingOfStarDust>()) {
+			if (Main.rand.NextFloat() <= .35f) {
+				return PlayerStats.SummonDMG;
+			}
+			else if (Main.rand.NextFloat() <= .25f) {
+				return Main.rand.Next(new PlayerStats[] {
+					PlayerStats.MaxMinion,
+					PlayerStats.MaxSentry,
+				});
+			}
+		}
+		else if (perkplayer.HasPerk<BlessingOfTitan>()) {
+			if (Main.rand.NextFloat() <= .35f) {
+				return Main.rand.Next(new PlayerStats[] {
+					PlayerStats.Thorn,
+					PlayerStats.Defense,
+					PlayerStats.MaxHP,
+				});
+			}
+		}
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
 			PlayerStats.RangeDMG,
@@ -334,5 +376,21 @@ public class SynergyTemplate : RelicTemplate {
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);
+	}
+}
+public class GunFireRateTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.AttackSpeed;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) =>
+		string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive),
+		});
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, 3f), 2), 1, 0, 0);
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		if (player.HeldItem.useAmmo == AmmoID.Bullet)
+			modplayer.AddStatsToPlayer(stat, value);
 	}
 }

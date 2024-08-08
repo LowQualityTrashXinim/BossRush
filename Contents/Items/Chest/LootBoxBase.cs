@@ -508,22 +508,6 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual List<int> FlagNumAcc() => new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 		/// <summary>
-		///      Allow user to return a list of number that contain different data to insert into chest <br/>
-		///      0 : Tier 1 Combat acc <br/>
-		///      1 : Tier 1 Health and Mana acc<br/>
-		///      2 : Tier 1 Movement acc<br/>
-		///      3 : Post evil Combat acc<br/>
-		///      4 : Post evil Health and Mana acc<br/>
-		///      5 : Post evil Movement acc<br/>
-		///      6 : Queen bee acc<br/>
-		///      7 : Cobalt Shield<br/>
-		///      8 : Anhk shield sub acc (not include the shield itself)<br/>
-		///      9 : Hardmode acc<br/>
-		///      10 : PhilosophersStone<br/>
-		/// </summary>
-		public virtual List<int> FlagNumAcc(List<int> listofNum) => listofNum;
-
-		/// <summary>
 		/// Allow for safely add in a list of accessory that specific to a situation
 		/// </summary>
 		/// <returns></returns>
@@ -571,7 +555,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		/// <summary>
-		/// This happen automatically for the sake of prototype
+		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
 		public void GetArmorForPlayer(IEntitySource entitySource, Player player) {
 			List<int> HeadArmor = new List<int>();
@@ -595,13 +579,29 @@ namespace BossRush.Contents.Items.Chest {
 				BodyArmor.Add(ItemID.BeeBreastplate);
 				LegArmor.Add(ItemID.BeeGreaves);
 			}
-			int[] fullbodyarmor = new int[]{
-				Main.rand.Next(HeadArmor),
-				Main.rand.Next(BodyArmor),
-				Main.rand.Next(LegArmor) };
-			for (int i = 0; i < fullbodyarmor.Length; i++) {
-				player.QuickSpawnItem(entitySource, fullbodyarmor[i]);
+			if(Main.hardMode) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorHardMode);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorHardMode);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorHardMode);
 			}
+			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostMech);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostMech);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostMech);
+			}
+			if(NPC.downedPlantBoss) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostPlant);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostPlant);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostPlant);
+			}
+			if (NPC.downedGolemBoss) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostGolem);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
+			}
+			player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
+			player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
+			player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
 		}
 		/// <summary>
 		/// Return a random accessory 
@@ -645,24 +645,6 @@ namespace BossRush.Contents.Items.Chest {
 				spriteBatch.Draw(texture, position + new Vector2(-2, -2), null, color4, 0, origin, scale, SpriteEffects.None, 0);
 			}
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
-		}
-		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-			ColorHandle();
-			//if (Item.whoAmI != whoAmI)
-			//{
-			//    return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-			//}
-			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
-			Vector2 origin = new Vector2(38, 30);
-			Vector2 drawPos = Item.Center - Main.screenPosition - origin * .5f;
-			for (int i = 0; i < 3; i++) {
-				spriteBatch.Draw(texture, drawPos + new Vector2(2, 2), null, color1, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(-2, 2), null, color2, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(2, -2), null, color3, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, drawPos + new Vector2(-2, -2), null, color4, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
-			}
-			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 	}
 	public class LootboxSystem : ModSystem {

@@ -1243,3 +1243,19 @@ public class EnchantmentUIslot : UIImage {
 		}
 	}
 }
+
+public class SpoilsUIState : UIState {
+	public UIImageButton[] btn_List;
+	public override void OnInitialize() {
+		btn_List = new UIImageButton[] { 
+			new UIImageButton(TextureAssets.InventoryBack),
+			new UIImageButton(TextureAssets.InventoryBack),
+			new UIImageButton(TextureAssets.InventoryBack)
+		};
+	}
+}
+public class SpoilsUIButton : UIImageButton {
+	byte spoilsID = 0;
+	public SpoilsUIButton(Asset<Texture2D> texture) : base(texture) {
+	}
+}

@@ -225,6 +225,51 @@ namespace BossRush.Common.Utils {
 		};
 		public readonly static int[] LegArmorPostEvil ={ItemID.ShadowGreaves,ItemID.MeteorLeggings,ItemID.FossilPants,ItemID.MoltenGreaves,ItemID.ObsidianPants,ItemID.CrimsonGreaves
 		};
+
+		public readonly static int[] HeadArmorHardMode = {
+			ItemID.CobaltHelmet,ItemID.CobaltHat, ItemID.CobaltMask,ItemID.MythrilHelmet,ItemID.MythrilHat,ItemID.MythrilHood,ItemID.AdamantiteHelmet,ItemID.AdamantiteHeadgear,ItemID.AdamantiteMask,ItemID.PalladiumHelmet,ItemID.PalladiumHeadgear,ItemID.PalladiumMask,ItemID.OrichalcumHelmet,ItemID.OrichalcumHeadgear,ItemID.OrichalcumMask,ItemID.TitaniumHelmet,ItemID.TitaniumHeadgear, ItemID.TitaniumMask,ItemID.SpiderMask, ItemID.FrostHelmet,ItemID.AncientBattleArmorHat
+		};
+		public readonly static int[] BodyArmorHardMode = {
+			ItemID.CobaltBreastplate, ItemID.MythrilChainmail,ItemID.AdamantiteBreastplate, ItemID.PalladiumBreastplate,ItemID.OrichalcumBreastplate,ItemID.TitaniumBreastplate,ItemID.SpiderBreastplate, ItemID.FrostBreastplate,ItemID.AncientBattleArmorShirt
+		};
+		public readonly static int[] LegArmorHardMode = {
+			ItemID.CobaltLeggings, ItemID.MythrilGreaves,ItemID.AdamantiteLeggings, ItemID.PalladiumLeggings,ItemID.OrichalcumLeggings,ItemID.TitaniumLeggings,ItemID.SpiderGreaves, ItemID.FrostLeggings,ItemID.AncientBattleArmorPants
+		};
+
+		public readonly static int[] HeadArmorPostMech = {
+			ItemID.ChlorophyteHelmet,ItemID.ChlorophyteHeadgear, ItemID.ChlorophyteMask,ItemID.HallowedHelmet,ItemID.HallowedHeadgear, ItemID.HallowedHood,ItemID.HallowedMask,ItemID.SquireGreatHelm, ItemID.HuntressWig,ItemID.MonkBrows,ItemID.ApprenticeHat,ItemID.TurtleHelmet
+		};
+
+		public readonly static int[] BodyArmorPostMech = {
+			ItemID.ChlorophytePlateMail, ItemID.HallowedPlateMail,ItemID.SquirePlating,ItemID.HuntressJerkin, ItemID.MonkShirt, ItemID.ApprenticeRobe,ItemID.TurtleScaleMail
+		};
+
+		public readonly static int[] LegArmorPostMech = {
+			ItemID.ChlorophyteGreaves, ItemID.HallowedGreaves,ItemID.SquireGreaves,ItemID.HuntressPants, ItemID.MonkPants, ItemID.ApprenticeTrousers,ItemID.TurtleLeggings
+		};
+
+		public readonly static int[] HeadArmorPostPlant = {
+			ItemID.SpookyHelmet,ItemID.ShroomiteHeadgear, ItemID.ShroomiteHelmet,ItemID.ShroomiteMask,ItemID.SpectreHood, ItemID.SpectreMask, ItemID.TikiMask
+		};
+
+		public readonly static int[] BodyArmorPostPlant = {
+			ItemID.SpookyBreastplate, ItemID.ShroomiteBreastplate,ItemID.SpectreRobe,ItemID.TikiShirt
+		};
+
+		public readonly static int[] LegArmorPostPlant = {
+			ItemID.SpookyLeggings, ItemID.ShroomiteLeggings,ItemID.SpectrePants,ItemID.TikiPants
+		};
+
+		public readonly static int[] HeadArmorPostGolem = {
+			ItemID.SquireAltHead,ItemID.HuntressAltHead,ItemID.MonkAltHead,ItemID.ApprenticeAltHead
+		};
+		public readonly static int[] BodyArmorPostGolem = {
+			ItemID.SquireAltShirt,ItemID.HuntressAltShirt, ItemID.MonkAltShirt, ItemID.ApprenticeAltShirt
+		};
+		public readonly static int[] LegArmorPostGolem = {
+			ItemID.SquireAltPants,ItemID.HuntressAltPants, ItemID.MonkAltPants, ItemID.ApprenticeAltPants
+		};
+		//Potion
 		public readonly static int[] SpecialPotion = {
 					ModContent.ItemType<BerserkerElixir>(),
 					ModContent.ItemType<GunslingerElixir>(),

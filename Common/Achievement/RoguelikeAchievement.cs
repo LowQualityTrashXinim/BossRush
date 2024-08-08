@@ -3,36 +3,21 @@
 namespace BossRush.Common.Achievement;
 
 class TheBeginningOfEndless : ModAchivement {
-	protected override void SetDefault() {
-		Type = RoguelikeAchievementID.TheBeginningOfEndless;
-	}
 	public override bool ConditionCheck() {
 		return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen > 0;
 	}
 }
-
 class TheFirstOfMany : ModAchivement {
-	protected override void SetDefault() {
-		Type = RoguelikeAchievementID.TheFirstOfMany;
-	}
 	public override bool ConditionCheck() {
 		return NPC.downedMoonlord;
 	}
 }
-
 class BountifulHarvest : ModAchivement {
-	protected override void SetDefault() {
-		Type = RoguelikeAchievementID.BountifulHarvest;
-	}
 	public override bool ConditionCheck() {
 		return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 100;
 	}
 }
-
 class OceanOfFortune : ModAchivement {
-	protected override void SetDefault() {
-		Type = RoguelikeAchievementID.BountifulHarvest;
-	}
 	public override bool ConditionCheck() {
 		return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 1000;
 	}

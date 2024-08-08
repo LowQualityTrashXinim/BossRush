@@ -235,6 +235,8 @@ Mods: {
 			ReactiveBombProjectile.DisplayName: Reactive Bomb Projectile
 			GlassProjectile.DisplayName: Glass Projectile
 			MagicalBolt.DisplayName: Magical Bolt
+			MagicBullet.DisplayName: Magic Bullet
+			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
 		}
 
 		NPCs: {
@@ -1663,6 +1665,21 @@ Mods: {
 					Upon critical hit a enemy, you gain a blood diamond stack
 					Blood diamond stack increases your attack speed by 6%, damage by 10% and critical damage by 20%
 					'''
+			}
+
+			MagicMuzzle: {
+				DisplayName: Arcane Muzzle
+				Tooltip:
+					'''
+					"Muzzle made by wizard"
+					Weapon that uses bullet ammo will have their projectile convert to Arcane Bullet
+					Arcane Bullet damage is affected by both range damage and magic damage
+					'''
+			}
+
+			ForbiddenTome: {
+				DisplayName: Forbidden Tome
+				Tooltip: ""
 			}
 		}
 
