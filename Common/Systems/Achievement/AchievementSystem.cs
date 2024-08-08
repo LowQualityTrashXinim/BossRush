@@ -13,6 +13,7 @@ public class AchievementSystem : ModSystem {
 	private static string FilePath => Path.Join(DirectoryPath, "Achievements");
 
 	public override void Load() {
+		// Loading achievements.
 		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(Achievement)))) {
 			var achievement = (Achievement)Activator.CreateInstance(type);
 			Achievements.Add(achievement);
@@ -32,21 +33,11 @@ public class AchievementSystem : ModSystem {
 				Mod.Logger.Debug(achievement.Name);
 			}
 		}
-
-		On_Main.Main_Exiting += On_Main_Main_Exiting;
+		// --------------------- //
 	}
 
 	public override void Unload() {
-		On_Main.Main_Exiting -= On_Main_Main_Exiting;
-		SaveAchievements();
-	}
-
-	private static void On_Main_Main_Exiting(On_Main.orig_Main_Exiting orig, Main self, object sender, EventArgs e) {
-		SaveAchievements();
-		orig(self, sender, e);
-	}
-
-	private static void SaveAchievements() {
+		// Saving achievements.
 		var tag = new TagCompound();
 		foreach (var achievement in Achievements) {
 			if (achievement.Achieved) {
@@ -55,7 +46,7 @@ public class AchievementSystem : ModSystem {
 		}
 
 		if (!File.Exists(FilePath)) {
-			if (Directory.Exists(DirectoryPath)) {
+			if (!Directory.Exists(DirectoryPath)) {
 				Directory.CreateDirectory(DirectoryPath);
 			}
 
@@ -63,6 +54,7 @@ public class AchievementSystem : ModSystem {
 		}
 
 		TagIO.ToFile(tag, FilePath);
+		// --------------------- //
 	}
 
 	public override void PostUpdateEverything() {
