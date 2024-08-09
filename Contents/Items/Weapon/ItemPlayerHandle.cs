@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
+using Terraria.Localization;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -162,6 +163,10 @@ namespace BossRush.Contents.Items.Weapon {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = relic.relicColor.MultiColor(5);
 			}
 			if (item.accessory && LostAccessories) {
+				TooltipLine line_Name= tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+				TooltipLine line_Tooltip0 = tooltips.Where(t => t.Name == "Tooltip0").FirstOrDefault();
+				line_Name.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.DisplayName");
+				line_Tooltip0.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.Tooltip");
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = Color.DarkGoldenrod;
 				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") {OverrideColor = Color.LightGoldenrodYellow });
 			}

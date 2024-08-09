@@ -25,6 +25,7 @@
     <None Remove="Localization\en-US_Mods.BossRush.Achievement.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ArmorSet.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.Artifacts.hjson" />
+    <None Remove="Localization\en-US_Mods.BossRush.LostAccessories.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModEnchantment.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModPerk.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModSkill.hjson" />

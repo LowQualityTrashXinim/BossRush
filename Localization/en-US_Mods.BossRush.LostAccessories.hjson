@@ -1,0 +1,213 @@
+ReactiveBombing: {
+	DisplayName: Reactive Bombing
+	Tooltip:
+		'''
+		"Miner self defense equipment"
+		Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
+		Reduce damage receive by 10
+		'''
+}
+
+HeartOfBloodThorn: {
+	DisplayName: Heart Of Blood Thorn
+	Tooltip:
+		'''
+		"A thorn in heart"
+		Upon hit, Burst out 6 blood thorn that deal 45 magic damage
+		Blood thorn that is created by this item have life steal effect
+		Increases healing effective by 15% and maximum life by 15
+		'''
+}
+
+SpectreQuiver: {
+	DisplayName: Spectre Quiver
+	Tooltip:
+		'''
+		"Grant the user with spectre archer knowledge"
+		Increases range base damage by 10 and arrow velocity by 10%
+		Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( 1s delay )
+		'''
+}
+
+NatureCrystal: {
+	Tooltip:
+		'''
+		"A Mana and a Life Crystal merged into 1 single item"
+		Increase health and mana by 40
+		Getting hit both heal back your hp and mana for 10% of taken damage
+		'''
+	DisplayName: Nature Crystal
+}
+
+EnergeticOrb: {
+	Tooltip:
+		'''
+		"Bursting with energy"
+		Increases your mana regeneration, maximum mana by 30 and magic damage by 6%
+		Magic projectile upon hitting enemy will heal small amount of your mana
+		'''
+	DisplayName: Energetic Orb
+}
+
+StarStone: {
+	DisplayName: Star Stone
+	Tooltip:
+		'''
+		"Made from star that keep falling from the sky"
+		Increases synergy damage by 15%
+		Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
+		'''
+}
+
+TitanBlood: {
+	DisplayName: Titan Blood
+	Tooltip:
+		'''
+		"A small snippet strength of the ancient god"
+		Increases damage reduction by 10% when your life is under 50%
+		Increases additional damage reduction by 5% when your life is under 35%
+		Increases additional damage reduction by 5% when your life is under 15%
+		You have chance to resist a attack
+		When you resist a attack, damage taken reduce to 1 and you gain extra 1s of i-frame
+		'''
+}
+
+StealthCloak: {
+	DisplayName: Steath Cloak
+	Tooltip:
+		'''
+		"No one will live to tell the tale"
+		You become invisible after 15s of not being invisible
+		While invisible your critical damage increases by 35%
+		increases your movement speed by 15%
+		you have chance to dodge an attack
+		'''
+}
+
+OverpoweringGem: {
+	DisplayName: Overpowering Gem
+	Tooltip:
+		'''
+		"Radiate with world energy"
+		Minor increases to various stats
+		You have a small chance to dodge a attack, and small chance to life steal 
+		'''
+}
+
+GreatHolyCross: {
+	DisplayName: Great Holy Cross
+	Tooltip:
+		'''
+		"Made from pure gold"
+		Greatly increases length of invincibility after taking damage
+		Will also increases the strength of other item that grant invincibility
+		'''
+}
+
+VitalityDrainTotem: {
+	DisplayName: Vitality Drain Totem
+	Tooltip:
+		'''
+		Increases your life regeneration
+		Increases healing effectiveness by 25%
+		During your immunity frame, you drain life of enemies nearby you and heal you
+		'''
+}
+
+KillingThrill: {
+	DisplayName: Killing Thrill
+	Tooltip:
+		'''
+		Increases your damage against undamaged enemy by 300%
+		Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases and also 
+		Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
+		'''
+}
+
+GodDice: {
+	Tooltip:
+		'''
+		"The dice use by god to decide mortal fate"
+		Gives you a roll for each boss kill which will automatically roll for you
+		'''
+	DisplayName: God Dice
+}
+
+GlassCannon: {
+	DisplayName: Glass Cannon
+	Tooltip:
+		'''
+		When using a weapon that shoot projectile
+		Shoot out a glass that deal 125% of weapon damage
+		'''
+}
+
+StimPack: {
+	DisplayName: Stim Pack
+	Tooltip:
+		'''
+		When health fall below 40%, automatically give you stim pack buff
+		Stim pack buff increases attack speed by 12% and health regenaration by 50% and flat 10
+		'''
+}
+
+MagicalScroll: {
+	DisplayName: Magical Scroll
+	Tooltip:
+		'''
+		Increases mana cost by 5%
+		Have 1 in 5 chance to shoot out a magic orb that deal 42 magic damage
+		'''
+}
+
+BloodDiamond: {
+	DisplayName: Blood Diamond
+	Tooltip:
+		'''
+		Increases critical strike chance by 5
+		Upon critical hit a enemy, you gain a blood diamond stack
+		Blood diamond stack increases your attack speed by 6%, damage by 10% and critical damage by 20%
+		'''
+}
+
+MagicMuzzle: {
+	DisplayName: Arcane Muzzle
+	Tooltip:
+		'''
+		"Muzzle made by wizard"
+		Weapon that uses bullet ammo will have their projectile convert to Arcane Bullet
+		Arcane Bullet damage is affected by both range damage and magic damage
+		'''
+}
+
+ForbiddenTome: {
+	DisplayName: Forbidden Tome
+	Tooltip:
+		'''
+		Passively heal your mana by 40 every 5s
+		Create a tome that float around you in infinite symbol shape
+		When tome is near a enemy, shoot out shadow flame
+		'''
+}
+
+StarCharm: {
+	DisplayName: Star Charm
+	Tooltip:
+		'''
+		Increases your summon damage by 10%
+		Have a chance of shooting down star fury onto your enemy
+		During night, the chance are accelerate
+		'''
+}
+
+SpiritEmblem: {
+	DisplayName: Spirit Emblem
+	Tooltip:
+		'''
+		Increases your max minion, sentry slot by 1
+		You burst out a wave of confusion to enemy that get too close to you
+		When you are close to a minion, your defense increases by 15
+		Hitting enemy with whip or item with similiar damage to whip will inflict enemy with Crystalized debuff
+		Crystalized debuff will make minion contact damage or summon damage have a chance to be increased by 55%
+		'''
+}
