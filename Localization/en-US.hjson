@@ -237,6 +237,7 @@ Mods: {
 			MagicalBolt.DisplayName: Magical Bolt
 			MagicBullet.DisplayName: Magic Bullet
 			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
+			MindWaveProjectile.DisplayName: Mind Wave Projectile
 		}
 
 		NPCs: {
@@ -1679,7 +1680,46 @@ Mods: {
 
 			ForbiddenTome: {
 				DisplayName: Forbidden Tome
-				Tooltip: ""
+				Tooltip:
+					'''
+					Passively heal your mana by 40 every 5s
+					Create a tome that float around you in infinite symbol shape
+					When tome is near a enemy, shoot out shadow flame
+					'''
+			}
+
+			StarCharm: {
+				DisplayName: Star Charm
+				Tooltip:
+					'''
+					Increases your summon damage by 10%
+					Have a chance of shooting down star fury onto your enemy
+					During night, the chance are accelerate
+					'''
+			}
+
+			SpiritEmblem: {
+				DisplayName: Spirit Emblem
+				Tooltip:
+					'''
+					Increases your max minion, sentry slot by 1
+					You burst out a wave of confusion to enemy that get too close to you
+					When you are close to a minion, your defense increases by 15
+					Hitting enemy with whip or item with similiar damage to whip will inflict enemy with Crystalized debuff
+					Crystalized debuff will make minion contact damage or summon damage have a chance to be increased by 55%
+					'''
+			}
+
+			ArcaneMaster: {
+				DisplayName: Arcane Master
+				Tooltip: 
+				'''
+				"The zenith of sage ideology"
+				Multiply magic damage by 1.5 and reduce mana cost by 50%
+				Inherit the following effect : mana flower, mana magnet, star cloak
+				Using a magic weapon will increases mana cost by 10% but increases weapon magic damage by 5%
+				This have a capped at 60 and have 1s of decay
+				'''
 			}
 		}
 
@@ -1973,6 +2013,11 @@ Mods: {
 					"Sudden rush"
 					Increases attack speed and health regenaration
 					'''
+			}
+
+			Crystalized: {
+				DisplayName: Crystalized
+				Description: Mods.BossRush.Buffs.Crystalized.Description
 			}
 		}
 

@@ -6,13 +6,14 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Contents.Items.BuilderItem;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Common;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 	public int Source_ItemType = -1;
 	public int OnKill_ScatterShot = -1;
-	bool Source_FromDeathScatterShot = false;
+	public bool Source_FromDeathScatterShot = false;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is EntitySource_ItemUse parent) {
 			Source_ItemType = parent.Item.type;
@@ -45,11 +46,15 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.type == ProjectileID.PortalGunGate
 			|| projectile.type == ProjectileID.LightsBane
 			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
+			|| projectile.type == ModContent.ProjectileType<MagicBullet>()//This is to prevent lag
 			|| projectile.type == ModContent.ProjectileType<DiamondGemP>()
 			|| projectile.type == ModContent.ProjectileType<ArenaMakerProj>()
 			|| projectile.type == ModContent.ProjectileType<NeoDynamiteExplosion>()
 			|| projectile.type == ModContent.ProjectileType<TowerDestructionProjectile>()) {
 			return;
+		}
+		if (!projectile.velocity.IsLimitReached(1)) {
+			projectile.velocity *= Main.rand.NextFloat(5, 7);
 		}
 		for (int i = 0; i < OnKill_ScatterShot; i++) {
 			Projectile.NewProjectile(projectile.GetSource_Misc("OnKill_ScatterShot"), projectile.Center, projectile.velocity.Vector2RotateByRandom(360), projectile.type, (int)(projectile.damage * .65f), projectile.knockBack * .55f, projectile.owner);

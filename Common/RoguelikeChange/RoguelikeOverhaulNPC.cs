@@ -11,9 +11,9 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public int HeatRay_Decay = 0;
 	public int HeatRay_HitCount = 0;
 	public override void PostAI(NPC npc) {
-		if(HeatRay_HitCount > 0) {
+		if (HeatRay_HitCount > 0) {
 			HeatRay_Decay = BossRushUtils.CountDown(HeatRay_Decay);
-			if(HeatRay_Decay <= 0) {
+			if (HeatRay_Decay <= 0) {
 				HeatRay_HitCount--;
 			}
 		}
@@ -21,6 +21,9 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 		if (projectile.type == ProjectileID.HeatRay) {
 			modifiers.SourceDamage += HeatRay_HitCount * .02f;
+		}
+		if ((projectile.minion || projectile.DamageType == DamageClass.Summon) && npc.HasBuff<Crystalized>() && Main.rand.NextBool(10)) {
+			modifiers.SourceDamage += .55f;
 		}
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {

@@ -1,26 +1,30 @@
-﻿using Terraria;
+using BossRush.Common.Systems.Achievement;
+using Terraria;
 
-namespace BossRush.Common.Achievement;
+namespace BossRush.Contents.Achievements;
 
-class TheBeginningOfEndless : ModAchivement {
-	public override bool ConditionCheck() {
-		return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen > 0;
-	}
+public class TheBeginningOfEndless : Achievement {
+    public override bool Condition() {
+        return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen > 0;
+    }
 }
-class TheFirstOfMany : ModAchivement {
-	public override bool ConditionCheck() {
-		return NPC.downedMoonlord;
-	}
+
+public class TheFirstOfMany : Achievement {
+    public override bool Condition() {
+        return NPC.downedMoonlord;
+    }
 }
-class BountifulHarvest : ModAchivement {
-	public override bool ConditionCheck() {
-		return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 100;
-	}
+
+public class BountifulHarvest : Achievement {
+    public override bool Condition() {
+        return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 100;
+    }
 }
-class OceanOfFortune : ModAchivement {
-	public override bool ConditionCheck() {
-		return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 1000;
-	}
+
+public class OceanOfFortune : Achievement {
+    public override bool Condition() {
+        return BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 1000;
+    }
 }
 //achievementData.Add(new BossRushAchivement() {
 //	Type = 1,

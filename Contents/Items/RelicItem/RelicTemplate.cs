@@ -387,7 +387,7 @@ public class GunFireRateTemplate : RelicTemplate {
 		});
 
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, 3f), 2), 1, 0, 0);
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .3f), 2), 1, 0, 0);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (player.HeldItem.useAmmo == AmmoID.Bullet)

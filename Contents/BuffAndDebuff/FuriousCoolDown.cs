@@ -1,6 +1,5 @@
-﻿using BossRush.Contents.Items.Accessories.SynergyAccessories.FuryEmblem;
+﻿using Terraria;
 using BossRush.Texture;
-using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.BuffAndDebuff {

@@ -3,7 +3,6 @@ using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
-using BossRush.Common.Achievement;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 
@@ -29,14 +28,6 @@ namespace BossRush {
 			roguelikedata = null;
 			_synergyitem = null;
 			_lostAccs = null;
-		}
-		public override void PostUpdateEverything() {
-			foreach (var achieve in AchievementLoader.Achievement.Values) {
-				bool condition = achieve.ConditionCheck();
-				if (condition) {
-					achieve.Condition = true;
-				}
-			}
 		}
 		public int AmountOfLootboxOpenInCurrentSection() {
 			if (Main.netMode == NetmodeID.SinglePlayer) {

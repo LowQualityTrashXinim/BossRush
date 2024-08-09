@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.RoguelikeChange;
+using BossRush.Common;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class MagicMuzzle : ModItem {
@@ -42,7 +44,7 @@ class MagicBullet : ModProjectile {
 		Projectile.width = Projectile.height = 10;
 		Projectile.tileCollide = false;
 		Projectile.friendly = true;
-		Projectile.timeLeft = 12000;
+		Projectile.timeLeft = 6000;
 		Projectile.extraUpdates = 20;
 		Projectile.penetrate = 2;
 		Projectile.usesLocalNPCImmunity = true;
@@ -55,7 +57,7 @@ class MagicBullet : ModProjectile {
 		return Projectile.penetrate > 1;
 	}
 	public override void AI() {
-		if (Projectile.timeLeft == 12000) {
+		if (Projectile.timeLeft == 6000) {
 			if (Projectile.ai[0] == 0) {
 				Projectile.damage = (int)Main.player[Projectile.owner].GetDamage(DamageClass.Magic).ApplyTo(Projectile.damage);
 			}
@@ -88,10 +90,11 @@ class MagicBullet : ModProjectile {
 		}
 	}
 	public override void OnKill(int timeLeft) {
-		if (Projectile.ai[2] == 0)
+		if (Projectile.ai[2] == 0 && !Projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_FromDeathScatterShot)
 			if (Projectile.Center.LookForHostileNPC(out NPC npc, 250f)) {
 				Vector2 vel = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 5f;
-				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel, Type, (int)(Projectile.damage * .5f), Projectile.knockBack, Projectile.owner,1,0,1);
+				int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel, Type, (int)(Projectile.damage * .5f), Projectile.knockBack, Projectile.owner, 1, 0, 1);
+				Main.projectile[proj].timeLeft = 3000;
 			}
 	}
 	public override bool PreDraw(ref Color lightColor) {

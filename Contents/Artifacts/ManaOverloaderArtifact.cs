@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.Accessories.Trinket;
+using System;
 
 namespace BossRush.Contents.Artifacts {
 	internal class ManaOverloaderArtifact : Artifact {
@@ -130,7 +131,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override bool ReApply(Player player, int time, int buffIndex) {
 			ManaOverloaderPlayer modplayer = player.GetModPlayer<ManaOverloaderPlayer>();
-			modplayer.StackPoint++;
+			modplayer.StackPoint = Math.Clamp(modplayer.StackPoint + 1, 0, 10);
 			return base.ReApply(player, time, buffIndex);
 		}
 	}
