@@ -5,9 +5,7 @@ using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
-using System;
 using System.Linq;
-using Terraria.ID;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -45,6 +43,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier DebuffTime = new StatModifier();
 
 	public StatModifier BuffTime = new StatModifier();
+
+	public StatModifier DebuffBuffTime = new StatModifier();
 
 	public StatModifier AttackSpeed = new StatModifier();
 
@@ -108,34 +108,35 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statLifeMax2 = (int)UpdateHPMax.ApplyTo(Player.statLifeMax2);
 		Player.statManaMax2 = (int)UpdateManaMax.ApplyTo(Player.statManaMax2);
 
-		UpdateFullHPDamage = new StatModifier();
-		UpdateMinion = new StatModifier();
-		UpdateSentry = new StatModifier();
-		UpdateMovement = new StatModifier();
-		UpdateJumpBoost = new StatModifier();
-		UpdateHPMax = new StatModifier();
-		UpdateManaMax = new StatModifier();
-		UpdateHPRegen = new StatModifier();
-		UpdateManaRegen = new StatModifier();
-		UpdateDefenseBase = new StatModifier();
-		UpdateCritDamage = new StatModifier();
-		UpdateDefEff = new StatModifier();
-		UpdateDropAmount = new StatModifier();
-		UpdateThorn = new StatModifier();
-		AuraModifier = new StatModifier();
-		DebuffTime = new StatModifier();
-		BuffTime = new StatModifier();
-		ShieldEffectiveness = new StatModifier();
-		ShieldHealth = new StatModifier();
-		AttackSpeed = new StatModifier();
-		AuraModifier = new StatModifier();
-		LifeStealEffectiveness = new StatModifier();
-		EnergyCap = new StatModifier();
-		RechargeEnergyCap = new StatModifier();
-		StaticDefense = new StatModifier() - 1;
-		DebuffDamage = new StatModifier();
-		SynergyDamage = new StatModifier();
-		Iframe = new StatModifier();
+		UpdateFullHPDamage = StatModifier.Default;
+		UpdateMinion = StatModifier.Default;
+		UpdateSentry = StatModifier.Default;
+		UpdateMovement = StatModifier.Default;
+		UpdateJumpBoost = StatModifier.Default;
+		UpdateHPMax = StatModifier.Default;
+		UpdateManaMax = StatModifier.Default;
+		UpdateHPRegen = StatModifier.Default;
+		UpdateManaRegen = StatModifier.Default;
+		UpdateDefenseBase = StatModifier.Default;
+		UpdateCritDamage = StatModifier.Default;
+		UpdateDefEff = StatModifier.Default;
+		UpdateDropAmount = StatModifier.Default;
+		UpdateThorn = StatModifier.Default;
+		AuraModifier = StatModifier.Default;
+		DebuffTime = StatModifier.Default;
+		BuffTime = StatModifier.Default;
+		DebuffBuffTime = StatModifier.Default;
+		ShieldEffectiveness = StatModifier.Default;
+		ShieldHealth = StatModifier.Default;
+		AttackSpeed = StatModifier.Default;
+		AuraModifier = StatModifier.Default;
+		LifeStealEffectiveness = StatModifier.Default;
+		EnergyCap = StatModifier.Default;
+		RechargeEnergyCap = StatModifier.Default;
+		StaticDefense = StatModifier.Default - 1;
+		DebuffDamage = StatModifier.Default;
+		SynergyDamage = StatModifier.Default;
+		Iframe = StatModifier.Default;
 		successfullyKillNPCcount = 0;
 	}
 	public override float UseSpeedMultiplier(Item item) {
@@ -275,6 +276,9 @@ public class PlayerStatsHandle : ModPlayer {
 	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		if (stat == PlayerStats.None) {
 			return;
+		}
+		if (Additive < 0) {
+			Additive += 1;
 		}
 		StatModifier StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
 		switch (stat) {
@@ -493,7 +497,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
 			else {
-				orig(self, type, timeToAdd, quiet, foodHack);
+				orig(self, type, (int)modplayer.DebuffBuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
 		}
 		else {

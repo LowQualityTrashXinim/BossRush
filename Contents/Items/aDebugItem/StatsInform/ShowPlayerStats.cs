@@ -29,7 +29,7 @@ namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 				$"\nMana regenaration : {player.manaRegen}" +
 				$"\nMana reduction : {player.manaCost}" +
 				$"\nDefense effectiveness : {player.DefenseEffectiveness.Value}" +
-				$"\nDamage reduction: {Math.Round(player.endurance, 2)}" +
+				$"\nDamage reduction: {Math.Round(player.endurance * 100, 2)}%" +
 				$"\nMovement speed : {Math.Round(player.moveSpeed, 2)}" +
 				$"\nJump speed : {player.jumpSpeedBoost}" +
 				$"\nMax minion : {player.maxMinions}" +

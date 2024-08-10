@@ -104,6 +104,32 @@ TokenOfWrathArtifact: {
 		'''
 }
 
+TokenOfSlothArtifact: {
+	DisplayName: Token Of Sloth
+	Description:
+		'''
+		"..."
+		[c/b7bf5c:Positive effect] : 
+			+ Increases damage by 35% and undamaged enemy recieve 50% more damage
+			+ Standing still will gain sloth status which will boost the above effect by 10%
+		[c/ab3e43:Negative effect] : 
+			- Decreases your attack speed by 65%
+			- Decreases movement speed by 35%
+		'''
+}
+
+TokenOfGluttonyArtifact: {
+	DisplayName: Token Of Gluttony
+	Description:
+		'''
+		"..."
+		[c/b7bf5c:Positive effect] : 
+			+ Base on defense value before reduce, damage reduction will be increases base on DEF:HP ratio
+		[c/ab3e43:Negative effect] : 
+			- Defenses are reduced to 0
+		'''
+}
+
 VampirismCrystalArtifact: {
 	DisplayName: Vampirism Crystal
 	Description:

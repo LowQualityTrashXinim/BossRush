@@ -12,7 +12,6 @@ internal class TokenOfWrathArtifact : Artifact {
 }
 public class TokenOfWrathPlayer : ModPlayer {
 	bool TokenOfWrath = false;
-	float critrate = 0;
 	public override void ResetEffects() {
 		TokenOfWrath = Player.HasArtifact<TokenOfWrathArtifact>();
 	}

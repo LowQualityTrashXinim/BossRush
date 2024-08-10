@@ -13,13 +13,13 @@ internal class TitanBlood : ModItem {
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<TitanBloodPlayer>().TitanBlood = true;
 		float damagereduction = 0;
-		if(player.ComparePlayerHealthInPercentage(.5f)) {
+		if(!player.ComparePlayerHealthInPercentage(.5f)) {
 			damagereduction += .1f;
 		}
-		if(player.ComparePlayerHealthInPercentage(.35f)) {
+		if(!player.ComparePlayerHealthInPercentage(.35f)) {
 			damagereduction += .05f;
 		}
-		if (player.ComparePlayerHealthInPercentage(.15f)) {
+		if (!player.ComparePlayerHealthInPercentage(.15f)) {
 			damagereduction += .05f;
 		}
 		player.endurance += damagereduction;

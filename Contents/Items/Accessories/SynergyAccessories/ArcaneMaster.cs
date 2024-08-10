@@ -36,7 +36,7 @@ class ArcaneMasterPlayer : ModPlayer {
 	public int ManaCostIncreases = 0;
 	public int Decay_ManaCostIncreases = 0;
 	public override void ResetEffects() {
-		ArcaneMaster = true;
+		ArcaneMaster = false;
 		if (ManaCostIncreases <= 0 || Player.ItemAnimationActive) {
 			return;
 		}

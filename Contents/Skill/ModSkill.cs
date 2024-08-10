@@ -201,6 +201,19 @@ public class BloodToPower : ModSkill {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().BloodToPower * .01f);
 	}
 }
+//public class PotentialUnlock : ModSkill {
+//	public override void SetDefault() {
+//		Skill_EnergyRequire = 1000;
+//		Skill_Duration = BossRushUtils.ToSecond(10);
+//		Skill_CoolDown = BossRushUtils.ToSecond(30);
+//	}
+//	public override void Update(Player player) {
+//		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, 1f);
+//	}
+//	public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
+//		useSpeed += .5f;
+//	}
+//}
 public class AllOrNothing : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 500;
