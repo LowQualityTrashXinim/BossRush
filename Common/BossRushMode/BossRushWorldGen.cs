@@ -8,15 +8,16 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
+using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			tasks.ForEach(g => g.Disable());
-			tasks.AddRange(((ITaskCollection)this).Tasks);
-			return;
 
-			if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
+			if(!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				return;
+			}
+			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_WORLDGEN)) {
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Spider Caves")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Living Trees")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wood Tree Walls")));
@@ -71,21 +72,54 @@ namespace BossRush.Common.ChallengeMode {
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Small Holes")));
 				tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Broken Traps")));
 			}
+			else {
+				tasks.ForEach(g => g.Disable());
+				tasks.AddRange(((ITaskCollection)this).Tasks);
+			}
 		}
-		public static int GridPart_X = Main.maxTilesX / 24;
-		public static int GridPart_Y = Main.maxTilesY / 24;
-		public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
-		public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
+		public static Dictionary<short, List<Rectangle>> Room;
+		public static bool FindSuitablePlaceToTeleport(Mod mod, Player player, short BiomeID) {
+			if (!Room.ContainsKey(BiomeID)) {
+				mod.Logger.Error("Biome id doesn't exist in the dictionary");
+				return false;
+			}
+			List<Rectangle> rect = Room[BiomeID];
+			int failsafe = 0;
+			while (failsafe <= 9999) {
+				Rectangle roomPosition = Main.rand.Next(rect);
+				Point position = new Point(
+					Main.rand.Next(roomPosition.Left, roomPosition.Right + 1),
+					Main.rand.Next(roomPosition.Top, roomPosition.Bottom));
+				if (WorldGen.TileEmpty(position.X, position.Y)) {
+					int pass = 0;
+					for (int offsetX = -1; offsetX <= 1; offsetX++) {
+						for (int offsetY = -1; offsetY <= 1; offsetY++) {
+							if (offsetX == 0 && offsetY == 0) continue;
+							if (WorldGen.TileEmpty(position.X + offsetX, position.Y + offsetY)) {
+								pass++;
+							}
+						}
+					}
+					if (pass >= 8) {
+						player.Teleport(position.ToVector2().ToWorldCoordinates());
+						player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
+						return true;
+					}
+					failsafe++;
+				}
+			}
+			mod.Logger.Error("Fail to find a suitable spot to teleport");
+			return false;
+		}
 	}
 	public partial class BossRushWorldGen : ITaskCollection {
 		[Task]
 		public void SetUp() {
-			GridPart_X = Main.maxTilesX / 24;//small world : 175
-			GridPart_Y = Main.maxTilesY / 24;//small world : 50
-			Main.spawnTileX = (int)(Main.maxTilesX * .08f);
-			Main.spawnTileY = (int)(Main.maxTilesY * .176f);
-			WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
-			WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
+			Room = new Dictionary<short, List<Rectangle>>();
+			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;//small world : 175
+			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;//small world : 50
+			RogueLikeWorldGen.WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
+			RogueLikeWorldGen.WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 			Main.worldSurface = (int)(Main.maxTilesY * .22f);
 			Main.rockLayer = (int)(Main.maxTilesY * .34f);
 			//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 17),
@@ -96,9 +130,10 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_Arena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(1, 3, 2, 2);
-			ImageData flesharena = ImageStructureLoader.Get(ImageStructureLoader.OverworldArenaVar1);
-			flesharena.EnumeratePixels((a, b, color) => {
+			List<Rectangle> rectList = new List<Rectangle>();
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(3, 3, 2, 2);
+			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.OverworldArenaVar1);
+			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
 				if (color.R == 254) {
@@ -115,10 +150,15 @@ namespace BossRush.Common.ChallengeMode {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 				}
 			});
-			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(1, 5, 2, 1),
+			rectList.Add(rect);
+			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 2, 1),
 				(i, j) => {
 					GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
 				});
+			rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 2, 1));
+			Main.spawnTileX = rect.X + ((rect.Right - rect.X) / 2);
+			Main.spawnTileY = rect.Y + ((rect.Bottom - rect.Y) / 2);
+			Room.Add(BiomeAreaID.Forest, rectList);
 		}
 		[Task]
 		public void Create_JungleArena() {
@@ -145,10 +185,11 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Jungle);
 			});
+			Room.Add(BiomeAreaID.Jungle, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_BeeNest() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(12, 11, 2, 4);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(15, 12, 2, 4);
 			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.BeeNestArenaVar1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -167,30 +208,37 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Hive);
 			});
+			Room.Add(BiomeAreaID.BeeNest, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_TundraArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(9, 5, 2, 6);
-			GenerationHelper.ForEachInRectangle(rect,
-			(i, j) => {
-				if (i <= rect.PointOnRectX(.05f) || i >= rect.PointOnRectX(.95f)) {
-					//only place block if I is between 20% and 80% of rect width
-					GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(11, 10, 3, 3);
+			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.TundraArenaVar1);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
 				}
-				else if (j <= rect.PointOnRectY(.05f) || j >= rect.PointOnRectY(.95f)) {
-					//only place block if J is between 20% and 80% of rect height
-					{
-						GenerationHelper.FastPlaceTile(i, j, TileID.SnowBlock);
-					}
+				if (color.R == 255 && color.G == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
-				else {
-					GenerationHelper.FastPlaceTile(i, j, TileID.IceBlock);
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.IceBlock);
 				}
+				else if (color.R == 240) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.BreakableIce);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.IceUnsafe);
 			});
+			Room.Add(BiomeAreaID.Tundra, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_CrimsonArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(14, 5, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
 			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.CrimsonArenaVar1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -212,11 +260,11 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CrimsonUnsafe1);
 			});
-			//Biome.Add(RogueLike_BiomeAreaID.Crimson, rectList);
+			Room.Add(BiomeAreaID.Crimson, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_CorruptionArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(19, 5, 2, 4);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(10, 5, 2, 4);
 			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.CorruptionAreanaVar1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -232,11 +280,11 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CorruptionUnsafe1);
 			});
-			//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
+			Room.Add(BiomeAreaID.Corruption, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_DungeonArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(12, 5, 2, 2);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 2);
 			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.DungeonAreanaVar1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -260,10 +308,11 @@ namespace BossRush.Common.ChallengeMode {
 					GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeonUnsafe);
 				}
 			});
+			Room.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_SlimeArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 9, 2, 2);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 2, 2);
 			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.SlimeArenaVar1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -285,11 +334,11 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
 			});
-			//Biome.Add(RogueLike_BiomeAreaID.BlueSlime, rectList);
+			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_FleshArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
 			ImageData flesharena = ImageStructureLoader.Get(ImageStructureLoader.FleshArenaVar1);
 			flesharena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -308,15 +357,13 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Flesh);
 			});
-			//GenerationHelper.ForEachInRectangle(rect, (i, j) => {
-			//});
-			//Biome.Add(RogueLike_BiomeAreaID.FleshRealm, rectList);
+			Room.Add(BiomeAreaID.FleshRealm, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_Hell() {
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 23, 24, 1),
 			(i, j) => {
-				if (j == GridPart_Y * 23) {
+				if (j == RogueLikeWorldGen.GridPart_Y * 23) {
 					GenerationHelper.FastPlaceTile(i, j, TileID.AshGrass);
 				}
 				else {

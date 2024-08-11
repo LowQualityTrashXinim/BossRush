@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
@@ -50,10 +51,6 @@ namespace BossRush.Contents.Items.Chest {
 
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			if (NPC.downedQueenBee) {
-				int OneRareBeeItem = Main.rand.Next(new int[] { ItemID.BeeCloak, ItemID.QueenBeeBossBag, ItemID.HoneyBalloon, ItemID.SweetheartNecklace, ItemID.WaspGun });
-				player.QuickSpawnItem(entitySource, OneRareBeeItem);
-			}
 			if (player.IsDebugPlayer()) {
 				GetArmorForPlayer(entitySource, player);
 			}
@@ -83,6 +80,9 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
 			player.QuickSpawnItem(entitySource, ItemID.CalmingPotion, 10);
 		}
 	}

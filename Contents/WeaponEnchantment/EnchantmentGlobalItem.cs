@@ -88,6 +88,8 @@ public class EnchantmentModplayer : ModPlayer {
 				globalItem = localglobal;
 			}
 		}
+	}
+	public override void UpdateEquips() {
 		if (CommonEnchantmentCheck()) {
 			return;
 		}

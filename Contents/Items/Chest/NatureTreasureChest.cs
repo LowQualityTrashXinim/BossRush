@@ -25,8 +25,6 @@ namespace BossRush.Contents.Items.Chest {
 		public override List<int> FlagNumAcc() => new List<int> { 8, 9, 10 };
 		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			int wing = Main.rand.Next(new int[] { ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
-			player.QuickSpawnItem(entitySource, wing);
 			int RandomNumber = Main.rand.Next(5); int Random2 = Main.rand.Next(3);
 			switch (RandomNumber) {
 				case 0:
@@ -73,6 +71,11 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
+			int wing = Main.rand.Next(new int[] { ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
+			player.QuickSpawnItem(entitySource, wing);
 			player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
 			player.QuickSpawnItem(entitySource, ItemID.NaughtyPresent);
 			player.QuickSpawnItem(entitySource, ItemID.PumpkinMoonMedallion);

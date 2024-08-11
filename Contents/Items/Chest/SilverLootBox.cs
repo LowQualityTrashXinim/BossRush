@@ -79,6 +79,9 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
 			player.QuickSpawnItem(entitySource, Main.rand.Next(new int[] { ItemID.AmethystHook, ItemID.TopazHook, ItemID.SapphireHook, ItemID.EmeraldHook }));
 		}
 	}

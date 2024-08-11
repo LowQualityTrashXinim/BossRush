@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
@@ -70,6 +71,9 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
 			player.QuickSpawnItem(entitySource, ItemID.IronAnvil);
 		}
 	}

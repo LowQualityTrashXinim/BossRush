@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
@@ -65,6 +66,17 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
 			}
+			if (Main.rand.NextBool(5)) {
+				player.QuickSpawnItem(entitySource, ItemID.QueenSlimeBossBag);
+			}
+			if (Main.rand.NextBool(20)) {
+				player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
+			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
+			int wing = Main.rand.Next(new int[] { ItemID.AngelWings, ItemID.DemonWings, ItemID.LeafWings, ItemID.FairyWings, ItemID.HarpyWings });
+			player.QuickSpawnItem(entitySource, wing);
 			if (Main.rand.NextBool(5)) {
 				player.QuickSpawnItem(entitySource, ItemID.QueenSlimeBossBag);
 			}

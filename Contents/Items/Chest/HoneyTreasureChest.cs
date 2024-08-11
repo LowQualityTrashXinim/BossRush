@@ -80,8 +80,11 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			GetWeapon(entitySource, player, 5);
-			player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
 			player.QuickSpawnItem(entitySource, GetPotion(), 3);
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
+			player.QuickSpawnItem(entitySource, ItemID.Honeyfin, 10);
 		}
 	}
 }

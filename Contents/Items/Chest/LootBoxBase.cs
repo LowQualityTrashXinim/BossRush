@@ -30,12 +30,14 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public virtual bool ChestUseOwnLogic => false;
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
 			if (!ChestUseOwnLogic) {
 				if (LootboxSystem.GetItemPool(Type) == null)
 					return;
 				if (LootboxSystem.GetItemPool(Type).AllItemPool().Count <= 0)
 					return;
+				if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX))
+					return;
+				ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
 				//absolutely not recommend to do this
 				List<int> potiontotal = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
 				if (chestplayer.weaponShowID == 0 || --chestplayer.counterShow <= 0) {
@@ -95,13 +97,8 @@ namespace BossRush.Contents.Items.Chest {
 		/// Use <see cref="LootboxSystem.GetItemPool"/> to modify loot pool
 		/// </summary>
 		public virtual void ModifyLootAdd(Player player) { }
-		/// <summary>
-		/// Use this to add condition to chest
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool CanBeRightClick() => false;
 		public override bool CanRightClick() => true;
-		public override void RightClick(Player player) {
+		public sealed override void RightClick(Player player) {
 			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			modplayer.CurrentSectionAmountOfChestOpen++;
 			base.RightClick(player);
@@ -112,28 +109,45 @@ namespace BossRush.Contents.Items.Chest {
 					modplayer.ItemGraveYard.Remove(modplayer.ItemGraveYard.ElementAt(index));
 				}
 			}
-			OnRightClick(player, modplayer);
-			if (!UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
-				return;
-			}
-			var entitySource = player.GetSource_OpenItem(Type);
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
-				if (relicitem.ModItem is Relic relic) {
-					relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
+				OnRightClick(player, modplayer);
+				if (!UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
+					return;
+				}
+				var entitySource = player.GetSource_OpenItem(Type);
+				if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+					Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+					if (relicitem.ModItem is Relic relic) {
+						relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+					}
+				}
+				else {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+				}
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
+				if (modplayer.LootboxCanDropSpecialPotion) {
+					player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
+				}
+				if (modplayer.CanDropSynergyEnergy) {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 				}
 			}
 			else {
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+				UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+				system.ActivateSpoilsUI(Type);
 			}
-			player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
-			if (modplayer.LootboxCanDropSpecialPotion) {
-				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
-			}
-			if (modplayer.CanDropSynergyEnergy) {
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
-			}
+			AbsoluteRightClick(player);
 		}
+		/// <summary>
+		/// This won't be change no matter what
+		/// </summary>
+		/// <param name="player"></param>
+		public virtual void AbsoluteRightClick(Player player) { }
+		/// <summary>
+		/// This only active if legacy setting is true
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="modplayer"></param>
 		public virtual void OnRightClick(Player player, ChestLootDropPlayer modplayer) { }
 		/// <summary>
 		/// Return weapon
@@ -235,8 +249,248 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 		}
+		List<int> DropArrowAmmo = new List<int>();
+		List<int> DropBulletAmmo = new List<int>();
+		List<int> DropDartAmmo = new List<int>();
 		/// <summary>
-		/// Return weapon base on progression
+		/// Automatically quick drop player ammo item accordingly to weapon ammo type
+		/// </summary>
+		/// /// <param name="player">The player</param>
+		/// <param name="weapon">Weapon need to be checked</param>
+		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
+		public void AmmoForWeapon(IEntitySource source, Player player, int weapon, float AmountModifier = 1) {
+			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
+			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
+				if (weapontoCheck.mana > 0) {
+					player.QuickSpawnItem(source, ItemID.LesserManaPotion, 5);
+				}
+				return;
+			}
+			//The most ugly code
+			int Amount = (int)(200 * AmountModifier);
+			int Ammo;
+			if (Main.masterMode) {
+				Amount += 150;
+			}
+			DropArrowAmmo.Clear();
+			DropBulletAmmo.Clear();
+			DropDartAmmo.Clear();
+
+			DropArrowAmmo.AddRange(TerrariaArrayID.defaultArrow);
+			DropBulletAmmo.AddRange(TerrariaArrayID.defaultBullet);
+			DropDartAmmo.AddRange(TerrariaArrayID.defaultDart);
+
+			if (Main.hardMode) {
+				DropArrowAmmo.AddRange(TerrariaArrayID.ArrowHM);
+				DropBulletAmmo.AddRange(TerrariaArrayID.BulletHM);
+				DropDartAmmo.AddRange(TerrariaArrayID.DartHM);
+			}
+			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
+				DropArrowAmmo.Add(ItemID.ChlorophyteArrow);
+				DropBulletAmmo.Add(ItemID.ChlorophyteBullet);
+			}
+			if (NPC.downedPlantBoss) {
+				DropArrowAmmo.Add(ItemID.VenomArrow);
+				DropBulletAmmo.Add(ItemID.NanoBullet);
+				DropBulletAmmo.Add(ItemID.VenomBullet);
+			}
+			if (weapontoCheck.useAmmo == AmmoID.Arrow) {
+				Ammo = Main.rand.NextFromCollection(DropArrowAmmo);
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Bullet) {
+				Ammo = Main.rand.NextFromCollection(DropBulletAmmo);
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Dart) {
+				Ammo = Main.rand.NextFromCollection(DropDartAmmo);
+			}
+			else if (weapontoCheck.mana > 0) {
+				Ammo = ItemID.LesserManaPotion;
+				Amount = (int)(10 * AmountModifier);
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Rocket) {
+				Ammo = Main.rand.Next(new int[] { ItemID.RocketI, ItemID.RocketII, ItemID.RocketIII, ItemID.RocketIV });
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Snowball) {
+				Ammo = ItemID.Snowball;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.CandyCorn) {
+				Ammo = ItemID.CandyCorn;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.JackOLantern) {
+				Ammo = ItemID.JackOLantern;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Flare) {
+				Ammo = ItemID.Flare;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Stake) {
+				Ammo = ItemID.Stake;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.StyngerBolt) {
+				Ammo = ItemID.StyngerBolt;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.NailFriendly) {
+				Ammo = ItemID.Nail;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Gel) {
+				Ammo = ItemID.Gel;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.FallenStar) {
+				Ammo = ModContent.ItemType<StarTreasureChest>();
+				if (Amount < 1) {
+					Amount = 1;
+				}
+				else if (Amount > 1) {
+					Amount = (int)(1 * AmountModifier);
+				}
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Sand) {
+				Ammo = ItemID.SandBlock;
+			}
+			else {
+				Ammo = ItemID.WoodenArrow;
+			}
+			player.QuickSpawnItem(source, Ammo, Amount);
+		}
+
+		List<int> Accessories = new List<int>();
+		/// <summary>
+		///      Allow user to return a list of number that contain different data to insert into chest <br/>
+		///      0 : Tier 1 Combat acc <br/>
+		///      1 : Tier 1 Health and Mana acc<br/>
+		///      2 : Tier 1 Movement acc<br/>
+		///      3 : Post evil Combat acc<br/>
+		///      4 : Post evil Health and Mana acc<br/>
+		///      5 : Post evil Movement acc<br/>
+		///      6 : Queen bee acc<br/>
+		///      7 : Cobalt Shield<br/>
+		///      8 : Anhk shield sub acc (not include the shield itself)<br/>
+		///      9 : Hardmode acc<br/>
+		///      10 : PhilosophersStone<br/>
+		/// </summary>
+		public virtual List<int> FlagNumAcc() => new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+		/// <summary>
+		/// Allow for safely add in a list of accessory that specific to a situation
+		/// </summary>
+		/// <returns></returns>
+		public virtual List<int> SafePostAddAcc() => new List<int>() { };
+
+		private void AddAcc(List<int> flag) {
+			Accessories.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
+			for (int i = 0; i < flag.Count; i++) {
+				switch (flag[i]) {
+					case 0:
+						Accessories.AddRange(TerrariaArrayID.T1CombatAccessory);
+						break;
+					case 1:
+						Accessories.AddRange(TerrariaArrayID.T1HealthAndManaAccessory);
+						break;
+					case 2:
+						Accessories.AddRange(TerrariaArrayID.T1MovementAccessory);
+						break;
+					case 3:
+						Accessories.AddRange(TerrariaArrayID.PostEvilCombatAccessory);
+						break;
+					case 4:
+						Accessories.AddRange(TerrariaArrayID.PostEvilHealthManaAccessory);
+						break;
+					case 5:
+						Accessories.AddRange(TerrariaArrayID.PostEvilMovementAccessory);
+						break;
+					case 6:
+						Accessories.AddRange(TerrariaArrayID.QueenBeeCombatAccessory);
+						break;
+					case 7:
+						Accessories.Add(ItemID.CobaltShield);
+						break;
+					case 8:
+						Accessories.AddRange(TerrariaArrayID.AnhkCharm);
+						break;
+					case 9:
+						Accessories.AddRange(TerrariaArrayID.HMAccessory);
+						break;
+					case 10:
+						Accessories.Add(ItemID.PhilosophersStone);
+						break;
+				}
+				if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
+			}
+		}
+		/// <summary>
+		/// This method return a set of armor with randomize piece of armor accordingly to progression
+		/// </summary>
+		public void GetArmorForPlayer(IEntitySource entitySource, Player player) {
+			List<int> HeadArmor = new List<int>();
+			List<int> BodyArmor = new List<int>();
+			List<int> LegArmor = new List<int>();
+			HeadArmor.AddRange(TerrariaArrayID.HeadArmorPreBoss);
+			BodyArmor.AddRange(TerrariaArrayID.BodyArmorPreBoss);
+			LegArmor.AddRange(TerrariaArrayID.LegArmorPreBoss);
+			if (NPC.downedBoss2) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostEvil);
+			}
+			if (NPC.downedBoss3) {
+				HeadArmor.Add(ItemID.NecroHelmet);
+				BodyArmor.Add(ItemID.NecroBreastplate);
+				LegArmor.Add(ItemID.NecroGreaves);
+			}
+			if (NPC.downedQueenBee) {
+				HeadArmor.Add(ItemID.BeeHeadgear);
+				BodyArmor.Add(ItemID.BeeBreastplate);
+				LegArmor.Add(ItemID.BeeGreaves);
+			}
+			if (Main.hardMode) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorHardMode);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorHardMode);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorHardMode);
+			}
+			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostMech);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostMech);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostMech);
+			}
+			if (NPC.downedPlantBoss) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostPlant);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostPlant);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostPlant);
+			}
+			if (NPC.downedGolemBoss) {
+				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostGolem);
+				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
+				LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
+			}
+			player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
+			player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
+			player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
+		}
+		/// <summary>
+		/// Return a random accessory 
+		/// </summary>
+		public int GetAccessory() {
+			AddAcc(FlagNumAcc());
+			return Main.rand.NextFromCollection(Accessories);
+		}
+		List<int> DropItemPotion = new List<int>();
+		/// <summary>
+		/// Return random potion
+		/// </summary>
+		/// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
+		public int GetPotion(bool MovementPotionOnly = false) {
+			DropItemPotion.AddRange(TerrariaArrayID.NonMovementPotion);
+			if (Main.hardMode) {
+				DropItemPotion.Add(ItemID.LifeforcePotion);
+				DropItemPotion.Add(ItemID.InfernoPotion);
+			}
+			if (MovementPotionOnly) {
+				DropItemPotion.Clear();
+			}
+			DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
+			return Main.rand.NextFromCollection(DropItemPotion);
+		}
+		/// <summary>
+		/// Return weapon base on world/player progression
 		/// </summary>
 		/// <param name="ReturnWeapon"></param>
 		/// <param name="Amount"></param>
@@ -386,246 +640,144 @@ namespace BossRush.Contents.Items.Chest {
 					break;
 			}
 		}
-		List<int> DropArrowAmmo = new List<int>();
-		List<int> DropBulletAmmo = new List<int>();
-		List<int> DropDartAmmo = new List<int>();
-
 		/// <summary>
-		/// Automatically quick drop player ammo item accordingly to weapon ammo type
+		/// This is a static function version of GetWeapon in LootBoxBase<br/>
+		/// Lootbox check is already presented in this function and as such it is not needed to check if the item a lootboxbase or not<br/>
+		/// it is also important to remember that this function will automatically handle dropping item
 		/// </summary>
-		/// /// <param name="player">The player</param>
-		/// <param name="weapon">Weapon need to be checked</param>
-		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
-		public void AmmoForWeapon(IEntitySource source, Player player, int weapon, float AmountModifier = 1) {
-			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
-			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
-				if (weapontoCheck.mana > 0) {
-					player.QuickSpawnItem(source, ItemID.LesserManaPotion, 5);
-				}
+		/// <param name="lootbox">The lootbox item</param>
+		/// <param name="player">The player</param>
+		/// <param name="rng">rng number</param>
+		public static void GetWeapon(Item lootbox, Player player, int rng = 0) {
+			if (lootbox.ModItem is not LootBoxBase item) {
 				return;
 			}
-			//The most ugly code
-			int Amount = (int)(200 * AmountModifier);
-			int Ammo;
+			int SpecialAmount = 200;
+			int ReturnWeapon = ItemID.None;
+			//adding stuff here
 			if (Main.masterMode) {
-				Amount += 150;
+				SpecialAmount += 150;
 			}
-			DropArrowAmmo.Clear();
-			DropBulletAmmo.Clear();
-			DropDartAmmo.Clear();
-
-			DropArrowAmmo.AddRange(TerrariaArrayID.defaultArrow);
-			DropBulletAmmo.AddRange(TerrariaArrayID.defaultBullet);
-			DropDartAmmo.AddRange(TerrariaArrayID.defaultDart);
-
-			if (Main.hardMode) {
-				DropArrowAmmo.AddRange(TerrariaArrayID.ArrowHM);
-				DropBulletAmmo.AddRange(TerrariaArrayID.BulletHM);
-				DropDartAmmo.AddRange(TerrariaArrayID.DartHM);
+			IEntitySource entitySource = player.GetSource_OpenItem(lootbox.type);
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE) && !player.IsDebugPlayer()) {
+				int weapon = Main.rand.Next(BossRushModSystem.SynergyItem).type;
+				player.QuickSpawnItemDirect(entitySource, weapon);
+				item.AmmoForWeapon(entitySource, player, weapon);
+				return;
 			}
-			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-				DropArrowAmmo.Add(ItemID.ChlorophyteArrow);
-				DropBulletAmmo.Add(ItemID.ChlorophyteBullet);
-			}
-			if (NPC.downedPlantBoss) {
-				DropArrowAmmo.Add(ItemID.VenomArrow);
-				DropBulletAmmo.Add(ItemID.NanoBullet);
-				DropBulletAmmo.Add(ItemID.VenomBullet);
-			}
-			if (weapontoCheck.useAmmo == AmmoID.Arrow) {
-				Ammo = Main.rand.NextFromCollection(DropArrowAmmo);
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Bullet) {
-				Ammo = Main.rand.NextFromCollection(DropBulletAmmo);
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Dart) {
-				Ammo = Main.rand.NextFromCollection(DropDartAmmo);
-			}
-			else if (weapontoCheck.mana > 0) {
-				Ammo = ItemID.LesserManaPotion;
-				Amount = (int)(10 * AmountModifier);
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Rocket) {
-				Ammo = Main.rand.Next(new int[] { ItemID.RocketI,ItemID.RocketII, ItemID.RocketIII, ItemID.RocketIV });
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Snowball) {
-				Ammo = ItemID.Snowball;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.CandyCorn) {
-				Ammo = ItemID.CandyCorn;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.JackOLantern) {
-				Ammo = ItemID.JackOLantern;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Flare) {
-				Ammo = ItemID.Flare;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Stake) {
-				Ammo = ItemID.Stake;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.StyngerBolt) {
-				Ammo = ItemID.StyngerBolt;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.NailFriendly) {
-				Ammo = ItemID.Nail;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Gel) {
-				Ammo = ItemID.Gel;
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.FallenStar) {
-				Ammo = ModContent.ItemType<StarTreasureChest>();
-				if (Amount < 1) {
-					Amount = 1;
-				}
-				else if (Amount > 1) {
-					Amount = (int)(1 * AmountModifier);
-				}
-			}
-			else if (weapontoCheck.useAmmo == AmmoID.Sand) {
-				Ammo = ItemID.SandBlock;
-			}
-			else {
-				Ammo = ItemID.WoodenArrow;
-			}
-			player.QuickSpawnItem(source, Ammo, Amount);
-		}
-
-		List<int> Accessories = new List<int>();
-		/// <summary>
-		///      Allow user to return a list of number that contain different data to insert into chest <br/>
-		///      0 : Tier 1 Combat acc <br/>
-		///      1 : Tier 1 Health and Mana acc<br/>
-		///      2 : Tier 1 Movement acc<br/>
-		///      3 : Post evil Combat acc<br/>
-		///      4 : Post evil Health and Mana acc<br/>
-		///      5 : Post evil Movement acc<br/>
-		///      6 : Queen bee acc<br/>
-		///      7 : Cobalt Shield<br/>
-		///      8 : Anhk shield sub acc (not include the shield itself)<br/>
-		///      9 : Hardmode acc<br/>
-		///      10 : PhilosophersStone<br/>
-		/// </summary>
-		public virtual List<int> FlagNumAcc() => new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-		/// <summary>
-		/// Allow for safely add in a list of accessory that specific to a situation
-		/// </summary>
-		/// <returns></returns>
-		public virtual List<int> SafePostAddAcc() => new List<int>() { };
-
-		private void AddAcc(List<int> flag) {
-			Accessories.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
-			for (int i = 0; i < flag.Count; i++) {
-				switch (flag[i]) {
+			item.ModifyLootAdd(player);
+			//actual choosing item
+			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			modplayer.GetAmount();
+			HashSet<int> DummyMeleeData = LootboxSystem.GetItemPool(item.Type).DropItemMelee.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyRangeData = LootboxSystem.GetItemPool(item.Type).DropItemRange.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(item.Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(item.Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
+			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(item.Type).DropItemMisc;
+			for (int i = 0; i < modplayer.weaponAmount; i++) {
+				rng = item.RNGManage(player);
+				rng = item.ModifyRNG(rng, player);
+				switch (rng) {
 					case 0:
-						Accessories.AddRange(TerrariaArrayID.T1CombatAccessory);
-						break;
+						continue;
 					case 1:
-						Accessories.AddRange(TerrariaArrayID.T1HealthAndManaAccessory);
-						break;
+						if (DummyMeleeData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							continue;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMeleeData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
+						DummyMeleeData.Remove(ReturnWeapon);
+						continue;
 					case 2:
-						Accessories.AddRange(TerrariaArrayID.T1MovementAccessory);
-						break;
+						if (DummyRangeData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							item.AmmoForWeapon(entitySource, player, Weapon);
+							continue;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyRangeData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
+						DummyRangeData.Remove(ReturnWeapon);
+						continue;
 					case 3:
-						Accessories.AddRange(TerrariaArrayID.PostEvilCombatAccessory);
-						break;
+						if (DummyMagicData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							item.AmmoForWeapon(entitySource, player, Weapon);
+							continue;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
+						DummyMagicData.Remove(ReturnWeapon);
+						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
+						continue;
 					case 4:
-						Accessories.AddRange(TerrariaArrayID.PostEvilHealthManaAccessory);
-						break;
+						if (DummySummonData.Count <= 0) {
+							GetWeapon(out int Weapon, out int Amount, rng);
+							player.QuickSpawnItem(entitySource, Weapon, Amount);
+							item.AmmoForWeapon(entitySource, player, Weapon);
+							continue;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon);
+						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
+						DummySummonData.Remove(ReturnWeapon);
+						continue;
 					case 5:
-						Accessories.AddRange(TerrariaArrayID.PostEvilMovementAccessory);
-						break;
+						if (DummyMiscsData.Count < 1) {
+							ChooseWeapon(Main.rand.Next(1, 5), ref ReturnWeapon, ref SpecialAmount, DummyMeleeData.ToList(), DummyRangeData.ToList(), DummyMagicData.ToList(), DummySummonData.ToList(), DummyMiscsData.ToList());
+							continue;
+						}
+						ReturnWeapon = Main.rand.NextFromHashSet(DummyMiscsData);
+						player.QuickSpawnItem(entitySource, ReturnWeapon, SpecialAmount);
+						modplayer.ItemGraveYard.Add(ReturnWeapon);
+						DummyMiscsData.Remove(ReturnWeapon);
+						continue;
 					case 6:
-						Accessories.AddRange(TerrariaArrayID.QueenBeeCombatAccessory);
-						break;
-					case 7:
-						Accessories.Add(ItemID.CobaltShield);
-						break;
-					case 8:
-						Accessories.AddRange(TerrariaArrayID.AnhkCharm);
-						break;
-					case 9:
-						Accessories.AddRange(TerrariaArrayID.HMAccessory);
-						break;
-					case 10:
-						Accessories.Add(ItemID.PhilosophersStone);
-						break;
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<WonderDrug>());
+						continue;
 				}
-				if (SafePostAddAcc().Count > 0) Accessories.AddRange(SafePostAddAcc());
 			}
 		}
 		/// <summary>
-		/// This method return a set of armor with randomize piece of armor accordingly to progression
+		/// This function will automatically handle drop for you so no need to do it yourself
 		/// </summary>
-		public void GetArmorForPlayer(IEntitySource entitySource, Player player) {
-			List<int> HeadArmor = new List<int>();
-			List<int> BodyArmor = new List<int>();
-			List<int> LegArmor = new List<int>();
-			HeadArmor.AddRange(TerrariaArrayID.HeadArmorPreBoss);
-			BodyArmor.AddRange(TerrariaArrayID.BodyArmorPreBoss);
-			LegArmor.AddRange(TerrariaArrayID.LegArmorPreBoss);
-			if (NPC.downedBoss2) {
-				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostEvil);
-				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostEvil);
-				LegArmor.AddRange(TerrariaArrayID.LegArmorPostEvil);
-			}
-			if (NPC.downedBoss3) {
-				HeadArmor.Add(ItemID.NecroHelmet);
-				BodyArmor.Add(ItemID.NecroBreastplate);
-				LegArmor.Add(ItemID.NecroGreaves);
-			}
-			if (NPC.downedQueenBee) {
-				HeadArmor.Add(ItemID.BeeHeadgear);
-				BodyArmor.Add(ItemID.BeeBreastplate);
-				LegArmor.Add(ItemID.BeeGreaves);
-			}
-			if(Main.hardMode) {
-				HeadArmor.AddRange(TerrariaArrayID.HeadArmorHardMode);
-				BodyArmor.AddRange(TerrariaArrayID.BodyArmorHardMode);
-				LegArmor.AddRange(TerrariaArrayID.LegArmorHardMode);
-			}
-			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
-				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostMech);
-				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostMech);
-				LegArmor.AddRange(TerrariaArrayID.LegArmorPostMech);
-			}
-			if(NPC.downedPlantBoss) {
-				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostPlant);
-				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostPlant);
-				LegArmor.AddRange(TerrariaArrayID.LegArmorPostPlant);
-			}
-			if (NPC.downedGolemBoss) {
-				HeadArmor.AddRange(TerrariaArrayID.HeadArmorPostGolem);
-				BodyArmor.AddRange(TerrariaArrayID.BodyArmorPostGolem);
-				LegArmor.AddRange(TerrariaArrayID.LegArmorPostGolem);
-			}
-			player.QuickSpawnItem(entitySource, Main.rand.Next(HeadArmor));
-			player.QuickSpawnItem(entitySource, Main.rand.Next(BodyArmor));
-			player.QuickSpawnItem(entitySource, Main.rand.Next(LegArmor));
+		/// <param name="type"></param>
+		/// <param name="player"></param>
+		public static void GetAccessories(int type, Player player) {
+			List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc, .. BossRushModSystem.LostAccessories.Select(i => i.type)];
+			IEntitySource entitySource = player.GetSource_OpenItem(type);
+			player.QuickSpawnItem(entitySource, Main.rand.Next(acc));
 		}
 		/// <summary>
-		/// Return a random accessory 
+		/// This function will automatically handle drop for you so no need to do it yourself
 		/// </summary>
-		public int GetAccessory() {
-			AddAcc(FlagNumAcc());
-			return Main.rand.NextFromCollection(Accessories);
+		/// <param name="type"></param>
+		/// <param name="player"></param>
+		public static void GetPotion(int type, Player player) {
+			List<int> DropItemPotion = [.. TerrariaArrayID.NonMovementPotion, .. TerrariaArrayID.MovementPotion];
+			DropItemPotion.Add(ItemID.LifeforcePotion);
+			DropItemPotion.Add(ItemID.InfernoPotion);
+			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+			modplayer.GetAmount();
+			IEntitySource entitySource = player.GetSource_OpenItem(type);
+			for (int i = 0; i < modplayer.potionNumAmount; i++) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(DropItemPotion), modplayer.potionTypeAmount);
+			}
+
 		}
-		List<int> DropItemPotion = new List<int>();
-		/// <summary>
-		/// Return random potion
-		/// </summary>
-		/// <param name="MovementPotionOnly">Allow potion that enhance movement to be drop</param>
-		public int GetPotion(bool MovementPotionOnly = false) {
-			DropItemPotion.AddRange(TerrariaArrayID.NonMovementPotion);
-			if (Main.hardMode) {
-				DropItemPotion.Add(ItemID.LifeforcePotion);
-				DropItemPotion.Add(ItemID.InfernoPotion);
+		public static void GetArmorPiece(int type, Player player) {
+			IEntitySource entitySource = player.GetSource_OpenItem(type);
+			for (int i = 0; i < 3; i++) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.EveryArmorPiece));
 			}
-			if (MovementPotionOnly) {
-				DropItemPotion.Clear();
-			}
-			DropItemPotion.AddRange(TerrariaArrayID.MovementPotion);
-			return Main.rand.NextFromCollection(DropItemPotion);
 		}
 		Color color1, color2, color3, color4;
 		private void ColorHandle() {
@@ -636,8 +788,8 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			ColorHandle();
-			Main.instance.LoadItem(Item.type);
-			Texture2D texture = TextureAssets.Item[Item.type].Value;
+			Main.instance.LoadItem(Type);
+			Texture2D texture = TextureAssets.Item[Type].Value;
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, position + new Vector2(2, 2), null, color1, 0, origin, scale, SpriteEffects.None, 0);
 				spriteBatch.Draw(texture, position + new Vector2(-2, 2), null, color2, 0, origin, scale, SpriteEffects.None, 0);
@@ -651,7 +803,7 @@ namespace BossRush.Contents.Items.Chest {
 		private static List<LootBoxItemPool> LootBoxDropPool = new List<LootBoxItemPool>();
 		/// <summary>
 		/// Direct modify maybe unstable, unsure how this will work <br/>
-		/// For a more direct way of modify, please refer to <see cref="ReplaceItemPool(LootBoxItemPool)"/>
+		/// To safely modifying loot pool of said item, please refer to <see cref="ReplaceItemPool(LootBoxItemPool)"/>
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns></returns>
@@ -660,6 +812,10 @@ namespace BossRush.Contents.Items.Chest {
 			pool.IndexID = LootBoxDropPool.Count;
 			LootBoxDropPool.Add(pool);
 		}
+		/// <summary>
+		/// Replace the item pool with a new item pool
+		/// </summary>
+		/// <param name="pool"></param>
 		public static void ReplaceItemPool(LootBoxItemPool pool) {
 			LootBoxItemPool itempool = LootBoxDropPool.Where(i => i.PoolID == pool.PoolID).FirstOrDefault();
 			int index = itempool.IndexID;
@@ -799,9 +955,9 @@ namespace BossRush.Contents.Items.Chest {
 				potionTypeAmount = 1;
 				potionNumAmount = 1;
 			}
-			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount  + WeaponAmountAddition), 1, 999999);
-			potionTypeAmount = ModifyGetAmount(potionTypeAmount  + PotionTypeAmountAddition);
-			potionNumAmount = ModifyGetAmount(potionNumAmount  + PotionNumberAmountAddition);
+			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
+			potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
+			potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
 			if (ModContent.GetInstance<BossRushModConfig>().SynergyFeverMode && ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 				weaponAmount = 1;
 			}

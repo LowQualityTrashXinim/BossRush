@@ -39,6 +39,12 @@ public class ImageStructureLoader : ILoadable {
 	public const string CrimsonArenaVar1 = "3x3CrimsonArena1";
 	public const string CorruptionAreanaVar1 = "2x4CorruptionArena1";
 	public const string DungeonAreanaVar1 = "2x2DungeonArena1";
+	public const string TundraArenaVar1 = "3x3TundraArena1";
+}
+public static class StructureID {
+	public static string GetStructure(short variant) {
+		return "";
+	}
 }
 public record ImageData(int Width, Color[] Data) {
 	public int Height => Data.Length / Width;

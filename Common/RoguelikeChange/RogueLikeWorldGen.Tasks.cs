@@ -8,11 +8,13 @@ using Terraria.WorldBuilding;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System;
+using System.Reflection;
 
 namespace BossRush.Common.WorldGenOverhaul;
-
-public class RogueLike_BiomeAreaID {
+public class PlayerBiome : ModPlayer {
+	HashSet<short> CurrentBiome = new HashSet<short>();
+}
+public class BiomeAreaID {
 	public const short None = 0;
 	public const short Forest = 1;
 	public const short Jungle = 2;
@@ -24,13 +26,34 @@ public class RogueLike_BiomeAreaID {
 	public const short BlueShroom = 8;
 	public const short Granite = 9;
 	public const short Marble = 10;
-	public const short BlueSlime = 11;
+	public const short Slime = 11;
 	public const short FleshRealm = 12;
 	public const short Beaches = 13;
 	public const short Underground = 14;
+	public const short BeeNest = 15;
 }
 
 public partial class RogueLikeWorldGen : ModSystem {
+	public static Dictionary<short, string> BiomeID;
+	public override void OnModLoad() {
+		BiomeID = new();
+		FieldInfo[] field = typeof(BiomeAreaID).GetFields();
+		for (int i = 0; i < field.Length; i++) {
+			object? obj = field[i].GetValue(null);
+			if (obj == null) {
+				continue;
+			}
+			if (obj.GetType() != typeof(short)) {
+				continue;
+			}
+			short objvalue = (short)obj;
+			BiomeID.Add(objvalue, field[i].Name);
+		}
+	}
+	public override void OnModUnload() {
+		BiomeID = null;
+	}
+
 	public static int GridPart_X = Main.maxTilesX / 24;
 	public static int GridPart_Y = Main.maxTilesY / 24;
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;

@@ -8,22 +8,24 @@ using BossRush.Texture;
 using System.Reflection;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
 using System.Collections.Generic;
+using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Chest;
 using Terraria.GameContent.UI.States;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
-using System.Drawing.Drawing2D;
-using Terraria.Localization;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
+using System.Drawing.Drawing2D;
+using Terraria.DataStructures;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -85,6 +87,23 @@ internal class UniversalSystem : ModSystem {
 			return config.SynergyMode && config.BossRushMode;
 		return false;
 	}
+	public const string LEGACY_LOOTBOX = "lootbox";
+	public const string LEGACY_WORLDGEN = "worldgen";
+	/// <summary>
+	/// Check legacy option whenever or not if it enable or not
+	/// </summary>
+	/// <param name="option"></param>
+	/// <returns>
+	/// return true if it is enable
+	/// </returns>
+	public static bool CheckLegacy(string option) {
+		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (option == LEGACY_LOOTBOX)
+			return config.LegacyLootBoxDrop;
+		if (option == LEGACY_WORLDGEN)
+			return config.LegacyBossRushWorldGen;
+		return false;
+	}
 	internal UserInterface userInterface;
 	internal UserInterface perkInterface;
 	internal UserInterface skillInterface;
@@ -92,6 +111,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface systemMenuInterface;
 	internal UserInterface transmutationInterface;
 	internal UserInterface relicTest;
+	internal UserInterface spoils;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -100,6 +120,7 @@ internal class UniversalSystem : ModSystem {
 	public UISystemMenu UIsystemmenu;
 	public TransmutationUIState transmutationUI;
 	public RelicTransmuteUI relicUI;
+	public SpoilsUIState spoilsState;
 
 	public static bool EnchantingState = false;
 	public override void Load() {
@@ -127,6 +148,9 @@ internal class UniversalSystem : ModSystem {
 
 			relicTest = new();
 			relicUI = new();
+
+			spoilsState = new();
+			spoils = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
@@ -161,6 +185,9 @@ internal class UniversalSystem : ModSystem {
 		transmutationInterface = null;
 		relicUI = null;
 		relicTest = null;
+
+		spoilsState = null;
+		spoils = null;
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
@@ -170,6 +197,7 @@ internal class UniversalSystem : ModSystem {
 		systemMenuInterface?.Update(gameTime);
 		transmutationInterface?.Update(gameTime);
 		relicTest?.Update(gameTime);
+		spoils?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -184,6 +212,7 @@ internal class UniversalSystem : ModSystem {
 					systemMenuInterface.Draw(Main.spriteBatch, new GameTime());
 					transmutationInterface.Draw(Main.spriteBatch, new GameTime());
 					relicTest.Draw(Main.spriteBatch, new GameTime());
+					spoils.Draw(Main.spriteBatch, new GameTime());
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -210,6 +239,11 @@ internal class UniversalSystem : ModSystem {
 		DeactivateUI();
 		relicTest.SetState(relicUI);
 	}
+	public void ActivateSpoilsUI(int lootboxType) {
+		DeactivateUI();
+		SpoilsUIState.Current_OpenLootBox = lootboxType;
+		spoils.SetState(spoilsState);
+	}
 	public void DeactivateUI() {
 		perkInterface.SetState(null);
 		skillInterface.SetState(null);
@@ -217,6 +251,7 @@ internal class UniversalSystem : ModSystem {
 		systemMenuInterface.SetState(null);
 		transmutationInterface.SetState(null);
 		relicTest.SetState(null);
+		spoils.SetState(null);
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -306,7 +341,7 @@ class DefaultUI : UIState {
 	}
 
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (ModContent.GetInstance<UniversalSystem>().systemMenuInterface.CurrentState == null) {
+		if (ModContent.GetInstance<UniversalSystem>().systemMenuInterface.CurrentState == null && ModContent.GetInstance<UniversalSystem>().spoils.CurrentState == null) {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			ModContent.GetInstance<UniversalSystem>().systemMenuInterface.SetState(ModContent.GetInstance<UniversalSystem>().UIsystemmenu);
 		}
@@ -645,7 +680,7 @@ internal class SkillUI : UIState {
 		base.Update(gameTime);
 		SkillHandlePlayer modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		modplayer.SkillStatTotal(out int energy, out int duration, out int cooldown);
-		Color color =  energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
+		Color color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
 		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
 		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
 		cooldownText.SetText($"Cool down = {MathF.Round(cooldown / 60f, 2)}s");
@@ -1243,19 +1278,137 @@ public class EnchantmentUIslot : UIImage {
 		}
 	}
 }
-
 public class SpoilsUIState : UIState {
-	public UIImageButton[] btn_List;
+	public static int Current_OpenLootBox = -1;
+	public int Limit_Spoils = 3;
+	public List<SpoilsUIButton> btn_List;
+	public int lootboxItem = -1;
 	public override void OnInitialize() {
-		btn_List = new UIImageButton[] { 
-			new UIImageButton(TextureAssets.InventoryBack),
-			new UIImageButton(TextureAssets.InventoryBack),
-			new UIImageButton(TextureAssets.InventoryBack)
-		};
+		Limit_Spoils = 3;
+		btn_List = new List<SpoilsUIButton>();
+	}
+	public override void OnActivate() {
+		btn_List.Clear();
+		lootboxItem = Current_OpenLootBox;
+		if (lootboxItem <= 0) {
+			return;
+		}
+		Player player = Main.LocalPlayer;
+		Vector2 origin = new Vector2(26, 26);
+		for (int i = 0; i < Limit_Spoils; i++) {
+			Vector2 vec = Vector2.UnitX * MathHelper.Lerp(-200, 200, i / (float)(Limit_Spoils));
+			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack);
+			btn.Type = (byte)Main.rand.Next(1, 7);
+			btn.LootboxItem = lootboxItem;
+			btn.UISetPosition(vec + player.Center, origin);
+			btn_List.Add(btn);
+			Append(btn);
+		}
+		SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10);
+		btna.Type = SpoilsID.Randomized; ;
+		btna.LootboxItem = lootboxItem;
+		btna.UISetPosition(Vector2.UnitX * 200 + player.Center, origin);
+		btn_List.Add(btna);
+		Append(btna);
 	}
 }
 public class SpoilsUIButton : UIImageButton {
-	byte spoilsID = 0;
+	public byte Type = 0;
+	public int LootboxItem = 0;
 	public SpoilsUIButton(Asset<Texture2D> texture) : base(texture) {
+		Type = 0;
 	}
+	public override void LeftClick(UIMouseEvent evt) {
+		if (Type == SpoilsID.None) {
+			return;
+		}
+		SpoilsGift(Type);
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+	public void SpoilsGift(int type) {
+		Player player = Main.LocalPlayer;
+		switch (type) {
+			case SpoilsID.Weapons:
+				LootBoxBase.GetWeapon(ContentSamples.ItemsByType[LootboxItem], player);
+				break;
+			case SpoilsID.Accessories:
+				LootBoxBase.GetAccessories(LootboxItem, player);
+				break;
+			case SpoilsID.Armors:
+				LootBoxBase.GetArmorPiece(LootboxItem, player);
+				break;
+			case SpoilsID.Potions:
+				LootBoxBase.GetPotion(LootboxItem, player);
+				break;
+			case SpoilsID.Relics:
+				if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+					Item relicitem = player.QuickSpawnItemDirect(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
+					if (relicitem.ModItem is Relic relic) {
+						relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+					}
+				}
+				else {
+					player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
+				}
+				break;
+			case SpoilsID.Skills:
+				player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<SkillLootBox>());
+				break;
+			case SpoilsID.Randomized:
+				SpoilsGift(Main.rand.Next(1,7));
+				break;
+			case SpoilsID.None:
+			default:
+				break;
+		}
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (IsMouseHovering) {
+			string text = "";
+			switch (Type) {
+				case SpoilsID.Weapons:
+					text += "Return weapons";
+					break;
+				case SpoilsID.Accessories:
+					text += "Return accessories";
+					break;
+				case SpoilsID.Armors:
+					text += "Return armor pieces";
+					break;
+				case SpoilsID.Potions:
+					text += "Return potions";
+					break;
+				case SpoilsID.Relics:
+					text += "Return relic";
+					break;
+				case SpoilsID.Skills:
+					text += "Return skill";
+					break;
+				case SpoilsID.None:
+				case SpoilsID.Randomized:
+					text += "random spoils";
+					break;
+				default:
+					break;
+			}
+			Main.instance.MouseText(text);
+		}
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
+		}
+	}
+}
+public static class SpoilsID {
+	public const byte None = 0;
+	public const byte Weapons = 1;
+	public const byte Accessories = 2;
+	public const byte Armors = 3;
+	public const byte Potions = 4;
+	public const byte Relics = 5;
+	public const byte Skills = 6;
+	public const byte Randomized = 64;
+	//public const byte WeaponUpgrades = 7;
 }

@@ -33,22 +33,20 @@ namespace BossRush.Contents.Items.Chest {
 				int Accessory = Main.rand.Next(new int[] { ItemID.MasterNinjaGear, ItemID.FireGauntlet, ItemID.NecromanticScroll, ItemID.CelestialEmblem, ItemID.CelestialShell, ItemID.AvengerEmblem, ItemID.CharmofMyths, ItemID.DestroyerEmblem, ItemID.SniperScope, ItemID.StarCloak, ItemID.StarVeil, ItemID.CelestialCuffs });
 				player.QuickSpawnItem(entitySource, Accessory);
 			}
-			int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
-			player.QuickSpawnItem(entitySource, wing);
 			modplayer.GetAmount();
 			GetWeapon(entitySource, player, modplayer.weaponAmount, RNGManage(player, 25, 25, 25, 25, 0));
 			for (int i = 0; i < 3; i++) {
 				player.QuickSpawnItem(entitySource, GetAccessory());
 			}
+			GetArmorForPlayer(entitySource, player);
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
+			int wing = Main.rand.Next(new int[] { ItemID.BeeWings, ItemID.BeetleWings, ItemID.BoneWings, ItemID.BatWings, ItemID.MothronWings, ItemID.ButterflyWings, ItemID.Hoverboard, ItemID.FlameWings, ItemID.GhostWings, ItemID.FestiveWings, ItemID.SpookyWings, ItemID.TatteredFairyWings });
+			player.QuickSpawnItem(entitySource, wing);
 			player.QuickSpawnItem(entitySource, ItemID.GoldenFishingRod);
-			if (UniversalSystem.CanAccessContent(player,UniversalSystem.BOSSRUSH_MODE)) {
-				int RandomModdedBuff = Main.rand.Next(new int[] {
-					ModContent.ItemType<BerserkerElixir>(),
-					ModContent.ItemType<GunslingerElixir>(),
-					ModContent.ItemType<SageElixir>(),
-					ModContent.ItemType<CommanderElixir>(),
-					ModContent.ItemType<TitanElixir>() });
-				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
 			}
 			player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystal);
 		}

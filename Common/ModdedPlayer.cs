@@ -14,6 +14,7 @@ using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Common.Utils;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -57,8 +58,6 @@ namespace BossRush.Common {
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			yield return new Item(ItemID.PlatinumPickaxe);
-			yield return new Item(ItemID.PlatinumAxe);
 			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());

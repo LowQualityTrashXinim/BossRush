@@ -143,6 +143,10 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] AnhkCharm = { ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap };
 		public readonly static int[] HMAccessory = { ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles };
 
+		public readonly static int[] EveryCombatHealtMovehAcc = {
+			 ItemID.FeralClaws, ItemID.ObsidianSkull, ItemID.SharkToothNecklace, ItemID.WhiteString, ItemID.BlackCounterweight,ItemID.Aglet, ItemID.FlyingCarpet, ItemID.FrogLeg, ItemID.IceSkates, ItemID.ShoeSpikes, ItemID.ClimbingClaws, ItemID.HermesBoots, ItemID.AmphibianBoots, ItemID.FlurryBoots, ItemID.CloudinaBottle, ItemID.SandstorminaBottle, ItemID.BlizzardinaBottle, ItemID.Flipper, ItemID.AnkletoftheWind, ItemID.BalloonPufferfish, ItemID.TsunamiInABottle, ItemID.LuckyHorseshoe, ItemID.ShinyRedBalloon,ItemID.BandofRegeneration, ItemID.NaturesGift, ItemID.MagmaStone, ItemID.ObsidianRose,ItemID.LavaCharm, ItemID.Magiluminescence, ItemID.RocketBoots, ItemID.BandofStarpower, ItemID.CelestialMagnet, ItemID.PygmyNecklace, ItemID.HoneyComb,ItemID.AdhesiveBandage, ItemID.Bezoar, ItemID.Vitamins,ItemID.HandWarmer, ItemID.ArmorPolish, ItemID.Blindfold, ItemID.PocketMirror, ItemID.Nazar, ItemID.Megaphone, ItemID.FastClock, ItemID.TrifoldMap,ItemID.RangerEmblem, ItemID.SorcererEmblem, ItemID.SummonerEmblem, ItemID.WarriorEmblem, ItemID.StarCloak, ItemID.CrossNecklace, ItemID.YoYoGlove, ItemID.TitanGlove, ItemID.PutridScent, ItemID.FleshKnuckles, ItemID.ManaCloak, ItemID.MagnetFlower, ItemID.ManaFlower,ItemID.ManaRegenerationBand, ItemID.CharmofMyths, ItemID.CelestialEmblem, ItemID.CelestialCuffs, ItemID.ArcaneFlower, ItemID.AnkhCharm, ItemID.AnkhShield, ItemID.BerserkerGlove, ItemID.BlackBelt, ItemID.MoonCharm, ItemID.MoonShell, ItemID.CelestialStone, ItemID.CelestialShell, ItemID.BeeCloak, ItemID.AvengerEmblem, ItemID.DestroyerEmblem, ItemID.EyeoftheGolem, ItemID.FireGauntlet, ItemID.FleshKnuckles, ItemID.FrozenTurtleShell, ItemID.FrozenShield, ItemID.HeroShield, ItemID.MagicQuiver, ItemID.MechanicalGlove, ItemID.MoonStone, ItemID.MoltenQuiver, ItemID.MoltenSkullRose, ItemID.ObsidianSkullRose, ItemID.PaladinsShield, ItemID.PanicNecklace, ItemID.PowerGlove, ItemID.ReconScope, ItemID.RifleScope, ItemID.SniperScope, ItemID.StalkersQuiver, ItemID.StarVeil, ItemID.ManaCloakStar, ItemID.StingerNecklace, ItemID.SunStone, ItemID.SweetheartNecklace, ItemID.TitanGlove, ItemID.ApprenticeScarf, ItemID.SquireShield, ItemID.HuntressBuckler, ItemID.MonkBelt, ItemID.HerculesBeetle, ItemID.NecromanticScroll, ItemID.PapyrusScarab, ItemID.YoyoBag, ItemID.NeptunesShell, ItemID.BundleofBalloons, ItemID.FrostsparkBoots, ItemID.TerrasparkBoots, ItemID.FloatingTube, ItemID.LightningBoots, ItemID.MasterNinjaGear, ItemID.Tabi
+		};
+
 		public readonly static int[] Phaseblade = { ItemID.BluePhaseblade, ItemID.RedPhaseblade, ItemID.GreenPhaseblade, ItemID.OrangePhaseblade, ItemID.YellowPhaseblade, ItemID.PurplePhaseblade, ItemID.WhitePhaseblade };
 
 		//DustID
@@ -269,6 +273,12 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] LegArmorPostGolem = {
 			ItemID.SquireAltPants,ItemID.HuntressAltPants, ItemID.MonkAltPants, ItemID.ApprenticeAltPants
 		};
+		public readonly static int[] EveryArmorPiece = [
+			..HeadArmorHardMode, ..HeadArmorPostEvil, ..HeadArmorPostGolem, ..HeadArmorPostMech, ..HeadArmorPostPlant, ..HeadArmorPreBoss,
+			..BodyArmorHardMode, ..BodyArmorPostEvil, ..BodyArmorPostGolem, ..BodyArmorPostMech, ..BodyArmorPostPlant, ..BodyArmorPreBoss,
+			..LegArmorHardMode, ..LegArmorPostEvil, ..LegArmorPostGolem, ..LegArmorPostMech, ..LegArmorPostPlant, ..LegArmorPreBoss,
+			ItemID.NecroHelmet,ItemID.NecroBreastplate,ItemID.NecroGreaves,ItemID.BeeHeadgear,ItemID.BeeBreastplate,ItemID.BeeGreaves
+			];
 		//Potion
 		public readonly static int[] SpecialPotion = {
 					ModContent.ItemType<BerserkerElixir>(),

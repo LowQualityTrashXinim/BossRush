@@ -89,6 +89,10 @@ namespace BossRush.Contents.Items.Chest {
 				int RandomAssArmor = Main.rand.Next(new int[] { ItemID.FlinxFurCoat, ItemID.VikingHelmet, ItemID.EmptyBucket, ItemID.NightVisionHelmet, ItemID.DivingHelmet, ItemID.Goggles, ItemID.Gi });
 				player.QuickSpawnItem(entitySource, RandomAssArmor);
 			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
+			GetWeapon(entitySource, player, 1);
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);

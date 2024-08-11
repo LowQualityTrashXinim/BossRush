@@ -1612,6 +1612,11 @@ Mods: {
 				DisplayName: Vitality Drain Totem
 				Tooltip: ""
 			}
+
+			TestTeleporter: {
+				DisplayName: Test Teleporter
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -1993,7 +1998,7 @@ Mods: {
 				}
 
 				ForceBossDropRegadless: {
-					Label: Force Boss Drop Regadless
+					Label: Force Boss Drop Regardless
 					Tooltip: Make boss drop outside of challenge mode
 				}
 
@@ -2021,7 +2026,18 @@ Mods: {
 					QoLHeader: Quality of Life
 					BaseGameHeader: Base game
 					GameModeHeader: Game Mode
+					LegacyHeader: Legacy
 					DebugHeader: Debug
+				}
+
+				LegacyLootBoxDrop: {
+					Label: Legacy Loot Box Drop
+					Tooltip: ""
+				}
+
+				LegacyBossRushWorldGen: {
+					Label: Legacy Boss Rush World Gen
+					Tooltip: ""
 				}
 			}
 		}
