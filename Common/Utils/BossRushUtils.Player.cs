@@ -35,7 +35,7 @@ namespace BossRush {
 					|| stats is PlayerStats.RegenHP
 					|| stats is PlayerStats.RegenMana
 					|| stats is PlayerStats.LootDropIncrease;
-		public static bool Player_MeteoriteArmorSet(Player player) => 
+		public static bool Player_MeteoriteArmorSet(Player player) =>
 			player.head == ArmorIDs.Head.MeteorHelmet
 			&& player.body == ArmorIDs.Body.MeteorSuit
 			&& player.legs == ArmorIDs.Legs.MeteorLeggings;
@@ -44,7 +44,16 @@ namespace BossRush {
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns>Return true if the item is a weapon</returns>
-		public static bool IsAWeapon(this Item item) => item.damage > 0 && item.useTime > 0 && item.useAnimation > 0 && !item.accessory;
+		public static bool IsAWeapon(this Item item) =>
+			item.damage > 0
+			&& item.useTime > 0
+			&& item.useAnimation > 0
+			&& !item.accessory
+			&& item.pick == 0
+			&& item.axe == 0
+			&& item.hammer == 0
+			&& item.ammo == AmmoID.None
+			&& item.maxStack == 1;
 	}
 	public enum PlayerStats : byte {
 		None,

@@ -26,10 +26,10 @@ namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 				$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
 				$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
 				$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
-				$"\nMelee drop chance : {chestplayer.MeleeChanceMutilplier + chestplayer.UpdateMeleeChanceMutilplier}" +
-				$"\nRange drop chance : {chestplayer.RangeChanceMutilplier + chestplayer.UpdateRangeChanceMutilplier}" +
-				$"\nMagic drop chance : {chestplayer.MagicChanceMutilplier + chestplayer.UpdateMagicChanceMutilplier}" +
-				$"\nSummon drop chance : {chestplayer.SummonChanceMutilplier + chestplayer.UpdateSummonChanceMutilplier}" +
+				$"\nMelee drop chance : {chestplayer.UpdateMeleeChanceMutilplier}" +
+				$"\nRange drop chance : {chestplayer.UpdateRangeChanceMutilplier}" +
+				$"\nMagic drop chance : {chestplayer.UpdateMagicChanceMutilplier}" +
+				$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
 				$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 				$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
 				$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +

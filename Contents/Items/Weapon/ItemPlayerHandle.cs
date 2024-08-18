@@ -165,10 +165,13 @@ namespace BossRush.Contents.Items.Weapon {
 			if (item.accessory && LostAccessories) {
 				TooltipLine line_Name= tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
 				TooltipLine line_Tooltip0 = tooltips.Where(t => t.Name == "Tooltip0").FirstOrDefault();
+				if(line_Name == null|| line_Tooltip0 == null) {
+					return;
+				}
 				line_Name.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.DisplayName");
 				line_Tooltip0.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.Tooltip");
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = Color.DarkGoldenrod;
-				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") {OverrideColor = Color.LightGoldenrodYellow });
+				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") { OverrideColor = Color.LightGoldenrodYellow });
 			}
 		}
 	}

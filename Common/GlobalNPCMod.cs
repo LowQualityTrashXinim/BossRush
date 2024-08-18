@@ -4,7 +4,6 @@ using BossRush.Contents.Items.Chest;
 //EnragedStuff
 using BossRush.Contents.WeaponEnchantment;
 using Terraria.GameContent.ItemDropRules;
-using BossRush.Contents.Items.Toggle;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using Terraria.ModLoader;
@@ -71,7 +70,7 @@ namespace BossRush.Common {
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
-				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PerkChooser>()));
+				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<WorldEssence>()));
 			}
 			if (npc.type == NPCID.BrainofCthulhu) {
 				//NoHit mode drop
@@ -84,7 +83,7 @@ namespace BossRush.Common {
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				IsABoss.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
-				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PerkChooser>()));
+				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<WorldEssence>()));
 			}
 			if (npc.type == NPCID.QueenBee) {
 				//NoHit mode drop
@@ -170,7 +169,7 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdAltar));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureTreasureChest>()));
-				SynergyRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<PerkChooser>()));
+				SynergyRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WorldEssence>()));
 			}
 			if (npc.type == NPCID.Golem) {
 				//NoHit mode drop

@@ -1,20 +1,58 @@
-﻿using BossRush.Common.Systems;
-using BossRush.Common.Utils;
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using System.Linq;
+﻿using System;
 using Terraria;
+using System.Linq;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using BossRush.Common.Utils;
 using Terraria.WorldBuilding;
+using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
+		public override void Load() {
+			On_Player.UpdateBiomes += On_Player_UpdateBiomes;
+			Platform = new();
+		}
+		public override void Unload() {
+			Platform = null;
+		}
+		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
+			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				orig(self);
+				return;
+			}
+			self.ZoneCorrupt = false;
+			self.ZoneCrimson = false;
+			self.ZoneJungle = false;
+			self.ZoneSnow = false;
+			self.ZoneUnderworldHeight = false;
+			Tile tileSafely = Framing.GetTileSafely(self.Center);
+			if (tileSafely != null)
+				self.behindBackWall = tileSafely.WallType > 0;
 
+			if (IsInBiome(self, BiomeAreaID.Corruption, Room)) {
+				self.ZoneCorrupt = true;
+			}
+			if (IsInBiome(self, BiomeAreaID.Crimson, Room)) {
+				self.ZoneCrimson = true;
+			}
+			if (IsInBiome(self, BiomeAreaID.BeeNest, Room)) {
+				self.ZoneJungle = true;
+				self.ZoneRockLayerHeight = true;
+			}
+			if (IsInBiome(self, BiomeAreaID.Tundra, Room)) {
+				self.ZoneSnow = true;
+			}
+			if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
+				self.ZoneUnderworldHeight = true;
+			}
+		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			if(!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				return;
 			}
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_WORLDGEN)) {
@@ -77,11 +115,35 @@ namespace BossRush.Common.ChallengeMode {
 				tasks.AddRange(((ITaskCollection)this).Tasks);
 			}
 		}
-		public static Dictionary<short, List<Rectangle>> Room;
-		public static bool FindSuitablePlaceToTeleport(Mod mod, Player player, short BiomeID) {
+		public Dictionary<short, List<Rectangle>> Room;
+		public static bool IsInBiome(Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {
+			if (Room == null) {
+				return false;
+			}
+			if (!Room.ContainsKey(BiomeID)) {
+				return false;
+			}
+			List<Rectangle> rectList = Room[BiomeID];
+			foreach (Rectangle rect in rectList) {
+				if (rect.Contains((int)player.Center.X / 16, (int)player.Center.Y / 16)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		public static bool FindSuitablePlaceToTeleport(Mod mod, Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {
+			if (Room == null) {
+				mod.Logger.Error("Room return null");
+				return false;
+			}
 			if (!Room.ContainsKey(BiomeID)) {
 				mod.Logger.Error("Biome id doesn't exist in the dictionary");
 				return false;
+			}
+			if (BiomeID == BiomeAreaID.Underground) {
+				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.5f).ToWorldCoordinates());
+				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
+				return true;
 			}
 			List<Rectangle> rect = Room[BiomeID];
 			int failsafe = 0;
@@ -111,10 +173,69 @@ namespace BossRush.Common.ChallengeMode {
 			mod.Logger.Error("Fail to find a suitable spot to teleport");
 			return false;
 		}
+		public static bool FindSuitablePlaceToTeleport(Player player, short BiomeID, Dictionary<short, List<Rectangle>> Room) {
+			if (Room == null) {
+				return false;
+			}
+			if (!Room.ContainsKey(BiomeID)) {
+				return false;
+			}
+			List<Rectangle> rect = Room[BiomeID];
+			if (BiomeID == BiomeAreaID.Underground) {
+				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.5f).ToWorldCoordinates());
+				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
+				return true;
+			}
+			int failsafe = 0;
+			while (failsafe <= 9999) {
+				Rectangle roomPosition = Main.rand.Next(rect);
+				Point position = new Point(
+					Main.rand.Next(roomPosition.Left, roomPosition.Right + 1),
+					Main.rand.Next(roomPosition.Top, roomPosition.Bottom));
+				if (WorldGen.TileEmpty(position.X, position.Y)) {
+					int pass = 0;
+					for (int offsetX = -1; offsetX <= 1; offsetX++) {
+						for (int offsetY = -1; offsetY <= 1; offsetY++) {
+							if (offsetX == 0 && offsetY == 0) continue;
+							if (WorldGen.TileEmpty(position.X + offsetX, position.Y + offsetY)) {
+								pass++;
+							}
+						}
+					}
+					if (pass >= 8) {
+						player.Teleport(position.ToVector2().ToWorldCoordinates());
+						player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
+						return true;
+					}
+					failsafe++;
+				}
+			}
+			return false;
+		}
+		public override void SaveWorldData(TagCompound tag) {
+			if (Room == null) {
+				return;
+			}
+			tag["BiomeType"] = Room.Keys.ToList();
+			tag["BiomeArea"] = Room.Values.ToList();
+		}
+		public override void LoadWorldData(TagCompound tag) {
+			var Type = tag.Get<List<short>>("BiomeType");
+			var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
+			if (Type == null || Area == null) {
+				return;
+			}
+			Room = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		}
+		public static List<Point> Platform;
+		public static void AddPlatformToList(int x, int y) {
+			Platform.Add(new(x, y));
+		}
 	}
 	public partial class BossRushWorldGen : ITaskCollection {
 		[Task]
 		public void SetUp() {
+			Platform.Clear();
 			Room = new Dictionary<short, List<Rectangle>>();
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;//small world : 175
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;//small world : 50
@@ -122,11 +243,8 @@ namespace BossRush.Common.ChallengeMode {
 			RogueLikeWorldGen.WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 			Main.worldSurface = (int)(Main.maxTilesY * .22f);
 			Main.rockLayer = (int)(Main.maxTilesY * .34f);
-			//GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 17),
-			//	(i, j) => {
-			//		GenerationHelper.FastPlaceTile(i, j, TileID.Dirt);
-			//	}
-			//);
+			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 15),	
+				(i, j) => { GenerationHelper.FastPlaceTile(i, j, TileID.Dirt, PaintID.BlackPaint); });
 		}
 		[Task]
 		public void Create_Arena() {
@@ -136,6 +254,7 @@ namespace BossRush.Common.ChallengeMode {
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 254) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Grass);
 				}
@@ -148,6 +267,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 			});
 			rectList.Add(rect);
@@ -170,6 +290,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -182,6 +303,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Jungle);
 			});
@@ -197,6 +319,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -205,6 +328,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Hive);
 			});
@@ -220,6 +344,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -231,6 +356,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.IceUnsafe);
 			});
@@ -246,6 +372,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -257,6 +384,7 @@ namespace BossRush.Common.ChallengeMode {
 				//}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CrimsonUnsafe1);
 			});
@@ -272,11 +400,16 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255 && color.B == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Ebonstone);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CorruptionUnsafe1);
 			});
@@ -292,6 +425,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255 && color.B == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -300,6 +434,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				if (color.G == 255 && color.R == 0) {
 					GenerationHelper.FastPlaceWall(a, b, WallID.PinkDungeon);
@@ -312,7 +447,7 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_SlimeArena() {
-			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 2, 2);
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
 			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.SlimeArenaVar1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -320,17 +455,19 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255 && color.B == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
 				}
-				else if (color.R == 254) {
+				else if (color.R == 240) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.PinkSlimeBlock);
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
 			});
@@ -346,6 +483,7 @@ namespace BossRush.Common.ChallengeMode {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				GenerationHelper.FastRemoveTile(a, b);
 				if (color.R == 255 && color.G == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
 				}
@@ -354,6 +492,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Flesh);
 			});
@@ -361,15 +500,26 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Create_Hell() {
-			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 23, 24, 1),
+			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 4),
 			(i, j) => {
-				if (j == RogueLikeWorldGen.GridPart_Y * 23) {
+				if(j < RogueLikeWorldGen.GridPart_Y * 21.7f) {
+					return;
+				}
+				if (j == RogueLikeWorldGen.GridPart_Y * 21.7f) {
 					GenerationHelper.FastPlaceTile(i, j, TileID.AshGrass);
 				}
 				else {
 					GenerationHelper.FastPlaceTile(i, j, TileID.Ash);
 				}
 			});
+
+			Room.Add(BiomeAreaID.Underground, new List<Rectangle> { GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 3) });
+		}
+		[Task]
+		public void Readjust_Final() {
+			for (int i = 0; i < Platform.Count; i++) {
+				GenerationHelper.SmartReadjustPlatform(Platform[i]);
+			}
 		}
 	}
 }

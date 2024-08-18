@@ -11,10 +11,8 @@ namespace BossRush.Contents.Items.aDebugItem;
 internal class TestTeleporter : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTURE;
 	public override void SetDefaults() {
-		Item.width = 32;
-		Item.height = 32;
-		Item.useTime = 15;
-		Item.useAnimation = 15;
+		Item.width = Item.height = 32;
+		Item.useTime = Item.useAnimation = 15;
 		Item.useStyle = ItemUseStyleID.HoldUp;
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
@@ -38,9 +36,7 @@ internal class TestTeleporter : ModItem {
 				modplayer.Zoneindex = (short)Math.Clamp(modplayer.Zoneindex + 1, 0, 15);
 			}
 			else {
-				if (BossRushWorldGen.Room.ContainsKey(modplayer.Zoneindex)) {
-					BossRushWorldGen.FindSuitablePlaceToTeleport(Mod, player, modplayer.Zoneindex);
-				}
+				BossRushWorldGen.FindSuitablePlaceToTeleport(Mod, player, modplayer.Zoneindex, ModContent.GetInstance<BossRushWorldGen>().Room);
 			}
 			return true;
 		}

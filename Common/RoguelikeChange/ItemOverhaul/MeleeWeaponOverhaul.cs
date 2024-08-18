@@ -354,7 +354,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.ChristmasTreeSword:
 					SwingType = BossRushUseStyle.Swipe;
 					item.useTurn = false;
-					item.damage += item.damage;
+					item.scale += .25f;
 					break;
 				//Poke Sword
 				//Pre HM Sword
@@ -378,7 +378,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.StarWrath:
 					SwingType = BossRushUseStyle.Poke;
 					item.useTurn = false;
-					item.damage += item.damage;
+					item.scale += .25f;
 					break;
 				case ItemID.DD2SquireBetsySword:
 				case ItemID.ZombieArm:
@@ -391,7 +391,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.PsychoKnife:
 					SwingType = BossRushUseStyle.GenericSwingDownImprove;
 					item.useTurn = false;
-					item.damage += item.damage;
+					item.scale += .25f;
 					break;
 				default:
 					break;
@@ -464,24 +464,6 @@ namespace BossRush.Common.RoguelikeChange {
 				return false;
 			}
 			return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
-		}
-		public override void ModifyItemScale(Item item, Player player, ref float scale) {
-			//if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-			//	if (player.GetModPlayer<MeleeOverhaulPlayer>().ComboNumber == 2) {
-			//		scale += .25f;
-			//		return;
-			//	}
-			//	int duration = player.itemAnimationMax;
-			//	float thirdduration = duration / 3;
-			//	float progress;
-			//	if (player.itemAnimation < thirdduration) {
-			//		progress = player.itemAnimation / thirdduration;
-			//	}
-			//	else {
-			//		progress = (duration - player.itemAnimation) / thirdduration;
-			//	}
-			//	scale += MathHelper.SmoothStep(-.5f, .25f, progress);
-			//}
 		}
 		public override bool CanUseItem(Item item, Player player) {
 			if ((SwingType != BossRushUseStyle.Swipe &&

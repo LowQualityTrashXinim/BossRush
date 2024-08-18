@@ -20,7 +20,6 @@ namespace BossRush {
             DrugSyncPlayer,
             NoHitBossNum,
             GambleAddiction,
-            ChanceMultiplayer,
             GodUltimateChallenge,
 			Perk,
 			Skill,
@@ -62,14 +61,6 @@ namespace BossRush {
                     if (Main.netMode == NetmodeID.Server)
                     {
                         gamble.SyncPlayer(-1, whoAmI, false);
-                    }
-                    break;
-                case MessageType.ChanceMultiplayer:
-                    ChestLootDropPlayer chestplayer = Main.player[playernumber].GetModPlayer<ChestLootDropPlayer>();
-                    chestplayer.ReceivePlayerSync(reader);
-                    if (Main.netMode == NetmodeID.Server)
-                    {
-                        chestplayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
                 case MessageType.GodUltimateChallenge:

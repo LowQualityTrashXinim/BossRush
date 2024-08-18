@@ -33,9 +33,11 @@ class StealthCloakPlayer : ModPlayer {
 		}
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
-		if(info.Dodgeable) {
-			return base.FreeDodge(info);
+		if(!Player.immune && StealthCloak && Player.HasBuff(BuffID.Invisibility) && Main.rand.NextBool(15)) {
+			Player.AddImmuneTime(info.CooldownCounter, 60);
+			Player.immune = true; 
+			return true;
 		}
-		return StealthCloak && Player.HasBuff(BuffID.Invisibility) && Main.rand.NextBool(15);
+		return base.FreeDodge(info);
 	}
 }

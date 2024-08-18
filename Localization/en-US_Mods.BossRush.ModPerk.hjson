@@ -12,7 +12,7 @@ StrokeOfLuck: {
 	DisplayName: Stroke Of Luck
 	Description:
 		'''
-		You have 1 in 25 chance to 
+		You have 5% to
 		+ Have your output damage increases when hitting NPC from 15% to 100%
 		+ Damage dealt onto you may be reduce from 15% to dealing 1 damage
 		'''
@@ -20,7 +20,18 @@ StrokeOfLuck: {
 
 UncertainStrike: {
 	DisplayName: Uncertain Strike
-	Description: + Damage dealt onto NPC may increases up to 45% or decreases down by 15%
+	Description: + Damage dealt onto NPC may increases up to 55% or decreases down by 15%
+}
+
+MarkOfSpectre: {
+	DisplayName: Mark of Spectre
+	Description:
+		'''
+		+ You have 60% to dodge a incomming attack
+		+ Your movement speed is increases by 35% and massively boost jump speed
+		+ You are knockback less
+		- Damage taken is increases by 25%
+		'''
 }
 
 LethalKnockBack: {

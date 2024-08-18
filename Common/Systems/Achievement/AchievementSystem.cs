@@ -1,3 +1,4 @@
+using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,13 +20,18 @@ public class AchievementSystem : ModSystem {
 			Achievements.Add(achievement);
 		}
 
-		if (File.Exists(FilePath)) {
-			var tag = TagIO.FromFile(FilePath);
-			foreach (var achievement in Achievements) {
-				if (tag.ContainsKey(achievement.Name)) {
-					achievement.Achieved = true;
+		try {
+			if (File.Exists(FilePath)) {
+				var tag = TagIO.FromFile(FilePath);
+				foreach (var achievement in Achievements) {
+					if (tag.ContainsKey(achievement.Name)) {
+						achievement.Achieved = true;
+					}
 				}
 			}
+		}
+		catch {
+
 		}
 	}
 
@@ -45,8 +51,12 @@ public class AchievementSystem : ModSystem {
 
 			File.Create(FilePath);
 		}
+		try {
+			TagIO.ToFile(tag, FilePath);
+		}
+		catch {
 
-		TagIO.ToFile(tag, FilePath);
+		}
 	}
 
 	public override void PostUpdateEverything() {

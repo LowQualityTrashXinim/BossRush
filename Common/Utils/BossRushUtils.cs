@@ -11,26 +11,6 @@ using Terraria.Utilities;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
-		public static string GetTheSameTextureAsEntity<T>() where T : class {
-			var type = typeof(T);
-			string NameSpace = type.Namespace;
-			if (NameSpace == null) {
-				return BossRushTexture.MISSINGTEXTURE;
-			}
-			return NameSpace.Replace(".", "/") + "/" + type.Name;
-		}
-		public static string GetTheSameTextureAs<T>(string altName = "") where T : class {
-			var type = typeof(T);
-			if (string.IsNullOrEmpty(altName)) {
-				altName = type.Name;
-			}
-			string NameSpace = type.Namespace;
-			if (NameSpace == null) {
-				return BossRushTexture.MISSINGTEXTURE;
-			}
-			return NameSpace.Replace(".", "/") + "/" + altName;
-		}
-		public static string GetVanillaTexture<T>(int EntityType) where T : class => $"Terraria/Images/{typeof(T).Name}_{EntityType}";
 		public static bool IsAnyVanillaBossAlive() {
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				NPC npc = Main.npc[i];

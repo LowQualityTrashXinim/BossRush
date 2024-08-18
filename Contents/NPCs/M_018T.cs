@@ -71,8 +71,8 @@ internal class M_018T : ModNPC {
 		shop.Add(new Item(ModContent.ItemType<RelicContainer>()) { shopCustomPrice = Item.buyPrice(gold: 7) });
 		shop.Add(new Item(ModContent.ItemType<WeaponLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 15) });
 		shop.Add(new Item(ModContent.ItemType<SkillLootBox>()) { shopCustomPrice = Item.buyPrice(gold: 17) });
-		shop.Add(new Item(ModContent.ItemType<PerkChooser>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
-		shop.Add(new Item(ModContent.ItemType<StarterPerkChooser>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
+		shop.Add(new Item(ModContent.ItemType<WorldEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
+		shop.Add(new Item(ModContent.ItemType<CelestialEssence>()) { shopCustomPrice = Item.buyPrice(platinum: 1) });
 		shop.Add(new Item(ModContent.ItemType<ModStatsDebugger>()) { shopCustomPrice = Item.buyPrice(gold: 50) });
 		shop.Add(new Item(ModContent.ItemType<ShowPlayerStats>()) { shopCustomPrice = Item.buyPrice(gold: 50) });
 		shop.Register();

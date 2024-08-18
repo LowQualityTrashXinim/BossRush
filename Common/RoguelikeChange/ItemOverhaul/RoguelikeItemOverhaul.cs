@@ -1,17 +1,12 @@
-using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EvilEye;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Projectiles;
 using System.Collections.Generic;
-using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Audio;
-using System.Linq;
 using Terraria.ID;
 using Terraria;
-using System;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -71,7 +66,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.GoldBow:
 					item.useTime = item.useAnimation = 42;
 					item.damage += 10;
-					item.shootSpeed += 1;
+					item.shootSpeed += 3;
 					item.crit += 6;
 					break;
 				case ItemID.CopperShortsword:
@@ -92,13 +87,16 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.PalmWoodBow:
 				case ItemID.EbonwoodBow:
 				case ItemID.ShadewoodBow:
-					item.useTime = item.useAnimation = 15;
+					item.shootSpeed += 3;
 					item.crit += 6;
 					break;
 				case ItemID.HeatRay:
 					item.useTime = item.useAnimation = 4;
 					item.mana = 4;
 					item.damage = 40;
+					break;
+				case ItemID.AbigailsFlower:
+					item.damage += 10;
 					break;
 
 			}
@@ -107,12 +105,21 @@ namespace BossRush.Common.RoguelikeChange {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
-			if (item.type == ItemID.Stynger) {
-				SoundEngine.PlaySound(item.UseSound);
-				position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
+			switch (item.type) {
+				case ItemID.Stynger:
+					SoundEngine.PlaySound(item.UseSound);
+					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
+					break;
+				case ItemID.CopperBow:
+				case ItemID.TinBow:
+					velocity = velocity.Vector2RotateByRandom(5);
+					break;
 			}
 		}
 		public override bool AltFunctionUse(Item item, Player player) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return base.AltFunctionUse(item, player);
+			}
 			switch (item.type) {
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
@@ -141,10 +148,46 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.TungstenShortsword:
 					if (player.altFunctionUse == 2 && !player.GetModPlayer<ThrownShortSwordPlayer>().OnCoolDown) {
 						Projectile.NewProjectile(source, position, velocity * 7, ModContent.ProjectileType<ThrowShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
-						player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), BossRushUtils.ToSecond(3));
+						player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), BossRushUtils.ToSecond(1.5f));
 						return false;
 					}
 					return true;
+				case ItemID.CopperBow:
+				case ItemID.TinBow:
+					int counter = 1;
+					for (int i = 0; i < counter; i++) {
+						if (Main.rand.NextBool(5)) {
+							Vector2 newVelocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
+							Projectile.NewProjectile(source, position, newVelocity.Vector2RotateByRandom(10), type, damage, knockback, player.whoAmI);
+							counter++;
+						}
+					}
+					return true;
+				case ItemID.GoldBow:
+				case ItemID.PlatinumBow:
+					Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+					if (ContentSamples.ProjectilesByType[type].arrow) {
+						projectile.extraUpdates += 1;
+					}
+					return false;
+				case ItemID.WoodenBow:
+				case ItemID.AshWoodBow:
+				case ItemID.BorealWoodBow:
+				case ItemID.RichMahoganyBow:
+				case ItemID.PalmWoodBow:
+				case ItemID.EbonwoodBow:
+				case ItemID.ShadewoodBow:
+					Vector2 newPos1 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(MathHelper.PiOver2), 5);
+					Vector2 newVelocity1 = (Main.MouseWorld - newPos1).SafeNormalize(Vector2.Zero) * velocity.Length();
+					Vector2 newPos2 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(-MathHelper.PiOver2), 5);
+					Vector2 newVelocity2 = (Main.MouseWorld - newPos2).SafeNormalize(Vector2.Zero) * velocity.Length();
+					Projectile arrow1 = Projectile.NewProjectileDirect(source, newPos1, newVelocity1, type, damage, knockback, player.whoAmI);
+					Projectile arrow2 = Projectile.NewProjectileDirect(source, newPos2, newVelocity2, type, damage, knockback, player.whoAmI);
+					if (ContentSamples.ProjectilesByType[type].arrow) {
+						arrow1.extraUpdates += 1;
+						arrow2.extraUpdates += 1;
+					}
+					return false;
 			}
 			if (item.type == ItemID.ToxicFlask) {
 				GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
@@ -166,6 +209,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			Player player = Main.LocalPlayer;
 			//We are using name format RoguelikeOverhaul_+ item name
+			TooltipLine line;
 			switch (item.type) {
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
@@ -175,12 +219,15 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.SilverShortsword:
 				case ItemID.TinShortsword:
 				case ItemID.TungstenShortsword:
-					TooltipLine line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 3s cool down )");
+					line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 3s cool down )");
 					line.OverrideColor = Color.Yellow;
 					tooltips.Add(line);
 					break;
-			}
-			switch (item.type) {
+				case ItemID.CopperBow:
+				case ItemID.TinBow:
+					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow (upon success roll, the chance are roll again)");
+					tooltips.Add(line);
+					break;
 				case ItemID.WoodenBow:
 				case ItemID.AshWoodBow:
 				case ItemID.BorealWoodBow:
@@ -188,7 +235,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.PalmWoodBow:
 				case ItemID.EbonwoodBow:
 				case ItemID.ShadewoodBow:
-					TooltipLine line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Holding the item increases user's movement speed by 15%");
+					line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Shoot out 2 empowered arrows instead of 1");
 					tooltips.Add(line);
 					break;
 			}
@@ -211,17 +258,6 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void HoldItem(Item item, Player player) {
-			switch (item.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
-					break;
-			}
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {

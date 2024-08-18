@@ -1,0 +1,49 @@
+WeaponSpoil: {
+	DisplayName: "[[i:{0}]] Weapon Pack"
+	Description: Contains {0} weapons
+}
+
+AccessorySpoil: {
+	DisplayName: "[[i:{0}]] Accessory Pack"
+	Description: Contains {0} accessory/accesories
+}
+
+ArmorSpoil: {
+	DisplayName: "[[i:{0}]] Armor Pack"
+	Description: Contains {0} armor piece/pieces
+}
+
+PotionSpoil: {
+	DisplayName: "[[i:{0}]] Potion Pack"
+	Description: Contains {0} potion/potions of any type
+}
+
+RelicSpoil: {
+	DisplayName: "[[i:{0}]] Relic Pack"
+	Description: Contains {0} relic/relics
+}
+
+SkillSpoil: {
+	DisplayName: "[[i:{0}]] Skill Pack"
+	Description: Contains {0} skillbox/skillboxes
+}
+
+PerkSpoil: {
+	DisplayName: Blessing
+	Description: Contains 1 World's Blessing
+}
+
+LostAccessorySpoil: {
+	DisplayName: Accessory of the past
+	Description: Contain 1 lost accessory
+}
+
+RareArmorPiece: {
+	DisplayName: Chivalric Special
+	Description: Contains {0} armor piece/pieces of randomized type
+}
+
+SuppliesPackage: {
+	DisplayName: Mixed Special
+	Description: Contains {0} weapon/weapons of randomized type, {1} armor piece/pieces of randomized type, {2} relic/relics and {3} skillbox/skillboxes
+}

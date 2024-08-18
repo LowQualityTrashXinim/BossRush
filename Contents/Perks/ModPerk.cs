@@ -50,24 +50,53 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = false;
 		}
 		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-			if (Main.rand.NextBool(25)) {
+			if (Main.rand.NextBool(20)) {
 				hurtInfo.Damage = Main.rand.Next(1, (int)(hurtInfo.Damage * .85f));
 			}
 		}
 		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-			if (Main.rand.NextBool(25)) {
+			if (Main.rand.NextBool(20)) {
 				hurtInfo.Damage = Main.rand.Next(1, (int)(hurtInfo.Damage * .85f));
 			}
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(25)) {
+			if (Main.rand.NextBool(20)) {
 				modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
 			}
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(25)) {
+			if (Main.rand.NextBool(20)) {
 				modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
 			}
+		}
+	}
+	public class MarkOfSpectre : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			CanBeChoosen = false;
+			CanBeStack = false;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, 1.35f);
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.JumpBoost, 1.65f);
+		}
+		public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
+			ModifyHit(ref modifiers);
+		}
+		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+			ModifyHit(ref modifiers);
+		}
+		private void ModifyHit(ref Player.HurtModifiers modifiers) {
+			modifiers.FinalDamage += .25f;
+			modifiers.Knockback *= .35f;
+		}
+		public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
+			if (!player.immune && Main.rand.NextFloat() <= .6f) {
+				player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
+				player.immune = true;
+				return true;
+			}
+			return base.FreeDodge(player, hurtInfo);
 		}
 	}
 	public class UncertainStrike : Perk {
@@ -78,11 +107,11 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (Main.rand.NextBool(3))
-				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .45f);
+				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			if (Main.rand.NextBool(3))
-				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .45f);
+				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
 		}
 	}
 	public class LethalKnockBack : Perk {
@@ -347,7 +376,7 @@ namespace BossRush.Contents.Perks {
 			modifiers.SourceDamage -= (StackLimit - StackAmount + 1) * .15f;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (type != ModContent.ProjectileType<ArenaMakerProj>() 
+			if (type != ModContent.ProjectileType<ArenaMakerProj>()
 				|| type == ModContent.ProjectileType<NeoDynamiteExplosion>()
 				|| type == ModContent.ProjectileType<TowerDestructionProjectile>()
 				|| !ContentSamples.ProjectilesByType[type].minion) {

@@ -197,6 +197,16 @@ namespace BossRush.Contents.Perks {
 				ModPerkLoader.GetPerk(perk).ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 			}
 		}
+		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).ModifyHitByNPC(Player, npc, ref modifiers);
+			}
+		}
+		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).ModifyHitByProjectile(Player, proj, ref modifiers);
+			}
+		}
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			foreach (int perk in perks.Keys) {
 				ModPerkLoader.GetPerk(perk).OnHitNPCWithItem(Player, item, target, hit, damageDone);
@@ -230,6 +240,15 @@ namespace BossRush.Contents.Perks {
 				ModPerkLoader.GetPerk(perk).ModifyUseSpeed(Player, item, ref useSpeed);
 			}
 			return useSpeed;
+		}
+
+		public override bool FreeDodge(Player.HurtInfo info) {
+			foreach (int perk in perks.Keys) {
+				if (ModPerkLoader.GetPerk(perk).FreeDodge(Player, info)) {
+					return true;
+				}
+			}
+			return base.FreeDodge(info);
 		}
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
@@ -359,6 +378,8 @@ namespace BossRush.Contents.Perks {
 		public virtual void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) { }
 		public virtual void ModifyItemScale(Player player, Item item, ref float scale) { }
 		public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
+		public virtual void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) { }
+		public virtual void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) { }
 		/// <summary>
 		/// Subtract will make player use weapon slower
 		/// Additive will make player use weapon faster
@@ -368,6 +389,7 @@ namespace BossRush.Contents.Perks {
 		/// <param name="useSpeed">by default start at 1</param>
 		public virtual void ModifyUseSpeed(Player player, Item item, ref float useSpeed) { }
 		public virtual void OnChoose(Player player) { }
+		public virtual bool FreeDodge(Player player, Player.HurtInfo hurtInfo) => false;
 	}
 	public static class ModPerkLoader {
 		private static readonly List<Perk> _perks = new();
@@ -379,63 +401,6 @@ namespace BossRush.Contents.Perks {
 		}
 		public static Perk GetPerk(int type) {
 			return type >= 0 && type < _perks.Count ? _perks[type] : null;
-		}
-	}
-	class PerkChooser : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
-		public override void SetDefaults() {
-			Item.BossRushDefaultToConsume(32, 23);
-			Item.maxStack = 999;
-		}
-		public override bool AltFunctionUse(Player player) => true;
-		public override bool? UseItem(Player player) {
-			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
-			if (player.altFunctionUse != 2) {
-				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-				uiSystemInstance.ActivatePerkUI(PerkUIState.DefaultState);
-			}
-			else if (player.IsDebugPlayer()) {
-				modplayer.perks.Clear();
-			}
-			return true;
-		}
-	}
-	class StarterPerkChooser : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
-		public override void SetDefaults() {
-			Item.BossRushDefaultToConsume(32, 23);
-			Item.maxStack = 999;
-		}
-		public override bool AltFunctionUse(Player player) => true;
-		public override bool? UseItem(Player player) {
-			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
-			if (player.altFunctionUse != 2) {
-				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-				uiSystemInstance.ActivatePerkUI(PerkUIState.StarterPerkState);
-			}
-			else if (player.IsDebugPlayer()) {
-				modplayer.perks.Clear();
-			}
-			return true;
-		}
-	}
-	class GamblerPerk : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
-		public override void SetDefaults() {
-			Item.BossRushDefaultToConsume(32, 23);
-			Item.maxStack = 999;
-		}
-		public override bool AltFunctionUse(Player player) => true;
-		public override bool? UseItem(Player player) {
-			PerkPlayer modplayer = player.GetModPlayer<PerkPlayer>();
-			if (player.altFunctionUse != 2) {
-				UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-				uiSystemInstance.ActivatePerkUI(PerkUIState.GamblerState);
-			}
-			else if (player.IsDebugPlayer()) {
-				modplayer.perks.Clear();
-			}
-			return true;
 		}
 	}
 }

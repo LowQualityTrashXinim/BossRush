@@ -4,10 +4,36 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.ChallengeMode {
 	internal class BossRushGlobalNPC : GlobalNPC {
+		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
+			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				return;
+			}
+			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_WORLDGEN)) {
+				spawnRate *= 100;
+			}
+		}
 		public override bool PreAI(NPC npc) {
+			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				return base.PreAI(npc);
+			}
+			if (npc.type == NPCID.SkeletronHand) {
+				SkeletronAIHand(npc);
+				return false;
+			}
+			if (npc.type == NPCID.SkeletronHead) {
+				SkeletronAI(npc);
+				return false;
+			}
+			if (npc.type == NPCID.OldMan) {
+				return false;
+			}
+			if (npc.type == NPCID.TravellingMerchant) {
+				return false;
+			}
 			return true;
 		}
 		private void SkeletronAIHand(NPC npc) {
@@ -524,6 +550,11 @@ namespace BossRush.Common.ChallengeMode {
 			return (int)MathHelper.Lerp(normalDamage, expertDamage, amount);
 		}
 		public override void PostAI(NPC npc) {
+		}
+		public override void OnKill(NPC npc) {
+			if(npc.type == NPCID.WallofFlesh && !Main.hardMode) {
+				ModContent.GetInstance<UniversalSystem>().defaultUI.TurnOnEndOfDemoMessage();
+			}
 		}
 	}
 }

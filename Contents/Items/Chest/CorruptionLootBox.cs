@@ -2,6 +2,7 @@
 using Terraria.ID;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Chest {
 	class CorruptionLootBox : LootBoxBase {
@@ -76,6 +77,14 @@ namespace BossRush.Contents.Items.Chest {
 			player.QuickSpawnItem(entitySource, GetAccessory());
 			for (int i = 0; i < modplayer.potionTypeAmount; i++) {
 				player.QuickSpawnItem(entitySource, GetPotion(), modplayer.potionNumAmount);
+			}
+		}
+		public override void AbsoluteRightClick(Player player) {
+			if(NPC.downedBoss2) {
+				var entitySource = player.GetSource_OpenItem(Type);
+				player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
+				player.QuickSpawnItem(entitySource, ItemID.Hellforge); 
+				player.QuickSpawnItem(entitySource, Main.rand.Next(new int[] { ItemID.DiamondHook, ItemID.RubyHook }));
 			}
 		}
 	}

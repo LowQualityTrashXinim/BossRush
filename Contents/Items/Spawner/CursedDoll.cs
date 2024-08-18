@@ -24,6 +24,9 @@ namespace BossRush.Contents.Items.Spawner {
 			}
 		}
 		public override bool CanUseItem(Player player) {
+			if (Main.dayTime) {
+				Main.time = Main.dayLength;
+			}
 			return !Main.dayTime;
 		}
 	}

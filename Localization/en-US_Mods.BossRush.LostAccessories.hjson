@@ -1,5 +1,5 @@
 ReactiveBombing: {
-	DisplayName: Reactive Bombing
+	DisplayName: Bombshell Artillery
 	Tooltip:
 		'''
 		"Miner self defense equipment"
@@ -9,7 +9,7 @@ ReactiveBombing: {
 }
 
 HeartOfBloodThorn: {
-	DisplayName: Heart Of Blood Thorn
+	DisplayName: Bloodthorn Core
 	Tooltip:
 		'''
 		"A thorn in heart"
@@ -36,21 +36,21 @@ NatureCrystal: {
 		Increase health and mana by 40
 		Getting hit both heal back your hp and mana for 10% of taken damage
 		'''
-	DisplayName: Nature Crystal
+	DisplayName: Natural Crystal
 }
 
 EnergeticOrb: {
+	DisplayName: Overcharged Orb
 	Tooltip:
 		'''
 		"Bursting with energy"
 		Increases your mana regeneration, maximum mana by 30 and magic damage by 6%
 		Magic projectile upon hitting enemy will heal small amount of your mana
 		'''
-	DisplayName: Energetic Orb
 }
 
 StarStone: {
-	DisplayName: Star Stone
+	DisplayName: Starfell Stone
 	Tooltip:
 		'''
 		"Made from star that keep falling from the sky"
@@ -60,7 +60,7 @@ StarStone: {
 }
 
 TitanBlood: {
-	DisplayName: Titan Blood
+	DisplayName: Titanic Blood
 	Tooltip:
 		'''
 		"A small snippet strength of the ancient god"
@@ -85,7 +85,7 @@ StealthCloak: {
 }
 
 OverpoweringGem: {
-	DisplayName: Overpowering Gem
+	DisplayName: Universal Gemstone
 	Tooltip:
 		'''
 		"Radiate with world energy"
@@ -95,7 +95,7 @@ OverpoweringGem: {
 }
 
 GreatHolyCross: {
-	DisplayName: Great Holy Cross
+	DisplayName: Golden Cross
 	Tooltip:
 		'''
 		"Made from pure gold"
@@ -105,7 +105,7 @@ GreatHolyCross: {
 }
 
 VitalityDrainTotem: {
-	DisplayName: Vitality Drain Totem
+	DisplayName: Vampiric Totem
 	Tooltip:
 		'''
 		Increases your life regeneration
@@ -115,7 +115,7 @@ VitalityDrainTotem: {
 }
 
 KillingThrill: {
-	DisplayName: Killing Thrill
+	DisplayName: Genocidal Pact
 	Tooltip:
 		'''
 		Increases your damage against undamaged enemy by 300%
@@ -125,12 +125,12 @@ KillingThrill: {
 }
 
 GodDice: {
+	DisplayName: Godborn Dice
 	Tooltip:
 		'''
 		"The dice use by god to decide mortal fate"
 		Gives you a roll for each boss kill which will automatically roll for you
 		'''
-	DisplayName: God Dice
 }
 
 GlassCannon: {
@@ -143,7 +143,7 @@ GlassCannon: {
 }
 
 StimPack: {
-	DisplayName: Stim Pack
+	DisplayName: Stimulant Bottle
 	Tooltip:
 		'''
 		When health fall below 40%, automatically give you stim pack buff
@@ -152,7 +152,7 @@ StimPack: {
 }
 
 MagicalScroll: {
-	DisplayName: Magical Scroll
+	DisplayName: Obscure Orb Scroll
 	Tooltip:
 		'''
 		Increases mana cost by 5%
@@ -191,11 +191,11 @@ ForbiddenTome: {
 }
 
 StarCharm: {
-	DisplayName: Star Charm
+	DisplayName: Stellar Charm
 	Tooltip:
 		'''
 		Increases your summon damage by 10%
-		Have a chance of shooting down star fury onto your enemy
+		Minion attacking will have a chance shooting down star onto your enemy
 		During night, the chance are accelerate
 		'''
 }

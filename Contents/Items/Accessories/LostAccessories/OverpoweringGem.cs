@@ -3,6 +3,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Contents.Items.Weapon;
+using Terraria.ID;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class OverpoweringGem : ModItem {
@@ -22,7 +23,7 @@ internal class OverpoweringGem : ModItem {
 		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.05f);
 		modplayer.AddStatsToPlayer(PlayerStats.Thorn, 1.15f);
 		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 1.2f);
-		modplayer.AddStatsToPlayer(PlayerStats.Defense, Base:3);
+		modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 3);
 		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
 		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.15f);
 		modplayer.AddStatsToPlayer(PlayerStats.LifeStealEffectiveness, 1.05f);
@@ -42,9 +43,11 @@ class OverpoweringGemPlayer : ModPlayer {
 		}
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
-		if (info.Dodgeable) {
-			return base.FreeDodge(info);
+		if (!Player.immune && OverpoweringGem && Main.rand.NextFloat() <= .025f) {
+			Player.AddImmuneTime(info.CooldownCounter, 60);
+			Player.immune = true;
+			return true;
 		}
-		return OverpoweringGem && Main.rand.NextFloat() <= .025f;
+		return base.FreeDodge(info);
 	}
 }

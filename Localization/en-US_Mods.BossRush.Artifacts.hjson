@@ -124,7 +124,7 @@ TokenOfGluttonyArtifact: {
 		'''
 		"..."
 		[c/b7bf5c:Positive effect] : 
-			+ Base on defense value before reduce, damage reduction will be increases base on DEF:HP ratio
+			+ Damage reduction will be increases by your current defense/max life
 		[c/ab3e43:Negative effect] : 
 			- Defenses are reduced to 0
 		'''

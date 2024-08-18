@@ -19,9 +19,20 @@ internal static partial class GenerationHelper {
 
 		Tile tile = Main.tile[i, j];
 		tile.TileType = tileType;
+		tile.TileColor = PaintID.None; 
 		tile.Get<TileWallWireStateData>().HasTile = true;
 	}
 
+	public static void FastPlaceTile(int i, int j, ushort tileType, byte color) {
+		if (CoordinatesOutOfBounds(i, j) || tileType < 0 || tileType >= TileID.Count) {
+			return;
+		}
+
+		Tile tile = Main.tile[i, j];
+		tile.TileType = tileType;
+		tile.TileColor = color;
+		tile.Get<TileWallWireStateData>().HasTile = true;
+	}
 	public static void FastPlaceTile(int i, int j, int tileType) {
 		FastPlaceTile(i, j, (ushort)tileType);
 	}
@@ -30,7 +41,6 @@ internal static partial class GenerationHelper {
 		if (CoordinatesOutOfBounds(i, j)) {
 			return;
 		}
-
 		Main.tile[i, j].Get<TileWallWireStateData>().HasTile = false;
 	}
 
@@ -111,6 +121,75 @@ internal static partial class GenerationHelper {
 		return r.NextFromHashSet(getallPosition);
 	}
 	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="i">x axis</param>
+	/// <param name="j">y axis</param>
+	/// <param name="tileType"></param>
+	public static void SmartReadjustPlatform(int i, int j, ushort tileType) {
+		//|-|
+		//0-|
+		//|-|
+		bool HasTileLeft = !WorldGen.TileEmpty(i - 1, j);
+		//|-|
+		//|-O
+		//|-|
+		bool HasTileRight = !WorldGen.TileEmpty(i + 1, j);
+
+		//0-|
+		//|-|
+		//|-|
+		bool HasTileTopLeft = !WorldGen.TileEmpty(i - 1, j - 1);
+		//|-0
+		//|-|
+		//|-|
+		bool HasTileTopRight = !WorldGen.TileEmpty(i + 1, j - 1);
+		//|-|
+		//|-|
+		//0-|
+		bool HasTileBottomLeft = !WorldGen.TileEmpty(i - 1, j + 1);
+		//|-|
+		//|-|
+		//|-0
+		bool HasTileBottomRight = !WorldGen.TileEmpty(i + 1, j + 1);
+		Tile tile = Main.tile[i, j];
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="i">x axis</param>
+	/// <param name="j">y axis</param>
+	/// <param name="tileType"></param>
+	public static void SmartReadjustPlatform(Point point, ushort tileType = 0) {
+		int i = point.X; int j = point.Y;
+		//|-|
+		//0-|
+		//|-|
+		bool HasTileLeft = !WorldGen.TileEmpty(i - 1, j);
+		//|-|
+		//|-O
+		//|-|
+		bool HasTileRight = !WorldGen.TileEmpty(i + 1, j);
+
+		//0-|
+		//|-|
+		//|-|
+		bool HasTileTopLeft = !WorldGen.TileEmpty(i - 1, j - 1);
+		//|-0
+		//|-|
+		//|-|
+		bool HasTileTopRight = !WorldGen.TileEmpty(i + 1, j - 1);
+		//|-|
+		//|-|
+		//0-|
+		bool HasTileBottomLeft = !WorldGen.TileEmpty(i - 1, j + 1);
+		//|-|
+		//|-|
+		//|-0
+		bool HasTileBottomRight = !WorldGen.TileEmpty(i + 1, j + 1);
+
+	}
+	/// <summary>
 	/// Use this for easy place tile in the world in 24x24 grid like
 	/// </summary>
 	/// <param name="x">The starting X position</param>
@@ -136,36 +215,5 @@ internal static partial class GenerationHelper {
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}
-	public static void PlaceStructure(int startingX, int startingY, int currentX, int currentY, StructureData structureData) {
-		if(startingX > currentX || startingY > currentY) {
-			return;
-		}
-		if (currentX - startingX >= structureData.data[0].Length) {
-			return;
-		}
-		if (currentY - startingY >= structureData.data.Length) {
-			return;
-		}
-		if(structureData.data[currentY - startingY][currentX - startingX] >= TileID.Count) {
-			FastRemoveTile(currentX, currentY);
-		}
-		FastPlaceTile(currentX, currentY, structureData.data[currentY - startingY][currentX - startingX]);
-	}
-}
-/// <summary>
-/// It is extremely not recommended to uses this if you gonna make the same kind of world gen
-/// This is very much hardcoded
-/// </summary>
-public class StructureData {
-	public int Type;
-	/// <summary>
-	/// Beaware that when making this, the tile placement will be rotated by 90 degree clockwise
-	/// </summary>
-	public ushort[][] data;
-	public StructureData() {
-	}
-	public StructureData(int type, ushort[][] Data) {
-		Type = type;
-		data = Data;
-	}
+
 }

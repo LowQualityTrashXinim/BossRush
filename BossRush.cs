@@ -16,10 +16,12 @@ namespace BossRush {
 	}
 	public class BossRushModSystem : ModSystem {
 		public static RogueLikeData roguelikedata;
+		public static Dictionary<int, List<int>> WeaponRarityDB;
 		public override void OnModLoad() {
 			roguelikedata = new RogueLikeData();
 			_synergyitem = new List<Item>();
 			_lostAccs = new List<Item>();
+			WeaponRarityDB = new Dictionary<int, List<int>>();
 		}
 		public override void OnWorldUnload() {
 			roguelikedata.AmountOfLootBoxOpen += Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
@@ -28,6 +30,7 @@ namespace BossRush {
 			roguelikedata = null;
 			_synergyitem = null;
 			_lostAccs = null;
+			WeaponRarityDB = null;
 		}
 		public int AmountOfLootboxOpenInCurrentSection() {
 			if (Main.netMode == NetmodeID.SinglePlayer) {
@@ -40,13 +43,25 @@ namespace BossRush {
 			_lostAccs = new List<Item>();
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
 			for (int i = 0; i < cacheitemList.Count; i++) {
-				if (cacheitemList[i].ModItem is SynergyModItem) {
-					_synergyitem.Add(cacheitemList[i]);
+				Item item = cacheitemList[i];
+				if (item.ModItem is SynergyModItem) {
+					_synergyitem.Add(item);
+					continue;
 				}
-				if (cacheitemList[i].TryGetGlobalItem<GlobalItemHandle>(out GlobalItemHandle globalItem)) {
+				if (item.TryGetGlobalItem(out GlobalItemHandle globalItem)) {
 					if (globalItem.LostAccessories) {
-						_lostAccs.Add(cacheitemList[i]);
+						_lostAccs.Add(item);
+						continue;
 					}
+				}
+				if (!item.IsAWeapon()) {
+					continue;
+				}
+				if (!WeaponRarityDB.ContainsKey(item.rare)) {
+					WeaponRarityDB.Add(item.rare, new List<int> { item.type });
+				}
+				else {
+					WeaponRarityDB[item.rare].Add(item.type);
 				}
 			}
 		}
@@ -56,3 +71,4 @@ namespace BossRush {
 		public static List<Item> LostAccessories => _lostAccs;
 	}
 }
+

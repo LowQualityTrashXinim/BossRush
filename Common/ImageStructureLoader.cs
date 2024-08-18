@@ -35,7 +35,7 @@ public class ImageStructureLoader : ILoadable {
 	public const string FleshArenaVar1 = "3x3FleshArena1";
 	public const string JungleArenaVar1 = "3x3JungleArena1";
 	public const string BeeNestArenaVar1 = "2x4BeeNestArena1"; 
-	public const string SlimeArenaVar1 = "2x1SlimeArena1";
+	public const string SlimeArenaVar1 = "3x3SlimeArena1";
 	public const string CrimsonArenaVar1 = "3x3CrimsonArena1";
 	public const string CorruptionAreanaVar1 = "2x4CorruptionArena1";
 	public const string DungeonAreanaVar1 = "2x2DungeonArena1";

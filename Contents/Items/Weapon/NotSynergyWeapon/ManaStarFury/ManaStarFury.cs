@@ -21,9 +21,7 @@ namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury {
 			Vector2 SkyPos = new Vector2(Main.MouseWorld.X + Main.rand.Next(-200, 200), Main.MouseWorld.Y - 800 + Main.rand.Next(-300, 100));
 			Vector2 Aimto = Main.MouseWorld - SkyPos;
 			Vector2 safeAim = Aimto.SafeNormalize(Vector2.UnitX);
-			Projectile.NewProjectile(source, SkyPos, safeAim * 20, ProjectileID.Starfury, (int)(damage * 0.45f), knockback, player.whoAmI);
-			Projectile.NewProjectile(source, position, velocity, ProjectileID.Starfury, (int)(damage * 0.75f), knockback, player.whoAmI);
-			Projectile.NewProjectile(source, position, velocity, ProjectileID.StarCannonStar, damage, knockback, player.whoAmI);
+			Projectile.NewProjectile(source, position, safeAim * velocity.Length(), ProjectileID.MagicMissile, (int)(damage * 1.67f), knockback, player.whoAmI);
 			return false;
 		}
 		public override void AddRecipes() {

@@ -66,15 +66,15 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		protected int RNGManage(Player player, int meleeChance = 20, int rangeChance = 25, int magicChance = 25, int summonChance = 15, int specialChance = 15) {
 			ChestLootDropPlayer modPlayer = player.GetModPlayer<ChestLootDropPlayer>();
-			meleeChance = (int)((modPlayer.MeleeChanceMutilplier + modPlayer.UpdateMeleeChanceMutilplier) * meleeChance);
-			rangeChance = (int)((modPlayer.RangeChanceMutilplier + modPlayer.UpdateRangeChanceMutilplier) * rangeChance);
-			magicChance = (int)((modPlayer.MagicChanceMutilplier + modPlayer.UpdateMagicChanceMutilplier) * magicChance);
-			summonChance = (int)((modPlayer.SummonChanceMutilplier + modPlayer.UpdateSummonChanceMutilplier) * summonChance);
+			meleeChance = (int)(modPlayer.UpdateMeleeChanceMutilplier * meleeChance);
+			rangeChance = (int)(modPlayer.UpdateRangeChanceMutilplier * rangeChance);
+			magicChance = (int)(modPlayer.UpdateMagicChanceMutilplier * magicChance);
+			summonChance = (int)(modPlayer.UpdateSummonChanceMutilplier * summonChance);
 			rangeChance += meleeChance;
 			magicChance += rangeChance;
 			summonChance += magicChance;
 			specialChance += summonChance;
-			int chooser = Main.rand.Next(specialChance);
+			int chooser = Main.rand.Next(specialChance) + 1;
 			if (chooser <= meleeChance) {
 				return 1;
 			}
@@ -107,6 +107,22 @@ namespace BossRush.Contents.Items.Chest {
 				for (int i = 0; i < RemoveAmount; i++) {
 					int index = Main.rand.Next(modplayer.ItemGraveYard.Count);
 					modplayer.ItemGraveYard.Remove(modplayer.ItemGraveYard.ElementAt(index));
+				}
+			}
+			for (int i = 0; i < player.inventory.Length; i++) {
+				Item item = player.inventory[i];
+				if (item.ammo == AmmoID.None) {
+					continue;
+				}
+				if (item.type == ItemID.EndlessMusketPouch || item.type == ItemID.EndlessQuiver) {
+					continue;
+				}
+				int stackCheck = 350;
+				if (Main.masterMode) {
+					stackCheck += 150;
+				}
+				if (item.stack < stackCheck) {
+					item.stack = stackCheck;
 				}
 			}
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
@@ -227,9 +243,8 @@ namespace BossRush.Contents.Items.Chest {
 							AmmoForWeapon(entitySource, player, Weapon);
 							break;
 						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						ReturnWeapon = Main.rand.NextFromHashSet(DummySummonData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
-						AmmoForWeapon(entitySource, player, ReturnWeapon);
 						modplayer.ItemGraveYard.Add(ReturnWeapon);
 						DummySummonData.Remove(ReturnWeapon);
 						break;
@@ -267,7 +282,7 @@ namespace BossRush.Contents.Items.Chest {
 				return;
 			}
 			//The most ugly code
-			int Amount = (int)(200 * AmountModifier);
+			int Amount = (int)(350 * AmountModifier);
 			int Ammo;
 			if (Main.masterMode) {
 				Amount += 150;
@@ -419,7 +434,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// <summary>
 		/// This method return a set of armor with randomize piece of armor accordingly to progression
 		/// </summary>
-		public void GetArmorForPlayer(IEntitySource entitySource, Player player) {
+		public static void GetArmorForPlayer(IEntitySource entitySource, Player player) {
 			List<int> HeadArmor = new List<int>();
 			List<int> BodyArmor = new List<int>();
 			List<int> LegArmor = new List<int>();
@@ -648,11 +663,12 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="lootbox">The lootbox item</param>
 		/// <param name="player">The player</param>
 		/// <param name="rng">rng number</param>
-		public static void GetWeapon(Item lootbox, Player player, int rng = 0) {
+		/// <param name="additiveModify">additive direct modify to amount of weapons can be given</param>
+		public static void GetWeapon(Item lootbox, Player player, int rng = 0, float additiveModify = 1) {
 			if (lootbox.ModItem is not LootBoxBase item) {
 				return;
 			}
-			int SpecialAmount = 200;
+			int SpecialAmount = 350;
 			int ReturnWeapon = ItemID.None;
 			//adding stuff here
 			if (Main.masterMode) {
@@ -674,7 +690,8 @@ namespace BossRush.Contents.Items.Chest {
 			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(item.Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(item.Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(item.Type).DropItemMisc;
-			for (int i = 0; i < modplayer.weaponAmount; i++) {
+			int weaponAmount = (int)MathF.Ceiling(modplayer.weaponAmount * additiveModify);
+			for (int i = 0; i < weaponAmount; i++) {
 				rng = item.RNGManage(player);
 				rng = item.ModifyRNG(rng, player);
 				switch (rng) {
@@ -724,7 +741,7 @@ namespace BossRush.Contents.Items.Chest {
 							item.AmmoForWeapon(entitySource, player, Weapon);
 							continue;
 						}
-						ReturnWeapon = Main.rand.NextFromHashSet(DummyMagicData);
+						ReturnWeapon = Main.rand.NextFromHashSet(DummySummonData);
 						player.QuickSpawnItem(entitySource, ReturnWeapon);
 						item.AmmoForWeapon(entitySource, player, ReturnWeapon);
 						modplayer.ItemGraveYard.Add(ReturnWeapon);
@@ -773,10 +790,40 @@ namespace BossRush.Contents.Items.Chest {
 			}
 
 		}
-		public static void GetArmorPiece(int type, Player player) {
+		public static void GetArmorPiece(int type, Player player, bool randomized = false) {
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
-			for (int i = 0; i < 3; i++) {
+			if (randomized) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.EveryArmorPiece));
+				return;
+			}
+			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.HeadAllPiece));
+			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.BodyAllPiece));
+			player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.LegsAllPiece));
+		}
+		public static void GetRelic(int type, Player player, int amount = 1) {
+			IEntitySource entitySource = player.GetSource_OpenItem(type);
+			amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(amount);
+
+			for (int i = 0; i < amount; i++) {
+				if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+					Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+					if (Main.rand.NextBool(4)) {
+						if (relicitem.ModItem is Relic relic) {
+							relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+						}
+					}
+				}
+				else {
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+				}
+			}
+		}
+		public static void GetSkillLootbox(int type, Player player, int amount = 1) {
+			IEntitySource entitySource = player.GetSource_OpenItem(type);
+			amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(amount);
+
+			for (int i = 0; i < amount; i++) {
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
 			}
 		}
 		Color color1, color2, color3, color4;
@@ -858,7 +905,6 @@ namespace BossRush.Contents.Items.Chest {
 			_cachedAllItems.UnionWith(DropItemSummon);
 			_cachedAllItems.UnionWith(DropItemMisc);
 		}
-
 		public HashSet<int> AllItemPool() {
 			if (_cachedAllItems == null) {
 				UpdateAllItemPool();
@@ -880,8 +926,13 @@ namespace BossRush.Contents.Items.Chest {
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
 		//Alternatively we can use this to handle all the data itself
 
-		//This is global modifier ( aka amount modifier to all )
+		/// <summary>
+		/// This is global multiplier that affect all of the drop amount in <see cref="LootBoxBase"/>
+		/// </summary>
 		public float finalMultiplier = 1f;
+		/// <summary>
+		/// This is a global addition that affect all of the drop amount in <see cref="LootBoxBase"/>
+		/// </summary>
 		public int amountModifier = 0;
 
 		//This is inner modifier ( aka amount modifier to x stuff )
@@ -901,22 +952,7 @@ namespace BossRush.Contents.Items.Chest {
 		public int weaponAmount;
 		public int potionTypeAmount;
 		public int potionNumAmount;
-		/// <summary>
-		/// Use this if it is consumable
-		/// </summary>
-		public float MeleeChanceMutilplier = 1f;
-		/// <summary>
-		/// Use this if it is consumable
-		/// </summary>
-		public float RangeChanceMutilplier = 1f;
-		/// <summary>
-		/// Use this if it is consumable
-		/// </summary>
-		public float MagicChanceMutilplier = 1f;
-		/// <summary>
-		/// Use this if it is consumable
-		/// </summary>
-		public float SummonChanceMutilplier = 1f;
+
 		/// <summary>
 		/// Use this if you gonna always update it
 		/// </summary>
@@ -934,7 +970,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// </summary>
 		public float UpdateSummonChanceMutilplier = 0;
 		public bool LootboxCanDropSpecialPotion = false;
-		private int ModifyGetAmount(int ValueToModify) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (ValueToModify + amountModifier)) : 1;
+		public int ModifyGetAmount(int baseValue) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (baseValue + amountModifier)) : 1;
 		/// <summary>
 		/// This must be called before using
 		/// <br/><see cref="weaponAmount"/>
@@ -970,65 +1006,13 @@ namespace BossRush.Contents.Items.Chest {
 			WeaponAmountAddition = 0;
 			PotionTypeAmountAddition = 0;
 			PotionNumberAmountAddition = 0;
-			UpdateMeleeChanceMutilplier = 0;
-			UpdateRangeChanceMutilplier = 0;
-			UpdateMagicChanceMutilplier = 0;
-			UpdateSummonChanceMutilplier = 0;
+			UpdateMeleeChanceMutilplier = 1;
+			UpdateRangeChanceMutilplier = 1;
+			UpdateMagicChanceMutilplier = 1;
+			UpdateSummonChanceMutilplier = 1;
 		}
 		public override void Unload() {
 			ItemGraveYard = null;
-		}
-		public override void Initialize() {
-			MeleeChanceMutilplier = 1f;
-			RangeChanceMutilplier = 1f;
-			MagicChanceMutilplier = 1f;
-			SummonChanceMutilplier = 1f;
-		}
-		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)BossRush.MessageType.ChanceMultiplayer);
-			packet.Write((byte)Player.whoAmI);
-			packet.Write(MeleeChanceMutilplier);
-			packet.Write(RangeChanceMutilplier);
-			packet.Write(MagicChanceMutilplier);
-			packet.Write(SummonChanceMutilplier);
-			packet.Send(toWho, fromWho);
-		}
-		public override void SaveData(TagCompound tag) {
-			tag["MeleeChanceMulti"] = MeleeChanceMutilplier;
-			tag["RangeChanceMulti"] = RangeChanceMutilplier;
-			tag["MagicChanceMulti"] = MagicChanceMutilplier;
-			tag["SummonChanceMulti"] = SummonChanceMutilplier;
-		}
-		public override void LoadData(TagCompound tag) {
-			MeleeChanceMutilplier = (float)tag["MeleeChanceMulti"];
-			RangeChanceMutilplier = (float)tag["RangeChanceMulti"];
-			MagicChanceMutilplier = (float)tag["MagicChanceMulti"];
-			SummonChanceMutilplier = (float)tag["SummonChanceMulti"];
-		}
-		public void ReceivePlayerSync(BinaryReader reader) {
-			MeleeChanceMutilplier = reader.ReadSingle();
-			RangeChanceMutilplier = reader.ReadSingle();
-			MagicChanceMutilplier = reader.ReadSingle();
-			SummonChanceMutilplier = reader.ReadSingle();
-		}
-
-		public override void CopyClientState(ModPlayer targetCopy) {
-			ChestLootDropPlayer clone = (ChestLootDropPlayer)targetCopy;
-			clone.MeleeChanceMutilplier = MeleeChanceMutilplier;
-			clone.RangeChanceMutilplier = RangeChanceMutilplier;
-			clone.MagicChanceMutilplier = MagicChanceMutilplier;
-			clone.SummonChanceMutilplier = SummonChanceMutilplier;
-		}
-
-		public override void SendClientChanges(ModPlayer clientPlayer) {
-			ChestLootDropPlayer clone = (ChestLootDropPlayer)clientPlayer;
-			if (MeleeChanceMutilplier != clone.MeleeChanceMutilplier
-			|| RangeChanceMutilplier != clone.RangeChanceMutilplier
-			 || MagicChanceMutilplier != clone.MagicChanceMutilplier
-			 || SummonChanceMutilplier != clone.SummonChanceMutilplier
-			 )
-				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}
 }

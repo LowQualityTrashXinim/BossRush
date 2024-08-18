@@ -13,8 +13,9 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Contents.Items.aDebugItem;
+using BossRush.Contents.Items.BossRushItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
-using BossRush.Common.Utils;
+using BossRush.Common.WorldGenOverhaul;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -25,7 +26,13 @@ namespace BossRush.Common {
 
 		public int HowManyBossIsAlive = 0;
 		public bool ItemIsUsedDuringBossFight = false;
+
 		public override void OnEnterWorld() {
+			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
+				Player.difficulty = PlayerDifficultyID.Hardcore;
+			}
+			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
+			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
 			if (Player.IsDebugPlayer()) {
 				Main.NewText("You have enter debug mode", Color.Red);
 				return;
@@ -58,23 +65,22 @@ namespace BossRush.Common {
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
-			yield return new Item(ModContent.ItemType<BuilderLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					yield return new Item(ItemID.ManaCrystal, 5);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
 					yield return new Item(ModContent.ItemType<BiomeToggle>());
+					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
+						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
+					}
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 					//yield return new Item(ModContent.ItemType<CursedSkull>());
-					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
-					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
-					if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-						yield return new Item(ModContent.ItemType<SpawnMerchant>());
-					}
+					yield return new Item(ModContent.ItemType<CelestialEssence>());
+					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);
@@ -110,8 +116,8 @@ namespace BossRush.Common {
 					yield return new Item(ModContent.ItemType<CrimsonLootBox>());
 					yield return new Item(ModContent.ItemType<IceLootBox>());
 					yield return new Item(ModContent.ItemType<HoneyTreasureChest>());
-					yield return new Item(ModContent.ItemType<StarterPerkChooser>());
-					yield return new Item(ModContent.ItemType<PerkChooser>());
+					yield return new Item(ModContent.ItemType<CelestialEssence>());
+					yield return new Item(ModContent.ItemType<WorldEssence>());
 					yield return new Item(ItemID.PlatinumCoin, 2);
 					yield return new Item(ItemID.LifeCrystal, 15);
 					yield return new Item(ItemID.ManaCrystal, 4);
@@ -125,27 +131,6 @@ namespace BossRush.Common {
 					yield return new Item(ItemID.GuideVoodooDoll);
 				}
 			}
-		}
-		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
-			itemsByMod["Terraria"].Clear();
-		}
-		public int amountOfTimeGotHit = 0;
-		public override void OnHurt(Player.HurtInfo info) {
-			if (BossRushUtils.IsAnyVanillaBossAlive()) {
-				if (gitGud > 0) {
-					PlayerDeathReason reason = new PlayerDeathReason();
-					reason.SourceCustomReason = $"{Player.name} has fail the challenge";
-					Player.KillMe(reason, 9999999999, info.HitDirection);
-					return;
-				}
-				else {
-					amountOfTimeGotHit++;
-				}
-			}
-		}
-
-		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-			SpawnItem();
 		}
 		private void SpawnItem() {
 			if (NPC.AnyNPCs(NPCID.KingSlime)) {
@@ -200,6 +185,27 @@ namespace BossRush.Common {
 				Player.QuickSpawnItem(null, ItemID.CelestialSigil);
 			}
 		}
+		public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
+			itemsByMod["Terraria"].Clear();
+		}
+		public int amountOfTimeGotHit = 0;
+		public override void OnHurt(Player.HurtInfo info) {
+			if (BossRushUtils.IsAnyVanillaBossAlive()) {
+				if (gitGud > 0) {
+					PlayerDeathReason reason = new PlayerDeathReason();
+					reason.SourceCustomReason = $"{Player.name} has fail the challenge";
+					Player.KillMe(reason, 9999999999, info.HitDirection);
+					return;
+				}
+				else {
+					amountOfTimeGotHit++;
+				}
+			}
+		}
+
+		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
+			SpawnItem();
+		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)BossRush.MessageType.GodUltimateChallenge);
@@ -221,7 +227,7 @@ namespace BossRush.Common {
 		}
 		public override void LoadData(TagCompound tag) {
 			gitGud = (int)tag["gitgud"];
-			if(tag.TryGet<int>("EnchantingEnable", out int value1)) {
+			if (tag.TryGet<int>("EnchantingEnable", out int value1)) {
 				EnchantingEnable = value1;
 			}
 			if (tag.TryGet<int>("SkillEnable", out int value2)) {

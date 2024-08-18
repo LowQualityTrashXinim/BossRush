@@ -29,10 +29,10 @@ Mods: {
 				'''
 				[Transmutation]
 				This is where you can merge your relic !
-				Relic can be merge up to have 4 effects
-				Merge relic together to create a even stronger relic
-				Find and create your own suitable relic,
-				You can find relic in [c/b7bf5c:Relic Container] !
+				Relic can be merge up to have 4 effects, merge relic together to create a even stronger relic
+				You can find relic in [c/b7bf5c:Relic Container] or you can get it from spoils !
+				You can also transmute 2 items of the same rarity to get a item with better rarity !
+				There are some item that can be merge to become a special item, best bet to try and find out yourself !
 				'''
 			Skill.Tooltip:
 				'''
@@ -1194,24 +1194,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			PerkChooser: {
-				DisplayName: Perk Chooser
-				Tooltip:
-					'''
-					Use this to choose a perk
-					When choosing a perk, you can't use anything so be wary of where you are choosing
-					'''
-			}
-
-			StarterPerkChooser: {
-				DisplayName: Classes Perk Chooser
-				Tooltip:
-					'''
-					Use this to choose to upgrade a classes via perk
-					When choosing a perk, you can't use anything so be wary of where you are choosing
-					'''
-			}
-
 			CelestialWrath: {
 				DisplayName: Celestial Wrath
 				Tooltip: Bring down wrath of celestial being
@@ -1616,6 +1598,61 @@ Mods: {
 			TestTeleporter: {
 				DisplayName: Test Teleporter
 				Tooltip: ""
+			}
+
+			BeeNestTp: {
+				DisplayName: Bee Nest Tp
+				Tooltip: ""
+			}
+
+			CorruptionTp: {
+				DisplayName: Corruption Tp
+				Tooltip: ""
+			}
+
+			CrimsonTp: {
+				DisplayName: Crimson Tp
+				Tooltip: ""
+			}
+
+			DungeonTp: {
+				DisplayName: Dungeon Tp
+				Tooltip: ""
+			}
+
+			FleshRealmTp: {
+				DisplayName: Flesh Realm Tp
+				Tooltip: ""
+			}
+
+			SlimeAreaTp: {
+				DisplayName: Slime Area Tp
+				Tooltip: ""
+			}
+
+			TundraTp: {
+				DisplayName: Tundra Tp
+				Tooltip: ""
+			}
+
+			ExoticTeleporter: {
+				DisplayName: Exotic Teleporter
+				Tooltip: ""
+			}
+
+			CelestialEssence: {
+				DisplayName: Celestial's Blessing
+				Tooltip: Grant a perk
+			}
+
+			LuckEssence: {
+				DisplayName: Luck's Blessing
+				Tooltip: Grant a perk
+			}
+
+			WorldEssence: {
+				DisplayName: World's Blessing
+				Tooltip: Grant a perk
 			}
 		}
 

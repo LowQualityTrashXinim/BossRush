@@ -1,8 +1,8 @@
-﻿using BossRush.Common.Systems;
-using BossRush.Common.Utils;
-using System.Collections.Generic;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Common.Utils;
+using BossRush.Common.Systems;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
@@ -92,12 +92,16 @@ namespace BossRush.Contents.Items.Chest {
 		}
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
-			GetWeapon(entitySource, player, 1);
+			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
+				GetWeapon(entitySource, player, 3);
+				GetArmorForPlayer(entitySource, player);
+				GetAccessories(Type, player);
+				GetPotion(Type, player);
+			}
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			}
-			player.QuickSpawnItem(entitySource, ItemID.SlimeCrown);
 			player.QuickSpawnItem(entitySource, ItemID.GrapplingHook);
 			player.QuickSpawnItem(entitySource, ItemID.LesserHealingPotion, 5);
 		}

@@ -23,7 +23,7 @@ public class GamblerSoulPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		if (GamblerSoul && AlreadyGotGivenItem == 0) {
 			Player.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(ModSkill.GetSkillType<AllOrNothing>(), false);
-			Player.QuickSpawnItem(null, ModContent.ItemType<GamblerPerk>());
+			Player.QuickSpawnItem(null, ModContent.ItemType<LuckEssence>());
 			AlreadyGotGivenItem++;
 		}
 	}

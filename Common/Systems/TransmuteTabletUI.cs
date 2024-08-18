@@ -14,7 +14,11 @@ using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
-using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Contents.Items.Weapon.NotSynergyWeapon.LongerMusket;
+using BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury;
+using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballRifle;
+using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballShotgunCannon;
+using BossRush.Contents.Items.Weapon.NotSynergyWeapon.HuntingRifle;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {
@@ -78,13 +82,7 @@ public class TransmutationUI : UIImage {
 		}
 		else if (Main.mouseItem.type != ItemID.None && item == null) {
 			//When the slot is available
-			if (Main.mouseItem.accessory) {
-
-			}
-			else if (Main.mouseItem.damage > 0) {
-
-			}
-			else if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
+			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
 				item = Main.mouseItem.Clone();
 				item.stack = 1;
@@ -164,10 +162,6 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			resultlist.ForEach(i => i.item = null);
 			return;
 		}
-		foreach (var result in resultlist) if (CheckWeapon(result.item)) {
-				result.item = null;
-				continue;
-			}
 	}
 	private bool CheckForSpecialDrop(List<Item> item) {
 		var player = Main.LocalPlayer;
@@ -191,32 +185,49 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				return true;
 			}
 		}
-		var itemList = new List<int>();
-		item.ForEach(i => {
-			itemList.Add(i.type);
-		});
-		if (Main.rand.NextBool()) {
+		if (item.Count < 2) {
 			return false;
 		}
-		bool MiniShark = itemList.Contains(ItemID.Minishark);
-		bool IceBlade = itemList.Contains(ItemID.IceBlade);
-		bool Musket = itemList.Contains(ItemID.Musket);
-		if (itemList.Contains(ModContent.ItemType<CelestialWrath>())) player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<GodDice>());
-		if (MiniShark && IceBlade) {
+		if (!item[0].IsAWeapon() || !item[1].IsAWeapon()) {
+			return false;
+		}
+		if (item.Where(i => i.type == ItemID.Minishark || i.type == ItemID.IceBlade).Count() == 2) {
 			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
 			return true;
 		}
-		if (Musket && MiniShark) {
+		else if (item.Where(i => i.type == ItemID.Minishark || i.type == ItemID.Musket).Count() == 2) {
 			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SingleBarrelMinishark>());
 			return true;
 		}
-		return false;
-	}
-	private bool CheckWeapon(Item item) {
-		if (item.damage > 0 && !item.accessory || item.damage < 1 && item.accessory) {
-			Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), ModContent.ItemType<Relic>());
+		else if (item.Where(i => i.type == ItemID.Musket).Count() == 2) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<LongerMusket>());
 			return true;
 		}
+		else if (item.Where(i => i.type == ItemID.Starfury || i.type == ItemID.MagicMissile).Count() == 2) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<ManaStarFury>());
+			return true;
+		}
+		else if (item.Where(i => i.type == ItemID.SnowballCannon || i.type == ItemID.Minishark).Count() == 2) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SnowballRifle>());
+			return true;
+		}
+		else if (item.Where(i => i.type == ItemID.SnowballCannon || i.type == ItemID.Boomstick || i.type == ItemID.QuadBarrelShotgun).Count() == 2) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SnowballShotgunCannon>());
+			return true;
+		}
+		else if (item.Where(i => i.type == ItemID.Musket || i.type == ItemID.Boomstick || i.type == ItemID.QuadBarrelShotgun).Count() == 2) {
+			player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<HuntingRifle>());
+			return true;
+		}
+		else {
+			if (item[0].rare == item[1].rare && item[0].rare < ItemRarityID.Purple) {
+				int rare = item[0].rare + 1;
+				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare]));
+				Main.item[itemSpawn].ResetPrefix();
+				return true;
+			}
+		}
+
 		return false;
 	}
 }

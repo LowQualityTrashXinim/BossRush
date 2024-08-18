@@ -10,22 +10,24 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using BossRush.Common.Utils;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
+using BossRush.Common.ChallengeMode;
 using BossRush.Contents.Items.Chest;
 using Terraria.GameContent.UI.States;
+using BossRush.Contents.Items.Spawner;
+using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
-using System.Drawing.Drawing2D;
-using Terraria.DataStructures;
-using static System.Net.Mime.MediaTypeNames;
+using BossRush.Common.Systems.SpoilSystem;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -52,7 +54,7 @@ internal class UniversalSystem : ModSystem {
 			return config.Nightmare;
 		if (context == HARDCORE_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
-		if (player.difficulty != PlayerDifficultyID.Hardcore)
+		if (player.difficulty != PlayerDifficultyID.Hardcore && !config.AutoHardCore)
 			return false;
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
@@ -112,6 +114,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface transmutationInterface;
 	internal UserInterface relicTest;
 	internal UserInterface spoils;
+	internal UserInterface TeleportUser;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -121,10 +124,11 @@ internal class UniversalSystem : ModSystem {
 	public TransmutationUIState transmutationUI;
 	public RelicTransmuteUI relicUI;
 	public SpoilsUIState spoilsState;
+	public TeleportUI teleportUI;
 
 	public static bool EnchantingState = false;
 	public override void Load() {
-
+		GivenBossSpawnItem = new();
 		//UI stuff
 		if (!Main.dedServ) {
 			//Mod custom UI
@@ -151,6 +155,9 @@ internal class UniversalSystem : ModSystem {
 
 			spoilsState = new();
 			spoils = new();
+
+			teleportUI = new();
+			TeleportUser = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
@@ -169,6 +176,8 @@ internal class UniversalSystem : ModSystem {
 		}
 	}
 	public override void Unload() {
+		GivenBossSpawnItem = null;
+
 		Enchant_uiState = null;
 		perkUIstate = null;
 
@@ -188,6 +197,9 @@ internal class UniversalSystem : ModSystem {
 
 		spoilsState = null;
 		spoils = null;
+
+		teleportUI = null;
+		TeleportUser = null;
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
@@ -198,6 +210,7 @@ internal class UniversalSystem : ModSystem {
 		transmutationInterface?.Update(gameTime);
 		relicTest?.Update(gameTime);
 		spoils?.Update(gameTime);
+		TeleportUser?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -213,6 +226,7 @@ internal class UniversalSystem : ModSystem {
 					transmutationInterface.Draw(Main.spriteBatch, new GameTime());
 					relicTest.Draw(Main.spriteBatch, new GameTime());
 					spoils.Draw(Main.spriteBatch, new GameTime());
+					TeleportUser.Draw(Main.spriteBatch, new GameTime());
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -244,6 +258,10 @@ internal class UniversalSystem : ModSystem {
 		SpoilsUIState.Current_OpenLootBox = lootboxType;
 		spoils.SetState(spoilsState);
 	}
+	public void ActivateTeleportUI() {
+		DeactivateUI();
+		TeleportUser.SetState(teleportUI);
+	}
 	public void DeactivateUI() {
 		perkInterface.SetState(null);
 		skillInterface.SetState(null);
@@ -252,6 +270,14 @@ internal class UniversalSystem : ModSystem {
 		transmutationInterface.SetState(null);
 		relicTest.SetState(null);
 		spoils.SetState(null);
+		TeleportUser.SetState(null);
+	}
+	public static List<int> GivenBossSpawnItem = new List<int>();
+	public override void SaveWorldData(TagCompound tag) {
+		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
+	}
+	public override void LoadWorldData(TagCompound tag) {
+		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -285,10 +311,8 @@ public class UniversalGlobalItem : GlobalItem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		uiSystemInstance.DeactivateUI();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
-		uiSystemInstance.perkInterface.SetState(null);
-		uiSystemInstance.skillInterface.SetState(null);
-		uiSystemInstance.enchantInterface.SetState(null);
 		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE) && WarnAlready == 0) {
 			WarnAlready = 1;
 		}
@@ -310,34 +334,35 @@ public class UniversalModPlayer : ModPlayer {
 		WarnAlready = (int)tag["WarnAlready"];
 	}
 }
-
 class DefaultUI : UIState {
-	// For this bar we'll be using a frame texture and then a gradient inside bar, as it's one of the more simpler approaches while still looking decent.
-	// Once this is all set up make sure to go and do the required stuff for most UI's in the ModSystem class.
-	private UIText text;
-	private UIElement area;
-	private UIImage barFrame;
-	private Color gradientA;
-	private Color gradientB;
-	private UIText text2;
-	private UIElement area2;
-	private UIImage barFrame2;
-	private Color gradientA2;
-	private Color gradientB2;
+	Roguelike_ProgressUIBar energyBar;
+	Roguelike_ProgressUIBar energyCoolDownBar;
+
+	private UITextPanel<string> EndOfDemoPanel;
+	private UITextPanel<string> EndOfDemoPanelClose;
 
 	private UITextPanel<string> popUpWarning;
 	private UITextPanel<string> popUpWarningClose;
 
 	private UIImageButton staticticUI;
-	public override void OnInitialize() {
-		CreateEnergyBar();
-		CreateCoolDownBar();
-		staticticUI = new UIImageButton(TextureAssets.InventoryBack);
-		staticticUI.UISetWidthHeight(52, 52);
-		staticticUI.HAlign = .67f;
-		staticticUI.VAlign = .06f;
-		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
-		Append(staticticUI);
+	public void TurnOnEndOfDemoMessage() {
+		EndOfDemoPanel = new UITextPanel<string>
+			("Thank you for playing Terraia Roguelike, you have reach the end of demo" +
+			"\nYou can still continue even after the demo end however the content after demo is unpolished");
+		EndOfDemoPanel.Height.Set(66, 0);
+		EndOfDemoPanel.HAlign = .5f;
+		EndOfDemoPanel.VAlign = .5f;
+		Append(EndOfDemoPanel);
+		EndOfDemoPanelClose = new UITextPanel<string>("Close");
+		EndOfDemoPanelClose.HAlign = .5f;
+		EndOfDemoPanelClose.VAlign = .6f;
+		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;
+		Append(EndOfDemoPanelClose);
+	}
+
+	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		EndOfDemoPanel.Remove();
+		EndOfDemoPanelClose.Remove();
 	}
 
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -350,6 +375,16 @@ class DefaultUI : UIState {
 		}
 	}
 
+	public override void OnInitialize() {
+		CreateEnergyBar();
+		CreateCoolDownBar();
+		staticticUI = new UIImageButton(TextureAssets.InventoryBack);
+		staticticUI.UISetWidthHeight(52, 52);
+		staticticUI.HAlign = .67f;
+		staticticUI.VAlign = .06f;
+		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
+		Append(staticticUI);
+	}
 	public override void OnActivate() {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
 			popUpWarning = new UITextPanel<string>("Terraria: Roguelike is only compatible with freshly created Hardcore characters\nAs a result, the mod will be temporarily disabled until you leave the world.");
@@ -371,117 +406,48 @@ class DefaultUI : UIState {
 	}
 
 	private void CreateEnergyBar() {
-		area = new UIElement();
-		area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
-		area.Top.Set(30, 0f); // Placing it just a bit below the top of the screen.
-		area.Width.Set(182, 0f); // We will be placing the following 2 UIElements within this 182x60 area.
-		area.Height.Set(60, 0f);
-
-		barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.EXAMPLEUI)); // Frame of our resource bar
-		barFrame.Left.Set(22, 0f);
-		barFrame.Top.Set(0, 0f);
-		barFrame.Width.Set(138, 0f);
-		barFrame.Height.Set(34, 0f);
-
-		text = new UIText("0/0", 0.8f); // text to show stat
-		text.Width.Set(138, 0f);
-		text.Top.Set(40, 0f);
-		text.Left.Set(0, 0f);
-
-		gradientA = new Color(123, 25, 138); // A dark purple
-		gradientB = new Color(207, 111, 221); // A light purple
-
-		area.Append(text);
-		area.Append(barFrame);
-		Append(area);
+		energyBar = new Roguelike_ProgressUIBar(null, Color.DarkBlue, Color.LightCyan, "0/0", .8f);
+		energyBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
+		energyBar.Left.Set(-energyBar.Width.Pixels - 600, 1f);
+		energyBar.Top.Set(30, 0);
+		energyBar.Width.Set(182, 0);
+		energyBar.Height.Set(60, 0);
+		energyBar.OnUpdate += EnergyBar_OnUpdate;
+		Append(energyBar);
 	}
-	private void CreateCoolDownBar() {
-		area2 = new UIElement();
-		area2.Left.Set(-area2.Width.Pixels - 600, 1f);
-		area2.Top.Set(80, 0f);
-		area2.Width.Set(182, 0f);
-		area2.Height.Set(60, 0f);
 
-		barFrame2 = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.EXAMPLEUI));
-		barFrame2.Left.Set(22, 0f);
-		barFrame2.Top.Set(0, 0f);
-		barFrame2.Width.Set(138, 0f);
-		barFrame2.Height.Set(34, 0f);
-
-		text2 = new UIText("0/0", 0.8f);
-		text2.Width.Set(138, 0f);
-		text2.Height.Set(34, 0f);
-		text2.Top.Set(40, 0f);
-		text2.Left.Set(0, 0f);
-
-		gradientA2 = new Color(123, 25, 138);
-		gradientB2 = new Color(207, 111, 221);
-
-		area2.Append(text2);
-		area2.Append(barFrame2);
-		Append(area2);
-	}
-	protected override void DrawSelf(SpriteBatch spriteBatch) {
-		base.DrawSelf(spriteBatch);
-		DrawSkillProgressBarUI(spriteBatch);
-	}
-	private void DrawSkillProgressBarUI(SpriteBatch spriteBatch) {
+	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		// Calculate quotient
-		float quotient = (float)modPlayer.Energy / modPlayer.EnergyCap; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
-		quotient = Math.Clamp(quotient, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
+		energyBar.text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
+		energyBar.BarProgress = modPlayer.Energy / (float)modPlayer.EnergyCap;
+	}
 
-		// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
-		Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
-		hitbox.X += 12;
-		hitbox.Width -= 24;
-		hitbox.Y += 8;
-		hitbox.Height -= 16;
+	private void CreateCoolDownBar() {
+		energyCoolDownBar = new Roguelike_ProgressUIBar(null, Color.Red, Color.Yellow, "0/0", .8f);
+		energyCoolDownBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
+		energyCoolDownBar.Left.Set(-energyCoolDownBar.Width.Pixels - 600, 1f);
+		energyCoolDownBar.Top.Set(80, 0);
+		energyCoolDownBar.Width.Set(182, 0);
+		energyCoolDownBar.Height.Set(60, 0);
+		energyCoolDownBar.Recalculate();
+		energyCoolDownBar.OnUpdate += EnergyCoolDownBar_OnUpdate;
+		Append(energyCoolDownBar);
+	}
 
-		// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
-		int left = hitbox.Left;
-		int right = hitbox.Right;
-		int steps = (int)((right - left) * quotient);
-		for (int i = 0; i < steps; i += 1) {
-			// float percent = (float)i / steps; // Alternate Gradient Approach
-			float percent = (float)i / (right - left);
-			spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
+	private void EnergyCoolDownBar_OnUpdate(UIElement affectedElement) {
+		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
+		// Setting the text per tick to update and show our resource values.
+
+		if (modPlayer.CoolDown > 0) {
+			energyCoolDownBar.text.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f, 2)}");
 		}
-
-		if (modPlayer.CoolDown > 0 && modPlayer.MaximumCoolDown > 0) {
-			float quotient2 = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
-			quotient2 = Math.Clamp(quotient2, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
-
-			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
-			Rectangle hitbox2 = barFrame2.GetInnerDimensions().ToRectangle();
-			hitbox2.X += 12;
-			hitbox2.Width -= 24;
-			hitbox2.Y += 8;
-			hitbox2.Height -= 16;
-
-			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
-			int left2 = hitbox2.Left;
-			int right2 = hitbox2.Right;
-			int steps2 = (int)((right2 - left2) * quotient2);
-			for (int i = 0; i < steps2; i++) {
-				// float percent = (float)i / steps; // Alternate Gradient Approach
-				float percent = (float)i / (right2 - left2);
-				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left2 + i, hitbox2.Y, 1, hitbox2.Height), Color.Lerp(gradientA2, gradientB2, percent));
-			}
+		else {
+			energyCoolDownBar.text.SetText("");
 		}
+		energyCoolDownBar.BarProgress = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown;
 	}
 
 	public override void Update(GameTime gameTime) {
-		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		// Setting the text per tick to update and show our resource values.
-		text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
-		if (modPlayer.CoolDown > 0) {
-			text2.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f, 2)}");
-		}
-		else {
-			text2.SetText("");
-		}
-
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -1280,11 +1246,17 @@ public class EnchantmentUIslot : UIImage {
 }
 public class SpoilsUIState : UIState {
 	public static int Current_OpenLootBox = -1;
-	public int Limit_Spoils = 3;
+	public int Limit_Spoils = 5;
 	public List<SpoilsUIButton> btn_List;
 	public int lootboxItem = -1;
+	public UITextPanel<string> panel;
 	public override void OnInitialize() {
-		Limit_Spoils = 3;
+		panel = new UITextPanel<string>("Select one of the following Spoils:");
+		panel.HAlign = .5f;
+		panel.VAlign = .3f;
+		panel.UISetWidthHeight(150, 53);
+		Append(panel);
+		Limit_Spoils = 5;
 		btn_List = new List<SpoilsUIButton>();
 	}
 	public override void OnActivate() {
@@ -1293,106 +1265,62 @@ public class SpoilsUIState : UIState {
 		if (lootboxItem <= 0) {
 			return;
 		}
-		Player player = Main.LocalPlayer;
-		Vector2 origin = new Vector2(26, 26);
+		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+		for (int i = SpoilList.Count - 1; i >= 0; i--) {
+			ModSpoil spoil = SpoilList[i];
+			if (!spoil.IsSelectable(Main.LocalPlayer, ContentSamples.ItemsByType[lootboxItem])) {
+				SpoilList.Remove(spoil);
+			}
+		}
 		for (int i = 0; i < Limit_Spoils; i++) {
-			Vector2 vec = Vector2.UnitX * MathHelper.Lerp(-200, 200, i / (float)(Limit_Spoils));
-			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack);
-			btn.Type = (byte)Main.rand.Next(1, 7);
+			ModSpoil spoil = Main.rand.Next(SpoilList);
+			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
+			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
+			SpoilList.Remove(spoil);
 			btn.LootboxItem = lootboxItem;
-			btn.UISetPosition(vec + player.Center, origin);
+			btn.HAlign = Hvalue;
+			btn.VAlign = .4f;
 			btn_List.Add(btn);
 			Append(btn);
 		}
-		SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10);
-		btna.Type = SpoilsID.Randomized; ;
+		SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
 		btna.LootboxItem = lootboxItem;
-		btna.UISetPosition(Vector2.UnitX * 200 + player.Center, origin);
+		btna.HAlign = .7f;
+		btna.VAlign = .4f;
 		btn_List.Add(btna);
 		Append(btna);
 	}
 }
 public class SpoilsUIButton : UIImageButton {
-	public byte Type = 0;
+	public ModSpoil spoil;
 	public int LootboxItem = 0;
-	public SpoilsUIButton(Asset<Texture2D> texture) : base(texture) {
-		Type = 0;
+	public SpoilsUIButton(Asset<Texture2D> texture, ModSpoil Spoil) : base(texture) {
+		spoil = Spoil;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
-		if (Type == SpoilsID.None) {
+		if (spoil == null) {
+			Main.rand.Next(ModSpoilSystem.GetSpoilsList()).OnChoose(Main.LocalPlayer, LootboxItem);
+			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			return;
 		}
-		SpoilsGift(Type);
+		spoil.OnChoose(Main.LocalPlayer, LootboxItem);
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-	}
-	public void SpoilsGift(int type) {
-		Player player = Main.LocalPlayer;
-		switch (type) {
-			case SpoilsID.Weapons:
-				LootBoxBase.GetWeapon(ContentSamples.ItemsByType[LootboxItem], player);
-				break;
-			case SpoilsID.Accessories:
-				LootBoxBase.GetAccessories(LootboxItem, player);
-				break;
-			case SpoilsID.Armors:
-				LootBoxBase.GetArmorPiece(LootboxItem, player);
-				break;
-			case SpoilsID.Potions:
-				LootBoxBase.GetPotion(LootboxItem, player);
-				break;
-			case SpoilsID.Relics:
-				if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-					Item relicitem = player.QuickSpawnItemDirect(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
-					if (relicitem.ModItem is Relic relic) {
-						relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
-					}
-				}
-				else {
-					player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<Relic>());
-				}
-				break;
-			case SpoilsID.Skills:
-				player.QuickSpawnItem(player.GetSource_FromThis(), ModContent.ItemType<SkillLootBox>());
-				break;
-			case SpoilsID.Randomized:
-				SpoilsGift(Main.rand.Next(1,7));
-				break;
-			case SpoilsID.None:
-			default:
-				break;
-		}
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (IsMouseHovering) {
-			string text = "";
-			switch (Type) {
-				case SpoilsID.Weapons:
-					text += "Return weapons";
-					break;
-				case SpoilsID.Accessories:
-					text += "Return accessories";
-					break;
-				case SpoilsID.Armors:
-					text += "Return armor pieces";
-					break;
-				case SpoilsID.Potions:
-					text += "Return potions";
-					break;
-				case SpoilsID.Relics:
-					text += "Return relic";
-					break;
-				case SpoilsID.Skills:
-					text += "Return skill";
-					break;
-				case SpoilsID.None:
-				case SpoilsID.Randomized:
-					text += "random spoils";
-					break;
-				default:
-					break;
+			if (LootboxSystem.GetItemPool(LootboxItem) == null) {
+				return;
 			}
-			Main.instance.MouseText(text);
+			if (spoil == null) {
+				Main.instance.MouseText("Randomize your spoil reward");
+			}
+			else {
+				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);
+			}
 		}
 		else {
 			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
@@ -1401,14 +1329,78 @@ public class SpoilsUIButton : UIImageButton {
 		}
 	}
 }
-public static class SpoilsID {
-	public const byte None = 0;
-	public const byte Weapons = 1;
-	public const byte Accessories = 2;
-	public const byte Armors = 3;
-	public const byte Potions = 4;
-	public const byte Relics = 5;
-	public const byte Skills = 6;
-	public const byte Randomized = 64;
-	//public const byte WeaponUpgrades = 7;
+
+public class TeleportUI : UIState {
+	public List<btn_Teleport> btn_List;
+	public UITextPanel<string> panel;
+	public override void OnInitialize() {
+		panel = new UITextPanel<string>("Select place to teleport below");
+		panel.HAlign = .5f;
+		panel.VAlign = .3f;
+		panel.UISetWidthHeight(150, 53);
+		Append(panel);
+
+		btn_List = new List<btn_Teleport>();
+		Dictionary<int, short> stuff = new Dictionary<int, short>();
+		stuff.Add(ItemID.SlimeCrown, BiomeAreaID.Slime);
+		stuff.Add(ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm);
+		stuff.Add(ItemID.WormFood, BiomeAreaID.Corruption);
+		stuff.Add(ItemID.BloodySpine, BiomeAreaID.Crimson);
+		stuff.Add(ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon);
+		stuff.Add(ItemID.Abeemination, BiomeAreaID.BeeNest);
+		stuff.Add(ItemID.DeerThing, BiomeAreaID.Tundra);
+		stuff.Add(ItemID.GuideVoodooDoll, BiomeAreaID.Underground);
+		for (int i = 0; i < stuff.Count; i++) {
+			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuff.Count - 1));
+			int keyvalue = stuff.Keys.ElementAt(i);
+			btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuff[keyvalue]);
+			btn.VAlign = .4f;
+			btn.HAlign = Hvalue;
+			btn_List.Add(btn);
+			Append(btn);
+		}
+	}
+}
+public class btn_Teleport : UIImageButton {
+	Texture2D tex;
+	int bossitemid;
+	short biomeid;
+	public string ZoneText = "";
+	public btn_Teleport(Asset<Texture2D> texture, int BossItemID, short biomeID) : base(texture) {
+		bossitemid = BossItemID;
+		biomeid = biomeID;
+		tex = texture.Value;
+	}
+
+	public override void LeftClick(UIMouseEvent evt) {
+		Player player = Main.LocalPlayer;
+		BossRushWorldGen.FindSuitablePlaceToTeleport(player, biomeid, ModContent.GetInstance<BossRushWorldGen>().Room);
+		if (!UniversalSystem.GivenBossSpawnItem.Contains(bossitemid)) {
+			UniversalSystem.GivenBossSpawnItem.Add(bossitemid);
+			player.QuickSpawnItem(player.GetSource_FromThis(), bossitemid);
+		}
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		Main.instance.LoadItem(bossitemid);
+		Texture2D texture1 = TextureAssets.Item[bossitemid].Value;
+		Vector2 origin = texture1.Size() * .5f;
+		Vector2 drawpos = GetInnerDimensions().Position() + tex.Size() * .5f;
+		spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (IsMouseHovering) {
+			Main.instance.MouseText(RogueLikeWorldGen.BiomeID[biomeid]);
+		}
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
+		}
+	}
 }

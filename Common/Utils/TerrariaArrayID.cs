@@ -279,6 +279,16 @@ namespace BossRush.Common.Utils {
 			..LegArmorHardMode, ..LegArmorPostEvil, ..LegArmorPostGolem, ..LegArmorPostMech, ..LegArmorPostPlant, ..LegArmorPreBoss,
 			ItemID.NecroHelmet,ItemID.NecroBreastplate,ItemID.NecroGreaves,ItemID.BeeHeadgear,ItemID.BeeBreastplate,ItemID.BeeGreaves
 			];
+
+		public readonly static int[] HeadAllPiece = [
+			..HeadArmorHardMode, ..HeadArmorPostEvil, ..HeadArmorPostGolem, ..HeadArmorPostMech, ..HeadArmorPostPlant, ..HeadArmorPreBoss,ItemID.NecroHelmet,ItemID.BeeHeadgear
+			];
+		public readonly static int[] BodyAllPiece = [
+			..BodyArmorHardMode, ..BodyArmorPostEvil, ..BodyArmorPostGolem, ..BodyArmorPostMech, ..BodyArmorPostPlant, ..BodyArmorPreBoss,ItemID.NecroBreastplate,ItemID.BeeBreastplate
+			];
+		public readonly static int[] LegsAllPiece = [
+			..LegArmorHardMode, ..LegArmorPostEvil, ..LegArmorPostGolem, ..LegArmorPostMech, ..LegArmorPostPlant, ..LegArmorPreBoss,ItemID.NecroGreaves,ItemID.BeeGreaves
+			];
 		//Potion
 		public readonly static int[] SpecialPotion = {
 					ModContent.ItemType<BerserkerElixir>(),
