@@ -10,6 +10,7 @@ using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
+using Terraria.Utilities;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -243,14 +244,15 @@ namespace BossRush.Common.ChallengeMode {
 			RogueLikeWorldGen.WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 			Main.worldSurface = (int)(Main.maxTilesY * .22f);
 			Main.rockLayer = (int)(Main.maxTilesY * .34f);
-			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 15),	
+			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 15),
 				(i, j) => { GenerationHelper.FastPlaceTile(i, j, TileID.Dirt, PaintID.BlackPaint); });
+			WorldGen._genRand = new UnifiedRandom(WorldGen._genRandSeed);
 		}
 		[Task]
 		public void Create_Arena() {
 			List<Rectangle> rectList = new List<Rectangle>();
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(3, 3, 2, 2);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.OverworldArenaVar1);
+			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.OverworldArena + 1);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -283,7 +285,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_JungleArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(15, 8, 3, 3);
-			ImageData flesharena = ImageStructureLoader.Get(ImageStructureLoader.JungleArenaVar1);
+			ImageData flesharena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.JungleArenaVar, 1)
+				);
 			flesharena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -312,7 +316,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_BeeNest() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(15, 12, 2, 4);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.BeeNestArenaVar1);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.BeeNestArenaVar, 1)
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -337,7 +343,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_TundraArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(11, 10, 3, 3);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.TundraArenaVar1);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.TundraArena, 1)
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -365,7 +373,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_CrimsonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.CrimsonArenaVar1);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 1)
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -393,7 +403,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_CorruptionArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(10, 5, 2, 4);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.CorruptionAreanaVar1);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CorruptionAreana, 1 + WorldGen.genRand.NextBool().ToInt())
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -407,6 +419,12 @@ namespace BossRush.Common.ChallengeMode {
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Ebonstone);
 				}
+				else if (color.R == 200 && color.G == 10) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.CorruptGrass);
+				}
+				else if (color.R == 200 && color.G == 100) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 					AddPlatformToList(a, b);
@@ -418,7 +436,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_DungeonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 2);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.DungeonAreanaVar1);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.DungeonAreana, 1)
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -448,7 +468,9 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.SlimeArenaVar1);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 1)
+				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
@@ -476,8 +498,10 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_FleshArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
-			ImageData flesharena = ImageStructureLoader.Get(ImageStructureLoader.FleshArenaVar1);
-			flesharena.EnumeratePixels((a, b, color) => {
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder( ImageStructureLoader.FleshArenaVar, 1)
+				);
+			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
 				b += rect.Y;
 				if (a > rect.Right || b > rect.Bottom) {
@@ -502,7 +526,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_Hell() {
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 4),
 			(i, j) => {
-				if(j < RogueLikeWorldGen.GridPart_Y * 21.7f) {
+				if (j < RogueLikeWorldGen.GridPart_Y * 21.7f) {
 					return;
 				}
 				if (j == RogueLikeWorldGen.GridPart_Y * 21.7f) {

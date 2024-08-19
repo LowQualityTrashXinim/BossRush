@@ -31,20 +31,16 @@ public class ImageStructureLoader : ILoadable {
 	public void Unload() {
 	}
 
-	public const string OverworldArenaVar1 = "2x1OverworldArena1";
-	public const string FleshArenaVar1 = "3x3FleshArena1";
-	public const string JungleArenaVar1 = "3x3JungleArena1";
-	public const string BeeNestArenaVar1 = "2x4BeeNestArena1"; 
-	public const string SlimeArenaVar1 = "3x3SlimeArena1";
-	public const string CrimsonArenaVar1 = "3x3CrimsonArena1";
-	public const string CorruptionAreanaVar1 = "2x4CorruptionArena1";
-	public const string DungeonAreanaVar1 = "2x2DungeonArena1";
-	public const string TundraArenaVar1 = "3x3TundraArena1";
-}
-public static class StructureID {
-	public static string GetStructure(short variant) {
-		return "";
-	}
+	public const string OverworldArena = "2x1OverworldArena";
+	public const string FleshArenaVar = "3x3FleshArena";
+	public const string JungleArenaVar = "3x3JungleArena";
+	public const string BeeNestArenaVar = "2x4BeeNestArena"; 
+	public const string SlimeArena = "3x3SlimeArena";
+	public const string CrimsonArena = "3x3CrimsonArena";
+	public const string CorruptionAreana = "2x4CorruptionArena";
+	public const string DungeonAreana = "2x2DungeonArena";
+	public const string TundraArena = "3x3TundraArena";
+	public static string StringBuilder(string ArenaName, int Variant) => $"{ArenaName}{Variant}";
 }
 public record ImageData(int Width, Color[] Data) {
 	public int Height => Data.Length / Width;

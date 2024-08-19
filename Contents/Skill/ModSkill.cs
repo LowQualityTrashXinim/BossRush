@@ -1,12 +1,12 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using BossRush.Contents.Projectiles;
-using BossRush.Common.Utils;
-using System.Collections.Generic;
 using BossRush.Texture;
+using Terraria.ModLoader;
+using BossRush.Common.Utils;
 using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using BossRush.Contents.Projectiles;
 using System;
 
 namespace BossRush.Contents.Skill;
@@ -66,11 +66,8 @@ public class InfiniteManaSupply : ModSkill {
 	}
 	public override void Update(Player player) {
 		if (player.statMana < player.statManaMax2) {
-			player.statMana++;
+			player.statMana += 10;
 		}
-	}
-	public override void OnMissingMana(Player player, Item item, int neededMana) {
-		player.statMana += neededMana;
 	}
 }
 public class GuaranteedCrit : ModSkill {
@@ -144,7 +141,7 @@ public class StarFury : ModSkill {
 }
 public class WoodSwordSpirit : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 245;
+		Skill_EnergyRequire = 145;
 		Skill_Duration = BossRushUtils.ToSecond(3);
 		Skill_CoolDown = BossRushUtils.ToSecond(6);
 	}
@@ -201,19 +198,31 @@ public class BloodToPower : ModSkill {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 + player.GetModPlayer<SkillHandlePlayer>().BloodToPower * .01f);
 	}
 }
-//public class PotentialUnlock : ModSkill {
-//	public override void SetDefault() {
-//		Skill_EnergyRequire = 1000;
-//		Skill_Duration = BossRushUtils.ToSecond(10);
-//		Skill_CoolDown = BossRushUtils.ToSecond(30);
-//	}
-//	public override void Update(Player player) {
-//		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, 1f);
-//	}
-//	public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
-//		useSpeed += .5f;
-//	}
-//}
+public class Overclock : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 235;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(9);
+	}
+	public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
+		useSpeed += 2;
+	}
+}
+public class BulletStorm : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 255;
+		Skill_Duration = BossRushUtils.ToSecond(2);
+		Skill_CoolDown = BossRushUtils.ToSecond(19);
+	}
+	public override void Update(Player player) {
+		Vector2 spawn = player.Center.Subtract(0, 1000);
+		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(30);
+		for (int i = 0; i < 3; i++) {
+			float RandomizeX = Main.rand.NextFloat(-300, 300);
+			Projectile.NewProjectile(player.GetSource_Misc("Skill"), spawn.Add(RandomizeX, 0) + Main.rand.NextVector2Circular(300, 300), Vector2.UnitY * Main.rand.Next(10, 14), Main.rand.Next(TerrariaArrayID.Bullet), damage, 2);
+		}
+	}
+}
 public class AllOrNothing : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 500;

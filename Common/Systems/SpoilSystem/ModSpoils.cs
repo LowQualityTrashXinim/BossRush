@@ -105,10 +105,10 @@ public class FoodSpoil : ModSpoil {
 		return DisplayName.FormatWith(chestplayer.foodshowID);
 	}
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(3));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(6));
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(3);
+		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(6);
 		for (int i = 0; i < amount; i++) {
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.Next(TerrariaArrayID.AllFood));
 		}
@@ -295,5 +295,31 @@ public class RoguelikeSpoil : ModSpoil {
 			LootBoxBase.GetRelic(itemsource, player);
 		}
 		LootBoxBase.GetSkillLootbox(itemsource, player, amount1);
+	}
+}
+
+public class WeaponUpgrade : ModSpoil {
+	public override bool IsSelectable(Player player, Item itemsource) {
+		return false;
+	}
+	public override void SetStaticDefault() {
+		RareValue = SpoilDropRarity.Rare;
+	}
+}
+
+public class ArtifactUpgrade : ModSpoil {
+	public override bool IsSelectable(Player player, Item itemsource) {
+		return false;
+	}
+	public override void SetStaticDefault() {
+		RareValue = SpoilDropRarity.SSR;
+	}
+}
+public class Curses : ModSpoil {
+	public override bool IsSelectable(Player player, Item itemsource) {
+		return false;
+	}
+	public override void SetStaticDefault() {
+		RareValue = SpoilDropRarity.SuperRare;
 	}
 }
