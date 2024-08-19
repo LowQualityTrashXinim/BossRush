@@ -12,7 +12,7 @@ namespace BossRush {
 			var type = typeof(T);
 			string NameSpace = type.Namespace;
 			if (NameSpace == null) {
-				return BossRushTexture.MISSINGTEXTURE;
+				return BossRushTexture.MissingTexture_Default;
 			}
 			return NameSpace.Replace(".", "/") + "/" + type.Name;
 		}
@@ -23,7 +23,7 @@ namespace BossRush {
 			}
 			string NameSpace = type.Namespace;
 			if (NameSpace == null) {
-				return BossRushTexture.MISSINGTEXTURE;
+				return BossRushTexture.MissingTexture_Default;
 			}
 			return NameSpace.Replace(".", "/") + "/" + altName;
 		}

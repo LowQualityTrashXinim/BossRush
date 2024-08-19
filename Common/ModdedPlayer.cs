@@ -74,6 +74,9 @@ namespace BossRush.Common {
 					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
 					}
+					else {
+						yield return new Item(ModContent.ItemType<BuilderLootBox>());
+					}
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
 					//yield return new Item(ModContent.ItemType<CursedSkull>());

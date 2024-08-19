@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using BossRush.Contents.Items.Weapon;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,6 +11,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 		}
 		public override void SetDefaults() {
 			BossRushUtils.BossRushSetDefault(Item, 20, 20, 0, 0, 1, 1, ItemUseStyleID.HoldUp, false);
+			Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 		}
 		public override bool? UseItem(Player player) {
 			Main.time = Main.dayTime ? Main.dayLength : Main.nightLength;

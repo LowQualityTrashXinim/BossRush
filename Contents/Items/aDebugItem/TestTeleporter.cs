@@ -6,14 +6,16 @@ using Terraria;
 using Terraria.ModLoader;
 using BossRush.Common.ChallengeMode;
 using BossRush.Common.WorldGenOverhaul;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.aDebugItem;
 internal class TestTeleporter : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
 		Item.useTime = Item.useAnimation = 15;
 		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		base.ModifyTooltips(tooltips);

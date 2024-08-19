@@ -6,7 +6,7 @@ using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
 	internal class PlusOneBullet : SynergyModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.accessory = true;
 			Item.height = 30;

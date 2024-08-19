@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.BuilderItem {
 	internal class ArenaMakerProj : ModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = 20;
 			Projectile.height = 36;

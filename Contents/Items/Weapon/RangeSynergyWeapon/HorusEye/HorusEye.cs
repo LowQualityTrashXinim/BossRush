@@ -56,7 +56,7 @@ internal class HorusEye : SynergyModItem {
 	}
 }
 class HorusEye_Projectile : SynergyModProjectile {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 20;
 		Projectile.penetrate = 1;

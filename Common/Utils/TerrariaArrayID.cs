@@ -213,6 +213,10 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] BigMeal = new int[] { ItemID.SeafoodDinner, ItemID.GoldenDelight, ItemID.ApplePie, ItemID.BBQRibs, ItemID.Burger, ItemID.Pizza, ItemID.Spaghetti, ItemID.Steak, ItemID.Bacon, ItemID.ChristmasPudding, ItemID.GingerbreadCookie, ItemID.SugarCookie };
 		public readonly static int[] StrongDrink = new int[] { ItemID.Milkshake, ItemID.Grapefruit };
 
+		public readonly static int[] AllFood = [
+			..WeakDrink, ..Smallmeal, ..fruit, .. MediumMeal, ..MediumDrink, ..BigMeal, ..StrongDrink
+		];
+
 		//NPC
 		public readonly static int[] BAT = { NPCID.CaveBat, NPCID.GiantBat, NPCID.IceBat, NPCID.IlluminantBat, NPCID.JungleBat, NPCID.SporeBat, NPCID.Lavabat, NPCID.Hellbat };
 

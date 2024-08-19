@@ -5,7 +5,7 @@ using System;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 public class Trinket_of_Swift_Health : BaseTrinket {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.GetModPlayer<Trinket_of_Swift_Health_ModPlayer>().Trinket_of_Swift_Health = true;
 		modplayer.HPstats += .2f;

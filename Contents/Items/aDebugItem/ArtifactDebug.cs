@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.aDebugItem;
 internal class ArtifactDebug : ModItem {
@@ -12,6 +13,7 @@ internal class ArtifactDebug : ModItem {
 		Item.width = Item.height = 32;
 		Item.useTime = Item.useAnimation = 15;
 		Item.useStyle = ItemUseStyleID.HoldUp;
+		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		base.ModifyTooltips(tooltips);
@@ -21,6 +23,9 @@ internal class ArtifactDebug : ModItem {
 		}
 		ArtifactPlayer artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
 		tooltips.Add(new TooltipLine(Mod, "CurrentArtifact", $"Current select artifact to imprint : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}"));
+	}
+	public override bool AltFunctionUse(Player player) {
+		return base.AltFunctionUse(player);
 	}
 	public override bool? UseItem(Player player) {
 		if (Main.netMode == NetmodeID.SinglePlayer) {

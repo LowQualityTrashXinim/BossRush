@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class StimPack : ModItem{
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.DefaultToAccessory(32, 32);
 		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
@@ -27,7 +27,7 @@ public class StimPackPlayer : ModPlayer {
 	}
 }
 class StimPackBuff : ModBuff {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
 		Main.debuff[Type] = false;
 	}

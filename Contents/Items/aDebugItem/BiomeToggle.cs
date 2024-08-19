@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BossRush.Contents.Items.Weapon;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,11 +8,10 @@ namespace BossRush.Contents.Items.aDebugItem {
 	internal class BiomeToggle : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.WorldGlobe);
 		public override void SetDefaults() {
-			Item.width = 32;
-			Item.height = 32;
-			Item.useTime = 15;
-			Item.useAnimation = 15;
+			Item.width = Item.height = 32;
+			Item.useTime = Item.useAnimation = 15;
 			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);

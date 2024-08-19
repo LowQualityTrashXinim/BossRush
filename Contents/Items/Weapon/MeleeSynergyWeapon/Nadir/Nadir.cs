@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 	internal class Nadir : SynergyModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 54, 20, 7f, 7, 21, ItemUseStyleID.Shoot, true);
 			Item.BossRushSetDefaultSpear(1, 1);

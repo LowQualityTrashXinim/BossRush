@@ -109,7 +109,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 		}
 	}
 	class CompoundGrenadeProjectile : SynergyModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 20;
 			Projectile.friendly = true;

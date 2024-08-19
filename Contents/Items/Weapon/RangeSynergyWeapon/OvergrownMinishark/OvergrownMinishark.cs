@@ -85,7 +85,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.OvergrownMinishark {
 		}
 	}
 	public class ExplosiveMineProjectile : SynergyModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 40;
 			Projectile.friendly = true;

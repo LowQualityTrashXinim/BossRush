@@ -6,12 +6,18 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.SpecialReward;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Skill;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 	internal class ModStatsDebugger : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.width = Item.height = 10;
+			Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);

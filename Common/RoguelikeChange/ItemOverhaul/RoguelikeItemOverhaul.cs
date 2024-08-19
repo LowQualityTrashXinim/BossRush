@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria;
+using System;
 
 namespace BossRush.Common.RoguelikeChange {
 	/// <summary>
@@ -20,6 +21,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			VanillaBuff(entity);
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal) {
+				entity.useTime = entity.useAnimation = 12;
 				entity.autoReuse = true;
 			}
 		}
@@ -97,6 +99,9 @@ namespace BossRush.Common.RoguelikeChange {
 					break;
 				case ItemID.AbigailsFlower:
 					item.damage += 10;
+					break;
+				case ItemID.ChainKnife:
+					item.damage += 12;
 					break;
 
 			}
@@ -268,6 +273,9 @@ namespace BossRush.Common.RoguelikeChange {
 			RoguelikeOverhaul_VikingHelmet = false;
 		}
 		public override bool CanUseItem(Item item) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return base.CanUseItem(item);
+			}
 			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
 				return false;
 			}
@@ -283,11 +291,17 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return;
+			}
 			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
 				scale += .1f;
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return;
+			}
 			if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss) {
 				damage *= .5f;
 			}
@@ -296,9 +310,11 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return;
+			}
 			OnHitNPC_WoodBow(proj, target);
 			OnHitNPC_TheUnderTaker(proj, target);
-
 		}
 		private void OnHitNPC_WoodBow(Projectile proj, NPC target) {
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool()) {
@@ -317,6 +333,9 @@ namespace BossRush.Common.RoguelikeChange {
 	}
 	public class GlobalItemProjectile : GlobalProjectile {
 		public override void OnSpawn(Projectile projectile, IEntitySource source) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+				return;
+			}
 			if (projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile) {
 				projectile.friendly = parentProjectile.friendly;
 				projectile.hostile = parentProjectile.hostile;

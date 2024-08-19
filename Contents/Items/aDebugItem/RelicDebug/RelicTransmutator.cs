@@ -1,5 +1,6 @@
 ﻿using BossRush.Common.Systems;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System;
@@ -19,6 +20,7 @@ internal class RelicTransmutator : ModItem {
 		Item.useTime = Item.useAnimation = 30;
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.width = Item.height = 30;
+		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {

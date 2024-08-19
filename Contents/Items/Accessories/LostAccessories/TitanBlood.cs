@@ -5,7 +5,7 @@ using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class TitanBlood : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.DefaultToAccessory(32, 32);
 		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;

@@ -3,6 +3,7 @@ using Terraria.ID;
 using BossRush.Common.Utils;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
@@ -93,7 +94,9 @@ namespace BossRush.Contents.Items.Chest {
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-				GetWeapon(entitySource, player, 3);
+				ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
+				modplayer.GetAmount();
+				GetWeapon(entitySource, player, modplayer.weaponAmount);
 				GetArmorForPlayer(entitySource, player);
 				GetAccessories(Type, player);
 				GetPotion(Type, player);

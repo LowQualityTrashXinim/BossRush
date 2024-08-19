@@ -10,7 +10,7 @@ using System;
 
 namespace BossRush.Contents.Artifacts {
 	internal class ManaOverloaderArtifact : Artifact {
-		public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
+		public override string TexturePath => BossRushTexture.MissingTexture_Default;
 		public override Color DisplayNameColor => Color.LimeGreen;
 	}
 

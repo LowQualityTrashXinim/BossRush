@@ -1,16 +1,11 @@
 ﻿using BossRush.Common.Systems;
 using BossRush.Texture;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 
 namespace BossRush.Contents.Perks;
 class WorldEssence : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.Get_MissingTexture("Perk");
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 23);
 		Item.maxStack = 999;
@@ -22,7 +17,7 @@ class WorldEssence : ModItem {
 	}
 }
 class CelestialEssence : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.Get_MissingTexture("Perk");
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 23);
 		Item.maxStack = 999;
@@ -35,7 +30,7 @@ class CelestialEssence : ModItem {
 	}
 }
 class LuckEssence : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.Get_MissingTexture("Perk");
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 23);
 		Item.maxStack = 999;

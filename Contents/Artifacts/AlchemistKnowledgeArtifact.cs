@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Artifacts {
 	internal class AlchemistKnowledgeArtifact : Artifact {
-		public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
+		public override string TexturePath => BossRushTexture.MissingTexture_Default;
 		public override Color DisplayNameColor => Color.PaleVioletRed;
 	}
 	class AlchemistKnowledgePlayer : ModPlayer {

@@ -84,7 +84,7 @@ namespace BossRush.Contents.Items {
 		}
 	}
 	class CelestialWrathBeamProjectile : ModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = 400;
 			Projectile.height = 1000;

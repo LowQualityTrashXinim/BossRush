@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Projectiles {
 	internal class CorruptionTrail : ModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 10;
 			Projectile.friendly = true;

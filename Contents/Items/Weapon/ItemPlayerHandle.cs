@@ -158,14 +158,21 @@ namespace BossRush.Contents.Items.Weapon {
 	public class GlobalItemHandle : GlobalItem {
 		public override bool InstancePerEntity => true;
 		public bool LostAccessories = false;
+		public bool DebugItem = false;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if(item.ModItem is Relic relic && relic.relicColor != null) {
+			if (DebugItem) {
+				TooltipLine line = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+				line.Text += " [Debug]";
+				line.OverrideColor = Color.MediumPurple;
+				return;
+			}
+			if (item.ModItem is Relic relic && relic.relicColor != null) {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = relic.relicColor.MultiColor(5);
 			}
 			if (item.accessory && LostAccessories) {
-				TooltipLine line_Name= tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+				TooltipLine line_Name = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
 				TooltipLine line_Tooltip0 = tooltips.Where(t => t.Name == "Tooltip0").FirstOrDefault();
-				if(line_Name == null|| line_Tooltip0 == null) {
+				if (line_Name == null || line_Tooltip0 == null) {
 					return;
 				}
 				line_Name.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.DisplayName");
@@ -336,7 +343,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyBuff : ModBuff {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override sealed void SetStaticDefaults() {
 			base.SetStaticDefaults();
 			SynergySetStaticDefaults();

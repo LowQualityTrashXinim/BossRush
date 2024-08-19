@@ -518,7 +518,7 @@ namespace BossRush.Contents.NPCs {
 			SetHostileDefaults();
 		}
 		public virtual void SetHostileDefaults() { }
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public int ItemIDtextureValue = 1;
 		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);
@@ -820,7 +820,7 @@ namespace BossRush.Contents.NPCs {
 
 	}
 	public abstract class BaseHostileGun : ModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public int ItemIDtextureValue = 1;
 		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);

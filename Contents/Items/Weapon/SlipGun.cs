@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon;
 internal class SlipGun : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(30, 30, 50, 5f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.Bullet, 30, true, AmmoID.Bullet);
 

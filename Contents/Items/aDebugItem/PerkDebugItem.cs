@@ -3,12 +3,14 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.aDebugItem;
 internal class PerkDebugItem : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
+		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 		Item.maxStack = 999;
 	}
 	public override bool AltFunctionUse(Player player) => true;

@@ -6,7 +6,7 @@ using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket_of_Perpetuation : BaseTrinket {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.GetModPlayer<Trinket_of_Perpetuation_ModPlayer>().Trinket_of_Perpetuation = true;
 		player.GetModPlayer<PlayerStatsHandle>().DebuffTime += .35f;

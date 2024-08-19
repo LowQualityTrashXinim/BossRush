@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Projectiles;
 internal class SwordProjectile : ModProjectile {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.penetrate = -1;
@@ -61,7 +61,7 @@ internal class SwordProjectile : ModProjectile {
 	}
 }
 internal class SwordProjectile2 : ModProjectile {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 0;
 		ProjectileID.Sets.TrailCacheLength[Type] = 10;
@@ -132,7 +132,7 @@ internal class SwordProjectile2 : ModProjectile {
 	}
 }
 internal class SwordProjectile3 : ModProjectile {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 32;
 		Projectile.penetrate = -1;

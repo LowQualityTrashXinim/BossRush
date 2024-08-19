@@ -10,7 +10,7 @@ using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.SynergyAccessories;
 internal class ArcaneMaster : SynergyModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.DefaultToAccessory(30, 30);
 		Item.value = 1000000;

@@ -12,7 +12,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 namespace BossRush.Contents.Artifacts;
 internal class GamblerSoulArtifact : Artifact {
 	public override Color DisplayNameColor => Color.LightGoldenrodYellow;
-	public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
+	public override string TexturePath => BossRushTexture.MissingTexture_Default;
 }
 public class GamblerSoulPlayer : ModPlayer {
 	bool GamblerSoul = false;

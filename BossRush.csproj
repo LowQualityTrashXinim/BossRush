@@ -41,6 +41,12 @@
     <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Images\Structures\" />
+    <Folder Include="Assets\Images\Structures\DungeonArena\" />
+    <Folder Include="Assets\Images\Structures\BeeNestArena\" />
+    <Folder Include="Assets\Images\Structures\CorruptionArena\" />
+    <Folder Include="Assets\Images\Structures\Crimson Arena\" />
+    <Folder Include="Assets\Images\Structures\JungleArena\" />
+    <Folder Include="Assets\Images\Structures\FleshArena\" />
+    <Folder Include="Assets\Images\Structures\SlimeArena\" />
   </ItemGroup>
 </Project>

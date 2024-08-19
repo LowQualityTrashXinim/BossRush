@@ -62,7 +62,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 		}
 	}
 	internal class ExplodeProjectile : ModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = 150;
 			Projectile.height = 150;

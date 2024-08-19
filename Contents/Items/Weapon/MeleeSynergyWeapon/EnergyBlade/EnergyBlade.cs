@@ -159,7 +159,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 		}
 	}
 	class EnergyBladeEnergyBallProjectile : SynergyModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.hide = true;
 			Projectile.width = 10;

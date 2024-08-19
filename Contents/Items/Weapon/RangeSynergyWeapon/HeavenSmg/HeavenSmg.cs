@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 	public class HeavenSmg : SynergyModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			BossRushUtils.BossRushDefaultRange(Item, 32, 32, 12, 1, 3, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 25, true, AmmoID.Bullet);
 			Item.reuseDelay = 30;
@@ -107,7 +107,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		static bool returningToOwner = false;
 		static bool targetHit = false;
 		int oldposFrameAmount = 15;
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = oldposFrameAmount;
@@ -233,7 +233,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		}
 	}
 	internal class HeavenBolt : SynergyModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		static int oldposFrameAmount = 25;
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;

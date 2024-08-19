@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Accessories.EnragedBossAccessories.CorruptedFlesh {
 	internal class CorruptedFlesh : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.accessory = true;
 			Item.height = 40;

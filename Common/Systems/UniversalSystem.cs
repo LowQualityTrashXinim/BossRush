@@ -161,7 +161,6 @@ internal class UniversalSystem : ModSystem {
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
-
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
 			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
@@ -272,7 +271,10 @@ internal class UniversalSystem : ModSystem {
 		spoils.SetState(null);
 		TeleportUser.SetState(null);
 	}
-	public static List<int> GivenBossSpawnItem = new List<int>();
+	public List<int> GivenBossSpawnItem = new List<int>();
+	public override void ClearWorld() {
+		GivenBossSpawnItem = new List<int>();
+	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
 	}
@@ -378,7 +380,7 @@ class DefaultUI : UIState {
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
-		staticticUI = new UIImageButton(TextureAssets.InventoryBack);
+		staticticUI = new UIImageButton(ModContent.Request<Texture2D>(BossRushTexture.MENU));
 		staticticUI.UISetWidthHeight(52, 52);
 		staticticUI.HAlign = .67f;
 		staticticUI.VAlign = .06f;
@@ -1265,10 +1267,11 @@ public class SpoilsUIState : UIState {
 		if (lootboxItem <= 0) {
 			return;
 		}
+		Player player = Main.LocalPlayer;
 		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 		for (int i = SpoilList.Count - 1; i >= 0; i--) {
 			ModSpoil spoil = SpoilList[i];
-			if (!spoil.IsSelectable(Main.LocalPlayer, ContentSamples.ItemsByType[lootboxItem])) {
+			if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[lootboxItem])) {
 				SpoilList.Remove(spoil);
 			}
 		}
@@ -1299,7 +1302,14 @@ public class SpoilsUIButton : UIImageButton {
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		if (spoil == null) {
-			Main.rand.Next(ModSpoilSystem.GetSpoilsList()).OnChoose(Main.LocalPlayer, LootboxItem);
+			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+			for (int i = SpoilList.Count - 1; i >= 0; i--) {
+				ModSpoil spoil = SpoilList[i];
+				if (!spoil.IsSelectable(Main.LocalPlayer, ContentSamples.ItemsByType[LootboxItem])) {
+					SpoilList.Remove(spoil);
+				}
+			}
+			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer, LootboxItem);
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			return;
 		}
@@ -1375,8 +1385,8 @@ public class btn_Teleport : UIImageButton {
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
 		BossRushWorldGen.FindSuitablePlaceToTeleport(player, biomeid, ModContent.GetInstance<BossRushWorldGen>().Room);
-		if (!UniversalSystem.GivenBossSpawnItem.Contains(bossitemid)) {
-			UniversalSystem.GivenBossSpawnItem.Add(bossitemid);
+		if (!ModContent.GetInstance<UniversalSystem>().GivenBossSpawnItem.Contains(bossitemid)) {
+			ModContent.GetInstance<UniversalSystem>().GivenBossSpawnItem.Add(bossitemid);
 			player.QuickSpawnItem(player.GetSource_FromThis(), bossitemid);
 		}
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();

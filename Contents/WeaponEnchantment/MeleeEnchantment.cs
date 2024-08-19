@@ -1057,18 +1057,22 @@ public class Gladius : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool(3)) {
-			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50, 50);
-			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 20;
-			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), target.Center + Main.rand.NextVector2CircularEdge(50,50), vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
+			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), 
+				position, 
+				vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile2 shortproj)
 				shortproj.ItemIDtextureValue = ItemIDType;
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool(7) && proj.type != ModContent.ProjectileType<ShortSwordProjectile>()) {
-			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50, 50);
-			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 20;
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), target.Center + Main.rand.NextVector2CircularEdge(50, 50), vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
+			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), 
+				position, 
+				vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
 			if (Main.projectile[projectile].ModProjectile is SwordProjectile2 shortproj)
 				shortproj.ItemIDtextureValue = ItemIDType;
 		}

@@ -29,7 +29,7 @@ public abstract class ModSkill : ModType {
 	protected int Skill_Duration = 0;
 	protected int Skill_EnergyRequire = 0;
 	protected bool Skill_CanBeSelect = true;
-	public virtual string Texture => BossRushTexture.MISSINGTEXTURE;
+	public virtual string Texture => BossRushTexture.MissingTexture_Default;
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
 	public int EnergyRequire { get => Skill_EnergyRequire; }
@@ -762,7 +762,7 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 }
 public class SkillOrb : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.width = Item.height = 30;
 		Item.useStyle = ItemUseStyleID.HoldUp;

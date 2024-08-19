@@ -7,7 +7,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts;
 internal class TokenOfWrathArtifact : Artifact {
-	public override string TexturePath => BossRushTexture.MISSINGTEXTURE;
+	public override string TexturePath => BossRushTexture.MissingTexture_Default;
 	public override Color DisplayNameColor => Color.LimeGreen;
 }
 public class TokenOfWrathPlayer : ModPlayer {

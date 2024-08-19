@@ -4,6 +4,8 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {
@@ -24,6 +26,23 @@ public class ModSpoilSystem : ModSystem {
 	public static ModSpoil GetSpoils(string name) {
 		return _spoils.ContainsKey(name) ? _spoils[name] : null;
 	}
+}
+public static class SpoilDropRarity {
+	public readonly static int Common = ItemRarityID.White;
+	public readonly static int Uncommon = ItemRarityID.Blue;
+	public readonly static int Rare = ItemRarityID.Yellow;
+	public readonly static int SuperRare = ItemRarityID.Purple;
+	public readonly static int SSR = ItemRarityID.Red;
+	public static bool ChanceWrapper(float chance) {
+		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().HasPerk<BlessingOfPerk>()) {
+			chance *= 1.5f;
+		}
+		return Main.rand.NextFloat() <= chance;
+	}
+	public static bool UncommonDrop() => ChanceWrapper(.44f);
+	public static bool RareDrop() => ChanceWrapper(.15f);
+	public static bool SuperRareDrop() => ChanceWrapper(.05f);
+	public static bool SSRDrop() => ChanceWrapper(.01f);
 }
 public abstract class ModSpoil {
 	public string Name => GetType().Name;

@@ -34,7 +34,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class GiftOfRelic : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushTexture.ACCESSORIESSLOT;
+			textureString = BossRushTexture.Get_MissingTexture("Perk");
 			CanBeStack = true;
 			StackLimit = -1;
 			CanBeChoosen = false;
@@ -45,7 +45,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class StrokeOfLuck : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushTexture.ACCESSORIESSLOT;
+			textureString = BossRushTexture.Get_MissingTexture("Perk");
 			CanBeChoosen = false;
 			CanBeStack = false;
 		}
@@ -436,6 +436,9 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1f;
+		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			if (item.DamageType == DamageClass.Melee)
 				scale += .12f * StackAmount;
@@ -465,6 +468,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: 1.5f);
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1f;
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			if (Main.rand.NextFloat() <= .01f * StackAmount && proj.DamageType == DamageClass.Ranged)
@@ -480,6 +484,9 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1f;
 		}
 		public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) {
 			multi -= .11f * StackAmount;
@@ -499,9 +506,10 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
-		public override void ResetEffect(Player player) {
+		public override void UpdateEquip(Player player) {
 			player.maxMinions += 1;
 			player.maxTurrets += 1;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += 1f;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			damage.Base += (player.maxMinions + player.maxTurrets) / 2 * StackAmount;
@@ -513,7 +521,7 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	public class StarGaze : ModBuff {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetStaticDefaults() {
 			Main.debuff[Type] = true;
 		}
@@ -570,6 +578,9 @@ namespace BossRush.Contents.Perks {
 				return "don't you think it is enough now ?";
 			}
 			return base.ModifyToolTip();
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1);
 		}
 	}
 	public class ArenaBlessing : Perk {

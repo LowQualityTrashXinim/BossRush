@@ -7,7 +7,7 @@ using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Items.BuilderItem {
 	internal class TowerDestruction : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.width = 18;
 			Item.height = 56;
@@ -33,7 +33,7 @@ namespace BossRush.Contents.Items.BuilderItem {
 		}
 	}
 	class TowerDestructionProjectile : ModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.width = 14;
 			Projectile.height = 14;

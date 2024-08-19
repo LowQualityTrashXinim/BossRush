@@ -236,8 +236,13 @@ BlessingOfTitan: {
 }
 
 BlessingOfPerk: {
-	DisplayName: Blessing Of Perk
-	Description: + Increases perk range amount by 1
+	DisplayName: Blessing Of Opportunity
+	Description:
+		'''
+		+ Increases perk range amount by 1
+		+ Increases lootbox drop amount by 1
+		+ Rare spoils are more common
+		'''
 }
 
 ArenaBlessing: {

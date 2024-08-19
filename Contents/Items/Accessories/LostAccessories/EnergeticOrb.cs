@@ -6,7 +6,7 @@ using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories {
 	class EnergeticOrb : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.DefaultToAccessory(28, 30);
 			Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;

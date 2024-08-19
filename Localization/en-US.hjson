@@ -1654,6 +1654,11 @@ Mods: {
 				DisplayName: World's Blessing
 				Tooltip: Grant a perk
 			}
+
+			ContentTracker: {
+				DisplayName: Content Tracker
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

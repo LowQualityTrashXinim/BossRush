@@ -9,8 +9,8 @@ AccessorySpoil: {
 }
 
 ArmorSpoil: {
-	DisplayName: "[[i:{0}]] Armor Pack"
-	Description: Contains {0} armor piece/pieces
+	DisplayName: "[[i:{0}]] Armor Pack [[i:{0}]]"
+	Description: Contains armors
 }
 
 PotionSpoil: {
@@ -34,7 +34,7 @@ PerkSpoil: {
 }
 
 LostAccessorySpoil: {
-	DisplayName: Accessory of the past
+	DisplayName: Ancient Pack
 	Description: Contain 1 lost accessory
 }
 
@@ -45,5 +45,35 @@ RareArmorPiece: {
 
 SuppliesPackage: {
 	DisplayName: Mixed Special
-	Description: Contains {0} weapon/weapons of randomized type, {1} armor piece/pieces of randomized type, {2} relic/relics and {3} skillbox/skillboxes
+	Description: Contains {0} weapon of randomized type, armor piece of randomized type, {1} relic and {1} skillbox
+}
+
+FoodSpoil: {
+	DisplayName: "[[i:{0}]] Homemade Pack"
+	Description: Contains {0} meal of any type.
+}
+
+RareWeaponSpoil: {
+	DisplayName: Chivalric Special
+	Description: Contains 4 weapons accordingly to progression of each vanilla classes.
+}
+
+SSRPerkSpoil: {
+	DisplayName: "[[i:{0}]] Roguelike Special [[i:{0}]]"
+	Description: Contains a world's blessing, {0} skillbox and {1} relic.
+}
+
+WeaponPotionSpoil: {
+	DisplayName: "[[i:{0}]] Survival Bundle [[i:{0}]]"
+	Description: Contains {0} weapons, {1} potions and meals of any type.
+}
+
+ArmorAccessorySpoil: {
+	DisplayName: "[[i:{0}]] Chivalric Bundle [[i:{0}]]"
+	Description: Contains {0} armor piece and {1} accesories.
+}
+
+RoguelikeSpoil: {
+	DisplayName: "[[i:{0}]] Utility Bundle [[i:{0}]]"
+	Description: Contains {0} skillboxes and {1} relics.
 }

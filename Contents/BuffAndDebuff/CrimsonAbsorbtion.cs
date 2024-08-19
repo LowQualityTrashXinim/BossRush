@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.BuffAndDebuff;
 internal class CrimsonAbsorbtion : ModBuff {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetStaticDefaults() {
 		Main.debuff[Type] = true;
 	}

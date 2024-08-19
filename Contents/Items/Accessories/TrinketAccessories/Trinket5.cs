@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket5 : BaseTrinket {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.statDefense += 25;
 		player.GetModPlayer<Trinket5_ModPlayer>().Trinket5 = true;

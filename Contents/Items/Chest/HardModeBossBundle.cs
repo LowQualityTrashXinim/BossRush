@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class HardModeBossBundle : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.width = 30;
 			Item.height = 30;
@@ -25,7 +25,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	internal class PreHardmodeBossBundle : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.width = 30;
 			Item.height = 30;
@@ -44,7 +44,7 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	internal class ItemBundle : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.width = 30;
 			Item.height = 30;

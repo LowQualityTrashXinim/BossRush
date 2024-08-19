@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.SuperShortSword {
 	internal class SuperShortSwordOrbitShortSword : SynergyModProjectile {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Projectile.height = Projectile.width = 32;
 			Projectile.friendly = true;

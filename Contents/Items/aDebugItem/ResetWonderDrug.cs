@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ID;
@@ -6,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.aDebugItem {
 	internal class ResetWonderDrug : ModItem {
-		public override string Texture => BossRushTexture.MISSINGTEXTURE;
+		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.useAnimation = 15;
@@ -14,6 +15,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 			Item.useTurn = true;
 			Item.maxStack = 30;
 			Item.consumable = true;
+			Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 		}
 		public override bool? UseItem(Player player) {
 			player.GetModPlayer<WonderDrugPlayer>().DrugDealer = 0;

@@ -100,7 +100,7 @@ public class GenericTemplate : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		if (stat == PlayerStats.JumpBoost || stat == PlayerStats.MovementSpeed) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.15f), 2), 1);
 		}
 		if (stat == PlayerStats.MaxMinion || stat == PlayerStats.MaxSentry) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 3));
@@ -112,19 +112,19 @@ public class GenericTemplate : RelicTemplate {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10);
 		}
 		if (stat == PlayerStats.Defense) {
-			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 2);
+			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5));
 		}
 		if (stat == PlayerStats.ShieldHealth) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 5) * 10 + 100);
 		}
 		if (stat == PlayerStats.PureDamage) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.2f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.01f, 1.06f), 2), 1);
 		}
 		if (stat == PlayerStats.MeleeDMG
 			|| stat == PlayerStats.RangeDMG
 			|| stat == PlayerStats.MagicDMG
 			|| stat == PlayerStats.SummonDMG) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.01f, 1.11f), 2), 1);
 		}
 		if (stat == PlayerStats.EnergyCap) {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 6) * 20);
@@ -133,7 +133,7 @@ public class GenericTemplate : RelicTemplate {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 10));
 		}
 		if (stat == PlayerStats.Thorn) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.36f), 2), 1, 0, 0);
+			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.15f), 2), 1, 0, 0);
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}
@@ -238,10 +238,10 @@ public class CombatV4Template : RelicTemplate {
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
 		var value = new StatModifier();
 		if (stat == PlayerStats.PureDamage) {
-			value.Base += Main.rand.Next(1, 11);
+			value.Base += Main.rand.Next(1, 6);
 			return value;
 		}
-		value.Base += Main.rand.Next(8, 21);
+		value.Base += Main.rand.Next(5, 11);
 		return value;
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
@@ -254,7 +254,7 @@ public class StrikeFullHPTemplate : RelicTemplate {
 		return string.Format(Description, new string[] { Color.Yellow.Hex3(), RelicTemplateLoader.RelicValueToPercentage(value), });
 	}
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(MathF.Round(Main.rand.NextFloat(.5f, 1f) + 1, 2), 1, 0, 0);
+		return new StatModifier(MathF.Round(Main.rand.NextFloat(.75f, 1.01f) + 1, 2), 1, 0, 0);
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);

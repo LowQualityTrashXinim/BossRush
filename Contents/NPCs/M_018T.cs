@@ -18,7 +18,7 @@ using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Contents.NPCs;
 internal class M_018T : ModNPC {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public const string ShopName = "Shop";
 	public override void SetStaticDefaults() {
 		NPCID.Sets.NoTownNPCHappiness[Type] = true;

@@ -117,6 +117,9 @@ namespace BossRush.Contents.Items.Chest {
 				if (item.type == ItemID.EndlessMusketPouch || item.type == ItemID.EndlessQuiver) {
 					continue;
 				}
+				if(!item.notAmmo) {
+					continue;
+				}
 				int stackCheck = 350;
 				if (Main.masterMode) {
 					stackCheck += 150;
@@ -918,7 +921,7 @@ namespace BossRush.Contents.Items.Chest {
 	}
 	public class ChestLootDropPlayer : ModPlayer {
 		public int counterShow = 0;
-		public int weaponShowID = 0, potionShowID = 0;
+		public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
 
 		public HashSet<int> ItemGraveYard = new HashSet<int>();
 		public bool CanDropSynergyEnergy = true;

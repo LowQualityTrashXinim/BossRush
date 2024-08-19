@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform;
 internal class PerkDebugShower : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.width = Item.height = 10;
+		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		base.ModifyTooltips(tooltips);

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.EmpoweredAccessories;
 internal class ProofOfEmpowered : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	MethodInfo meth = null;
 	public override void SetStaticDefaults() {
 		meth = typeof(Player).GetMethod("SpawnHallucination", BindingFlags.NonPublic | BindingFlags.Instance);

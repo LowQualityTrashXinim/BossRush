@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket_of_Ample_Perception : BaseTrinket {
-	public override string Texture => BossRushTexture.MISSINGTEXTURE;
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		Trinket_of_Ample_Perception_ModPlayer trinketplayer = player.GetModPlayer<Trinket_of_Ample_Perception_ModPlayer>();
 		trinketplayer.Trinket_of_Ample_Perception = true;
