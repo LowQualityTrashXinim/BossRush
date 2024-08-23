@@ -40,7 +40,7 @@ LostAccessorySpoil: {
 
 RareArmorPiece: {
 	DisplayName: Chivalric Special
-	Description: Contains {0} armor piece/pieces of randomized type
+	Description: Contains armor pieces of randomized type
 }
 
 SuppliesPackage: {

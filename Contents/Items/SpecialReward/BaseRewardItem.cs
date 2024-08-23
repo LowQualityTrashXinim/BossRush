@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.SpecialReward {
 	abstract class BaseDonHit : ModItem {
-		public const int HP = 50;
+		public const int HP = 15;
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.LifeCrystal);
 			Item.rare = ItemRarityID.Expert;

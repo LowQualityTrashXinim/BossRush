@@ -219,7 +219,7 @@ namespace BossRush.Common.RoguelikeChange {
 				}
 			}
 			if (itemIsAShotgun) {
-				return true;
+				return false;
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}

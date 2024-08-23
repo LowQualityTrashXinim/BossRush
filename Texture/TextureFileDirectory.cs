@@ -20,6 +20,7 @@
 		public const string EXAMPLEUI = "BossRush/Texture/ExampleFrame";
 		public const string SUPPILESDROP = "BossRush/Texture/SuppliesDrop";
 		public const string FOURSTAR = "BossRush/Texture/FourStar";
+		public const string CrossSprite = "BossRush/Texture/UI/Cross";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 	}

@@ -25,9 +25,10 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (EnergeticOrb && proj.DamageType == DamageClass.Magic) {
-				Player.statMana += Main.rand.Next(3, 10);
+				int value = Main.rand.Next(3, 10);
+				Player.statMana += value;
 				if (Player.statMana > Player.statManaMax2) Player.statMana = Player.statManaMax2;
-				Player.ManaEffect(Main.rand.Next(3, 10));
+				Player.ManaEffect(value);
 			}
 		}
 	}

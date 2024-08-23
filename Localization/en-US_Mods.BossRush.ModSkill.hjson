@@ -63,7 +63,6 @@ BulletStorm: {
 	Description: Rain down various bullet that deal 30 range damage
 }
 
-
 AllOrNothing: {
 	DisplayName: All Or Nothing
 	Description: Luck given you one more opportunity !

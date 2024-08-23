@@ -24,6 +24,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public int SynergyBonus = 0;
 
 		public bool BurningPassion_WandofFrosting = false;
+		public bool BurningPassion_SkyFracture = false;
 
 		public bool DarkCactus_BatScepter = false;
 		public bool DarkCactus_BladeOfGrass = false;
@@ -89,9 +90,14 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool Swotaff_Spear = false;
 
 		public bool NatureSelection_NatureCrystal = false;
+		public override void PreUpdate() {
+		}
 		public override void ResetEffects() {
-			SynergyBonusBlock = false;
 			SynergyBonus = 0;
+			SynergyBonusBlock = false;
+
+			BurningPassion_WandofFrosting = false;
+			BurningPassion_SkyFracture = false;
 
 			DarkCactus_BatScepter = false;
 			DarkCactus_BladeOfGrass = false;
@@ -151,9 +157,6 @@ namespace BossRush.Contents.Items.Weapon {
 
 			NatureSelection_NatureCrystal = false;
 		}
-		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			damage += SynergyBonus * .5f;
-		}
 	}
 	public class GlobalItemHandle : GlobalItem {
 		public override bool InstancePerEntity => true;
@@ -195,6 +198,32 @@ namespace BossRush.Contents.Items.Weapon {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = CustomColor.MultiColor(5);
 			}
 		}
+		public override void ModifyWeaponCrit(Player player, ref float crit) {
+			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
+			crit += 4 * modplayer.SynergyBonus;
+		}
+		public override void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+			float damageIncreasement = 0;
+			float damageMultiplier = 0;
+			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
+			if (modplayer.SynergyBonus > 0) {
+				damageMultiplier += 0.025f * modplayer.SynergyBonus;
+			}
+			else {
+				damageMultiplier += 0.01f;
+			}
+			for (int i = 0; player.inventory.Length > 0; i++) {
+				if (i > 50) {
+					break;
+				}
+				Item item = player.inventory[i];
+				if (!item.IsAWeapon() || item == Item || item.ModItem is SynergyModItem) {
+					continue;
+				}
+				damageIncreasement += player.inventory[i].damage * damageMultiplier;
+			}
+			damage += damageIncreasement;
+		}
 		public virtual void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) { }
 		public override sealed void HoldItem(Player player) {
 			base.HoldItem(player);
@@ -202,7 +231,6 @@ namespace BossRush.Contents.Items.Weapon {
 			if (modplayer.SynergyBonusBlock) {
 				return;
 			}
-			HoldSynergyItem(player, modplayer);
 		}
 		public override sealed void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
@@ -210,7 +238,13 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public override sealed void UpdateInventory(Player player) {
 			base.UpdateInventory(player);
-			SynergyUpdateInventory(player, player.GetModPlayer<PlayerSynergyItemHandle>());
+			//Very funny that hold item happen after ModifyWeaponDamage
+			//This probably will tank our mod performance, but well, it is what it is
+			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
+			if (player.HeldItem == Item && !modplayer.SynergyBonusBlock) {
+				HoldSynergyItem(player, modplayer);
+			}
+			SynergyUpdateInventory(player, modplayer);
 		}
 		public virtual void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
 
@@ -286,13 +320,10 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModProjectile : ModProjectile {
-		public virtual void SpawnDustPostPreAI(Player player) { }
-		public virtual void SpawnDustPostAI(Player player) { }
 		public virtual void SpawnDustPostPostAI(Player player) { }
 		public override sealed bool PreAI() {
 			Player player = Main.player[Projectile.owner];
 			SynergyPreAI(player, player.GetModPlayer<PlayerSynergyItemHandle>(), out bool stopAI);
-			SpawnDustPostPreAI(player);
 			return stopAI;
 		}
 		/// <summary>
@@ -305,7 +336,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public override sealed void AI() {
 			Player player = Main.player[Projectile.owner];
 			SynergyAI(player, player.GetModPlayer<PlayerSynergyItemHandle>());
-			SpawnDustPostAI(player);
 		}
 		/// <summary>
 		/// You should check the condition yourself

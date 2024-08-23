@@ -15,10 +15,21 @@ namespace BossRush.Common {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Exclusive to challenge mode";
 	}
+	public class CheckLegacyLootboxBoss : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation)
+				return UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) && info.npc.boss;
+			return false;
+		}
+
+		public bool CanShowItemDropInUI() => false;
+
+		public string GetConditionDescription() => "";
+	}
 	public class EvilBossChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)
-				return ((UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2 && info.npc.boss;
+				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2 && info.npc.boss;
 			return false;
 		}
 		public bool CanShowItemDropInUI() => true;

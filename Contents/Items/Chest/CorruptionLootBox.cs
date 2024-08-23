@@ -3,6 +3,7 @@ using Terraria.ID;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
 	class CorruptionLootBox : LootBoxBase {
@@ -80,7 +81,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public override void AbsoluteRightClick(Player player) {
-			if(NPC.downedBoss2) {
+			if(NPC.downedBoss2 ) {
 				var entitySource = player.GetSource_OpenItem(Type);
 				player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
 				player.QuickSpawnItem(entitySource, ItemID.Hellforge); 

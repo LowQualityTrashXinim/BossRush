@@ -87,8 +87,6 @@ namespace BossRush.Common.RoguelikeChange {
 			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Frostbrand] = .45f;
 			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Cutlass] = .45f;
 			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Seedler] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Meowmere] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.StarWrath] = .45f;
 			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireBetsySword] = .45f;
 			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ZombieArm] = .45f;
 			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BatBat] = .45f;
@@ -355,6 +353,9 @@ namespace BossRush.Common.RoguelikeChange {
 					SwingType = BossRushUseStyle.Swipe;
 					item.useTurn = false;
 					item.scale += .25f;
+					item.useTime += 20;
+					item.useAnimation += 20;
+					item.damage += (int)(item.damage * .5f);
 					break;
 				//Poke Sword
 				//Pre HM Sword
@@ -373,12 +374,12 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.Frostbrand:
 				case ItemID.Cutlass:
 				case ItemID.Seedler:
-				case ItemID.TrueNightsEdge:
-				case ItemID.Meowmere:
-				case ItemID.StarWrath:
 					SwingType = BossRushUseStyle.Poke;
 					item.useTurn = false;
 					item.scale += .25f;
+					item.useTime += 20;
+					item.useAnimation += 20;
+					item.damage += (int)(item.damage * .5f);
 					break;
 				case ItemID.DD2SquireBetsySword:
 				case ItemID.ZombieArm:
@@ -392,13 +393,12 @@ namespace BossRush.Common.RoguelikeChange {
 					SwingType = BossRushUseStyle.GenericSwingDownImprove;
 					item.useTurn = false;
 					item.scale += .25f;
+					item.useTime += 20;
+					item.useAnimation += 20;
+					item.damage += (int)(item.damage * .5f);
 					break;
 				default:
 					break;
-			}
-			if (item.type == ItemID.Meowmere) {
-				item.damage += 100;
-				item.useTime = item.useAnimation = 45;
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {

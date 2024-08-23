@@ -507,6 +507,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void UpdateEquip(Player player) {
+			player.whipRangeMultiplier += .25f;
 			player.maxMinions += 1;
 			player.maxTurrets += 1;
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += 1f;
@@ -608,12 +609,13 @@ namespace BossRush.Contents.Perks {
 	public class StellarRetirement : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			CanBeChoosen = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 		}
 		public override void Update(Player player) {
-			if (Main.rand.NextBool(100) && !Main.dayTime) {
-				Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.FallingStar, 1000, 5);
+			if (Main.rand.NextBool(100)) {
+				int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
+				int proj = Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.Starfury, damage, 5);
+				Main.projectile[proj].tileCollide = false;
 			}
 		}
 	}

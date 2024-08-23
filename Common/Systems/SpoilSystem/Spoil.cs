@@ -1,11 +1,11 @@
 ﻿using System;
+using Terraria;
 using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ID;
 using BossRush.Contents.Perks;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {

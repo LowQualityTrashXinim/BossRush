@@ -333,7 +333,7 @@ namespace BossRush.Common.ChallengeMode {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Hive);
 				}
 				else if (color.B == 255) {
-					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms, PaintID.BluePaint);
 					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Hive);
@@ -374,7 +374,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_CrimsonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 1)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 1 + WorldGen.genRand.NextBool().ToInt())
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -389,9 +389,12 @@ namespace BossRush.Common.ChallengeMode {
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Crimstone);
 				}
-				//else if (color.R == 254) {
-				//	GenerationHelper.FastPlaceTile(a, b, TileID.PinkSlimeBlock);
-				//}
+				else if (color.R == 200 && color.G == 10) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.CrimsonGrass);
+				}
+				else if (color.R == 200 && color.G == 100) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 					AddPlatformToList(a, b);
@@ -469,7 +472,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 1)
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 1 + WorldGen.genRand.NextBool().ToInt())
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -484,8 +487,11 @@ namespace BossRush.Common.ChallengeMode {
 				else if (color.R == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
 				}
-				else if (color.R == 240) {
+				else if (color.R == 200) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.PinkSlimeBlock);
+				}
+				else if (color.R == 150) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.FrozenSlimeBlock);
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
@@ -499,7 +505,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_FleshArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder( ImageStructureLoader.FleshArenaVar, 1)
+				ImageStructureLoader.StringBuilder( ImageStructureLoader.FleshArenaVar, 1 + WorldGen.genRand.NextBool().ToInt())
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;

@@ -31,10 +31,11 @@ internal class NPCMutation : GlobalNPC {
 				mutation.SetDefaults(entity);
 			}
 		}
-		if (Main.masterMode) {
+		return;
+		if (!Main.masterMode) {
 			return;
 		}
-		float DamageReductionPoint = 0;
+		float DamageReductionPoint = .5f;
 		if (Main.hardMode) {
 			DamageReductionPoint += .25f;
 		}

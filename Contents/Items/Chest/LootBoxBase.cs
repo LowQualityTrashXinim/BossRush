@@ -111,13 +111,9 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			for (int i = 0; i < player.inventory.Length; i++) {
 				Item item = player.inventory[i];
-				if (item.ammo == AmmoID.None) {
-					continue;
-				}
-				if (item.type == ItemID.EndlessMusketPouch || item.type == ItemID.EndlessQuiver) {
-					continue;
-				}
-				if(!item.notAmmo) {
+				if (item.ammo == AmmoID.None 
+					|| item.type == ItemID.EndlessMusketPouch 
+					|| item.type == ItemID.EndlessQuiver) {
 					continue;
 				}
 				int stackCheck = 350;

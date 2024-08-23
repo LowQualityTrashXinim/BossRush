@@ -25,9 +25,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
-using BossRush.Common.Systems.SpoilSystem;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -48,6 +48,8 @@ internal class UniversalSystem : ModSystem {
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
 		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (context == SYNERGYFEVER_MODE)
+			return config.SynergyMode && config.SynergyFeverMode;
 		if (config.HardEnableFeature || player.IsDebugPlayer())
 			return true;
 		if (context == NIGHTMARE_MODE)
@@ -60,8 +62,6 @@ internal class UniversalSystem : ModSystem {
 			return config.BossRushMode;
 		if (context == SYNERGY_MODE)
 			return config.SynergyMode;
-		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyMode && config.SynergyFeverMode;
 		if (context == TRUE_MODE)
 			return config.SynergyMode && config.BossRushMode;
 		return false;
@@ -973,6 +973,7 @@ internal class PerkUIState : UIState {
 			Perk.GetPerkType<BlessingOfStarDust>(),
 			Perk.GetPerkType<BlessingOfSynergy>(),
 			Perk.GetPerkType<BlessingOfTitan>(),
+			Perk.GetPerkType<BlessingOfPerk>(),
 		};
 		for (int i = 0; i < starterPerk.Length; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;

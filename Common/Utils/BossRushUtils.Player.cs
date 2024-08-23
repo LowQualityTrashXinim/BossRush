@@ -45,7 +45,8 @@ namespace BossRush {
 		/// <param name="item"></param>
 		/// <returns>Return true if the item is a weapon</returns>
 		public static bool IsAWeapon(this Item item) =>
-			item.damage > 0
+			item.type != ItemID.None
+			&& item.damage > 0
 			&& item.useTime > 0
 			&& item.useAnimation > 0
 			&& !item.accessory

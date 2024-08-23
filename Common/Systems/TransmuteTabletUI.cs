@@ -19,6 +19,7 @@ using BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballRifle;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballShotgunCannon;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.HuntingRifle;
+using BossRush.Texture;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {
@@ -53,6 +54,12 @@ public class ExitUI : UIImageButton {
 
 	public override void LeftClick(UIMouseEvent evt) {
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.CrossSprite).Value;
+		CalculatedStyle rect = this.GetDimensions();
+		spriteBatch.Draw(texture, rect.Position() + texture.Size() * .5f, Color.White);
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);

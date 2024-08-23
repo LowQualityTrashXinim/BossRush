@@ -35,13 +35,13 @@ public class MagicalScrollPlayer : ModPlayer {
 	}
 }
 class MagicalBolt : ModProjectile {
-	public override string Texture => BossRushTexture.WHITEBALL;
+	public override string Texture => BossRushTexture.SMALLWHITEBALL;
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailCacheLength[Type] = 100;
 		ProjectileID.Sets.TrailingMode[Type] = 2;
 	}
 	public override void SetDefaults() {
-		Projectile.width = Projectile.height = 30;
+		Projectile.width = Projectile.height = 10;
 		Projectile.tileCollide = false;
 		Projectile.friendly = true;
 		Projectile.timeLeft = 600;
@@ -97,7 +97,7 @@ class MagicalBolt : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Type);
-		Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.WHITEBALL).Value;
+		Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.SMALLWHITEBALL).Value;
 		Vector2 origin = Projectile.Size * .5f;
 		DrawTrail1(texture, origin);
 		DrawTrail2(texture, origin);

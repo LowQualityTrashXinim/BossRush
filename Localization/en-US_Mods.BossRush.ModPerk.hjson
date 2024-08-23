@@ -213,10 +213,10 @@ BlessingOfStarDust: {
 	DisplayName: Blessing Of Stardust
 	Description:
 		'''
+		+ Increases your whip range by 25%
 		+ Your whip inflict Star gaze
 		+ For 2 minion/sentry slot you have, you gain 1 damage
-		+ 1 minion slot
-		+ 1 sentry slot
+		+ Increases your max minion slot and sentry slot by 1
 		'''
 }
 
@@ -285,7 +285,7 @@ ArenaBlessing3: {
 
 StellarRetirement: {
 	DisplayName: Stellar Retirement
-	Description: + Fallen Star are now more common
+	Description: + Star Fury now drop from the sky dealing 1000 damage
 }
 
 OverchargedMana: {

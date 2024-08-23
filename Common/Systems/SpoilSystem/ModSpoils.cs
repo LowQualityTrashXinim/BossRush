@@ -1,13 +1,13 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using Humanizer;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Chest;
-using Humanizer;
 using BossRush.Common.Utils;
-using System.Collections.Generic;
 using BossRush.Contents.Perks;
+using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.aDebugItem;
-using System;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 
@@ -198,7 +198,8 @@ public class SSRPerkSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.FallenStar);
 	}
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1), Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2));
+		ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+		return Description.FormatWith(chestplayer.ModifyGetAmount(1), chestplayer.ModifyGetAmount(2));
 	}
 	public override bool IsSelectable(Player player, Item itemsource) {
 		return SpoilDropRarity.SSRDrop();

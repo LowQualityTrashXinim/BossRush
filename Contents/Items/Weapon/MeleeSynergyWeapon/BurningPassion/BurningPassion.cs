@@ -24,10 +24,17 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			if (modplayer.BurningPassion_WandofFrosting) {
 				tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit and shoot out spark flame on peak"));
 			}
+			if (modplayer.BurningPassion_SkyFracture) {
+				tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage"));
+			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			if (player.HasItem(ItemID.WandofFrosting)) {
 				modplayer.BurningPassion_WandofFrosting = true;
+				modplayer.SynergyBonus++;
+			}
+			if (player.HasItem(ItemID.SkyFracture)) {
+				modplayer.BurningPassion_SkyFracture = true;
 				modplayer.SynergyBonus++;
 			}
 			if (player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown == 1)
@@ -44,6 +51,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			if (player.altFunctionUse == 2 && player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown <= 0) {
 				player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown = 120;
 				player.velocity = velocity * 5f;
+			}
+			if (modplayer.BurningPassion_SkyFracture) {
+				float speed = velocity.Length() * 4;
+				for (int i = 0; i < 3; i++) {
+					Vector2 newPos = position + Main.rand.NextVector2Circular(75, 75);
+					Vector2 newVel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * speed;
+					Projectile.NewProjectile(source, newPos, newVel, ProjectileID.SkyFracture, (int)(damage * .45f), knockback, player.whoAmI);
+				}
 			}
 			CanShootItem = true;
 		}
@@ -97,8 +112,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
 			Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2;
 			runAI = false;
-		}
-		public override void SpawnDustPostPreAI(Player player) {
 			for (int i = 0; i < 5; i++) {
 				Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.Torch, Projectile.velocity.X * 0.75f, -5, 0, default, Main.rand.NextFloat(0.5f, 1.2f));
 				if (player.GetModPlayer<PlayerSynergyItemHandle>().BurningPassion_WandofFrosting) {
