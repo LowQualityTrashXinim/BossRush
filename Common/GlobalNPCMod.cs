@@ -9,11 +9,12 @@ using BossRush.Contents.Perks;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
+using System;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
 		public override void OnSpawn(NPC npc, IEntitySource source) {
-			if (!npc.boss) {
+			if (!npc.boss && Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1 && npc.type != NPCID.Creeper) {
 				npc.damage += Main.rand.Next((int)(npc.damage * .5f) + 1);
 				npc.lifeMax += Main.rand.Next((int)(npc.lifeMax * .5f) + 1);
 				npc.defense += Main.rand.Next((int)(npc.defense * .5f) + 1);
@@ -60,7 +61,7 @@ namespace BossRush.Common {
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.BloodySpine));
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<SilverLootBox>()));
 			}
-			else if (System.Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1) {
+			else if (Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<EoWDonHitReward>()));

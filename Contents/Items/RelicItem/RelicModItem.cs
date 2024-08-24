@@ -7,9 +7,8 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Systems;
-using System.Collections.Generic;
-using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
@@ -32,7 +31,7 @@ public class Relic : ModItem {
 	/// <param name="templateid"></param>
 	/// <param name="value"></param>
 	/// <param name="stats"></param>
-	public void AddRelicTemplate(Player player, int templateid, StatModifier value, PlayerStats stats = PlayerStats.None) {
+	public void AddRelicTemplate(int templateid, StatModifier value, PlayerStats stats = PlayerStats.None, float valueMulti = 1) {
 		if (templatelist == null) {
 			templatelist = new List<int>();
 			statlist = new List<PlayerStats>();
@@ -40,6 +39,7 @@ public class Relic : ModItem {
 		}
 		templatelist.Add(templateid);
 		statlist.Add(stats);
+		value = value.Scale(valueMulti);
 		valuelist.Add(value);
 	}
 	/// <summary>
@@ -48,7 +48,7 @@ public class Relic : ModItem {
 	/// <param name="templateid"></param>
 	/// <param name="value"></param>
 	/// <param name="stats"></param>
-	public void AddRelicTemplate(Player player, int templateid) {
+	public void AddRelicTemplate(Player player, int templateid, float valueMulti = 1) {
 		if (templatelist == null) {
 			templatelist = new List<int>();
 			statlist = new List<PlayerStats>();
@@ -57,7 +57,9 @@ public class Relic : ModItem {
 		templatelist.Add(templateid);
 		PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(player);
 		statlist.Add(innerStats);
-		valuelist.Add(RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, innerStats));
+		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, innerStats);
+		value = value.Scale(valueMulti);
+		valuelist.Add(value);
 	}
 	/// <summary>
 	/// Use this to add stats before the item automatic add stats
@@ -65,7 +67,7 @@ public class Relic : ModItem {
 	/// <param name="templateid"></param>
 	/// <param name="value"></param>
 	/// <param name="stats"></param>
-	public void AddRelicTemplate(Player player, int templateid, PlayerStats stats = PlayerStats.None) {
+	public void AddRelicTemplate(Player player, int templateid, PlayerStats stats, float valueMulti = 1) {
 		if (templatelist == null) {
 			templatelist = new List<int>();
 			statlist = new List<PlayerStats>();
@@ -73,7 +75,9 @@ public class Relic : ModItem {
 		}
 		templatelist.Add(templateid);
 		statlist.Add(stats);
-		valuelist.Add(RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, stats));
+		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, stats);
+		value = value.Scale(valueMulti);
+		valuelist.Add(value);
 	}
 	public override ModItem Clone(Item newEntity) {
 		Relic clone = (Relic)base.Clone(newEntity);
@@ -96,14 +100,14 @@ public class Relic : ModItem {
 				continue;
 			}
 			line.Text += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(statlist[i], valuelist[i]);
-			if (Main.LocalPlayer.IsDebugPlayer()) {
-				line.Text +=
-					$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
-					$"\nTemplate Desc : {RelicTemplateLoader.GetTemplate(templatelist[i]).Description}" +
-					$"\nTemplate ID : {templatelist[i]}" +
-					$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
-					$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
-			}
+			//if (Main.LocalPlayer.IsDebugPlayer()) {
+			//	line.Text +=
+					//$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
+					//$"\nTemplate Desc : {RelicTemplateLoader.GetTemplate(templatelist[i]).Description}" +
+					//$"\nTemplate ID : {templatelist[i]}" +
+					//$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
+					//$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
+			//}
 			if (i + 1 != templatelist.Count) {
 				line.Text += "\n";
 			}

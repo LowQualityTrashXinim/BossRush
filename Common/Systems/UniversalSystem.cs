@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using System.IO;
 using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
@@ -28,10 +29,13 @@ using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
+using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.SpecialReward;
 
 namespace BossRush.Common.Systems;
 /// <summary>
-/// This not only include main stuff that make everything work but also contain some fixes to vanilla
+/// This not only include main stuff that make everything work but also contain some fixes to vanilla<br/>
+/// Also, very unholy class, do not look into it
 /// </summary>
 internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
@@ -115,6 +119,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface relicTest;
 	internal UserInterface spoils;
 	internal UserInterface TeleportUser;
+	internal UserInterface infoUser;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -125,6 +130,7 @@ internal class UniversalSystem : ModSystem {
 	public RelicTransmuteUI relicUI;
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
+	public InfoUI infoUI;
 
 	public static bool EnchantingState = false;
 	public override void Load() {
@@ -158,6 +164,9 @@ internal class UniversalSystem : ModSystem {
 
 			teleportUI = new();
 			TeleportUser = new();
+
+			infoUser = new();
+			infoUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 	}
@@ -199,6 +208,9 @@ internal class UniversalSystem : ModSystem {
 
 		teleportUI = null;
 		TeleportUser = null;
+
+		infoUser = null;
+		infoUI = null;
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
@@ -210,6 +222,7 @@ internal class UniversalSystem : ModSystem {
 		relicTest?.Update(gameTime);
 		spoils?.Update(gameTime);
 		TeleportUser?.Update(gameTime);
+		infoUser?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -217,15 +230,17 @@ internal class UniversalSystem : ModSystem {
 			layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
 				"BossRush: UI",
 				delegate {
-					userInterface.Draw(Main.spriteBatch, new GameTime());
-					perkInterface.Draw(Main.spriteBatch, new GameTime());
-					skillInterface.Draw(Main.spriteBatch, new GameTime());
-					enchantInterface.Draw(Main.spriteBatch, new GameTime());
-					systemMenuInterface.Draw(Main.spriteBatch, new GameTime());
-					transmutationInterface.Draw(Main.spriteBatch, new GameTime());
-					relicTest.Draw(Main.spriteBatch, new GameTime());
-					spoils.Draw(Main.spriteBatch, new GameTime());
-					TeleportUser.Draw(Main.spriteBatch, new GameTime());
+					GameTime gametime = new GameTime();
+					userInterface.Draw(Main.spriteBatch, gametime);
+					perkInterface.Draw(Main.spriteBatch, gametime);
+					skillInterface.Draw(Main.spriteBatch, gametime);
+					enchantInterface.Draw(Main.spriteBatch, gametime);
+					systemMenuInterface.Draw(Main.spriteBatch, gametime);
+					transmutationInterface.Draw(Main.spriteBatch, gametime);
+					relicTest.Draw(Main.spriteBatch, gametime);
+					spoils.Draw(Main.spriteBatch, gametime);
+					TeleportUser.Draw(Main.spriteBatch, gametime);
+					infoUser.Draw(Main.spriteBatch, gametime);
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -235,6 +250,10 @@ internal class UniversalSystem : ModSystem {
 		DeactivateUI();
 		perkUIstate.StateofState = state;
 		perkInterface.SetState(perkUIstate);
+	}
+	public void ActivateInfoUI() {
+		DeactivateUI();
+		infoUser.SetState(infoUI);
 	}
 	public void ActivateSkillUI() {
 		DeactivateUI();
@@ -252,9 +271,16 @@ internal class UniversalSystem : ModSystem {
 		DeactivateUI();
 		relicTest.SetState(relicUI);
 	}
-	public void ActivateSpoilsUI(int lootboxType) {
+	/// <summary>
+	/// Activate spoils ui state, it is required that lootboxtype come from lootbox item ID
+	/// </summary>
+	/// <param name="lootboxType">the lootbox item ID</param>
+	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
+	public void ActivateSpoilsUI(int lootboxType, bool IsReopening = false) {
 		DeactivateUI();
-		SpoilsUIState.Current_OpenLootBox = lootboxType;
+		if (!IsReopening) {
+			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
+		}
 		spoils.SetState(spoilsState);
 	}
 	public void ActivateTeleportUI() {
@@ -270,6 +296,7 @@ internal class UniversalSystem : ModSystem {
 		relicTest.SetState(null);
 		spoils.SetState(null);
 		TeleportUser.SetState(null);
+		infoUser.SetState(null);
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public override void ClearWorld() {
@@ -361,31 +388,34 @@ class DefaultUI : UIState {
 		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;
 		Append(EndOfDemoPanelClose);
 	}
-
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		EndOfDemoPanel.Remove();
 		EndOfDemoPanelClose.Remove();
 	}
 
-	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (ModContent.GetInstance<UniversalSystem>().systemMenuInterface.CurrentState == null && ModContent.GetInstance<UniversalSystem>().spoils.CurrentState == null) {
-			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-			ModContent.GetInstance<UniversalSystem>().systemMenuInterface.SetState(ModContent.GetInstance<UniversalSystem>().UIsystemmenu);
-		}
-		else {
-			ModContent.GetInstance<UniversalSystem>().systemMenuInterface.SetState(null);
-		}
-	}
 
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
 		staticticUI = new UIImageButton(ModContent.Request<Texture2D>(BossRushTexture.MENU));
-		staticticUI.UISetWidthHeight(52, 52);
-		staticticUI.HAlign = .67f;
-		staticticUI.VAlign = .06f;
+		staticticUI.UISetWidthHeight(32, 32);
+		staticticUI.HAlign = .3f;
+		staticticUI.VAlign = .02f;
 		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
 		Append(staticticUI);
+	}
+	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+		if (Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
+			system.ActivateSpoilsUI(Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First(), true);
+		}
+		if (system.systemMenuInterface.CurrentState == null && system.spoils.CurrentState == null) {
+			system.DeactivateUI();
+			system.systemMenuInterface.SetState(system.UIsystemmenu);
+		}
+		else {
+			system.systemMenuInterface.SetState(null);
+		}
 	}
 	public override void OnActivate() {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
@@ -401,7 +431,6 @@ class DefaultUI : UIState {
 			Append(popUpWarningClose);
 		}
 	}
-
 	private void PopUpWarning_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		Elements.Remove(popUpWarning);
 		Elements.Remove(popUpWarningClose);
@@ -410,8 +439,8 @@ class DefaultUI : UIState {
 	private void CreateEnergyBar() {
 		energyBar = new Roguelike_ProgressUIBar(null, Color.DarkBlue, Color.LightCyan, "0/0", .8f);
 		energyBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
-		energyBar.Left.Set(-energyBar.Width.Pixels - 600, 1f);
-		energyBar.Top.Set(30, 0);
+		energyBar.VAlign = .02f;
+		energyBar.HAlign = .37f;
 		energyBar.Width.Set(182, 0);
 		energyBar.Height.Set(60, 0);
 		energyBar.OnUpdate += EnergyBar_OnUpdate;
@@ -426,31 +455,38 @@ class DefaultUI : UIState {
 
 	private void CreateCoolDownBar() {
 		energyCoolDownBar = new Roguelike_ProgressUIBar(null, Color.Red, Color.Yellow, "0/0", .8f);
+		energyCoolDownBar.VAlign = .02f;
+		energyCoolDownBar.HAlign = .47f;
 		energyCoolDownBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
-		energyCoolDownBar.Left.Set(-energyCoolDownBar.Width.Pixels - 600, 1f);
-		energyCoolDownBar.Top.Set(80, 0);
 		energyCoolDownBar.Width.Set(182, 0);
 		energyCoolDownBar.Height.Set(60, 0);
-		energyCoolDownBar.Recalculate();
 		energyCoolDownBar.OnUpdate += EnergyCoolDownBar_OnUpdate;
+		energyCoolDownBar.Hide = true;
 		Append(energyCoolDownBar);
 	}
 
 	private void EnergyCoolDownBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		// Setting the text per tick to update and show our resource values.
-
 		if (modPlayer.CoolDown > 0) {
+			energyCoolDownBar.Hide = false;
 			energyCoolDownBar.text.SetText($"CoolDown : {MathF.Round(modPlayer.CoolDown / 60f, 2)}");
 		}
 		else {
+			energyCoolDownBar.DelayHide(120);
 			energyCoolDownBar.text.SetText("");
 		}
 		energyCoolDownBar.BarProgress = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown;
 	}
 
 	public override void Update(GameTime gameTime) {
+
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
+			Player player = Main.LocalPlayer;
+			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
+				SpoilsPlayer spoilplayer = player.GetModPlayer<SpoilsPlayer>();
+				Main.instance.MouseText($"You have {spoilplayer.LootBoxSpoilThatIsNotOpen.Count} left that is not chosen, click here to choose them");
+			}
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		base.Update(gameTime);
@@ -540,6 +576,10 @@ class UISystemMenu : UIState {
 		}
 	}
 
+
+	private void Open_Transmutation_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateTransmutationUI();
+	}
 	private void Open_Transmutation_UI_OnUpdate(UIElement affectedElement) {
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
@@ -556,6 +596,9 @@ class UISystemMenu : UIState {
 		}
 	}
 
+	private void Open_skill_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
+	}
 	private void Open_skill_UI_OnUpdate(UIElement affectedElement) {
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
@@ -572,10 +615,6 @@ class UISystemMenu : UIState {
 		}
 	}
 
-	private void Open_Transmutation_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateTransmutationUI();
-	}
-
 	private void Open_Enchantment_UI_OnUpdate(UIElement affectedElement) {
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
@@ -589,6 +628,11 @@ class UISystemMenu : UIState {
 		}
 		else {
 			EnchantmentHover = false;
+		}
+	}
+	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()) {
+			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
 		}
 	}
 
@@ -607,21 +651,190 @@ class UISystemMenu : UIState {
 			InfoHover = false;
 		}
 	}
-
-	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()) {
-			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
-		}
-	}
-
-	private void Open_skill_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().ActivateSkillUI();
-	}
-
 	private void Show_playerMod_Info_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-
+		ModContent.GetInstance<UniversalSystem>().ActivateInfoUI();
 	}
 }
+class Info_ArtifactImage : Roguelike_UIImage {
+	public Info_ArtifactImage(Asset<Texture2D> texture) : base(texture) {
+	}
+	public override void DrawImage(SpriteBatch spriteBatch) {
+		Artifact artifact = Artifact.GetArtifact(Main.LocalPlayer.GetModPlayer<ArtifactPlayer>().ActiveArtifact);
+		CalculatedStyle style = GetInnerDimensions();
+		artifact.DrawInUI(spriteBatch, style);
+	}
+}
+class InfoUI : UIState {
+	UIPanel panel;
+	Roguelike_WrapTextUIPanel textpanel;
+	UIImageButton btn_Stats;
+	UIImageButton btn_ModStats;
+	UIImageButton btn_Artifact;
+	Info_ArtifactImage Info_artifact;
+	UIImageButton btn_Perks;
+	ExitUI btn_Exit;
+	int CurrentState = 0;
+	public override void OnInitialize() {
+		panel = new UIPanel();
+		panel.HAlign = .35f;
+		panel.VAlign = .5f;
+		panel.UISetWidthHeight(100, 450);
+		Append(panel);
+		textpanel = new Roguelike_WrapTextUIPanel("");
+		textpanel.HAlign = .53f;
+		textpanel.VAlign = .5f;
+		textpanel.UISetWidthHeight(450, 600);
+		Append(textpanel);
+
+		btn_Stats = new UIImageButton(TextureAssets.InventoryBack);
+		btn_Stats.HAlign = .5f;
+		btn_Stats.VAlign = .1f;
+		btn_Stats.UISetWidthHeight(52, 52);
+		btn_Stats.OnLeftClick += Btn_Stats_OnLeftClick;
+		btn_Stats.SetVisibility(1, 1);
+		panel.Append(btn_Stats);
+
+		btn_ModStats = new UIImageButton(TextureAssets.InventoryBack);
+		btn_ModStats.HAlign = .5f;
+		btn_ModStats.VAlign = MathHelper.Lerp(.1f, .9f, 1 / 4f);
+		btn_ModStats.OnLeftClick += Btn_ModStats_OnLeftClick;
+		btn_ModStats.UISetWidthHeight(52, 52);
+		panel.Append(btn_ModStats);
+
+		btn_Artifact = new UIImageButton(TextureAssets.InventoryBack);
+		btn_Artifact.HAlign = .5f;
+		btn_Artifact.VAlign = MathHelper.Lerp(.1f, .9f, 2 / 4f);
+		btn_Artifact.UISetWidthHeight(52, 52);
+		btn_Artifact.OnLeftClick += Btn_Artifact_OnLeftClick;
+		panel.Append(btn_Artifact);
+
+		Info_artifact = new Info_ArtifactImage(TextureAssets.InventoryBack);
+		Info_artifact.HAlign = .38f;
+		Info_artifact.VAlign = .22f;
+		Info_artifact.Hide = true;
+		Append(Info_artifact);
+
+		btn_Perks = new UIImageButton(TextureAssets.InventoryBack);
+		btn_Perks.HAlign = .5f;
+		btn_Perks.VAlign = MathHelper.Lerp(.1f, .9f, 3 / 4f);
+		btn_Perks.UISetWidthHeight(52, 52);
+		btn_Perks.OnLeftClick += Btn_Perks_OnLeftClick;
+		panel.Append(btn_Perks);
+
+		btn_Exit = new ExitUI(TextureAssets.InventoryBack);
+		btn_Exit.HAlign = .5f;
+		btn_Exit.VAlign = .9f;
+		btn_Exit.UISetWidthHeight(52, 52);
+		panel.Append(btn_Exit);
+	}
+
+
+	private void Btn_Stats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		btn_Stats.SetVisibility(1, 1);
+		btn_ModStats.SetVisibility(.7f, .6f);
+		btn_Perks.SetVisibility(.7f, .6f);
+		btn_Artifact.SetVisibility(.7f, .6f);
+		CurrentState = 0;
+		Info_artifact.Hide = true;
+	}
+	private void Btn_ModStats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		btn_ModStats.SetVisibility(1, 1);
+		btn_Stats.SetVisibility(.7f, .6f);
+		btn_Perks.SetVisibility(.7f, .6f);
+		btn_Artifact.SetVisibility(.7f, .6f);
+		CurrentState = 1;
+		Info_artifact.Hide = true;
+	}
+	private void Btn_Artifact_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		btn_Artifact.SetVisibility(1, 1);
+		btn_ModStats.SetVisibility(.7f, .6f);
+		btn_Perks.SetVisibility(.7f, .6f);
+		btn_Stats.SetVisibility(.7f, .6f);
+		CurrentState = 2;
+		Info_artifact.Hide = false;
+	}
+
+	private void Btn_Perks_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		btn_Perks.SetVisibility(1, 1);
+		btn_ModStats.SetVisibility(.7f, .6f);
+		btn_Stats.SetVisibility(.7f, .6f);
+		btn_Artifact.SetVisibility(.7f, .6f);
+		CurrentState = 3;
+		Info_artifact.Hide = true;
+	}
+
+	public override void Update(GameTime gameTime) {
+		var player = Main.LocalPlayer;
+		string line;
+		switch (CurrentState) {
+			case 0:
+				var statshandle = player.GetModPlayer<PlayerStatsHandle>();
+				line =
+					$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
+					$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
+					$"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
+					$"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
+					$"\nGeneric Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
+					$"\nCrit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%" +
+					$"\nDamage bonus to undamaged NPC : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%" +
+					$"\nAttack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}" +
+					$"\nHealth regenaration : {player.lifeRegen}" +
+					$"\nMana regenaration : {player.manaRegen}" +
+					$"\nMana reduction : {player.manaCost}" +
+					$"\nDefense effectiveness : {player.DefenseEffectiveness.Value}" +
+					$"\nDamage reduction: {Math.Round(player.endurance * 100, 2)}%" +
+					$"\nMovement speed : {Math.Round(player.moveSpeed, 2)}" +
+					$"\nJump speed : {player.jumpSpeedBoost}" +
+					$"\nMax minion : {player.maxMinions}" +
+					$"\nMax sentry/turret : {player.maxTurrets}" +
+					$"\nThorn : {player.thorns}";
+				textpanel.SetText(line);
+				break;
+			case 1:
+				var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
+				var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
+				var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
+				chestplayer.GetAmount();
+				line =
+					$"Amount drop chest addition : {chestplayer.amountModifier}" +
+					$"\nAmount drop chest multiplication : {chestplayer.finalMultiplier}" +
+					$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
+					$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
+					$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
+					$"\nMelee drop chance : {chestplayer.UpdateMeleeChanceMutilplier}" +
+					$"\nRange drop chance : {chestplayer.UpdateRangeChanceMutilplier}" +
+					$"\nMagic drop chance : {chestplayer.UpdateMagicChanceMutilplier}" +
+					$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
+					$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
+					$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
+					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}";
+				textpanel.SetText(line);
+				break;
+			case 2:
+				var artifactplayer = player.GetModPlayer<ArtifactPlayer>();
+				line = $"Current active artifact : {Artifact.GetArtifact(artifactplayer.ActiveArtifact).DisplayName}";
+				line += $"\n{Artifact.GetArtifact(artifactplayer.ActiveArtifact).Description}";
+				textpanel.SetText(line);
+				break;
+			case 3:
+				var perkplayer = player.GetModPlayer<PerkPlayer>();
+				line = "Current perks list : ";
+				foreach (var perkItem in perkplayer.perks.Keys) {
+					if (ModPerkLoader.GetPerk(perkItem) != null) {
+						line += "\n" + ModPerkLoader.GetPerk(perkItem).DisplayName + $" | current stack : [{perkplayer.perks[perkItem]}]";
+					}
+				}
+				textpanel.SetText(line);
+				break;
+			default:
+				line = "";
+				textpanel.SetText(line);
+				break;
+		}
+		base.Update(gameTime);
+	}
+}
+
 internal class SkillUI : UIState {
 	public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
 	public List<btn_SkillSlotHolder> inventory = new List<btn_SkillSlotHolder>();
@@ -1248,7 +1461,6 @@ public class EnchantmentUIslot : UIImage {
 	}
 }
 public class SpoilsUIState : UIState {
-	public static int Current_OpenLootBox = -1;
 	public int Limit_Spoils = 5;
 	public List<SpoilsUIButton> btn_List;
 	public int lootboxItem = -1;
@@ -1264,7 +1476,7 @@ public class SpoilsUIState : UIState {
 	}
 	public override void OnActivate() {
 		btn_List.Clear();
-		lootboxItem = Current_OpenLootBox;
+		lootboxItem = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
 		if (lootboxItem <= 0) {
 			return;
 		}
@@ -1281,14 +1493,12 @@ public class SpoilsUIState : UIState {
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
 			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
 			SpoilList.Remove(spoil);
-			btn.LootboxItem = lootboxItem;
 			btn.HAlign = Hvalue;
 			btn.VAlign = .4f;
 			btn_List.Add(btn);
 			Append(btn);
 		}
 		SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
-		btna.LootboxItem = lootboxItem;
 		btna.HAlign = .7f;
 		btna.VAlign = .4f;
 		btn_List.Add(btna);
@@ -1297,24 +1507,29 @@ public class SpoilsUIState : UIState {
 }
 public class SpoilsUIButton : UIImageButton {
 	public ModSpoil spoil;
-	public int LootboxItem = 0;
+	int LootboxItem = 0;
 	public SpoilsUIButton(Asset<Texture2D> texture, ModSpoil Spoil) : base(texture) {
 		spoil = Spoil;
+		LootboxItem = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
 	}
 	public override void LeftClick(UIMouseEvent evt) {
+		Player player = Main.LocalPlayer;
+		LootboxItem = player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
 		if (spoil == null) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
-				if (!spoil.IsSelectable(Main.LocalPlayer, ContentSamples.ItemsByType[LootboxItem])) {
+				if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[LootboxItem])) {
 					SpoilList.Remove(spoil);
 				}
 			}
-			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer, LootboxItem);
+			Main.rand.Next(SpoilList).OnChoose(player, LootboxItem);
+			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.RemoveAt(0);
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			return;
 		}
-		spoil.OnChoose(Main.LocalPlayer, LootboxItem);
+		spoil.OnChoose(player, LootboxItem);
+		player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.RemoveAt(0);
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}
 	public override void Update(GameTime gameTime) {
@@ -1340,7 +1555,44 @@ public class SpoilsUIButton : UIImageButton {
 		}
 	}
 }
+public class SpoilsPlayer : ModPlayer {
+	public List<int> LootBoxSpoilThatIsNotOpen = new List<int>();
+	public override void Initialize() {
+		LootBoxSpoilThatIsNotOpen = new();
+	}
+	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+		ModPacket packet = Mod.GetPacket();
+		packet.Write((byte)BossRush.MessageType.Perk);
+		packet.Write((byte)Player.whoAmI);
+		packet.Write(LootBoxSpoilThatIsNotOpen.Count);
+		foreach (int item in LootBoxSpoilThatIsNotOpen) {
+			packet.Write(LootBoxSpoilThatIsNotOpen[item]);
+		}
+		packet.Send(toWho, fromWho);
+	}
+	public void ReceivePlayerSync(BinaryReader reader) {
+		LootBoxSpoilThatIsNotOpen.Clear();
+		int count = reader.ReadInt32();
+		for (int i = 0; i < count; i++)
+			LootBoxSpoilThatIsNotOpen.Add(reader.ReadInt32());
+	}
 
+	public override void CopyClientState(ModPlayer targetCopy) {
+		SpoilsPlayer clone = (SpoilsPlayer)targetCopy;
+		clone.LootBoxSpoilThatIsNotOpen = LootBoxSpoilThatIsNotOpen;
+	}
+
+	public override void SendClientChanges(ModPlayer clientPlayer) {
+		SpoilsPlayer clone = (SpoilsPlayer)clientPlayer;
+		if (LootBoxSpoilThatIsNotOpen != clone.LootBoxSpoilThatIsNotOpen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+	}
+	public override void SaveData(TagCompound tag) {
+		tag["LootBoxSpoilThatIsNotOpen"] = LootBoxSpoilThatIsNotOpen;
+	}
+	public override void LoadData(TagCompound tag) {
+		LootBoxSpoilThatIsNotOpen = tag.Get<List<int>>("LootBoxSpoilThatIsNotOpen");
+	}
+}
 public class TeleportUI : UIState {
 	public List<btn_Teleport> btn_List;
 	public UITextPanel<string> panel;

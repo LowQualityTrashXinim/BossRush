@@ -3,7 +3,7 @@ BootsOfSpeedManipulationArtifact: {
 	Description:
 		'''
 		"Run like you want to run."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Increase your movement capacity massively
 		[c/ab3e43:Negative effect] : 
 			- You can't fly with wing
@@ -16,7 +16,7 @@ EternalWealthArtifact: {
 	Description:
 		'''
 		"Regardless of anything, wealth is all that matters."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Multiply your lootbox drop by 3.
 		[c/ab3e43:Negative effect] : 
 			- A field of damage curses will be spawn and disappear after few seconds at where you are.
@@ -29,7 +29,7 @@ HeartOfEarthArtifact: {
 	Description:
 		'''
 		"Protected by the Earth"
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Multiply your max HP by 1.5 and add a additional 100 max hp
 			+ Standing still for a short moment massively boost your regen
 		[c/ab3e43:Negative effect] : 
@@ -44,7 +44,7 @@ MagicalCardDeckArtifact: {
 		'''
 		"I Summon pot of greed ! it allow me to draw 2 card from the deck"
 		Banned for many reason
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Card packet can drop potentially more cards ( up to 3 )
 		[c/ab3e43:Negative effect] :
 			- Increase the chance to get faulty card
@@ -58,7 +58,7 @@ SkillIssuedArtifact: {
 	Description:
 		'''
 		"with this, nothing is impossible, even with skill issue in bloodstream"
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ For each monster killed, your maximum life will increase by 0.5 and boost damage and thorns by 0.01% (Multiplicative).
 		[c/ab3e43:Negative effect] :
 			- make monster spawns increase by CRAZY amount
@@ -71,7 +71,7 @@ TokenOfGreedArtifact: {
 	Description:
 		'''
 		"Satisfied by just having, caring not for weapon quality."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Increase amount of drop by 1
 		[c/ab3e43:Negative effect] : 
 			- If the weapon type have been uses more than 1 time, damage effective will be decreases by 30%
@@ -84,7 +84,7 @@ TokenOfPrideArtifact: {
 	Description:
 		'''
 		"Having the skill to use whatever you are given."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Randomize 1 of your weapon's enchantment
 		[c/ab3e43:Negative effect] : 
 			- Lootbox drop value set to 1 regardless of increasement
@@ -96,7 +96,7 @@ TokenOfWrathArtifact: {
 	Description:
 		'''
 		"Ruthless..."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Increases your none-critical damage by 50%
 			+ Increases your critical strike chance by 50
 		[c/ab3e43:Negative effect] : 
@@ -109,7 +109,7 @@ TokenOfSlothArtifact: {
 	Description:
 		'''
 		"..."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Increases damage by 35% and undamaged enemy recieve 50% more damage
 			+ Standing still will gain sloth status which will boost the above effect by 10%
 		[c/ab3e43:Negative effect] : 
@@ -123,7 +123,7 @@ TokenOfGluttonyArtifact: {
 	Description:
 		'''
 		"..."
-		[c/b7bf5c:Positive effect] : 
+		[c/ffff00:Positive effect] : 
 			+ Damage reduction will be increases by your current defense/max life
 		[c/ab3e43:Negative effect] : 
 			- Defenses are reduced to 0
@@ -135,7 +135,7 @@ VampirismCrystalArtifact: {
 	Description:
 		'''
 		"Unpure, relentess crystal."
-		[c/b7bf5c:Positive effect] :
+		[c/ffff00:Positive effect] :
 			+ Attacks heal the player.
 			+ You can survive 1 fatal attack (5 minute cooldown).
 		[c/ab3e43:Negative effect] : 
@@ -148,7 +148,7 @@ ManaOverloaderArtifact: {
 	Description:
 		'''
 		"Unlimited potential"
-		[c/b7bf5c:Positive effect] :
+		[c/ffff00:Positive effect] :
 			+ You constantly regen Mana regardless of mana regen cooldown
 		[c/ab3e43:Negative effect] : 
 			- Damage dealt to you will be increases base on your mana
@@ -169,7 +169,7 @@ AlchemistKnowledgeArtifact: {
 	Description:
 		'''
 		"reveal secret of alchemist"
-		[c/b7bf5c:Positive effect] :
+		[c/ffff00:Positive effect] :
 			+ Having active buff will increase your stats
 			+ Attacking enemy that have :
 			1 debuff active will increases your damage
@@ -185,7 +185,7 @@ GamblerSoulArtifact: {
 	Description:
 		'''
 		"Playing the RNG game"
-		[c/b7bf5c:Positive effect] :
+		[c/ffff00:Positive effect] :
 			+ Right at the start you gain exclusive spell and perk
 			+ Increases lootbox drop by 1
 		[c/ab3e43:Negative effect] : 
@@ -203,7 +203,7 @@ EssenceLanternArtifact: {
 		[c/9b9c76:Neutral effect] :
 			= Weapon damage type become generic
 			= Sometime spawn Essence Orb on hitting enemy
-		[c/b7bf5c:Positive effect] :
+		[c/ffff00:Positive effect] :
 			+ Some essence orb have positive effect
 		[c/ab3e43:Negative effect] : 
 			+ Some essence orb have negative effect

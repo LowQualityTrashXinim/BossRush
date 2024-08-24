@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using System;
+using System.Diagnostics;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -206,6 +207,29 @@ public class Overclock : ModSkill {
 	}
 	public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
 		useSpeed += 2;
+	}
+}
+public class TerrorForm : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 300;
+		Skill_Duration = BossRushUtils.ToSecond(4);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+	}
+	public override void Update(Player player) {
+		for (int i = 0; i < 2; i++) {
+			Dust dust = Dust.NewDustDirect(player.position, player.width, player.height, Main.rand.Next(new int[] { DustID.Shadowflame, DustID.Wraith, DustID.UltraBrightTorch }));
+			dust.noGravity = true;
+			dust.velocity = Vector2.UnitY * -Main.rand.NextFloat(3);
+			dust.scale = Main.rand.NextFloat(0.75f, 1.25f);
+		}
+		player.statLife = Math.Clamp(player.statLife - 1, 1, player.statLifeMax2);
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.5f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
+		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2), Base: 25);
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
+		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.5f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
+		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.35f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
+		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.35f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
 	}
 }
 public class BulletStorm : ModSkill {

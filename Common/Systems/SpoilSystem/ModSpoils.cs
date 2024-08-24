@@ -8,14 +8,17 @@ using BossRush.Contents.Perks;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.aDebugItem;
+using System.Linq;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 
 public class WeaponSpoil : ModSpoil {
 	public override string FinalDisplayName() {
 		ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+		SpoilsPlayer spoilsplayer = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>();
 		if (chestplayer.weaponShowID == 0 || --chestplayer.counterShow <= 0) {
-			chestplayer.weaponShowID = Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(SpoilsUIState.Current_OpenLootBox).AllItemPool());
+			chestplayer.weaponShowID = Main.rand.NextFromHashSet(LootboxSystem.GetItemPool(spoilsplayer.LootBoxSpoilThatIsNotOpen.First()).AllItemPool());
 			chestplayer.counterShow = 6;
 		}
 		return DisplayName.FormatWith(chestplayer.weaponShowID);
@@ -183,8 +186,11 @@ public class LostAccessorySpoil : ModSpoil {
 	public override bool IsSelectable(Player player, Item itemsource) {
 		return SpoilDropRarity.RareDrop();
 	}
+	public override string FinalDescription() {
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
+	}
 	public override void OnChoose(Player player, int itemsource) {
-		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
+		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
 		for (int i = 0; i < amount; i++) {
 			player.QuickSpawnItem(player.GetSource_OpenItem(itemsource), Main.rand.Next(BossRushModSystem.LostAccessories));
 		}
@@ -271,7 +277,48 @@ public class ArmorAccessorySpoil : ModSpoil {
 		}
 	}
 }
-
+public class SuperRelicSpoil : ModSpoil {
+	public override void SetStaticDefault() {
+		RareValue = SpoilDropRarity.SuperRare;
+	}
+	public override bool IsSelectable(Player player, Item itemsource) {
+		return SpoilDropRarity.SuperRareDrop();
+	}
+	public override void OnChoose(Player player, int itemsource) {
+		Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
+		if (item.ModItem is Relic relic) {
+			for (int i = 0; i < 4; i++) {
+				relic.AddRelicTemplate(player, Main.rand.Next(RelicTemplateLoader.TotalCount));
+			}
+		}
+	}
+}
+public class LegendaryRelicSpoil : ModSpoil {
+	public override void SetStaticDefault() {
+		RareValue = SpoilDropRarity.SSR;
+	}
+	public override bool IsSelectable(Player player, Item itemsource) {
+		return SpoilDropRarity.SSRDrop();
+	}
+	public override void OnChoose(Player player, int itemsource) {
+		Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
+		if (item.ModItem is Relic relic) {
+			if (Main.rand.NextBool(20)) {
+				relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<GenericTemplate>(), 3);
+				relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatV2Template>(), 3);
+				relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatV3Template>(), 3);
+				relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<CombatV4Template>(), 3);
+				relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<HealthV2Template>(), 3);
+				relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<HealthV3Template>(), 3);
+			}
+			else {
+				for (int i = 0; i < 6; i++) {
+					relic.AddRelicTemplate(player, Main.rand.Next(RelicTemplateLoader.TotalCount), 3);
+				}
+			}
+		}
+	}
+}
 public class RoguelikeSpoil : ModSpoil {
 	public override void SetStaticDefault() {
 		RareValue = SpoilDropRarity.Rare;

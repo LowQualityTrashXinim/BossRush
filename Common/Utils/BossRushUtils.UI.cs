@@ -1,15 +1,21 @@
-﻿using BossRush.Contents.Skill;
+﻿using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Skill;
 using BossRush.Texture;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Graphics;
 using SteelSeries.GameSense;
 using System;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -36,6 +42,19 @@ namespace BossRush {
 	public class Roguelike_ProgressUIBar : UIElement {
 		protected Asset<Texture2D> texture;
 		private float barProgress;
+		public bool Hide = false;
+		private int Delay = 0;
+		public void DelayHide(int HideDelay) {
+			if(Delay <= 0 && !Hide) {
+				Delay = HideDelay;
+			}
+			else {
+				Delay = BossRushUtils.CountDown(Delay);
+				if(Delay <= 1) {
+					Hide = true;
+				}
+			}
+		}
 		public Roguelike_ProgressUIBar(Asset<Texture2D> bartexture, Color starterColor, Color endColor, string textstring, float textscale = 1, bool isLarge = false) {
 			if (bartexture == null) {
 				barFrame = new UIImage(ModContent.Request<Texture2D>(BossRushTexture.EXAMPLEUI)); // Frame of our resource bar
@@ -69,7 +88,16 @@ namespace BossRush {
 		public void SetColorB(Color color) {
 			gradientB = color;
 		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			if(Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
+		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if(Hide) {
+				return;
+			}
 			base.DrawSelf(spriteBatch);
 			DrawBarUI(spriteBatch);
 		}
@@ -94,6 +122,67 @@ namespace BossRush {
 				float percent = (float)i / (right - left);
 				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
 			}
+		}
+	}
+
+	public class Roguelike_WrapTextUIPanel : UITextPanel<string> {
+		//Stole from ActiveArtifactDescriptionUI cause idk how to do text wrapping stuff
+		private int linePosition;
+		private int maxLinePosition;
+		private const int MAX_LINES = 6;
+		public Roguelike_WrapTextUIPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
+		}
+
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			DynamicSpriteFont font = FontAssets.MouseText.Value;
+			float scale = 1;
+			string cachedText = Text;
+			SetText("");
+			base.Recalculate();
+			base.DrawSelf(spriteBatch);
+			string[] lines = Utils.WordwrapString(
+				cachedText,
+				font,
+				430,
+				100,
+			out int lineCount
+			).Where(line => line is not null).ToArray();
+
+			maxLinePosition = Math.Max(lines.Length, 0);
+			linePosition = Math.Clamp(linePosition, 0, 100);
+
+			float yOffset = 0f;
+			for (int i = linePosition; i < lines.Length; i++) {
+				string text = lines[i];
+				ChatManager.DrawColorCodedStringWithShadow(
+					spriteBatch,
+					font,
+					text,
+					GetInnerDimensions().Position() + Vector2.UnitY * yOffset,
+					Color.White,
+					0f,
+					Vector2.Zero,
+					Vector2.One * scale
+				);
+
+				yOffset += scale * 25f;
+			}
+		}
+		public override void ScrollWheel(UIScrollWheelEvent evt) {
+			linePosition -= MathF.Sign(evt.ScrollWheelValue);
+		}
+	}
+	class Roguelike_UIImage : UIImage {
+		public bool Hide = false;
+		public Roguelike_UIImage(Asset<Texture2D> texture) : base(texture) {
+		}
+		public virtual void DrawImage(SpriteBatch spriteBatch) { }
+		public sealed override void Draw(SpriteBatch spriteBatch) {
+			if(Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
+			DrawImage(spriteBatch);
 		}
 	}
 }

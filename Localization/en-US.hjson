@@ -16,14 +16,12 @@ Mods: {
 			BlockWeaponEnchantment.Tooltip: A Force beyond your realm has block you from accessing it's system
 			ShowPlayerInfo.Tooltip:
 				'''
-				We are current working on show player info UI.
-				It is under working progress
-				expect it to arrive in future update !
-				What to expect in this UI:
-				Perk selected
-				Artifact selected
-				Player vanilla stats info
-				Player modded stat info (this mod stats)
+				[Player Info]
+				View your current stats, your current perks and current artifact
+				See how much you progress and how much you lack !
+				Create broken built by looking at what you current most strong at
+				Or even create synergetic build using the current stats, perks and aritfact 
+				by viewing what they do !
 				'''
 			Transmutation.Tooltip:
 				'''

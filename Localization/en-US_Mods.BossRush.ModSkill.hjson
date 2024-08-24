@@ -63,6 +63,11 @@ BulletStorm: {
 	Description: Rain down various bullet that deal 30 range damage
 }
 
+TerrorForm: {
+	DisplayName: Terror Form
+	Description: Put user into Terror form at the cost of rapidly drain their life
+}
+
 AllOrNothing: {
 	DisplayName: All Or Nothing
 	Description: Luck given you one more opportunity !

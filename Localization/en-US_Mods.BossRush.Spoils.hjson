@@ -35,7 +35,7 @@ PerkSpoil: {
 
 LostAccessorySpoil: {
 	DisplayName: Ancient Pack
-	Description: Contain 1 lost accessory
+	Description: Contain {0} lost accessory
 }
 
 RareArmorPiece: {
@@ -71,6 +71,16 @@ WeaponPotionSpoil: {
 ArmorAccessorySpoil: {
 	DisplayName: "[[i:{0}]] Chivalric Bundle [[i:{0}]]"
 	Description: Contains {0} armor piece and {1} accesories.
+}
+
+SuperRelicSpoil: {
+	DisplayName: "[Super Relic]"
+	Description: Contains 1 tier 4 relic.
+}
+
+LegendaryRelicSpoil: {
+	DisplayName: "[Legendary Relic]"
+	Description: Contains 1 super tier 6 relic.
 }
 
 RoguelikeSpoil: {
