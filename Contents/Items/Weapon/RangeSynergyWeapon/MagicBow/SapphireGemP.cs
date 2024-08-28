@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			if (player.dead || !player.active) {
 				Projectile.Kill();
 			}
-			SearchForTargets(out bool fountTarget, out float distance, out Vector2 Target);
+			Projectile.Center.LookForHostileNPC(out NPC npc, 2000);
 			count++;
 			if (count < 30) {
 				Projectile.velocity -= Projectile.velocity * 0.06f;
@@ -57,14 +57,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 					}
 				}
 				else {
-					if (distance >= 20f && fountTarget) {
-						Projectile.velocity += (Target - Projectile.Center).SafeNormalize(Vector2.UnitX) * 3f;
+					if (npc != null) {
+						Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 3f;
 						Projectile.penetrate = 1;
 						if (count % 70 == 0) {
-							Projectile.velocity = (Target - Projectile.Center).SafeNormalize(Vector2.UnitX) * 5f;
+							Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 5f;
 						}
 					}
-					else if (!fountTarget) {
+					else {
 						Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.UnitX) * 1.5f;
 					}
 				}

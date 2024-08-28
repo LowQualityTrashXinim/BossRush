@@ -1,15 +1,10 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Skill;
-using BossRush.Texture;
-using Microsoft.CodeAnalysis.Text;
+﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Graphics;
-using SteelSeries.GameSense;
 using System;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
@@ -126,14 +121,18 @@ namespace BossRush {
 	}
 
 	public class Roguelike_WrapTextUIPanel : UITextPanel<string> {
+		public bool Hide = false;
 		//Stole from ActiveArtifactDescriptionUI cause idk how to do text wrapping stuff
 		private int linePosition;
 		private int maxLinePosition;
-		private const int MAX_LINES = 6;
+		public int MAX_LINES = 0;
 		public Roguelike_WrapTextUIPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
 			DynamicSpriteFont font = FontAssets.MouseText.Value;
 			float scale = 1;
 			string cachedText = Text;
@@ -148,11 +147,11 @@ namespace BossRush {
 			out int lineCount
 			).Where(line => line is not null).ToArray();
 
-			maxLinePosition = Math.Max(lines.Length, 0);
-			linePosition = Math.Clamp(linePosition, 0, 100);
+			maxLinePosition = Math.Max(lines.Length - MAX_LINES, 0);
+			linePosition = Math.Clamp(linePosition , 0, maxLinePosition);
 
 			float yOffset = 0f;
-			for (int i = linePosition; i < lines.Length; i++) {
+			for (int i = 0; i < lines.Length; i++) {
 				string text = lines[i];
 				ChatManager.DrawColorCodedStringWithShadow(
 					spriteBatch,
@@ -168,8 +167,50 @@ namespace BossRush {
 				yOffset += scale * 25f;
 			}
 		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
+		}
 		public override void ScrollWheel(UIScrollWheelEvent evt) {
 			linePosition -= MathF.Sign(evt.ScrollWheelValue);
+		}
+	}
+	public class Roguelike_UITextPanel : UITextPanel<string> {
+		public bool Hide = false;
+		public Roguelike_UITextPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
+		}
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if(Hide) {
+				return;
+			}
+			base.DrawSelf(spriteBatch);
+		}
+		public override void Draw(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			Vector2 stringsize = ChatManager.GetStringSize(FontAssets.MouseText.Value, Text, Vector2.UnitY);
+			Height.Pixels = stringsize.Y + 10;
+			base.Draw(spriteBatch);
+		}
+	}
+	class Roguelike_UIText : UIText {
+		public bool Hide = false;
+		public Roguelike_UIText(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
+		}
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			base.DrawSelf(spriteBatch);
+		}
+		public sealed override void Draw(SpriteBatch spriteBatch) {
+			if(Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
 		}
 	}
 	class Roguelike_UIImage : UIImage {

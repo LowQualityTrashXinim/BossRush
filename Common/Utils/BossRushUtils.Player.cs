@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
 using Terraria.ID;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -20,7 +21,7 @@ namespace BossRush {
 			player.name.Contains("Debug") ||
 			player.name == "LowQualityTrashXinim" ||
 			player.name.Contains("#Beta");
-
+		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryDB.FindEntryByNPCID(NPCtype).Info.Count > 0;
 		public static int ActiveArtifact(this Player player) => player.GetModPlayer<ArtifactPlayer>().ActiveArtifact;
 		public static bool HasArtifact<T>(this Player player)
 			where T : Artifact => Artifact.GetArtifact(player.GetModPlayer<ArtifactPlayer>().ActiveArtifact) is T;
@@ -55,6 +56,101 @@ namespace BossRush {
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
 			&& item.maxStack == 1;
+		public static bool IsAVanillaSword(int type) {
+			switch (type) {
+				//Sword that have even end
+				case ItemID.TerraBlade:
+				case ItemID.Meowmere:
+				case ItemID.StarWrath:
+				//WoodSword
+				case ItemID.PearlwoodSword:
+				case ItemID.BorealWoodSword:
+				case ItemID.PalmWoodSword:
+				case ItemID.ShadewoodSword:
+				case ItemID.EbonwoodSword:
+				case ItemID.RichMahoganySword:
+				case ItemID.WoodenSword:
+				case ItemID.CactusSword:
+				//OrebroadSword
+				case ItemID.BeeKeeper:
+				case ItemID.CopperBroadsword:
+				case ItemID.TinBroadsword:
+				case ItemID.IronBroadsword:
+				case ItemID.LeadBroadsword:
+				case ItemID.SilverBroadsword:
+				case ItemID.TungstenBroadsword:
+				case ItemID.GoldBroadsword:
+				case ItemID.PlatinumBroadsword:
+				//LightSaber
+				case ItemID.PurplePhaseblade:
+				case ItemID.BluePhaseblade:
+				case ItemID.GreenPhaseblade:
+				case ItemID.YellowPhaseblade:
+				case ItemID.OrangePhaseblade:
+				case ItemID.RedPhaseblade:
+				case ItemID.WhitePhaseblade:
+				//Saber
+				case ItemID.PurplePhasesaber:
+				case ItemID.BluePhasesaber:
+				case ItemID.GreenPhasesaber:
+				case ItemID.YellowPhasesaber:
+				case ItemID.OrangePhasesaber:
+				case ItemID.RedPhasesaber:
+				case ItemID.WhitePhasesaber:
+				//Misc PreHM sword
+				case ItemID.PurpleClubberfish:
+				case ItemID.StylistKilLaKillScissorsIWish:
+				case ItemID.BladeofGrass:
+				case ItemID.FieryGreatsword:
+				case ItemID.LightsBane:
+				//HardmodeSword
+				case ItemID.MythrilSword:
+				case ItemID.AdamantiteSword:
+				case ItemID.OrichalcumSword:
+				case ItemID.TitaniumSword:
+				case ItemID.Excalibur:
+				case ItemID.TheHorsemansBlade:
+				case ItemID.Bladetongue:
+				case ItemID.DD2SquireDemonSword:
+				//Sword That shoot projectile
+				case ItemID.BeamSword:
+				case ItemID.EnchantedSword:
+				case ItemID.Starfury:
+				case ItemID.InfluxWaver:
+				case ItemID.ChlorophyteClaymore:
+				case ItemID.ChlorophyteSaber:
+				case ItemID.ChristmasTreeSword:
+				//Poke Sword
+				//Pre HM Sword
+				case ItemID.DyeTradersScimitar:
+				case ItemID.CandyCaneSword:
+				case ItemID.Muramasa:
+				case ItemID.BloodButcherer:
+				case ItemID.Katana:
+				case ItemID.FalconBlade:
+				case ItemID.BoneSword:
+				//HM sword
+				case ItemID.CobaltSword:
+				case ItemID.PalladiumSword:
+				case ItemID.IceBlade:
+				case ItemID.BreakerBlade:
+				case ItemID.Frostbrand:
+				case ItemID.Cutlass:
+				case ItemID.Seedler:
+				case ItemID.DD2SquireBetsySword:
+				case ItemID.ZombieArm:
+				case ItemID.BatBat:
+				case ItemID.TentacleSpike:
+				case ItemID.SlapHand:
+				case ItemID.Keybrand:
+				case ItemID.AntlionClaw:
+				case ItemID.HamBat:
+				case ItemID.PsychoKnife:
+					return true;
+				default:
+					return false;
+			}
+		}
 	}
 	public enum PlayerStats : byte {
 		None,
@@ -101,7 +197,6 @@ namespace BossRush {
 	public class BossRushUtilsPlayer : ModPlayer {
 		public const float PLAYERARMLENGTH = 12f;
 		public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
-		public static bool HasPlayerKillThisNPC(int NPCtype) => Main.BestiaryDB.FindEntryByNPCID(NPCtype).Info.Count > 0;
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				MouseLastPositionBeforeAnimation = Main.MouseWorld;

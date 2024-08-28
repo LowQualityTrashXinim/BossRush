@@ -87,3 +87,8 @@ RoguelikeSpoil: {
 	DisplayName: "[[i:{0}]] Utility Bundle [[i:{0}]]"
 	Description: Contains {0} skillboxes and {1} relics.
 }
+
+TrinketSpoil: {
+	DisplayName: "[ Trinket ]"
+	Description: Contains 1 trinket
+}

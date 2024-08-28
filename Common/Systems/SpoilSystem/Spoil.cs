@@ -6,6 +6,8 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using BossRush.Contents.Perks;
 using System.Collections.Generic;
+using System.IO;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class ModSpoilSystem : ModSystem {
@@ -58,5 +60,43 @@ public abstract class ModSpoil {
 	public virtual void OnChoose(Player player, int itemsource) { }
 	public sealed override string ToString() {
 		return base.ToString();
+	}
+}
+public class SpoilsPlayer : ModPlayer {
+	public List<int> LootBoxSpoilThatIsNotOpen = new List<int>();
+	public override void Initialize() {
+		LootBoxSpoilThatIsNotOpen = new();
+	}
+	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
+		ModPacket packet = Mod.GetPacket();
+		packet.Write((byte)BossRush.MessageType.Perk);
+		packet.Write((byte)Player.whoAmI);
+		packet.Write(LootBoxSpoilThatIsNotOpen.Count);
+		foreach (int item in LootBoxSpoilThatIsNotOpen) {
+			packet.Write(LootBoxSpoilThatIsNotOpen[item]);
+		}
+		packet.Send(toWho, fromWho);
+	}
+	public void ReceivePlayerSync(BinaryReader reader) {
+		LootBoxSpoilThatIsNotOpen.Clear();
+		int count = reader.ReadInt32();
+		for (int i = 0; i < count; i++)
+			LootBoxSpoilThatIsNotOpen.Add(reader.ReadInt32());
+	}
+
+	public override void CopyClientState(ModPlayer targetCopy) {
+		SpoilsPlayer clone = (SpoilsPlayer)targetCopy;
+		clone.LootBoxSpoilThatIsNotOpen = LootBoxSpoilThatIsNotOpen;
+	}
+
+	public override void SendClientChanges(ModPlayer clientPlayer) {
+		SpoilsPlayer clone = (SpoilsPlayer)clientPlayer;
+		if (LootBoxSpoilThatIsNotOpen != clone.LootBoxSpoilThatIsNotOpen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+	}
+	public override void SaveData(TagCompound tag) {
+		tag["LootBoxSpoilThatIsNotOpen"] = LootBoxSpoilThatIsNotOpen;
+	}
+	public override void LoadData(TagCompound tag) {
+		LootBoxSpoilThatIsNotOpen = tag.Get<List<int>>("LootBoxSpoilThatIsNotOpen");
 	}
 }

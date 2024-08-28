@@ -113,7 +113,8 @@ namespace BossRush.Contents.Items.Chest {
 				Item item = player.inventory[i];
 				if (item.ammo == AmmoID.None 
 					|| item.type == ItemID.EndlessMusketPouch 
-					|| item.type == ItemID.EndlessQuiver) {
+					|| item.type == ItemID.EndlessQuiver
+					|| (item.type == ItemID.CopperCoin || item.type == ItemID.GoldCoin || item.type == ItemID.SilverCoin || item.type == ItemID.PlatinumCoin && player.HasItem(ItemID.CoinGun))) {
 					continue;
 				}
 				int stackCheck = 350;
@@ -365,7 +366,6 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			player.QuickSpawnItem(source, Ammo, Amount);
 		}
-
 		List<int> Accessories = new List<int>();
 		/// <summary>
 		///      Allow user to return a list of number that contain different data to insert into chest <br/>
@@ -761,6 +761,106 @@ namespace BossRush.Contents.Items.Chest {
 						continue;
 				}
 			}
+		}
+		/// <summary>
+		/// Automatically quick drop player ammo item accordingly to weapon ammo type
+		/// </summary>
+		/// /// <param name="player">The player</param>
+		/// <param name="weapon">Weapon need to be checked</param>
+		/// <param name="AmountModifier">Modify the ammount of ammo will be given</param>
+		public static void AmmoForWeapon(int lootbox, Player player, int weapon, float AmountModifier = 1) {
+			IEntitySource entitySource = player.GetSource_OpenItem(lootbox);
+			Item weapontoCheck = ContentSamples.ItemsByType[weapon];
+			if (weapontoCheck.consumable || weapontoCheck.useAmmo == AmmoID.None) {
+				if (weapontoCheck.mana > 0) {
+					player.QuickSpawnItem(entitySource, ItemID.LesserManaPotion, 5);
+				}
+				return;
+			}
+			//The most ugly code
+			int Amount = (int)(350 * AmountModifier);
+			int Ammo;
+			if (Main.masterMode) {
+				Amount += 150;
+			}
+			List <int> DropArrowAmmo = new();
+			List<int> DropBulletAmmo = new();
+			List<int> DropDartAmmo = new();
+
+			DropArrowAmmo.AddRange(TerrariaArrayID.defaultArrow);
+			DropBulletAmmo.AddRange(TerrariaArrayID.defaultBullet);
+			DropDartAmmo.AddRange(TerrariaArrayID.defaultDart);
+
+			if (Main.hardMode) {
+				DropArrowAmmo.AddRange(TerrariaArrayID.ArrowHM);
+				DropBulletAmmo.AddRange(TerrariaArrayID.BulletHM);
+				DropDartAmmo.AddRange(TerrariaArrayID.DartHM);
+			}
+			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3) {
+				DropArrowAmmo.Add(ItemID.ChlorophyteArrow);
+				DropBulletAmmo.Add(ItemID.ChlorophyteBullet);
+			}
+			if (NPC.downedPlantBoss) {
+				DropArrowAmmo.Add(ItemID.VenomArrow);
+				DropBulletAmmo.Add(ItemID.NanoBullet);
+				DropBulletAmmo.Add(ItemID.VenomBullet);
+			}
+			if (weapontoCheck.useAmmo == AmmoID.Arrow) {
+				Ammo = Main.rand.NextFromCollection(DropArrowAmmo);
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Bullet) {
+				Ammo = Main.rand.NextFromCollection(DropBulletAmmo);
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Dart) {
+				Ammo = Main.rand.NextFromCollection(DropDartAmmo);
+			}
+			else if (weapontoCheck.mana > 0) {
+				Ammo = ItemID.LesserManaPotion;
+				Amount = (int)(10 * AmountModifier);
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Rocket) {
+				Ammo = Main.rand.Next(new int[] { ItemID.RocketI, ItemID.RocketII, ItemID.RocketIII, ItemID.RocketIV });
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Snowball) {
+				Ammo = ItemID.Snowball;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.CandyCorn) {
+				Ammo = ItemID.CandyCorn;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.JackOLantern) {
+				Ammo = ItemID.JackOLantern;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Flare) {
+				Ammo = ItemID.Flare;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Stake) {
+				Ammo = ItemID.Stake;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.StyngerBolt) {
+				Ammo = ItemID.StyngerBolt;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.NailFriendly) {
+				Ammo = ItemID.Nail;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Gel) {
+				Ammo = ItemID.Gel;
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.FallenStar) {
+				Ammo = ModContent.ItemType<StarTreasureChest>();
+				if (Amount < 1) {
+					Amount = 1;
+				}
+				else if (Amount > 1) {
+					Amount = (int)(1 * AmountModifier);
+				}
+			}
+			else if (weapontoCheck.useAmmo == AmmoID.Sand) {
+				Ammo = ItemID.SandBlock;
+			}
+			else {
+				Ammo = ItemID.WoodenArrow;
+			}
+			player.QuickSpawnItem(entitySource, Ammo, Amount);
 		}
 		/// <summary>
 		/// This function will automatically handle drop for you so no need to do it yourself

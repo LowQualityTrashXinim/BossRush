@@ -205,7 +205,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 				int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(5, 5), 0, 0, DustID.GemAmethyst);
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
 				Main.dust[dust].scale = Main.rand.NextFloat(.55f, .75f);
-				Main.dust[dust].fadeIn = 2f;
+				Main.dust[dust].fadeIn = 1;
 				Main.dust[dust].noGravity = true;
 			}
 			if (npc.Count < 1) {
@@ -244,7 +244,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 				int dust = Dust.NewDust(Projectile.Center + Main.rand.NextVector2Circular(2, 2), 0, 0, DustID.GemAmethyst);
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(5, 5);
 				Main.dust[dust].scale = Main.rand.NextFloat(.55f, .75f);
-				Main.dust[dust].fadeIn = 1.5f;
+				Main.dust[dust].fadeIn = 1f;
 				Main.dust[dust].noGravity = true;
 			}
 			Projectile.Center.LookForHostileNPC(out List<NPC> npc, 20);

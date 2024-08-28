@@ -18,6 +18,7 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Common;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -781,10 +782,27 @@ namespace BossRush.Contents.Perks {
 	}
 	public class AspectOfFirstChaos : Perk {
 		public override void SetDefaults() {
-			CanBeStack = false;
+			CanBeStack = true;
+			StackLimit = 2;
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+		}
+		public override string ModifyToolTip() {
+			if (StackAmount == 1) {
+				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
+			}
+			return base.ModifyToolTip();
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			int randcount = 1;
+			if (StackAmount >= 1) {
+				var globalproj = proj.GetGlobalProjectile<RoguelikeGlobalProjectile>();
+				if (globalproj.Source_CustomContextInfo == "AspectOfFirstChaos") {
+					if (!Main.rand.NextBool(4)) {
+						Vector2 newPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(target.Center, 300, 300);
+						Projectile.NewProjectile(proj.GetSource_FromAI(), newPos, (target.Center - newPos).SafeNormalize(Vector2.Zero) * Main.rand.Next(10, 15), Main.rand.Next(TerrariaArrayID.UltimateProjPack), proj.damage, proj.knockBack, player.whoAmI);
+					}
+				}
+			}
+			int randcount = 1 + StackAmount;
 			for (int i = 0; i < randcount; i++) {
 				if (Main.rand.NextBool(5)) {
 					randcount++;
@@ -811,7 +829,7 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			int randcount = 1;
+			int randcount = 1 + StackAmount;
 			for (int i = 0; i < randcount; i++) {
 				if (Main.rand.NextBool(5)) {
 					randcount++;
@@ -819,7 +837,7 @@ namespace BossRush.Contents.Perks {
 				}
 			}
 			if (!Main.rand.NextBool(4)) {
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 4, Main.rand.Next(TerrariaArrayID.UltimateProjPack), item.damage, item.knockBack, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item, "AspectOfFirstChaos"), player.Center, (target.Center - player.Center).SafeNormalize(Vector2.Zero) * 4, Main.rand.Next(TerrariaArrayID.UltimateProjPack), item.damage, item.knockBack, player.whoAmI);
 			}
 			bool Opportunity = Main.rand.NextBool(10);
 			int[] debuffArray =
@@ -841,10 +859,11 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!Main.rand.NextBool(4)) {
+			if (!Main.rand.NextBool(Math.Clamp(4 - StackAmount, 1, 4))) {
 				return;
 			}
-			Projectile.NewProjectile(source, position, velocity, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damage, knockback, player.whoAmI);
+			EntitySource_ItemUse_WithAmmo newsource = new EntitySource_ItemUse_WithAmmo(source.Player, source.Item, source.AmmoItemIdUsed, "AspectOfFirstChaos");
+			Projectile.NewProjectile(newsource, position, velocity, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damage, knockback, player.whoAmI);
 		}
 	}
 	public class EnergyAbsorption : Perk {
@@ -867,6 +886,26 @@ namespace BossRush.Contents.Perks {
 			modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, Additive: 1 + (player.maxMinions + player.maxTurrets) * .05f);
 			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .001f);
 			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .001f);
+		}
+	}
+	public class OathOfSword : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			if (BossRushUtils.IsAVanillaSword(player.HeldItem.type)
+				|| player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
+				&& player.HeldItem.DamageType == DamageClass.Melee) {
+				modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, 1f, 1.11f);
+				modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, Multiplicative: .45f);
+			}
+			else {
+
+				modplayer.AddStatsToPlayer(PlayerStats.MagicDMG, .45f);
+				modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, .45f);
+				modplayer.AddStatsToPlayer(PlayerStats.SummonDMG, .45f);
+			}
 		}
 	}
 }

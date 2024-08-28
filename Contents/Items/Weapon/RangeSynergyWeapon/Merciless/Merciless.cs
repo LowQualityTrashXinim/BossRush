@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange;
@@ -26,17 +27,17 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless {
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-26, 0);
 		}
-		int count = 0;
-		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (type == ProjectileID.Bullet) {
 				type = ProjectileID.ExplosiveBullet;
 			}
-			if (count == 0) {
+		}
+		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+			if (++player.GetModPlayer<Item_MercilessPlayer>().count == 1) {
 				Projectile.NewProjectile(source, position, velocity * 1.5f, ProjectileID.CannonballFriendly, damage * 4, knockback, player.whoAmI);
-				count++;
 			}
 			else {
-				count = 0;
+				player.GetModPlayer<Item_MercilessPlayer>().count = 0;
 			}
 			CanShootItem = false;
 		}
@@ -45,6 +46,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless {
 				.AddIngredient(ItemID.Boomstick)
 				.AddIngredient(ItemID.QuadBarrelShotgun)
 				.Register();
+		}
+	}
+	public class Item_MercilessPlayer : ModPlayer {
+		public int count = 0;
+		public override void Initialize() {
+			count = 0;
 		}
 	}
 }

@@ -91,8 +91,8 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ResetEffects() {
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
-		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(500);
-		modplayer.EnergyRechargeCap = (int)RechargeEnergyCap.ApplyTo(1);
+		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
+		modplayer.EnergyRechargeCap = (int)RechargeEnergyCap.ApplyTo(1) - 1;
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);

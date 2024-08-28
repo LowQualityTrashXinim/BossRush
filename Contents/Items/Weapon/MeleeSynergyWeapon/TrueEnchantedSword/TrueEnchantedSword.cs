@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword {
 	internal class TrueEnchantedSword : SynergyModItem {
 		int count = 0;
 		public override void SetDefaults() {
-			Item.BossRushDefaultMeleeShootCustomProjectile(100, 100, 150, 7f, 19, 19, BossRushUseStyle.GenericSwingDownImprove, ProjectileID.EnchantedBeam, 20, true);
+			Item.BossRushDefaultMeleeShootCustomProjectile(100, 100, 150, 7f, 19, 19, ItemUseStyleID.Swing, ProjectileID.EnchantedBeam, 20, true);
 			Item.crit = 30;
 			Item.rare = ItemRarityID.LightPurple;
 			Item.value = Item.buyPrice(platinum: 5);
@@ -24,7 +24,8 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword {
 				Vector2 Aimto = Main.MouseWorld - SkyPos;
 				Vector2 safeAim = Aimto.SafeNormalize(Vector2.UnitX);
 				if (i != 5) {
-					Projectile.NewProjectile(source, SkyPos, safeAim * 15, ProjectileID.Starfury, (int)(damage * 1.25f), knockback, player.whoAmI);
+					int proj = Projectile.NewProjectile(source, SkyPos, safeAim * 15, ProjectileID.Starfury, (int)(damage * 1.25f), knockback, player.whoAmI);
+					Main.projectile[proj].tileCollide = false;
 				}
 				else {
 					Projectile.NewProjectile(source, SkyPos, safeAim * 15, ProjectileID.SuperStar, (int)(damage * 1.25f), knockback, player.whoAmI);

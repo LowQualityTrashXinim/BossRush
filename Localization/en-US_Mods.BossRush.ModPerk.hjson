@@ -159,7 +159,7 @@ BloodStrike: {
 	DisplayName: Blood Strike
 	Description:
 		'''
-		+ Increases your global damage by 36%
+		+ Increases your multiplicative damage to 1.36x
 		+ Increases your flat damage by 7
 		- Using weapon will eat your hp by 5% of that weapon damage
 		'''
@@ -169,7 +169,7 @@ SpeedArmor: {
 	DisplayName: Speed Armor
 	Description:
 		'''
-		+ The faster you are, the better your armor become
+		+ The faster you are, the more defenses increases
 		+ Increases your movement speed by 15%
 		'''
 }
@@ -292,8 +292,8 @@ OverchargedMana: {
 	DisplayName: Overcharged Mana
 	Description:
 		'''
-		+ Your max mana is halved
-		+ Deal AOE damage and gain +33% magic damage when at max current mana
+		+ Your maximum mana is halved
+		+ Deal magic explode damage and gain +33% magic damage when you have full mana
 		'''
 }
 
@@ -329,9 +329,9 @@ KnockpackPerk: {
 	DisplayName: Physics Enjoyer
 	Description:
 		'''
-		+ Gain increases knockback
+		+ Increases your knockback
 		+ Most projectiles knockback dealt always becomes upward
-		+ Hit against enemies that have 100% KB resistance will converts knockback into flat armor penetration instead
+		+ Hitting enemies that have knockback immunity will turn knockback value into flat armor penetration
 		'''
 }
 
@@ -340,7 +340,7 @@ ImprovedManaPotion: {
 	Description:
 		'''
 		+ During mana sickness, increases mana regen capability
-		- After mana sicnkess duration is over, you can't no longer consume a mana potion for 30s
+		- After mana sicnkess duration is over, you can't consume any mana potion for 30s
 		'''
 }
 
@@ -349,7 +349,7 @@ WeaponExpert: {
 	Description:
 		'''
 		+ If default weapon damage is below or equal to 20 damage then increases damage by 100% 
-		( Note : entering hard mode, requirement will be  change to 42 damage)
+		( Note : entering hard mode, requirement will be change to 42 damage)
 		'''
 }
 
@@ -369,8 +369,17 @@ AspectOfFirstChaos: {
 		'''
 		+ Your attack randomly inflict debuff that last 30s
 		+ Occasionally you shoot out random projectile that dealt the same damage as your current weapon
-		+ Hitting enemy will also occasionally shoot out random projectile
+		+ Hitting enemy with item will also occasionally shoot out random projectile
 		+ You sometime hit enemy multiple time
+		'''
+}
+
+AspectOfFirstChaos1: {
+	DisplayName: Aspect Of First Chaos
+	Description:
+		'''
+		+ Increases the chance of spawning random projectile and doing multiple hit
+		+ Projectile that is spawn from this perk have 1 in 4 chance to spawn another different projectile
 		'''
 }
 
@@ -380,5 +389,14 @@ EnergyAbsorption: {
 		'''
 		+ Getting hit will recharge your energy for 25% of damage taken
 		+ Increases damage reduction by 10%
+		'''
+}
+OathOfSword:{
+	DisplayName: Oath Of Sword
+	Description:
+		'''
+		+ Increases your melee damage by 100% and melee multiplicative are set to 1.1x
+		- Melee multiplicative attack speed are set to 0.45x
+		- Using any other weapon that is not melee will decreases their attack damage by 65%
 		'''
 }

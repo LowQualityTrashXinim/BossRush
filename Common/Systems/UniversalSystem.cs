@@ -667,6 +667,8 @@ class Info_ArtifactImage : Roguelike_UIImage {
 class InfoUI : UIState {
 	UIPanel panel;
 	Roguelike_WrapTextUIPanel textpanel;
+	Roguelike_UITextPanel generalTextPanel;
+	Dictionary<Roguelike_UIText, int> textlist;
 	UIImageButton btn_Stats;
 	UIImageButton btn_ModStats;
 	UIImageButton btn_Artifact;
@@ -675,6 +677,8 @@ class InfoUI : UIState {
 	ExitUI btn_Exit;
 	int CurrentState = 0;
 	public override void OnInitialize() {
+		textlist = new Dictionary<Roguelike_UIText, int>();
+
 		panel = new UIPanel();
 		panel.HAlign = .35f;
 		panel.VAlign = .5f;
@@ -685,6 +689,11 @@ class InfoUI : UIState {
 		textpanel.VAlign = .5f;
 		textpanel.UISetWidthHeight(450, 600);
 		Append(textpanel);
+
+		generalTextPanel = new Roguelike_UITextPanel("");
+		generalTextPanel.UISetWidthHeight(10, 10);
+		generalTextPanel.Hide = true;
+		Append(generalTextPanel);
 
 		btn_Stats = new UIImageButton(TextureAssets.InventoryBack);
 		btn_Stats.HAlign = .5f;
@@ -728,33 +737,60 @@ class InfoUI : UIState {
 		panel.Append(btn_Exit);
 	}
 
+	private void Text_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.IsMouseHovering) {
+			Roguelike_UIText text = textlist.Keys.Where(e => e.UniqueId == affectedElement.UniqueId).FirstOrDefault();
+			if (text == null || text.Hide) {
+				return;
+			}
+			generalTextPanel.Hide = false;
+			int perkType = textlist[text];
+			generalTextPanel.SetText(ModPerkLoader.GetPerk(perkType).Description);
+			generalTextPanel.UISetPosition(Main.MouseScreen);
+		}
+	}
 
 	private void Btn_Stats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in textlist.Keys) {
+			item.Hide = true;
+		}
 		btn_Stats.SetVisibility(1, 1);
 		btn_ModStats.SetVisibility(.7f, .6f);
 		btn_Perks.SetVisibility(.7f, .6f);
 		btn_Artifact.SetVisibility(.7f, .6f);
 		CurrentState = 0;
 		Info_artifact.Hide = true;
+		generalTextPanel.Hide = true;
 	}
 	private void Btn_ModStats_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in textlist.Keys) {
+			item.Hide = true;
+		}
 		btn_ModStats.SetVisibility(1, 1);
 		btn_Stats.SetVisibility(.7f, .6f);
 		btn_Perks.SetVisibility(.7f, .6f);
 		btn_Artifact.SetVisibility(.7f, .6f);
 		CurrentState = 1;
 		Info_artifact.Hide = true;
+		generalTextPanel.Hide = true;
 	}
 	private void Btn_Artifact_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in textlist.Keys) {
+			item.Hide = true;
+		}
 		btn_Artifact.SetVisibility(1, 1);
 		btn_ModStats.SetVisibility(.7f, .6f);
 		btn_Perks.SetVisibility(.7f, .6f);
 		btn_Stats.SetVisibility(.7f, .6f);
 		CurrentState = 2;
 		Info_artifact.Hide = false;
+		generalTextPanel.Hide = true;
 	}
 
 	private void Btn_Perks_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		foreach (var item in textlist.Keys) {
+			item.Hide = false;
+		}
 		btn_Perks.SetVisibility(1, 1);
 		btn_ModStats.SetVisibility(.7f, .6f);
 		btn_Stats.SetVisibility(.7f, .6f);
@@ -762,8 +798,30 @@ class InfoUI : UIState {
 		CurrentState = 3;
 		Info_artifact.Hide = true;
 	}
-
+	public override void OnActivate() {
+		foreach (var item in textlist.Keys) {
+			textpanel.RemoveChild(item);
+		}
+		textlist.Clear();
+		Player player = Main.LocalPlayer;
+		var perkplayer = player.GetModPlayer<PerkPlayer>();
+		int counter = 0;
+		foreach (var perkType in perkplayer.perks.Keys) {
+			if (ModPerkLoader.GetPerk(perkType) != null) {
+				Roguelike_UIText text = new Roguelike_UIText(ModPerkLoader.GetPerk(perkType).DisplayName + $" | current stack : [{perkplayer.perks[perkType]}]");
+				text.OnUpdate += Text_OnUpdate;
+				text.Top.Pixels += 25 * counter;
+				text.Hide = true;
+				textpanel.Append(text);
+				textlist.Add(text, perkType);
+				counter++;
+			}
+		}
+	}
 	public override void Update(GameTime gameTime) {
+		if (panel.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		var player = Main.LocalPlayer;
 		string line;
 		switch (CurrentState) {
@@ -817,14 +875,20 @@ class InfoUI : UIState {
 				textpanel.SetText(line);
 				break;
 			case 3:
-				var perkplayer = player.GetModPlayer<PerkPlayer>();
-				line = "Current perks list : ";
-				foreach (var perkItem in perkplayer.perks.Keys) {
-					if (ModPerkLoader.GetPerk(perkItem) != null) {
-						line += "\n" + ModPerkLoader.GetPerk(perkItem).DisplayName + $" | current stack : [{perkplayer.perks[perkItem]}]";
-					}
+				foreach (var item in textlist.Keys) {
+					item.Hide = false;
 				}
-				textpanel.SetText(line);
+				if (textlist.Keys.Where(e => !e.IsMouseHovering).Count() == textlist.Keys.Count) {
+					generalTextPanel.Hide = true;
+				}
+				//var perkplayer = player.GetModPlayer<PerkPlayer>();
+				//line = "Current perks list : ";
+				//foreach (var perkItem in perkplayer.perks.Keys) {
+				//	if (ModPerkLoader.GetPerk(perkItem) != null) {
+				//		line += "\n" + ModPerkLoader.GetPerk(perkItem).DisplayName + $" | current stack : [{perkplayer.perks[perkItem]}]";
+				//	}
+				//}
+				//textpanel.SetText(line);
 				break;
 			default:
 				line = "";
@@ -893,7 +957,7 @@ internal class SkillUI : UIState {
 					Append(btn_Selection);
 				}
 				for (int i = 0; i < 10; i++) {
-					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, i, SkillHolder[i], UItype_SKILL);
+					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack17, i, SkillHolder[i], UItype_SKILL);
 					skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
 					skill.Add(skillslot);
 					Append(skill[i]);
@@ -917,7 +981,7 @@ internal class SkillUI : UIState {
 			}
 			if (exitUI == null) {
 				exitUI = new ExitUI(TextureAssets.InventoryBack10);
-				exitUI.UISetPosition(player.Center + new Vector2(300, 0), textureSize);
+				exitUI.UISetPosition(player.Center + new Vector2(275, 0), textureSize);
 				Append(exitUI);
 			}
 			if (btn_delete == null) {
@@ -974,6 +1038,12 @@ class btn_SkillDeletion : UIImage {
 			modplayer.RequestSkillRemoval_SkillHolder(SkillModSystem.SelectSkillIndex);
 			SkillModSystem.SelectSkillIndex = -1;
 		}
+	}
+	public override void Update(GameTime gameTime) {
+		if (IsMouseHovering) {
+			Main.instance.MouseText("Select a skill and click here to delete that skill");
+		}
+		base.Update(gameTime);
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
@@ -1073,10 +1143,14 @@ class btn_SkillSlotHolder : UIImageButton {
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
+		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + Texture.Size() * .5f;
+		if ((SkillModSystem.SelectInventoryIndex == whoAmI && uitype == SkillUI.UIType_INVENTORY)
+			|| (SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL)) {
+			BossRushUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
+		}
 		if (sKillID < 0 || sKillID >= SkillLoader.TotalCount) {
 			return;
 		}
-		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + Texture.Size() * .5f;
 		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillLoader.GetSkill(sKillID).Texture).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
@@ -1252,7 +1326,7 @@ class PerkUIImageButton : UIImageButton {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
-			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).Description);
+			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
 		}
 		else {
 			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
@@ -1553,44 +1627,6 @@ public class SpoilsUIButton : UIImageButton {
 				Main.instance.MouseText("");
 			}
 		}
-	}
-}
-public class SpoilsPlayer : ModPlayer {
-	public List<int> LootBoxSpoilThatIsNotOpen = new List<int>();
-	public override void Initialize() {
-		LootBoxSpoilThatIsNotOpen = new();
-	}
-	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-		ModPacket packet = Mod.GetPacket();
-		packet.Write((byte)BossRush.MessageType.Perk);
-		packet.Write((byte)Player.whoAmI);
-		packet.Write(LootBoxSpoilThatIsNotOpen.Count);
-		foreach (int item in LootBoxSpoilThatIsNotOpen) {
-			packet.Write(LootBoxSpoilThatIsNotOpen[item]);
-		}
-		packet.Send(toWho, fromWho);
-	}
-	public void ReceivePlayerSync(BinaryReader reader) {
-		LootBoxSpoilThatIsNotOpen.Clear();
-		int count = reader.ReadInt32();
-		for (int i = 0; i < count; i++)
-			LootBoxSpoilThatIsNotOpen.Add(reader.ReadInt32());
-	}
-
-	public override void CopyClientState(ModPlayer targetCopy) {
-		SpoilsPlayer clone = (SpoilsPlayer)targetCopy;
-		clone.LootBoxSpoilThatIsNotOpen = LootBoxSpoilThatIsNotOpen;
-	}
-
-	public override void SendClientChanges(ModPlayer clientPlayer) {
-		SpoilsPlayer clone = (SpoilsPlayer)clientPlayer;
-		if (LootBoxSpoilThatIsNotOpen != clone.LootBoxSpoilThatIsNotOpen) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
-	}
-	public override void SaveData(TagCompound tag) {
-		tag["LootBoxSpoilThatIsNotOpen"] = LootBoxSpoilThatIsNotOpen;
-	}
-	public override void LoadData(TagCompound tag) {
-		LootBoxSpoilThatIsNotOpen = tag.Get<List<int>>("LootBoxSpoilThatIsNotOpen");
 	}
 }
 public class TeleportUI : UIState {

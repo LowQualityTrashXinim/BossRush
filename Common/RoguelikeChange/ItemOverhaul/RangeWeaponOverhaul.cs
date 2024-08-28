@@ -203,8 +203,11 @@ namespace BossRush.Common.RoguelikeChange {
 				.Vector2RandomSpread(modplayer.SpreadModify.ApplyTo(AdditionalSpread), modplayer.SpreadModify.ApplyTo(AdditionalMulti));
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul && item.ModItem == null) {
 				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+			}
+			if (itemIsAShotgun && item.ModItem == null) {
+				return true;
 			}
 			RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
 			int amount = NumOfProjectile + modplayer.ProjectileAmountModify;
@@ -218,13 +221,10 @@ namespace BossRush.Common.RoguelikeChange {
 					Projectile.NewProjectile(new EntitySource_ItemUse_WithAmmo(player, item, item.ammo), position, velocity2, type, damage, knockback, player.whoAmI);
 				}
 			}
-			if (itemIsAShotgun) {
-				return false;
-			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul && item.ModItem == null) {
 				return;
 			}
 			RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();

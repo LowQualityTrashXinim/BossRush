@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Contents.Projectiles;
 
 namespace BossRush.Common.RoguelikeChange {
 	public class BossRushUseStyle {
@@ -22,80 +21,80 @@ namespace BossRush.Common.RoguelikeChange {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PearlwoodSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BorealWoodSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalmWoodSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ShadewoodSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EbonwoodSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RichMahoganySword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WoodenSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CactusSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BeeKeeper] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CopperBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TinBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.IronBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.LeadBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SilverBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TungstenBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GoldBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PlatinumBroadsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurplePhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BluePhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GreenPhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.YellowPhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrangePhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RedPhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WhitePhaseblade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurplePhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BluePhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GreenPhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.YellowPhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrangePhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RedPhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WhitePhasesaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurpleClubberfish] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.StylistKilLaKillScissorsIWish] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BladeofGrass] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.FieryGreatsword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.LightsBane] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.MythrilSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AdamantiteSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrichalcumSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TitaniumSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Excalibur] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TheHorsemansBlade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Bladetongue] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireDemonSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BeamSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EnchantedSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Starfury] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.InfluxWaver] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChlorophyteClaymore] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChlorophyteSaber] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChristmasTreeSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CandyCaneSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Muramasa] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DyeTradersScimitar] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BloodButcherer] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Katana] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.FalconBlade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BoneSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CobaltSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalladiumSword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.IceBlade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BreakerBlade] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Frostbrand] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Cutlass] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Seedler] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireBetsySword] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ZombieArm] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BatBat] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TentacleSpike] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SlapHand] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Keybrand] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AntlionClaw] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.HamBat] = .45f;
-			ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PsychoKnife] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PearlwoodSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BorealWoodSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalmWoodSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ShadewoodSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EbonwoodSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RichMahoganySword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WoodenSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CactusSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BeeKeeper] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CopperBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TinBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.IronBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.LeadBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SilverBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TungstenBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GoldBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PlatinumBroadsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurplePhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BluePhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GreenPhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.YellowPhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrangePhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RedPhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WhitePhaseblade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurplePhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BluePhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.GreenPhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.YellowPhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrangePhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.RedPhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.WhitePhasesaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PurpleClubberfish] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.StylistKilLaKillScissorsIWish] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BladeofGrass] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.FieryGreatsword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.LightsBane] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.MythrilSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AdamantiteSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.OrichalcumSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TitaniumSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Excalibur] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TheHorsemansBlade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Bladetongue] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireDemonSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BeamSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.EnchantedSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Starfury] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.InfluxWaver] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChlorophyteClaymore] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChlorophyteSaber] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ChristmasTreeSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CandyCaneSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Muramasa] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DyeTradersScimitar] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BloodButcherer] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Katana] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.FalconBlade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BoneSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.CobaltSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalladiumSword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.IceBlade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BreakerBlade] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Frostbrand] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Cutlass] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Seedler] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.DD2SquireBetsySword] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.ZombieArm] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BatBat] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.TentacleSpike] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.SlapHand] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.Keybrand] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.AntlionClaw] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.HamBat] = .45f;
+			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PsychoKnife] = .45f;
 		}
 		public override void SetDefaults(Item item) {
 			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
@@ -352,10 +351,6 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.ChristmasTreeSword:
 					SwingType = BossRushUseStyle.Swipe;
 					item.useTurn = false;
-					item.scale += .25f;
-					item.useTime += 20;
-					item.useAnimation += 20;
-					item.damage += (int)(item.damage * .5f);
 					break;
 				//Poke Sword
 				//Pre HM Sword
@@ -376,10 +371,6 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.Seedler:
 					SwingType = BossRushUseStyle.Poke;
 					item.useTurn = false;
-					item.scale += .25f;
-					item.useTime += 20;
-					item.useAnimation += 20;
-					item.damage += (int)(item.damage * .5f);
 					break;
 				case ItemID.DD2SquireBetsySword:
 				case ItemID.ZombieArm:
@@ -392,10 +383,6 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.PsychoKnife:
 					SwingType = BossRushUseStyle.GenericSwingDownImprove;
 					item.useTurn = false;
-					item.scale += .25f;
-					item.useTime += 20;
-					item.useAnimation += 20;
-					item.damage += (int)(item.damage * .5f);
 					break;
 				default:
 					break;
@@ -412,21 +399,9 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 			if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
 				TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction" +
-					"\nHold down right mouse to do special attack");
+					"\nHold down right mouse to do heavy attack");
 				line.OverrideColor = Color.Yellow;
 				tooltips.Add(line);
-				if (SwingType == BossRushUseStyle.Swipe) {
-					TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo", "3rd attack deal 65% more damage");
-					line2.OverrideColor = Color.Yellow;
-					tooltips.Add(line2);
-				}
-				if (SwingType == BossRushUseStyle.Poke) {
-					TooltipLine line2 = new TooltipLine(Mod, "SwingImproveCombo",
-						"Heavy attack deal 55% more damage (Activate by alt attack)" +
-						"\nThurst attack deal 25% more damage");
-					line2.OverrideColor = Color.Yellow;
-					tooltips.Add(line2);
-				}
 			}
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
@@ -436,14 +411,13 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-				if (item.useAnimation > 10) {
-					return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
-				}
 				float itemscale = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
 				MeleeOverhaulPlayer modplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
-
+				if (target.immune[player.whoAmI] > 0) {
+					return false;
+				}
 				if (modplayer.ComboNumber != 2) {
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < 20; i++) {
 						Vector2 point = player.Center + Vector2.UnitX.Vector2DistributeEvenly(10, 310, i)
 							.RotatedBy(modplayer.PlayerToMouseDirection.ToRotation()) * itemscale;
 						if (Collision.CheckAABBvLineCollision(target.Hitbox.TopLeft(), target.Size * target.scale, player.Center, point)) {
@@ -543,6 +517,20 @@ namespace BossRush.Common.RoguelikeChange {
 					break;
 			}
 		}
+		public override void ModifyItemScale(Item item, Player player, ref float scale) {
+			//if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
+			//	int duration = player.itemAnimationMax;
+			//	float thirdduration = duration / 3;
+			//	float progress;
+			//	if (player.itemAnimation < thirdduration) {
+			//		progress = player.itemAnimation / thirdduration;
+			//	}
+			//	else {
+			//		progress = (duration - player.itemAnimation) / thirdduration;
+			//	}
+			//	scale += MathHelper.SmoothStep(-.75f, .6f, progress);
+			//}
+		}
 		private void StrongThrust(Player player, MeleeOverhaulPlayer modPlayer) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
 			Poke2(player, modPlayer, percentDone);
@@ -566,7 +554,7 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		private void SwipeAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			percentDone = BossRushUtils.InExpo(percentDone, 7.5f);
+			//percentDone = BossRushUtils.InExpo(percentDone, 7.5f);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
 			float angle = MathHelper.ToRadians(135) * player.direction;
 			float start = baseAngle + angle * direct;
@@ -676,7 +664,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		private void ComboHandleSystem() {
-			if (++ComboNumber >= 3)
+			if (++ComboNumber >= 2)
 				ComboNumber = 0;
 		}
 		public override void PostUpdate() {
@@ -694,11 +682,6 @@ namespace BossRush.Common.RoguelikeChange {
 				Player.direction = PlayerToMouseDirection.X > 0 ? 1 : -1;
 			}
 			Player.attackCD = 0;
-			for (int i = 0; i < Player.meleeNPCHitCooldown.Length; i++) {
-				if (Player.meleeNPCHitCooldown[i] > 0) {
-					Player.meleeNPCHitCooldown[i]--;
-				}
-			}
 		}
 		bool JustHitANPC = false;
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -709,14 +692,6 @@ namespace BossRush.Common.RoguelikeChange {
 				Player.velocity += (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * Player.GetWeaponKnockback(item);
 				JustHitANPC = true;
 			}
-		}
-		public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
-				return;
-			}
-		}
-		private float DamageHandleSystem(Item item) {
-			return 0;
 		}
 	}
 }

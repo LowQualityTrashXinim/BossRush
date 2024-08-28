@@ -1,8 +1,8 @@
-﻿using BossRush.Contents.Projectiles;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 	internal class KnifeRevolverP : ModProjectile {
@@ -47,8 +47,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, Rotate.X, Rotate.Y, 0, default, Main.rand.NextFloat(1.25f, 1.5f));
 				Main.dust[dustnumber].noGravity = true;
 			}
-
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 5f, Projectile.owner);
+			Player player = Main.player[Projectile.owner];
+			Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 175);
+			foreach (var npc in npclist) {
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage, BossRushUtils.DirectionFromPlayerToNPC(Projectile.Center.X, npc.Center.X), knockBack: 5f));
+			}
 		}
 	}
 }

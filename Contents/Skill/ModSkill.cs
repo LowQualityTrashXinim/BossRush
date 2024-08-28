@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
@@ -7,8 +8,6 @@ using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
-using System;
-using System.Diagnostics;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {

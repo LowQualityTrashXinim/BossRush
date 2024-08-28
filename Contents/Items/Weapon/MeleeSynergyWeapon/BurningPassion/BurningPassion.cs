@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 	class BurningPassion : SynergyModItem {
@@ -25,7 +25,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 				tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit and shoot out spark flame on peak"));
 			}
 			if (modplayer.BurningPassion_SkyFracture) {
-				tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage"));
+				tooltips.Add(new TooltipLine(Mod, "SkyFracture", $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage"));
 			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {

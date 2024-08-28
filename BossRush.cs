@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.Items.Accessories.Trinket;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
@@ -13,10 +14,11 @@ namespace BossRush {
 		public static Dictionary<int, List<int>> WeaponRarityDB;
 		private static List<Item> _synergyitem;
 		private static List<Item> _lostAccs;
-
+		private static List<Item> _trinket;
 		public static List<int> ListLootboxType;
 		public static List<Item> SynergyItem => _synergyitem;
 		public static List<Item> LostAccessories => _lostAccs;
+		public static List<Item> TrinketAccessories => _trinket;
 		public override void OnModLoad() {
 			_synergyitem = new List<Item>();
 			_lostAccs = new List<Item>();
@@ -52,6 +54,10 @@ namespace BossRush {
 						_lostAccs.Add(item);
 						continue;
 					}
+				}
+				if(item.ModItem is BaseTrinket) {
+					_trinket.Add(item);
+					continue;
 				}
 				if (!item.IsAWeapon()) {
 					continue;

@@ -10,7 +10,9 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 namespace BossRush.Common;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
+
 	public int Source_ItemType = -1;
+	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
 	public int OnKill_ScatterShot = -1;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
@@ -20,6 +22,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		if (source is EntitySource_Misc parent2 && parent2.Context == "OnKill_ScatterShot") {
 			Source_FromDeathScatterShot = true;
 		}
+		Source_CustomContextInfo = source.Context;
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
 		if (Source_FromDeathScatterShot

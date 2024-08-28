@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using System.IO;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
@@ -11,8 +12,6 @@ using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
-using BossRush.Contents.Perks;
-using System.IO;
 
 namespace BossRush.Contents.Skill;
 public abstract class ModSkill : ModType {
@@ -89,9 +88,9 @@ public class SkillModSystem : ModSystem {
 	}
 }
 public class SkillHandlePlayer : ModPlayer {
-	public int EnergyCap = 500;
+	public int EnergyCap = 1500;
 	public int Energy = 0;
-	public int EnergyRechargeCap = 1;
+	public int EnergyRechargeCap = 0;
 	public int Duration = 0;
 	public int CoolDown = 0;
 	int[] SkillHolder1 = new int[10];
@@ -675,8 +674,8 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (!Activate && RechargeDelay <= 0 && CoolDown <= 0) {
-			Energy = Math.Clamp(Math.Clamp(damageDone, 0, EnergyRechargeCap) + Energy, 0, EnergyCap);
-			RechargeDelay = 10;
+			Energy = Math.Clamp(hit.Damage + Energy, 0, EnergyCap);
+			RechargeDelay = hit.Damage - EnergyRechargeCap;
 		}
 	}
 	public override void UpdateDead() {

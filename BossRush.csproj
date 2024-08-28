@@ -22,6 +22,7 @@
     <None Remove="Contents\Artifacts\TokenofPrideArtifact.png" />
     <None Remove="Contents\Artifacts\VampirismCrystalArtifact.png" />
     <None Remove="Contents\Items\TransmuteTablet.png" />
+    <None Remove="Contents\Items\Weapon\NotSynergyWeapon\OldFlamingWoodSword.png" />
     <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\Horus'sEye.png" />
     <None Remove="Localization\en-US_Mods.BossRush.Achievement.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ArmorSet.hjson" />

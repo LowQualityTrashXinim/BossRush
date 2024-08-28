@@ -89,7 +89,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 			else {
 				progress = progression / (float)halfmaxProgress;
 			}
-			float X = MathHelper.SmoothStep(-60, MaxLengthX, progress);
+			float X = MathHelper.SmoothStep(-30, MaxLengthX, progress);
 			ProgressYHandle(progression, halfmaxProgress, quadmaxProgress, out float Y);
 			Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
 			Projectile.Center = player.Center + VelocityPosition;

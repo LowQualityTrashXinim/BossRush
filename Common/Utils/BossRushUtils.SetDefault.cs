@@ -138,6 +138,15 @@ namespace BossRush {
 			}
 			return false;
 		}
+		public static void DrawAuraEffect(SpriteBatch spriteBatch,Texture2D texture ,Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
+			Vector2 origin = texture.Size() * .5f;
+			for (int i = 0; i < 3; i++) {
+				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
+			}
+		}
 		public static void DrawAuraEffect(this Item item, SpriteBatch spriteBatch,Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
 			Main.instance.LoadItem(item.type);
 			Texture2D texture = TextureAssets.Item[item.type].Value;

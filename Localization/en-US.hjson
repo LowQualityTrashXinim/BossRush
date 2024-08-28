@@ -236,6 +236,7 @@ Mods: {
 			MagicBullet.DisplayName: Magic Bullet
 			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
 			MindWaveProjectile.DisplayName: Mind Wave Projectile
+			FlamingFireSpark.DisplayName: Flaming Fire Spark
 		}
 
 		NPCs: {
@@ -517,7 +518,7 @@ Mods: {
 			}
 
 			FlamingWoodSword: {
-				Tooltip: Funny how a wooden sword got the fire aspect enchantment (TOBEREWORK)
+				Tooltip: Funny how a wooden sword got the fire aspect enchantment
 				DisplayName: Flaming Wood Sword
 			}
 
@@ -976,7 +977,7 @@ Mods: {
 			}
 
 			HyperRegenElixir: {
-				DisplayName: Hyper Regen Elixir
+				DisplayName: Hyper Regenaration Elixir
 				Tooltip:
 					'''
 					"Absorb..."
@@ -1657,6 +1658,11 @@ Mods: {
 				DisplayName: Content Tracker
 				Tooltip: ""
 			}
+
+			OldFlamingWoodSword: {
+				DisplayName: Old Flaming Wood Sword
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2083,5 +2089,6 @@ Mods: {
 		}
 
 		"Keybinds.Skill activation.DisplayName": Skill activation
+		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger Damage
 	}
 }

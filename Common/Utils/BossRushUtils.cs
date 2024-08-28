@@ -4,10 +4,10 @@ using System.Linq;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.Utilities;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -254,24 +254,6 @@ namespace BossRush {
 			if (disXWidth * disXWidth + disYHeight * disYHeight < maxDistanceDouble)
 				return true;
 			return false;
-		}
-		//Todo : make a universal form of luck
-		public static bool RNGchance(this UnifiedRandom rand, float chance) {
-			return rand.NextFloat() > chance;
-		}
-		public static void ReplaceElementInArray(int[] from, int index1, int[] destination, int index2) {
-			if (from == null || destination == null) {
-				throw new ArgumentNullException();
-			}
-			if (index1 < 0 || index1 >= from.Length) {
-				throw new IndexOutOfRangeException();
-			}
-			if (index2 < 0 || index1 >= destination.Length) {
-				throw new IndexOutOfRangeException();
-			}
-			int cache = from[index1];
-			from[index1] = destination[index2];
-			from[index2] = cache;
 		}
 	}
 	/// <summary>

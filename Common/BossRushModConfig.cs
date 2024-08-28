@@ -7,13 +7,13 @@ namespace BossRush.Common {
 		[Header($"BaseGameHeader")]
 		[ReloadRequired]
 		[DefaultValue(true)]
-		public bool BossRushMode { get; set; }
-		[DefaultValue(true)]
 		public bool SynergyMode { get; set; }
 		[DefaultValue(true)]
 		public bool RoguelikeOverhaul { get; set; }
 
 		[Header($"GameModeHeader")]
+		[DefaultValue(true)]
+		public bool BossRushMode { get; set; }
 		[DefaultValue(false)]
 		public bool SynergyFeverMode { get; set; }
 		[ReloadRequired]

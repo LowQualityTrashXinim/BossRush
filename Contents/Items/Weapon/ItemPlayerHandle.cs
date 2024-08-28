@@ -90,6 +90,8 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool Swotaff_Spear = false;
 
 		public bool NatureSelection_NatureCrystal = false;
+
+		public bool HorusEye_ResonanceScepter = false;
 		public override void PreUpdate() {
 		}
 		public override void ResetEffects() {
@@ -156,6 +158,8 @@ namespace BossRush.Contents.Items.Weapon {
 			DeathBySpark_AleThrowingGlove = false;
 
 			NatureSelection_NatureCrystal = false;
+
+			HorusEye_ResonanceScepter = false;
 		}
 	}
 	public class GlobalItemHandle : GlobalItem {

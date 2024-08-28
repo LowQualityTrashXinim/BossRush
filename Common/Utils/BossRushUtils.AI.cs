@@ -90,10 +90,6 @@ namespace BossRush {
 			npc = null;
 			return false;
 		}
-
-		public static void MinionShootProjectileGeneric(this Projectile projectile, Vector2 velocity, int type) {
-			Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, velocity, type, projectile.damage, projectile.knockBack, projectile.owner);
-		}
 		public static void ProjectileSwordSwingAI(Projectile projectile, Player player, Vector2 PositionFromMouseToPlayer, int swing = 1, int swingdegree = 120) {
 			if (projectile.timeLeft > player.itemAnimationMax) {
 				projectile.timeLeft = player.itemAnimationMax;

@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Common;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 	internal abstract class MagicBow : SynergyModItem {
@@ -16,7 +18,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item75;
-			Item.DamageType = Terraria.ModLoader.DamageClass.Ranged;
+			Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			for (int i = 0; i < 20; i++) {
