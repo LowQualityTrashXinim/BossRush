@@ -884,8 +884,8 @@ namespace BossRush.Contents.Perks {
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, Additive: 1 + (player.maxMinions + player.maxTurrets) * .05f);
-			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .001f);
-			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .001f);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxMinion, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .01f);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxSentry, Base: player.GetTotalDamage(DamageClass.Ranged).ApplyTo(1) * .01f);
 		}
 	}
 	public class OathOfSword : Perk {

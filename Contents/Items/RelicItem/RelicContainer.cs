@@ -43,14 +43,7 @@ namespace BossRush.Contents.Items.RelicItem {
 		Color auraColor = new Color(255, 100, 0, 30);
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
-			Main.instance.LoadItem(Type);
-			var texture = TextureAssets.Item[Type].Value;
-			for (int i = 0; i < 3; i++) {
-				spriteBatch.Draw(texture, position + new Vector2(positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(positionRotateX, -positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-				spriteBatch.Draw(texture, position + new Vector2(-positionRotateX, -positionRotateX), null, auraColor, 0, origin, scale, SpriteEffects.None, 0);
-			}
+			Item.DrawAuraEffect(spriteBatch, position, 3, 3, auraColor, 0, 1);
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
 	}

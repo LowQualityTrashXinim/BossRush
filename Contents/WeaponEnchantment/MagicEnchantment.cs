@@ -298,7 +298,7 @@ public class BookOfSkulls : ModEnchantment {
 			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(5);
 			int damage = (int)player.GetDamage(DamageClass.Magic).ApplyTo(item.damage);
 			for (int i = 0; i < 5; i++) {
-				Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i);
+				Vector2 vel = Vector2.One.Vector2DistributeEvenly(5, 360, i) * 5;
 				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ProjectileID.BookOfSkullsSkull, damage, item.knockBack, player.whoAmI);
 			}
 		}

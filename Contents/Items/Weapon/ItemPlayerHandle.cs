@@ -12,6 +12,10 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.Localization;
+using BossRush.Common;
+using System.Collections.ObjectModel;
+using Terraria.UI.Chat;
+using ReLogic.Graphics;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -166,7 +170,11 @@ namespace BossRush.Contents.Items.Weapon {
 		public override bool InstancePerEntity => true;
 		public bool LostAccessories = false;
 		public bool DebugItem = false;
+		public bool ExtraInfo = false;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			if(item.ModItem.Mod != Mod) {
+				return;
+			}
 			if (DebugItem) {
 				TooltipLine line = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
 				line.Text += " [Debug]";
@@ -175,6 +183,12 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			if (item.ModItem is Relic relic && relic.relicColor != null) {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = relic.relicColor.MultiColor(5);
+			}
+			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
+			if (ExtraInfo && item.ModItem != null) {
+				if (!moddedplayer.Hold_Shift) {
+					tooltips.Add(new TooltipLine(Mod, "Shift_Info", "[Hold shift for more infomation]") { OverrideColor = Color.Gray });
+				}
 			}
 			if (item.accessory && LostAccessories) {
 				TooltipLine line_Name = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
@@ -187,6 +201,47 @@ namespace BossRush.Contents.Items.Weapon {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = Color.DarkGoldenrod;
 				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") { OverrideColor = Color.LightGoldenrodYellow });
 			}
+		}
+		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
+			if (item.ModItem.Mod != Mod) {
+				return true;
+			}
+			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
+			if (ExtraInfo && item.ModItem != null)
+				if (moddedplayer.Hold_Shift) {
+					float width;
+					float height = -16;
+					Vector2 pos;
+
+					string value = $"Mods.BossRush.Items.{item.ModItem.Name}.ExtraInfo";
+					string ExtraInfo = Language.GetTextValue(value);
+
+					DynamicSpriteFont font = FontAssets.MouseText.Value;
+
+					if (Main.MouseScreen.X < Main.screenWidth / 2) {
+						string widest = lines.OrderBy(n => ChatManager.GetStringSize(font, n.Text, Vector2.One).X).Last().Text;
+						width = ChatManager.GetStringSize(font, widest, Vector2.One).X;
+
+						pos = new Vector2(x, y) + new Vector2(width + 30, 0);
+					}
+					else {
+						width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
+
+						pos = new Vector2(x, y) - new Vector2(width + 30, 0);
+					}
+
+					width = ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).X + 20;
+
+					height += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
+
+
+					Utils.DrawInvBG(Main.spriteBatch, new Rectangle((int)pos.X - 10, (int)pos.Y - 10, (int)width + 20, (int)height + 20), new Color(25, 100, 55) * 0.85f);
+
+
+					Utils.DrawBorderString(Main.spriteBatch, ExtraInfo, pos, Color.White);
+					pos.Y += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
+				}
+			return base.PreDrawTooltip(item, lines, ref x, ref y);
 		}
 	}
 	public abstract class SynergyModItem : ModItem {

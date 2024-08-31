@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.Spawner {
 			width = 55; height = 52;
 		}
 		public override bool CanUseItem(Player player) {
-			return Main.hardMode && NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 && !NPC.AnyNPCs(NPCID.Plantera);
+			return !NPC.AnyNPCs(NPCID.Plantera);
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

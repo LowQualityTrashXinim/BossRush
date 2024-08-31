@@ -51,6 +51,10 @@ namespace BossRush.Common.ChallengeMode {
 			if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
 				self.ZoneUnderworldHeight = true;
 			}
+			if(IsInBiome(self, BiomeAreaID.Jungle, Room)) {
+				self.ZoneJungle = true;
+				self.ZoneRockLayerHeight = true;
+			}
 		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {

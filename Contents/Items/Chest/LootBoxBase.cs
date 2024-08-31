@@ -111,8 +111,8 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			for (int i = 0; i < player.inventory.Length; i++) {
 				Item item = player.inventory[i];
-				if (item.ammo == AmmoID.None 
-					|| item.type == ItemID.EndlessMusketPouch 
+				if (item.ammo == AmmoID.None
+					|| item.type == ItemID.EndlessMusketPouch
 					|| item.type == ItemID.EndlessQuiver
 					|| (item.type == ItemID.CopperCoin || item.type == ItemID.GoldCoin || item.type == ItemID.SilverCoin || item.type == ItemID.PlatinumCoin && player.HasItem(ItemID.CoinGun))) {
 					continue;
@@ -125,27 +125,26 @@ namespace BossRush.Contents.Items.Chest {
 					item.stack = stackCheck;
 				}
 			}
+			var entitySource = player.GetSource_OpenItem(Type);
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 				OnRightClick(player, modplayer);
-				if (!UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
-					return;
-				}
-				var entitySource = player.GetSource_OpenItem(Type);
-				if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
-					Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
-					if (relicitem.ModItem is Relic relic) {
-						relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+				if (UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
+					if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+						Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+						if (relicitem.ModItem is Relic relic) {
+							relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+						}
 					}
-				}
-				else {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
-				}
-				player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
-				if (modplayer.LootboxCanDropSpecialPotion) {
-					player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
-				}
-				if (modplayer.CanDropSynergyEnergy) {
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
+					else {
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
+					}
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
+					if (modplayer.LootboxCanDropSpecialPotion) {
+						player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
+					}
+					if (modplayer.CanDropSynergyEnergy) {
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
+					}
 				}
 			}
 			else {
@@ -153,6 +152,9 @@ namespace BossRush.Contents.Items.Chest {
 				system.ActivateSpoilsUI(Type);
 			}
 			AbsoluteRightClick(player);
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX) && Main.rand.NextBool(1500)) {
+				player.QuickSpawnItem(entitySource, ModContent.ItemType<RainbowLootBox>());
+			}
 		}
 		/// <summary>
 		/// This won't be change no matter what
@@ -390,7 +392,9 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual List<int> SafePostAddAcc() => new List<int>() { };
 
 		private void AddAcc(List<int> flag) {
-			Accessories.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC)) {
+				Accessories.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
+			}
 			for (int i = 0; i < flag.Count; i++) {
 				switch (flag[i]) {
 					case 0:
@@ -783,7 +787,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (Main.masterMode) {
 				Amount += 150;
 			}
-			List <int> DropArrowAmmo = new();
+			List<int> DropArrowAmmo = new();
 			List<int> DropBulletAmmo = new();
 			List<int> DropDartAmmo = new();
 
@@ -868,7 +872,10 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="type"></param>
 		/// <param name="player"></param>
 		public static void GetAccessories(int type, Player player) {
-			List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc, .. BossRushModSystem.LostAccessories.Select(i => i.type)];
+			List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc];
+			if(UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC)) {
+				acc.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
+			}
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
 			player.QuickSpawnItem(entitySource, Main.rand.Next(acc));
 		}

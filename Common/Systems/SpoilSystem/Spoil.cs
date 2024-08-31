@@ -36,6 +36,9 @@ public static class SpoilDropRarity {
 	public readonly static int SuperRare = ItemRarityID.Purple;
 	public readonly static int SSR = ItemRarityID.Red;
 	public static bool ChanceWrapper(float chance) {
+		if(!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS)) {
+			return false;
+		}
 		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().HasPerk<BlessingOfPerk>()) {
 			chance *= 1.5f;
 		}

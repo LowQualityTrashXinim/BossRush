@@ -8,6 +8,8 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.RoguelikeChange;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -113,6 +115,11 @@ namespace BossRush {
 			LootBoxBase.GetWeapon(out int Weapon, out int amount);
 			player.QuickSpawnItem(null, Weapon, amount);
 		}
+		public static void Set_InfoItem(this Item item, bool ExtraInfo) {
+			if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+				globalitem.ExtraInfo = ExtraInfo;
+			}
+		} 
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
 			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return false;

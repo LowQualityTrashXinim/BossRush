@@ -65,7 +65,7 @@ internal class RareSpoil {
 			RareValue = SpoilDropRarity.Rare;
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
-			return SpoilDropRarity.RareDrop();
+			return SpoilDropRarity.RareDrop() && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC);
 		}
 		public override string FinalDescription() {
 			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));

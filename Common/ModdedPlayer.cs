@@ -16,6 +16,7 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.BossRushItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Common.WorldGenOverhaul;
+using Terraria.GameInput;
 
 namespace BossRush.Common {
 	class ModdedPlayer : ModPlayer {
@@ -27,6 +28,10 @@ namespace BossRush.Common {
 		public int HowManyBossIsAlive = 0;
 		public bool ItemIsUsedDuringBossFight = false;
 
+		public bool Hold_Shift = false;
+		public override void ProcessTriggers(TriggersSet triggersSet) {
+			Hold_Shift = triggersSet.SmartSelect;
+		}
 		public override void OnEnterWorld() {
 			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;

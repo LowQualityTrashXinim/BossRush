@@ -1289,7 +1289,16 @@ Mods: {
 
 			Trinket6: {
 				DisplayName: Trinket6
-				Tooltip: ""
+				Tooltip:
+					'''
+					[[c/8888ea:Passive]]
+					Increases your defensive effectiveness by 1.5x
+					[[c/8888ea:Active]]
+					For each time you get hit, you gain a "stack"
+					For each "stack" your defense decrease by 10% ( maximum defense decrease is 50% )
+					But during the "stack" active, your damage is increased by how much defense effectiveness you have
+					The "stack" will last for 5s, after losing a "stack", you gain 5 defenses as compensation that last for 1 min
+					'''
 			}
 
 			Trinket7: {
@@ -1663,6 +1672,19 @@ Mods: {
 				DisplayName: Old Flaming Wood Sword
 				Tooltip: ""
 			}
+
+			DivinityStone: {
+				DisplayName: Divinity Stone
+				Tooltip: ""
+				ExtraInfo:
+					'''
+					[Divinity Stone]
+					Increases player : 
+					[+] Life regenarate rate by 10% and 2 flat
+					[+] Mana regen by 25% and 2 flat 
+					[+] Static defenses by 15% and 3 flat
+					'''
+			}
 		}
 
 		Buffs: {
@@ -1961,6 +1983,11 @@ Mods: {
 				DisplayName: Crystalized
 				Description: Mods.BossRush.Buffs.Crystalized.Description
 			}
+
+			Trinket6_DefensesBonus_Buff: {
+				DisplayName: Fraggile defense
+				Description: Mods.BossRush.Buffs.Trinket6_DefensesBonus_Buff.Description
+			}
 		}
 
 		Configs: {
@@ -2070,6 +2097,7 @@ Mods: {
 
 				Headers: {
 					QoLHeader: Quality of Life
+					LuckDepartmentHeader: Luck department
 					BaseGameHeader: Base game
 					GameModeHeader: Game Mode
 					LegacyHeader: Legacy
@@ -2084,6 +2112,42 @@ Mods: {
 				LegacyBossRushWorldGen: {
 					Label: Legacy Boss Rush World Gen
 					Tooltip: ""
+				}
+
+				RareSpoils: {
+					Label: Rare Spoils
+					Tooltip:
+						'''
+						Enable to have a chance to get rare spoil from spoil system
+						Disable to only have common spoil in spoil system
+						'''
+				}
+
+				RareLootbox: {
+					Label: Rare Lootbox
+					Tooltip:
+						'''
+						Enable to have a chance to get rare drop from lootbox
+						Disable to remove rare drop from lootbox
+						'''
+				}
+
+				LostAccessory: {
+					Label: Lost Accessory
+					Tooltip:
+						'''
+						Enable to have a chance to get Lost accessories
+						Disable to not include Lost accessories into loot pool
+						'''
+				}
+
+				WeaponEnchantment: {
+					Label: Weapon Enchantment
+					Tooltip:
+						'''
+						Enable to gain access to weapon enchantment system
+						Disable to revoke access to weapon enchantment system
+						'''
 				}
 			}
 		}

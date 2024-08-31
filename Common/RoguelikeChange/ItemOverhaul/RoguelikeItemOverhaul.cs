@@ -20,7 +20,7 @@ namespace BossRush.Common.RoguelikeChange {
 				return;
 			}
 			VanillaBuff(entity);
-			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal) {
+			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal || entity.type == ItemID.LifeFruit) {
 				entity.useTime = entity.useAnimation = 12;
 				entity.autoReuse = true;
 			}

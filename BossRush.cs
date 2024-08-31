@@ -20,6 +20,7 @@ namespace BossRush {
 		public static List<Item> LostAccessories => _lostAccs;
 		public static List<Item> TrinketAccessories => _trinket;
 		public override void OnModLoad() {
+			_trinket = new();
 			_synergyitem = new List<Item>();
 			_lostAccs = new List<Item>();
 			WeaponRarityDB = new Dictionary<int, List<int>>();

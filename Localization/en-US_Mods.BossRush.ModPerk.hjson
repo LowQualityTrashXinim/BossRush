@@ -391,12 +391,22 @@ EnergyAbsorption: {
 		+ Increases damage reduction by 10%
 		'''
 }
-OathOfSword:{
+
+OathOfSword: {
 	DisplayName: Oath Of Sword
 	Description:
 		'''
 		+ Increases your melee damage by 100% and melee multiplicative are set to 1.1x
 		- Melee multiplicative attack speed are set to 0.45x
 		- Using any other weapon that is not melee will decreases their attack damage by 65%
+		'''
+}
+
+HybridRanger: {
+	DisplayName: Spirit Ranger
+	Description:
+		'''
+		+ Your range damage is increased by how many max minion and sentry slot are
+		+ Increases your max minion and sentry slot by your range damage to 1:100
 		'''
 }

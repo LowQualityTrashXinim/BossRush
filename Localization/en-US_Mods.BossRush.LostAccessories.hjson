@@ -211,3 +211,12 @@ SpiritEmblem: {
 		Crystalized debuff will make minion contact damage or summon damage have a chance to be increased by 55%
 		'''
 }
+
+DivinityStone: {
+	DisplayName: Divinity Stone
+	Tooltip:
+		'''
+		Increases your crit chance by 5
+		Upon critial hit a enemy, you gain a divinity stack
+		'''
+}

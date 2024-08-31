@@ -31,6 +31,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.SpecialReward;
+using Terraria.DataStructures;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -110,6 +111,32 @@ internal class UniversalSystem : ModSystem {
 			return config.LegacyBossRushWorldGen;
 		return false;
 	}
+	public const string CHECK_LOSTACC = "lostacc";
+	public const string CHECK_RARELOOTBOX = "lootboxrare";
+	public const string CHECK_RARESPOILS = "rarespoil";
+	public const string CHECK_WWEAPONENCHANT = "weaponenchant";
+	public const string CHECK_RELICRANDOMVALUE = "relicvalue";
+
+	/// <summary>
+	/// Check config setting
+	/// </summary>
+	/// <param name="option">use <see cref="CHECK_LOSTACC"/> and other related string</param>
+	/// <returns>
+	///		return true if config is enable<br/>
+	///		return false if config is disable
+	/// </returns>
+	public static bool LuckDepartment(string option) {
+		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		if (option == CHECK_LOSTACC)
+			return config.LostAccessory;
+		if (option == CHECK_RARELOOTBOX)
+			return config.RareLootbox;
+		if (option == CHECK_RARESPOILS)
+			return config.RareSpoils;
+		if (option == CHECK_WWEAPONENCHANT)
+			return config.WeaponEnchantment;
+		return false;
+	}
 	internal UserInterface userInterface;
 	internal UserInterface perkInterface;
 	internal UserInterface skillInterface;
@@ -169,7 +196,16 @@ internal class UniversalSystem : ModSystem {
 			infoUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
+		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
 	}
+
+	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
+		if(CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
+			orig();
+		}
+		Main.hardMode = true;
+	}
+
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
 			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
@@ -631,7 +667,8 @@ class UISystemMenu : UIState {
 		}
 	}
 	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()) {
+		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
+			&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
 			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
 		}
 	}

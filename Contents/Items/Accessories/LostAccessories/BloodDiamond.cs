@@ -30,7 +30,7 @@ public class BloodDiamondPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateEquips() {
-		if (Stack <= 0) {
+		if (Stack <= 0 || !BloodDiamond) {
 			return;
 		}
 		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();

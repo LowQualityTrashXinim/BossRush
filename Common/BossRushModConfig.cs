@@ -23,7 +23,15 @@ namespace BossRush.Common {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Ascension { get; set; }
-
+		[Header($"LuckDepartmentHeader")]
+		[DefaultValue(true)]
+		public bool RareSpoils { get; set; }
+		[DefaultValue(true)]
+		public bool RareLootbox { get; set; }
+		[DefaultValue(true)]
+		public bool LostAccessory { get; set; }
+		[DefaultValue(true)]
+		public bool WeaponEnchantment { get; set; }
 		[Header($"QoLHeader")]
 		[DefaultValue(false)]
 		public bool AutoHardCore { get; set; }

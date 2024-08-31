@@ -12,7 +12,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.rare = ItemRarityID.Purple;
 		}
 		public override bool ChestUseOwnLogic => true;
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			int chestRanAmount = Main.rand.Next(2, 9);
 			for (int i = 0; i < chestRanAmount; i++) {
