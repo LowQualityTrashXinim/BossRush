@@ -237,6 +237,8 @@ Mods: {
 			ForbiddenTomeProjectile.DisplayName: Forbidden Tome Projectile
 			MindWaveProjectile.DisplayName: Mind Wave Projectile
 			FlamingFireSpark.DisplayName: Flaming Fire Spark
+			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
+			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
 		}
 
 		NPCs: {
@@ -2154,5 +2156,14 @@ Mods: {
 
 		"Keybinds.Skill activation.DisplayName": Skill activation
 		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger Damage
+
+		Prefixes: {
+			Cunning.DisplayName: Cunning
+			Evasive.DisplayName: Evasive
+			Spiky.DisplayName: Spiky
+			Stealthy.DisplayName: Stealthy
+			Vampiric.DisplayName: Vampiric
+			Vital.DisplayName: Vital
+		}
 	}
 }

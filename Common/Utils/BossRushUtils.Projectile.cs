@@ -53,7 +53,7 @@ namespace BossRush {
 			}
 		}
 		public static void ProjectileAlphaDecay(this Projectile projectile, float timeCountdown) {
-			projectile.alpha = (int)MathHelper.Lerp(0, 255, (timeCountdown - projectile.timeLeft) / timeCountdown);
+			projectile.alpha = Math.Clamp((int)MathHelper.Lerp(0, 255, (timeCountdown - projectile.timeLeft) / timeCountdown), 0, 255);
 		}
 		public static void BresenhamCircle(Vector2 pos, int radius, Color color) {
 			Texture2D texture = ModContent.Request<Texture2D>(BossRushTexture.WHITEDOT).Value;

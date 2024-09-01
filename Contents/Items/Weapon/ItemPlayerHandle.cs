@@ -172,6 +172,9 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			if(item.ModItem == null) {
+				return;
+			}
 			if(item.ModItem.Mod != Mod) {
 				return;
 			}
@@ -203,6 +206,9 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
+			if (item.ModItem == null) {
+				return true;
+			}
 			if (item.ModItem.Mod != Mod) {
 				return true;
 			}

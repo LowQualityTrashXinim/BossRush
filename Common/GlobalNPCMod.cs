@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
 using System;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {
@@ -228,6 +229,12 @@ namespace BossRush.Common {
 			npcLoot.Add(IsABoss);
 			npcLoot.Add(SynergyRule);
 			npcLoot.Add(legacyLootboxCheck);
+		}
+		public override void OnKill(NPC npc) {
+			if(npc.boss) {
+				UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+				system.ListOfBossKilled.Add(npc.type);
+			}
 		}
 	}
 }

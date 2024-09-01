@@ -6,9 +6,13 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Accessories.Trinket;
+using BossRush.Common.RoguelikeChange.Prefixes;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
+		public override void Load() {
+			base.Load();
+		}
 	}
 	public class BossRushModSystem : ModSystem {
 		public static Dictionary<int, List<int>> WeaponRarityDB;
@@ -37,6 +41,14 @@ namespace BossRush {
 				return Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
 			}
 			return -1;
+		}
+		public override void PostAddRecipes() {
+			if (ModLoader.TryGetMod("PrefixImproved", out Mod PrefixImproved)) {
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Vampiric>()).Name, (byte)4);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Evasive>()).Name, (byte)4);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Cunning>()).Name, (byte)2);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Stealthy>()).Name, (byte)2);
+			}
 		}
 		public override void PostSetupContent() {
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();

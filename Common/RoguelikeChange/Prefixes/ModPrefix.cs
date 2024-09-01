@@ -1,0 +1,99 @@
+﻿using Terraria;
+using Terraria.ModLoader;
+using BossRush.Common.Systems;
+using System.Collections.Generic;
+
+namespace BossRush.Common.RoguelikeChange.Prefixes;
+	
+public abstract class BaseAccPrefix : ModPrefix {
+	public override PrefixCategory Category => PrefixCategory.Accessory;
+	public virtual float PowerLevel => 1;
+	public sealed override bool CanRoll(Item item) {
+		return true;
+	}
+	public sealed override bool AllStatChangesHaveEffectOn(Item item) {
+		return base.AllStatChangesHaveEffectOn(item);
+	}
+	public sealed override void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult, ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus) {
+		base.SetStats(ref damageMult, ref knockbackMult, ref useTimeMult, ref scaleMult, ref shootSpeedMult, ref manaMult, ref critBonus);
+	}
+	public override void ModifyValue(ref float valueMult) {
+		valueMult *= 1f + 0.05f * PowerLevel;
+	}
+
+}
+public class Evasive : BaseAccPrefix  {
+	public override float PowerLevel => base.PowerLevel * 4;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.DodgeChance += PowerLevel * .01f;
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+4% dodge chance") {
+			IsModifier = true,
+		};
+	}
+}
+public class Vital : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel * 2;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.MaxHP, PowerLevel * 10);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20 maximum life") {
+			IsModifier = true,
+		};
+	}
+}
+
+public class Cunning : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel * 2;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, PowerLevel * .07f);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+14% critical damage") {
+			IsModifier = true,
+		};
+	}
+}
+
+public class Stealthy : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel * 2;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage, PowerLevel * .14f);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+28% undamaged enemy") {
+			IsModifier = true,
+		};
+	}
+}
+
+public class Spiky : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.Thorn, PowerLevel * .06f);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+6% thorn") {
+			IsModifier = true,
+		};
+	}
+}
+public class Vampiric : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.LifeSteal += .04f;
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+1% life steal") {
+			IsModifier = true,
+		};
+	}
+}

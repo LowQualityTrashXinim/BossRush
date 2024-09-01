@@ -8,6 +8,16 @@ using BossRush.Common.Systems;
 
 namespace BossRush.Common.ChallengeMode {
 	internal class BossRushGlobalNPC : GlobalNPC {
+		public override void SetDefaults(NPC entity) {
+			if(entity.boss && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
+				float multiplier = ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count * .5f;
+				if(Main.hardMode) {
+					multiplier *= 2;
+				}
+				entity.lifeMax = (int)(3000 + (3000 * multiplier));
+				entity.damage = (int)(30 + (30 * multiplier));
+			}
+		}
 		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				return;

@@ -73,7 +73,8 @@ namespace BossRush.Common {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					yield return new Item(ItemID.ManaCrystal, 5);
+					yield return new Item(ItemID.LifeCrystal, 15);
+					yield return new Item(ItemID.ManaCrystal, 9);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
 					yield return new Item(ModContent.ItemType<BiomeToggle>());
 					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
@@ -92,8 +93,6 @@ namespace BossRush.Common {
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);
-					yield return new Item(ItemID.LifeCrystal, 15);
-					yield return new Item(ItemID.ManaCrystal, 4);
 				}
 				if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
 					yield return new Item(ModContent.ItemType<RainbowLootBox>());

@@ -335,14 +335,18 @@ internal class UniversalSystem : ModSystem {
 		infoUser.SetState(null);
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
+	public List<int> ListOfBossKilled = new List<int>();
 	public override void ClearWorld() {
 		GivenBossSpawnItem = new List<int>();
+		ListOfBossKilled = new();
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
+		tag["ListOfBossKilled"] = ListOfBossKilled;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
+		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {

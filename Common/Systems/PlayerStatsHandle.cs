@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using System.Linq;
 using Terraria.ID;
+using System;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -69,6 +70,24 @@ public class PlayerStatsHandle : ModPlayer {
 
 	public StatModifier Iframe = new StatModifier();
 	//public float LuckIncrease = 0; 
+	/// <summary>
+	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>
+	/// Having the chance value over 1f would obviously give it 100% dodge chance
+	/// </summary>
+	public float DodgeChance = 0;
+	/// <summary>
+	/// This is a universal life steal that work depend on weapon damage <br/>
+	/// This have a forced cool down so that it is not OP <br/>
+	/// The cool down are made public and free to be modify cause fun
+	/// </summary>
+	public float LifeSteal = 0;
+	public int LifeSteal_CoolDown = 0;
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if(LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
+			Player.Heal((int)Math.Ceiling(hit.Damage * LifeSteal));
+			LifeSteal_CoolDown = 60;
+		}
+	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		if (target.life >= target.lifeMax) {
@@ -77,6 +96,13 @@ public class PlayerStatsHandle : ModPlayer {
 		if (target.buffType.Where(i => Main.debuff[i]).Any()) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage);
 		}
+	}
+	public override bool FreeDodge(Player.HurtInfo info) {
+		if(Main.rand.NextFloat() <= DodgeChance) {
+			Player.AddImmuneTime(info.CooldownCounter, 44);
+			return true;
+		}
+		return base.FreeDodge(info);
 	}
 	public override void PostHurt(Player.HurtInfo info) {
 		base.PostHurt(info);
@@ -138,7 +164,10 @@ public class PlayerStatsHandle : ModPlayer {
 		DebuffDamage = StatModifier.Default;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
+		DodgeChance = 0;
+		LifeSteal = 0;
 		successfullyKillNPCcount = 0;
+		LifeSteal_CoolDown = BossRushUtils.CountDown(LifeSteal_CoolDown);
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));

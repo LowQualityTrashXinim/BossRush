@@ -103,7 +103,24 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.ChainKnife:
 					item.damage += 12;
 					break;
-
+				case ItemID.AmethystStaff:
+					item.shoot = ModContent.ProjectileType<AmethystMagicalBolt>();
+					item.damage -= 3;
+					item.useTime = 3;
+					item.useAnimation = 15;
+					item.reuseDelay = 30;
+					item.mana = 6;
+					item.shootSpeed = 1;
+					break;
+				case ItemID.Topaz:
+					item.shoot = ModContent.ProjectileType<TopazMagicalBolt>();
+					item.damage -= 4;
+					item.useTime = 3;
+					item.useAnimation = 18;
+					item.reuseDelay = 33;
+					item.mana = 6;
+					item.shootSpeed = 1;
+					break;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -111,6 +128,14 @@ namespace BossRush.Common.RoguelikeChange {
 				return;
 			}
 			switch (item.type) {
+				case ItemID.AmethystStaff:
+					velocity = velocity.Vector2RotateByRandom(10);
+					position = position.PositionOFFSET(velocity,50);
+					break;
+				case ItemID.TopazStaff:
+					velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
+					position = position.PositionOFFSET(velocity, 50);
+					break;
 				case ItemID.Stynger:
 					SoundEngine.PlaySound(item.UseSound);
 					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
