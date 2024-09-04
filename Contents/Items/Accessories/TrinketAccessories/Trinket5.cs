@@ -7,6 +7,9 @@ using System.Collections.Generic;
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket5 : BaseTrinket {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override void TrinketDefault() {
+		Item.Set_InfoItem(true);
+	}
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		player.statDefense += 25;
 		player.GetModPlayer<Trinket5_ModPlayer>().Trinket5 = true;
@@ -74,7 +77,7 @@ public class Trinket5_Buff : TrinketBuff {
 	}
 	public override void UpdateTrinketPlayer(Player player, TrinketPlayer modplayer, ref int buffIndex) {
 		player.statDefense += player.GetModPlayer<Trinket5_ModPlayer>().HitCount;
-		modplayer.DamageStats += player.statDefense * .001f;
+		modplayer.GetStatsHandle().AddStatsToPlayer(PlayerStats.PureDamage, 1 + player.statDefense * .001f);
 	}
 	public override void OnEnded(Player player) {
 		player.GetModPlayer<Trinket5_ModPlayer>().HitCount = 0;

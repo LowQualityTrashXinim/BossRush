@@ -230,8 +230,8 @@ BlessingOfTitan: {
 	Description:
 		'''
 		+ Increases defense by 15% and additional 10 defenses
-		+ Increases max hp by 100
-		+ Increases thorn by 200%
+		+ Increases max hp by 50
+		+ Increases thorn damage by 100% ( Flat )
 		'''
 }
 

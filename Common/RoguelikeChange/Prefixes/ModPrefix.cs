@@ -4,7 +4,7 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Common.RoguelikeChange.Prefixes;
-	
+
 public abstract class BaseAccPrefix : ModPrefix {
 	public override PrefixCategory Category => PrefixCategory.Accessory;
 	public virtual float PowerLevel => 1;
@@ -22,7 +22,7 @@ public abstract class BaseAccPrefix : ModPrefix {
 	}
 
 }
-public class Evasive : BaseAccPrefix  {
+public class Evasive : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel * 4;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -38,7 +38,7 @@ public class Vital : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel * 2;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.MaxHP, PowerLevel * 10);
+		modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Base: PowerLevel * 10);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
 		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20 maximum life") {
@@ -77,10 +77,10 @@ public class Spiky : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.Thorn, PowerLevel * .06f);
+		modplayer.AddStatsToPlayer(PlayerStats.Thorn, Base: PowerLevel * .06f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+6% thorn") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+6% thorn damage") {
 			IsModifier = true,
 		};
 	}

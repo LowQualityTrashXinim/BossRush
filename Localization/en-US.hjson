@@ -1220,13 +1220,17 @@ Mods: {
 				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
-					Increases your hp by 20%
+					Increases your maximum health by 25%
 					[[c/8888ea:Active]]
 					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
-					During the [c/b7bf5c:Swift Steal] :
+					After the buff end, you receive 60 second cooldown before you can receive [c/b7bf5c:Swift Steal] again					
+					'''
+				ExtraInfo:
+					'''
+					[c/b7bf5c:Swift Steal] :
 					Increases your damage by 1 for each 5 health you currently have
-					Hitting a enemy will increases your max health by 5% and movement speed by 10% (max out at 6 time with 2s coold down between hit)
-					After the buff end, you receive 60 second cooldown before you can receive [c/b7bf5c:Swift Steal] again
+					Hitting a enemy will increases your max health by 5% and movement speed by 10% 
+					(max out at 6 time with 2s coold down between hit)
 					'''
 			}
 
@@ -1237,11 +1241,19 @@ Mods: {
 					[[c/8888ea:Passive]]
 					Increases inflicting debuff time by 35%
 					[[c/8888ea:Active]]
-					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second
-					[c/b7bf5c:Samsara of Retribution] debuff : deal 10 damage over time
+					Hitting enemy inflict [c/b7bf5c:Samsara of Retribution] debuff for 1 second 
+					and grant you [c/b7bf5c:Samsara of Tribution]
+					'''
+				ExtraInfo:
+					'''
+					[c/b7bf5c:Samsara of Retribution] 
+					Deal 10 damage over time onto enemy
 					Hitting enemy that already have [c/b7bf5c:Samsara of Retribution] will strengthen the debuff
 					Dealing critical strike to enemy that have [c/b7bf5c:Samsara of Retribution] deal extra damage
-					You will receive [c/b7bf5c:Samsara of Retribution Buff] which increases your damage base on how many you hit for 15s ( with 25s cooldown )
+
+					[c/b7bf5c:Samsara of Tribution]
+					Increases your damage base on amount of NPC you inflict [c/b7bf5c:Samsara of Retribution] for 15s 
+					( Have 25s cooldown )
 					'''
 			}
 
@@ -1252,9 +1264,13 @@ Mods: {
 					[[c/8888ea:Passive]]
 					Increases your critical strike chance by 12%
 					[[c/8888ea:Active]]
-					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye]
-					[c/b7bf5c:Divine Eye] increases your critical strike chance by 3% and damage by 6% (capped at 4 [c/b7bf5c:Divine Eye])
-					You can get an additional [c/b7bf5c:Divine Eye] every 2 seconds when hitting enemy ( also reset the [c/b7bf5c:Divine Eye] duration )
+					When dealing critical strike to a enemy, you gain a [c/b7bf5c:Divine Eye] ( 2s cool down )
+					'''
+				ExtraInfo:
+					'''
+					[[c/b7bf5c:Divine Eye]]
+					Increases your critical strike chance by 3% and damage by 6%
+					(You can only have at most 4 [c/b7bf5c:Divine Eye])
 					If no critical strike to be dealt after 7 second passed, 1 [c/b7bf5c:Divine Eye] is lost
 					'''
 			}
@@ -1283,9 +1299,14 @@ Mods: {
 					Increases defense by 25
 					[[c/8888ea:Active]]
 					Upon getting hit, grants [c/b7bf5c:Gradual Rockshell] for 10 seconds. (40s cooldown)
-					[c/b7bf5c:Gradual Rockshell]: increases defence by 1 every successful melee hit (stackable, 0.1 cooldown).
-					Heals the player at the end of the buff based on defense gained. Excess healing bursts into an AoE explosion.
-					During [c/b7bf5c:Gradual Rockshell], your defense also increases your damage output for each 10 defenses you have.
+					'''
+				ExtraInfo:
+					'''
+					[[c/b7bf5c:Gradual Rockshell]]
+					Increases defence by 1 every successful melee hit (stackable, 0.1 cooldown).
+					Heals the player at the end of the buff based on defense gained.
+					Excess healing bursts into an AoE explosion.
+					For each 10 defenses you have, increases your damage by 1%
 					'''
 			}
 
@@ -1836,8 +1857,8 @@ Mods: {
 			}
 
 			Samsara_of_Retribution_Buff: {
-				DisplayName: Samsara of Retribution
-				Description: Mods.BossRush.Buffs.Samsara_of_Retribution_Buff.Description
+				DisplayName: Samsara of Tribution
+				Description: " "
 			}
 
 			HyperRegen: {
@@ -1847,7 +1868,7 @@ Mods: {
 
 			Trinket5_Buff: {
 				DisplayName: Trinket5_ Buff
-				Description: Mods.BossRush.Buffs.Trinket5_Buff.Description
+				Description: " "
 			}
 
 			ManaReleaseBuff: {
@@ -1988,7 +2009,17 @@ Mods: {
 
 			Trinket6_DefensesBonus_Buff: {
 				DisplayName: Fraggile defense
-				Description: Mods.BossRush.Buffs.Trinket6_DefensesBonus_Buff.Description
+				Description: " "
+			}
+
+			AdAstraDebuff: {
+				DisplayName: Ad Astra Debuff
+				Description: Mods.BossRush.Buffs.AdAstraDebuff.Description
+			}
+
+			PowerBankDebuff: {
+				DisplayName: Power Bank Debuff
+				Description: Mods.BossRush.Buffs.PowerBankDebuff.Description
 			}
 		}
 

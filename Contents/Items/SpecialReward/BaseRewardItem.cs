@@ -17,7 +17,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			tooltips.Add(new TooltipLine(Mod, "DonHitReward",
 				"Overcoming a small challenge \n" +
-				"Increase max HP by 50 " +
+				"Increase maximum health by 15 " +
 				"Can only be used once \n"
 				));
 		}

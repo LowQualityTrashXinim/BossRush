@@ -1,13 +1,16 @@
 ﻿using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 public abstract class BaseTrinket : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.DefaultToAccessory();
+		TrinketDefault();
 	}
+	public virtual void TrinketDefault() { }
 	public virtual void UpdateTrinket(Player player, TrinketPlayer modplayer) { }
 	public sealed override void UpdateEquip(Player player) {
 		UpdateTrinket(player, player.GetModPlayer<TrinketPlayer>());
@@ -15,33 +18,14 @@ public abstract class BaseTrinket : ModItem {
 }
 //This will store all the information about the trinket and how they will interact with player
 public class TrinketPlayer : ModPlayer {
-	public StatModifier HPstats = StatModifier.Default;
-	public StatModifier ManaStats = StatModifier.Default;
-	public StatModifier DamageStats = StatModifier.Default;
-	public override void Initialize() {
-		HPstats = StatModifier.Default;
-		ManaStats = StatModifier.Default;
-		DamageStats = StatModifier.Default;
-	}
-	public override void ResetEffects() {
-		HPstats = StatModifier.Default;
-		ManaStats = StatModifier.Default;
-		DamageStats = StatModifier.Default;
-	}
+	public PlayerStatsHandle GetStatsHandle() => Player.GetModPlayer<PlayerStatsHandle>();
+
 	public int counterToFullPi = 0;
 	public override void PreUpdate() {
 		if (++counterToFullPi >= 360)
 			counterToFullPi = 0;
 	}
 	public override void PostUpdate() {
-	}
-	public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
-		base.ModifyMaxStats(out health, out mana);
-		health = health.CombineWith(HPstats);
-		mana = mana.CombineWith(ManaStats);
-	}
-	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-		damage = damage.CombineWith(DamageStats);
 	}
 }
 public class Trinket_GlobalNPC : GlobalNPC {

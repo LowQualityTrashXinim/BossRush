@@ -81,14 +81,14 @@ public class TransmutationUI : UIImage {
 		this.player = player;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
-		if (item != null && Main.mouseItem.type != ItemID.None) {
+		if (item != null && Main.mouseItem.type != ItemID.None && (Main.mouseItem.IsAWeapon() || Main.mouseItem.ModItem is Relic)) {
 			//Swap item here
 			Item itemcache = Main.mouseItem.Clone();
 			Main.mouseItem = item.Clone();
 			player.inventory[58] = item.Clone();
 			item = itemcache.Clone();
 		}
-		else if (Main.mouseItem.type != ItemID.None && item == null) {
+		else if (Main.mouseItem.type != ItemID.None && item == null && (Main.mouseItem.IsAWeapon() || Main.mouseItem.ModItem is Relic)) {
 			//When the slot is available
 			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
@@ -196,7 +196,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		if (item.Count < 2) {
 			return false;
 		}
-		if (item.Where(i => !i.IsAWeapon()).Count() < 2) {
+		if (item.Where(i => i.IsAWeapon()).Count() < 2) {
 			return false;
 		}
 		//var itemType = item.Select(i => i.type);

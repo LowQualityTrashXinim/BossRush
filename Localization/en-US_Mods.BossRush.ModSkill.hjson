@@ -1,11 +1,46 @@
+Replay: {
+	DisplayName: Replay
+	Description: Duplicates the preceding skill, but at double its Energy Cost
+}
+
+Rewind: {
+	DisplayName: Rewind
+	Description: Rewinds to the beginning once, but doubles the Energy Cost of preceding skills
+}
+
+FastForward: {
+	DisplayName: Fast Forward
+	Description: Halves the cooldown and duration of succeeding skills
+}
+
+PowerSaver: {
+	DisplayName: Energy Saver
+	Description: Halves the Energy Cost of all the active skill
+}
+
+TranquilMind: {
+	DisplayName: Tranquil Mind
+	Description: Increases skill duration by 5 seconds
+}
+
 HellFireArrowRain: {
-	DisplayName: Hell Fire Arrow Rain
-	Description: Rain down hellfire arrow
+	DisplayName: Hellborn Cascade
+	Description: Casts a cascade of Hellfire Arrows that phases through blocks, dealing 28 damage each
 }
 
 Increases_3xDamage: {
-	DisplayName: 3x Damage
-	Description: Increases your damage by 300%
+	DisplayName: Power Bank
+	Description: Increases damage by +300%, but decreases Energy Recharge by 50% for 1 minute
+}
+
+Icicle: {
+	DisplayName: Icicle
+	Description: Shoots out up to 6 icicle every 5 ticks towards your cursor, dealing 18 damage and inflicting the 'Chilled' debuff
+}
+
+MeteorShower: {
+	DisplayName: Meteor Shower
+	Description: Rain down meteor towards your cursor, dealing 44 base damage + 44% weapon damage in a large radius
 }
 
 SpiritBurst: {
@@ -14,28 +49,28 @@ SpiritBurst: {
 }
 
 InfiniteManaSupply: {
-	DisplayName: Mana overflow
-	Description: Drastically increases your mana regen
+	DisplayName: Astral Overcharge
+	Description: Overflows your character with Mana Regeneration
 }
 
 GuaranteedCrit: {
-	DisplayName: Guaranteed Critical
-	Description: Ensure every attack you did during skill duration is critical
+	DisplayName: Hyperfocus
+	Description: Ensures every hit within set skill duration crits
 }
 
 RapidHealing: {
-	DisplayName: Rapid Healing
-	Description: Every 0.1s heal player for 6 health
+	DisplayName: Rapid Overflow
+	Description: Regenerates 6 health every 0.1 seconds
 }
 
 FireBall: {
 	DisplayName: Fire ball
-	Description: Shoot out a fire ball every 10 tick that aim toward cursor
+	Description: Shoot out a fire ball every 10 tick deal 43 magic damage
 }
 
 StarFury: {
-	DisplayName: Fury of Star
-	Description: Not to be confused with Star Fury, a Star shoot down every 2s
+	DisplayName: Starfell Shower
+	Description: Shoots down a Fallen Star every 2 seconds at mouse location, dealing 1000 damage
 }
 
 WoodSwordSpirit: {
@@ -54,21 +89,26 @@ Overclock: {
 }
 
 BloodToPower: {
-	DisplayName: Blood To Power
-	Description: Take half of your current health to increases your damage
+	DisplayName: Sacrificial Pact
+	Description: Halves your current health to increase your damage% proportionally to the sacrified amount
+}
+
+AdAstra: {
+	DisplayName: Ad Astra
+	Description: Increases the damage of your next hit by +500%, but then lowers your attack, speed and defense by 90% for 15 seconds.
 }
 
 BulletStorm: {
-	DisplayName: Bullet storm
+	DisplayName: Bullet Whirlwind
 	Description: Rain down various bullet that deal 30 range damage
 }
 
 TerrorForm: {
 	DisplayName: Terror Form
-	Description: Put user into Terror form at the cost of rapidly drain their life
+	Description: Offers major improvements to several stats, but rapidly drains your life
 }
 
 AllOrNothing: {
 	DisplayName: All Or Nothing
-	Description: Luck given you one more opportunity !
+	Description: Blesses your next hit with a randomised damage output
 }

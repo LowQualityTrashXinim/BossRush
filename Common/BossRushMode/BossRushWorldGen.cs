@@ -30,6 +30,7 @@ namespace BossRush.Common.ChallengeMode {
 			self.ZoneCrimson = false;
 			self.ZoneJungle = false;
 			self.ZoneSnow = false;
+			self.ZoneHallow = false;
 			self.ZoneUnderworldHeight = false;
 			Tile tileSafely = Framing.GetTileSafely(self.Center);
 			if (tileSafely != null)
@@ -38,22 +39,28 @@ namespace BossRush.Common.ChallengeMode {
 			if (IsInBiome(self, BiomeAreaID.Corruption, Room)) {
 				self.ZoneCorrupt = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Crimson, Room)) {
+			else if (IsInBiome(self, BiomeAreaID.Crimson, Room)) {
 				self.ZoneCrimson = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.BeeNest, Room)) {
+			else if (IsInBiome(self, BiomeAreaID.BeeNest, Room)) {
 				self.ZoneJungle = true;
 				self.ZoneRockLayerHeight = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Tundra, Room)) {
+			else if (IsInBiome(self, BiomeAreaID.Tundra, Room)) {
 				self.ZoneSnow = true;
 			}
-			if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
+			else if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
 				self.ZoneUnderworldHeight = true;
 			}
-			if(IsInBiome(self, BiomeAreaID.Jungle, Room)) {
+			else if(IsInBiome(self, BiomeAreaID.Jungle, Room)) {
 				self.ZoneJungle = true;
 				self.ZoneRockLayerHeight = true;
+			}
+			else if (IsInBiome(self, BiomeAreaID.Hallow, Room)) {
+				self.ZoneHallow = true;
+			}
+			if(ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
+				Main.hardMode = true;
 			}
 		}
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
@@ -439,6 +446,39 @@ namespace BossRush.Common.ChallengeMode {
 				GenerationHelper.FastPlaceWall(a, b, WallID.CorruptionUnsafe1);
 			});
 			Room.Add(BiomeAreaID.Corruption, new List<Rectangle> { rect });
+		}
+		[Task]
+		public void Create_HallowArena() {
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(9, 15, 3, 3);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.HallowArena, 1)
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Pearlstone);
+				}
+				else if (color.R == 200 && color.G == 10) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.HallowedGrass);
+				}
+				else if (color.R == 200 && color.G == 100) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.HallowUnsafe1);
+			});
+			Room.Add(BiomeAreaID.Hallow, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_DungeonArena() {

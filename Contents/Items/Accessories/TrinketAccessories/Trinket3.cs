@@ -4,15 +4,20 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Accessories.Trinket;
 internal class Trinket_of_Ample_Perception : BaseTrinket {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override void TrinketDefault() {
+		Item.Set_InfoItem(true);
+	}
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
 		Trinket_of_Ample_Perception_ModPlayer trinketplayer = player.GetModPlayer<Trinket_of_Ample_Perception_ModPlayer>();
 		trinketplayer.Trinket_of_Ample_Perception = true;
-		player.GetCritChance(DamageClass.Generic) += 12 + 3 * trinketplayer.PointCounter;
-		modplayer.DamageStats += .06f * trinketplayer.PointCounter;
+		PlayerStatsHandle statsplayer = modplayer.GetStatsHandle();
+		statsplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 12 + 3 * trinketplayer.PointCounter);
+		statsplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1 + .06f * trinketplayer.PointCounter);
 	}
 }
 public class Trinket_of_Ample_Perception_ModPlayer : ModPlayer {

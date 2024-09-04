@@ -206,7 +206,7 @@ SpiritEmblem: {
 		'''
 		Increases your max minion, sentry slot by 1
 		You burst out a wave of confusion to enemy that get too close to you
-		When you are close to a minion, your defense increases by 15
+		When you are close to a minion, your defense increases by 2
 		Hitting enemy with whip or item with similiar damage to whip will inflict enemy with Crystalized debuff
 		Crystalized debuff will make minion contact damage or summon damage have a chance to be increased by 55%
 		'''

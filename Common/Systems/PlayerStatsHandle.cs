@@ -68,6 +68,8 @@ public class PlayerStatsHandle : ModPlayer {
 
 	public StatModifier SynergyDamage = new StatModifier();
 
+	public StatModifier EnergyRecharge = new StatModifier();
+
 	public StatModifier Iframe = new StatModifier();
 	//public float LuckIncrease = 0; 
 	/// <summary>
@@ -83,7 +85,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public float LifeSteal = 0;
 	public int LifeSteal_CoolDown = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if(LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
+		if (LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
 			Player.Heal((int)Math.Ceiling(hit.Damage * LifeSteal));
 			LifeSteal_CoolDown = 60;
 		}
@@ -98,7 +100,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override bool FreeDodge(Player.HurtInfo info) {
-		if(Main.rand.NextFloat() <= DodgeChance) {
+		if (Main.rand.NextFloat() <= DodgeChance) {
 			Player.AddImmuneTime(info.CooldownCounter, 44);
 			return true;
 		}
@@ -106,7 +108,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void PostHurt(Player.HurtInfo info) {
 		base.PostHurt(info);
-		if(!info.PvP) {
+		if (!info.PvP) {
 			//Player.immuneTime += (int)(Iframe - 1).ApplyTo(Player.immuneTime);
 		}
 	}
@@ -119,7 +121,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void ResetEffects() {
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
-		modplayer.EnergyRechargeCap = (int)RechargeEnergyCap.ApplyTo(1) - 1;
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
 		Player.jumpSpeedBoost = UpdateJumpBoost.ApplyTo(Player.jumpSpeedBoost);
 		Player.manaRegen = (int)UpdateManaRegen.ApplyTo(Player.manaRegen);
@@ -269,6 +270,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.EnergyCap:
 				EnergyCap = EnergyCap.CombineWith(StatMod);
 				break;
+			case PlayerStats.EnergyRecharge:
+				EnergyRecharge = EnergyRecharge.CombineWith(StatMod);
+				break;
 			case PlayerStats.EnergyRechargeCap:
 				RechargeEnergyCap = RechargeEnergyCap.CombineWith(StatMod);
 				break;
@@ -304,101 +308,11 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
 	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
-		if (stat == PlayerStats.None) {
-			return;
-		}
 		if (Additive < 0) {
 			Additive += 1;
 		}
 		StatModifier StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
-		switch (stat) {
-			case PlayerStats.MeleeDMG:
-				Player.GetDamage(DamageClass.Melee) = Player.GetDamage(DamageClass.Melee).CombineWith(StatMod);
-				break;
-			case PlayerStats.RangeDMG:
-				Player.GetDamage(DamageClass.Ranged) = Player.GetDamage(DamageClass.Ranged).CombineWith(StatMod);
-				break;
-			case PlayerStats.MagicDMG:
-				Player.GetDamage(DamageClass.Magic) = Player.GetDamage(DamageClass.Magic).CombineWith(StatMod);
-				break;
-			case PlayerStats.SummonDMG:
-				Player.GetDamage(DamageClass.Summon) = Player.GetDamage(DamageClass.Summon).CombineWith(StatMod);
-				break;
-			case PlayerStats.MovementSpeed:
-				UpdateMovement = UpdateMovement.CombineWith(StatMod);
-				break;
-			case PlayerStats.JumpBoost:
-				UpdateJumpBoost = UpdateJumpBoost.CombineWith(StatMod);
-				break;
-			case PlayerStats.MaxHP:
-				UpdateHPMax = UpdateHPMax.CombineWith(StatMod);
-				break;
-			case PlayerStats.RegenHP:
-				UpdateHPRegen = UpdateHPRegen.CombineWith(StatMod);
-				break;
-			case PlayerStats.MaxMana:
-				UpdateManaMax = UpdateManaMax.CombineWith(StatMod);
-				break;
-			case PlayerStats.RegenMana:
-				UpdateManaRegen = UpdateManaRegen.CombineWith(StatMod);
-				break;
-			case PlayerStats.Defense:
-				UpdateDefenseBase = UpdateDefenseBase.CombineWith(StatMod);
-				break;
-			case PlayerStats.PureDamage:
-				Player.GetDamage(DamageClass.Generic) = Player.GetDamage(DamageClass.Generic).CombineWith(StatMod);
-				break;
-			case PlayerStats.CritChance:
-				Player.GetCritChance(DamageClass.Generic) = StatMod.ApplyTo(Player.GetCritChance(DamageClass.Generic));
-				break;
-			case PlayerStats.CritDamage:
-				UpdateCritDamage = UpdateCritDamage.CombineWith(StatMod);
-				break;
-			case PlayerStats.DefenseEffectiveness:
-				UpdateDefEff = UpdateDefEff.CombineWith(StatMod);
-				break;
-			case PlayerStats.Thorn:
-				UpdateThorn = UpdateThorn.CombineWith(StatMod);
-				break;
-			case PlayerStats.MaxMinion:
-				UpdateMinion = UpdateMinion.CombineWith(StatMod);
-				break;
-			case PlayerStats.MaxSentry:
-				UpdateSentry = UpdateSentry.CombineWith(StatMod);
-				break;
-			case PlayerStats.AuraRadius:
-				AuraModifier = AuraModifier.CombineWith(StatMod);
-				break;
-			case PlayerStats.ShieldHealth:
-				ShieldHealth = ShieldHealth.CombineWith(StatMod);
-				break;
-			case PlayerStats.ShieldEffectiveness:
-				ShieldEffectiveness = ShieldEffectiveness.CombineWith(StatMod);
-				break;
-			case PlayerStats.AttackSpeed:
-				AttackSpeed = AttackSpeed.CombineWith(StatMod);
-				break;
-			case PlayerStats.LifeStealEffectiveness:
-				LifeStealEffectiveness = LifeStealEffectiveness.CombineWith(StatMod);
-				break;
-			case PlayerStats.FullHPDamage:
-				UpdateFullHPDamage = UpdateFullHPDamage.CombineWith(StatMod);
-				break;
-			case PlayerStats.StaticDefense:
-				StaticDefense = StaticDefense.CombineWith(StatMod);
-				break;
-			case PlayerStats.DebuffDamage:
-				DebuffDamage = DebuffDamage.CombineWith(StatMod);
-				break;
-			case PlayerStats.SynergyDamage:
-				SynergyDamage = SynergyDamage.CombineWith(StatMod);
-				break;
-			case PlayerStats.Iframe:
-				Iframe = Iframe.CombineWith(StatMod);
-				break;
-			default:
-				break;
-		}
+		AddStatsToPlayer(stat, StatMod);
 	}
 }
 public class PlayerStatsHandleSystem : ModSystem {
@@ -425,7 +339,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void On_Player_GiveImmuneTimeForCollisionAttack(On_Player.orig_GiveImmuneTimeForCollisionAttack orig, Player self, int time) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
-			orig(self,(int)(modplayer.Iframe - 1).ApplyTo(time) + time);
+			orig(self, (int)(modplayer.Iframe - 1).ApplyTo(time) + time);
 		}
 		else {
 			orig(self, time);
@@ -433,7 +347,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void On_Player_AddImmuneTime(On_Player.orig_AddImmuneTime orig, Player self, int cooldownCounterId, int immuneTime) {
-		if(self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, cooldownCounterId, (int)(modplayer.Iframe - 1).ApplyTo(immuneTime) + immuneTime);
 		}
 		else {
@@ -464,7 +378,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private int On_Projectile_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float(On_Projectile.orig_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float orig, IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner, float ai0, float ai1, float ai2) {
-		if(Type == ProjectileID.BookOfSkullsSkull) {
+		if (Type == ProjectileID.BookOfSkullsSkull) {
 
 		}
 		if (Owner < 0 || Owner > 255) {

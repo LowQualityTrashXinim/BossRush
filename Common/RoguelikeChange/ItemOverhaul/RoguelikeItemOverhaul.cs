@@ -112,7 +112,7 @@ namespace BossRush.Common.RoguelikeChange {
 					item.mana = 6;
 					item.shootSpeed = 1;
 					break;
-				case ItemID.Topaz:
+				case ItemID.TopazStaff:
 					item.shoot = ModContent.ProjectileType<TopazMagicalBolt>();
 					item.damage -= 4;
 					item.useTime = 3;

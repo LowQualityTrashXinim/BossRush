@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Utils;
+using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
@@ -19,6 +20,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using BossRush.Common.ChallengeMode;
 using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.Potion;
 using Terraria.GameContent.UI.States;
 using BossRush.Contents.Items.Spawner;
 using BossRush.Common.WorldGenOverhaul;
@@ -28,10 +30,9 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items.aDebugItem.RelicDebug;
-using BossRush.Contents.Items.Potion;
 using BossRush.Contents.Items.SpecialReward;
-using Terraria.DataStructures;
+using BossRush.Contents.Items.aDebugItem.RelicDebug;
+using Steamworks;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -200,7 +201,7 @@ internal class UniversalSystem : ModSystem {
 	}
 
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
-		if(CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
+		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
 			orig();
 		}
 		Main.hardMode = true;
@@ -1681,23 +1682,90 @@ public class TeleportUI : UIState {
 		Append(panel);
 
 		btn_List = new List<btn_Teleport>();
-		Dictionary<int, short> stuff = new Dictionary<int, short>();
-		stuff.Add(ItemID.SlimeCrown, BiomeAreaID.Slime);
-		stuff.Add(ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm);
-		stuff.Add(ItemID.WormFood, BiomeAreaID.Corruption);
-		stuff.Add(ItemID.BloodySpine, BiomeAreaID.Crimson);
-		stuff.Add(ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon);
-		stuff.Add(ItemID.Abeemination, BiomeAreaID.BeeNest);
-		stuff.Add(ItemID.DeerThing, BiomeAreaID.Tundra);
-		stuff.Add(ItemID.GuideVoodooDoll, BiomeAreaID.Underground);
-		for (int i = 0; i < stuff.Count; i++) {
-			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuff.Count - 1));
-			int keyvalue = stuff.Keys.ElementAt(i);
-			btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuff[keyvalue]);
+		Dictionary<int, short> stuffPreHM = new Dictionary<int, short>();
+		stuffPreHM.Add(ItemID.SlimeCrown, BiomeAreaID.Slime);
+		stuffPreHM.Add(ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm);
+		stuffPreHM.Add(ItemID.WormFood, BiomeAreaID.Corruption);
+		stuffPreHM.Add(ItemID.BloodySpine, BiomeAreaID.Crimson);
+		stuffPreHM.Add(ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon);
+		stuffPreHM.Add(ItemID.Abeemination, BiomeAreaID.BeeNest);
+		stuffPreHM.Add(ItemID.DeerThing, BiomeAreaID.Tundra);
+		stuffPreHM.Add(ItemID.GuideVoodooDoll, BiomeAreaID.Underground);
+
+		for (int i = 0; i < stuffPreHM.Count; i++) {
+			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
+			int keyvalue = stuffPreHM.Keys.ElementAt(i);
+			btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffPreHM[keyvalue]);
 			btn.VAlign = .4f;
 			btn.HAlign = Hvalue;
 			btn_List.Add(btn);
 			Append(btn);
+		}
+		if (Main.hardMode) {
+			Dictionary<int, short> stuffHM = new Dictionary<int, short>();
+			stuffHM.Add(ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.MechanicalSkull, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.MechanicalWorm, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.MechanicalEye, BiomeAreaID.Hallow);
+			stuffHM.Add(ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle);
+			stuffHM.Add(ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle);
+			stuffHM.Add(ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon);
+			stuffHM.Add(ItemID.EmpressButterfly, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.TruffleWorm, BiomeAreaID.Forest);
+			for (int i = 8; i < stuffHM.Count; i++) {
+				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
+				int keyvalue = stuffHM.Keys.ElementAt(i);
+				btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffHM[keyvalue]);
+				btn.VAlign = .6f;
+				btn.HAlign = Hvalue;
+				btn_List.Add(btn);
+				Append(btn);
+			}
+		}
+	}
+	public override void OnActivate() {
+		foreach (var item in btn_List) {
+			item.Remove();
+		}
+		btn_List.Clear();
+		Dictionary<int, short> stuffPreHM = new Dictionary<int, short>();
+		stuffPreHM.Add(ItemID.SlimeCrown, BiomeAreaID.Slime);
+		stuffPreHM.Add(ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm);
+		stuffPreHM.Add(ItemID.WormFood, BiomeAreaID.Corruption);
+		stuffPreHM.Add(ItemID.BloodySpine, BiomeAreaID.Crimson);
+		stuffPreHM.Add(ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon);
+		stuffPreHM.Add(ItemID.Abeemination, BiomeAreaID.BeeNest);
+		stuffPreHM.Add(ItemID.DeerThing, BiomeAreaID.Tundra);
+		stuffPreHM.Add(ItemID.GuideVoodooDoll, BiomeAreaID.Underground);
+		for (int i = 0; i < stuffPreHM.Count; i++) {
+			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
+			int keyvalue = stuffPreHM.Keys.ElementAt(i);
+			btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffPreHM[keyvalue]);
+			btn.VAlign = .4f;
+			btn.HAlign = Hvalue;
+			btn_List.Add(btn);
+			Append(btn);
+		}
+		if (Main.hardMode) {
+			Dictionary<int, short> stuffHM = new Dictionary<int, short>();
+			stuffHM.Add(ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.MechanicalSkull, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.MechanicalWorm, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.MechanicalEye, BiomeAreaID.Hallow);
+			stuffHM.Add(ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle);
+			stuffHM.Add(ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle);
+			stuffHM.Add(ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon);
+			stuffHM.Add(ItemID.EmpressButterfly, BiomeAreaID.Hallow);
+			stuffHM.Add(ItemID.TruffleWorm, BiomeAreaID.Forest);
+			for (int i = 0; i < stuffHM.Count; i++) {
+				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuffHM.Count - 1));
+				int keyvalue = stuffHM.Keys.ElementAt(i);
+				btn_Teleport btn = new btn_Teleport(TextureAssets.InventoryBack, keyvalue, stuffHM[keyvalue]);
+				btn.VAlign = .6f;
+				btn.HAlign = Hvalue;
+				btn_List.Add(btn);
+				Append(btn);
+			}
 		}
 	}
 }

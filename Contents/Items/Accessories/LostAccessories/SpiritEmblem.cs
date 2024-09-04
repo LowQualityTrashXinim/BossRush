@@ -41,7 +41,7 @@ public class SpiritEmblemPlayer : ModPlayer {
 			}
 			float PlayerDisToMinion = Vector2.DistanceSquared(Player.Center, projectile.Center);
 			if (PlayerDisToMinion < 275 * 275) {
-				Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 15);
+				Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: 2);
 			}
 		}
 	}

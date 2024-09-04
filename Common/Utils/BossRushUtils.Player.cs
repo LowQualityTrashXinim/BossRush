@@ -62,6 +62,10 @@ namespace BossRush {
 				case ItemID.TerraBlade:
 				case ItemID.Meowmere:
 				case ItemID.StarWrath:
+				case ItemID.NightsEdge:
+				case ItemID.TrueNightsEdge:
+				case ItemID.Excalibur:
+				case ItemID.TrueExcalibur:
 				//WoodSword
 				case ItemID.PearlwoodSword:
 				case ItemID.BorealWoodSword:
@@ -81,6 +85,7 @@ namespace BossRush {
 				case ItemID.TungstenBroadsword:
 				case ItemID.GoldBroadsword:
 				case ItemID.PlatinumBroadsword:
+				case ItemID.Flymeal:
 				//LightSaber
 				case ItemID.PurplePhaseblade:
 				case ItemID.BluePhaseblade:
@@ -108,7 +113,6 @@ namespace BossRush {
 				case ItemID.AdamantiteSword:
 				case ItemID.OrichalcumSword:
 				case ItemID.TitaniumSword:
-				case ItemID.Excalibur:
 				case ItemID.TheHorsemansBlade:
 				case ItemID.Bladetongue:
 				case ItemID.DD2SquireDemonSword:
@@ -185,7 +189,8 @@ namespace BossRush {
 		StaticDefense,
 		DebuffDamage,
 		SynergyDamage,
-		Iframe
+		Iframe,
+		EnergyRecharge
 		//Luck
 	}
 

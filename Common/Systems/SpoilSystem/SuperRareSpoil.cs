@@ -7,6 +7,7 @@ using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.RelicItem;
+using Terraria.DataStructures;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -61,6 +62,18 @@ internal class SuperRareSpoil {
 					relic.AddRelicTemplate(player, Main.rand.Next(RelicTemplateLoader.TotalCount));
 				}
 			}
+		}
+	}
+	public class TrinketSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.SuperRare;
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.SuperRareDrop();
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			player.QuickSpawnItem(entitySource, Main.rand.Next(BossRushModSystem.TrinketAccessories));
 		}
 	}
 }

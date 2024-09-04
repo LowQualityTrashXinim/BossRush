@@ -20,12 +20,14 @@ public class HellFireArrowRain : ModSkill {
 		if (!Main.rand.NextBool(3)) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(20);
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
 		position.X += Main.rand.NextFloat(-75, 75);
-		Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.HellfireArrow, damage, knockback, player.whoAmI);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.HellfireArrow, damage, knockback, player.whoAmI);
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 180;
 		for (int l = 0; l < 2; l++) {
 			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
 			Main.dust[dust].noGravity = true;
@@ -35,17 +37,58 @@ public class HellFireArrowRain : ModSkill {
 }
 public class Increases_3xDamage : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 230;
+		Skill_EnergyRequire = 530;
 		Skill_Duration = 8;
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
 	}
 	public override void Update(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 3);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 4);
+	}
+	public override void OnEnded(Player player) {
+		player.AddBuff(ModContent.BuffType<PowerBankDebuff>(), BossRushUtils.ToMinute(1));
+	}
+}
+public class PowerBankDebuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.EnergyRecharge, -.5f);
+	}
+}
+public class PowerSaver : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 560;
+		Skill_Duration = 0;
+		Skill_CoolDown = BossRushUtils.ToMinute(1);
+		Skill_EnergyRequirePercentage = -.5f;
+	}
+}
+public class FastForward : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 200;
+		Skill_Duration = 0;
+		Skill_CoolDown = BossRushUtils.ToSecond(20);
+	}
+	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
+		energy = new();
+		duration = new();
+		cooldown = new();
+		duration -= .5f;
+		cooldown -= .5f;
+	}
+}
+public class TranquilMind : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 400;
+		Skill_Duration = 5;
+		Skill_CoolDown = BossRushUtils.ToSecond(60);
 	}
 }
 public class SpiritBurst : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 110;
+		Skill_EnergyRequire = 210;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
 		Skill_CoolDown = BossRushUtils.ToSecond(7);
 	}
@@ -58,9 +101,36 @@ public class SpiritBurst : ModSkill {
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
 	}
 }
+public class Icicle : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 220;
+		Skill_Duration = BossRushUtils.ToSecond(1f);
+		Skill_CoolDown = BossRushUtils.ToSecond(9);
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 10 != 0) {
+			return;
+		}
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(18);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
+		float rotation = MathHelper.ToRadians(Main.rand.NextFloat(90));
+		for (int i = 0; i < 6; i++) {
+			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenlyPlus(6, 360, i).RotatedBy(rotation) * 50;
+			for (int l = 0; l < 6; l++) {
+				int dust = Dust.NewDust(pos, 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(1, 2));
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+			}
+			Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(50, 50) - pos).SafeNormalize(Vector2.Zero) * (10 + Main.rand.NextFloat(-3, 3));
+			Projectile.NewProjectile(player.GetSource_FromThis(), pos, vel, ProjectileID.Blizzard, damage, knockback, player.whoAmI);
+
+		}
+	}
+}
 public class InfiniteManaSupply : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 60;
+		Skill_EnergyRequire = 220;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
 		Skill_CoolDown = BossRushUtils.ToSecond(6);
 	}
@@ -72,7 +142,7 @@ public class InfiniteManaSupply : ModSkill {
 }
 public class GuaranteedCrit : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 125;
+		Skill_EnergyRequire = 425;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 	}
@@ -86,7 +156,7 @@ public class GuaranteedCrit : ModSkill {
 public class FireBall : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 45;
-		Skill_Duration = BossRushUtils.ToSecond(.12f);
+		Skill_Duration = 7;
 		Skill_CoolDown = BossRushUtils.ToSecond(2);
 	}
 	public override void Update(Player player) {
@@ -94,7 +164,7 @@ public class FireBall : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(70);
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(43);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(4);
 		Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 15f;
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, velocity, ProjectileID.Flamelash, damage, knockback, player.whoAmI);
@@ -105,7 +175,7 @@ public class FireBall : ModSkill {
 }
 public class RapidHealing : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 145;
+		Skill_EnergyRequire = 345;
 		Skill_Duration = BossRushUtils.ToSecond(2);
 		Skill_CoolDown = BossRushUtils.ToSecond(30);
 	}
@@ -139,53 +209,58 @@ public class StarFury : ModSkill {
 		Main.projectile[proj].timeLeft = 600;
 	}
 }
-public class WoodSwordSpirit : ModSkill {
+public class AdAstra : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 145;
+		Skill_EnergyRequire = 450;
 		Skill_Duration = BossRushUtils.ToSecond(3);
-		Skill_CoolDown = BossRushUtils.ToSecond(6);
-	}
-	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		ShootingSword(player);
-	}
-	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		ShootingSword(player);
-	}
-	private void ShootingSword(Player player) {
-		Vector2 position = player.Center + Main.rand.NextVector2Circular(50, 50);
-		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero);
-		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(24);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(10);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI);
-		Main.projectile[proj].timeLeft = Skill_Duration;
-		if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
-			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllWoodSword);
-	}
-}
-public class BroadSwordSpirit : ModSkill {
-	public override void SetDefault() {
-		Skill_EnergyRequire = 145;
-		Skill_Duration = BossRushUtils.ToSecond(1);
-		Skill_CoolDown = BossRushUtils.ToSecond(3);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
 	}
 	public override void Update(Player player) {
-		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
-			for (int i = 0; i < 3; i++) {
-				SummonSword(player, i);
-			}
-		}
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 5f);
 	}
-	private void SummonSword(Player player, int index) {
-		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(34);
-		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(3);
-		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, index);
-		if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
-			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
+	public override void OnEnded(Player player) {
+		player.AddBuff(ModContent.BuffType<AdAstraDebuff>(), BossRushUtils.ToSecond(15));
+	}
+}
+public class AdAstraDebuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, Multiplicative: .1f);
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, Multiplicative: .1f);
+		modplayer.AddStatsToPlayer(PlayerStats.Defense, Multiplicative: .1f);
+	}
+}
+public class MeteorShower : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 220;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_CanBeSelect = false;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 5 != 0) {
+			return;
+		}
+		int damage = (int)(player.GetTotalDamage(DamageClass.Magic).ApplyTo(44) + player.GetWeaponDamage(player.HeldItem) * .44f);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
+		Vector2 position = player.Center.Subtract(Main.rand.Next(-1000, 1000), 1000);
+		Vector2 velocity = (Main.MouseWorld - position + Main.rand.NextVector2Circular(200, 200)).SafeNormalize(Vector2.Zero) * 10f;
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage, knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 2));
+		Main.projectile[proj].friendly = true;
+		Main.projectile[proj].hostile = false;
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 600;
 	}
 }
 public class BloodToPower : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 170;
+		Skill_EnergyRequire = 570;
 		Skill_Duration = BossRushUtils.ToSecond(2);
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
 	}
@@ -200,17 +275,17 @@ public class BloodToPower : ModSkill {
 }
 public class Overclock : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 235;
+		Skill_EnergyRequire = 635;
 		Skill_Duration = BossRushUtils.ToSecond(1);
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
 	}
-	public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
-		useSpeed += 2;
+	public override void Update(Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, 3);
 	}
 }
 public class TerrorForm : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 300;
+		Skill_EnergyRequire = 900;
 		Skill_Duration = BossRushUtils.ToSecond(4);
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 	}
@@ -223,12 +298,13 @@ public class TerrorForm : ModSkill {
 		}
 		player.statLife = Math.Clamp(player.statLife - 1, 1, player.statLifeMax2);
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.5f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
-		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2), Base: 25);
-		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
-		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.5f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
-		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.35f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
-		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.35f, Multiplicative: 1 + (1 - player.statLife / (float)player.statLifeMax2));
+		float percentage = (1 - player.statLife / (float)player.statLifeMax2);
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1.5f, Multiplicative: 1 + percentage);
+		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Multiplicative: 1 + percentage, Base: 25);
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, 2f, Multiplicative: 1 + percentage);
+		modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1.5f, Multiplicative: 1 + percentage);
+		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.35f, Multiplicative: 1 + percentage);
+		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.35f, Multiplicative: 1 + percentage);
 	}
 }
 public class BulletStorm : ModSkill {
@@ -248,7 +324,7 @@ public class BulletStorm : ModSkill {
 }
 public class AllOrNothing : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 500;
+		Skill_EnergyRequire = 1500;
 		Skill_Duration = 1;
 		Skill_CoolDown = BossRushUtils.ToMinute(15);
 		Skill_CanBeSelect = false;
@@ -277,5 +353,51 @@ public class AllOrNothingBuff : ModBuff {
 				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(dmg, direction));
 			}
 		}
+	}
+}
+//Summon skill
+public class BroadSwordSpirit : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 145;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(3);
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<SwordProjectile3>()] < 1) {
+			for (int i = 0; i < 3; i++) {
+				SummonSword(player, i);
+			}
+		}
+	}
+	private void SummonSword(Player player, int index) {
+		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(34);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(3);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile3>(), damage, knockback, player.whoAmI, 0, 0, index);
+		if (Main.projectile[proj].ModProjectile is SwordProjectile3 woodproj)
+			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllOreBroadSword);
+	}
+}
+public class WoodSwordSpirit : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 145;
+		Skill_Duration = BossRushUtils.ToSecond(3);
+		Skill_CoolDown = BossRushUtils.ToSecond(6);
+		Skill_CanBeSelect = false;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		ShootingSword(player);
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		ShootingSword(player);
+	}
+	private void ShootingSword(Player player) {
+		Vector2 position = player.Center + Main.rand.NextVector2Circular(50, 50);
+		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero);
+		int damage = (int)player.GetTotalDamage(DamageClass.Melee).ApplyTo(24);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Melee).ApplyTo(10);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ModContent.ProjectileType<SwordProjectile2>(), damage, knockback, player.whoAmI);
+		Main.projectile[proj].timeLeft = Skill_Duration;
+		if (Main.projectile[proj].ModProjectile is SwordProjectile2 woodproj)
+			woodproj.ItemIDtextureValue = Main.rand.Next(TerrariaArrayID.AllWoodSword);
 	}
 }

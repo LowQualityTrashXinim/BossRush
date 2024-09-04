@@ -9,7 +9,7 @@ internal class Trinket4 : BaseTrinket {
 		Item.DefaultToAccessory();
 	}
 	public override void UpdateTrinket(Player player, TrinketPlayer modplayer) {
-		modplayer.ManaStats.Base += 60;
+		modplayer.GetStatsHandle().AddStatsToPlayer(PlayerStats.MaxMana, Base: 60);
 		player.GetModPlayer<Trinket4_ModPlayer>().Trinket4 = true;
 	}
 }

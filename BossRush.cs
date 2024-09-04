@@ -36,20 +36,6 @@ namespace BossRush {
 			ListLootboxType = null;
 			WeaponRarityDB = null;
 		}
-		public int AmountOfLootboxOpenInCurrentSection() {
-			if (Main.netMode == NetmodeID.SinglePlayer) {
-				return Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
-			}
-			return -1;
-		}
-		public override void PostAddRecipes() {
-			if (ModLoader.TryGetMod("PrefixImproved", out Mod PrefixImproved)) {
-				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Vampiric>()).Name, (byte)4);
-				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Evasive>()).Name, (byte)4);
-				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Cunning>()).Name, (byte)2);
-				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Stealthy>()).Name, (byte)2);
-			}
-		}
 		public override void PostSetupContent() {
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
 			for (int i = 0; i < cacheitemList.Count; i++) {
@@ -81,6 +67,20 @@ namespace BossRush {
 				else {
 					WeaponRarityDB[item.rare].Add(item.type);
 				}
+			}
+		}
+		public int AmountOfLootboxOpenInCurrentSection() {
+			if (Main.netMode == NetmodeID.SinglePlayer) {
+				return Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
+			}
+			return -1;
+		}
+		public override void PostAddRecipes() {
+			if (ModLoader.TryGetMod("PrefixImproved", out Mod PrefixImproved)) {
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Vampiric>()).Name, (byte)4);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Evasive>()).Name, (byte)4);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Cunning>()).Name, (byte)2);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Stealthy>()).Name, (byte)2);
 			}
 		}
 	}

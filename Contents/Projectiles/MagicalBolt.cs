@@ -16,9 +16,10 @@ internal class AmethystMagicalBolt : ModProjectile {
 		Projectile.tileCollide = true;
 		Projectile.friendly = true;
 		Projectile.timeLeft = 5000;
-		Projectile.penetrate = 2;
+		Projectile.penetrate = 99;
 		Projectile.extraUpdates = 7;
 		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 40;
 	}
 	public override bool OnTileCollide(Vector2 oldVelocity) {
 		Projectile.velocity = Vector2.Zero;
@@ -27,7 +28,7 @@ internal class AmethystMagicalBolt : ModProjectile {
 		return false;
 	}
 	public override bool? CanDamage() {
-		return Projectile.penetrate != 1;
+		return null;
 	}
 	public override bool PreAI() {
 		Projectile.velocity *= 10f;
@@ -42,16 +43,16 @@ internal class AmethystMagicalBolt : ModProjectile {
 			dust2.noGravity = true;
 			dust2.velocity = Vector2.Zero;
 		}
-		if (Projectile.penetrate == 1) {
-			if (Projectile.timeLeft > 150) {
-				Projectile.timeLeft = 150;
+		if (Projectile.penetrate != 99) {
+			if (Projectile.timeLeft > 60) {
+				Projectile.timeLeft = 60;
 			}
-			Projectile.ProjectileAlphaDecay(150);
+			Projectile.ProjectileAlphaDecay(60);
 		}
 		if (++Projectile.ai[0] >= 120) {
-			Projectile.velocity *= .995f;
+			Projectile.velocity *= .998f;
 			if (Projectile.velocity.Y < 12) {
-				Projectile.velocity.Y += .05f;
+				Projectile.velocity.Y += .035f;
 			}
 		}
 	}
@@ -74,10 +75,10 @@ internal class TopazMagicalBolt : ModProjectile {
 		Projectile.width = Projectile.height = 10;
 		Projectile.tileCollide = true;
 		Projectile.friendly = true;
-		Projectile.timeLeft = 1000;
-		Projectile.penetrate = 2;
+		Projectile.timeLeft = 1000; Projectile.penetrate = 99;
 		Projectile.extraUpdates = 7;
 		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 40;
 	}
 	public override bool OnTileCollide(Vector2 oldVelocity) {
 		Projectile.velocity = Vector2.Zero;
@@ -86,7 +87,7 @@ internal class TopazMagicalBolt : ModProjectile {
 		return false;
 	}
 	public override bool? CanDamage() {
-		return Projectile.penetrate != 1;
+		return null;
 	}
 	public override bool PreAI() {
 		Projectile.velocity *= 10f;
@@ -101,11 +102,11 @@ internal class TopazMagicalBolt : ModProjectile {
 			dust2.noGravity = true;
 			dust2.velocity = Vector2.Zero;
 		}
-		if (Projectile.penetrate == 1) {
-			if (Projectile.timeLeft > 150) {
-				Projectile.timeLeft = 150;
+		if (Projectile.penetrate != 99) {
+			if (Projectile.timeLeft > 40) {
+				Projectile.timeLeft = 40;
 			}
-			Projectile.ProjectileAlphaDecay(150);
+			Projectile.ProjectileAlphaDecay(40);
 		}
 		if (++Projectile.ai[0] >= 120) {
 			Projectile.velocity *= .995f;

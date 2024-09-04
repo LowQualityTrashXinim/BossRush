@@ -215,6 +215,81 @@ public class RoguelikePrefixSystem : ModSystem {
 				dmg = -12;
 				kb = -18;
 				break;
+			//case PrefixID.Legendary:
+			//Range
+			case PrefixID.Sighted:
+				dmg = 22;
+				crt = 10;
+				break;
+			case PrefixID.Rapid:
+				spd = 44;
+				shtspd = 15;
+				break;
+			case PrefixID.Hasty:
+				spd = 22;
+				shtspd = 38;
+				break;
+			case PrefixID.Intimidating:
+				shtspd = 12;
+				kb = 22;
+				break;
+			case PrefixID.Deadly2:
+				dmg = 14;
+				crt = 10;
+				break;
+			case PrefixID.Staunch:
+				dmg = 22;
+				kb = 44f;
+				spd = -16;
+				break;
+			case PrefixID.Powerful:
+				dmg = 33;
+				kb = 66f;
+				spd = -34;
+				break;
+			case PrefixID.Frenzying:
+				dmg = -22;
+				spd = 22;
+				break;
+			//case PrefixID.Unreal:
+			//Magic
+			case PrefixID.Mystic:
+				dmg = 18;
+				mcst = 24;
+				break;
+			case PrefixID.Adept:
+				mcst = 33;
+				break;
+			case PrefixID.Masterful:
+				dmg = 20;
+				mcst = 15;
+				kb = 10;
+				break;
+			case PrefixID.Intense:
+				dmg = 30;
+				mcst = -33;
+				break;
+			case PrefixID.Taboo:
+				dmg = 22;
+				kb = 11;
+				mcst = -27;
+				break;
+			case PrefixID.Celestial:
+				dmg = 22;
+				spd = -15;
+				kb = 18;
+				mcst = 22;
+				break;
+			case PrefixID.Furious:
+				dmg = 33;
+				kb = 22;
+				mcst = -66;
+				break;
+			case PrefixID.Manic:
+				dmg = -22;
+				spd = 23;
+				mcst = -33;
+				break;
 			default:
 				return orig(self, rolledPrefix, out dmg, out kb, out spd, out size, out shtspd, out mcst, out crt);
 		}

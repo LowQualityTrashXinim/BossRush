@@ -31,6 +31,7 @@ public class BiomeAreaID {
 	public const short Beaches = 13;
 	public const short Underground = 14;
 	public const short BeeNest = 15;
+	public const short Hallow = 16;
 }
 
 public partial class RogueLikeWorldGen : ModSystem {
@@ -206,6 +207,24 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		GenerationHelper.ForEachInRectangle(rectList[0],
 		(i, j) => {
 			GenerationHelper.FastPlaceTile(i, j, TileID.Ebonstone);
+
+		});
+		//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);
+	}
+
+	[Task]
+	public void Create_Hallowed() {
+		List<Rectangle> rectList = new List<Rectangle>();
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(20, 5, 1, 7));
+		GenerationHelper.ForEachInRectangle(rectList[0],
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Pearlstone);
+
+		});
+		rectList.Add(GenerationHelper.GridPositionInTheWorld24x24(3, 5, 1, 7));
+		GenerationHelper.ForEachInRectangle(rectList[1],
+		(i, j) => {
+			GenerationHelper.FastPlaceTile(i, j, TileID.Pearlstone);
 
 		});
 		//Biome.Add(RogueLike_BiomeAreaID.Corruption, rectList);

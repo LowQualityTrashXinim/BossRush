@@ -309,6 +309,7 @@ namespace BossRush.Common.RoguelikeChange {
 				case ItemID.SilverBroadsword:
 				case ItemID.TungstenBroadsword:
 				case ItemID.GoldBroadsword:
+				case ItemID.Flymeal:
 				case ItemID.PlatinumBroadsword:
 				//LightSaber
 				case ItemID.PurplePhaseblade:
@@ -411,15 +412,15 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-				float itemscale = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
+				float itemsize = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
 				MeleeOverhaulPlayer modplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 				if (target.immune[player.whoAmI] > 0) {
 					return false;
 				}
 				if (modplayer.ComboNumber != 2) {
 					for (int i = 0; i < 20; i++) {
-						Vector2 point = player.Center + Vector2.UnitX.Vector2DistributeEvenly(10, 310, i)
-							.RotatedBy(modplayer.PlayerToMouseDirection.ToRotation()) * itemscale;
+						Vector2 point = player.Center + Vector2.UnitX.Vector2DistributeEvenly(20, 270, i)
+							.RotatedBy(modplayer.PlayerToMouseDirection.ToRotation()) * itemsize;
 						if (Collision.CheckAABBvLineCollision(target.Hitbox.TopLeft(), target.Size * target.scale, player.Center, point)) {
 							return true;
 						}
@@ -427,8 +428,9 @@ namespace BossRush.Common.RoguelikeChange {
 				}
 				else {
 					if (SwingType == BossRushUseStyle.Swipe) {
+						Vector2 directionTo = (player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center).SafeNormalize(Vector2.Zero);
 						for (int i = 0; i < 36; i++) {
-							Vector2 point = player.Center + Vector2.UnitX.Vector2DistributeEvenly(36, 360, i) * itemscale;
+							Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(36, 270, i) * itemsize;
 							if (Collision.CheckAABBvLineCollision(target.Hitbox.TopLeft(), target.Size * target.scale, player.Center, point)) {
 								return true;
 							}
@@ -554,7 +556,7 @@ namespace BossRush.Common.RoguelikeChange {
 		}
 		private void SwipeAttack(Player player, int direct) {
 			float percentDone = player.itemAnimation / (float)player.itemAnimationMax;
-			//percentDone = BossRushUtils.InExpo(percentDone, 7.5f);
+			percentDone = BossRushUtils.InExpo(percentDone, 11f);
 			float baseAngle = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection.ToRotation();
 			float angle = MathHelper.ToRadians(135) * player.direction;
 			float start = baseAngle + angle * direct;

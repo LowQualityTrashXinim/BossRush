@@ -30,7 +30,7 @@ HeartOfEarthArtifact: {
 		'''
 		"Protected by the Earth"
 		[c/ffff00:Positive effect] : 
-			+ Multiply your max HP by 1.5 and add a additional 100 max hp
+			+ Increases your maximum health by 100
 			+ Standing still for a short moment massively boost your regen
 		[c/ab3e43:Negative effect] : 
 			- Your damage effectiveness is depended on your current hp
@@ -125,6 +125,7 @@ TokenOfGluttonyArtifact: {
 		"..."
 		[c/ffff00:Positive effect] : 
 			+ Damage reduction will be increases by your current defense/max life
+			+ You have 1 in 10 chance to negate a hostile projectile hit and heal 10% of that damage
 		[c/ab3e43:Negative effect] : 
 			- Defenses are reduced to 0
 		'''

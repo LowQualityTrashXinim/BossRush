@@ -100,6 +100,7 @@ namespace BossRush.Contents.Items.Chest {
 				GetArmorForPlayer(entitySource, player);
 				GetAccessories(Type, player);
 				GetPotion(Type, player);
+				GetSkillLootbox(Type, player, 1);
 			}
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
