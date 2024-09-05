@@ -109,6 +109,7 @@ public class SkillHandlePlayer : ModPlayer {
 	int RechargeDelay = 0;
 	public int MaximumCoolDown = 0;
 	public int BloodToPower = 0;
+	public int Request_Repeat = 0;
 	public override void Initialize() {
 		Array.Fill(SkillHolder1, -1);
 		Array.Fill(SkillHolder2, -1);
@@ -354,16 +355,18 @@ public class SkillHandlePlayer : ModPlayer {
 		RechargeDelay = BossRushUtils.CountDown(RechargeDelay);
 		if (Duration <= 0) {
 			Activate = false;
-			for (int i = 0; i < 10; i++) {
-				ModSkill skill = CurrentSkill(ref i);
-				if (skill == null) {
-					continue;
-				}
-				skill.OnEnded(Player);
-			}
 		}
 		else {
 			Duration = BossRushUtils.CountDown(Duration);
+			if(Duration <= 1) {
+				for (int i = 0; i < 10; i++) {
+					ModSkill skill = CurrentSkill(ref i);
+					if (skill == null) {
+						continue;
+					}
+					skill.OnEnded(Player);
+				}
+			}
 		}
 		CurrentActiveHolder = Math.Clamp(CurrentActiveHolder, 1, 3);
 		if (!Activate) {
@@ -379,7 +382,7 @@ public class SkillHandlePlayer : ModPlayer {
 			if (skill == null) {
 				continue;
 			}
-			CurrentSkill(ref i).ResetEffect(Player);
+			skill.ResetEffect(Player);
 		}
 	}
 	public override void UpdateEquips() {
@@ -468,10 +471,10 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (!Activate && RechargeDelay <= 0 && CoolDown <= 0) {
+		if (!Activate && RechargeDelay <= 0) {
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 			Energy = Math.Clamp((int)Math.Ceiling(modplayer.EnergyRecharge.ApplyTo(hit.Damage)) + Energy, 0, EnergyCap);
-			RechargeDelay = (int)modplayer.RechargeEnergyCap.ApplyTo(hit.Damage);
+			RechargeDelay = (int)modplayer.RechargeEnergyCap.ApplyTo(hit.Damage * 2);
 		}
 	}
 	public override void UpdateDead() {

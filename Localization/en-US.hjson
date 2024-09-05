@@ -2021,6 +2021,11 @@ Mods: {
 				DisplayName: Power Bank Debuff
 				Description: Mods.BossRush.Buffs.PowerBankDebuff.Description
 			}
+
+			PowerCordBuff: {
+				DisplayName: Power Cord Buff
+				Description: Mods.BossRush.Buffs.PowerCordBuff.Description
+			}
 		}
 
 		Configs: {

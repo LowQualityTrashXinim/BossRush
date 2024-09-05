@@ -161,6 +161,7 @@ public class PlayerStatsHandle : ModPlayer {
 		LifeStealEffectiveness = StatModifier.Default;
 		EnergyCap = StatModifier.Default;
 		RechargeEnergyCap = StatModifier.Default;
+		EnergyRecharge = StatModifier.Default;
 		StaticDefense = StatModifier.Default - 1;
 		DebuffDamage = StatModifier.Default;
 		SynergyDamage = StatModifier.Default;

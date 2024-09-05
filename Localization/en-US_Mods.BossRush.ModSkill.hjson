@@ -18,6 +18,21 @@ PowerSaver: {
 	Description: Halves the Energy Cost of all the active skill
 }
 
+PowerCord: {
+	DisplayName: Power Cord
+	Description: Increases energy recharge by 150% for 12s after duration ended
+}
+
+Procrastination: {
+	DisplayName: Procrastination
+	Description: Increases your attack by 125% and damage reduction by 75%, but you are affected by the 'Stoned' debuff
+}
+
+SpeedDemon: {
+	DisplayName: Speed Demon
+	Description: Increases your speed by 50% and weapon speed by 150%
+}
+
 TranquilMind: {
 	DisplayName: Tranquil Mind
 	Description: Increases skill duration by 5 seconds
