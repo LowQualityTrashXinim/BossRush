@@ -250,6 +250,14 @@ namespace BossRush.Contents.Perks {
 			}
 			return base.FreeDodge(info);
 		}
+		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
+			foreach (int perk in perks.Keys) {
+				if (ModPerkLoader.GetPerk(perk).PreKill(Player)) {
+					return false;
+				}
+			}
+			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+		}
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
@@ -357,6 +365,13 @@ namespace BossRush.Contents.Perks {
 			if (CanBeStack)
 				Tooltip += "\n( Can be stack ! )";
 		}
+		/// <summary>
+		/// This act different to <see cref="CanBeChoosen"/><br/>
+		/// if this is set to false then it won't be add into perk pool, otherwise if <see cref="CanBeChoosen"/> is false and this is true then it still won't be add<br/>
+		/// This only run on client side so it is recommend to uses <see cref="Main.LocalPlayer"/> to check player condition
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool SelectChoosing() => true;
 		public virtual void SetDefaults() { }
 		public virtual void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
 		public virtual void OnUseItem(Player player, Item item) { }
@@ -390,6 +405,7 @@ namespace BossRush.Contents.Perks {
 		public virtual void ModifyUseSpeed(Player player, Item item, ref float useSpeed) { }
 		public virtual void OnChoose(Player player) { }
 		public virtual bool FreeDodge(Player player, Player.HurtInfo hurtInfo) => false;
+		public virtual bool PreKill(Player player) => false;
 	}
 	public static class ModPerkLoader {
 		private static readonly List<Perk> _perks = new();

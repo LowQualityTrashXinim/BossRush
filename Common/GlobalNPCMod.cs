@@ -69,7 +69,6 @@ namespace BossRush.Common {
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<CorruptionLootBox>()));
 				//normal drop
-				lifecrystal += 2;
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
@@ -82,7 +81,6 @@ namespace BossRush.Common {
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrimsonLootBox>()));
 				//Normal mode drop
-				lifecrystal += 2;
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
@@ -128,7 +126,6 @@ namespace BossRush.Common {
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));
-				lifecrystal += 5;
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));

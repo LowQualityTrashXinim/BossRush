@@ -8,7 +8,6 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.RoguelikeChange;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.TrueEnchantedSword;
 using BossRush.Contents.Items.Weapon;
 
 namespace BossRush {
@@ -16,6 +15,10 @@ namespace BossRush {
 		public static void BossRushSetDefaultBuff(this ModBuff buff) {
 			Main.debuff[buff.Type] = false;
 			Main.buffNoSave[buff.Type] = true;
+		}
+		public static void BossRushSetDefaultDeBuff(this ModBuff buff, bool Save = false) {
+			Main.debuff[buff.Type] = true;
+			Main.buffNoSave[buff.Type] = Save;
 		}
 		/// <summary>
 		/// Set your own DamageClass type
@@ -119,7 +122,12 @@ namespace BossRush {
 			if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.ExtraInfo = ExtraInfo;
 			}
-		} 
+		}
+		public static void Set_DebugItem(this Item item, bool Debug) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+				globalitem.DebugItem = Debug;
+			}
+		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
 			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return false;

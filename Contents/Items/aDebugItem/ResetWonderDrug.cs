@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 			Item.useTurn = true;
 			Item.maxStack = 30;
 			Item.consumable = true;
-			Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
+			Item.Set_DebugItem(true);
 		}
 		public override bool? UseItem(Player player) {
 			player.GetModPlayer<WonderDrugPlayer>().DrugDealer = 0;

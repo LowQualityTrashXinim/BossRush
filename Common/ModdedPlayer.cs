@@ -81,8 +81,8 @@ namespace BossRush.Common {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					yield return new Item(ItemID.LifeCrystal, 15);
-					yield return new Item(ItemID.ManaCrystal, 9);
+					yield return new Item(ItemID.LifeCrystal, 5);
+					yield return new Item(ItemID.ManaCrystal, 4);
 					yield return new Item(ModContent.ItemType<DayTimeCycle>());
 					yield return new Item(ModContent.ItemType<BiomeToggle>());
 					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {

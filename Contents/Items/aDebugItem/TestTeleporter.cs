@@ -15,7 +15,7 @@ internal class TestTeleporter : ModItem {
 		Item.width = Item.height = 32;
 		Item.useTime = Item.useAnimation = 15;
 		Item.useStyle = ItemUseStyleID.HoldUp;
-		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
+		Item.Set_DebugItem(true);
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		base.ModifyTooltips(tooltips);

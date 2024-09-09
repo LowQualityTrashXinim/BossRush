@@ -871,9 +871,9 @@ namespace BossRush.Contents.Items.Chest {
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="player"></param>
-		public static void GetAccessories(int type, Player player) {
+		public static void GetAccessories(int type, Player player, bool LostAccIncluded = false) {
 			List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc];
-			if(UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC)) {
+			if(UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
 				acc.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
 			}
 			IEntitySource entitySource = player.GetSource_OpenItem(type);

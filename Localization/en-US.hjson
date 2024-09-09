@@ -27,10 +27,12 @@ Mods: {
 				'''
 				[Transmutation]
 				This is where you can merge your relic !
-				Relic can be merge up to have 4 effects, merge relic together to create a even stronger relic
+				Relic can be merge up to have 4 effects,
+				merge relic together to create a even stronger relic
 				You can find relic in [c/b7bf5c:Relic Container] or you can get it from spoils !
 				You can also transmute 2 items of the same rarity to get a item with better rarity !
-				There are some item that can be merge to become a special item, best bet to try and find out yourself !
+				There are some item that can be merge to become a special item,
+				best bet to try and find out yourself !
 				'''
 			Skill.Tooltip:
 				'''
@@ -754,27 +756,17 @@ Mods: {
 				DisplayName: Extra gun Barrel
 			}
 
-			GuideToMasterNinja2: {
-				Tooltip:
-					'''
-					"Part II out of II of a series treasured by weebs all across the globe!
-					Did the dev really just add another 'I' onto the book cover and call it a day?"
-					10% increase melee attack speed
-					15% increased jump height and jump speed
-					Increase critical strike chance by 5%
-					'''
-				DisplayName: Guide To Master Ninja II
-			}
-
 			GuideToMasterNinja: {
 				Tooltip:
 					'''
 					"Part I out of II of a beloved series.
 					To master the way of a ninja, you must first master the way of a weeb."
-					5% increased critical strike chance
-					15% increased movement speed
+					increased critical strike chance by 5%
+					increased melee attack speed by 10%
+					increased jump height and jump speed by 15%
 					Throws a shuriken every time an enemy gets hit 20 times.
 					The addition throwing deal static damage (fixed damage)
+					You summon a ring of shuriken and knife
 					'''
 				DisplayName: Guide To Master Ninja I
 			}
@@ -1425,6 +1417,13 @@ Mods: {
 			Relic: {
 				DisplayName: Relic
 				Tooltip: ""
+				ExtraInfo:
+					'''
+					[Tier] : is defined by how much effect your relic have
+
+					[Active Item] : mean having the item in your 
+					inventory will activate their effect
+					'''
 			}
 
 			PerkDebugItem: {
@@ -1707,6 +1706,16 @@ Mods: {
 					[+] Mana regen by 25% and 2 flat 
 					[+] Static defenses by 15% and 3 flat
 					'''
+			}
+
+			SkillGetter: {
+				DisplayName: Skill Getter
+				Tooltip: ""
+			}
+
+			SpawnTrial: {
+				DisplayName: Spawn Trial
+				Tooltip: ""
 			}
 		}
 
@@ -2025,6 +2034,16 @@ Mods: {
 			PowerCordBuff: {
 				DisplayName: Power Cord Buff
 				Description: Mods.BossRush.Buffs.PowerCordBuff.Description
+			}
+
+			MoonLightDebuff: {
+				DisplayName: Moon Light Debuff
+				Description: Mods.BossRush.Buffs.MoonLightDebuff.Description
+			}
+
+			TitanPowerBuff: {
+				DisplayName: Titan Power Buff
+				Description: Mods.BossRush.Buffs.TitanPowerBuff.Description
 			}
 		}
 

@@ -2,7 +2,15 @@ Musket.Description:
 	'''
 	Decreases gun spread by 25%
 	Increases critical strike damage by 50%
-	For every 25 time this weapon get uses, shoot out a 100% critical strike chance bullet
+	Increases weapon critical strike chance by 5
+	For every 15 time this weapon get uses, shoot out a 100% critical strike chance bullet
+	'''
+RedRyder.Description:
+	'''
+	Decreases gun spread by 15%
+	Increases critical strike damage by 15%
+	Increases weapon critical strike chance by 5
+	For every 7 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 FlintlockPistol.Description:
 	'''
@@ -17,6 +25,13 @@ Handgun.Description:
 	+ Have 50% to shoot out additional bullet dealing the same damage
 	Increases damage by 10%
 	Enemy that are hit by this weapon projectile are Marked ( Marked increases crit damage by 100% )
+	'''
+Revolver.Description:
+	'''
+	Weapon that can shoot :
+	+ Have 1 in 5 chance to shoot out additional bullet dealing the same damage
+	For each hit dealt onto NPC, increases crit chance by and damage by 5% ( have 1s cool down )
+	Getting hit will reset the buff
 	'''
 Minishark.Description:
 	'''
@@ -37,6 +52,13 @@ Boomstick.Description:
 	For each 7 time a weapon shoot projectile, shoot out 4 bullet projectile
 	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
 	Increases damage by 10%
+	'''
+QuadBarrelShotgun.Description:
+	'''
+	For each 21 time a weapon shoot projectile, shoot out 6 bullet projectile
+	+ Weapon that use bullet ammo will instead shoot that the current uses bullet
+	+ Hitting enemy with projectile will make above effect happen sooner
+	Increases damage by 12%
 	'''
 WoodenSword.Description:
 	'''
@@ -379,6 +401,22 @@ TendonBow.Description:
 	Hitting any enemy 4 times will heal player for 1 hp ( Note : projectile that is a minion is not accepted )
 	While holding this weapon, unstriked enemy receive 150% more damage
 	'''
+BeeKnees.Description:
+	'''
+	Convert wooden arrow to bee arrow
+	Increases range damage by 12% and crit chance by 3%
+	Hitting enemy with projectile will poisoned the enemy
+	Have 1 in 3 chance to spawn bee when hitting enemy
+	Hive pack will strengthen the above effect
+	'''
+MoltenFury.Description:
+	'''
+	Increases range damage by 15%
+	Wooden arrow will be converted into Fire arrow
+	Weapon will shoot 2 additional fire arrow
+	Fire arrow will deal 35% more damage when target is on fire
+	Have 1 in 3 chance to spawn a fire arrow near enemy
+	'''
 SnowballCannon.Description:
 	'''
 	Increases uses speed by 5%
@@ -397,27 +435,27 @@ PainterPaintballGun.Description:
 AmethystStaff.Description:
 	'''
 	Reduce mana cost by 15%
-	Convert your projectile into Amethyst Bolt
+	Override your weapon to shoot Amethyst Bolt
 	Your weapon have 
 	+ 55% chance to shoot out additional Amethyst Bolt random location
-	+ 17% chance to shoot out spread of 3 Amethyst Bolt
+	+ 27% chance to shoot out spread of 3 Amethyst Bolt
 	'''
 TopazStaff.Description:
 	'''
 	Reduce mana cost by 25%
-	Convert your projectile into Topaz Bolt
+	Override your weapon to shoot Topaz Bolt
 	Your weapon have 27% chance to shoot out additional Topaz Bolt random location
 	'''
 SapphireStaff.Description:
 	'''
 	Magic weapon have 18% chance to not use mana
-	Convert your projectile into Sapphire Bolt
+	Override your weapon to shoot Sapphire Bolt
 	Your weapon have 17% chance to shoot out additional Sapphire Bolt random location
 	'''
 EmeraldStaff.Description:
 	'''
 	Reduce mana cost by 15%
-	Convert your projectile into Emerald Bolt
+	Override your weapon to shoot Emerald Bolt
 	Your weapon have 
 	+ 47% chance to shoot out additional Emerald Bolt random location
 	+ 32% to make additional Emerald Bolt stronger

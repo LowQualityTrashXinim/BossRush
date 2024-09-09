@@ -24,6 +24,7 @@ public class Relic : ModItem {
 		Item.width = Item.height = 32;
 		Item.rare = ItemRarityID.Gray;
 		Item.value = Item.buyPrice(silver: 50);
+		Item.Set_InfoItem(true);
 	}
 	/// <summary>
 	/// Use this to add stats before the item automatic add stats

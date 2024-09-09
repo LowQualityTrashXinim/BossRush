@@ -20,7 +20,7 @@ internal class RelicTransmutator : ModItem {
 		Item.useTime = Item.useAnimation = 30;
 		Item.useStyle = ItemUseStyleID.HoldUp;
 		Item.width = Item.height = 30;
-		Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
+		Item.Set_DebugItem(true);
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {

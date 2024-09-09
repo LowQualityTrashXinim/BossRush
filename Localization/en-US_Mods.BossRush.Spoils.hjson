@@ -5,7 +5,7 @@ WeaponSpoil: {
 
 AccessorySpoil: {
 	DisplayName: "[[i:{0}]] Accessory Pack"
-	Description: Contains {0} accessory/accesories
+	Description: Contains {0} accessory
 }
 
 ArmorSpoil: {
@@ -15,22 +15,27 @@ ArmorSpoil: {
 
 PotionSpoil: {
 	DisplayName: "[[i:{0}]] Potion Pack"
-	Description: Contains {0} potion/potions of any type
+	Description: Contains {0} potion of any type
 }
 
 RelicSpoil: {
 	DisplayName: "[[i:{0}]] Relic Pack"
-	Description: Contains {0} relic/relics
+	Description: Contains {0} relic
 }
 
 SkillSpoil: {
 	DisplayName: "[[i:{0}]] Skill Pack"
-	Description: Contains {0} skillbox/skillboxes
+	Description: Contains {0} skillbox
 }
 
 PerkSpoil: {
 	DisplayName: Blessing
 	Description: Contains 1 World's Blessing
+}
+
+UpgradeAccSpoil: {
+	DisplayName: "[[i:{0}]] Accessory Pack"
+	Description: Contains {0} normal accessory and lost accessory
 }
 
 LostAccessorySpoil: {

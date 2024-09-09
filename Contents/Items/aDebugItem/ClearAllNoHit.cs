@@ -9,7 +9,7 @@ namespace BossRush.Contents.Items.aDebugItem {
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.BossRushDefaultToConsume(1, 1);
-			Item.GetGlobalItem<GlobalItemHandle>().DebugItem = true;
+			Item.Set_DebugItem(true);
 		}
 		public override bool? UseItem(Player player) {
 			player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Clear();

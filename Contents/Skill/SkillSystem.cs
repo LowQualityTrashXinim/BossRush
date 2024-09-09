@@ -108,6 +108,7 @@ public class SkillHandlePlayer : ModPlayer {
 	public int CurrentActiveIndex { get => CurrentActiveHolder; }
 	int RechargeDelay = 0;
 	public int MaximumCoolDown = 0;
+	public int MaximumDuration = 0;
 	public int BloodToPower = 0;
 	public int Request_Repeat = 0;
 	public override void Initialize() {
@@ -333,10 +334,12 @@ public class SkillHandlePlayer : ModPlayer {
 				CoolDown = 0;
 				Activate = false;
 				MaximumCoolDown = 0;
+				MaximumDuration = 0;
 				return;
 			}
 			else {
 				MaximumCoolDown = CoolDown;
+				MaximumDuration = Duration;
 				Energy -= energy;
 				for (int i = 0; i < 10; i++) {
 					ModSkill skill = CurrentSkill(ref i);

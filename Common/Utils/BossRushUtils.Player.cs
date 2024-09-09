@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
 using Terraria.ID;
 using BossRush.Common.RoguelikeChange;
+using System;
+using System.Linq;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -56,6 +58,11 @@ namespace BossRush {
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
 			&& item.maxStack == 1;
+		public static bool IsEquipAcc(this Player player, int itemType) {
+			Item[] item = new Item[9];
+			Array.Copy(player.armor, 3, item, 0, 9);
+			return item.Select(i => i.type).Contains(itemType);
+		}
 		public static bool IsAVanillaSword(int type) {
 			switch (type) {
 				//Sword that have even end

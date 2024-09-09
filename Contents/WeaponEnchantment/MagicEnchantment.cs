@@ -5,7 +5,6 @@ using BossRush.Common;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -15,15 +14,16 @@ public class AmethystStaff : ModEnchantment {
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .15f;
 	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		type = ProjectileID.AmethystBolt;
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		item.shoot = ProjectileID.AmethystBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Main.rand.NextFloat() <= .55f) {
+		if (Main.rand.NextFloat() <= .65f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
-			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.AmethystBolt, damage, knockback, player.whoAmI);
+			int proj = Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.AmethystBolt, damage, knockback, player.whoAmI);
+			Main.projectile[proj].extraUpdates += 1;
 		}
-		if (Main.rand.NextFloat() <= .17f) {
+		if (Main.rand.NextFloat() <= .37f) {
 			for (int i = 0; i < 3; i++) {
 				Vector2 newVel = velocity.Vector2DistributeEvenlyPlus(3, 30, i);
 				Projectile.NewProjectile(source, position, newVel, ProjectileID.AmethystBolt, damage, knockback, player.whoAmI);
@@ -38,11 +38,11 @@ public class TopazStaff : ModEnchantment {
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .25f;
 	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		type = ProjectileID.TopazBolt;
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		item.shoot = ProjectileID.TopazBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Main.rand.NextFloat() <= .27f) {
+		if (Main.rand.NextFloat() <= .47f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.TopazBolt, damage, knockback, player.whoAmI);
 		}
@@ -57,11 +57,11 @@ public class SapphireStaff : ModEnchantment {
 			player.statMana = Math.Clamp(player.statMana + consumedMana, 0, player.statManaMax2);
 		}
 	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		type = ProjectileID.SapphireBolt;
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		item.shoot = ProjectileID.SapphireBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Main.rand.NextFloat() <= .17f) {
+		if (Main.rand.NextFloat() <= .37f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.SapphireBolt, damage, knockback, player.whoAmI);
 		}
@@ -74,8 +74,8 @@ public class EmeraldStaff : ModEnchantment {
 	public override void ModifyManaCost(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float reduce, ref float multi) {
 		reduce -= .15f;
 	}
-	public override void ModifyShootStat(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		type = ProjectileID.EmeraldBolt;
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		item.shoot = ProjectileID.EmeraldBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (Main.rand.NextFloat() <= .47f) {
@@ -493,8 +493,8 @@ class AquaScepter : ModEnchantment {
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (proj.type != ProjectileID.WaterStream) {
-			if(proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
-			HitEnemy(player, target, (int)player.GetDamage(DamageClass.Magic).ApplyTo(proj.damage * .5f), 3);
+			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
+				HitEnemy(player, target, (int)player.GetDamage(DamageClass.Magic).ApplyTo(proj.damage * .5f), 3);
 			}
 		}
 		else {

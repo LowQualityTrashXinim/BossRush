@@ -410,3 +410,15 @@ HybridRanger: {
 		+ Increases your max minion and sentry slot by your range damage to 1:100
 		'''
 }
+
+BlessingOfMoon: {
+	DisplayName: Blessing Of Moon
+	Description:
+		'''
+		The lunar power, the moon power are now at your disposal 
+		+ Your attack deal extra 125% of weapon damage as True damage
+		+ Inflict Moonlight debuff onto enemy which drastically make enemies more vulnerable 
+		+ Your attack is always accompany by Lunar Flare
+		+ During the night, you have 75% to dodge an attack
+		'''
+}

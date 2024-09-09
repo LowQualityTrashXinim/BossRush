@@ -51,4 +51,29 @@ public class UncommonSpoil {
 			}
 		}
 	}
+	public class UpgradeAccSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Uncommon;
+		}
+		public override string FinalDisplayName() {
+			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			if (chestplayer.accShowID == 0 || --chestplayer.counterShow <= 0) {
+				chestplayer.accShowID = Main.rand.Next(TerrariaArrayID.EveryCombatHealtMovehAcc);
+				chestplayer.counterShow = 6;
+			}
+			return DisplayName.FormatWith(chestplayer.accShowID);
+		}
+		public override string FinalDescription() {
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.UncommonDrop();
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			for (int i = 0; i < amount; i++) {
+				LootBoxBase.GetAccessories(itemsource, player, true);
+			}
+		}
+	}
 }

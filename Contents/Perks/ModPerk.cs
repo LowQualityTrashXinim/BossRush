@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using System.Linq;
+using BossRush.Common;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Localization;
@@ -18,7 +19,8 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Common;
+using BossRush.Common.RoguelikeChange;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -71,10 +73,24 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class MarkOfSpectre : Perk {
+	public class UncertainStrike : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeChoosen = false;
+			CanBeStack = false;
+		}
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextBool(3))
+				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Main.rand.NextBool(3))
+				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
+		}
+	}
+	public class MarkOfSpectre : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = false;
 		}
 		public override void UpdateEquip(Player player) {
@@ -98,21 +114,6 @@ namespace BossRush.Contents.Perks {
 				return true;
 			}
 			return base.FreeDodge(player, hurtInfo);
-		}
-	}
-	public class UncertainStrike : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushTexture.ACCESSORIESSLOT;
-			CanBeChoosen = false;
-			CanBeStack = false;
-		}
-		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(3))
-				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
-		}
-		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(3))
-				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
 		}
 	}
 	public class LethalKnockBack : Perk {
@@ -364,8 +365,8 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
-		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-			hurtInfo.SourceDamage = (int)(hurtInfo.SourceDamage * (1 - .3f * StackAmount));
+		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+			modifiers.SourceDamage -= -.3f * StackAmount;
 		}
 	}
 	public class ProjectileDuplication : Perk {
@@ -906,6 +907,101 @@ namespace BossRush.Contents.Perks {
 				modplayer.AddStatsToPlayer(PlayerStats.RangeDMG, .45f);
 				modplayer.AddStatsToPlayer(PlayerStats.SummonDMG, .45f);
 			}
+		}
+	}
+	public class BlessingOfMoon : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override bool SelectChoosing() {
+			Player player = Main.LocalPlayer;
+			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+			if (perkplayer.perks.ContainsKey(GetPerkType<BlessingOfNebula>())
+				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfSolar>())
+				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfVortex>())
+				&& perkplayer.perks.ContainsKey(GetPerkType<BlessingOfStarDust>())) {
+				return true;
+			}
+			return false;
+		}
+		public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
+			if (!player.immune && Main.rand.NextFloat() <= .75f && !Main.dayTime) {
+				player.AddImmuneTime(hurtInfo.CooldownCounter, 60);
+				player.immune = true;
+				return true;
+			}
+			return base.FreeDodge(player, hurtInfo);
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			int damage = player.GetWeaponDamage(item);
+			float knockback = player.GetWeaponKnockback(item);
+			player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
+
+			IEntitySource source = player.GetSource_OnHit(target);
+			Vector2 pos = target.Center.Subtract(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
+			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
+			Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
+
+
+			target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 8)));
+		}
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			int damage = proj.damage;
+			float knockback = proj.knockBack;
+			player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
+
+			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
+				IEntitySource source = player.GetSource_OnHit(target);
+				Vector2 pos = target.Center.Subtract(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
+				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
+				Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
+
+			}
+			target.AddBuff(ModContent.BuffType<MoonLightDebuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 8)));
+		}
+	}
+	public class MoonLightDebuff : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
+		public override void Update(NPC npc, ref int buffIndex) {
+			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense *= 0;
+		}
+	}
+	public class TitanPower : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+		}
+		public override bool SelectChoosing() {
+			Player player = Main.LocalPlayer;
+			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+			if (perkplayer.perks.ContainsKey(GetPerkType<BlessingOfTitan>())
+				&& perkplayer.perks.ContainsKey(GetPerkType<ProjectileProtection>())
+				&& player.IsEquipAcc(ModContent.ItemType<TitanBlood>())) {
+				return true;
+			}
+			return false;
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Base: 200);
+			modplayer.AddStatsToPlayer(PlayerStats.Thorn, Base: 1.5f);
+			modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.25f, Flat: 15);
+			player.endurance += .4f;
+		}
+		public override bool PreKill(Player player) {
+			if (!player.HasBuff(ModContent.BuffType<TitanPowerBuff>())) {
+				player.AddBuff(ModContent.BuffType<TitanPowerBuff>(), BossRushUtils.ToMinute(4));
+				return true;
+			}
+			return false;
+		}
+	}
+	public class TitanPowerBuff : ModBuff {
+		public override string Texture => BossRushTexture.MissingTexture_Default;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff(true);
 		}
 	}
 }

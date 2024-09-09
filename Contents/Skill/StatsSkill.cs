@@ -24,7 +24,7 @@ public class Increases_3xDamage : ModSkill {
 	public class PowerBankDebuff : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
+			this.BossRushSetDefaultDeBuff();
 		}
 		public override void Update(Player player, ref int buffIndex) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.EnergyRecharge, -.5f);
@@ -160,7 +160,7 @@ public class AdAstra : ModSkill {
 	public class AdAstraDebuff : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
-			this.BossRushSetDefaultBuff();
+			this.BossRushSetDefaultDeBuff();
 		}
 		public override void Update(Player player, ref int buffIndex) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -192,7 +192,8 @@ public class Overclock : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
 	}
 	public override void Update(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, 3);
+		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, 1 + Math.Clamp(.5f * (skillplayer.MaximumDuration - skillplayer.Duration) / 50, 0, 7.5f));
 	}
 }
 public class TerrorForm : ModSkill {
@@ -229,25 +230,25 @@ public class AllOrNothing : ModSkill {
 	public override void OnTrigger(Player player) {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));
 	}
-}
-public class AllOrNothingBuff : ModBuff {
-	public override string Texture => BossRushTexture.EMPTYBUFF;
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
-	public override void Update(Player player, ref int buffIndex) {
-		if (player.buffTime[buffIndex] <= 0) {
-			player.Center.LookForHostileNPC(out List<NPC> npclist, 1000);
-			foreach (NPC npc in npclist) {
-				int direction = player.Center.X > npc.Center.X ? 1 : -1;
-				int originDmg = (int)(npc.lifeMax * .1f);
-				int dmg = originDmg;
-				for (int i = 2; i < 17; i++) {
-					if (Main.rand.NextBool(i)) {
-						dmg += (int)(originDmg * Main.rand.NextFloat(.85f, 1.15f));
+	public class AllOrNothingBuff : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			if (player.buffTime[buffIndex] <= 0) {
+				player.Center.LookForHostileNPC(out List<NPC> npclist, 1000);
+				foreach (NPC npc in npclist) {
+					int direction = player.Center.X > npc.Center.X ? 1 : -1;
+					int originDmg = (int)(npc.lifeMax * .1f);
+					int dmg = originDmg;
+					for (int i = 2; i < 17; i++) {
+						if (Main.rand.NextBool(i)) {
+							dmg += (int)(originDmg * Main.rand.NextFloat(.85f, 1.15f));
+						}
 					}
+					player.StrikeNPCDirect(npc, npc.CalculateHitInfo(dmg, direction));
 				}
-				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(dmg, direction));
 			}
 		}
 	}

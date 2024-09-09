@@ -100,7 +100,7 @@ BroadSwordSpirit: {
 
 Overclock: {
 	DisplayName: Overclock
-	Description: Increases your weapon speed by 200%
+	Description: Increases weapon speed by 50% (up to 750%) every 0.5 seconds
 }
 
 BloodToPower: {

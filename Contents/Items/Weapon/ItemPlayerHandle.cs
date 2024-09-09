@@ -172,10 +172,10 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if(item.ModItem == null) {
+			if (item.ModItem == null) {
 				return;
 			}
-			if(item.ModItem.Mod != Mod) {
+			if (item.ModItem.Mod != Mod) {
 				return;
 			}
 			if (DebugItem) {
@@ -186,7 +186,7 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 			if (item.ModItem is Relic relic && relic.relicColor != null) {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = relic.relicColor.MultiColor(5);
-				tooltips.Add(new(Mod, "RelicItem", "[Active Item]") { OverrideColor = Main.DiscoColor});
+				tooltips.Add(new(Mod, "RelicItem", $"[Active Item]\nTier : {relic.TemplateCount}") { OverrideColor = Main.DiscoColor });
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null) {

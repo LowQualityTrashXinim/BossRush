@@ -112,6 +112,7 @@ internal class UniversalSystem : ModSystem {
 			return config.LegacyBossRushWorldGen;
 		return false;
 	}
+	public static bool Check_RLOH() => ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul;
 	public const string CHECK_LOSTACC = "lostacc";
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
@@ -1218,7 +1219,7 @@ internal class PerkUIState : UIState {
 				ActivateStarterPerkUI(modplayer, player);
 			}
 			if (StateofState == DebugState) {
-				ActivateDebugPerkUI(modplayer, player);
+				ActivateDebugPerkUI(player);
 			}
 			if (StateofState == GamblerState) {
 				ActivateGamblerUI(modplayer, player);
@@ -1227,7 +1228,7 @@ internal class PerkUIState : UIState {
 		toolTip = new UIText("");
 		Append(toolTip);
 	}
-	private void ActivateDebugPerkUI(PerkPlayer modplayer, Player player) {
+	private void ActivateDebugPerkUI(Player player) {
 		int amount = ModPerkLoader.TotalCount;
 		Vector2 originDefault = new Vector2(26, 26);
 		for (int i = 0; i < amount; i++) {
@@ -1255,8 +1256,10 @@ internal class PerkUIState : UIState {
 					continue;
 				}
 			}
-			if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
-				continue;
+			if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
+				}
 			}
 			listOfPerk.Add(i);
 		}
