@@ -3,14 +3,14 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.SpecialReward;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Contents.Items.Consumable.Potion;
+using BossRush.Contents.Items.Consumable.SpecialReward;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 	internal class ModStatsDebugger : ModItem {

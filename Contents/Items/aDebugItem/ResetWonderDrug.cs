@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Items.Potion;
+﻿using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using Terraria;

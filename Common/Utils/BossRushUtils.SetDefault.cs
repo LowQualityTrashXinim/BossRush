@@ -5,10 +5,10 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
-using BossRush.Common.RoguelikeChange;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush {
 	public partial class BossRushUtils {

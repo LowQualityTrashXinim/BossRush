@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 
-namespace BossRush.Common.RoguelikeChange;
+namespace BossRush.Common.RoguelikeChange.ItemOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		//Note : Use look for tooltip with Defense if there are gonna be modification to defenses

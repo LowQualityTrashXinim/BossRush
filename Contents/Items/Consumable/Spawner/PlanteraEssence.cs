@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.ID;
 
-namespace BossRush.Contents.Items.Spawner {
+namespace BossRush.Contents.Items.Consumable.Spawner {
 	class PlanteraEssence : ModItem {
 		public override void SetDefaults() {
 			Item.height = 30;

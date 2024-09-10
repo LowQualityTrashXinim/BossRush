@@ -2,7 +2,7 @@
 using Terraria.ID;
 using BossRush.Texture;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
 	internal class PlusOneBullet : SynergyModItem {

@@ -4,7 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 
-namespace BossRush.Contents.Items.Accessories.Trinket;
+namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 internal class Trinket5 : BaseTrinket {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void TrinketDefault() {

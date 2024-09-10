@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using BossRush.Contents.Projectiles;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.Utils;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {

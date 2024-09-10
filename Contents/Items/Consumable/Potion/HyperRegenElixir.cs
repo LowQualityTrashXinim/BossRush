@@ -3,7 +3,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Potion;
+namespace BossRush.Contents.Items.Consumable.Potion;
 internal class HyperRegenElixir : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {

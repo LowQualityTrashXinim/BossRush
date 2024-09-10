@@ -3,7 +3,7 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Potion {
+namespace BossRush.Contents.Items.Consumable.Potion {
 	internal class BerserkerElixir : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<BerserkBuff>(), 12000);
@@ -13,9 +13,7 @@ namespace BossRush.Contents.Items.Potion {
 	}
 	public class BerserkerElixir_ModPlayer : ModPlayer {
 		public override void ModifyItemScale(Item item, ref float scale) {
-			if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee) {
-				scale += .3f;
-			}
+			if (Player.HasBuff(ModContent.BuffType<BerserkBuff>()) && item.DamageType == DamageClass.Melee) scale += .3f;
 		}
 	}
 	internal class BerserkBuff : ModBuff {

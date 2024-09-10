@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 using BossRush.Contents.NPCs;
 using Terraria;
 
-namespace BossRush.Contents.Items.Spawner;
+namespace BossRush.Contents.Items.Consumable.Spawner;
 internal class SpawnMerchant : BaseSpawnerItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override int[] NPCtypeToSpawn => new int[] { ModContent.NPCType<M_018T>() };

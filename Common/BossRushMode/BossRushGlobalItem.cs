@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using BossRush.Common.ChallengeMode;
 using BossRush.Common.WorldGenOverhaul;
-using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Consumable.Spawner;
 
 namespace BossRush.Common.BossRushMode;
 internal class BossRushGlobalItem : GlobalItem {

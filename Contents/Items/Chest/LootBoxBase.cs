@@ -12,9 +12,9 @@ using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Potion;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.Consumable.Potion;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {

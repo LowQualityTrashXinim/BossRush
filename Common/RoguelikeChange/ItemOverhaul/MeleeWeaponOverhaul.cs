@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Common.RoguelikeChange {
+namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
 		public const int Swipe = 999;
 		public const int Poke = 998;
@@ -442,8 +442,8 @@ namespace BossRush.Common.RoguelikeChange {
 			return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 		}
 		public override bool CanUseItem(Item item, Player player) {
-			if ((SwingType != BossRushUseStyle.Swipe &&
-				SwingType != BossRushUseStyle.Poke) ||
+			if (SwingType != BossRushUseStyle.Swipe &&
+				SwingType != BossRushUseStyle.Poke ||
 				item.noMelee) {
 				return base.CanUseItem(item, player);
 			}

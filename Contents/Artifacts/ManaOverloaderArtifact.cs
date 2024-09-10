@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items.Accessories.Trinket;
 using System;
+using BossRush.Contents.Items.Accessories.TrinketAccessories;
 
 namespace BossRush.Contents.Artifacts {
 	internal class ManaOverloaderArtifact : Artifact {

@@ -1,6 +1,4 @@
-﻿using BossRush.Contents.Items.SpecialReward;
-using BossRush.Contents.Items.Spawner;
-using BossRush.Contents.Items.Chest;
+﻿using BossRush.Contents.Items.Chest;
 //EnragedStuff
 using BossRush.Contents.WeaponEnchantment;
 using Terraria.GameContent.ItemDropRules;
@@ -11,6 +9,8 @@ using Terraria.ID;
 using Terraria;
 using System;
 using BossRush.Common.Systems;
+using BossRush.Contents.Items.Consumable.Spawner;
+using BossRush.Contents.Items.Consumable.SpecialReward;
 
 namespace BossRush.Common {
 	class GlobalNPCMod : GlobalNPC {

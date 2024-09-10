@@ -2,7 +2,7 @@
 using Terraria.DataStructures;
 using Terraria.ID;
 
-namespace BossRush.Contents.Items.Spawner {
+namespace BossRush.Contents.Items.Consumable.Spawner {
 	public class BleedingWorm : BaseSpawnerItem {
 		public override int[] NPCtypeToSpawn => new int[] { NPCID.BloodNautilus };
 		public override void PostSetStaticDefaults() {

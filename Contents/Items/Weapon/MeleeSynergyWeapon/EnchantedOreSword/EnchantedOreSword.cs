@@ -1,4 +1,4 @@
-﻿using BossRush.Common.RoguelikeChange;
+﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;

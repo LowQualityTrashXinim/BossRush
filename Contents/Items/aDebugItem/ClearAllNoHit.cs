@@ -1,4 +1,4 @@
-﻿using BossRush.Contents.Items.SpecialReward;
+﻿using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using Terraria;

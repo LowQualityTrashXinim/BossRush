@@ -3,8 +3,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Accessories.SynergyAccessories.MashedOfCopper {
 	public class MashedOfCopper : SynergyModItem {

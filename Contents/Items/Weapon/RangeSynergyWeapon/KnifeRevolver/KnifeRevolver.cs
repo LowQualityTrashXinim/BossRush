@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 	internal class KnifeRevolver : SynergyModItem {

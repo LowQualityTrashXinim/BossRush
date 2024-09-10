@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace BossRush.Contents.Items.Potion {
+namespace BossRush.Contents.Items.Consumable.Potion {
 	internal class WonderDrug : ModItem {
 		//HP
 		public const int DrugHP = 20;
@@ -38,30 +38,22 @@ namespace BossRush.Contents.Items.Potion {
 				case 1:
 					player.statLifeMax2 += DrugHP;
 					player.statLife += DrugHP;
-					if (Main.myPlayer == player.whoAmI) {
-						player.HealEffect(DrugHP);
-					}
+					if (Main.myPlayer == player.whoAmI) player.HealEffect(DrugHP);
 					break;
 				case 2:
 					player.statLifeMax2 += DrugHP2;
 					player.statLife += DrugHP2;
-					if (Main.myPlayer == player.whoAmI) {
-						player.HealEffect(DrugHP2);
-					}
+					if (Main.myPlayer == player.whoAmI) player.HealEffect(DrugHP2);
 					break;
 				case 3:
 					player.statLifeMax2 += DrugHP3;
 					player.statLife += DrugHP3;
-					if (Main.myPlayer == player.whoAmI) {
-						player.HealEffect(DrugHP3);
-					}
+					if (Main.myPlayer == player.whoAmI) player.HealEffect(DrugHP3);
 					break;
 				default:
 					player.statLifeMax2 += DrugHP4;
 					player.statLife += DrugHP4;
-					if (Main.myPlayer == player.whoAmI) {
-						player.HealEffect(DrugHP3);
-					}
+					if (Main.myPlayer == player.whoAmI) player.HealEffect(DrugHP3);
 					break;
 			}
 			++player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
@@ -126,7 +118,7 @@ namespace BossRush.Contents.Items.Potion {
 			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
+			var packet = Mod.GetPacket();
 			packet.Write((byte)BossRush.MessageType.DrugSyncPlayer);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(DrugDealer);
@@ -147,12 +139,12 @@ namespace BossRush.Contents.Items.Potion {
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
-			WonderDrugPlayer clone = (WonderDrugPlayer)targetCopy;
+			var clone = (WonderDrugPlayer)targetCopy;
 			clone.DrugDealer = DrugDealer;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
-			WonderDrugPlayer clone = (WonderDrugPlayer)clientPlayer;
+			var clone = (WonderDrugPlayer)clientPlayer;
 			if (DrugDealer != clone.DrugDealer) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}

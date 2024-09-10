@@ -1,5 +1,5 @@
-﻿using BossRush.Contents.Items.Accessories.Trinket;
-using BossRush.Contents.Items.Potion;
+﻿using BossRush.Contents.Items.Accessories.TrinketAccessories;
+using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
 using Terraria.ID;

@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items.Accessories.Trinket;
+using BossRush.Contents.Items.Accessories.TrinketAccessories;
 
 namespace BossRush.Contents.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {

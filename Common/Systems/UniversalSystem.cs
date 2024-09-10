@@ -20,9 +20,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using BossRush.Common.ChallengeMode;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.Potion;
 using Terraria.GameContent.UI.States;
-using BossRush.Contents.Items.Spawner;
 using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
@@ -30,9 +28,11 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items.SpecialReward;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using Steamworks;
+using BossRush.Contents.Items.Consumable.Potion;
+using BossRush.Contents.Items.Consumable.Spawner;
+using BossRush.Contents.Items.Consumable.SpecialReward;
 
 namespace BossRush.Common.Systems;
 /// <summary>

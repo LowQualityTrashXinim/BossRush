@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using System;
 using BossRush.Common.Systems;
 
-namespace BossRush.Contents.Items.Accessories.Trinket;
+namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 public class Trinket_of_Swift_Health : BaseTrinket {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void TrinketDefault() {

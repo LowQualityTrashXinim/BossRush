@@ -1,7 +1,7 @@
 ﻿using Terraria.ID;
 using Terraria;
 
-namespace BossRush.Contents.Items.SpecialReward;
+namespace BossRush.Contents.Items.Consumable.SpecialReward;
 internal class KSDonHitReward : BaseDonHit {
 	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.KingSlimePetItem);
 }

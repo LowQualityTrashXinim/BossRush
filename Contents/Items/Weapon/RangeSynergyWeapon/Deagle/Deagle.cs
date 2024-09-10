@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 	internal class Deagle : SynergyModItem {

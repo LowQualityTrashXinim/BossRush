@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.SpecialReward;
+using BossRush.Contents.Items.Consumable.SpecialReward;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {

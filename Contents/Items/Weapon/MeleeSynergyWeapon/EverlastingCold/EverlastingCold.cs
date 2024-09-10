@@ -1,4 +1,4 @@
-﻿using BossRush.Common.RoguelikeChange;
+﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

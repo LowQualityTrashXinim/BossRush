@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Contents.Items.SpecialReward {
+namespace BossRush.Contents.Items.Consumable.SpecialReward {
 	abstract class BaseDonHit : ModItem {
 		public const int HP = 15;
 		public override void SetDefaults() {
@@ -30,7 +30,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 			return true;
 		}
 		public override bool CanUseItem(Player player) {
-			NoHitPlayerHandle modplayer = player.GetModPlayer<NoHitPlayerHandle>();
+			var modplayer = player.GetModPlayer<NoHitPlayerHandle>();
 			return !modplayer.DontHitBossNumber.Contains(Type);
 		}
 		private int countX = 0;
@@ -38,39 +38,23 @@ namespace BossRush.Contents.Items.SpecialReward {
 		private float positionRotateX = 0;
 		private float positionRotateY = 0;
 		private void PositionHandle() {
-			if (positionRotateX < 3 && countX == 1) {
-				positionRotateX += .3f;
-			}
-			else {
-				countX = -1;
-			}
-			if (positionRotateX > 0 && countX == -1) {
-				positionRotateX -= .3f;
-			}
-			else {
-				countX = 1;
-			}
-			if (positionRotateY < 3 && countY == 1) {
-				positionRotateY += .3f;
-			}
-			else {
-				countY = -1;
-			}
-			if (positionRotateY > 0 && countY == -1) {
-				positionRotateY -= .3f;
-			}
-			else {
-				countY = 1;
-			}
+			if (positionRotateX < 3 && countX == 1) 				positionRotateX += .3f;
+			else 				countX = -1;
+			if (positionRotateX > 0 && countX == -1) 				positionRotateX -= .3f;
+			else 				countX = 1;
+			if (positionRotateY < 3 && countY == 1) 				positionRotateY += .3f;
+			else 				countY = -1;
+			if (positionRotateY > 0 && countY == -1) 				positionRotateY -= .3f;
+			else 				countY = 1;
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
-			Color color = new Color(255, 255, 0, 50);
+			var color = new Color(255, 255, 0, 50);
 			Item.DrawAuraEffect(spriteBatch, position, positionRotateX, positionRotateY, color, 0, scale);
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-			Color color = new Color(255, 255, 0, 50);
+			var color = new Color(255, 255, 0, 50);
 			Item.DrawAuraEffect(spriteBatch, positionRotateX, positionRotateY, color, 0, scale);
 			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
@@ -86,9 +70,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 				"Increase perk range by 1\n" +
 				"Can only be used once\n"
 				));
-			foreach (TooltipLine line in tooltips) {
-				if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
-			}
+			foreach (var line in tooltips) 				if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
 		}
 		public virtual int Data => Item.type;
 		public override bool? UseItem(Player player) {
@@ -97,7 +79,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 			return true;
 		}
 		public override bool CanUseItem(Player player) {
-			NoHitPlayerHandle modplayer = player.GetModPlayer<NoHitPlayerHandle>();
+			var modplayer = player.GetModPlayer<NoHitPlayerHandle>();
 			return !modplayer.BossNoHitNumber.Contains(Data);
 		}
 		private int countX = 0;
@@ -105,39 +87,23 @@ namespace BossRush.Contents.Items.SpecialReward {
 		private float positionRotateX = 0;
 		private float positionRotateY = 0;
 		private void PositionHandle() {
-			if (positionRotateX < 3 && countX == 1) {
-				positionRotateX += .3f;
-			}
-			else {
-				countX = -1;
-			}
-			if (positionRotateX > 0 && countX == -1) {
-				positionRotateX -= .3f;
-			}
-			else {
-				countX = 1;
-			}
-			if (positionRotateY < 3 && countY == 1) {
-				positionRotateY += .3f;
-			}
-			else {
-				countY = -1;
-			}
-			if (positionRotateY > 0 && countY == -1) {
-				positionRotateY -= .3f;
-			}
-			else {
-				countY = 1;
-			}
+			if (positionRotateX < 3 && countX == 1) 				positionRotateX += .3f;
+			else 				countX = -1;
+			if (positionRotateX > 0 && countX == -1) 				positionRotateX -= .3f;
+			else 				countX = 1;
+			if (positionRotateY < 3 && countY == 1) 				positionRotateY += .3f;
+			else 				countY = -1;
+			if (positionRotateY > 0 && countY == -1) 				positionRotateY -= .3f;
+			else 				countY = 1;
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
-			Color color = new Color(255, 255, 0, 50);
+			var color = new Color(255, 255, 0, 50);
 			Item.DrawAuraEffect(spriteBatch, position, positionRotateX, positionRotateY, color, 0, scale);
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
 		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
-			Color color = new Color(255, 255, 0, 50);
+			var color = new Color(255, 255, 0, 50);
 			Item.DrawAuraEffect(spriteBatch, positionRotateX, positionRotateY, color, 0, scale);
 			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
@@ -156,7 +122,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 			DontHitBossNumber = new List<int>();
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			ModPacket packet = Mod.GetPacket();
+			var packet = Mod.GetPacket();
 			packet.Write((byte)BossRush.MessageType.NoHitBossNum);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(BossNoHitNumber.Count);
@@ -179,7 +145,7 @@ namespace BossRush.Contents.Items.SpecialReward {
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
-			NoHitPlayerHandle clone = (NoHitPlayerHandle)targetCopy;
+			var clone = (NoHitPlayerHandle)targetCopy;
 			clone.BossNoHitNumber = BossNoHitNumber;
 			clone.DontHitBossNumber = DontHitBossNumber;
 		}

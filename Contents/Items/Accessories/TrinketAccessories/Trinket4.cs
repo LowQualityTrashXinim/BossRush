@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Accessories.Trinket;
+namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 internal class Trinket4 : BaseTrinket {
 	public override void SetDefaults() {
 		Item.DefaultToAccessory();

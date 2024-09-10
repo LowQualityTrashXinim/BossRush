@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using BossRush.Common.RoguelikeChange;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.RectangleShotgun {
 	class RectangleShotgun : SynergyModItem {

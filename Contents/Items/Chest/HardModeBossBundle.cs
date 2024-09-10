@@ -1,5 +1,5 @@
 ﻿using BossRush.Contents.Items.BuilderItem;
-using BossRush.Contents.Items.Spawner;
+using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ID;

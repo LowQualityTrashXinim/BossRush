@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Items.Accessories.Trinket;
 using BossRush.Common.RoguelikeChange.Prefixes;
+using BossRush.Contents.Items.Accessories.TrinketAccessories;
 
 namespace BossRush {
 	public partial class BossRush : Mod {

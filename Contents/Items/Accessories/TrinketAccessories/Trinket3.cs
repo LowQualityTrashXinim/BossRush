@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 
-namespace BossRush.Contents.Items.Accessories.Trinket;
+namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 internal class Trinket_of_Ample_Perception : BaseTrinket {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void TrinketDefault() {

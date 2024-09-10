@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 
-namespace BossRush.Common.ChallengeMode {
+namespace BossRush.Common.BossRushMode {
 	internal class BossRushGlobalNPC : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
 			//if(entity.boss && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
@@ -79,7 +79,7 @@ namespace BossRush.Common.ChallengeMode {
 							npc.velocity.Y = -6f;
 					}
 
-					if (npc.position.X + (float)(npc.width / 2) > Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 120f * npc.ai[0]) {
+					if (npc.position.X + npc.width / 2 > Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 120f * npc.ai[0]) {
 						if (npc.velocity.X > 0f)
 							npc.velocity.X *= 0.96f;
 
@@ -88,7 +88,7 @@ namespace BossRush.Common.ChallengeMode {
 							npc.velocity.X = 8f;
 					}
 
-					if (npc.position.X + (float)(npc.width / 2) < Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 120f * npc.ai[0]) {
+					if (npc.position.X + npc.width / 2 < Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 120f * npc.ai[0]) {
 						if (npc.velocity.X < 0f)
 							npc.velocity.X *= 0.96f;
 
@@ -126,7 +126,7 @@ namespace BossRush.Common.ChallengeMode {
 								npc.velocity.Y = -3f;
 						}
 
-						if (npc.position.X + (float)(npc.width / 2) > Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 200f * npc.ai[0]) {
+						if (npc.position.X + npc.width / 2 > Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 200f * npc.ai[0]) {
 							if (npc.velocity.X > 0f)
 								npc.velocity.X *= 0.96f;
 
@@ -135,7 +135,7 @@ namespace BossRush.Common.ChallengeMode {
 								npc.velocity.X = 8f;
 						}
 
-						if (npc.position.X + (float)(npc.width / 2) < Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 200f * npc.ai[0]) {
+						if (npc.position.X + npc.width / 2 < Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 200f * npc.ai[0]) {
 							if (npc.velocity.X < 0f)
 								npc.velocity.X *= 0.96f;
 
@@ -162,7 +162,7 @@ namespace BossRush.Common.ChallengeMode {
 							npc.velocity.Y = -3f;
 					}
 
-					if (npc.position.X + (float)(npc.width / 2) > Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 200f * npc.ai[0]) {
+					if (npc.position.X + npc.width / 2 > Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 200f * npc.ai[0]) {
 						if (npc.velocity.X > 0f)
 							npc.velocity.X *= 0.96f;
 
@@ -171,7 +171,7 @@ namespace BossRush.Common.ChallengeMode {
 							npc.velocity.X = 8f;
 					}
 
-					if (npc.position.X + (float)(npc.width / 2) < Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 200f * npc.ai[0]) {
+					if (npc.position.X + npc.width / 2 < Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 200f * npc.ai[0]) {
 						if (npc.velocity.X < 0f)
 							npc.velocity.X *= 0.96f;
 
@@ -181,15 +181,15 @@ namespace BossRush.Common.ChallengeMode {
 					}
 				}
 
-				Vector2 vector22 = new Vector2(npc.position.X + (float)npc.width * 0.5f, npc.position.Y + (float)npc.height * 0.5f);
-				float num181 = Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 200f * npc.ai[0] - vector22.X;
+				Vector2 vector22 = new Vector2(npc.position.X + npc.width * 0.5f, npc.position.Y + npc.height * 0.5f);
+				float num181 = Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 200f * npc.ai[0] - vector22.X;
 				float num182 = Main.npc[(int)npc.ai[1]].position.Y + 230f - vector22.Y;
 				float num183 = (float)Math.Sqrt(num181 * num181 + num182 * num182);
 				npc.rotation = (float)Math.Atan2(num182, num181) + 1.57f;
 			}
 			else if (npc.ai[2] == 1f) {
-				Vector2 vector23 = new Vector2(npc.position.X + (float)npc.width * 0.5f, npc.position.Y + (float)npc.height * 0.5f);
-				float num184 = Main.npc[(int)npc.ai[1]].position.X + (float)(Main.npc[(int)npc.ai[1]].width / 2) - 200f * npc.ai[0] - vector23.X;
+				Vector2 vector23 = new Vector2(npc.position.X + npc.width * 0.5f, npc.position.Y + npc.height * 0.5f);
+				float num184 = Main.npc[(int)npc.ai[1]].position.X + Main.npc[(int)npc.ai[1]].width / 2 - 200f * npc.ai[0] - vector23.X;
 				float num185 = Main.npc[(int)npc.ai[1]].position.Y + 230f - vector23.Y;
 				float num186;
 				npc.rotation = (float)Math.Atan2(num185, num184) + 1.57f;
@@ -207,11 +207,11 @@ namespace BossRush.Common.ChallengeMode {
 				if (npc.position.Y < Main.npc[(int)npc.ai[1]].position.Y - 200f) {
 					npc.TargetClosest();
 					npc.ai[2] = 2f;
-					vector23 = new Vector2(npc.position.X + (float)npc.width * 0.5f, npc.position.Y + (float)npc.height * 0.5f);
-					num184 = Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2) - vector23.X;
-					num185 = Main.player[npc.target].position.Y + (float)(Main.player[npc.target].height / 2) - vector23.Y;
+					vector23 = new Vector2(npc.position.X + npc.width * 0.5f, npc.position.Y + npc.height * 0.5f);
+					num184 = Main.player[npc.target].position.X + Main.player[npc.target].width / 2 - vector23.X;
+					num185 = Main.player[npc.target].position.Y + Main.player[npc.target].height / 2 - vector23.Y;
 					num186 = (float)Math.Sqrt(num184 * num184 + num185 * num185);
-					num186 = ((!Main.expertMode) ? (18f / num186) : (21f / num186));
+					num186 = !Main.expertMode ? 18f / num186 : 21f / num186;
 					npc.velocity.X = num184 * num186;
 					npc.velocity.Y = num185 * num186;
 					npc.netUpdate = true;
@@ -251,15 +251,15 @@ namespace BossRush.Common.ChallengeMode {
 					num187 = Main.player[npc.target].position.X + Main.player[npc.target].width * .5f - vector24.X;
 					num188 = Main.player[npc.target].position.Y + Main.player[npc.target].height * .5f - vector24.Y;
 					num189 = (float)Math.Sqrt(num187 * num187 + num188 * num188);
-					num189 = ((!Main.expertMode) ? (17f / num189) : (22f / num189));
+					num189 = !Main.expertMode ? 17f / num189 : 22f / num189;
 					npc.velocity.X = num187 * num189;
 					npc.velocity.Y = num188 * num189;
 					npc.netUpdate = true;
 				}
 			}
 			else if (npc.ai[2] == 5f &&
-				((npc.velocity.X > 0f && npc.position.X + npc.width * .5f > Main.player[npc.target].position.X + Main.player[npc.target].width * .5f) ||
-				(npc.velocity.X < 0f && npc.position.X + npc.width * .5f < Main.player[npc.target].position.X + Main.player[npc.target].width * .5f))) {
+				(npc.velocity.X > 0f && npc.position.X + npc.width * .5f > Main.player[npc.target].position.X + Main.player[npc.target].width * .5f ||
+				npc.velocity.X < 0f && npc.position.X + npc.width * .5f < Main.player[npc.target].position.X + Main.player[npc.target].width * .5f)) {
 				npc.ai[2] = 0f;
 			}
 
@@ -311,7 +311,7 @@ namespace BossRush.Common.ChallengeMode {
 				}
 
 				npc.defense += num149 * 25;
-				if ((num149 < 2 || (double)npc.life < (double)npc.lifeMax * 0.75) && npc.ai[1] == 0f) {
+				if ((num149 < 2 || npc.life < npc.lifeMax * 0.75) && npc.ai[1] == 0f) {
 					float num151 = 80f;
 					if (num149 == 0)
 						num151 /= 2f;
@@ -335,7 +335,7 @@ namespace BossRush.Common.ChallengeMode {
 							num158 = num155 / num158;
 							num156 *= num158;
 							num157 *= num158;
-							Vector2 vector19 = new Vector2(num156 * 1f + (float)Main.rand.Next(-50, 51) * 0.01f, num157 * 1f + (float)Main.rand.Next(-50, 51) * 0.01f);
+							Vector2 vector19 = new Vector2(num156 * 1f + Main.rand.Next(-50, 51) * 0.01f, num157 * 1f + Main.rand.Next(-50, 51) * 0.01f);
 							vector19.Normalize();
 							vector19 *= num155;
 							vector19 += npc.velocity;
@@ -397,7 +397,7 @@ namespace BossRush.Common.ChallengeMode {
 						npc.velocity.Y = 0f - num162;
 				}
 
-				if (npc.position.X + halfWidth > Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2)) {
+				if (npc.position.X + halfWidth > Main.player[npc.target].position.X + Main.player[npc.target].width / 2) {
 					if (npc.velocity.X > 0f)
 						npc.velocity.X *= 0.98f;
 
@@ -406,7 +406,7 @@ namespace BossRush.Common.ChallengeMode {
 						npc.velocity.X = num164;
 				}
 
-				if (npc.position.X + halfWidth < Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2)) {
+				if (npc.position.X + halfWidth < Main.player[npc.target].position.X + Main.player[npc.target].width / 2) {
 					if (npc.velocity.X < 0f)
 						npc.velocity.X *= 0.98f;
 
@@ -455,8 +455,8 @@ namespace BossRush.Common.ChallengeMode {
 
 				npc.rotation += npc.direction * 0.3f;
 				Vector2 vector20 = new Vector2(npc.position.X + halfWidth, npc.position.Y + halfHeight);
-				float num172 = Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2) - vector20.X;
-				float num173 = Main.player[npc.target].position.Y + (float)(Main.player[npc.target].height / 2) - vector20.Y;
+				float num172 = Main.player[npc.target].position.X + Main.player[npc.target].width / 2 - vector20.X;
+				float num173 = Main.player[npc.target].position.Y + Main.player[npc.target].height / 2 - vector20.Y;
 				float num174 = (float)Math.Sqrt(num172 * num172 + num173 * num173);
 				float num175 = 1.5f;
 				npc.damage = GetAttackDamage_LerpBetweenFinalValues(npc, npc.defDamage, npc.defDamage * 1.3f);
@@ -514,8 +514,8 @@ namespace BossRush.Common.ChallengeMode {
 				npc.defense = 9999;
 				npc.rotation += npc.direction * 0.3f;
 				Vector2 vector21 = new Vector2(npc.position.X + halfWidth, npc.position.Y + halfHeight);
-				float num176 = Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2) - vector21.X;
-				float num177 = Main.player[npc.target].position.Y + (float)(Main.player[npc.target].height / 2) - vector21.Y;
+				float num176 = Main.player[npc.target].position.X + Main.player[npc.target].width / 2 - vector21.X;
+				float num177 = Main.player[npc.target].position.Y + Main.player[npc.target].height / 2 - vector21.Y;
 				float num178 = (float)Math.Sqrt(num176 * num176 + num177 * num177);
 				num178 = 8f / num178;
 				npc.velocity.X = num176 * num178;
@@ -531,13 +531,13 @@ namespace BossRush.Common.ChallengeMode {
 			}
 
 			if (npc.ai[1] != 2f && npc.ai[1] != 3f && npc.type != NPCID.DungeonGuardian && (num149 != 0 || !Main.expertMode)) {
-				int num179 = Dust.NewDust(new Vector2(npc.position.X + halfWidth - 15f - npc.velocity.X * 5f, npc.position.Y + halfHeight), 30, 10, DustID.Blood, (0f - npc.velocity.X) * 0.2f, 3f, 0, default(Color), 2f);
+				int num179 = Dust.NewDust(new Vector2(npc.position.X + halfWidth - 15f - npc.velocity.X * 5f, npc.position.Y + halfHeight), 30, 10, DustID.Blood, (0f - npc.velocity.X) * 0.2f, 3f, 0, default, 2f);
 				Main.dust[num179].noGravity = true;
 				Main.dust[num179].velocity.X *= 1.3f;
 				Main.dust[num179].velocity.X += npc.velocity.X * 0.4f;
 				Main.dust[num179].velocity.Y += 2f + npc.velocity.Y;
 				for (int num180 = 0; num180 < 2; num180++) {
-					num179 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y + 120f), npc.width, 60, DustID.Blood, npc.velocity.X, npc.velocity.Y, 0, default(Color), 2f);
+					num179 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y + 120f), npc.width, 60, DustID.Blood, npc.velocity.X, npc.velocity.Y, 0, default, 2f);
 					Main.dust[num179].noGravity = true;
 					Dust dust = Main.dust[num179];
 					dust.velocity -= npc.velocity;
@@ -546,14 +546,14 @@ namespace BossRush.Common.ChallengeMode {
 			}
 		}
 		public int GetAttackDamage_ForProjectiles(NPC npc, float normalDamage, float expertDamage) {
-			float amount = (Main.expertMode ? 1 : 0);
+			float amount = Main.expertMode ? 1 : 0;
 			if (Main.GameModeInfo.IsJourneyMode)
 				amount = MathHelper.Clamp(npc.strengthMultiplier - 1f, 0f, 1f);
 
 			return (int)MathHelper.Lerp(normalDamage, expertDamage, amount);
 		}
 		public int GetAttackDamage_LerpBetweenFinalValues(NPC npc, float normalDamage, float expertDamage) {
-			float amount = (Main.expertMode ? 1 : 0);
+			float amount = Main.expertMode ? 1 : 0;
 			if (Main.GameModeInfo.IsJourneyMode)
 				amount = MathHelper.Clamp(npc.strengthMultiplier - 1f, 0f, 1f);
 
@@ -562,7 +562,7 @@ namespace BossRush.Common.ChallengeMode {
 		public override void PostAI(NPC npc) {
 		}
 		public override void OnKill(NPC npc) {
-			if(npc.type == NPCID.WallofFlesh && !Main.hardMode) {
+			if (npc.type == NPCID.WallofFlesh && !Main.hardMode) {
 				ModContent.GetInstance<UniversalSystem>().defaultUI.TurnOnEndOfDemoMessage();
 			}
 		}

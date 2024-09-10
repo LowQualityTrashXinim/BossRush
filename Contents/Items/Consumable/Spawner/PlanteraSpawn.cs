@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Spawner {
+namespace BossRush.Contents.Items.Consumable.Spawner {
 	public class PlanteraSpawn : BaseSpawnerItem {
 		public override int[] NPCtypeToSpawn => new int[] { NPCID.Plantera };
 		public override void SetSpawnerDefault(out int width, out int height) {

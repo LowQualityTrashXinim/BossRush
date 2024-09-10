@@ -9,7 +9,7 @@ using Terraria.ID;
 using Terraria;
 using System;
 
-namespace BossRush.Common.RoguelikeChange {
+namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
 	/// This is where we should modify vanilla item
 	/// </summary>
@@ -130,7 +130,7 @@ namespace BossRush.Common.RoguelikeChange {
 			switch (item.type) {
 				case ItemID.AmethystStaff:
 					velocity = velocity.Vector2RotateByRandom(10);
-					position = position.PositionOFFSET(velocity,50);
+					position = position.PositionOFFSET(velocity, 50);
 					break;
 				case ItemID.TopazStaff:
 					velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
@@ -335,7 +335,7 @@ namespace BossRush.Common.RoguelikeChange {
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
 				return;
 			}
 			OnHitNPC_WoodBow(proj, target);

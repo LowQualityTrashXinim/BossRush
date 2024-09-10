@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Potion {
+namespace BossRush.Contents.Items.Consumable.Potion {
 	internal class TitanElixir : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultPotion(20, 26, ModContent.BuffType<Protection>(), 12000);

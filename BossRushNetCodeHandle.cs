@@ -3,13 +3,13 @@ using System.IO;
 using Terraria.ID;
 using BossRush.Common;
 using BossRush.Contents.Artifacts;
-using BossRush.Contents.Items.Potion;
-using BossRush.Contents.Items.SpecialReward;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems.SpoilSystem;
+using BossRush.Contents.Items.Consumable.Potion;
+using BossRush.Contents.Items.Consumable.SpecialReward;
 
 namespace BossRush {
 	partial class BossRush {
