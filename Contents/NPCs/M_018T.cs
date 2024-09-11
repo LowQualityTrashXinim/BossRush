@@ -8,13 +8,13 @@ using BossRush.Contents.Items;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems;
-using BossRush.Common;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.aDebugItem.StatsInform;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.NPCs;
 internal class M_018T : ModNPC {

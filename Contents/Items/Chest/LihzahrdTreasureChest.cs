@@ -1,7 +1,7 @@
 ﻿using BossRush.Common;
 using BossRush.Common.Systems;
 using BossRush.Common.Utils;
-using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Consumable.Potion;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

@@ -1717,6 +1717,26 @@ Mods: {
 				DisplayName: Spawn Trial
 				Tooltip: ""
 			}
+
+			AntiPoisonPotion: {
+				DisplayName: Anti Poison Potion
+				Tooltip: ""
+			}
+
+			FireResistancePotion: {
+				DisplayName: Fire Resistance Potion
+				Tooltip: ""
+			}
+
+			LastingVile: {
+				DisplayName: Lasting Vile
+				Tooltip: ""
+			}
+
+			ProtectionScroll: {
+				DisplayName: Protection Scroll
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2044,6 +2064,26 @@ Mods: {
 			TitanPowerBuff: {
 				DisplayName: Titan Power Buff
 				Description: Mods.BossRush.Buffs.TitanPowerBuff.Description
+			}
+
+			AntiPoisonBuff: {
+				DisplayName: Anti Poison Buff
+				Description: Mods.BossRush.Buffs.AntiPoisonBuff.Description
+			}
+
+			FireResistanceBuff: {
+				DisplayName: Fire Resistance Buff
+				Description: Mods.BossRush.Buffs.FireResistanceBuff.Description
+			}
+
+			LastingVileBuff: {
+				DisplayName: Lasting Vile Buff
+				Description: Mods.BossRush.Buffs.LastingVileBuff.Description
+			}
+
+			ProtectionSpell: {
+				DisplayName: Protection Spell
+				Description: Mods.BossRush.Buffs.ProtectionSpell.Description
 			}
 		}
 

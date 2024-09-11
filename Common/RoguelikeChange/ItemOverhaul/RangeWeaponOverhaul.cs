@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using BossRush.Common.General;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	//public readonly static int[] GunType = {

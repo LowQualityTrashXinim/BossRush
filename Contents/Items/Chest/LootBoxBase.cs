@@ -3,7 +3,6 @@ using Terraria;
 using System.IO;
 using Terraria.ID;
 using System.Linq;
-using BossRush.Common;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using BossRush.Common.Utils;
@@ -15,6 +14,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Consumable.Potion;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {

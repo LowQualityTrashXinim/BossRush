@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
-namespace BossRush.Common {
+namespace BossRush.Common.General {
 	public class BossRushModConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 		[Header($"BaseGameHeader")]

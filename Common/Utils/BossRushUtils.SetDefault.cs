@@ -6,9 +6,9 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
-using BossRush.Common;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Common.General;
 
 namespace BossRush {
 	public partial class BossRushUtils {

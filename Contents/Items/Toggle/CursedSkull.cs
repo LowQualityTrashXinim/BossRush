@@ -1,4 +1,4 @@
-﻿using BossRush.Common;
+﻿using BossRush.Common.General;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;

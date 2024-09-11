@@ -10,7 +10,7 @@ namespace BossRush.Common;
 internal class RangeMageHybridDamageClass : DamageClass {
 
 	public override bool GetEffectInheritance(DamageClass damageClass) {
-		return damageClass == Magic;
+		return damageClass == Magic || damageClass == Ranged;
 	}
 	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
 		if (damageClass == Ranged || damageClass == Magic)

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using BossRush.Common.General;
 
 namespace BossRush.Common.Systems.Mutation;
 internal class NPCMutation : GlobalNPC {

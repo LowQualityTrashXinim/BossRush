@@ -1,8 +1,8 @@
 ﻿using Terraria;
 using Terraria.ID;
-using BossRush.Common;
 using Terraria.ModLoader;
 using BossRush.Contents.Items.BuilderItem;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class BuilderLootBox : ModItem {

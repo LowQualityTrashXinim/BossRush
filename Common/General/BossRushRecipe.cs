@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
 
-namespace BossRush.Common {
+namespace BossRush.Common.General {
 	internal class BossRushRecipe : ModSystem {
 		List<int> list = new List<int>();
 		public override void AddRecipes() {

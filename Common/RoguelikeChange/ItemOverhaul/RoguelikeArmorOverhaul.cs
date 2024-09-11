@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
+using BossRush.Common.General;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {

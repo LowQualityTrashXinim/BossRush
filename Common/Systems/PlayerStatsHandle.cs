@@ -8,6 +8,7 @@ using BossRush.Contents.Perks;
 using System.Linq;
 using Terraria.ID;
 using System;
+using BossRush.Common.General;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {

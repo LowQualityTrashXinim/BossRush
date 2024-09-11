@@ -12,10 +12,10 @@ using BossRush.Contents.Items.Chest;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.Localization;
-using BossRush.Common;
 using System.Collections.ObjectModel;
 using Terraria.UI.Chat;
 using ReLogic.Graphics;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>

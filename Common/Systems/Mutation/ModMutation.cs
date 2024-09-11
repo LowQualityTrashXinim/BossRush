@@ -33,7 +33,7 @@ public static class ModMutationLoader {
 		_mutation.Add(enchant);
 		return _mutation.Count - 1;
 	}
-	public static ModMutation GetEnchantment(int type) {
+	public static ModMutation GetMutation(int type) {
 		return type >= 0 && type < _mutation.Count ? _mutation[type] : null;
 	}
 }

@@ -12,7 +12,7 @@ using BossRush.Common.Systems;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 
-namespace BossRush.Common {
+namespace BossRush.Common.General {
 	class GlobalNPCMod : GlobalNPC {
 		public override void OnSpawn(NPC npc, IEntitySource source) {
 			if (!npc.boss && Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1 && npc.type != NPCID.Creeper) {
@@ -228,7 +228,7 @@ namespace BossRush.Common {
 			npcLoot.Add(legacyLootboxCheck);
 		}
 		public override void OnKill(NPC npc) {
-			if(npc.boss) {
+			if (npc.boss) {
 				UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
 				system.ListOfBossKilled.Add(npc.type);
 			}

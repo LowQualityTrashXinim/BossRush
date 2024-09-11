@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.RoguelikeChange;
-using BossRush.Common;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class MagicMuzzle : ModItem {

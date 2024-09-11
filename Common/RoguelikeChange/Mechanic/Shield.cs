@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using System;
+using BossRush.Common.General;
 
 namespace BossRush.Common.RoguelikeChange.Mechanic;
 public class Shield_GlobalItem : GlobalItem {

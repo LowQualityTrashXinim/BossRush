@@ -277,6 +277,7 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] LegArmorPostGolem = {
 			ItemID.SquireAltPants,ItemID.HuntressAltPants, ItemID.MonkAltPants, ItemID.ApprenticeAltPants
 		};
+		public readonly static int[] HeadPostML = { };
 		public readonly static int[] EveryArmorPiece = [
 			..HeadArmorHardMode, ..HeadArmorPostEvil, ..HeadArmorPostGolem, ..HeadArmorPostMech, ..HeadArmorPostPlant, ..HeadArmorPreBoss,
 			..BodyArmorHardMode, ..BodyArmorPostEvil, ..BodyArmorPostGolem, ..BodyArmorPostMech, ..BodyArmorPostPlant, ..BodyArmorPreBoss,
@@ -300,7 +301,10 @@ namespace BossRush.Common.Utils {
 					ModContent.ItemType<SageElixir>(),
 					ModContent.ItemType<CommanderElixir>(),
 					ModContent.ItemType<TitanElixir>(),
-					ModContent.ItemType<HyperRegenElixir>()
-	};
+					ModContent.ItemType<HyperRegenElixir>() };
+
+		//Buff
+		public readonly static int[] FireBuff = { BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno };
+		public readonly static int[] PoisonBuff = { BuffID.Poisoned, BuffID.Venom };
 	}
 }

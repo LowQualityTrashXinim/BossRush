@@ -4,11 +4,11 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Terraria.GameContent.ItemDropRules;
 
-namespace BossRush.Common {
+namespace BossRush.Common.General {
 	public class ChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless;
+				return UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless;
 			}
 			return false;
 		}
@@ -90,8 +90,8 @@ namespace BossRush.Common {
 			if (!info.IsInSimulation) {
 				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
 					&& (
-					info.player.difficulty == PlayerDifficultyID.Hardcore 
-					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature 
+					info.player.difficulty == PlayerDifficultyID.Hardcore
+					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature
 					|| info.player.IsDebugPlayer());
 			}
 			return false;

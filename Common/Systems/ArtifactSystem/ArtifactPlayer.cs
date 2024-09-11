@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using BossRush.Contents.Artifacts;
-using BossRush.Contents.Items.Potion;
+using BossRush.Contents.Items.Consumable.Potion;
 using System.IO;
 
 namespace BossRush.Common.Systems.ArtifactSystem {

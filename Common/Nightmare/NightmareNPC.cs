@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.Audio;
+using BossRush.Common.General;
 
 namespace BossRush.Common.Nightmare {
 	internal class NightmareNPC : GlobalNPC {

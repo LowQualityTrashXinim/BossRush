@@ -18,7 +18,7 @@ using Terraria.GameInput;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 
-namespace BossRush.Common {
+namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
 		//NoHiter
 		public int gitGud = 0;
@@ -242,10 +242,10 @@ namespace BossRush.Common {
 		}
 		public override void LoadData(TagCompound tag) {
 			gitGud = (int)tag["gitgud"];
-			if (tag.TryGet<int>("EnchantingEnable", out int value1)) {
+			if (tag.TryGet("EnchantingEnable", out int value1)) {
 				EnchantingEnable = value1;
 			}
-			if (tag.TryGet<int>("SkillEnable", out int value2)) {
+			if (tag.TryGet("SkillEnable", out int value2)) {
 				SkillEnable = value2;
 			}
 		}

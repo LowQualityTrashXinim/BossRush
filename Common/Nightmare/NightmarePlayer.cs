@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using BossRush.Common.General;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.Nightmare {
 	internal class NightmarePlayer : ModPlayer {

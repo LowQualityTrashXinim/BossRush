@@ -7,7 +7,7 @@ using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 
-namespace BossRush.Common;
+namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 
@@ -16,6 +16,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public bool Source_FromDeathScatterShot = false;
 	public int OnKill_ScatterShot = -1;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
+		if(source is null) {
+			return;
+		}
 		if (source is EntitySource_ItemUse parent) {
 			Source_ItemType = parent.Item.type;
 		}

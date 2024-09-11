@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using System.Linq;
-using BossRush.Common;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.Localization;
@@ -21,6 +20,7 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Common.RoguelikeChange;
 using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {

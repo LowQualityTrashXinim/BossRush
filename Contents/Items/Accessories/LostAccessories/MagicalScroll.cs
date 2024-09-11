@@ -1,11 +1,11 @@
 ﻿using Terraria;
 using Terraria.ID;
-using BossRush.Common;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class MagicalScroll : ModItem {

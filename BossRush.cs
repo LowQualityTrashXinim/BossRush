@@ -15,6 +15,8 @@ namespace BossRush {
 		}
 	}
 	public class BossRushModSystem : ModSystem {
+		public static bool[] IsFireBuff;
+		public static bool[] IsPoisonBuff;
 		public static Dictionary<int, List<int>> WeaponRarityDB;
 		private static List<Item> _synergyitem;
 		private static List<Item> _lostAccs;
@@ -35,12 +37,17 @@ namespace BossRush {
 			_lostAccs = null;
 			ListLootboxType = null;
 			WeaponRarityDB = null;
+			IsFireBuff = null;
+			IsPoisonBuff = null;
 		}
 		public override void PostSetupContent() {
+			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
+			IsPoisonBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.Poisoned, BuffID.Venom);
+
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
 			for (int i = 0; i < cacheitemList.Count; i++) {
 				Item item = cacheitemList[i];
-				if(item.ModItem is LootBoxBase) {
+				if (item.ModItem is LootBoxBase) {
 					ListLootboxType.Add(item.type);
 					continue;
 				}
@@ -54,7 +61,7 @@ namespace BossRush {
 						continue;
 					}
 				}
-				if(item.ModItem is BaseTrinket) {
+				if (item.ModItem is BaseTrinket) {
 					_trinket.Add(item);
 					continue;
 				}

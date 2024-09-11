@@ -201,6 +201,7 @@ namespace BossRush {
 		//Luck
 	}
 
+
 	/// <summary>
 	/// This player class will hold additional infomation that the base Player or ModPlayer class don't provide<br/>
 	/// The logic to get to those infomation is automatic <br/>
