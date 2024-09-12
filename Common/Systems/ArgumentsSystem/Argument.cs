@@ -21,7 +21,7 @@ public class ArgumentWeapon : GlobalItem {
 	}
 	public override bool InstancePerEntity => true;
 }
-public class ModArgument : ModType {
+public abstract class ModArgument : ModType {
 	protected override void Register() {
 		ArgumentLoader.Register(this);
 	}

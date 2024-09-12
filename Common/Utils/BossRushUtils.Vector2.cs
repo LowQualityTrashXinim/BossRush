@@ -11,6 +11,19 @@ namespace BossRush {
 			velocity.Y = Math.Clamp(velocity.Y, -Y, Y);
 			return velocity;
 		}
+		public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, Rectangle rect) {
+			float X = r.NextFloat(0, rect.Width);
+			float Y = r.NextFloat(0, rect.Height);
+			bool Randomdecider = r.NextBool();
+			Vector2 RandomPointOnEdge = new Vector2(X * Randomdecider.ToInt(), Y * (!Randomdecider).ToInt());
+			if (RandomPointOnEdge.X == 0) {
+				RandomPointOnEdge.X = rect.Width;
+			}
+			else {
+				RandomPointOnEdge.Y = rect.Height;
+			}
+			return RandomPointOnEdge * r.NextBool().ToDirectionInt();
+		}
 		public static Vector2 NextVector2RectangleEdge(this UnifiedRandom r, float RectangleWidthHalf, float RectangleHeightHalf) {
 			float X = r.NextFloat(-RectangleWidthHalf, RectangleWidthHalf);
 			float Y = r.NextFloat(-RectangleHeightHalf, RectangleHeightHalf);

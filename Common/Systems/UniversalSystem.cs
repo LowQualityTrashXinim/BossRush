@@ -29,7 +29,6 @@ using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
-using Steamworks;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Consumable.SpecialReward;

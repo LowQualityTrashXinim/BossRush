@@ -22,7 +22,7 @@ namespace BossRush.Common.Systems.ArtifactSystem
 {
     internal class CharacterCreationIL : ILoadable
     {
-        private const int ARTIFACT_SELECTION_UI_HEIGHT = 200;
+        private const int ARTIFACT_SELECTION_UI_HEIGHT = 215;
         private const int TOP_PADDING = 10;
 
         private static ILHook buildPageHook;

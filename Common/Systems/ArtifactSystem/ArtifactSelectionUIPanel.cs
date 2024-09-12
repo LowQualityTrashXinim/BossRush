@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Artifacts;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,12 @@ using Terraria.UI;
 namespace BossRush.Common.Systems.ArtifactSystem {
 	internal class ArtifactSelectionUIPanel : UIPanel {
 		public const int ARTIFACTS_PER_ROW = 4; // Set this up to 10 cuz reasons
+		public const int ARTIFACTS_MAX_LINES = 4;
+
+		private int currentOffset = 0;
+
+		private List<int> list_artifactInOrder = new();
+		private List<ArtifactSelectionUIButton> list_btnArtifact = new();
 		public ArtifactSelectionUIPanel(Player player, int height, int top) {
 			Width = StyleDimension.FromPercent(1f);
 			Height = StyleDimension.FromPixels(height);
@@ -31,21 +38,31 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 				Left = StyleDimension.FromPixels(0 % ARTIFACTS_PER_ROW * 46.0f + 6.0f),
 				Top = StyleDimension.FromPixels(0 / ARTIFACTS_PER_ROW * 48.0f + 1.0f)
 			};
+			list_btnArtifact.Add(normalbutton);
+			list_artifactInOrder.Add(Artifact.ArtifactType<NormalizeArtifact>());
 			artifactSelectionElement.Append(normalbutton);
-
 			int realtype = 0;
+			int lineCounter = 0;
 			for (int type = 1; type < Artifact.ArtifactCount; type++) {
 				if (realtype == Artifact.ArtifactType<NormalizeArtifact>()) {
 					realtype++;
 				}
-				ArtifactSelectionUIButton button = new(realtype, player) {
-					Width = StyleDimension.FromPixels(44f),
-					Height = StyleDimension.FromPixels(44f),
-					Left = StyleDimension.FromPixels((type % ARTIFACTS_PER_ROW) * 46.0f + 6.0f),
-					Top = StyleDimension.FromPixels((type / ARTIFACTS_PER_ROW) * 48.0f + 1.0f)
-				};
+				if (type % 4 == 0) {
+					lineCounter++;
+				}
+				if (lineCounter < ARTIFACTS_MAX_LINES) {
 
-				artifactSelectionElement.Append(button);
+					ArtifactSelectionUIButton button = new(realtype, player) {
+						Width = StyleDimension.FromPixels(44f),
+						Height = StyleDimension.FromPixels(44f),
+						Left = StyleDimension.FromPixels((type % ARTIFACTS_PER_ROW) * 46.0f + 6.0f),
+						Top = StyleDimension.FromPixels((type / ARTIFACTS_PER_ROW) * 48.0f + 1.0f)
+					};
+					list_btnArtifact.Add(button);
+					artifactSelectionElement.Append(button);
+				}
+
+				list_artifactInOrder.Add(realtype);
 				realtype = Math.Clamp(++realtype, 0, Artifact.ArtifactCount - 1);
 			}
 
@@ -74,6 +91,21 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 			activeArtifactInfoPanel.Append(activeArtifactDescription);
 
 			Append(activeArtifactInfoPanel);
+		}
+		public override void ScrollWheel(UIScrollWheelEvent evt) {
+			currentOffset -= MathF.Sign(evt.ScrollWheelValue);
+			currentOffset = Math.Clamp(currentOffset, 0, 1);
+
+			int offsetvalue = currentOffset * ARTIFACTS_PER_ROW;
+			int offsetlength = list_btnArtifact.Count - offsetvalue;
+			for (int i = 0; i < list_btnArtifact.Count; i++) {
+				int arty = Math.Clamp(i + offsetvalue, 0, Artifact.ArtifactCount - 1);
+				list_btnArtifact[i].ChangeArtifactType(-1);
+				if (i > offsetlength) {
+					continue;
+				}
+				list_btnArtifact[i].ChangeArtifactType(list_artifactInOrder[arty]);
+			}
 		}
 	}
 }
