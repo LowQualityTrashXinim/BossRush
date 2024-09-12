@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
@@ -31,15 +30,12 @@ namespace BossRush.Contents.Artifacts {
 				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item)) {
 					return;
 				}
-				int length = globalitem.EnchantmenStlot.Length;
-				int[] dummyEnchantment = new int[length];
-				for (int i = 0; i < 1; i++) {
-					if (globalitem.EnchantmenStlot[i] != 0) {
-						return;
+				for (int i = 0; i < globalitem.EnchantmenStlot.Length; i++) {
+					if (globalitem.EnchantmenStlot[i] != -1) {
+						continue;
 					}
-					dummyEnchantment[i] = Main.rand.Next(EnchantmentLoader.EnchantmentcacheID);
+					EnchantmentSystem.EnchantItem(item, i);
 				}
-				Array.Copy(dummyEnchantment, globalitem.EnchantmenStlot, length);
 			}
 		}
 	}

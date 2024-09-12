@@ -41,6 +41,9 @@ internal class TrialModSystem : ModSystem {
 
 		//Main.spriteBatch.End();
 	}
+	public static void SetTrial(int TrialID) {
+		Trial = GetTrial(Math.Clamp(TrialID, 0, TotalCount));
+	}
 	public override void PostUpdateInvasions() {
 		if (Trial == null) {
 			return;
@@ -132,7 +135,7 @@ internal class TrialModSystem : ModSystem {
 				}
 				Trial_SpawnTimer = 0;
 				if (Trial_NPC.Count <= Math.Min(Trial_NPCActiveLimit, Trial_TotalRemainingNPCs) && !(Trial_NPC.Count == Trial_TotalRemainingNPCs && Trial_TotalRemainingNPCs == 0)) {
-					Rectangle spawnRect = Trial.TrialSize(Main.LocalPlayer.Center);
+					Rectangle spawnRect = Trial_ArenaSize;
 					int npcType = Main.rand.Next(Trial_NPCPool.Keys.ToArray());
 
 					SpawnTrialNPC(npcType, spawnRect);
@@ -158,7 +161,7 @@ internal class TrialModSystem : ModSystem {
 	private void StartTrial() {
 		if (CurrentWave != NextWave) {
 			CurrentWave = Math.Min(CurrentWave + 1, NextWave);
-			Rectangle spawnRect = Trial.TrialSize(Main.LocalPlayer.Center);
+			Rectangle spawnRect = Trial_ArenaSize;
 			int npcCounter = 0;
 			do {
 				foreach (var npcType in Trial_NPCPool.Keys) {
@@ -175,8 +178,9 @@ internal class TrialModSystem : ModSystem {
 	}
 	private Rectangle Trial_ArenaSize = new();
 	private void BattleTrialUpdate() {
+		//Show border, temporary solution, not optimal at all cause we are relying on dust to draw border
 		for (int i = 0; i < 300; i++) {
-			Dust dust = Dust.NewDustDirect(Main.rand.NextVector2RectangleEdge(Trial_ArenaSize), 0, 0, DustID.WhiteTorch);
+			Dust dust = Dust.NewDustDirect(Main.rand.NextVector2RectangleEdge(Trial_ArenaSize), 0, 0, DustID.WhiteTorch, Scale: 2);
 			dust.noGravity = true;
 			dust.velocity = Vector2.Zero;
 		}

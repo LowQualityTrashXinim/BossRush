@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
+using BossRush.Common.Systems;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -129,7 +130,7 @@ namespace BossRush {
 			}
 		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
-			if(!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if(!UniversalSystem.Check_RLOH()) {
 				return false;
 			}
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {

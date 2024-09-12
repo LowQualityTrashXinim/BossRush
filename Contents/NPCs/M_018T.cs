@@ -55,7 +55,7 @@ internal class M_018T : ModNPC {
 			chat.Add("Do not sell that thing to me, no mortal would want to buy that !");
 		}
 		else {
-			if(ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if(UniversalSystem.Check_RLOH()) {
 				chat.Add("A lot of normal item are quite good now, sadly their selling price haven't change");
 			}
 			chat.Add("What ?");

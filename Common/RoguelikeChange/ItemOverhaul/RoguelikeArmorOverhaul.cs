@@ -17,7 +17,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		//Note : Use look for tooltip with Defense if there are gonna be modification to defenses
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		Player player = Main.LocalPlayer;
@@ -58,7 +58,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 	}
 	public override string IsArmorSet(Item head, Item body, Item legs) {
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return "";
 		}
 		return new ArmorSet(head.type, body.type, legs.type).ToString();

@@ -2177,11 +2177,6 @@ Mods: {
 					Tooltip: Do not mess with this, only for testing only
 				}
 
-				NoMoreChestFromBuilderLootbox: {
-					Label: No More Chest From Builder Lootbox
-					Tooltip: ""
-				}
-
 				AutoHardCore: {
 					Label: Auto Hard Core
 					Tooltip: ""
@@ -2244,6 +2239,18 @@ Mods: {
 						'''
 						Enable to gain access to weapon enchantment system
 						Disable to revoke access to weapon enchantment system
+						'''
+				}
+
+				TotalRNG: {
+					Label: Total RNG mode
+					Tooltip:
+						'''
+						[-] You no longer can choose your artifact
+						[-] You lost ability to choose what perk you want
+						[-] Randomize spoil reward, making you unable to choose them
+						[-] Your right to access enchantment system is revoked
+						Instead weapon enchantment have 10% to appear on your weapon
 						'''
 				}
 			}

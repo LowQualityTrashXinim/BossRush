@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria;
 using System;
 using BossRush.Common.General;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -17,7 +18,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	class RoguelikeItemOverhaul : GlobalItem {
 		public override void SetDefaults(Item entity) {
 			base.SetDefaults(entity);
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			VanillaBuff(entity);
@@ -125,7 +126,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			switch (item.type) {
@@ -148,7 +149,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override bool AltFunctionUse(Item item, Player player) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return base.AltFunctionUse(item, player);
 			}
 			switch (item.type) {
@@ -165,7 +166,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			return base.AltFunctionUse(item, player);
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
 			switch (item.type) {
@@ -235,7 +236,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			Player player = Main.LocalPlayer;
@@ -299,7 +300,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			RoguelikeOverhaul_VikingHelmet = false;
 		}
 		public override bool CanUseItem(Item item) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return base.CanUseItem(item);
 			}
 			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
@@ -317,7 +318,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			if (RoguelikeOverhaul_VikingHelmet && item.DamageType == DamageClass.Melee) {
@@ -325,7 +326,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			if (item.type == ItemID.WaspGun && !NPC.downedPlantBoss) {
@@ -336,7 +337,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			OnHitNPC_WoodBow(proj, target);
@@ -359,7 +360,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	}
 	public class GlobalItemProjectile : GlobalProjectile {
 		public override void OnSpawn(Projectile projectile, IEntitySource source) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			if (projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile) {

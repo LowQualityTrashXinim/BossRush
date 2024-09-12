@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.General;
+using BossRush.Common.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -6,7 +7,7 @@ using Terraria.ModLoader;
 namespace BossRush.Common.RoguelikeChange;
 internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 	public override void SetDefaults(Projectile entity) {
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		if (Main.LocalPlayer.strongBees) {
@@ -16,7 +17,7 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 		}
 	}
 	public override bool PreAI(Projectile projectile) {
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return base.PreAI(projectile);
 		}
 		Player player = Main.player[projectile.owner];
@@ -31,7 +32,7 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 		return base.PreAI(projectile);
 	}
 	public override void PostAI(Projectile projectile) {
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		Player player = Main.player[projectile.owner];

@@ -25,7 +25,7 @@ public class Shield_GlobalItem : GlobalItem {
 		return IsAShield(entity.type);
 	}
 	public override void SetDefaults(Item entity) {
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		switch (entity.type) {
@@ -64,7 +64,7 @@ public class Shield_GlobalItem : GlobalItem {
 		}
 	}
 	public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		Shield_ModPlayer shieldplayer = player.GetModPlayer<Shield_ModPlayer>();

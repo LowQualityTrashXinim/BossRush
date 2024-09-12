@@ -17,6 +17,8 @@ using BossRush.Common.WorldGenOverhaul;
 using Terraria.GameInput;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
+using BossRush.Contents.Items.Toggle;
+using System;
 
 namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
@@ -53,7 +55,7 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override void UpdateEquips() {
-			if (ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (UniversalSystem.Check_RLOH()) {
 				PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
 				Player.GetJumpState<SimpleExtraJump>().Enable();
 				modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
@@ -77,14 +79,16 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
+			int LifeCrystal = 0;
+			int ManaCrystal = 0;
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
-					yield return new Item(ItemID.LifeCrystal, 5);
-					yield return new Item(ItemID.ManaCrystal, 4);
-					yield return new Item(ModContent.ItemType<DayTimeCycle>());
-					yield return new Item(ModContent.ItemType<BiomeToggle>());
+					LifeCrystal += 5;
+					ManaCrystal += 4;
+					//yield return new Item(ModContent.ItemType<DayTimeCycle>());
+					//yield return new Item(ModContent.ItemType<BiomeToggle>());
 					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
 					}
@@ -93,7 +97,7 @@ namespace BossRush.Common.General {
 					}
 				}
 				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
-					//yield return new Item(ModContent.ItemType<CursedSkull>());
+					yield return new Item(ModContent.ItemType<CursedSkull>());
 					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					yield return new Item(ModContent.ItemType<CelestialEssence>());
@@ -134,8 +138,8 @@ namespace BossRush.Common.General {
 					yield return new Item(ModContent.ItemType<CelestialEssence>());
 					yield return new Item(ModContent.ItemType<WorldEssence>());
 					yield return new Item(ItemID.PlatinumCoin, 2);
-					yield return new Item(ItemID.LifeCrystal, 15);
-					yield return new Item(ItemID.ManaCrystal, 4);
+					LifeCrystal = Math.Clamp(LifeCrystal + 15, 0, 15);
+					ManaCrystal = Math.Clamp(ManaCrystal + 9, 0, 9);
 					yield return new Item(ItemID.KingSlimeBossBag);
 					yield return new Item(ItemID.EyeOfCthulhuBossBag);
 					yield return new Item(ItemID.EaterOfWorldsBossBag);
@@ -145,6 +149,8 @@ namespace BossRush.Common.General {
 					yield return new Item(ItemID.DeerclopsBossBag);
 					yield return new Item(ItemID.GuideVoodooDoll);
 				}
+				yield return new Item(ItemID.LifeCrystal, LifeCrystal);
+				yield return new Item(ItemID.ManaCrystal, ManaCrystal);
 			}
 		}
 		private void SpawnItem() {

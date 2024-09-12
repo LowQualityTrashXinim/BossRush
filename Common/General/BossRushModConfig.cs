@@ -16,10 +16,12 @@ namespace BossRush.Common.General {
 		public bool BossRushMode { get; set; }
 		[DefaultValue(false)]
 		public bool SynergyFeverMode { get; set; }
+		//TODO : Add a world data IsNightmareWorld 
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Nightmare { get; set; }
-
+		[DefaultValue(false)]
+		public bool TotalRNG { get; set; }
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Ascension { get; set; }
@@ -44,8 +46,6 @@ namespace BossRush.Common.General {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool AutoRandomizeCharacter { get; set; }
-		[DefaultValue(false)]
-		public bool NoMoreChestFromBuilderLootbox { get; set; }
 		[Header($"LegacyHeader")]
 		[DefaultValue(false)]
 		public bool LegacyLootBoxDrop { get; set; }

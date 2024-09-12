@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.General;
+using BossRush.Common.Systems;
 using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -32,7 +33,7 @@ public class RoguelikePrefixSystem : ModSystem {
 		shtspd = 1f;
 		mcst = 1f;
 		crt = 0;
-		if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return orig(self, rolledPrefix, out dmg, out kb, out spd, out size, out shtspd, out mcst, out crt);
 		}
 		switch (rolledPrefix) {

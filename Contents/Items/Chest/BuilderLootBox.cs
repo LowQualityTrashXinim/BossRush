@@ -17,9 +17,6 @@ namespace BossRush.Contents.Items.Chest {
 			var entitySource = player.GetSource_OpenItem(Type);
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<ArenaMaker>());
 			player.QuickSpawnItem(entitySource, ModContent.ItemType<SuperBuilderTool>());
-			if (!ModContent.GetInstance<BossRushModConfig>().NoMoreChestFromBuilderLootbox) {
-				player.QuickSpawnItem(entitySource, ItemID.Chest, 10);
-			}
 			player.QuickSpawnItem(entitySource, ItemID.Safe);
 			player.QuickSpawnItem(entitySource, ItemID.MoneyTrough);
 			player.QuickSpawnItem(entitySource, ItemID.DemonConch);

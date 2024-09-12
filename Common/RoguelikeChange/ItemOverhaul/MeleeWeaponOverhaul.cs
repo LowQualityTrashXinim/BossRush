@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.General;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -19,7 +20,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public float offset = 0;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PearlwoodSword] = .45f;
@@ -98,7 +99,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PsychoKnife] = .45f;
 		}
 		public override void SetDefaults(Item item) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			if (item.noMelee) {
@@ -391,7 +392,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			if (SwingType == BossRushUseStyle.GenericSwingDownImprove) {

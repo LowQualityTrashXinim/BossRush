@@ -12,6 +12,9 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 
 		public override void OnEnterWorld() {
 			if (UniversalSystem.CanAccessContent(Player,UniversalSystem.SYNERGY_MODE)) {
+				if(UniversalSystem.Check_TotalRNG()) {
+					ActiveArtifact = Artifact.ArtifactType<RandomArtifact>();
+				}
 				while (ActiveArtifact == Artifact.ArtifactType<RandomArtifact>() && Artifact.GetArtifact(ActiveArtifact).CanBeSelected(Player)) {
 					ActiveArtifact = Main.rand.Next(Artifact.ArtifactCount);
 				}

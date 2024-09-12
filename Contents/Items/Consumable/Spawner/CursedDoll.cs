@@ -15,6 +15,7 @@ namespace BossRush.Contents.Items.Consumable.Spawner {
 		}
 		public override bool UseSpecialSpawningMethod => true;
 		public override void SpecialSpawningLogic(Player player) {
+			Main.time = Main.dayLength;
 			int spawnY = 750;
 			NPC.SpawnBoss((int)player.Center.X, (int)(player.Center.Y - spawnY), NPCtypeToSpawn[0], player.whoAmI);
 			for (int i = 0; i <= spawnY; i++) {
@@ -24,7 +25,9 @@ namespace BossRush.Contents.Items.Consumable.Spawner {
 			}
 		}
 		public override bool CanUseItem(Player player) {
-			if (Main.dayTime) 				Main.time = Main.dayLength;
+			if (Main.dayTime) {
+				Main.time = Main.dayLength;
+			}
 			return !Main.dayTime;
 		}
 	}

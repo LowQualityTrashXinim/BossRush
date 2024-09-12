@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.General;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	//public readonly static int[] GunType = {
@@ -47,7 +48,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int VariableBulletAmount = 0;
 		public bool itemIsAShotgun = false;
 		public override void SetDefaults(Item entity) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
 			switch (entity.type) {
@@ -204,7 +205,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				.Vector2RandomSpread(modplayer.SpreadModify.ApplyTo(AdditionalSpread), modplayer.SpreadModify.ApplyTo(AdditionalMulti));
 		}
 		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul && item.ModItem == null) {
+			if (!UniversalSystem.Check_RLOH() && item.ModItem == null) {
 				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
 			if (itemIsAShotgun && item.ModItem == null) {
@@ -225,7 +226,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			if (!ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul && item.ModItem == null) {
+			if (!UniversalSystem.Check_RLOH() && item.ModItem == null) {
 				return;
 			}
 			RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();

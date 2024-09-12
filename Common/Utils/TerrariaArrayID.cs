@@ -2,6 +2,7 @@
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.ForceOfEarth;
+using BossRush.Contents.Perks;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -306,5 +307,16 @@ namespace BossRush.Common.Utils {
 		//Buff
 		public readonly static int[] FireBuff = { BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno };
 		public readonly static int[] PoisonBuff = { BuffID.Poisoned, BuffID.Venom };
+
+		//Perk
+		public readonly static int[] StarterPerk = {
+			Perk.GetPerkType<BlessingOfSolar>(),
+			Perk.GetPerkType<BlessingOfVortex>(),
+			Perk.GetPerkType<BlessingOfNebula>(),
+			Perk.GetPerkType<BlessingOfStarDust>(),
+			Perk.GetPerkType<BlessingOfSynergy>(),
+			Perk.GetPerkType<BlessingOfTitan>(),
+			Perk.GetPerkType<BlessingOfPerk>(),
+		};
 	}
 }

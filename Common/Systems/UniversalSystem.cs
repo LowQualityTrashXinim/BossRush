@@ -33,6 +33,8 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Common.General;
+using static System.Net.Mime.MediaTypeNames;
+using System.Drawing.Drawing2D;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -113,6 +115,10 @@ internal class UniversalSystem : ModSystem {
 		return false;
 	}
 	public static bool Check_RLOH() => ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul;
+
+	public static bool Check_TotalRNG() => ModContent.GetInstance<BossRushModConfig>().TotalRNG;
+
+
 	public const string CHECK_LOSTACC = "lostacc";
 	public const string CHECK_RARELOOTBOX = "lootboxrare";
 	public const string CHECK_RARESPOILS = "rarespoil";
@@ -285,9 +291,38 @@ internal class UniversalSystem : ModSystem {
 			);
 	}
 	public void ActivatePerkUI(short state) {
-		DeactivateUI();
-		perkUIstate.StateofState = state;
-		perkInterface.SetState(perkUIstate);
+		if (!Check_RLOH()) {
+			DeactivateUI();
+			perkUIstate.StateofState = state;
+			perkInterface.SetState(perkUIstate);
+			return;
+		}
+		if (state == PerkUIState.DefaultState) {
+			PerkPlayer modplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
+			List<int> listOfPerk = new List<int>();
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (modplayer.perks.ContainsKey(i)) {
+					if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+					if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+						continue;
+					}
+				}
+				listOfPerk.Add(i);
+			}
+			int perkType = Main.rand.Next(listOfPerk);
+			AddPerk(perkType);
+			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
+		}
+		else if (state == PerkUIState.StarterPerkState) {
+			int perkType = Main.rand.Next(TerrariaArrayID.StarterPerk);
+			AddPerk(perkType);
+			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
+		}
 	}
 	public void ActivateInfoUI() {
 		DeactivateUI();
@@ -319,6 +354,17 @@ internal class UniversalSystem : ModSystem {
 		if (!IsReopening) {
 			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
 		}
+		if (Check_TotalRNG()) {
+			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+			for (int i = SpoilList.Count - 1; i >= 0; i--) {
+				ModSpoil spoil = SpoilList[i];
+				if (!spoil.IsSelectable(Main.LocalPlayer, ContentSamples.ItemsByType[lootboxType])) {
+					SpoilList.Remove(spoil);
+				}
+			}
+			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer, lootboxType);
+			return;
+		}
 		spoils.SetState(spoilsState);
 	}
 	public void ActivateTeleportUI() {
@@ -349,6 +395,36 @@ internal class UniversalSystem : ModSystem {
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
+	}
+	public static void AddPerk(int perkType) {
+		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		PerkPlayer perkplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
+		if (ModPerkLoader.GetPerk(perkType) != null) {
+			if (ModPerkLoader.GetPerk(perkType).StackLimit == -1 && ModPerkLoader.GetPerk(perkType).CanBeStack) {
+				ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
+				uiSystemInstance.DeactivateUI();
+				return;
+			}
+		}
+		if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perkType))
+			perkplayer.perks.Add(perkType, 1);
+		else
+			if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
+			perkplayer.perks[perkType]++;
+		ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
+		uiSystemInstance.DeactivateUI();
+	}
+	private static string cachedstringeffect = string.Empty;
+	public static string GetRandomGlitchyNameEffect(int delay) {
+		if ((int)Main.time % delay == 0) {
+			int length = Main.rand.Next(20, 25);
+			cachedstringeffect = string.Empty;
+			for (int i = 0; i < length; i++) {
+				byte b = (byte)(Main.rand.Next() % 256);
+				cachedstringeffect += (char)b;
+			}
+		}
+		return cachedstringeffect;
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -674,7 +750,8 @@ class UISystemMenu : UIState {
 	}
 	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
-			&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
+			&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
+			&& !UniversalSystem.Check_RLOH()) {
 			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
 		}
 	}
@@ -1298,15 +1375,7 @@ internal class PerkUIState : UIState {
 	}
 	private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
 		Vector2 originDefault = new Vector2(26, 26);
-		int[] starterPerk = new int[]
-		{ Perk.GetPerkType<BlessingOfSolar>(),
-			Perk.GetPerkType<BlessingOfVortex>(),
-			Perk.GetPerkType<BlessingOfNebula>(),
-			Perk.GetPerkType<BlessingOfStarDust>(),
-			Perk.GetPerkType<BlessingOfSynergy>(),
-			Perk.GetPerkType<BlessingOfTitan>(),
-			Perk.GetPerkType<BlessingOfPerk>(),
-		};
+		int[] starterPerk = TerrariaArrayID.StarterPerk;
 		for (int i = 0; i < starterPerk.Length; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
 			//After that we assign perk
@@ -1351,22 +1420,7 @@ class PerkUIImageButton : UIImageButton {
 	public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
 	}
 	public override void LeftClick(UIMouseEvent evt) {
-		PerkPlayer perkplayer = Main.LocalPlayer.GetModPlayer<PerkPlayer>();
-		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (ModPerkLoader.GetPerk(perkType) != null) {
-			if (ModPerkLoader.GetPerk(perkType).StackLimit == -1 && ModPerkLoader.GetPerk(perkType).CanBeStack) {
-				ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
-				uiSystemInstance.DeactivateUI();
-				return;
-			}
-		}
-		if (perkplayer.perks.Count < 0 || !perkplayer.perks.ContainsKey(perkType))
-			perkplayer.perks.Add(perkType, 1);
-		else
-			if (perkplayer.perks.ContainsKey(perkType) && ModPerkLoader.GetPerk(perkType).CanBeStack)
-			perkplayer.perks[perkType]++;
-		ModPerkLoader.GetPerk(perkType).OnChoose(perkplayer.Player);
-		uiSystemInstance.DeactivateUI();
+		UniversalSystem.AddPerk(perkType);
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);

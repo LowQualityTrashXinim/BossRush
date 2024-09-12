@@ -9,8 +9,91 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.WeaponEnchantment;
+public class EnchantmentSystem : ModSystem {
+	public override void Load() {
+		On_Player.QuickSpawnItemDirect_IEntitySource_Item_int += On_Player_QuickSpawnItemDirect_IEntitySource_Item_int;
+		On_Player.QuickSpawnItemDirect_IEntitySource_int_int += On_Player_QuickSpawnItemDirect_IEntitySource_int_int;
+		On_Player.QuickSpawnItem_IEntitySource_int_int += On_Player_QuickSpawnItem_IEntitySource_int_int;
+		On_Player.QuickSpawnItem_IEntitySource_Item_int += On_Player_QuickSpawnItem_IEntitySource_Item_int;
+	}
+	private int On_Player_QuickSpawnItem_IEntitySource_int_int(On_Player.orig_QuickSpawnItem_IEntitySource_int_int orig, Player self, IEntitySource source, int item, int stack) {
+		int whoamI = orig(self, source, item, stack);
+		EnchantmentRNG(type: item, itemWhoAmI: whoamI);
+		return whoamI;
+	}
+	private int On_Player_QuickSpawnItem_IEntitySource_Item_int(On_Player.orig_QuickSpawnItem_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
+		int whoamI = orig(self, source, item, stack);
+		EnchantmentRNG(item);
+		return whoamI;
+	}
+	private Item On_Player_QuickSpawnItemDirect_IEntitySource_int_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_int_int orig, Player self, IEntitySource source, int type, int stack) {
+		Item item = orig(self, source, type, stack);
+		EnchantmentRNG(item);
+		return item;
+	}
+	private Item On_Player_QuickSpawnItemDirect_IEntitySource_Item_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
+		EnchantmentRNG(item);
+		return orig(self, source, item, stack);
+	}
+
+	private void EnchantmentRNG(Item item = null, int type = -1, int itemWhoAmI = -1) {
+		if (!UniversalSystem.Check_TotalRNG()) {
+			return;
+		}
+		if (item == null) {
+			if (type == -1 || !EnchantmentGlobalItem.CanBeEnchanted(ContentSamples.ItemsByType[type])) {
+				return;
+			}
+			Item worlditem = Main.item[itemWhoAmI];
+			for (int i = 0; i < 3; i++) {
+				if (worlditem.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
+					if (globalitem.EnchantmenStlot[i] != -1) {
+						continue;
+					}
+				}
+				if (Main.rand.NextFloat() <= .1f) {
+					EnchantItem(worlditem, i);
+					continue;
+				}
+				break;
+			}
+		}
+		else {
+			if (!EnchantmentGlobalItem.CanBeEnchanted(item)) {
+				return;
+			}
+			for (int i = 0; i < 3; i++) {
+				if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
+					if (globalitem.EnchantmenStlot[i] != -1) {
+						continue;
+					}
+				}
+				if (Main.rand.NextFloat() <= .1f) {
+					EnchantItem(item, i);
+					continue;
+				}
+				break;
+			}
+		}
+	}
+	public static void EnchantItem(Item item, int slot, int enchantmentType = -1) {
+		if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
+			slot = Math.Clamp(slot, 0, globalitem.EnchantmenStlot.Length);
+			if (enchantmentType == -1) {
+				globalitem.EnchantmenStlot[slot] = Main.rand.Next(EnchantmentLoader.TotalCount);
+			}
+			else {
+				if (EnchantmentLoader.GetEnchantment(enchantmentType) == null) {
+					return;
+				}
+				globalitem.EnchantmenStlot[slot] = enchantmentType;
+			}
+		}
+	}
+
+}
 public class EnchantmentGlobalItem : GlobalItem {
-	public static bool CanBeEnchanted(Item entity) => entity.damage > 0 && !entity.accessory && !entity.consumable && entity.maxStack == 1;
+	public static bool CanBeEnchanted(Item entity) => entity.IsAWeapon() && !entity.consumable;
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return CanBeEnchanted(entity);
 	}
