@@ -33,8 +33,6 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Common.General;
-using static System.Net.Mime.MediaTypeNames;
-using System.Drawing.Drawing2D;
 
 namespace BossRush.Common.Systems;
 /// <summary>

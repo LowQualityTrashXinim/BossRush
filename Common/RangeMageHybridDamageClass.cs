@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 
 namespace BossRush.Common;
 internal class RangeMageHybridDamageClass : DamageClass {
-
 	public override bool GetEffectInheritance(DamageClass damageClass) {
-		return damageClass == Magic || damageClass == Ranged;
+		if(damageClass == Magic || damageClass == Ranged || damageClass == Generic) {
+			return true;
+		}
+
+		return false;
 	}
 	public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
-		if (damageClass == Ranged || damageClass == Magic)
+		if (damageClass == Ranged || damageClass == Magic || damageClass == Generic)
 			return StatInheritanceData.Full;
 		return new StatInheritanceData(
 			damageInheritance: 0f,

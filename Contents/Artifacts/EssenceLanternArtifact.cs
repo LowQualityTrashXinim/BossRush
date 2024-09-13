@@ -17,10 +17,6 @@ public class EssenceLanternPlayer : ModPlayer {
 	public override void ResetEffects() {
 		EssenceLantern = Player.HasArtifact<EssenceLanternArtifact>();
 	}
-	public override void PostItemCheck() {
-		//if (EssenceLantern)
-		//	Player.HeldItem.DamageType = DamageClass.Generic;
-	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool(7) && EssenceLantern) {
 			int proj = Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), target.Center + Main.rand.NextVector2Circular(target.width, target.height), Vector2.Zero, ModContent.ProjectileType<EssenceProjectile>(), 1, 0, Player.whoAmI);
@@ -31,9 +27,6 @@ public class EssenceLanternPlayer : ModPlayer {
 	}
 }
 public abstract class EssenceBuff : ModBuff {
-	public override void SetStaticDefaults() {
-		this.BossRushSetDefaultBuff();
-	}
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void Update(Player player, ref int buffIndex) {
 		UpdatePlayer(player);
@@ -45,17 +38,26 @@ public abstract class EssenceBuff : ModBuff {
 	public virtual void OnEnded(Player player) { }
 }
 public class EssenceOfWrath : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1.2f);
 	}
 }
 public class EssenceOfRage : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritChance, Additive: 1.1f);
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: 1.35f);
 	}
 }
 public class EssenceOfRejuvenate : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: 1.67f);
 	}
@@ -64,38 +66,59 @@ public class EssenceOfRejuvenate : EssenceBuff {
 	}
 }
 public class EssenceOfTitan : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Additive: 1.2f, Base: 20);
 	}
 }
 public class EssenceOfSwift : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1.34f);
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: 1.14f);
 	}
 }
 public class EssenceOfDrowsy : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: -1.44f);
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: -1.24f);
 	}
 }
 public class EssenceOfWeakness : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Base: -20);
 	}
 }
 public class EssenceOfKindness : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: -1.5f);
 	}
 }
 public class EssenceOfCalmness : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: -1.5f);
 	}
 }
 public class EssenceOfWither : EssenceBuff {
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
 	public override void UpdatePlayer(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: -2, Base: -18);
 	}
@@ -142,17 +165,17 @@ public class EssenceProjectile : ModProjectile {
 			case 3:
 				return Color.LightGreen;
 			case 4:
-				return Color.Green;
+				return Color.Yellow;
 			case 5:
-				return Color.MediumPurple;
+				return new(100,100,0);
 			case 6:
-				return Color.DarkSeaGreen;
+				return Color.DarkRed;
 			case 7:
-				return Color.DeepPink;
+				return Color.DarkBlue;
 			case 8:
 				return Color.Gray;
 			case 9:
-				return Color.DarkBlue;
+				return Color.DarkOrange;
 			default:
 				return Color.Black;
 		}

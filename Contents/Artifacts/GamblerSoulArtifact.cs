@@ -32,7 +32,7 @@ public class GamblerSoulPlayer : ModPlayer {
 			return item.type != ModContent.ItemType<EnchantmentTablet>();
 		return base.CanUseItem(item);
 	}
-	public override void PostUpdate() {
+	public override void UpdateEquips() {
 		if (GamblerSoul)
 			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1);
 	}

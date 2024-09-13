@@ -1737,6 +1737,15 @@ Mods: {
 				DisplayName: Protection Scroll
 				Tooltip: ""
 			}
+
+			LaserSniper: {
+				DisplayName: Laser Sniper
+				Tooltip:
+					'''
+					"Extremely lethal"
+					Continue to shoot even you are out of mana
+					'''
+			}
 		}
 
 		Buffs: {
@@ -2042,8 +2051,11 @@ Mods: {
 			}
 
 			AdAstraDebuff: {
-				DisplayName: Ad Astra Debuff
-				Description: Mods.BossRush.Buffs.AdAstraDebuff.Description
+				DisplayName: Ad Astra
+				Description: 
+				'''
+				Multiply your attack, movement, attack speed by 0.1
+				'''
 			}
 
 			PowerBankDebuff: {
@@ -2257,7 +2269,7 @@ Mods: {
 		}
 
 		"Keybinds.Skill activation.DisplayName": Skill activation
-		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger Damage
+		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
 
 		Prefixes: {
 			Cunning.DisplayName: Cunning

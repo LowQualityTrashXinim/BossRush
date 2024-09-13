@@ -82,7 +82,7 @@ public class RelicSpoil : ModSpoil {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(3));
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetRelic(itemsource, player, 3);
+		LootBoxBase.GetRelic(itemsource, player, 2);
 	}
 }
 public class SkillSpoil : ModSpoil {
@@ -90,7 +90,7 @@ public class SkillSpoil : ModSpoil {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(3));
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		LootBoxBase.GetSkillLootbox(itemsource, player, 3);
+		LootBoxBase.GetSkillLootbox(itemsource, player, 2);
 	}
 }
 public class FoodSpoil : ModSpoil {

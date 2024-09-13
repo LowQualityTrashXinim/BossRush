@@ -152,7 +152,7 @@ public class AdAstra : ModSkill {
 	}
 	public override void Update(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 5f);
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage,Additive: 6f);
 	}
 	public override void OnEnded(Player player) {
 		player.AddBuff(ModContent.BuffType<AdAstraDebuff>(), BossRushUtils.ToSecond(15));

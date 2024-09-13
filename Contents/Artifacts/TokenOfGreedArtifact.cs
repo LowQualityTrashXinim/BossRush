@@ -26,7 +26,7 @@ namespace BossRush.Contents.Artifacts {
 				return;
 			}
 			if (Player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
-				damage *= .70f;
+				damage *= .85f;
 			}
 		}
 	}
