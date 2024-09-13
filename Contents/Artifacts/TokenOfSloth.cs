@@ -10,7 +10,7 @@ using BossRush.Contents.Items.Accessories.TrinketAccessories;
 
 namespace BossRush.Contents.Artifacts;
 internal class TokenOfSlothArtifact : Artifact {
-	public override string TexturePath => BossRushTexture.MissingTexture_Default;
+	public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.LimeGreen;
 }
 public class TokenOfSlothPlayer : ModPlayer {

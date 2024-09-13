@@ -241,6 +241,7 @@ Mods: {
 			FlamingFireSpark.DisplayName: Flaming Fire Spark
 			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
 			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
+			SwordProjectileSpear.DisplayName: Sword Projectile Spear
 		}
 
 		NPCs: {
@@ -1720,22 +1721,22 @@ Mods: {
 
 			AntiPoisonPotion: {
 				DisplayName: Anti Poison Potion
-				Tooltip: ""
+				Tooltip: "Give you immunity to most poison debuff"
 			}
 
 			FireResistancePotion: {
 				DisplayName: Fire Resistance Potion
-				Tooltip: ""
+				Tooltip: "Give you immunity to most fire debuff"
 			}
 
 			LastingVile: {
 				DisplayName: Lasting Vile
-				Tooltip: ""
+				Tooltip: "Increases existing buff duration by 2 minute"
 			}
 
 			ProtectionScroll: {
 				DisplayName: Protection Scroll
-				Tooltip: ""
+				Tooltip: "Give user protection spell"
 			}
 
 			LaserSniper: {
@@ -1745,6 +1746,30 @@ Mods: {
 					"Extremely lethal"
 					Continue to shoot even you are out of mana
 					'''
+			}
+
+			LifeStealPotion: {
+				DisplayName: Life Steal Potion
+				Tooltip: "You have 2% life steal effect"
+			}
+
+			ShadowPotion: {
+				DisplayName: Shadow Potion
+				Tooltip: 
+				'''
+				Your have 2% to dodge a attack
+				Increases invincibility frame duration by 10%
+				'''
+			}
+
+			ScrollofEvasive: {
+				DisplayName: Scroll of Evasive
+				Tooltip: "Give user envasion spell"
+			}
+
+			ScrollOfMaterialize: {
+				DisplayName: Scroll Of Materialize
+				Tooltip: "Give user materialize spell"
 			}
 		}
 
@@ -2052,50 +2077,67 @@ Mods: {
 
 			AdAstraDebuff: {
 				DisplayName: Ad Astra
-				Description: 
-				'''
-				Multiply your attack, movement, attack speed by 0.1
-				'''
+				Description: Multiply your attack, defense, attack speed by 0.1
 			}
 
 			PowerBankDebuff: {
 				DisplayName: Power Bank Debuff
-				Description: Mods.BossRush.Buffs.PowerBankDebuff.Description
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			PowerCordBuff: {
 				DisplayName: Power Cord Buff
-				Description: Mods.BossRush.Buffs.PowerCordBuff.Description
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			MoonLightDebuff: {
 				DisplayName: Moon Light Debuff
-				Description: Mods.BossRush.Buffs.MoonLightDebuff.Description
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			TitanPowerBuff: {
 				DisplayName: Titan Power Buff
-				Description: Mods.BossRush.Buffs.TitanPowerBuff.Description
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			AntiPoisonBuff: {
 				DisplayName: Anti Poison Buff
-				Description: Mods.BossRush.Buffs.AntiPoisonBuff.Description
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			FireResistanceBuff: {
-				DisplayName: Fire Resistance Buff
-				Description: Mods.BossRush.Buffs.FireResistanceBuff.Description
+				DisplayName: Fire Resistance
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			LastingVileBuff: {
-				DisplayName: Lasting Vile Buff
-				Description: Mods.BossRush.Buffs.LastingVileBuff.Description
+				DisplayName: Lasting Vile Cooldown
+				Description: "TODO: ADD DESCRIPTION"
 			}
 
 			ProtectionSpell: {
 				DisplayName: Protection Spell
-				Description: Mods.BossRush.Buffs.ProtectionSpell.Description
+				Description: Increases your defenses by base 10 and 12%
+			}
+
+			LifeStealBuff: {
+				DisplayName: Life Steal Buff
+				Description: "TODO: ADD DESCRIPTION"
+			}
+
+			ShadowBuff: {
+				DisplayName: Shadow Buff
+				Description: "TODO: ADD DESCRIPTION"
+			}
+
+			EnvasionSpell: {
+				DisplayName: Envasion Spell
+				Description: You have 50% to dodge an attack
+			}
+
+			MaterializeSpell: {
+				DisplayName: Materialize Spell
+				Description: Hitting enemy have 1 in 15 chance to drop heart of mana
 			}
 		}
 

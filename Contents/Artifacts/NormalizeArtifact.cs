@@ -10,6 +10,6 @@ namespace BossRush.Contents.Artifacts
 {
     internal class NormalizeArtifact : Artifact
     {
-        public override string TexturePath => BossRushTexture.MissingTexture_Default;
+        public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
     }
 }

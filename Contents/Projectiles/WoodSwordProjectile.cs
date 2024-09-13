@@ -30,10 +30,16 @@ internal class SwordProjectile : ModProjectile {
 	private void EnergySword_Code1AI() {
 		if (Projectile.timeLeft > 30) {
 			player = Main.player[Projectile.owner];
-			directionToMouse = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
+			directionToMouse = Projectile.velocity;
+			if (directionToMouse == Vector2.Zero) {
+				directionToMouse = (Main.MouseWorld - player.MountedCenter).SafeNormalize(Vector2.Zero);
+			}
 			oldCenter = Projectile.Center.PositionOFFSET(directionToMouse, -30);
 			Projectile.timeLeft = 30;
 			directionLooking = Main.rand.NextBool().ToDirectionInt();
+		}
+		if (Projectile.timeLeft <= 10) {
+			Projectile.ProjectileAlphaDecay(10);
 		}
 		float percentDone = Projectile.timeLeft / 30f;
 		percentDone = Math.Clamp(BossRushUtils.InExpo(percentDone), 0, 1);
@@ -155,6 +161,47 @@ internal class SwordProjectile3 : ModProjectile {
 		Vector2 NewPos = Main.player[Projectile.owner].Center + RotationPos;
 		Projectile.Center = NewPos;
 		Projectile.rotation = RotationPos.ToRotation() + MathHelper.PiOver4;
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Main.instance.LoadProjectile(Projectile.type);
+		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
+		Vector2 origin = texture.Size() * .5f;
+		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
+		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		return false;
+	}
+}
+internal class SwordProjectileSpear : ModProjectile {
+	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 32;
+		Projectile.penetrate = -1;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 999;
+		Projectile.tileCollide = false;
+		Projectile.DamageType = DamageClass.Melee;
+		Projectile.usesLocalNPCImmunity = true;
+	}
+	public int ItemIDtextureValue = ItemID.WoodenSword;
+	protected virtual float HoldoutRangeMin => 20f;
+	protected virtual float HoldoutRangeMax => 120f;
+	public override void AI() {
+		Player player = Main.player[Projectile.owner];
+		int duration = player.itemAnimationMax;
+		player.heldProj = Projectile.whoAmI;
+		if (Projectile.timeLeft > duration) {
+			Projectile.timeLeft = duration;
+			Projectile.ai[1] = Projectile.Center.X;
+			Projectile.ai[2] = Projectile.Center.Y;
+		}
+		Projectile.velocity = Vector2.Normalize(Projectile.velocity);
+		Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+		float halfDuration = duration * 0.5f;
+		float progress = 1 - Projectile.timeLeft / halfDuration;
+		Vector2 vel = Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * (HoldoutRangeMax + 100), progress);
+		Projectile.Center = new Vector2(Projectile.ai[1], Projectile.ai[2]) + vel;
+		Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2;
+		return;
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);

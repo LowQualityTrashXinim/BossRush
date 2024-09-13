@@ -289,7 +289,7 @@ internal class UniversalSystem : ModSystem {
 			);
 	}
 	public void ActivatePerkUI(short state) {
-		if (!Check_RLOH()) {
+		if (!Check_TotalRNG()) {
 			DeactivateUI();
 			perkUIstate.StateofState = state;
 			perkInterface.SetState(perkUIstate);
@@ -349,9 +349,6 @@ internal class UniversalSystem : ModSystem {
 	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
 	public void ActivateSpoilsUI(int lootboxType, bool IsReopening = false) {
 		DeactivateUI();
-		if (!IsReopening) {
-			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
-		}
 		if (Check_TotalRNG()) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
@@ -362,6 +359,9 @@ internal class UniversalSystem : ModSystem {
 			}
 			Main.rand.Next(SpoilList).OnChoose(Main.LocalPlayer, lootboxType);
 			return;
+		}
+		if (!IsReopening) {
+			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
 		}
 		spoils.SetState(spoilsState);
 	}
@@ -671,7 +671,9 @@ class UISystemMenu : UIState {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (EnchantmentHover) {
-			if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()) {
+			if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>() 
+				&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
+			&& !UniversalSystem.Check_TotalRNG()) {
 				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
 			}
 			else {
@@ -749,7 +751,7 @@ class UISystemMenu : UIState {
 	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
 			&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
-			&& !UniversalSystem.Check_RLOH()) {
+			&& !UniversalSystem.Check_TotalRNG()) {
 			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
 		}
 	}

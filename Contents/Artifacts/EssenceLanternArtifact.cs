@@ -9,7 +9,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Contents.Artifacts;
 internal class EssenceLanternArtifact : Artifact {
-	public override string TexturePath => BossRushTexture.MissingTexture_Default;
+	public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.AntiqueWhite;
 }
 public class EssenceLanternPlayer : ModPlayer {

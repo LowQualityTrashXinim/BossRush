@@ -11,7 +11,7 @@ namespace BossRush.Contents.Artifacts
 {
     internal class EternalWealthArtifact : Artifact
     {
-        public override string TexturePath => BossRushTexture.MissingTexture_Default;
+        public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
 		public override Color DisplayNameColor => Color.LightGoldenrodYellow;
 		public override bool CanBeSelected(Player player) => false;
 	}

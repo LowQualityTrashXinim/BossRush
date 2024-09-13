@@ -8,7 +8,7 @@ using System;
 
 namespace BossRush.Contents.Artifacts;
 internal class TokenOfGluttonyArtifact : Artifact {
-	public override string TexturePath => BossRushTexture.MissingTexture_Default;
+	public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
 	public override Color DisplayNameColor => Color.LimeGreen;
 }
 public class TokenOfGluttonyPlayer : ModPlayer {

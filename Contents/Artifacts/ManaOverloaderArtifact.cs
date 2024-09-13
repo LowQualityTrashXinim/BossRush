@@ -10,7 +10,7 @@ using BossRush.Contents.Items.Accessories.TrinketAccessories;
 
 namespace BossRush.Contents.Artifacts {
 	internal class ManaOverloaderArtifact : Artifact {
-		public override string TexturePath => BossRushTexture.MissingTexture_Default;
+		public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
 		public override Color DisplayNameColor => Color.LimeGreen;
 	}
 
@@ -83,6 +83,9 @@ namespace BossRush.Contents.Artifacts {
 				return;
 			}
 			modifiers.SourceDamage += Player.statMana * 0.01f;
+			modifiers.SourceDamage.Flat -= Player.statMana;
+			Player.statMana = 0;
+			Player.manaRegenCount = BossRushUtils.ToSecond(5);
 		}
 	}
 	class ManaReleaseOrb : ModProjectile {

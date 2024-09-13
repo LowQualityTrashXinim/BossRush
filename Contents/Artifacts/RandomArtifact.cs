@@ -5,6 +5,6 @@ namespace BossRush.Contents.Artifacts
 {
     internal class RandomArtifact : Artifact
     {
-        public override string TexturePath => BossRushTexture.MissingTexture_Default;
+        public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
     }
 }

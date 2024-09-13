@@ -290,6 +290,12 @@ Gladius.Description:
 	Hitting enemy with item have 1 in 3 chance to spawn a gladius near enemy
 	Hitting enemy with projectile have 1 in 7 chance to spawn a gladius near enemy
 	'''
+Katana.Description:
+	'''
+	Increases melee damage by 15%, weapon critical chance by 3%, 
+	critical damage by 20% and damage against undamaged enemy by 35%
+	Hitting enemy with item will spawn a ghost katana that attack enemy
+	'''
 WoodenBow.Description:
 	'''
 	Increases damage by 1 and multiply shooting velocity by 1.1
