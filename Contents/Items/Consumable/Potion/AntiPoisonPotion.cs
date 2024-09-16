@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Consumable.Potion;
 internal class AntiPoisonPotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<AntiPoisonBuff>(), BossRushUtils.ToSecond(1.5f));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<AntiPoisonBuff>(), BossRushUtils.ToMinute(1.5f));
 	}
 }
 public class AntiPoisonBuff : ModBuff {

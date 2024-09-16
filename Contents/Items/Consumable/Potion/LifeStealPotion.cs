@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Consumable.Potion;
 internal class LifeStealPotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LifeStealBuff>(), BossRushUtils.ToSecond(4));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LifeStealBuff>(), BossRushUtils.ToMinute(4));
 	}
 }
 public class LifeStealBuff : ModBuff {

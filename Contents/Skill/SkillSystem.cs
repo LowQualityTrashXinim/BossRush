@@ -14,6 +14,12 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 namespace BossRush.Contents.Skill;
+public static class SkillTypeID {
+	public const byte Skill_None = 0;
+	public const byte Skill_Projectile = 1;
+	public const byte Skill_Stats = 2;
+	public const byte Skill_Summon = 3;
+}
 public abstract class ModSkill : ModType {
 	public static int GetSkillType<T>() where T : ModSkill {
 		return ModContent.GetInstance<T>().Type;
@@ -29,6 +35,7 @@ public abstract class ModSkill : ModType {
 	protected int Skill_EnergyRequire = 0;
 	protected float Skill_EnergyRequirePercentage = 0;
 	protected bool Skill_CanBeSelect = true;
+	protected byte Skill_Type = 0;
 	public virtual string Texture => BossRushTexture.MissingTexture_Default;
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
@@ -144,7 +151,6 @@ public class SkillHandlePlayer : ModPlayer {
 				SkillInventory[availableIndex] = skillType;
 				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillLoader.GetSkill(skillType).DisplayName}");
 				return true;
-
 			}
 		}
 		SkillInventory[availableIndex] = skillType;

@@ -14,6 +14,7 @@ public class Increases_3xDamage : ModSkill {
 		Skill_EnergyRequire = 530;
 		Skill_Duration = 8;
 		Skill_CoolDown = BossRushUtils.ToSecond(15);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 4);
@@ -37,6 +38,7 @@ public class PowerSaver : ModSkill {
 		Skill_Duration = 0;
 		Skill_CoolDown = BossRushUtils.ToMinute(1);
 		Skill_EnergyRequirePercentage = -.5f;
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 }
 public class FastForward : ModSkill {
@@ -44,6 +46,7 @@ public class FastForward : ModSkill {
 		Skill_EnergyRequire = 200;
 		Skill_Duration = 0;
 		Skill_CoolDown = BossRushUtils.ToSecond(20);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
 		energy = new();
@@ -59,6 +62,7 @@ public class PowerCord : ModSkill {
 		Skill_EnergyRequirePercentage = .25f;
 		Skill_Duration = 0;
 		Skill_CoolDown = 0;
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void OnEnded(Player player) {
 		player.AddBuff(ModContent.BuffType<PowerCordBuff>(), BossRushUtils.ToSecond(12));
@@ -78,6 +82,7 @@ public class Procrastination : ModSkill {
 		Skill_EnergyRequire = 350;
 		Skill_Duration = BossRushUtils.ToSecond(4);
 		Skill_CoolDown = BossRushUtils.ToSecond(17);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		player.AddBuff(BuffID.Stoned, 2);
@@ -91,6 +96,7 @@ public class SpeedDemon : ModSkill {
 		Skill_EnergyRequire = 330;
 		Skill_Duration = 30;
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -103,6 +109,7 @@ public class TranquilMind : ModSkill {
 		Skill_EnergyRequire = 400;
 		Skill_Duration = 5;
 		Skill_CoolDown = BossRushUtils.ToSecond(60);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 }
 public class InfiniteManaSupply : ModSkill {
@@ -110,6 +117,7 @@ public class InfiniteManaSupply : ModSkill {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
 		Skill_CoolDown = BossRushUtils.ToSecond(6);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		if (player.statMana < player.statManaMax2) {
@@ -122,6 +130,7 @@ public class GuaranteedCrit : ModSkill {
 		Skill_EnergyRequire = 425;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SetCrit();
@@ -135,6 +144,7 @@ public class RapidHealing : ModSkill {
 		Skill_EnergyRequire = 345;
 		Skill_Duration = BossRushUtils.ToSecond(2);
 		Skill_CoolDown = BossRushUtils.ToSecond(30);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
@@ -149,6 +159,7 @@ public class AdAstra : ModSkill {
 		Skill_EnergyRequire = 450;
 		Skill_Duration = BossRushUtils.ToSecond(3);
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -175,6 +186,7 @@ public class BloodToPower : ModSkill {
 		Skill_EnergyRequire = 570;
 		Skill_Duration = BossRushUtils.ToSecond(2);
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void OnTrigger(Player player) {
 		int blood = player.statLife / 2;
@@ -190,6 +202,7 @@ public class Overclock : ModSkill {
 		Skill_EnergyRequire = 635;
 		Skill_Duration = BossRushUtils.ToSecond(1);
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
@@ -201,6 +214,7 @@ public class TerrorForm : ModSkill {
 		Skill_EnergyRequire = 900;
 		Skill_Duration = BossRushUtils.ToSecond(4);
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void Update(Player player) {
 		for (int i = 0; i < 2; i++) {
@@ -226,6 +240,7 @@ public class AllOrNothing : ModSkill {
 		Skill_Duration = 1;
 		Skill_CoolDown = BossRushUtils.ToMinute(15);
 		Skill_CanBeSelect = false;
+		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void OnTrigger(Player player) {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));

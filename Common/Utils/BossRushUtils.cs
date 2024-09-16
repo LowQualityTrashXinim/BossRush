@@ -136,6 +136,15 @@ namespace BossRush {
 					npc.Add(Npc);
 			}
 		}
+		public static List<NPC> LookForHostileListNPC(this Vector2 position, float distance) {
+			List<NPC> npclist = new List<NPC>();
+			for (int i = 0; i < Main.maxNPCs; i++) {
+				NPC Npc = Main.npc[i];
+				if (Npc.active && Npc.CanBeChasedBy() && Npc.type != NPCID.TargetDummy && !Npc.friendly && CompareSquareFloatValueWithHitbox(position, Npc.position, Npc.Hitbox, distance))
+					npclist.Add(Npc);
+			}
+			return npclist;
+		}
 		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
 		public static int ToSecond(float second) => (int)(second * 60);
 		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1)

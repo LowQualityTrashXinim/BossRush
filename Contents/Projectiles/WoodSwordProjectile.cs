@@ -54,6 +54,12 @@ internal class SwordProjectile : ModProjectile {
 		Projectile.velocity.X = directionLooking;
 		Projectile.Center = oldCenter + Vector2.UnitX.RotatedBy(rotation) * 60f;
 	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[Projectile.owner];
+
+		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
+		modifiers.HitDirectionOverride = directionTo;
+	}
 	public override void ModifyDamageHitbox(ref Rectangle hitbox) {
 		BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, oldCenter, outrotation, Projectile.width, Projectile.height, 10f);
 	}
@@ -110,6 +116,12 @@ internal class SwordProjectile2 : ModProjectile {
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 		}
 	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[Projectile.owner];
+
+		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
+		modifiers.HitDirectionOverride = directionTo;
+	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		State = 1;
 	}
@@ -162,6 +174,12 @@ internal class SwordProjectile3 : ModProjectile {
 		Projectile.Center = NewPos;
 		Projectile.rotation = RotationPos.ToRotation() + MathHelper.PiOver4;
 	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[Projectile.owner];
+
+		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
+		modifiers.HitDirectionOverride = directionTo;
+	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);
 		Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>(ItemIDtextureValue)).Value;
@@ -201,7 +219,12 @@ internal class SwordProjectileSpear : ModProjectile {
 		Vector2 vel = Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * (HoldoutRangeMax + 100), progress);
 		Projectile.Center = new Vector2(Projectile.ai[1], Projectile.ai[2]) + vel;
 		Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2;
-		return;
+	}
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		Player player = Main.player[Projectile.owner];
+		
+		int directionTo = (player.Center.X < target.Center.X).ToDirectionInt();
+		modifiers.HitDirectionOverride = directionTo;
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Main.instance.LoadProjectile(Projectile.type);

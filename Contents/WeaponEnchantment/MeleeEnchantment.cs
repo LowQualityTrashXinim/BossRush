@@ -1096,11 +1096,11 @@ public class Katana : ModEnchantment {
 			Vector2 pos = target.Center;
 			int type = ModContent.ProjectileType<SwordProjectile>();
 			if (Main.rand.NextBool()) {
-				pos += Main.rand.NextVector2CircularEdge(target.width, target.height) * 4.25f;
+				pos += Main.rand.NextVector2CircularEdge(target.width + 50, target.height + 50);
 				type = ModContent.ProjectileType<SwordProjectileSpear>();
 			}
 			else {
-				pos += Main.rand.NextVector2CircularEdge(target.width, target.height) * 1.25f;
+				pos += Main.rand.NextVector2CircularEdge(target.width + 20, target.height + 20);
 			}
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), pos, (target.Center - pos).SafeNormalize(Vector2.Zero), type, item.damage, item.knockBack, player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is SwordProjectile swordproj) {

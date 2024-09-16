@@ -89,13 +89,13 @@ StarFury: {
 }
 
 WoodSwordSpirit: {
-	DisplayName: Wood Sword Spirit
-	Description: Hitting a enemy will shoot out a wood sword toward the enemy dealing 24 damage
+	DisplayName: Wooden Warrior
+	Description: Summons a Wooden Spirit, deal 24 damage
 }
 
 BroadSwordSpirit: {
 	DisplayName: Broad Sword Spirit
-	Description: Summon 3 broad sword that spin around player dealing 34 damage
+	Description: Summons 3 ancient broadswords that spin around the player, dealing 34 base damage + 75% weapon damage TODO ADD PENETRATING debuff
 }
 
 Overclock: {
@@ -126,4 +126,14 @@ TerrorForm: {
 AllOrNothing: {
 	DisplayName: All Or Nothing
 	Description: Blesses your next hit with a randomised damage output
+}
+
+IceAge: {
+	DisplayName: Ice Age
+	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius
+}
+
+ElectricChain: {
+	DisplayName: Electric Chain
+	Description: Releases a zap that deals 43 damage to up to 10 unelectrified enemies close to each other, inflicting the 'Electrified' debuff and returning 5 Energy each
 }

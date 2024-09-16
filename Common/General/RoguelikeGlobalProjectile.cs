@@ -6,6 +6,7 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
+using System.Collections.Generic;
 
 namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -16,7 +17,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public bool Source_FromDeathScatterShot = false;
 	public int OnKill_ScatterShot = -1;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
-		if(source is null) {
+		if (source is null) {
 			return;
 		}
 		if (source is EntitySource_ItemUse parent) {
@@ -26,6 +27,21 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			Source_FromDeathScatterShot = true;
 		}
 		Source_CustomContextInfo = source.Context;
+	}
+	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Source_CustomContextInfo == "Skill_IceAge") {
+			Player player = Main.player[projectile.owner];
+			target.AddBuff(BuffID.Frozen, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
+			target.Center.LookForHostileNPC(out List<NPC> npclist, 75);
+			NPC.HitInfo hitweaker = hit;
+			hitweaker.Damage = (int)(hit.Damage * .54f);
+			foreach (NPC npc in npclist) {
+				if (npc.whoAmI == target.whoAmI) {
+					continue;
+				}
+				player.StrikeNPCDirect(npc, hitweaker);
+			}
+		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
 		if (Source_FromDeathScatterShot

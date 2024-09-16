@@ -242,6 +242,8 @@ Mods: {
 			AmethystMagicalBolt.DisplayName: Amethyst Magical Bolt
 			TopazMagicalBolt.DisplayName: Topaz Magical Bolt
 			SwordProjectileSpear.DisplayName: Sword Projectile Spear
+			ElectricChainBolt.DisplayName: Electric Chain Bolt
+			SoulWoodSword.DisplayName: Soul Wood Sword
 		}
 
 		NPCs: {
@@ -1721,22 +1723,17 @@ Mods: {
 
 			AntiPoisonPotion: {
 				DisplayName: Anti Poison Potion
-				Tooltip: "Give you immunity to most poison debuff"
+				Tooltip: Give you immunity to most poison debuff
 			}
 
 			FireResistancePotion: {
 				DisplayName: Fire Resistance Potion
-				Tooltip: "Give you immunity to most fire debuff"
+				Tooltip: Give you immunity to most fire debuff
 			}
 
 			LastingVile: {
 				DisplayName: Lasting Vile
-				Tooltip: "Increases existing buff duration by 2 minute"
-			}
-
-			ProtectionScroll: {
-				DisplayName: Protection Scroll
-				Tooltip: "Give user protection spell"
+				Tooltip: Increases existing buff duration by 2 minute
 			}
 
 			LaserSniper: {
@@ -1750,26 +1747,36 @@ Mods: {
 
 			LifeStealPotion: {
 				DisplayName: Life Steal Potion
-				Tooltip: "You have 2% life steal effect"
+				Tooltip: You have 2% life steal effect
 			}
 
 			ShadowPotion: {
 				DisplayName: Shadow Potion
-				Tooltip: 
-				'''
-				Your have 2% to dodge a attack
-				Increases invincibility frame duration by 10%
-				'''
+				Tooltip:
+					'''
+					Your have 2% to dodge a attack
+					Increases invincibility frame duration by 10%
+					'''
 			}
 
 			ScrollofEvasive: {
 				DisplayName: Scroll of Evasive
-				Tooltip: "Give user envasion spell"
+				Tooltip: Give user envasion spell
 			}
 
 			ScrollOfMaterialize: {
 				DisplayName: Scroll Of Materialize
-				Tooltip: "Give user materialize spell"
+				Tooltip: Give user materialize spell
+			}
+
+			ScrollOfInvincibility: {
+				DisplayName: Scroll Of Invincibility
+				Tooltip: Give user invincibility spell
+			}
+
+			ScrollOfProtection: {
+				DisplayName: Scroll Of Protection
+				Tooltip: Give user protection spell
 			}
 		}
 
@@ -2082,37 +2089,37 @@ Mods: {
 
 			PowerBankDebuff: {
 				DisplayName: Power Bank Debuff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			PowerCordBuff: {
 				DisplayName: Power Cord Buff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			MoonLightDebuff: {
 				DisplayName: Moon Light Debuff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			TitanPowerBuff: {
 				DisplayName: Titan Power Buff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			AntiPoisonBuff: {
 				DisplayName: Anti Poison Buff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			FireResistanceBuff: {
 				DisplayName: Fire Resistance
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			LastingVileBuff: {
 				DisplayName: Lasting Vile Cooldown
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			ProtectionSpell: {
@@ -2122,12 +2129,12 @@ Mods: {
 
 			LifeStealBuff: {
 				DisplayName: Life Steal Buff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			ShadowBuff: {
 				DisplayName: Shadow Buff
-				Description: "TODO: ADD DESCRIPTION"
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			EnvasionSpell: {
@@ -2138,6 +2145,11 @@ Mods: {
 			MaterializeSpell: {
 				DisplayName: Materialize Spell
 				Description: Hitting enemy have 1 in 15 chance to drop heart of mana
+			}
+
+			InvincibilitySpell: {
+				DisplayName: Invincibility Spell
+				Description: Grant complete invincibility
 			}
 		}
 

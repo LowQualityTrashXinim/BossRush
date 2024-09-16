@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Consumable.Potion;
 internal class FireResistancePotion : ModItem{
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<FireResistanceBuff>(), BossRushUtils.ToSecond(1.5f));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<FireResistanceBuff>(), BossRushUtils.ToMinute(1.5f));
 	}
 }
 public class FireResistanceBuff : ModBuff {

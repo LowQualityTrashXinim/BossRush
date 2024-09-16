@@ -4,10 +4,10 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Consumable.Scroll;
-internal class ProtectionScroll : ModItem {
+internal class ScrollOfProtection : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToSecond(1.5f));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToMinute(1.5f));
 	}
 }
 public class ProtectionSpell : ModBuff {
