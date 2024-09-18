@@ -1116,3 +1116,69 @@ public class Katana : ModEnchantment {
 		}
 	}
 }
+public class WoodenBoomerang : ModEnchantment {
+	Item itemstat = new();
+	public override void SetDefaults() {
+		ItemIDType = ItemID.WoodenBoomerang;
+		itemstat = ContentSamples.ItemsByType[ItemIDType];
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.itemAnimation == player.itemAnimationMax) {
+			if (player.ownedProjectileCounts[ProjectileID.WoodenBoomerang] < 1) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.WoodenBoomerang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+			}
+		}
+	}
+}
+
+public class EnchantedBoomerang : ModEnchantment {
+	Item itemstat = new();
+	public override void SetDefaults() {
+		ItemIDType = ItemID.EnchantedBoomerang;
+		itemstat = ContentSamples.ItemsByType[ItemIDType];
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.itemAnimation == player.itemAnimationMax) {
+			if (player.ownedProjectileCounts[ProjectileID.EnchantedBoomerang] < 1) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.EnchantedBoomerang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+			}
+		}
+	}
+}
+public class IceBoomerang : ModEnchantment {
+	Item itemstat = new();
+	public override void SetDefaults() {
+		ItemIDType = ItemID.IceBoomerang;
+		itemstat = ContentSamples.ItemsByType[ItemIDType];
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.itemAnimation == player.itemAnimationMax) {
+			if (player.ownedProjectileCounts[ProjectileID.IceBoomerang] < 1) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.IceBoomerang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+			}
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (proj.type == ProjectileID.IceBoomerang) {
+			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(5, 8)));
+		}
+	}
+}
+public class Shroomerang : ModEnchantment {
+	Item itemstat = new();
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Shroomerang;
+		itemstat = ContentSamples.ItemsByType[ItemIDType];
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.itemAnimation == player.itemAnimationMax) {
+			if (player.ownedProjectileCounts[ProjectileID.Shroomerang] < 1) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.Shroomerang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+			}
+		}
+	}
+}

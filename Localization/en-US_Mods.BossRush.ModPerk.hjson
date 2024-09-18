@@ -285,14 +285,15 @@ ArenaBlessing3: {
 
 StellarRetirement: {
 	DisplayName: Stellar Retirement
-	Description: + Star Fury now drop from the sky dealing 1000 damage
+	Description: + Star Fury fall from the sky dealing 1000 damage
 }
 
 OverchargedMana: {
 	DisplayName: Overcharged Mana
 	Description:
 		'''
-		+ Your maximum mana is halved
+		- Your maximum mana is halved
+		+ Your mana regen is increases
 		+ Deal magic explode damage and gain +33% magic damage when you have full mana
 		'''
 }

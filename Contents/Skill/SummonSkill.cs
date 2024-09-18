@@ -46,3 +46,48 @@ public class WoodSwordSpirit : ModSkill {
 		}
 	}
 }
+
+public class WilloFreeze : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 85;
+		Skill_Duration = BossRushUtils.ToSecond(4);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<WilloFreezeProjectile>()] < 1) {
+			int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(36);
+			float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(5);
+			for (int i = 0; i < 4; i++) {
+				Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<WilloFreezeProjectile>(), damage, knockback, player.whoAmI, 75, i, 4);
+			}
+		}
+	}
+}
+
+public class PowerPlant : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 125;
+		Skill_Duration = BossRushUtils.ToSecond(4);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<PowerPlantProjectile>()] < 1) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<PowerPlantProjectile>(), 0, 0, player.whoAmI);
+		}
+	}
+}
+public class TransferStation : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 125;
+		Skill_Duration = BossRushUtils.ToSecond(4);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<TransferStationProjectile>()] < 1) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<TransferStationProjectile>(), 0, 0, player.whoAmI);
+		}
+	}
+}

@@ -244,6 +244,9 @@ Mods: {
 			SwordProjectileSpear.DisplayName: Sword Projectile Spear
 			ElectricChainBolt.DisplayName: Electric Chain Bolt
 			SoulWoodSword.DisplayName: Soul Wood Sword
+			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
+			PowerPlantProjectile.DisplayName: Power Plant Projectile
+			TransferStationProjectile.DisplayName: Transfer Station Projectile
 		}
 
 		NPCs: {
@@ -2150,6 +2153,11 @@ Mods: {
 			InvincibilitySpell: {
 				DisplayName: Invincibility Spell
 				Description: Grant complete invincibility
+			}
+
+			Penetrating: {
+				DisplayName: Penetrating
+				Description: Mods.BossRush.Buffs.Penetrating.Description
 			}
 		}
 

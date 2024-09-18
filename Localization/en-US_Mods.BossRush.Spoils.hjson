@@ -35,7 +35,7 @@ PerkSpoil: {
 
 UpgradeAccSpoil: {
 	DisplayName: "[[i:{0}]] Accessory Pack"
-	Description: Contains {0} normal accessory and lost accessory
+	Description: Contains {0} normal accessory or lost accessory
 }
 
 LostAccessorySpoil: {

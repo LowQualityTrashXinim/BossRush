@@ -40,7 +40,6 @@ namespace BossRush.Common.General {
 			LeadingConditionRule dontHit = new LeadingConditionRule(new DontHitBoss());
 			LeadingConditionRule IsABoss = new(new Conditions.LegacyHack_IsABoss());
 			LeadingConditionRule legacyLootboxCheck = new(new CheckLegacyLootboxBoss());
-			LeadingConditionRule SynergyRule = new(new SynergyDrop());
 			if (npc.type == NPCID.KingSlime) {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<KSNoHitReward>()));
@@ -72,7 +71,6 @@ namespace BossRush.Common.General {
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CorruptionLootBox>()));
-				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<WorldEssence>()));
 			}
 			else if (npc.type == NPCID.BrainofCthulhu) {
 				//NoHit mode drop
@@ -84,7 +82,6 @@ namespace BossRush.Common.General {
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<PreHardmodeBossBundle>()));
 				legacyLootboxCheck.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<ItemBundle>()));
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrimsonLootBox>()));
-				SynergyRule.OnSuccess(ItemDropRule.ByCondition(new EvilBossChallengeModeException(), ModContent.ItemType<WorldEssence>()));
 			}
 			else if (npc.type == NPCID.QueenBee) {
 				//NoHit mode drop
@@ -169,7 +166,7 @@ namespace BossRush.Common.General {
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdAltar));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureTreasureChest>()));
-				SynergyRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WorldEssence>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WorldEssence>()));
 			}
 			else if (npc.type == NPCID.Golem) {
 				//NoHit mode drop
@@ -218,13 +215,16 @@ namespace BossRush.Common.General {
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
 			}
+			LeadingConditionRule perkrule = new(new PerkDrop());
+			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
+
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(), ItemID.ManaCrystal, 1, manacrystal, manacrystal));
+			npcLoot.Add(perkrule);
 			npcLoot.Add(noHit);
 			npcLoot.Add(dontHit);
 			npcLoot.Add(ExpertVSnormal);
 			npcLoot.Add(IsABoss);
-			npcLoot.Add(SynergyRule);
 			npcLoot.Add(legacyLootboxCheck);
 		}
 		public override void OnKill(NPC npc) {

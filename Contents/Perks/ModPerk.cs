@@ -11,16 +11,16 @@ using BossRush.Contents.Items;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
+using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Contents.Items.RelicItem;
 using BossRush.Common.RoguelikeChange;
+using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
-using BossRush.Common.General;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -625,6 +625,9 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenMana, Base: 20);
 		}
 		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
 			mana /= 2;

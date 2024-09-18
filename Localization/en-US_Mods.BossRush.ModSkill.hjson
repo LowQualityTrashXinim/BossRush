@@ -137,3 +137,18 @@ ElectricChain: {
 	DisplayName: Electric Chain
 	Description: Releases a zap that deals 43 damage to up to 10 unelectrified enemies close to each other, inflicting the 'Electrified' debuff and returning 5 Energy each
 }
+
+WilloFreeze: {
+	DisplayName: Will o' Freeze
+	Description: Summons 4 frozen flames that spin around the player while spreading out, dealing 36 damage and inflicting the 'Frostburn' debuff
+}
+
+PowerPlant: {
+	DisplayName: Power Plant
+	Description: Deploys a Radioactive Tower that damages both you and enemies, dealing 10 damage per second and converting it into Energy
+}
+
+TransferStation: {
+	DisplayName: Transfer Station
+	Description: Places a Vampiric Pylon at your cursor, dealing 10 damage per second to enemies and healing you half that amount while in its radius
+}

@@ -79,7 +79,7 @@ public class PotionSpoil : ModSpoil {
 
 public class RelicSpoil : ModSpoil {
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(3));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2));
 	}
 	public override void OnChoose(Player player, int itemsource) {
 		LootBoxBase.GetRelic(itemsource, player, 2);
@@ -87,7 +87,7 @@ public class RelicSpoil : ModSpoil {
 }
 public class SkillSpoil : ModSpoil {
 	public override string FinalDescription() {
-		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(3));
+		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2));
 	}
 	public override void OnChoose(Player player, int itemsource) {
 		LootBoxBase.GetSkillLootbox(itemsource, player, 2);

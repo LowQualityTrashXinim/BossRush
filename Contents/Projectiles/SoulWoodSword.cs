@@ -65,9 +65,9 @@ internal class SoulWoodSword : ModProjectile {
 			return;
 		}
 		if (AnywhereNearNPC == Vector2.Zero) {
-			AnywhereNearNPC = npc.Center + Main.rand.NextVector2CircularEdge(npc.width + 20, npc.height + 20);
+			AnywhereNearNPC = npc.Center + Main.rand.NextVector2CircularEdge(npc.width, npc.height);
 		}
-		Projectile.velocity = (AnywhereNearNPC - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+		Projectile.velocity = (AnywhereNearNPC - Projectile.Center).SafeNormalize(Vector2.Zero) * 15;
 		Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 		if (Projectile.Center.IsCloseToPosition(AnywhereNearNPC, 25f)) {
 			State = Main.rand.Next(1, 3);
@@ -90,7 +90,7 @@ internal class SoulWoodSword : ModProjectile {
 		ResetStats = true;
 	}
 	private void SpearAI() {
-		int duration = 30;
+		int duration = 10;
 		if (ResetStats) {
 			oldCenter = Projectile.Center;
 			ResetStats = false;
@@ -98,13 +98,12 @@ internal class SoulWoodSword : ModProjectile {
 			directionTo = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
 		}
 
-		Projectile.rotation = directionTo.ToRotation() - MathHelper.PiOver2;
 		float halfDuration = duration * 0.5f;
 		float progress = Math.Clamp(continuousTimer / halfDuration, 0, 1);
 		Vector2 vel = Vector2.SmoothStep(directionTo * 20, directionTo * 220, progress);
 		Projectile.Center = oldCenter + vel;
-		Projectile.rotation += Projectile.spriteDirection == -1 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2;
-		if (continuousTimer > 40) {
+		Projectile.rotation = directionTo.ToRotation() + MathHelper.PiOver4;
+		if (continuousTimer > 20) {
 			ResetStats = true;
 			State = 3;
 		}
@@ -115,11 +114,11 @@ internal class SoulWoodSword : ModProjectile {
 
 			directionTo = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
 
-			oldCenter = Projectile.Center.PositionOFFSET(directionTo, -30);
+			oldCenter = Projectile.Center.PositionOFFSET(directionTo, -10);
 			directionLooking = Main.rand.NextBool().ToDirectionInt();
 			ResetStats = false;
 		}
-		float percentDone = 1 - continuousTimer / 30f;
+		float percentDone = 1 - continuousTimer / 20f;
 		percentDone = Math.Clamp(BossRushUtils.InExpo(percentDone), 0, 1);
 		Projectile.spriteDirection = directionLooking;
 		float baseAngle = directionTo.ToRotation();
@@ -130,7 +129,7 @@ internal class SoulWoodSword : ModProjectile {
 		outrotation = rotation;
 		Projectile.rotation = rotation + MathHelper.PiOver4;
 		Projectile.Center = oldCenter + Vector2.UnitX.RotatedBy(rotation) * 60f;
-		if (continuousTimer > 40) {
+		if (continuousTimer > 30) {
 			ResetStats = true;
 			State = 3;
 		}
@@ -145,7 +144,7 @@ internal class SoulWoodSword : ModProjectile {
 		for (int i = 0; i < 10; i++) {
 			Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Cloud);
 			dust.noGravity = true;
-			dust.velocity = Main.rand.NextVector2Circular(3, 3) + directionTo;
+			dust.velocity = Main.rand.NextVector2Circular(3, 3) + directionTo * 3;
 			dust.scale = Main.rand.NextFloat(3f, 3.5f);
 		}
 	}
@@ -156,11 +155,11 @@ internal class SoulWoodSword : ModProjectile {
 		Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 		Color yellowish = new Color(255, 255, 0, 100);
 
-			Main.EntitySpriteDraw(texture, drawPos.Add(3, 3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(texture, drawPos.Add(-3, 3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(texture, drawPos.Add(3, -3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-			Main.EntitySpriteDraw(texture, drawPos.Add(-3, -3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-		
+		Main.EntitySpriteDraw(texture, drawPos.Add(3, 3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		Main.EntitySpriteDraw(texture, drawPos.Add(-3, 3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		Main.EntitySpriteDraw(texture, drawPos.Add(3, -3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+		Main.EntitySpriteDraw(texture, drawPos.Add(-3, -3), null, yellowish, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+
 		Main.EntitySpriteDraw(texture, drawPos, null, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
 		return false;
 	}

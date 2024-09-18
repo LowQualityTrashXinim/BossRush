@@ -270,6 +270,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Shoot out 2 empowered arrows instead of 1");
 					tooltips.Add(line);
 					break;
+				case ItemID.WoodenBoomerang:
+				case ItemID.EnchantedBoomerang:
+				case ItemID.IceBoomerang:
+				case ItemID.Flamarang:
+				case ItemID.Shroomerang:
+					line = new(Mod, "RoguelikeOverhaul_Boomerang", "Reduce enemy defenses by 10 on hit");
+					tooltips.Add(line);
+					break;
 			}
 			if (item.type == ItemID.Sandgun) {
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Sandgun", "Sand projectile no longer spawn upon kill"));
@@ -344,10 +352,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			OnHitNPC_TheUnderTaker(proj, target);
 		}
 		private void OnHitNPC_WoodBow(Projectile proj, NPC target) {
-			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool()) {
+			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(10));
 			}
-			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.BorealWoodBow && Main.rand.NextBool()) {
+			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.BorealWoodBow && Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
 			}
 		}
@@ -355,6 +363,15 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.TheUndertaker) {
 				Player.Heal(1);
 				npc.AddBuff(ModContent.BuffType<CrimsonAbsorbtion>(), 240);
+			}
+		}
+		private void OnHitNPC_Boomerang(Projectile proj, NPC npc) {
+			if (proj.type == ProjectileID.WoodenBoomerang
+				|| proj.type == ProjectileID.IceBoomerang
+				|| proj.type == ProjectileID.EnchantedBoomerang
+				|| proj.type == ProjectileID.Flamarang
+				|| proj.type == ProjectileID.Shroomerang) {
+				npc.AddBuff(ModContent.BuffType<Penetrating>(), BossRushUtils.ToSecond(Main.rand.Next(10, 14)));
 			}
 		}
 	}
@@ -368,30 +385,5 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				projectile.hostile = parentProjectile.hostile;
 			}
 		}
-	}
-	public class GlobalItemMod_GlobalNPC : GlobalNPC {
-		public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers) {
-			if (npc.HasBuff(ModContent.BuffType<LeadIrradiation>()))
-				modifiers.Defense.Base += 20;
-		}
-	}
-	public class ArmorSet {
-		public int headID, bodyID, legID;
-		protected string ArmorSetBonusToolTip = "";
-		public ArmorSet(int headID, int bodyID, int legID) {
-			this.headID = headID;
-			this.bodyID = bodyID;
-			this.legID = legID;
-		}
-		public static string ConvertIntoArmorSetFormat(int headID, int bodyID, int legID) => $"{headID}:{bodyID}:{legID}";
-		/// <summary>
-		/// Expect there is only 3 item in a array
-		/// </summary>
-		/// <param name="armor"></param>
-		/// <returns></returns>
-		public static string ConvertIntoArmorSetFormat(int[] armor) => $"{armor[0]}:{armor[1]}:{armor[2]}";
-		public override string ToString() => $"{headID}:{bodyID}:{legID}";
-
-		public bool ContainAnyOfArmorPiece(int type) => type == headID || type == bodyID || type == legID;
 	}
 }
