@@ -33,8 +33,6 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			int lifecrystal = 1;
-			int manacrystal = 1;
 			LeadingConditionRule ExpertVSnormal = new LeadingConditionRule(new Conditions.LegacyHack_IsBossAndNotExpert());
 			LeadingConditionRule noHit = new LeadingConditionRule(new GitGudMode());
 			LeadingConditionRule dontHit = new LeadingConditionRule(new DontHitBoss());
@@ -218,8 +216,6 @@ namespace BossRush.Common.General {
 			LeadingConditionRule perkrule = new(new PerkDrop());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
 
-			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalMax(), ItemID.LifeCrystal, 1, lifecrystal, lifecrystal));
-			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalMax(), ItemID.ManaCrystal, 1, manacrystal, manacrystal));
 			npcLoot.Add(perkrule);
 			npcLoot.Add(noHit);
 			npcLoot.Add(dontHit);

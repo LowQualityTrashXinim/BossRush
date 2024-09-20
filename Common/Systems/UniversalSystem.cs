@@ -16,6 +16,7 @@ using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
+using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Contents.Artifacts;
 using BossRush.Common.ChallengeMode;
@@ -28,11 +29,10 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
+using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Common.General;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -619,6 +619,7 @@ class UISystemMenu : UIState {
 	bool SkillHover = false;
 	bool InfoHover = false;
 	bool Transmutation = false;
+	private Asset<Texture2D> lockIcon;
 	public override void OnInitialize() {
 		panel = new UIPanel();
 		panel.HAlign = .5f;
@@ -664,16 +665,28 @@ class UISystemMenu : UIState {
 		open_Transmutation_UI.VAlign = .4f;
 		open_Transmutation_UI.HAlign = .57f;
 		open_Transmutation_UI.SetVisibility(1f, 67f);
-		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick; ;
-		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate; ;
+		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick;
+		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate;
 		Append(open_Transmutation_UI);
+
+		lockIcon = ModContent.Request<Texture2D>("BossRush/Texture/UI/lock");
+	}
+	private bool CanEnchantmentBeAccess() =>
+		Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
+		&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
+		&& !UniversalSystem.Check_TotalRNG();
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		if (!CanEnchantmentBeAccess()) {
+			Vector2 pos = open_Enchantment_UI.GetDimensions().Position();
+			Vector2 origin = -lockIcon.Size() * .1f;
+			Main.EntitySpriteDraw(lockIcon.Value, pos, null, Color.White, 0, origin, 1, SpriteEffects.None);
+		}
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (EnchantmentHover) {
-			if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>() 
-				&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
-			&& !UniversalSystem.Check_TotalRNG()) {
+			if (CanEnchantmentBeAccess()) {
 				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
 			}
 			else {
@@ -749,9 +762,7 @@ class UISystemMenu : UIState {
 		}
 	}
 	private void Open_Enchantment_UI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
-			&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
-			&& !UniversalSystem.Check_TotalRNG()) {
+		if (CanEnchantmentBeAccess()) {
 			ModContent.GetInstance<UniversalSystem>().ActivateEnchantmentUI();
 		}
 	}
@@ -1001,14 +1012,6 @@ class InfoUI : UIState {
 				if (textlist.Keys.Where(e => !e.IsMouseHovering).Count() == textlist.Keys.Count) {
 					generalTextPanel.Hide = true;
 				}
-				//var perkplayer = player.GetModPlayer<PerkPlayer>();
-				//line = "Current perks list : ";
-				//foreach (var perkItem in perkplayer.perks.Keys) {
-				//	if (ModPerkLoader.GetPerk(perkItem) != null) {
-				//		line += "\n" + ModPerkLoader.GetPerk(perkItem).DisplayName + $" | current stack : [{perkplayer.perks[perkItem]}]";
-				//	}
-				//}
-				//textpanel.SetText(line);
 				break;
 			default:
 				line = "";
@@ -1334,9 +1337,10 @@ internal class PerkUIState : UIState {
 				}
 			}
 			if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
-				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
-					continue;
-				}
+				continue;
+			}
+			if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+				continue;
 			}
 			listOfPerk.Add(i);
 		}
@@ -1496,7 +1500,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 				UniversalSystem.EnchantingState = true;
 			}
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
-				int length = globalItem.EnchantmenStlot.Length;
+				int length = globalItem.EnchantmenStlot.Length - 1;
 				for (int i = 0; i < length; i++) {
 					Vector2 pos = player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
 					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack);

@@ -555,7 +555,7 @@ Vilethorn.Description:
 CrimsonRod.Description:
 	'''
 	Reduce mana cost by 8%
-	Create blood rain that shoot out randomly at cursor position
+	Create blood rain that rain down at cursor position
 	( Can be trigger every 0.12s )
 	'''
 MagicMissile.Description:

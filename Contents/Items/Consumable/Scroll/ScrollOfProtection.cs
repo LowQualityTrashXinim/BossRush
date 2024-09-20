@@ -1,7 +1,7 @@
-﻿using BossRush.Common.Systems;
+﻿using Terraria;
 using BossRush.Texture;
-using Terraria;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfProtection : ModItem {
@@ -16,7 +16,7 @@ public class ProtectionSpell : ModBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.12f, Base: 10);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.12f, Flat: 10);
 	}
 }
 

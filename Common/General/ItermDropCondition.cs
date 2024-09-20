@@ -114,30 +114,10 @@ namespace BossRush.Common.General {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Nightmare mode exclusive";
 	}
-	public class LifeCrystalMax : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return true;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "";
-	}
-	public class ManaCrystalMax : IItemDropRuleCondition {
-		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return true;
-			}
-			return false;
-		}
-		public bool CanShowItemDropInUI() => true;
-		public string GetConditionDescription() => "";
-	}
 	public class PerkDrop  : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 2;
+				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1;
 			}
 			return false;
 		}

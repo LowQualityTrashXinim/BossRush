@@ -36,7 +36,7 @@ public abstract class ModSkill : ModType {
 	protected float Skill_EnergyRequirePercentage = 0;
 	protected bool Skill_CanBeSelect = true;
 	protected byte Skill_Type = 0;
-	public virtual string Texture => BossRushTexture.MissingTexture_Default;
+	public virtual string Texture => BossRushTexture.Get_MissingTexture("Skill");
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
 	public int EnergyRequire { get => Skill_EnergyRequire; }

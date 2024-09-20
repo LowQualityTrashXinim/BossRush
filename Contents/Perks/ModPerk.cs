@@ -876,6 +876,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.endurance += .1f;
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.EnergyCap, 1.2f);
 		}
 		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
 			player.GetModPlayer<SkillHandlePlayer>().Modify_EnergyAmount((int)(hurtInfo.Damage * .25f));

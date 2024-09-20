@@ -7,7 +7,7 @@ namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfInvincibility : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToSecond(10));
+		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<InvincibilitySpell>(), BossRushUtils.ToSecond(10));
 	}
 }
 public class InvincibilitySpell : ModBuff {
@@ -17,6 +17,7 @@ public class InvincibilitySpell : ModBuff {
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.12f, Base: 10);
+		player.noFallDmg = true;
 	}
 }
 

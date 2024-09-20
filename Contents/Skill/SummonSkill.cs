@@ -8,7 +8,7 @@ namespace BossRush.Contents.Skill;
 
 public class BroadSwordSpirit : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 145;
+		Skill_EnergyRequire = 545;
 		Skill_Duration = BossRushUtils.ToSecond(1);
 		Skill_CoolDown = BossRushUtils.ToSecond(3);
 		Skill_Type = SkillTypeID.Skill_Summon;
@@ -31,7 +31,7 @@ public class BroadSwordSpirit : ModSkill {
 }
 public class WoodSwordSpirit : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 145;
+		Skill_EnergyRequire = 645;
 		Skill_Duration = BossRushUtils.ToSecond(3);
 		Skill_CoolDown = BossRushUtils.ToSecond(6);
 		Skill_Type = SkillTypeID.Skill_Summon;
@@ -49,7 +49,7 @@ public class WoodSwordSpirit : ModSkill {
 
 public class WilloFreeze : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 85;
+		Skill_EnergyRequire = 485;
 		Skill_Duration = BossRushUtils.ToSecond(4);
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
@@ -67,7 +67,7 @@ public class WilloFreeze : ModSkill {
 
 public class PowerPlant : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 125;
+		Skill_EnergyRequire = 525;
 		Skill_Duration = BossRushUtils.ToSecond(4);
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;
@@ -80,7 +80,7 @@ public class PowerPlant : ModSkill {
 }
 public class TransferStation : ModSkill {
 	public override void SetDefault() {
-		Skill_EnergyRequire = 125;
+		Skill_EnergyRequire = 525;
 		Skill_Duration = BossRushUtils.ToSecond(4);
 		Skill_CoolDown = BossRushUtils.ToSecond(12);
 		Skill_Type = SkillTypeID.Skill_Summon;

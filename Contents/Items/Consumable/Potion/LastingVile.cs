@@ -9,12 +9,11 @@ internal class LastingVile : ModItem {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LastingVileBuff>(), BossRushUtils.ToMinute(5));
 	}
 	public override bool? UseItem(Player player) {
-		if(player.itemAnimation == player.itemAnimationMax) {
+		if (player.itemAnimation == player.itemAnimationMax - 1) {
 			for (int i = 0; i < player.buffTime.Length; i++) {
-				if (player.buffTime[i] == 0 || player.buffType[i] == ModContent.BuffType<LastingVileBuff>()) {
-					continue;
+				if (player.buffTime[i] != 0 || BossRushModSystem.CanBeAffectByLastingVile[player.buffType[i]]) {
+					player.buffTime[i] += BossRushUtils.ToMinute(2);
 				}
-				player.buffTime[i] += BossRushUtils.ToMinute(2);
 			}
 		}
 		return base.UseItem(player);

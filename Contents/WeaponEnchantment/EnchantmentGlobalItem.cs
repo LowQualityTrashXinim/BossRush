@@ -51,7 +51,7 @@ public class EnchantmentSystem : ModSystem {
 						continue;
 					}
 				}
-				if (Main.rand.NextFloat() <= .1f) {
+				if (Main.rand.NextFloat() <= .2f) {
 					EnchantItem(worlditem, i);
 					continue;
 				}
@@ -80,7 +80,7 @@ public class EnchantmentSystem : ModSystem {
 		if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
 			slot = Math.Clamp(slot, 0, globalitem.EnchantmenStlot.Length);
 			if (enchantmentType == -1) {
-				globalitem.EnchantmenStlot[slot] = Main.rand.Next(EnchantmentLoader.TotalCount);
+				globalitem.EnchantmenStlot[slot] = Main.rand.Next(EnchantmentLoader.EnchantmentcacheID);
 			}
 			else {
 				if (EnchantmentLoader.GetEnchantment(enchantmentType) == null) {
@@ -98,14 +98,25 @@ public class EnchantmentGlobalItem : GlobalItem {
 		return CanBeEnchanted(entity);
 	}
 	public override bool InstancePerEntity => true;
-	public int[] EnchantmenStlot = new int[3];
-	public int[] Item_Counter1 = new int[3];
-	public int[] Item_Counter2 = new int[3];
-	public int[] Item_Counter3 = new int[3];
+	public int[] EnchantmenStlot = new int[4];
+	public int[] Item_Counter1 = new int[4];
+	public int[] Item_Counter2 = new int[4];
+	public int[] Item_Counter3 = new int[4];
 	public override GlobalItem Clone(Item from, Item to) {
 		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
-		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 3);
+		if (EnchantmenStlot.Length < 4 || clone.EnchantmenStlot.Length < 4) {
+			Array.Resize(ref EnchantmenStlot, 4);
+			Array.Resize(ref clone.EnchantmenStlot, 4);
+		}
+		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 4);
 		return clone;
+	}
+	public override GlobalItem NewInstance(Item target) {
+		EnchantmenStlot = new int[4];
+		Item_Counter1 = new int[4];
+		Item_Counter2 = new int[4];
+		Item_Counter3 = new int[4];
+		return base.NewInstance(target);
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (EnchantmenStlot == null) {
@@ -160,9 +171,9 @@ public class EnchantmentModplayer : ModPlayer {
 						continue;
 					if (EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).ForcedCleanCounter) {
 						EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).PreCleanCounter(i, Player, globalItem, item);
-						globalItem.Item_Counter1 = new int[3];
-						globalItem.Item_Counter2 = new int[3];
-						globalItem.Item_Counter3 = new int[3];
+						Array.Fill(globalItem.Item_Counter1, 0);
+						Array.Fill(globalItem.Item_Counter2, 0);
+						Array.Fill(globalItem.Item_Counter3, 0);
 					}
 				}
 			}

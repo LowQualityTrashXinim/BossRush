@@ -7,6 +7,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.Prefixes;
 using BossRush.Contents.Items.Accessories.TrinketAccessories;
+using BossRush.Contents.Items.Consumable.Potion;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
@@ -17,6 +18,7 @@ namespace BossRush {
 	public class BossRushModSystem : ModSystem {
 		public static bool[] IsFireBuff;
 		public static bool[] IsPoisonBuff;
+		public static bool[] CanBeAffectByLastingVile;
 		public static Dictionary<int, List<int>> WeaponRarityDB;
 		private static List<Item> _synergyitem;
 		private static List<Item> _lostAccs;
@@ -43,6 +45,7 @@ namespace BossRush {
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
 			IsPoisonBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.Poisoned, BuffID.Venom);
+			CanBeAffectByLastingVile = BuffID.Sets.Factory.CreateBoolSet(true, ModContent.BuffType<LastingVileBuff>());
 
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
 			for (int i = 0; i < cacheitemList.Count; i++) {

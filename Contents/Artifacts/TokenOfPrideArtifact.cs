@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.WeaponEnchantment;
+using Terraria.ID;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -27,15 +28,11 @@ namespace BossRush.Contents.Artifacts {
 			}
 			Item item = Player.HeldItem;
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item)) {
+				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item) 
+					|| globalitem.EnchantmenStlot[3] != ItemID.None || globalitem.EnchantmenStlot[3] != -1) {
 					return;
 				}
-				for (int i = 0; i < globalitem.EnchantmenStlot.Length; i++) {
-					if (globalitem.EnchantmenStlot[i] != -1) {
-						continue;
-					}
-					EnchantmentSystem.EnchantItem(item, i);
-				}
+				EnchantmentSystem.EnchantItem(item, 3);
 			}
 		}
 	}
