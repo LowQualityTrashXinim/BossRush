@@ -13,7 +13,7 @@ Mods: {
 				hover over your weapon in your inventory to read what effect they can give
 				before enchanting your weapon.
 				'''
-			BlockWeaponEnchantment.Tooltip: A Force beyond your realm has block you from accessing it's system
+			BlockWeaponEnchantment.Tooltip: A force beyond your realm has blocked you from accessing its system.
 			ShowPlayerInfo.Tooltip:
 				'''
 				[Player Info]

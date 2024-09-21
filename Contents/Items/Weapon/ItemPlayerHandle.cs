@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using Terraria.UI.Chat;
 using ReLogic.Graphics;
 using BossRush.Common.General;
+using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -171,6 +172,7 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool LostAccessories = false;
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
+		public bool AdvancedBuffItem = false;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (item.ModItem == null) {
 				return;
@@ -178,14 +180,14 @@ namespace BossRush.Contents.Items.Weapon {
 			if (item.ModItem.Mod != Mod) {
 				return;
 			}
-			if (DebugItem) {
-				TooltipLine line = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
-				line.Text += " [Debug]";
-				line.OverrideColor = Color.MediumPurple;
+			TooltipLine NameLine = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+			if (DebugItem && NameLine != null) {
+				NameLine.Text += " [Debug]";
+				NameLine.OverrideColor = Color.MediumPurple;
 				return;
 			}
 			if (item.ModItem is Relic relic && relic.relicColor != null) {
-				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = relic.relicColor.MultiColor(5);
+				NameLine.OverrideColor = relic.relicColor.MultiColor(5);
 				tooltips.Add(new(Mod, "RelicItem", $"[Active Item]\nTier : {relic.TemplateCount}") { OverrideColor = Main.DiscoColor });
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
@@ -195,15 +197,17 @@ namespace BossRush.Contents.Items.Weapon {
 				}
 			}
 			if (item.accessory && LostAccessories) {
-				TooltipLine line_Name = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
 				TooltipLine line_Tooltip0 = tooltips.Where(t => t.Name == "Tooltip0").FirstOrDefault();
-				if (line_Name == null || line_Tooltip0 == null) {
+				if (NameLine == null || line_Tooltip0 == null) {
 					return;
 				}
-				line_Name.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.DisplayName");
+				NameLine.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.DisplayName");
 				line_Tooltip0.Text = Language.GetTextValue($"Mods.BossRush.LostAccessories.{item.ModItem.Name}.Tooltip");
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = Color.DarkGoldenrod;
 				tooltips.Add(new TooltipLine(Mod, "LostAcc_" + item.type, "Lost Accessory") { OverrideColor = Color.LightGoldenrodYellow });
+			}
+			if (AdvancedBuffItem && NameLine != null) {
+				NameLine.Text += " [Advanced]";
 			}
 		}
 		public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
@@ -249,6 +253,12 @@ namespace BossRush.Contents.Items.Weapon {
 					pos.Y += ChatManager.GetStringSize(font, ExtraInfo, Vector2.One).Y + 16;
 				}
 			return base.PreDrawTooltip(item, lines, ref x, ref y);
+		}
+		public override bool? UseItem(Item item, Player player) {
+			if (AdvancedBuffItem) {
+				player.AddBuff(ModContent.BuffType<Drawback>(), BossRushUtils.ToMinute(6));
+			}
+			return base.UseItem(item, player);
 		}
 	}
 	public abstract class SynergyModItem : ModItem {

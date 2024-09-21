@@ -7,6 +7,7 @@ namespace BossRush.Contents.Items.Consumable.Scroll;
 internal class ScrollOfInvincibility : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
+		Item.Set_AdvancedBuffItem();
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<InvincibilitySpell>(), BossRushUtils.ToSecond(10));
 	}
 }

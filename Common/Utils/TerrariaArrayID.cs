@@ -201,7 +201,8 @@ namespace BossRush.Common.Utils {
 			ModContent.ItemType<Trinket_of_Perpetuation>(),
 			ModContent.ItemType<Trinket_of_Ample_Perception>(),
 			ModContent.ItemType<Trinket4>(),
-			ModContent.ItemType<Trinket5>()
+			ModContent.ItemType<Trinket5>(),
+			ModContent.ItemType<Trinket6>(),
 		};
 
 		public readonly static int[] WeakDrink = new int[] { ItemID.Teacup, ItemID.TropicalSmoothie, ItemID.SmoothieofDarkness, ItemID.PinaColada, ItemID.PeachSangria, ItemID.Lemonade, ItemID.FruitJuice, ItemID.BananaDaiquiri, ItemID.AppleJuice, ItemID.BloodyMoscato, ItemID.MilkCarton };
@@ -307,7 +308,7 @@ namespace BossRush.Common.Utils {
 		//Buff
 		public readonly static int[] FireBuff = { BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno };
 		public readonly static int[] PoisonBuff = { BuffID.Poisoned, BuffID.Venom };
-
+		public readonly static int[] Debuff = [.. FireBuff, .. PoisonBuff];
 		//Perk
 		public readonly static int[] StarterPerk = {
 			Perk.GetPerkType<BlessingOfSolar>(),

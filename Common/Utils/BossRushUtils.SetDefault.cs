@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
+using System.Diagnostics;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -17,9 +18,10 @@ namespace BossRush {
 			Main.debuff[buff.Type] = false;
 			Main.buffNoSave[buff.Type] = true;
 		}
-		public static void BossRushSetDefaultDeBuff(this ModBuff buff, bool Save = false) {
+		public static void BossRushSetDefaultDeBuff(this ModBuff buff, bool Save = false, bool Cure = false) {
 			Main.debuff[buff.Type] = true;
 			Main.buffNoSave[buff.Type] = Save;
+			BuffID.Sets.NurseCannotRemoveDebuff[buff.Type] = Cure;
 		}
 		/// <summary>
 		/// Set your own DamageClass type
@@ -111,26 +113,29 @@ namespace BossRush {
 			CheckOnlyModded,
 			CheckOnlyModdedWithoutDefault
 		}
-		/// <summary>
-		/// This allow for easy access toward chest and related logic, tho this work on terraria progression
-		/// </summary>
-		/// <param name="player"></param>
-		public static void DropWeaponFromChestPool(Player player) {
-			LootBoxBase.GetWeapon(out int Weapon, out int amount);
-			player.QuickSpawnItem(null, Weapon, amount);
-		}
-		public static void Set_InfoItem(this Item item, bool ExtraInfo) {
-			if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+		public static void Set_InfoItem(this Item item, bool ExtraInfo = true) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.ExtraInfo = ExtraInfo;
 			}
 		}
-		public static void Set_DebugItem(this Item item, bool Debug) {
+		public static void Set_DebugItem(this Item item, bool Debug = true) {
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.DebugItem = Debug;
 			}
 		}
+		public static void Set_AdvancedBuffItem(this Item item, bool Advanced = true) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+				globalitem.AdvancedBuffItem = Advanced;
+			}
+		}
+		public static void Set_LostAccessory(this Item item, int width, int height, bool Lost = true) {
+			item.DefaultToAccessory(width, height);
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+				globalitem.LostAccessories = Lost;
+			}
+		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
-			if(!UniversalSystem.Check_RLOH()) {
+			if (!UniversalSystem.Check_RLOH()) {
 				return false;
 			}
 			if (item.TryGetGlobalItem(out MeleeWeaponOverhaul meleeItem)) {
@@ -154,7 +159,7 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static void DrawAuraEffect(SpriteBatch spriteBatch,Texture2D texture ,Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
+		public static void DrawAuraEffect(SpriteBatch spriteBatch, Texture2D texture, Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
 			Vector2 origin = texture.Size() * .5f;
 			for (int i = 0; i < 3; i++) {
 				spriteBatch.Draw(texture, drawPos.Subtract(offsetX, offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
@@ -163,7 +168,7 @@ namespace BossRush {
 				spriteBatch.Draw(texture, drawPos.Subtract(-offsetX, -offsetY), null, color, rotation, origin, scale, SpriteEffects.None, 0);
 			}
 		}
-		public static void DrawAuraEffect(this Item item, SpriteBatch spriteBatch,Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
+		public static void DrawAuraEffect(this Item item, SpriteBatch spriteBatch, Vector2 drawPos, float offsetX, float offsetY, Color color, float rotation, float scale) {
 			Main.instance.LoadItem(item.type);
 			Texture2D texture = TextureAssets.Item[item.type].Value;
 			Vector2 origin = texture.Size() * .5f;

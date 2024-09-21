@@ -97,3 +97,29 @@ public class Vampiric : BaseAccPrefix {
 		};
 	}
 }
+
+public class Energetic : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.EnergyCap, Base: PowerLevel * 50);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+50 maximum energy") {
+			IsModifier = true,
+		};
+	}
+}
+
+public class Savage : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage, 1 + PowerLevel * .2f);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20% damage against undamage enemy") {
+			IsModifier = true,
+		};
+	}
+}
