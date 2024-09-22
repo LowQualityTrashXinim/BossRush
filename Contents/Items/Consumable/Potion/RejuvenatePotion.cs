@@ -12,6 +12,7 @@ internal class RejuvenatePotion : ModItem {
 	}
 }
 public class RejuvenatePotionBuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
 	}

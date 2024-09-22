@@ -166,7 +166,6 @@ BloodDiamond: {
 		'''
 		Increases critical strike chance by 5
 		Upon critical hit a enemy, you gain a blood diamond stack
-		Blood diamond stack increases your attack speed by 6%, damage by 10% and critical damage by 20%
 		'''
 }
 
@@ -218,5 +217,14 @@ DivinityStone: {
 		'''
 		Increases your crit chance by 5
 		Upon critial hit a enemy, you gain a divinity stack
+		'''
+}
+
+ChaosTablet: {
+	DisplayName: Chaos Tablet
+	Tooltip:
+		'''
+		Chaos explosion may happen during combat
+		Increases one of your stats after 15s
 		'''
 }

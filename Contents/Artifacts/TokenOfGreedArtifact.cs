@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Contents.Items;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfGreedArtifact : Artifact {

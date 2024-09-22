@@ -247,6 +247,7 @@ Mods: {
 			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
 			PowerPlantProjectile.DisplayName: Power Plant Projectile
 			TransferStationProjectile.DisplayName: Transfer Station Projectile
+			ChaosExplosion.DisplayName: Chaos Explosion
 		}
 
 		NPCs: {
@@ -1529,6 +1530,15 @@ Mods: {
 			BloodDiamond: {
 				DisplayName: Blood Diamond
 				Tooltip: ""
+				ExtraInfo:
+					'''
+					[Blood diamond]
+					Increases player : 
+					[+] Attack speed by 6%
+					[+] Damage by 10%
+					[+] Critical damage by 20%
+					per stack
+					'''
 			}
 
 			EnergeticOrb: {
@@ -1750,14 +1760,14 @@ Mods: {
 
 			LifeStealPotion: {
 				DisplayName: Life Steal Potion
-				Tooltip: You have 2% life steal effect
+				Tooltip: Give 2% life steal effect
 			}
 
 			ShadowPotion: {
 				DisplayName: Shadow Potion
 				Tooltip:
 					'''
-					Your have 2% to dodge a attack
+					Give 2% to dodge a attack
 					Increases invincibility frame duration by 10%
 					'''
 			}
@@ -1780,6 +1790,21 @@ Mods: {
 			ScrollOfProtection: {
 				DisplayName: Scroll Of Protection
 				Tooltip: Give user protection spell
+			}
+
+			ChaosTablet: {
+				DisplayName: Chaos Tablet
+				Tooltip: ""
+			}
+
+			KeenPotion: {
+				DisplayName: Keen Potion
+				Tooltip: ""
+			}
+
+			RejuvenatePotion: {
+				DisplayName: Rejuvenate Potion
+				Tooltip: ""
 			}
 		}
 
@@ -1901,7 +1926,7 @@ Mods: {
 
 			LeadIrradiation: {
 				DisplayName: Lead Irradiation
-				Description: Mods.BossRush.Buffs.LeadIrradiation.Description
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			heavenSmgBuff: {
@@ -1911,17 +1936,17 @@ Mods: {
 
 			HeavenSmgBuff: {
 				DisplayName: Heaven Smg Buff
-				Description: Mods.BossRush.Buffs.HeavenSmgBuff.Description
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			BoilingBlood: {
 				DisplayName: Boiling Blood
-				Description: Mods.BossRush.Buffs.BoilingBlood.Description
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			Samsara_of_Retribution: {
 				DisplayName: Samsara of Retribution
-				Description: Mods.BossRush.Buffs.Samsara_of_Retribution.Description
+				Description: TODO: ADD DESCRIPTION
 			}
 
 			SwiftSteal_Buff: {
@@ -2157,7 +2182,27 @@ Mods: {
 
 			Penetrating: {
 				DisplayName: Penetrating
-				Description: Mods.BossRush.Buffs.Penetrating.Description
+				Description: TODO: ADD DESCRIPTION
+			}
+
+			Drawback: {
+				DisplayName: Drawback
+				Description: TODO: ADD DESCRIPTION
+			}
+
+			KeenBuff: {
+				DisplayName: Keen Buff
+				Description: TODO: ADD DESCRIPTION
+			}
+
+			RejuvenatePotionBuff: {
+				DisplayName: Rejuvenate Potion Buff
+				Description: TODO: ADD DESCRIPTION
+			}
+
+			ChaosBuff: {
+				DisplayName: Chaos Buff
+				Description: Mods.BossRush.Buffs.ChaosBuff.Description
 			}
 		}
 
@@ -2340,6 +2385,8 @@ Mods: {
 			Stealthy.DisplayName: Stealthy
 			Vampiric.DisplayName: Vampiric
 			Vital.DisplayName: Vital
+			Energetic.DisplayName: Energetic
+			Savage.DisplayName: Savage
 		}
 	}
 }

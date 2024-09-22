@@ -1,16 +1,15 @@
 ﻿using System;
 using Terraria;
+using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
-using BossRush.Contents.Items.Weapon;
-using BossRush.Texture;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class BloodDiamond: ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+		Item.Set_LostAccessory(32, 32);
+		Item.Set_InfoItem();
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritChance, Base: 5);

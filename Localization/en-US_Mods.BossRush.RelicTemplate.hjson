@@ -13,8 +13,5 @@ MagicCostTemplate.Description:
 	Increases your magic damage multiply by [c/{0}:{1}]
 	And your flat magic damage by [c/{0}:{2}]
 	'''
-SynergyTemplate.Description:
-	'''
-	Increases your synergy flat damage by [c/{0}:{1}]
-	'''
+SynergyTemplate.Description: Increases your synergy flat damage by [c/{0}:{1}]
 GunFireRateTemplate.Description: Increases gun fire rate by [c/{0}:{1}]

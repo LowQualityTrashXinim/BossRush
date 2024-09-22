@@ -126,26 +126,12 @@ namespace BossRush.Common.Systems {
 			var statsplayer = player.GetModPlayer<PlayerStatsHandle>();
 			for (int i = 0; i < modplayer.Stats.Count; i++) switch (modplayer.Stats[i]) {
 					case PlayerStats.MaxHP:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.RegenHP:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.MaxMana:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.RegenMana:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.CritChance:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.MaxMinion:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.Defense:
-						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
-						break;
 					case PlayerStats.MaxSentry:
 						statsplayer.AddStatsToPlayer(modplayer.Stats[i], Base: modplayer.ToStatsNumInt(modplayer.Stats[i], modplayer.StatsMulti[i]));
 						break;

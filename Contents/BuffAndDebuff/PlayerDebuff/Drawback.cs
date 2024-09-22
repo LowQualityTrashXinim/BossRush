@@ -1,9 +1,11 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
+using BossRush.Texture;
 
 namespace BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 internal class Drawback : ModBuff{
+	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultDeBuff(true);
 	}
