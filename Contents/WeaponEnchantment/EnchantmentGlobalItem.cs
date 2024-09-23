@@ -47,7 +47,7 @@ public class EnchantmentSystem : ModSystem {
 			Item worlditem = Main.item[itemWhoAmI];
 			for (int i = 0; i < 3; i++) {
 				if (worlditem.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-					if (globalitem.EnchantmenStlot[i] != -1) {
+					if (globalitem.EnchantmenStlot[i] != 0) {
 						continue;
 					}
 				}
@@ -64,11 +64,11 @@ public class EnchantmentSystem : ModSystem {
 			}
 			for (int i = 0; i < 3; i++) {
 				if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-					if (globalitem.EnchantmenStlot[i] != -1) {
+					if (globalitem.EnchantmenStlot[i] != 0) {
 						continue;
 					}
 				}
-				if (Main.rand.NextFloat() <= .1f) {
+				if (Main.rand.NextFloat() <= .2f) {
 					EnchantItem(item, i);
 					continue;
 				}

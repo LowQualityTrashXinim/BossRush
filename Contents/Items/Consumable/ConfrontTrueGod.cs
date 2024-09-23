@@ -35,8 +35,8 @@ internal class ConfrontTrueGod : ModItem {
 	public override bool? UseItem(Player player) {
 		if (!player.dead) {
 			string whoAmI = "False God";
-			if(NPC.downedMoonlord) {
-				whoAmI = "True God";
+			if(!NPC.downedMoonlord) {
+				whoAmI = "\"True\" God";
 			}
 			PlayerDeathReason reason = new PlayerDeathReason();
 			reason.SourceCustomReason = $"{player.name} has confront {whoAmI}";

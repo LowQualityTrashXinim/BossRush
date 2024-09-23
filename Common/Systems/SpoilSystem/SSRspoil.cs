@@ -1,16 +1,11 @@
-﻿using BossRush.Contents.Items.aDebugItem;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.Perks;
+﻿using Terraria;
 using Humanizer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.aDebugItem;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SSRspoil {

@@ -7,7 +7,6 @@ using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using System;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class ChaosTablet : ModItem {
@@ -38,11 +37,11 @@ class ChaosBuff : ModBuff {
 			case PlayerStats.Defense:
 			case PlayerStats.MaxSentry:
 				statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
-					Base: modplayer.ToStatsNumInt(chaosplayer.chaosstat, 1));
+					Base: modplayer.ToStatsNumInt(chaosplayer.chaosstat, 2));
 				break;
 			default:
 				statsplayer.AddStatsToPlayer(chaosplayer.chaosstat,
-					Additive: 1 + modplayer.ToStatsNumFloat(chaosplayer.chaosstat, 1));
+					Additive: 1 + modplayer.ToStatsNumFloat(chaosplayer.chaosstat, 2));
 				break;
 		}
 		if (player.buffTime[buffIndex] <= 0) {
