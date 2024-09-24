@@ -1,5 +1,4 @@
 ﻿using BossRush.Common.Systems.ArtifactSystem;
-using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using BossRush.Texture;
@@ -16,20 +15,29 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 	public override void ResetEffects() {
 		TokenOfGluttony = Player.HasArtifact<TokenOfGluttonyArtifact>();
 	}
-	public override void UpdateEquips() {
-		if (TokenOfGluttony) {
-			float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative,2);
-			float DRvalue = defensesValue / (float)Player.statLifeMax2;
-			Player.endurance += DRvalue;
-			Player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Multiplicative: 0);
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		if (!TokenOfGluttony) {
+			return;
+		}
+		float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative, 2);
+		float DRvalue = defensesValue / 2f;
+		modifiers.ScalingArmorPenetration += 1;
+		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .25f, 1f);
+		if (Main.rand.NextBool(5)) {
+			Player.Heal((int)modifiers.FinalDamage.ApplyTo(npc.damage * .5f));
+			modifiers.SetMaxDamage(1);
 		}
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
-		if(!TokenOfGluttony) {
+		if (!TokenOfGluttony) {
 			return;
 		}
-		if(Main.rand.NextBool(10)) {
-			Player.Heal((int)modifiers.FinalDamage.ApplyTo(proj.damage * .1f));
+		float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative, 2);
+		float DRvalue = defensesValue / 2f;
+		modifiers.ScalingArmorPenetration += 1;
+		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .25f, 1f);
+		if (Main.rand.NextBool(5)) {
+			Player.Heal((int)modifiers.FinalDamage.ApplyTo(proj.damage * .5f));
 			modifiers.SetMaxDamage(1);
 		}
 	}

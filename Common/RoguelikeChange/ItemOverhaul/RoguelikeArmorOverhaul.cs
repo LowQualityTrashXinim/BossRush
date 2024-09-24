@@ -22,30 +22,36 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		Player player = Main.LocalPlayer;
 		int[] armorSet = new int[] { player.armor[0].type, player.armor[1].type, player.armor[2].type };
+		int index = tooltips.FindIndex(line => line.Name == "Tooltip0");
+		if (index != -1) {
+			switch (item.type) {
+				case ItemID.BeeHeadgear:
+					tooltips[index].Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear");
+					break;
+				case ItemID.BeeBreastplate:
+					tooltips[index].Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear");
+					break;
+				case ItemID.BeeGreaves:
+					tooltips[index].Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeGreaves");
+					break;
+			}
+		}
+		int defindex = tooltips.FindIndex(line => line.Name == "Defense");
+		if (defindex != -1) {
+			switch (item.type) {
+				case ItemID.BeeHeadgear:
+					tooltips[defindex].Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear_Defense");
+					break;
+				case ItemID.BeeBreastplate:
+					tooltips[defindex].Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeBreastplate_Defense");
+					break;
+				case ItemID.BeeGreaves:
+					tooltips[defindex].Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeGreaves_Defense");
+					break;
+			}
+		}
 		foreach (TooltipLine tooltipLine in tooltips) {
 			if (tooltipLine.Name != "SetBonus") {
-				if (tooltipLine.Name == "Tooltip0") {
-					if (item.type == ItemID.BeeHeadgear) {
-						tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear");
-					}
-					if (item.type == ItemID.BeeBreastplate) {
-						tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeBreastplate");
-					}
-					if (item.type == ItemID.BeeGreaves) {
-						tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeGreaves");
-					}
-				}
-				else if (tooltipLine.Name == "Defense") {
-					if (item.type == ItemID.BeeHeadgear) {
-						tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeHeadgear_Defense");
-					}
-					if (item.type == ItemID.BeeBreastplate) {
-						tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeBreastplate_Defense");
-					}
-					if (item.type == ItemID.BeeGreaves) {
-						tooltipLine.Text = Language.GetTextValue($"Mods.BossRush.ArmorSet.BeeGreaves_Defense");
-					}
-				}
 				continue;
 			}
 			if (armorSet.Contains(ItemID.BeeHeadgear) || armorSet.Contains(ItemID.BeeBreastplate) || armorSet.Contains(ItemID.BeeGreaves)) {

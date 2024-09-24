@@ -137,7 +137,7 @@ VampirismCrystalArtifact: {
 		'''
 		"Unpure, relentess crystal."
 		[c/ffff00:Positive effect] :
-			+ Attacks heal the player.
+			+ Attacks heal the player. ( 0.25s cool down betwen hit )
 			+ You can survive 1 fatal attack (5 minute cooldown).
 		[c/ab3e43:Negative effect] : 
 			- Reduce max life by 55% and apply permanent potion sickness.

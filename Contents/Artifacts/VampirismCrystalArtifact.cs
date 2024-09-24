@@ -14,6 +14,7 @@ namespace BossRush.Contents.Artifacts {
 
 	public class VampirePlayer : ModPlayer {
 		bool Vampire = false;
+		int cooldown = 0;
 		public override void ResetEffects() {
 			Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
 		}
@@ -39,7 +40,11 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			if (cooldown > 0) {
+				return false;
+			}
 			if (!Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire) {
+				cooldown = BossRushUtils.ToSecond(.25f);
 				Player.Heal(Player.statLifeMax2);
 				Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
 				return false;

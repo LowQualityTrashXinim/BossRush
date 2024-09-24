@@ -17,6 +17,7 @@ skulltheeevee help in grammar aspect
 StarDust for giving me the custom sword swing code
 Papyro for always sticking with me since the beginning
 basicallyiamacat for providing useful code feedback, even tho you were weird af like a cat
+kainsett for play testing and providing feedback
 
 If you spot any bug, gameplay issue or have any question, please consider reporting it in our Discord server which is https://discord.gg/YqN5z5WVaS
 
