@@ -153,7 +153,7 @@ namespace BossRush.Common.ChallengeMode {
 				return false;
 			}
 			if (BiomeID == BiomeAreaID.Underground) {
-				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.5f).ToWorldCoordinates());
+				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
 				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
 				return true;
 			}
@@ -194,7 +194,7 @@ namespace BossRush.Common.ChallengeMode {
 			}
 			List<Rectangle> rect = Room[BiomeID];
 			if (BiomeID == BiomeAreaID.Underground) {
-				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.5f).ToWorldCoordinates());
+				player.Teleport(new Vector2(RogueLikeWorldGen.GridPart_X * 12f, RogueLikeWorldGen.GridPart_Y * 21.3f).ToWorldCoordinates());
 				player.AddBuff(BuffID.Featherfall, BossRushUtils.ToSecond(2.5f));
 				return true;
 			}
@@ -576,10 +576,14 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_Hell() {
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 4),
 			(i, j) => {
-				if (j < RogueLikeWorldGen.GridPart_Y * 21.7f) {
+				if( j == RogueLikeWorldGen.GridPart_Y * 21f
+				|| j == RogueLikeWorldGen.GridPart_Y * 20.5f) {
+					GenerationHelper.FastPlaceTile(i, j, TileID.Platforms);
+				}
+				if (j < RogueLikeWorldGen.GridPart_Y * 21.4f) {
 					return;
 				}
-				if (j == RogueLikeWorldGen.GridPart_Y * 21.7f) {
+				if (j == RogueLikeWorldGen.GridPart_Y * 21.4f) {
 					GenerationHelper.FastPlaceTile(i, j, TileID.AshGrass);
 				}
 				else {

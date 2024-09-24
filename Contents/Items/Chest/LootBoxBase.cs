@@ -1,20 +1,18 @@
 ﻿using System;
 using Terraria;
-using System.IO;
 using Terraria.ID;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using BossRush.Common.Utils;
-using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using Terraria.DataStructures;
+using BossRush.Common.General;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Consumable.Potion;
-using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
