@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Terraria.Localization;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 internal class ArgumentLoader : ModSystem {
@@ -27,7 +28,7 @@ public class ArgumentWeapon : GlobalItem {
 			if (argument == null) {
 				continue;
 			}
-			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", argument.Description));
+			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", argument.Description) { OverrideColor = argument.tooltipColor });
 		}
 	}
 	public override bool InstancePerEntity => true;
@@ -58,6 +59,7 @@ public abstract class ModArgument : ModType {
 	protected override void Register() {
 		ArgumentLoader.Register(this);
 	}
+	public Color tooltipColor = Color.White;
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModArgument.{Name}.Description");
 	public virtual void ModifyHitNPC(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
