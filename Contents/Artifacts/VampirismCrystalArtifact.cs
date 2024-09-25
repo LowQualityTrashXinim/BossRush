@@ -17,6 +17,7 @@ namespace BossRush.Contents.Artifacts {
 		int cooldown = 0;
 		public override void ResetEffects() {
 			Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
+			cooldown = BossRushUtils.CountDown(cooldown);
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
@@ -40,11 +41,7 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-			if (cooldown > 0) {
-				return false;
-			}
 			if (!Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire) {
-				cooldown = BossRushUtils.ToSecond(.25f);
 				Player.Heal(Player.statLifeMax2);
 				Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
 				return false;
@@ -52,7 +49,11 @@ namespace BossRush.Contents.Artifacts {
 			return true;
 		}
 		private void LifeSteal(NPC target, int rangeMin = 1, int rangeMax = 3, float multiplier = 1) {
+			if (cooldown > 0) {
+				return;
+			}
 			if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy) {
+				cooldown = BossRushUtils.ToSecond(.25f);
 				int HP = (int)(Main.rand.Next(rangeMin, rangeMax) * multiplier);
 				Player.Heal(HP);
 			}
