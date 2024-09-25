@@ -21,6 +21,15 @@ public class ArgumentWeapon : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.IsAWeapon();
 	}
+	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+		for (int i = 0; i < ArgumentSlots.Length; i++) {
+			ModArgument argument = ArgumentLoader.GetArgument(ArgumentSlots[i]);
+			if (argument == null) {
+				continue;
+			}
+			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", argument.Description));
+		}
+	}
 	public override bool InstancePerEntity => true;
 	public int[] ArgumentSlots = new int[5];
 	public override GlobalItem NewInstance(Item target) {

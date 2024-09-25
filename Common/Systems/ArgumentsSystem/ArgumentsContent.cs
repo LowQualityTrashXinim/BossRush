@@ -9,7 +9,7 @@ public class Flaming : ModArgument {
 	}
 }
 
-public class FlamingExplosion : ModArgument {
+public class FireReactive : ModArgument {
 	public override void ModifyHitNPC(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { 
 		if(target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
 			modifiers.SourceDamage += .2f;
