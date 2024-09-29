@@ -1,9 +1,11 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
+using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 internal class ArgumentLoader : ModSystem {
@@ -19,6 +21,14 @@ internal class ArgumentLoader : ModSystem {
 	}
 }
 public class ArgumentWeapon : GlobalItem {
+	public float ArgumentChance = 1;
+	public override void SetDefaults(Item entity) {
+		switch (entity.type) {
+			case ItemID.CopperBroadsword:
+				ArgumentChance = 1;
+				break;
+		}
+	}
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return entity.IsAWeapon();
 	}
@@ -28,11 +38,46 @@ public class ArgumentWeapon : GlobalItem {
 			if (argument == null) {
 				continue;
 			}
-			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", argument.Description) { OverrideColor = argument.tooltipColor });
+			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", $"[c/{argument.tooltipColor.Hex3()}:{argument.Name}] : {argument.Description}"));
 		}
 	}
 	public override bool InstancePerEntity => true;
 	public int[] ArgumentSlots = new int[5];
+	/// <summary>
+	/// Can only applied to weapon that is <see cref="BossRushUtils.IsAWeapon(Item)"/>
+	/// </summary>
+	/// <param name="item"></param>
+	public static void AddArgument(Player player, Item item) {
+		if (!item.IsAWeapon()) {
+			return;
+		}
+		if (item.TryGetGlobalItem(out ArgumentWeapon weapon)) {
+			List<int> ArgumentList = new List<int>();
+			for (int i = 1; i <= ArgumentLoader.TotalCount; i++) {
+				if (ArgumentLoader.GetArgument(i).ConditionToBeApplied(player, item)) {
+					ArgumentList.Add(i);
+				}
+			}
+			int currentEmptySlot = 0;
+			bool passException = false;
+			for (int i = 0; i < weapon.ArgumentSlots.Length && currentEmptySlot < weapon.ArgumentSlots.Length; i++) {
+				if (Main.rand.NextFloat() > weapon.ArgumentChance && !passException) {
+					continue;
+				}
+				if (weapon.ArgumentSlots[currentEmptySlot] == 0) {
+					passException = false;
+					int type = Main.rand.Next(ArgumentList);
+					weapon.ArgumentSlots[currentEmptySlot] = type;
+					ArgumentList.Remove(type);
+				}
+				else {
+					currentEmptySlot++;
+					passException = true;
+					i--;
+				}
+			}
+		}
+	}
 	public override GlobalItem NewInstance(Item target) {
 		ArgumentSlots = new int[5];
 		return base.NewInstance(target);
@@ -54,16 +99,31 @@ public class ArgumentWeapon : GlobalItem {
 			argument.UpdateHeld(player, item);
 		}
 	}
+	public override void SaveData(Item item, TagCompound tag) {
+		tag.Add("ArgumentSlot", ArgumentSlots);
+	}
+	public override void LoadData(Item item, TagCompound tag) {
+		if (tag.TryGet("ArgumentSlot", out int[] TypeValue))
+			ArgumentSlots = TypeValue;
+	}
 }
 public abstract class ModArgument : ModType {
 	protected override void Register() {
 		ArgumentLoader.Register(this);
+		SetStaticDefaults();
 	}
 	public Color tooltipColor = Color.White;
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModArgument.{Name}.Description");
 	public virtual void ModifyHitNPC(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void UpdateHeld(Player player, Item item) { }
+	/// <summary>
+	/// By default argument will always be applied on weapon
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="item"></param>
+	/// <returns></returns>
+	public virtual bool ConditionToBeApplied(Player player, Item item) => true;
 }
 public class ArgumentPlayer : ModPlayer {
 	ArgumentWeapon weapon = null;
@@ -73,9 +133,9 @@ public class ArgumentPlayer : ModPlayer {
 	/// </summary>
 	/// <param name="item"></param>
 	/// <returns></returns>
-	public bool IsArgumentWeapon(Item item) => weapon != null && item.IsAWeapon();
+	public bool IsArgumentable(Item item) => weapon != null && item.IsAWeapon();
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		if (IsArgumentWeapon(Player.HeldItem)) {
+		if (IsArgumentable(Player.HeldItem)) {
 			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
 				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
 				if (argument == null) {
@@ -86,7 +146,7 @@ public class ArgumentPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (IsArgumentWeapon(Player.HeldItem)) {
+		if (IsArgumentable(Player.HeldItem)) {
 			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
 				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
 				if (argument == null) {
@@ -98,13 +158,8 @@ public class ArgumentPlayer : ModPlayer {
 	}
 	public override void PreUpdate() {
 		Item item = Player.HeldItem;
-		if (!item.IsAWeapon()) {
-			weapon = null;
-			return;
-		}
-		if (ItemTypeCurrent != Player.HeldItem.type) {
-			weapon = item.GetGlobalItem<ArgumentWeapon>();
-			ItemTypeCurrent = Player.HeldItem.type;
+		if(item.TryGetGlobalItem(out ArgumentWeapon argumentWeapon)) {
+			weapon = argumentWeapon;
 		}
 	}
 }

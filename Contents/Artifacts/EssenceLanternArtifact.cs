@@ -87,8 +87,8 @@ public class EssenceOfDrowsy : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: -1.44f);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: -1.24f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: -.44f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: -.24f);
 	}
 }
 public class EssenceOfWeakness : EssenceBuff {
@@ -104,7 +104,7 @@ public class EssenceOfKindness : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: -1.5f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: -.5f);
 	}
 }
 public class EssenceOfCalmness : EssenceBuff {
@@ -112,7 +112,7 @@ public class EssenceOfCalmness : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: -1.5f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: -.5f);
 	}
 }
 public class EssenceOfWither : EssenceBuff {
@@ -120,7 +120,7 @@ public class EssenceOfWither : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: -2, Base: -18);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: -.2f, Base: -18);
 	}
 }
 public class EssenceProjectile : ModProjectile {

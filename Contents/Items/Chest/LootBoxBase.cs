@@ -691,7 +691,7 @@ namespace BossRush.Contents.Items.Chest {
 			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(item.Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(item.Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(item.Type).DropItemMisc;
-			int weaponAmount = (int)MathF.Ceiling(modplayer.weaponAmount * additiveModify);
+			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 			for (int i = 0; i < weaponAmount; i++) {
 				rng = item.RNGManage(player);
 				rng = item.ModifyRNG(rng, player);
@@ -871,7 +871,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// <param name="player"></param>
 		public static void GetAccessories(int type, Player player, bool LostAccIncluded = false) {
 			List<int> acc = [.. TerrariaArrayID.EveryCombatHealtMovehAcc];
-			if(UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_LOSTACC) && LostAccIncluded) {
 				acc.AddRange(BossRushModSystem.LostAccessories.Select(i => i.type));
 			}
 			IEntitySource entitySource = player.GetSource_OpenItem(type);

@@ -1,2 +1,14 @@
-Flaming.Description: "Weapon inflict on fire upon enemy hit"
-FireReactive.Description: "Enemy with on fire debuff receive 20% more damage"
+FireI.Description: Weapon inflict on fire upon enemy hit
+FireII.Description: Enemy with on fire debuff receive 20% more damage
+FrostBurnI.Description: Weapon inflict frost burn upon enemy hit
+FrostBurnII.Description: Enemy with frost burn debuff receive 20% more damage
+BerserkI.Description: Deal more damage the lower your health get
+True.Description: Deal 10% of weapon damage as True damage
+Terra.Description: Your weapons will deal 2nd strike as True damage
+TitanI.Description: knock back value are added into base damage
+TitanII.Description: knock back strength are increased by 5% of weapon damage
+CriticalI.Description: Critical strike enemy will heal player for 0.1% of player health
+VampireI.Description: Your weapon can life steal by 1%
+VampireII.Description: during the night, your critical strike are more fatal
+AlchemistI.Description: When a enemy have a debuff/buff on them, deal 6% more damage
+AlchemistII.Description: For each debuff/buff the enemy have, final strike damage are increase by 3% of weapon damage

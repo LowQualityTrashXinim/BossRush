@@ -12,7 +12,7 @@ public class UncommonSpoil {
 			RareValue = SpoilDropRarity.Uncommon;
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
-			return SpoilDropRarity.RareDrop();
+			return SpoilDropRarity.UncommonDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			for (int i = 1; i <= 4; i++) {

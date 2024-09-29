@@ -11,6 +11,7 @@ using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System.Diagnostics;
+using BossRush.Common.Systems.ArgumentsSystem;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -132,6 +133,11 @@ namespace BossRush {
 			item.DefaultToAccessory(width, height);
 			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 				globalitem.LostAccessories = Lost;
+			}
+		}
+		public static void Set_ItemArgumentChance(this Item item, float chance) {
+			if(item.TryGetGlobalItem(out ArgumentWeapon globalitem)) {
+				globalitem.ArgumentChance = chance;
 			}
 		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {

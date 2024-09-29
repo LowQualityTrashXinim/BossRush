@@ -8,6 +8,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.DataStructures;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -74,6 +75,19 @@ internal class SuperRareSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
 			player.QuickSpawnItem(entitySource, Main.rand.Next(BossRushModSystem.TrinketAccessories));
+		}
+	}
+	public class DivineWeaponSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.SuperRare;
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.SuperRareDrop();
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
+			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, 0, 0);
+
 		}
 	}
 }

@@ -104,6 +104,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 							type = proj;
 						}
 					}
+					if(speed < 3) {
+						speed = 7;
+					}
 					Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15);
 					Projectile.NewProjectile(player.GetSource_ItemUse_WithPotentialAmmo(item, ammoID), player.Center, vel * speed, type, damage, knockback, player.whoAmI);
 					globalItem.Item_Counter1[index] = 8;

@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
+﻿using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Weapon;
@@ -28,7 +29,8 @@ internal class ContentTracker : ModItem {
 			$"\nSkill amount: {SkillLoader.TotalCount}" +
 			$"\nPerk amount : {ModPerkLoader.TotalCount}" +
 			$"\nSpoils amount : {ModSpoilSystem.TotalCount}" +
-			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}"
+			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}" +
+			$"\nArgument amount : {ArgumentLoader.TotalCount}"
 			);
 		tooltips.Add(line);
 	}

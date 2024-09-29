@@ -97,3 +97,8 @@ TrinketSpoil: {
 	DisplayName: "[ Trinket ]"
 	Description: Contains 1 trinket
 }
+
+DivineWeaponSpoil: {
+	DisplayName: "[ Divine Weapon ]"
+	Description: Contains 1 fully randomized enchanted weapon
+}
