@@ -45,7 +45,12 @@ TitanII: {
 
 CriticalI: {
 	DisplayName: Critical I
-	Description: Critical strike enemy will heal player for 0.1% of player health
+	Description: Critically strike a enemy will heal player for 0.1% of player health
+}
+
+CriticalII: {
+	DisplayName: Critical II
+	Description: Critical strike will ignore 50% of enemy defense
 }
 
 VampireI: {

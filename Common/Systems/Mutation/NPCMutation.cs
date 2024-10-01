@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Common.General;
+using Terraria.ModLoader.UI.ModBrowser;
 
 namespace BossRush.Common.Systems.Mutation;
 internal class NPCMutation : GlobalNPC {
@@ -138,6 +139,14 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
+		if (npc.lastInteraction < 255 && npc.lastInteraction >= 0) {
+			Player player = player = Main.player[npc.lastInteraction];
+			bool crit = player.GetModPlayer<PlayerStatsHandle>().WillCritRegardless;
+			if (crit) {
+				modifiers.SetCrit();
+			}
+		}
+
 		if (mutationList != null) {
 			foreach (var mutation in mutationList) {
 				mutation.ModifyHitByProjectile(npc, projectile, ref modifiers);
@@ -160,9 +169,14 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
+		bool crit = player.GetModPlayer<PlayerStatsHandle>().WillCritRegardless;
+		if (crit) {
+			modifiers.SetCrit();
+		}
+
 		if (mutationList != null) {
 			foreach (var mutation in mutationList) {
-				mutation.ModifyHitByItem(npc,player,item,ref modifiers);
+				mutation.ModifyHitByItem(npc, player, item, ref modifiers);
 			}
 		}
 		if (!Main.masterMode) {

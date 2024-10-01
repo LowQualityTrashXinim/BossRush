@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader.UI.ModBrowser;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -146,6 +147,31 @@ public class CriticalI : ModArgument {
 	public override void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		if (hitInfo.Crit) {
 			player.Heal(Math.Clamp((int)(player.statLifeMax2 * 0.001f), 1, player.statLifeMax2));
+		}
+	}
+}
+public class CriticalII : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Orange;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		int critchanceReroll = player.GetWeaponCrit(item);
+		if(Main.rand.Next(1, 101) < critchanceReroll) {
+			modifiers.SetCrit();
+			modifiers.ScalingArmorPenetration += .5f;
+		}
+		else {
+			modifiers.DisableCrit();
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		float critchanceReroll = player.GetWeaponCrit(player.HeldItem);
+		if (Main.rand.Next(1, 101) < critchanceReroll) {
+			modifiers.SetCrit();
+			modifiers.ScalingArmorPenetration += .5f;
+		}
+		else {
+			modifiers.DisableCrit();
 		}
 	}
 }

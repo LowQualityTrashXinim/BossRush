@@ -132,6 +132,9 @@ public class GuaranteedCrit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
+	public override void Update(Player player) {
+		player.GetModPlayer<PlayerStatsHandle>().WillCritRegardless = true;
+	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SetCrit();
 	}

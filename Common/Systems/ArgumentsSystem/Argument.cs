@@ -21,11 +21,14 @@ internal class ArgumentLoader : ModSystem {
 	}
 }
 public class ArgumentWeapon : GlobalItem {
-	public float ArgumentChance = 1;
+	public float ArgumentChance = 0;
 	public override void SetDefaults(Item entity) {
 		switch (entity.type) {
 			case ItemID.CopperBroadsword:
 				ArgumentChance = 1;
+				break;
+			default:
+				ArgumentChance = 0.01f;
 				break;
 		}
 	}
@@ -60,11 +63,13 @@ public class ArgumentWeapon : GlobalItem {
 			}
 			int currentEmptySlot = 0;
 			bool passException = false;
+			float chanceDecay = player.GetModPlayer<ArgumentPlayer>().IncreasesChance;
 			for (int i = 0; i < weapon.ArgumentSlots.Length && currentEmptySlot < weapon.ArgumentSlots.Length; i++) {
-				if (Main.rand.NextFloat() > weapon.ArgumentChance && !passException) {
+				if (Main.rand.NextFloat() > weapon.ArgumentChance + chanceDecay && !passException) {
 					continue;
 				}
 				if (weapon.ArgumentSlots[currentEmptySlot] == 0) {
+					chanceDecay *= .5f;
 					passException = false;
 					int type = Main.rand.Next(ArgumentList);
 					weapon.ArgumentSlots[currentEmptySlot] = type;
@@ -131,13 +136,19 @@ public abstract class ModArgument : ModType {
 }
 public class ArgumentPlayer : ModPlayer {
 	ArgumentWeapon weapon = null;
-	int ItemTypeCurrent;
+	/// <summary>
+	/// This chance will decay for each success roll
+	/// </summary>
+	public float IncreasesChance = 0;
+	public override void ResetEffects() {
+		IncreasesChance = 0;
+	}
 	/// <summary>
 	/// With this, we can comfortably use <see cref="weapon"/>
 	/// </summary>
 	/// <param name="item"></param>
 	/// <returns></returns>
-	public bool IsArgumentable(Item item) => weapon != null && item.IsAWeapon();
+	private bool IsArgumentable(Item item) => weapon != null && item.IsAWeapon();
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (IsArgumentable(Player.HeldItem)) {
 			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {

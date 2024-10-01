@@ -29,7 +29,10 @@ internal class SkillGetter : ModItem {
 	public override bool? UseItem(Player player) {
 		if (player.itemAnimation == player.itemAnimationMax) {
 			if (player.altFunctionUse == 2) {
-				counter = Math.Clamp(counter + 1, 0, SkillLoader.TotalCount - 1);
+				counter = Math.Clamp(counter, 0, SkillLoader.TotalCount - 1);
+				if(++counter == SkillLoader.TotalCount) {
+					counter = 0;
+				}
 			}
 			else {
 				SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();

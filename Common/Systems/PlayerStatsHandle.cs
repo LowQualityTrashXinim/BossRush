@@ -85,6 +85,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// </summary>
 	public float LifeSteal = 0;
 	public int LifeSteal_CoolDown = 0;
+	public bool WillCritRegardless = false;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
 			Player.Heal((int)Math.Ceiling(hit.Damage * LifeSteal));
@@ -137,6 +138,8 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statLifeMax2 = (int)UpdateHPMax.ApplyTo(Player.statLifeMax2);
 		Player.statManaMax2 = (int)UpdateManaMax.ApplyTo(Player.statManaMax2);
 
+		WillCritRegardless = false;
+
 		UpdateFullHPDamage = StatModifier.Default;
 		UpdateMinion = StatModifier.Default;
 		UpdateSentry = StatModifier.Default;
@@ -175,10 +178,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
 		return useSpeed;
-	}
-	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-	}
-	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
 	}
 	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
@@ -328,6 +327,21 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Projectile.NewProjectileDirect += On_Projectile_NewProjectileDirect;
 		On_Player.GiveImmuneTimeForCollisionAttack += On_Player_GiveImmuneTimeForCollisionAttack;
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
+		On_Player.ApplyDamageToNPC += On_Player_ApplyDamageToNPC;
+	}
+
+	private void On_Player_ApplyDamageToNPC(On_Player.orig_ApplyDamageToNPC orig, Player self, NPC npc, int damage, float knockback, int direction, bool crit, DamageClass damageType, bool damageVariation) {
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			if (modplayer.WillCritRegardless) {
+				orig(self, npc, damage, knockback, direction, true, damageType, damageVariation);
+			}
+			else {
+				orig(self, npc, damage, knockback, direction, crit, damageType, damageVariation);
+			}
+		}
+		else {
+			orig(self, npc, damage, knockback, direction, crit, damageType, damageVariation);
+		}
 	}
 
 	private void On_Player_SetImmuneTimeForAllTypes(On_Player.orig_SetImmuneTimeForAllTypes orig, Player self, int time) {

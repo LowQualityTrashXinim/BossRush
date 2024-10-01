@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.Localization;
 
 namespace BossRush.Contents.Items {
 	internal class CelestialWrath : ModItem {
@@ -20,7 +21,7 @@ namespace BossRush.Contents.Items {
 		}
 		public override bool? UseItem(Player player) {
 			if (player.ItemAnimationJustStarted)
-				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "You feel like you should move");
+				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, Language.GetTextValue("Mods.BossRush.Items.CelestialWrath.WarningMessage"));
 			return true;
 		}
 	}

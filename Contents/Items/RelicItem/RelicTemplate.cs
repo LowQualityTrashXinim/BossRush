@@ -1,9 +1,9 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
-using Terraria.ID;
 using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Items.RelicItem;
@@ -392,5 +392,27 @@ public class GunFireRateTemplate : RelicTemplate {
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (player.HeldItem.useAmmo == AmmoID.Bullet)
 			modplayer.AddStatsToPlayer(stat, value);
+	}
+}
+
+public class ArcherMasteryTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.RangeDMG;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) =>
+		string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive),
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive * 2),
+			RelicTemplateLoader.RelicValueToNumber(value.Base),
+		});
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .2f), 2), 1, 0, Main.rand.Next(3,10));
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		if (player.HeldItem.useAmmo == AmmoID.Arrow) {
+			modplayer.AddStatsToPlayer(stat, value);
+			modplayer.AddStatsToPlayer(stat, Base: value.Base);
+			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value * 2);
+		}
 	}
 }
