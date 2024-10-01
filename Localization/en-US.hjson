@@ -1,7 +1,29 @@
 Mods: {
 	BossRush: {
 		SystemTooltip: {
-			WeaponEnchantment.Tooltip:
+			DemoEnding: {
+				Tooltip:
+					'''
+					Thank you for playing Terraia Roguelike, you have reach the end of demo
+					You can still continue even after the demo end however the content after demo is unpolished
+					'''
+				Close: "Close"				
+			}
+			PopUpWarning: {
+				Tooltip:
+					'''
+					Terraria: Roguelike is only compatible with freshly created Hardcore characters
+					As a result, the mod will be temporarily disabled until you leave the world.
+					'''
+				ClosingText: "Close Disclaimer"
+			}
+			Spoil:{
+				Header: "Select one of the following Spoils:"
+				Tooltip: "You have {0} left that is not chosen, click here to choose them"
+				Randomize: "Randomize your spoil reward";
+			}
+			WeaponEnchantment:{
+				Tooltip:
 				'''
 				[Weapon Enchantment]
 				This is where you can enchant your weapon ! Customize your weapon 
@@ -13,6 +35,8 @@ Mods: {
 				hover over your weapon in your inventory to read what effect they can give
 				before enchanting your weapon.
 				'''
+				None: "No enchantment can be found"
+			}
 			BlockWeaponEnchantment.Tooltip: A force beyond your realm has blocked you from accessing its system.
 			ShowPlayerInfo.Tooltip:
 				'''
@@ -34,17 +58,20 @@ Mods: {
 				There are some item that can be merge to become a special item,
 				best bet to try and find out yourself !
 				'''
-			Skill.Tooltip:
-				'''
-				[Skill]
-				Plan out your strategy, customize your skill, dominate your enemy !
-				you can get skill from [c/b7bf5c:Skill LootBox] which will automatically added 
-				a skill into your skill inventory ui, move your skill into 1 of 3 active holder
-				to uses the skill, skill can be activate using your hotkey which is in control.
-				Upon using skill, you will uses your energy and skill duration will be set and after
-				skill active duration end then skill cool down will set in, you can't gain energy during
-				skill cool down nor skill active so make your activation count !
-				'''
+			Skill:{
+				Delete: "Select a skill and click here to delete that skill"
+				Tooltip:
+					'''
+					[Skill]
+					Plan out your strategy, customize your skill, dominate your enemy !
+					you can get skill from [c/b7bf5c:Skill LootBox] which will automatically added 
+					a skill into your skill inventory ui, move your skill into 1 of 3 active holder
+					to uses the skill, skill can be activate using your hotkey which is in control.
+					Upon using skill, you will uses your energy and skill duration will be set and after
+					skill active duration end then skill cool down will set in, you can't gain energy during
+					skill cool down nor skill active so make your activation count !
+					'''
+			}
 		}
 
 		Projectiles: {

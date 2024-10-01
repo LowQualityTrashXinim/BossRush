@@ -442,7 +442,7 @@ public class UniversalGlobalItem : GlobalItem {
 			return;
 		for (int i = 0; i < tooltips.Count; i++) {
 			if (tooltips[i].Name == "ItemName") {
-				string tooltipText = "No enchantment can be found";
+				string tooltipText = Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.None");
 				if (EnchantmentLoader.GetEnchantmentItemID(item.type) != null) {
 					tooltipText = EnchantmentLoader.GetEnchantmentItemID(item.type).Description;
 				}
@@ -491,14 +491,12 @@ class DefaultUI : UIState {
 
 	private UIImageButton staticticUI;
 	public void TurnOnEndOfDemoMessage() {
-		EndOfDemoPanel = new UITextPanel<string>
-			("Thank you for playing Terraia Roguelike, you have reach the end of demo" +
-			"\nYou can still continue even after the demo end however the content after demo is unpolished");
+		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
 		EndOfDemoPanel.Height.Set(66, 0);
 		EndOfDemoPanel.HAlign = .5f;
 		EndOfDemoPanel.VAlign = .5f;
 		Append(EndOfDemoPanel);
-		EndOfDemoPanelClose = new UITextPanel<string>("Close");
+		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Close"));
 		EndOfDemoPanelClose.HAlign = .5f;
 		EndOfDemoPanelClose.VAlign = .6f;
 		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;
@@ -535,12 +533,13 @@ class DefaultUI : UIState {
 	}
 	public override void OnActivate() {
 		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE)) {
-			popUpWarning = new UITextPanel<string>("Terraria: Roguelike is only compatible with freshly created Hardcore characters\nAs a result, the mod will be temporarily disabled until you leave the world.");
+			string text = Language.GetTextValue($"Mods.BossRush.SystemTooltip.PopUpWarning.Tooltip");
+			popUpWarning = new UITextPanel<string>(text);
 			popUpWarning.Height.Set(66, 0);
 			popUpWarning.HAlign = .5f;
 			popUpWarning.VAlign = .5f;
 			Append(popUpWarning);
-			popUpWarningClose = new UITextPanel<string>("Close Disclaimer");
+			popUpWarningClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.PopUpWarning.ClosingText"));
 			popUpWarningClose.HAlign = .5f;
 			popUpWarningClose.VAlign = .6f;
 			popUpWarningClose.OnLeftClick += PopUpWarning_OnLeftClick;
@@ -601,7 +600,8 @@ class DefaultUI : UIState {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
 				SpoilsPlayer spoilplayer = player.GetModPlayer<SpoilsPlayer>();
-				Main.instance.MouseText($"You have {spoilplayer.LootBoxSpoilThatIsNotOpen.Count} left that is not chosen, click here to choose them");
+				string text = string.Format(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Tooltip"), spoilplayer.LootBoxSpoilThatIsNotOpen.Count);
+				Main.instance.MouseText(text);
 			}
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -1164,7 +1164,7 @@ class btn_SkillDeletion : UIImage {
 	}
 	public override void Update(GameTime gameTime) {
 		if (IsMouseHovering) {
-			Main.instance.MouseText("Select a skill and click here to delete that skill");
+			Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Delete"));
 		}
 		base.Update(gameTime);
 	}
@@ -1643,7 +1643,7 @@ public class SpoilsUIState : UIState {
 	public int lootboxItem = -1;
 	public UITextPanel<string> panel;
 	public override void OnInitialize() {
-		panel = new UITextPanel<string>("Select one of the following Spoils:");
+		panel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Header"));
 		panel.HAlign = .5f;
 		panel.VAlign = .3f;
 		panel.UISetWidthHeight(150, 53);
@@ -1719,7 +1719,7 @@ public class SpoilsUIButton : UIImageButton {
 				return;
 			}
 			if (spoil == null) {
-				Main.instance.MouseText("Randomize your spoil reward");
+				Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Randomize"));
 			}
 			else {
 				Main.instance.MouseText(spoil.FinalDisplayName(), spoil.FinalDescription(), spoil.RareValue);

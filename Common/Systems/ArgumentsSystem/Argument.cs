@@ -38,7 +38,7 @@ public class ArgumentWeapon : GlobalItem {
 			if (argument == null) {
 				continue;
 			}
-			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", $"[c/{argument.tooltipColor.Hex3()}:{argument.Name}] : {argument.Description}"));
+			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", $"[c/{argument.tooltipColor.Hex3()}:{argument.DisplayName}] : {argument.Description}"));
 		}
 	}
 	public override bool InstancePerEntity => true;
@@ -113,8 +113,12 @@ public abstract class ModArgument : ModType {
 		SetStaticDefaults();
 	}
 	public Color tooltipColor = Color.White;
+	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModArgument.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModArgument.{Name}.Description");
-	public virtual void ModifyHitNPC(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
+	public virtual void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
+	public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void UpdateHeld(Player player, Item item) { }
 	/// <summary>
@@ -134,17 +138,6 @@ public class ArgumentPlayer : ModPlayer {
 	/// <param name="item"></param>
 	/// <returns></returns>
 	public bool IsArgumentable(Item item) => weapon != null && item.IsAWeapon();
-	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		if (IsArgumentable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
-				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
-				if (argument == null) {
-					continue;
-				}
-				argument.ModifyHitNPC(Player, Player.HeldItem, target, ref modifiers);
-			}
-		}
-	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (IsArgumentable(Player.HeldItem)) {
 			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
@@ -152,13 +145,46 @@ public class ArgumentPlayer : ModPlayer {
 				if (argument == null) {
 					continue;
 				}
-				argument.OnHitNPC(Player, Player.HeldItem, target, hit);
+				argument.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
+			}
+		}
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (IsArgumentable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
+				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
+				if (argument == null) {
+					continue;
+				}
+				argument.OnHitNPCWithProj(Player, proj, target, hit);
+			}
+		}
+	}
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (IsArgumentable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
+				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
+				if (argument == null) {
+					continue;
+				}
+				argument.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
+			}
+		}
+	}
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (IsArgumentable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
+				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
+				if (argument == null) {
+					continue;
+				}
+				argument.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 			}
 		}
 	}
 	public override void PreUpdate() {
 		Item item = Player.HeldItem;
-		if(item.TryGetGlobalItem(out ArgumentWeapon argumentWeapon)) {
+		if (item.TryGetGlobalItem(out ArgumentWeapon argumentWeapon)) {
 			weapon = argumentWeapon;
 		}
 	}
