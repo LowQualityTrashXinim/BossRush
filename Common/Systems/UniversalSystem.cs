@@ -33,6 +33,7 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Contents.NPCs;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -424,6 +425,13 @@ internal class UniversalSystem : ModSystem {
 		}
 		return cachedstringeffect;
 	}
+	public bool IsAttemptingToBringItemToNewPlayer = false;
+	public string WorldState = "";
+	public override void OnWorldUnload() {
+		WorldState = "Exited";
+		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		uiSystemInstance.DeactivateUI();
+	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
 	public override void SetStaticDefaults() {
@@ -456,6 +464,12 @@ public class UniversalGlobalItem : GlobalItem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		if(uiSystemInstance.IsAttemptingToBringItemToNewPlayer) {
+			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Trying to cheat huh ? that is not very nice");
+			Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
+			NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<ElderGuardian>());
+		}
+		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
 		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE) && WarnAlready == 0) {
@@ -1550,12 +1564,17 @@ public class WeaponEnchantmentUIslot : UIImage {
 			return;
 		for (int i = 0; i < 50; i++) {
 			if (player.CanItemSlotAccept(player.inventory[i], item)) {
+				if (ModContent.GetInstance<UniversalSystem>().WorldState == "Exited") {
+					ModContent.GetInstance<UniversalSystem>().IsAttemptingToBringItemToNewPlayer = true;
+					return;
+				}
 				player.inventory[i] = item.Clone();
 				item = null;
 				return;
 			}
 		}
 		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+		item = null;
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
 		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;

@@ -2237,6 +2237,11 @@ Mods: {
 				DisplayName: Chaos Buff
 				Description: Mods.BossRush.Buffs.ChaosBuff.Description
 			}
+
+			LifeStruckDebuff: {
+				DisplayName: Life Struck Debuff
+				Description: Mods.BossRush.Buffs.LifeStruckDebuff.Description
+			}
 		}
 
 		Configs: {
@@ -2404,6 +2409,11 @@ Mods: {
 						[-] Your right to access enchantment system is revoked
 						Instead weapon enchantment have 20% to appear on your weapon
 						'''
+				}
+
+				WorldGenRLSettingTest: {
+					Label: World Gen R L Setting Test
+					Tooltip: ""
 				}
 			}
 		}

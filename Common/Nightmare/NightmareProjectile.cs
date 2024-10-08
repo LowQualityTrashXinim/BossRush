@@ -1,6 +1,4 @@
-﻿using BossRush.Common.General;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -8,7 +6,7 @@ namespace BossRush.Common.Nightmare;
 internal class NightmareProjectile : GlobalProjectile {
 	public override void PostAI(Projectile projectile) {
 		base.PostAI(projectile);
-		if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+		if (!NightmareSystem.IsANightmareWorld()) {
 			return;
 		}
 		if (projectile.type == ProjectileID.CultistRitual) {

@@ -25,9 +25,8 @@ internal class RareSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			int amount1 = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
 			int amount2 = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(4);
-			for (int i = 0; i < amount2; i++) {
-				LootBoxBase.GetRelic(itemsource, player);
-			}
+
+			LootBoxBase.GetRelic(itemsource, player, amount2);
 			LootBoxBase.GetSkillLootbox(itemsource, player, amount1);
 		}
 	}

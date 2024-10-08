@@ -12,7 +12,7 @@ namespace BossRush.Common.Nightmare {
 		public override bool InstancePerEntity => true;
 		int aiTimer = 0;
 		public override void SetDefaults(NPC npc) {
-			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+			if (!NightmareSystem.IsANightmareWorld()) {
 				return;
 			}
 			npc.trapImmune = true;
@@ -50,7 +50,7 @@ namespace BossRush.Common.Nightmare {
 			}
 		}
 		public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
-			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+			if (!NightmareSystem.IsANightmareWorld()) {
 				return;
 			}
 			switch (npc.type) {
@@ -130,13 +130,13 @@ namespace BossRush.Common.Nightmare {
 		private bool LifLowerOrEqualHalf(NPC npc) => npc.life <= npc.lifeMax * .5f;
 		private bool IsNPCLifeAbovePercentage(NPC npc, float percentage) => npc.life >= npc.lifeMax * percentage;
 		public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
-			if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+			if (NightmareSystem.IsANightmareWorld()) {
 				maxSpawns += 100;
 				spawnRate -= 10;
 			}
 		}
 		public override bool PreAI(NPC npc) {
-			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+			if (!NightmareSystem.IsANightmareWorld()) {
 				return base.PreAI(npc);
 			}
 			if (npc.type == NPCID.Spazmatism) {
@@ -172,7 +172,7 @@ namespace BossRush.Common.Nightmare {
 		}
 		public override void PostAI(NPC npc) {
 			base.PostAI(npc);
-			if (!ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+			if (!NightmareSystem.IsANightmareWorld()) {
 				return;
 			}
 			if (npc.type == NPCID.Spazmatism) {

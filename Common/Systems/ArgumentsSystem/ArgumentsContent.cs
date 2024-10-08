@@ -160,18 +160,12 @@ public class CriticalII : ModArgument {
 			modifiers.SetCrit();
 			modifiers.ScalingArmorPenetration += .5f;
 		}
-		else {
-			modifiers.DisableCrit();
-		}
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		float critchanceReroll = player.GetWeaponCrit(player.HeldItem);
 		if (Main.rand.Next(1, 101) < critchanceReroll) {
 			modifiers.SetCrit();
 			modifiers.ScalingArmorPenetration += .5f;
-		}
-		else {
-			modifiers.DisableCrit();
 		}
 	}
 }

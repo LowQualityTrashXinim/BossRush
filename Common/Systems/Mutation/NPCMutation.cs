@@ -141,10 +141,6 @@ internal class NPCMutation : GlobalNPC {
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 		if (npc.lastInteraction < 255 && npc.lastInteraction >= 0) {
 			Player player = player = Main.player[npc.lastInteraction];
-			bool crit = player.GetModPlayer<PlayerStatsHandle>().WillCritRegardless;
-			if (crit) {
-				modifiers.SetCrit();
-			}
 		}
 
 		if (mutationList != null) {
@@ -169,10 +165,6 @@ internal class NPCMutation : GlobalNPC {
 		}
 	}
 	public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers) {
-		bool crit = player.GetModPlayer<PlayerStatsHandle>().WillCritRegardless;
-		if (crit) {
-			modifiers.SetCrit();
-		}
 
 		if (mutationList != null) {
 			foreach (var mutation in mutationList) {

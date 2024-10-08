@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace BossRush.Contents.Skill;
 
@@ -132,9 +133,6 @@ public class GuaranteedCrit : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void Update(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().WillCritRegardless = true;
-	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SetCrit();
 	}
@@ -166,7 +164,7 @@ public class AdAstra : ModSkill {
 	}
 	public override void Update(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.PureDamage,Additive: 6f);
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, Additive: 6f);
 	}
 	public override void OnEnded(Player player) {
 		player.AddBuff(ModContent.BuffType<AdAstraDebuff>(), BossRushUtils.ToSecond(15));

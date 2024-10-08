@@ -54,5 +54,6 @@ namespace BossRush.Common.General {
 		[Header($"DebugHeader")]
 		[DefaultValue(false)]
 		public bool WorldGenTest { get; set; }
+		public bool WorldGenRLSettingTest { get; set; }
 	}
 }

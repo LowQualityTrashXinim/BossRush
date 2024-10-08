@@ -9,6 +9,8 @@ using System.Linq;
 using Terraria.ID;
 using System;
 using BossRush.Common.General;
+using BossRush.Common.Systems.Mutation;
+using System.Reflection;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -16,66 +18,39 @@ public class PlayerStatsHandle : ModPlayer {
 	public ChestLootDropPlayer ChestLoot => Player.GetModPlayer<ChestLootDropPlayer>();
 
 	public StatModifier AuraModifier = new StatModifier();
-
 	public StatModifier UpdateMovement = new StatModifier();
-
 	public StatModifier UpdateJumpBoost = new StatModifier();
-
 	public StatModifier UpdateHPMax = new StatModifier();
-
 	public StatModifier UpdateHPRegen = new StatModifier();
-
 	public StatModifier UpdateManaMax = new StatModifier();
-
 	public StatModifier UpdateManaRegen = new StatModifier();
-
 	public StatModifier UpdateDefenseBase = new StatModifier();
-
 	public StatModifier UpdateThorn = new StatModifier();
-
 	public StatModifier UpdateCritDamage = new StatModifier();
-
 	public StatModifier UpdateDefEff = new StatModifier();
-
 	public StatModifier UpdateDropAmount = new StatModifier();
-
 	public StatModifier UpdateMinion = new StatModifier();
-
 	public StatModifier UpdateSentry = new StatModifier();
-
 	public StatModifier DebuffTime = new StatModifier();
-
 	public StatModifier BuffTime = new StatModifier();
-
 	public StatModifier DebuffBuffTime = new StatModifier();
-
 	public StatModifier AttackSpeed = new StatModifier();
-
 	public StatModifier ShieldHealth = new StatModifier();
-
 	public StatModifier ShieldEffectiveness = new StatModifier();
-
 	public StatModifier LifeStealEffectiveness = new StatModifier();
-
 	public StatModifier EnergyCap = new StatModifier();
-
 	public StatModifier RechargeEnergyCap = new StatModifier();
-
 	public StatModifier UpdateFullHPDamage = new StatModifier();
-
 	public StatModifier StaticDefense = new StatModifier();
-
 	public StatModifier DebuffDamage = new StatModifier();
-
 	public StatModifier SynergyDamage = new StatModifier();
-
 	public StatModifier EnergyRecharge = new StatModifier();
-
 	public StatModifier Iframe = new StatModifier();
 	//public float LuckIncrease = 0; 
 	/// <summary>
 	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>
-	/// Having the chance value over 1f would obviously give it 100% dodge chance
+	/// Having the chance value over 1f would make it 100% dodge chance
+	/// The dodge immunity frame is hardcoded to 44 tick
 	/// </summary>
 	public float DodgeChance = 0;
 	/// <summary>
@@ -84,8 +59,14 @@ public class PlayerStatsHandle : ModPlayer {
 	/// The cool down are made public and free to be modify cause fun
 	/// </summary>
 	public float LifeSteal = 0;
+	/// <summary>
+	/// This is the public cool down of <see cref="LifeSteal"/>
+	/// The cool down is hardcoded to 1s
+	/// </summary>
 	public int LifeSteal_CoolDown = 0;
-	public bool WillCritRegardless = false;
+	public int Rapid_LifeRegen = 0;
+	public int Rapid_ManaRegen = 0;
+	public int Debuff_LifeStruct = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
 			Player.Heal((int)Math.Ceiling(hit.Damage * LifeSteal));
@@ -93,6 +74,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.DisableCrit();
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		if (target.life >= target.lifeMax) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
@@ -116,11 +98,16 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void PostUpdate() {
 		ChestLoot.amountModifier = (int)UpdateDropAmount.ApplyTo(ChestLoot.amountModifier);
+		Player.statLife = Math.Clamp(Player.statLife + Rapid_LifeRegen, 1, Player.statLifeMax2);
+		Player.statMana = Math.Clamp(Player.statMana + Rapid_ManaRegen, 0, Player.statManaMax2);
 	}
 	public override void UpdateLifeRegen() {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
 	}
 	public override void ResetEffects() {
+		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
+			Debuff_LifeStruct = 0;
+		}
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
@@ -135,10 +122,8 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.maxMinions = (int)UpdateMinion.ApplyTo(Player.maxMinions);
 		Player.maxTurrets = (int)UpdateSentry.ApplyTo(Player.maxTurrets);
 
-		Player.statLifeMax2 = (int)UpdateHPMax.ApplyTo(Player.statLifeMax2);
-		Player.statManaMax2 = (int)UpdateManaMax.ApplyTo(Player.statManaMax2);
-
-		WillCritRegardless = false;
+		Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2), 1, int.MaxValue);
+		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2), 1, int.MaxValue);
 
 		UpdateFullHPDamage = StatModifier.Default;
 		UpdateMinion = StatModifier.Default;
@@ -190,10 +175,6 @@ public class PlayerStatsHandle : ModPlayer {
 	/// when creating a new stat modifier, pleases uses the default and increases from there
 	/// </summary>
 	/// <param name="stat"></param>
-	/// <param name="Additive"></param>
-	/// <param name="Multiplicative"></param>
-	/// <param name="Flat"></param>
-	/// <param name="Base"></param>
 	public void AddStatsToPlayer(PlayerStats stat, StatModifier StatMod) {
 		if (stat == PlayerStats.None) {
 			return;
@@ -327,21 +308,10 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Projectile.NewProjectileDirect += On_Projectile_NewProjectileDirect;
 		On_Player.GiveImmuneTimeForCollisionAttack += On_Player_GiveImmuneTimeForCollisionAttack;
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
-		On_Player.ApplyDamageToNPC += On_Player_ApplyDamageToNPC;
+		On_Player.StrikeNPCDirect += On_Player_StrikeNPCDirect;
 	}
 
-	private void On_Player_ApplyDamageToNPC(On_Player.orig_ApplyDamageToNPC orig, Player self, NPC npc, int damage, float knockback, int direction, bool crit, DamageClass damageType, bool damageVariation) {
-		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
-			if (modplayer.WillCritRegardless) {
-				orig(self, npc, damage, knockback, direction, true, damageType, damageVariation);
-			}
-			else {
-				orig(self, npc, damage, knockback, direction, crit, damageType, damageVariation);
-			}
-		}
-		else {
-			orig(self, npc, damage, knockback, direction, crit, damageType, damageVariation);
-		}
+	private void On_Player_StrikeNPCDirect(On_Player.orig_StrikeNPCDirect orig, Player self, NPC npc, NPC.HitInfo hit) {
 	}
 
 	private void On_Player_SetImmuneTimeForAllTypes(On_Player.orig_SetImmuneTimeForAllTypes orig, Player self, int time) {
