@@ -50,7 +50,7 @@ CriticalI: {
 
 CriticalII: {
 	DisplayName: Critical II
-	Description: Critical strike will ignore 50% of enemy defense
+	Description: Critical strike will roll twice to ignore 50% of enemy defense
 }
 
 VampireI: {

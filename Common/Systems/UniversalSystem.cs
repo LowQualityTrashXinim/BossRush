@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using BossRush.Common.Utils;
+using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
@@ -33,7 +34,6 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Contents.NPCs;
 
 namespace BossRush.Common.Systems;
 /// <summary>
@@ -1762,15 +1762,16 @@ public class TeleportUI : UIState {
 		Append(panel);
 
 		btn_List = new List<btn_Teleport>();
-		Dictionary<int, short> stuffPreHM = new Dictionary<int, short>();
-		stuffPreHM.Add(ItemID.SlimeCrown, BiomeAreaID.Slime);
-		stuffPreHM.Add(ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm);
-		stuffPreHM.Add(ItemID.WormFood, BiomeAreaID.Corruption);
-		stuffPreHM.Add(ItemID.BloodySpine, BiomeAreaID.Crimson);
-		stuffPreHM.Add(ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon);
-		stuffPreHM.Add(ItemID.Abeemination, BiomeAreaID.BeeNest);
-		stuffPreHM.Add(ItemID.DeerThing, BiomeAreaID.Tundra);
-		stuffPreHM.Add(ItemID.GuideVoodooDoll, BiomeAreaID.Underground);
+		Dictionary<int, short> stuffPreHM = new Dictionary<int, short> {
+			{ ItemID.SlimeCrown, BiomeAreaID.Slime },
+			{ ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm },
+			{ ItemID.WormFood, BiomeAreaID.Corruption },
+			{ ItemID.BloodySpine, BiomeAreaID.Crimson },
+			{ ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon },
+			{ ItemID.Abeemination, BiomeAreaID.BeeNest },
+			{ ItemID.DeerThing, BiomeAreaID.Tundra },
+			{ ItemID.GuideVoodooDoll, BiomeAreaID.Underground }
+		};
 
 		for (int i = 0; i < stuffPreHM.Count; i++) {
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
@@ -1782,16 +1783,17 @@ public class TeleportUI : UIState {
 			Append(btn);
 		}
 		if (Main.hardMode) {
-			Dictionary<int, short> stuffHM = new Dictionary<int, short>();
-			stuffHM.Add(ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.MechanicalSkull, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.MechanicalWorm, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.MechanicalEye, BiomeAreaID.Hallow);
-			stuffHM.Add(ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle);
-			stuffHM.Add(ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle);
-			stuffHM.Add(ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon);
-			stuffHM.Add(ItemID.EmpressButterfly, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.TruffleWorm, BiomeAreaID.Forest);
+			Dictionary<int, short> stuffHM = new Dictionary<int, short> {
+				{ ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow },
+				{ ItemID.MechanicalSkull, BiomeAreaID.Hallow },
+				{ ItemID.MechanicalWorm, BiomeAreaID.Hallow },
+				{ ItemID.MechanicalEye, BiomeAreaID.Hallow },
+				{ ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle },
+				{ ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle },
+				{ ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon },
+				{ ItemID.EmpressButterfly, BiomeAreaID.Hallow },
+				{ ItemID.TruffleWorm, BiomeAreaID.Forest }
+			};
 			for (int i = 8; i < stuffHM.Count; i++) {
 				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
 				int keyvalue = stuffHM.Keys.ElementAt(i);
@@ -1808,15 +1810,16 @@ public class TeleportUI : UIState {
 			item.Remove();
 		}
 		btn_List.Clear();
-		Dictionary<int, short> stuffPreHM = new Dictionary<int, short>();
-		stuffPreHM.Add(ItemID.SlimeCrown, BiomeAreaID.Slime);
-		stuffPreHM.Add(ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm);
-		stuffPreHM.Add(ItemID.WormFood, BiomeAreaID.Corruption);
-		stuffPreHM.Add(ItemID.BloodySpine, BiomeAreaID.Crimson);
-		stuffPreHM.Add(ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon);
-		stuffPreHM.Add(ItemID.Abeemination, BiomeAreaID.BeeNest);
-		stuffPreHM.Add(ItemID.DeerThing, BiomeAreaID.Tundra);
-		stuffPreHM.Add(ItemID.GuideVoodooDoll, BiomeAreaID.Underground);
+		Dictionary<int, short> stuffPreHM = new Dictionary<int, short> {
+			{ ItemID.SlimeCrown, BiomeAreaID.Slime },
+			{ ItemID.SuspiciousLookingEye, BiomeAreaID.FleshRealm },
+			{ ItemID.WormFood, BiomeAreaID.Corruption },
+			{ ItemID.BloodySpine, BiomeAreaID.Crimson },
+			{ ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon },
+			{ ItemID.Abeemination, BiomeAreaID.BeeNest },
+			{ ItemID.DeerThing, BiomeAreaID.Tundra },
+			{ ItemID.GuideVoodooDoll, BiomeAreaID.Underground }
+		};
 		for (int i = 0; i < stuffPreHM.Count; i++) {
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
 			int keyvalue = stuffPreHM.Keys.ElementAt(i);
@@ -1827,16 +1830,17 @@ public class TeleportUI : UIState {
 			Append(btn);
 		}
 		if (Main.hardMode) {
-			Dictionary<int, short> stuffHM = new Dictionary<int, short>();
-			stuffHM.Add(ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.MechanicalSkull, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.MechanicalWorm, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.MechanicalEye, BiomeAreaID.Hallow);
-			stuffHM.Add(ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle);
-			stuffHM.Add(ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle);
-			stuffHM.Add(ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon);
-			stuffHM.Add(ItemID.EmpressButterfly, BiomeAreaID.Hallow);
-			stuffHM.Add(ItemID.TruffleWorm, BiomeAreaID.Forest);
+			Dictionary<int, short> stuffHM = new Dictionary<int, short> {
+				{ ItemID.QueenSlimeCrystal, BiomeAreaID.Hallow },
+				{ ItemID.MechanicalSkull, BiomeAreaID.Hallow },
+				{ ItemID.MechanicalWorm, BiomeAreaID.Hallow },
+				{ ItemID.MechanicalEye, BiomeAreaID.Hallow },
+				{ ModContent.ItemType<PlanteraSpawn>(), BiomeAreaID.Jungle },
+				{ ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle },
+				{ ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon },
+				{ ItemID.EmpressButterfly, BiomeAreaID.Hallow },
+				{ ItemID.TruffleWorm, BiomeAreaID.Forest }
+			};
 			for (int i = 0; i < stuffHM.Count; i++) {
 				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuffHM.Count - 1));
 				int keyvalue = stuffHM.Keys.ElementAt(i);

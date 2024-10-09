@@ -103,11 +103,11 @@ public class Relic : ModItem {
 			line.Text += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(statlist[i], valuelist[i]);
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
-					//$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
-					//$"\nTemplate Desc : {RelicTemplateLoader.GetTemplate(templatelist[i]).Description}" +
-					//$"\nTemplate ID : {templatelist[i]}" +
-					//$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
-					//$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
+			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
+			//		$"\nTemplate Desc : {RelicTemplateLoader.GetTemplate(templatelist[i]).Description}" +
+			//		$"\nTemplate ID : {templatelist[i]}" +
+			//		$"\nStat to be increased : {Enum.GetName(typeof(PlayerStats), statlist[i])}" +
+			//		$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
 			//}
 			if (i + 1 != templatelist.Count) {
 				line.Text += "\n";

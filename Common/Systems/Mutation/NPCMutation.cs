@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using BossRush.Common.General;
-using Terraria.ModLoader.UI.ModBrowser;
 
 namespace BossRush.Common.Systems.Mutation;
 internal class NPCMutation : GlobalNPC {

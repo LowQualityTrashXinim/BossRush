@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.UI.ModBrowser;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 

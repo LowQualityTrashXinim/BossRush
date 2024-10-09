@@ -1839,6 +1839,11 @@ Mods: {
 				DisplayName: Rejuvenate Potion
 				Tooltip: ""
 			}
+
+			AlterItem: {
+				DisplayName: Alter Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
