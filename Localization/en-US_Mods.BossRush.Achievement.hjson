@@ -21,3 +21,9 @@ OceanOfFortune: {
 	Description: Overwhelm yourself with countless blessings.
 	ConditionTip: Open a total of 1000 lootboxes.
 }
+
+SkillCheck: {
+	DisplayName: Skill Check
+	Description: This is just the beginning
+	ConditionTip: Beat a boss without getting hit
+}

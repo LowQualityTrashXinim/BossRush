@@ -38,14 +38,14 @@ namespace BossRush.Contents.Items.Consumable.SpecialReward {
 		private float positionRotateX = 0;
 		private float positionRotateY = 0;
 		private void PositionHandle() {
-			if (positionRotateX < 3 && countX == 1) 				positionRotateX += .3f;
-			else 				countX = -1;
-			if (positionRotateX > 0 && countX == -1) 				positionRotateX -= .3f;
-			else 				countX = 1;
-			if (positionRotateY < 3 && countY == 1) 				positionRotateY += .3f;
-			else 				countY = -1;
-			if (positionRotateY > 0 && countY == -1) 				positionRotateY -= .3f;
-			else 				countY = 1;
+			if (positionRotateX < 3 && countX == 1) positionRotateX += .3f;
+			else countX = -1;
+			if (positionRotateX > 0 && countX == -1) positionRotateX -= .3f;
+			else countX = 1;
+			if (positionRotateY < 3 && countY == 1) positionRotateY += .3f;
+			else countY = -1;
+			if (positionRotateY > 0 && countY == -1) positionRotateY -= .3f;
+			else countY = 1;
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();
@@ -70,7 +70,8 @@ namespace BossRush.Contents.Items.Consumable.SpecialReward {
 				"Increase perk range by 1\n" +
 				"Can only be used once\n"
 				));
-			foreach (var line in tooltips) 				if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
+			foreach (var line in tooltips)
+				if (line.Text == "challenge") line.OverrideColor = Main.DiscoColor;
 		}
 		public virtual int Data => Item.type;
 		public override bool? UseItem(Player player) {
@@ -87,14 +88,14 @@ namespace BossRush.Contents.Items.Consumable.SpecialReward {
 		private float positionRotateX = 0;
 		private float positionRotateY = 0;
 		private void PositionHandle() {
-			if (positionRotateX < 3 && countX == 1) 				positionRotateX += .3f;
-			else 				countX = -1;
-			if (positionRotateX > 0 && countX == -1) 				positionRotateX -= .3f;
-			else 				countX = 1;
-			if (positionRotateY < 3 && countY == 1) 				positionRotateY += .3f;
-			else 				countY = -1;
-			if (positionRotateY > 0 && countY == -1) 				positionRotateY -= .3f;
-			else 				countY = 1;
+			if (positionRotateX < 3 && countX == 1) positionRotateX += .3f;
+			else countX = -1;
+			if (positionRotateX > 0 && countX == -1) positionRotateX -= .3f;
+			else countX = 1;
+			if (positionRotateY < 3 && countY == 1) positionRotateY += .3f;
+			else countY = -1;
+			if (positionRotateY > 0 && countY == -1) positionRotateY -= .3f;
+			else countY = 1;
 		}
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale) {
 			PositionHandle();

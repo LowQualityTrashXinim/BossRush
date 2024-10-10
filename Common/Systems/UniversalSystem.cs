@@ -34,8 +34,15 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using Terraria.IO;
+using Microsoft.Build.Tasks;
+using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Common.Systems;
+public static class RoguelikeData {
+	public static int Lootbox_AmountOpen = 0;
+	public static int Run_Amount = 0;
+}
 /// <summary>
 /// This not only include main stuff that make everything work but also contain some fixes to vanilla<br/>
 /// Also, very unholy class, do not look into it
@@ -154,6 +161,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface spoils;
 	internal UserInterface TeleportUser;
 	internal UserInterface infoUser;
+	internal UserInterface achievementUser;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -165,9 +173,29 @@ internal class UniversalSystem : ModSystem {
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
 	public InfoUI infoUI;
+	public AchievementUI achievementUI;
 
 	public static bool EnchantingState = false;
+	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
+	private static string FilePath => Path.Join(DirectoryPath, "Data");
 	public override void Load() {
+		try {
+			if (File.Exists(FilePath)) {
+				var tag = TagIO.FromFile(FilePath);
+				FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
+				foreach (var field in fields) {
+					if (!tag.ContainsKey(field.Name)) {
+						continue;
+					}
+					field.SetValue(null, tag[field.Name]);
+				}
+			}
+		}
+		catch {
+
+		}
+
+
 		GivenBossSpawnItem = new();
 		//UI stuff
 		if (!Main.dedServ) {
@@ -201,32 +229,32 @@ internal class UniversalSystem : ModSystem {
 
 			infoUser = new();
 			infoUI = new();
+
+			achievementUser = new();
+			achievementUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
 	}
-
-	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
-		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
-			orig();
-		}
-		Main.hardMode = true;
-	}
-
-	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
-		try {
-			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
-				if (self is UICharacterCreation el && Main.MenuUI.CurrentState is UICharacterCreation) {
-					MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
-					method.Invoke(el, new object[] { null, null });
-				}
-			}
-		}
-		finally {
-			orig(self);
-		}
-	}
 	public override void Unload() {
+		if (!File.Exists(FilePath)) {
+			if (!Directory.Exists(DirectoryPath)) {
+				Directory.CreateDirectory(DirectoryPath);
+			}
+
+			File.Create(FilePath);
+		}
+		try {
+			TagCompound tag = new();
+			FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
+			foreach (var field in fields) {
+				tag.Set(field.Name, field.GetValue(null));
+			}
+			TagIO.ToFile(tag, FilePath);
+		}
+		catch {
+
+		}
 		GivenBossSpawnItem = null;
 
 		Enchant_uiState = null;
@@ -254,6 +282,30 @@ internal class UniversalSystem : ModSystem {
 
 		infoUser = null;
 		infoUI = null;
+
+		achievementUser = null;
+		achievementUI = null;
+	}
+
+	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
+		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
+			orig();
+		}
+		Main.hardMode = true;
+	}
+
+	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
+		try {
+			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
+				if (self is UICharacterCreation el && Main.MenuUI.CurrentState is UICharacterCreation) {
+					MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
+					method.Invoke(el, new object[] { null, null });
+				}
+			}
+		}
+		finally {
+			orig(self);
+		}
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
@@ -266,6 +318,7 @@ internal class UniversalSystem : ModSystem {
 		spoils?.Update(gameTime);
 		TeleportUser?.Update(gameTime);
 		infoUser?.Update(gameTime);
+		achievementUser?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -284,6 +337,7 @@ internal class UniversalSystem : ModSystem {
 					spoils.Draw(Main.spriteBatch, gametime);
 					TeleportUser.Draw(Main.spriteBatch, gametime);
 					infoUser.Draw(Main.spriteBatch, gametime);
+					achievementUser.Draw(Main.spriteBatch, gametime);
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -342,6 +396,10 @@ internal class UniversalSystem : ModSystem {
 	public void ActivateRelicUI() {
 		DeactivateUI();
 		relicTest.SetState(relicUI);
+	}
+	public void ActivateAchievementUI() {
+		DeactivateUI();
+		achievementUser.SetState(achievementUI);
 	}
 	/// <summary>
 	/// Activate spoils ui state, it is required that lootboxtype come from lootbox item ID
@@ -464,7 +522,7 @@ public class UniversalGlobalItem : GlobalItem {
 public class UniversalModPlayer : ModPlayer {
 	public override void OnEnterWorld() {
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if(uiSystemInstance.IsAttemptingToBringItemToNewPlayer) {
+		if (uiSystemInstance.IsAttemptingToBringItemToNewPlayer) {
 			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Yellow, "Trying to cheat huh ? that is not very nice");
 			Vector2 randomSpamLocation = Main.rand.NextVector2CircularEdge(1500, 1500) + Player.Center;
 			NPC.NewNPC(NPC.GetSource_NaturalSpawn(), (int)randomSpamLocation.X, (int)randomSpamLocation.Y, ModContent.NPCType<ElderGuardian>());
@@ -1894,5 +1952,30 @@ public class btn_Teleport : UIImageButton {
 				Main.instance.MouseText("");
 			}
 		}
+	}
+}
+public class AchievementUI : UIState {
+	private const int Row = 10;
+	UIPanel mainPanel;
+	List<AchievementButton> btn_Achievement;
+	public override void OnInitialize() {
+		mainPanel = new();
+		mainPanel = new UIPanel();
+		mainPanel.HAlign = .35f;
+		mainPanel.VAlign = .5f;
+		mainPanel.UISetWidthHeight(100, 450);
+
+		btn_Achievement = new();
+		foreach (var item in AchievementSystem.Achievements) {
+			AchievementButton btn = new(ModContent.Request<Texture2D>(item.Texture),item.Name);
+			btn_Achievement.Add(btn);
+
+		}
+	}
+}
+public class AchievementButton : UIImageButton {
+	private string achievementname;
+	public AchievementButton(Asset<Texture2D> texture, string achievementName) : base(texture) {
+		achievementname = achievementName;
 	}
 }

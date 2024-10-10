@@ -79,12 +79,6 @@ namespace BossRush {
 				}
 			}
 		}
-		public int AmountOfLootboxOpenInCurrentSection() {
-			if (Main.netMode == NetmodeID.SinglePlayer) {
-				return Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().CurrentSectionAmountOfChestOpen;
-			}
-			return -1;
-		}
 		public override void PostAddRecipes() {
 			if (ModLoader.TryGetMod("PrefixImproved", out Mod PrefixImproved)) {
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Vampiric>()).Name, (byte)4);

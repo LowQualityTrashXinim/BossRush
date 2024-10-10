@@ -98,8 +98,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override bool CanRightClick() => true;
 		public sealed override void RightClick(Player player) {
 			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
-			modplayer.CurrentSectionAmountOfChestOpen++;
-			base.RightClick(player);
+			RoguelikeData.Lootbox_AmountOpen = Math.Clamp(RoguelikeData.Lootbox_AmountOpen + 1, 0, int.MaxValue);
 			if (modplayer.ItemGraveYard.Count > 0) {
 				int RemoveAmount = 1 + modplayer.ItemGraveYard.Count / 10;
 				for (int i = 0; i < RemoveAmount; i++) {
@@ -1026,7 +1025,6 @@ namespace BossRush.Contents.Items.Chest {
 
 		public HashSet<int> ItemGraveYard = new HashSet<int>();
 		public bool CanDropSynergyEnergy = true;
-		public int CurrentSectionAmountOfChestOpen = 0;
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
 		//Alternatively we can use this to handle all the data itself
 

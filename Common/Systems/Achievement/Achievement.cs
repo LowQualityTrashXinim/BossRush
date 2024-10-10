@@ -1,3 +1,4 @@
+using BossRush.Texture;
 using Terraria.Localization;
 
 namespace BossRush.Common.Systems.Achievement;
@@ -7,6 +8,7 @@ namespace BossRush.Common.Systems.Achievement;
 /// </summary>
 public abstract class Achievement {
 	public bool Achieved { get; set; }
+	public string Texture => BossRushTexture.MissingTexture_Default;
 	public string Name => GetType().Name;
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.Description");
