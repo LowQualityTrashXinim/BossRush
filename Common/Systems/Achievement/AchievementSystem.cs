@@ -8,14 +8,15 @@ using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Systems.Achievement;
 public class AchievementSystem : ModSystem {
-	public static readonly List<Achievement> Achievements = [];
+	public static readonly List<ModAchievement> Achievements = [];
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
 	private static string FilePath => Path.Join(DirectoryPath, "Achievements");
-
+	public static ModAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
+	public static ModAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
 	public override void Load() {
 		// Loading achievements
-		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(Achievement)))) {
-			var achievement = (Achievement)Activator.CreateInstance(type);
+		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(ModAchievement)))) {
+			var achievement = (ModAchievement)Activator.CreateInstance(type);
 			Achievements.Add(achievement);
 		}
 

@@ -687,11 +687,14 @@ class UISystemMenu : UIState {
 	UIImageButton open_skill_UI;
 	UIImageButton open_Enchantment_UI;
 	UIImageButton open_Transmutation_UI;
+	UIImageButton open_AchievmentUI;
 	bool EnchantmentHover = false;
 	bool SkillHover = false;
 	bool InfoHover = false;
 	bool Transmutation = false;
+	bool Achievement = false;
 	private Asset<Texture2D> lockIcon;
+	private float SetHAlign(float value) => MathHelper.Lerp(.43f, .57f, value / 4f);
 	public override void OnInitialize() {
 		panel = new UIPanel();
 		panel.HAlign = .5f;
@@ -708,7 +711,7 @@ class UISystemMenu : UIState {
 		show_playerMod_Info = new UIImageButton(TextureAssets.InventoryBack);
 		show_playerMod_Info.UISetWidthHeight(52, 52);
 		show_playerMod_Info.VAlign = .4f;
-		show_playerMod_Info.HAlign = .43f;
+		show_playerMod_Info.HAlign = SetHAlign(0);
 		show_playerMod_Info.SetVisibility(1f, 67f);
 		show_playerMod_Info.OnLeftClick += Show_playerMod_Info_OnLeftClick;
 		show_playerMod_Info.OnUpdate += Show_playerMod_Info_OnUpdate;
@@ -717,7 +720,7 @@ class UISystemMenu : UIState {
 		open_skill_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_skill_UI.UISetWidthHeight(52, 52);
 		open_skill_UI.VAlign = .4f;
-		open_skill_UI.HAlign = .475f;
+		open_skill_UI.HAlign = SetHAlign(1);
 		open_skill_UI.SetVisibility(1f, 67f);
 		open_skill_UI.OnLeftClick += Open_skill_UI_OnLeftClick;
 		open_skill_UI.OnUpdate += Open_skill_UI_OnUpdate;
@@ -726,7 +729,7 @@ class UISystemMenu : UIState {
 		open_Enchantment_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Enchantment_UI.UISetWidthHeight(52, 52);
 		open_Enchantment_UI.VAlign = .4f;
-		open_Enchantment_UI.HAlign = .525f;
+		open_Enchantment_UI.HAlign = SetHAlign(2);
 		open_Enchantment_UI.SetVisibility(1f, 67f);
 		open_Enchantment_UI.OnLeftClick += Open_Enchantment_UI_OnLeftClick;
 		open_Enchantment_UI.OnUpdate += Open_Enchantment_UI_OnUpdate;
@@ -735,14 +738,40 @@ class UISystemMenu : UIState {
 		open_Transmutation_UI = new UIImageButton(TextureAssets.InventoryBack);
 		open_Transmutation_UI.UISetWidthHeight(52, 52);
 		open_Transmutation_UI.VAlign = .4f;
-		open_Transmutation_UI.HAlign = .57f;
+		open_Transmutation_UI.HAlign = SetHAlign(3);
 		open_Transmutation_UI.SetVisibility(1f, 67f);
 		open_Transmutation_UI.OnLeftClick += Open_Transmutation_UI_OnLeftClick;
 		open_Transmutation_UI.OnUpdate += Open_Transmutation_UI_OnUpdate;
 		Append(open_Transmutation_UI);
 
+		open_AchievmentUI = new(TextureAssets.InventoryBack);
+		open_AchievmentUI.UISetWidthHeight(52, 52);
+		open_AchievmentUI.VAlign = .4f;
+		open_AchievmentUI.HAlign = SetHAlign(4);
+		open_AchievmentUI.SetVisibility(1f, 67f);
+		open_AchievmentUI.OnLeftClick += Open_AchievmentUI_OnLeftClick;
+		open_AchievmentUI.OnUpdate += Open_AchievmentUI_OnUpdate;
+		Append(open_AchievmentUI);
+
 		lockIcon = ModContent.Request<Texture2D>("BossRush/Texture/UI/lock");
 	}
+
+	private void Open_AchievmentUI_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (affectedElement.IsMouseHovering) {
+			Achievement = true;
+		}
+		else {
+			Achievement = false;
+		}
+	}
+
+	private void Open_AchievmentUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().ActivateAchievementUI();
+	}
+
 	private bool CanEnchantmentBeAccess() =>
 		Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
 		&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
@@ -774,6 +803,9 @@ class UISystemMenu : UIState {
 		else if (Transmutation) {
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Transmutation.Tooltip"));
 		}
+		else if (Achievement) {
+			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Achievement.Tooltip"));
+		}
 		else {
 			uitextpanel.SetText("");
 		}
@@ -784,10 +816,6 @@ class UISystemMenu : UIState {
 		ModContent.GetInstance<UniversalSystem>().ActivateTransmutationUI();
 	}
 	private void Open_Transmutation_UI_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		// Otherwise, we can check a child element instead
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -806,10 +834,6 @@ class UISystemMenu : UIState {
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
-		// Otherwise, we can check a child element instead
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
 		if (affectedElement.IsMouseHovering) {
 			SkillHover = true;
 		}
@@ -819,10 +843,6 @@ class UISystemMenu : UIState {
 	}
 
 	private void Open_Enchantment_UI_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		// Otherwise, we can check a child element instead
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -840,10 +860,6 @@ class UISystemMenu : UIState {
 	}
 
 	private void Show_playerMod_Info_OnUpdate(UIElement affectedElement) {
-		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		// Otherwise, we can check a child element instead
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -887,6 +903,7 @@ class InfoUI : UIState {
 		panel.VAlign = .5f;
 		panel.UISetWidthHeight(100, 450);
 		Append(panel);
+
 		textpanel = new Roguelike_WrapTextUIPanel("");
 		textpanel.HAlign = .53f;
 		textpanel.VAlign = .5f;
@@ -1957,25 +1974,105 @@ public class btn_Teleport : UIImageButton {
 public class AchievementUI : UIState {
 	private const int Row = 10;
 	UIPanel mainPanel;
+	Roguelike_WrapTextUIPanel textpanel;
 	List<AchievementButton> btn_Achievement;
+	private int RowOffSet = 0;
+	public static string ActiveAchievement = "";
 	public override void OnInitialize() {
 		mainPanel = new();
 		mainPanel = new UIPanel();
 		mainPanel.HAlign = .35f;
 		mainPanel.VAlign = .5f;
-		mainPanel.UISetWidthHeight(100, 450);
+		mainPanel.UISetWidthHeight(100, 600);
+
+		textpanel = new Roguelike_WrapTextUIPanel("");
+		textpanel.HAlign = .53f;
+		textpanel.VAlign = .5f;
+		textpanel.UISetWidthHeight(450, 600);
+		Append(textpanel);
 
 		btn_Achievement = new();
-		foreach (var item in AchievementSystem.Achievements) {
-			AchievementButton btn = new(ModContent.Request<Texture2D>(item.Texture),item.Name);
+		for (int i = 0; i < Row; i++) {
+			ModAchievement achievement = AchievementSystem.SafeGetAchievement(i);
+			string text = "";
+			string texture = BossRushTexture.ACCESSORIESSLOT;
+			if (achievement != null) {
+				text = achievement.Name;
+				texture = achievement.Texture;
+			}
+			AchievementButton btn = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), text);
+			btn.HAlign = .5f;
+			btn.VAlign = MathHelper.Lerp(0f, 1f, i / (Row - 1f));
+			btn.UISetWidthHeight(52, 52);
 			btn_Achievement.Add(btn);
-
+			mainPanel.Append(btn);
 		}
+
+		Append(mainPanel);
+	}
+	public override void ScrollWheel(UIScrollWheelEvent evt) {
+		RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
+		RowOffSet = Math.Clamp(RowOffSet, 0, Math.Max(AchievementSystem.Achievements.Count, Row));
+
+		for (int i = 0; i < AchievementSystem.Achievements.Count; i++) {
+			btn_Achievement[i].SetAchievement("");
+			if (i + RowOffSet >= AchievementSystem.Achievements.Count) {
+				continue;
+			}
+			btn_Achievement[i].SetAchievement(AchievementSystem.Achievements[i + RowOffSet].Name);
+		}
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ActiveAchievement == "") {
+			return;
+		}
+		ModAchievement achievement = AchievementSystem.GetAchievement(ActiveAchievement);
+		if (achievement == null) {
+			return;
+		}
+		string text = $"Description : {achievement.Description}";
+		if (achievement.AdditionalConditionTipAfterAchieve && achievement.Achieved) {
+			text += "\nCondition: " + achievement.ConditionTipAfterAchieve;
+		}
+		else {
+			text += "\nCondition: " + achievement.ConditionTip;
+		}
+		text += "\nStatus : ";
+		if(achievement.Achieved) {
+			text += "Completed";
+		}
+		else {
+			text += "Unfinished";
+		}
+		textpanel.SetText(text);
 	}
 }
 public class AchievementButton : UIImageButton {
-	private string achievementname;
+	public string achievementname;
+	private ModAchievement achievement;
+	public void SetAchievement(string name) {
+		achievementname = name;
+		achievement = AchievementSystem.GetAchievement(achievementname);
+	}
 	public AchievementButton(Asset<Texture2D> texture, string achievementName) : base(texture) {
-		achievementname = achievementName;
+		SetAchievement(achievementName);
+	}
+	public override void LeftClick(UIMouseEvent evt) {
+		AchievementUI.ActiveAchievement = achievementname;
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (IsMouseHovering) {
+			Main.instance.MouseText(achievementname);
+		}
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
+		}
 	}
 }

@@ -6,9 +6,10 @@ namespace BossRush.Common.Systems.Achievement;
 /// <summary>
 /// This should and will be run on client side only, this should never work in multiplayer no matter what
 /// </summary>
-public abstract class Achievement {
+public abstract class ModAchievement {
 	public bool Achieved { get; set; }
-	public string Texture => BossRushTexture.MissingTexture_Default;
+	public bool AdditionalConditionTipAfterAchieve = false;
+	public string Texture => BossRushTexture.ACCESSORIESSLOT;
 	public string Name => GetType().Name;
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.Description");
