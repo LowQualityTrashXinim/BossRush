@@ -24,33 +24,38 @@ BerserkI: {
 }
 
 True: {
-	DisplayName: True I
+	DisplayName: True
 	Description: Deal 10% of weapon damage as True damage
 }
 
 Terra: {
-	DisplayName: Terra I
+	DisplayName: Terra
 	Description: Your weapons will deal 2nd strike as True damage
 }
 
 TitanI: {
-	DisplayName: Fire I
+	DisplayName: Titan I
 	Description: Knock back value are added into base damage
 }
 
 TitanII: {
-	DisplayName: Fire I
+	DisplayName: Titan II
 	Description: Knock back strength are increased by 5% of weapon damage
 }
 
 CriticalI: {
 	DisplayName: Critical I
-	Description: Critically strike a enemy will heal player for 0.1% of player health
+	Description: Critically strike a enemy will heal player for 1% of player health
 }
 
 CriticalII: {
 	DisplayName: Critical II
 	Description: Critical strike will roll twice to ignore 50% of enemy defense
+}
+
+CriticalIII: {
+	DisplayName: Critical III
+	Description: Critical strike will roll again increasing critical strike damage by 100%
 }
 
 VampireI: {
@@ -71,4 +76,14 @@ AlchemistI: {
 AlchemistII: {
 	DisplayName: Alchemist II
 	Description: For each debuff/buff the enemy have, final strike damage are increase by 3% of weapon damage
+}
+
+Light: {
+	DisplayName: Light
+	Description: Deal 150% more damage to enemy above 80% max hp
+}
+
+Dark: {
+	DisplayName: Dark
+	Description: Deal 150% more damage to enemy below 40% max hp
 }

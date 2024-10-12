@@ -134,10 +134,10 @@ public class GuaranteedCrit : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SetCrit();
+		player.GetModPlayer<PlayerStatsHandle>().ModifyHit_OverrideCrit = true;
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SetCrit();
+		player.GetModPlayer<PlayerStatsHandle>().ModifyHit_OverrideCrit = true;
 	}
 }
 public class RapidHealing : ModSkill {

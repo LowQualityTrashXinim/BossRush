@@ -22,7 +22,7 @@ namespace BossRush.Common.BossRushMode {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 				return;
 			}
-			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_WORLDGEN)) {
+			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_WORLDGEN)) {
 				spawnRate *= 1000;
 			}
 		}

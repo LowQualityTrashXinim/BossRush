@@ -5,7 +5,7 @@ namespace BossRush.Common.Systems.Achievement;
 
 public class TheBeginningOfEndless : ModAchievement {
 	public override bool Condition() {
-		return false;//BossRushModSystem.roguelikedata.AmountOfLootBoxOpen > 0;
+		return RoguelikeData.Lootbox_AmountOpen > 0;
 	}
 }
 
@@ -17,13 +17,13 @@ public class TheFirstOfMany : ModAchievement {
 
 public class BountifulHarvest : ModAchievement {
 	public override bool Condition() {
-		return false;//BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 100;
+		return RoguelikeData.Lootbox_AmountOpen > 100;
 	}
 }
 
 public class OceanOfFortune : ModAchievement {
 	public override bool Condition() {
-		return false;//BossRushModSystem.roguelikedata.AmountOfLootBoxOpen >= 1000;
+		return RoguelikeData.Lootbox_AmountOpen > 1000;
 	}
 }
 

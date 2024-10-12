@@ -145,7 +145,7 @@ public class CriticalI : ModArgument {
 	}
 	public override void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		if (hitInfo.Crit) {
-			player.Heal(Math.Clamp((int)(player.statLifeMax2 * 0.001f), 1, player.statLifeMax2));
+			player.Heal(Math.Clamp((int)Math.Ceiling(player.statLifeMax2 * 0.01f), 1, player.statLifeMax2));
 		}
 	}
 }
@@ -154,17 +154,34 @@ public class CriticalII : ModArgument {
 		tooltipColor = Color.Orange;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		int critchanceReroll = player.GetWeaponCrit(item);
-		if(Main.rand.Next(1, 101) < critchanceReroll) {
+		if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit) {
 			modifiers.SetCrit();
 			modifiers.ScalingArmorPenetration += .5f;
 		}
 	}
+
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		float critchanceReroll = player.GetWeaponCrit(player.HeldItem);
-		if (Main.rand.Next(1, 101) < critchanceReroll) {
+		if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit) {
 			modifiers.SetCrit();
 			modifiers.ScalingArmorPenetration += .5f;
+		}
+	}
+}
+
+public class CriticalIII : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Orange;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		int critchanceReroll = player.GetWeaponCrit(item);
+		if (Main.rand.Next(1, 101) < critchanceReroll) {
+			modifiers.CritDamage += 1;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		int critchanceReroll = proj.CritChance;
+		if (Main.rand.Next(1, 101) < critchanceReroll) {
+			modifiers.CritDamage += 1;
 		}
 	}
 }
@@ -209,5 +226,33 @@ public class AlchemistII : ModArgument {
 			int buffamount = target.buffType.Where(b => b != 0 && b != -1).Count();
 			modifiers.FinalDamage += 0.06f * buffamount;
 		}
+	}
+}
+
+public class Light : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Pink;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.GetLifePercent() > .8f)
+			modifiers.SourceDamage += 1.5f;
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.GetLifePercent() > .8f)
+			modifiers.SourceDamage += 1.5f;
+	}
+}
+
+public class Dark : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Purple;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.GetLifePercent() < .4f)
+			modifiers.SourceDamage += 1.5f;
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.GetLifePercent() < .4f)
+			modifiers.SourceDamage += 1.5f;
 	}
 }

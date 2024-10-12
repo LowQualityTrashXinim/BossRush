@@ -67,6 +67,14 @@ public class PlayerStatsHandle : ModPlayer {
 	public int Rapid_LifeRegen = 0;
 	public int Rapid_ManaRegen = 0;
 	public int Debuff_LifeStruct = 0;
+	/// <summary>
+	/// This one is a hacky way of ensuring a hit always crit
+	/// </summary>
+	public bool? ModifyHit_OverrideCrit = null;
+	/// <summary>
+	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/>
+	/// </summary>
+	public bool ModifyHit_Before_Crit = false;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
 			Player.Heal((int)Math.Ceiling(hit.Damage * LifeSteal));
@@ -74,7 +82,6 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.DisableCrit();
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		if (target.life >= target.lifeMax) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
@@ -82,7 +89,20 @@ public class PlayerStatsHandle : ModPlayer {
 		if (target.buffType.Where(i => Main.debuff[i]).Any()) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage);
 		}
+		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 	}
+
+	private void Modifiers_ModifyHitInfo(ref NPC.HitInfo info) {
+		ModifyHit_Before_Crit = info.Crit;
+		if(info.Crit) {
+			ModifyHit_Before_Crit = true;
+		}
+		if(ModifyHit_OverrideCrit == null) {
+			return;
+		}
+		info.Crit = (bool)ModifyHit_OverrideCrit;
+	}
+
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= DodgeChance) {
 			Player.AddImmuneTime(info.CooldownCounter, 44);
@@ -159,6 +179,7 @@ public class PlayerStatsHandle : ModPlayer {
 		LifeSteal = 0;
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = BossRushUtils.CountDown(LifeSteal_CoolDown);
+		ModifyHit_OverrideCrit = null;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));

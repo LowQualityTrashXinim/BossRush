@@ -20,4 +20,5 @@ public abstract class ModAchievement {
 	public virtual bool Condition() {
 		return false;
 	}
+	public virtual void SpecialEffectOnAchieved() { }
 }
