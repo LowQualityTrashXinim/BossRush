@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 
-namespace BossRush.Common.BossRushMode {
+namespace BossRush.Common.Mode.BossRushMode {
 	internal class BossRushGlobalNPC : GlobalNPC {
 		public override void SetDefaults(NPC entity) {
 			//if(entity.boss && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {

@@ -6,7 +6,7 @@ using BossRush.Common.ChallengeMode;
 using BossRush.Common.WorldGenOverhaul;
 using BossRush.Contents.Items.Consumable.Spawner;
 
-namespace BossRush.Common.BossRushMode;
+namespace BossRush.Common.Mode.BossRushMode;
 internal class BossRushGlobalItem : GlobalItem {
 	public override bool CanUseItem(Item item, Player player) {
 		if (!UniversalSystem.CanAccessContent(player, UniversalSystem.BOSSRUSH_MODE)) {

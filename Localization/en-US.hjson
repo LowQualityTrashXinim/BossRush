@@ -2250,7 +2250,7 @@ Mods: {
 		}
 
 		Configs: {
-			BossRushModConfig: {
+			RogueLikeConfig: {
 				DisplayName: Boss Rush Mod Config
 
 				BossRushMode: {
@@ -2401,6 +2401,7 @@ Mods: {
 						'''
 						Enable to gain access to weapon enchantment system
 						Disable to revoke access to weapon enchantment system
+						Instead weapon enchantment have 20% to appear
 						'''
 				}
 

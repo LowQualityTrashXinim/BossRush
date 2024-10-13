@@ -8,7 +8,7 @@ namespace BossRush.Common.General {
 	public class ChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless;
+				return UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) && UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX) || ModContent.GetInstance<RogueLikeConfig>().ForceBossDropRegadless;
 			}
 			return false;
 		}
@@ -29,7 +29,7 @@ namespace BossRush.Common.General {
 	public class EvilBossChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation)
-				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<BossRushModConfig>().ForceBossDropRegadless) && NPC.downedBoss2 && info.npc.boss;
+				return (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE) || ModContent.GetInstance<RogueLikeConfig>().ForceBossDropRegadless) && NPC.downedBoss2 && info.npc.boss;
 			return false;
 		}
 		public bool CanShowItemDropInUI() => true;
@@ -81,7 +81,7 @@ namespace BossRush.Common.General {
 				return info.player.GetModPlayer<ModdedPlayer>().amountOfTimeGotHit == 0
 					&& (
 					info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature
+					|| ModContent.GetInstance<RogueLikeConfig>().HardEnableFeature
 					|| info.player.IsDebugPlayer());
 			}
 			return false;
@@ -95,7 +95,7 @@ namespace BossRush.Common.General {
 				return !info.player.GetModPlayer<ModdedPlayer>().ItemIsUsedDuringBossFight
 					&& (
 					info.player.difficulty == PlayerDifficultyID.Hardcore
-					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature
+					|| ModContent.GetInstance<RogueLikeConfig>().HardEnableFeature
 					|| info.player.IsDebugPlayer());
 			}
 			return false;
@@ -106,8 +106,8 @@ namespace BossRush.Common.General {
 	public class NightmareMode : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
-				return ModContent.GetInstance<BossRushModConfig>().Nightmare
-					|| ModContent.GetInstance<BossRushModConfig>().HardEnableFeature;
+				return ModContent.GetInstance<RogueLikeConfig>().Nightmare
+					|| ModContent.GetInstance<RogueLikeConfig>().HardEnableFeature;
 			}
 			return false;
 		}

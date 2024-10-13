@@ -62,7 +62,7 @@ public class EnchantmentSystem : ModSystem {
 			}
 			modplayer.Request_EnchantedItem--;
 		}
-		if (!UniversalSystem.Check_TotalRNG()) {
+		if (!UniversalSystem.Check_TotalRNG() && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
 			return;
 		}
 		for (int i = 0; i < 3; i++) {

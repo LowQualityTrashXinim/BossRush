@@ -7,7 +7,7 @@ using BossRush.Contents.BuffAndDebuff;
 using Terraria.Audio;
 using BossRush.Common.General;
 
-namespace BossRush.Common.Nightmare {
+namespace BossRush.Common.Mode.Nightmare {
 	internal class NightmareNPC : GlobalNPC {
 		public override bool InstancePerEntity => true;
 		int aiTimer = 0;
@@ -144,18 +144,18 @@ namespace BossRush.Common.Nightmare {
 					npc.velocity /= 2;
 				}
 			}
-			else if(npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
+			else if (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
 				npc.velocity /= 2;
 			}
-			else if(npc.type == NPCID.BrainofCthulhu) {
+			else if (npc.type == NPCID.BrainofCthulhu) {
 				if (npc.ai[0] < 0) {
 					npc.velocity /= 3f;
 				}
 			}
-			else if(npc.type == NPCID.Creeper) {
+			else if (npc.type == NPCID.Creeper) {
 				npc.velocity /= 1.5f;
 			}
-			else if(npc.type == NPCID.ServantofCthulhu) {
+			else if (npc.type == NPCID.ServantofCthulhu) {
 				npc.velocity /= 3;
 			}
 			else if (npc.type == NPCID.KingSlime) {
@@ -163,7 +163,7 @@ namespace BossRush.Common.Nightmare {
 				KingSlimeAI(npc);
 				return false;
 			}
-			else if(npc.type == NPCID.EyeofCthulhu) {
+			else if (npc.type == NPCID.EyeofCthulhu) {
 				npc.velocity /= 1.25f;
 				EoCAi(npc);
 				return false;
@@ -180,28 +180,28 @@ namespace BossRush.Common.Nightmare {
 					npc.velocity *= 2;
 				}
 			}
-			else if(npc.type == NPCID.BrainofCthulhu) {
+			else if (npc.type == NPCID.BrainofCthulhu) {
 				if (npc.ai[0] < 0) {
 					npc.velocity *= 3f;
 				}
 				npc.localAI[1] += 1;
 			}
-			else if(npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
+			else if (npc.type == NPCID.EaterofWorldsBody || npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail) {
 				npc.velocity *= 2;
 			}
-			else if(npc.type == NPCID.Creeper) {
+			else if (npc.type == NPCID.Creeper) {
 				npc.velocity *= 1.5f;
 			}
-			else if(npc.type == NPCID.KingSlime) {
+			else if (npc.type == NPCID.KingSlime) {
 				npc.velocity *= 1.25f;
 			}
-			else if(npc.type == NPCID.EyeofCthulhu) {
+			else if (npc.type == NPCID.EyeofCthulhu) {
 				npc.velocity *= 1.25f;
 			}
-			else if(npc.type == NPCID.ServantofCthulhu) {
+			else if (npc.type == NPCID.ServantofCthulhu) {
 				npc.velocity *= 3f;
 			}
-			else if(npc.type == NPCID.CultistBoss) {
+			else if (npc.type == NPCID.CultistBoss) {
 				if (npc.ai[0] == 5f) {
 					if (npc.ai[1] >= 120f) {
 						npc.chaseable = true;
@@ -640,8 +640,8 @@ namespace BossRush.Common.Nightmare {
 			Player player = Main.player[npc.target];
 			bool dead = player.dead;
 			Vector2 distanceTo = npc.position + npc.Size.Subtract(npc.width * .5f, 59f) - player.Center;
-			float num5 = npc.position.X + (float)(npc.width / 2) - player.position.X - (float)(player.width / 2);
-			float num6 = npc.position.Y + (float)npc.height - 59f - player.position.Y - (float)(player.height / 2);
+			float num5 = npc.position.X + npc.width / 2 - player.position.X - player.width / 2;
+			float num6 = npc.position.Y + npc.height - 59f - player.position.Y - player.height / 2;
 			float num7 = (float)Math.Atan2(num6, num5) + 1.57f;
 			if (num7 < 0f)
 				num7 += 6.283f;
@@ -691,7 +691,7 @@ namespace BossRush.Common.Nightmare {
 
 			if (npc.rotation < 0f)
 				npc.rotation += 6.283f;
-			else if ((double)npc.rotation > 6.283)
+			else if (npc.rotation > 6.283)
 				npc.rotation -= 6.283f;
 
 			if (npc.rotation > num7 - num8 && npc.rotation < num7 + num8)
@@ -766,7 +766,7 @@ namespace BossRush.Common.Nightmare {
 						npc.target = 255;
 						npc.netUpdate = true;
 					}
-					else if ((npc.position.Y + (float)npc.height < Main.player[npc.target].position.Y && num15 < 500f) || (Main.expertMode && num15 < 500f)) {
+					else if (npc.position.Y + npc.height < Main.player[npc.target].position.Y && num15 < 500f || Main.expertMode && num15 < 500f) {
 						if (!Main.player[npc.target].dead)
 							npc.ai[3] += 1f;
 
@@ -840,10 +840,10 @@ namespace BossRush.Common.Nightmare {
 						if (Main.getGoodWorld)
 							npc.velocity *= 0.99f;
 
-						if ((double)npc.velocity.X > -0.1 && (double)npc.velocity.X < 0.1)
+						if (npc.velocity.X > -0.1 && npc.velocity.X < 0.1)
 							npc.velocity.X = 0f;
 
-						if ((double)npc.velocity.Y > -0.1 && (double)npc.velocity.Y < 0.1)
+						if (npc.velocity.Y > -0.1 && npc.velocity.Y < 0.1)
 							npc.velocity.Y = 0f;
 					}
 					else {
@@ -857,7 +857,7 @@ namespace BossRush.Common.Nightmare {
 					if (Main.getGoodWorld)
 						num27 -= 15;
 
-					if (npc.ai[2] >= (float)num27) {
+					if (npc.ai[2] >= num27) {
 						npc.ai[3] += 1f;
 						npc.ai[2] = 0f;
 						npc.target = 255;
@@ -892,7 +892,7 @@ namespace BossRush.Common.Nightmare {
 			if (npc.ai[0] == 1f || npc.ai[0] == 2f) {
 				if (npc.ai[0] == 1f || npc.ai[3] == 1f) {
 					npc.ai[2] += 0.005f;
-					if ((double)npc.ai[2] > 0.5)
+					if (npc.ai[2] > 0.5)
 						npc.ai[2] = 0.5f;
 				}
 				else {
@@ -910,7 +910,7 @@ namespace BossRush.Common.Nightmare {
 				if (Main.getGoodWorld && npc.life < npc.lifeMax / 3)
 					num29 = 10;
 
-				if (Main.expertMode && npc.ai[1] % (float)num29 == 0f) {
+				if (Main.expertMode && npc.ai[1] % num29 == 0f) {
 					float num30 = 5f;
 					float num31 = Main.rand.Next(-200, 200);
 					float num32 = Main.rand.Next(-200, 200);
@@ -922,7 +922,7 @@ namespace BossRush.Common.Nightmare {
 					float num33 = (float)Math.Sqrt(num31 * num31 + num32 * num32);
 					num33 = num30 / num33;
 					Vector2 vector6 = npc.Center;
-					Vector2 vector7 = default(Vector2);
+					Vector2 vector7 = default;
 					vector7.X = num31 * num33;
 					vector7.Y = num32 * num33;
 					vector6.X += vector7.X * 10f;
@@ -961,7 +961,7 @@ namespace BossRush.Common.Nightmare {
 							}
 
 							for (int num36 = 0; num36 < 20; num36++) {
-								Dust.NewDust(npc.position, npc.width, npc.height, 5, (float)Main.rand.Next(-30, 31) * 0.2f, (float)Main.rand.Next(-30, 31) * 0.2f);
+								Dust.NewDust(npc.position, npc.width, npc.height, 5, Main.rand.Next(-30, 31) * 0.2f, Main.rand.Next(-30, 31) * 0.2f);
 							}
 
 							SoundEngine.PlaySound(SoundID.Roar, npc.position);
@@ -1004,8 +1004,8 @@ namespace BossRush.Common.Nightmare {
 				float num40 = 0.07f;
 				Vector2 vector8 = npc.Center;
 				//TODO : re write code here
-				float num41 = Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2) - vector8.X;
-				float num42 = Main.player[npc.target].position.Y + (float)(Main.player[npc.target].height / 2) - 120f - vector8.Y;
+				float num41 = Main.player[npc.target].position.X + Main.player[npc.target].width / 2 - vector8.X;
+				float num42 = Main.player[npc.target].position.Y + Main.player[npc.target].height / 2 - 120f - vector8.Y;
 				float num43 = MathF.Sqrt(num41 * num41 + num42 * num42);
 				if (num43 > 400f && Main.expertMode) {
 					num39 += 1f;
@@ -1123,7 +1123,7 @@ namespace BossRush.Common.Nightmare {
 				if (Main.expertMode)
 					num49 = 90;
 
-				if (npc.ai[2] >= (float)num49) {
+				if (npc.ai[2] >= num49) {
 					npc.ai[3] += 1f;
 					npc.ai[2] = 0f;
 					npc.target = 255;
@@ -1180,11 +1180,11 @@ namespace BossRush.Common.Nightmare {
 
 					num51 -= Main.player[npc.target].velocity.X * num53;
 					num52 -= Main.player[npc.target].velocity.Y * num53 / 4f;
-					num51 *= 1f + (float)Main.rand.Next(-10, 11) * 0.01f;
-					num52 *= 1f + (float)Main.rand.Next(-10, 11) * 0.01f;
+					num51 *= 1f + Main.rand.Next(-10, 11) * 0.01f;
+					num52 *= 1f + Main.rand.Next(-10, 11) * 0.01f;
 					if (flag3) {
-						num51 *= 1f + (float)Main.rand.Next(-10, 11) * 0.01f;
-						num52 *= 1f + (float)Main.rand.Next(-10, 11) * 0.01f;
+						num51 *= 1f + Main.rand.Next(-10, 11) * 0.01f;
+						num52 *= 1f + Main.rand.Next(-10, 11) * 0.01f;
 					}
 
 					float num54 = (float)Math.Sqrt(num51 * num51 + num52 * num52);
@@ -1192,11 +1192,11 @@ namespace BossRush.Common.Nightmare {
 					num54 = num50 / num54;
 					npc.velocity.X = num51 * num54;
 					npc.velocity.Y = num52 * num54;
-					npc.velocity.X += (float)Main.rand.Next(-20, 21) * 0.1f;
-					npc.velocity.Y += (float)Main.rand.Next(-20, 21) * 0.1f;
+					npc.velocity.X += Main.rand.Next(-20, 21) * 0.1f;
+					npc.velocity.Y += Main.rand.Next(-20, 21) * 0.1f;
 					if (flag3) {
-						npc.velocity.X += (float)Main.rand.Next(-50, 51) * 0.1f;
-						npc.velocity.Y += (float)Main.rand.Next(-50, 51) * 0.1f;
+						npc.velocity.X += Main.rand.Next(-50, 51) * 0.1f;
+						npc.velocity.Y += Main.rand.Next(-50, 51) * 0.1f;
 						float num56 = Math.Abs(npc.velocity.X);
 						float num57 = Math.Abs(npc.velocity.Y);
 						if (npc.Center.X > Main.player[npc.target].Center.X)
@@ -1209,8 +1209,8 @@ namespace BossRush.Common.Nightmare {
 						npc.velocity.Y = num56 + npc.velocity.Y;
 						npc.velocity.Normalize();
 						npc.velocity *= num50;
-						npc.velocity.X += (float)Main.rand.Next(-20, 21) * 0.1f;
-						npc.velocity.Y += (float)Main.rand.Next(-20, 21) * 0.1f;
+						npc.velocity.X += Main.rand.Next(-20, 21) * 0.1f;
+						npc.velocity.Y += Main.rand.Next(-20, 21) * 0.1f;
 					}
 					else if (num55 < 100f) {
 						if (Math.Abs(npc.velocity.X) > Math.Abs(npc.velocity.Y)) {

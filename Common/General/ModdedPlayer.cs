@@ -35,7 +35,7 @@ namespace BossRush.Common.General {
 			Hold_Shift = triggersSet.SmartSelect;
 		}
 		public override void OnEnterWorld() {
-			if (ModContent.GetInstance<BossRushModConfig>().AutoHardCore) {
+			if (ModContent.GetInstance<RogueLikeConfig>().AutoHardCore) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
@@ -96,14 +96,14 @@ namespace BossRush.Common.General {
 						yield return new Item(ModContent.ItemType<BuilderLootBox>());
 					}
 				}
-				if (ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+				if (ModContent.GetInstance<RogueLikeConfig>().SynergyMode) {
 					yield return new Item(ModContent.ItemType<CursedSkull>());
 					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					yield return new Item(ModContent.ItemType<CelestialEssence>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 				}
-				if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);
 				}
 				if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {

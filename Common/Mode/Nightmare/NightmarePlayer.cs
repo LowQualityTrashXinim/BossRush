@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.Nightmare {
+namespace BossRush.Common.Mode.Nightmare {
 	internal class NightmarePlayer : ModPlayer {
 		public override void OnEnterWorld() {
 			//if (NightmareSystem.IsANightmareWorld()) {

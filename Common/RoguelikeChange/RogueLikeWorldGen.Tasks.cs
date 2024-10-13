@@ -62,7 +62,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public static float WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
 	public static float WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-		if (ModContent.GetInstance<BossRushModConfig>().WorldGenTest) {
+		if (ModContent.GetInstance<RogueLikeConfig>().WorldGenTest) {
 			tasks.ForEach(g => g.Disable());
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}

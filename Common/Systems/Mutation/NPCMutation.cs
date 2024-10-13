@@ -43,7 +43,7 @@ internal class NPCMutation : GlobalNPC {
 		if (NPC.downedMoonlord) {
 			DamageReductionPoint += .5f;
 		}
-		if (ModContent.GetInstance<BossRushModConfig>().Nightmare) {
+		if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
 			DamageReductionPoint++;
 		}
 		if (DamageReductionPoint >= 4) {

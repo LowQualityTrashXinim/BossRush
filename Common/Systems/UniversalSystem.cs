@@ -55,13 +55,13 @@ internal class UniversalSystem : ModSystem {
 	public const string TRUE_MODE = "TrueMode";
 	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
 	/// <summary>
-	/// Use this to universally lock content behind hardcore, it basically act like a wrapper for <see cref="BossRushModConfig"/>
+	/// Use this to universally lock content behind hardcore, it basically act like a wrapper for <see cref="RogueLikeConfig"/>
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
 	/// <returns></returns>
 	public static bool CanAccessContent(Player player, string context) {
-		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == SYNERGYFEVER_MODE)
 			return config.SynergyMode && config.SynergyFeverMode;
 		if (config.HardEnableFeature || player.IsDebugPlayer())
@@ -81,12 +81,12 @@ internal class UniversalSystem : ModSystem {
 		return false;
 	}
 	/// <summary>
-	/// Use this to lock content behind certain config, it basically act like a wrapper for <see cref="BossRushModConfig"/>
+	/// Use this to lock content behind certain config, it basically act like a wrapper for <see cref="RogueLikeConfig"/>
 	/// </summary>
 	/// <param name="context">Use <see cref="BOSSRUSH_MODE"/> or any kind of mode that seem fit</param>
 	/// <returns></returns>
 	public static bool CanAccessContent(string context) {
-		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
 		if (config.HardEnableFeature)
@@ -113,16 +113,16 @@ internal class UniversalSystem : ModSystem {
 	/// return true if it is enable
 	/// </returns>
 	public static bool CheckLegacy(string option) {
-		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (option == LEGACY_LOOTBOX)
 			return config.LegacyLootBoxDrop;
 		if (option == LEGACY_WORLDGEN)
 			return config.LegacyBossRushWorldGen;
 		return false;
 	}
-	public static bool Check_RLOH() => ModContent.GetInstance<BossRushModConfig>().RoguelikeOverhaul;
+	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;
 
-	public static bool Check_TotalRNG() => ModContent.GetInstance<BossRushModConfig>().TotalRNG;
+	public static bool Check_TotalRNG() => ModContent.GetInstance<RogueLikeConfig>().TotalRNG;
 
 
 	public const string CHECK_LOSTACC = "lostacc";
@@ -140,7 +140,7 @@ internal class UniversalSystem : ModSystem {
 	///		return false if config is disable
 	/// </returns>
 	public static bool LuckDepartment(string option) {
-		BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (option == CHECK_LOSTACC)
 			return config.LostAccessory;
 		if (option == CHECK_RARELOOTBOX)
@@ -296,7 +296,7 @@ internal class UniversalSystem : ModSystem {
 
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
-			if (ModContent.GetInstance<BossRushModConfig>().AutoRandomizeCharacter) {
+			if (ModContent.GetInstance<RogueLikeConfig>().AutoRandomizeCharacter) {
 				if (self is UICharacterCreation el && Main.MenuUI.CurrentState is UICharacterCreation) {
 					MethodInfo method = typeof(UICharacterCreation).GetMethod("Click_RandomizePlayer", BindingFlags.NonPublic | BindingFlags.Instance);
 					method.Invoke(el, new object[] { null, null });

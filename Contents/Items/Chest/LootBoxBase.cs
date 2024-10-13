@@ -1096,7 +1096,7 @@ namespace BossRush.Contents.Items.Chest {
 			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
 			potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
 			potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
-			if (ModContent.GetInstance<BossRushModConfig>().SynergyFeverMode && ModContent.GetInstance<BossRushModConfig>().SynergyMode) {
+			if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode && ModContent.GetInstance<RogueLikeConfig>().SynergyMode) {
 				weaponAmount = 1;
 			}
 		}

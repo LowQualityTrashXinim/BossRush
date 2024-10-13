@@ -7,8 +7,9 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.FlamingWoodSword;
+using BossRush.Common.General;
 
-namespace BossRush.Common.General {
+namespace BossRush.Common.Mode.BossRushMode {
 	internal class BossRushRecipe : ModSystem {
 		List<int> list = new List<int>();
 		public override void AddRecipes() {
@@ -90,7 +91,7 @@ namespace BossRush.Common.General {
 			RecipeGroup.RegisterGroup("OreBow", OreBow);
 		}
 		public override void PostAddRecipes() {
-			BossRushModConfig config = ModContent.GetInstance<BossRushModConfig>();
+			RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 			foreach (Recipe recipe in Main.recipe) {
 				SynergyRecipe(recipe);
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {

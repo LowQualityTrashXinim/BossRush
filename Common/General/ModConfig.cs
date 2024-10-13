@@ -2,7 +2,7 @@
 using Terraria.ModLoader.Config;
 
 namespace BossRush.Common.General {
-	public class BossRushModConfig : ModConfig {
+	public class RogueLikeConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 		[Header($"BaseGameHeader")]
 		[ReloadRequired]
