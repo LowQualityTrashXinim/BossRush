@@ -29,7 +29,7 @@ namespace BossRush.Contents.Artifacts {
 			Item item = Player.HeldItem;
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
 				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item) 
-					|| globalitem.EnchantmenStlot[3] != ItemID.None || globalitem.EnchantmenStlot[3] != -1) {
+					|| globalitem.EnchantmenStlot[3] != ItemID.None || globalitem.EnchantmenStlot[3] == -1) {
 					return;
 				}
 				EnchantmentSystem.EnchantItem(item, 3);

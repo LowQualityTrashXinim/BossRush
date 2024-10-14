@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
-public class AlterItem : ModItem {
+public class AltarItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.width = Item.height = 30;
@@ -14,7 +14,7 @@ public class AlterItem : ModItem {
 		Item.createTile = ModContent.TileType<Altar>();
 	}
 }
-public class Altar : ModTile {
+public abstract class Altar : ModTile {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override string HighlightTexture => BossRushTexture.MissingTexture_Default;
 	public bool Activated = false;
@@ -28,12 +28,18 @@ public class Altar : ModTile {
 	}
 	public override bool RightClick(int i, int j) {
 		Player player = Main.LocalPlayer;
-		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), ModContent.ItemType<Relic>());
 		WorldGen.KillTile(i, j, noItem: true);
+		On_RightClick(player, i, j);
+		return base.RightClick(i, j);
+	}
+	public virtual void On_RightClick(Player player, int i, int j) { }
+}
+public class RelicAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), ModContent.ItemType<Relic>());
 		for (int a = 0; a < 30; a++) {
 			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
 		}
-		return base.RightClick(i, j);
 	}
 }

@@ -1844,6 +1844,11 @@ Mods: {
 				DisplayName: Alter Item
 				Tooltip: ""
 			}
+
+			AltarItem: {
+				DisplayName: Altar Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
