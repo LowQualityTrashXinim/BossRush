@@ -402,7 +402,7 @@ public class ArcherMasteryTemplate : RelicTemplate {
 			Color.Yellow.Hex3(),
 			RelicTemplateLoader.RelicValueToPercentage(value.Additive),
 			RelicTemplateLoader.RelicValueToNumber(value.Base),
-			RelicTemplateLoader.RelicValueToPercentage(value.Additive * 2),
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive * 2 - 1),
 		});
 
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
@@ -412,7 +412,7 @@ public class ArcherMasteryTemplate : RelicTemplate {
 		if (player.HeldItem.useAmmo == AmmoID.Arrow) {
 			modplayer.AddStatsToPlayer(stat, value);
 			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: value.Base);
-			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value * 2);
+			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value.Additive * 2 - 1);
 		}
 	}
 }

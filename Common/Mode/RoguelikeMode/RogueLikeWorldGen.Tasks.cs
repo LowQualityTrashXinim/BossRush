@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Reflection;
 using BossRush.Common.General;
+using System;
 
 namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
@@ -97,10 +98,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void AddAltar() {
 		bool RNG = false;
-		for (int i = 0; i < Main.maxTilesX; i++) {
-			for (int j = 0; j < Main.maxTilesY; j++) {
+		for (int i = 1; i < Main.maxTilesX - 1; i++) {
+			for (int j = 1; j < Main.maxTilesY - 1; j++) {
 				if (!RNG) {
-					if (WorldGen.genRand.NextBool(1000)) {
+					if (WorldGen.genRand.NextBool(1500)) {
 						RNG = true;
 					}
 					continue;
@@ -110,12 +111,17 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					for (int offsetX = -1; offsetX <= 1; offsetX++) {
 						for (int offsetY = -1; offsetY <= 1; offsetY++) {
 							if (offsetX == 0 && offsetY == 0) continue;
-							if (WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
+							if (offsetY == 1 && offsetX == 0) continue;
+							if (!WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
+								j = Math.Clamp(j + 1, 0, Main.maxTilesY);
+								break;
+							}
+							else {
 								pass++;
 							}
 						}
 					}
-					if (pass >= 8) {
+					if (pass >= 7) {
 						WorldGen.PlaceTile(i, j, ModContent.TileType<RelicAltar>());
 						RNG = false;
 					}
