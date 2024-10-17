@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
-	class MechTreasureChest : LootBoxBase {
+	class MechLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;

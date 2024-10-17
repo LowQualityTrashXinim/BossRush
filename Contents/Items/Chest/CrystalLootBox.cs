@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
-	class CrystalTreasureChest : LootBoxBase {
+	class CrystalLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;

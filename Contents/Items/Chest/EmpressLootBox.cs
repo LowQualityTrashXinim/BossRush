@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
-	internal class EmpressTreasureChest : LootBoxBase {
+	internal class EmpressLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostPlant);

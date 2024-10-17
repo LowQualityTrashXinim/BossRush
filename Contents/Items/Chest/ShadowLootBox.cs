@@ -8,7 +8,7 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Chest {
-	class ShadowTreasureChest : LootBoxBase {
+	class ShadowLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleeSkel);

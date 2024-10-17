@@ -1065,7 +1065,7 @@ Mods: {
 			}
 
 			UnderworldTreasureChest: {
-				DisplayName: Underworld Treasure Chest
+				DisplayName: Underworld Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -1074,23 +1074,23 @@ Mods: {
 				DisplayName: Star Treasure Chest
 			}
 
-			ShadowTreasureChest: {
-				DisplayName: Shadow Treasure Chest
+			ShadowLootBox: {
+				DisplayName: Shadow Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			NatureTreasureChest: {
-				DisplayName: Nature Treasure Chest
+			NatureLootBox: {
+				DisplayName: Nature Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			MoonTreasureChest: {
-				DisplayName: Moon Treasure Chest
+			MoonLootBox: {
+				DisplayName: Moon Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			MechTreasureChest: {
-				DisplayName: Mech Treasure Chest
+			MechLootBox: {
+				DisplayName: Mech Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -1099,39 +1099,39 @@ Mods: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen} from your mom [i:58]"
 			}
 
-			LunaticTreasureChest: {
-				DisplayName: Lunatic Treasure Chest
+			LunaticLootBox: {
+				DisplayName: Lunatic Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			LihzahrdTreasureChest: {
-				DisplayName: Lihzahrd Treasure Chest
+			LihzahrdLootBox: {
+				DisplayName: Lihzahrd Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			HoneyTreasureChest: {
-				DisplayName: Honey Treasure Chest
+			HoneyLootBox: {
+				DisplayName: Honey Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			EmpressTreasureChest: {
-				DisplayName: Empress Treasure Chest
+			EmpressLootBox: {
+				DisplayName: Empress Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			DukeTreasureChest: {
-				DisplayName: Duke Treasure Chest
+			DukeLootBox: {
+				DisplayName: Duke Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			DeerclopTreasureChest: {
-				DisplayName: Deerclop Treasure Chest
+			DeerclopLootBox: {
+				DisplayName: Deerclop Loot Box
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
-			CrystalTreasureChest: {
+			CrystalLootBox: {
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-				DisplayName: Crystal Treasure Chest
+				DisplayName: Crystal Loot Box
 			}
 
 			BuilderTreasureChest: {

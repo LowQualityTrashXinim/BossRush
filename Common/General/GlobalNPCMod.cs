@@ -86,11 +86,11 @@ namespace BossRush.Common.General {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<QueenBeeDonHitReward>()));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HoneyLootBox>()));
 				//Enraged boss drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new QueenBeeEnranged(), ModContent.ItemType<HoneyTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new QueenBeeEnranged(), ModContent.ItemType<HoneyLootBox>()));
 				//Expert drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<HoneyTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<HoneyLootBox>()));
 			}
 			else if (npc.type == NPCID.SkeletronHead) {
 				//NoHit mode drop
@@ -120,10 +120,10 @@ namespace BossRush.Common.General {
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshNoHitReward>()));
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowLootBox>()));
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowLootBox>()));
 			}
 			else if (npc.type == NPCID.BloodNautilus) {
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodLootBox>()));
@@ -131,28 +131,28 @@ namespace BossRush.Common.General {
 			}
 			else if (npc.type == NPCID.QueenSlimeBoss) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalLootBox>(), 1, 2, 2));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalLootBox>()));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrystalTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CrystalLootBox>()));
 			}
 			else if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.SkeletronPrime) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>(), 1, 2, 2));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MechLootBox>()));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MechTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MechLootBox>()));
 			}
 			else if (npc.type == NPCID.Spazmatism || npc.type == NPCID.Retinazer) {
 				LeadingConditionRule leadingConditionRule = new LeadingConditionRule(new Conditions.MissingTwin());
 				//NoHit Mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new GitGudMode(), ModContent.ItemType<MechTreasureChest>(), 1, 2, 2));
+				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new GitGudMode(), ModContent.ItemType<MechLootBox>(), 1, 2, 2));
 				//Normal mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsBossAndNotExpert(), ModContent.ItemType<MechTreasureChest>()));
+				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsBossAndNotExpert(), ModContent.ItemType<MechLootBox>()));
 				//Expert mode drop
-				leadingConditionRule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<MechTreasureChest>()));
+				leadingConditionRule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<MechLootBox>()));
 				npcLoot.Add(leadingConditionRule);
 			}
 			else if (npc.type == NPCID.Plantera) {
@@ -168,14 +168,14 @@ namespace BossRush.Common.General {
 			}
 			else if (npc.type == NPCID.Golem) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>(), 1, 2, 2));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<LihzahrdLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ModContent.ItemType<LunaticTablet>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.TruffleWorm));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.EmpressButterfly, 1, 5, 5));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LihzahrdTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<LihzahrdLootBox>()));
 			}
 			else if (npc.type == NPCID.HallowBoss) {
 				//NoHit mode drop
@@ -183,18 +183,18 @@ namespace BossRush.Common.General {
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
-				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBagByCondition(new Conditions.EmpressOfLightIsGenuinelyEnraged(), ModContent.ItemType<EmpressLootBox>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));
 			}
 			else if (npc.type == NPCID.DukeFishron) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DukeTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<DukeLootBox>(), 1, 2, 2));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>()));
 				//Enraged boss drop
 				LeadingConditionRule rule = new LeadingConditionRule(new DukeIsEnrage());
-				rule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DukeTreasureChest>()));
+				rule.OnSuccess(ItemDropRule.BossBag(ModContent.ItemType<DukeLootBox>()));
 				npcLoot.Add(rule);
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlackLootBox>()));

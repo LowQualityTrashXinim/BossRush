@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
+using BossRush.Contents.Items.Chest;
 public class AltarItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -37,6 +38,17 @@ public abstract class Altar : ModTile {
 public class RelicAltar : Altar {
 	public override void On_RightClick(Player player, int i, int j) {
 		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), ModContent.ItemType<Relic>());
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}
+public class WeaponAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		LootBoxBase.GetWeapon(out int weapon, out int amount);
+		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), weapon, amount);
+
 		for (int a = 0; a < 30; a++) {
 			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);

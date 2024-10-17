@@ -4,7 +4,7 @@ Disclaimer: This game is in a beta demo state. While this mod is playable until 
 Note: Multiplayer is currently in the works, so it will not work.
 
 Roguelike Terraria is an expansive boss rush which aims to offer a fair and diverse randomised experience, all while eliminating the need for grinding.
-Your goal is to defeat Moon Lord by making use of the limited resources from special randomised treasure chests inside a simulated, simplified world.
+Your goal is to defeat Moon Lord by making use of the limited resources from special randomised loot boxs inside a simulated, simplified world.
 
 If you are dissatisfied with the intended gameplay flow, you may disable relevant functions in the 'Main Experience' section, as well as enable extra gameplay gimmicks under the 'Difficulty' section inside the mod's config.
 

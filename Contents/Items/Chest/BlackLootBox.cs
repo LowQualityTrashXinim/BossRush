@@ -28,7 +28,7 @@ namespace BossRush.Contents.Items.Chest {
 				int ran1 = Main.rand.Next(10);
 				switch (ran1) {
 					case 0:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<DukeTreasureChest>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<DukeLootBox>());
 						break;
 					case 1:
 						player.QuickSpawnItem(entitySource, ItemID.FishronBossBag);
@@ -74,22 +74,22 @@ namespace BossRush.Contents.Items.Chest {
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<GoldLootBox>());
 					break;
 				case 5:
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<HoneyTreasureChest>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<HoneyLootBox>());
 					break;
 				case 6:
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<ShadowTreasureChest>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<ShadowLootBox>());
 					break;
 				case 7:
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<CrystalTreasureChest>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<CrystalLootBox>());
 					break;
 				case 8:
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<MechTreasureChest>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<MechLootBox>());
 					break;
 				case 9:
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<NatureTreasureChest>());
 					break;
 				case 10:
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<LihzahrdTreasureChest>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<LihzahrdLootBox>());
 					break;
 			}
 

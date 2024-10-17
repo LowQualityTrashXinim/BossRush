@@ -319,5 +319,11 @@ namespace BossRush.Common.Utils {
 			Perk.GetPerkType<BlessingOfTitan>(),
 			Perk.GetPerkType<BlessingOfPerk>(),
 		};
+		//Tile
+		public readonly static int[] Altar = { 
+			ModContent.TileType<RelicAltar>(),
+			ModContent.TileType<WeaponAltar>()
+		
+		};
 	}
 }

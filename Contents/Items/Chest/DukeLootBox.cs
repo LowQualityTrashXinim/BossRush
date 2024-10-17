@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
-	internal class DukeTreasureChest : LootBoxBase {
+	internal class DukeLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePostPlant);

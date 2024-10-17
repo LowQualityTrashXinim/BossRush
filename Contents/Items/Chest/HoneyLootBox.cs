@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
-	class HoneyTreasureChest : LootBoxBase {
+	class HoneyLootBox : LootBoxBase {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);

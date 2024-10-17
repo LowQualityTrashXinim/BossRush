@@ -134,7 +134,7 @@ namespace BossRush.Common.General {
 					yield return new Item(ModContent.ItemType<CorruptionLootBox>());
 					yield return new Item(ModContent.ItemType<CrimsonLootBox>());
 					yield return new Item(ModContent.ItemType<IceLootBox>());
-					yield return new Item(ModContent.ItemType<HoneyTreasureChest>());
+					yield return new Item(ModContent.ItemType<HoneyLootBox>());
 					yield return new Item(ModContent.ItemType<CelestialEssence>());
 					yield return new Item(ModContent.ItemType<WorldEssence>());
 					yield return new Item(ItemID.PlatinumCoin, 2);
