@@ -237,8 +237,6 @@ Mods: {
 			ShadowMagicMissle.DisplayName: Shadow Magic Missle
 			pearlSwordProj.DisplayName: Pearl Sword
 			LightningStrike.DisplayName: Lightning Strike
-			heavenBolt.DisplayName: Heaven Bolt
-			HeavenSmgThrow.DisplayName: Heaven Smg Throw
 			MagicalExplosionBolt.DisplayName: Magical Explosion Bolt
 			SmallerMagicalExplosionBolt.DisplayName: Smaller Magical Explosion Bolt
 			HeavenBolt.DisplayName: Heaven Bolt
@@ -280,6 +278,9 @@ Mods: {
 			PowerPlantProjectile.DisplayName: Power Plant Projectile
 			TransferStationProjectile.DisplayName: Transfer Station Projectile
 			ChaosExplosion.DisplayName: Chaos Explosion
+			AngelicBolt.DisplayName: Angelic Bolt
+			AngelicSmgThrow.DisplayName: Angelic Smg Throw
+			AngelicSmgHeld.DisplayName: Angelic Smg Held
 		}
 
 		NPCs: {
@@ -1100,7 +1101,7 @@ Mods: {
 			}
 
 			LunaticLootBox: {
-				DisplayName: Lunatic Loot Box
+				DisplayName: Lunatic LootBox
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -1156,11 +1157,6 @@ Mods: {
 
 			RainbowLootBox: {
 				DisplayName: Rainbow Loot Box
-				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
-			}
-
-			LunaticLootBox: {
-				DisplayName: Lunatic LootBox
 				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
 			}
 
@@ -1235,11 +1231,6 @@ Mods: {
 			LootboxLordSummon: {
 				DisplayName: Lootbox Lord Summon
 				Tooltip: ""
-			}
-
-			HeavenSmg: {
-				DisplayName: Heaven Smg
-				Tooltip: Bring down heaven wrath with this smg
 			}
 
 			ItemBundle: {
@@ -1849,6 +1840,26 @@ Mods: {
 				DisplayName: Altar Item
 				Tooltip: ""
 			}
+
+			DeerclopTreasureChest: {
+				DisplayName: Deerclop Treasure Chest
+				Tooltip: ""
+			}
+
+			MoonTreasureChest: {
+				DisplayName: Moon Treasure Chest
+				Tooltip: ""
+			}
+
+			NatureTreasureChest: {
+				DisplayName: Nature Treasure Chest
+				Tooltip: ""
+			}
+
+			AngelicSmg: {
+				DisplayName: Angelic Smg
+				Tooltip: Bring down heaven wrath with this smg
+			}
 		}
 
 		Buffs: {
@@ -2251,6 +2262,11 @@ Mods: {
 			LifeStruckDebuff: {
 				DisplayName: Life Struck Debuff
 				Description: Mods.BossRush.Buffs.LifeStruckDebuff.Description
+			}
+
+			AngelicSmgBuff: {
+				DisplayName: Angelic Smg Buff
+				Description: Mods.BossRush.Buffs.AngelicSmgBuff.Description
 			}
 		}
 

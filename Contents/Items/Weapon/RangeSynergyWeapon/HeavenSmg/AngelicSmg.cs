@@ -12,77 +12,38 @@ using Terraria.Graphics.Shaders;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
-	public class HeavenSmg : SynergyModItem {
-		public override string Texture => BossRushTexture.MissingTexture_Default;
+	public class AngelicSmg : SynergyModItem {
 		public override void SetDefaults() {
-			BossRushUtils.BossRushDefaultRange(Item, 32, 32, 12, 1, 3, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 25, true, AmmoID.Bullet);
+			BossRushUtils.BossRushDefaultRange(Item, 32, 32, 24, 1, 42, 42, ItemUseStyleID.Shoot, ProjectileID.Bullet, 25, true, AmmoID.Bullet);
 			Item.reuseDelay = 30;
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasBuff(ModContent.BuffType<HeavenSmgBuff>())) {
-				Vector2 offCenter = player.Center.IgnoreTilePositionOFFSET(Vector2.UnitX, player.direction == 1 ? -15 : 5);
-				float length = player.velocity.Length();
-				for (int i = 0; i < 35; i++) {
-					Vector2 pos = offCenter + new Vector2(0, -5) - new Vector2(1.3f * player.direction, .7f).Vector2RotateByRandom(25) * i;
-					int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = new Vector2(length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
-				}
-				for (int i = 0; i < 30; i++) {
-					Vector2 pos = offCenter + new Vector2(0, -10) - new Vector2(1.2f * player.direction, .8f).Vector2RotateByRandom(25) * i;
-					int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
-				}
-				for (int i = 0; i < 25; i++) {
-					Vector2 pos = offCenter + new Vector2(0, -15) - new Vector2(1.1f * player.direction, .9f).Vector2RotateByRandom(25) * i;
-					int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
-				}
-				for (int i = 0; i < 20; i++) {
-					Vector2 pos = offCenter + new Vector2(0, -20) - new Vector2(1 * player.direction, 1).Vector2RotateByRandom(25) * i;
-					int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
-				}
-				for (int i = 0; i < 10; i++) {
-					Vector2 pos = offCenter - new Vector2(1 * player.direction, -1).Vector2RotateByRandom(25) * i;
-					int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = new Vector2(-length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
-				}
-				for (int i = 0; i < 10; i++) {
-					Vector2 pos = offCenter - new Vector2(1 * player.direction, -2).Vector2RotateByRandom(25) * i;
-					int dust = Dust.NewDust(pos, 0, 0, DustID.GoldFlame);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity = new Vector2(length * player.direction, -player.velocity.Y).Vector2RotateByRandom(25);
-					Main.dust[dust].scale = Main.rand.NextFloat(.5f, 1.25f);
-				}
-			}
+			Item.noUseGraphic = true;
 		}
 		public override bool AltFunctionUse(Player player) => true;
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (player.altFunctionUse == 2) {
-				player.itemTime = player.itemAnimation;
-				type = ModContent.ProjectileType<HeavenSmgThrow>();
+				type = ModContent.ProjectileType<AngelicSmgThrow>();
 				damage *= 3;
 			}
 			else {
-				velocity = velocity.Vector2RotateByRandom(10);
 				SoundEngine.PlaySound(SoundID.Item36 with { Pitch = 1.5f }, player.Center);
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (player.velocity.Y > 0f && player.HasBuff<HeavenSmgBuff>()) {
-				Projectile.NewProjectileDirect(source, position, velocity * 0.5f, ModContent.ProjectileType<HeavenBolt>(), (int)(damage * .5f), 0, Main.myPlayer, 1);
+			if (player.altFunctionUse != 2) {
+				int useAnimation = (int)(Item.useAnimation * player.GetWeaponAttackSpeed(Item));
+				Projectile projectile = Projectile.NewProjectileDirect(source, player.Center, Vector2.Zero, ModContent.ProjectileType<AngelicSmgHeld>(), damage, knockback, player.whoAmI, useAnimation / 14f, useAnimation);
+				AngelicSmgHeld modprojectile = (AngelicSmgHeld)projectile.ModProjectile;
+				modprojectile.shootVelocity = velocity;
+				modprojectile.type = type;
+				modprojectile.ammoItemID = source.AmmoItemIdUsed;
 			}
 			CanShootItem = true;
+		}
+		public override bool CanUseItem(Player player) {
+			return player.ownedProjectileCounts[ModContent.ProjectileType<AngelicSmgThrow>()] < 1;
+		}
+		public override Vector2? HoldoutOffset() {
+			return new(-5, 0);
 		}
 	}
 	public struct HeavenTrail {
@@ -103,11 +64,73 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		}
 		private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 32f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
 	}
-	public class HeavenSmgThrow : SynergyModProjectile {
+	public class AngelicSmgHeld : ModProjectile {
+		public override void SetStaticDefaults() {
+			Main.projFrames[Type] = 5;
+		}
+		public override void SetDefaults() {
+			Projectile.width = 56;
+			Projectile.height = 56;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.tileCollide = false;
+		}
+		public override bool? CanDamage() {
+			return false;
+		}
+		public Vector2 shootVelocity = Vector2.Zero;
+		public Vector2 positiionOffSet = Vector2.Zero;
+		public int ammoItemID = ItemID.MusketBall;
+		public int type = ProjectileID.Bullet;
+		public int useTime { get => (int)Projectile.ai[0]; set => Projectile.ai[0] = value; }
+		public int useAnimation { get => (int)Projectile.ai[1]; set => Projectile.ai[1] = value; }
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
+			if (Projectile.timeLeft > player.itemAnimationMax) {
+				Projectile.ai[1] = shootVelocity.Length();
+				Projectile.timeLeft = player.itemAnimationMax;
+			}
+			player.heldProj = Projectile.whoAmI;
+			Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * Projectile.ai[1];
+			Vector2 OFFSET = velocity.SafeNormalize(Vector2.Zero);
+			Projectile.Center = player.Center + OFFSET * 10 + new Vector2(0, -5f);
+			if (++Projectile.ai[2] >= useTime) {
+				int damage = Projectile.damage;
+				if (player.velocity.Y > 0f && player.HasBuff<AngelicSmgBuff>()) {
+					type = ModContent.ProjectileType<AngelicBolt>();
+					damage = (int)(damage * 1.5f);
+				}
+				Vector2 vel = velocity.Vector2RotateByRandom(10);
+				Projectile.NewProjectile(
+					player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, ammoItemID),
+					Projectile.Center + OFFSET * 40,
+					vel,
+					type,
+					damage,
+					Projectile.knockBack,
+					Projectile.owner
+					);
+				Projectile.rotation = vel.ToRotation() + (player.direction == 1 ? 0 : MathHelper.Pi);
+				Projectile.ai[2] = 0;
+			}
+			player.direction = velocity.X > 0 ? 1 : -1;
+			Projectile.spriteDirection = player.direction;
+			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.PiOver2 * player.direction);
+			player.heldProj = Projectile.whoAmI;
+			if (++Projectile.frameCounter >= 3) {
+				Projectile.frameCounter = 0;
+				Projectile.frame += 1;
+				if (Projectile.frame >= Main.projFrames[Type]) {
+					Projectile.frame = 0;
+				}
+			}
+		}
+	}
+	public class AngelicSmgThrow : SynergyModProjectile {
 		static bool returningToOwner = false;
 		static bool targetHit = false;
 		int oldposFrameAmount = 15;
-		public override string Texture => BossRushTexture.MissingTexture_Default;
+		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AngelicSmg>();
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = oldposFrameAmount;
@@ -133,7 +156,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
 			Color bigColor = shineColor * opacity * 0.5f;
 			bigColor.A = 0;
-			Vector2 origin = sparkleTexture.Size() / 2f;
+			Vector2 origin = sparkleTexture.Size() * .5f;
 			Color smallColor = drawColor * 0.5f;
 			float lerpValue = Utils.GetLerpValue(fadeInStart, fadeInEnd, flareCounter, clamped: true) * Utils.GetLerpValue(fadeOutEnd, fadeOutStart, flareCounter, clamped: true);
 			Vector2 scaleLeftRight = new Vector2(fatness.X * 0.5f, scale.X) * lerpValue;
@@ -162,7 +185,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 			if (!returningToOwner) {
 				targetHit = true;
-				player.AddBuff(ModContent.BuffType<HeavenSmgBuff>(), 300);
+				player.AddBuff(ModContent.BuffType<AngelicSmgBuff>(), 300);
 			}
 			returnToPlayer();
 		}
@@ -173,7 +196,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 		}
 		private void resetStacks() {
 			Player player = Main.player[Projectile.owner];
-			var modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
 			player.GetModPlayer<HeavenSmgPlayer>().ModPlayer_resetStacks();
 		}
 		private void returnToPlayer() {
@@ -192,8 +214,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 				resetStacks();
 				returnToPlayer();
 			}
-			player.itemAnimation = player.itemTime = 2;
-			player.heldProj = Projectile.whoAmI;
+			Projectile.rotation += Projectile.velocity.ToRotation();
 			if (returningToOwner) {
 				Vector2 vel = player.Center - Projectile.Center;
 				vel.Normalize();
@@ -221,7 +242,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 				}
 		}
 	}
-	internal class HeavenSmgBuff : ModBuff {
+	internal class AngelicSmgBuff : ModBuff {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void Update(Player player, ref int buffIndex) {
 			player.slowFall = true;
@@ -232,7 +253,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			}
 		}
 	}
-	internal class HeavenBolt : SynergyModProjectile {
+	internal class AngelicBolt : SynergyModProjectile {
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		static int oldposFrameAmount = 25;
 		public override void SetStaticDefaults() {
@@ -317,29 +338,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 				var dust = Dust.NewDustPerfect(Projectile.Center, DustID.WhiteTorch, Main.rand.NextVector2CircularEdge(1f, 1f) * (isMiniProjectile == true ? 5f : 15f), default, new Color(255, 255, 255, 0), 2f);
 				dust.noGravity = true;
 			}
-			if (Main.myPlayer == Projectile.owner && Projectile.ai[0] == 0) {
-				for (int i = 0; i < miniProjectileAmount; i++) {
-					var proj = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.oldPosition, Main.rand.NextVector2CircularEdge(1f, 1f), ModContent.ProjectileType<HeavenBolt>(), Projectile.damage / 3, 0, Main.myPlayer, 1);
-					proj.timeLeft = 600;
-				}
-			}
 		}
 	}
 	public class HeavenSmgPlayer : ModPlayer {
 		public int HeavenSmg_Stacks = 0;
 		public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
-				ModPlayer_resetStacks();
-			}
-		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
+			if (Player.HeldItem.type == ModContent.ItemType<AngelicSmg>()) {
 				ModPlayer_resetStacks();
 			}
 		}
 		public void IncreaseStack() {
 			for (int i = 0; i < 5; i++) {
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<HeavenBolt>(), 30, 0, Player.whoAmI, 1);
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.One.Vector2DistributeEvenly(5f, 360, i), ModContent.ProjectileType<AngelicBolt>(), 30, 0, Player.whoAmI, 1);
 			}
 			if (HeavenSmg_Stacks >= 40) {
 				SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -2f }, Player.Center);
@@ -349,19 +359,19 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 			SoundEngine.PlaySound(SoundID.NPCHit5 with { Pitch = HeavenSmg_Stacks * 0.075f }, Player.Center);
 		}
 		public void ModPlayer_resetStacks() {
-			if (Player.HeldItem.type == ModContent.ItemType<HeavenSmg>()) {
+			if (Player.HeldItem.type == ModContent.ItemType<AngelicSmg>()) {
 				SoundEngine.PlaySound(SoundID.NPCDeath7, Player.Center);
 			}
 			HeavenSmg_Stacks = 0;
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if (item.type == ModContent.ItemType<HeavenSmg>()) {
+			if (item.type == ModContent.ItemType<AngelicSmg>()) {
 				damage += HeavenSmg_Stacks * 0.05f;
 			}
 		}
 		public override float UseSpeedMultiplier(Item item) {
 			float multiplier = base.UseAnimationMultiplier(item);
-			if (item.type == ModContent.ItemType<HeavenSmg>()) {
+			if (item.type == ModContent.ItemType<AngelicSmg>()) {
 				return multiplier + HeavenSmg_Stacks * 0.01f;
 			}
 			return base.UseSpeedMultiplier(item);

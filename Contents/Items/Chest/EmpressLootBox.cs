@@ -3,6 +3,8 @@ using BossRush.Contents.Items.Accessories.EnragedBossAccessories.EmpressDelight;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Contents.Items.Chest {
 	internal class EmpressLootBox : LootBoxBase {
