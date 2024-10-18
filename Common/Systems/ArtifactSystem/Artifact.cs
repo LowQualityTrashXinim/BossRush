@@ -64,7 +64,9 @@ namespace BossRush.Common.Systems.ArtifactSystem
 
             return -1;
         }
-
+		public static bool PlayerCurrentArtifact<T>() where T : Artifact {
+			return Main.LocalPlayer.GetModPlayer<ArtifactPlayer>().ActiveArtifact == ArtifactType<T>();
+		}
         public static Artifact GetArtifact(int type)
         {
             return type >= 0 && type < AllArtifacts.Count ? AllArtifacts[type] : null;

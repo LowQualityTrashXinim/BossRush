@@ -1,4 +1,6 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
+﻿using BossRush.Common.Systems;
+using BossRush.Common.Systems.Achievement;
+using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.Chest;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
@@ -13,7 +15,7 @@ namespace BossRush.Contents.Artifacts
     {
         public override string TexturePath => BossRushTexture.Get_MissingTexture("Artifact");
 		public override Color DisplayNameColor => Color.LightGoldenrodYellow;
-		public override bool CanBeSelected(Player player) => false;
+		public override bool CanBeSelected(Player player) => AchievementSystem.IsAchieved("TokenOfGreed");
 	}
 	class EternalWealthPlayer : ModPlayer {
 		bool EternalWealth = false;

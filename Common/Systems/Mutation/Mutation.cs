@@ -76,3 +76,11 @@ public class LifeStruckDebuff : ModBuff {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, -.05f);
 	}
 }
+public class Tanky : ModMutation{
+	public override void SetDefaults(NPC npc) {
+		NewGamePlus = true;
+		npc.lifeMax *= 3;
+		npc.life = npc.lifeMax;
+		npc.defense *= 3;
+	}
+}

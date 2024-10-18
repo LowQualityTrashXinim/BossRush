@@ -11,6 +11,7 @@ using System.Reflection;
 namespace BossRush.Contents.Skill;
 
 public class Increases_3xDamage : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<Increases_3xDamage>("PowerBank");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 530;
 		Skill_Duration = 8;
@@ -58,6 +59,7 @@ public class FastForward : ModSkill {
 	}
 }
 public class PowerCord : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<PowerCord>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 100;
 		Skill_EnergyRequirePercentage = .25f;
@@ -79,6 +81,7 @@ public class PowerCord : ModSkill {
 	}
 }
 public class Procrastination : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<Procrastination>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 350;
 		Skill_Duration = BossRushUtils.ToSecond(4);
@@ -114,6 +117,7 @@ public class TranquilMind : ModSkill {
 	}
 }
 public class InfiniteManaSupply : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<InfiniteManaSupply>("AstralOvercharge");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = BossRushUtils.ToSecond(.5f);
@@ -141,6 +145,7 @@ public class GuaranteedCrit : ModSkill {
 	}
 }
 public class RapidHealing : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<RapidHealing>("RapidOverflow");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 345;
 		Skill_Duration = BossRushUtils.ToSecond(2);
@@ -156,6 +161,7 @@ public class RapidHealing : ModSkill {
 	}
 }
 public class AdAstra : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AdAstra>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 450;
 		Skill_Duration = BossRushUtils.ToSecond(3);

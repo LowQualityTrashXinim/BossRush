@@ -48,6 +48,7 @@ public static class RoguelikeData {
 /// Also, very unholy class, do not look into it
 /// </summary>
 internal class UniversalSystem : ModSystem {
+	public static bool DidPlayerBeatTheMod() => Main.hardMode;
 	public const string SYNERGY_MODE = "SynergyModeEnable";
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
@@ -438,6 +439,7 @@ internal class UniversalSystem : ModSystem {
 		spoils.SetState(null);
 		TeleportUser.SetState(null);
 		infoUser.SetState(null);
+		achievementUser.SetState(null);
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
@@ -1747,12 +1749,20 @@ public class SpoilsUIState : UIState {
 	}
 	public override void OnActivate() {
 		btn_List.Clear();
-		lootboxItem = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
+		SpoilsPlayer modplayer = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>();
+		lootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.FirstOrDefault();
 		if (lootboxItem <= 0) {
 			return;
 		}
 		Player player = Main.LocalPlayer;
 		List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
+		if (modplayer.SpoilsGift.Count > Limit_Spoils - 1 && modplayer.LootBoxSpoilThatIsNotOpen.Count > 0) {
+			SpoilList.Clear();
+			SpoilList = modplayer.SpoilsGift.Select(ModSpoilSystem.GetSpoils).ToList();
+		}
+		else {
+			modplayer.SpoilsGift.Clear();
+		}
 		for (int i = SpoilList.Count - 1; i >= 0; i--) {
 			ModSpoil spoil = SpoilList[i];
 			if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[lootboxItem])) {
@@ -1763,6 +1773,7 @@ public class SpoilsUIState : UIState {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
 			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
+			modplayer.SpoilsGift.Add(spoil.Name);
 			SpoilList.Remove(spoil);
 			btn.HAlign = Hvalue;
 			btn.VAlign = .4f;
@@ -2015,6 +2026,9 @@ public class AchievementUI : UIState {
 		RowOffSet = Math.Clamp(RowOffSet, 0, Math.Max(AchievementSystem.Achievements.Count, Row));
 
 		for (int i = 0; i < AchievementSystem.Achievements.Count; i++) {
+			if (i >= btn_Achievement.Count) {
+				break;
+			}
 			btn_Achievement[i].SetAchievement("");
 			if (i + RowOffSet >= AchievementSystem.Achievements.Count) {
 				continue;
@@ -2039,7 +2053,7 @@ public class AchievementUI : UIState {
 			text += "\nCondition: " + achievement.ConditionTip;
 		}
 		text += "\nStatus : ";
-		if(achievement.Achieved) {
+		if (achievement.Achieved) {
 			text += "Completed";
 		}
 		else {

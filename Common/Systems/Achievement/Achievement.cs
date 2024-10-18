@@ -16,7 +16,7 @@ public abstract class ModAchievement {
 	public string ConditionTip => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.ConditionTip");
 	public string ConditionTipAfterAchieve => Language.GetTextValue($"Mods.BossRush.Achievement.{Name}.ConditionTipAfterAchieve");
 
-	protected virtual void SetDefault() { }
+	public virtual void SetStaticDefault() { }
 	public virtual bool Condition() {
 		return false;
 	}

@@ -13,6 +13,12 @@ public class AchievementSystem : ModSystem {
 	private static string FilePath => Path.Join(DirectoryPath, "Achievements");
 	public static ModAchievement SafeGetAchievement(int type) => Achievements.Count > type && type >= 0 ? Achievements[type] : null;
 	public static ModAchievement GetAchievement(string achievementName) => Achievements.Where(achieve => achieve.Name == achievementName).FirstOrDefault();
+	public static bool IsAchieved(string AchievementName) => GetAchievement(AchievementName).Achieved;
+	public override void PostSetupContent() {
+		foreach (var item in Achievements) {
+			item.SetStaticDefault();
+		}
+	}
 	public override void Load() {
 		// Loading achievements
 		foreach (var type in Mod.Code.GetTypes().Where(type => !type.IsAbstract && type.IsAssignableTo(typeof(ModAchievement)))) {

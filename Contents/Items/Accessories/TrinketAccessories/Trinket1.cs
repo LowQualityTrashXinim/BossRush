@@ -6,7 +6,7 @@ using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Accessories.TrinketAccessories;
 public class Trinket_of_Swift_Health : BaseTrinket {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<Trinket_of_Swift_Health>();
 	public override void TrinketDefault() {
 		Item.Set_InfoItem(true);
 	}

@@ -27,3 +27,75 @@ SkillCheck: {
 	Description: This is just the beginning
 	ConditionTip: Beat a boss without getting hit
 }
+
+TokenOfGreed: {
+	DisplayName: Token of Greed
+	Description: Greed
+	ConditionTip: Beat the mod with Token of Greed artifact
+}
+
+TokenOfPride: {
+	DisplayName: Token of Pride
+	Description: Pride
+	ConditionTip: Beat the mod with Token of Pride artifact
+}
+
+TokenOfWrath: {
+	DisplayName: Token Of Wrath
+	Description: Wrath
+	ConditionTip: Beat the mod with Token of Wrath artifact
+}
+
+TokenOfSloth: {
+	DisplayName: Token Of Sloth
+	Description: Sloth
+	ConditionTip: Beat the mod with Token of Sloth artifact
+}
+
+TokenOfGluttony: {
+	DisplayName: Token Of Gluttony
+	Description: Gluttony
+	ConditionTip: Beat the mod with Token of Gluttony artifact
+}
+
+BootOfSpeedManipulation: {
+	DisplayName: Boot Of Speed Manipulation
+	Description: Run with uncontrollable speed
+	ConditionTip: Beat the mod with Boot Of Speed Manipulation artifact
+}
+
+VampirismCrystal: {
+	DisplayName: Vampirism Crystal
+	Description: Give you knowledge of the darkness
+	ConditionTip: Beat the mod with Vampirism Crystal artifact
+}
+
+HeartOfEarth: {
+	DisplayName: Heart Of Earth
+	Description: A beating heart, it is warm to hold
+	ConditionTip: Beat the mod with Heart Of Earth artifact
+}
+
+GamblerSoul: {
+	DisplayName: Gambler Soul
+	Description: Your entire life is to gamble on every moment
+	ConditionTip: Beat the mod with Gambler Soul artifact
+}
+
+ManaOverloader: {
+	DisplayName: Mana Overloader
+	Description: Overflowing with endless power, too bad you can't use more
+	ConditionTip: Beat the mod with ManaOverloader artifact
+}
+
+EssenceLantern: {
+	DisplayName: Essence Lantern
+	Description: Enable new world perspective, shine light on the 3rd world
+	ConditionTip: Beat the mod with Essence Lantern artifact
+}
+
+AlchemistKnowledge: {
+	DisplayName: Alchemist Knowledge
+	Description: Knowledge said to be from True God
+	ConditionTip: Beat the mod with Alchemist Knowledge artifact
+}

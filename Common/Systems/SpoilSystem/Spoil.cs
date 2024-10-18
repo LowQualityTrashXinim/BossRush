@@ -67,8 +67,10 @@ public abstract class ModSpoil {
 }
 public class SpoilsPlayer : ModPlayer {
 	public List<int> LootBoxSpoilThatIsNotOpen = new List<int>();
+	public List<string> SpoilsGift = new();
 	public override void Initialize() {
 		LootBoxSpoilThatIsNotOpen = new();
+		SpoilsGift = new();
 	}
 	public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 		ModPacket packet = Mod.GetPacket();

@@ -78,7 +78,7 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 
 			artifact.DrawInUI(spriteBatch, dimensions);
 
-			if (!artifact.CanBeSelected(Player) && IsMouseHovering) {
+			if (!artifact.CanBeSelected(Player)) {
 				spriteBatch.Draw(
 					LockTexture.Value,
 					dimensions.Center(),

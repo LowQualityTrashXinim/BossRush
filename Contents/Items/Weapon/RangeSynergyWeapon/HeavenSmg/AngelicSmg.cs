@@ -100,6 +100,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg {
 					type = ModContent.ProjectileType<AngelicBolt>();
 					damage = (int)(damage * 1.5f);
 				}
+				SoundEngine.PlaySound(SoundID.Item36 with { Pitch = 1.5f }, player.Center);
 				Vector2 vel = velocity.Vector2RotateByRandom(10);
 				Projectile.NewProjectile(
 					player.GetSource_ItemUse_WithPotentialAmmo(player.HeldItem, ammoItemID),
