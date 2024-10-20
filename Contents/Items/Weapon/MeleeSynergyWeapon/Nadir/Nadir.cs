@@ -7,10 +7,10 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 	internal class Nadir : SynergyModItem {
-		public override string Texture => BossRushTexture.Get_MissingTexture("Synergy");
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 54, 20, 7f, 7, 21, ItemUseStyleID.Shoot, true);
 			Item.BossRushSetDefaultSpear(1, 1);
@@ -53,7 +53,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
-		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.CopperBroadsword);
+		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<Nadir>();
 		public override void SetDefaults() {
 			Projectile.width = Projectile.height = 50;
 			Projectile.friendly = true;
@@ -71,11 +71,12 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 		Vector2 offset = Vector2.Zero;
 		public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
 			if (Projectile.timeLeft == 999) {
+				Projectile.localAI[0] = Main.rand.NextBool(10).ToDirectionInt();
 				MaxLengthX = (Main.MouseWorld - player.Center).Length();
 				maxProgress += (int)(MaxLengthX * .075f);
 				progression = maxProgress;
 				MouseXPosDirection = Main.rand.NextBool().ToDirectionInt() * (Main.MouseWorld.X - player.Center.X > 0 ? 1 : -1);
-				MaxLengthY = -(MaxLengthX + Main.rand.NextFloat(-10, 80)) * .25f * MouseXPosDirection;
+				MaxLengthY = -Main.rand.NextFloat(20, 150 + MaxLengthX * .25f) * MouseXPosDirection;
 			}
 			base.SynergyPreAI(player, modplayer, out runAI);
 		}
@@ -97,11 +98,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 			else {
 				progress = progression / (float)halfmaxProgress;
 			}
-			float X = MathHelper.SmoothStep(-60, MaxLengthX, progress);
+			float X = MathHelper.SmoothStep(-30, MaxLengthX, progress);
 			ProgressYHandle(progression, halfmaxProgress, quadmaxProgress, out float Y);
 			Vector2 VelocityPosition = new Vector2(X, Y).RotatedBy(Projectile.velocity.ToRotation());
 			offset = VelocityPosition;
-			Projectile.Center = player.Center + VelocityPosition;
+			Projectile.Center = player.Center + VelocityPosition + new Vector2(10, 0);
 			float rotation = MathHelper.SmoothStep(0, 360, 1 - progression / (float)maxProgress) * MouseXPosDirection;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi + MathHelper.ToRadians(rotation);
 			progression--;
@@ -128,7 +129,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.Nadir {
 		}
 		public override bool PreDraw(ref Color lightColor) {
 			Main.instance.LoadProjectile(Projectile.type);
-			Texture2D texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>((int)Projectile.ai[2])).Value;
+			Texture2D texture;
+			if (Projectile.localAI[0] != 1) {
+				texture = ModContent.Request<Texture2D>(BossRushUtils.GetVanillaTexture<Item>((int)Projectile.ai[2])).Value;
+			}
+			else {
+				texture = TextureAssets.Projectile[Type].Value;
+			}
 			Vector2 origin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 			Vector2 drawPos = Projectile.position - Main.screenPosition + origin + new Vector2(0f, Projectile.gfxOffY);
 			Main.EntitySpriteDraw(texture, drawPos, null, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);

@@ -31,6 +31,21 @@ namespace BossRush.Common.General {
 		public bool ItemIsUsedDuringBossFight = false;
 
 		public bool Hold_Shift = false;
+		private Item starterItem = null;
+		public bool UseOnly1ItemSinceTheStartOfTheGame(int type = 0) {
+			if (starterItem == null) {
+				return false;
+			}
+			if (starterItem != Player.HeldItem) {
+				return false;
+			}
+			if(type != 0) {
+				if(starterItem.type == type) {
+					return true;
+				}
+			}
+			return true;
+		}
 		public override void ProcessTriggers(TriggersSet triggersSet) {
 			Hold_Shift = triggersSet.SmartSelect;
 		}
@@ -49,6 +64,12 @@ namespace BossRush.Common.General {
 			}
 		}
 		public override void PreUpdate() {
+			if (starterItem == null) {
+				Item item = Player.HeldItem;
+				if (item.IsAWeapon()) {
+					starterItem = item;
+				}
+			}
 			CheckHowManyHit();
 			if (Player.ItemAnimationActive && HowManyBossIsAlive > 0 && Player.HeldItem.damage > 0) {
 				ItemIsUsedDuringBossFight = true;

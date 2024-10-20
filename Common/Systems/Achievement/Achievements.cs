@@ -1,7 +1,12 @@
+using BossRush.Common.General;
+using BossRush.Common.Mode.Nightmare;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Contents.NPCs;
 using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.Achievement;
 
@@ -94,5 +99,31 @@ public class EssenceLantern : ModAchievement {
 public class AlchemistKnowledge : ModAchievement {
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>();
+	}
+}
+public class LordOfLootBox : ModAchievement {
+	public override bool Condition() {
+		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(ModContent.NPCType<LootBoxLord>());
+	}
+}
+public class WeaponChallenge1 : ModAchievement {
+	public override bool Condition() {
+		Player player = Main.LocalPlayer;
+		if (player.TryGetModPlayer(out ModdedPlayer modplayer)) {
+			return UniversalSystem.DidPlayerBeatTheMod() && modplayer.UseOnly1ItemSinceTheStartOfTheGame(ItemID.CopperShortsword);
+		}
+		else {
+			return false;
+		}
+	}
+}
+public class NightmareOvercome : ModAchievement {
+	public override bool Condition() {
+		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld();
+	}
+}
+public class TrueNightmare : ModAchievement {
+	public override bool Condition() {
+		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld() && Main.masterMode && Main.getGoodWorld;
 	}
 }

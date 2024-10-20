@@ -99,3 +99,27 @@ AlchemistKnowledge: {
 	Description: Knowledge said to be from True God
 	ConditionTip: Beat the mod with Alchemist Knowledge artifact
 }
+
+LordOfLootbox: {
+	DisplayName: Lord Of Lootbox
+	Description: Requirement, prove your skill and beat a god
+	ConditionTip: Beat Loot Box Lord
+}
+
+WeaponChallenge1: {
+	DisplayName: Weapon Challenge I
+	Description: A God dare you to beat 1 of his many challenge
+	ConditionTip: Beat the mod using only a copper shortsword from start to the end of the mod
+}
+
+NightmareOvercome: {
+	DisplayName: Nightmare Overcome
+	Description: You have overcome the hellish nightmare
+	ConditionTip: Beat the mod in Nightmare mode
+}
+
+TrueNightmare: {
+	DisplayName: True Nightmare
+	Description: no word can describe the pain you must goes through
+	ConditionTip: Beat the mod in Nightmare mode in For The Worthy Master mode
+}

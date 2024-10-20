@@ -96,6 +96,7 @@ public class Procrastination : ModSkill {
 	}
 }
 public class SpeedDemon : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<SpeedDemon>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 330;
 		Skill_Duration = 30;
