@@ -123,6 +123,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.mana = 6;
 					item.shootSpeed = 1;
 					break;
+				case ItemID.ChlorophyteClaymore:
+					item.damage += 10;
+					item.shootsEveryUse = true;
+					break;
 			}
 		}
 		public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -145,6 +149,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					velocity = velocity.Vector2RotateByRandom(5);
+					break;
+				case ItemID.ChlorophyteClaymore:
 					break;
 			}
 		}
@@ -220,18 +226,28 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						arrow2.extraUpdates += 1;
 					}
 					return false;
-			}
-			if (item.type == ItemID.ToxicFlask) {
-				GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
-				if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
-					for (int i = 0; i < 3; i++) {
-						Vector2 vel = velocity.Vector2DistributeEvenlyPlus(3, 45, i);
-						Projectile.NewProjectile(source, position, vel, type, damage, knockback, player.whoAmI);
+				case ItemID.ToxicFlask:
+					GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
+					if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
+						for (int i = 0; i < 3; i++) {
+							Vector2 vel = velocity.Vector2DistributeEvenlyPlus(3, 45, i);
+							Projectile.NewProjectile(source, position, vel, type, damage, knockback, player.whoAmI);
+						}
+						modplayer.ToxicFlask_DelayWeaponUse = 60;
+						modplayer.ToxicFlask_SpecialCounter = -1;
+						return false;
 					}
-					modplayer.ToxicFlask_DelayWeaponUse = 60;
-					modplayer.ToxicFlask_SpecialCounter = -1;
-					return false;
-				}
+					break;
+				case ItemID.ChlorophyteClaymore:
+					//float adjustedItemScale = player.GetAdjustedItemScale(item); // Get the melee scale of the player and item.
+					//int proj = Projectile.NewProjectile(source, player.MountedCenter, new Vector2(player.direction, 0f), ModContent.ProjectileType<SlashProjectile>(), damage, knockback, player.whoAmI, player.direction * player.gravDir, player.itemAnimationMax, adjustedItemScale);
+					//if (Main.projectile[proj].ModProjectile is SlashProjectile slash) {
+					//	slash.Back_Color = new(80, 180, 80);
+					//	slash.Middle_Color = new(140, 200, 140);
+					//	slash.Front_Color = new(100, 255, 100);
+					//}
+					//NetMessage.SendData(MessageID.PlayerControls, -1, -1, null, player.whoAmI); // Sync the changes in multiplayer.
+					return true;
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}

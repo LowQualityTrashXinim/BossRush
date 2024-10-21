@@ -281,6 +281,7 @@ Mods: {
 			AngelicBolt.DisplayName: Angelic Bolt
 			AngelicSmgThrow.DisplayName: Angelic Smg Throw
 			AngelicSmgHeld.DisplayName: Angelic Smg Held
+			SlashProjectile.DisplayName: Slash Projectile
 		}
 
 		NPCs: {
