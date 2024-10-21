@@ -1856,7 +1856,7 @@ public class TeleportUI : UIState {
 			{ ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon },
 			{ ItemID.Abeemination, BiomeAreaID.BeeNest },
 			{ ItemID.DeerThing, BiomeAreaID.Tundra },
-			{ ItemID.GuideVoodooDoll, BiomeAreaID.Underground }
+			{ ModContent.ItemType<WallOfFleshSpawner>(), BiomeAreaID.Underground }
 		};
 
 		for (int i = 0; i < stuffPreHM.Count; i++) {
@@ -1904,7 +1904,7 @@ public class TeleportUI : UIState {
 			{ ModContent.ItemType<CursedDoll>(), BiomeAreaID.Dungeon },
 			{ ItemID.Abeemination, BiomeAreaID.BeeNest },
 			{ ItemID.DeerThing, BiomeAreaID.Tundra },
-			{ ItemID.GuideVoodooDoll, BiomeAreaID.Underground }
+			{ ModContent.ItemType<WallOfFleshSpawner>(), BiomeAreaID.Underground }
 		};
 		for (int i = 0; i < stuffPreHM.Count; i++) {
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
