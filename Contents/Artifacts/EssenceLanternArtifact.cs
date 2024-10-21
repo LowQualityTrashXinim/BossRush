@@ -42,7 +42,7 @@ public class EssenceOfWrath : EssenceBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1.2f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: .2f);
 	}
 }
 public class EssenceOfRage : EssenceBuff {
@@ -50,8 +50,8 @@ public class EssenceOfRage : EssenceBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritChance, Additive: 1.1f);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: 1.35f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritChance, Additive: .1f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: .35f);
 	}
 }
 public class EssenceOfRejuvenate : EssenceBuff {
@@ -59,7 +59,7 @@ public class EssenceOfRejuvenate : EssenceBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: 1.67f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: .67f);
 	}
 	public override void OnEnded(Player player) {
 		player.Heal(100);
@@ -70,7 +70,7 @@ public class EssenceOfTitan : EssenceBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Additive: 1.2f, Base: 20);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, Additive: .2f, Base: 20);
 	}
 }
 public class EssenceOfSwift : EssenceBuff {
@@ -78,8 +78,8 @@ public class EssenceOfSwift : EssenceBuff {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1.34f);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: 1.14f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: .34f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: .14f);
 	}
 }
 public class EssenceOfDrowsy : EssenceBuff {
