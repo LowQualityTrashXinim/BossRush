@@ -125,6 +125,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					break;
 				case ItemID.ChlorophyteClaymore:
 					item.damage += 10;
+
 					item.shootsEveryUse = true;
 					break;
 			}
