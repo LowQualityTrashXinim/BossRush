@@ -79,6 +79,8 @@ namespace BossRush.Contents.Items.Chest {
 			player.QuickSpawnItem(entitySource, ItemID.LifeFruit, 5);
 			player.QuickSpawnItem(entitySource, ItemID.NaughtyPresent);
 			player.QuickSpawnItem(entitySource, ItemID.PumpkinMoonMedallion);
+			player.QuickSpawnItem(entitySource, ItemID.LihzahrdAltar);
+
 		}
 	}
 }
