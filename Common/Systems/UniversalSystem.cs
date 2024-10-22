@@ -362,9 +362,10 @@ internal class UniversalSystem : ModSystem {
 					}
 				}
 				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
-					if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
-						continue;
-					}
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
 				}
 				listOfPerk.Add(i);
 			}
@@ -594,6 +595,9 @@ class DefaultUI : UIState {
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+		if (system.spoils.CurrentState != null) {
+			return;
+		}
 		if (Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
 			system.ActivateSpoilsUI(Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First(), true);
 		}
@@ -676,6 +680,9 @@ class DefaultUI : UIState {
 				SpoilsPlayer spoilplayer = player.GetModPlayer<SpoilsPlayer>();
 				string text = string.Format(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Spoil.Tooltip"), spoilplayer.LootBoxSpoilThatIsNotOpen.Count);
 				Main.instance.MouseText(text);
+			}
+			else {
+				Main.instance.MouseText("Roguelike Menu");
 			}
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -789,6 +796,7 @@ class UISystemMenu : UIState {
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
 		if (EnchantmentHover) {
+			Main.instance.MouseText("Enchantment Menu");
 			if (CanEnchantmentBeAccess()) {
 				uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.WeaponEnchantment.Tooltip"));
 			}
@@ -797,15 +805,19 @@ class UISystemMenu : UIState {
 			}
 		}
 		else if (SkillHover) {
+			Main.instance.MouseText("Skill inventory");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Tooltip"));
 		}
 		else if (InfoHover) {
+			Main.instance.MouseText("Show player's info");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.ShowPlayerInfo.Tooltip"));
 		}
 		else if (Transmutation) {
+			Main.instance.MouseText("Transmutation menu");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Transmutation.Tooltip"));
 		}
 		else if (Achievement) {
+			Main.instance.MouseText("Achievement menu");
 			uitextpanel.SetText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Achievement.Tooltip"));
 		}
 		else {
@@ -1986,6 +1998,8 @@ public class AchievementUI : UIState {
 	private const int Row = 10;
 	UIPanel mainPanel;
 	Roguelike_WrapTextUIPanel textpanel;
+	Roguelike_WrapTextUIPanel conditiontextpanel;
+	UIImage image;
 	List<AchievementButton> btn_Achievement;
 	private int RowOffSet = 0;
 	public static string ActiveAchievement = "";
@@ -2006,10 +2020,8 @@ public class AchievementUI : UIState {
 		for (int i = 0; i < Row; i++) {
 			ModAchievement achievement = AchievementSystem.SafeGetAchievement(i);
 			string text = "";
-			string texture = BossRushTexture.ACCESSORIESSLOT;
 			if (achievement != null) {
 				text = achievement.Name;
-				texture = achievement.Texture;
 			}
 			AchievementButton btn = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), text);
 			btn.HAlign = .5f;
@@ -2018,8 +2030,20 @@ public class AchievementUI : UIState {
 			btn_Achievement.Add(btn);
 			mainPanel.Append(btn);
 		}
-
 		Append(mainPanel);
+
+		conditiontextpanel = new Roguelike_WrapTextUIPanel("", .77f);
+		conditiontextpanel.HAlign = .1f;
+		conditiontextpanel.VAlign = 1f;
+		conditiontextpanel.UISetWidthHeight(300, 100);
+		textpanel.Append(conditiontextpanel);
+
+		image = new UIImage(TextureAssets.InventoryBack16);
+		image.HAlign = 1f;
+		image.VAlign = 1f;
+		image.ScaleToFit = true;
+		image.UISetWidthHeight(100, 100);
+		textpanel.Append(image);
 	}
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
 		RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
@@ -2047,10 +2071,10 @@ public class AchievementUI : UIState {
 		}
 		string text = $"Description : {achievement.Description}";
 		if (achievement.AdditionalConditionTipAfterAchieve && achievement.Achieved) {
-			text += "\nCondition: " + achievement.ConditionTipAfterAchieve;
+			conditiontextpanel.SetText("Condition: " + achievement.ConditionTipAfterAchieve);
 		}
 		else {
-			text += "\nCondition: " + achievement.ConditionTip;
+			conditiontextpanel.SetText("Condition: " + achievement.ConditionTip);
 		}
 		text += "\nStatus : ";
 		if (achievement.Achieved) {
@@ -2065,11 +2089,14 @@ public class AchievementUI : UIState {
 public class AchievementButton : UIImageButton {
 	public string achievementname;
 	private ModAchievement achievement;
+	Texture2D texture;
 	public void SetAchievement(string name) {
 		achievementname = name;
 		achievement = AchievementSystem.GetAchievement(achievementname);
+		this.SetVisibility(.5f, .5f);
 	}
 	public AchievementButton(Asset<Texture2D> texture, string achievementName) : base(texture) {
+		this.texture = texture.Value;
 		SetAchievement(achievementName);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
@@ -2077,6 +2104,11 @@ public class AchievementButton : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if (achievement != null) {
+			if (achievement.Achieved) {
+				this.SetVisibility(1f, 1f);
+			}
+		}
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -2089,4 +2121,32 @@ public class AchievementButton : UIImageButton {
 			}
 		}
 	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		string texturestring;
+		float visibility;
+		if (achievement != null) {
+			texturestring = achievement.Texture;
+			if (achievement.Achieved) {
+				visibility = 1f;
+			}
+			else {
+				visibility = .5f;
+			}
+		}
+		else {
+			visibility = .5f;
+			texturestring = BossRushTexture.ACCESSORIESSLOT;
+		}
+		if(texturestring != BossRushTexture.ACCESSORIESSLOT) {
+			visibility = .75f;
+		}
+		Texture2D skilltexture = ModContent.Request<Texture2D>(texturestring).Value;
+		Vector2 origin = skilltexture.Size() * .5f;
+		float scaling = ScaleCalculation(texture.Size(), skilltexture.Size());
+		Vector2 drawpos = this.GetDimensions().Position() + texture.Size() * .5f;
+		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255) * visibility, 0, origin, scaling, SpriteEffects.None, 0);
+	}
+	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
+
 }

@@ -39,8 +39,8 @@ namespace BossRush.Common.General {
 			if (starterItem != Player.HeldItem) {
 				return false;
 			}
-			if(type != 0) {
-				if(starterItem.type == type) {
+			if (type != 0) {
+				if (starterItem.type == type) {
 					return true;
 				}
 			}
@@ -232,21 +232,20 @@ namespace BossRush.Common.General {
 		}
 		public int amountOfTimeGotHit = 0;
 		public override void OnHurt(Player.HurtInfo info) {
-			if (BossRushUtils.IsAnyVanillaBossAlive()) {
-				if (gitGud > 0) {
-					PlayerDeathReason reason = new PlayerDeathReason();
-					reason.SourceCustomReason = $"{Player.name} has fail the challenge";
-					Player.KillMe(reason, 9999999999, info.HitDirection);
-					return;
-				}
-				else {
-					amountOfTimeGotHit++;
-				}
+			if (gitGud > 0) {
+				PlayerDeathReason reason = new PlayerDeathReason();
+				reason.SourceCustomReason = $"{Player.name} has fail the challenge";
+				Player.KillMe(reason, 9999999999, info.HitDirection);
+				return;
 			}
+			if (BossRushUtils.IsAnyVanillaBossAlive())
+				amountOfTimeGotHit++;
 		}
 
 		public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-			SpawnItem();
+			if (Player.difficulty != PlayerDifficultyID.Hardcore) {
+				SpawnItem();
+			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
