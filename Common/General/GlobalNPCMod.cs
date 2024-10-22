@@ -121,7 +121,7 @@ namespace BossRush.Common.General {
 				dontHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<WallOfFleshDonHitReward>()));
 				//Normal mode drop
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<ShadowLootBox>()));
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
+				//npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowLootBox>()));
 			}
