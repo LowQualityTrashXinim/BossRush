@@ -598,3 +598,7 @@ BabySlimeStaff.Description:
 	Spike baby slime shoot out 1 to 3 slime spike whenever it attack a enemy
 	'''
 FlinxStaff.Description: Spawn 2 flinx minions to aid you
+EnchantedBoomerang.Description: Shoots an Enchanted Boomerang when used
+IceBoomerang.Description: Shoots an Ice Boomerang when used
+Shroomerang.Description: Shoots a Shroomerang when used
+WoodenBoomerang.Description: Shoots a Wooden Boomerang when used

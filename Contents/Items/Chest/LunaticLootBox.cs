@@ -18,6 +18,8 @@ namespace BossRush.Contents.Items.Chest {
 			var entitySource = player.GetSource_OpenItem(Type);
 			int LunarWeapon = Main.rand.Next(new int[] { ItemID.DayBreak, ItemID.SolarEruption, ItemID.NebulaBlaze, ItemID.NebulaArcanum, ItemID.VortexBeater, ItemID.Phantasm, ItemID.StardustDragonStaff, ItemID.StardustCellStaff });
 			player.QuickSpawnItem(entitySource, LunarWeapon, 1);
+			player.QuickSpawnItem(entitySource, ItemID.CelestialSigil, 1);
+
 		}
 
 	}
