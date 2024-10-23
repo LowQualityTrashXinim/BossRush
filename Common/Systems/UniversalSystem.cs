@@ -1771,6 +1771,7 @@ public class SpoilsUIState : UIState {
 		if (modplayer.SpoilsGift.Count > Limit_Spoils - 1 && modplayer.LootBoxSpoilThatIsNotOpen.Count > 0) {
 			SpoilList.Clear();
 			SpoilList = modplayer.SpoilsGift.Select(ModSpoilSystem.GetSpoils).ToList();
+			modplayer.SpoilsGift.Clear();
 		}
 		else {
 			modplayer.SpoilsGift.Clear();
@@ -1781,7 +1782,7 @@ public class SpoilsUIState : UIState {
 				SpoilList.Remove(spoil);
 			}
 		}
-		if(SpoilList.Count < 1) {
+		if (SpoilList.Count < 1) {
 			SpoilList = ModSpoilSystem.GetSpoilsList();
 		}
 		for (int i = 0; i < Limit_Spoils; i++) {
@@ -2141,7 +2142,7 @@ public class AchievementButton : UIImageButton {
 			visibility = .5f;
 			texturestring = BossRushTexture.ACCESSORIESSLOT;
 		}
-		if(texturestring != BossRushTexture.ACCESSORIESSLOT) {
+		if (texturestring != BossRushTexture.ACCESSORIESSLOT) {
 			visibility = .75f;
 		}
 		Texture2D skilltexture = ModContent.Request<Texture2D>(texturestring).Value;

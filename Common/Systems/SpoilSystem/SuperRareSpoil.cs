@@ -83,14 +83,12 @@ internal class SuperRareSpoil {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
-			return true;
+			return SpoilDropRarity.SuperRareDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
 			player.GetModPlayer<ArgumentPlayer>().SafeRequest_AddArgument(1, -1, false);
 			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, 0, 0);
-
-
 		}
 	}
 }
