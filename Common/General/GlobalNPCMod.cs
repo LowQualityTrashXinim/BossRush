@@ -157,13 +157,13 @@ namespace BossRush.Common.General {
 			}
 			else if (npc.type == NPCID.Plantera) {
 				//NoHit mode drop
-				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureTreasureChest>(), 1, 2, 2));
+				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>(), 1, 2, 2));
 				//Normal mode drop
-				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureTreasureChest>()));
+				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<NatureLootBox>()));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdPowerCell));
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdAltar));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureLootBox>()));
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WorldEssence>()));
 			}
 			else if (npc.type == NPCID.Golem) {
@@ -211,7 +211,7 @@ namespace BossRush.Common.General {
 				//NoHit mode drop
 				noHit.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BlackLootBox>(), 1, 2, 2));
 				//Expert mode drop
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonTreasureChest>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonLootBox>()));
 			}
 			LeadingConditionRule perkrule = new(new PerkDrop());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));

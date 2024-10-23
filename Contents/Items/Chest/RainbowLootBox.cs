@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items.Chest {
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<MechLootBox>());
 						break;
 					case 9:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<NatureTreasureChest>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<NatureLootBox>());
 						break;
 					case 10:
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<LihzahrdLootBox>());

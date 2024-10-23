@@ -42,7 +42,7 @@ namespace BossRush.Contents.Items.Chest {
 				int ran1 = Main.rand.Next(10);
 				switch (ran1) {
 					case 0:
-						player.QuickSpawnItem(entitySource, ModContent.ItemType<MoonTreasureChest>());
+						player.QuickSpawnItem(entitySource, ModContent.ItemType<MoonLootBox>());
 						break;
 					case 1:
 						player.QuickSpawnItem(entitySource, ItemID.MoonLordBossBag);
@@ -86,7 +86,7 @@ namespace BossRush.Contents.Items.Chest {
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<MechLootBox>());
 					break;
 				case 9:
-					player.QuickSpawnItem(entitySource, ModContent.ItemType<NatureTreasureChest>());
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<NatureLootBox>());
 					break;
 				case 10:
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<LihzahrdLootBox>());

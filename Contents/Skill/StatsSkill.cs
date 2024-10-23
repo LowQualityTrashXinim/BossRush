@@ -110,6 +110,7 @@ public class SpeedDemon : ModSkill {
 	}
 }
 public class TranquilMind : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TranquilMind>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 400;
 		Skill_Duration = 5;
@@ -243,6 +244,7 @@ public class TerrorForm : ModSkill {
 	}
 }
 public class AllOrNothing : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AllOrNothing>();
 	public override void SetDefault() {
 		Skill_EnergyRequirePercentage = 1;
 		Skill_Duration = 1;
@@ -254,7 +256,7 @@ public class AllOrNothing : ModSkill {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));
 	}
 	public class AllOrNothingBuff : ModBuff {
-		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<AllOrNothing>();
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff();
 		}

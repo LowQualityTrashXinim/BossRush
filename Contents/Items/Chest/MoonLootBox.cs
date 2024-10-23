@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Chest {
-	internal class MoonTreasureChest : ModItem {
+	internal class MoonLootBox : ModItem {
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 30;

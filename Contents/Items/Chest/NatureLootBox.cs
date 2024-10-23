@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 
 namespace BossRush.Contents.Items.Chest {
-	class NatureTreasureChest : LootBoxBase {
+	class NatureLootBox : LootBoxBase {
 		public override void SetDefaults() {
 			Item.width = 54;
 			Item.height = 38;

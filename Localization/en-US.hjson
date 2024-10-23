@@ -1247,7 +1247,7 @@ Mods: {
 					Increases your maximum health by 25%
 					[[c/8888ea:Active]]
 					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
-					After the buff end, you receive 60 second cooldown before you can receive [c/b7bf5c:Swift Steal] again					
+					After the buff end, you receive 60 second cooldown before you can gain [c/b7bf5c:Swift Steal] again
 					'''
 				ExtraInfo:
 					'''
@@ -1844,16 +1844,6 @@ Mods: {
 
 			DeerclopTreasureChest: {
 				DisplayName: Deerclop Treasure Chest
-				Tooltip: ""
-			}
-
-			MoonTreasureChest: {
-				DisplayName: Moon Treasure Chest
-				Tooltip: ""
-			}
-
-			NatureTreasureChest: {
-				DisplayName: Nature Treasure Chest
 				Tooltip: ""
 			}
 
