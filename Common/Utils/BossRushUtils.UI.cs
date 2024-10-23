@@ -40,12 +40,12 @@ namespace BossRush {
 		public bool Hide = false;
 		private int Delay = 0;
 		public void DelayHide(int HideDelay) {
-			if(Delay <= 0 && !Hide) {
+			if (Delay <= 0 && !Hide) {
 				Delay = HideDelay;
 			}
 			else {
 				Delay = BossRushUtils.CountDown(Delay);
-				if(Delay <= 1) {
+				if (Delay <= 1) {
 					Hide = true;
 				}
 			}
@@ -84,13 +84,13 @@ namespace BossRush {
 			gradientB = color;
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
-			if(Hide) {
+			if (Hide) {
 				return;
 			}
 			base.Draw(spriteBatch);
 		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if(Hide) {
+			if (Hide) {
 				return;
 			}
 			base.DrawSelf(spriteBatch);
@@ -134,21 +134,21 @@ namespace BossRush {
 				return;
 			}
 			DynamicSpriteFont font = FontAssets.MouseText.Value;
-			float scale = 1;
+			float scale = TextScale;
 			string cachedText = Text;
 			SetText("");
-			base.Recalculate();
+			this.Recalculate();
 			base.DrawSelf(spriteBatch);
 			string[] lines = Utils.WordwrapString(
 				cachedText,
 				font,
-				430,
+				(int)(this.GetInnerDimensions().Width * (1 + Math.Abs(1 - scale))),
 				100,
 			out int lineCount
 			).Where(line => line is not null).ToArray();
 
 			maxLinePosition = Math.Max(lines.Length - MAX_LINES, 0);
-			linePosition = Math.Clamp(linePosition , 0, maxLinePosition);
+			linePosition = Math.Clamp(linePosition, 0, maxLinePosition);
 
 			float yOffset = 0f;
 			for (int i = 0; i < lines.Length; i++) {
@@ -182,7 +182,7 @@ namespace BossRush {
 		public Roguelike_UITextPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if(Hide) {
+			if (Hide) {
 				return;
 			}
 			base.DrawSelf(spriteBatch);
@@ -207,7 +207,7 @@ namespace BossRush {
 			base.DrawSelf(spriteBatch);
 		}
 		public sealed override void Draw(SpriteBatch spriteBatch) {
-			if(Hide) {
+			if (Hide) {
 				return;
 			}
 			base.Draw(spriteBatch);
@@ -219,7 +219,7 @@ namespace BossRush {
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
-			if(Hide) {
+			if (Hide) {
 				return;
 			}
 			base.Draw(spriteBatch);

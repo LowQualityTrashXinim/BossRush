@@ -423,3 +423,14 @@ BlessingOfMoon: {
 		+ During the night, you have 75% to dodge an attack
 		'''
 }
+
+TitanPower: {
+	DisplayName: Titan Power
+	Description:
+		'''
+		The power of a Titan
+		+ Increases your maximum health by 200, thorn damage by 150&, defenses by 15 flat and 25%
+		+ Increases your damage reduction by 40%
+		+ You can revive once ( 4 miniutes cool down )
+		'''
+}

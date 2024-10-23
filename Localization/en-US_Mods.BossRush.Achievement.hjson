@@ -6,8 +6,8 @@ TheBeginningOfEndless: {
 
 TheFirstOfMany: {
 	DisplayName: The first of many
-	Description: From this point nothing stopping you
-	ConditionTip: Slay down moon lord.
+	Description: From this point, a legend is born !
+	ConditionTip: Beat the mod first time
 }
 
 BountifulHarvest: {
@@ -100,7 +100,7 @@ AlchemistKnowledge: {
 	ConditionTip: Beat the mod with Alchemist Knowledge artifact
 }
 
-LordOfLootbox: {
+LordOfLootBox: {
 	DisplayName: Lord Of Lootbox
 	Description: Requirement, prove your skill and beat a god
 	ConditionTip: Beat Loot Box Lord
@@ -122,4 +122,10 @@ TrueNightmare: {
 	DisplayName: True Nightmare
 	Description: no word can describe the pain you must goes through
 	ConditionTip: Beat the mod in Nightmare mode in For The Worthy Master mode
+}
+
+GodOfChallenge: {
+	DisplayName: God Of Challenge
+	Description: Impressive...
+	ConditionTip: Beat the mod with God Of Challenge enable with expert or higher difficulty
 }

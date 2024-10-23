@@ -18,7 +18,7 @@ public class TheBeginningOfEndless : ModAchievement {
 
 public class TheFirstOfMany : ModAchievement {
 	public override bool Condition() {
-		return NPC.downedMoonlord;
+		return UniversalSystem.DidPlayerBeatTheMod();
 	}
 }
 
@@ -41,6 +41,7 @@ public class SkillCheck : ModAchievement {
 }
 
 public class TokenOfGreed : ModAchievement {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TokenOfGreedArtifact>();
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>();
 	}
@@ -67,6 +68,7 @@ public class TokenOfGluttony : ModAchievement {
 	}
 }
 public class BootOfSpeedManipulation : ModAchievement {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<BootsOfSpeedManipulationArtifact>();
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<BootsOfSpeedManipulationArtifact>();
 	}
@@ -125,5 +127,12 @@ public class NightmareOvercome : ModAchievement {
 public class TrueNightmare : ModAchievement {
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && NightmareSystem.IsANightmareWorld() && Main.masterMode && Main.getGoodWorld;
+	}
+}
+public class GodOfChallenge : ModAchievement {
+	public override bool Condition() {
+		return UniversalSystem.DidPlayerBeatTheMod() 
+			&& Main.LocalPlayer.GetModPlayer<ModdedPlayer>().gitGud > 0
+			&& (Main.expertMode || Main.masterMode);
 	}
 }
