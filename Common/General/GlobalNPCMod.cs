@@ -229,20 +229,5 @@ namespace BossRush.Common.General {
 				system.ListOfBossKilled.Add(npc.type);
 			}
 		}
-
-
-		// TODO: delete this override after finishing hardmode
-		public override bool PreKill(NPC npc) {
-
-			if (npc.type == NPCID.CultistBoss) {
-				Item.NewItem(npc.GetSource_DropAsItem(), npc.getRect(), ModContent.ItemType<LunaticLootBox>());
-				Item.NewItem(npc.GetSource_DropAsItem(), npc.getRect(), ItemID.LunarCraftingStation);
-
-				return false;
-			}
-
-			return base.PreKill(npc);
-		}
-
 	}
 }
