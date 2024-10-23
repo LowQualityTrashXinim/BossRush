@@ -628,35 +628,6 @@ namespace BossRush.Contents.Items.Chest {
 			ChooseWeapon(rng, ref ReturnWeapon, ref Amount, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon, DropItemMisc);
 		}
 		private static void ChooseWeapon(int rng, ref int weapon, ref int amount, List<int> DropItemMelee, List<int> DropItemRange, List<int> DropItemMagic, List<int> DropItemSummon, List<int> DropItemMisc) {
-			if(DropItemMelee.Count < 1) {
-				if(rng == 1) {
-					rng++;
-				}
-			}
-			if(DropItemRange.Count < 1) {
-				if (rng == 2) {
-					rng++;
-				}
-			}
-			if(DropItemMagic.Count < 1) {
-				if (rng == 3) {
-					rng++;
-				}
-			}
-			if(DropItemSummon.Count < 1) {
-				if (rng == 4) {
-					rng++;
-				}
-			}
-			if (DropItemMisc.Count < 1) {
-				if (rng == 5) {
-					weapon = ItemID.CopperShortsword;
-					amount = 1;
-					return;
-				}
-				int rngM = Main.rand.Next(1, 5);
-				ChooseWeapon(rngM, ref weapon, ref amount, DropItemMelee, DropItemRange, DropItemMagic, DropItemSummon, DropItemMisc);
-			}
 			switch (rng) {
 				case 0:
 					weapon = ItemID.None;

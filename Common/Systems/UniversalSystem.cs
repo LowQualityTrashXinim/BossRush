@@ -1775,11 +1775,11 @@ public class SpoilsUIState : UIState {
 		}
 		else {
 			modplayer.SpoilsGift.Clear();
-		}
-		for (int i = SpoilList.Count - 1; i >= 0; i--) {
-			ModSpoil spoil = SpoilList[i];
-			if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[lootboxItem])) {
-				SpoilList.Remove(spoil);
+			for (int i = SpoilList.Count - 1; i >= 0; i--) {
+				ModSpoil spoil = SpoilList[i];
+				if (!spoil.IsSelectable(player, ContentSamples.ItemsByType[lootboxItem])) {
+					SpoilList.Remove(spoil);
+				}
 			}
 		}
 		if (SpoilList.Count < 1) {
@@ -1812,7 +1812,8 @@ public class SpoilsUIButton : UIImageButton {
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
-		LootboxItem = player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
+		SpoilsPlayer modplayer = player.GetModPlayer<SpoilsPlayer>();
+		LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
 		if (spoil == null) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
@@ -1822,12 +1823,14 @@ public class SpoilsUIButton : UIImageButton {
 				}
 			}
 			Main.rand.Next(SpoilList).OnChoose(player, LootboxItem);
-			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.RemoveAt(0);
+			modplayer.LootBoxSpoilThatIsNotOpen.RemoveAt(0);
+			modplayer.SpoilsGift.Clear();
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			return;
 		}
 		spoil.OnChoose(player, LootboxItem);
-		player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.RemoveAt(0);
+		modplayer.LootBoxSpoilThatIsNotOpen.RemoveAt(0);
+		modplayer.SpoilsGift.Clear();
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}
 	public override void Update(GameTime gameTime) {
