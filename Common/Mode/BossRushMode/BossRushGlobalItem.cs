@@ -49,7 +49,7 @@ internal class BossRushGlobalItem : GlobalItem {
 			return BossRushWorldGen.IsInBiome(player, BiomeAreaID.Dungeon, ModContent.GetInstance<BossRushWorldGen>().Room);
 		}
 		if (item.type == ItemID.TruffleWorm) {
-			return BossRushWorldGen.IsInBiome(player, BiomeAreaID.BeeNest, ModContent.GetInstance<BossRushWorldGen>().Room);
+			return BossRushWorldGen.IsInBiome(player, BiomeAreaID.Beaches, ModContent.GetInstance<BossRushWorldGen>().Room);
 		}
 		if (item.type == ItemID.Abeemination) {
 			return BossRushWorldGen.IsInBiome(player, BiomeAreaID.BeeNest, ModContent.GetInstance<BossRushWorldGen>().Room);
