@@ -1003,7 +1003,7 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	public class TitanPowerBuff : ModBuff {
-		public override string Texture => BossRushTexture.MissingTexture_Default;
+		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff(true);
 		}
