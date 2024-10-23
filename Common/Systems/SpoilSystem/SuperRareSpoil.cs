@@ -9,6 +9,7 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.DataStructures;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Common.Systems.ArgumentsSystem;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -82,11 +83,13 @@ internal class SuperRareSpoil {
 			RareValue = SpoilDropRarity.SuperRare;
 		}
 		public override bool IsSelectable(Player player, Item itemsource) {
-			return SpoilDropRarity.SuperRareDrop();
+			return true;
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
+			player.GetModPlayer<ArgumentPlayer>().SafeRequest_AddArgument(1, -1, false);
 			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, 0, 0);
+
 
 		}
 	}

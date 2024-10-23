@@ -1861,6 +1861,11 @@ Mods: {
 				DisplayName: Angelic Smg
 				Tooltip: Bring down heaven wrath with this smg
 			}
+
+			WindSlashPerk: {
+				DisplayName: Wind Slash Perk
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

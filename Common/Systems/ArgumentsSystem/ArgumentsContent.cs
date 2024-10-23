@@ -155,14 +155,12 @@ public class CriticalII : ModArgument {
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit) {
-			modifiers.SetCrit();
 			modifiers.ScalingArmorPenetration += .5f;
 		}
 	}
 
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (player.GetModPlayer<PlayerStatsHandle>().ModifyHit_Before_Crit) {
-			modifiers.SetCrit();
 			modifiers.ScalingArmorPenetration += .5f;
 		}
 	}
@@ -200,7 +198,8 @@ public class VampireII : ModArgument {
 		tooltipColor = Color.DarkRed;
 	}
 	public override void UpdateHeld(Player player, Item item) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.5f);
+		if (!Main.IsItDay())
+			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.5f);
 	}
 }
 

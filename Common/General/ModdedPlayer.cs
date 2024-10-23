@@ -53,6 +53,10 @@ namespace BossRush.Common.General {
 			if (ModContent.GetInstance<RogueLikeConfig>().AutoHardCore) {
 				Player.difficulty = PlayerDifficultyID.Hardcore;
 			}
+			Player.itemAnimation = 0;
+			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
+				Player.itemAnimationMax = Player.HeldItem.useAnimation;
+			}
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
 			if (Player.IsDebugPlayer()) {
@@ -122,6 +126,7 @@ namespace BossRush.Common.General {
 					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
 					//yield return new Item(ModContent.ItemType<PowerEnergy>());
 					yield return new Item(ModContent.ItemType<CelestialEssence>());
+					yield return new Item(ModContent.ItemType<WindSlashPerk>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 				}
 				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
@@ -147,7 +152,7 @@ namespace BossRush.Common.General {
 					yield return new Item(ItemID.NinjaShirt);
 					yield return new Item(ItemID.NinjaPants);
 				}
-				if (Player.name == "HMdebug") {
+				if (Player.name.Trim() == "hmdebug") {
 					yield return new Item(ModContent.ItemType<LootboxLordSummon>());
 					yield return new Item(ModContent.ItemType<IronLootBox>());
 					yield return new Item(ModContent.ItemType<SilverLootBox>());
@@ -156,8 +161,7 @@ namespace BossRush.Common.General {
 					yield return new Item(ModContent.ItemType<CrimsonLootBox>());
 					yield return new Item(ModContent.ItemType<IceLootBox>());
 					yield return new Item(ModContent.ItemType<HoneyLootBox>());
-					yield return new Item(ModContent.ItemType<CelestialEssence>());
-					yield return new Item(ModContent.ItemType<WorldEssence>());
+					yield return new Item(ModContent.ItemType<WorldEssence>(), 2);
 					yield return new Item(ItemID.PlatinumCoin, 2);
 					LifeCrystal = Math.Clamp(LifeCrystal + 15, 0, 15);
 					ManaCrystal = Math.Clamp(ManaCrystal + 9, 0, 9);

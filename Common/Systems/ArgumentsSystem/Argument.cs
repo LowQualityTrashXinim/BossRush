@@ -47,10 +47,18 @@ public class ArgumentWeapon : GlobalItem {
 	public override bool InstancePerEntity => true;
 	public int[] ArgumentSlots = new int[5];
 	/// <summary>
-	/// Can only applied to weapon that is <see cref="BossRushUtils.IsAWeapon(Item)"/>
+	/// Can only applied to weapon that is <see cref="BossRushUtils.IsAWeapon(Item)"/><br/>
+	/// Argument won't always be added, instead it work base on weapon's chance stat<br/>
+	/// Use <paramref name="chance"/> to increases the chance directly, be aware it will decay overtime<br/>
+	/// Weapon's chance stat have fixed chance, meaning it won't be decay
+	/// Set <paramref name="decayable"/> to disable decay
 	/// </summary>
-	/// <param name="item"></param>
-	public static void AddArgument(Player player, Item item) {
+	/// <param name="player">The player</param>
+	/// <param name="item">The item</param>
+	/// <param name="limit">The limit amount of argument can have on weapon</param>
+	/// <param name="chance">the chance to add argument</param>
+	/// <param name="decayable">disable the decay of custom chance</param>
+	public static void AddArgument(Player player,ref Item item, int limit = -1,float chance = 0, bool decayable = true) {
 		if (!item.IsAWeapon()) {
 			return;
 		}
@@ -61,15 +69,26 @@ public class ArgumentWeapon : GlobalItem {
 					ArgumentList.Add(i);
 				}
 			}
+			ArgumentPlayer modplayer = player.GetModPlayer<ArgumentPlayer>();
+			chance += modplayer.Request_ChanceArgument;
+			limit += modplayer.Request_LimitArgument;
+			decayable = modplayer.Request_Decayable;
 			int currentEmptySlot = 0;
 			bool passException = false;
-			float chanceDecay = player.GetModPlayer<ArgumentPlayer>().IncreasesChance;
+			float chanceDecay = modplayer.IncreasesChance + chance;
 			for (int i = 0; i < weapon.ArgumentSlots.Length && currentEmptySlot < weapon.ArgumentSlots.Length; i++) {
+				if(limit <= -1) {
+					if(currentEmptySlot <= limit) {
+						break;
+					}
+				}
 				if (Main.rand.NextFloat() > weapon.ArgumentChance + chanceDecay && !passException) {
 					continue;
 				}
 				if (weapon.ArgumentSlots[currentEmptySlot] == 0) {
-					chanceDecay *= .5f;
+					if (decayable) {
+						chanceDecay *= .5f;
+					}
 					passException = false;
 					int type = Main.rand.Next(ArgumentList);
 					weapon.ArgumentSlots[currentEmptySlot] = type;
@@ -140,6 +159,14 @@ public class ArgumentPlayer : ModPlayer {
 	/// This chance will decay for each success roll
 	/// </summary>
 	public float IncreasesChance = 0;
+	public void SafeRequest_AddArgument(float chance, int limit, bool decayable) {
+		Request_ChanceArgument = chance;
+		Request_LimitArgument = limit;
+		Request_Decayable = decayable;
+	}
+	public float Request_ChanceArgument = 0;
+	public int Request_LimitArgument = 1;
+	public bool Request_Decayable = false;
 	public override void ResetEffects() {
 		IncreasesChance = 0;
 	}

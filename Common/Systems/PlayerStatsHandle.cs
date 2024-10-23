@@ -180,6 +180,7 @@ public class PlayerStatsHandle : ModPlayer {
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = BossRushUtils.CountDown(LifeSteal_CoolDown);
 		ModifyHit_OverrideCrit = null;
+		ModifyHit_Before_Crit = false;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));

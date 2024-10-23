@@ -1781,6 +1781,9 @@ public class SpoilsUIState : UIState {
 				SpoilList.Remove(spoil);
 			}
 		}
+		if(SpoilList.Count < 1) {
+			SpoilList = ModSpoilSystem.GetSpoilsList();
+		}
 		for (int i = 0; i < Limit_Spoils; i++) {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));

@@ -7,6 +7,7 @@ using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 
 namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -44,8 +45,10 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		}
 	}
 	public override void OnKill(Projectile projectile, int timeLeft) {
+		Player player = Main.player[projectile.owner];
 		if (Source_FromDeathScatterShot
 			|| OnKill_ScatterShot <= 0
+			|| player.heldProj == projectile.owner
 			|| projectile.hostile
 			|| !projectile.friendly
 			|| projectile.minion
@@ -67,6 +70,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			|| projectile.type == ProjectileID.PortalGunGate
 			|| projectile.type == ProjectileID.LightsBane
 			|| projectile.type == ModContent.ProjectileType<LeafProjectile>()
+			|| projectile.type == ModContent.ProjectileType<AngelicSmgHeld>()
 			|| projectile.type == ModContent.ProjectileType<MagicBullet>()//This is to prevent lag
 			|| projectile.type == ModContent.ProjectileType<DiamondGemP>()
 			|| projectile.type == ModContent.ProjectileType<ArenaMakerProj>()
@@ -78,7 +82,8 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			projectile.velocity *= Main.rand.NextFloat(5, 7);
 		}
 		for (int i = 0; i < OnKill_ScatterShot; i++) {
-			Projectile.NewProjectile(projectile.GetSource_Misc("OnKill_ScatterShot"), projectile.Center, projectile.velocity.Vector2RotateByRandom(360), projectile.type, (int)(projectile.damage * .65f), projectile.knockBack * .55f, projectile.owner);
+			int proj = Projectile.NewProjectile(projectile.GetSource_Misc("OnKill_ScatterShot"), projectile.Center, projectile.velocity.Vector2RotateByRandom(360), projectile.type, (int)(projectile.damage * .65f), projectile.knockBack * .55f, projectile.owner);
+			Main.projectile[proj].timeLeft = 120;
 		}
 	}
 }

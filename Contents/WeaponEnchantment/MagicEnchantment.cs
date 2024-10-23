@@ -18,6 +18,9 @@ public class AmethystStaff : ModEnchantment {
 		item.shoot = ProjectileID.AmethystBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if(!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .65f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			int proj = Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.AmethystBolt, damage, knockback, player.whoAmI);
@@ -42,6 +45,9 @@ public class TopazStaff : ModEnchantment {
 		item.shoot = ProjectileID.TopazBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .47f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.TopazBolt, damage, knockback, player.whoAmI);
@@ -61,6 +67,9 @@ public class SapphireStaff : ModEnchantment {
 		item.shoot = ProjectileID.SapphireBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .37f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.SapphireBolt, damage, knockback, player.whoAmI);
@@ -78,6 +87,9 @@ public class EmeraldStaff : ModEnchantment {
 		item.shoot = ProjectileID.EmeraldBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .47f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			int proj = Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.EmeraldBolt, damage, knockback, player.whoAmI);
@@ -99,6 +111,9 @@ public class RubyStaff : ModEnchantment {
 		type = ProjectileID.RubyBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .17f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.RubyBolt, damage, knockback, player.whoAmI);
@@ -130,6 +145,9 @@ public class DiamondStaff : ModEnchantment {
 		type = ProjectileID.DiamondBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .17f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.DiamondBolt, damage, knockback, player.whoAmI);
@@ -171,6 +189,9 @@ public class AmberStaff : ModEnchantment {
 		type = ProjectileID.AmberBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (!velocity.IsLimitReached(3)) {
+			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
+		}
 		if (Main.rand.NextFloat() <= .17f) {
 			Vector2 newPos = position + Main.rand.NextVector2Circular(40, 40);
 			Projectile.NewProjectile(source, newPos, (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * velocity.Length(), ProjectileID.AmberBolt, damage, knockback, player.whoAmI);
