@@ -29,6 +29,7 @@ public enum CursesCatagory {
 public abstract class ModCurse : ModType {
 	public List<CursesCatagory> catagory = new();
 	public int Type = 0;
+	public int Value = 0;
 	public string DisplayName => $"- {Language.GetTextValue($"Mods.BossRush.Curse.{Name}.DisplayName")} -";
 	public string Description => Language.GetTextValue($"Mods.BossRush.Curse.{Name}.Description");
 	public virtual void SetStaticDefault() { }
