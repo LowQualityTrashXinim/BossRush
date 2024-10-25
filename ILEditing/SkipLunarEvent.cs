@@ -24,6 +24,17 @@ public class SkipLunarEvent : ModSystem {
 			ILCursor c = new ILCursor(il);
 			c.GotoNext(i => i.MatchCall(typeof(WorldGen).GetMethod("TriggerLunarApocalypse")));
 			c.Remove();
+
+			// make sure towers are considered downed for the sake of compatibilty 
+			c.EmitDelegate(() => 
+			{
+
+				NPC.downedTowerNebula = true;
+				NPC.downedTowerSolar = true;
+				NPC.downedTowerStardust = true;
+				NPC.downedTowerVortex = true;
+
+			});
 		}
 		catch (Exception e) {
 
