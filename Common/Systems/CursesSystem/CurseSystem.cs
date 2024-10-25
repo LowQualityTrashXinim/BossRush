@@ -20,11 +20,12 @@ internal class CursesLoader : ModSystem {
 		_curses = null;
 	}
 	public static ModCurse GetCurses(string name) => _curses.ContainsKey(name) ? _curses[name] : null;
+	public static int GetQuickValue(Player player, string name) => player.GetModPlayer<PlayerCursesHandle>().curses[GetCurses(name)];
 }
 public enum CursesCatagory {
 	None,
 	Blessing,
-	Curse
+	Taboo
 }
 public abstract class ModCurse : ModType {
 	public List<CursesCatagory> catagory = new();
@@ -44,25 +45,27 @@ public abstract class ModCurse : ModType {
 	public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 }
 public class PlayerCursesHandle : ModPlayer {
-	public List<ModCurse> curses = new();
+	public Dictionary<ModCurse, int> curses = new();
 	public override void Initialize() {
 		curses = new();
 	}
 	public override void UpdateEquips() {
-		curses.ForEach(c => c.Update(Player));
+		curses.Keys.ToList().ForEach(c => c.Update(Player));
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		curses.ForEach(c => c.OnHitByNPC(Player, npc, hurtInfo));
+		curses.Keys.ToList().ForEach(c => c.OnHitByNPC(Player, npc, hurtInfo));
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		curses.ForEach(c => c.OnHitByProjectile(Player, proj, hurtInfo));
+		curses.Keys.ToList().ForEach(c => c.OnHitByProjectile(Player, proj, hurtInfo));
 	}
 	public override void SaveData(TagCompound tag) {
-		tag["PlayerCurses"] = curses.Select(c => c.Name);
+		tag["PlayerCurses"] = curses.Keys.ToList().Select(c => c.Name);
+		tag["PlayerCursesValue"] = curses.Values.ToList();
 	}
 	public override void LoadData(TagCompound tag) {
-		if (tag.TryGet("PlayerCurses", out List<string> cursesNameList)) {
-			curses = cursesNameList.Select(CursesLoader.GetCurses).ToList();
-		}
+		var cursesNameList = tag.Get<List<string>>("PlayerCurses");
+		var cursesValueList = tag.Get<List<int>>("PlayerCursesValue");
+
+		curses = cursesNameList.Zip(cursesValueList, (k, v) => new { Key = CursesLoader.GetCurses(k), Value = v }).ToDictionary(x => x.Key, x => x.Value);
 	}
 }
