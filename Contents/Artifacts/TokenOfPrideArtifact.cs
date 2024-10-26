@@ -32,7 +32,7 @@ namespace BossRush.Contents.Artifacts {
 					|| globalitem.EnchantmenStlot[3] != ItemID.None || globalitem.EnchantmenStlot[3] == -1) {
 					return;
 				}
-				EnchantmentSystem.EnchantItem(item, 3);
+				EnchantmentSystem.EnchantItem(ref item, 3);
 			}
 		}
 	}
