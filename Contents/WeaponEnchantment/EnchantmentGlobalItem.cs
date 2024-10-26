@@ -93,7 +93,7 @@ public class EnchantmentSystem : ModSystem {
 				globalitem.EnchantmenStlot[slot] = Main.rand.Next(EnchantmentLoader.EnchantmentcacheID);
 			}
 			else {
-				ModEnchantment enchant = EnchantmentLoader.GetEnchantment(enchantmentType);
+				ModEnchantment enchant = EnchantmentLoader.GetEnchantmentItemID(enchantmentType);
 				if (enchant == null) {
 					return;
 				}

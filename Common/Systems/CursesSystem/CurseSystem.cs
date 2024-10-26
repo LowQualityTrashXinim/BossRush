@@ -59,7 +59,7 @@ public class PlayerCursesHandle : ModPlayer {
 		curses.Keys.ToList().ForEach(c => c.OnHitByProjectile(Player, proj, hurtInfo));
 	}
 	public override void SaveData(TagCompound tag) {
-		tag["PlayerCurses"] = curses.Keys.ToList().Select(c => c.Name);
+		tag["PlayerCurses"] = curses.Keys.Select(c => c.Name).ToList();
 		tag["PlayerCursesValue"] = curses.Values.ToList();
 	}
 	public override void LoadData(TagCompound tag) {

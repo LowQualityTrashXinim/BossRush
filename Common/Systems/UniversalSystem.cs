@@ -1681,7 +1681,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 			spriteBatch.Draw(backgroundtexture, drawpos, null, new Color(0, 0, 0, 80), 0, texture.Size() * .35f, ScaleCalculation(backgroundtexture.Size()), SpriteEffects.None, 0);
 		}
 	}
-	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.5f);
+	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.25f);
 }
 public class EnchantmentUIslot : UIImage {
 	public int itemType = 0;
@@ -1718,7 +1718,7 @@ public class EnchantmentUIslot : UIImage {
 				Main.instance.LoadItem(itemType);
 				Texture2D texture1 = TextureAssets.Item[itemType].Value;
 				Vector2 origin = texture1.Size() * .5f;
-				spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
+				spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, .87f, SpriteEffects.None, 0);
 			}
 		}
 		catch (Exception ex) {
