@@ -58,7 +58,7 @@ public class EnchantmentSystem : ModSystem {
 		if (modplayer.Request_EnchantedItem > 0) {
 			int length = modplayer.Request_EnchantedAmount;
 			for (int i = 0; i < length; i++) {
-				EnchantItem(item, i);
+				EnchantItem(ref item, i);
 			}
 			modplayer.Request_EnchantedItem--;
 		}
@@ -72,13 +72,13 @@ public class EnchantmentSystem : ModSystem {
 				}
 			}
 			if (Main.rand.NextFloat() <= .2f) {
-				EnchantItem(item, i);
+				EnchantItem(ref item, i);
 				continue;
 			}
 			break;
 		}
 	}
-	public static void EnchantItem(Item item, int slot = -1, int enchantmentType = -1) {
+	public static void EnchantItem(ref Item item, int slot = -1, int enchantmentType = -1) {
 		if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
 			if (slot == -1) {
 				for (int i = 0; i < globalitem.EnchantmenStlot.Length - 1; i++) {
