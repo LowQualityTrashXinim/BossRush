@@ -33,33 +33,37 @@ public class UiCharacterCreationChanges : ModSystem
 	}
 
 	private void HookUpdateDifficultyDescription(ILContext il) {
-		
-		ILCursor c = new ILCursor(il);
 
-		c.GotoNext(MoveType.Before, i => i.MatchLdcI4(31));
+		try {
+			ILCursor c = new ILCursor(il);
 
-		c.Index--;
-		c.RemoveRange(4);
+			c.GotoNext(MoveType.Before, i => i.MatchLdcI4(31));
 
-		c.EmitLdstr("Mods.BossRush.SystemTooltip.NotSupported.Warning");
-		c.Emit(OpCodes.Call, typeof(Language).GetMethod(nameof(Language.GetText)));
-		c.EmitStloc0();
+			c.Index--;
+			c.RemoveRange(4);
 
-		c.GotoNext(MoveType.Before, i => i.MatchLdcI4(31));
+			c.EmitLdstr("Mods.BossRush.SystemTooltip.NotSupported.Warning");
+			c.Emit(OpCodes.Call, typeof(Language).GetMethod(nameof(Language.GetText)));
+			c.EmitStloc0();
 
-		c.Index--;
-		c.RemoveRange(4);
+			c.GotoNext(MoveType.Before, i => i.MatchLdcI4(31));
 
-		c.GotoNext(MoveType.Before, i => i.MatchLdcI4(30));
+			c.Index--;
+			c.RemoveRange(4);
 
-		c.Index--;
-		c.RemoveRange(4);
+			c.GotoNext(MoveType.Before, i => i.MatchLdcI4(30));
 
-		c.GotoNext(MoveType.Before, i => i.MatchLdstr("UI.CreativeDescriptionPlayer"));
+			c.Index--;
+			c.RemoveRange(4);
 
-		c.RemoveRange(3);
+			c.GotoNext(MoveType.Before, i => i.MatchLdstr("UI.CreativeDescriptionPlayer"));
 
+			c.RemoveRange(3);
 
+		}
+		catch (Exception e) {
+			MonoModHooks.DumpIL(ModContent.GetInstance<BossRush>(), il);
+		}
 	}
 
 	private void HookUICharacterCreationCtor(ILContext il) {
