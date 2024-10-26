@@ -1,6 +1,8 @@
 Mods: {
 	BossRush: {
 		SystemTooltip: {
+			NotSupported.Warning: WARNING: Not Supported By The Terraria Roguelike Mod
+
 			DemoEnding: {
 				Tooltip:
 					'''
