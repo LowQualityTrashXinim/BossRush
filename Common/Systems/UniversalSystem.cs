@@ -1705,9 +1705,7 @@ public class EnchantmentUIslot : UIImage {
 			itemType = Main.mouseItem.type;
 			Main.mouseItem.TurnToAir();
 			Main.LocalPlayer.inventory[58].TurnToAir();
-			if (itemOwner.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
-				globalItem.EnchantmenStlot[WhoAmI] = itemType;
-			}
+			EnchantmentSystem.EnchantItem(itemOwner, WhoAmI, itemType);
 		}
 	}
 	public override void Draw(SpriteBatch spriteBatch) {

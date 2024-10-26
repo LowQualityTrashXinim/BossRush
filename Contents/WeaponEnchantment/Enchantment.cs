@@ -22,6 +22,13 @@ namespace BossRush.Contents.WeaponEnchantment {
 			Type = EnchantmentLoader.Register(this);
 		}
 		/// <summary>
+		/// This will run whenever the item is being enchanted <br/>
+		/// Use <see cref="Main.LocalPlayer"/> as this will always run client side
+		/// </summary>
+		/// <param name="item">The item being enchanted</param>
+		/// <param name="EnchantmentItemID"></param>
+		public virtual void OnAddEnchantment(Item item, EnchantmentGlobalItem globalitem, int EnchantmentItemID, int slot) { }
+		/// <summary>
 		/// This will run before the counter from globalItem be wiped clean<br/>
 		/// Only use it if <see cref="ForcedCleanCounter"/> is true
 		/// </summary>

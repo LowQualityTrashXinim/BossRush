@@ -93,14 +93,15 @@ public class EnchantmentSystem : ModSystem {
 				globalitem.EnchantmenStlot[slot] = Main.rand.Next(EnchantmentLoader.EnchantmentcacheID);
 			}
 			else {
-				if (EnchantmentLoader.GetEnchantment(enchantmentType) == null) {
+				ModEnchantment enchant = EnchantmentLoader.GetEnchantment(enchantmentType);
+				if (enchant == null) {
 					return;
 				}
+				enchant.OnAddEnchantment(item, globalitem, enchantmentType, slot);
 				globalitem.EnchantmenStlot[slot] = enchantmentType;
 			}
 		}
 	}
-
 }
 public class EnchantmentGlobalItem : GlobalItem {
 	public static bool CanBeEnchanted(Item entity) => entity.IsAWeapon() && !entity.consumable;
