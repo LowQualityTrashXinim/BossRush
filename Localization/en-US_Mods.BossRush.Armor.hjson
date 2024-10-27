@@ -1,0 +1,12 @@
+WoodArmor: {
+	SetBonus:
+		'''
+		When in forest biome :
+		Increase defense by 5
+		Increase movement speed by 25%
+		Your attack have 25% chance to drop down a acorn dealing 10 damage
+		'''
+	HeadTooltip: ""
+	BodyTooltip: ""
+	LegTooltip: ""
+}

@@ -2455,6 +2455,8 @@ Mods: {
 			Vital.DisplayName: Vital
 			Energetic.DisplayName: Energetic
 			Savage.DisplayName: Savage
+			Alchemic.DisplayName: Alchemic
+			Jumpy.DisplayName: Jumpy
 		}
 	}
 }
