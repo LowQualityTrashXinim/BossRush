@@ -62,7 +62,7 @@ public class PlayerArmorHandle : ModPlayer {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 		if (ActiveArmor.modplayer == null)
 			return;
-		if (ActiveArmor.modplayer.Index == this.Index) {
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
 			Armor_ResetEffects();
 		}
 	}
