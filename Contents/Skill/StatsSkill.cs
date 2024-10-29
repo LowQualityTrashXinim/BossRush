@@ -113,7 +113,7 @@ public class TranquilMind : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<TranquilMind>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 400;
-		Skill_Duration = 5;
+		Skill_Duration = BossRushUtils.ToSecond(5);
 		Skill_CoolDown = BossRushUtils.ToSecond(60);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}

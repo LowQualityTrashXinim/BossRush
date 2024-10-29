@@ -78,6 +78,7 @@ public class Icicle : ModSkill {
 	}
 }
 public class FireBall : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<FireBall>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 45;
 		Skill_Duration = 7;
@@ -99,6 +100,7 @@ public class FireBall : ModSkill {
 	}
 }
 public class StarFury : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<StarFury>("StarFall");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 225;
 		Skill_Duration = 6;
@@ -122,6 +124,7 @@ public class StarFury : ModSkill {
 	}
 }
 public class MeteorShower : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<MeteorShower>("MeteorStrike");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = BossRushUtils.ToSecond(1);

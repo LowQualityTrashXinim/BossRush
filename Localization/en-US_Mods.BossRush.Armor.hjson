@@ -1,10 +1,37 @@
 WoodArmor: {
 	SetBonus:
 		'''
-		When in forest biome :
+When in forest biome :
+	Increase defense by 5
+	Increase movement speed by 25%
+	Your attack have 25% chance to drop down a acorn dealing 10 damage
+		'''
+	HeadTooltip: ""
+	BodyTooltip: ""
+	LegTooltip: ""
+}
+
+BorealWoodArmor: {
+	SetBonus:
+		'''
+		When in snow biome :
 		Increase defense by 5
-		Increase movement speed by 25%
-		Your attack have 25% chance to drop down a acorn dealing 10 damage
+		Increase movement speed by 20%
+		You are immune to Chilled, Slow
+		Your attack have 30% chance to inflict frost burn for 10 second
+		'''
+	HeadTooltip: ""
+	BodyTooltip: ""
+	LegTooltip: ""
+}
+
+RichMahoganyArmor: {
+	SetBonus:
+		'''
+		When in jungle biome :
+		Increase defense by 6
+		Increase movement speed by 30%
+		Getting hit release sharp leaf around you that deal 12 damage
 		'''
 	HeadTooltip: ""
 	BodyTooltip: ""

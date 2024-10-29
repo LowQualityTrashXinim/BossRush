@@ -80,18 +80,13 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	private void ModifyArmorDefenseTooltip(Player player, Item item, List<TooltipLine> tooltips) {
 		int index = tooltips.FindIndex(line => line.Name == "Defense");
-		int adddefense = ArmorLoader.GetHeadDef(item.type);
-		if (adddefense <= 0) {
-			adddefense = ArmorLoader.GetBodyDef(item.type);
-		}
-		if (adddefense <= 0) {
-			adddefense = ArmorLoader.GetLegDef(item.type);
-		}
-		if (adddefense <= 0) {
+		var info = ArmorLoader.GetArmorPieceInfo(item.type);
+		if (info == null) {
 			return;
 		}
+
 		if (index == -1) {
-			tooltips.Insert(2, new(Mod, "Defense", $"{adddefense} Defense"));
+			tooltips.Insert(2, new(Mod, "Defense", $"{info.Add_Defense} Defense"));
 			return;
 		}
 		string text = tooltips[index].Text;
@@ -108,7 +103,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		int defense = int.Parse(defenseStringSimulation);
 		text = text.Substring(indexWhereNumEnd);
-		tooltips[index].Text = (defense + adddefense) + text;
+		tooltips[index].Text = (defense + info.Add_Defense) + text;
 	}
 
 	public override string IsArmorSet(Item head, Item body, Item legs) {
@@ -119,60 +114,57 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 	private string GetToolTip(int type) {
-		if (type == ItemID.BorealWoodHelmet || type == ItemID.BorealWoodBreastplate || type == ItemID.BorealWoodGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.BorealWoodArmor");
-		}
-		if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.RichMahoganyArmor");
-		}
-		if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.ShadewoodArmor");
-		}
-		if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.EbonwoodArmor");
-		}
-		if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.AshWoodArmor");
-		}
-		if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.CactusArmor");
-		}
-		if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.PalmWoodArmor");
-		}
-		if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.PumpkinArmor");
-		}
-		if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.TinArmor");
-		}
-		if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.LeadArmor");
-		}
-		if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.CopperArmor");
-		}
-		if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.PearlArmor");
-		}
-		if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.IronArmor");
-		}
-		if (type == ItemID.SilverHelmet || type == ItemID.SilverChainmail || type == ItemID.SilverGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.SilverArmor");
-		}
-		if (type == ItemID.TungstenHelmet || type == ItemID.TungstenChainmail || type == ItemID.TungstenGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.TungstenArmor");
-		}
-		if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.GoldArmor");
-		}
-		if (type == ItemID.PlatinumHelmet || type == ItemID.PlatinumChainmail || type == ItemID.PlatinumGreaves) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.PlatinumArmor");
-		}
-		if (type == ItemID.JungleHat || type == ItemID.JungleShirt || type == ItemID.JunglePants) {
-			return Language.GetTextValue($"Mods.BossRush.ArmorSet.JungleArmor");
-		}
+		//if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.RichMahoganyArmor");
+		//}
+		//if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.ShadewoodArmor");
+		//}
+		//if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.EbonwoodArmor");
+		//}
+		//if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.AshWoodArmor");
+		//}
+		//if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.CactusArmor");
+		//}
+		//if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PalmWoodArmor");
+		//}
+		//if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PumpkinArmor");
+		//}
+		//if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.TinArmor");
+		//}
+		//if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.LeadArmor");
+		//}
+		//if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.CopperArmor");
+		//}
+		//if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PearlArmor");
+		//}
+		//if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.IronArmor");
+		//}
+		//if (type == ItemID.SilverHelmet || type == ItemID.SilverChainmail || type == ItemID.SilverGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.SilverArmor");
+		//}
+		//if (type == ItemID.TungstenHelmet || type == ItemID.TungstenChainmail || type == ItemID.TungstenGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.TungstenArmor");
+		//}
+		//if (type == ItemID.GoldHelmet || type == ItemID.GoldChainmail || type == ItemID.GoldGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.GoldArmor");
+		//}
+		//if (type == ItemID.PlatinumHelmet || type == ItemID.PlatinumChainmail || type == ItemID.PlatinumGreaves) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PlatinumArmor");
+		//}
+		//if (type == ItemID.JungleHat || type == ItemID.JungleShirt || type == ItemID.JunglePants) {
+		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.JungleArmor");
+		//}
 		return "";
 	}
 	public override void UpdateArmorSet(Player player, string set) {
@@ -191,24 +183,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 	}
 	private bool WoodAndFruitTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BorealWoodHelmet, ItemID.BorealWoodBreastplate, ItemID.BorealWoodGreaves)) {
-			if (player.ZoneSnow) {
-				player.statDefense += 13;
-				player.moveSpeed += .20f;
-				player.buffImmune[BuffID.Chilled] = true;
-				player.buffImmune[BuffID.Slow] = true;
-				modplayer.BorealWoodArmor = true;
-			}
-			return true;
-		}
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.RichMahoganyHelmet, ItemID.RichMahoganyBreastplate, ItemID.RichMahoganyGreaves)) {
-			if (player.ZoneJungle) {
-				player.statDefense += 12;
-				player.moveSpeed += .30f;
-				modplayer.RichMahoganyArmor = true;
-			}
-			return true;
-		}
 		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.ShadewoodHelmet, ItemID.ShadewoodBreastplate, ItemID.ShadewoodGreaves)) {
 			if (player.ZoneCrimson) {
 				player.statDefense += 17;
@@ -315,6 +289,16 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		return false;
 	}
 	public override void UpdateEquip(Item item, Player player) {
+		int type = item.type;
+
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		ModArmorPiece def = ArmorLoader.GetArmorPieceInfo(type);
+		if (def != null) {
+			def.UpdateEquip(player, item);
+			if (def.Add_Defense > 0)
+				modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: def.Add_Defense);
+		}
+
 		BeeArmorRework(player, item);
 		if (item.type == ItemID.NightVisionHelmet) {
 			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
@@ -365,8 +349,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public int DashDelay = 0;
 	public int DashTimer = 0;
 
-	public bool BorealWoodArmor = false;
-	public bool RichMahoganyArmor = false;
 	public bool ShadewoodArmor = false;
 	int ShadewoodArmorCD = 0;
 	public bool EbonWoodArmor = false;
@@ -392,8 +374,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public bool BeeArmor = false;
 
 	public override void ResetEffects() {
-		BorealWoodArmor = false;
-		RichMahoganyArmor = false;
 		ShadewoodArmor = false;
 		EbonWoodArmor = false;
 		CactusArmor = false;
@@ -423,8 +403,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateDead() {
-		BorealWoodArmor = false;
-		RichMahoganyArmor = false;
 		ShadewoodArmor = false;
 		EbonWoodArmor = false;
 		CactusArmor = false;
@@ -591,13 +569,11 @@ class RoguelikeArmorPlayer : ModPlayer {
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		OnHitEffect_RichMahoganyArmor(proj);
 		OnHitEffect_CactusArmor(proj);
 		OnHitEffect_AshWoodArmor(proj);
 		OnHitEffect_PumpkinArmor();
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		OnHitEffect_RichMahoganyArmor(npc);
 		OnHitEffect_CactusArmor(npc);
 		OnHitEffect_AshWoodArmor(npc);
 		OnHitEffect_PumpkinArmor();
@@ -611,15 +587,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		if (AshWoodArmor) {
 			int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, (entity.Center - Player.Center).SafeNormalize(Vector2.UnitX) * 10, ProjectileID.Flames, Main.rand.Next(5, 15), 1f, Player.whoAmI);
 			Main.projectile[proj].penetrate = -1;
-		}
-	}
-	private void OnHitEffect_RichMahoganyArmor(Entity entity) {
-		if (RichMahoganyArmor) {
-			for (int i = 0; i < 10; i++) {
-				Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
-				int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, 12, 1f, Player.whoAmI);
-				Main.projectile[proj].penetrate = -1;
-			}
 		}
 	}
 	private void OnHitEffect_CactusArmor(Entity entity) {
@@ -643,7 +610,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_ShadewoodArmor();
-		OnHitNPC_BorealWoodArmor(target);
 		OnHitNPC_PumpkinArmor(target, damageDone);
 		OnHitNPC_AshWoodArmor(target);
 		OnHitNPC_CopperArmor();
@@ -653,7 +619,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_ShadewoodArmor();
-		OnHitNPC_BorealWoodArmor(target);
 		OnHitNPC_PumpkinArmor(target, damageDone);
 		OnHitNPC_AshWoodArmor(target);
 		OnHitNPC_CopperArmor();
@@ -687,14 +652,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 				Player.Heal(1);
 			}
 			ShadewoodArmorCD = BossRushUtils.ToSecond(3);
-		}
-	}
-	private void OnHitNPC_BorealWoodArmor(NPC target) {
-		if (!BorealWoodArmor) {
-			return;
-		}
-		if (Main.rand.NextFloat() <= .3f) {
-			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
 		}
 	}
 	private void OnHitNPC_PumpkinArmor(NPC npc, float damage) {

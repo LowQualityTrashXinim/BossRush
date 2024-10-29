@@ -5,23 +5,30 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
-internal class WoodArmor : ModArmor {
+namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
+internal class WoodArmor : ModArmorSet {
 	public override void SetDefault() {
 		headID = ItemID.WoodHelmet;
 		bodyID = ItemID.WoodBreastplate;
 		legID = ItemID.WoodGreaves;
 	}
 }
+class WoodHelmet : ModArmorPiece {
+	public override int Add_Defense => 3;
+	public override int _pieceID => ItemID.WoodHelmet;
+}
+class WoodBreastplate : ModArmorPiece {
+	public override int Add_Defense => 4;
+	public override int _pieceID => ItemID.WoodBreastplate;
+}
+class WoodGreaves : ModArmorPiece {
+	public override int Add_Defense => 3;
+	public override int _pieceID => ItemID.WoodGreaves;
+}
 class WoodArmorPlayer : PlayerArmorHandle {
 	public override void SetStaticDefaults() {
-		ModArmor armor = ArmorLoader.GetModArmor("WoodArmor");
+		ModArmorSet armor = ArmorLoader.GetModArmor("WoodArmor");
 		armor.modplayer = this;
-		ArmorLoader.HeadDef.Add(armor.HeadID, 3);
-		ArmorLoader.BodyDef.Add(armor.BodyID, 4);
-		ArmorLoader.LegDef.Add(armor.LegID, 3);
-	}
-	public override void Armor_ResetEffects() {
 	}
 	public override void Armor_UpdateEquipsSet() {
 		if (Player.ZoneForest) {
