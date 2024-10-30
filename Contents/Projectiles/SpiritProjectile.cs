@@ -22,6 +22,12 @@ internal class SpiritProjectile : ModProjectile {
 		Projectile.timeLeft = BossRushUtils.ToSecond(100);
 	}
 	public override void AI() {
+		if (Projectile.ai[0] % 2 == 0) {
+			Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond);
+			dust.noGravity = true;
+			dust.velocity = Vector2.Zero;
+			dust.scale = Main.rand.NextFloat(.85f, 1.25f);
+		}
 		if (++Projectile.ai[0] > 300) {
 			float progress = MathHelper.Lerp(0, 2, Math.Clamp(++Projectile.ai[1] / 300f, 0, 1));
 			Projectile.Center.LookForHostileNPC(out NPC npc, 1500, true);
@@ -29,7 +35,13 @@ internal class SpiritProjectile : ModProjectile {
 				Projectile.velocity = (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * progress;
 			}
 		}
-		Projectile.velocity *= .99f;
+		if (--Projectile.ai[2] <= 0) {
+			Projectile.ai[2] = Main.rand.Next(1, 10) * 50;
+			Projectile.spriteDirection *= -1;
+		}
+		if (Projectile.velocity.IsLimitReached(4))
+			Projectile.velocity -= Projectile.velocity * .99f;
+		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Main.rand.Next(1, 3) * Projectile.spriteDirection));
 	}
 	public override void OnKill(int timeLeft) {
 		for (int i = 0; i < 10; i++) {

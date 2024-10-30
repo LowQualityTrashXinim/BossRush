@@ -68,7 +68,6 @@ public class PlayerArmorHandle : ModPlayer {
 			}
 		}
 	}
-	public virtual void Armor_UpdateEquips(int head, int body, int legs) { }
 	public virtual void Armor_UpdateEquipsSet() { }
 	public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
@@ -104,6 +103,7 @@ public class PlayerArmorHandle : ModPlayer {
 public abstract class ModArmorPiece : ModType {
 	public virtual int _pieceID => ItemID.None;
 	public virtual int Add_Defense => 0;
+	public virtual bool AddTooltip => false;
 	public virtual void UpdateEquip(Player player, Item item) { }
 	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{Name}");
 	protected override void Register() {

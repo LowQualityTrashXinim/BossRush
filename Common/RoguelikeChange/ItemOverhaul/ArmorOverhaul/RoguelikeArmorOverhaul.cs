@@ -21,8 +21,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		Player player = Main.LocalPlayer;
 		ModifyArmorSetToolTip(player, item, tooltips);
-		ModifyArmorToolTip(player, item, tooltips);
-		ModifyArmorDefenseTooltip(player, item, tooltips);
+		ModifyArmorTooltip(player, item, tooltips);
 	}
 	private void ModifyArmorSetToolTip(Player player, Item item, List<TooltipLine> tooltips) {
 		int index = tooltips.FindIndex(line => line.Name == "SetBonus");
@@ -46,39 +45,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			}
 		}
 	}
-	private void ModifyArmorToolTip(Player player, Item item, List<TooltipLine> tooltips) {
-		int index = tooltips.FindIndex(line => line.Name == "Tooltip0");
-		if (index == -1) {
-			return;
-		}
-		if (player.TryGetModPlayer(out PlayerArmorHandle modplayer)) {
-			var armor = modplayer.GetActiveArmorSet();
-			if (armor.Name == "None") {
-				return;
-			}
-			int ItemType = item.type;
-			string text = null;
-			if (armor.HeadID == ItemType) {
-				text = armor.HeadToolTip;
-			}
-			else if (armor.BodyID == ItemType) {
-				text = armor.BodyToolTip;
-			}
-			else if (armor.LegID == ItemType) {
-				text = armor.LegToolTip;
-			}
-			if (text == null) {
-				return;
-			}
-			if (armor.OverrideOriginalToolTip) {
-				tooltips[index].Text = text;
-			}
-			else {
-				tooltips[index].Text += "\n" + text;
-			}
-		}
-	}
-	private void ModifyArmorDefenseTooltip(Player player, Item item, List<TooltipLine> tooltips) {
+	private void ModifyArmorTooltip(Player player, Item item, List<TooltipLine> tooltips) {
 		int index = tooltips.FindIndex(line => line.Name == "Defense");
 		var info = ArmorLoader.GetArmorPieceInfo(item.type);
 		if (info == null) {
@@ -104,6 +71,15 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		int defense = int.Parse(defenseStringSimulation);
 		text = text.Substring(indexWhereNumEnd);
 		tooltips[index].Text = (defense + info.Add_Defense) + text;
+
+		index = tooltips.FindIndex(line => line.Name == "Tooltip0");
+		if (index == -1) {
+			return;
+		}
+		var armorinfo = ArmorLoader.GetArmorPieceInfo(item.type);
+		if (armorinfo.AddTooltip) {
+			tooltips[index].Text += armorinfo.ToolTip;
+		}
 	}
 
 	public override string IsArmorSet(Item head, Item body, Item legs) {
@@ -114,9 +90,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 	private string GetToolTip(int type) {
-		//if (type == ItemID.RichMahoganyHelmet || type == ItemID.RichMahoganyBreastplate || type == ItemID.RichMahoganyGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.RichMahoganyArmor");
-		//}
 		//if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.ShadewoodArmor");
 		//}
@@ -183,14 +156,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 	}
 	private bool WoodAndFruitTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.ShadewoodHelmet, ItemID.ShadewoodBreastplate, ItemID.ShadewoodGreaves)) {
-			if (player.ZoneCrimson) {
-				player.statDefense += 17;
-				player.moveSpeed += .15f;
-				modplayer.ShadewoodArmor = true;
-			}
-			return true;
-		}
 		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.EbonwoodHelmet, ItemID.EbonwoodBreastplate, ItemID.EbonwoodGreaves)) {
 			if (player.ZoneCorrupt) {
 				player.statDefense += 6;
@@ -349,7 +314,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public int DashDelay = 0;
 	public int DashTimer = 0;
 
-	public bool ShadewoodArmor = false;
 	int ShadewoodArmorCD = 0;
 	public bool EbonWoodArmor = false;
 	int EbonWoodArmorCD = 0;
@@ -374,7 +338,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public bool BeeArmor = false;
 
 	public override void ResetEffects() {
-		ShadewoodArmor = false;
 		EbonWoodArmor = false;
 		CactusArmor = false;
 		PalmWoodArmor = false;
@@ -403,7 +366,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateDead() {
-		ShadewoodArmor = false;
 		EbonWoodArmor = false;
 		CactusArmor = false;
 		PalmWoodArmor = false;
@@ -609,7 +571,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		OnHitNPC_ShadewoodArmor();
 		OnHitNPC_PumpkinArmor(target, damageDone);
 		OnHitNPC_AshWoodArmor(target);
 		OnHitNPC_CopperArmor();
@@ -618,7 +579,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		OnHitNPC_PearlWoodArmor(target);
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		OnHitNPC_ShadewoodArmor();
 		OnHitNPC_PumpkinArmor(target, damageDone);
 		OnHitNPC_AshWoodArmor(target);
 		OnHitNPC_CopperArmor();
@@ -633,25 +593,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	private void OnHitNPC_LeadArmor(NPC npc) {
 		if (LeadArmor) {
 			npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
-		}
-	}
-	private void OnHitNPC_ShadewoodArmor() {
-		if (!ShadewoodArmor) {
-			return;
-		}
-		if (ShadewoodArmorCD <= 0) {
-			float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
-			for (int i = 0; i < 75; i++) {
-				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Crimson);
-				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.GemRuby);
-			}
-			Player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
-			foreach (var npc in npclist) {
-				Player.StrikeNPCDirect(npc, npc.CalculateHitInfo((int)Player.GetDamage(DamageClass.Generic).ApplyTo(30), 1));
-				npc.AddBuff(BuffID.Ichor, 300);
-				Player.Heal(1);
-			}
-			ShadewoodArmorCD = BossRushUtils.ToSecond(3);
 		}
 	}
 	private void OnHitNPC_PumpkinArmor(NPC npc, float damage) {
