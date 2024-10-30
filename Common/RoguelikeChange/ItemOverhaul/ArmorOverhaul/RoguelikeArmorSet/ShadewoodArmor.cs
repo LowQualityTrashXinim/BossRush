@@ -1,12 +1,8 @@
-﻿using BossRush.Common.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
+using System.Collections.Generic;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class ShadewoodArmor : ModArmorSet {
@@ -30,6 +26,10 @@ public class ShadewoodGreaves : ModArmorPiece {
 }
 public class ShadewoodArmorPlayer : PlayerArmorHandle {
 	int ShadewoodArmorCD = 0;
+	public override void SetStaticDefaults() {
+		ModArmorSet armor = ArmorLoader.GetModArmor("ShadewoodArmor");
+		armor.modplayer = this;
+	}
 	public override void Armor_UpdateEquipsSet() {
 		if (Player.ZoneCrimson) {
 			Player.statDefense += 7;

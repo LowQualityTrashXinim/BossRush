@@ -90,9 +90,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 	private string GetToolTip(int type) {
-		//if (type == ItemID.ShadewoodHelmet || type == ItemID.ShadewoodBreastplate || type == ItemID.ShadewoodGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.ShadewoodArmor");
-		//}
 		//if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.EbonwoodArmor");
 		//}

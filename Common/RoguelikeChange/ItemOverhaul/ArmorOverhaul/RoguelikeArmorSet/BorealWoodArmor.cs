@@ -2,7 +2,7 @@
 using Terraria.ID;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
-internal class BorealWoodArmor : ModArmorSet {
+internal class BorealwoodArmor : ModArmorSet {
 	public override void SetDefault() {
 		headID = ItemID.BorealWoodHelmet;
 		bodyID = ItemID.BorealWoodBreastplate;
@@ -23,7 +23,7 @@ class BorealWoodGreaves : ModArmorPiece {
 }
 class BorealWoodArmorPlayer : PlayerArmorHandle {
 	public override void SetStaticDefaults() {
-		ModArmorSet armor = ArmorLoader.GetModArmor("BorealWoodArmor");
+		ModArmorSet armor = ArmorLoader.GetModArmor("BorealwoodArmor");
 		armor.modplayer = this;
 	}
 	public override void Armor_UpdateEquipsSet() {

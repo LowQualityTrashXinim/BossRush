@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Terraria.Localization;
 using BossRush.Common.Systems;
 using Terraria.ID;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 public class ArmorLoader : ModSystem {
@@ -69,6 +71,15 @@ public class PlayerArmorHandle : ModPlayer {
 		}
 	}
 	public virtual void Armor_UpdateEquipsSet() { }
+
+	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+			return Armor_Shoot(item, source, position, velocity, type, damage, knockback);
+		}
+		return base.Shoot(item, source, position, velocity, type, damage, knockback);
+	}
+	public virtual bool Armor_Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) => true;
+
 	public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
 			Armor_OnHitNPC(target, hit, damageDone);
