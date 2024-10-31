@@ -1,63 +1,47 @@
-WoodArmor: {
-	SetBonus:
-		'''
-		When in forest biome :
-		Increase defense by 5
-		Increase movement speed by 25%
-		Your attack have 25% chance to drop down a acorn dealing 10 damage
-		'''
-}
-
-BorealWoodArmor: {
-	SetBonus:
-		'''
-		When in snow biome :
-		Increase defense by 5
-		Increase movement speed by 20%
-		You are immune to Chilled, Slow
-		Your attack have 30% chance to inflict frost burn for 10 second
-		'''
-}
-
-RichMahoganyArmor: {
-	SetBonus:
-		'''
-		When in jungle biome :
-		Increase defense by 6
-		Increase movement speed by 30%
-		Getting hit release sharp leaf around you that deal 12 damage
-		'''
-}
-
-ShadewoodArmor: {
-	SetBonus:
-		'''
+WoodArmor.SetBonus:
+	'''
+	When in forest biome :
+	Increase defense by 5
+	Increase movement speed by 25%
+	Your attack have 25% chance to drop down a acorn dealing 10 damage
+	'''
+BorealWoodArmor.SetBonus:
+	'''
+	When in snow biome :
+	Increase defense by 5
+	Increase movement speed by 20%
+	You are immune to Chilled, Slow
+	Your attack have 30% chance to inflict frost burn for 10 second
+	'''
+RichMahoganyArmor.SetBonus:
+	'''
+	When in jungle biome :
+	Increase defense by 6
+	Increase movement speed by 30%
+	Getting hit release sharp leaf around you that deal 12 damage
+	'''
+ShadewoodArmor.SetBonus:
+	'''
 	When in crimson biome :
 	Increase defense by 7
 	Increase movement speed by 15%
 	Whenever you strike a enemy :
 	A ring of crimson burst out that deal fixed 30 damage ( have 3 second cool down)
 	For each enemy it hit, debuff them with ichor for 5s and heal you for 1hp
-		'''
-}
-
-EbonwoodArmor: {
-	SetBonus:
-		'''
+	'''
+EbonwoodArmor.SetBonus:
+	'''
 	When in corruption biome :
 	Increase defense by 6
 	Increase movement speed by 35%
 	Increase damage by 5%
 	You leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s
-		'''
-}
-AshWoodArmor: {
-	SetBonus:
-		'''
+	'''
+AshWoodArmor.SetBonus:
+	'''
 	Increase defense by 8
 	Increase damage by 10%
 	When in underworld or underground caven level :
 	Getting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage
 	All attacks inflicts On Fire! for 5 seconds
-		'''
-}
+	'''

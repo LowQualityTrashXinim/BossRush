@@ -46,35 +46,36 @@ public class ArmorLoader : ModSystem {
 			return _armor.ContainsKey("None") ? _armor["None"] : null;
 		return armor;
 	}
+	public static ModArmorSet Default => _armor["None"];
 	public static ModArmorSet GetModArmor(string name) => _armor.ContainsKey(name) ? _armor[name] : _armor.ContainsKey("None") ? _armor["None"] : null;
 	public static void SetModPlayer(string name, ModPlayer modplayer) => GetModArmor(name).modplayer = modplayer;
 }
-public class PlayerArmorHandle : ModPlayer {
-	private ModArmorSet ActiveArmor = ArmorLoader.GetModArmor("");
-	public ModArmorSet GetActiveArmorSet() => ActiveArmor;
+public abstract class PlayerArmorHandle : ModPlayer {
+	private ModArmorSet ActiveArmor => Player.GetModPlayer<RoguelikeArmorPlayer>().ActiveArmor;
 	public override sealed void ResetEffects() {
-		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			Armor_ResetEffects();
 		}
 	}
 	public virtual void Armor_ResetEffects() { }
 	public override sealed void UpdateEquips() {
-		int headtype = Player.armor[0].type, bodytype = Player.armor[1].type, legstype = Player.armor[2].type;
-		bool Head = headtype == ActiveArmor.HeadID;
-		bool Body = bodytype == ActiveArmor.BodyID;
-		bool Leg = legstype == ActiveArmor.LegID;
-
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
-			if (Head && Body && Leg) {
-				Armor_UpdateEquipsSet();
-			}
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_UpdateEquipsSet();
 		}
 	}
 	public virtual void Armor_UpdateEquipsSet() { }
 
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return base.Shoot(item, source, position, velocity, type, damage, knockback);
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			return Armor_Shoot(item, source, position, velocity, type, damage, knockback);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -82,31 +83,46 @@ public class PlayerArmorHandle : ModPlayer {
 	public virtual bool Armor_Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) => true;
 
 	public override sealed void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			Armor_OnHitNPC(target, hit, damageDone);
 		}
 	}
 	public virtual void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override sealed void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			Armor_OnHitByProjectile(proj, hurtInfo);
 		}
 	}
 	public virtual void Armor_OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) { }
 	public override sealed void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			Armor_OnHitByNPC(npc, hurtInfo);
 		}
 	}
 	public virtual void Armor_OnHitByNPC(NPC target, Player.HurtInfo hurtInfo) { }
 	public override sealed void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			Armor_OnHitWithProj(proj, target, hit, damageDone);
 		}
 	}
 	public virtual void Armor_OnHitWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override sealed void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer is PlayerArmorHandle) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
 			Armor_OnHitWithItem(item, target, hit, damageDone);
 		}
 	}
@@ -146,4 +162,7 @@ public abstract class ModArmorSet : ModType {
 }
 
 public class None : ModArmorSet {
+	public override void SetDefault() {
+		modplayer = null;
+	}
 }

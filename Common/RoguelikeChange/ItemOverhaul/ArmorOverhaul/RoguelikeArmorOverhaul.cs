@@ -28,8 +28,8 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		if (index == -1) {
 			return;
 		}
-		if (player.TryGetModPlayer(out PlayerArmorHandle modplayer)) {
-			var armor = modplayer.GetActiveArmorSet();
+		if (player.TryGetModPlayer(out RoguelikeArmorPlayer modplayer)) {
+			var armor = modplayer.ActiveArmor;
 			if (!armor.ContainAnyOfArmorPiece(item.type)) {
 				return;
 			}
@@ -306,8 +306,9 @@ class RoguelikeArmorPlayer : ModPlayer {
 	int PlatinumArmorCountEffect = 0;
 	public bool JungleArmor = false;
 	public bool BeeArmor = false;
-
+	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public override void ResetEffects() {
+		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 		CactusArmor = false;
 		PalmWoodArmor = false;
 		PumpkinArmor = false;

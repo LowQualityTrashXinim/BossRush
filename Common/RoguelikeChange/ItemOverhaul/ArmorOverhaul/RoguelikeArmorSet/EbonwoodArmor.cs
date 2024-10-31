@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
-internal class EbownoodArmor : ModArmorSet {
+internal class EbonwoodArmor : ModArmorSet {
 	public override void SetDefault() {
 		headID = ItemID.EbonwoodHelmet;
 		bodyID = ItemID.EbonwoodBreastplate;
