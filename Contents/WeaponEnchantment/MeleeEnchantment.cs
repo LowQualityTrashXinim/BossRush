@@ -7,6 +7,10 @@ using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
+using BossRush.Common.Utils;
+using System.Linq;
+using BossRush.Contents.BuffAndDebuff;
+using System;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
@@ -1181,4 +1185,242 @@ public class Shroomerang : ModEnchantment {
 			}
 		}
 	}
+}
+public class BreakerBladeSword : ModEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BreakerBlade;
+	}
+	public override void OnAddEnchantment(Item item, EnchantmentGlobalItem globalitem, int EnchantmentItemID, int slot) {
+		int meleeItem = TerrariaArrayID.MeleeHM[Main.rand.Next(TerrariaArrayID.MeleeHM.Length)];
+		Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_Loot(), meleeItem);
+	}
+
+	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
+		scale += 1f;
+	}
+
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		if (item.DamageType == DamageClass.Melee)
+			useSpeed *= 0.8f;
+	}
+
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		if (item.DamageType == DamageClass.Melee)
+			damage.Base += 25;
+	}
+
+}
+public abstract class YoyoEnchantment : ModEnchantment {
+
+	public float yoyoAmount = 2f;
+	
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+
+
+		for (int i = 0; i < 200; i++) {
+			if (Main.projectile[i].type == ModContent.ProjectileType<GhostYoyo>() && Main.projectile[i].ai[0] == ItemIDType && Main.projectile[i].active)
+				return;
+
+
+
+		}
+
+
+		for (int j = 0; j < yoyoAmount; j++)
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.position, Vector2.Zero, ModContent.ProjectileType<GhostYoyo>(), ContentSamples.ItemsByType[ItemIDType].damage / 2, 1, player.whoAmI, ItemIDType, MathHelper.Lerp(MathHelper.TwoPi, 0f, j / yoyoAmount), 0.075f);
+
+
+	}
+}
+public class WoodenYoyo : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.WoodYoyo;
+	}
+
+
+}
+public class Malaise : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CorruptYoyo;
+		yoyoAmount = 4;
+	}
+
+}
+
+public class Amazon : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.JungleYoyo;
+		yoyoAmount = 3;
+	}
+
+}
+
+public class HiveFive : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.HiveFive;
+		yoyoAmount = 5;
+	}
+
+}
+
+public class Rally : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Rally;
+	}
+
+}
+
+public class Artery : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.CrimsonYoyo;
+		yoyoAmount = 3;
+	}
+}
+
+public class Code1 : YoyoEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Code1;
+		yoyoAmount = 5;
+		
+	}
+
+}
+
+public class Terragrim : ModEnchantment 
+{
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Terragrim;
+	}
+
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.ArmorPenetration += 5;
+	}
+
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.ArmorPenetration += 5;
+	}
+
+	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+		useSpeed *= 2;
+	}
+
+	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
+		damage *= 0.55f;
+				
+	}
+
+
+
+}
+
+
+public class Trimarang : ModEnchantment {
+
+	Item itemstat = new();
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Trimarang;
+		itemstat = ContentSamples.ItemsByType[ItemIDType];
+	}
+
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.itemAnimation == player.itemAnimationMax) {
+			if (player.ownedProjectileCounts[ProjectileID.Trimarang] < 3) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.Trimarang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+			}
+		}
+	}
+
+}
+
+public class BloodButcherer : ModEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BloodButcherer;
+	}
+
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+
+		if (Main.rand.NextBool(10))
+			target.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), BossRushUtils.ToSecond(2));
+
+		modifiers.FinalDamage.Flat += GiveBonusDamage(proj.damage, target);
+	}
+
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+
+		if (Main.rand.NextBool(10))
+			target.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), BossRushUtils.ToSecond(2));
+
+		modifiers.FinalDamage.Flat += GiveBonusDamage(item.damage,target);
+	}
+
+
+	private float GiveBonusDamage(float baseDamage, NPC target) {
+		if (target.lifeRegen < 0)
+			return baseDamage * MathHelper.Lerp(0f, 0.25f, MathHelper.Clamp(Math.Abs(target.lifeRegen) / 10f, 0f, 1f));
+		return 0;
+	}
+
+}
+
+public class BallOHurt : ModEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.BallOHurt;
+	}
+
+	public override void Update(Player player) {
+		player.GetDamage(DamageClass.Melee) += 0.2f;
+		player.GetCritChance(DamageClass.Melee) += 5;
+	}
+
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.CursedInferno,BossRushUtils.ToSecond(6));
+	}
+
+
+}
+
+public class TheMeatball : ModEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TheMeatball;
+	}
+
+	public override void Update(Player player) {
+		player.GetDamage(DamageClass.Melee) += 0.2f;
+		player.GetCritChance(DamageClass.Melee) += 5;
+	}
+
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		target.AddBuff(BuffID.Ichor, BossRushUtils.ToSecond(6));
+	}
+
+
+}
+
+public class SwordFish : ModEnchantment {
+
+
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.Swordfish;
+	}
+
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.FinalDamage *= 0.5f;
+		modifiers.ArmorPenetration += 5;
+		target.StrikeNPC(modifiers.ToHitInfo(proj.damage,false,0,false,player.luck));
+	}
+
 }
