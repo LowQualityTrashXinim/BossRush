@@ -11,6 +11,9 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.Utils;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
+using Terraria.Chat;
+using Terraria.Localization;
+using BossRush.Contents.Items.Chest;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -702,6 +705,57 @@ namespace BossRush.Contents.WeaponEnchantment {
 					Projectile.NewProjectile(proj.GetSource_OnHit(target), pos, vel, ProjectileID.Bee, damage, proj.knockBack, player.whoAmI);
 				}
 			}
+		}
+	}
+	public class ClockworkAssaultRifle : ModEnchantment {
+
+		public override void SetDefaults() {
+			ItemIDType = ItemID.ClockworkAssaultRifle;
+		}
+
+		public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+
+
+			if (globalItem.Item_Counter1[index]++ > 3) {
+
+				globalItem.Item_Counter1[index] = 0;
+
+				useSpeed += 2;
+
+
+			}
+			useSpeed += .1f;
+		}
+
+	}
+
+	public class SandGun : ModEnchantment {
+
+		public override void SetDefaults() {
+			ItemIDType = ItemID.Sandgun;
+		}
+
+		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+			globalItem.Item_Counter1[index]--;
+		}
+
+		public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (target.life - damageDone <= 0 && globalItem.Item_Counter1[index] <= 0)
+				for (int i = 0; i < 15; i++) 
+				{
+					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
+					globalItem.Item_Counter1[index] = 5;
+
+				}
+		}
+
+		public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			if (target.life - damageDone <= 0 && globalItem.Item_Counter1[index] <= 0)
+				for (int i = 0; i < 15; i++) {
+					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
+					globalItem.Item_Counter1[index] = 5;
+
+				}
 		}
 	}
 }

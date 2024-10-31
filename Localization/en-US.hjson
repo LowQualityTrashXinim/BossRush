@@ -284,6 +284,7 @@ Mods: {
 			AngelicSmgThrow.DisplayName: Angelic Smg Throw
 			AngelicSmgHeld.DisplayName: Angelic Smg Held
 			SlashProjectile.DisplayName: Slash Projectile
+			GhostYoyo.DisplayName: Ghost Yoyo
 		}
 
 		NPCs: {
@@ -2265,6 +2266,11 @@ Mods: {
 			AngelicSmgBuff: {
 				DisplayName: Angelic Smg Buff
 				Description: Mods.BossRush.Buffs.AngelicSmgBuff.Description
+			}
+
+			BloodButchererEnchantmentDebuff: {
+				DisplayName: Blood Butcherer Enchantment Debuff
+				Description: Mods.BossRush.Buffs.BloodButchererEnchantmentDebuff.Description
 			}
 		}
 

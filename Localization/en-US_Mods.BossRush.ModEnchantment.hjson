@@ -602,3 +602,35 @@ EnchantedBoomerang.Description: Shoots an Enchanted Boomerang when used
 IceBoomerang.Description: Shoots an Ice Boomerang when used
 Shroomerang.Description: Shoots a Shroomerang when used
 WoodenBoomerang.Description: Shoots a Wooden Boomerang when used
+ClockworkAssaultRifle.Description: after every 3 attack, you attack on a short burst
+Malaise.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+HiveFive.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+Artery.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+Code1.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+Rally.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+WoodenYoyo.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+Amazon.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
+Terragrim.Description: you attack 2x faster, but deal 45% less damage, attacks ignore 5 defense
+Trimarang.Description: Shoots up to 3 Trimarangs when used
+LeatherWhip.Description: 10% increased whip speed and range, Increase Summon Damage by 1
+Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damage by 2, grants jungle's fury on-hit
+SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
+ImpStaff.Description: makes minions shot fireballs at nearby enemy that deals 15 damage
+HornetStaff.Description: makes minions shot stingers at nearby enemy that deals 12 damage
+SandGun.Description: enemies burst into 15 sand projectiles on-death, each deals 15 damage (has a short cooldown)
+TheMeatball.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict ichor debuff
+BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict cursed flames debuff
+SwordFish.Description: damage dealt is splited into two, both damage ignore 5 defense, second source of damage always deals full damage
+BloodButcherer.Description:
+	'''
+	damage dealt is increased based on damage over time debuffs applied to target enemy (up to 25% bonus damage at -10 life regen)
+	10% chance on-hit to apply a powerful damage over time debuff for 2 seconds
+	'''
+BreakerBlade.Description:
+	'''
+	Increases Weapon Size by 100%
+	Decreases Attack Speed by 20%
+	Increases Damage by 25;
+	Gives a random early-hardmode Melee Weapon
+	(most of these bonuses applies only to melee weapons)
+	'''
