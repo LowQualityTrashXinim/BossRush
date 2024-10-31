@@ -9,7 +9,7 @@ public abstract class BaseAccPrefix : ModPrefix {
 	public override PrefixCategory Category => PrefixCategory.Accessory;
 	public virtual float PowerLevel => 1;
 	public sealed override bool CanRoll(Item item) {
-		return true;
+		return item.accessory;
 	}
 	public sealed override bool AllStatChangesHaveEffectOn(Item item) {
 		return base.AllStatChangesHaveEffectOn(item);
@@ -86,23 +86,23 @@ public class Spiky : BaseAccPrefix {
 	}
 }
 public class Vampiric : BaseAccPrefix {
-	public override float PowerLevel => base.PowerLevel;
+	public override float PowerLevel => base.PowerLevel * 4;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.LifeSteal += .04f;
+		modplayer.LifeSteal += .01f * PowerLevel;
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+1% life steal") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+4% life steal") {
 			IsModifier = true,
 		};
 	}
 }
 
 public class Energetic : BaseAccPrefix {
-	public override float PowerLevel => base.PowerLevel;
+	public override float PowerLevel => base.PowerLevel * 2;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.EnergyCap, Base: PowerLevel * 50);
+		modplayer.AddStatsToPlayer(PlayerStats.EnergyCap, Base: PowerLevel * 25);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
 		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+50 maximum energy") {
@@ -111,14 +111,27 @@ public class Energetic : BaseAccPrefix {
 	}
 }
 
-public class Savage : BaseAccPrefix {
-	public override float PowerLevel => base.PowerLevel;
+public class Alchemic : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel * 4;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage, 1 + PowerLevel * .2f);
+		modplayer.AddStatsToPlayer(PlayerStats.DebuffDamage, 1 + PowerLevel * .05f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20% damage against undamage enemy") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20% damage dealt to enemy with debuff") {
+			IsModifier = true,
+		};
+	}
+}
+
+public class Jumpy : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel * 4;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1 + PowerLevel * .01f);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+4% jump boost") {
 			IsModifier = true,
 		};
 	}

@@ -48,6 +48,7 @@ public class WoodSwordSpirit : ModSkill {
 }
 
 public class WilloFreeze : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WilloFreeze>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 485;
 		Skill_Duration = BossRushUtils.ToSecond(4);

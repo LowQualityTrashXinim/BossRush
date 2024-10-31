@@ -8,19 +8,39 @@ using System.Linq;
 namespace BossRush.Common.Systems.CursesSystem;
 internal class CursesLoader : ModSystem {
 	private static Dictionary<string, ModCurse> _curses = new();
-	public static int Register(ModCurse enchant) {
-		ModTypeLookup<ModCurse>.Register(enchant);
-		_curses.Add(enchant.Name, enchant);
+	private static Dictionary<string, ModCurse> _TabooCurse = new();
+	private static Dictionary<string, ModCurse> _BlessingCurse = new();
+	public static int Register(ModCurse curse) {
+		ModTypeLookup<ModCurse>.Register(curse);
+		_curses.Add(curse.Name, curse);
+		if(curse.catagory.Contains(CursesCatagory.Taboo)) {
+			_TabooCurse.Add(curse.Name, curse);
+		}
+		if (curse.catagory.Contains(CursesCatagory.Blessing)) {
+			_BlessingCurse.Add(curse.Name, curse);
+		}
 		return _curses.Count - 1;
 	}
 	public override void Load() {
 		_curses = new();
+		_TabooCurse = new();
+		_BlessingCurse = new();
 	}
 	public override void Unload() {
 		_curses = null;
+		_TabooCurse = null;
+		_BlessingCurse = null;
 	}
-	public static ModCurse GetCurses(string name) => _curses.ContainsKey(name) ? _curses[name] : null;
-	public static int GetQuickValue(Player player, string name) => player.GetModPlayer<PlayerCursesHandle>().curses[GetCurses(name)];
+	public static ModCurse GetCurses(string name, CursesCatagory type = CursesCatagory.None) {
+		if(type == CursesCatagory.Taboo) {
+			return _TabooCurse.ContainsKey(name) ? _TabooCurse[name] : null;
+		}
+		if (type == CursesCatagory.Blessing) {
+			return _BlessingCurse.ContainsKey(name) ? _BlessingCurse[name] : null;
+		}
+		return _curses.ContainsKey(name) ? _curses[name] : null;
+	}
+	public static int GetCurseValue(Player player, string name) => player.GetModPlayer<PlayerCursesHandle>().curses[GetCurses(name)];
 }
 public enum CursesCatagory {
 	None,
@@ -33,16 +53,25 @@ public abstract class ModCurse : ModType {
 	public int Value = 0;
 	public string DisplayName => $"- {Language.GetTextValue($"Mods.BossRush.Curse.{Name}.DisplayName")} -";
 	public string Description => Language.GetTextValue($"Mods.BossRush.Curse.{Name}.Description");
-	public virtual void SetStaticDefault() { }
-	public virtual string FinalDisplayName() => DisplayName;
-	public virtual string FinalDescription() => Description;
 	protected override void Register() {
 		Type = CursesLoader.Register(this);
-		SetStaticDefaults();
+		SetDefault();
 	}
+	protected void AddCatagory(CursesCatagory cata) {
+		if (!catagory.Contains(cata)) {
+			return;
+		}
+		catagory.Add(cata);
+	}
+	protected int GetValue(Player player) => CursesLoader.GetCurseValue(player, Name);
+	public virtual void SetDefault() { }
+	public virtual string FinalDisplayName() => DisplayName;
+	public virtual string FinalDescription() => Description;
 	public virtual void Update(Player player) { }
 	public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 	public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
+	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 }
 public class PlayerCursesHandle : ModPlayer {
 	public Dictionary<ModCurse, int> curses = new();
@@ -51,6 +80,22 @@ public class PlayerCursesHandle : ModPlayer {
 	}
 	public override void UpdateEquips() {
 		curses.Keys.ToList().ForEach(c => c.Update(Player));
+	}
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (curses.Keys.Count < 1) {
+			return;
+		}
+		foreach (ModCurse curse in curses.Keys) {
+			curse.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
+		}
+	}
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (curses.Keys.Count < 1) {
+			return;
+		}
+		foreach (ModCurse curse in curses.Keys) {
+			curse.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
+		}
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		curses.Keys.ToList().ForEach(c => c.OnHitByNPC(Player, npc, hurtInfo));

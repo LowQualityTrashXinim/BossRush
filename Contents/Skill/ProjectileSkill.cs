@@ -4,7 +4,6 @@ using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
-using System.Collections.Generic;
 
 namespace BossRush.Contents.Skill;
 public class HellFireArrowRain : ModSkill {
@@ -41,10 +40,10 @@ public class SpiritBurst : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player) {
-		if (!Main.rand.NextBool(2)) {
+		if (!Main.rand.NextBool(10)) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(40);
+		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(64);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 		Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Main.rand.NextVector2Circular(4, 4), ModContent.ProjectileType<SpiritProjectile>(), damage, knockback, player.whoAmI);
 	}
@@ -78,6 +77,7 @@ public class Icicle : ModSkill {
 	}
 }
 public class FireBall : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<FireBall>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 45;
 		Skill_Duration = 7;
@@ -99,6 +99,7 @@ public class FireBall : ModSkill {
 	}
 }
 public class StarFury : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<StarFury>("StarFall");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 225;
 		Skill_Duration = 6;
@@ -122,6 +123,7 @@ public class StarFury : ModSkill {
 	}
 }
 public class MeteorShower : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<MeteorShower>("MeteorStrike");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 220;
 		Skill_Duration = BossRushUtils.ToSecond(1);

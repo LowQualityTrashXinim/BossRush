@@ -162,12 +162,16 @@ namespace BossRush.Contents.Perks {
 		public int OpportunityWindow = 0;
 		public bool StrikeOpportunity = false;
 		public override void PostUpdate() {
+			if (!Player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<WindSlash>())) {
+				return;
+			}
 			if (Player.ItemAnimationActive) {
 				OpportunityWindow = 0;
 				StrikeOpportunity = false;
 			}
 			if (OpportunityWindow >= BossRushUtils.ToSecond(3)) {
 				StrikeOpportunity = true;
+				Dust.NewDust(Player.Center, 0, 0, DustID.SolarFlare);
 				return;
 			}
 			OpportunityWindow++;
@@ -902,7 +906,7 @@ namespace BossRush.Contents.Perks {
 			if (BossRushUtils.IsAVanillaSword(player.HeldItem.type)
 				|| player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
 				&& player.HeldItem.DamageType == DamageClass.Melee) {
-				modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, 1f, 1.11f);
+				modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, 2f, 1.11f);
 				modplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, Multiplicative: .45f);
 			}
 			else {

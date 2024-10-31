@@ -10,7 +10,6 @@ using Terraria.ID;
 using System;
 using BossRush.Common.General;
 using BossRush.Common.Systems.Mutation;
-using System.Reflection;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -58,12 +57,15 @@ public class PlayerStatsHandle : ModPlayer {
 	/// This have a forced cool down so that it is not OP <br/>
 	/// The cool down are made public and free to be modify cause fun
 	/// </summary>
-	public float LifeSteal = 0;
+	public StatModifier LifeSteal = StatModifier.Default - 1;
 	/// <summary>
-	/// This is the public cool down of <see cref="LifeSteal"/>
-	/// The cool down is hardcoded to 1s
+	/// This is the public count cool down of <see cref="LifeSteal"/>
 	/// </summary>
-	public int LifeSteal_CoolDown = 0;
+	public int LifeSteal_CoolDownCounter = 0;
+	/// <summary>
+	/// This is the count down, by default it set to 1s
+	/// </summary>
+	public int LifeSteal_CoolDown = 60;
 	public int Rapid_LifeRegen = 0;
 	public int Rapid_ManaRegen = 0;
 	public int Debuff_LifeStruct = 0;
@@ -76,9 +78,9 @@ public class PlayerStatsHandle : ModPlayer {
 	/// </summary>
 	public bool ModifyHit_Before_Crit = false;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (LifeSteal_CoolDown <= 0 && LifeSteal > 0) {
-			Player.Heal((int)Math.Ceiling(hit.Damage * LifeSteal));
-			LifeSteal_CoolDown = 60;
+		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
+			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
+			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
@@ -175,9 +177,10 @@ public class PlayerStatsHandle : ModPlayer {
 		DebuffDamage = StatModifier.Default;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
+		LifeSteal = StatModifier.Default - 1;
 		DodgeChance = 0;
-		LifeSteal = 0;
 		successfullyKillNPCcount = 0;
+		LifeSteal_CoolDown = 60;
 		LifeSteal_CoolDown = BossRushUtils.CountDown(LifeSteal_CoolDown);
 		ModifyHit_OverrideCrit = null;
 		ModifyHit_Before_Crit = false;
@@ -312,10 +315,11 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
 	public void AddStatsToPlayer(PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
-		if (Additive < 0) {
-			Additive += 1;
-		}
-		StatModifier StatMod = new StatModifier(Additive, Multiplicative, Flat, Base);
+		StatModifier StatMod = new StatModifier();
+		StatMod += Additive - 1;
+		StatMod *= Multiplicative;
+		StatMod.Flat = Flat;
+		StatMod.Base = Base;
 		AddStatsToPlayer(stat, StatMod);
 	}
 }
