@@ -47,6 +47,7 @@ public class ArmorLoader : ModSystem {
 		return armor;
 	}
 	public static ModArmorSet GetModArmor(string name) => _armor.ContainsKey(name) ? _armor[name] : _armor.ContainsKey("None") ? _armor["None"] : null;
+	public static void SetModPlayer(string name, ModPlayer modplayer) => GetModArmor(name).modplayer = modplayer;
 }
 public class PlayerArmorHandle : ModPlayer {
 	private ModArmorSet ActiveArmor = ArmorLoader.GetModArmor("");

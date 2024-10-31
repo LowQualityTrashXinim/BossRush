@@ -31,6 +31,7 @@ public class ShadewoodArmorPlayer : PlayerArmorHandle {
 		armor.modplayer = this;
 	}
 	public override void Armor_UpdateEquipsSet() {
+		ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
 		if (Player.ZoneCrimson) {
 			Player.statDefense += 7;
 			Player.moveSpeed += .15f;

@@ -90,12 +90,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 	private string GetToolTip(int type) {
-		//if (type == ItemID.EbonwoodHelmet || type == ItemID.EbonwoodBreastplate || type == ItemID.EbonwoodGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.EbonwoodArmor");
-		//}
-		//if (type == ItemID.AshWoodHelmet || type == ItemID.AshWoodBreastplate || type == ItemID.AshWoodGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.AshWoodArmor");
-		//}
 		//if (type == ItemID.CactusHelmet || type == ItemID.CactusBreastplate || type == ItemID.CactusLeggings) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.CactusArmor");
 		//}
@@ -153,23 +147,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 	}
 	private bool WoodAndFruitTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.EbonwoodHelmet, ItemID.EbonwoodBreastplate, ItemID.EbonwoodGreaves)) {
-			if (player.ZoneCorrupt) {
-				player.statDefense += 6;
-				player.moveSpeed += .35f;
-				player.GetDamage(DamageClass.Generic) += .05f;
-				modplayer.EbonWoodArmor = true;
-			}
-			return true;
-		}
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.AshWoodHelmet, ItemID.AshWoodBreastplate, ItemID.AshWoodGreaves)) {
-			player.statDefense += 16;
-			player.GetDamage(DamageClass.Generic) += .1f;
-			if (player.ZoneUnderworldHeight || player.ZoneUnderworldHeight) {
-				modplayer.AshWoodArmor = true;
-			}
-			return true;
-		}
 		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CactusHelmet, ItemID.CactusBreastplate, ItemID.CactusLeggings)) {
 			player.statDefense += 10;
 			modplayer.CactusArmor = true;
@@ -311,15 +288,11 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public int DashDelay = 0;
 	public int DashTimer = 0;
 
-	int ShadewoodArmorCD = 0;
-	public bool EbonWoodArmor = false;
-	int EbonWoodArmorCD = 0;
 	public bool CactusArmor = false;
 	int CactusArmorCD = 0;
 	public bool PalmWoodArmor = false;
 	public int PalmWoodArmor_SandCounter = 0;
 	public bool PumpkinArmor = false;
-	public bool AshWoodArmor = false;
 	public bool CopperArmor = false;
 	int CopperArmorChargeCounter = 0;
 	public bool GoldArmor = false;
@@ -335,11 +308,9 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public bool BeeArmor = false;
 
 	public override void ResetEffects() {
-		EbonWoodArmor = false;
 		CactusArmor = false;
 		PalmWoodArmor = false;
 		PumpkinArmor = false;
-		AshWoodArmor = false;
 		CopperArmor = false;
 		GoldArmor = false;
 		pearlWoodArmor = false;
@@ -363,11 +334,9 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 	}
 	public override void UpdateDead() {
-		EbonWoodArmor = false;
 		CactusArmor = false;
 		PalmWoodArmor = false;
 		PumpkinArmor = false;
-		AshWoodArmor = false;
 		CopperArmor = false;
 		GoldArmor = false;
 		pearlWoodArmor = false;
@@ -412,16 +381,8 @@ class RoguelikeArmorPlayer : ModPlayer {
 			&& !Player.mount.Active;
 	}
 	public override void PreUpdate() {
-		ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
-		EbonWoodArmorCD = BossRushUtils.CountDown(EbonWoodArmorCD);
 		CactusArmorCD = BossRushUtils.CountDown(CactusArmorCD);
 		pearlWoodArmorCD = BossRushUtils.CountDown(pearlWoodArmorCD);
-		if (EbonWoodArmor) {
-			if (EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero) {
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
-				EbonWoodArmorCD = 45;
-			}
-		}
 		if (PalmWoodArmor) {
 			if (Player.justJumped) {
 				for (int i = 0; i < 4; i++) {
@@ -529,12 +490,10 @@ class RoguelikeArmorPlayer : ModPlayer {
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
 		OnHitEffect_CactusArmor(proj);
-		OnHitEffect_AshWoodArmor(proj);
 		OnHitEffect_PumpkinArmor();
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
 		OnHitEffect_CactusArmor(npc);
-		OnHitEffect_AshWoodArmor(npc);
 		OnHitEffect_PumpkinArmor();
 	}
 	private void OnHitEffect_PumpkinArmor() {
@@ -542,12 +501,7 @@ class RoguelikeArmorPlayer : ModPlayer {
 			Player.AddBuff(BuffID.WellFed3, 300);
 		}
 	}
-	private void OnHitEffect_AshWoodArmor(Entity entity) {
-		if (AshWoodArmor) {
-			int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, (entity.Center - Player.Center).SafeNormalize(Vector2.UnitX) * 10, ProjectileID.Flames, Main.rand.Next(5, 15), 1f, Player.whoAmI);
-			Main.projectile[proj].penetrate = -1;
-		}
-	}
+
 	private void OnHitEffect_CactusArmor(Entity entity) {
 		if (CactusArmor) {
 			if (CactusArmorCD <= 0) {
@@ -569,7 +523,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_PumpkinArmor(target, damageDone);
-		OnHitNPC_AshWoodArmor(target);
 		OnHitNPC_CopperArmor();
 		OnHitNPC_GoldArmor(target, damageDone);
 		OnHitNPC_LeadArmor(target);
@@ -577,7 +530,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_PumpkinArmor(target, damageDone);
-		OnHitNPC_AshWoodArmor(target);
 		OnHitNPC_CopperArmor();
 		OnHitNPC_GoldArmor(target, damageDone);
 		if (TinArmor)
@@ -611,11 +563,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 		else {
 			npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
-		}
-	}
-	private void OnHitNPC_AshWoodArmor(NPC npc) {
-		if (AshWoodArmor) {
-			npc.AddBuff(BuffID.OnFire, 300);
 		}
 	}
 	private void OnHitNPC_PearlWoodArmor(NPC npc) {
