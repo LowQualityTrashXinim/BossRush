@@ -25,8 +25,7 @@ class RichMahoganyGreaves : ModArmorPiece {
 class RichMahoganyArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;
 	public override void SetStaticDefaults() {
-		ModArmorSet armor = ArmorLoader.GetModArmor("RichMahoganyArmor");
-		armor.modplayer = this;
+		ArmorLoader.SetModPlayer("RichMahoganyArmor", this);
 	}
 	public override void Armor_ResetEffects() {
 		inZone = false;

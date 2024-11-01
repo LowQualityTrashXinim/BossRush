@@ -27,8 +27,7 @@ class WoodGreaves : ModArmorPiece {
 class WoodArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;
 	public override void SetStaticDefaults() {
-		ModArmorSet armor = ArmorLoader.GetModArmor("WoodArmor");
-		armor.modplayer = this;
+		ArmorLoader.SetModPlayer("WoodArmor", this);
 	}
 	public override void Armor_ResetEffects() {
 		inZone = false;

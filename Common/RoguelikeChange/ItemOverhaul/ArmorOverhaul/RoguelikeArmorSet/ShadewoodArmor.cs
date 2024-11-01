@@ -28,8 +28,7 @@ public class ShadewoodArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;
 	int ShadewoodArmorCD = 0;
 	public override void SetStaticDefaults() {
-		ModArmorSet armor = ArmorLoader.GetModArmor("ShadewoodArmor");
-		armor.modplayer = this;
+		ArmorLoader.SetModPlayer("ShadewoodArmor", this);
 	}
 	public override void Armor_ResetEffects() {
 		inZone = false;

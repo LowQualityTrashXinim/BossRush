@@ -24,8 +24,7 @@ class BorealWoodGreaves : ModArmorPiece {
 class BorealWoodArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;
 	public override void SetStaticDefaults() {
-		ModArmorSet armor = ArmorLoader.GetModArmor("BorealwoodArmor");
-		armor.modplayer = this;
+		ArmorLoader.SetModPlayer("BorealwoodArmor", this);
 	}
 	public override void Armor_UpdateEquipsSet() {
 		if (Player.ZoneSnow) {

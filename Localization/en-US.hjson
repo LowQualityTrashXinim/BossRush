@@ -79,15 +79,15 @@ Mods: {
 					skill cool down nor skill active so make your activation count !
 					'''
 
-			Achievement: {
-				FutureShit: ""
-				Tooltip:
-					'''
-					[Achievement]
-					This is where you can view mod's custom achievement
-					Complete these achievement for special reward ! (W.I.P)
-					'''
-			}
+				Achievement: {
+					FutureShit: ""
+					Tooltip:
+						'''
+						[Achievement]
+						This is where you can view mod's custom achievement
+						Complete these achievement for special reward ! (W.I.P)
+						'''
+				}
 			}
 		}
 
