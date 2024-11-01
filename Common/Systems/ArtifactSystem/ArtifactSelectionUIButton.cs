@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Artifacts;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -36,7 +37,7 @@ namespace BossRush.Common.Systems.ArtifactSystem {
 
 			SelectedBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelHighlight");
 			HoveredBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanelBorder");
-			LockTexture = ModContent.Request<Texture2D>("BossRush/Texture/UI/lock");
+			LockTexture = ModContent.Request<Texture2D>(BossRushTexture.Lock);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {

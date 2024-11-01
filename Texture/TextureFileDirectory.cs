@@ -21,6 +21,7 @@
 		public const string SUPPILESDROP = "BossRush/Texture/SuppliesDrop";
 		public const string FOURSTAR = "BossRush/Texture/FourStar";
 		public const string CrossSprite = "BossRush/Texture/UI/Cross";
+		public const string Lock = "BossRush/Texture/UI/lock";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
 	}

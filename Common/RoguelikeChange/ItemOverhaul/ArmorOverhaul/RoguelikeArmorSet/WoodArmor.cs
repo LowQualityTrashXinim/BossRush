@@ -25,18 +25,23 @@ class WoodGreaves : ModArmorPiece {
 	public override int _pieceID => ItemID.WoodGreaves;
 }
 class WoodArmorPlayer : PlayerArmorHandle {
+	bool inZone = false;
 	public override void SetStaticDefaults() {
 		ModArmorSet armor = ArmorLoader.GetModArmor("WoodArmor");
 		armor.modplayer = this;
+	}
+	public override void Armor_ResetEffects() {
+		inZone = false;
 	}
 	public override void Armor_UpdateEquipsSet() {
 		if (Player.ZoneForest) {
 			Player.statDefense += 5;
 			Player.moveSpeed += .25f;
+			inZone = true;
 		}
 	}
 	public override void Armor_OnHitWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile)) {
+		if (Main.rand.NextBool(4) && (proj is null || proj is not null && proj.ModProjectile is not AcornProjectile) && inZone) {
 			Projectile.NewProjectile(Player.GetSource_FromThis(),
 				target.Center - new Vector2(0, 400),
 				Vector2.UnitY * 10,
@@ -44,7 +49,7 @@ class WoodArmorPlayer : PlayerArmorHandle {
 		}
 	}
 	public override void Armor_OnHitWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(4)) {
+		if (Main.rand.NextBool(4) && inZone) {
 			Projectile.NewProjectile(Player.GetSource_FromThis(),
 				target.Center - new Vector2(0, 400),
 				Vector2.UnitY * 10,

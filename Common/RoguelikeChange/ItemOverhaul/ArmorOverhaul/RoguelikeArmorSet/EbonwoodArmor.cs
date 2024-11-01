@@ -34,10 +34,10 @@ public class EbonwoodArmorPlayer : PlayerArmorHandle {
 			Player.statDefense += 6;
 			Player.moveSpeed += .35f;
 			Player.GetDamage(DamageClass.Generic) += .05f;
-		}
-		if (--EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero) {
-			Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
-			EbonWoodArmorCD = 45;
+			if (--EbonWoodArmorCD <= 0 && Player.velocity != Vector2.Zero) {
+				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center + Main.rand.NextVector2Circular(10, 10), -Player.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<CorruptionTrail>(), 3, 0, Player.whoAmI);
+				EbonWoodArmorCD = 45;
+			}
 		}
 	}
 }

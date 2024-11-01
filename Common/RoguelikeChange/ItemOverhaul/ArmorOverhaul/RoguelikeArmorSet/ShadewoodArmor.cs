@@ -25,23 +25,28 @@ public class ShadewoodGreaves : ModArmorPiece {
 	public override int Add_Defense => 3;
 }
 public class ShadewoodArmorPlayer : PlayerArmorHandle {
+	bool inZone = false;
 	int ShadewoodArmorCD = 0;
 	public override void SetStaticDefaults() {
 		ModArmorSet armor = ArmorLoader.GetModArmor("ShadewoodArmor");
 		armor.modplayer = this;
+	}
+	public override void Armor_ResetEffects() {
+		inZone = false;
 	}
 	public override void Armor_UpdateEquipsSet() {
 		ShadewoodArmorCD = BossRushUtils.CountDown(ShadewoodArmorCD);
 		if (Player.ZoneCrimson) {
 			Player.statDefense += 7;
 			Player.moveSpeed += .15f;
+			inZone = true;
 		}
 	}
 	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_ShadewoodArmor();
 	}
 	private void OnHitNPC_ShadewoodArmor() {
-		if (ShadewoodArmorCD <= 0) {
+		if (ShadewoodArmorCD <= 0 && inZone) {
 			float radius = Player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
 			for (int i = 0; i < 75; i++) {
 				Dust.NewDust(Player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Crimson);

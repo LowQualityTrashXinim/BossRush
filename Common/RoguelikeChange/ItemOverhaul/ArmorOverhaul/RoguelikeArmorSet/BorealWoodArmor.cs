@@ -22,6 +22,7 @@ class BorealWoodGreaves : ModArmorPiece {
 	public override int _pieceID => ItemID.BorealWoodGreaves;
 }
 class BorealWoodArmorPlayer : PlayerArmorHandle {
+	bool inZone = false;
 	public override void SetStaticDefaults() {
 		ModArmorSet armor = ArmorLoader.GetModArmor("BorealwoodArmor");
 		armor.modplayer = this;
@@ -32,6 +33,7 @@ class BorealWoodArmorPlayer : PlayerArmorHandle {
 			Player.moveSpeed += .20f;
 			Player.buffImmune[BuffID.Chilled] = true;
 			Player.buffImmune[BuffID.Slow] = true;
+			inZone = true;
 		}
 	}
 	public override void Armor_OnHitWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -41,7 +43,7 @@ class BorealWoodArmorPlayer : PlayerArmorHandle {
 		OnHitNPC_BorealWoodArmor(target);
 	}
 	private void OnHitNPC_BorealWoodArmor(NPC target) {
-		if (Main.rand.NextFloat() <= .3f) {
+		if (Main.rand.NextFloat() <= .3f && inZone) {
 			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
 		}
 	}

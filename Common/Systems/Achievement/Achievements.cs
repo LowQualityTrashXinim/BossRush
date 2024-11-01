@@ -2,11 +2,14 @@ using BossRush.Common.General;
 using BossRush.Common.Mode.Nightmare;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Artifacts;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.NPCs;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace BossRush.Common.Systems.Achievement;
 
@@ -48,6 +51,9 @@ public class TokenOfGreed : ModAchievement {
 }
 
 public class TokenOfPride : ModAchievement {
+	public override void Draw(UIElement element, SpriteBatch spriteBatch) {
+		Artifact.GetArtifact(Artifact.ArtifactType<TokenOfPrideArtifact>()).DrawInUI(spriteBatch, element.GetDimensions());
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>();
 	}
@@ -74,11 +80,16 @@ public class BootOfSpeedManipulation : ModAchievement {
 	}
 }
 public class VampirismCrystal : ModAchievement {
+	public override bool SpecialDraw => true;
+	public override void Draw(UIElement element, SpriteBatch spriteBatch) {
+		Artifact.GetArtifact(Artifact.ArtifactType<VampirismCrystalArtifact>()).DrawInUI(spriteBatch, element.GetDimensions());
+	}
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<VampirismCrystalArtifact>();
 	}
 }
 public class HeartOfEarth : ModAchievement {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<HeartOfEarthArtifact>();
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod() && Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>();
 	}
@@ -104,6 +115,7 @@ public class AlchemistKnowledge : ModAchievement {
 	}
 }
 public class LordOfLootBox : ModAchievement {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<WoodenLootBox>();
 	public override bool Condition() {
 		return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(ModContent.NPCType<LootBoxLord>());
 	}
@@ -130,8 +142,8 @@ public class TrueNightmare : ModAchievement {
 	}
 }
 public class GodOfChallenge : ModAchievement {
-	public override bool Condition() {
-		return UniversalSystem.DidPlayerBeatTheMod() 
+	public override bool Condition() {//TODO make god of challenge a world setting instead
+		return UniversalSystem.DidPlayerBeatTheMod()
 			&& Main.LocalPlayer.GetModPlayer<ModdedPlayer>().gitGud > 0
 			&& (Main.expertMode || Main.masterMode);
 	}

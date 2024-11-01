@@ -78,6 +78,16 @@ Mods: {
 					skill active duration end then skill cool down will set in, you can't gain energy during
 					skill cool down nor skill active so make your activation count !
 					'''
+
+			Achievement: {
+				FutureShit: ""
+				Tooltip:
+					'''
+					[Achievement]
+					This is where you can view mod's custom achievement
+					Complete these achievement for special reward ! (W.I.P)
+					'''
+			}
 			}
 		}
 

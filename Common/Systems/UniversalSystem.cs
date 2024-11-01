@@ -2004,7 +2004,6 @@ public class AchievementUI : UIState {
 	UIPanel mainPanel;
 	Roguelike_WrapTextUIPanel textpanel;
 	Roguelike_WrapTextUIPanel conditiontextpanel;
-	UIImage image;
 	List<AchievementButton> btn_Achievement;
 	private int RowOffSet = 0;
 	public static string ActiveAchievement = "";
@@ -2040,15 +2039,8 @@ public class AchievementUI : UIState {
 		conditiontextpanel = new Roguelike_WrapTextUIPanel("", .77f);
 		conditiontextpanel.HAlign = .1f;
 		conditiontextpanel.VAlign = 1f;
-		conditiontextpanel.UISetWidthHeight(300, 100);
+		conditiontextpanel.UISetWidthHeight(450, 100);
 		textpanel.Append(conditiontextpanel);
-
-		image = new UIImage(TextureAssets.InventoryBack16);
-		image.HAlign = 1f;
-		image.VAlign = 1f;
-		image.ScaleToFit = true;
-		image.UISetWidthHeight(100, 100);
-		textpanel.Append(image);
 	}
 	public override void ScrollWheel(UIScrollWheelEvent evt) {
 		RowOffSet -= MathF.Sign(evt.ScrollWheelValue);
@@ -2095,6 +2087,7 @@ public class AchievementButton : UIImageButton {
 	public string achievementname;
 	private ModAchievement achievement;
 	Texture2D texture;
+	Asset<Texture2D> Lock;
 	public void SetAchievement(string name) {
 		achievementname = name;
 		achievement = AchievementSystem.GetAchievement(achievementname);
@@ -2103,6 +2096,7 @@ public class AchievementButton : UIImageButton {
 	public AchievementButton(Asset<Texture2D> texture, string achievementName) : base(texture) {
 		this.texture = texture.Value;
 		SetAchievement(achievementName);
+		Lock = ModContent.Request<Texture2D>(BossRushTexture.Lock);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		AchievementUI.ActiveAchievement = achievementname;
@@ -2129,28 +2123,35 @@ public class AchievementButton : UIImageButton {
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 		string texturestring;
-		float visibility;
-		if (achievement != null) {
+		bool checkAchievement = achievement != null;
+		if (checkAchievement) {
 			texturestring = achievement.Texture;
-			if (achievement.Achieved) {
-				visibility = 1f;
-			}
-			else {
-				visibility = .5f;
+			if (achievement.SpecialDraw) {
+				achievement.Draw(this, spriteBatch);
+				if (!achievement.Achieved) {
+					Texture2D locktex = Lock.Value;
+					Vector2 origin2 = locktex.Size() * .5f;
+					Vector2 drawpos2 = this.GetDimensions().Position() + texture.Size() * .5f;
+					spriteBatch.Draw(locktex, drawpos2, null, new Color(255, 255, 255) * .45f, 0, origin2, .9f, SpriteEffects.None, 0);
+				}
+				return;
 			}
 		}
 		else {
-			visibility = .5f;
 			texturestring = BossRushTexture.ACCESSORIESSLOT;
-		}
-		if (texturestring != BossRushTexture.ACCESSORIESSLOT) {
-			visibility = .75f;
 		}
 		Texture2D skilltexture = ModContent.Request<Texture2D>(texturestring).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(texture.Size(), skilltexture.Size());
 		Vector2 drawpos = this.GetDimensions().Position() + texture.Size() * .5f;
-		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255) * visibility, 0, origin, scaling, SpriteEffects.None, 0);
+		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
+		if (checkAchievement) {
+			if (!achievement.Achieved) {
+				Texture2D locktex = Lock.Value;
+				origin = locktex.Size() * .5f;
+				spriteBatch.Draw(locktex, drawpos, null, new Color(255, 255, 255) * .45f, 0, origin, .9f, SpriteEffects.None, 0);
+			}
+		}
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 
