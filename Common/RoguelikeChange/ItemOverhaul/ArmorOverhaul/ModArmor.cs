@@ -79,7 +79,15 @@ public abstract class PlayerArmorHandle : ModPlayer {
 		}
 	}
 	public virtual void Armor_UpdateEquipsSet() { }
-
+	public override sealed void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_ModifyShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
+		}
+	}
+	public virtual void Armor_ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -99,6 +107,24 @@ public abstract class PlayerArmorHandle : ModPlayer {
 			Armor_OnHitNPC(target, hit, damageDone);
 		}
 	}
+	public override sealed void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_ModifyHitByNPC(npc, ref modifiers);
+		}
+	}
+	public virtual void Armor_ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) { }
+	public override sealed void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			ModifyHitByProjectile(proj, ref modifiers);
+		}
+	}
+	public virtual void Armor_ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) { }
 	public virtual void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override sealed void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
 		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {

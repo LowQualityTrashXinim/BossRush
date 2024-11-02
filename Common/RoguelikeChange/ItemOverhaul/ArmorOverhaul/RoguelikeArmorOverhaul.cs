@@ -86,26 +86,9 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			}
 		}
 	}
-
-	public override string IsArmorSet(Item head, Item body, Item legs) {
-		if (!UniversalSystem.Check_RLOH()) {
-			return "";
-		}
-		return new ArmorSet(head.type, body.type, legs.type).ToString();
-	}
-	//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 	private string GetToolTip(int type) {
-		//if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.TinArmor");
-		//}
 		//if (type == ItemID.LeadHelmet || type == ItemID.LeadChainmail || type == ItemID.LeadGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.LeadArmor");
-		//}
-		//if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.CopperArmor");
-		//}
-		//if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.IronArmor");
 		//}
 		//if (type == ItemID.SilverHelmet || type == ItemID.SilverChainmail || type == ItemID.SilverGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.SilverArmor");
@@ -133,25 +116,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 	}
 	private bool OreTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves)) {
-			player.statDefense += 5;
-			player.moveSpeed += .21f;
-			modplayer.TinArmor = true;
-			return true;
-		}
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.CopperHelmet, ItemID.CopperChainmail, ItemID.CopperGreaves)) {
-			player.moveSpeed += 0.25f;
-			modplayer.CopperArmor = true;
-			return true;
-		}
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.IronHelmet, ItemID.IronChainmail, ItemID.IronGreaves)) {
-			player.endurance += 0.1f;
-			player.DefenseEffectiveness *= 1.25f;
-			if (player.statLife <= player.statLifeMax * 0.5f) {
-				player.statDefense += 25;
-			}
-			return true;
-		}
 		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.LeadHelmet, ItemID.LeadChainmail, ItemID.LeadGreaves)) {
 			player.statDefense += 7;
 			modplayer.LeadArmor = true;
@@ -208,11 +172,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 }
 class RoguelikeArmorPlayer : ModPlayer {
 
-	public bool CopperArmor = false;
-	int CopperArmorChargeCounter = 0;
 	public bool GoldArmor = false;
-	public bool TinArmor = false;
-	public int TinArmorCountEffect = 0;
 	public bool LeadArmor = false;
 	public bool TungstenArmor = false;
 	public bool PlatinumArmor = false;
@@ -221,18 +181,14 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public override void ResetEffects() {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
-		CopperArmor = false;
 		GoldArmor = false;
-		TinArmor = false;
 		LeadArmor = false;
 		TungstenArmor = false;
 		PlatinumArmor = false;
 		JungleArmor = false;
 	}
 	public override void UpdateDead() {
-		CopperArmor = false;
 		GoldArmor = false;
-		TinArmor = false;
 		LeadArmor = false;
 		TungstenArmor = false;
 		PlatinumArmor = false;
@@ -263,39 +219,8 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 		return base.UseSpeedMultiplier(item);
 	}
-	public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-		if (TinArmor) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				velocity *= 2;
-			}
-		}
-	}
 	public float[] Projindex = new float[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (TinArmor) {
-			if (item.useAmmo == AmmoID.Arrow) {
-				Vector2 pos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 50, 50);
-				Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * velocity.Length();
-				Projectile.NewProjectile(source, pos, vel, ModContent.ProjectileType<TinOreProjectile>(), damage, knockback, Player.whoAmI);
-				TinArmorCountEffect++;
-				if (TinArmorCountEffect >= 5) {
-					Projectile.NewProjectile(source, position, velocity * 1.15f, ModContent.ProjectileType<TinBarProjectile>(), (int)(damage * 1.5f), knockback, Player.whoAmI);
-					TinArmorCountEffect = 0;
-				}
-			}
-			if (item.mana > 0 && Item.staff[item.type]) {
-				for (int i = 0; i < 3; i++) {
-					Vector2 vec = velocity.Vector2DistributeEvenly(3, 10, i);
-					int proj = Projectile.NewProjectile(source, position, vec, type, damage, knockback, Player.whoAmI);
-					Main.projectile[proj].extraUpdates = 10;
-				}
-				return false;
-			}
-			if (item.useStyle == ItemUseStyleID.Rapier) {
-				Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
-				Projectile.NewProjectile(source, pos, Main.MouseWorld - pos, ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
-			}
-		}
 		if (JungleArmor) {
 			if (item.DamageType == DamageClass.Magic) {
 
@@ -316,34 +241,16 @@ class RoguelikeArmorPlayer : ModPlayer {
 	}
 
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		OnHitNPC_CopperArmor();
 		OnHitNPC_GoldArmor(target, damageDone);
 		OnHitNPC_LeadArmor(target);
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		OnHitNPC_CopperArmor();
 		OnHitNPC_GoldArmor(target, damageDone);
-		if (TinArmor)
-			if (item.DamageType == DamageClass.Melee) {
-				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TinBroadSwordProjectile>(), 12, 1f, Player.whoAmI);
-			}
 		OnHitNPC_LeadArmor(target);
 	}
 	private void OnHitNPC_LeadArmor(NPC npc) {
 		if (LeadArmor) {
 			npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
-		}
-	}
-	private void OnHitNPC_CopperArmor() {
-		if (!CopperArmor) {
-			return;
-		}
-		CopperArmorChargeCounter++;
-		if (Player.ZoneRain)
-			CopperArmorChargeCounter++;
-		if (CopperArmorChargeCounter >= 50) {
-			Player.AddBuff(ModContent.BuffType<OverCharged>(), 300);
-			CopperArmorChargeCounter = 0;
 		}
 	}
 	private void OnHitNPC_GoldArmor(NPC npc, float damage) {

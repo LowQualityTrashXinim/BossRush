@@ -15,7 +15,7 @@ namespace BossRush {
 		/// <param name="player"></param>
 		/// <param name="percent"></param>
 		/// <returns>
-		/// True if health is above said percentage
+		/// True if health is above or equal said percentage
 		/// </returns>
 		public static bool ComparePlayerHealthInPercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
 		public static bool IsDebugPlayer(this Player player) =>
