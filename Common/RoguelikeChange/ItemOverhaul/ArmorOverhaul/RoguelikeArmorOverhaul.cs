@@ -111,9 +111,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		RoguelikeArmorPlayer modplayer = player.GetModPlayer<RoguelikeArmorPlayer>();
 
 		if (OreTypeArmor(player, modplayer, set)) { return; }
-		else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.JungleHat, ItemID.JungleShirt, ItemID.JunglePants)) {
-			modplayer.JungleArmor = true;
-		}
 	}
 	private bool OreTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
 		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.LeadHelmet, ItemID.LeadChainmail, ItemID.LeadGreaves)) {
@@ -177,7 +174,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public bool TungstenArmor = false;
 	public bool PlatinumArmor = false;
 	int PlatinumArmorCountEffect = 0;
-	public bool JungleArmor = false;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public override void ResetEffects() {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
@@ -185,14 +181,12 @@ class RoguelikeArmorPlayer : ModPlayer {
 		LeadArmor = false;
 		TungstenArmor = false;
 		PlatinumArmor = false;
-		JungleArmor = false;
 	}
 	public override void UpdateDead() {
 		GoldArmor = false;
 		LeadArmor = false;
 		TungstenArmor = false;
 		PlatinumArmor = false;
-		JungleArmor = false;
 	}
 	public override void PreUpdate() {
 		if (PlatinumArmor) {
@@ -219,27 +213,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		}
 		return base.UseSpeedMultiplier(item);
 	}
-	public float[] Projindex = new float[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (JungleArmor) {
-			if (item.DamageType == DamageClass.Magic) {
-
-				float indexThatIsMissing = 0;
-				for (int i = 0; i < Projindex.Length; i++) {
-					if (Projindex[i] != -1)
-						continue;
-					indexThatIsMissing = i;
-					Projindex[i] = 1;
-					break;
-				}
-				if (Player.ownedProjectileCounts[ModContent.ProjectileType<LeafProjectile>()] < 10) {
-					Projectile.NewProjectile(source, Player.Center, Vector2.Zero, ModContent.ProjectileType<LeafProjectile>(), (int)(damage * 1.25f), knockback, Player.whoAmI, indexThatIsMissing);
-				}
-			}
-		}
-		return base.Shoot(item, source, position, velocity, type, damage, knockback);
-	}
-
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_GoldArmor(target, damageDone);
 		OnHitNPC_LeadArmor(target);
