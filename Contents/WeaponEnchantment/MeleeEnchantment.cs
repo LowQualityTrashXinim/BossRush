@@ -1214,23 +1214,22 @@ public class BreakerBladeSword : ModEnchantment {
 public abstract class YoyoEnchantment : ModEnchantment {
 
 	public float yoyoAmount = 2f;
-	
-	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 
 		for (int i = 0; i < 200; i++) {
 			if (Main.projectile[i].type == ModContent.ProjectileType<GhostYoyo>() && Main.projectile[i].ai[0] == ItemIDType && Main.projectile[i].active)
 				return;
-
-
-
 		}
-
-
 		for (int j = 0; j < yoyoAmount; j++)
-			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.position, Vector2.Zero, ModContent.ProjectileType<GhostYoyo>(), ContentSamples.ItemsByType[ItemIDType].damage / 2, 1, player.whoAmI, ItemIDType, MathHelper.Lerp(MathHelper.TwoPi, 0f, j / yoyoAmount), 0.075f);
-
-
+			Projectile.NewProjectile(
+				player.GetSource_ItemUse(item), 
+				player.position, 
+				Vector2.Zero, 
+				ModContent.ProjectileType<GhostYoyo>(), 
+				ContentSamples.ItemsByType[ItemIDType].damage / 2, 
+				1, 
+				player.whoAmI, ItemIDType, MathHelper.Lerp(MathHelper.TwoPi, 0f, j / yoyoAmount), 0.075f);
 	}
 }
 public class WoodenYoyo : YoyoEnchantment {
@@ -1289,13 +1288,12 @@ public class Code1 : YoyoEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Code1;
 		yoyoAmount = 5;
-		
+
 	}
 
 }
 
-public class Terragrim : ModEnchantment 
-{
+public class Terragrim : ModEnchantment {
 
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Terragrim;
@@ -1315,7 +1313,7 @@ public class Terragrim : ModEnchantment
 
 	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
 		damage *= 0.55f;
-				
+
 	}
 
 
@@ -1361,7 +1359,7 @@ public class BloodButcherer : ModEnchantment {
 		if (Main.rand.NextBool(10))
 			target.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), BossRushUtils.ToSecond(2));
 
-		modifiers.FinalDamage.Flat += GiveBonusDamage(item.damage,target);
+		modifiers.FinalDamage.Flat += GiveBonusDamage(item.damage, target);
 	}
 
 
@@ -1385,7 +1383,7 @@ public class BallOHurt : ModEnchantment {
 	}
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		target.AddBuff(BuffID.CursedInferno,BossRushUtils.ToSecond(6));
+		target.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(6));
 	}
 
 
@@ -1420,7 +1418,7 @@ public class SwordFish : ModEnchantment {
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.FinalDamage *= 0.5f;
 		modifiers.ArmorPenetration += 5;
-		target.StrikeNPC(modifiers.ToHitInfo(proj.damage,false,0,false,player.luck));
+		target.StrikeNPC(modifiers.ToHitInfo(proj.damage, false, 0, false, player.luck));
 	}
 
 }
