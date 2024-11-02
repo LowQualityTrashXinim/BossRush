@@ -90,12 +90,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	//I really need to make this whole GetToolTip and UpdateArmorSet to be somehow it's own classes, maybe utilize ArmorSet class ?
 	private string GetToolTip(int type) {
-		//if (type == ItemID.PalmWoodHelmet || type == ItemID.PalmWoodBreastplate || type == ItemID.PalmWoodGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PalmWoodArmor");
-		//}
-		//if (type == ItemID.PumpkinHelmet || type == ItemID.PumpkinBreastplate || type == ItemID.PumpkinLeggings) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PumpkinArmor");
-		//}
 		//if (type == ItemID.TinHelmet || type == ItemID.TinChainmail || type == ItemID.TinGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.TinArmor");
 		//}
@@ -130,8 +124,8 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 	public override void UpdateArmorSet(Player player, string set) {
 		RoguelikeArmorPlayer modplayer = player.GetModPlayer<RoguelikeArmorPlayer>();
-		if (WoodAndFruitTypeArmor(player, modplayer, set)) { return; }
-		else if (OreTypeArmor(player, modplayer, set)) { return; }
+
+		if (OreTypeArmor(player, modplayer, set)) { return; }
 		else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.JungleHat, ItemID.JungleShirt, ItemID.JunglePants)) {
 			modplayer.JungleArmor = true;
 		}
@@ -142,17 +136,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			modplayer.BeeArmor = true;
 			player.maxMinions++;
 		}
-	}
-	private bool WoodAndFruitTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PearlwoodHelmet, ItemID.PearlwoodBreastplate, ItemID.PearlwoodGreaves)) {
-			player.moveSpeed += 0.35f;
-			player.statDefense += 12;
-			modplayer.pearlWoodArmor = true;
-			if (Main.dayTime)
-				player.GetDamage(DamageClass.Generic) += 0.15f;
-			return true;
-		}
-		return false;
 	}
 	private bool OreTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
 		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.TinHelmet, ItemID.TinChainmail, ItemID.TinGreaves)) {
@@ -271,8 +254,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public bool CopperArmor = false;
 	int CopperArmorChargeCounter = 0;
 	public bool GoldArmor = false;
-	public bool pearlWoodArmor = false;
-	int pearlWoodArmorCD = 0;
 	public bool TinArmor = false;
 	public int TinArmorCountEffect = 0;
 	public bool LeadArmor = false;
@@ -286,7 +267,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 		CopperArmor = false;
 		GoldArmor = false;
-		pearlWoodArmor = false;
 		TinArmor = false;
 		LeadArmor = false;
 		TungstenArmor = false;
@@ -309,7 +289,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public override void UpdateDead() {
 		CopperArmor = false;
 		GoldArmor = false;
-		pearlWoodArmor = false;
 		TinArmor = false;
 		LeadArmor = false;
 		TungstenArmor = false;
@@ -351,7 +330,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 			&& !Player.mount.Active;
 	}
 	public override void PreUpdate() {
-		pearlWoodArmorCD = BossRushUtils.CountDown(pearlWoodArmorCD);
 		if (PlatinumArmor) {
 			if (Player.ItemAnimationActive) {
 				PlatinumArmorCountEffect = Math.Clamp(PlatinumArmorCountEffect + 1, 0, 1200);
@@ -445,7 +423,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		OnHitNPC_CopperArmor();
 		OnHitNPC_GoldArmor(target, damageDone);
 		OnHitNPC_LeadArmor(target);
-		OnHitNPC_PearlWoodArmor(target);
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		OnHitNPC_CopperArmor();
@@ -455,25 +432,10 @@ class RoguelikeArmorPlayer : ModPlayer {
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero), ModContent.ProjectileType<TinBroadSwordProjectile>(), 12, 1f, Player.whoAmI);
 			}
 		OnHitNPC_LeadArmor(target);
-		OnHitNPC_PearlWoodArmor(target);
 	}
 	private void OnHitNPC_LeadArmor(NPC npc) {
 		if (LeadArmor) {
 			npc.AddBuff(ModContent.BuffType<LeadIrradiation>(), 600);
-		}
-	}
-	private void OnHitNPC_PearlWoodArmor(NPC npc) {
-		if (pearlWoodArmorCD <= 0 && pearlWoodArmor) {
-			int dmg = 12;
-			if (Player.ZoneHallow) {
-				dmg += 35;
-			}
-			for (int i = 0; i < 6; i++) {
-				Vector2 pos = npc.Center + new Vector2(0, -20).Vector2DistributeEvenly(6, 360, i) * 10;
-				Vector2 vel = npc.Center - pos;
-				Projectile.NewProjectile(Player.GetSource_OnHit(npc), pos, vel.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<pearlSwordProj>(), dmg, 1, Player.whoAmI);
-			}
-			pearlWoodArmorCD = 240;
 		}
 	}
 	private void OnHitNPC_CopperArmor() {
