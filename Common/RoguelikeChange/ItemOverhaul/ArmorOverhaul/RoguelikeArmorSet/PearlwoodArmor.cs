@@ -12,6 +12,25 @@ internal class PearlwoodArmor : ModArmorSet {
 		legID = ItemID.PearlwoodGreaves;
 	}
 }
+public class PearlwoodHelmet : ModArmorPiece {
+	public override void SetDefault() {
+		PieceID = ItemID.PearlwoodHelmet;
+		Add_Defense = 3;
+	}
+}
+public class PearlwoodBreastplate : ModArmorPiece {
+	public override void SetDefault() {
+		PieceID = ItemID.PearlwoodBreastplate;
+		Add_Defense = 4;
+	}
+}
+public class PearlwoodGreaves : ModArmorPiece {
+	public override void SetDefault() {
+		PieceID = ItemID.PearlwoodGreaves;
+		Add_Defense = 3;
+	}
+
+}
 public class PearlwoodArmorPlayer : PlayerArmorHandle {
 	int pearlWoodArmorCD = 0;
 	public override void SetStaticDefaults() {

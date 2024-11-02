@@ -13,16 +13,22 @@ internal class EbonwoodArmor : ModArmorSet {
 	}
 }
 public class EbonwoodHelmet : ModArmorPiece {
-	public override int Add_Defense => 2;
-	public override int _pieceID => ItemID.EbonwoodHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.EbonwoodHelmet;
+		Add_Defense = 2;
+	}
 }
 public class EbonwoodBreastplate : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.EbonwoodBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.EbonwoodBreastplate;
+		Add_Defense = 2;
+	}
 }
 public class EbonwoodGreaves : ModArmorPiece {
-	public override int Add_Defense => 2;
-	public override int _pieceID => ItemID.EbonwoodGreaves;
+	public override void SetDefault() {
+		PieceID = ItemID.EbonwoodGreaves;
+		Add_Defense = 2;
+	}
 }
 public class EbonwoodArmorPlayer : PlayerArmorHandle {
 	int EbonWoodArmorCD = 0;

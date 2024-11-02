@@ -10,16 +10,22 @@ internal class BorealwoodArmor : ModArmorSet {
 	}
 }
 class BorealWoodHelmet : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.BorealWoodHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.BorealWoodHelmet;
+		Add_Defense = 3;
+	}
 }
 class BorealWoodBreastplate : ModArmorPiece {
-	public override int Add_Defense => 4;
-	public override int _pieceID => ItemID.BorealWoodBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.BorealWoodBreastplate;
+		Add_Defense = 4;
+	}
 }
 class BorealWoodGreaves : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.BorealWoodGreaves;
+	public override void SetDefault() {
+		PieceID = ItemID.BorealWoodGreaves;
+		Add_Defense = 3;
+	}
 }
 class BorealWoodArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;

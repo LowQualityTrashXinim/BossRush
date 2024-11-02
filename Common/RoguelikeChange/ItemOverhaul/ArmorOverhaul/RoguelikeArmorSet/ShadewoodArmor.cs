@@ -13,16 +13,22 @@ internal class ShadewoodArmor : ModArmorSet {
 	}
 }
 public class ShadewoodHelmet : ModArmorPiece {
-	public override int _pieceID => ItemID.ShadewoodHelmet;
-	public override int Add_Defense => 3;
+	public override void SetDefault() {
+		PieceID = ItemID.ShadewoodHelmet;
+		Add_Defense = 3;
+	}
 }
 public class ShadewoodBreastplate : ModArmorPiece {
-	public override int _pieceID => ItemID.ShadewoodBreastplate;
-	public override int Add_Defense => 4;
+	public override void SetDefault() {
+		PieceID = ItemID.ShadewoodBreastplate;
+		Add_Defense = 3;
+	}
 }
 public class ShadewoodGreaves : ModArmorPiece {
-	public override int _pieceID => ItemID.ShadewoodGreaves;
-	public override int Add_Defense => 3;
+	public override void SetDefault() {
+		PieceID = ItemID.ShadewoodGreaves;
+		Add_Defense = 3;
+	}
 }
 public class ShadewoodArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;

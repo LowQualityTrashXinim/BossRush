@@ -15,16 +15,22 @@ internal class PumpkinArmor : ModArmorSet {
 	}
 }
 public class PumpkinHelmet : ModArmorPiece {
-	public override int Add_Defense => 2;
-	public override int _pieceID => ItemID.PumpkinHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.PumpkinHelmet;
+		Add_Defense = 2;
+	}
 }
 public class PumpkinBreastplate : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.PumpkinBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.PumpkinBreastplate;
+		Add_Defense = 3;
+	}
 }
 public class PumpkinLeggings : ModArmorPiece {
-	public override int Add_Defense => 2;
-	public override int _pieceID => ItemID.PumpkinLeggings;
+	public override void SetDefault() {
+		PieceID = ItemID.PumpkinLeggings;
+		Add_Defense = 2;
+	}
 }
 
 public class PumpkinArmorPlayer : PlayerArmorHandle {

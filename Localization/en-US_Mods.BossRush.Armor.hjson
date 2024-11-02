@@ -67,3 +67,38 @@ PumpkinArmor.SetBonus:
 	Reapplying debuff to a enemy will causes an explosion dealing 5 + 5% of damage dealt
 	While below 20% HP, you gain 5x health regen
 	'''
+PearlwoodArmor.SetBonus:
+	'''
+	Increase movement speed by 35%
+	Attacking an enemy summons 6 hallow Swords that deals 12 damage with 4 seconds cooldown
+	During the day : Increases damage by 15% and defense by 12
+	When in Hallow biome : Hallow Swords deal 35 more damage
+	'''
+
+BeeArmor: {
+	Head:
+		'''
+		Increases your damage by 4%
+		Increases your critical strike chance by 3%
+		'''
+	Body:
+		'''
+		Increases your damage by 5%
+		Increases your melee attack speed by 6%
+		'''
+	Leg:
+		'''
+		Increases your damage by 5%
+		Increases your movement speed by 5%
+		Increases your mana reduction by 16%
+		'''
+	SetBonus:
+		'''
+		Set Bonus : Increases damage by 10%
+		+ Shoot out stringer when using range weapon
+		+ Shoot out queen stringer when using magic weapon
+		+ Holding melee weapon will allow dash
+		+ Increases your max number of minions by 1
+		"Borrow power of queen bee"
+		'''
+}

@@ -12,16 +12,22 @@ internal class AshwoodArmor : ModArmorSet {
 	}
 }
 public class AshWoodHelmet : ModArmorPiece {
-	public override int _pieceID => ItemID.AshWoodHelmet;
-	public override int Add_Defense => 3;
+	public override void SetDefault() {
+		PieceID = ItemID.AshWoodHelmet;
+		Add_Defense = 3;
+	}
 }
 public class AshWoodBreastplate : ModArmorPiece {
-	public override int _pieceID => ItemID.AshWoodBreastplate;
-	public override int Add_Defense => 3;
+	public override void SetDefault() {
+		PieceID = ItemID.AshWoodBreastplate;
+		Add_Defense = 4;
+	}
 }
 public class AshWoodGreaves : ModArmorPiece {
-	public override int _pieceID => ItemID.AshWoodGreaves;
-	public override int Add_Defense => 3;
+	public override void SetDefault() {
+		PieceID = ItemID.AshWoodGreaves;
+		Add_Defense = 3;
+	}
 }
 public class AshwoodArmorPlayer : PlayerArmorHandle {
 	public override void SetStaticDefaults() {

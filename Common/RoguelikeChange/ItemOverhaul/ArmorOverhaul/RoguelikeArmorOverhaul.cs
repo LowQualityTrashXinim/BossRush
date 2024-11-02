@@ -78,7 +78,12 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		var armorinfo = ArmorLoader.GetArmorPieceInfo(item.type);
 		if (armorinfo.AddTooltip) {
-			tooltips[index].Text += armorinfo.ToolTip;
+			if (armorinfo.OverrideTooltip) {
+				tooltips[index].Text = armorinfo.ToolTip;
+			}
+			else {
+				tooltips[index].Text += "\n" + armorinfo.ToolTip;
+			}
 		}
 	}
 
@@ -98,9 +103,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		//}
 		//if (type == ItemID.CopperHelmet || type == ItemID.CopperChainmail || type == ItemID.CopperGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.CopperArmor");
-		//}
-		//if (type == ItemID.PearlwoodHelmet || type == ItemID.PearlwoodBreastplate || type == ItemID.PearlwoodGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PearlArmor");
 		//}
 		//if (type == ItemID.IronHelmet || type == ItemID.IronChainmail || type == ItemID.IronGreaves) {
 		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.IronArmor");
@@ -128,13 +130,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		if (OreTypeArmor(player, modplayer, set)) { return; }
 		else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.JungleHat, ItemID.JungleShirt, ItemID.JunglePants)) {
 			modplayer.JungleArmor = true;
-		}
-		else if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.BeeHeadgear, ItemID.BeeBreastplate, ItemID.BeeGreaves)) {
-			player.GetDamage(DamageClass.Melee) += .1f;
-			player.GetDamage(DamageClass.Ranged) += .1f;
-			player.GetDamage(DamageClass.Magic) += .1f;
-			modplayer.BeeArmor = true;
-			player.maxMinions++;
 		}
 	}
 	private bool OreTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
@@ -200,8 +195,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			if (def.Add_Defense > 0)
 				modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: def.Add_Defense);
 		}
-
-		BeeArmorRework(player, item);
 		if (item.type == ItemID.NightVisionHelmet) {
 			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= .25f;
 		}
@@ -212,44 +205,8 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			player.buffImmune[BuffID.OnFire] = true;
 		}
 	}
-	private void BeeArmorRework(Player player, Item item) {
-		if (item.type == ItemID.BeeHeadgear) {
-			player.GetDamage(DamageClass.Melee) += .04f;
-			player.GetDamage(DamageClass.Ranged) += .04f;
-			player.GetDamage(DamageClass.Magic) += .04f;
-			player.GetCritChance(DamageClass.Generic) += 3;
-			player.statDefense += 6;
-		}
-		if (item.type == ItemID.BeeBreastplate) {
-			player.GetDamage(DamageClass.Melee) += .05f;
-			player.GetDamage(DamageClass.Ranged) += .05f;
-			player.GetDamage(DamageClass.Magic) += .05f;
-			player.GetAttackSpeed(DamageClass.Melee) += .06f;
-			player.statDefense += 6;
-		}
-		if (item.type == ItemID.BeeGreaves) {
-			player.GetDamage(DamageClass.Melee) += .05f;
-			player.GetDamage(DamageClass.Ranged) += .05f;
-			player.GetDamage(DamageClass.Magic) += .05f;
-			player.manaCost -= .16f;
-			player.statDefense += 5;
-		}
-	}
 }
 class RoguelikeArmorPlayer : ModPlayer {
-
-	public const int DashRight = 2;
-	public const int DashLeft = 3;
-
-	public const int DashCooldown = 50;
-	public const int DashDuration = 35;
-
-	public const float DashVelocity = 12.5f;
-
-	public int DashDir = -1;
-
-	public int DashDelay = 0;
-	public int DashTimer = 0;
 
 	public bool CopperArmor = false;
 	int CopperArmorChargeCounter = 0;
@@ -261,7 +218,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public bool PlatinumArmor = false;
 	int PlatinumArmorCountEffect = 0;
 	public bool JungleArmor = false;
-	public bool BeeArmor = false;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public override void ResetEffects() {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
@@ -272,19 +228,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		TungstenArmor = false;
 		PlatinumArmor = false;
 		JungleArmor = false;
-		BeeArmor = false;
-		// ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
-		// When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
-		// If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-		if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15) {
-			DashDir = DashRight;
-		}
-		else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15) {
-			DashDir = DashLeft;
-		}
-		else {
-			DashDir = -1;
-		}
 	}
 	public override void UpdateDead() {
 		CopperArmor = false;
@@ -294,40 +237,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 		TungstenArmor = false;
 		PlatinumArmor = false;
 		JungleArmor = false;
-		BeeArmor = false;
-	}
-	public override void PreUpdateMovement() {
-		if (CanUseDash() && DashDir != -1 && DashDelay == 0 && BeeArmor && Player.HeldItem.DamageType == DamageClass.Melee) {
-			Vector2 newVelocity = Player.velocity;
-
-			switch (DashDir) {
-				case DashLeft when Player.velocity.X > -DashVelocity:
-				case DashRight when Player.velocity.X < DashVelocity: {
-						float dashDirection = DashDir == DashRight ? 1 : -1;
-						newVelocity.X = dashDirection * DashVelocity;
-						break;
-					}
-				default:
-					return;
-			}
-			DashDelay = DashCooldown;
-			DashTimer = DashDuration;
-			Player.velocity = newVelocity;
-		}
-
-		if (DashDelay > 0)
-			DashDelay--;
-
-		if (DashTimer > 0) {
-			Player.eocDash = DashTimer;
-			Player.armorEffectDrawShadowEOCShield = true;
-			DashTimer--;
-		}
-	}
-	private bool CanUseDash() {
-		return Player.dashType == DashID.None
-			&& !Player.setSolar
-			&& !Player.mount.Active;
 	}
 	public override void PreUpdate() {
 		if (PlatinumArmor) {
@@ -401,19 +310,6 @@ class RoguelikeArmorPlayer : ModPlayer {
 				if (Player.ownedProjectileCounts[ModContent.ProjectileType<LeafProjectile>()] < 10) {
 					Projectile.NewProjectile(source, Player.Center, Vector2.Zero, ModContent.ProjectileType<LeafProjectile>(), (int)(damage * 1.25f), knockback, Player.whoAmI, indexThatIsMissing);
 				}
-			}
-		}
-		if (BeeArmor) {
-			if (item.DamageType == DamageClass.Ranged) {
-				int proj = Projectile.NewProjectile(source, position, velocity, ProjectileID.Stinger, damage, knockback, Player.whoAmI);
-				Main.projectile[proj].friendly = true;
-				Main.projectile[proj].hostile = false;
-				Main.projectile[proj].penetrate = 1;
-			}
-			if (item.DamageType == DamageClass.Magic) {
-				int proj = Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), ProjectileID.QueenBeeStinger, damage, knockback, Player.whoAmI);
-				Main.projectile[proj].friendly = true;
-				Main.projectile[proj].hostile = false;
 			}
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);

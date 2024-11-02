@@ -11,16 +11,22 @@ internal class RichMahoganyArmor : ModArmorSet {
 	}
 }
 class RichMahoganyHelmet : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.RichMahoganyHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.RichMahoganyHelmet;
+		Add_Defense = 3;
+	}
 }
 class RichMahoganyBreastplate : ModArmorPiece {
-	public override int Add_Defense => 4;
-	public override int _pieceID => ItemID.RichMahoganyBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.RichMahoganyBreastplate;
+		Add_Defense = 4;
+	}
 }
 class RichMahoganyGreaves : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.RichMahoganyGreaves;
+	public override void SetDefault() {
+		PieceID = ItemID.RichMahoganyGreaves;
+		Add_Defense = 3;
+	}
 }
 class RichMahoganyArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;

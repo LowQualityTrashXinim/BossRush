@@ -14,16 +14,22 @@ internal class PalmwoodArmor : ModArmorSet {
 	}
 }
 public class PalmWoodHelmet : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.PalmWoodHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.PalmWoodHelmet;
+		Add_Defense = 3;
+	}
 }
 public class PalmWoodBreastplate : ModArmorPiece {
-	public override int Add_Defense => 4;
-	public override int _pieceID => ItemID.PalmWoodBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.PalmWoodBreastplate;
+		Add_Defense = 4;
+	}
 }
 public class PalmWoodGreaves : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.PalmWoodGreaves;
+	public override void SetDefault() {
+		PieceID = ItemID.PalmWoodGreaves;
+		Add_Defense = 3;
+	}
 }
 public class PalmwoodArmorPlayer : PlayerArmorHandle {
 	int PalmWoodArmor_SandCounter = 0;

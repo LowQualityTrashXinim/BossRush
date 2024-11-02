@@ -11,16 +11,22 @@ internal class CactusArmor : ModArmorSet {
 	}
 }
 public class CactusHelmet : ModArmorPiece {
-	public override int Add_Defense => 4;
-	public override int _pieceID => ItemID.CactusHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.CactusHelmet;
+		Add_Defense = 4;
+	}
 }
 public class CactusBreastplate : ModArmorPiece {
-	public override int Add_Defense => 5;
-	public override int _pieceID => ItemID.CactusBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.CactusBreastplate;
+		Add_Defense = 5;
+	}
 }
 public class CactusLeggings : ModArmorPiece {
-	public override int Add_Defense => 4;
-	public override int _pieceID => ItemID.CactusLeggings;
+	public override void SetDefault() {
+		PieceID = ItemID.CactusLeggings;
+		Add_Defense = 4;
+	}
 }
 
 public class CactusArmorPlayer : PlayerArmorHandle {

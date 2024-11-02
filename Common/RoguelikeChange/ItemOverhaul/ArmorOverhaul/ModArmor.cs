@@ -18,7 +18,7 @@ public class ArmorLoader : ModSystem {
 	}
 	public static void Register(ModArmorPiece armor) {
 		ModTypeLookup<ModArmorPiece>.Register(armor);
-		_armorpiece.Add(armor._pieceID, armor);
+		_armorpiece.Add(armor.PieceID, armor);
 	}
 	public override void Load() {
 		_armor = new();
@@ -52,6 +52,15 @@ public class ArmorLoader : ModSystem {
 }
 public abstract class PlayerArmorHandle : ModPlayer {
 	private ModArmorSet ActiveArmor => Player.GetModPlayer<RoguelikeArmorPlayer>().ActiveArmor;
+	public override sealed void PreUpdateMovement() {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_PreUpdateMovement();
+		}
+	}
+	public virtual void Armor_PreUpdateMovement() { }
 	public override sealed void ResetEffects() {
 		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
 			return;
@@ -129,14 +138,34 @@ public abstract class PlayerArmorHandle : ModPlayer {
 	public virtual void Armor_OnHitWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
 }
 public abstract class ModArmorPiece : ModType {
-	public virtual int _pieceID => ItemID.None;
-	public virtual int Add_Defense => 0;
-	public virtual bool AddTooltip => false;
+	public const string Type_Head = "Head";
+	public const string Type_Body = "Body";
+	public const string Type_Leg = "Leg";
+	public int PieceID = ItemID.None;
+	public int Add_Defense = 0;
+	/// <summary>
+	/// <b>False</b> to avoid tooltip of this to be added<br/>
+	/// <b>True</b> to add localization of this armor piece into armor tooltip
+	/// </summary>
+	public bool AddTooltip = false;
+	public bool OverrideTooltip = false;
 	public virtual void UpdateEquip(Player player, Item item) { }
-	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{Name}");
+	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{ArmorName}.{TypeEquipment}");
 	protected override void Register() {
+		SetDefault();
 		ArmorLoader.Register(this);
 	}
+	/// <summary>
+	/// You will need to set this in <see cref="SetDefault"/> for the localization to work properly <br/>
+	/// Use <see cref="Type_Body"/> or any that you see fit
+	/// </summary>
+	public string TypeEquipment = "";
+	/// <summary>
+	/// This is require if you want localization to work properly<br/>
+	/// What name you set for <see cref="ModArmorSet"/> should be set here
+	/// </summary>
+	public string ArmorName = "";
+	public virtual void SetDefault() { }
 }
 public abstract class ModArmorSet : ModType {
 	protected int headID;

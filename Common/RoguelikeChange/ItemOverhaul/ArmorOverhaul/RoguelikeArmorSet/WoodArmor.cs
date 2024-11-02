@@ -13,16 +13,22 @@ internal class WoodArmor : ModArmorSet {
 	}
 }
 class WoodHelmet : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.WoodHelmet;
+	public override void SetDefault() {
+		PieceID = ItemID.WoodHelmet;
+		Add_Defense = 3;
+	}
 }
 class WoodBreastplate : ModArmorPiece {
-	public override int Add_Defense => 4;
-	public override int _pieceID => ItemID.WoodBreastplate;
+	public override void SetDefault() {
+		PieceID = ItemID.WoodBreastplate;
+		Add_Defense = 4;
+	}
 }
 class WoodGreaves : ModArmorPiece {
-	public override int Add_Defense => 3;
-	public override int _pieceID => ItemID.WoodGreaves;
+	public override void SetDefault() {
+		PieceID = ItemID.WoodGreaves;
+		Add_Defense = 3;
+	}
 }
 class WoodArmorPlayer : PlayerArmorHandle {
 	bool inZone = false;
