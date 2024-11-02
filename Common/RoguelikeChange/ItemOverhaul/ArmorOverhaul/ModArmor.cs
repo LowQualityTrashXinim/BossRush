@@ -88,7 +88,7 @@ public abstract class PlayerArmorHandle : ModPlayer {
 		}
 	}
 	public virtual void Armor_ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) { }
-	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	public override sealed bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}

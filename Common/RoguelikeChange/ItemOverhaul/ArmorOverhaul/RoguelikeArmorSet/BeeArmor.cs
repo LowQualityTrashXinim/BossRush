@@ -131,7 +131,7 @@ public class BeeArmorPlayer : PlayerArmorHandle {
 			&& !Player.setSolar
 			&& !Player.mount.Active;
 	}
-	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	public override bool Armor_Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (item.DamageType == DamageClass.Ranged) {
 			int proj = Projectile.NewProjectile(source, position, velocity, ProjectileID.Stinger, damage, knockback, Player.whoAmI);
 			Main.projectile[proj].friendly = true;

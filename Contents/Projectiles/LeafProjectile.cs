@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 
 namespace BossRush.Contents.Projectiles;
 internal class LeafProjectile : ModProjectile {
@@ -74,6 +75,6 @@ internal class LeafProjectile : ModProjectile {
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(5f, 5f);
 		}
-		player.GetModPlayer<RoguelikeArmorPlayer>().Projindex[(int)Projectile.ai[0]] = -1;
+		player.GetModPlayer<JungleArmorPlayer>().Projindex[(int)Projectile.ai[0]] = -1;
 	}
 }

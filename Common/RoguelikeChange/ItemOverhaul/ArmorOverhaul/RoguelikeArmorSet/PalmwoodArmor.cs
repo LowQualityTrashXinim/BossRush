@@ -46,7 +46,7 @@ public class PalmwoodArmorPlayer : PlayerArmorHandle {
 			}
 		}
 	}
-	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+	public override bool Armor_Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (++PalmWoodArmor_SandCounter >= 7) {
 			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<SandProjectile>(), (int)(damage * .5f), knockback, Player.whoAmI);
 			if (PalmWoodArmor_SandCounter >= 10) {

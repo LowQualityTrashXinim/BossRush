@@ -102,6 +102,7 @@ BeeArmor: {
 		"Borrow power of queen bee"
 		'''
 }
+
 TinArmor.SetBonus:
 	'''
 	Increase defense by 5
