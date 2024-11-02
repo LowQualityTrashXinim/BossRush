@@ -1,12 +1,12 @@
 ﻿using Terraria;
+using Terraria.ID;
 using System.Linq;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 using Terraria.Localization;
-using BossRush.Common.Systems;
-using Terraria.ID;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 public class ArmorLoader : ModSystem {
@@ -162,6 +162,43 @@ public abstract class PlayerArmorHandle : ModPlayer {
 		}
 	}
 	public virtual void Armor_OnHitWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) { }
+	public override sealed void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_ModifyHitNPC(target, ref modifiers);
+		}
+	}
+	public virtual void Armor_ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_ModifyHitNPCWithItem(item, target, ref modifiers);
+		}
+	}
+	public virtual void Armor_ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_ModifyHitNPCWithProj(proj, target, ref modifiers);
+		}
+	}
+	public virtual void Armor_ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
+
+	public override sealed void NaturalLifeRegen(ref float regen) {
+		if (ActiveArmor.ToString() == ArmorLoader.Default.ToString()) {
+			return;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == this.Name) {
+			Armor_NaturalLifeRegen(ref regen);
+		}
+	}
+	public virtual void Armor_NaturalLifeRegen(ref float regen) { }
 }
 public abstract class ModArmorPiece : ModType {
 	public const string Type_Head = "Head";

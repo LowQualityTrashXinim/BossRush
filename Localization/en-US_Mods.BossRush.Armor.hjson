@@ -129,3 +129,33 @@ JungleArmor.SetBonus:
 	When using magic weapon, you will shoot out magical leaf hover around player up to max of 10
 	When there are 10 leafs exist in world, the leaf will home into the closest enemy when possible
 	'''
+LeadArmor.SetBonus:
+	'''
+	Increase defense by 7
+	Your attack can inflict irradiation poison
+	Lead irradiation increase enemy defense by 20 but deal 50 DoT
+	'''
+SilverArmor.SetBonus:
+	'''
+	During the day : increases defense by 10
+	During the night : increases damage by 10%
+	While above 75% health, these effects are multiply by 2
+	'''
+TungstenArmor.SetBonus:
+	'''
+	When at full health :
+	Reduce your defense down to 0
+	Increase movement speed by 30%
+	The closer your enemy is, the more damage increases
+	'''
+
+GoldArmor: {
+	SetBonus:
+		'''
+		Attacking enemy with midas debuff will deal additional damage based on their defense
+		While enemy have midas debuff, you will take 1 damage and heal 5 life ( debuff is removed after )
+		'''
+	Head: Increases chance to inflict midas by 5%
+	Body: Increases chance to inflict midas by 5%
+	Leg: Increases chance to inflict midas by 5%
+}

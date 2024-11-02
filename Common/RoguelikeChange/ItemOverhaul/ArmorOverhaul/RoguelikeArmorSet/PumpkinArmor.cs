@@ -84,4 +84,7 @@ public class PumpkinArmorPlayer : PlayerArmorHandle {
 			npc.AddBuff(ModContent.BuffType<pumpkinOverdose>(), 240);
 		}
 	}
+	public override void Armor_NaturalLifeRegen(ref float regen) {
+		regen += Player.statLife <= Player.statLifeMax * .2f ? 5f : 1f;
+	}
 }
