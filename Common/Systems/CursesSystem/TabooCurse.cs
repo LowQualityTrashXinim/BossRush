@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 
 namespace BossRush.Common.Systems.CursesSystem;
 
@@ -55,8 +50,27 @@ public class SoulFlame : ModCurse {
 	}
 	public override void Update(Player player) {
 		if (player.ComparePlayerHealthInPercentage(.75f)) {
-			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Flat: -10);
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Flat: -10);
 		}
 	}
 }
+public class WitheringI : ModCurse {
+	public override void SetDefault() {
+		AddCatagory(CursesCatagory.Taboo);
+		Value = 1;
+	}
+	public override void Update(Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: -1);
+	}
+}
+
+public class WitheringII : ModCurse {
+	public override void SetDefault() {
+		AddCatagory(CursesCatagory.Taboo);
+		Value = 3;
+	}
+	public override void Update(Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: -5);
+	}
+}
+

@@ -196,6 +196,7 @@ public class IceAge : ModSkill {
 }
 
 public class ElectricChain : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<ElectricChain>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 145;
 		Skill_Duration = BossRushUtils.ToSecond(1.5f);

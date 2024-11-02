@@ -207,6 +207,7 @@ public class BloodToPower : ModSkill {
 	}
 }
 public class Overclock : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<Overclock>();
 	public override void SetDefault() {
 		Skill_EnergyRequire = 635;
 		Skill_Duration = BossRushUtils.ToSecond(1);

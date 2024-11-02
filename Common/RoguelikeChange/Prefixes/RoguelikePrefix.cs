@@ -1,12 +1,8 @@
-﻿using BossRush.Common.General;
-using BossRush.Common.Systems;
-using Microsoft.Build.Framework;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange.Prefixes;
 internal class RoguelikePrefix : GlobalItem {

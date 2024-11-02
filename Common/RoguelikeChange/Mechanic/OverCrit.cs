@@ -1,11 +1,6 @@
-﻿using BossRush.Common.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange.Mechanic;
 internal class OverCrit_Player : ModPlayer {

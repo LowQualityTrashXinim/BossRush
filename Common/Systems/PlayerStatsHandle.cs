@@ -96,10 +96,10 @@ public class PlayerStatsHandle : ModPlayer {
 
 	private void Modifiers_ModifyHitInfo(ref NPC.HitInfo info) {
 		ModifyHit_Before_Crit = info.Crit;
-		if(info.Crit) {
+		if (info.Crit) {
 			ModifyHit_Before_Crit = true;
 		}
-		if(ModifyHit_OverrideCrit == null) {
+		if (ModifyHit_OverrideCrit == null) {
 			return;
 		}
 		info.Crit = (bool)ModifyHit_OverrideCrit;
@@ -321,6 +321,9 @@ public class PlayerStatsHandle : ModPlayer {
 		StatMod.Flat = Flat;
 		StatMod.Base = Base;
 		AddStatsToPlayer(stat, StatMod);
+	}
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
 	}
 }
 public class PlayerStatsHandleSystem : ModSystem {

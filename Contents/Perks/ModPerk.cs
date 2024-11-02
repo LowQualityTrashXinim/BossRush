@@ -789,6 +789,9 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	public class AspectOfFirstChaos : Perk {
+		public override bool SelectChoosing() {
+			return Main.LocalPlayer.IsEquipAcc(ModContent.ItemType<ChaosTablet>());
+		}
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 2;

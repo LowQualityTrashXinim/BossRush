@@ -1889,7 +1889,7 @@ Mods: {
 
 			SecondChance: {
 				Description: You had survived a fatal attack, so don't get hit a 2nd time
-				DisplayName: Second Chance
+				DisplayName: Pheonix Bloodbath
 			}
 
 			SageBuff: {
@@ -1989,16 +1989,6 @@ Mods: {
 
 			LeadIrradiation: {
 				DisplayName: Lead Irradiation
-				Description: TODO: ADD DESCRIPTION
-			}
-
-			heavenSmgBuff: {
-				DisplayName: Heavenly power
-				Description: Give them grace
-			}
-
-			HeavenSmgBuff: {
-				DisplayName: Heaven Smg Buff
 				Description: TODO: ADD DESCRIPTION
 			}
 
@@ -2274,8 +2264,8 @@ Mods: {
 			}
 
 			AngelicSmgBuff: {
-				DisplayName: Angelic Smg Buff
-				Description: Mods.BossRush.Buffs.AngelicSmgBuff.Description
+				DisplayName: Heavenly power
+				Description: Give them grace
 			}
 
 			BloodButchererEnchantmentDebuff: {
