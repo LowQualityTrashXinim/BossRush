@@ -213,9 +213,10 @@ namespace BossRush.Common.General {
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MoonLootBox>()));
 			}
+			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalDrop(), ItemID.LifeCrystal));
+			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalDrop(), ItemID.ManaCrystal));
 			LeadingConditionRule perkrule = new(new PerkDrop());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
-
 			npcLoot.Add(perkrule);
 			npcLoot.Add(noHit);
 			npcLoot.Add(dontHit);

@@ -124,4 +124,28 @@ namespace BossRush.Common.General {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "";
 	}
+	public class LifeCrystalDrop : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return info.player.ConsumedLifeCrystals < Player.LifeCrystalMax;
+			}
+			return false;
+		}
+
+		public bool CanShowItemDropInUI() => false;
+
+		public string GetConditionDescription() => "";
+	}
+	public class ManaCrystalDrop : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return info.player.ConsumedManaCrystals < Player.ManaCrystalMax;
+			}
+			return false;
+		}
+
+		public bool CanShowItemDropInUI() => false;
+
+		public string GetConditionDescription() => "";
+	}
 }

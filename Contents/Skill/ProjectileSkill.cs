@@ -63,7 +63,11 @@ public class Icicle : ModSkill {
 		int damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(18);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Magic).ApplyTo(2);
 		float rotation = MathHelper.ToRadians(Main.rand.NextFloat(90));
+		int Index = Main.rand.Next(6);
 		for (int i = 0; i < 6; i++) {
+			if (i != Index) {
+				continue;
+			}
 			Vector2 pos = player.Center + Vector2.One.Vector2DistributeEvenlyPlus(6, 360, i).RotatedBy(rotation) * 50;
 			for (int l = 0; l < 6; l++) {
 				int dust = Dust.NewDust(pos, 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(1, 2));

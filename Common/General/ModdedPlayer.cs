@@ -109,6 +109,7 @@ namespace BossRush.Common.General {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
+				yield return new Item(ModContent.ItemType<CursedSkull>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					LifeCrystal += 5;
 					ManaCrystal += 4;
@@ -120,13 +121,18 @@ namespace BossRush.Common.General {
 					else {
 						yield return new Item(ModContent.ItemType<BuilderLootBox>());
 					}
-				}
-				if (ModContent.GetInstance<RogueLikeConfig>().SynergyMode) {
-					yield return new Item(ModContent.ItemType<CursedSkull>());
-					//yield return new Item(ModContent.ItemType<ConfrontTrueGod>());
-					//yield return new Item(ModContent.ItemType<PowerEnergy>());
-					yield return new Item(ModContent.ItemType<CelestialEssence>());
-					yield return new Item(ModContent.ItemType<WindSlashPerk>());
+					if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
+						if (Main.rand.NextBool(10)) {
+							yield return new Item(ModContent.ItemType<WorldEssence>());
+						}
+						else {
+							yield return new Item(ModContent.ItemType<CelestialEssence>());
+						}
+					}
+					else {
+						yield return new Item(ModContent.ItemType<CelestialEssence>());
+					}
+					//yield return new Item(ModContent.ItemType<WindSlashPerk>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 				}
 				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
