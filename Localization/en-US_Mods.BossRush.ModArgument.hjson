@@ -38,6 +38,25 @@ CursedFlameII: {
 	Description: Enemy with cursed flame debuff receive 20% more damage
 }
 
+PoisonI: {
+	DisplayName: Poison I
+	Description: Weapon inflict poisoned upon enemy hit
+}
+
+PoisonII: {
+	DisplayName: Poison II
+	Description: Enemy with poisoned debuff receive 20% more damage
+}
+VenomI: {
+	DisplayName: Venom I
+	Description: Weapon inflict poisoned upon enemy hit
+}
+
+VenomII: {
+	DisplayName: Venom II
+	Description: Enemy with poisoned debuff receive 20% more damage
+}
+
 BerserkI: {
 	DisplayName: Berserk I
 	Description: Deal more damage the lower your health get

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
 using BossRush.Contents.Items.Chest;
+using BossRush;
 public class AltarItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -57,7 +58,7 @@ public class WeaponAltar : Altar {
 }
 public class RPGAltar : Altar {
 	public override void On_RightClick(Player player, int i, int j) {
-		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), );
+		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), Main.rand.Next(BossRushModSystem.RPGItem));
 
 		for (int a = 0; a < 30; a++) {
 			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));

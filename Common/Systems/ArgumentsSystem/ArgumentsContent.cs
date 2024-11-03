@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.WorldBuilding;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -330,6 +331,63 @@ public class CursedFlameII : ModArgument {
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
 			if (target.HasBuff(BuffID.CursedInferno)) {
+				modifiers.SourceDamage += .2f;
+			}
+	}
+}
+public class PoisonI : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleGreen;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
+		npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+}
+public class PoisonII : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleGreen;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Poisoned)) {
+			modifiers.SourceDamage += .2f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Poisoned)) {
+				modifiers.SourceDamage += .2f;
+			}
+	}
+}
+
+public class VenomI : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleGreen;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
+		npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+}
+public class VenomII : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleGreen;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Venom)) {
+			modifiers.SourceDamage += .2f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Venom)) {
 				modifiers.SourceDamage += .2f;
 			}
 	}

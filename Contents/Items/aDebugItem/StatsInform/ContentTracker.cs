@@ -1,8 +1,8 @@
 ﻿using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.WeaponEnchantment;
@@ -30,7 +30,8 @@ internal class ContentTracker : ModItem {
 			$"\nPerk amount : {ModPerkLoader.TotalCount}" +
 			$"\nSpoils amount : {ModSpoilSystem.TotalCount}" +
 			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}" +
-			$"\nArgument amount : {ArgumentLoader.TotalCount}"
+			$"\nArgument amount : {ArgumentLoader.TotalCount}" +
+			$"\nCurses taboo amount : {CursesLoader.CurseTabooCount}"
 			);
 		tooltips.Add(line);
 	}

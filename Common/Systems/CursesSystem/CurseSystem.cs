@@ -21,6 +21,8 @@ internal class CursesLoader : ModSystem {
 		}
 		return _curses.Count - 1;
 	}
+	public static int CurseTabooCount => _TabooCurse.Count;
+	public static int CurseBlessingCount => _BlessingCurse.Count;
 	public override void Load() {
 		_curses = new();
 		_TabooCurse = new();
