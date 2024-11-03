@@ -21,8 +21,8 @@ internal class CursesLoader : ModSystem {
 		}
 		return _curses.Count - 1;
 	}
-	public static int CurseTabooCount => _TabooCurse.Count;
-	public static int CurseBlessingCount => _BlessingCurse.Count;
+	public static int CurseTabooCount => _TabooCurse.Keys.Count;
+	public static int CurseBlessingCount => _BlessingCurse.Keys.Count;
 	public override void Load() {
 		_curses = new();
 		_TabooCurse = new();
@@ -56,8 +56,8 @@ public abstract class ModCurse : ModType {
 	public string DisplayName => $"- {Language.GetTextValue($"Mods.BossRush.Curse.{Name}.DisplayName")} -";
 	public string Description => Language.GetTextValue($"Mods.BossRush.Curse.{Name}.Description");
 	protected override void Register() {
-		Type = CursesLoader.Register(this);
 		SetDefault();
+		Type = CursesLoader.Register(this);
 	}
 	protected void AddCatagory(CursesCatagory cata) {
 		if (!catagory.Contains(cata)) {

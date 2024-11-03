@@ -229,6 +229,9 @@ public abstract class ModArmorPiece : ModType {
 	/// </summary>
 	public string ArmorName = "";
 	public virtual void SetDefault() { }
+	public override sealed void SetStaticDefaults() {
+		base.SetStaticDefaults();
+	}
 }
 public abstract class ModArmorSet : ModType {
 	protected int headID;
@@ -251,10 +254,13 @@ public abstract class ModArmorSet : ModType {
 		SetDefault();
 	}
 	public virtual void SetDefault() { }
-}
+	public override sealed void SetStaticDefaults() {
+		base.SetStaticDefaults();
+	}
 
-public class None : ModArmorSet {
-	public override void SetDefault() {
-		modplayer = null;
+	public class None : ModArmorSet {
+		public override void SetDefault() {
+			modplayer = null;
+		}
 	}
 }

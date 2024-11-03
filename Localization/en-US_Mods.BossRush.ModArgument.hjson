@@ -47,6 +47,7 @@ PoisonII: {
 	DisplayName: Poison II
 	Description: Enemy with poisoned debuff receive 20% more damage
 }
+
 VenomI: {
 	DisplayName: Venom I
 	Description: Weapon inflict poisoned upon enemy hit
@@ -131,4 +132,3 @@ Union: {
 	DisplayName: Union
 	Description: For every weapon in your inventory, +0.5 flat damage
 }
-
