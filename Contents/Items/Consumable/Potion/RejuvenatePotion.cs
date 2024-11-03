@@ -9,6 +9,7 @@ internal class RejuvenatePotion : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<FireResistanceBuff>(), BossRushUtils.ToMinute(.5f));
 		Item.Set_AdvancedBuffItem();
+		Item.Set_ItemIsRPG();
 	}
 }
 public class RejuvenatePotionBuff : ModBuff {

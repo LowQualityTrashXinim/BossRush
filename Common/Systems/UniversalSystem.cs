@@ -27,6 +27,7 @@ using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
+using BossRush.Common.Systems.Achievement;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.ArtifactSystem;
@@ -34,9 +35,6 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using Terraria.IO;
-using Microsoft.Build.Tasks;
-using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -444,17 +442,21 @@ internal class UniversalSystem : ModSystem {
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
+	public List<int> LootBoxOpen = new();
 	public override void ClearWorld() {
 		GivenBossSpawnItem = new List<int>();
 		ListOfBossKilled = new();
+		LootBoxOpen = new();
 	}
 	public override void SaveWorldData(TagCompound tag) {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
 		tag["ListOfBossKilled"] = ListOfBossKilled;
+		tag["LootBoxOpen"] = LootBoxOpen;
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
+		LootBoxOpen = tag.Get<List<int>>("LootBoxOpen");
 	}
 	public static void AddPerk(int perkType) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();

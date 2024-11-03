@@ -8,6 +8,7 @@ internal class LifeStealPotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LifeStealBuff>(), BossRushUtils.ToMinute(4));
+		Item.Set_ItemIsRPG();
 	}
 }
 public class LifeStealBuff : ModBuff {

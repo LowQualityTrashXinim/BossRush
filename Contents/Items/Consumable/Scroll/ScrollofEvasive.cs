@@ -7,6 +7,7 @@ internal class ScrollofEvasive : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<EnvasionSpell>(), BossRushUtils.ToMinute(1));
+		Item.Set_ItemIsRPG();
 	}
 }
 public class EnvasionSpell : ModBuff {

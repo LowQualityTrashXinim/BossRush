@@ -7,6 +7,7 @@ internal class LastingVile : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LastingVileBuff>(), BossRushUtils.ToMinute(5));
+		Item.Set_ItemIsRPG();
 	}
 	public override bool? UseItem(Player player) {
 		if (player.itemAnimation == player.itemAnimationMax - 1) {

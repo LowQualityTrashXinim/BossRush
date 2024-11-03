@@ -168,11 +168,13 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public class GlobalItemHandle : GlobalItem {
+		public const byte None = 0;
 		public override bool InstancePerEntity => true;
 		public bool LostAccessories = false;
 		public bool DebugItem = false;
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
+		public bool RPGItem = false;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (item.ModItem == null) {
 				return;

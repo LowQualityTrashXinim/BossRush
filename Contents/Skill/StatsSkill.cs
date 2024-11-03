@@ -191,6 +191,7 @@ public class AdAstra : ModSkill {
 	}
 }
 public class BloodToPower : ModSkill {
+	public override string Texture => BossRushUtils.GetTheSameTextureAs<BloodToPower>("SacrificialPact");
 	public override void SetDefault() {
 		Skill_EnergyRequire = 570;
 		Skill_Duration = BossRushUtils.ToSecond(2);

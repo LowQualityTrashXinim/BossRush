@@ -55,3 +55,13 @@ public class WeaponAltar : Altar {
 		}
 	}
 }
+public class RPGAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), );
+
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}

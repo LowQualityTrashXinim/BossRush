@@ -8,6 +8,7 @@ internal class ScrollOfMaterialize : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<MaterializeSpell>(), BossRushUtils.ToMinute(4));
+		Item.Set_ItemIsRPG();
 	}
 }
 public class MaterializeSpell : ModBuff {

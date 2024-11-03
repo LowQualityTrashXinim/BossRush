@@ -8,6 +8,7 @@ internal class ScrollOfProtection : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<ProtectionSpell>(), BossRushUtils.ToMinute(1.5f));
+		Item.Set_ItemIsRPG();
 	}
 }
 public class ProtectionSpell : ModBuff {

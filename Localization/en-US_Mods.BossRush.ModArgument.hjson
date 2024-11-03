@@ -18,6 +18,26 @@ FrostBurnII: {
 	Description: Enemy with frost burn debuff receive 20% more damage
 }
 
+ShadowFlameI: {
+	DisplayName: ShadowFlame I
+	Description: Weapon inflict ShadowFlame upon enemy hit
+}
+
+ShadowFlameII: {
+	DisplayName: ShadowFlame II
+	Description: Enemy with ShadowFlame debuff receive 20% more damage
+}
+
+CursedFlameI: {
+	DisplayName: CursedFlame I
+	Description: Weapon inflict cursed flame upon enemy hit
+}
+
+CursedFlameII: {
+	DisplayName: CursedFlame II
+	Description: Enemy with cursed flame debuff receive 20% more damage
+}
+
 BerserkI: {
 	DisplayName: Berserk I
 	Description: Deal more damage the lower your health get
@@ -87,3 +107,9 @@ Dark: {
 	DisplayName: Dark
 	Description: Deal 150% more damage to enemy below 40% max hp
 }
+
+Union: {
+	DisplayName: Union
+	Description: For every weapon in your inventory, +0.5 flat damage
+}
+

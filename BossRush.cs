@@ -23,20 +23,26 @@ namespace BossRush {
 		private static List<Item> _synergyitem;
 		private static List<Item> _lostAccs;
 		private static List<Item> _trinket;
+		private static List<Item> _rpgitem;
+
 		public static List<int> ListLootboxType;
 		public static List<Item> SynergyItem => _synergyitem;
 		public static List<Item> LostAccessories => _lostAccs;
 		public static List<Item> TrinketAccessories => _trinket;
+		public static List<Item> RPGItem => _rpgitem;
 		public override void OnModLoad() {
 			_trinket = new();
-			_synergyitem = new List<Item>();
-			_lostAccs = new List<Item>();
-			WeaponRarityDB = new Dictionary<int, List<int>>();
-			ListLootboxType = new List<int>();
+			_rpgitem = new();
+			_synergyitem = new();
+			_lostAccs = new();
+			WeaponRarityDB = new();
+			ListLootboxType = new();
 		}
 		public override void OnModUnload() {
 			_synergyitem = null;
 			_lostAccs = null;
+			_rpgitem = null;
+			_trinket = null;
 			ListLootboxType = null;
 			WeaponRarityDB = null;
 			IsFireBuff = null;
@@ -62,6 +68,11 @@ namespace BossRush {
 					if (globalItem.LostAccessories) {
 						_lostAccs.Add(item);
 						continue;
+					}
+					else if (globalItem.RPGItem) {
+						if (globalItem.AdvancedBuffItem) {
+							_rpgitem.Add(item);
+						}
 					}
 				}
 				if (item.ModItem is BaseTrinket) {

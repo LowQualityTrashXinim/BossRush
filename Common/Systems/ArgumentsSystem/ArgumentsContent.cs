@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.General;
+using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System;
 using System.Linq;
@@ -101,7 +102,7 @@ public class Terra : ModArgument {
 	}
 	public override void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		NPC.HitModifiers modifier = new NPC.HitModifiers();
-		modifier.FinalDamage.Flat = player.GetWeaponDamage(item) * (hitInfo.Crit ? 2 : 1);
+		modifier.FinalDamage.Flat = player.GetWeaponDamage(item) * (hitInfo.Crit ? player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage.ApplyTo(2) : 1);
 		modifier.FinalDamage *= 0;
 		player.StrikeNPCDirect(npc, modifier.ToHitInfo(1, hitInfo.Crit, hitInfo.Knockback, true));
 	}
@@ -253,5 +254,83 @@ public class Dark : ModArgument {
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.GetLifePercent() < .4f)
 			modifiers.SourceDamage += 1.5f;
+	}
+}
+
+public class Union : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Bisque;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		float damageIncreasement = 0;
+		for (int i = 0; player.inventory.Length > 0; i++) {
+			if (i > 50) {
+				break;
+			}
+			Item invitem = player.inventory[i];
+			if (!item.IsAWeapon() || invitem == item || item.ModItem is SynergyModItem) {
+				continue;
+			}
+			damageIncreasement += .5f;
+		}
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, Flat: damageIncreasement);
+	}
+}
+
+public class ShadowFlameI : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.MediumPurple;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
+		npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+}
+public class ShadowFlameII : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.MediumPurple;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.ShadowFlame)) {
+			modifiers.SourceDamage += .2f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Frostburn)) {
+				modifiers.SourceDamage += .2f;
+			}
+	}
+}
+
+public class CursedFlameI : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.ForestGreen;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
+		npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+	}
+}
+public class CursedFlameII : ModArgument {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.ForestGreen;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.CursedInferno)) {
+			modifiers.SourceDamage += .2f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.CursedInferno)) {
+				modifiers.SourceDamage += .2f;
+			}
 	}
 }

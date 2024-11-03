@@ -12,6 +12,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System.Diagnostics;
 using BossRush.Common.Systems.ArgumentsSystem;
+using System.Threading.Channels;
 
 namespace BossRush {
 	public partial class BossRushUtils {
@@ -136,8 +137,13 @@ namespace BossRush {
 			}
 		}
 		public static void Set_ItemArgumentChance(this Item item, float chance) {
-			if(item.TryGetGlobalItem(out ArgumentWeapon globalitem)) {
+			if (item.TryGetGlobalItem(out ArgumentWeapon globalitem)) {
 				globalitem.ArgumentChance = chance;
+			}
+		}
+		public static void Set_ItemIsRPG(this Item item, bool RPG = true) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+				globalitem.RPGItem = RPG;
 			}
 		}
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {

@@ -97,8 +97,11 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual void ModifyLootAdd(Player player) { }
 		public override bool CanRightClick() => true;
 		public sealed override void RightClick(Player player) {
-			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			RoguelikeData.Lootbox_AmountOpen = Math.Clamp(RoguelikeData.Lootbox_AmountOpen + 1, 0, int.MaxValue);
+			if (!ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Contains(Type)) {
+				ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Add(Type);
+			}
+			ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
 			if (modplayer.ItemGraveYard.Count > 0) {
 				int RemoveAmount = 1 + modplayer.ItemGraveYard.Count / 10;
 				for (int i = 0; i < RemoveAmount; i++) {

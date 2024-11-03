@@ -9,6 +9,7 @@ internal class ScrollOfInvincibility : ModItem {
 	public override void SetDefaults() {
 		Item.Set_AdvancedBuffItem();
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<InvincibilitySpell>(), BossRushUtils.ToSecond(10));
+		Item.Set_ItemIsRPG();
 	}
 }
 public class InvincibilitySpell : ModBuff {

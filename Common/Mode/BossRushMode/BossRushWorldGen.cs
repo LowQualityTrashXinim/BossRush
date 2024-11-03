@@ -224,7 +224,9 @@ namespace BossRush.Common.ChallengeMode {
 			}
 			return false;
 		}
+		public bool BossRushWorld = false;
 		public override void SaveWorldData(TagCompound tag) {
+			tag["BossRushWorld"] = BossRushWorld;
 			if (Room == null) {
 				return;
 			}
@@ -232,6 +234,9 @@ namespace BossRush.Common.ChallengeMode {
 			tag["BiomeArea"] = Room.Values.ToList();
 		}
 		public override void LoadWorldData(TagCompound tag) {
+			if (tag.TryGet("BossRushWorld", out bool BossRushMode)) {
+				BossRushWorld = BossRushMode;
+			}
 			var Type = tag.Get<List<short>>("BiomeType");
 			var Area = tag.Get<List<List<Rectangle>>>("BiomeArea");
 			if (Type == null || Area == null) {

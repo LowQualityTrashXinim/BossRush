@@ -9,6 +9,7 @@ internal class KeenPotion : ModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<KeenBuff>(), BossRushUtils.ToMinute(2));
 		Item.Set_AdvancedBuffItem();
+		Item.Set_ItemIsRPG();
 	}
 }
 public class KeenBuff : ModBuff {
