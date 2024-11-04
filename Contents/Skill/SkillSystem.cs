@@ -157,6 +157,28 @@ public class SkillHandlePlayer : ModPlayer {
 		BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, "Added a skill");
 		return true;
 	}
+	public int SimulateSkillCost() {
+		int energy = 0;
+		int[] active = GetCurrentActiveSkillHolder();
+		float percentageEnergy = 1;
+		StatModifier energyS = new();
+		int seperateEnergy = 0;
+		for (int i = 0; i < active.Length; i++) {
+			ModSkill skill = SkillLoader.GetSkill(active[i]);
+			if (skill == null) {
+				continue;
+			}
+			if (skill.Type == ModSkill.GetSkillType<PowerSaver>()) {
+				seperateEnergy += skill.EnergyRequire;
+			}
+			else {
+				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
+			}
+			percentageEnergy += skill.EnergyRequirePercentage;
+			skill.ModifyNextSkillStats(out energyS, out _, out _);
+		}
+		return (int)(energy * percentageEnergy) + seperateEnergy;
+	}
 	public void SkillStatTotal(out int energy, out int duration, out int cooldown) {
 		int[] active = GetCurrentActiveSkillHolder();
 		energy = 0;
@@ -367,7 +389,7 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 		else {
 			Duration = BossRushUtils.CountDown(Duration);
-			if(Duration <= 1) {
+			if (Duration <= 1) {
 				for (int i = 0; i < 10; i++) {
 					ModSkill skill = CurrentSkill(ref i);
 					if (skill == null) {

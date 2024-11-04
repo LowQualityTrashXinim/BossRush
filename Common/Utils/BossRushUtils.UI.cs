@@ -38,6 +38,8 @@ namespace BossRush {
 		protected Asset<Texture2D> texture;
 		private float barProgress;
 		public bool Hide = false;
+		public bool HideBar = false;
+		public bool HideText = false;
 		private int Delay = 0;
 		public void DelayHide(int HideDelay) {
 			if (Delay <= 0 && !Hide) {
@@ -63,6 +65,9 @@ namespace BossRush {
 			text = new(textstring, textscale, isLarge);
 			Append(text);
 			Append(barFrame);
+			if (HideBar) {
+				barFrame.ImageScale = 0;
+			}
 		}
 		public UIText text;
 		private UIImage barFrame;
@@ -82,6 +87,12 @@ namespace BossRush {
 		}
 		public void SetColorB(Color color) {
 			gradientB = color;
+		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			if (HideText) {
+				text.SetText("");
+			}
 		}
 		public override void Draw(SpriteBatch spriteBatch) {
 			if (Hide) {

@@ -559,6 +559,7 @@ public class UniversalModPlayer : ModPlayer {
 class DefaultUI : UIState {
 	Roguelike_ProgressUIBar energyBar;
 	Roguelike_ProgressUIBar energyCoolDownBar;
+	Roguelike_ProgressUIBar energyCostBar;
 
 	private UITextPanel<string> EndOfDemoPanel;
 	private UITextPanel<string> EndOfDemoPanelClose;
@@ -567,6 +568,7 @@ class DefaultUI : UIState {
 	private UITextPanel<string> popUpWarningClose;
 
 	private UIImageButton staticticUI;
+
 	public void TurnOnEndOfDemoMessage() {
 		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
 		EndOfDemoPanel.Height.Set(66, 0);
@@ -584,7 +586,8 @@ class DefaultUI : UIState {
 		EndOfDemoPanelClose.Remove();
 	}
 
-
+	private ColorInfo colorChanging1;
+	private ColorInfo colorChanging2;
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
@@ -594,6 +597,8 @@ class DefaultUI : UIState {
 		staticticUI.VAlign = .02f;
 		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
 		Append(staticticUI);
+		colorChanging1 = new(new() { Color.DarkBlue, Color.LightCyan });
+		colorChanging2 = new(new() { Color.LightCyan, Color.DarkBlue });
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
@@ -632,6 +637,18 @@ class DefaultUI : UIState {
 	}
 
 	private void CreateEnergyBar() {
+		energyCostBar = new Roguelike_ProgressUIBar(null, Color.DarkBlue, Color.LightCyan, "", .8f);
+		energyCostBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
+		energyCostBar.VAlign = .02f;
+		energyCostBar.HAlign = .37f;
+		energyCostBar.Width.Set(182, 0);
+		energyCostBar.Height.Set(60, 0);
+		energyCostBar.HideBar = true;
+		energyCostBar.HideText = true;
+		energyCostBar.OnUpdate += EnergyCostBar_OnUpdate;
+		energyCostBar.SetColorA(Color.DarkRed);
+		energyCostBar.SetColorB(Color.DarkRed);
+		Append(energyCostBar);
 		energyBar = new Roguelike_ProgressUIBar(null, Color.DarkBlue, Color.LightCyan, "0/0", .8f);
 		energyBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
 		energyBar.VAlign = .02f;
@@ -642,10 +659,17 @@ class DefaultUI : UIState {
 		Append(energyBar);
 	}
 
+	private void EnergyCostBar_OnUpdate(UIElement affectedElement) {
+		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
+		energyCostBar.BarProgress = modPlayer.SimulateSkillCost() / (float)modPlayer.EnergyCap;
+	}
+
 	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyBar.text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
 		energyBar.BarProgress = modPlayer.Energy / (float)modPlayer.EnergyCap;
+		energyBar.SetColorA(colorChanging1.MultiColor(1));
+		energyBar.SetColorB(colorChanging2.MultiColor(1));
 	}
 
 	private void CreateCoolDownBar() {
