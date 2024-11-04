@@ -11,6 +11,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 30;
 			Item.rare = ItemRarityID.Purple;
 		}
+		public override bool CanActivateSpoil => false;
 		public override bool ChestUseOwnLogic => true;
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);

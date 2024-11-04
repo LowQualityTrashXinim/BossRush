@@ -96,6 +96,7 @@ namespace BossRush.Contents.Items.Chest {
 		/// </summary>
 		public virtual void ModifyLootAdd(Player player) { }
 		public override bool CanRightClick() => true;
+		public virtual bool CanActivateSpoil => true;
 		public sealed override void RightClick(Player player) {
 			RoguelikeData.Lootbox_AmountOpen = Math.Clamp(RoguelikeData.Lootbox_AmountOpen + 1, 0, int.MaxValue);
 			if (!ModContent.GetInstance<UniversalSystem>().LootBoxOpen.Contains(Type)) {
@@ -148,8 +149,10 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			else {
-				UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
-				system.ActivateSpoilsUI(Type);
+				if (CanActivateSpoil) {
+					UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+					system.ActivateSpoilsUI(Type);
+				}
 			}
 			AbsoluteRightClick(player);
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX) && Main.rand.NextBool(1500)) {

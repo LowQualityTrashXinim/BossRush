@@ -11,7 +11,8 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = ItemRarityID.Purple;
 		}
-		public override void OnRightClick(Player player, ChestLootDropPlayer modplayer) {
+		public override bool CanActivateSpoil => false;
+		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (NPC.downedEmpressOfLight) {
 				int ran1 = Main.rand.Next(10);
