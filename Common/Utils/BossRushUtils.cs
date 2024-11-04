@@ -269,20 +269,31 @@ namespace BossRush {
 	/// Use this to set up your own logic for multi color changing effect, could done this with shader but well
 	/// </summary>
 	public class ColorInfo {
-		public ColorInfo(List<Color> colorlist) {
+		public const int MaximumProgress = 255;
+		public ColorInfo(List<Color> colorlist, float offsetprogress = 0) {
 			listcolor = colorlist;
+			progress = (int)(MaximumProgress * offsetprogress);
+			//Attempt to fill up color
+			if (listcolor == null) {
+				return;
+			}
+			if (listcolor.Count >= 2) {
+				color1 = listcolor[0];
+				color2 = listcolor[1];
+				color3 = listcolor[0];
+			}
 		}
 		int currentIndex = 0, progress = 0;
 		Color color1 = new Color(), color2 = new Color(), color3 = new Color();
 		List<Color> listcolor = new List<Color>();
 
 		public Color MultiColor(int speed) {
-			if (progress >= 255)
+			if (progress >= MaximumProgress)
 				progress = 0;
 			else
-				progress = Math.Clamp(progress + 1 * speed, 0, 255);
+				progress = Math.Clamp(progress + 1 * speed, 0, MaximumProgress);
 
-			if (listcolor.Count < 1)
+			if (listcolor == null || listcolor.Count < 1)
 				return Color.White;
 
 			if (listcolor.Count < 2)

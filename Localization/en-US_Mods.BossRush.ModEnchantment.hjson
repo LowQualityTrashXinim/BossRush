@@ -634,3 +634,9 @@ BreakerBlade.Description:
 	Gives a random early-hardmode Melee Weapon
 	(most of these bonuses applies only to melee weapons)
 	'''
+BloodRainBow.Description:
+	'''
+	Using weapon can shoot will shoot additional blood arrow
+	Hitting enemy with the weapon will shoot 3 blood arrows
+	(All blood arrow spawm by this achievement deal 15% less damage)
+	'''

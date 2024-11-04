@@ -588,6 +588,7 @@ class DefaultUI : UIState {
 
 	private ColorInfo colorChanging1;
 	private ColorInfo colorChanging2;
+	private ColorInfo colorchanging3;
 	public override void OnInitialize() {
 		CreateEnergyBar();
 		CreateCoolDownBar();
@@ -598,7 +599,8 @@ class DefaultUI : UIState {
 		staticticUI.OnLeftClick += StaticticUI_OnLeftClick;
 		Append(staticticUI);
 		colorChanging1 = new(new() { Color.DarkBlue, Color.LightCyan });
-		colorChanging2 = new(new() { Color.LightCyan, Color.DarkBlue });
+		colorChanging2 = new(new() { Color.LightCyan, Color.DarkBlue }, .5f);
+		colorchanging3 = new(new() { Color.DarkRed, Color.Red });
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
@@ -637,7 +639,7 @@ class DefaultUI : UIState {
 	}
 
 	private void CreateEnergyBar() {
-		energyCostBar = new Roguelike_ProgressUIBar(null, Color.DarkBlue, Color.LightCyan, "", .8f);
+		energyCostBar = new Roguelike_ProgressUIBar(null, Color.DarkRed, Color.DarkRed, "", .8f);
 		energyCostBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
 		energyCostBar.VAlign = .02f;
 		energyCostBar.HAlign = .37f;
@@ -646,8 +648,6 @@ class DefaultUI : UIState {
 		energyCostBar.HideBar = true;
 		energyCostBar.HideText = true;
 		energyCostBar.OnUpdate += EnergyCostBar_OnUpdate;
-		energyCostBar.SetColorA(Color.DarkRed);
-		energyCostBar.SetColorB(Color.DarkRed);
 		Append(energyCostBar);
 		energyBar = new Roguelike_ProgressUIBar(null, Color.DarkBlue, Color.LightCyan, "0/0", .8f);
 		energyBar.SetPosition(new Rectangle(-22, 0, 138, 34), new Rectangle(0, 40, 138, 34));
@@ -662,14 +662,15 @@ class DefaultUI : UIState {
 	private void EnergyCostBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyCostBar.BarProgress = modPlayer.SimulateSkillCost() / (float)modPlayer.EnergyCap;
+		energyCostBar.SetColorA(colorchanging3.MultiColor(5));
 	}
 
 	private void EnergyBar_OnUpdate(UIElement affectedElement) {
 		var modPlayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
 		energyBar.text.SetText($"Energy : {modPlayer.Energy}/{modPlayer.EnergyCap}");
 		energyBar.BarProgress = modPlayer.Energy / (float)modPlayer.EnergyCap;
-		energyBar.SetColorA(colorChanging1.MultiColor(1));
-		energyBar.SetColorB(colorChanging2.MultiColor(1));
+		energyBar.SetColorA(colorChanging1.MultiColor(5));
+		energyBar.SetColorB(colorChanging2.MultiColor(5));
 	}
 
 	private void CreateCoolDownBar() {

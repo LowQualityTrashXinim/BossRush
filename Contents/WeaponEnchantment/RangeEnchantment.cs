@@ -14,6 +14,7 @@ using BossRush.Common.General;
 using Terraria.Chat;
 using Terraria.Localization;
 using BossRush.Contents.Items.Chest;
+using Mono.Cecil;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -107,7 +108,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 							type = proj;
 						}
 					}
-					if(speed < 3) {
+					if (speed < 3) {
 						speed = 7;
 					}
 					Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(15);
@@ -623,11 +624,17 @@ namespace BossRush.Contents.WeaponEnchantment {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RangeDMG, 1.05f);
 		}
 		public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (++globalItem.Item_Counter1[index] >= 7) {
-				type = item.useAmmo == AmmoID.Bullet ? type : ProjectileID.Bullet;
-				int proj = Projectile.NewProjectile(source, position, velocity * 2f, type, damage, knockback, player.whoAmI);
-				Main.projectile[proj].CritChance = 101;
-				globalItem.Item_Counter1[index] = 0;
+			Vector2 pos = Main.rand.NextVector2Circular(25, 300).Add(0, Main.rand.NextFloat(-100, 100) + 800) + Main.MouseWorld;
+			Vector2 vel = (Main.MouseWorld + Main.rand.NextVector2Circular(20, 20) - pos).SafeNormalize(Vector2.Zero) * (item.shootSpeed > 0 ? item.shootSpeed : 5);
+			Projectile.NewProjectile(source, pos, vel, ProjectileID.BloodArrow, (int)(damage * .85f), knockback, player.whoAmI);
+		}
+		public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			IEntitySource entitySource = player.GetSource_ItemUse(item);
+			int damage = (int)(hit.Damage * .85f);
+			for (int i = 0; i < 3; i++) {
+				Vector2 pos = Main.rand.NextVector2Circular(25, 100).Add(0, Main.rand.NextFloat(-100, 100) + 800) + Main.MouseWorld;
+				Vector2 vel = (pos - Main.MouseWorld).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(entitySource, pos, vel, ProjectileID.BloodArrow, damage, hit.Knockback, player.whoAmI);
 			}
 		}
 	}
@@ -741,8 +748,7 @@ namespace BossRush.Contents.WeaponEnchantment {
 
 		public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (target.life - damageDone <= 0 && globalItem.Item_Counter1[index] <= 0)
-				for (int i = 0; i < 15; i++) 
-				{
+				for (int i = 0; i < 15; i++) {
 					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
 					globalItem.Item_Counter1[index] = 5;
 
