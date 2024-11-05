@@ -65,16 +65,23 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		tooltips[index].Text = (defense + info.Add_Defense) + text;
 
 		index = tooltips.FindIndex(line => line.Name == "Tooltip0");
-		if (index == -1) {
-			return;
-		}
 		var armorinfo = ArmorLoader.GetArmorPieceInfo(item.type);
-		if (armorinfo.AddTooltip) {
-			if (armorinfo.OverrideTooltip) {
-				tooltips[index].Text = armorinfo.ToolTip;
+		if (index == -1) {
+			if (armorinfo == null) {
+				return;
 			}
-			else {
-				tooltips[index].Text += "\n" + armorinfo.ToolTip;
+			if (armorinfo.AddTooltip) {
+				tooltips.Insert(3, new(Mod, $"{Mod.Name}_Tooltip0", armorinfo.ToolTip));
+			}
+		}
+		else {
+			if (armorinfo.AddTooltip) {
+				if (armorinfo.OverrideTooltip) {
+					tooltips[index].Text = armorinfo.ToolTip;
+				}
+				else {
+					tooltips[index].Text += "\n" + armorinfo.ToolTip;
+				}
 			}
 		}
 	}

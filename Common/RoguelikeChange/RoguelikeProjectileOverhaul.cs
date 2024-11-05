@@ -25,9 +25,6 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 			return base.PreAI(projectile);
 		}
 		Player player = Main.player[projectile.owner];
-		if (projectile.type == ProjectileID.AbigailMinion) {
-			projectile.velocity /= 1.5f;
-		}
 		if (player.strongBees) {
 			if (projectile.type == ProjectileID.Bee || projectile.type == ProjectileID.GiantBee) {
 				projectile.velocity /= 1.25f;
@@ -51,9 +48,6 @@ internal class RoguelikeProjectileOverhaul : GlobalProjectile {
 				float currentRotation = projectile.velocity.ToRotation();
 				
 				projectile.velocity = projectile.velocity.RotatedBy(rotateTo - currentRotation);
-			}
-			if (projectile.type == ProjectileID.AbigailMinion) {
-				projectile.velocity *= 1.5f;
 			}
 			if (player.strongBees) {
 				if (projectile.type == ProjectileID.Bee || projectile.type == ProjectileID.GiantBee) {

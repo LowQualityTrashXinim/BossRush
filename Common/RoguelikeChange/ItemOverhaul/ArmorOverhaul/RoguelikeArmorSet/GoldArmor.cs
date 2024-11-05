@@ -19,7 +19,7 @@ public class GoldHelmet : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<GoldArmorModPlayer>().Chance += .5f;
+		player.GetModPlayer<GoldArmorModPlayer>().Chance += .05f;
 	}
 }
 public class GoldChainmail : ModArmorPiece {
@@ -31,7 +31,7 @@ public class GoldChainmail : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<GoldArmorModPlayer>().Chance += .5f;
+		player.GetModPlayer<GoldArmorModPlayer>().Chance += .05f;
 	}
 }
 public class GoldGreaves : ModArmorPiece {
@@ -43,7 +43,7 @@ public class GoldGreaves : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<GoldArmorModPlayer>().Chance += .5f;
+		player.GetModPlayer<GoldArmorModPlayer>().Chance += .05f;
 	}
 }
 public class GoldArmorModPlayer : ModPlayer {
