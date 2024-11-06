@@ -32,6 +32,7 @@ namespace BossRush.Common.ChallengeMode {
 			self.ZoneSnow = false;
 			self.ZoneHallow = false;
 			self.ZoneUnderworldHeight = false;
+			self.ZoneBeach = false;
 			Tile tileSafely = Framing.GetTileSafely(self.Center);
 			if (tileSafely != null)
 				self.behindBackWall = tileSafely.WallType > 0;
@@ -39,27 +40,30 @@ namespace BossRush.Common.ChallengeMode {
 			if (IsInBiome(self, BiomeAreaID.Corruption, Room)) {
 				self.ZoneCorrupt = true;
 			}
-			else if (IsInBiome(self, BiomeAreaID.Crimson, Room)) {
+			if (IsInBiome(self, BiomeAreaID.Crimson, Room)) {
 				self.ZoneCrimson = true;
 			}
-			else if (IsInBiome(self, BiomeAreaID.BeeNest, Room)) {
+			if (IsInBiome(self, BiomeAreaID.BeeNest, Room)) {
 				self.ZoneJungle = true;
 				self.ZoneRockLayerHeight = true;
 			}
-			else if (IsInBiome(self, BiomeAreaID.Tundra, Room)) {
+			if (IsInBiome(self, BiomeAreaID.Tundra, Room)) {
 				self.ZoneSnow = true;
 			}
-			else if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
+			if (IsInBiome(self, BiomeAreaID.Underground, Room)) {
 				self.ZoneUnderworldHeight = true;
 			}
-			else if(IsInBiome(self, BiomeAreaID.Jungle, Room)) {
+			if (IsInBiome(self, BiomeAreaID.Jungle, Room)) {
 				self.ZoneJungle = true;
 				self.ZoneRockLayerHeight = true;
 			}
-			else if (IsInBiome(self, BiomeAreaID.Hallow, Room)) {
+			if (IsInBiome(self, BiomeAreaID.Hallow, Room)) {
 				self.ZoneHallow = true;
 			}
-			if(ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
+			else if (IsInBiome(self, BiomeAreaID.Ocean, Room)) {
+				self.ZoneBeach = true;
+			}
+			if (ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Contains(NPCID.WallofFlesh)) {
 				Main.hardMode = true;
 			}
 		}
@@ -554,7 +558,7 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_FleshArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
 			ImageData arena = ImageStructureLoader.Get(
-				ImageStructureLoader.StringBuilder( ImageStructureLoader.FleshArenaVar, 1 + WorldGen.genRand.NextBool().ToInt())
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.FleshArenaVar, 1 + WorldGen.genRand.NextBool().ToInt())
 				);
 			arena.EnumeratePixels((a, b, color) => {
 				a += rect.X;
@@ -578,10 +582,36 @@ namespace BossRush.Common.ChallengeMode {
 			Room.Add(BiomeAreaID.FleshRealm, new List<Rectangle> { rect });
 		}
 		[Task]
+		public void Create_OceanArena() {
+			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(20, 2, 3, 3);
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.OceanArena, 1)
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Sand);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+					AddPlatformToList(a, b);
+				}
+				else if (color.G == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Sandstone);
+				}
+			});
+			Room.Add(BiomeAreaID.Ocean, new List<Rectangle> { rect });
+		}
+		[Task]
 		public void Create_Hell() {
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 20, 24, 4),
 			(i, j) => {
-				if( j == RogueLikeWorldGen.GridPart_Y * 21f
+				if (j == RogueLikeWorldGen.GridPart_Y * 21f
 				|| j == RogueLikeWorldGen.GridPart_Y * 20.5f) {
 					GenerationHelper.FastPlaceTile(i, j, TileID.Platforms);
 				}

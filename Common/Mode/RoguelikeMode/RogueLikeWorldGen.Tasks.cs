@@ -34,6 +34,7 @@ public class BiomeAreaID {
 	public const short Underground = 14;
 	public const short BeeNest = 15;
 	public const short Hallow = 16;
+	public const short Ocean = 17;
 }
 
 public partial class RogueLikeWorldGen : ModSystem {

@@ -41,6 +41,7 @@ public class ImageStructureLoader : ILoadable {
 	public const string DungeonAreana = "2x2DungeonArena";
 	public const string TundraArena = "3x3TundraArena";
 	public const string HallowArena = "3x3HallowArena";
+	public const string OceanArena = "3x3OceanArena";
 	public static string StringBuilder(string ArenaName, int Variant) => $"{ArenaName}{Variant}";
 }
 public record ImageData(int Width, Color[] Data) {
