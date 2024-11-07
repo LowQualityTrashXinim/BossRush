@@ -144,14 +144,11 @@ namespace BossRush.Contents.Items.Chest {
 			player.QuickSpawnItem(entitySource, wing);
 			player.QuickSpawnItem(entitySource, ItemID.MythrilAnvil);
 			player.QuickSpawnItem(entitySource, ItemID.AdamantiteForge);
-			int ranPix = Main.rand.Next(2);
-			switch (ranPix) {
-				case 0:
-					player.QuickSpawnItem(entitySource, ItemID.AdamantitePickaxe);
-					break;
-				case 1:
-					player.QuickSpawnItem(entitySource, ItemID.TitaniumPickaxe);
-					break;
+			if (Main.rand.NextBool()) {
+				player.QuickSpawnItem(entitySource, ItemID.AdamantitePickaxe);
+			}
+			else {
+				player.QuickSpawnItem(entitySource, ItemID.TitaniumPickaxe);
 			}
 			if (Main.rand.NextBool(20)) {
 				player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
@@ -159,6 +156,13 @@ namespace BossRush.Contents.Items.Chest {
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
+			}
+			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
+				GetArmorForPlayer(entitySource, player);
+				GetWeapon(entitySource, player, 2);
+				GetAccessories(Type, player);
+				GetPotion(Type, player);
+				GetSkillLootbox(Type, player, 1);
 			}
 		}
 	}

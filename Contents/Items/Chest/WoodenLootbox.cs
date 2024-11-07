@@ -94,9 +94,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-				ChestLootDropPlayer modplayer = player.GetModPlayer<ChestLootDropPlayer>();
-				modplayer.GetAmount();
-				GetWeapon(entitySource, player, modplayer.weaponAmount);
+				GetWeapon(entitySource, player, 2);
 				GetArmorForPlayer(entitySource, player);
 				GetAccessories(Type, player);
 				GetPotion(Type, player);

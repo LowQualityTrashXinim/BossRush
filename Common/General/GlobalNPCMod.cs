@@ -124,6 +124,7 @@ namespace BossRush.Common.General {
 				//npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HardModeBossBundle>()));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ShadowLootBox>()));
+				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WorldEssence>()));
 			}
 			else if (npc.type == NPCID.BloodNautilus) {
 				ExpertVSnormal.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BloodLootBox>()));
@@ -164,7 +165,6 @@ namespace BossRush.Common.General {
 				npcLoot.Add(ItemDropRule.ByCondition(new ChallengeModeException(), ItemID.LihzahrdAltar));
 				//Expert mode drop
 				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NatureLootBox>()));
-				npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WorldEssence>()));
 			}
 			else if (npc.type == NPCID.Golem) {
 				//NoHit mode drop

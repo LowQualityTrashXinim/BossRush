@@ -1922,7 +1922,7 @@ public class TeleportUI : UIState {
 				{ ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle },
 				{ ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon },
 				{ ItemID.EmpressButterfly, BiomeAreaID.Hallow },
-				{ ItemID.TruffleWorm, BiomeAreaID.Forest }
+				{ ItemID.TruffleWorm, BiomeAreaID.Ocean }
 			};
 			for (int i = 8; i < stuffHM.Count; i++) {
 				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(8 - 1));
@@ -1969,7 +1969,7 @@ public class TeleportUI : UIState {
 				{ ItemID.LihzahrdPowerCell, BiomeAreaID.Jungle },
 				{ ModContent.ItemType<LunaticTablet>(), BiomeAreaID.Dungeon },
 				{ ItemID.EmpressButterfly, BiomeAreaID.Hallow },
-				{ ItemID.TruffleWorm, BiomeAreaID.Forest }
+				{ ItemID.TruffleWorm, BiomeAreaID.Ocean }
 			};
 			for (int i = 0; i < stuffHM.Count; i++) {
 				float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(stuffHM.Count - 1));

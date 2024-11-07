@@ -110,10 +110,12 @@ namespace BossRush.Contents.Perks {
 			return PerkAmount;
 		}
 		public bool HasPerk<T>() where T : Perk => perks.ContainsKey(Perk.GetPerkType<T>());
-		public override bool CanUseItem(Item item) {
+		public override void PostItemCheck() {
 			foreach (int perk in perks.Keys) {
-				ModPerkLoader.GetPerk(perk).OnUseItem(Player, item);
+				ModPerkLoader.GetPerk(perk).OnUseItem(Player, Player.HeldItem);
 			}
+		}
+		public override bool CanUseItem(Item item) {
 			if (item.buffType == BuffID.ManaSickness && Player.HasBuff(ModContent.BuffType<ManaBlock>())) {
 				return false;
 			}

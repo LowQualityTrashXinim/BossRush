@@ -409,7 +409,7 @@ namespace BossRush.Contents.Perks {
 			damage.Flat += 7;
 		}
 		public override void OnUseItem(Player player, Item item) {
-			if (player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
+			if (item.IsAWeapon() && player.itemAnimation == player.itemAnimationMax && player.ItemAnimationActive) {
 				int damage = (int)Math.Round(player.GetWeaponDamage(player.HeldItem) * .05f);
 				player.statLife = Math.Clamp(player.statLife - damage, 0, player.statLifeMax2);
 				BossRushUtils.CombatTextRevamp(player.Hitbox, Color.Red, "-" + damage, Main.rand.Next(-10, 40));
