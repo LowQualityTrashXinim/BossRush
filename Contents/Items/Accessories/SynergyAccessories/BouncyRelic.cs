@@ -37,11 +37,10 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
 			if (player.GetModPlayer<PlayerRelic>().Bouncy && !projectile.minion && !projectile.hostile) {
 				projectile.tileCollide = true;
 				Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-				if (projectile.velocity.X != oldVelocity.X) 					projectile.velocity.X = -oldVelocity.X;
-				if (projectile.velocity.Y != oldVelocity.Y) 					projectile.velocity.Y = -oldVelocity.Y;
-				if (projectile.timeLeft > 180) 					projectile.timeLeft = 180;
-				counter++;
-				if (counter > 10) 					return false;
+				if (projectile.velocity.X != oldVelocity.X) projectile.velocity.X = -oldVelocity.X;
+				if (projectile.velocity.Y != oldVelocity.Y) projectile.velocity.Y = -oldVelocity.Y;
+				if (projectile.timeLeft > 180) projectile.timeLeft = 180;
+				if (++counter > 10) return false;
 				projectile.damage = (int)(projectile.damage * 1.2f);
 				return false;
 			}

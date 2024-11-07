@@ -20,8 +20,8 @@ public class ModSpoilSystem : ModSystem {
 			_spoils.Add(spoil.Name, spoil);
 		}
 	}
-	public static List<ModSpoil> GetSpoilsList() => new(_spoils.Values); 
-	
+	public static List<ModSpoil> GetSpoilsList() => new(_spoils.Values);
+
 	public override void Unload() {
 		_spoils = null;
 	}
@@ -36,7 +36,7 @@ public static class SpoilDropRarity {
 	public readonly static int SuperRare = ItemRarityID.Purple;
 	public readonly static int SSR = ItemRarityID.Red;
 	public static bool ChanceWrapper(float chance) {
-		if(!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS)) {
+		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS)) {
 			return false;
 		}
 		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().HasPerk<BlessingOfPerk>()) {
@@ -45,9 +45,9 @@ public static class SpoilDropRarity {
 		return Main.rand.NextFloat() <= chance;
 	}
 	public static bool UncommonDrop() => ChanceWrapper(.44f);
-	public static bool RareDrop() => ChanceWrapper(.15f);
-	public static bool SuperRareDrop() => ChanceWrapper(.05f);
-	public static bool SSRDrop() => ChanceWrapper(.01f);
+	public static bool RareDrop() => ChanceWrapper(.10f);
+	public static bool SuperRareDrop() => ChanceWrapper(.025f);
+	public static bool SSRDrop() => ChanceWrapper(.001f);
 }
 public abstract class ModSpoil {
 	public string Name => GetType().Name;

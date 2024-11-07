@@ -13,7 +13,7 @@ internal class CursesLoader : ModSystem {
 	public static int Register(ModCurse curse) {
 		ModTypeLookup<ModCurse>.Register(curse);
 		_curses.Add(curse.Name, curse);
-		if(curse.catagory.Contains(CursesCatagory.Taboo)) {
+		if (curse.catagory.Contains(CursesCatagory.Taboo)) {
 			_TabooCurse.Add(curse.Name, curse);
 		}
 		if (curse.catagory.Contains(CursesCatagory.Blessing)) {
@@ -34,7 +34,7 @@ internal class CursesLoader : ModSystem {
 		_BlessingCurse = null;
 	}
 	public static ModCurse GetCurses(string name, CursesCatagory type = CursesCatagory.None) {
-		if(type == CursesCatagory.Taboo) {
+		if (type == CursesCatagory.Taboo) {
 			return _TabooCurse.ContainsKey(name) ? _TabooCurse[name] : null;
 		}
 		if (type == CursesCatagory.Blessing) {
@@ -43,6 +43,17 @@ internal class CursesLoader : ModSystem {
 		return _curses.ContainsKey(name) ? _curses[name] : null;
 	}
 	public static int GetCurseValue(Player player, string name) => player.GetModPlayer<PlayerCursesHandle>().curses[GetCurses(name)];
+	public static void AddCurses(Player player, string name, CursesCatagory catagory) {
+		if (player.TryGetModPlayer(out PlayerCursesHandle curseplayer)) {
+			ModCurse curse = GetCurses(name, catagory);
+			if (!curseplayer.curses.ContainsKey(curse)) {
+				curseplayer.curses.Add(curse, 1);
+			}
+			else {
+				curseplayer.curses[curse]++;
+			}
+		}
+	}
 }
 public enum CursesCatagory {
 	None,
@@ -74,9 +85,16 @@ public abstract class ModCurse : ModType {
 	public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
+	public override sealed string ToString() {
+		return Name;
+	}
+	public override sealed bool Equals(object obj) {
+		return this.Name == obj.ToString();
+	}
 }
 public class PlayerCursesHandle : ModPlayer {
 	public Dictionary<ModCurse, int> curses = new();
+	public int TotalCursesValue => curses.Select(c => c.Key.Value * c.Value).Sum();
 	public override void Initialize() {
 		curses = new();
 	}

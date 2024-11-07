@@ -47,7 +47,8 @@ internal class ProofOfEmpowered : ModItem {
 		player.brainOfConfusionItem = Item;
 		player.boneGloveItem = Item;
 		player.strongBees = true;
-		if (meth != null) 			try {
+		if (meth != null)
+			try {
 				meth.Invoke(player, new object[] { Item });
 			}
 			catch (Exception ex) {
