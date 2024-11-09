@@ -18,15 +18,16 @@ public class TokenOfSlothPlayer : ModPlayer {
 	public int SlothMeter = 0;
 	public int Counter_Sloth = 0;
 	public int Decay_SlothMeter = 0;
+	public const int ThreeSecond = 180;
 	public override void ResetEffects() {
 		TokenOfSloth = Player.HasArtifact<TokenOfSlothArtifact>();
 		if (SlothMeter <= 0 || Player.velocity == Vector2.Zero || !TokenOfSloth) {
 			return;
 		}
-		if (++Decay_SlothMeter >= 180) {
+		if (++Decay_SlothMeter >= ThreeSecond) {
 			Decay_SlothMeter = 0;
 			Counter_Sloth = 0;
-			SlothMeter = Math.Clamp(SlothMeter - 1, 0, 10);
+			SlothMeter = Math.Clamp(SlothMeter - 1, 0, 4);
 		}
 	}
 	public override void UpdateEquips() {
@@ -41,8 +42,8 @@ public class TokenOfSlothPlayer : ModPlayer {
 				Main.dust[dust].fadeIn = 0;
 			}
 			if (Player.velocity == Vector2.Zero) {
-				if (++Counter_Sloth >= 90) {
-					SlothMeter = Math.Clamp(SlothMeter + 1, 0, 10);
+				if (++Counter_Sloth >= ThreeSecond / 3) {
+					SlothMeter = Math.Clamp(SlothMeter + 1, 0, 4);
 					Counter_Sloth = 0;
 					Decay_SlothMeter = 0;
 				}

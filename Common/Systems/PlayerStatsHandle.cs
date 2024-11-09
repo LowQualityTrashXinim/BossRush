@@ -27,7 +27,6 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier UpdateThorn = new StatModifier();
 	public StatModifier UpdateCritDamage = new StatModifier();
 	public StatModifier UpdateDefEff = new StatModifier();
-	public StatModifier UpdateDropAmount = new StatModifier();
 	public StatModifier UpdateMinion = new StatModifier();
 	public StatModifier UpdateSentry = new StatModifier();
 	public StatModifier DebuffTime = new StatModifier();
@@ -119,7 +118,6 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override void PostUpdate() {
-		ChestLoot.amountModifier = (int)UpdateDropAmount.ApplyTo(ChestLoot.amountModifier);
 		Player.statLife = Math.Clamp(Player.statLife + Rapid_LifeRegen, 1, Player.statLifeMax2);
 		Player.statMana = Math.Clamp(Player.statMana + Rapid_ManaRegen, 0, Player.statManaMax2);
 	}
@@ -159,7 +157,6 @@ public class PlayerStatsHandle : ModPlayer {
 		UpdateDefenseBase = StatModifier.Default;
 		UpdateCritDamage = StatModifier.Default;
 		UpdateDefEff = StatModifier.Default;
-		UpdateDropAmount = StatModifier.Default;
 		UpdateThorn = StatModifier.Default;
 		AuraModifier = StatModifier.Default;
 		DebuffTime = StatModifier.Default;

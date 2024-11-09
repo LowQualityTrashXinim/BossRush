@@ -1029,14 +1029,8 @@ namespace BossRush.Contents.Items.Chest {
 		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
 		//Alternatively we can use this to handle all the data itself
 
-		/// <summary>
-		/// This is global multiplier that affect all of the drop amount in <see cref="LootBoxBase"/>
-		/// </summary>
-		public float finalMultiplier = 1f;
-		/// <summary>
-		/// This is a global addition that affect all of the drop amount in <see cref="LootBoxBase"/>
-		/// </summary>
-		public int amountModifier = 0;
+
+		public StatModifier DropModifier = new();
 
 		//This is inner modifier ( aka amount modifier to x stuff )
 		/// <summary>
@@ -1073,7 +1067,13 @@ namespace BossRush.Contents.Items.Chest {
 		/// </summary>
 		public float UpdateSummonChanceMutilplier = 0;
 		public bool LootboxCanDropSpecialPotion = false;
-		public int ModifyGetAmount(int baseValue) => finalMultiplier > 0 ? (int)Math.Ceiling(finalMultiplier * (baseValue + amountModifier)) : 1;
+		public int ModifyGetAmount(int baseValue) {
+			int amount = (int)DropModifier.ApplyTo(baseValue);
+			if (amount <= 0) {
+				return 1;
+			}
+			return amount;
+		}
 		/// <summary>
 		/// This must be called before using
 		/// <br/><see cref="weaponAmount"/>
@@ -1081,14 +1081,9 @@ namespace BossRush.Contents.Items.Chest {
 		/// <br/><see cref="potionNumAmount"/>
 		/// </summary>
 		public void GetAmount() {
-			weaponAmount = 5;
-			potionTypeAmount = 3;
-			potionNumAmount = 4;
-			if (Main.ActiveWorldFileData.GameMode != 0) {
-				weaponAmount -= 2;
-				potionTypeAmount -= 2;
-				potionNumAmount -= 2;
-			}
+			weaponAmount = 3;
+			potionTypeAmount = 1;
+			potionNumAmount = 2;
 			if (Main.getGoodWorld) {
 				weaponAmount = 2;
 				potionTypeAmount = 1;
@@ -1104,8 +1099,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void ResetEffects() {
 			LootboxCanDropSpecialPotion = false;
 			CanDropSynergyEnergy = false;
-			amountModifier = 0;
-			finalMultiplier = 1f;
+			DropModifier = StatModifier.Default;
 			WeaponAmountAddition = 0;
 			PotionTypeAmountAddition = 0;
 			PotionNumberAmountAddition = 0;

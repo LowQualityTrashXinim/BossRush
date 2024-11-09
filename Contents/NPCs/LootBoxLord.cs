@@ -39,42 +39,42 @@ namespace BossRush.Contents.NPCs {
 			NPC.ScaleStats_UseStrengthMultiplier(1);
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreBoss[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.MeleePreEoC.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreEoC[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.MeleeEvilBoss.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleeEvilBoss[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.RangePreBoss.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreBoss[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.RangePreEoC.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreEoC[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.RangeSkele.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangeSkele[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.MagicPreBoss.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreBoss[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.MagicPreEoC.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreEoC[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.MagicSkele.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicSkele[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.SummonPreBoss.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonPreBoss[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.SummonerPreEoC.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonerPreEoC[i]));
-			}
-			for (int i = 0; i < TerrariaArrayID.SummonSkele.Length; i++) {
-				npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonSkele[i]));
-			}
+			//for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreBoss[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.MeleePreEoC.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleePreEoC[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.MeleeEvilBoss.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MeleeEvilBoss[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.RangePreBoss.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreBoss[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.RangePreEoC.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangePreEoC[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.RangeSkele.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.RangeSkele[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.MagicPreBoss.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreBoss[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.MagicPreEoC.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicPreEoC[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.MagicSkele.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.MagicSkele[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.SummonPreBoss.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonPreBoss[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.SummonerPreEoC.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonerPreEoC[i]));
+			//}
+			//for (int i = 0; i < TerrariaArrayID.SummonSkele.Length; i++) {
+			//	npcLoot.Add(ItemDropRule.Common(TerrariaArrayID.SummonSkele[i]));
+			//}
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PowerEnergy>()));
 		}
 		public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment) {

@@ -75,6 +75,9 @@ public class ArgumentWeapon : GlobalItem {
 			decayable = modplayer.Request_Decayable;
 			int currentEmptySlot = 0;
 			bool passException = false;
+			if(player.name.Trim() == "hero") {
+				chance += .1f;
+			}
 			float chanceDecay = modplayer.IncreasesChance + chance;
 			for (int i = 0; i < weapon.ArgumentSlots.Length && currentEmptySlot < weapon.ArgumentSlots.Length; i++) {
 				if(limit <= -1) {

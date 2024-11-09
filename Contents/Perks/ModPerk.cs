@@ -138,6 +138,7 @@ namespace BossRush.Contents.Perks {
 	public class WindSlash : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
+			CanBeChoosen = false;
 		}
 		public override void Update(Player player) {
 			if (player.HeldItem.DamageType == DamageClass.Melee
@@ -169,7 +170,7 @@ namespace BossRush.Contents.Perks {
 				OpportunityWindow = 0;
 				StrikeOpportunity = false;
 			}
-			if (OpportunityWindow >= BossRushUtils.ToSecond(3)) {
+			if (OpportunityWindow >= BossRushUtils.ToSecond(1.5f)) {
 				StrikeOpportunity = true;
 				Dust.NewDust(Player.Center, 0, 0, DustID.SolarFlare);
 				return;
@@ -180,16 +181,17 @@ namespace BossRush.Contents.Perks {
 	public class PowerUp : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PowerUp>();
-			CanBeStack = false;
+			CanBeStack = true;
+			StackLimit = 3;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage += .25f;
+			damage += .25f * StackAmount(player);
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
-			crit += 10;
+			crit += 10 * StackAmount(player);
 		}
 		public override void ModifyUseSpeed(Player player, Item item, ref float useSpeed) {
-			useSpeed -= .35f;
+			useSpeed -= .25f + .1f * StackAmount(player);
 		}
 	}
 	public class LifeForceOrb : Perk {
@@ -208,65 +210,6 @@ namespace BossRush.Contents.Perks {
 				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
-	//public class PoisonAura : Perk {
-	//	public override void SetDefaults() {
-	//		CanBeStack = false;
-	//	}
-	//	public override void OnChoose(Player player) {
-	//		player.QuickSpawnItem(player.GetSource_Loot(), ItemID.Bezoar);
-	//	}
-	//	public override void Update(Player player) {
-	//		if (player.buffImmune[BuffID.Poisoned]) {
-	//			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
-	//			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
-	//			for (int i = 0; i < 6; i++) {
-	//				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Poisoned);
-	//				Main.dust[dustRing].noGravity = true;
-	//				Main.dust[dustRing].velocity = Vector2.Zero;
-	//				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-	//				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Poisoned);
-	//				Main.dust[dust].noGravity = true;
-	//				Main.dust[dust].velocity = Vector2.Zero;
-	//				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-	//			}
-	//			if (npclist.Count > 0) {
-	//				foreach (NPC npc in npclist) {
-	//					npc.AddBuff(BuffID.Poisoned, 180);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-	//public class OnFireAura : Perk {
-	//	public override void SetDefaults() {
-	//		textureString = BossRushUtils.GetTheSameTextureAsEntity<OnFireAura>();
-	//		CanBeStack = false;
-	//	}
-	//	public override void OnChoose(Player player) {
-	//		player.QuickSpawnItem(player.GetSource_Loot(), ItemID.ObsidianRose);
-	//	}
-	//	public override void Update(Player player) {
-	//		if (player.buffImmune[BuffID.OnFire]) {
-	//			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
-	//			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
-	//			for (int i = 0; i < 4; i++) {
-	//				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
-	//				Main.dust[dustRing].noGravity = true;
-	//				Main.dust[dustRing].velocity = Vector2.Zero;
-	//				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
-	//				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
-	//				Main.dust[dust].noGravity = true;
-	//				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
-	//				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
-	//			}
-	//			if (npclist.Count > 0) {
-	//				foreach (NPC npc in npclist) {
-	//					npc.AddBuff(BuffID.OnFire, 180);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
 	public class IllegalTrading : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
@@ -274,10 +217,10 @@ namespace BossRush.Contents.Perks {
 			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount;
+			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount(player);
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage -= .07f * StackAmount;
+			damage -= .07f * StackAmount(player);
 		}
 	}
 	public class BackUpMana : Perk {
@@ -323,10 +266,8 @@ namespace BossRush.Contents.Perks {
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MysteriousPotionEffectiveness, Base: 3);
 			player.GetModPlayer<PerkPlayer>().perk_AlchemistPotion = true;
-			player.GetModPlayer<PlayerStatsHandle>().DebuffTime -= .35f;
 			player.GetModPlayer<PerkPlayer>().perk_PotionCleanse = true;
 			player.GetModPlayer<PerkPlayer>().perk_PotionExpert = true;
-			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .35f;
 			player.GetModPlayer<ChestLootDropPlayer>().LootboxCanDropSpecialPotion = true;
 		}
 	}
@@ -340,7 +281,7 @@ namespace BossRush.Contents.Perks {
 			player.Center.LookForHostileNPC(out List<NPC> npclist, radius);
 			foreach (NPC npc in npclist) {
 				int direction = player.Center.X - npc.Center.X > 0 ? -1 : 1;
-				npc.StrikeNPC(npc.CalculateHitInfo((120 + player.statLife) * StackAmount, direction, false, 10));
+				npc.StrikeNPC(npc.CalculateHitInfo((120 + player.statLife) * StackAmount(player), direction, false, 10));
 			}
 			for (int i = 0; i < 150; i++) {
 				int smokedust = Dust.NewDust(player.Center, 0, 0, DustID.Smoke);
@@ -370,7 +311,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-			modifiers.SourceDamage -= -.3f * StackAmount;
+			modifiers.SourceDamage -= -.3f * StackAmount(player);
 		}
 	}
 	public class ProjectileDuplication : Perk {
@@ -379,14 +320,14 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			modifiers.SourceDamage -= (StackLimit - StackAmount + 1) * .15f;
+			modifiers.SourceDamage -= (StackLimit - StackAmount(player) + 1) * .15f;
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			if (type != ModContent.ProjectileType<ArenaMakerProj>()
 				|| type == ModContent.ProjectileType<NeoDynamiteExplosion>()
 				|| type == ModContent.ProjectileType<TowerDestructionProjectile>()
 				|| !ContentSamples.ProjectilesByType[type].minion) {
-				player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = StackAmount;
+				player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = StackAmount(player);
 				player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange = 10;
 			}
 		}
@@ -422,7 +363,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 2;
 		}
 		public override void ResetEffect(Player player) {
-			player.statDefense += (int)Math.Round(player.velocity.Length()) * StackAmount;
+			player.statDefense += (int)Math.Round(player.velocity.Length()) * StackAmount(player);
 		}
 		public override void Update(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1.15f);
@@ -447,13 +388,13 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			if (item.DamageType == DamageClass.Melee)
-				scale += .12f * StackAmount;
+				scale += .12f * StackAmount(player);
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (item.DamageType != DamageClass.Melee && item.DamageType != DamageClass.MeleeNoSpeed) {
 				return;
 			}
-			if (Main.rand.NextFloat() <= .07f * StackAmount) {
+			if (Main.rand.NextFloat() <= .07f * StackAmount(player)) {
 				Item.NewItem(item.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Heart));
 			}
 			if (Main.rand.NextBool(10)) {
@@ -477,12 +418,12 @@ namespace BossRush.Contents.Perks {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1f;
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() <= .01f * StackAmount && proj.DamageType == DamageClass.Ranged)
+			if (Main.rand.NextFloat() <= .01f * StackAmount(player) && proj.DamageType == DamageClass.Ranged)
 				modifiers.SourceDamage *= 4;
 		}
 		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
 			if (item.DamageType == DamageClass.Ranged)
-				crit += 7 * StackAmount;
+				crit += 7 * StackAmount(player);
 		}
 	}
 	public class BlessingOfNebula : Perk {
@@ -495,10 +436,10 @@ namespace BossRush.Contents.Perks {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1f;
 		}
 		public override void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) {
-			multi -= .11f * StackAmount;
+			multi -= .11f * StackAmount(player);
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (Main.rand.NextFloat() <= .06f * StackAmount && proj.DamageType == DamageClass.Magic) {
+			if (Main.rand.NextFloat() <= .06f * StackAmount(player) && proj.DamageType == DamageClass.Magic) {
 				Item.NewItem(proj.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Star));
 			}
 		}
@@ -519,7 +460,7 @@ namespace BossRush.Contents.Perks {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += 1f;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage.Base += (player.maxMinions + player.maxTurrets) / 2 * StackAmount;
+			damage.Base += (player.maxMinions + player.maxTurrets) / 2 * StackAmount(player);
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (ProjectileID.Sets.IsAWhip[proj.type]) {
@@ -554,7 +495,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			if (player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
-				damage.Flat += 10 * StackAmount;
+				damage.Flat += 10 * StackAmount(player);
 			}
 		}
 	}
@@ -566,9 +507,9 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 100 * StackAmount);
-			modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.15f * StackAmount, Flat: 10);
-			modplayer.AddStatsToPlayer(PlayerStats.Thorn, Flat: 2f * StackAmount);
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Flat: 100 * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.Defense, Additive: 1.15f * StackAmount(player), Flat: 10);
+			modplayer.AddStatsToPlayer(PlayerStats.Thorn, Flat: 2f * StackAmount(player));
 		}
 	}
 	public class BlessingOfPerk : Perk {
@@ -581,7 +522,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 999;
 		}
 		public override string ModifyToolTip() {
-			if (StackAmount == 10) {
+			if (StackAmount(Main.LocalPlayer) == 10) {
 				return "don't you think it is enough now ?";
 			}
 			return base.ModifyToolTip();
@@ -596,7 +537,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 4;
 		}
 		public override string ModifyToolTip() {
-			switch (StackAmount) {
+			switch (StackAmount(Main.LocalPlayer)) {
 				case 1:
 					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
 				case 2:
@@ -660,7 +601,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void Update(Player player) {
-			player.GetCritChance(DamageClass.Generic) += 5 * StackAmount;
+			player.GetCritChance(DamageClass.Generic) += 5 * StackAmount(player);
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (Main.rand.NextFloat() < .03f * StackLimit) {
@@ -681,11 +622,11 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 4;
 		}
 		public override void Update(Player player) {
-			player.maxMinions += StackAmount * 2;
+			player.maxMinions += StackAmount(player) * 2;
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.DamageType != DamageClass.Summon) {
-				hit.SourceDamage -= (int)(hit.SourceDamage * 0.05f) * StackAmount;
+				hit.SourceDamage -= (int)(hit.SourceDamage * 0.05f) * StackAmount(player);
 			}
 		}
 	}
@@ -697,7 +638,7 @@ namespace BossRush.Contents.Perks {
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (modifiers.DamageType == DamageClass.Melee && item.shoot == ProjectileID.None) {
 				modifiers.DamageVariationScale *= 0f;
-				modifiers.SourceDamage += .25f * StackAmount;
+				modifiers.SourceDamage += .25f * StackAmount(player);
 				if (!player.immune) {
 					modifiers.SourceDamage += .44f;
 				}
@@ -798,13 +739,13 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 		}
 		public override string ModifyToolTip() {
-			if (StackAmount == 1) {
+			if (StackAmount(Main.LocalPlayer) >= 1) {
 				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
 			}
 			return base.ModifyToolTip();
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (StackAmount >= 1) {
+			if (StackAmount(player) >= 1) {
 				var globalproj = proj.GetGlobalProjectile<RoguelikeGlobalProjectile>();
 				if (globalproj.Source_CustomContextInfo == "AspectOfFirstChaos") {
 					if (!Main.rand.NextBool(4)) {
@@ -813,7 +754,7 @@ namespace BossRush.Contents.Perks {
 					}
 				}
 			}
-			int randcount = 1 + StackAmount;
+			int randcount = 1 + StackAmount(player);
 			for (int i = 0; i < randcount; i++) {
 				if (Main.rand.NextBool(5)) {
 					randcount++;
@@ -840,7 +781,7 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-			int randcount = 1 + StackAmount;
+			int randcount = 1 + StackAmount(player);
 			for (int i = 0; i < randcount; i++) {
 				if (Main.rand.NextBool(5)) {
 					randcount++;
@@ -870,7 +811,7 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (!Main.rand.NextBool(Math.Clamp(4 - StackAmount, 1, 4))) {
+			if (!Main.rand.NextBool(Math.Clamp(4 - StackAmount(player), 1, 4))) {
 				return;
 			}
 			EntitySource_ItemUse_WithAmmo newsource = new EntitySource_ItemUse_WithAmmo(source.Player, source.Item, source.AmmoItemIdUsed, "AspectOfFirstChaos");

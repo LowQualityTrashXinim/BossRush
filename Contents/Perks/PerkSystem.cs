@@ -129,11 +129,7 @@ namespace BossRush.Contents.Perks {
 			perk_ScatterShot = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
-			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
-				ModPerkLoader.GetPerk(i).StackAmount = 0;
-			}
 			foreach (int perk in perks.Keys) {
-				ModPerkLoader.GetPerk(perk).StackAmount = perks[perk];
 				ModPerkLoader.GetPerk(perk).ResetEffect(Player);
 			}
 		}
@@ -309,10 +305,18 @@ namespace BossRush.Contents.Perks {
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
 		public bool CanBeStack = false;
 		/// <summary>
-		/// Use this if <see cref="CanBeStack"/> is true
-		/// <br/> This allow easy multiply
+		/// This will get the value from Mod Perk player itself<br/>
+		/// it is recommend to use this rather than get it yourself cause what it doing is pretty much the same<br/>
+		/// This is prefer over the previous method as this do not update and isntead just get it from the source<br/>
+		/// In whatever case it is, it is highly recommend to not cached it cause the performance increases is very minimal<br/>
 		/// </summary>
-		public int StackAmount = 0;
+		public int StackAmount(Player player) {
+			if (player.TryGetModPlayer(out PerkPlayer perkplayer)) {
+				if (perkplayer.perks.ContainsKey(Type))
+					return perkplayer.perks[Type];
+			}
+			return 0;
+		}
 		/// <summary>
 		/// This is where you set limit to amount of stack should a perk have<br/>
 		/// <see cref="StackAmount"/> will always start at 0 and increase by 1 ( regardless if <see cref="CanBeStack"/> true or false )<br/>

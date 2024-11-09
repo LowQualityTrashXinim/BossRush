@@ -23,7 +23,7 @@ namespace BossRush.Contents.Artifacts {
 			}
 			int lengthPlayer = Player.buffType.Where(i => i != 0).Count();
 			PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-			modplayer.BuffTime -= .7f;
+			modplayer.BuffTime -= .55f;
 			modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: lengthPlayer * 1.5f);
 			modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Base: lengthPlayer * 2);
 			modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: lengthPlayer);
@@ -51,16 +51,6 @@ namespace BossRush.Contents.Artifacts {
 			}
 			if (lengthNPC >= 3) {
 				Player.Heal(lengthNPC - 3);
-			}
-			if (lengthNPC >= 5) {
-				target.Center.LookForHostileNPC(out List<NPC> npclist, 150);
-				int[] bufflist = target.buffType.Where(i => i != 0).ToArray();
-				foreach (NPC npc in npclist) {
-					Player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Player.GetWeaponDamage(Player.HeldItem), 1));
-					for (int i = 0; i < bufflist.Length; i++) {
-						npc.AddBuff(bufflist[i], BossRushUtils.ToSecond(6));
-					}
-				}
 			}
 			//if (Alchemist) {
 			//	int lengthNPC = target.buffType.Where(i => i != 0).Count();

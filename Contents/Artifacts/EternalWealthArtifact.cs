@@ -30,7 +30,7 @@ namespace BossRush.Contents.Artifacts
 		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
 		public override void PostUpdate() {
 			if (EternalWealth) {
-				chestmodplayer.finalMultiplier += 2;
+				chestmodplayer.DropModifier *= 3;
 				timer = BossRushUtils.CountDown(timer);
 				if (timer <= 0) {
 					if (counterOldPos >= oldPos.Length - 1) {

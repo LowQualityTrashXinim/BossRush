@@ -342,7 +342,8 @@ internal class UniversalSystem : ModSystem {
 				InterfaceScaleType.UI)
 			);
 	}
-	public void ActivatePerkUI(short state) {
+	public void ActivatePerkUI(short state, string extra = "") {
+		perkUIstate.Info = extra;
 		if (!Check_TotalRNG()) {
 			DeactivateUI();
 			perkUIstate.StateofState = state;
@@ -809,8 +810,7 @@ class UISystemMenu : UIState {
 	}
 
 	private bool CanEnchantmentBeAccess() =>
-		Main.LocalPlayer.ActiveArtifact() != Artifact.ArtifactType<GamblerSoulArtifact>()
-		&& UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
+		UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)
 		&& !UniversalSystem.Check_TotalRNG();
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
@@ -1115,8 +1115,7 @@ class InfoUI : UIState {
 				var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
 				chestplayer.GetAmount();
 				line =
-					$"Amount drop chest addition : {chestplayer.amountModifier}" +
-					$"\nAmount drop chest multiplication : {chestplayer.finalMultiplier}" +
+					$"Amount drop : {chestplayer.DropModifier.ApplyTo(1)}" +
 					$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
 					$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
 					$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +
@@ -1412,6 +1411,7 @@ class btn_SkillSlotHolder : UIImageButton {
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
 }
 internal class PerkUIState : UIState {
+	public string Info = "";
 	public const short DefaultState = 0;
 	public const short StarterPerkState = 1;
 	public const short DebugState = 2;
@@ -1436,6 +1436,7 @@ internal class PerkUIState : UIState {
 			}
 		}
 		toolTip = new UIText("");
+		Info = "";
 		Append(toolTip);
 	}
 	private void ActivateDebugPerkUI(Player player) {
@@ -1495,6 +1496,7 @@ internal class PerkUIState : UIState {
 				buttonWeapon.perkType = newperk;
 				buttonWeapon.UISetWidthHeight(52, 52);
 				buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
+				buttonWeapon.Info = Info;
 				Append(buttonWeapon);
 				continue;
 			}
@@ -1504,24 +1506,28 @@ internal class PerkUIState : UIState {
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = newperk;
+			btn.Info = Info;
 			Append(btn);
 		}
 	}
 	private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
 		Vector2 originDefault = new Vector2(26, 26);
-		int[] starterPerk = TerrariaArrayID.StarterPerk;
-		for (int i = 0; i < starterPerk.Length; i++) {
-			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
+		List<int> starterPerk = [.. TerrariaArrayID.StarterPerk];
+		int limit = 3;
+		for (int i = 0; i < limit; i++) {
+			Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));
+			starterPerk.Remove(choosenperk.Type);
+			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(limit, 360, i) * 120;
 			//After that we assign perk
-			if (modplayer.perks.ContainsKey(starterPerk[i])) {
-				if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(starterPerk[i]).StackLimit) {
+			if (modplayer.perks.ContainsKey(choosenperk.Type)) {
+				if (modplayer.perks[choosenperk.Type] >= choosenperk.StackLimit) {
 					continue;
 				}
 			}
-			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString));
+			PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(choosenperk.textureString));
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
-			btn.perkType = starterPerk[i];
+			btn.perkType = choosenperk.Type;
 			Append(btn);
 		}
 	}
@@ -1551,10 +1557,24 @@ internal class PerkUIState : UIState {
 //Do all the check in UI state since that is where the perk actually get create and choose
 class PerkUIImageButton : UIImageButton {
 	public int perkType;
+	public string Info = "";
+	private Asset<Texture2D> texture;
 	public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
+		this.texture = texture;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		UniversalSystem.AddPerk(perkType);
+		if (Info == "Glitch") {
+			Perk perk = ModPerkLoader.GetPerk(perkType);
+			int stack = 0;
+			if (perk.CanBeStack) {
+				stack = Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks[perkType];
+			}
+			int length = Math.Clamp(perk.StackLimit - stack, 0, 999999);
+			for (int i = 0; i < length; i++) {
+				UniversalSystem.AddPerk(perkType);
+			}
+		}
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
@@ -1566,6 +1586,13 @@ class PerkUIImageButton : UIImageButton {
 				Main.instance.MouseText("");
 			}
 		}
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		if (Info == "Glitch") {
+			spriteBatch.Draw(texture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Red * .5f);
+			spriteBatch.Draw(texture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Blue * .5f);
+		}
+		base.Draw(spriteBatch);
 	}
 }
 internal class EnchantmentUIState : UIState {

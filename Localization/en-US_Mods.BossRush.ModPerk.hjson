@@ -45,12 +45,12 @@ LethalKnockBack: {
 }
 
 PowerUp: {
-	DisplayName: Stronger Attack
+	DisplayName: Strong heavy Attack
 	Description:
 		'''
 		+ Increases damage by 25%
 		+ Increases critical strike chance by 10
-		- Decreases attack speed by 35%
+		- Decreases attack speed by 35% ( the next stack only decreases by 10% )
 		'''
 }
 

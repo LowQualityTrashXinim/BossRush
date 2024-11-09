@@ -40,6 +40,16 @@ public class GamblerSoulPlayer : ModPlayer {
 		if (GamblerSoul)
 			modifiers.DamageVariationScale *= 1.65f;
 	}
+	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+		if (GamblerSoul) {
+			modifiers.FinalDamage += .2f;
+		}
+	}
+	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (GamblerSoul) {
+			modifiers.FinalDamage += .2f;
+		}
+	}
 	public override void SaveData(TagCompound tag) {
 		tag.Add("AlreadyGotGivenItem", AlreadyGotGivenItem);
 	}

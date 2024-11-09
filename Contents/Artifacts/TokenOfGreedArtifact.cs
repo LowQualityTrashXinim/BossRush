@@ -18,7 +18,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void PostUpdate() {
 			if (Greed) {
-				chestmodplayer.amountModifier += 1;
+				chestmodplayer.DropModifier += 1;
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {

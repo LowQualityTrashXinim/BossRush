@@ -19,7 +19,7 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void PostUpdate() {
 			if (Pride) {
-				chestmodplayer.finalMultiplier = 0;
+				chestmodplayer.DropModifier *= 0;
 			}
 		}
 		public override void PreUpdate() {
@@ -28,7 +28,7 @@ namespace BossRush.Contents.Artifacts {
 			}
 			Item item = Player.HeldItem;
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
-				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item) 
+				if (globalitem.EnchantmenStlot == null || globalitem.EnchantmenStlot.Length < 1 && EnchantmentGlobalItem.CanBeEnchanted(item)
 					|| globalitem.EnchantmenStlot[3] != ItemID.None || globalitem.EnchantmenStlot[3] == -1) {
 					return;
 				}

@@ -1869,6 +1869,16 @@ Mods: {
 				DisplayName: Wind Slash Perk
 				Tooltip: ""
 			}
+
+			GlitchWorldEssence: {
+				DisplayName: World Blessing?
+				Tooltip: Grant a perk
+			}
+
+			DivineHammer: {
+				DisplayName: Divine Hammer
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

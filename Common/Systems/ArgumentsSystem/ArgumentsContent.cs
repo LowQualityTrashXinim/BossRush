@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
-using Terraria.WorldBuilding;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 

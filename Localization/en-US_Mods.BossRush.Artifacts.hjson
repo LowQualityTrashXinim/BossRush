@@ -113,8 +113,8 @@ TokenOfSlothArtifact: {
 			+ Increases damage by 35% and undamaged enemy recieve 50% more damage
 			+ Standing still will gain sloth status which will boost the above effect by 10%
 		[c/ab3e43:Negative effect] : 
-			- Decreases your attack speed by 65%
-			- Decreases movement speed by 35%
+			- Decreases your attack speed by 35%
+			- Decreases movement speed by 10%
 		'''
 }
 
@@ -176,9 +176,8 @@ AlchemistKnowledgeArtifact: {
 			+ Attacking enemy that have :
 			1 debuff active will increases your damage
 			3 debuff active or more will heal you
-			5 debuff active or more causes a explosion that damage and spread debuff to nearby NPC
 		[c/ab3e43:Negative effect] : 
-			- Decreases potion duration by 70%
+			- Decreases potion duration by 55%
 		'''
 }
 
@@ -191,7 +190,7 @@ GamblerSoulArtifact: {
 			+ Right at the start you gain exclusive spell and perk
 			+ Increases lootbox drop by 1
 		[c/ab3e43:Negative effect] : 
-			- Your right to access Enchantment system is revoke
+			- Taken damage are increases by 20% ( Final damage )
 		[c/9b9c76:Neutral effect] :
 			= Damage variant increases from 15% to 65%
 		'''

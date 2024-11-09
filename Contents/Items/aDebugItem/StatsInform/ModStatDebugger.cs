@@ -27,8 +27,7 @@ namespace BossRush.Contents.Items.aDebugItem.StatsInform {
 			var artifactplayer = Main.LocalPlayer.GetModPlayer<ArtifactPlayer>();
 			chestplayer.GetAmount();
 			var line = new TooltipLine(Mod, "StatsShowcase",
-				$"Amount drop chest addition : {chestplayer.amountModifier}" +
-				$"\nAmount drop chest multiplication : {chestplayer.finalMultiplier}" +
+				$"Amount drop : {chestplayer.DropModifier.ApplyTo(1)}" +
 				$"\nAmount drop chest final weapon : {chestplayer.weaponAmount}" +
 				$"\nAmount drop chest final potion type : {chestplayer.potionTypeAmount}" +
 				$"\nAmount drop chest final potion amount : {chestplayer.potionNumAmount}" +

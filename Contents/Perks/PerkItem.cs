@@ -17,6 +17,18 @@ class WorldEssence : ModItem {
 		return true;
 	}
 }
+class GlitchWorldEssence : ModItem {
+	public override string Texture => BossRushTexture.Get_MissingTexture("Perk");
+	public override void SetDefaults() {
+		Item.BossRushDefaultToConsume(32, 23);
+		Item.maxStack = 999;
+	}
+	public override bool? UseItem(Player player) {
+		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
+		uiSystemInstance.ActivatePerkUI(PerkUIState.DefaultState, "Glitch");
+		return true;
+	}
+}
 class CelestialEssence : ModItem {
 	public override string Texture => BossRushTexture.Get_MissingTexture("Perk");
 	public override void SetDefaults() {
