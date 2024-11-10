@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Systems.AugmentssSystem;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
@@ -24,7 +24,7 @@ public class EnchantmentSystem : ModSystem {
 		}
 		Item worlditem = Main.item[whoamI];
 		EnchantmentRNG(self, worlditem);
-		ArgumentWeapon.AddArgument(self, ref worlditem);
+		AugmentsWeapon.AddAugments(self, ref worlditem);
 		return whoamI;
 	}
 	private int On_Player_QuickSpawnItem_IEntitySource_Item_int(On_Player.orig_QuickSpawnItem_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
@@ -34,19 +34,19 @@ public class EnchantmentSystem : ModSystem {
 		}
 		Item worlditem = Main.item[whoamI];
 		EnchantmentRNG(self, worlditem);
-		ArgumentWeapon.AddArgument(self, ref worlditem);
+		AugmentsWeapon.AddAugments(self, ref worlditem);
 		return whoamI;
 	}
 	private Item On_Player_QuickSpawnItemDirect_IEntitySource_int_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_int_int orig, Player self, IEntitySource source, int type, int stack) {
 		Item worlditem = orig(self, source, type, stack);
 		EnchantmentRNG(self, worlditem);
-		ArgumentWeapon.AddArgument(self, ref worlditem);
+		AugmentsWeapon.AddAugments(self, ref worlditem);
 		return worlditem;
 	}
 	private Item On_Player_QuickSpawnItemDirect_IEntitySource_Item_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
 		Item worlditem = orig(self, source, item, stack);
 		EnchantmentRNG(self, worlditem);
-		ArgumentWeapon.AddArgument(self, ref worlditem);
+		AugmentsWeapon.AddAugments(self, ref worlditem);
 		return worlditem;
 	}
 

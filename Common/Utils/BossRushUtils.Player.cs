@@ -46,8 +46,9 @@ namespace BossRush {
 		/// Check whenever or not is this item a weapon or not
 		/// </summary>
 		/// <param name="item"></param>
+		/// <param name="ConsumableWeapon">Set to true if you want to allow consumable weapon</param>
 		/// <returns>Return true if the item is a weapon</returns>
-		public static bool IsAWeapon(this Item item) =>
+		public static bool IsAWeapon(this Item item, bool ConsumableWeapon = false) =>
 			item.type != ItemID.None
 			&& item.damage > 0
 			&& item.useTime > 0
@@ -57,7 +58,7 @@ namespace BossRush {
 			&& item.axe == 0
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
-			&& item.maxStack == 1;
+			&& (item.maxStack == 1 && !ConsumableWeapon);
 		public static bool IsEquipAcc(this Player player, int itemType) {
 			Item[] item = new Item[9];
 			Array.Copy(player.armor, 3, item, 0, 9);

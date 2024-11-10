@@ -1,4 +1,7 @@
 ﻿using BossRush.Common.General;
+using BossRush.Common.Systems.Achievement;
+using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System;
@@ -6,9 +9,9 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 
-namespace BossRush.Common.Systems.ArgumentsSystem;
+namespace BossRush.Common.Systems.AugmentssSystem;
 
-public class FireI : ModArgument {
+public class FireI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Red;
 	}
@@ -20,7 +23,7 @@ public class FireI : ModArgument {
 			npc.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
 	}
 }
-public class FireII : ModArgument {
+public class FireII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Red;
 	}
@@ -36,7 +39,7 @@ public class FireII : ModArgument {
 			}
 	}
 }
-public class FrostBurnI : ModArgument {
+public class FrostBurnI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Cyan;
 	}
@@ -48,7 +51,7 @@ public class FrostBurnI : ModArgument {
 			npc.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
 	}
 }
-public class FrostBurnII : ModArgument {
+public class FrostBurnII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Cyan;
 	}
@@ -64,7 +67,7 @@ public class FrostBurnII : ModArgument {
 			}
 	}
 }
-public class BerserkI : ModArgument {
+public class BerserkI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.OrangeRed;
 	}
@@ -80,7 +83,7 @@ public class BerserkI : ModArgument {
 	}
 }
 
-public class True : ModArgument {
+public class True : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Yellow;
 	}
@@ -96,7 +99,7 @@ public class True : ModArgument {
 	}
 }
 
-public class Terra : ModArgument {
+public class Terra : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Green;
 	}
@@ -108,7 +111,7 @@ public class Terra : ModArgument {
 	}
 }
 
-public class TitanI : ModArgument {
+public class TitanI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Blue;
 	}
@@ -124,7 +127,7 @@ public class TitanI : ModArgument {
 	}
 }
 
-public class TitanII : ModArgument {
+public class TitanII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Blue;
 	}
@@ -140,7 +143,7 @@ public class TitanII : ModArgument {
 	}
 }
 
-public class CriticalI : ModArgument {
+public class CriticalI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Orange;
 	}
@@ -150,7 +153,7 @@ public class CriticalI : ModArgument {
 		}
 	}
 }
-public class CriticalII : ModArgument {
+public class CriticalII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Orange;
 	}
@@ -167,7 +170,7 @@ public class CriticalII : ModArgument {
 	}
 }
 
-public class CriticalIII : ModArgument {
+public class CriticalIII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Orange;
 	}
@@ -185,7 +188,14 @@ public class CriticalIII : ModArgument {
 	}
 }
 
-public class VampireI : ModArgument {
+public class VampireI : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if(!Main.IsItDay()) {
+			Chance += .1f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkRed;
 	}
@@ -194,7 +204,14 @@ public class VampireI : ModArgument {
 	}
 }
 
-public class VampireII : ModArgument {
+public class VampireII : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (!Main.IsItDay()) {
+			Chance += .1f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkRed;
 	}
@@ -204,7 +221,14 @@ public class VampireII : ModArgument {
 	}
 }
 
-public class AlchemistI : ModArgument {
+public class AlchemistI : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>()) {
+			Chance += .1f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.BlueViolet;
 	}
@@ -213,7 +237,14 @@ public class AlchemistI : ModArgument {
 	}
 }
 
-public class AlchemistII : ModArgument {
+public class AlchemistII : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>()) {
+			Chance += .1f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.BlueViolet;
 	}
@@ -229,7 +260,7 @@ public class AlchemistII : ModArgument {
 	}
 }
 
-public class Light : ModArgument {
+public class Light : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Pink;
 	}
@@ -243,7 +274,7 @@ public class Light : ModArgument {
 	}
 }
 
-public class Dark : ModArgument {
+public class Dark : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Purple;
 	}
@@ -257,7 +288,7 @@ public class Dark : ModArgument {
 	}
 }
 
-public class Union : ModArgument {
+public class Union : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Bisque;
 	}
@@ -277,7 +308,7 @@ public class Union : ModArgument {
 	}
 }
 
-public class ShadowFlameI : ModArgument {
+public class ShadowFlameI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.MediumPurple;
 	}
@@ -289,7 +320,7 @@ public class ShadowFlameI : ModArgument {
 			npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
 	}
 }
-public class ShadowFlameII : ModArgument {
+public class ShadowFlameII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.MediumPurple;
 	}
@@ -306,7 +337,7 @@ public class ShadowFlameII : ModArgument {
 	}
 }
 
-public class CursedFlameI : ModArgument {
+public class CursedFlameI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.ForestGreen;
 	}
@@ -318,7 +349,7 @@ public class CursedFlameI : ModArgument {
 			npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
 	}
 }
-public class CursedFlameII : ModArgument {
+public class CursedFlameII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.ForestGreen;
 	}
@@ -334,7 +365,7 @@ public class CursedFlameII : ModArgument {
 			}
 	}
 }
-public class PoisonI : ModArgument {
+public class PoisonI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.PaleGreen;
 	}
@@ -346,7 +377,7 @@ public class PoisonI : ModArgument {
 			npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
 	}
 }
-public class PoisonII : ModArgument {
+public class PoisonII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.PaleGreen;
 	}
@@ -363,7 +394,7 @@ public class PoisonII : ModArgument {
 	}
 }
 
-public class VenomI : ModArgument {
+public class VenomI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.PaleGreen;
 	}
@@ -375,7 +406,7 @@ public class VenomI : ModArgument {
 			npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
 	}
 }
-public class VenomII : ModArgument {
+public class VenomII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.PaleGreen;
 	}

@@ -444,7 +444,7 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
-			mana.Base += 78;
+			mana.Base += 78 * StackAmount(player);
 		}
 	}
 	public class BlessingOfStarDust : Perk {
@@ -454,7 +454,6 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void UpdateEquip(Player player) {
-			player.whipRangeMultiplier += .25f;
 			player.maxMinions += 1;
 			player.maxTurrets += 1;
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateSummonChanceMutilplier += 1f;
@@ -529,6 +528,20 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LootDropIncrease, Base: 1);
+		}
+	}
+	public class BlessingOfEvasive : Perk {
+		public override void SetDefaults() {
+			textureString = BossRushTexture.ACCESSORIESSLOT;
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			player.GetJumpState<SimpleExtraJump>().Enable();
+			modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1 + .15f * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1 + .25f * StackAmount(player));
+			modplayer.DodgeChance += .04f * StackAmount(player);
 		}
 	}
 	public class ArenaBlessing : Perk {

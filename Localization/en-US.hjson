@@ -1877,7 +1877,11 @@ Mods: {
 
 			DivineHammer: {
 				DisplayName: Divine Hammer
-				Tooltip: ""
+				Tooltip:
+				'''
+				Enable ability to modify world's rule which enforce on weapon and override them with something new
+				Can also be used to increases weapon's stats
+				'''
 			}
 		}
 

@@ -9,7 +9,7 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.DataStructures;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Systems.AugmentssSystem;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
@@ -87,7 +87,7 @@ internal class SuperRareSpoil {
 		}
 		public override void OnChoose(Player player, int itemsource) {
 			player.GetModPlayer<EnchantmentModplayer>().SafeRequest_EnchantItem(1, 3);
-			player.GetModPlayer<ArgumentPlayer>().SafeRequest_AddArgument(1, -1, false);
+			player.GetModPlayer<AugmentsPlayer>().SafeRequest_AddAugments(1, -1, false);
 			LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player, 0, 0);
 		}
 	}

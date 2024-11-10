@@ -11,7 +11,7 @@ using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System.Diagnostics;
-using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Systems.AugmentssSystem;
 using System.Threading.Channels;
 
 namespace BossRush {
@@ -136,9 +136,9 @@ namespace BossRush {
 				globalitem.LostAccessories = Lost;
 			}
 		}
-		public static void Set_ItemArgumentChance(this Item item, float chance) {
-			if (item.TryGetGlobalItem(out ArgumentWeapon globalitem)) {
-				globalitem.ArgumentChance = chance;
+		public static void Set_ItemAugmentsChance(this Item item, float chance) {
+			if (item.TryGetGlobalItem(out AugmentsWeapon globalitem)) {
+				globalitem.AugmentsChance = chance;
 			}
 		}
 		public static void Set_ItemIsRPG(this Item item, bool RPG = true) {

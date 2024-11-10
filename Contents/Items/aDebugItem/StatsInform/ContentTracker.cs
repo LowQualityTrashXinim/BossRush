@@ -1,4 +1,4 @@
-﻿using BossRush.Common.Systems.ArgumentsSystem;
+﻿using BossRush.Common.Systems.AugmentssSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Systems.SpoilSystem;
@@ -30,7 +30,7 @@ internal class ContentTracker : ModItem {
 			$"\nPerk amount : {ModPerkLoader.TotalCount}" +
 			$"\nSpoils amount : {ModSpoilSystem.TotalCount}" +
 			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}" +
-			$"\nArgument amount : {ArgumentLoader.TotalCount}" +
+			$"\nAugments amount : {AugmentsLoader.TotalCount}" +
 			$"\nCurses taboo amount : {CursesLoader.CurseTabooCount}"
 			);
 		tooltips.Add(line);

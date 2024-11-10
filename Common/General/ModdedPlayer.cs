@@ -79,14 +79,6 @@ namespace BossRush.Common.General {
 				ItemIsUsedDuringBossFight = true;
 			}
 		}
-		public override void UpdateEquips() {
-			if (UniversalSystem.Check_RLOH()) {
-				PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
-				Player.GetJumpState<SimpleExtraJump>().Enable();
-				modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.15f);
-				modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.25f);
-			}
-		}
 		private void CheckHowManyHit() {
 			HowManyBossIsAlive = 0;
 			bool FoundEater = false;

@@ -318,6 +318,7 @@ namespace BossRush.Common.Utils {
 			Perk.GetPerkType<BlessingOfSynergy>(),
 			Perk.GetPerkType<BlessingOfTitan>(),
 			Perk.GetPerkType<BlessingOfPerk>(),
+			Perk.GetPerkType<BlessingOfEvasive>()
 		};
 		//Tile
 		public readonly static int[] Altar = { 

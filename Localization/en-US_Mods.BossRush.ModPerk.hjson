@@ -213,7 +213,6 @@ BlessingOfStarDust: {
 	DisplayName: Blessing Of Stardust
 	Description:
 		'''
-		+ Increases your whip range by 25%
 		+ Your whip inflict Star gaze
 		+ For 2 minion/sentry slot you have, you gain 1 damage
 		+ Increases your max minion slot and sentry slot by 1
@@ -232,6 +231,16 @@ BlessingOfTitan: {
 		+ Increases defense by 15% and additional 10 defenses
 		+ Increases max hp by 50
 		+ Increases thorn damage by 100% ( Flat )
+		'''
+}
+
+BlessingOfEvasive: {
+	DisplayName: Blessing Of Evasive
+	Description:
+		'''
+		+ Increases movement speed by 15% and jump bonus by 25%
+		+ Increases dodge chance by 4%
+		+ Grant you a extra jump ( not stackable )
 		'''
 }
 

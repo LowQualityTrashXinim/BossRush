@@ -6,29 +6,30 @@ using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace BossRush.Common.Systems.ArgumentsSystem;
-internal class ArgumentLoader : ModSystem {
-	private static readonly List<ModArgument> _arguments = new();
-	public static int TotalCount => _arguments.Count;
-	public static int Register(ModArgument enchant) {
-		ModTypeLookup<ModArgument>.Register(enchant);
-		_arguments.Add(enchant);
-		return _arguments.Count;
+namespace BossRush.Common.Systems.AugmentssSystem;
+internal class AugmentsLoader : ModSystem {
+	private static readonly List<ModAugments> _Augmentss = new();
+	public static int TotalCount => _Augmentss.Count;
+	public static int Register(ModAugments enchant) {
+		ModTypeLookup<ModAugments>.Register(enchant);
+		_Augmentss.Add(enchant);
+		return _Augmentss.Count;
 	}
-	public static ModArgument GetArgument(int type) {
-		return type > 0 && type <= _arguments.Count ? _arguments[type - 1] : null;
+	public static ModAugments GetAugments(int type) {
+		return type > 0 && type <= _Augmentss.Count ? _Augmentss[type - 1] : null;
 	}
 }
-public class ArgumentWeapon : GlobalItem {
-	public float ArgumentChance = 0;
+public class AugmentsWeapon : GlobalItem {
+	public float AugmentsChance = 0;
 	public override void SetDefaults(Item entity) {
 		switch (entity.type) {
 			case ItemID.CopperBroadsword:
-				ArgumentChance = 1;
+				AugmentsChance = 1;
 				break;
 			default:
-				ArgumentChance = 0.01f;
+				AugmentsChance = 0.01f;
 				break;
 		}
 	}
@@ -36,66 +37,75 @@ public class ArgumentWeapon : GlobalItem {
 		return entity.IsAWeapon();
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		for (int i = 0; i < ArgumentSlots.Length; i++) {
-			ModArgument argument = ArgumentLoader.GetArgument(ArgumentSlots[i]);
-			if (argument == null) {
+		for (int i = 0; i < AugmentsSlots.Length; i++) {
+			ModAugments Augments = AugmentsLoader.GetAugments(AugmentsSlots[i]);
+			if (Augments == null) {
 				continue;
 			}
-			tooltips.Add(new TooltipLine(Mod, $"Argument{i + 1}", $"[c/{argument.tooltipColor.Hex3()}:{argument.DisplayName}] : {argument.Description}"));
+			tooltips.Add(new TooltipLine(Mod, $"Augments{i + 1}", $"[c/{Augments.tooltipColor.Hex3()}:{Augments.DisplayName}] : {Augments.Description}"));
 		}
 	}
 	public override bool InstancePerEntity => true;
-	public int[] ArgumentSlots = new int[5];
+	public int[] AugmentsSlots = new int[5];
 	/// <summary>
 	/// Can only applied to weapon that is <see cref="BossRushUtils.IsAWeapon(Item)"/><br/>
-	/// Argument won't always be added, instead it work base on weapon's chance stat<br/>
+	/// Augments won't always be added, instead it work base on weapon's chance stat<br/>
 	/// Use <paramref name="chance"/> to increases the chance directly, be aware it will decay overtime<br/>
-	/// Weapon's chance stat have fixed chance, meaning it won't be decay
+	/// Weapon's chance stat and <see cref="ModAugments"/> chance have fixed chance, meaning it won't be decay
 	/// Set <paramref name="decayable"/> to disable decay
 	/// </summary>
 	/// <param name="player">The player</param>
 	/// <param name="item">The item</param>
-	/// <param name="limit">The limit amount of argument can have on weapon</param>
-	/// <param name="chance">the chance to add argument</param>
+	/// <param name="limit">The limit amount of Augments can have on weapon</param>
+	/// <param name="chance">the chance to add Augments</param>
 	/// <param name="decayable">disable the decay of custom chance</param>
-	public static void AddArgument(Player player,ref Item item, int limit = -1,float chance = 0, bool decayable = true) {
+	public static void AddAugments(Player player, ref Item item, int limit = -1, float chance = 0, bool decayable = true) {
 		if (!item.IsAWeapon()) {
 			return;
 		}
-		if (item.TryGetGlobalItem(out ArgumentWeapon weapon)) {
-			List<int> ArgumentList = new List<int>();
-			for (int i = 1; i <= ArgumentLoader.TotalCount; i++) {
-				if (ArgumentLoader.GetArgument(i).ConditionToBeApplied(player, item)) {
-					ArgumentList.Add(i);
+		if (item.TryGetGlobalItem(out AugmentsWeapon weapon)) {
+			Dictionary<int, float> AugmentsList = new();
+			for (int i = 1; i <= AugmentsLoader.TotalCount; i++) {
+				ModAugments Augments = AugmentsLoader.GetAugments(i);
+				if (Augments.ConditionToBeApplied(player, item, out float Chance)) {
+					AugmentsList.Add(i, Augments.Chance + Chance);
 				}
 			}
-			ArgumentPlayer modplayer = player.GetModPlayer<ArgumentPlayer>();
-			chance += modplayer.Request_ChanceArgument;
-			limit += modplayer.Request_LimitArgument;
-			decayable = modplayer.Request_Decayable;
+			AugmentsPlayer modplayer = player.GetModPlayer<AugmentsPlayer>();
+			chance += modplayer.Request_ChanceAugments;
+			limit += modplayer.Request_LimitAugments;
+			if (modplayer.Request_Decayable != null)
+				decayable = (bool)modplayer.Request_Decayable;
+
 			int currentEmptySlot = 0;
 			bool passException = false;
-			if(player.name.Trim() == "hero") {
+
+			if (player.name.Trim() == "hero") {
 				chance += .1f;
 			}
+
 			float chanceDecay = modplayer.IncreasesChance + chance;
-			for (int i = 0; i < weapon.ArgumentSlots.Length && currentEmptySlot < weapon.ArgumentSlots.Length; i++) {
-				if(limit <= -1) {
-					if(currentEmptySlot <= limit) {
+			ModAugments modAugments = null;
+			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
+				if (modAugments == null) {
+					modAugments = AugmentsLoader.GetAugments(Main.rand.Next(AugmentsList.Keys.ToArray()));
+					AugmentsList.Remove(modAugments.Type);
+				}
+				if (limit <= -1) {
+					if (currentEmptySlot <= limit) {
 						break;
 					}
 				}
-				if (Main.rand.NextFloat() > weapon.ArgumentChance + chanceDecay && !passException) {
+				if (Main.rand.NextFloat() > weapon.AugmentsChance + chanceDecay + AugmentsList[modAugments.Type] && !passException) {
 					continue;
 				}
-				if (weapon.ArgumentSlots[currentEmptySlot] == 0) {
+				if (weapon.AugmentsSlots[currentEmptySlot] == 0) {
 					if (decayable) {
 						chanceDecay *= .5f;
 					}
 					passException = false;
-					int type = Main.rand.Next(ArgumentList);
-					weapon.ArgumentSlots[currentEmptySlot] = type;
-					ArgumentList.Remove(type);
+					weapon.AugmentsSlots[currentEmptySlot] = modAugments.Type;
+					modAugments = null;
 				}
 				else {
 					currentEmptySlot++;
@@ -106,42 +116,47 @@ public class ArgumentWeapon : GlobalItem {
 		}
 	}
 	public override GlobalItem NewInstance(Item target) {
-		ArgumentSlots = new int[5];
+		AugmentsSlots = new int[5];
 		return base.NewInstance(target);
 	}
 	public override GlobalItem Clone(Item from, Item to) {
-		ArgumentWeapon clone = (ArgumentWeapon)base.Clone(from, to);
-		Array.Copy((int[])ArgumentSlots?.Clone(), clone.ArgumentSlots, 5);
+		AugmentsWeapon clone = (AugmentsWeapon)base.Clone(from, to);
+		Array.Copy((int[])AugmentsSlots?.Clone(), clone.AugmentsSlots, 5);
 		return base.Clone(from, to);
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (ArgumentSlots == null) {
-			ArgumentSlots = new int[5];
+		if (AugmentsSlots == null) {
+			AugmentsSlots = new int[5];
 		}
-		for (int i = 0; i < ArgumentSlots.Length; i++) {
-			ModArgument argument = ArgumentLoader.GetArgument(ArgumentSlots[i]);
-			if (argument == null) {
+		for (int i = 0; i < AugmentsSlots.Length; i++) {
+			ModAugments Augments = AugmentsLoader.GetAugments(AugmentsSlots[i]);
+			if (Augments == null) {
 				continue;
 			}
-			argument.UpdateHeld(player, item);
+			Augments.UpdateHeld(player, item);
 		}
 	}
 	public override void SaveData(Item item, TagCompound tag) {
-		tag.Add("ArgumentSlot", ArgumentSlots);
+		tag.Add("AugmentsSlot", AugmentsSlots);
 	}
 	public override void LoadData(Item item, TagCompound tag) {
-		if (tag.TryGet("ArgumentSlot", out int[] TypeValue))
-			ArgumentSlots = TypeValue;
+		if (tag.TryGet("AugmentsSlot", out int[] TypeValue))
+			AugmentsSlots = TypeValue;
 	}
 }
-public abstract class ModArgument : ModType {
+public abstract class ModAugments : ModType {
+	public int Type { get; internal set; }
 	protected override void Register() {
-		ArgumentLoader.Register(this);
+		Type = AugmentsLoader.Register(this);
 		SetStaticDefaults();
 	}
+	/// <summary>
+	/// Be aware it's chance is not decayable and is fixed
+	/// </summary>
+	public float Chance = 0;
 	public Color tooltipColor = Color.White;
-	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModArgument.{Name}.DisplayName");
-	public string Description => Language.GetTextValue($"Mods.BossRush.ModArgument.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.DisplayName");
+	public string Description => Language.GetTextValue($"Mods.BossRush.ModAugments.{Name}.Description");
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
@@ -149,27 +164,31 @@ public abstract class ModArgument : ModType {
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void UpdateHeld(Player player, Item item) { }
 	/// <summary>
-	/// By default argument will always be applied on weapon
+	/// By default Augments will always be applied on weapon
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="item"></param>
+	/// <param name="Chance">This is not decayable, so be aware of setting</param>
 	/// <returns></returns>
-	public virtual bool ConditionToBeApplied(Player player, Item item) => true;
+	public virtual bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0f;
+		return true;
+	}
 }
-public class ArgumentPlayer : ModPlayer {
-	ArgumentWeapon weapon = null;
+public class AugmentsPlayer : ModPlayer {
+	AugmentsWeapon weapon = null;
 	/// <summary>
 	/// This chance will decay for each success roll
 	/// </summary>
 	public float IncreasesChance = 0;
-	public void SafeRequest_AddArgument(float chance, int limit, bool decayable) {
-		Request_ChanceArgument = chance;
-		Request_LimitArgument = limit;
+	public void SafeRequest_AddAugments(float chance, int limit, bool decayable) {
+		Request_ChanceAugments = chance;
+		Request_LimitAugments = limit;
 		Request_Decayable = decayable;
 	}
-	public float Request_ChanceArgument = 0;
-	public int Request_LimitArgument = 1;
-	public bool Request_Decayable = false;
+	public float Request_ChanceAugments = 0;
+	public int Request_LimitAugments = 1;
+	public bool? Request_Decayable = false;
 	public override void ResetEffects() {
 		IncreasesChance = 0;
 	}
@@ -178,55 +197,55 @@ public class ArgumentPlayer : ModPlayer {
 	/// </summary>
 	/// <param name="item"></param>
 	/// <returns></returns>
-	private bool IsArgumentable(Item item) => weapon != null && item.IsAWeapon();
+	private bool IsAugmentsable(Item item) => weapon != null && item.IsAWeapon();
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (IsArgumentable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
-				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
-				if (argument == null) {
+		if (IsAugmentsable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
+				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
+				if (Augments == null) {
 					continue;
 				}
-				argument.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
+				Augments.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
 			}
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (IsArgumentable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
-				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
-				if (argument == null) {
+		if (IsAugmentsable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
+				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
+				if (Augments == null) {
 					continue;
 				}
-				argument.OnHitNPCWithProj(Player, proj, target, hit);
+				Augments.OnHitNPCWithProj(Player, proj, target, hit);
 			}
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (IsArgumentable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
-				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
-				if (argument == null) {
+		if (IsAugmentsable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
+				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
+				if (Augments == null) {
 					continue;
 				}
-				argument.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
+				Augments.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 			}
 		}
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (IsArgumentable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.ArgumentSlots.Length; i++) {
-				ModArgument argument = ArgumentLoader.GetArgument(weapon.ArgumentSlots[i]);
-				if (argument == null) {
+		if (IsAugmentsable(Player.HeldItem)) {
+			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
+				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
+				if (Augments == null) {
 					continue;
 				}
-				argument.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
+				Augments.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 			}
 		}
 	}
 	public override void PreUpdate() {
 		Item item = Player.HeldItem;
-		if (item.TryGetGlobalItem(out ArgumentWeapon argumentWeapon)) {
-			weapon = argumentWeapon;
+		if (item.TryGetGlobalItem(out AugmentsWeapon AugmentsWeapon)) {
+			weapon = AugmentsWeapon;
 		}
 	}
 }
