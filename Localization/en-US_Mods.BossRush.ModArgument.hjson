@@ -148,3 +148,7 @@ StrengthenIV: {
 	DisplayName: Strengthen V
 	Description: Increases critical strike chance by 10% when helding this item
 }
+DarkSoul: {
+	DisplayName: Dark Soul
+	Description: Grant 12 tick of I-frame when hitting enemy with item
+}

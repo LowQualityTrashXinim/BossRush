@@ -44,13 +44,18 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier SynergyDamage = new StatModifier();
 	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
+	public StatModifier NonCriticalDamage = new StatModifier();
 	//public float LuckIncrease = 0; 
 	/// <summary>
 	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>
-	/// Having the chance value over 1f would make it 100% dodge chance
-	/// The dodge immunity frame is hardcoded to 44 tick
+	/// Having the chance value over 1f would make it 100% dodge chance<br/>
+	/// The dodge immunity frame is <see cref="DodgeTimer"/>
 	/// </summary>
 	public float DodgeChance = 0;
+	/// <summary>
+	/// This is the universal dodge timer
+	/// </summary>
+	public int DodgeTimer = 44;
 	/// <summary>
 	/// This is a universal life steal that work depend on weapon damage <br/>
 	/// This have a forced cool down so that it is not OP <br/>
@@ -84,6 +89,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
+		modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(NonCriticalDamage);
 		if (target.life >= target.lifeMax) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
@@ -106,16 +112,10 @@ public class PlayerStatsHandle : ModPlayer {
 
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= DodgeChance) {
-			Player.AddImmuneTime(info.CooldownCounter, 44);
+			Player.AddImmuneTime(info.CooldownCounter, DodgeTimer);
 			return true;
 		}
 		return base.FreeDodge(info);
-	}
-	public override void PostHurt(Player.HurtInfo info) {
-		base.PostHurt(info);
-		if (!info.PvP) {
-			//Player.immuneTime += (int)(Iframe - 1).ApplyTo(Player.immuneTime);
-		}
 	}
 	public override void PostUpdate() {
 		Player.statLife = Math.Clamp(Player.statLife + Rapid_LifeRegen, 1, Player.statLifeMax2);
@@ -174,8 +174,10 @@ public class PlayerStatsHandle : ModPlayer {
 		DebuffDamage = StatModifier.Default;
 		SynergyDamage = StatModifier.Default;
 		Iframe = StatModifier.Default;
+		NonCriticalDamage = StatModifier.Default;
 		LifeSteal = StatModifier.Default - 1;
 		DodgeChance = 0;
+		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = 60;
 		LifeSteal_CoolDown = BossRushUtils.CountDown(LifeSteal_CoolDown);

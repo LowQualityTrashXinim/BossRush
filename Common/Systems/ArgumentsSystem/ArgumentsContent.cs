@@ -1,5 +1,4 @@
 ﻿using BossRush.Common.General;
-using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
@@ -481,5 +480,18 @@ public class StrengthenV : ModAugments {
 	}
 	public override void UpdateHeld(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 10);
+	}
+}
+
+public class DarkSoul : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		return !item.noMelee && !item.noUseGraphic;
+	}
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.DarkBlue;
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
+		player.AddImmuneTime(-1, 12);
 	}
 }

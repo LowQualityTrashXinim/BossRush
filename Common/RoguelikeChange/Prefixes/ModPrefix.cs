@@ -41,7 +41,7 @@ public class Vital : BaseAccPrefix {
 		modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Base: PowerLevel * 10);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20 maximum life") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20 maximum health") {
 			IsModifier = true,
 		};
 	}
@@ -112,13 +112,13 @@ public class Energetic : BaseAccPrefix {
 }
 
 public class Alchemic : BaseAccPrefix {
-	public override float PowerLevel => base.PowerLevel * 4;
+	public override float PowerLevel => base.PowerLevel * 2;
 	public override void ApplyAccessoryEffects(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.DebuffDamage, 1 + PowerLevel * .05f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20% damage dealt to enemy with debuff") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+10% damage dealt to enemy with debuff") {
 			IsModifier = true,
 		};
 	}

@@ -111,10 +111,7 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
-		if (ActiveArmor.Equals(ArmorLoader.Default) && ForceActive == null && ForceActive.Count < 1) {
-			return false;
-		}
-		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == modplayer.Name) {
+		if (!ActiveArmor.Equals(ArmorLoader.Default) && ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == modplayer.Name) {
 			return true;
 		}
 		if (ForceActive != null && ForceActive.Where(ar => !ar.Equals(ArmorLoader.Default) && ar.modplayer.Name == modplayer.Name).Any()) {
