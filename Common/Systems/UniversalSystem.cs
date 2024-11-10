@@ -35,6 +35,7 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using Terraria.Audio;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -1563,6 +1564,7 @@ class PerkUIImageButton : UIImageButton {
 		this.texture = texture;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
+		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -1 });
 		UniversalSystem.AddPerk(perkType);
 		if (Info == "Glitch") {
 			Perk perk = ModPerkLoader.GetPerk(perkType);
