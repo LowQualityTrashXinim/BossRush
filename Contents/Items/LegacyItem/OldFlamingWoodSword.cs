@@ -4,10 +4,10 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon;
+namespace BossRush.Contents.Items.LegacyItem;
 internal class OldFlamingWoodSword : ModItem {
 	public override void SetDefaults() {
-		BossRushUtils.BossRushSetDefault(Item, 32, 36, 22, 5f, 4, 40, 1, false);
+		Item.BossRushSetDefault(32, 36, 22, 5f, 4, 40, 1, false);
 		Item.DamageType = DamageClass.Melee;
 
 		Item.crit = 5;

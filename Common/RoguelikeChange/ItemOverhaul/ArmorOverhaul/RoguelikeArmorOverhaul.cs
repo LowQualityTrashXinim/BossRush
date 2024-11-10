@@ -4,7 +4,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
@@ -112,7 +111,7 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
-		if (ActiveArmor.Equals(ArmorLoader.Default)) {
+		if (ActiveArmor.Equals(ArmorLoader.Default) && ForceActive == null && ForceActive.Count < 1) {
 			return false;
 		}
 		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == modplayer.Name) {

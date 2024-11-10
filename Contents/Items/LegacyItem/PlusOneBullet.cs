@@ -3,9 +3,10 @@ using Terraria.ID;
 using BossRush.Texture;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
-	internal class PlusOneBullet : SynergyModItem {
+namespace BossRush.Contents.Items.LegacyItem {
+	internal class PlusOneBullet : ModItem {
 		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.accessory = true;

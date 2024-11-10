@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark {
+namespace BossRush.Contents.Items.LegacyItem.FrozenShark {
 	internal class FrozenShark : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(64, 20, 16, 1f, 8, 8, ItemUseStyleID.Shoot, ProjectileID.IceBolt, 12, true);

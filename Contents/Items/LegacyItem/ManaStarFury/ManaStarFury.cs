@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury {
+namespace BossRush.Contents.Items.LegacyItem.ManaStarFury {
 	internal class ManaStarFury : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 40, 35, 6f, 20, 20, ItemUseStyleID.Swing, true);

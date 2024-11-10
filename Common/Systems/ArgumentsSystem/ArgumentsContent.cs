@@ -9,7 +9,7 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 
-namespace BossRush.Common.Systems.AugmentssSystem;
+namespace BossRush.Common.Systems.ArgumentsSystem;
 
 public class FireI : ModAugments {
 	public override void SetStaticDefaults() {
@@ -100,6 +100,13 @@ public class True : ModAugments {
 }
 
 public class Terra : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (item.type == ItemID.TerraBlade) {
+			Chance = .2f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Green;
 	}
@@ -112,6 +119,13 @@ public class Terra : ModAugments {
 }
 
 public class TitanI : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (item.knockBack > 10) {
+			Chance = .2f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Blue;
 	}
@@ -128,6 +142,13 @@ public class TitanI : ModAugments {
 }
 
 public class TitanII : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (item.knockBack > 10) {
+			Chance = .2f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Blue;
 	}
@@ -191,7 +212,7 @@ public class CriticalIII : ModAugments {
 public class VampireI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if(!Main.IsItDay()) {
+		if (!Main.IsItDay()) {
 			Chance += .1f;
 		}
 		return true;
@@ -420,5 +441,45 @@ public class VenomII : ModAugments {
 			if (target.HasBuff(BuffID.Venom)) {
 				modifiers.SourceDamage += .2f;
 			}
+	}
+}
+public class StrengthenI : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.IndianRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.25f);
+	}
+}
+public class StrengthenII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.IndianRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.25f);
+	}
+}
+public class StrengthenIII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.IndianRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: 10);
+	}
+}
+public class StrengthenIV : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.IndianRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Base: 50);
+	}
+}
+public class StrengthenV : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.IndianRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 10);
 	}
 }

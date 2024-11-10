@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenEnchantedSword {
+namespace BossRush.Contents.Items.LegacyItem.FrozenEnchantedSword {
 	public class FrozenEnchantedSword : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 40, 29, 7f, 15, 15, ItemUseStyleID.Swing, true);

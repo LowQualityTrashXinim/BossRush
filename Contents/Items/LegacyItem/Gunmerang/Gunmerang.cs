@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.Gunmerang {
+namespace BossRush.Contents.Items.LegacyItem.Gunmerang {
 	internal class Gunmerang : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(34, 26, 34, 1f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenBoomerang, 14, true);

@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.RifleShotgun {
+namespace BossRush.Contents.Items.LegacyItem.RifleShotgun {
 	class RifleShotgun : ModItem {
 		public override void SetDefaults() {
 			Item.damage = 42;

@@ -43,7 +43,8 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.MashedOfCopper 
 			OnHitByAny();
 		}
 		private void OnHitByAny() {
-			if (!MashedOfCopper) return;
+			if (!MashedOfCopper)
+				return;
 			for (int i = 0; i < 5; i++) {
 				var speed = Main.rand.NextVector2Unit(MathHelper.Pi + MathHelper.PiOver4, MathHelper.PiOver2) * 10f;
 				Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, speed, ModContent.ProjectileType<MoCCopperOre>(), 30, 2, Player.whoAmI);

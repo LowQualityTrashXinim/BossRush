@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.HuntingRifle {
+namespace BossRush.Contents.Items.LegacyItem.HuntingRifle {
 	internal class HuntingRifle : ModItem {
 		public override void SetDefaults() {
 			Item.width = 76;

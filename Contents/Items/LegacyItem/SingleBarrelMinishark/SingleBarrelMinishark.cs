@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark {
+namespace BossRush.Contents.Items.LegacyItem.SingleBarrelMinishark {
 	internal class SingleBarrelMinishark : ModItem {
 		public override void SetDefaults() {
 			Item.damage = 8;

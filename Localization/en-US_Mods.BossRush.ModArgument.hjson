@@ -132,3 +132,19 @@ Union: {
 	DisplayName: Union
 	Description: For every weapon in your inventory, +0.5 flat damage
 }
+StrengthenI: {
+	DisplayName: Strengthen I
+	Description: Increases damage by 25% when helding this item
+}
+StrengthenII: {
+	DisplayName: Strengthen II
+	Description: Increases critical strike damage by 35% when helding this item
+}
+StrengthenIII: {
+	DisplayName: Strengthen III
+	Description: Increases defenses by 10 when helding this item
+}
+StrengthenIV: {
+	DisplayName: Strengthen V
+	Description: Increases critical strike chance by 10% when helding this item
+}

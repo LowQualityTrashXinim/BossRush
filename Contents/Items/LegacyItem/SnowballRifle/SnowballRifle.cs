@@ -4,7 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballRifle {
+namespace BossRush.Contents.Items.LegacyItem.SnowballRifle {
 	class SnowballRifle : ModItem {
 		public override void SetStaticDefaults() {
 			// DisplayName.SetDefault("Snowball Rifle");

@@ -9,7 +9,7 @@ using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.DataStructures;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Common.Systems.AugmentssSystem;
+using BossRush.Common.Systems.ArgumentsSystem;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {
