@@ -12,15 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenShark;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SingleBarrelMinishark;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.LongerMusket;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.ManaStarFury;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballRifle;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.SnowballShotgunCannon;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.HuntingRifle;
 using BossRush.Texture;
-using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenEnchantedSword;
 
 namespace BossRush.Common.Systems;
 public class TransumtationRecipe {
@@ -36,12 +28,12 @@ public class TransmutationUIState : UIState {
 		panalUI.UISetWidthHeight(250, 150);
 		panalUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(0, -150), new Vector2(100, 100));
 		Append(panalUI);
-		var cardUI = new TransmutationUI(TextureAssets.InventoryBack, Main.LocalPlayer);
+		var cardUI = new TransmutationUI(TextureAssets.InventoryBack);
 		var origin = new Vector2(26, 26);
 		cardUI.UISetWidthHeight(52, 52);
 		cardUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(52, -150), origin);
 		Append(cardUI);
-		var cardUI1 = new TransmutationUI(TextureAssets.InventoryBack, Main.LocalPlayer);
+		var cardUI1 = new TransmutationUI(TextureAssets.InventoryBack);
 		cardUI1.UISetWidthHeight(52, 52);
 		cardUI1.UISetPosition(Main.LocalPlayer.Center - new Vector2(-10, -150), origin);
 		Append(cardUI1);
@@ -81,12 +73,11 @@ public class TransmutationUI : UIImage {
 	public Item item;
 
 	private Texture2D texture;
-	private Player player;
-	public TransmutationUI(Asset<Texture2D> texture, Player player) : base(texture) {
+	public TransmutationUI(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
-		this.player = player;
 	}
 	public override void LeftClick(UIMouseEvent evt) {
+		Player player = Main.LocalPlayer;
 		if (item != null && Main.mouseItem.type != ItemID.None && (Main.mouseItem.IsAWeapon() || Main.mouseItem.ModItem is Relic)) {
 			//Swap item here
 			Item itemcache = Main.mouseItem.Clone();
@@ -123,6 +114,7 @@ public class TransmutationUI : UIImage {
 		}
 	}
 	public override void OnDeactivate() {
+		Player player = Main.LocalPlayer;
 		if (item == null)
 			return;
 		for (int i = 0; i < 50; i++) if (player.CanItemSlotAccept(player.inventory[i], item)) {
