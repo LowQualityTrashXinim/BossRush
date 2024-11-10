@@ -23,6 +23,12 @@ using BossRush.Texture;
 using BossRush.Contents.Items.Weapon.NotSynergyWeapon.FrozenEnchantedSword;
 
 namespace BossRush.Common.Systems;
+public class TransumtationRecipe {
+
+}
+public class TransmutationSystem : ModSystem {
+
+}
 public class TransmutationUIState : UIState {
 	public override void OnActivate() {
 		Elements.Clear();

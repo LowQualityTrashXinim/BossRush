@@ -16,7 +16,7 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.MashedOfCopper 
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
 			player.statDefense += 6;
-			//Todo : Add a way that Modplayer of CopperArmorPlayer run when this is active
+			player.GetModPlayer<RoguelikeArmorPlayer>().SafeAddArmorSet("CopperArmor");
 			player.GetModPlayer<MashedOfCopperPlayer>().MashedOfCopper = true;
 		}
 

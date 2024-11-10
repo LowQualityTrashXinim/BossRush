@@ -74,3 +74,22 @@ public class WitheringII : ModCurse {
 	}
 }
 
+public class Heartbreak : ModCurse {
+	public override void SetDefault() {
+		AddCatagory(CursesCatagory.Taboo);
+		Value = 1;
+	}
+	public override void Update(Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .02f);
+	}
+}
+
+public class Lifebreak : ModCurse {
+	public override void SetDefault() {
+		AddCatagory(CursesCatagory.Taboo);
+		Value = 3;
+	}
+	public override void Update(Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .1f);
+	}
+}

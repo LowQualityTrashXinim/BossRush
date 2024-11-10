@@ -4,6 +4,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
@@ -13,7 +15,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		Player player = Main.LocalPlayer;
 		ModifyArmorSetToolTip(player, item, tooltips);
-		ModifyArmorTooltip(player, item, tooltips);
+		ModifyArmorTooltip(item, tooltips);
 	}
 	private void ModifyArmorSetToolTip(Player player, Item item, List<TooltipLine> tooltips) {
 		int index = tooltips.FindIndex(line => line.Name == "SetBonus");
@@ -37,7 +39,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			}
 		}
 	}
-	private void ModifyArmorTooltip(Player player, Item item, List<TooltipLine> tooltips) {
+	private void ModifyArmorTooltip(Item item, List<TooltipLine> tooltips) {
 		int index = tooltips.FindIndex(line => line.Name == "Defense");
 		var info = ArmorLoader.GetArmorPieceInfo(item.type);
 		if (info == null) {
@@ -85,24 +87,6 @@ class RoguelikeArmorOverhaul : GlobalItem {
 			}
 		}
 	}
-	private string GetToolTip(int type) {
-		//if (type == ItemID.PlatinumHelmet || type == ItemID.PlatinumChainmail || type == ItemID.PlatinumGreaves) {
-		//	return Language.GetTextValue($"Mods.BossRush.ArmorSet.PlatinumArmor");
-		//}
-		return "";
-	}
-	public override void UpdateArmorSet(Player player, string set) {
-		RoguelikeArmorPlayer modplayer = player.GetModPlayer<RoguelikeArmorPlayer>();
-
-		if (OreTypeArmor(player, modplayer, set)) { return; }
-	}
-	private bool OreTypeArmor(Player player, RoguelikeArmorPlayer modplayer, string set) {
-		if (set == ArmorSet.ConvertIntoArmorSetFormat(ItemID.PlatinumHelmet, ItemID.PlatinumChainmail, ItemID.PlatinumGreaves)) {
-			modplayer.PlatinumArmor = true;
-			return true;
-		}
-		return false;
-	}
 	public override void UpdateEquip(Item item, Player player) {
 		int type = item.type;
 
@@ -125,37 +109,30 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 }
 class RoguelikeArmorPlayer : ModPlayer {
-	public bool PlatinumArmor = false;
-	int PlatinumArmorCountEffect = 0;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
+	public List<ModArmorSet> ForceActive = new();
+	public bool ArmorSetCheck(ModPlayer modplayer = null) {
+		if (ActiveArmor.Equals(ArmorLoader.Default)) {
+			return false;
+		}
+		if (ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == modplayer.Name) {
+			return true;
+		}
+		if (ForceActive != null && ForceActive.Where(ar => !ar.Equals(ArmorLoader.Default) && ar.modplayer.Name == modplayer.Name).Any()) {
+			return true;
+		}
+		return false;
+	}
+	public void SafeAddArmorSet(string armorSetName) {
+		ModArmorSet set = ArmorLoader.GetModArmor(armorSetName);
+		if (set.Equals(ArmorLoader.Default)) {
+			return;
+		}
+		ForceActive.Add(set);
+	}
 	public override void ResetEffects() {
+		ForceActive.Clear();
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
-		PlatinumArmor = false;
-	}
-	public override void UpdateDead() {
-		PlatinumArmor = false;
-	}
-	public override void PreUpdate() {
-		if (PlatinumArmor) {
-			if (Player.ItemAnimationActive) {
-				PlatinumArmorCountEffect = Math.Clamp(PlatinumArmorCountEffect + 1, 0, 1200);
-			}
-			else {
-				PlatinumArmorCountEffect = BossRushUtils.CountDown(PlatinumArmorCountEffect);
-			}
-		}
-	}
-	public override void PostUpdate() {
-		if (PlatinumArmorCountEffect >= 600) {
-			Player.AddBuff(BuffID.OnFire, 300);
-			Dust.NewDust(Player.Center, 0, 0, DustID.Torch, 0, 0, 0, default, Main.rand.NextFloat(1, 1.5f));
-		}
-	}
-	public override float UseSpeedMultiplier(Item item) {
-		if (PlatinumArmor) {
-			return 1.35f;
-		}
-		return base.UseSpeedMultiplier(item);
 	}
 }
 public class ArmorSet {
