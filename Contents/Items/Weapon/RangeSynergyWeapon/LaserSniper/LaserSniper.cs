@@ -1,5 +1,6 @@
 ﻿using BossRush.Common;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -18,6 +19,31 @@ internal class LaserSniper : SynergyModItem {
 		Item.scale = 0.9f;
 		Item.mana = 20;
 		Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
+	}
+	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
+		if(modplayer.LaserSniper_LaserRifle) {
+			tooltips.Add(new(Mod, "LaserSniper_LaserRifle", $"[i:{ItemID.LaserRifle}] : Activate rifle mode"));
+		}
+	}
+	public override bool? CanAutoReuseItem(Player player) {
+		bool result = player.GetModPlayer<PlayerSynergyItemHandle>().LaserSniper_LaserRifle;
+		if(result) {
+			return true;
+		}
+		return base.CanAutoReuseItem(player);
+	}
+	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
+		if(player.HasItem(ItemID.LaserRifle)) {
+			modplayer.LaserSniper_LaserRifle = true;
+			modplayer.SynergyBonus++;
+		}
+	}
+	public override float UseSpeedMultiplier(Player player) {
+		float speed  = base.UseSpeedMultiplier(player);
+		if(player.GetModPlayer<PlayerSynergyItemHandle>().LaserSniper_LaserRifle) {
+			speed += 2.5f;
+		}
+		return speed;
 	}
 	public override void OnMissingMana(Player player, int neededMana) {
 		player.GetModPlayer<LaserSniperPlayer>().ManaMissing = true;

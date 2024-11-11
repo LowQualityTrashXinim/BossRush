@@ -96,12 +96,18 @@ namespace BossRush.Contents.Items.Weapon {
 
 		public bool NatureSelection_NatureCrystal = false;
 
+		public bool LaserSniper_LaserRifle = false;
+
 		public bool HorusEye_ResonanceScepter = false;
-		public override void PreUpdate() {
-		}
+		public Dictionary<int, List<int>> Dictionary_SynergyBonus = new();
 		public override void ResetEffects() {
+			Dictionary_SynergyBonus.Clear();
+
+
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;
+
+			LaserSniper_LaserRifle = false;
 
 			BurningPassion_WandofFrosting = false;
 			BurningPassion_SkyFracture = false;

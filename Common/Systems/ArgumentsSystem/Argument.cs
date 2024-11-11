@@ -45,6 +45,13 @@ public class AugmentsWeapon : GlobalItem {
 			tooltips.Add(new TooltipLine(Mod, $"Augments{i + 1}", $"[c/{Augments.tooltipColor.Hex3()}:{Augments.DisplayName}] : {Augments.Description}"));
 		}
 	}
+	public float WeaponConditionalChance(Item item, Player player) {
+		float Chance = 0;
+		if (item.prefix == PrefixID.Annoying) {
+			Chance += .5f;
+		}
+		return Chance;
+	}
 	public override bool InstancePerEntity => true;
 	public int[] AugmentsSlots = new int[5];
 	/// <summary>
@@ -84,11 +91,13 @@ public class AugmentsWeapon : GlobalItem {
 				chance += .1f;
 			}
 
-			float chanceDecay = modplayer.IncreasesChance + chance;
+			float chanceDecay = modplayer.IncreasesChance + chance + weapon.WeaponConditionalChance(item, player);
 			ModAugments modAugments = null;
+			float augmentChance = 0;
 			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
 				if (modAugments == null) {
 					modAugments = AugmentsLoader.GetAugments(Main.rand.Next(AugmentsList.Keys.ToArray()));
+					augmentChance = AugmentsList[modAugments.Type];
 					AugmentsList.Remove(modAugments.Type);
 				}
 				if (limit <= -1) {
@@ -96,7 +105,7 @@ public class AugmentsWeapon : GlobalItem {
 						break;
 					}
 				}
-				if (Main.rand.NextFloat() > weapon.AugmentsChance + chanceDecay + AugmentsList[modAugments.Type] && !passException) {
+				if (Main.rand.NextFloat() > weapon.AugmentsChance + chanceDecay + augmentChance && !passException) {
 					continue;
 				}
 				if (weapon.AugmentsSlots[currentEmptySlot] == 0) {
