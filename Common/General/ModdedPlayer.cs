@@ -127,6 +127,10 @@ namespace BossRush.Common.General {
 					//yield return new Item(ModContent.ItemType<WindSlashPerk>());
 					yield return new Item(ModContent.ItemType<SynergyEnergy>());
 				}
+				if (ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest) {
+					yield return new Item(ItemID.CopperPickaxe);
+					yield return new Item(ItemID.CopperAxe);
+				}
 				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);
 				}

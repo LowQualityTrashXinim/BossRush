@@ -1186,6 +1186,21 @@ public class Shroomerang : ModEnchantment {
 		}
 	}
 }
+public class ThornChakram : ModEnchantment {
+	Item itemstat = new();
+	public override void SetDefaults() {
+		ItemIDType = ItemID.ThornChakram;
+		itemstat = ContentSamples.ItemsByType[ItemIDType];
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		if (player.itemAnimation == player.itemAnimationMax) {
+			if (player.ownedProjectileCounts[ProjectileID.ThornChakram] < 1) {
+				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.ThornChakram, itemstat.damage, itemstat.knockBack, player.whoAmI);
+			}
+		}
+	}
+}
 public class BreakerBlade : ModEnchantment {
 
 	public override void SetDefaults() {
@@ -1315,9 +1330,6 @@ public class Terragrim : ModEnchantment {
 		damage *= 0.55f;
 
 	}
-
-
-
 }
 
 

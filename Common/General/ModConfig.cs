@@ -25,6 +25,18 @@ namespace BossRush.Common.General {
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Ascension { get; set; }
+		//Replace Cursed skull
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool HellishEndeavour { get; set; }
+		//Cursed challenge
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool LifeOfThorn { get; set; }
+		//Chaotic god challenge
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool DreamlikeWorld { get; set; }
 		[Header($"LuckDepartmentHeader")]
 		[DefaultValue(true)]
 		public bool RareSpoils { get; set; }

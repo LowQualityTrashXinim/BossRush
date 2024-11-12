@@ -52,23 +52,23 @@ namespace BossRush.Contents.Perks {
 			CanBeChoosen = false;
 			CanBeStack = false;
 		}
-		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-			if (Main.rand.NextBool(20)) {
-				hurtInfo.Damage = Main.rand.Next(1, (int)(hurtInfo.Damage * .85f));
+		public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
+			if (Main.rand.NextBool(Main.rand.Next(3,21))) {
+				modifiers.FinalDamage.Flat -= Main.rand.Next(1, 1 + (int)Math.Ceiling(npc.damage * .85f));
 			}
 		}
-		public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-			if (Main.rand.NextBool(20)) {
-				hurtInfo.Damage = Main.rand.Next(1, (int)(hurtInfo.Damage * .85f));
+		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+			if (Main.rand.NextBool(Main.rand.Next(3, 21))) {
+				modifiers.FinalDamage.Flat -= Main.rand.Next(1, 1 + (int)Math.Ceiling(proj.damage * .85f));
 			}
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(20)) {
+			if (Main.rand.NextBool(Main.rand.Next(3, 21))) {
 				modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
 			}
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(20)) {
+			if (Main.rand.NextBool(Main.rand.Next(3, 21))) {
 				modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
 			}
 		}
@@ -80,12 +80,26 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = false;
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(3))
+			if (Main.rand.NextBool(3)) {
 				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
+			}
+			if (Main.rand.NextFloat() >= .05f) {
+				modifiers.SourceDamage *= 2;
+			}
+			if (Main.rand.NextFloat() >= .15f) {
+				modifiers.ArmorPenetration += 20;
+			}
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextBool(3))
+			if (Main.rand.NextBool(3)) {
 				modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
+			}
+			if (Main.rand.NextFloat() >= .05f) {
+				modifiers.SourceDamage *= 2;
+			}
+			if (Main.rand.NextFloat() >= .15f) {
+				modifiers.ArmorPenetration += 20;
+			}
 		}
 	}
 	public class MarkOfSpectre : Perk {
