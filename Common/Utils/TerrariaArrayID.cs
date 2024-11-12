@@ -321,10 +321,15 @@ namespace BossRush.Common.Utils {
 			Perk.GetPerkType<BlessingOfEvasive>()
 		};
 		//Tile
-		public readonly static int[] Altar = { 
+		public readonly static int[] Altar = {
 			ModContent.TileType<RelicAltar>(),
-			ModContent.TileType<WeaponAltar>()
-		
+			ModContent.TileType<WeaponAltar>(),
+			ModContent.TileType<RPGAltar>(),
+			ModContent.TileType<ArmorAltar>(),
+						ModContent.TileType<SkillAltar>(),
+						ModContent.TileType<PotionAltar>(),
+						ModContent.TileType<PotionAltar>(),
+						ModContent.TileType<FoodAltar>(),
 		};
 	}
 }

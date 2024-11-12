@@ -123,7 +123,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						}
 					}
 					if (pass >= 7) {
-						WorldGen.PlaceTile(i, j, ModContent.TileType<RelicAltar>());
+						WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
 						RNG = false;
 					}
 				}

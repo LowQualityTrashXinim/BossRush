@@ -7,6 +7,8 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
 using BossRush.Contents.Items.Chest;
 using BossRush;
+using BossRush.Contents.Skill;
+using BossRush.Common.Utils;
 public class AltarItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -59,6 +61,46 @@ public class WeaponAltar : Altar {
 public class RPGAltar : Altar {
 	public override void On_RightClick(Player player, int i, int j) {
 		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), Main.rand.Next(BossRushModSystem.RPGItem));
+
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}
+public class ArmorAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		LootBoxBase.GetArmorPiece(ModContent.ItemType<WoodenLootBox>(), player, true);
+
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}
+public class SkillAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		player.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(Main.rand.Next(SkillLoader.TotalCount), false);
+
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}
+public class PotionAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		LootBoxBase.GetPotion(ModContent.ItemType<WoodenLootBox>(), player);
+
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}
+public class FoodAltar : Altar {
+	public override void On_RightClick(Player player, int i, int j) {
+		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), Main.rand.Next(TerrariaArrayID.AllFood), Main.rand.Next(5, 10));
 
 		for (int a = 0; a < 30; a++) {
 			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
