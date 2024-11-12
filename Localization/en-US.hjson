@@ -2286,6 +2286,11 @@ Mods: {
 				DisplayName: Blood Butcherer Enchantment Debuff
 				Description: Mods.BossRush.Buffs.BloodButchererEnchantmentDebuff.Description
 			}
+
+			BackUpMana_CoolDown: {
+				DisplayName: Back Up Mana_ Cool Down
+				Description: Mods.BossRush.Buffs.BackUpMana_CoolDown.Description
+			}
 		}
 
 		Configs: {

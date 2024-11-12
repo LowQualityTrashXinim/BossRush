@@ -30,7 +30,7 @@
     <None Remove="Localization\en-US_Mods.BossRush.Armor.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.Artifacts.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.LostAccessories.hjson" />
-    <None Remove="Localization\en-US_Mods.BossRush.ModArgument.hjson" />
+    <None Remove="Localization\en-US_Mods.BossRush.ModAugments.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModEnchantment.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModPerk.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.ModSkill.hjson" />

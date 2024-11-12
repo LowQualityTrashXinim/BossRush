@@ -112,7 +112,6 @@ AlchemistEmpowerment: {
 		+ Quick Potion heal is halved, but also cleanses almost all debuffs
 		+ Potion have 55% to not be consumed when not using Quick Buff key
 		+ Opening Lootbox will drop you 1 random special potion
-		+ Increases Potion duration by 35%
 		"Knowledge that was lost to time."
 		'''
 }
@@ -285,16 +284,15 @@ ArenaBlessing3: {
 
 StellarRetirement: {
 	DisplayName: Stellar Retirement
-	Description: + Star Fury fall from the sky dealing 1000 damage
+	Description: + Super star fall from the sky dealing 1000 damage
 }
 
 OverchargedMana: {
 	DisplayName: Overcharged Mana
 	Description:
 		'''
-		- Your maximum mana is halved
-		+ Your mana regen is increases
-		+ Deal magic explode damage and gain +33% magic damage when you have full mana
+		+ Your mana regenaration is increases
+		+ When you have full mana deal magic explode damage and +33% magic damage
 		'''
 }
 
@@ -390,6 +388,7 @@ EnergyAbsorption: {
 		'''
 		+ Getting hit will recharge your energy for 25% of damage taken
 		+ Increases damage reduction by 10%
+		+ Increases energy capacity by 20%
 		'''
 }
 

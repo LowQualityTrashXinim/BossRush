@@ -1186,7 +1186,7 @@ public class Shroomerang : ModEnchantment {
 		}
 	}
 }
-public class BreakerBladeSword : ModEnchantment {
+public class BreakerBlade : ModEnchantment {
 
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BreakerBlade;

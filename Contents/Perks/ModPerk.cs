@@ -242,6 +242,7 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	public class BackUpMana_CoolDown : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff(true);
 		}
@@ -306,7 +307,7 @@ namespace BossRush.Contents.Perks {
 				Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
 			}
-			player.AddBuff(ModContent.BuffType<ExplosionHealing>(), BossRushUtils.ToSecond(5));
+			player.AddBuff(ModContent.BuffType<ExplosionHealing>(), BossRushUtils.ToSecond(5 + StackAmount(player)));
 		}
 	}
 	public class ExplosionHealing : ModBuff {
@@ -315,7 +316,7 @@ namespace BossRush.Contents.Perks {
 			this.BossRushSetDefaultBuff();
 		}
 		public override void Update(Player player, ref int buffIndex) {
-			player.lifeRegen += 47;
+			player.lifeRegen += 22;
 		}
 	}
 	public class ProjectileProtection : Perk {
@@ -587,7 +588,7 @@ namespace BossRush.Contents.Perks {
 		public override void Update(Player player) {
 			if (Main.rand.NextBool(100)) {
 				int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
-				int proj = Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.Starfury, damage, 5);
+				int proj = Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.SuperStar, damage, 5);
 				Main.projectile[proj].tileCollide = false;
 			}
 		}
@@ -599,9 +600,6 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenMana, Base: 20);
-		}
-		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
-			mana /= 2;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			if (player.statMana == player.statLifeMax2 && item.DamageType == DamageClass.Magic) {
