@@ -207,33 +207,46 @@ namespace BossRush.Contents.Perks {
 		}
 		private void LifeForceSpawn(Player player, NPC target) {
 			if (Main.rand.NextBool(10))
-				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(100, 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
+				Projectile.NewProjectile(player.GetSource_FromThis(), target.Center + Main.rand.NextVector2Circular(target.width + 100, target.height + 100), Vector2.Zero, ModContent.ProjectileType<LifeOrb>(), 0, 0, player.whoAmI);
 		}
 	}
-	public class IllegalTrading : Perk {
-		public override void SetDefaults() {
-			CanBeStack = true;
-			StackLimit = 5;
-			CanBeChoosen = false;
-		}
-		public override void ResetEffect(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount(player);
-		}
-		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			damage -= .07f * StackAmount(player);
-		}
-	}
+	//public class IllegalTrading : Perk {
+	//	public override void SetDefaults() {
+	//		CanBeStack = true;
+	//		StackLimit = 5;
+	//		CanBeChoosen = false;
+	//	}
+	//	public override void ResetEffect(Player player) {
+	//		player.GetModPlayer<ChestLootDropPlayer>().WeaponAmountAddition += 3 + StackAmount(player);
+	//	}
+	//	public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+	//		damage -= .07f * StackAmount(player);
+	//	}
+	//}
 	public class BackUpMana : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BackUpMana>();
-			CanBeStack = false;
+			CanBeStack = true;
+			StackLimit = 3;
 		}
 		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
-			mana.Base += 67;
+			mana.Base += 67 * StackAmount(player);
 		}
 		public override void OnMissingMana(Player player, Item item, int neededMana) {
-			player.statMana += neededMana;
-			player.statLife = Math.Clamp(player.statLife - (int)(neededMana * .5f), 1, player.statLifeMax2);
+			//player.statMana += neededMana;
+			//player.statLife = Math.Clamp(player.statLife - (int)(neededMana * .5f), 1, player.statLifeMax2);
+			if (!player.HasBuff<BackUpMana_CoolDown>()) {
+				player.statMana = player.statManaMax2;
+				player.AddBuff(ModContent.BuffType<BackUpMana_CoolDown>(), BossRushUtils.ToSecond(Math.Clamp(37 - 7 * StackAmount(player), 1, 9999)));
+			}
+		}
+	}
+	public class BackUpMana_CoolDown : ModBuff {
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff(true);
+		}
+		public override void Update(Player player, ref int buffIndex) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenMana, -.5f);
 		}
 	}
 	public class PeaceWithGod : Perk {

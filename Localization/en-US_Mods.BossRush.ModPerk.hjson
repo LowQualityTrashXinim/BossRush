@@ -75,22 +75,13 @@ LifeForceOrb: {
 		'''
 }
 
-IllegalTrading: {
-	DisplayName: Illegal Trading
-	Description:
-		'''
-		+ Increase amount of weapon drop from chest by 3 !
-		- Decrease your damage by 7%
-		'''
-}
-
 BackUpMana: {
 	DisplayName: Back Up Mana
 	Description:
 		'''
-		+ You can fire magic weapon forever
 		+ Increases your maximum mana by 67
-		- When you are out of mana, mana cost reduce is by 50% and you use your life instead
+		+ When you are out of mana, instant fill up your mana
+		( Have 30s cool down, stacking this perk will reduce the duration by 7)
 		'''
 }
 

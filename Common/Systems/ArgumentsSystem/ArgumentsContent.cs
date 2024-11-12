@@ -12,6 +12,7 @@ namespace BossRush.Common.Systems.ArgumentsSystem;
 
 public class FireI : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .15f;
 		tooltipColor = Color.Red;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
@@ -24,6 +25,7 @@ public class FireI : ModAugments {
 }
 public class FireII : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .05f;
 		tooltipColor = Color.Red;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
@@ -40,6 +42,7 @@ public class FireII : ModAugments {
 }
 public class FrostBurnI : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .15f;
 		tooltipColor = Color.Cyan;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
@@ -52,6 +55,7 @@ public class FrostBurnI : ModAugments {
 }
 public class FrostBurnII : ModAugments {
 	public override void SetStaticDefaults() {
+
 		tooltipColor = Color.Cyan;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
@@ -149,6 +153,7 @@ public class TitanII : ModAugments {
 		return true;
 	}
 	public override void SetStaticDefaults() {
+
 		tooltipColor = Color.Blue;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
@@ -330,6 +335,7 @@ public class Union : ModAugments {
 
 public class ShadowFlameI : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .07f;
 		tooltipColor = Color.MediumPurple;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
@@ -359,6 +365,7 @@ public class ShadowFlameII : ModAugments {
 
 public class CursedFlameI : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .07f;
 		tooltipColor = Color.ForestGreen;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
@@ -387,6 +394,7 @@ public class CursedFlameII : ModAugments {
 }
 public class PoisonI : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .15f;
 		tooltipColor = Color.PaleGreen;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
@@ -416,6 +424,7 @@ public class PoisonII : ModAugments {
 
 public class VenomI : ModAugments {
 	public override void SetStaticDefaults() {
+		Chance = .07f;
 		tooltipColor = Color.PaleGreen;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {

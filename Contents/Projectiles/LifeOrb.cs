@@ -34,7 +34,7 @@ namespace BossRush.Contents.Projectiles {
 			Main.dust[dust].velocity = Vector2.Zero;
 			if (Projectile.Center.IsCloseToPosition(player.Center, 225)) {
 				Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .5f;
-				Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
+				Projectile.velocity = Projectile.velocity.LimitedVelocity(6);
 			}
 			else {
 				Projectile.velocity *= .98f;
