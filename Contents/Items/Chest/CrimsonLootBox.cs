@@ -2,6 +2,7 @@
 using Terraria.ID;
 using BossRush.Common.Utils;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.Chest {
 	class CrimsonLootBox : LootBoxBase {
@@ -79,12 +80,13 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public override void AbsoluteRightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
 			if (NPC.downedBoss2) {
-				var entitySource = player.GetSource_OpenItem(Type);
 				player.QuickSpawnItem(entitySource, ItemID.TinkerersWorkshop);
 				player.QuickSpawnItem(entitySource, ItemID.Hellforge);
 				player.QuickSpawnItem(entitySource, Main.rand.Next(new int[] { ItemID.DiamondHook, ItemID.RubyHook }));
 			}
+			player.QuickSpawnItem(entitySource, ItemID.DD2ElderCrystalStand);
 		}
 	}
 }

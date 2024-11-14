@@ -22,13 +22,13 @@ StrokeOfLuck: {
 UncertainStrike: {
 	DisplayName: Uncertain Strike
 	Description:
-	'''
-	Your strike have
-	+ 33% to increases damage up to 55% or decreases down to 15%
-	+ 15% to ignore 20 defenses
-	+ 5% for damage to be multiply by 2
-	+ 1% to heal player
-	'''
+		'''
+		Your strike have
+		+ 33% to increases damage up to 55% or decreases down to 15%
+		+ 15% to ignore 20 defenses
+		+ 5% for damage to be multiply by 2
+		+ 1% to heal player
+		'''
 }
 
 MarkOfSpectre: {

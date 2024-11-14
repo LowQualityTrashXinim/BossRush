@@ -2465,6 +2465,21 @@ Mods: {
 					Label: World Gen R L Setting Test
 					Tooltip: ""
 				}
+
+				HellishEndeavour: {
+					Label: Hellish Endeavour
+					Tooltip: ""
+				}
+
+				LifeOfThorn: {
+					Label: Life Of Thorn
+					Tooltip: ""
+				}
+
+				DreamlikeWorld: {
+					Label: Dreamlike World
+					Tooltip: ""
+				}
 			}
 		}
 
