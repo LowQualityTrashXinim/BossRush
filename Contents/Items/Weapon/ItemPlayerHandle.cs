@@ -99,9 +99,17 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool LaserSniper_LaserRifle = false;
 
 		public bool HorusEye_ResonanceScepter = false;
-		public Dictionary<int, List<int>> Dictionary_SynergyBonus = new();
+		public Dictionary<int, Dictionary<int, bool>> Dictionary_SynergyBonus = new();
 		public override void ResetEffects() {
-			Dictionary_SynergyBonus.Clear();
+			int Synergylength = Dictionary_SynergyBonus.Keys.Count;
+			for (int i = 0; i < Synergylength; i++) {
+				int synergyItem = Dictionary_SynergyBonus.Keys.ElementAt(i);
+				int SynergyBonusLength = Dictionary_SynergyBonus[synergyItem].Keys.Count;
+				for (int l = 0; l < SynergyBonusLength; l++) {
+					int SynergyBonusKey = Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
+					Dictionary_SynergyBonus[synergyItem][SynergyBonusKey] = false;
+				}
+			}
 
 
 			SynergyBonus = 0;

@@ -91,6 +91,10 @@ public abstract class ModCurse : ModType {
 	public override sealed bool Equals(object obj) {
 		return this.Name == obj.ToString();
 	}
+
+	public override int GetHashCode() {
+		return base.GetHashCode();
+	}
 }
 public class PlayerCursesHandle : ModPlayer {
 	public Dictionary<ModCurse, int> curses = new();

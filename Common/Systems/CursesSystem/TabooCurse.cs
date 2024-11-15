@@ -93,3 +93,15 @@ public class Lifebreak : ModCurse {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .1f);
 	}
 }
+
+public class Unholy : ModCurse {
+	public override void SetDefault() {
+		AddCatagory(CursesCatagory.Taboo);
+		Value = 3;
+	}
+	public override void Update(Player player) {
+		if (Main.IsItDay()) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .2f);
+		}
+	}
+}
