@@ -19,6 +19,18 @@ using BossRush.Common.General;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 
 namespace BossRush.Contents.Items.Weapon {
+	public class SynergyBonus_System : ModSystem {
+		public static Dictionary<int, Dictionary<int, bool>> Dictionary_SynergyBonus = new();
+		public override void Load() {
+			Dictionary_SynergyBonus = new();
+		}
+		public override void Unload() {
+			Dictionary_SynergyBonus = null;
+		}
+		public void Add_SynergyBonus(int SynergyItemID, int ItemID) {
+			Dictionary_SynergyBonus.Add(SynergyItemID, new() { { ItemID, false } });
+		}
+	}
 	/// <summary>
 	///This mod player should hold all the logic require for the item, if the item is shooting out the projectile, it should be doing that itself !<br/>
 	///Same with projectile unless it is a vanilla projectile then we can refer to global projectile<br/>
@@ -99,15 +111,21 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool LaserSniper_LaserRifle = false;
 
 		public bool HorusEye_ResonanceScepter = false;
-		public Dictionary<int, Dictionary<int, bool>> Dictionary_SynergyBonus = new();
 		public override void ResetEffects() {
-			int Synergylength = Dictionary_SynergyBonus.Keys.Count;
+			int Synergylength = SynergyBonus_System.Dictionary_SynergyBonus.Keys.Count;
 			for (int i = 0; i < Synergylength; i++) {
-				int synergyItem = Dictionary_SynergyBonus.Keys.ElementAt(i);
-				int SynergyBonusLength = Dictionary_SynergyBonus[synergyItem].Keys.Count;
+				int synergyItem = SynergyBonus_System.Dictionary_SynergyBonus.Keys.ElementAt(i);
+				if (Player.HeldItem.type != synergyItem) {
+					continue;
+				}
+				int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
 				for (int l = 0; l < SynergyBonusLength; l++) {
-					int SynergyBonusKey = Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
-					Dictionary_SynergyBonus[synergyItem][SynergyBonusKey] = false;
+					int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
+					bool HasItem = Player.HasItem(itemIDBonus);
+					if (HasItem) {
+						SynergyBonus++;
+					}
+					SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][itemIDBonus] = HasItem;
 				}
 			}
 
@@ -278,10 +296,12 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
-		public override void SetStaticDefaults() {
+		public sealed override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
 			CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(50, 100, 100) });
+			Synergy_SetStaticDefaults();
 		}
+		public virtual void Synergy_SetStaticDefaults() { }
 		public ColorInfo CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(100, 150, 150) });
 		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
 			base.ModifyTooltips(tooltips);
