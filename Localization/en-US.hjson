@@ -1223,7 +1223,7 @@ Mods: {
 
 			StreetLamp: {
 				DisplayName: Street Lamp
-				Tooltip: ""
+				Tooltip: "Summons a Moth to protect their Lamp"
 			}
 
 			AmberBoneSpear: {

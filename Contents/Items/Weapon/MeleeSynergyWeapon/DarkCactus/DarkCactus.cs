@@ -8,6 +8,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 	internal class DarkCactus : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BatScepter);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BladeofGrass);
+		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(58, 78, 29, 5f, 60, 20, ItemUseStyleID.Swing, true);
 			Item.DamageType = DamageClass.Melee;
@@ -23,39 +27,29 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 				meleeItem.SwingType = BossRushUseStyle.GenericSwingDownImprove;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.DarkCactus_BatScepter) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type,ItemID.BatScepter)) {
 				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BatScepter", $"[i:{ItemID.BatScepter}] Bat now spawn on each swing, rolling cactus also spawn bat"));
 			}
-			if (modplayer.DarkCactus_BladeOfGrass) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
 				tooltips.Add(new TooltipLine(Mod, "DarkCactus_BladeOfGrass", $"[i:{ItemID.BladeofGrass}] Increase weapon size by 150% and shoot out leaf blade"));
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (modplayer.DarkCactus_BatScepter) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BatScepter)) {
 				Vector2 UnitXvelocity = Vector2.UnitX * player.direction;
 				for (int i = 0; i < 4; i++) {
 					Projectile.NewProjectile(source, position, UnitXvelocity.Vector2DistributeEvenly(4, 40, i).Vector2RotateByRandom(10f), ProjectileID.Bat, damage, knockback, player.whoAmI);
 				}
 			}
-			if (modplayer.DarkCactus_BladeOfGrass) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
 				for (int i = 0; i < 3; i++) {
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10f), ProjectileID.BladeOfGrass, damage, knockback, player.whoAmI);
 				}
 			}
 			CanShootItem = true;
 		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.BatScepter)) {
-				modplayer.DarkCactus_BatScepter = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.BladeofGrass)) {
-				modplayer.DarkCactus_BladeOfGrass = true;
-				modplayer.SynergyBonus++;
-			}
-		}
 		public override void ModifyItemScale(Player player, ref float scale) {
-			if (player.GetModPlayer<PlayerSynergyItemHandle>().DarkCactus_BladeOfGrass) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BladeofGrass)) {
 				scale += 1.5f;
 			}
 		}
@@ -90,7 +84,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 			Projectile.damage *= 3;
 		}
 		public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.DarkCactus_BatScepter) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BatScepter)) {
 				if (!Main.rand.NextBool(10)) {
 					return;
 				}

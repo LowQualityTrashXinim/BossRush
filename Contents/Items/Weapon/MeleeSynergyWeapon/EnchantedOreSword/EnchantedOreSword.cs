@@ -9,6 +9,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 	class EnchantedOreSword : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Starfury);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedSword);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMeleeShootCustomProjectile(50, 50, 19, 6f, 24, 24, ItemUseStyleID.Swing, ModContent.ProjectileType<EnchantedSilverSwordP>(), 15f, true);
 			Item.value = Item.buyPrice(gold: 50);
@@ -20,22 +24,11 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		}
 		int count = -1;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.EnchantedOreSword_StarFury) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Starfury)) {
 				tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_StarFury", $"[i:{ItemID.Starfury}] Shortsword will leave a trail of star"));
 			}
-			if (modplayer.EnchantedOreSword_EnchantedSword) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedSword)) {
 				tooltips.Add(new TooltipLine(Mod, "EnchantedOreSword_EnchantedSword", $"[i:{ItemID.EnchantedSword}] you shoot out additional shortsword attack of random"));
-			}
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			base.HoldSynergyItem(player, modplayer);
-			if (player.HasItem(ItemID.Starfury)) {
-				modplayer.EnchantedOreSword_StarFury = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.EnchantedSword)) {
-				modplayer.EnchantedOreSword_EnchantedSword = true;
-				modplayer.SynergyBonus++;
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
@@ -45,7 +38,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 			else {
 				count = 0;
 			}
-			if (modplayer.EnchantedOreSword_EnchantedSword) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedSword)) {
 				ShootSwordSword(player, source, position, velocity, damage, knockback, Main.rand.Next(TerrariaArrayID.EnchantedOreSwordProjectile.Length));
 			}
 			ShootSwordSword(player, source, position, velocity, damage, knockback, count);

@@ -8,12 +8,15 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.LaserSniper;
 internal class LaserSniper : SynergyModItem {
+	public override void Synergy_SetStaticDefaults() {
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.LaserRifle);
+	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(86, 26, 250, 20, 40, 40, ItemUseStyleID.Shoot, ProjectileID.LaserMachinegunLaser, 20, false, AmmoID.Bullet);
 		Item.crit = 20;
 		Item.UseSound = SoundID.Item91 with {
 			Pitch = .9f
-		}; 
+		};
 		Item.rare = ItemRarityID.Orange;
 		Item.value = Item.buyPrice(gold: 50);
 		Item.scale = 0.9f;
@@ -21,26 +24,20 @@ internal class LaserSniper : SynergyModItem {
 		Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if(modplayer.LaserSniper_LaserRifle) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.LaserRifle)) {
 			tooltips.Add(new(Mod, "LaserSniper_LaserRifle", $"[i:{ItemID.LaserRifle}] : Activate rifle mode"));
 		}
 	}
 	public override bool? CanAutoReuseItem(Player player) {
-		bool result = player.GetModPlayer<PlayerSynergyItemHandle>().LaserSniper_LaserRifle;
-		if(result) {
+		bool result = SynergyBonus_System.Check_SynergyBonus(Type, ItemID.LaserRifle);
+		if (result) {
 			return true;
 		}
 		return base.CanAutoReuseItem(player);
 	}
-	public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
-		if(player.HasItem(ItemID.LaserRifle)) {
-			modplayer.LaserSniper_LaserRifle = true;
-			modplayer.SynergyBonus++;
-		}
-	}
 	public override float UseSpeedMultiplier(Player player) {
-		float speed  = base.UseSpeedMultiplier(player);
-		if(player.GetModPlayer<PlayerSynergyItemHandle>().LaserSniper_LaserRifle) {
+		float speed = base.UseSpeedMultiplier(player);
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.LaserRifle)) {
 			speed += 2.5f;
 		}
 		return speed;

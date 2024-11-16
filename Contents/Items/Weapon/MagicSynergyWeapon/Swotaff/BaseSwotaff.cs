@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -7,6 +8,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	public abstract class SwotaffGemItem : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Spear);
+		}
 		public virtual void PreSetDefaults(out int damage, out int ProjectileType, out int ShootType) {
 			damage = 20;
 			ProjectileType = 0;
@@ -25,6 +29,11 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item8;
 			Item.noUseGraphic = true;
+		}
+		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Spear)) {
+				tooltips.Add(new(Mod, "Swotaff_Spear", $"[i:{ItemID.Spear}] Shoot out additional swotaff that shoot toward your cursor"));
+			}
 		}
 		public override float UseSpeedMultiplier(Player player) {
 			if (player.altFunctionUse == 2) {
@@ -55,12 +64,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 				return player.ownedProjectileCounts[ProjectileType] < 2;
 			}
 			return player.ownedProjectileCounts[ProjectileType] < 1;
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.Spear)) {
-				modplayer.Swotaff_Spear = true;
-				modplayer.SynergyBonus++;
-			}
 		}
 		int CanShootProjectile = 1;
 		int countIndex = 1;
@@ -118,17 +121,17 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 		}
 		Vector2 PosToGo;
 		float AltAttackAmountProjectile;
-		int AltAttackProjectileType, 
+		int AltAttackProjectileType,
 			NormalBoltProjectile,
-			DustType, 
-			ManaCost, 
-			countdownBeforeReturn = 100, 
-			AbsoluteCountDown = 420, 
-			timeToSpin = 0, 
+			DustType,
+			ManaCost,
+			countdownBeforeReturn = 100,
+			AbsoluteCountDown = 420,
+			timeToSpin = 0,
 			projectileBelongToItem;
-		bool isAlreadyHeldDown = false, 
+		bool isAlreadyHeldDown = false,
 			isAlreadyReleased = false,
-			isAlreadySpinState = false, 
+			isAlreadySpinState = false,
 			ProjectileAlreadyExist = false;
 		public override void OnSpawn(IEntitySource source) {
 			base.OnSpawn(source);
@@ -285,15 +288,17 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.Swotaff {
 	public class SwotaffPlayer : ModPlayer {
 		public int Swotaff_Spear_Counter = 0;
 		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Player.GetModPlayer<PlayerSynergyItemHandle>().Swotaff_Spear && Player.altFunctionUse != 2) {
-				if (Swotaff_Spear_Counter < 2) {
-					Swotaff_Spear_Counter++;
-				}
-				else {
-					Vector2 cirRanPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 30, 90, velocity.ToRotation());
-					Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero) * 10;
-					Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI, 2);
-					Swotaff_Spear_Counter = 0;
+			if (item.ModItem is SwotaffGemItem) {
+				if (SynergyBonus_System.Check_SynergyBonus(Player.HeldItem.type, ItemID.Spear) && Player.altFunctionUse != 2) {
+					if (Swotaff_Spear_Counter < 2) {
+						Swotaff_Spear_Counter++;
+					}
+					else {
+						Vector2 cirRanPos = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 30, 90, velocity.ToRotation());
+						Vector2 vel = (Main.MouseWorld - cirRanPos).SafeNormalize(Vector2.Zero) * 10;
+						Projectile.NewProjectile(source, cirRanPos, vel, type, damage, knockback, Player.whoAmI, 2);
+						Swotaff_Spear_Counter = 0;
+					}
 				}
 			}
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);

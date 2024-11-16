@@ -8,6 +8,10 @@ using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 	internal class Deagle : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PhoenixBlaster);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DaedalusStormbow);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(56, 30, 70, 5f, 21, 21, ItemUseStyleID.Shoot, ProjectileID.Bullet, 40, false, AmmoID.Bullet);
 			Item.rare = ItemRarityID.Orange;
@@ -19,21 +23,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 				weapon.OffSetPost = 50;
 			}
 		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.PhoenixBlaster)) {
-				modplayer.Deagle_PhoenixBlaster = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.DaedalusStormbow)) {
-				modplayer.Deagle_DaedalusStormBow = true;
-				modplayer.SynergyBonus++;
-			}
-		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.Deagle_PhoenixBlaster) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PhoenixBlaster)) {
 				tooltips.Add(new TooltipLine(Mod, "Deagle_PhoenixBlaster", $"[i:{ItemID.PhoenixBlaster}] You shoot out additional bullet but at a random position, getting crit will make the next shot shoot out a fire phoenix dealing quadruple damage"));
 			}
-			if (modplayer.Deagle_DaedalusStormBow) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.DaedalusStormbow)) {
 				tooltips.Add(new TooltipLine(Mod, "Deagle_DaedalusStormBow",
 					$"[i:{ItemID.DaedalusStormbow}] Upon critical hit, storm of bullet fly down at target, have a 10 second cool down"));
 			}
@@ -54,15 +48,15 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (modplayer.Deagle_PhoenixBlaster) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PhoenixBlaster)) {
 				Vector2 position2 = BossRushUtils.SpawnRanPositionThatIsNotIntoTile(position, 300, 300);
-				if (modplayer.Deagle_PhoenixBlaster_Critical) {
+				if (player.GetModPlayer<DeaglePlayer>().Deagle_PhoenixBlaster_Critical) {
 					Projectile.NewProjectile(source, position, (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * Item.shootSpeed, ProjectileID.DD2PhoenixBowShot, damage * 4, knockback, player.whoAmI);
 					int proj = Projectile.NewProjectile(source, position2, (Main.MouseWorld - position2).SafeNormalize(Vector2.Zero) * Item.shootSpeed, ProjectileID.DD2PhoenixBowShot, damage * 2, knockback, player.whoAmI);
 					Main.projectile[proj].scale = .5f;
 					Main.projectile[proj].width = (int)(Main.projectile[proj].width * .5f);
 					Main.projectile[proj].height = (int)(Main.projectile[proj].height * .5f);
-					modplayer.Deagle_PhoenixBlaster_Critical = false;
+					player.GetModPlayer<DeaglePlayer>().Deagle_PhoenixBlaster_Critical = false;
 					CanShootItem = false;
 					return;
 				}
@@ -86,19 +80,22 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 		}
 	}
 	public class DeaglePlayer : ModPlayer {
+		public int Deagle_DaedalusStormBow_coolDown = 0;
+		public bool Deagle_PhoenixBlaster_Critical = false;
 		public override void PostUpdate() {
 			if (Player.HeldItem.type == ModContent.ItemType<Deagle>()) {
-				if (Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow) {
-					Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown = BossRushUtils.CountDown(Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown);
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.DaedalusStormbow)) {
+					Deagle_DaedalusStormBow_coolDown = BossRushUtils.CountDown(Deagle_DaedalusStormBow_coolDown);
 				}
 			}
 		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.Crit) {
-				if (Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_PhoenixBlaster) {
-					Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_PhoenixBlaster_Critical = true;
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.PhoenixBlaster)) {
+					Deagle_PhoenixBlaster_Critical = true;
 				}
-				if (Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow && Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown <= 0) {
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.DaedalusStormbow) 
+					&& Deagle_DaedalusStormBow_coolDown <= 0) {
 					for (int i = 0; i < 15; i++) {
 						Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100, 100), Main.rand.Next(-1100, -1000));
 						int projectile = Projectile.NewProjectile(
@@ -111,7 +108,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 							Player.whoAmI);
 						Main.projectile[projectile].usesLocalNPCImmunity = true;
 					}
-					Player.GetModPlayer<PlayerSynergyItemHandle>().Deagle_DaedalusStormBow_coolDown = 600;
+					Deagle_DaedalusStormBow_coolDown = 600;
 				}
 			}
 		}

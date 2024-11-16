@@ -10,8 +10,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 	public class StreetLamp : SynergyModItem {
-		public override void SetStaticDefaults() {
+		public override void Synergy_SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(15, 6));
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.VampireFrogStaff);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.FireWhip);
 		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(62, 62, 20, 0, 32, 32, ItemUseStyleID.HoldUp, true);
@@ -26,17 +28,6 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 
 		public override Color? GetAlpha(Color lightColor) {
 			return Color.White;
-		}
-		public override void SynergyUpdateInventory(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.VampireFrogStaff)) {
-				modplayer.SynergyBonus++;
-				modplayer.StreetLamp_VampireFrogStaff = true;
-			}
-			if (player.HasItem(ItemID.FireWhip)) {
-				modplayer.SynergyBonus++;
-				modplayer.StreetLamp_Firecracker = true;
-			}
-
 		}
 		public override void UseStyle(Player player, Rectangle heldItemFrame) {
 			LampHold(player);
@@ -56,12 +47,11 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 		}
 
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			tooltips.Add(new TooltipLine(Mod, "StreetLampTooltip", "Summons a Moth to protect their Lamp"));
-			if (modplayer.StreetLamp_VampireFrogStaff) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.VampireFrogStaff)) {
 				tooltips.Add(new TooltipLine(Mod, "StreetLamp_VampireFrogStaff",
 					$"[i:{ItemID.VampireFrogStaff}] Moth's dash speed increased by 15% and every 3 successful hit will heal player for 2.5% of dash attack damage dealt"));
 			}
-			if (modplayer.StreetLamp_Firecracker) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FireWhip)) {
 				tooltips.Add(new TooltipLine(Mod, "StreetLamp_Firecracker",
 					$"[i:{ItemID.FireWhip}] Moth's Dash attacks have 10% chance to do small explosion that deal 3 time the damage and inflict Hellfire for 5 seconds"));
 			}
@@ -131,7 +121,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			//get all the important informations about the target
 			getInfos(player, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
 			//the movement, attacks, etc... is here
-			behavior(player, vectorToIdlePosition, distanceToIdlePosition, foundTarget, distanceFromTarget, targetCenter, modplayer);
+			behavior(player, vectorToIdlePosition, distanceToIdlePosition, foundTarget, distanceFromTarget, targetCenter);
 			SelectFrame();
 			//sprite juice
 			if (currentState == State.dashing) {
@@ -150,7 +140,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			if (currentState == State.dashing) {
 				//deal more damage if dashing
 				int DashBonusDamage = (int)(damageDone * .5f);
-				if (modplayer.StreetLamp_VampireFrogStaff) {
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.VampireFrogStaff)) {
 					modplayer.StreetLamp_VampireFrogStaff_HitCounter++;
 					if (modplayer.StreetLamp_VampireFrogStaff_HitCounter >= 3) {
 						int SynergyhealAmount = (int)(DashBonusDamage * 0.025f);
@@ -158,7 +148,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 						modplayer.StreetLamp_VampireFrogStaff_HitCounter = 0;
 					}
 				}
-				if (modplayer.StreetLamp_Firecracker && Main.rand.NextBool(10)) {
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FireWhip) && Main.rand.NextBool(10)) {
 					npc.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 					foreach (var entity in npclist) {
 						SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot);
@@ -224,10 +214,10 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			}
 		}
 
-		public void behavior(Player owner, Vector2 vectorToIdlePosition, float distanceToIdlePosition, bool foundTarget, float distanceFromTarget, Vector2 targetCenter, PlayerSynergyItemHandle modplayer) {
+		public void behavior(Player owner, Vector2 vectorToIdlePosition, float distanceToIdlePosition, bool foundTarget, float distanceFromTarget, Vector2 targetCenter) {
 			float baseSpeed = 20f;
 			// projectile speed scales with whip attack speed for extra synergy juice
-			float speed = (baseSpeed * owner.GetAttackSpeed(DamageClass.SummonMeleeSpeed)) + (modplayer.StreetLamp_VampireFrogStaff == true ? baseSpeed * 0.15f : 0f);
+			float speed = (baseSpeed * owner.GetAttackSpeed(DamageClass.SummonMeleeSpeed)) + (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.VampireFrogStaff) ? baseSpeed * 0.15f : 0f);
 			//placeholder
 			Vector2 dashAt = owner.Center;
 			// dashDurtion = distance/speed + baseDashDuration

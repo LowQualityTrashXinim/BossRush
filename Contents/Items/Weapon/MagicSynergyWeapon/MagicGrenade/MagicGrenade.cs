@@ -7,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 	internal class MagicGrenade : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(10, 10, 75, 3f, 25, 25, ItemUseStyleID.Swing, ModContent.ProjectileType<MagicGrenadeProjectile>(), 12, 30, true);
 			Item.noUseGraphic = true;
@@ -15,14 +18,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 			Item.value = Item.buyPrice(gold: 50);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.MagicGrenade_MagicMissle)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile))
 				tooltips.Add(new TooltipLine(Mod, "MagicGrenade_MagicMissle", $"[i:{ItemID.MagicMissile}] Grenade's explosion will be accompany by magical bolt that explode shortly after"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.MagicMissile)) {
-				modplayer.SynergyBonus++;
-				modplayer.MagicGrenade_MagicMissle = true;
-			}
 		}
 		public override void AddRecipes() {
 			CreateRecipe()
@@ -90,7 +87,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 					Projectile.knockBack,
 					Projectile.owner);
 			}
-			if (modplayer.MagicGrenade_MagicMissle) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile)) {
 				for (int i = 0; i < 4; i++) {
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i).Vector2RotateByRandom(120), ModContent.ProjectileType<MagicalExplosionBolt>(), Projectile.damage, 1, Projectile.owner, 0, Main.rand.NextBool().ToDirectionInt());
 				}

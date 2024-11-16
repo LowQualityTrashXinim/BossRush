@@ -7,6 +7,19 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 	internal class SuperFlareGun : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SetKey_SynergyBonusGroupItem(new() { ItemID.BluePhaseblade });
+			SynergyBonus_System.Add_SynergyGroupBonus(Type, ItemID.BluePhaseblade, new List<int>()
+			{
+				ItemID.BluePhaseblade,
+				ItemID.RedPhaseblade,
+				ItemID.GreenPhaseblade,
+				ItemID.OrangePhaseblade,
+				ItemID.YellowPhaseblade,
+				ItemID.PurplePhaseblade,
+				ItemID.WhitePhaseblade
+			});
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(68, 38, 20, 2f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<SuperFlareP>(), 20, false, AmmoID.Flare);
 			Item.rare = ItemRarityID.LightRed;
@@ -18,20 +31,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 			return new Vector2(3, 0);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.SuperFlareGun_Phaseblade)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BluePhaseblade))
 				tooltips.Add(new TooltipLine(Mod, "SuperFlareGun_Phaseblade", $"[i:{Main.rand.Next(TerrariaArrayID.Phaseblade)}] Decrease life time of super flare gun projectile"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.BluePhaseblade) ||
-				player.HasItem(ItemID.RedPhaseblade) ||
-				player.HasItem(ItemID.GreenPhaseblade) ||
-				player.HasItem(ItemID.OrangePhaseblade) ||
-				player.HasItem(ItemID.YellowPhaseblade) ||
-				player.HasItem(ItemID.PurplePhaseblade) ||
-				player.HasItem(ItemID.WhitePhaseblade)) {
-				modplayer.SuperFlareGun_Phaseblade = true;
-				modplayer.SynergyBonus++;
-			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			type = ModContent.ProjectileType<SuperFlareP>();

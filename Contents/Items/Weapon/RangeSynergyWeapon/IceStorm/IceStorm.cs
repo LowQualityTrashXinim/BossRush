@@ -8,6 +8,11 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 	internal class IceStorm : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SnowballCannon);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.FlowerofFrost);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BlizzardStaff);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 98, 50, 1f, 75, 75, ItemUseStyleID.Shoot, ProjectileID.FrostArrow, 10f, true, AmmoID.Arrow);
 			Item.crit = 5;
@@ -17,38 +22,29 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 			Item.UseSound = SoundID.Item5;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			base.ModifySynergyToolTips(ref tooltips, modplayer);
-			if (modplayer.IceStorm_SnowBallCannon) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SnowballCannon)) {
 				tooltips.Add(new TooltipLine(Mod, "IceStorm_SnowBallCannon", $"[i:{ItemID.SnowballCannon}] Charge attack up can shoot snowballs and summon itself"));
 			}
-			if (modplayer.IceStorm_FlowerofFrost) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FlowerofFrost)) {
 				tooltips.Add(new TooltipLine(Mod, "IceStorm_FlowerofFrost", $"[i:{ItemID.FlowerofFrost}] Charge attack up can shoot ball of frost and summon itself"));
 			}
-			if (modplayer.IceStorm_BlizzardStaff) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BlizzardStaff)) {
 				tooltips.Add(new TooltipLine(Mod, "IceStorm_BlizzardStaff", $"[i:{ItemID.BlizzardStaff}] Max charge can now rain down frost spike"));
 			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 			int type;
-			if (player.HasItem(ItemID.SnowballCannon)) {
-				modplayer.IceStorm_SnowBallCannon = true;
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SnowballCannon)) {
 				type = ModContent.ProjectileType<IceStormSnowBallCannonMinion>();
 				if (player.ownedProjectileCounts[type] < 1) {
 					Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
 				}
-				modplayer.SynergyBonus++;
 			}
-			if (player.HasItem(ItemID.FlowerofFrost)) {
-				modplayer.IceStorm_FlowerofFrost = true;
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FlowerofFrost)) {
 				type = ModContent.ProjectileType<IceStormFrostFlowerMinion>();
 				if (player.ownedProjectileCounts[type] < 1) {
 					Projectile.NewProjectile(Item.GetSource_FromThis(), player.Center, Vector2.Zero, type, Item.damage, Item.knockBack, player.whoAmI);
 				}
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.BlizzardStaff)) {
-				modplayer.IceStorm_BlizzardStaff = true;
-				modplayer.SynergyBonus++;
 			}
 			if (!Main.mouseLeft && player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier >= 1) {
 				player.GetModPlayer<IceStormPlayer>().IceStorm_SpeedMultiplier -= 0.025f;
@@ -68,18 +64,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.IceStorm {
 			ChargeUpHandle(player);
 			IceStormPlayer icestormplayer = player.GetModPlayer<IceStormPlayer>();
 			float projectile = (int)(icestormplayer.IceStorm_SpeedMultiplier * .5f);
-			if (modplayer.IceStorm_SnowBallCannon) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SnowballCannon)) {
 				for (int i = 0; i < projectile; i++) {
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 7).Vector2RandomSpread(7) * 1.5f, ProjectileID.SnowBallFriendly, damage, knockback, player.whoAmI);
 				}
 			}
-			if (modplayer.IceStorm_FlowerofFrost) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FlowerofFrost)) {
 				projectile = (int)(icestormplayer.IceStorm_SpeedMultiplier * .1666667f);
 				for (int i = 0; i < projectile; i++) {
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(projectile * 5).Vector2RandomSpread(12), ProjectileID.BallofFrost, damage, knockback, player.whoAmI);
 				}
 			}
-			if (modplayer.IceStorm_BlizzardStaff && icestormplayer.IceStorm_SpeedMultiplier >= 8) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BlizzardStaff) && icestormplayer.IceStorm_SpeedMultiplier >= 8) {
 				Vector2 SkyPos = new Vector2(player.Center.X, player.Center.Y - 800);
 				Vector2 SkyVelocity = (Main.MouseWorld - SkyPos).SafeNormalize(Vector2.UnitX);
 				for (int i = 0; i < 5; i++) {

@@ -8,6 +8,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 	internal class ZapSnapper : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WeatherPain);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.ThunderStaff);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(56, 16, 12, 2f, 50, 50, ItemUseStyleID.Shoot, ProjectileID.ThunderSpearShot, 22, 4, true);
 
@@ -16,20 +20,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 			Item.UseSound = SoundID.Item9;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.ZapSnapper_WeatherPain)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain))
 				tooltips.Add(new TooltipLine(Mod, "ZapSnapper_WeatherPain", $"[i:{ItemID.WeatherPain}] You sometime shoot out a super charge thunder shot"));
-			if (modplayer.ZapSnapper_ThunderStaff)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff))
 				tooltips.Add(new TooltipLine(Mod, "ZapSnapperThunderStaff", $"[i:{ItemID.ThunderStaff}] You occasionally shoot out thunder bolt"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.WeatherPain)) {
-				modplayer.SynergyBonus++;
-				modplayer.ZapSnapper_WeatherPain = true;
-			}
-			if (player.HasItem(ItemID.ThunderStaff)) {
-				modplayer.SynergyBonus++;
-				modplayer.ZapSnapper_ThunderStaff = true;
-			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 30);
@@ -40,10 +34,10 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.ZapSnapper {
 				Vector2 newVec = velocity.Vector2DistributeEvenly(amount, 30, i).Vector2RotateByRandom(10).Vector2RandomSpread(2, Main.rand.NextFloat(.5f, 1.5f));
 				int proj = Projectile.NewProjectile(source, position, newVec, ProjectileID.ThunderSpearShot, damage, knockback, player.whoAmI);
 				Main.projectile[proj].DamageType = DamageClass.Magic;
-				if (modplayer.ZapSnapper_ThunderStaff && Main.rand.NextBool(3))
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.ThunderStaff) && Main.rand.NextBool(3))
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(30).Vector2RandomSpread(5, Main.rand.NextFloat(1, 1.2f)) * .15f, ProjectileID.ThunderStaffShot, damage, knockback, player.whoAmI);
 			}
-			if (modplayer.ZapSnapper_WeatherPain && Main.rand.NextBool(3)) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WeatherPain) && Main.rand.NextBool(3)) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LightningStrike>(), damage * 4, knockback, player.whoAmI);
 			}
 			CanShootItem = false;

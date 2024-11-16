@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.ShadowTrick {
 	public class ShadowTrick : SynergyModItem {
-		public override void SetStaticDefaults() {
+		public override void Synergy_SetStaticDefaults() {
 			ItemID.Sets.Yoyo[Item.type] = true;
 			ItemID.Sets.GamepadExtraRange[Item.type] = 15;
 			ItemID.Sets.GamepadSmartQuickReach[Item.type] = true;

@@ -7,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 	internal class SharpBoomerang : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.EnchantedBoomerang);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(38, 72, 17, 5f, 15, 15, ItemUseStyleID.Swing, ModContent.ProjectileType<SharpBoomerangP>(), 40, false);
 			Item.crit = 6;
@@ -16,18 +19,12 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SharpBoomerang {
 			Item.value = Item.buyPrice(platinum: 5);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.SharpBoomerang_EnchantedBoomerang)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedBoomerang))
 				tooltips.Add(new TooltipLine(Mod, "SharpBoomerang_EnchantedBoomerang", $"[i:{ItemID.EnchantedBoomerang}] You throw out additional boomerang"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.EnchantedBoomerang)) {
-				modplayer.SharpBoomerang_EnchantedBoomerang = true;
-				modplayer.SynergyBonus++;
-			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			CanShootItem = true;
-			if (modplayer.SharpBoomerang_EnchantedBoomerang) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.EnchantedBoomerang)) {
 				for (int i = -1; i < 2; i++) {
 					if (i == 0)
 						continue;

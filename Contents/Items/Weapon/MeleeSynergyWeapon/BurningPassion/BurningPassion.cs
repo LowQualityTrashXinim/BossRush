@@ -7,6 +7,10 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 	class BurningPassion : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.WandofFrosting);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture);
+		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(74, 74, 25, 6.7f, 28, 28, ItemUseStyleID.Shoot, true);
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<BurningPassionP>(), 3.7f);
@@ -21,22 +25,14 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			base.ModifySynergyToolTips(ref tooltips, modplayer);
-			if (modplayer.BurningPassion_WandofFrosting) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
 				tooltips.Add(new TooltipLine(Mod, "WandOfFrosting", $"[i:{ItemID.WandofFrosting}] Inflict frost burn on hit and shoot out spark flame on peak"));
 			}
-			if (modplayer.BurningPassion_SkyFracture) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 				tooltips.Add(new TooltipLine(Mod, "SkyFracture", $"[i:{ItemID.SkyFracture}] Attacking summon 3 sky fracture toward your foes dealing 45% of your weapon damage"));
 			}
 		}
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.WandofFrosting)) {
-				modplayer.BurningPassion_WandofFrosting = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.SkyFracture)) {
-				modplayer.BurningPassion_SkyFracture = true;
-				modplayer.SynergyBonus++;
-			}
 			if (player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown == 1)
 				for (int i = 0; i < 25; i++) {
 					int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
@@ -52,7 +48,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 				player.GetModPlayer<BurningPassionPlayer>().BurningPassion_Cooldown = 120;
 				player.velocity = velocity * 5f;
 			}
-			if (modplayer.BurningPassion_SkyFracture) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 				float speed = velocity.Length() * 4;
 				for (int i = 0; i < 3; i++) {
 					Vector2 newPos = position + Main.rand.NextVector2Circular(75, 75);
@@ -97,7 +93,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			Projectile.velocity = Vector2.Normalize(Projectile.velocity);
 			float halfDuration = duration * 0.5f;
 			float progress;
-			if (Projectile.timeLeft == (int)(halfDuration + 5) && modplayer.BurningPassion_WandofFrosting) {
+			if (Projectile.timeLeft == (int)(halfDuration + 5) && SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
 				for (int i = 0; i < 5; i++) {
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.velocity * Main.rand.NextFloat(3, 6)).Vector2RotateByRandom(5).Vector2RandomSpread(1, Main.rand.NextFloat(.75f, 1.25f)), ProjectileID.WandOfSparkingSpark, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.velocity * Main.rand.NextFloat(3, 6)).Vector2RotateByRandom(5).Vector2RandomSpread(1, Main.rand.NextFloat(.75f, 1.25f)), ProjectileID.WandOfFrostingFrost, (int)(Projectile.damage * .25f), 0f, player.whoAmI);
@@ -114,13 +110,13 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BurningPassion {
 			runAI = false;
 			for (int i = 0; i < 5; i++) {
 				Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.Torch, Projectile.velocity.X * 0.75f, -5, 0, default, Main.rand.NextFloat(0.5f, 1.2f));
-				if (player.GetModPlayer<PlayerSynergyItemHandle>().BurningPassion_WandofFrosting) {
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
 					Dust.NewDust(Projectile.Center, (int)(Projectile.width * 0.5f), (int)(Projectile.height * 0.5f), DustID.IceTorch, Projectile.velocity.X * 0.75f, -5, 0, default, Main.rand.NextFloat(0.5f, 1.2f));
 				}
 			}
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			if (modplayer.BurningPassion_WandofFrosting) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.WandofFrosting)) {
 				npc.AddBuff(BuffID.Frostburn, 90);
 			}
 			Projectile.damage = (int)(Projectile.damage * .9f);

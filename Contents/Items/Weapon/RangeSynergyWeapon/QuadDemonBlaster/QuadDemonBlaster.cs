@@ -8,6 +8,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.QuadDemonBlaster {
 	class QuadDemonBlaster : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			base.Synergy_SetStaticDefaults();
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(40, 30, 29, 3f, 15, 15, ItemUseStyleID.Shoot, ProjectileID.Bullet, 15, true, AmmoID.Bullet);
 			Item.value = Item.buyPrice(gold: 50);

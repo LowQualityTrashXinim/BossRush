@@ -3,11 +3,13 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 	public class AmberBoneSpear : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AntlionClaw);
+		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(42, 42, 30, 5, 20, 20, ItemUseStyleID.Shoot, true);
 			Item.BossRushSetDefaultSpear(ModContent.ProjectileType<AmberBoneSpearProjectile>(), 25);
@@ -17,15 +19,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			Item.rare = ItemRarityID.Orange;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			base.ModifySynergyToolTips(ref tooltips, modplayer);
-			if (modplayer.AmberBoneSpear_MandibleBlade)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AntlionClaw))
 				tooltips.Add(new TooltipLine(Mod, "AmberBoneSpear_MandibleBlade", $"[i:{ItemID.AntlionClaw}] Your spear attack sometime will shoot out mandible blade, hitting enemies with your spear will spawn a mandible blade immediately"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.AntlionClaw)) {
-				modplayer.AmberBoneSpear_MandibleBlade = true;
-				modplayer.SynergyBonus++;
-			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			if (player.altFunctionUse == 2) {
@@ -33,9 +28,6 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 				velocity *= .5f;
 				damage = (int)(damage * .75f);
 			}
-		}
-		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
 		}
 		public override bool? UseItem(Player player) {
 			if (player.altFunctionUse == 2) {
@@ -101,7 +93,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			player.heldProj = Projectile.whoAmI;
 			if (Projectile.timeLeft > duration) {
 				Projectile.timeLeft = duration;
-				if (modplayer.AmberBoneSpear_MandibleBlade && Main.rand.NextBool(4))
+				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AntlionClaw) && Main.rand.NextBool(4))
 					Projectile.NewProjectile(
 						Projectile.GetSource_FromAI(),
 						Projectile.Center,
@@ -132,7 +124,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			runAI = false;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			if (modplayer.AmberBoneSpear_MandibleBlade)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AntlionClaw))
 				if (Main.rand.NextBool(4))
 					Projectile.NewProjectile(
 						Projectile.GetSource_FromAI(),

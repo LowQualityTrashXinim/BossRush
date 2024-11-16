@@ -8,6 +8,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 	internal class EnchantedStarfury : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.SkyFracture);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BreakerBlade);
+		}
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(66, 66, 24, 4f, 60, 20, ItemUseStyleID.Swing, true);
 			Item.DamageType = DamageClass.Melee;
@@ -23,33 +27,23 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 		}
 		int switchProj = 0;
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.EnchantedStarfury_SkyFacture) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 				tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_SkyFacture", $"[i:{ItemID.SkyFracture}] Shower down StarFury regardless of attack and with additional sky facture"));
 			}
-			if (modplayer.EnchantedStarfury_BreakerBlade) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BreakerBlade)) {
 				tooltips.Add(new TooltipLine(Mod, "EnchantedStarfury_BreakerBlade", $"[i:{ItemID.BreakerBlade}] On swing, swing out a living breaker blade that deal 250% of your weapon damage"));
-			}
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.SkyFracture)) {
-				modplayer.EnchantedStarfury_SkyFacture = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.BreakerBlade)) {
-				modplayer.EnchantedStarfury_BreakerBlade = true;
-				modplayer.SynergyBonus++;
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 			for (int i = 0; i < 5; i++) {
-				if (switchProj % 2 == 1 || modplayer.EnchantedStarfury_SkyFacture) {
+				if (switchProj % 2 == 1 || SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 					for (int l = 0; l < 2; l++) {
 						Vector2 customPos = new Vector2(position.X + Main.rand.Next(-100, 100), position.Y - 900 + Main.rand.Next(-200, 200));
 						Vector2 aimSpread = Main.MouseWorld + Main.rand.NextVector2Circular(200f, 200f);
 						Vector2 velocityTo = (aimSpread - customPos).SafeNormalize(Vector2.UnitX) * Item.shootSpeed;
 						int typeChoose = l == 0 ? ProjectileID.StarCannonStar : ProjectileID.SkyFracture;
 						Projectile.NewProjectile(source, customPos, velocityTo, typeChoose, damage * 3, knockback, player.whoAmI, i);
-						if (!modplayer.EnchantedStarfury_SkyFacture) {
+						if (!SynergyBonus_System.Check_SynergyBonus(Type, ItemID.SkyFracture)) {
 							break;
 						}
 					}
@@ -60,7 +54,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedStarFury {
 				}
 			}
 			switchProj++;
-			if (modplayer.EnchantedStarfury_BreakerBlade) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BreakerBlade)) {
 				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<LivingBreakerBladeProjectile>(), (int)(damage * 2.5f), knockback, player.whoAmI);
 			}
 			CanShootItem = false;

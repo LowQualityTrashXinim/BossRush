@@ -9,9 +9,11 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 	internal class EnergyBlade : SynergyModItem {
-		public override void SetStaticDefaults() {
+		public override void Synergy_SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(3, 8));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Code1);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Code2);
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMeleeCustomProjectile(64, 62, 21, 0, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<EnergyBladeProjectile>(), true);
@@ -21,26 +23,15 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 			Item.UseSound = SoundID.Item1;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.EnergyBlade_Code1) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
 				tooltips.Add(new TooltipLine(Mod, "EnergyBlade_Code1", $"[i:{ItemID.Code1}] Unlock 1st Energy Blade ability"));
 			}
-			if (modplayer.EnergyBlade_Code2) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
 				tooltips.Add(new TooltipLine(Mod, "EnergyBlade_Code2", $"[i:{ItemID.Code2}] Unlock 2nd Energy Blade ability"));
-			}
-			base.ModifySynergyToolTips(ref tooltips, modplayer);
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.Code1)) {
-				modplayer.EnergyBlade_Code1 = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.Code2)) {
-				modplayer.EnergyBlade_Code2 = true;
-				modplayer.SynergyBonus++;
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (modplayer.EnergyBlade_Code1) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
 				if (modplayer.EnergyBlade_Code1_Energy > 0) {
 					for (int i = 0; i < modplayer.EnergyBlade_Code1_Energy; i++) {
 						Vector2 lerp = velocity.Vector2DistributeEvenly(modplayer.EnergyBlade_Code1_Energy, 90, i) * 5f;
@@ -83,7 +74,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
 			npc.immune[Projectile.owner] = 0;
-			if (modplayer.EnergyBlade_Code1) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
 				if (Projectile.ai[0] == 1) {
 					Vector2 Toplayer = (player.Center - npc.Center).SafeNormalize(Vector2.Zero);
 					Projectile.NewProjectile(Projectile.GetSource_FromThis(), npc.Center, Toplayer * 6f, ModContent.ProjectileType<EnergyBladeEnergyBallProjectile>(), 0, 0, Projectile.owner);
@@ -110,7 +101,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 				return;
 			}
 			BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
-			if (modplayer.EnergyBlade_Code1) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
 				float rotation = Projectile.rotation - (Projectile.spriteDirection > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2);
 				int energycode1 = Projectile.NewProjectile(Projectile.GetSource_FromAI(),
 					Projectile.Center,
@@ -201,7 +192,6 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 				modplayer.EnergyBlade_Code1_Energy++;
 				Projectile.Kill();
 			}
-			base.SynergyAI(player, modplayer);
 		}
 	}
 }

@@ -7,6 +7,10 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer {
 	internal class StarLightDistributer : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MagicMissile);
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.StarCannon);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(45, 24, 16, 2f, 16, 16, ItemUseStyleID.Shoot, ProjectileID.GreenLaser, 10, 8, true);
 			Item.rare = ItemRarityID.Orange;
@@ -16,23 +20,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
 			if (BossRushUtils.Player_MeteoriteArmorSet(Main.LocalPlayer))
 				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MeteorArmor", $"[i:{ItemID.MeteorHelmet}][i:{ItemID.MeteorSuit}][i:{ItemID.MeteorLeggings}]Attack now cost 0 mana"));
-			if (modplayer.StarLightDistributer_MagicMissile)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile))
 				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.MagicMissile}] Shoot out magic missle"));
-			if (modplayer.StarlightDistributer_StarCannon)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.StarCannon))
 				tooltips.Add(new TooltipLine(Mod, "StarLightDistributer_MagicMissile", $"[i:{ItemID.StarCannon}] Create shooting star at your position"));
 		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.MagicMissile)) {
-				modplayer.StarLightDistributer_MagicMissile = true;
-				modplayer.SynergyBonus++;
-			}
-			if (player.HasItem(ItemID.StarCannon)) {
-				modplayer.StarlightDistributer_StarCannon = true;
-				modplayer.SynergyBonus++;
-			}
-		}
 		public override void ModifyManaCost(Player player, ref float reduce, ref float mult) {
-			if(BossRushUtils.Player_MeteoriteArmorSet(player)) {
+			if (BossRushUtils.Player_MeteoriteArmorSet(player)) {
 				mult *= 0;
 			}
 		}
@@ -59,12 +53,12 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.StarLightDistributer
 					Projectile.NewProjectile(source, position, EvenSpread, ProjectileID.GreenLaser, (int)(damage * 1.25f), knockback, player.whoAmI);
 				}
 			}
-			if (modplayer.StarLightDistributer_MagicMissile)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile))
 				for (int i = 0; i < num; i++) {
 					Vector2 spread = velocity.Vector2DistributeEvenly(num, 60, i);
 					Projectile.NewProjectile(source, position, spread, ProjectileID.MagicMissile, (int)(damage * 1.5f), knockback, player.whoAmI);
 				}
-			if (modplayer.StarlightDistributer_StarCannon)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.StarCannon))
 				for (int i = 0; i < 3; i++) {
 					int proj = Projectile.NewProjectile(source, position + Main.rand.NextVector2Circular(100, 100), velocity * Main.rand.NextFloat(1f, 2f), ProjectileID.StarCannonStar, damage * 2, knockback, player.whoAmI);
 					Main.projectile[proj].timeLeft = 150;

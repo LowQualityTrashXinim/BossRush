@@ -8,6 +8,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 	internal class BloodyShot : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AquaScepter);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(42, 36, 25, 1f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<BloodBullet>(), 1, false, AmmoID.Bullet);
 			Item.scale = 0.9f;
@@ -20,21 +23,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 			}
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.BloodyShoot_AquaScepter)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AquaScepter))
 				tooltips.Add(new TooltipLine(Mod, "BloodyShoot_AquaScepter", $"[i:{ItemID.AquaScepter}] Your gun now shoot out damaging blood"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.AquaScepter)) {
-				modplayer.BloodyShoot_AquaScepter = true;
-				modplayer.SynergyBonus++;
-			}
-
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			type = ModContent.ProjectileType<BloodBullet>();
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (modplayer.BloodyShoot_AquaScepter) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AquaScepter)) {
 				for (int i = 0; i < Main.rand.Next(3, 6); i++) {
 					Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(20).Vector2RandomSpread(4, Main.rand.NextFloat(.9f, 1.1f)) * .5f, ModContent.ProjectileType<BloodWater>(), damage, knockback, player.whoAmI);
 				}
