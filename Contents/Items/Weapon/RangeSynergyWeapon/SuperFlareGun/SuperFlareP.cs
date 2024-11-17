@@ -56,8 +56,14 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 			Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 600);
 			foreach (NPC npc in npclist) {
 				int direction = Projectile.Center.X - npc.Center.X > 0 ? -1 : 1;
-				npc.StrikeNPC(npc.CalculateHitInfo(Projectile.damage * 5, direction, false, 10));
-				player.addDPS(Projectile.damage * 5);
+				player.StrikeNPCDirect(npc, npc.CalculateHitInfo(Projectile.damage * 5, direction, false, 10));
+			}
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<SuperFlareGun>(), ItemID.Boomstick) && Main.rand.NextBool(10)) {
+				for (int i = 0; i < 36; i++) {
+					Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(36, 360, i) * 5;
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel, ProjectileID.Bullet, Projectile.damage, Projectile.knockBack, Projectile.owner);
+
+				}
 			}
 		}
 	}
