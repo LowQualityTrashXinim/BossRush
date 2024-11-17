@@ -35,9 +35,23 @@ namespace BossRush.Contents.Items.Weapon {
 			Dictionary_SynergyGroupBonus = null;
 		}
 		public static void Add_SynergyBonus(int SynergyItemID, int ItemID) {
+			if (Dictionary_SynergyBonus.ContainsKey(SynergyItemID)) {
+				if (Dictionary_SynergyBonus[SynergyItemID].ContainsKey(ItemID)) {
+					return;
+				}
+				Dictionary_SynergyBonus[SynergyItemID].Add(ItemID, false);
+				return;
+			}
 			Dictionary_SynergyBonus.Add(SynergyItemID, new() { { ItemID, false } });
 		}
 		public static void Add_SynergyGroupBonus(int SynergyItemID, int KeyItemID, List<int> GroupItemID) {
+			if (Dictionary_SynergyGroupBonus.ContainsKey(SynergyItemID)) {
+				if (Dictionary_SynergyGroupBonus[SynergyItemID].ContainsKey(KeyItemID)) {
+					return;
+				}
+				Dictionary_SynergyGroupBonus[SynergyItemID].Add(KeyItemID, GroupItemID);
+				return;
+			}
 			Dictionary_SynergyGroupBonus.Add(SynergyItemID, new() { { KeyItemID, GroupItemID } });
 		}
 		/// <summary>
