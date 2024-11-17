@@ -8,7 +8,6 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 	internal class SuperFlareGun : SynergyModItem {
 		public override void Synergy_SetStaticDefaults() {
-			SetKey_SynergyBonusGroupItem(new() { ItemID.BluePhaseblade });
 			SynergyBonus_System.Add_SynergyGroupBonus(Type, ItemID.BluePhaseblade, new List<int>()
 			{
 				ItemID.BluePhaseblade,
@@ -19,6 +18,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 				ItemID.PurplePhaseblade,
 				ItemID.WhitePhaseblade
 			});
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.BluePhaseblade);
 		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(68, 38, 20, 2f, 20, 20, ItemUseStyleID.Shoot, ModContent.ProjectileType<SuperFlareP>(), 20, false, AmmoID.Flare);

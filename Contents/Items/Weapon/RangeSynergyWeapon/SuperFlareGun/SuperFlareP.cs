@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.SuperFlareGun {
 			return false;
 		}
 		public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BluePhaseblade))
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<SuperFlareGun>(), ItemID.BluePhaseblade))
 				if (Projectile.timeLeft > 50)
 					Projectile.timeLeft = 50;
 			int RandomDust = Main.rand.Next(new int[] { DustID.GemDiamond, DustID.GemTopaz });

@@ -146,36 +146,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public override void ResetEffects() {
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;
-			int Synergylength = SynergyBonus_System.Dictionary_SynergyBonus.Keys.Count;
-			for (int i = 0; i < Synergylength; i++) {
-				int synergyItem = SynergyBonus_System.Dictionary_SynergyBonus.Keys.ElementAt(i);
-				if (Player.HeldItem.type != synergyItem) {
-					continue;
-				}
-				int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
-				for (int l = 0; l < SynergyBonusLength; l++) {
-					int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
-					bool HasItem = Player.HasItem(itemIDBonus);
-					if (HasItem) {
-						SynergyBonus++;
-					}
-					SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][itemIDBonus] = HasItem;
-					continue;
-				}
-				if (ContentSamples.ItemsByType[synergyItem].ModItem is SynergyModItem ModItem) {
-					if (!ModItem.Contain_GroupSynergy) {
-						continue;
-					}
-					List<int> keyItem = ModItem.Get_Key;
-					foreach (var item in keyItem) {
-						bool HasAnyGroupItem = SynergyBonus_System.SafeGet_SynergyGroupBonus(synergyItem, item).Where(Player.HasItem).Any();
-						if (HasAnyGroupItem) {
-							SynergyBonus++;
-							SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][item] = HasAnyGroupItem;
-						}
-					}
-				}
-			}
 
 			SinisterBook_DemonScythe = false;
 
@@ -186,6 +156,35 @@ namespace BossRush.Contents.Items.Weapon {
 			NatureSelection_NatureCrystal = false;
 
 			HorusEye_ResonanceScepter = false;
+			if (!BossRushModSystem.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
+				return;
+			}
+			int Synergylength = SynergyBonus_System.Dictionary_SynergyBonus.Keys.Count;
+			for (int i = 0; i < Synergylength; i++) {
+				int synergyItem = SynergyBonus_System.Dictionary_SynergyBonus.Keys.ElementAt(i);
+				int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
+				for (int l = 0; l < SynergyBonusLength; l++) {
+					int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
+					bool HasItem = Player.HasItem(itemIDBonus);
+					if (HasItem) {
+						SynergyBonus++;
+					}
+					else {
+						if (SynergyBonus_System.Dictionary_SynergyGroupBonus.ContainsKey(synergyItem)
+							&& SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem].ContainsKey(itemIDBonus)) {
+							List<int> keyItem = SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem][itemIDBonus];
+							foreach (var item in keyItem) {
+								bool HasAnyGroupItem = SynergyBonus_System.SafeGet_SynergyGroupBonus(synergyItem, item).Where(Player.HasItem).Any();
+								if (HasAnyGroupItem) {
+									SynergyBonus++;
+									HasItem = HasAnyGroupItem;
+								}
+							}
+						}
+					}
+					SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][itemIDBonus] = HasItem;
+				}
+			}
 		}
 	}
 	public class GlobalItemHandle : GlobalItem {
@@ -285,19 +284,6 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 	}
 	public abstract class SynergyModItem : ModItem {
-		private bool _groupSynergy = false;
-		private List<int> Key_GroupSynergyItem = new();
-		public bool Contain_GroupSynergy => _groupSynergy;
-		public List<int> Get_Key => Key_GroupSynergyItem;
-		/// <summary>
-		/// Set a list of your synergy key item to use along with <see cref="SynergyBonus_System.Add_SynergyGroupBonus(int, int, List{int})"/><br/>
-		/// This is mandatory to make synergy bonus that contain a group of item<br/>
-		/// </summary>
-		/// <param name="KeyItem"></param>
-		public void SetKey_SynergyBonusGroupItem(List<int> KeyItem) {
-			_groupSynergy = true;
-			Key_GroupSynergyItem = KeyItem;
-		}
 		public sealed override void SetStaticDefaults() {
 			ItemID.Sets.ShimmerTransformToItem[Item.type] = ModContent.ItemType<SynergyEnergy>();
 			CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(50, 100, 100) });
@@ -306,7 +292,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public virtual void Synergy_SetStaticDefaults() { }
 		public ColorInfo CustomColor = new ColorInfo(new List<Color> { new Color(100, 255, 255), new Color(100, 150, 150) });
 		public override sealed void ModifyTooltips(List<TooltipLine> tooltips) {
-			base.ModifyTooltips(tooltips);
 			ModifySynergyToolTips(ref tooltips, Main.LocalPlayer.GetModPlayer<PlayerSynergyItemHandle>());
 			if (CustomColor != null) {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = CustomColor.MultiColor(5);
