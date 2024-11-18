@@ -8,20 +8,17 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 	internal class MagicHandCannon : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.Flamelash);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(54, 32, 30, 5f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<MagicHandCannonProjectile>(), 12, 13, false);
 			Item.scale = .75f;
 			Item.rare = ItemRarityID.Orange;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if (modplayer.MagicHandCannon_Flamelash)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Flamelash))
 				tooltips.Add(new TooltipLine(Mod, "MagicHandCannon_Flamelash", $"[i:{ItemID.Flamelash}] When magic shadow flame is outside the ring, shoot out a home in shadow magic flame and damage dealing outside of the ring increases by 45%"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.Flamelash)) {
-				modplayer.MagicHandCannon_Flamelash = true;
-				modplayer.SynergyBonus++;
-			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 50);
@@ -99,7 +96,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 			}
 			bool outsideBorder = !Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center, 350);
 			SelectFrame();
-			if (modplayer.MagicHandCannon_Flamelash) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<MagicHandCannon>(), ItemID.Flamelash)) {
 				bool ShootProjectile = false;
 				if (!outsideBorder) {
 					Projectile.ai[0]++;
@@ -118,7 +115,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicHandCannon {
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 		public override void ModifyHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, ref NPC.HitModifiers modifiers) {
-			if (modplayer.MagicHandCannon_Flamelash) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<MagicHandCannon>(), ItemID.Flamelash)) {
 				if (!Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center, 350)) {
 					modifiers.SourceDamage += .45f;
 				}

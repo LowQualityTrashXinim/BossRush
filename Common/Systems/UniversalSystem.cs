@@ -4,6 +4,7 @@ using System.IO;
 using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
+using Terraria.Audio;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -35,7 +36,7 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using Terraria.Audio;
+using BossRush.Common.Systems.CursesSystem;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -162,6 +163,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface TeleportUser;
 	internal UserInterface infoUser;
 	internal UserInterface achievementUser;
+	internal UserInterface cursesUser;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -2210,5 +2212,18 @@ public class AchievementButton : UIImageButton {
 		}
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
-
+}
+public class CursesButtonMenu : UIImageButton {
+	public CursesButtonMenu(Asset<Texture2D> texture) : base(texture) {
+	}
+}
+public class CurseState : UIState {
+	UIPanel panel;
+	List<Roguelike_UIText> textlist;
+	List<ModCurse> cursesLib;
+	public override void OnInitialize() {
+		panel = new();
+		textlist = new();
+		cursesLib = new();
+	}
 }

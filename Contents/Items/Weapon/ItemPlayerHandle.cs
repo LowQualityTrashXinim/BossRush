@@ -130,32 +130,15 @@ namespace BossRush.Contents.Items.Weapon {
 
 		public int StreetLamp_VampireFrogStaff_HitCounter = 0;
 
-		public bool SinisterBook_DemonScythe = false;
 		public int SinisterBook_DemonScythe_Counter = 0;
 
 		public bool QuadDemonBlaster = false;
 		public float QuadDemonBlaster_SpeedMultiplier = 1;
-
-		public bool MagicHandCannon_Flamelash = false;
-
-		public bool DeathBySpark_AleThrowingGlove = false;
-
-		public bool NatureSelection_NatureCrystal = false;
-
-		public bool HorusEye_ResonanceScepter = false;
 		public override void ResetEffects() {
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;
 
-			SinisterBook_DemonScythe = false;
 
-			MagicHandCannon_Flamelash = false;
-
-			DeathBySpark_AleThrowingGlove = false;
-
-			NatureSelection_NatureCrystal = false;
-
-			HorusEye_ResonanceScepter = false;
 			if (!BossRushModSystem.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
 				return;
 			}

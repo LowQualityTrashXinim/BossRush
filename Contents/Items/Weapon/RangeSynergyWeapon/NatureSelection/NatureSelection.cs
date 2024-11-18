@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
+﻿using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -7,6 +8,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 	internal class NatureSelection : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Check_SynergyBonus(Type, ModContent.ItemType<NatureCrystal>());
+		}
 		static int counter = 0;
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(32, 66, 40, 3f, 20, 20, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 20, true, AmmoID.Arrow);
@@ -17,7 +21,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.NatureSelection {
 		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			if (modplayer.NatureSelection_NatureCrystal) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ModContent.ItemType<NatureCrystal>())) {
 				for (int i = 0; i < 2; i++) {
 					var RandomPos = position + Main.rand.NextVector2Circular(100f, 100f);
 					var Aimto = (Main.MouseWorld - RandomPos).SafeNormalize(Vector2.UnitX) * 15;

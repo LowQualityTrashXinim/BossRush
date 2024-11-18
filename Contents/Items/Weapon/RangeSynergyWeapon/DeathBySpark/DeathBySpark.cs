@@ -7,6 +7,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark {
 	internal class DeathBySpark : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.AleThrowingGlove);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(34, 24, 15, 1f, 84, 84, ItemUseStyleID.Shoot, ModContent.ProjectileType<SparkFlare>(), 12, false, AmmoID.Flare);
 			Item.rare = ItemRarityID.Orange;
@@ -14,14 +17,8 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark {
 			Item.value = Item.buyPrice(gold: 50);
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			if(modplayer.DeathBySpark_AleThrowingGlove) {
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AleThrowingGlove)) {
 				tooltips.Add(new TooltipLine(Mod, "DeathBySpark_AleThrowingGlove", $"[i:{ItemID.AleThrowingGlove}] Flare will shoot out ale that deal 25% more damage"));
-			}
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.AleThrowingGlove)) {
-				modplayer.SynergyBonus++;
-				modplayer.DeathBySpark_AleThrowingGlove = true;
 			}
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
@@ -62,7 +59,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.DeathBySpark {
 			Main.projectile[proj].usesLocalNPCImmunity = true;
 			Main.projectile[proj].localNPCHitCooldown = 20;
 			Main.projectile[proj].timeLeft = 12;
-			if (modplayer.DeathBySpark_AleThrowingGlove && ++Projectile.ai[1] >= 30) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<DeathBySpark>(), ItemID.AleThrowingGlove) && ++Projectile.ai[1] >= 30) {
 				Projectile.ai[1] = 0;
 				Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, OppositeVelocity.Vector2RotateByRandom(15) * 4f, ProjectileID.Ale, (int)(Projectile.damage * 1.25f), 3f, player.whoAmI);
 			}

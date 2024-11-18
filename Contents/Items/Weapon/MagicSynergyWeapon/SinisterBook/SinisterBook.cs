@@ -9,6 +9,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook {
 	internal class SinisterBook : SynergyModItem {
+		public override void Synergy_SetStaticDefaults() {
+			SynergyBonus_System.Add_SynergyBonus(Type, ItemID.DemonScythe);
+		}
 		public override void SetDefaults() {
 			Item.BossRushDefaultMagic(10, 10, 24, 2f, 9, 9, ItemUseStyleID.Shoot, ModContent.ProjectileType<SinisterBolt>(), 2.5f, 14, true);
 			Item.rare = ItemRarityID.Blue;
@@ -16,15 +19,8 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook {
 			Item.UseSound = SoundID.Item8;
 		}
 		public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-			base.ModifySynergyToolTips(ref tooltips, modplayer);
-			if (modplayer.SinisterBook_DemonScythe)
+			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.DemonScythe))
 				tooltips.Add(new TooltipLine(Mod, "SinisterBook_DemonScythe", $"[i:{ItemID.DemonScythe}] You occasionally shoot out a ring of demon scythe"));
-		}
-		public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-			if (player.HasItem(ItemID.DemonScythe)) {
-				modplayer.SinisterBook_DemonScythe = true;
-				modplayer.SynergyBonus++;
-			}
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			position = position.PositionOFFSET(velocity, 30);
@@ -97,7 +93,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.SinisterBook {
 			}
 		}
 		public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) {
-			if (modplayer.SinisterBook_DemonScythe) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<SinisterBook>(), ItemID.DemonScythe)) {
 				modplayer.SinisterBook_DemonScythe_Counter++;
 			}
 			Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GhostHitBox>(), Projectile.damage, 0, Projectile.owner);

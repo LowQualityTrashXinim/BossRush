@@ -11,6 +11,9 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HorusEye;
 ///  Uwaaa blue archive weapon but not really
 /// </summary>
 internal class HorusEye : SynergyModItem {
+	public override void Synergy_SetStaticDefaults() {
+		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.PrincessWeapon);
+	}
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(45, 120, 23, 7f, 12, 12, ItemUseStyleID.Shoot, ProjectileID.Bullet, 6f, false, AmmoID.Bullet);
 		Item.crit = 12;
@@ -28,14 +31,8 @@ internal class HorusEye : SynergyModItem {
 		return new Vector2(-33, 5f);
 	}
 	public override void ModifySynergyToolTips(ref List<TooltipLine> tooltips, PlayerSynergyItemHandle modplayer) {
-		if (modplayer.HorusEye_ResonanceScepter) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PrincessWeapon)) {
 			tooltips.Add(new(Mod, "HorusEye_ResonanceScepter", $"[i:{ItemID.PrincessWeapon}] Shoot out a powerful bolt that will knock you back slightly"));
-		}
-	}
-	public override void HoldSynergyItem(Player player, PlayerSynergyItemHandle modplayer) {
-		if(player.HasItem(ItemID.PrincessWeapon)) {
-			modplayer.HorusEye_ResonanceScepter = true;
-			modplayer.SynergyBonus++;
 		}
 	}
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -57,7 +54,7 @@ internal class HorusEye : SynergyModItem {
 		for (int i = 0; i < 10; i++) {
 			Projectile.NewProjectile(source, position, Main.rand.NextVector2Unit(-MathHelper.PiOver4 * .5f, MathHelper.PiOver4).RotatedBy(velocity.ToRotation()) * Main.rand.NextFloat(7f, 21f), type, damage, knockback, player.whoAmI);
 		}
-		if (modplayer.HorusEye_ResonanceScepter) {
+		if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.PrincessWeapon)) {
 			player.velocity += -velocity * .35f;
 			Projectile.NewProjectile(source, position, velocity * .8f, ModContent.ProjectileType<HorusEye_Projectile>(), damage, knockback, player.whoAmI);
 		}
