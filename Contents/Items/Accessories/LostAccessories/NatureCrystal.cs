@@ -13,7 +13,6 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories {
 			player.statLifeMax2 += 40;
 			player.statManaMax2 += 40;
 			player.GetModPlayer<NatureCrystalPlayer>().NatureCrystal = true;
-			player.GetModPlayer<PlayerSynergyItemHandle>().NatureSelection_NatureCrystal = true;
 		}
 	}
 	class NatureCrystalPlayer : ModPlayer {

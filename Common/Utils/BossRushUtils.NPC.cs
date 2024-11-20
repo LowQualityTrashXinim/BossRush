@@ -39,5 +39,18 @@ namespace BossRush {
 			Main.projectile[HostileProjectile].friendly = false;
 			return HostileProjectile;
 		}
+
+		public static void Heal(this NPC npc, int healAmount, bool texteffect = true) {
+			int simulatehealing = npc.life + healAmount;
+			if (npc.lifeMax <= simulatehealing) {
+				npc.life = npc.lifeMax;
+			}
+			else {
+				npc.life = simulatehealing;
+			}
+			if (texteffect) {
+				CombatText.NewText(npc.Hitbox, CombatText.HealLife, healAmount);
+			}
+		}
 	}
 }
