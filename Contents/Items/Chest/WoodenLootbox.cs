@@ -4,6 +4,7 @@ using BossRush.Common.Utils;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using Terraria.ModLoader;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
@@ -12,6 +13,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = ItemRarityID.White;
 		}
+		public override bool CanActivateSpoil => ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest;
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);

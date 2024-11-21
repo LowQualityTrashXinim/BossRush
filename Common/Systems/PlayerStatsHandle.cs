@@ -45,6 +45,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
 	public StatModifier NonCriticalDamage = new StatModifier();
+	public StatModifier SkillDuration = new();
+	public StatModifier SkillCoolDown = new();
 	//public float LuckIncrease = 0; 
 	/// <summary>
 	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>
@@ -176,6 +178,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Iframe = StatModifier.Default;
 		NonCriticalDamage = StatModifier.Default;
 		LifeSteal = StatModifier.Default - 1;
+		SkillDuration = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -296,6 +299,12 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 			case PlayerStats.Iframe:
 				Iframe = Iframe.CombineWith(StatMod);
+				break;
+			case PlayerStats.SkillDuration:
+				SkillDuration = SkillDuration.CombineWith(StatMod);
+				break;
+			case PlayerStats.SkillCooldown:
+				SkillCoolDown = SkillCoolDown.CombineWith(StatMod);
 				break;
 			default:
 				break;

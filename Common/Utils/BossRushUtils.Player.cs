@@ -198,7 +198,9 @@ namespace BossRush {
 		DebuffDamage,
 		SynergyDamage,
 		Iframe,
-		EnergyRecharge
+		EnergyRecharge,
+		SkillDuration,
+		SkillCooldown,
 		//Luck
 	}
 
