@@ -1883,6 +1883,11 @@ Mods: {
 					Can also be used to increases weapon's stats
 					'''
 			}
+
+			Transmutator: {
+				DisplayName: Transmutator
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

@@ -4,7 +4,6 @@ using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Common.Systems;
 using Terraria.ID;
 using System;
-using Terraria.ModLoader.UI.ModBrowser;
 
 namespace BossRush.Common.RoguelikeChange;
 internal class RoguelikeOverhaulNPC : GlobalNPC {
@@ -14,8 +13,47 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public StatModifier StatDefense = new StatModifier();
 	public bool DRFromFatalAttack = false;
 	public int DRTimer = 0;
+	public const int BossHP = 4000;
+	public const int BossDMG = 40;
+	public const int BossDef = 5;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
+		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || Main.LocalPlayer.IsDebugPlayer()) {
+			return;
+		}
+		entity.lifeMax = (int)(BossHP * GetValueMulti());
+		entity.damage = (int)(BossDMG * GetValueMulti());
+		entity.defense = (int)(BossDef * GetValueMulti(.5f));
+	}
+	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
+		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || Main.LocalPlayer.IsDebugPlayer()) {
+			return;
+		}
+		float adjustment;
+		if (Main.expertMode)
+			adjustment = 2;
+		else if (Main.masterMode)
+			adjustment = 3;
+		else
+			adjustment = 1;
+
+		npc.lifeMax = (int)(BossHP / adjustment * GetValueMulti());
+		npc.life = npc.lifeMax;
+		npc.damage = (int)(BossDMG / adjustment * GetValueMulti());
+		npc.defense = (int)(BossDef / adjustment * GetValueMulti(.5f));
+	}
+	public float GetValueMulti(float scale = 1) {
+		float extraMultiply = 0;
+		if (Main.expertMode) {
+			extraMultiply += .25f;
+		}
+		if (Main.masterMode) {
+			extraMultiply += .75f;
+		}
+		if (Main.getGoodWorld) {
+			extraMultiply += 1;
+		}
+		return (1 + ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count * .5f + extraMultiply) * scale;
 	}
 	public override void ResetEffects(NPC npc) {
 		StatDefense = new();
@@ -71,16 +109,16 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (!npc.boss) {
 			return;
 		}
-		if (npc.lifeMax / (float)hit.Damage >= npc.lifeMax * .1f) {
+		if (hit.Damage >= npc.lifeMax * .1f) {
 			if (!DRFromFatalAttack) {
-				npc.life += npc.lifeMax / 10;
+				npc.Heal(npc.lifeMax / 10);
 			}
 			DRTimer = BossRushUtils.ToMinute(1);
 			DRFromFatalAttack = true;
 		}
 		if (hit.Crit) {
 			if (Main.rand.NextBool(10)) {
-				npc.Heal(hit.Damage * 2);
+				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
 	}
@@ -92,16 +130,16 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (!npc.boss) {
 			return;
 		}
-		if (npc.lifeMax / (float)hit.Damage >= npc.lifeMax * .1f) {
+		if (hit.Damage >= npc.lifeMax * .1f) {
 			if (!DRFromFatalAttack) {
-				npc.life += npc.lifeMax / 10;
+				npc.Heal(npc.lifeMax / 10);
 			}
 			DRTimer = BossRushUtils.ToMinute(1);
 			DRFromFatalAttack = true;
 		}
 		if (hit.Crit) {
 			if (Main.rand.NextBool(10)) {
-				npc.Heal(hit.Damage * 2);
+				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
 	}

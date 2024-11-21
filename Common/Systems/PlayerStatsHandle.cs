@@ -321,6 +321,15 @@ public class PlayerStatsHandle : ModPlayer {
 		StatMod.Base = Base;
 		AddStatsToPlayer(stat, StatMod);
 	}
+	/// <summary>
+	/// This should be uses in always update code
+	/// when creating a new stat modifier, pleases uses the default and increases from there
+	/// </summary>
+	/// <param name="stat"></param>
+	/// <param name="Additive"></param>
+	/// <param name="Multiplicative"></param>
+	/// <param name="Flat"></param>
+	/// <param name="Base"></param>
 	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
 	}

@@ -43,6 +43,36 @@ HellFireArrowRain: {
 	Description: Casts a cascade of Hellfire Arrows that phases through blocks, dealing 28 damage each
 }
 
+FireArrowRain: {
+	DisplayName: Fire arrow rain
+	Description: Casts a cascade of Fire arrows that phases through blocks, dealing 28 damage each
+}
+
+FrostburnArrowRain: {
+	DisplayName: Frost burn arrow rain
+	Description: Casts a cascade of Frost burn Arrows that phases through blocks, dealing 28 damage each
+}
+
+BoneArrowRain: {
+	DisplayName: Bone arrow rain
+	Description: Casts a cascade of Unholy Arrows that phases through blocks, dealing 28 damage each
+}
+
+UnholyArrowRain: {
+	DisplayName: Unholy arrow rain
+	Description: Casts a cascade of Unholy Arrows that phases through blocks, dealing 28 damage each
+}
+
+HolyArrowRain: {
+	DisplayName: Holy arrow rain
+	Description: Casts a cascade of Holy Arrows that phases through blocks, dealing 28 damage each
+}
+
+WoodenArrowRain: {
+	DisplayName: Wooden arrow rain
+	Description: Casts a cascade of Arrows that phases through blocks, dealing 28 damage each
+}
+
 Increases_3xDamage: {
 	DisplayName: Power Bank
 	Description: Increases damage by +300%, but decreases Energy Recharge by 50% for 1 minute
