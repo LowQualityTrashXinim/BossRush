@@ -12,6 +12,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public int HeatRay_HitCount = 0;
 	public StatModifier StatDefense = new StatModifier();
 	public bool DRFromFatalAttack = false;
+	public bool OneTimeDR = false;
 	public int DRTimer = 0;
 	public const int BossHP = 4000;
 	public const int BossDMG = 40;
@@ -22,7 +23,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public bool NPC_SpecialException = false;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
-		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || !Main.LocalPlayer.IsDebugPlayer() || NPC_SpecialException) {
+		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || NPC_SpecialException) {
 			return;
 		}
 		entity.lifeMax = (int)(BossHP * GetValueMulti());
@@ -30,8 +31,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		entity.defense = (int)(BossDef * GetValueMulti(.5f));
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || !Main.LocalPlayer.IsDebugPlayer() ||
-			NPC_SpecialException) {
+		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || NPC_SpecialException) {
 			return;
 		}
 		float adjustment;
@@ -114,10 +114,9 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (!npc.boss) {
 			return;
 		}
-		if (hit.Damage >= npc.lifeMax * .1f) {
-			if (!DRFromFatalAttack) {
-				npc.Heal(npc.lifeMax / 10);
-			}
+		if (hit.Damage >= npc.lifeMax * .1f && !OneTimeDR) {
+			npc.Heal(npc.lifeMax / 10);
+			OneTimeDR = true;
 			DRTimer = BossRushUtils.ToMinute(1);
 			DRFromFatalAttack = true;
 		}
@@ -135,10 +134,9 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (!npc.boss) {
 			return;
 		}
-		if (hit.Damage >= npc.lifeMax * .1f) {
-			if (!DRFromFatalAttack) {
-				npc.Heal(npc.lifeMax / 10);
-			}
+		if (hit.Damage >= npc.lifeMax * .1f && !OneTimeDR) {
+			npc.Heal(npc.lifeMax / 10);
+			OneTimeDR = true;
 			DRTimer = BossRushUtils.ToMinute(1);
 			DRFromFatalAttack = true;
 		}

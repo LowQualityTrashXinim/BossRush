@@ -37,7 +37,6 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Common.Systems.CursesSystem;
-using System.Diagnostics;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 
 namespace BossRush.Common.Systems;
