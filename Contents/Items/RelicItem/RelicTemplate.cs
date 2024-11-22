@@ -466,7 +466,7 @@ public class SkillDurationTemplate : RelicTemplate {
 		return string.Format(Description, new string[] {
 			Color.Yellow.Hex3(),
 			Name,
-			RelicTemplateLoader.RelicValueToNumber(value.Base)
+			RelicTemplateLoader.RelicValueToNumber(value.Base / 60)
 	});
 	}
 

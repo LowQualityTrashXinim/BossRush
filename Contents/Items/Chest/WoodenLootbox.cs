@@ -13,7 +13,7 @@ namespace BossRush.Contents.Items.Chest {
 			Item.height = 38;
 			Item.rare = ItemRarityID.White;
 		}
-		public override bool CanActivateSpoil => ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest;
+		public override bool CanActivateSpoil => !ModContent.GetInstance<RogueLikeConfig>().WorldGenRLSettingTest;
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);

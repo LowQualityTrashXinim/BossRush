@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.ItemDropRules;
 using BossRush.Contents.Items;
 using Terraria.GameContent;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.NPCs {
 	internal class LootBoxLord : ModNPC {
@@ -37,6 +38,7 @@ namespace BossRush.Contents.NPCs {
 			NPC.dontTakeDamage = true;
 			NPC.strengthMultiplier = 1;
 			NPC.ScaleStats_UseStrengthMultiplier(1);
+			NPC.GetGlobalNPC<RoguelikeOverhaulNPC>().NPC_SpecialException = true;
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			//for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {

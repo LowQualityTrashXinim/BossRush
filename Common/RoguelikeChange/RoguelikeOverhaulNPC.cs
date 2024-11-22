@@ -16,9 +16,13 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public const int BossHP = 4000;
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
+	/// <summary>
+	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
+	/// </summary>
+	public bool NPC_SpecialException = false;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
-		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || Main.LocalPlayer.IsDebugPlayer()) {
+		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || !Main.LocalPlayer.IsDebugPlayer() || NPC_SpecialException) {
 			return;
 		}
 		entity.lifeMax = (int)(BossHP * GetValueMulti());
@@ -26,7 +30,8 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		entity.defense = (int)(BossDef * GetValueMulti(.5f));
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || Main.LocalPlayer.IsDebugPlayer()) {
+		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || !Main.LocalPlayer.IsDebugPlayer() ||
+			NPC_SpecialException) {
 			return;
 		}
 		float adjustment;

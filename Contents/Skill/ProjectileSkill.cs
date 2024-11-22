@@ -195,6 +195,114 @@ public class WoodenArrowRain : ModSkill {
 		}
 	}
 }
+public class CholorophyteArrowRain : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 95;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Projectile;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 10 != 0) {
+			return;
+		}
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
+		Vector2 position = Main.MouseWorld;
+		position.Y -= 500;
+		position.X += Main.rand.NextFloat(-75, 75);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.ChlorophyteArrow, damage, knockback, player.whoAmI);
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 180;
+		for (int l = 0; l < 2; l++) {
+			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+		}
+	}
+}
+public class CursedArrowRain : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 95;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Projectile;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 10 != 0) {
+			return;
+		}
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
+		Vector2 position = Main.MouseWorld;
+		position.Y -= 500;
+		position.X += Main.rand.NextFloat(-75, 75);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.CursedArrow, damage, knockback, player.whoAmI);
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 180;
+		for (int l = 0; l < 2; l++) {
+			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+		}
+	}
+}
+public class IchorArrowRain : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 95;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Projectile;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 10 != 0) {
+			return;
+		}
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
+		Vector2 position = Main.MouseWorld;
+		position.Y -= 500;
+		position.X += Main.rand.NextFloat(-75, 75);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.IchorArrow, damage, knockback, player.whoAmI);
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 180;
+		for (int l = 0; l < 2; l++) {
+			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+		}
+	}
+}
+public class JesterArrowRain : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 75;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Projectile;
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 10 != 0) {
+			return;
+		}
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
+		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
+		Vector2 position = Main.MouseWorld;
+		position.Y -= 500;
+		position.X += Main.rand.NextFloat(-75, 75);
+		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, Vector2.UnitY * Main.rand.NextFloat(20, 24), ProjectileID.JestersArrow, damage, knockback, player.whoAmI);
+		Main.projectile[proj].tileCollide = false;
+		Main.projectile[proj].timeLeft = 180;
+		for (int l = 0; l < 2; l++) {
+			int dust = Dust.NewDust(position, 0, 0, DustID.Smoke, Scale: Main.rand.NextFloat(3, 4));
+			Main.dust[dust].noGravity = true;
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(2, 2);
+		}
+	}
+}
 public class SpiritBurst : ModSkill {
 	public override void SetDefault() {
 		Skill_EnergyRequire = 210;

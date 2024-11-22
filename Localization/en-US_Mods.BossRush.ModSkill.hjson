@@ -68,6 +68,26 @@ HolyArrowRain: {
 	Description: Casts a cascade of Holy Arrows that phases through blocks, dealing 28 damage each
 }
 
+CholorophyteArrowRain: {
+	DisplayName: Cholorophyte arrow rain
+	Description: Casts a cascade of Cholorophyte Arrows that phases through blocks, dealing 28 damage each
+}
+
+CursedArrowRain: {
+	DisplayName: Cursed arrow rain
+	Description: Casts a cascade of Cursed Arrows that phases through blocks, dealing 28 damage each
+}
+
+IchorArrowRain: {
+	DisplayName: Ichor arrow rain
+	Description: Casts a cascade of Ichor Arrows that phases through blocks, dealing 28 damage each
+}
+
+JesterArrowRain: {
+	DisplayName: Jester arrow rain
+	Description: Casts a cascade of Jester Arrows that phases through blocks, dealing 28 damage each
+}
+
 WoodenArrowRain: {
 	DisplayName: Wooden arrow rain
 	Description: Casts a cascade of Arrows that phases through blocks, dealing 28 damage each
