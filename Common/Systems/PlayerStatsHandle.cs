@@ -45,6 +45,8 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier EnergyRecharge = new StatModifier();
 	public StatModifier Iframe = new StatModifier();
 	public StatModifier NonCriticalDamage = new StatModifier();
+	public StatModifier SkillDuration = new();
+	public StatModifier SkillCoolDown = new();
 	//public float LuckIncrease = 0; 
 	/// <summary>
 	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>
@@ -176,6 +178,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Iframe = StatModifier.Default;
 		NonCriticalDamage = StatModifier.Default;
 		LifeSteal = StatModifier.Default - 1;
+		SkillDuration = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
@@ -297,6 +300,12 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.Iframe:
 				Iframe = Iframe.CombineWith(StatMod);
 				break;
+			case PlayerStats.SkillDuration:
+				SkillDuration = SkillDuration.CombineWith(StatMod);
+				break;
+			case PlayerStats.SkillCooldown:
+				SkillCoolDown = SkillCoolDown.CombineWith(StatMod);
+				break;
 			default:
 				break;
 		}
@@ -321,6 +330,15 @@ public class PlayerStatsHandle : ModPlayer {
 		StatMod.Base = Base;
 		AddStatsToPlayer(stat, StatMod);
 	}
+	/// <summary>
+	/// This should be uses in always update code
+	/// when creating a new stat modifier, pleases uses the default and increases from there
+	/// </summary>
+	/// <param name="stat"></param>
+	/// <param name="Additive"></param>
+	/// <param name="Multiplicative"></param>
+	/// <param name="Flat"></param>
+	/// <param name="Base"></param>
 	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
 	}

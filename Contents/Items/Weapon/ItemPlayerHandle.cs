@@ -138,35 +138,34 @@ namespace BossRush.Contents.Items.Weapon {
 			SynergyBonus = 0;
 			SynergyBonusBlock = false;
 
-
 			if (!BossRushModSystem.SynergyItem.Select(i => i.type).Contains(Player.HeldItem.type)) {
 				return;
 			}
-			int Synergylength = SynergyBonus_System.Dictionary_SynergyBonus.Keys.Count;
-			for (int i = 0; i < Synergylength; i++) {
-				int synergyItem = SynergyBonus_System.Dictionary_SynergyBonus.Keys.ElementAt(i);
-				int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
-				for (int l = 0; l < SynergyBonusLength; l++) {
-					int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
-					bool HasItem = Player.HasItem(itemIDBonus);
-					if (HasItem) {
-						SynergyBonus++;
-					}
-					else {
-						if (SynergyBonus_System.Dictionary_SynergyGroupBonus.ContainsKey(synergyItem)
-							&& SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem].ContainsKey(itemIDBonus)) {
-							List<int> keyItem = SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem][itemIDBonus];
-							foreach (var item in keyItem) {
-								bool HasAnyGroupItem = SynergyBonus_System.SafeGet_SynergyGroupBonus(synergyItem, item).Where(Player.HasItem).Any();
-								if (HasAnyGroupItem) {
-									SynergyBonus++;
-									HasItem = HasAnyGroupItem;
-								}
+			int synergyItem = Player.HeldItem.type;
+			if(!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(synergyItem)) {
+				return;
+			}
+			int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
+			for (int l = 0; l < SynergyBonusLength; l++) {
+				int itemIDBonus = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.ElementAt(l);
+				bool HasItem = Player.HasItem(itemIDBonus);
+				if (HasItem) {
+					SynergyBonus++;
+				}
+				else {
+					if (SynergyBonus_System.Dictionary_SynergyGroupBonus.ContainsKey(synergyItem)
+						&& SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem].ContainsKey(itemIDBonus)) {
+						List<int> keyItem = SynergyBonus_System.Dictionary_SynergyGroupBonus[synergyItem][itemIDBonus];
+						foreach (var item in keyItem) {
+							bool HasAnyGroupItem = SynergyBonus_System.SafeGet_SynergyGroupBonus(synergyItem, item).Where(Player.HasItem).Any();
+							if (HasAnyGroupItem) {
+								SynergyBonus++;
+								HasItem = HasAnyGroupItem;
 							}
 						}
 					}
-					SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][itemIDBonus] = HasItem;
 				}
+				SynergyBonus_System.Dictionary_SynergyBonus[synergyItem][itemIDBonus] = HasItem;
 			}
 		}
 	}

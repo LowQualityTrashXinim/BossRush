@@ -109,6 +109,9 @@ public class SkillHandlePlayer : ModPlayer {
 	int[] SkillHolder2 = new int[10];
 	int[] SkillHolder3 = new int[10];
 	public int[] SkillInventory = new int[30];
+	/// <summary>
+	/// <b>Return : </b>true when skill is activated
+	/// </summary>
 	public bool Activate = false;
 	public int Duplicate = 0;
 	int CurrentActiveHolder = 1;
@@ -203,23 +206,9 @@ public class SkillHandlePlayer : ModPlayer {
 			percentageEnergy += skill.EnergyRequirePercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS, out cooldownS);
 		}
+		duration = (int)Player.GetModPlayer<PlayerStatsHandle>().SkillDuration.ApplyTo(duration);
+		cooldown = (int)Player.GetModPlayer<PlayerStatsHandle>().SkillCoolDown.ApplyTo(cooldown);
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
-	}
-	public void AddSkillIntoCurrentActiveHolder(int SkillID, int whoAmI) {
-		if (whoAmI < 0 || whoAmI > 9) {
-			return;
-		}
-		switch (CurrentActiveHolder) {
-			case 1:
-				SkillHolder1[whoAmI] = SkillID;
-				break;
-			case 2:
-				SkillHolder2[whoAmI] = SkillID;
-				break;
-			case 3:
-				SkillHolder3[whoAmI] = SkillID;
-				break;
-		}
 	}
 	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
 		if (whoAmIskill < 0 || whoAmIskill > 9) {

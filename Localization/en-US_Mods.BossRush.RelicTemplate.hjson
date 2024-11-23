@@ -16,3 +16,5 @@ MagicCostTemplate.Description:
 SynergyTemplate.Description: Increases your synergy flat damage by [c/{0}:{1}]
 GunFireRateTemplate.Description: Increases gun fire rate by [c/{0}:{1}]
 ArcherMasteryTemplate.Description: Increases bow damage [c/{0}:{1}], critical strike chance by [c/{0}:{2}], critical damage by [c/{0}:{3}]
+SkillActivateTemplate.Description: During skill activated, increases [c/{0}:{1}] by [c/{0}:{2}]
+SkillDurationTemplate.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] seconds

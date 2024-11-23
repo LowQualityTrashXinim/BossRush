@@ -1893,6 +1893,12 @@ Mods: {
 					'''
 			}
 
+			Transmutator: {
+				DisplayName: Transmutator
+				Tooltip: ""
+			}
+		}
+
 			StarWhip: {
 				DisplayName: Star Whip
 				Tooltip:

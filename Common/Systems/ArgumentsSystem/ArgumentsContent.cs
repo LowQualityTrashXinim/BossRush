@@ -324,7 +324,7 @@ public class Union : ModAugments {
 				break;
 			}
 			Item invitem = player.inventory[i];
-			if (!item.IsAWeapon() || invitem == item || item.ModItem is SynergyModItem) {
+			if (!invitem.IsAWeapon() || invitem == item || item.ModItem is SynergyModItem) {
 				continue;
 			}
 			damageIncreasement += .5f;

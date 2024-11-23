@@ -24,7 +24,7 @@ internal class RelicTransmutator : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.ItemAnimationJustStarted) {
-			ModContent.GetInstance<UniversalSystem>().ActivateRelicUI();
+			ModContent.GetInstance<UniversalSystem>().ActivateDebugUI();
 		}
 		return base.UseItem(player);
 	}

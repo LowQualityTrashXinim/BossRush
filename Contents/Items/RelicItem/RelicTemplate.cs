@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Skill;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class GenericTemplate : RelicTemplate {
@@ -406,7 +407,7 @@ public class ArcherMasteryTemplate : RelicTemplate {
 		});
 
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .2f), 2), 1, 0, Main.rand.Next(3,10));
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .2f), 2), 1, 0, Main.rand.Next(3, 10));
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		if (player.HeldItem.useAmmo == AmmoID.Arrow) {
@@ -414,5 +415,65 @@ public class ArcherMasteryTemplate : RelicTemplate {
 			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: value.Base);
 			modplayer.AddStatsToPlayer(PlayerStats.CritDamage, value.Additive * 2 - 1);
 		}
+	}
+}
+public class SkillActivateTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) {
+		return Main.rand.Next(new PlayerStats[] {
+			PlayerStats.PureDamage,
+			PlayerStats.CritChance,
+			PlayerStats.CritDamage,
+			PlayerStats.AttackSpeed,
+			PlayerStats.Defense,
+		});
+	}
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base) : RelicTemplateLoader.RelicValueToPercentage(value.Additive);
+		return string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			Name,
+			Number
+	});
+	}
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		if (stat == PlayerStats.PureDamage) {
+			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .3f), 2), 1, 0, 0);
+		}
+		if (stat == PlayerStats.CritChance) {
+			return new StatModifier(1, 1, 0, Main.rand.Next(5, 21));
+		}
+		if (stat == PlayerStats.CritDamage) {
+			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .5f), 2), 1, 0, 0);
+		}
+		if (stat == PlayerStats.AttackSpeed) {
+			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.05f, .2f), 2), 1, 0, 0);
+		}
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.1f, .35f), 2), 1, 0, 0);
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		SkillHandlePlayer skillPlayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (skillPlayer.Activate) {
+			modplayer.AddStatsToPlayer(stat, value);
+		}
+	}
+}
+public class SkillDurationTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) => PlayerStats.SkillDuration;
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		return string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			Name,
+			RelicTemplateLoader.RelicValueToNumber(value.Base / 60)
+	});
+	}
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1,4)));
+	}
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value);
 	}
 }

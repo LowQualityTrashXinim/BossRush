@@ -37,6 +37,7 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Common.Systems.CursesSystem;
+using BossRush.Contents.Items.aDebugItem.SkillDebug;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -158,7 +159,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface enchantInterface;
 	internal UserInterface systemMenuInterface;
 	internal UserInterface transmutationInterface;
-	internal UserInterface relicTest;
+	internal UserInterface TestUser;
 	internal UserInterface spoils;
 	internal UserInterface TeleportUser;
 	internal UserInterface infoUser;
@@ -171,7 +172,10 @@ internal class UniversalSystem : ModSystem {
 	public DefaultUI defaultUI;
 	public UISystemMenu UIsystemmenu;
 	public TransmutationUIState transmutationUI;
+
 	public RelicTransmuteUI relicUI;
+	public SkillGetterUI skillUI;
+
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
 	public InfoUI infoUI;
@@ -220,8 +224,9 @@ internal class UniversalSystem : ModSystem {
 			transmutationUI = new();
 			transmutationInterface = new();
 
-			relicTest = new();
+			TestUser = new();
 			relicUI = new();
+			skillUI = new();
 
 			spoilsState = new();
 			spoils = new();
@@ -274,7 +279,8 @@ internal class UniversalSystem : ModSystem {
 		transmutationUI = null;
 		transmutationInterface = null;
 		relicUI = null;
-		relicTest = null;
+		skillUI = null;
+		TestUser = null;
 
 		spoilsState = null;
 		spoils = null;
@@ -316,7 +322,7 @@ internal class UniversalSystem : ModSystem {
 		enchantInterface?.Update(gameTime);
 		systemMenuInterface?.Update(gameTime);
 		transmutationInterface?.Update(gameTime);
-		relicTest?.Update(gameTime);
+		TestUser?.Update(gameTime);
 		spoils?.Update(gameTime);
 		TeleportUser?.Update(gameTime);
 		infoUser?.Update(gameTime);
@@ -335,7 +341,7 @@ internal class UniversalSystem : ModSystem {
 					enchantInterface.Draw(Main.spriteBatch, gametime);
 					systemMenuInterface.Draw(Main.spriteBatch, gametime);
 					transmutationInterface.Draw(Main.spriteBatch, gametime);
-					relicTest.Draw(Main.spriteBatch, gametime);
+					TestUser.Draw(Main.spriteBatch, gametime);
 					spoils.Draw(Main.spriteBatch, gametime);
 					TeleportUser.Draw(Main.spriteBatch, gametime);
 					infoUser.Draw(Main.spriteBatch, gametime);
@@ -397,9 +403,14 @@ internal class UniversalSystem : ModSystem {
 		DeactivateUI();
 		transmutationInterface.SetState(transmutationUI);
 	}
-	public void ActivateRelicUI() {
+	public void ActivateDebugUI(string context = "relic") {
 		DeactivateUI();
-		relicTest.SetState(relicUI);
+		if (context.Trim() == "relic") {
+			TestUser.SetState(relicUI);
+		}
+		if(context.Trim() == "skill") {
+			TestUser.SetState(skillUI);
+		}
 	}
 	public void ActivateAchievementUI() {
 		DeactivateUI();
@@ -438,7 +449,7 @@ internal class UniversalSystem : ModSystem {
 		enchantInterface.SetState(null);
 		systemMenuInterface.SetState(null);
 		transmutationInterface.SetState(null);
-		relicTest.SetState(null);
+		TestUser.SetState(null);
 		spoils.SetState(null);
 		TeleportUser.SetState(null);
 		infoUser.SetState(null);
