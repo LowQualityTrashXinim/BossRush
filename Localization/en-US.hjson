@@ -1905,7 +1905,7 @@ Mods: {
 					'''
 					{$CommonItemTooltip.SummonTagDamage}
 					Fallen Stars spawn randomly around you 
-					hitting those star with the whip empowers it for the next target hit
+					hitting those stars with the whip empowers the next attack
 					'''
 			}
 
