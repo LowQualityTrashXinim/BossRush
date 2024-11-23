@@ -4,9 +4,12 @@ using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -502,5 +505,18 @@ public class DarkSoul : ModAugments {
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		player.AddImmuneTime(-1, 12);
+	}
+}
+
+public class ExtraLife : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = -.1f;
+		return true;
+	}
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.White;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		player.GetModPlayer<PlayerStatsHandle>().Add_ExtraLifeWeapon(item);
 	}
 }
