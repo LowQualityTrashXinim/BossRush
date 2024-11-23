@@ -295,6 +295,12 @@ Mods: {
 			AngelicSmgHeld.DisplayName: Angelic Smg Held
 			SlashProjectile.DisplayName: Slash Projectile
 			GhostYoyo.DisplayName: Ghost Yoyo
+			StarWhipProj.DisplayName: Star Whip Proj
+			WhipTipPositionTrackerProj.DisplayName: Whip Tip Position Tracker Proj
+			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
+			StarWhipStarProj.DisplayName: Star Whip Star Proj
+			MythrilBeam.DisplayName: Mythril Beam
+			WinterFlameProjectile.DisplayName: Winter Flame Projectile
 		}
 
 		NPCs: {
@@ -319,6 +325,9 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			StarTargetsNPC.DisplayName: Star Targets N P C
+			FallenStarPower.DisplayName: Fallen Star Power
 		}
 
 		Items: {
@@ -1883,6 +1892,26 @@ Mods: {
 					Can also be used to increases weapon's stats
 					'''
 			}
+
+			StarWhip: {
+				DisplayName: Star Whip
+				Tooltip:
+					'''
+					{$CommonItemTooltip.SummonTagDamage}
+					Fallen Stars spawn randomly around you 
+					hitting those star with the whip empowers it for the next target hit
+					'''
+			}
+
+			MythrilBeamSword: {
+				DisplayName: Mythril Beam Sword
+				Tooltip: ""
+			}
+
+			WinterFlame: {
+				DisplayName: Winter Flame
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2290,6 +2319,16 @@ Mods: {
 			BackUpMana_CoolDown: {
 				DisplayName: Back Up Mana_ Cool Down
 				Description: Mods.BossRush.Buffs.BackUpMana_CoolDown.Description
+			}
+
+			StarWhipBuff: {
+				DisplayName: Star Whip Buff
+				Description: Mods.BossRush.Buffs.StarWhipBuff.Description
+			}
+
+			StarWhipDebuff: {
+				DisplayName: Star Whip Debuff
+				Description: Mods.BossRush.Buffs.StarWhipDebuff.Description
 			}
 		}
 
