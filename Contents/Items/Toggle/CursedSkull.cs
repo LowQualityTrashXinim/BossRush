@@ -1,12 +1,9 @@
-﻿using BossRush.Common.General;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Toggle {
@@ -37,15 +34,7 @@ namespace BossRush.Contents.Items.Toggle {
 		}
 		public override bool? UseItem(Player player) {
 			if (player.whoAmI == Main.myPlayer) {
-				if (player.GetModPlayer<ModdedPlayer>().gitGud > 0) {
-					return true;
-				}
 				SoundEngine.PlaySound(SoundID.Roar, player.position);
-				if (Main.netMode != NetmodeID.MultiplayerClient) {
-					player.difficulty = 2;
-					player.GetModPlayer<ModdedPlayer>().gitGud++;
-					ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Have fun, you can't revert this change"), Colors.RarityDarkRed);
-				}
 			}
 			return true;
 		}

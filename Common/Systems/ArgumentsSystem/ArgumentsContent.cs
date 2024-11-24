@@ -216,6 +216,18 @@ public class CriticalIII : ModAugments {
 	}
 }
 
+public class CriticalIV : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Orange;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 25);
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, .5f);
+	}
+}
+
+
 public class VampireI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
@@ -248,6 +260,25 @@ public class VampireII : ModAugments {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.5f);
 	}
 }
+
+public class VampireIII : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (!Main.IsItDay()) {
+			Chance += .1f;
+		}
+		return true;
+	}
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.DarkRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		if (!Main.IsItDay()) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, 1.25f, Base: 1);
+		}
+	}
+}
+
 
 public class AlchemistI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {

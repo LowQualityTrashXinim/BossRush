@@ -1,4 +1,5 @@
 using BossRush.Common.General;
+using BossRush.Common.Mode.HellishEndeavour;
 using BossRush.Common.Mode.Nightmare;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Artifacts;
@@ -142,9 +143,9 @@ public class TrueNightmare : ModAchievement {
 	}
 }
 public class GodOfChallenge : ModAchievement {
-	public override bool Condition() {//TODO make god of challenge a world setting instead
+	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
-			&& Main.LocalPlayer.GetModPlayer<ModdedPlayer>().gitGud > 0
+			&& HellishEndeavourSystem.Hellish()
 			&& (Main.expertMode || Main.masterMode);
 	}
 }
