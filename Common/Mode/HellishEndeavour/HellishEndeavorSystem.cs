@@ -12,11 +12,11 @@ using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
 namespace BossRush.Common.Mode.HellishEndeavour;
-internal class HellishEndeavourSystem : ModSystem {
+internal class HellishEndeavorSystem : ModSystem {
 	/// <returns>
 	/// return <b>True</b> if the world is nightmare difficulty
 	/// </returns>
-	public static bool Hellish() => ModContent.GetInstance<HellishEndeavourSystem>().HellishWorld;
+	public static bool Hellish() => ModContent.GetInstance<HellishEndeavorSystem>().HellishWorld;
 	public bool HellishWorld = false;
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		if (UniversalSystem.CanAccessContent(UniversalSystem.HELLISH_MODE)) {
@@ -34,12 +34,12 @@ internal class HellishEndeavourSystem : ModSystem {
 }
 public class HellishEndeavourPlayer : ModPlayer {
 	public override void UpdateEquips() {
-		if (HellishEndeavourSystem.Hellish()) {
+		if (HellishEndeavorSystem.Hellish()) {
 			PlayerStatsHandle.AddStatsToPlayer(Player, PlayerStats.LootDropIncrease, Multiplicative: 0);
 		}
 	}
 	public override void OnHurt(Player.HurtInfo info) {
-		if (HellishEndeavourSystem.Hellish()) {
+		if (HellishEndeavorSystem.Hellish()) {
 			PlayerDeathReason reason = new PlayerDeathReason();
 			reason.SourceCustomReason = $"{Player.name} has fail the challenge";
 			Player.KillMe(reason, 9999999999, info.HitDirection);

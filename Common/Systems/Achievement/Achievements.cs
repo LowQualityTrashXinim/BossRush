@@ -145,7 +145,7 @@ public class TrueNightmare : ModAchievement {
 public class GodOfChallenge : ModAchievement {
 	public override bool Condition() {
 		return UniversalSystem.DidPlayerBeatTheMod()
-			&& HellishEndeavourSystem.Hellish()
+			&& HellishEndeavorSystem.Hellish()
 			&& (Main.expertMode || Main.masterMode);
 	}
 }
