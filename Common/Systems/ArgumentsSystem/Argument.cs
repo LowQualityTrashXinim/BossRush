@@ -47,8 +47,8 @@ public class AugmentsWeapon : GlobalItem {
 	}
 	public float WeaponConditionalChance(Item item, Player player) {
 		float Chance = 0;
-		if (item.prefix == PrefixID.Annoying) {
-			Chance += .5f;
+		if (item.prefix == PrefixID.Broken || item.prefix == PrefixID.Annoying) {
+			Chance += 1;
 		}
 		return Chance;
 	}
@@ -87,7 +87,7 @@ public class AugmentsWeapon : GlobalItem {
 			int currentEmptySlot = 0;
 			bool passException = false;
 
-			if (player.name.Trim() == "hero") {
+			if (player.name.Trim().ToLower() == "hero") {
 				chance += .1f;
 			}
 

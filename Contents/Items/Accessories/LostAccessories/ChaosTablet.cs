@@ -73,7 +73,7 @@ class ChaosTabletPlayer : ModPlayer {
 			return;
 		}
 		if (chaosstat == PlayerStats.None) {
-			Player.GetModPlayer<ChaosTabletPlayer>().chaosstat = Main.rand.Next(MysteriousPotionBuff.lookupDictionary.Keys.ToList());
+			chaosstat = Main.rand.Next(MysteriousPotionBuff.lookupDictionary.Keys.ToList());
 			Player.AddBuff(ModContent.BuffType<ChaosBuff>(), BossRushUtils.ToSecond(15));
 		}
 		if (!Player.Center.LookForAnyHostileNPC(600)) {

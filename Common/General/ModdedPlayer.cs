@@ -22,8 +22,6 @@ using System;
 
 namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
-		//NoHiter
-		public int gitGud = 0;
 		public int EnchantingEnable = 0;
 		public int SkillEnable = 0;
 
@@ -238,12 +236,6 @@ namespace BossRush.Common.General {
 		}
 		public int amountOfTimeGotHit = 0;
 		public override void OnHurt(Player.HurtInfo info) {
-			if (gitGud > 0) {
-				PlayerDeathReason reason = new PlayerDeathReason();
-				reason.SourceCustomReason = $"{Player.name} has fail the challenge";
-				Player.KillMe(reason, 9999999999, info.HitDirection);
-				return;
-			}
 			if (BossRushUtils.IsAnyVanillaBossAlive())
 				amountOfTimeGotHit++;
 		}
@@ -257,23 +249,19 @@ namespace BossRush.Common.General {
 			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)BossRush.MessageType.GodUltimateChallenge);
 			packet.Write((byte)Player.whoAmI);
-			packet.Write(gitGud);
 			packet.Write(EnchantingEnable);
 			packet.Write(SkillEnable);
 			packet.Send(toWho, fromWho);
 		}
 		public override void Initialize() {
-			gitGud = 0;
 			EnchantingEnable = 0;
 			SkillEnable = 0;
 		}
 		public override void SaveData(TagCompound tag) {
-			tag["gitgud"] = gitGud;
 			tag["EnchantingEnable"] = EnchantingEnable;
 			tag["SkillEnable"] = SkillEnable;
 		}
 		public override void LoadData(TagCompound tag) {
-			gitGud = (int)tag["gitgud"];
 			if (tag.TryGet("EnchantingEnable", out int value1)) {
 				EnchantingEnable = value1;
 			}
@@ -282,22 +270,19 @@ namespace BossRush.Common.General {
 			}
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {
-			gitGud = reader.ReadInt32();
 			EnchantingEnable = reader.ReadInt32();
 			SkillEnable = reader.ReadInt32();
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {
 			ModdedPlayer clone = (ModdedPlayer)targetCopy;
-			clone.gitGud = gitGud;
 			clone.EnchantingEnable = EnchantingEnable;
 			clone.SkillEnable = SkillEnable;
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
 			ModdedPlayer clone = (ModdedPlayer)clientPlayer;
-			if (gitGud != clone.gitGud
-				|| EnchantingEnable != clone.EnchantingEnable
+			if ( EnchantingEnable != clone.EnchantingEnable
 				|| SkillEnable != clone.SkillEnable) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}

@@ -4,9 +4,12 @@ using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -213,6 +216,18 @@ public class CriticalIII : ModAugments {
 	}
 }
 
+public class CriticalIV : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Orange;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 25);
+		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, .5f);
+	}
+}
+
+
 public class VampireI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
@@ -245,6 +260,25 @@ public class VampireII : ModAugments {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.5f);
 	}
 }
+
+public class VampireIII : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (!Main.IsItDay()) {
+			Chance += .1f;
+		}
+		return true;
+	}
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.DarkRed;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		if (!Main.IsItDay()) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, 1.25f, Base: 1);
+		}
+	}
+}
+
 
 public class AlchemistI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
@@ -502,5 +536,18 @@ public class DarkSoul : ModAugments {
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		player.AddImmuneTime(-1, 12);
+	}
+}
+
+public class ExtraLife : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = -.1f;
+		return true;
+	}
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.White;
+	}
+	public override void UpdateHeld(Player player, Item item) {
+		player.GetModPlayer<PlayerStatsHandle>().Add_ExtraLifeWeapon(item);
 	}
 }
