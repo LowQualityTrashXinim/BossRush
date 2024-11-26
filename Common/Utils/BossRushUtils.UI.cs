@@ -3,11 +3,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.Graphics;
+using ReLogic.Localization.IME;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -32,6 +36,32 @@ namespace BossRush {
 			ui.Left.Percent = 0;
 			ui.Top.Pixels = position.Y;
 			ui.Top.Percent = 0;
+		}
+		/// <summary>
+		/// Code source credit : StructureHelper
+		/// Draws the outline of a box in the style of the DragonLens GUI.
+		/// </summary>
+		/// <param name="spriteBatch">the spriteBatch to draw the outline with</param>
+		/// <param name="target">where/how big the outline should be drawn</param>
+		/// <param name="color">the color of the outline</param>
+		public static void DrawOutline(SpriteBatch spriteBatch, Rectangle target, Color color = default) {
+			Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/GUI/Box").Value;
+
+			if (color == default)
+				color = new Color(49, 84, 141) * 0.9f;
+
+			var sourceCorner = new Rectangle(0, 0, 6, 6);
+			var sourceEdge = new Rectangle(6, 0, 4, 6);
+
+			spriteBatch.Draw(tex, new Rectangle(target.X + 6, target.Y, target.Width - 12, 6), sourceEdge, color, 0, Vector2.Zero, 0, 0);
+			spriteBatch.Draw(tex, new Rectangle(target.X, target.Y - 6 + target.Height, target.Height - 12, 6), sourceEdge, color, -(float)Math.PI * 0.5f, Vector2.Zero, 0, 0);
+			spriteBatch.Draw(tex, new Rectangle(target.X - 6 + target.Width, target.Y + target.Height, target.Width - 12, 6), sourceEdge, color, (float)Math.PI, Vector2.Zero, 0, 0);
+			spriteBatch.Draw(tex, new Rectangle(target.X + target.Width, target.Y + 6, target.Height - 12, 6), sourceEdge, color, (float)Math.PI * 0.5f, Vector2.Zero, 0, 0);
+
+			spriteBatch.Draw(tex, new Rectangle(target.X, target.Y, 6, 6), sourceCorner, color, 0, Vector2.Zero, 0, 0);
+			spriteBatch.Draw(tex, new Rectangle(target.X + target.Width, target.Y, 6, 6), sourceCorner, color, (float)Math.PI * 0.5f, Vector2.Zero, 0, 0);
+			spriteBatch.Draw(tex, new Rectangle(target.X + target.Width, target.Y + target.Height, 6, 6), sourceCorner, color, (float)Math.PI, Vector2.Zero, 0, 0);
+			spriteBatch.Draw(tex, new Rectangle(target.X, target.Y + target.Height, 6, 6), sourceCorner, color, (float)Math.PI * 1.5f, Vector2.Zero, 0, 0);
 		}
 	}
 	public class Roguelike_ProgressUIBar : UIElement {
@@ -130,7 +160,6 @@ namespace BossRush {
 			}
 		}
 	}
-
 	public class Roguelike_WrapTextUIPanel : UITextPanel<string> {
 		public bool Hide = false;
 		//Stole from ActiveArtifactDescriptionUI cause idk how to do text wrapping stuff
@@ -237,4 +266,6 @@ namespace BossRush {
 			DrawImage(spriteBatch);
 		}
 	}
+
 }
+

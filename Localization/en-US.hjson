@@ -1888,6 +1888,11 @@ Mods: {
 				DisplayName: Transmutator
 				Tooltip: ""
 			}
+
+			StructureWand: {
+				DisplayName: Structure Wand
+				Tooltip: Avoid saving tile in a way that cut the tile in half, thx
+			}
 		}
 
 		Buffs: {

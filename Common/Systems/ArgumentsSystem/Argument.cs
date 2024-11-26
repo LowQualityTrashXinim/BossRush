@@ -90,7 +90,9 @@ public class AugmentsWeapon : GlobalItem {
 			if (player.name.Trim().ToLower() == "hero") {
 				chance += .1f;
 			}
-
+			if (player.IsDebugPlayer()) {
+				chance += 10;
+			}
 			float chanceDecay = modplayer.IncreasesChance + chance + weapon.WeaponConditionalChance(item, player);
 			ModAugments modAugments = null;
 			float augmentChance = 0;

@@ -6,6 +6,11 @@ using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
+using System.IO;
+using Terraria.ModLoader.IO;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Common.Utils;
 
@@ -19,7 +24,7 @@ internal static partial class GenerationHelper {
 
 		Tile tile = Main.tile[i, j];
 		tile.TileType = tileType;
-		tile.TileColor = PaintID.None; 
+		tile.TileColor = PaintID.None;
 		tile.Get<TileWallWireStateData>().HasTile = true;
 	}
 
@@ -121,75 +126,6 @@ internal static partial class GenerationHelper {
 		return r.NextFromHashSet(getallPosition);
 	}
 	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="i">x axis</param>
-	/// <param name="j">y axis</param>
-	/// <param name="tileType"></param>
-	public static void SmartReadjustPlatform(int i, int j, ushort tileType) {
-		//|-|
-		//0-|
-		//|-|
-		bool HasTileLeft = !WorldGen.TileEmpty(i - 1, j);
-		//|-|
-		//|-O
-		//|-|
-		bool HasTileRight = !WorldGen.TileEmpty(i + 1, j);
-
-		//0-|
-		//|-|
-		//|-|
-		bool HasTileTopLeft = !WorldGen.TileEmpty(i - 1, j - 1);
-		//|-0
-		//|-|
-		//|-|
-		bool HasTileTopRight = !WorldGen.TileEmpty(i + 1, j - 1);
-		//|-|
-		//|-|
-		//0-|
-		bool HasTileBottomLeft = !WorldGen.TileEmpty(i - 1, j + 1);
-		//|-|
-		//|-|
-		//|-0
-		bool HasTileBottomRight = !WorldGen.TileEmpty(i + 1, j + 1);
-		Tile tile = Main.tile[i, j];
-	}
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="i">x axis</param>
-	/// <param name="j">y axis</param>
-	/// <param name="tileType"></param>
-	public static void SmartReadjustPlatform(Point point, ushort tileType = 0) {
-		int i = point.X; int j = point.Y;
-		//|-|
-		//0-|
-		//|-|
-		bool HasTileLeft = !WorldGen.TileEmpty(i - 1, j);
-		//|-|
-		//|-O
-		//|-|
-		bool HasTileRight = !WorldGen.TileEmpty(i + 1, j);
-
-		//0-|
-		//|-|
-		//|-|
-		bool HasTileTopLeft = !WorldGen.TileEmpty(i - 1, j - 1);
-		//|-0
-		//|-|
-		//|-|
-		bool HasTileTopRight = !WorldGen.TileEmpty(i + 1, j - 1);
-		//|-|
-		//|-|
-		//0-|
-		bool HasTileBottomLeft = !WorldGen.TileEmpty(i - 1, j + 1);
-		//|-|
-		//|-|
-		//|-0
-		bool HasTileBottomRight = !WorldGen.TileEmpty(i + 1, j + 1);
-
-	}
-	/// <summary>
 	/// Use this for easy place tile in the world in 24x24 grid like
 	/// </summary>
 	/// <param name="x">The starting X position</param>
@@ -215,5 +151,218 @@ internal static partial class GenerationHelper {
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}
+	/// <summary>
+	/// Saves a given region of the world as a structure file
+	/// </summary>
+	/// <param name="target">The region of the world to save, in tile coordinates</param>
+	/// <param name="targetPath">The name of the file to save. Automatically defaults to a file named after the date in the SavedStructures folder</param>
+	public static void SaveToFile(Rectangle target, string name = "unnamed structure") {
+		if (name == "")
+			name = "unnamed structure";
 
+		string path = Path.Join(Program.SavePathShared, "RogueLikeData");
+
+		if (!Directory.Exists(path))
+			Directory.CreateDirectory(path);
+
+		SaveStructure(target, path, name);
+		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
+	}
+	/// <summary>
+	/// Transforms a region of the world into a structure TagCompound. Must be called in an unsafe context!
+	/// </summary>
+	/// <param name="target">The region to transform</param>
+	/// <param name="path">Path to save</param>
+	/// <param name="name">File's name</param>
+	public static void SaveStructure(Rectangle target, string path, string name) {
+		try {
+			FileStream file = File.Create(Path.Combine(path, name));
+			StreamWriter w = new(file);
+			Tile outSideLoop = new();
+			int distance = 0;
+			for (int x = target.X; x <= target.X + target.Width; x++) {
+				for (int y = target.Y; y <= target.Y + target.Height; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					if (tile.TileType != outSideLoop.TileType && tile.TileFrameX != outSideLoop.TileFrameX) {
+						if (distance != 0) {
+							w.Write(distance);
+						}
+						outSideLoop = tile;
+						TileData td = new(tile);
+						w.Write(td.ToString());
+						distance = 0;
+					}
+					else {
+						distance++;
+					}
+				}
+			}
+			w.Close();
+			file.Close();
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
+}
+public class TileData {
+	public int Tile_Type = 0;
+	public int Tile_FrameX = 0;
+	public int Tile_FrameY = 0;
+	public int Tile_WallData = 0;
+	public byte Tile_WireData = 0;
+	public byte Tile_LiquidData = byte.MaxValue;
+	public byte Tile_Liquid = 0;
+	public bool Tile_HasActuator = false;
+	public TileData() {
+
+	}
+
+	public TileData(int tileType, int tileFrameX, int tileFrameY, int tile_WallData, byte tile_WireData, bool tile_HasActuator) {
+		Tile_Type = tileType;
+		Tile_FrameX = tileFrameX;
+		Tile_FrameY = tileFrameY;
+		Tile_WallData = tile_WallData;
+		Tile_WireData = tile_WireData;
+		Tile_HasActuator = tile_HasActuator;
+	}
+	public TileData(Tile tile) {
+		Tile_Type = tile.TileType;
+		Tile_FrameX = tile.TileFrameX;
+		Tile_FrameY = tile.TileFrameY;
+		Tile_WallData = tile.WallType;
+		if (tile.RedWire) {
+			Tile_WireData = 1;
+		}
+		if (tile.BlueWire) {
+			Tile_WireData = 2;
+		}
+		if (tile.YellowWire) {
+			Tile_WireData = 3;
+		}
+		if (tile.GreenWire) {
+			Tile_WireData = 4;
+		}
+		if (tile.LiquidAmount != 0) {
+			Tile_Liquid = (byte)tile.LiquidType;
+			Tile_LiquidData = tile.LiquidAmount;
+		}
+	}
+	/// <summary>
+	/// Reverse the ToString back into a tile format
+	/// </summary>
+	/// <param name="Tile"></param>
+	public TileData(string Tile) {
+		for (int i = 0; i < Tile.Length; i++) {
+			Char c = Tile[i];
+			string NumberString = "";
+			if (c == 'T') {
+				for (int l = i; l < Tile.Length; l++) {
+					if (char.IsNumber(Tile[l])) {
+						NumberString += Tile[l];
+					}
+					else {
+						i = l;
+						Tile_Type = int.Parse(NumberString);
+						NumberString = "";
+						break;
+					}
+				}
+			}
+			if (c == 'X') {
+				for (int l = i; l < Tile.Length; l++) {
+					if (char.IsNumber(Tile[l])) {
+						NumberString += Tile[l];
+					}
+					else {
+						i = l;
+						Tile_FrameX = int.Parse(NumberString);
+						NumberString = "";
+						break;
+					}
+				}
+
+			}
+			if (c == 'Y') {
+				for (int l = i; l < Tile.Length; l++) {
+					if (char.IsNumber(Tile[l])) {
+						NumberString += Tile[l];
+					}
+					else {
+						i = l;
+						Tile_FrameY = int.Parse(NumberString);
+						NumberString = "";
+						break;
+					}
+				}
+			}
+			if (c == 'W') {
+				for (int l = i; l < Tile.Length; l++) {
+					if (char.IsNumber(Tile[l])) {
+						NumberString += Tile[l];
+					}
+					else {
+						i = l;
+						Tile_WallData = int.Parse(NumberString);
+						NumberString = "";
+						break;
+					}
+				}
+			}
+			if (c == 'L') {
+				for (int l = i; l < Tile.Length; l++) {
+					if (char.IsNumber(Tile[l])) {
+						NumberString += Tile[l];
+					}
+					else {
+						Tile_Liquid = byte.Parse(NumberString);
+						NumberString = "";
+						break;
+					}
+				}
+			}
+			if (c == 'D') {
+				for (int l = i; l < Tile.Length; l++) {
+					if (char.IsNumber(Tile[l])) {
+						NumberString += Tile[l];
+					}
+					else {
+						i = l;
+						Tile_LiquidData = byte.Parse(NumberString);
+						break;
+					}
+				}
+			}
+			if (c == 'A') {
+				Tile_HasActuator = true;
+			}
+		}
+	}
+	public override string ToString() {
+		string T = "T" + Tile_Type;
+		string X = "X" + Tile_FrameX;
+		string Y = "Y" + Tile_FrameY;
+		string W = "W" + Tile_WallData;
+		string L = "L" + Tile_Liquid;
+		string D = "D" + Tile_LiquidData;
+		string ToString = "";
+		if (Tile_Type < TileID.Count) {
+			ToString += T;
+			ToString += X;
+			ToString += Y;
+		}
+		if (Tile_WallData < WallID.Count) {
+			ToString += W;
+		}
+		if (Tile_LiquidData < LiquidID.Count && Tile_Liquid > 0) {
+			ToString += L;
+			ToString += D;
+		}
+		if (Tile_HasActuator) {
+			ToString += "[A]";
+		}
+		return "{" + ToString + "}";
+	}
 }

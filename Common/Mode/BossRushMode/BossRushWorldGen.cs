@@ -11,16 +11,13 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
-using StructureHelper;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
 		public override void Load() {
 			On_Player.UpdateBiomes += On_Player_UpdateBiomes;
-			Platform = new();
 		}
 		public override void Unload() {
-			Platform = null;
 		}
 		private void On_Player_UpdateBiomes(On_Player.orig_UpdateBiomes orig, Player self) {
 			if (!UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
@@ -249,16 +246,11 @@ namespace BossRush.Common.ChallengeMode {
 			}
 			Room = Type.Zip(Area, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 		}
-		public static List<Point> Platform;
-		public static void AddPlatformToList(int x, int y) {
-			Platform.Add(new(x, y));
-		}
 		public static string StringBuilder(string FileName) => $"Assets/Structures/{FileName}";
 	}
 	public partial class BossRushWorldGen : ITaskCollection {
 		[Task]
 		public void SetUp() {
-			Platform.Clear();
 			Room = new Dictionary<short, List<Rectangle>>();
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;//small world : 175
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;//small world : 50
@@ -291,7 +283,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-					AddPlatformToList(a, b);
 				}
 			});
 			rectList.Add(rect);
@@ -329,7 +320,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Jungle);
 			});
@@ -356,7 +346,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms, PaintID.BluePaint);
-					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Hive);
 			});
@@ -365,7 +354,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_TundraArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(11, 10, 3, 3);
-			Generator.GenerateStructure(StringBuilder($"TundraArenaVar{1}"), rect.TopLeft().ToPoint16(), Mod);
+			//Generator.GenerateStructure(StringBuilder($"TundraArenaVar{1}"), rect.TopLeft().ToPoint16(), Mod);
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.TundraArena, 1)
 			//	);
@@ -396,7 +385,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_CrimsonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
-			Generator.GenerateStructure(StringBuilder($"CrimsonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
+			//Generator.GenerateStructure(StringBuilder($"CrimsonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 2)
 			//	);
@@ -454,7 +443,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-					AddPlatformToList(a, b);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.CorruptionUnsafe1);
 			});
@@ -463,7 +451,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_HallowArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(9, 15, 3, 3);
-			Generator.GenerateStructure(StringBuilder($"HallowArenaVar{WorldGen.genRand.Next(1, 3)}"), rect.TopLeft().ToPoint16(), Mod);
+			//Generator.GenerateStructure(StringBuilder($"HallowArenaVar{WorldGen.genRand.Next(1, 3)}"), rect.TopLeft().ToPoint16(), Mod);
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.HallowArena, 1)
 			//	);
@@ -497,7 +485,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_DungeonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 2);
-			Generator.GenerateStructure(StringBuilder($"DungeonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
+			//Generator.GenerateStructure(StringBuilder($"DungeonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.DungeonAreana, 1)
 			//	);
@@ -530,7 +518,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			Generator.GenerateStructure(StringBuilder($"SlimeArenaVar{WorldGen.genRand.Next(1,4)}"), rect.TopLeft().ToPoint16(), Mod);
+			//Generator.GenerateStructure(StringBuilder($"SlimeArenaVar{WorldGen.genRand.Next(1,4)}"), rect.TopLeft().ToPoint16(), Mod);
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 2)
 			//	);
@@ -564,7 +552,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_FleshArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
-			Generator.GenerateStructure(StringBuilder($"FleshArenaVar{1 + WorldGen.genRand.NextBool().ToInt()}"), rect.TopLeft().ToPoint16(), Mod);
+			//Generator.GenerateStructure(StringBuilder($"FleshArenaVar{1 + WorldGen.genRand.NextBool().ToInt()}"), rect.TopLeft().ToPoint16(), Mod);
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.FleshArenaVar, //Num)
 			//	);
@@ -607,7 +595,6 @@ namespace BossRush.Common.ChallengeMode {
 				}
 				else if (color.B == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-					AddPlatformToList(a, b);
 				}
 				else if (color.G == 255) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.Sandstone);
@@ -638,9 +625,6 @@ namespace BossRush.Common.ChallengeMode {
 		}
 		[Task]
 		public void Readjust_Final() {
-			for (int i = 0; i < Platform.Count; i++) {
-				GenerationHelper.SmartReadjustPlatform(Platform[i]);
-			}
 		}
 	}
 }
