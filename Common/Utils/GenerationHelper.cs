@@ -156,7 +156,7 @@ internal static partial class GenerationHelper {
 	/// </summary>
 	/// <param name="target">The region of the world to save, in tile coordinates</param>
 	/// <param name="targetPath">The name of the file to save. Automatically defaults to a file named after the date in the SavedStructures folder</param>
-	public static void SaveToFile(Rectangle target, string name = "unnamed structure") {
+	public static void SaveToFile(Rectangle target, string name = "unnamed structure", SaverOptimizedMethod method = SaverOptimizedMethod.Default) {
 		if (name == "")
 			name = "unnamed structure";
 
@@ -164,8 +164,8 @@ internal static partial class GenerationHelper {
 
 		if (!Directory.Exists(path))
 			Directory.CreateDirectory(path);
-
-		SaveStructure(target, path, name);
+		if (method == SaverOptimizedMethod.Default)
+			SaveStructure(target, path, name);
 		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
 	}
 	/// <summary>
@@ -184,19 +184,22 @@ internal static partial class GenerationHelper {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
 					//Since this just saving, it is completely fine to be slow
 					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType && tile.TileFrameX != outSideLoop.TileFrameX) {
+					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/) {
 						if (distance != 0) {
 							w.Write(distance);
 						}
 						outSideLoop = tile;
 						TileData td = new(tile);
 						w.Write(td.ToString());
-						distance = 0;
+						distance = 1;
 					}
 					else {
 						distance++;
 					}
 				}
+			}
+			if (distance != 0) {
+				w.Write(distance);
 			}
 			w.Close();
 			file.Close();
@@ -207,20 +210,45 @@ internal static partial class GenerationHelper {
 		}
 	}
 }
+/// <summary>
+/// TODO : Implement the below optimize saving method
+/// All of these act differently so it is as expected
+/// </summary>
+public enum SaverOptimizedMethod : byte {
+	/// <summary>
+	/// The default optimization, it is highly recommend to use this method when you are saving a small building
+	/// </summary>
+	Default,
+	/// <summary>
+	/// The default optimization but instead horizontal
+	/// </summary>
+	HorizontalDefault,
+	/// <summary>
+	/// This optimization method will save the following structure in rectangle-like<br/>
+	/// useful for wanting to save a massive arena structure that have a lot of open space
+	/// </summary>
+	MultiStructure,
+	/// <summary>
+	/// Default optimization but seperate wall and tile into 2 different field
+	/// </summary>
+	WallTileSeperate,
+
+}
 public class TileData {
-	public int Tile_Type = 0;
-	public int Tile_FrameX = 0;
-	public int Tile_FrameY = 0;
-	public int Tile_WallData = 0;
+	public ushort Tile_Type = 0;
+	public short Tile_FrameX = 0;
+	public short Tile_FrameY = 0;
+	public ushort Tile_WallData = 0;
 	public byte Tile_WireData = 0;
 	public byte Tile_LiquidData = byte.MaxValue;
 	public byte Tile_Liquid = 0;
 	public bool Tile_HasActuator = false;
+	public bool Tile_Air = false;
 	public TileData() {
 
 	}
 
-	public TileData(int tileType, int tileFrameX, int tileFrameY, int tile_WallData, byte tile_WireData, bool tile_HasActuator) {
+	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, byte tile_WireData, bool tile_HasActuator) {
 		Tile_Type = tileType;
 		Tile_FrameX = tileFrameX;
 		Tile_FrameY = tileFrameY;
@@ -229,10 +257,21 @@ public class TileData {
 		Tile_HasActuator = tile_HasActuator;
 	}
 	public TileData(Tile tile) {
-		Tile_Type = tile.TileType;
-		Tile_FrameX = tile.TileFrameX;
-		Tile_FrameY = tile.TileFrameY;
-		Tile_WallData = tile.WallType;
+		if (tile.Get<TileWallWireStateData>().HasTile) {
+			Tile_Type = tile.TileType;
+			if (tile.TileFrameX != -1) {
+				Tile_FrameX = tile.TileFrameX;
+			}
+			if (tile.TileFrameY != -1) {
+				Tile_FrameY = tile.TileFrameY;
+			}
+		}
+		else {
+			Tile_Air = true;
+		}
+		if (tile.WallType != 0) {
+			Tile_WallData = tile.WallType;
+		}
 		if (tile.RedWire) {
 			Tile_WireData = 1;
 		}
@@ -255,91 +294,41 @@ public class TileData {
 	/// </summary>
 	/// <param name="Tile"></param>
 	public TileData(string Tile) {
+		char c = ' ';
+		string NumberString = "";
 		for (int i = 0; i < Tile.Length; i++) {
-			Char c = Tile[i];
-			string NumberString = "";
-			if (c == 'T') {
-				for (int l = i; l < Tile.Length; l++) {
-					if (char.IsNumber(Tile[l])) {
-						NumberString += Tile[l];
-					}
-					else {
-						i = l;
-						Tile_Type = int.Parse(NumberString);
-						NumberString = "";
-						break;
-					}
-				}
+			if (char.IsNumber(Tile[i])) {
+				NumberString += Tile[i];
 			}
-			if (c == 'X') {
-				for (int l = i; l < Tile.Length; l++) {
-					if (char.IsNumber(Tile[l])) {
-						NumberString += Tile[l];
+			else {
+				if (c != ' ') {
+					switch (c) {
+						case 'T':
+							Tile_Type = ushort.Parse(NumberString); break;
+						case 'X':
+							Tile_FrameX = short.Parse(NumberString); break;
+						case 'Y':
+							Tile_FrameY = short.Parse(NumberString); break;
+						case 'W':
+							Tile_WallData = ushort.Parse(NumberString); break;
+						case 'L':
+							Tile_Liquid = byte.Parse(NumberString); break;
+						case 'D':
+							Tile_LiquidData = byte.Parse(NumberString); break;
+						case 'A':
+							Tile_HasActuator = true; break;
 					}
-					else {
-						i = l;
-						Tile_FrameX = int.Parse(NumberString);
-						NumberString = "";
-						break;
-					}
+					NumberString = "";
 				}
-
-			}
-			if (c == 'Y') {
-				for (int l = i; l < Tile.Length; l++) {
-					if (char.IsNumber(Tile[l])) {
-						NumberString += Tile[l];
-					}
-					else {
-						i = l;
-						Tile_FrameY = int.Parse(NumberString);
-						NumberString = "";
-						break;
-					}
-				}
-			}
-			if (c == 'W') {
-				for (int l = i; l < Tile.Length; l++) {
-					if (char.IsNumber(Tile[l])) {
-						NumberString += Tile[l];
-					}
-					else {
-						i = l;
-						Tile_WallData = int.Parse(NumberString);
-						NumberString = "";
-						break;
-					}
-				}
-			}
-			if (c == 'L') {
-				for (int l = i; l < Tile.Length; l++) {
-					if (char.IsNumber(Tile[l])) {
-						NumberString += Tile[l];
-					}
-					else {
-						Tile_Liquid = byte.Parse(NumberString);
-						NumberString = "";
-						break;
-					}
-				}
-			}
-			if (c == 'D') {
-				for (int l = i; l < Tile.Length; l++) {
-					if (char.IsNumber(Tile[l])) {
-						NumberString += Tile[l];
-					}
-					else {
-						i = l;
-						Tile_LiquidData = byte.Parse(NumberString);
-						break;
-					}
-				}
-			}
-			if (c == 'A') {
-				Tile_HasActuator = true;
+				c = Tile[i];
 			}
 		}
 	}
+	/// <summary>
+	/// Use this method during world gen is advised<br/>
+	/// But only if there are actually anything implemented into this method
+	/// </summary>
+	public virtual void PlaceTile() { }
 	public override string ToString() {
 		string T = "T" + Tile_Type;
 		string X = "X" + Tile_FrameX;
@@ -348,10 +337,13 @@ public class TileData {
 		string L = "L" + Tile_Liquid;
 		string D = "D" + Tile_LiquidData;
 		string ToString = "";
-		if (Tile_Type < TileID.Count) {
+		if (Tile_Type < TileID.Count && !Tile_Air) {
 			ToString += T;
 			ToString += X;
 			ToString += Y;
+		}
+		else {
+			ToString += 'N';
 		}
 		if (Tile_WallData < WallID.Count) {
 			ToString += W;
@@ -361,7 +353,7 @@ public class TileData {
 			ToString += D;
 		}
 		if (Tile_HasActuator) {
-			ToString += "[A]";
+			ToString += "A";
 		}
 		return "{" + ToString + "}";
 	}

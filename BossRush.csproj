@@ -13,9 +13,6 @@
     <None Remove="Contents\Items\Weapon\DupeSynergy\**" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Remove="Assets\TestFormat\SlimeArenaVer2.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
     <None Remove="Contents\Artifacts\BootsOfSpeedManipulationArtifact.png" />
     <None Remove="Contents\Artifacts\HeartOfEarthArtifact.png" />
@@ -52,6 +49,12 @@
     <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\TestFormat\" />
     <Folder Include="Contents\Tiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="StructureHelper">
+      <HintPath>..\..\ModReader\StructureHelper\StructureHelper.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

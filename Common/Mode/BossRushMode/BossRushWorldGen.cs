@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
+using StructureHelper;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -355,65 +356,63 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_TundraArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(11, 10, 3, 3);
 			//Generator.GenerateStructure(StringBuilder($"TundraArenaVar{1}"), rect.TopLeft().ToPoint16(), Mod);
-			//ImageData arena = ImageStructureLoader.Get(
-			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.TundraArena, 1)
-			//	);
-			//arena.EnumeratePixels((a, b, color) => {
-			//	a += rect.X;
-			//	b += rect.Y;
-			//	if (a > rect.Right || b > rect.Bottom) {
-			//		return;
-			//	}
-			//	GenerationHelper.FastRemoveTile(a, b);
-			//	if (color.R == 255 && color.G == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
-			//	}
-			//	else if (color.R == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.IceBlock);
-			//	}
-			//	else if (color.R == 240) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.BreakableIce);
-			//	}
-			//	else if (color.B == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//		AddPlatformToList(a, b);
-			//	}
-			//	GenerationHelper.FastPlaceWall(a, b, WallID.IceUnsafe);
-			//});
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.TundraArena, 1)
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.G == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.IceBlock);
+				}
+				else if (color.R == 240) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.BreakableIce);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.IceUnsafe);
+			});
 			Room.Add(BiomeAreaID.Tundra, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_CrimsonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(6, 5, 3, 3);
 			//Generator.GenerateStructure(StringBuilder($"CrimsonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
-			//ImageData arena = ImageStructureLoader.Get(
-			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 2)
-			//	);
-			//arena.EnumeratePixels((a, b, color) => {
-			//	a += rect.X;
-			//	b += rect.Y;
-			//	if (a > rect.Right || b > rect.Bottom) {
-			//		return;
-			//	}
-			//	GenerationHelper.FastRemoveTile(a, b);
-			//	if (color.R == 255 && color.G == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
-			//	}
-			//	else if (color.R == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Crimstone);
-			//	}
-			//	else if (color.R == 200 && color.G == 10) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.CrimsonGrass);
-			//	}
-			//	else if (color.R == 200 && color.G == 100) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
-			//	}
-			//	else if (color.B == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//		AddPlatformToList(a, b);
-			//	}
-			//	GenerationHelper.FastPlaceWall(a, b, WallID.CrimsonUnsafe1);
-			//});
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.CrimsonArena, 2)
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.G == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Crimstone);
+				}
+				else if (color.R == 200 && color.G == 10) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.CrimsonGrass);
+				}
+				else if (color.R == 200 && color.G == 100) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.CrimsonUnsafe1);
+			});
 			Room.Add(BiomeAreaID.Crimson, new List<Rectangle> { rect });
 		}
 		[Task]
@@ -452,73 +451,100 @@ namespace BossRush.Common.ChallengeMode {
 		public void Create_HallowArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(9, 15, 3, 3);
 			//Generator.GenerateStructure(StringBuilder($"HallowArenaVar{WorldGen.genRand.Next(1, 3)}"), rect.TopLeft().ToPoint16(), Mod);
-			//ImageData arena = ImageStructureLoader.Get(
-			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.HallowArena, 1)
-			//	);
-			//arena.EnumeratePixels((a, b, color) => {
-			//	a += rect.X;
-			//	b += rect.Y;
-			//	if (a > rect.Right || b > rect.Bottom) {
-			//		return;
-			//	}
-			//	GenerationHelper.FastRemoveTile(a, b);
-			//	if (color.R == 255 && color.G == 255 && color.B == 0) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
-			//	}
-			//	else if (color.R == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Pearlstone);
-			//	}
-			//	else if (color.R == 200 && color.G == 10) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.HallowedGrass);
-			//	}
-			//	else if (color.R == 200 && color.G == 100) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
-			//	}
-			//	else if (color.B == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//		AddPlatformToList(a, b);
-			//	}
-			//	GenerationHelper.FastPlaceWall(a, b, WallID.HallowUnsafe1);
-			//});
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.HallowArena, 1)
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Pearlstone);
+				}
+				else if (color.R == 200 && color.G == 10) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.HallowedGrass);
+				}
+				else if (color.R == 200 && color.G == 100) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Dirt);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.HallowUnsafe1);
+			});
 			Room.Add(BiomeAreaID.Hallow, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_DungeonArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(13, 5, 2, 2);
 			//Generator.GenerateStructure(StringBuilder($"DungeonArenaVar{WorldGen.genRand.Next(1, 4)}"), rect.TopLeft().ToPoint16(), Mod);
-			//ImageData arena = ImageStructureLoader.Get(
-			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.DungeonAreana, 1)
-			//	);
-			//arena.EnumeratePixels((a, b, color) => {
-			//	a += rect.X;
-			//	b += rect.Y;
-			//	if (a > rect.Right || b > rect.Bottom) {
-			//		return;
-			//	}
-			//	GenerationHelper.FastRemoveTile(a, b);
-			//	if (color.R == 255 && color.G == 255 && color.B == 0) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
-			//	}
-			//	else if (color.R == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
-			//	}
-			//	else if (color.B == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//		AddPlatformToList(a, b);
-			//	}
-			//	if (color.G == 255 && color.R == 0) {
-			//		GenerationHelper.FastPlaceWall(a, b, WallID.PinkDungeon);
-			//	}
-			//	else {
-			//		GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeonUnsafe);
-			//	}
-			//});
+			ImageData arena = ImageStructureLoader.Get(
+				ImageStructureLoader.StringBuilder(ImageStructureLoader.DungeonAreana, 1)
+				);
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.G == 255 && color.B == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				if (color.G == 255 && color.R == 0) {
+					GenerationHelper.FastPlaceWall(a, b, WallID.PinkDungeon);
+				}
+				else {
+					GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeonUnsafe);
+				}
+			});
 			Room.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			//Generator.GenerateStructure(StringBuilder($"SlimeArenaVar{WorldGen.genRand.Next(1,4)}"), rect.TopLeft().ToPoint16(), Mod);
+			List<GenPassData> datalist = ModContent.GetInstance<RogueLikeWorldGenSystem>().list_genPass;
+			int X = rect.X;
+			int Y = rect.Y;
+			int extraY = 0;
+			int extraX = 0;
+			for (int i = 0; i < datalist.Count; i++) {
+				GenPassData gdata = datalist[i];
+				for (int l = 0; l < gdata.Count; l++) {
+					if (extraY >= rect.Height) {
+						extraY = 0;
+						extraX++;
+					}
+					Tile tile = Main.tile[X + extraX, Y + extraY];
+					TileData data = gdata.tileData;
+					if (data.Tile_Air) {
+						GenerationHelper.FastRemoveTile(X + extraX, Y + extraY);
+					}
+					else {
+						tile.TileType = data.Tile_Type;
+						tile.WallType = data.Tile_WallData;
+						tile.TileFrameX = data.Tile_FrameX;
+						tile.TileFrameY = data.Tile_FrameY;
+						tile.TileColor = PaintID.None;
+						tile.Get<TileWallWireStateData>().HasTile = true;
+					}
+					extraY++;
+				}
+			}
+
+			//Old
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 2)
 			//	);
@@ -543,38 +569,34 @@ namespace BossRush.Common.ChallengeMode {
 			//	}
 			//	else if (color.B == 255) {
 			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//		AddPlatformToList(a, b);
 			//	}
 			//	GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
 			//});
-			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+			//Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_FleshArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
 			//Generator.GenerateStructure(StringBuilder($"FleshArenaVar{1 + WorldGen.genRand.NextBool().ToInt()}"), rect.TopLeft().ToPoint16(), Mod);
-			//ImageData arena = ImageStructureLoader.Get(
-			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.FleshArenaVar, //Num)
-			//	);
-			//arena.EnumeratePixels((a, b, color) => {
-			//	a += rect.X;
-			//	b += rect.Y;
-			//	if (a > rect.Right || b > rect.Bottom) {
-			//		return;
-			//	}
-			//	GenerationHelper.FastRemoveTile(a, b);
-			//	if (color.R == 255 && color.G == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
-			//	}
-			//	else if (color.R == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.FleshBlock);
-			//	}
-			//	else if (color.B == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//		AddPlatformToList(a, b);
-			//	}
-			//	GenerationHelper.FastPlaceWall(a, b, WallID.Flesh);
-			//});
+			ImageData arena = ImageStructureLoader.Get(ImageStructureLoader.StringBuilder(ImageStructureLoader.FleshArenaVar, 2));
+			arena.EnumeratePixels((a, b, color) => {
+				a += rect.X;
+				b += rect.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.G == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
+				}
+				else if (color.R == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.FleshBlock);
+				}
+				else if (color.B == 255) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.Flesh);
+			});
 			Room.Add(BiomeAreaID.FleshRealm, new List<Rectangle> { rect });
 		}
 		[Task]
