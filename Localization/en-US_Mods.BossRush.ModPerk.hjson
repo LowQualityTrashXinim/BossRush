@@ -302,6 +302,7 @@ OverchargedMana: {
 		+ Your mana regenaration is increases
 		+ When at 50%, your mana regenaration is further increases
 		+ When you have full mana deal magic explode damage and +77% magic damage
+		+ When your current mana value is greater than your current life value, strengthen above effect
 		'''
 }
 
