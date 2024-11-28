@@ -300,7 +300,8 @@ OverchargedMana: {
 	Description:
 		'''
 		+ Your mana regenaration is increases
-		+ When you have full mana deal magic explode damage and +33% magic damage
+		+ When at 50%, your mana regenaration is further increases
+		+ When you have full mana deal magic explode damage and +77% magic damage
 		'''
 }
 
@@ -308,7 +309,7 @@ BeyondCritcal: {
 	DisplayName: Beyond Critical
 	Description:
 		'''
-		+ You have 3% chance to ignore 90% target hit defense and increases damage by 2.5 time
+		+ You have 4% chance to ignore 90% target hit defense and increases damage by 2.5 time
 		+ Increases critcal strike chance by 5%
 		'''
 }
@@ -342,12 +343,13 @@ KnockpackPerk: {
 		'''
 }
 
-ImprovedManaPotion: {
-	DisplayName: Improved Mana Potion
+ImprovedPotion: {
+	DisplayName: "Mana/Healing Potion+"
 	Description:
 		'''
-		+ During mana sickness, increases mana regen capability
-		- After mana sicnkess duration is over, you can't consume any mana potion for 30s
+		+ Healing potion is heal you 70% more
+		+ During mana sickness, increases mana regen capability massively
+		- After mana sicnkess duration is over, you can't consume any mana potion for 10s
 		'''
 }
 

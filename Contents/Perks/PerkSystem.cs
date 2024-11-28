@@ -28,9 +28,14 @@ namespace BossRush.Contents.Perks {
 		// how is drinking a potion with left click works differently from quick heal?... talking about a fresh spaghetti serving right there.
 		public override void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+			StatModifier healingPotionstat = StatModifier.Default;
 			if (perkplayer.perk_PotionCleanse) {
-				healValue /= 2;
+				healingPotionstat -= .5f;
 			}
+			if (perkplayer.perk_ImprovedPotion) {
+				healingPotionstat += .7f;
+			}
+			healValue = (int)healingPotionstat.ApplyTo(healValue);
 		}
 
 		public override bool ConsumeItem(Item item, Player player) {
@@ -56,7 +61,7 @@ namespace BossRush.Contents.Perks {
 		}
 		private void On_Player_QuickMana(On_Player.orig_QuickMana orig, Player self) {
 			PerkPlayer perkplayer = self.GetModPlayer<PerkPlayer>();
-			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.perk_ImprovedManaPotion) {
+			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.perk_ImprovedPotion) {
 				return;
 			}
 			orig(self);
@@ -64,12 +69,12 @@ namespace BossRush.Contents.Perks {
 	}
 	class MagicOverhaulBuff : GlobalBuff {
 		public override void Update(int type, Player player, ref int buffIndex) {
-			if (type == BuffID.ManaSickness && player.GetModPlayer<PerkPlayer>().HasPerk<ImprovedManaPotion>()) {
+			if (type == BuffID.ManaSickness && player.GetModPlayer<PerkPlayer>().perk_ImprovedPotion) {
 				if (player.statMana < player.statManaMax2) {
-					player.statMana++;
+					player.statMana += 2;
 				}
 				if (player.buffTime[buffIndex] <= 0) {
-					player.AddBuff(ModContent.BuffType<ManaBlock>(), BossRushUtils.ToSecond(30));
+					player.AddBuff(ModContent.BuffType<ManaBlock>(), BossRushUtils.ToSecond(10));
 				}
 			}
 		}
@@ -96,7 +101,7 @@ namespace BossRush.Contents.Perks {
 		public bool perk_PotionExpert = false;
 		public bool perk_PotionCleanse = false;
 		public bool perk_AlchemistPotion = false;
-		public bool perk_ImprovedManaPotion = false;
+		public bool perk_ImprovedPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 		public bool perk_ScatterShot = false;
 		public override void Initialize() {
@@ -125,7 +130,7 @@ namespace BossRush.Contents.Perks {
 			perk_PotionExpert = false;
 			perk_PotionCleanse = false;
 			perk_AlchemistPotion = false;
-			perk_ImprovedManaPotion = false;
+			perk_ImprovedPotion = false;
 			perk_ScatterShot = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
