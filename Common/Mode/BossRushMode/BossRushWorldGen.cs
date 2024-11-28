@@ -260,7 +260,7 @@ namespace BossRush.Common.ChallengeMode {
 			Main.worldSurface = (int)(Main.maxTilesY * .22f);
 			Main.rockLayer = (int)(Main.maxTilesY * .34f);
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 15),
-				(i, j) => { GenerationHelper.FastPlaceTile(i, j, TileID.Dirt, PaintID.BlackPaint); });
+				(i, j) => { GenerationHelper.FastPlaceTile(i, j, TileID.GraniteBlock); });
 			WorldGen._genRand = new UnifiedRandom(WorldGen._genRandSeed);
 		}
 		[Task]
@@ -515,34 +515,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			List<GenPassData> datalist = ModContent.GetInstance<RogueLikeWorldGenSystem>().list_genPass;
-			int X = rect.X;
-			int Y = rect.Y;
-			int extraY = 0;
-			int extraX = 0;
-			for (int i = 0; i < datalist.Count; i++) {
-				GenPassData gdata = datalist[i];
-				for (int l = 0; l < gdata.Count; l++) {
-					if (extraY >= rect.Height) {
-						extraY = 0;
-						extraX++;
-					}
-					Tile tile = Main.tile[X + extraX, Y + extraY];
-					TileData data = gdata.tileData;
-					if (data.Tile_Air) {
-						GenerationHelper.FastRemoveTile(X + extraX, Y + extraY);
-					}
-					else {
-						tile.TileType = data.Tile_Type;
-						tile.WallType = data.Tile_WallData;
-						tile.TileFrameX = data.Tile_FrameX;
-						tile.TileFrameY = data.Tile_FrameY;
-						tile.TileColor = PaintID.None;
-						tile.Get<TileWallWireStateData>().HasTile = true;
-					}
-					extraY++;
-				}
-			}
+			GenerationHelper.PlaceStructure(rect, SaverOptimizedMethod.Default);
 
 			//Old
 			//ImageData arena = ImageStructureLoader.Get(

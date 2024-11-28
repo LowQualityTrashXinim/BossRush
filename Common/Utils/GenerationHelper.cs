@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using BossRush.Common.Systems.Achievement;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BossRush.Common.Utils;
 
@@ -150,6 +151,38 @@ internal static partial class GenerationHelper {
 	}
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
+	}
+	/// <summary>
+	/// Use this to place the structure in world gen code
+	/// </summary>
+	/// <param name="method">the method that was uses to optimize the file</param>
+	public static void PlaceStructure(Rectangle rect, SaverOptimizedMethod method) {
+		List<GenPassData> datalist = ModContent.GetInstance<RogueLikeWorldGenSystem>().list_genPass;
+		if (method == SaverOptimizedMethod.Default) {
+			int X = rect.X;
+			int Y = rect.Y;
+			int extraY = 0;
+			int extraX = 0;
+			for (int i = 0; i < datalist.Count; i++) {
+				GenPassData gdata = datalist[i];
+				for (int l = 0; l < gdata.Count; l++) {
+					if (extraY >= rect.Height) {
+						extraY = 0;
+						extraX++;
+					}
+					Tile tile = Main.tile[X + extraX, Y + extraY];
+					TileData data = gdata.tileData;
+					FastRemoveTile(X + extraX, Y + extraY);
+					if (!data.Tile_Air) {
+						data.PlaceTile(tile);
+					}
+					else {
+						tile.WallType = data.Tile_WallData;
+					}
+					extraY++;
+				}
+			}
+		}
 	}
 	/// <summary>
 	/// Saves a given region of the world as a structure file
@@ -317,10 +350,32 @@ public class TileData {
 							Tile_LiquidData = byte.Parse(NumberString); break;
 						case 'A':
 							Tile_HasActuator = true; break;
+						case 'N':
+							Tile_Air = true; break;
 					}
 					NumberString = "";
 				}
 				c = Tile[i];
+			}
+		}
+		if (c != ' ') {
+			switch (c) {
+				case 'T':
+					Tile_Type = ushort.Parse(NumberString); break;
+				case 'X':
+					Tile_FrameX = short.Parse(NumberString); break;
+				case 'Y':
+					Tile_FrameY = short.Parse(NumberString); break;
+				case 'W':
+					Tile_WallData = ushort.Parse(NumberString); break;
+				case 'L':
+					Tile_Liquid = byte.Parse(NumberString); break;
+				case 'D':
+					Tile_LiquidData = byte.Parse(NumberString); break;
+				case 'A':
+					Tile_HasActuator = true; break;
+				case 'N':
+					Tile_Air = true; break;
 			}
 		}
 	}
@@ -328,7 +383,13 @@ public class TileData {
 	/// Use this method during world gen is advised<br/>
 	/// But only if there are actually anything implemented into this method
 	/// </summary>
-	public virtual void PlaceTile() { }
+	public virtual void PlaceTile(Tile tile) {
+		tile.TileType = Tile_Type;
+		tile.TileFrameX = Tile_FrameX;
+		tile.TileFrameY = Tile_FrameY;
+		tile.WallType = Tile_WallData;
+		tile.Get<TileWallWireStateData>().HasTile = true;
+	}
 	public override string ToString() {
 		string T = "T" + Tile_Type;
 		string X = "X" + Tile_FrameX;
