@@ -1561,10 +1561,10 @@ internal class PerkUIState : UIState {
 		}
 		foreach (var item in list_perkbtn) {
 			if (listOfPerk.Count < 1) {
-				item.perkType = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
+				item.ChangePerkType(Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() }));
 			}
 			else {
-				item.perkType = Main.rand.Next(listOfPerk);
+				item.ChangePerkType(Main.rand.Next(listOfPerk));
 			}
 		}
 		modplayer.Modify_RerollCount(1, true);
@@ -1722,6 +1722,11 @@ class PerkUIImageButton : UIImageButton {
 	private Asset<Texture2D> texture;
 	public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture;
+	}
+	public void ChangePerkType(int type) {
+		perkType = type;
+		texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
+		SetImage(texture);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -1 });
