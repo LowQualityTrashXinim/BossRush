@@ -211,12 +211,11 @@ internal static partial class GenerationHelper {
 		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
 	}
 	/// <summary>
-	/// Transforms a region of the world into a structure TagCompound. Must be called in an unsafe context!
+	/// Attempt to save a structure into a file
 	/// </summary>
 	/// <param name="target">The region to transform</param>
 	/// <param name="path">Path to save</param>
 	/// <param name="name">File's name</param>
-	/// 
 	public static void SaveStructure(Rectangle target, string path, string name) {
 		try {
 			using FileStream file = File.Create(Path.Combine(path, name));
@@ -244,6 +243,55 @@ internal static partial class GenerationHelper {
 			}
 			if (distance != 0) {
 				m.Write(distance);
+			}
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
+	/// <summary>
+	/// Attempt to save a structure into a file with rectangle format
+	/// </summary>
+	/// <param name="target">The region to transform</param>
+	/// <param name="path">Path to save</param>
+	/// <param name="name">File's name</param>
+	public static void SaveRectStructure(Rectangle target, string path, string name) {
+		try {
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
+
+			Tile outSideLoop = new();
+			int distanceX = 0;
+			int distanceY = 0;
+			int X = target.X, Y = target.Y, W = target.Width, H = target.Height;
+			for (int x = X; x <= X + W; x++) {
+				for (int y = Y; y <= Y + H; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
+						if (distanceY != 0) {
+							if (distanceY >= H) {
+								m.Write('Y' + H);
+							}
+
+
+							m.Write('Y' + distanceY);
+
+						}
+						outSideLoop = tile;
+						TileData td = new(tile);
+						m.Write(td.ToString());
+						distanceY = 1;
+					}
+					else {
+						distanceY++;
+					}
+					distanceX++;
+				}
+			}
+			if (distanceY != 0) {
+				m.Write('Y' + distanceY);
 			}
 		}
 		catch (Exception ex) {

@@ -11,10 +11,6 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
-using StructureHelper;
-using System.IO;
-using System.Text;
-using System.Diagnostics;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -518,48 +514,8 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			Stopwatch watch = new();
-			watch.Start();
 			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect, SaverOptimizedMethod.Default);
-			watch.Stop();
-			Mod.Logger.Info("Built in mod : " + watch.ToString());
-			watch.Restart();
-
-			//Generator.GenerateStructure("Assets/Structures/SlimeArenaVar2", rect.TopLeft().ToPoint16(), Mod);
-			//watch.Stop();
-			//Mod.Logger.Info("Structure Helper mod : " + watch.ToString());
-			//watch.Restart();
-
-			//ImageData arena = ImageStructureLoader.Get(
-			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 2)
-			//	);
-			//arena.EnumeratePixels((a, b, color) => {
-			//	a += rect.X;
-			//	b += rect.Y;
-			//	if (a > rect.Right || b > rect.Bottom) {
-			//		return;
-			//	}
-			//	GenerationHelper.FastRemoveTile(a, b);
-			//	if (color.R == 255 && color.G == 255 && color.B == 0) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Torches);
-			//	}
-			//	else if (color.R == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
-			//	}
-			//	else if (color.R == 200) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.PinkSlimeBlock);
-			//	}
-			//	else if (color.R == 150) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.FrozenSlimeBlock);
-			//	}
-			//	else if (color.B == 255) {
-			//		GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
-			//	}
-			//	GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
-			//});
-			//watch.Stop();
-			//Mod.Logger.Info("Old built in mod : " + watch.ToString());
-			//Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]
 		public void Create_FleshArena() {

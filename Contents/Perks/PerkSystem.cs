@@ -12,6 +12,8 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using System;
+using Humanizer;
+using Newtonsoft.Json.Linq;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -93,7 +95,23 @@ namespace BossRush.Contents.Perks {
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
 		public int PerkAmount = 4;
-		public byte perk_Reroll = 1;
+		private byte perk_Reroll = 1;
+		public void Modify_RerollCount(byte amount, bool negative = false) {
+			int simulate = perk_Reroll + amount;
+			if (simulate < byte.MinValue) {
+				perk_Reroll = byte.MinValue;
+			}
+			else if (simulate > byte.MaxValue) {
+				perk_Reroll = byte.MaxValue;
+			}
+			if (negative) {
+				perk_Reroll -= amount;
+			}
+			else {
+				perk_Reroll += amount;
+			}
+		}
+		public byte Reroll => perk_Reroll;
 		/// <summary>
 		/// Keys : Perk type<br/>
 		/// Values : Stack value

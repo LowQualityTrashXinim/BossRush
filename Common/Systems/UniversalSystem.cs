@@ -1523,10 +1523,13 @@ internal class PerkUIState : UIState {
 	}
 
 	private void Reroll_OnUpdate(UIElement affectedElement) {
+		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().Reroll == 0) {
+			reroll.Hide = true;
+		}
 		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
-		if(affectedElement.IsMouseHovering) {
+		if (affectedElement.IsMouseHovering) {
 			Main.instance.MouseText("Reroll Perk !");
 		}
 	}
@@ -1564,14 +1567,13 @@ internal class PerkUIState : UIState {
 				item.perkType = Main.rand.Next(listOfPerk);
 			}
 		}
-		modplayer.perk_Reroll--;
-		listeningElement.Remove();
+		modplayer.Modify_RerollCount(1, true);
 	}
 
 	public override void OnActivate() {
 		list_perkbtn.Clear();
-		for (int i = Elements.Count -1; i >= 0; i--) {
-			if(Elements[i].UniqueId != reroll.UniqueId) {
+		for (int i = Elements.Count - 1; i >= 0; i--) {
+			if (Elements[i].UniqueId != reroll.UniqueId) {
 				Elements[i].Remove();
 			}
 		}

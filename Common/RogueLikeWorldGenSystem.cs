@@ -10,7 +10,7 @@ namespace BossRush.Common;
 public class RogueLikeWorldGenSystem : ModSystem {
 	public List<GenPassData> list_genPass = new();
 	public Dictionary<string, List<GenPassData>> dict_Struture = new();
-	public const string FileDestination = "Assets/TestFormat/";
+	public const string FileDestination = "Assets/Structures/";
 	public override void PostSetupContent() {
 		Stopwatch watch = new();
 		try {

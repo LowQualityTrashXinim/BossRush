@@ -51,9 +51,4 @@
   <ItemGroup>
     <Folder Include="Contents\Tiles\" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="StructureHelper">
-      <HintPath>..\..\ModReader\StructureHelper\StructureHelper.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
