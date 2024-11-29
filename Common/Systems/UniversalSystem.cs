@@ -478,7 +478,7 @@ internal class UniversalSystem : ModSystem {
 		if (context.Trim() == "relic") {
 			TestUser.SetState(relicUI);
 		}
-		if(context.Trim() == "skill") {
+		if (context.Trim() == "skill") {
 			TestUser.SetState(skillUI);
 		}
 	}
@@ -1450,6 +1450,9 @@ class btn_SkillSlotHolder : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		Player player = Main.LocalPlayer;
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (uitype == SkillUI.UIType_INVENTORY) {
@@ -1502,8 +1505,76 @@ internal class PerkUIState : UIState {
 	public const short GamblerState = 3;
 	public short StateofState = 0;
 	public UIText toolTip;
+	public Roguelike_UIImageButton reroll = null;
+	List<PerkUIImageButton> list_perkbtn = new();
+	public override void OnInitialize() {
+		reroll = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		reroll.OnLeftClick += Reroll_OnLeftClick;
+		reroll.OnUpdate += Reroll_OnUpdate;
+		reroll.UISetWidthHeight(52, 52);
+		reroll.HAlign = .5f;
+		reroll.VAlign = .5f;
+		Append(reroll);
+
+		list_perkbtn = new();
+		toolTip = new UIText("");
+		Info = "";
+		Append(toolTip);
+	}
+
+	private void Reroll_OnUpdate(UIElement affectedElement) {
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if(affectedElement.IsMouseHovering) {
+			Main.instance.MouseText("Reroll Perk !");
+		}
+	}
+
+	private void Reroll_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
+		List<int> listOfPerk = new List<int>();
+		Player player = Main.LocalPlayer;
+		player.TryGetModPlayer(out PerkPlayer modplayer);
+		if (StateofState == DefaultState) {
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (modplayer.perks.ContainsKey(i)) {
+					if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
+				}
+				listOfPerk.Add(i);
+			}
+		}
+		if (StateofState == StarterPerkState) {
+			listOfPerk = [.. TerrariaArrayID.StarterPerk];
+		}
+		foreach (var item in list_perkbtn) {
+			if (listOfPerk.Count < 1) {
+				item.perkType = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
+			}
+			else {
+				item.perkType = Main.rand.Next(listOfPerk);
+			}
+		}
+		modplayer.perk_Reroll--;
+		listeningElement.Remove();
+	}
+
 	public override void OnActivate() {
-		Elements.Clear();
+		list_perkbtn.Clear();
+		for (int i = Elements.Count -1; i >= 0; i--) {
+			if(Elements[i].UniqueId != reroll.UniqueId) {
+				Elements[i].Remove();
+			}
+		}
 		Player player = Main.LocalPlayer;
 		if (player.TryGetModPlayer(out PerkPlayer modplayer)) {
 			if (StateofState == DefaultState) {
@@ -1519,9 +1590,6 @@ internal class PerkUIState : UIState {
 				ActivateGamblerUI(modplayer, player);
 			}
 		}
-		toolTip = new UIText("");
-		Info = "";
-		Append(toolTip);
 	}
 	private void ActivateDebugPerkUI(Player player) {
 		int amount = ModPerkLoader.TotalCount;
@@ -1541,8 +1609,10 @@ internal class PerkUIState : UIState {
 			Append(btn);
 			ModPerkLoader.GetPerk(i);
 		}
+		reroll.Hide = true;
 	}
 	private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player) {
+		reroll.Hide = false;
 		List<int> listOfPerk = new List<int>();
 		for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 			if (modplayer.perks.ContainsKey(i)) {
@@ -1559,8 +1629,8 @@ internal class PerkUIState : UIState {
 			}
 			listOfPerk.Add(i);
 		}
-		int amount = listOfPerk.Count;
 		Vector2 originDefault = new Vector2(26, 26);
+		int amount = listOfPerk.Count;
 		int perkamount = modplayer.PerkAmountModified();
 		for (int i = 0; i < perkamount; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
@@ -1570,7 +1640,7 @@ internal class PerkUIState : UIState {
 				texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
 			else
 				texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
-			if (i >= amount || i >= perkamount - 1) {
+			if (i >= amount) {
 				newperk = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
 				if (ModPerkLoader.GetPerk(newperk).textureString is not null)
 					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
@@ -1581,6 +1651,7 @@ internal class PerkUIState : UIState {
 				buttonWeapon.UISetWidthHeight(52, 52);
 				buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
 				buttonWeapon.Info = Info;
+				list_perkbtn.Add(buttonWeapon);
 				Append(buttonWeapon);
 				continue;
 			}
@@ -1591,10 +1662,12 @@ internal class PerkUIState : UIState {
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = newperk;
 			btn.Info = Info;
+			list_perkbtn.Add(btn);
 			Append(btn);
 		}
 	}
 	private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
+		reroll.Hide = false;
 		Vector2 originDefault = new Vector2(26, 26);
 		List<int> starterPerk = [.. TerrariaArrayID.StarterPerk];
 		int limit = 3;
@@ -1612,6 +1685,7 @@ internal class PerkUIState : UIState {
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = choosenperk.Type;
+			list_perkbtn.Add(btn);
 			Append(btn);
 		}
 	}
@@ -1636,6 +1710,7 @@ internal class PerkUIState : UIState {
 			btn.perkType = starterPerk[i];
 			Append(btn);
 		}
+		reroll.Hide = true;
 	}
 }
 //Do all the check in UI state since that is where the perk actually get create and choose

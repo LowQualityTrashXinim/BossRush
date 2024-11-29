@@ -21,6 +21,7 @@ namespace BossRush {
 		public static bool[] IsFireBuff;
 		public static bool[] IsPoisonBuff;
 		public static bool[] CanBeAffectByLastingVile;
+		public static bool[] AdvancedRPGItem;
 		public static Dictionary<int, List<int>> WeaponRarityDB;
 		private static List<Item> _synergyitem;
 		private static List<Item> _lostAccs;
@@ -54,7 +55,7 @@ namespace BossRush {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
 			IsPoisonBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.Poisoned, BuffID.Venom);
 			CanBeAffectByLastingVile = BuffID.Sets.Factory.CreateBoolSet(true, ModContent.BuffType<LastingVileBuff>());
-
+			AdvancedRPGItem = ItemID.Sets.Factory.CreateBoolSet();
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
 			for (int i = 0; i < cacheitemList.Count; i++) {
 				Item item = cacheitemList[i];
@@ -73,8 +74,9 @@ namespace BossRush {
 					}
 					else if (globalItem.RPGItem) {
 						if (globalItem.AdvancedBuffItem) {
-							_rpgitem.Add(item);
+							AdvancedRPGItem[item.type] = true;
 						}
+						_rpgitem.Add(item);
 					}
 				}
 				if (item.ModItem is BaseTrinket) {

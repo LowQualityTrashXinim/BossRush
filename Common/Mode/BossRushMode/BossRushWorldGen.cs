@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
 using StructureHelper;
+using System.IO;
+using System.Text;
+using System.Diagnostics;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -515,9 +518,18 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			GenerationHelper.PlaceStructure(rect, SaverOptimizedMethod.Default);
+			Stopwatch watch = new();
+			watch.Start();
+			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect, SaverOptimizedMethod.Default);
+			watch.Stop();
+			Mod.Logger.Info("Built in mod : " + watch.ToString());
+			watch.Restart();
 
-			//Old
+			//Generator.GenerateStructure("Assets/Structures/SlimeArenaVar2", rect.TopLeft().ToPoint16(), Mod);
+			//watch.Stop();
+			//Mod.Logger.Info("Structure Helper mod : " + watch.ToString());
+			//watch.Restart();
+
 			//ImageData arena = ImageStructureLoader.Get(
 			//	ImageStructureLoader.StringBuilder(ImageStructureLoader.SlimeArena, 2)
 			//	);
@@ -545,6 +557,8 @@ namespace BossRush.Common.ChallengeMode {
 			//	}
 			//	GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
 			//});
+			//watch.Stop();
+			//Mod.Logger.Info("Old built in mod : " + watch.ToString());
 			//Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]

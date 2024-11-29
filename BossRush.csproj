@@ -49,7 +49,6 @@
     <PackageReference Update="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\TestFormat\" />
     <Folder Include="Contents\Tiles\" />
   </ItemGroup>
   <ItemGroup>

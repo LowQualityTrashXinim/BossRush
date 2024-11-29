@@ -459,7 +459,7 @@ public class PoisonII : ModAugments {
 public class VenomI : ModAugments {
 	public override void SetStaticDefaults() {
 		Chance = .07f;
-		tooltipColor = Color.PaleGreen;
+		tooltipColor = Color.Purple;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
 		npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
@@ -471,7 +471,7 @@ public class VenomI : ModAugments {
 }
 public class VenomII : ModAugments {
 	public override void SetStaticDefaults() {
-		tooltipColor = Color.PaleGreen;
+		tooltipColor = Color.Purple;
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.HasBuff(BuffID.Venom)) {

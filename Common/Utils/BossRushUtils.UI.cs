@@ -266,6 +266,18 @@ namespace BossRush {
 			DrawImage(spriteBatch);
 		}
 	}
-
+	class Roguelike_UIImageButton : UIImageButton {
+		public Roguelike_UIImageButton(Asset<Texture2D> texture) : base(texture) {
+		}
+		public bool Hide = false;
+		public virtual void DrawImage(SpriteBatch spriteBatch) { }
+		public sealed override void Draw(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
+			DrawImage(spriteBatch);
+		}
+	}
 }
 

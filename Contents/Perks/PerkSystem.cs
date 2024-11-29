@@ -11,6 +11,7 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using System;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -92,6 +93,7 @@ namespace BossRush.Contents.Perks {
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
 		public int PerkAmount = 4;
+		public byte perk_Reroll = 1;
 		/// <summary>
 		/// Keys : Perk type<br/>
 		/// Values : Stack value
@@ -264,6 +266,7 @@ namespace BossRush.Contents.Perks {
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
+			tag["perk_Reroll"] = perk_Reroll;
 		}
 		public override void LoadData(TagCompound tag) {
 			var PlayerPerks = tag.Get<List<int>>("PlayerPerks");
@@ -276,6 +279,9 @@ namespace BossRush.Contents.Perks {
 					perks.Remove(perks.Keys.ElementAt(i));
 				}
 			}
+			if (tag.TryGet("perk_Reroll", out byte va)) {
+				perk_Reroll = va;
+			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
@@ -286,6 +292,7 @@ namespace BossRush.Contents.Perks {
 				packet.Write(item);
 				packet.Write(perks[item]);
 			}
+			packet.Write(perk_Reroll);
 			packet.Send(toWho, fromWho);
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {
@@ -293,6 +300,7 @@ namespace BossRush.Contents.Perks {
 			int count = reader.ReadInt32();
 			for (int i = 0; i < count; i++)
 				perks.Add(reader.ReadInt32(), reader.ReadInt32());
+			perk_Reroll = reader.ReadByte();
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {

@@ -345,7 +345,7 @@ KnockpackPerk: {
 }
 
 ImprovedPotion: {
-	DisplayName: "Mana/Healing Potion+"
+	DisplayName: Mana/Healing Potion+
 	Description:
 		'''
 		+ Healing potion is heal you 70% more

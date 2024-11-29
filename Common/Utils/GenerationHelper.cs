@@ -11,7 +11,10 @@ using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
 using BossRush.Common.Systems.Achievement;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Text;
+using System.Diagnostics;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BossRush.Common.Utils;
 
@@ -156,30 +159,36 @@ internal static partial class GenerationHelper {
 	/// Use this to place the structure in world gen code
 	/// </summary>
 	/// <param name="method">the method that was uses to optimize the file</param>
-	public static void PlaceStructure(Rectangle rect, SaverOptimizedMethod method) {
-		List<GenPassData> datalist = ModContent.GetInstance<RogueLikeWorldGenSystem>().list_genPass;
+	public static void PlaceStructure(string FileName, Rectangle rect, SaverOptimizedMethod method) {
+		List<GenPassData> datalist;
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		if (modsystem.dict_Struture.ContainsKey(FileName)) {
+			datalist = modsystem.dict_Struture[FileName];
+		}
+		else {
+			return;
+		}
 		if (method == SaverOptimizedMethod.Default) {
-			int X = rect.X;
-			int Y = rect.Y;
-			int extraY = 0;
-			int extraX = 0;
+			int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
+
 			for (int i = 0; i < datalist.Count; i++) {
 				GenPassData gdata = datalist[i];
 				for (int l = 0; l < gdata.Count; l++) {
-					if (extraY >= rect.Height) {
-						extraY = 0;
-						extraX++;
+					if (offsetY >= rect.Height) {
+						offsetY = 0;
+						offsetX++;
 					}
-					Tile tile = Main.tile[X + extraX, Y + extraY];
+					holdX = X + offsetX; holdY = Y + offsetY;
+					Tile tile = Main.tile[holdX, holdY];
 					TileData data = gdata.tileData;
-					FastRemoveTile(X + extraX, Y + extraY);
 					if (!data.Tile_Air) {
 						data.PlaceTile(tile);
 					}
 					else {
+						FastRemoveTile(holdX, holdY);
 						tile.WallType = data.Tile_WallData;
 					}
-					extraY++;
+					offsetY++;
 				}
 			}
 		}
@@ -207,23 +216,25 @@ internal static partial class GenerationHelper {
 	/// <param name="target">The region to transform</param>
 	/// <param name="path">Path to save</param>
 	/// <param name="name">File's name</param>
+	/// 
 	public static void SaveStructure(Rectangle target, string path, string name) {
 		try {
-			FileStream file = File.Create(Path.Combine(path, name));
-			StreamWriter w = new(file);
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
+
 			Tile outSideLoop = new();
 			int distance = 0;
 			for (int x = target.X; x <= target.X + target.Width; x++) {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
 					//Since this just saving, it is completely fine to be slow
 					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/) {
+					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
 						if (distance != 0) {
-							w.Write(distance);
+							m.Write(distance);
 						}
 						outSideLoop = tile;
 						TileData td = new(tile);
-						w.Write(td.ToString());
+						m.Write(td.ToString());
 						distance = 1;
 					}
 					else {
@@ -232,10 +243,8 @@ internal static partial class GenerationHelper {
 				}
 			}
 			if (distance != 0) {
-				w.Write(distance);
+				m.Write(distance);
 			}
-			w.Close();
-			file.Close();
 		}
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());
@@ -267,7 +276,7 @@ public enum SaverOptimizedMethod : byte {
 	WallTileSeperate,
 
 }
-public class TileData {
+public struct TileData : ICloneable {
 	public ushort Tile_Type = 0;
 	public short Tile_FrameX = 0;
 	public short Tile_FrameY = 0;
@@ -277,8 +286,17 @@ public class TileData {
 	public byte Tile_Liquid = 0;
 	public bool Tile_HasActuator = false;
 	public bool Tile_Air = false;
+	public static TileData Default => new();
 	public TileData() {
-
+		Tile_Type = 0;
+		Tile_FrameX = 0;
+		Tile_FrameY = 0;
+		Tile_WallData = 0;
+		Tile_WireData = 0;
+		Tile_LiquidData = byte.MaxValue;
+		Tile_Liquid = 0;
+		Tile_HasActuator = false;
+		Tile_Air = false;
 	}
 
 	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, byte tile_WireData, bool tile_HasActuator) {
@@ -327,63 +345,51 @@ public class TileData {
 	/// </summary>
 	/// <param name="Tile"></param>
 	public TileData(string Tile) {
-		char c = ' ';
 		string NumberString = "";
+		char c = ' ';
 		for (int i = 0; i < Tile.Length; i++) {
 			if (char.IsNumber(Tile[i])) {
 				NumberString += Tile[i];
 			}
 			else {
 				if (c != ' ') {
-					switch (c) {
-						case 'T':
-							Tile_Type = ushort.Parse(NumberString); break;
-						case 'X':
-							Tile_FrameX = short.Parse(NumberString); break;
-						case 'Y':
-							Tile_FrameY = short.Parse(NumberString); break;
-						case 'W':
-							Tile_WallData = ushort.Parse(NumberString); break;
-						case 'L':
-							Tile_Liquid = byte.Parse(NumberString); break;
-						case 'D':
-							Tile_LiquidData = byte.Parse(NumberString); break;
-						case 'A':
-							Tile_HasActuator = true; break;
-						case 'N':
-							Tile_Air = true; break;
-					}
+
+					ParseStringData(c, NumberString);
 					NumberString = "";
+
 				}
 				c = Tile[i];
 			}
 		}
-		if (c != ' ') {
-			switch (c) {
-				case 'T':
-					Tile_Type = ushort.Parse(NumberString); break;
-				case 'X':
-					Tile_FrameX = short.Parse(NumberString); break;
-				case 'Y':
-					Tile_FrameY = short.Parse(NumberString); break;
-				case 'W':
-					Tile_WallData = ushort.Parse(NumberString); break;
-				case 'L':
-					Tile_Liquid = byte.Parse(NumberString); break;
-				case 'D':
-					Tile_LiquidData = byte.Parse(NumberString); break;
-				case 'A':
-					Tile_HasActuator = true; break;
-				case 'N':
-					Tile_Air = true; break;
-			}
+		if (c != ' ')
+			ParseStringData(c, NumberString);
+	}
+
+	private void ParseStringData(char c, string str) {
+		switch (c) {
+			case 'T':
+				Tile_Type = ushort.Parse(str); break;
+			case 'X':
+				Tile_FrameX = short.Parse(str); break;
+			case 'Y':
+				Tile_FrameY = short.Parse(str); break;
+			case 'W':
+				Tile_WallData = ushort.Parse(str); break;
+			case 'L':
+				Tile_Liquid = byte.Parse(str); break;
+			case 'D':
+				Tile_LiquidData = byte.Parse(str); break;
+			case 'A':
+				Tile_HasActuator = true; break;
+			case 'N':
+				Tile_Air = true; break;
 		}
 	}
 	/// <summary>
 	/// Use this method during world gen is advised<br/>
 	/// But only if there are actually anything implemented into this method
 	/// </summary>
-	public virtual void PlaceTile(Tile tile) {
+	public void PlaceTile(Tile tile) {
 		tile.TileType = Tile_Type;
 		tile.TileFrameX = Tile_FrameX;
 		tile.TileFrameY = Tile_FrameY;
@@ -391,31 +397,41 @@ public class TileData {
 		tile.Get<TileWallWireStateData>().HasTile = true;
 	}
 	public override string ToString() {
-		string T = "T" + Tile_Type;
-		string X = "X" + Tile_FrameX;
-		string Y = "Y" + Tile_FrameY;
-		string W = "W" + Tile_WallData;
-		string L = "L" + Tile_Liquid;
-		string D = "D" + Tile_LiquidData;
-		string ToString = "";
+		StringBuilder sb = new StringBuilder();
 		if (Tile_Type < TileID.Count && !Tile_Air) {
-			ToString += T;
-			ToString += X;
-			ToString += Y;
+			sb.Append("T").Append(Tile_Type);
+			sb.Append("X").Append(Tile_FrameX);
+			sb.Append("Y").Append(Tile_FrameY);
 		}
 		else {
-			ToString += 'N';
+			sb.Append("N");
 		}
 		if (Tile_WallData < WallID.Count) {
-			ToString += W;
+			sb.Append("W").Append(Tile_WallData);
 		}
 		if (Tile_LiquidData < LiquidID.Count && Tile_Liquid > 0) {
-			ToString += L;
-			ToString += D;
+			sb.Append("L").Append(Tile_Liquid);
+			sb.Append("D").Append(Tile_LiquidData);
 		}
 		if (Tile_HasActuator) {
-			ToString += "A";
+			sb.Append("A");
 		}
-		return "{" + ToString + "}";
+		return "{" + sb.ToString() + "}";
+	}
+
+	public object Clone() {
+		return this.MemberwiseClone();
+	}
+	public override bool Equals([NotNullWhen(true)] object obj) {
+		var TD = (TileData)obj;
+		return TD.Tile_Type == this.Tile_Type
+			&& TD.Tile_Liquid == this.Tile_Liquid
+			&& TD.Tile_LiquidData == this.Tile_LiquidData
+			&& TD.Tile_Air == this.Tile_Air
+			&& TD.Tile_FrameX == this.Tile_FrameX
+			&& TD.Tile_FrameY == this.Tile_FrameY
+			&& TD.Tile_HasActuator == this.Tile_HasActuator
+			&& TD.Tile_WallData == this.Tile_WallData
+			&& TD.Tile_WireData == this.Tile_WireData;
 	}
 }
