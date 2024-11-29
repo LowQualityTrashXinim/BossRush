@@ -207,7 +207,7 @@ EssenceLanternArtifact: {
 		[c/ffff00:Positive effect] :
 			+ Some essence orb have positive effect
 		[c/ab3e43:Negative effect] : 
-			+ Some essence orb have negative effect
+			- Some essence orb have negative effect
 		'''
 }
 

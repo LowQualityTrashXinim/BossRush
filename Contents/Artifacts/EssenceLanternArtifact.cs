@@ -19,7 +19,7 @@ public class EssenceLanternPlayer : ModPlayer {
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextBool(7) && EssenceLantern) {
-			int proj = Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), target.Center + Main.rand.NextVector2Circular(target.width, target.height), Vector2.Zero, ModContent.ProjectileType<EssenceProjectile>(), 1, 0, Player.whoAmI);
+			int proj = Projectile.NewProjectile(Player.GetSource_ItemUse(Player.HeldItem), target.Center + Main.rand.NextVector2CircularEdge(target.width, target.height) + Main.rand.NextVector2Circular(target.width, target.height), Vector2.Zero, ModContent.ProjectileType<EssenceProjectile>(), 1, 0, Player.whoAmI);
 			if (Main.projectile[proj].ModProjectile is EssenceProjectile essproj) {
 				essproj.EssenceType = Main.rand.Next(11);
 			}
@@ -133,16 +133,16 @@ public class EssenceProjectile : ModProjectile {
 		Projectile.width = Projectile.height = 10;
 		Projectile.friendly = true;
 		Projectile.tileCollide = false;
-		Projectile.timeLeft = BossRushUtils.ToSecond(15);
+		Projectile.timeLeft = BossRushUtils.ToSecond(45);
 		Projectile.penetrate = -1;
 		Projectile.extraUpdates = 3;
 	}
 	public override bool? CanDamage() => false;
 	public int EssenceType = -1;
 	public override void AI() {
-		Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / (float)BossRushUtils.ToSecond(15));
+		Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / (float)BossRushUtils.ToSecond(45));
 		Player player = Main.player[Projectile.owner];
-		if (Projectile.Center.IsCloseToPosition(player.Center, 225)) {
+		if (Projectile.Center.IsCloseToPosition(player.Center, 115)) {
 			Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .05f;
 			Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
 		}
