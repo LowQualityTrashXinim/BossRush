@@ -22,30 +22,26 @@ namespace BossRush {
 		public static bool[] IsPoisonBuff;
 		public static bool[] CanBeAffectByLastingVile;
 		public static bool[] AdvancedRPGItem;
-		public static Dictionary<int, List<int>> WeaponRarityDB;
-		private static List<Item> _synergyitem;
-		private static List<Item> _lostAccs;
-		private static List<Item> _trinket;
-		private static List<Item> _rpgitem;
+		public static Dictionary<int, List<int>> WeaponRarityDB { get; private set; }
+		public static List<Item> SynergyItem { get; private set; }
+		public static List<Item> LostAccessories { get; private set; }
+		public static List<Item> TrinketAccessories { get; private set; }
+		public static List<Item> RPGItem { get; private set; }
 
 		public static List<int> ListLootboxType;
-		public static List<Item> SynergyItem => _synergyitem;
-		public static List<Item> LostAccessories => _lostAccs;
-		public static List<Item> TrinketAccessories => _trinket;
-		public static List<Item> RPGItem => _rpgitem;
 		public override void OnModLoad() {
-			_trinket = new();
-			_rpgitem = new();
-			_synergyitem = new();
-			_lostAccs = new();
+			TrinketAccessories = new();
+			LostAccessories = new();
+			SynergyItem = new();
+			RPGItem = new();
 			WeaponRarityDB = new();
 			ListLootboxType = new();
 		}
 		public override void OnModUnload() {
-			_synergyitem = null;
-			_lostAccs = null;
-			_rpgitem = null;
-			_trinket = null;
+			SynergyItem = null;
+			LostAccessories = null;
+			RPGItem = null;
+			TrinketAccessories = null;
 			ListLootboxType = null;
 			WeaponRarityDB = null;
 			IsFireBuff = null;
@@ -64,23 +60,23 @@ namespace BossRush {
 					continue;
 				}
 				if (item.ModItem is SynergyModItem) {
-					_synergyitem.Add(item);
+					SynergyItem.Add(item);
 					continue;
 				}
 				if (item.TryGetGlobalItem(out GlobalItemHandle globalItem)) {
 					if (globalItem.LostAccessories) {
-						_lostAccs.Add(item);
+						LostAccessories.Add(item);
 						continue;
 					}
 					else if (globalItem.RPGItem) {
 						if (globalItem.AdvancedBuffItem) {
 							AdvancedRPGItem[item.type] = true;
 						}
-						_rpgitem.Add(item);
+						RPGItem.Add(item);
 					}
 				}
 				if (item.ModItem is BaseTrinket) {
-					_trinket.Add(item);
+					TrinketAccessories.Add(item);
 					continue;
 				}
 				if (!item.IsAWeapon()) {

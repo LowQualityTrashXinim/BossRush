@@ -477,25 +477,13 @@ public class SkillDurationTemplate : RelicTemplate {
 		modplayer.AddStatsToPlayer(stat, value);
 	}
 }
-
-public class SkillActivationTemplate : RelicTemplate {
+public class DebuffTemplateV1 : RelicTemplate {
 	public override PlayerStats StatCondition(Player player) {
-		float percentage = Main.rand.NextFloat();
-		if (percentage <= .25f) {
-			return Main.rand.Next(new[] {
-				PlayerStats.PureDamage,
-				PlayerStats.CritChance,
-				PlayerStats.CritDamage
+		return Main.rand.Next(new[] {
+				PlayerStats.HealEffectiveness,
+				PlayerStats.Defense,
+				PlayerStats.RegenHP
 			});
-		}
-		else {
-			return Main.rand.Next(new[] {
-				PlayerStats.MeleeDMG,
-				PlayerStats.RangeDMG,
-				PlayerStats.MagicDMG,
-				PlayerStats.SummonDMG
-			});
-		}
 	}
 	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
@@ -507,17 +495,18 @@ public class SkillActivationTemplate : RelicTemplate {
 	}
 
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		if (stat == PlayerStats.MeleeDMG ||
-			stat == PlayerStats.RangeDMG ||
-			stat == PlayerStats.MagicDMG ||
-			stat == PlayerStats.SummonDMG)
-			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .4f), 2), 1, 0, 0);
-		else {
-			return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.2f, .4f), 2), 1, 0, 0);
-		}
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.3f, .5f), 2), 1, 0, 0);
 	}
+
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (player.GetModPlayer<SkillHandlePlayer>().Activate) {
+		int count = 0;
+		for (int i = 0; i < player.buffType.Length; i++) {
+			if (player.buffType[i] == 0) continue;
+			if (Main.debuff[player.buffType[i]]) {
+				count++;
+			}
+		}
+		if (count > 3) {
 			modplayer.AddStatsToPlayer(stat, value);
 		}
 	}

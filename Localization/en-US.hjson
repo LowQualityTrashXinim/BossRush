@@ -2513,7 +2513,11 @@ Mods: {
 			}
 		}
 
-		"Keybinds.Skill activation.DisplayName": Skill activation
+		Keybinds: {
+			"Skill activation.DisplayName": Skill activation
+			"Weapon action.DisplayName": Weapon action
+		}
+
 		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
 
 		Prefixes: {

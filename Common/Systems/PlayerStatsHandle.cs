@@ -36,7 +36,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier AttackSpeed = new StatModifier();
 	public StatModifier ShieldHealth = new StatModifier();
 	public StatModifier ShieldEffectiveness = new StatModifier();
-	public StatModifier LifeStealEffectiveness = new StatModifier();
+	public StatModifier HealEffectiveness = new StatModifier();
 	public StatModifier EnergyCap = new StatModifier();
 	public StatModifier RechargeEnergyCap = new StatModifier();
 	public StatModifier UpdateFullHPDamage = new StatModifier();
@@ -177,7 +177,7 @@ public class PlayerStatsHandle : ModPlayer {
 		ShieldHealth = StatModifier.Default;
 		AttackSpeed = StatModifier.Default;
 		AuraModifier = StatModifier.Default;
-		LifeStealEffectiveness = StatModifier.Default;
+		HealEffectiveness = StatModifier.Default;
 		EnergyCap = StatModifier.Default;
 		RechargeEnergyCap = StatModifier.Default;
 		EnergyRecharge = StatModifier.Default;
@@ -291,8 +291,8 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.AttackSpeed:
 				AttackSpeed = AttackSpeed.CombineWith(StatMod);
 				break;
-			case PlayerStats.LifeStealEffectiveness:
-				LifeStealEffectiveness = LifeStealEffectiveness.CombineWith(StatMod);
+			case PlayerStats.HealEffectiveness:
+				HealEffectiveness = HealEffectiveness.CombineWith(StatMod);
 				break;
 			case PlayerStats.EnergyCap:
 				EnergyCap = EnergyCap.CombineWith(StatMod);
@@ -481,7 +481,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 
 	private void On_Player_Heal(On_Player.orig_Heal orig, Player self, int amount) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
-			orig(self, (int)modplayer.LifeStealEffectiveness.ApplyTo(amount));
+			orig(self, (int)modplayer.HealEffectiveness.ApplyTo(amount));
 		}
 		else {
 			orig(self, amount);

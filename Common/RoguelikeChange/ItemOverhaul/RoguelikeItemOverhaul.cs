@@ -10,6 +10,8 @@ using Terraria;
 using System;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
+using Terraria.GameInput;
+using Terraria.GameContent.Creative;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -176,6 +178,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!UniversalSystem.Check_RLOH()) {
 				return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}
+			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
+			if (modplayer.ModeSwitch_Revolver == 1) {
+				SoundEngine.PlaySound(item.UseSound);
+			}
 			switch (item.type) {
 				case ItemID.CopperShortsword:
 				case ItemID.GoldShortsword:
@@ -228,7 +234,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					}
 					return false;
 				case ItemID.ToxicFlask:
-					GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
 					if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
 						for (int i = 0; i < 3; i++) {
 							Vector2 vel = velocity.Vector2DistributeEvenlyPlus(3, 45, i);
@@ -239,16 +244,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						return false;
 					}
 					break;
-				case ItemID.ChlorophyteClaymore:
-					//float adjustedItemScale = player.GetAdjustedItemScale(item); // Get the melee scale of the player and item.
-					//int proj = Projectile.NewProjectile(source, player.MountedCenter, new Vector2(player.direction, 0f), ModContent.ProjectileType<SlashProjectile>(), damage, knockback, player.whoAmI, player.direction * player.gravDir, player.itemAnimationMax, adjustedItemScale);
-					//if (Main.projectile[proj].ModProjectile is SlashProjectile slash) {
-					//	slash.Back_Color = new(80, 180, 80);
-					//	slash.Middle_Color = new(140, 200, 140);
-					//	slash.Front_Color = new(100, 255, 100);
-					//}
-					//NetMessage.SendData(MessageID.PlayerControls, -1, -1, null, player.whoAmI); // Sync the changes in multiplayer.
-					return true;
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
@@ -257,6 +252,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			Player player = Main.LocalPlayer;
+			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
 			//We are using name format RoguelikeOverhaul_+ item name
 			TooltipLine line;
 			switch (item.type) {
@@ -274,7 +270,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					break;
 				case ItemID.CopperBow:
 				case ItemID.TinBow:
-					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow (upon success roll, the chance are roll again)");
+					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow");
 					tooltips.Add(line);
 					break;
 				case ItemID.WoodenBow:
@@ -284,7 +280,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.PalmWoodBow:
 				case ItemID.EbonwoodBow:
 				case ItemID.ShadewoodBow:
-					line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Shoot out 2 empowered arrows instead of 1");
+					line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Shoot out 2 empowered arrows instead of 1 normal arrow");
 					tooltips.Add(line);
 					break;
 				case ItemID.WoodenBoomerang:
@@ -292,7 +288,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.IceBoomerang:
 				case ItemID.Flamarang:
 				case ItemID.Shroomerang:
-					line = new(Mod, "RoguelikeOverhaul_Boomerang", "Reduce enemy defenses by 10 on hit");
+					line = new(Mod, "RoguelikeOverhaul_Boomerang", "Reduce enemy's defenses by 10 on hit");
 					tooltips.Add(line);
 					break;
 			}
@@ -313,16 +309,50 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					"Increases melee damage by 15%" +
 					"\nIncreases melee weapon size by 10%"));
 			}
+			else if(item.type == ItemID.Revolver) {
+				string text;
+				if(modplayer.ModeSwitch_Revolver == 1) {
+					text = $"[c/{Color.Yellow.Hex3()}:Rapid fire Mode]";
+				}
+				else {
+					text = $"[c/{Color.Blue.Hex3()}:Precise fire Mode]";
+				}
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Revolver",
+					text));
+			}
 		}
 		public override void HoldItem(Item item, Player player) {
+			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
+			if(modplayer.ModeSwitch_Revolver == 1) {
+				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify += 1f;
+			}
 		}
 	}
 	public class GlobalItemPlayer : ModPlayer {
 		public bool RoguelikeOverhaul_VikingHelmet = false;
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
+		public bool WeaponKeyPressed = false;
+		public bool WeaponKeyReleased = false;
+		public bool WeaponKeyHeld = false;
+
+		public int ModeSwitch_Revolver = 0;
 		public override void ResetEffects() {
 			RoguelikeOverhaul_VikingHelmet = false;
+			WeaponKeyPressed = false;
+			WeaponKeyReleased = false;
+			WeaponKeyHeld = false;
+		}
+		public override void ProcessTriggers(TriggersSet triggersSet) {
+			WeaponKeyPressed = UniversalSystem.WeaponActionKey.JustPressed;
+			WeaponKeyReleased = UniversalSystem.WeaponActionKey.JustReleased;
+			WeaponKeyHeld = UniversalSystem.WeaponActionKey.Current;
+			Item item = Player.HeldItem;
+			if (WeaponKeyPressed) {
+				if (item.type == ItemID.Revolver) {
+					ModeSwitch_Revolver = BossRushUtils.Safe_SwitchValue(ModeSwitch_Revolver, 1);
+				}
+			}
 		}
 		public override bool CanUseItem(Item item) {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -336,7 +366,15 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public override void UpdateDead() {
 			RoguelikeOverhaul_VikingHelmet = false;
 		}
-
+		public override float UseTimeMultiplier(Item item) {
+			float time = base.UseTimeMultiplier(item);
+			if (item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
+				float useAni = Player.itemAnimationMax;
+				float SimulatedUseTime = useAni / 4f;
+				return SimulatedUseTime / useAni;
+			}
+			return base.UseTimeMultiplier(item);
+		}
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				ToxicFlask_DelayWeaponUse = BossRushUtils.CountDown(ToxicFlask_DelayWeaponUse);

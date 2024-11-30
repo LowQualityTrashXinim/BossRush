@@ -109,6 +109,11 @@ VampireI: {
 }
 
 VampireII: {
+	DisplayName: Vampire II
+	Description: During the night, your critical hit is more fatal
+}
+
+VampireIII: {
 	DisplayName: Vampire III
 	Description: During the night, your regeneration is increases by 25%
 }

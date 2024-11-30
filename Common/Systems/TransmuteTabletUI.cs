@@ -232,13 +232,25 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		//	return true;
 		//}
 
-		if (item[0].rare == item[1].rare && item[0].rare < ItemRarityID.Purple) {
-			int rare = item[0].rare + 1;
+		if (ContentSamples.ItemsByType[item[0].type].rare >= ItemRarityID.Purple || ContentSamples.ItemsByType[item[0].type].rare <= -1
+			|| ContentSamples.ItemsByType[item[1].type].rare >= ItemRarityID.Purple || ContentSamples.ItemsByType[item[1].type].rare <= -1) {
+			return false;
+		}
+
+		if (ContentSamples.ItemsByType[item[0].type].rare == ContentSamples.ItemsByType[item[1].type].rare) {
+			int rare = ContentSamples.ItemsByType[item[0].type].rare;
 			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare]));
 			Main.item[itemSpawn].ResetPrefix();
 			return true;
 		}
-
-		return false;
+		else {
+			int rare = ContentSamples.ItemsByType[item[0].type].rare;
+			int rare2 = ContentSamples.ItemsByType[item[1].type].rare;
+			int spawmItemType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare]);
+			int spawnItemType2 = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare2]);
+			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.NextBool() ? spawmItemType : spawnItemType2);
+			Main.item[itemSpawn].ResetPrefix();
+		}
+		return true;
 	}
 }

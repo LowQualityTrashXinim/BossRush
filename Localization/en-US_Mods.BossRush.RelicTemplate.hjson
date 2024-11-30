@@ -19,3 +19,4 @@ ArcherMasteryTemplate.Description: Increases bow damage [c/{0}:{1}], critical st
 SkillActivateTemplate.Description: During skill activated, increases [c/{0}:{1}] by [c/{0}:{2}]
 SkillDurationTemplate.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] seconds
 SkillActivationTemplate.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation
+DebuffTemplateV1.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] when player are under effect of 3 debuffs

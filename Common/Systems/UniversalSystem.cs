@@ -5,6 +5,7 @@ using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
 using Terraria.Audio;
+using BossRush.Items;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -38,7 +39,7 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Items;
+using Microsoft.Xna.Framework.Input;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -190,7 +191,9 @@ internal class UniversalSystem : ModSystem {
 	public static bool EnchantingState = false;
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
 	private static string FilePath => Path.Join(DirectoryPath, "Data");
+	public static ModKeybind WeaponActionKey { get; private set; }
 	public override void Load() {
+		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
 		try {
 			if (File.Exists(FilePath)) {
 				var tag = TagIO.FromFile(FilePath);
@@ -251,6 +254,58 @@ internal class UniversalSystem : ModSystem {
 		On_Main.DrawInterface += On_Main_DrawInterface;
 	}
 
+	public override void Unload() {
+		WeaponActionKey = null;
+		if (!File.Exists(FilePath)) {
+			if (!Directory.Exists(DirectoryPath)) {
+				Directory.CreateDirectory(DirectoryPath);
+			}
+
+			File.Create(FilePath);
+		}
+		try {
+			TagCompound tag = new();
+			FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
+			foreach (var field in fields) {
+				tag.Set(field.Name, field.GetValue(null));
+			}
+			TagIO.ToFile(tag, FilePath);
+		}
+		catch {
+
+		}
+		GivenBossSpawnItem = null;
+
+		Enchant_uiState = null;
+		perkUIstate = null;
+
+		skillUIstate = null;
+		defaultUI = null;
+
+		userInterface = null;
+		perkInterface = null;
+		skillInterface = null;
+		enchantInterface = null;
+		UIsystemmenu = null;
+		systemMenuInterface = null;
+		transmutationUI = null;
+		transmutationInterface = null;
+		relicUI = null;
+		skillUI = null;
+		TestUser = null;
+
+		spoilsState = null;
+		spoils = null;
+
+		teleportUI = null;
+		TeleportUser = null;
+
+		infoUser = null;
+		infoUI = null;
+
+		achievementUser = null;
+		achievementUI = null;
+	}
 	private void On_Main_DrawInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime) {
 		//Code source credit : Structure Helper
 		SpriteBatch spriteBatch = Main.spriteBatch;
@@ -312,66 +367,12 @@ internal class UniversalSystem : ModSystem {
 
 		orig(self, gameTime);
 	}
-
-	public override void Unload() {
-		if (!File.Exists(FilePath)) {
-			if (!Directory.Exists(DirectoryPath)) {
-				Directory.CreateDirectory(DirectoryPath);
-			}
-
-			File.Create(FilePath);
-		}
-		try {
-			TagCompound tag = new();
-			FieldInfo[] fields = typeof(RoguelikeData).GetFields(BindingFlags.Static | BindingFlags.Public);
-			foreach (var field in fields) {
-				tag.Set(field.Name, field.GetValue(null));
-			}
-			TagIO.ToFile(tag, FilePath);
-		}
-		catch {
-
-		}
-		GivenBossSpawnItem = null;
-
-		Enchant_uiState = null;
-		perkUIstate = null;
-
-		skillUIstate = null;
-		defaultUI = null;
-
-		userInterface = null;
-		perkInterface = null;
-		skillInterface = null;
-		enchantInterface = null;
-		UIsystemmenu = null;
-		systemMenuInterface = null;
-		transmutationUI = null;
-		transmutationInterface = null;
-		relicUI = null;
-		skillUI = null;
-		TestUser = null;
-
-		spoilsState = null;
-		spoils = null;
-
-		teleportUI = null;
-		TeleportUser = null;
-
-		infoUser = null;
-		infoUI = null;
-
-		achievementUser = null;
-		achievementUI = null;
-	}
-
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
 			orig();
 		}
 		Main.hardMode = true;
 	}
-
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
 			if (ModContent.GetInstance<RogueLikeConfig>().AutoRandomizeCharacter) {
@@ -2004,7 +2005,7 @@ public class SpoilsUIState : UIState {
 		if (SpoilList.Count < 1) {
 			SpoilList = ModSpoilSystem.GetSpoilsList();
 		}
-		for (int i = 0; i < Limit_Spoils; i++) {
+		for (int i = 0; i <= Limit_Spoils; i++) {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
 			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
@@ -2015,11 +2016,11 @@ public class SpoilsUIState : UIState {
 			btn_List.Add(btn);
 			Append(btn);
 		}
-		SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
-		btna.HAlign = .7f;
-		btna.VAlign = .4f;
-		btn_List.Add(btna);
-		Append(btna);
+		//SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
+		//btna.HAlign = .7f;
+		//btna.VAlign = .4f;
+		//btn_List.Add(btna);
+		//Append(btna);
 	}
 }
 public class SpoilsUIButton : UIImageButton {

@@ -90,8 +90,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.Revolver:
 					NumOfProjectile = 1;
 					OffSetPost = 10;
-					SpreadAmount = 6;
-					AdditionalSpread = 1.5f;
+					SpreadAmount = 1;
+					AdditionalSpread = 1.2f;
 					break;
 				case ItemID.Handgun:
 					NumOfProjectile = 1;
