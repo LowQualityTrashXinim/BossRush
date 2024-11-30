@@ -29,13 +29,13 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override void PostUpdate() {
-			if (!Earth && OnHitDelay <= 0) {
+			if (!Earth || OnHitDelay > 0) {
 				OnHitDelay = BossRushUtils.CountDown(OnHitDelay);
 				return;
 			}
 			if (Player.velocity == Vector2.Zero) {
 				ShortStanding++;
-				if (ShortStanding > 120) {
+				if (ShortStanding > 120) {//2s required
 					if (ShortStanding % Math.Clamp(10 - ShortStanding / 100, 1, 10) == 0) {
 						Player.statLife = Math.Clamp(Player.statLife + 1, 0, Player.statLifeMax2);
 					}
