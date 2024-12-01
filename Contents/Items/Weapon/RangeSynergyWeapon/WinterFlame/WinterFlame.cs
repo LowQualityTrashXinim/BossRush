@@ -325,8 +325,8 @@ public class WinterFlamesProjV2 : SynergyModProjectile
 		return true;
 	}
 
-	public override void Kill(int timeLeft) {
-
+	public override void SynergyKill(Player player, PlayerSynergyItemHandle modplayer, int timeLeft) 
+	{ 
 		for (int i = 0; i < Projectile.oldPos.Length; i++)
 			for (int j = 0; j < 5; j++) 
 			{
