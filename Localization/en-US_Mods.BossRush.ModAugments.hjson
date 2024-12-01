@@ -163,7 +163,6 @@ StrengthenIV: {
 	Description: Increases maximum life by 50 when helding this item
 }
 
-
 StrengthenV: {
 	DisplayName: Strengthen V
 	Description: Increases critical strike chance by 10% when helding this item
