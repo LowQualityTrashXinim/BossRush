@@ -1753,6 +1753,8 @@ Mods: {
 			WilloFreezeProjectile.DisplayName: Willo Freeze Projectile
 			WindSlashProjectile.DisplayName: Wind Slash Projectile
 			WinterFlamesProjV2.DisplayName: Winter Flames Proj V2
+			WyvernWrathMainProjectile.DisplayName: Wyvern Wrath Main Projectile
+			WyvernWrathMiniProjectile.DisplayName: Wyvern Wrath Mini Projectile
 		}
 
 		Configs: {

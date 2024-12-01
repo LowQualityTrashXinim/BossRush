@@ -961,10 +961,14 @@ Mods: {
 			}
 
 			MythrilBeamSword: {
-			}
+		
 
 			WinterFlame: {
 			}
+
+			WyvernWrath: {
+			}
+
 		}
 
 		Buffs: {
