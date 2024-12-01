@@ -2510,6 +2510,11 @@ Mods: {
 						[=] Some weapons (that is not unusable) will have their stats randomize (weapon get their stats randomize from 30 -> 120)
 						'''
 				}
+
+				LegacySpoils: {
+					Label: Legacy Spoils
+					Tooltip: ""
+				}
 			}
 		}
 

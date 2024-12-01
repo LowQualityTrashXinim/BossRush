@@ -33,6 +33,37 @@ namespace BossRush {
 		public static List<Item> RPGItem { get; private set; }
 
 		public static List<int> ListLootboxType;
+
+		public static int Safe_GetWeaponRarity(int rare) {
+			if (WeaponRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(WeaponRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetAccRarity(int rare) {
+			if (AccRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(AccRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetHeadRarity(int rare) {
+			if (HeadArmorRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(HeadArmorRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetBodyRarity(int rare) {
+			if (BodyArmorRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(BodyArmorRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetLegsRarity(int rare) {
+			if (LegsArmorRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(LegsArmorRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
 		public override void OnModLoad() {
 			TrinketAccessories = new();
 			LostAccessories = new();
@@ -75,41 +106,50 @@ namespace BossRush {
 					SynergyItem.Add(item);
 					continue;
 				}
-				if (item.headSlot > 0) {
-					if (!HeadArmorRarityDB.ContainsKey(item.rare)) {
-						HeadArmorRarityDB.Add(item.rare, new List<int> { item.type });
+				if (!item.vanity)
+					if (item.headSlot > 0) {
+						if (!HeadArmorRarityDB.ContainsKey(item.rare)) {
+							HeadArmorRarityDB.Add(item.rare, new List<int> { item.type });
+						}
+						else {
+							HeadArmorRarityDB[item.rare].Add(item.type);
+						}
+						continue;
 					}
-					else {
-						HeadArmorRarityDB[item.rare].Add(item.type);
+					else if (item.bodySlot > 0) {
+						if (!BodyArmorRarityDB.ContainsKey(item.rare)) {
+							BodyArmorRarityDB.Add(item.rare, new List<int> { item.type });
+						}
+						else {
+							BodyArmorRarityDB[item.rare].Add(item.type);
+						}
+						continue;
 					}
-					continue;
+					else if (item.legSlot > 0) {
+						if (!LegsArmorRarityDB.ContainsKey(item.rare)) {
+							LegsArmorRarityDB.Add(item.rare, new List<int> { item.type });
+						}
+						else {
+							LegsArmorRarityDB[item.rare].Add(item.type);
+						}
+						continue;
+					}
+				if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+					if (globalitem.LostAccessories) {
+						LostAccessories.Add(item);
+						continue;
+					}
+					if (globalitem.RPGItem) {
+						if (globalitem.AdvancedBuffItem) {
+							AdvancedRPGItem[item.type] = true;
+						}
+						RPGItem.Add(item);
+						continue;
+					}
 				}
-				else if (item.bodySlot > 0) {
-					if (!BodyArmorRarityDB.ContainsKey(item.rare)) {
-						BodyArmorRarityDB.Add(item.rare, new List<int> { item.type });
-					}
-					else {
-						BodyArmorRarityDB[item.rare].Add(item.type);
-					}
-					continue;
-				}
-				else if (item.legSlot > 0) {
-					if (!LegsArmorRarityDB.ContainsKey(item.rare)) {
-						LegsArmorRarityDB.Add(item.rare, new List<int> { item.type });
-					}
-					else {
-						LegsArmorRarityDB[item.rare].Add(item.type);
-					}
-					continue;
-				}
-				GlobalItemHandle globalitem = item.GetGlobalItem<GlobalItemHandle>();
 				if (item.accessory) {
 					if (item.ModItem is BaseTrinket) {
 						TrinketAccessories.Add(item);
-						continue;
-					}
-					if (globalitem.LostAccessories) {
-						LostAccessories.Add(item);
 						continue;
 					}
 					if (!AccRarityDB.ContainsKey(item.rare)) {
@@ -118,13 +158,6 @@ namespace BossRush {
 					else {
 						AccRarityDB[item.rare].Add(item.type);
 					}
-					continue;
-				}
-				if (globalitem.RPGItem) {
-					if (globalitem.AdvancedBuffItem) {
-						AdvancedRPGItem[item.type] = true;
-					}
-					RPGItem.Add(item);
 					continue;
 				}
 				if (!item.IsAWeapon()) {
