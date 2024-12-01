@@ -168,6 +168,12 @@ namespace BossRush {
 			}
 			return npclist;
 		}
+		public static int Safe_SwitchValue(int currentMode, int max) {
+			if (max <= 0) {
+				return currentMode;
+			}
+			return ++currentMode > max ? 0 : currentMode;
+		}
 		public static int ToMinute(float minute) => (int)(ToSecond(60) * minute);
 		public static int ToSecond(float second) => (int)(second * 60);
 		public static float ToFloatValue(this StatModifier modifier, float additionalMulti = 1, int round = -1)

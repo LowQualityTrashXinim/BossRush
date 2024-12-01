@@ -15,7 +15,10 @@ using Terraria.Graphics.Shaders;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
+		public static BossRush Instance { get; private set; }
 		public override void Load() {
+			Instance = this;
+			base.Load();
 
 			loadShaders();
 
@@ -48,40 +51,80 @@ namespace BossRush {
 		public static bool[] IsFireBuff;
 		public static bool[] IsPoisonBuff;
 		public static bool[] CanBeAffectByLastingVile;
-		public static Dictionary<int, List<int>> WeaponRarityDB;
-		private static List<Item> _synergyitem;
-		private static List<Item> _lostAccs;
-		private static List<Item> _trinket;
-		private static List<Item> _rpgitem;
+		public static bool[] AdvancedRPGItem;
+		public static Dictionary<int, List<int>> WeaponRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> AccRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> HeadArmorRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> BodyArmorRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> LegsArmorRarityDB { get; private set; }
+		public static List<Item> SynergyItem { get; private set; }
+		public static List<Item> LostAccessories { get; private set; }
+		public static List<Item> TrinketAccessories { get; private set; }
+		public static List<Item> RPGItem { get; private set; }
 
 		public static List<int> ListLootboxType;
-		public static List<Item> SynergyItem => _synergyitem;
-		public static List<Item> LostAccessories => _lostAccs;
-		public static List<Item> TrinketAccessories => _trinket;
-		public static List<Item> RPGItem => _rpgitem;
+
+		public static int Safe_GetWeaponRarity(int rare) {
+			if (WeaponRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(WeaponRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetAccRarity(int rare) {
+			if (AccRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(AccRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetHeadRarity(int rare) {
+			if (HeadArmorRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(HeadArmorRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetBodyRarity(int rare) {
+			if (BodyArmorRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(BodyArmorRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
+		public static int Safe_GetLegsRarity(int rare) {
+			if (LegsArmorRarityDB.ContainsKey(rare)) {
+				return Main.rand.Next(LegsArmorRarityDB[rare]);
+			}
+			return ItemID.None;
+		}
 		public override void OnModLoad() {
-			_trinket = new();
-			_rpgitem = new();
-			_synergyitem = new();
-			_lostAccs = new();
+			TrinketAccessories = new();
+			LostAccessories = new();
+			SynergyItem = new();
+			RPGItem = new();
 			WeaponRarityDB = new();
 			ListLootboxType = new();
+			HeadArmorRarityDB = new();
+			BodyArmorRarityDB = new();
+			LegsArmorRarityDB = new();
+			AccRarityDB = new();
 		}
 		public override void OnModUnload() {
-			_synergyitem = null;
-			_lostAccs = null;
-			_rpgitem = null;
-			_trinket = null;
+			SynergyItem = null;
+			LostAccessories = null;
+			RPGItem = null;
+			TrinketAccessories = null;
 			ListLootboxType = null;
 			WeaponRarityDB = null;
 			IsFireBuff = null;
 			IsPoisonBuff = null;
+			HeadArmorRarityDB = null;
+			BodyArmorRarityDB = null;
+			LegsArmorRarityDB = null;
+			AccRarityDB = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
 			IsPoisonBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.Poisoned, BuffID.Venom);
 			CanBeAffectByLastingVile = BuffID.Sets.Factory.CreateBoolSet(true, ModContent.BuffType<LastingVileBuff>());
-
+			AdvancedRPGItem = ItemID.Sets.Factory.CreateBoolSet();
 			List<Item> cacheitemList = ContentSamples.ItemsByType.Values.ToList();
 			for (int i = 0; i < cacheitemList.Count; i++) {
 				Item item = cacheitemList[i];
@@ -90,22 +133,61 @@ namespace BossRush {
 					continue;
 				}
 				if (item.ModItem is SynergyModItem) {
-					_synergyitem.Add(item);
+					SynergyItem.Add(item);
 					continue;
 				}
-				if (item.TryGetGlobalItem(out GlobalItemHandle globalItem)) {
-					if (globalItem.LostAccessories) {
-						_lostAccs.Add(item);
+				if (!item.vanity)
+					if (item.headSlot > 0) {
+						if (!HeadArmorRarityDB.ContainsKey(item.rare)) {
+							HeadArmorRarityDB.Add(item.rare, new List<int> { item.type });
+						}
+						else {
+							HeadArmorRarityDB[item.rare].Add(item.type);
+						}
 						continue;
 					}
-					else if (globalItem.RPGItem) {
-						if (globalItem.AdvancedBuffItem) {
-							_rpgitem.Add(item);
+					else if (item.bodySlot > 0) {
+						if (!BodyArmorRarityDB.ContainsKey(item.rare)) {
+							BodyArmorRarityDB.Add(item.rare, new List<int> { item.type });
 						}
+						else {
+							BodyArmorRarityDB[item.rare].Add(item.type);
+						}
+						continue;
+					}
+					else if (item.legSlot > 0) {
+						if (!LegsArmorRarityDB.ContainsKey(item.rare)) {
+							LegsArmorRarityDB.Add(item.rare, new List<int> { item.type });
+						}
+						else {
+							LegsArmorRarityDB[item.rare].Add(item.type);
+						}
+						continue;
+					}
+				if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+					if (globalitem.LostAccessories) {
+						LostAccessories.Add(item);
+						continue;
+					}
+					if (globalitem.RPGItem) {
+						if (globalitem.AdvancedBuffItem) {
+							AdvancedRPGItem[item.type] = true;
+						}
+						RPGItem.Add(item);
+						continue;
 					}
 				}
-				if (item.ModItem is BaseTrinket) {
-					_trinket.Add(item);
+				if (item.accessory) {
+					if (item.ModItem is BaseTrinket) {
+						TrinketAccessories.Add(item);
+						continue;
+					}
+					if (!AccRarityDB.ContainsKey(item.rare)) {
+						AccRarityDB.Add(item.rare, new List<int> { item.type });
+					}
+					else {
+						AccRarityDB[item.rare].Add(item.type);
+					}
 					continue;
 				}
 				if (!item.IsAWeapon()) {

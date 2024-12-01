@@ -25,5 +25,6 @@
 		public const string PERLINNOISE = "BossRush/Texture/roguelikePerlinNoise";
 		public static string Get_MissingTexture(string text) => CommonTextureStringPattern + MissingTexture_Folder + $"{text}MissingTexture";
 		public const string MissingTexture_Default = CommonTextureStringPattern + MissingTexture_Folder + "MissingTextureDefault";
+		public static string Get_StructureHelperTex(string text) => $"BossRush/Texture/StructureHelper_{text}";
 	}
 }

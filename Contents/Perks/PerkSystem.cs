@@ -11,6 +11,9 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using System;
+using Humanizer;
+using Newtonsoft.Json.Linq;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -28,9 +31,14 @@ namespace BossRush.Contents.Perks {
 		// how is drinking a potion with left click works differently from quick heal?... talking about a fresh spaghetti serving right there.
 		public override void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue) {
 			PerkPlayer perkplayer = player.GetModPlayer<PerkPlayer>();
+			StatModifier healingPotionstat = StatModifier.Default;
 			if (perkplayer.perk_PotionCleanse) {
-				healValue /= 2;
+				healingPotionstat -= .5f;
 			}
+			if (perkplayer.perk_ImprovedPotion) {
+				healingPotionstat += .7f;
+			}
+			healValue = (int)healingPotionstat.ApplyTo(healValue);
 		}
 
 		public override bool ConsumeItem(Item item, Player player) {
@@ -56,7 +64,7 @@ namespace BossRush.Contents.Perks {
 		}
 		private void On_Player_QuickMana(On_Player.orig_QuickMana orig, Player self) {
 			PerkPlayer perkplayer = self.GetModPlayer<PerkPlayer>();
-			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.perk_ImprovedManaPotion) {
+			if (self.HasBuff(ModContent.BuffType<ManaBlock>()) && perkplayer.perk_ImprovedPotion) {
 				return;
 			}
 			orig(self);
@@ -64,12 +72,12 @@ namespace BossRush.Contents.Perks {
 	}
 	class MagicOverhaulBuff : GlobalBuff {
 		public override void Update(int type, Player player, ref int buffIndex) {
-			if (type == BuffID.ManaSickness && player.GetModPlayer<PerkPlayer>().HasPerk<ImprovedManaPotion>()) {
+			if (type == BuffID.ManaSickness && player.GetModPlayer<PerkPlayer>().perk_ImprovedPotion) {
 				if (player.statMana < player.statManaMax2) {
-					player.statMana++;
+					player.statMana += 2;
 				}
 				if (player.buffTime[buffIndex] <= 0) {
-					player.AddBuff(ModContent.BuffType<ManaBlock>(), BossRushUtils.ToSecond(30));
+					player.AddBuff(ModContent.BuffType<ManaBlock>(), BossRushUtils.ToSecond(10));
 				}
 			}
 		}
@@ -87,6 +95,23 @@ namespace BossRush.Contents.Perks {
 	public class PerkPlayer : ModPlayer {
 		public bool CanGetPerk = false;
 		public int PerkAmount = 4;
+		private byte perk_Reroll = 1;
+		public void Modify_RerollCount(byte amount, bool negative = false) {
+			int simulate = perk_Reroll + amount;
+			if (simulate < byte.MinValue) {
+				perk_Reroll = byte.MinValue;
+			}
+			else if (simulate > byte.MaxValue) {
+				perk_Reroll = byte.MaxValue;
+			}
+			if (negative) {
+				perk_Reroll -= amount;
+			}
+			else {
+				perk_Reroll += amount;
+			}
+		}
+		public byte Reroll => perk_Reroll;
 		/// <summary>
 		/// Keys : Perk type<br/>
 		/// Values : Stack value
@@ -96,7 +121,7 @@ namespace BossRush.Contents.Perks {
 		public bool perk_PotionExpert = false;
 		public bool perk_PotionCleanse = false;
 		public bool perk_AlchemistPotion = false;
-		public bool perk_ImprovedManaPotion = false;
+		public bool perk_ImprovedPotion = false;
 		public bool PotionExpert_perk_CanConsume = false;
 		public bool perk_ScatterShot = false;
 		public override void Initialize() {
@@ -125,7 +150,7 @@ namespace BossRush.Contents.Perks {
 			perk_PotionExpert = false;
 			perk_PotionCleanse = false;
 			perk_AlchemistPotion = false;
-			perk_ImprovedManaPotion = false;
+			perk_ImprovedPotion = false;
 			perk_ScatterShot = false;
 			PerkAmount = 4;
 			PerkAmount = Player.GetModPlayer<NoHitPlayerHandle>().BossNoHitNumber.Count + PerkAmountModified();
@@ -259,6 +284,7 @@ namespace BossRush.Contents.Perks {
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
+			tag["perk_Reroll"] = perk_Reroll;
 		}
 		public override void LoadData(TagCompound tag) {
 			var PlayerPerks = tag.Get<List<int>>("PlayerPerks");
@@ -271,6 +297,9 @@ namespace BossRush.Contents.Perks {
 					perks.Remove(perks.Keys.ElementAt(i));
 				}
 			}
+			if (tag.TryGet("perk_Reroll", out byte va)) {
+				perk_Reroll = va;
+			}
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
@@ -281,6 +310,7 @@ namespace BossRush.Contents.Perks {
 				packet.Write(item);
 				packet.Write(perks[item]);
 			}
+			packet.Write(perk_Reroll);
 			packet.Send(toWho, fromWho);
 		}
 		public void ReceivePlayerSync(BinaryReader reader) {
@@ -288,6 +318,7 @@ namespace BossRush.Contents.Perks {
 			int count = reader.ReadInt32();
 			for (int i = 0; i < count; i++)
 				perks.Add(reader.ReadInt32(), reader.ReadInt32());
+			perk_Reroll = reader.ReadByte();
 		}
 
 		public override void CopyClientState(ModPlayer targetCopy) {

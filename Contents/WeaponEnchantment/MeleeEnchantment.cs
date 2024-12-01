@@ -788,7 +788,7 @@ public class Volcano : ModEnchantment {
 			Main.dust[smokedust].noGravity = true;
 			Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 			Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
-			int dust = Dust.NewDust(player.Center, 0, 0, DustID.Torch);
+			int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity = Main.rand.NextVector2Circular(radius / 12f, radius / 12f);
 			Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);

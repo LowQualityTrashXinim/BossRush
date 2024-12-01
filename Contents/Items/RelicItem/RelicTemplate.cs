@@ -471,9 +471,43 @@ public class SkillDurationTemplate : RelicTemplate {
 	}
 
 	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
-		return new StatModifier(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1,4)));
+		return new StatModifier(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 4)));
 	}
 	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		modplayer.AddStatsToPlayer(stat, value);
+	}
+}
+public class DebuffTemplateV1 : RelicTemplate {
+	public override PlayerStats StatCondition(Player player) {
+		return Main.rand.Next(new[] {
+				PlayerStats.HealEffectiveness,
+				PlayerStats.Defense,
+				PlayerStats.RegenHP
+			});
+	}
+	public override string ModifyToolTip(PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		return string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			Name,
+			RelicTemplateLoader.RelicValueToNumber(value.Base)
+	});
+	}
+
+	public override StatModifier ValueCondition(Player player, PlayerStats stat) {
+		return new StatModifier(1 + MathF.Round(Main.rand.NextFloat(.3f, .5f), 2), 1, 0, 0);
+	}
+
+	public override void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		int count = 0;
+		for (int i = 0; i < player.buffType.Length; i++) {
+			if (player.buffType[i] == 0) continue;
+			if (Main.debuff[player.buffType[i]]) {
+				count++;
+			}
+		}
+		if (count > 3) {
+			modplayer.AddStatsToPlayer(stat, value);
+		}
 	}
 }

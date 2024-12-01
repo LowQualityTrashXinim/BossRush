@@ -952,6 +952,12 @@ Mods: {
 				Tooltip: ""
 			}
 
+			StructureWand: {
+				DisplayName: Structure Wand
+				Tooltip: Avoid saving tile in a way that cut the tile in half, thx
+			}
+		}
+
 			StarWhip: {
 			}
 
@@ -1300,9 +1306,33 @@ Mods: {
 						[=] Some weapons (that is not unusable) will have their stats randomize (weapon get their stats randomize from 30 -> 120)
 						'''
 				}
+
+				LegacySpoils: {
+					Label: Legacy Spoils
+					Tooltip: ""
+				}
 			}
 		}
 
+		Keybinds: {
+			"Skill activation.DisplayName": Skill activation
+			"Weapon action.DisplayName": Weapon action
+		}
+
+		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
+
+		Prefixes: {
+			Cunning.DisplayName: Cunning
+			Evasive.DisplayName: Evasive
+			Spiky.DisplayName: Spiky
+			Stealthy.DisplayName: Stealthy
+			Vampiric.DisplayName: Vampiric
+			Vital.DisplayName: Vital
+			Energetic.DisplayName: Energetic
+			Savage.DisplayName: Savage
+			Alchemic.DisplayName: Alchemic
+			Jumpy.DisplayName: Jumpy
+		}
 		Prefixes.Savage.DisplayName: Savage
 	}
 }

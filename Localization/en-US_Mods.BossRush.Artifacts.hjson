@@ -30,7 +30,7 @@ HeartOfEarthArtifact: {
 		'''
 		"Protected by the Earth"
 		[c/ffff00:Positive effect] : 
-			+ Increases your maximum health by 100
+			+ Increases your maximum health by 100 and increases your maximum life by 10%
 			+ Standing still for a short moment massively boost your regen
 		[c/ab3e43:Negative effect] : 
 			- Your damage effectiveness is depended on your current hp
@@ -207,7 +207,7 @@ EssenceLanternArtifact: {
 		[c/ffff00:Positive effect] :
 			+ Some essence orb have positive effect
 		[c/ab3e43:Negative effect] : 
-			+ Some essence orb have negative effect
+			- Some essence orb have negative effect
 		'''
 }
 

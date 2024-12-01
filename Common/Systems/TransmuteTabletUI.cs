@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
+using Microsoft.CodeAnalysis.Options;
 
 namespace BossRush.Common.Systems;
 public class TransumtationRecipe {
@@ -78,14 +79,14 @@ public class TransmutationUI : UIImage {
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
-		if (item != null && Main.mouseItem.type != ItemID.None && (Main.mouseItem.IsAWeapon() || Main.mouseItem.ModItem is Relic)) {
+		if (item != null && Main.mouseItem.type != ItemID.None) {
 			//Swap item here
 			Item itemcache = Main.mouseItem.Clone();
 			Main.mouseItem = item.Clone();
 			player.inventory[58] = item.Clone();
 			item = itemcache.Clone();
 		}
-		else if (Main.mouseItem.type != ItemID.None && item == null && (Main.mouseItem.IsAWeapon() || Main.mouseItem.ModItem is Relic)) {
+		else if (Main.mouseItem.type != ItemID.None && item == null) {
 			//When the slot is available
 			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
@@ -170,6 +171,9 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		}
 	}
 	private bool CheckForSpecialDrop(List<Item> item) {
+		if (item.Count < 2) {
+			return false;
+		}
 		var player = Main.LocalPlayer;
 		if (item.Where(i => i.ModItem is Relic).Count() > 1) {
 			Relic relic1 = null;
@@ -191,12 +195,106 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				return true;
 			}
 		}
-		if (item.Count < 2) {
+		Item relicpreItem = item.Where(i => i.ModItem is Relic).FirstOrDefault();
+		Relic relicItem = relicpreItem != null ? relicpreItem.ModItem as Relic : null;
+		Item weaponItem = item.Where(i => i.IsAWeapon()).FirstOrDefault();
+		Item accItem = item.Where(i => i.accessory).FirstOrDefault();
+		Item headItem = item.Where(i => i.headSlot > 0 && !i.vanity).FirstOrDefault();
+		Item bodyItem = item.Where(i => i.bodySlot > 0 && !i.vanity).FirstOrDefault();
+		Item legItem = item.Where(i => i.legSlot > 0 && !i.vanity).FirstOrDefault();
+		Item univitem = null;
+		int Option = 0;
+		if (weaponItem != null && weaponItem.rare < ItemRarityID.Purple - 2) {
+			univitem = weaponItem;
+			Option = 1;
+		}
+		if (accItem != null && accItem.rare < ItemRarityID.Purple - 2) {
+			univitem = accItem;
+			Option = 2;
+		}
+		if (headItem != null && headItem.rare < ItemRarityID.Purple - 2) {
+			univitem = accItem;
+			Option = 3;
+		}
+		if (bodyItem != null && bodyItem.rare < ItemRarityID.Purple - 2) {
+			univitem = accItem;
+			Option = 4;
+		}
+		if (legItem != null && legItem.rare < ItemRarityID.Purple - 2) {
+			univitem = accItem;
+			Option = 5;
+		}
+		if (relicItem != null) {
+			if (Option != 0) {
+
+				float chance = Main.rand.NextFloat();
+
+				float rarityOffSet = univitem.rare * .03f;
+				if (univitem.rare >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
+					rarityOffSet += (univitem.rare - 3) * .02f;
+				}
+				chance += rarityOffSet;
+				bool SuccessChance = false;
+				switch (relicItem.RelicTier) {
+					case 1:
+						SuccessChance = chance <= Relic.chanceTier1;
+						break;
+					case 2:
+						SuccessChance = chance <= Relic.chanceTier2;
+						break;
+					case 3:
+						SuccessChance = chance <= Relic.chanceTier3;
+						break;
+					case 4:
+						SuccessChance = chance <= Relic.chanceTier4;
+						break;
+					default:
+						SuccessChance = chance <= Relic.chanceTier4 + .05f * relicItem.RelicTier;
+						break;
+				}
+				int rare = ContentSamples.ItemsByType[univitem.type].rare;
+				if (SuccessChance) {
+					rare = ContentSamples.ItemsByType[univitem.type].rare + 1;
+				}
+				int itemType = GetItemRarityDB(rare, Option);
+				if (itemType == ItemID.None) {
+					Main.NewText($"Detected no rarity found ! at {rare} rarity at {Option} option");
+					return false;
+				}
+				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
+				if (Main.item[itemSpawn].CanHavePrefixes())
+					Main.item[itemSpawn].ResetPrefix();
+				return true;
+			}
+		}
+
+		if (ContentSamples.ItemsByType[item[0].type].rare >= ItemRarityID.Purple || ContentSamples.ItemsByType[item[0].type].rare <= -1
+			|| ContentSamples.ItemsByType[item[1].type].rare >= ItemRarityID.Purple || ContentSamples.ItemsByType[item[1].type].rare <= -1) {
 			return false;
 		}
-		if (item.Where(i => i.IsAWeapon()).Count() < 2) {
-			return false;
+
+		if (ContentSamples.ItemsByType[item[0].type].rare == ContentSamples.ItemsByType[item[1].type].rare) {
+			int rare = ContentSamples.ItemsByType[item[0].type].rare;
+			int itemType = GetItemRarityDB(rare, Option);
+			if (itemType == ItemID.None) {
+				Main.NewText($"Detected no rarity found ! at {rare} rarity at {Option} option");
+				return false;
+			}
+			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
+			if (Main.item[itemSpawn].CanHavePrefixes())
+				Main.item[itemSpawn].ResetPrefix();
+			return true;
 		}
+		else {
+			int rare = ContentSamples.ItemsByType[item[0].type].rare;
+			int rare2 = ContentSamples.ItemsByType[item[1].type].rare;
+			int spawmItemType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare]);
+			int spawnItemType2 = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare2]);
+			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.NextBool() ? spawmItemType : spawnItemType2);
+			if (Main.item[itemSpawn].CanHavePrefixes())
+				Main.item[itemSpawn].ResetPrefix();
+		}
+		return true;
 		//var itemType = item.Select(i => i.type);
 
 		//if (itemType.Contains(ItemID.Minishark) && itemType.Contains(ItemID.IceBlade)) {
@@ -231,14 +329,21 @@ public class TransmutationUIConfirmButton : UIImageButton {
 		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenEnchantedSword>());
 		//	return true;
 		//}
-
-		if (item[0].rare == item[1].rare && item[0].rare < ItemRarityID.Purple) {
-			int rare = item[0].rare + 1;
-			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare]));
-			Main.item[itemSpawn].ResetPrefix();
-			return true;
+	}
+	private int GetItemRarityDB(int rare, int option) {
+		switch (option) {
+			case 1:
+				return BossRushModSystem.Safe_GetWeaponRarity(rare);
+			case 2:
+				return BossRushModSystem.Safe_GetAccRarity(rare);
+			case 3:
+				return BossRushModSystem.Safe_GetHeadRarity(rare);
+			case 4:
+				return BossRushModSystem.Safe_GetBodyRarity(rare);
+			case 5:
+				return BossRushModSystem.Safe_GetLegsRarity(rare);
+			default:
+				return ItemID.None;
 		}
-
-		return false;
 	}
 }

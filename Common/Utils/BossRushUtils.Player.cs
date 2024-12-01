@@ -189,7 +189,7 @@ namespace BossRush {
 		ShieldEffectiveness,
 		AttackSpeed,
 		AuraRadius,
-		LifeStealEffectiveness,
+		HealEffectiveness,
 		MysteriousPotionEffectiveness,
 		EnergyCap,
 		EnergyRechargeCap,

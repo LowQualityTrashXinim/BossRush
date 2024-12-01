@@ -10,7 +10,6 @@ using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.Items.BossRushItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Common.WorldGenOverhaul;

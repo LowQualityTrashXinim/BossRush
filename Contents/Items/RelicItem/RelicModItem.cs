@@ -12,11 +12,15 @@ using System.Collections.Generic;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
+	public const float chanceTier1 = .5f;
+	public const float chanceTier2 = .7f;
+	public const float chanceTier3 = .45f;
+	public const float chanceTier4 = .6f;
 	public override string Texture => BossRushTexture.ACCESSORIESSLOT;
 	List<int> templatelist = new List<int>();
 	List<PlayerStats> statlist = new List<PlayerStats>();
 	List<StatModifier> valuelist = new List<StatModifier>();
-	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue});
+	public ColorInfo relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	public override void SetStaticDefaults() {
 		relicColor = new ColorInfo(new List<Color> { Color.Red, Color.Purple, Color.AliceBlue });
 	}
@@ -89,6 +93,7 @@ public class Relic : ModItem {
 		clone.SetRelicData(templatelist, statlist, valuelist);
 		return clone;
 	}
+	public int RelicTier => templatelist != null ? templatelist.Count : 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		var line = tooltips.FirstOrDefault(l => l.Name == "Tooltip0");
 		if (templatelist == null || line == null) {

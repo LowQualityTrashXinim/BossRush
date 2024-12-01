@@ -16,7 +16,7 @@ internal class HeartOfBloodThorn : ModItem {
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<BloodBurstPlayer>().BloodBurst = true;
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LifeStealEffectiveness, Additive: 1.15f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.HealEffectiveness, Additive: 1.15f);
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, Base: 15);
 	}
 }

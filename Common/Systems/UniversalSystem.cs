@@ -5,6 +5,7 @@ using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
 using Terraria.Audio;
+using BossRush.Items;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -31,13 +32,19 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.SpoilSystem;
+using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
-using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Common.Systems.CursesSystem;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
+using BossRush.Contents.Items.Consumable.SpecialReward;
+using Microsoft.Xna.Framework.Input;
+using Terraria.ModLoader.UI;
+using Terraria.GameInput;
+using ReLogic.Localization.IME;
+using System.Text.RegularExpressions;
+using ReLogic.OS;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -112,6 +119,7 @@ internal class UniversalSystem : ModSystem {
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";
 	public const string LEGACY_WORLDGEN = "worldgen";
+	public const string LEGACY_SPOIL = "spoil";
 	/// <summary>
 	/// Check legacy option whenever or not if it enable or not
 	/// </summary>
@@ -125,6 +133,8 @@ internal class UniversalSystem : ModSystem {
 			return config.LegacyLootBoxDrop;
 		if (option == LEGACY_WORLDGEN)
 			return config.LegacyBossRushWorldGen;
+		if (option == LEGACY_SPOIL)
+			return config.LegacySpoils;
 		return false;
 	}
 	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;
@@ -170,6 +180,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface infoUser;
 	internal UserInterface achievementUser;
 	internal UserInterface cursesUser;
+	internal UserInterface structureUser;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -185,11 +196,14 @@ internal class UniversalSystem : ModSystem {
 	public TeleportUI teleportUI;
 	public InfoUI infoUI;
 	public AchievementUI achievementUI;
+	public StructureUI structUI;
 
 	public static bool EnchantingState = false;
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
 	private static string FilePath => Path.Join(DirectoryPath, "Data");
+	public static ModKeybind WeaponActionKey { get; private set; }
 	public override void Load() {
+		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
 		try {
 			if (File.Exists(FilePath)) {
 				var tag = TagIO.FromFile(FilePath);
@@ -244,11 +258,17 @@ internal class UniversalSystem : ModSystem {
 
 			achievementUser = new();
 			achievementUI = new();
+
+			structureUser = new();
+			structUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
+		On_Main.DrawInterface += On_Main_DrawInterface;
 	}
+
 	public override void Unload() {
+		WeaponActionKey = null;
 		if (!File.Exists(FilePath)) {
 			if (!Directory.Exists(DirectoryPath)) {
 				Directory.CreateDirectory(DirectoryPath);
@@ -298,15 +318,77 @@ internal class UniversalSystem : ModSystem {
 
 		achievementUser = null;
 		achievementUI = null;
-	}
 
+		structureUser = null;
+		structUI = null;
+	}
+	private void On_Main_DrawInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime) {
+		//Code source credit : Structure Helper
+		SpriteBatch spriteBatch = Main.spriteBatch;
+
+		if (Main.LocalPlayer.HeldItem.ModItem is StructureWand) {
+			var wand = (Main.LocalPlayer.HeldItem.ModItem as StructureWand);
+
+			spriteBatch.Begin(default, default, SamplerState.PointClamp, default, default, default, Main.GameViewMatrix.ZoomMatrix);
+
+			Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/corner").Value;
+			Texture2D tex2 = ModContent.Request<Texture2D>("StructureHelper/box").Value;
+
+			Point16 topLeft = wand.TopLeft;
+			Point16 bottomRight = wand.BottomRight;
+
+			bool drawPreview = true;
+
+			if (wand.secondPoint) {
+				var point1 = wand.point1;
+				var point2 = (Main.MouseWorld / 16).ToPoint16();
+
+				topLeft = new Point16(point1.X < point2.X ? point1.X : point2.X, point1.Y < point2.Y ? point1.Y : point2.Y);
+				bottomRight = new Point16(point1.X > point2.X ? point1.X : point2.X, point1.Y > point2.Y ? point1.Y : point2.Y);
+				int Width = bottomRight.X - topLeft.X - 1;
+				int Height = bottomRight.Y - topLeft.Y - 1;
+
+				var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
+				BossRushUtils.DrawOutline(spriteBatch, target, Color.Gold);
+				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
+
+				spriteBatch.Draw(tex, wand.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan, 0, tex.Frame().Size() / 2, 1, 0, 0);
+				//spriteBatch.Draw(tex, point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			}
+			else if (wand.Ready) {
+				int Width = bottomRight.X - topLeft.X - 1;
+				int Height = bottomRight.Y - topLeft.Y - 1;
+
+				var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
+				BossRushUtils.DrawOutline(spriteBatch, target, Color.Lerp(Color.Gold, Color.White, 0.5f + 0.5f * (float)System.Math.Sin(Main.GameUpdateCount * 0.2f)));
+				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
+
+				float scale1 = Vector2.Distance(Main.MouseWorld, wand.point1.ToVector2() * 16) < 32 ? 1.5f : 1f;
+				spriteBatch.Draw(tex, wand.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan * scale1, 0, tex.Frame().Size() / 2, scale1, 0, 0);
+
+				float scale2 = Vector2.Distance(Main.MouseWorld, wand.point2.ToVector2() * 16) < 32 ? 1.5f : 1f;
+				spriteBatch.Draw(tex, wand.point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Red * scale2, 0, tex.Frame().Size() / 2, scale2, 0, 0);
+
+				if (scale1 > 1 || scale2 > 1)
+					drawPreview = false;
+			}
+
+			if (drawPreview) {
+				var pos = (Main.MouseWorld / 16).ToPoint16();
+				spriteBatch.Draw(tex, pos.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			}
+
+			spriteBatch.End();
+		}
+
+		orig(self, gameTime);
+	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
 			orig();
 		}
 		Main.hardMode = true;
 	}
-
 	private void On_UIElement_OnActivate(On_UIElement.orig_OnActivate orig, UIElement self) {
 		try {
 			if (ModContent.GetInstance<RogueLikeConfig>().AutoRandomizeCharacter) {
@@ -332,6 +414,7 @@ internal class UniversalSystem : ModSystem {
 		TeleportUser?.Update(gameTime);
 		infoUser?.Update(gameTime);
 		achievementUser?.Update(gameTime);
+		structureUser?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -351,6 +434,7 @@ internal class UniversalSystem : ModSystem {
 					TeleportUser.Draw(Main.spriteBatch, gametime);
 					infoUser.Draw(Main.spriteBatch, gametime);
 					achievementUser.Draw(Main.spriteBatch, gametime);
+					structureUser.Draw(Main.spriteBatch, gametime);
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -392,6 +476,12 @@ internal class UniversalSystem : ModSystem {
 			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}
 	}
+	public void ActivateStructureSaverUI(Point16 TopLeft, Point16 BottomRight) {
+		DeactivateUI();
+		structUI.TopLeft = TopLeft;
+		structUI.BottomRight = BottomRight;
+		structureUser.SetState(structUI);
+	}
 	public void ActivateInfoUI() {
 		DeactivateUI();
 		infoUser.SetState(infoUI);
@@ -413,7 +503,7 @@ internal class UniversalSystem : ModSystem {
 		if (context.Trim() == "relic") {
 			TestUser.SetState(relicUI);
 		}
-		if(context.Trim() == "skill") {
+		if (context.Trim() == "skill") {
 			TestUser.SetState(skillUI);
 		}
 	}
@@ -459,6 +549,7 @@ internal class UniversalSystem : ModSystem {
 		TeleportUser.SetState(null);
 		infoUser.SetState(null);
 		achievementUser.SetState(null);
+		structureUser.SetState(null);
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
@@ -1385,6 +1476,9 @@ class btn_SkillSlotHolder : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		Player player = Main.LocalPlayer;
 		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (uitype == SkillUI.UIType_INVENTORY) {
@@ -1437,8 +1531,78 @@ internal class PerkUIState : UIState {
 	public const short GamblerState = 3;
 	public short StateofState = 0;
 	public UIText toolTip;
+	public Roguelike_UIImageButton reroll = null;
+	List<PerkUIImageButton> list_perkbtn = new();
+	public override void OnInitialize() {
+		reroll = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		reroll.OnLeftClick += Reroll_OnLeftClick;
+		reroll.OnUpdate += Reroll_OnUpdate;
+		reroll.UISetWidthHeight(52, 52);
+		reroll.HAlign = .5f;
+		reroll.VAlign = .5f;
+		Append(reroll);
+
+		list_perkbtn = new();
+		toolTip = new UIText("");
+		Info = "";
+		Append(toolTip);
+	}
+
+	private void Reroll_OnUpdate(UIElement affectedElement) {
+		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().Reroll == 0) {
+			reroll.Hide = true;
+		}
+		if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (affectedElement.IsMouseHovering) {
+			Main.instance.MouseText("Reroll Perk !");
+		}
+	}
+
+	private void Reroll_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
+		List<int> listOfPerk = new List<int>();
+		Player player = Main.LocalPlayer;
+		player.TryGetModPlayer(out PerkPlayer modplayer);
+		if (StateofState == DefaultState) {
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (modplayer.perks.ContainsKey(i)) {
+					if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
+				}
+				listOfPerk.Add(i);
+			}
+		}
+		if (StateofState == StarterPerkState) {
+			listOfPerk = [.. TerrariaArrayID.StarterPerk];
+		}
+		foreach (var item in list_perkbtn) {
+			if (listOfPerk.Count < 1) {
+				item.ChangePerkType(Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() }));
+			}
+			else {
+				item.ChangePerkType(Main.rand.Next(listOfPerk));
+			}
+		}
+		modplayer.Modify_RerollCount(1, true);
+	}
+
 	public override void OnActivate() {
-		Elements.Clear();
+		list_perkbtn.Clear();
+		for (int i = Elements.Count - 1; i >= 0; i--) {
+			if (Elements[i].UniqueId != reroll.UniqueId) {
+				Elements[i].Remove();
+			}
+		}
 		Player player = Main.LocalPlayer;
 		if (player.TryGetModPlayer(out PerkPlayer modplayer)) {
 			if (StateofState == DefaultState) {
@@ -1454,9 +1618,6 @@ internal class PerkUIState : UIState {
 				ActivateGamblerUI(modplayer, player);
 			}
 		}
-		toolTip = new UIText("");
-		Info = "";
-		Append(toolTip);
 	}
 	private void ActivateDebugPerkUI(Player player) {
 		int amount = ModPerkLoader.TotalCount;
@@ -1476,8 +1637,10 @@ internal class PerkUIState : UIState {
 			Append(btn);
 			ModPerkLoader.GetPerk(i);
 		}
+		reroll.Hide = true;
 	}
 	private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player) {
+		reroll.Hide = false;
 		List<int> listOfPerk = new List<int>();
 		for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 			if (modplayer.perks.ContainsKey(i)) {
@@ -1494,8 +1657,8 @@ internal class PerkUIState : UIState {
 			}
 			listOfPerk.Add(i);
 		}
-		int amount = listOfPerk.Count;
 		Vector2 originDefault = new Vector2(26, 26);
+		int amount = listOfPerk.Count;
 		int perkamount = modplayer.PerkAmountModified();
 		for (int i = 0; i < perkamount; i++) {
 			Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
@@ -1505,7 +1668,7 @@ internal class PerkUIState : UIState {
 				texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
 			else
 				texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
-			if (i >= amount || i >= perkamount - 1) {
+			if (i >= amount) {
 				newperk = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
 				if (ModPerkLoader.GetPerk(newperk).textureString is not null)
 					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
@@ -1516,6 +1679,7 @@ internal class PerkUIState : UIState {
 				buttonWeapon.UISetWidthHeight(52, 52);
 				buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
 				buttonWeapon.Info = Info;
+				list_perkbtn.Add(buttonWeapon);
 				Append(buttonWeapon);
 				continue;
 			}
@@ -1526,10 +1690,12 @@ internal class PerkUIState : UIState {
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = newperk;
 			btn.Info = Info;
+			list_perkbtn.Add(btn);
 			Append(btn);
 		}
 	}
 	private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
+		reroll.Hide = false;
 		Vector2 originDefault = new Vector2(26, 26);
 		List<int> starterPerk = [.. TerrariaArrayID.StarterPerk];
 		int limit = 3;
@@ -1547,6 +1713,7 @@ internal class PerkUIState : UIState {
 			btn.UISetWidthHeight(52, 52);
 			btn.UISetPosition(player.Center + offsetPos, originDefault);
 			btn.perkType = choosenperk.Type;
+			list_perkbtn.Add(btn);
 			Append(btn);
 		}
 	}
@@ -1571,6 +1738,7 @@ internal class PerkUIState : UIState {
 			btn.perkType = starterPerk[i];
 			Append(btn);
 		}
+		reroll.Hide = true;
 	}
 }
 //Do all the check in UI state since that is where the perk actually get create and choose
@@ -1580,6 +1748,11 @@ class PerkUIImageButton : UIImageButton {
 	private Asset<Texture2D> texture;
 	public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture;
+	}
+	public void ChangePerkType(int type) {
+		perkType = type;
+		texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
+		SetImage(texture);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -1 });
@@ -1919,7 +2092,7 @@ public class SpoilsUIState : UIState {
 		if (SpoilList.Count < 1) {
 			SpoilList = ModSpoilSystem.GetSpoilsList();
 		}
-		for (int i = 0; i < Limit_Spoils; i++) {
+		for (int i = 0; i <= Limit_Spoils; i++) {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
 			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
@@ -1930,11 +2103,11 @@ public class SpoilsUIState : UIState {
 			btn_List.Add(btn);
 			Append(btn);
 		}
-		SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
-		btna.HAlign = .7f;
-		btna.VAlign = .4f;
-		btn_List.Add(btna);
-		Append(btna);
+		//SpoilsUIButton btna = new SpoilsUIButton(TextureAssets.InventoryBack10, null);
+		//btna.HAlign = .7f;
+		//btna.VAlign = .4f;
+		//btn_List.Add(btna);
+		//Append(btna);
 	}
 }
 public class SpoilsUIButton : UIImageButton {
@@ -2290,6 +2463,136 @@ public class AchievementButton : UIImageButton {
 		}
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
+}
+public class StructureUI : UIState {
+	public UIPanel panel;
+	public UITextBox textBox;
+	public UIImageButton btn_confirm;
+	public UIImageButton btn_cancel;
+	public UITextPanel<string> textPanel;
+	public Point16 TopLeft = new Point16();
+	public Point16 BottomRight = new Point16();
+	public bool IsFocus = false;
+	public int WidthStruct => BottomRight.X - TopLeft.X;
+	public int HeightStruct => BottomRight.Y - TopLeft.Y;
+	public override void OnInitialize() {
+		panel = new();
+		panel.HAlign = .5f;
+		panel.VAlign = .5f;
+		panel.UISetWidthHeight(450, 200);
+		panel.OnUpdate += Panel_OnUpdate;
+		Append(panel);
+
+		textPanel = new("Save this structure ? Please name the file");
+		textPanel.UISetWidthHeight(400, 40);
+		textPanel.HAlign = .5f;
+		textPanel.VAlign = .1f;
+		panel.Append(textPanel);
+
+		textBox = new("");
+		textBox.HAlign = .5f;
+		textBox.VAlign = .45f;
+		textBox.UISetWidthHeight(400, 40);
+		textBox.ShowInputTicker = true;
+		textBox.TextHAlign = 0f;
+		textBox.OnLeftClick += TextBox_OnLeftClick;
+		panel.Append(textBox);
+
+		btn_cancel = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		btn_cancel.HAlign = 0f;
+		btn_cancel.VAlign = 1f;
+		btn_cancel.OnLeftClick += Btn_cancel_OnLeftClick;
+		btn_cancel.UISetWidthHeight(52, 52);
+		panel.Append(btn_cancel);
+
+		btn_confirm = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		btn_confirm.HAlign = 1f;
+		btn_confirm.VAlign = 1f;
+		btn_confirm.UISetWidthHeight(52, 52);
+		btn_confirm.OnLeftClick += Btn_confirm_OnLeftClick;
+		panel.Append(btn_confirm);
+	}
+
+	private void Panel_OnUpdate(UIElement affectedElement) {
+		if (panel.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
+
+	private void TextBox_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		IsFocus = true;
+	}
+
+	private void Btn_cancel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+		Main.blockInput = false;
+		PlayerInput.WritingText = false;
+		textBox.SetText("");
+	}
+
+	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GenerationHelper.SaveToFile(new(TopLeft.X, TopLeft.Y, WidthStruct - 1, HeightStruct - 1), textBox.Text);
+		textBox.SetText("");
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+	int Delay = 0;
+	bool shift = false;
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (Main.keyState.IsKeyDown(Keys.Escape) || Main.mouseLeft && !IsMouseHovering)
+			IsFocus = false;
+		if (IsFocus) {
+			Main.blockInput = true;
+			textBox.ShowInputTicker = true;
+			if (--Delay > 0) {
+				return;
+			}
+			var list = PlayerInput.GetPressedKeys();
+			if (list.Count > 0) {
+				shift = false;
+				Delay = BossRushUtils.ToSecond(.1f);
+				Keys outKey = Keys.None;
+				for (int i = 0; i < list.Count; i++) {
+					Keys key = list[0];
+					if (key == Keys.Back) {
+						textBox.Backspace();
+					}
+					else if (key == Keys.Space) {
+						textBox.Write(" ");
+					}
+					else {
+						if (key == Keys.LeftShift) {
+							shift = true;
+							continue;
+						}
+						if (outKey != key) {
+							outKey = key;
+							continue;
+						}
+					}
+				}
+				if (outKey != Keys.None) {
+					string c = outKey.ToString();
+					if (shift) {
+						textBox.Write(c);
+					}
+					else {
+						textBox.Write(c.ToLower());
+					}
+				}
+			}
+		}
+		else {
+			Main.blockInput = false;
+			textBox.ShowInputTicker = false;
+		}
+
+	}
+}
+public enum InputType {
+	text,
+	integer,
+	number
 }
 public class CursesButtonMenu : UIImageButton {
 	public CursesButtonMenu(Asset<Texture2D> texture) : base(texture) {

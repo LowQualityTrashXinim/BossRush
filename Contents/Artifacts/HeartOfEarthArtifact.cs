@@ -19,7 +19,8 @@ namespace BossRush.Contents.Artifacts {
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
 			if (Earth) {
-				health.Base = 100;
+				health.Flat += 100;
+				health += .1f;
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
@@ -28,13 +29,13 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override void PostUpdate() {
-			if (!Earth && OnHitDelay <= 0) {
+			if (!Earth || OnHitDelay > 0) {
 				OnHitDelay = BossRushUtils.CountDown(OnHitDelay);
 				return;
 			}
 			if (Player.velocity == Vector2.Zero) {
 				ShortStanding++;
-				if (ShortStanding > 120) {
+				if (ShortStanding > 120) {//2s required
 					if (ShortStanding % Math.Clamp(10 - ShortStanding / 100, 1, 10) == 0) {
 						Player.statLife = Math.Clamp(Player.statLife + 1, 0, Player.statLifeMax2);
 					}

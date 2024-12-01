@@ -17,7 +17,7 @@ internal class VitalityDrainTotem : ModItem {
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<VitalityDrainTotemPlayer>().VitalityDrainTotem = true;
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.LifeStealEffectiveness, Additive: 1.25f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.HealEffectiveness, Additive: 1.25f);
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Base: 3);
 	}
 }

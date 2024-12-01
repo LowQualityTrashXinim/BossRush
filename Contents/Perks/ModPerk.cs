@@ -618,7 +618,7 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 		}
 		public override void Update(Player player) {
-			if (Main.rand.NextBool(100)) {
+			if (Main.rand.NextBool(200)) {
 				int damage = (int)player.GetDamage(DamageClass.Generic).ApplyTo(1000);
 				int proj = Projectile.NewProjectile(Entity.GetSource_NaturalSpawn(), player.Center + new Vector2(Main.rand.NextFloat(-1000, 1000), -1500), (Vector2.UnitY * 15).Vector2RotateByRandom(25), ProjectileID.SuperStar, damage, 5);
 				Main.projectile[proj].tileCollide = false;
@@ -631,22 +631,33 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenMana, Base: 20);
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Base: 20);
+			if(player.statMana <= player.statManaMax2 / 2) {
+				modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Base: 40);
+			}
+			if(player.statMana > player.statLife) {
+				modplayer.AddStatsToPlayer(PlayerStats.MagicDMG, 1.25f);
+			}
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
-			if (player.statMana == player.statLifeMax2 && item.DamageType == DamageClass.Magic) {
-				damage += 0.33f;
+			if (player.statMana == player.statManaMax2 && item.DamageType == DamageClass.Magic) {
+				damage += 0.77f;
 			}
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-			if (hit.DamageType == DamageClass.Magic) {
+			if (hit.DamageType == DamageClass.Magic && player.statMana == player.statLifeMax2) {
 				target.Center.LookForHostileNPC(out List<NPC> npclist, 64);
 				for (int i = 0; i < 65; i++) {
 					var d = Dust.NewDust(target.Center + Main.rand.NextVector2CircularEdge(64, 64), 0, 0, DustID.BlueTorch);
 					Main.dust[d].noGravity = true;
 				}
+				float damage = .15f;
+				if (player.statMana > player.statLife) {
+					damage += .3f;
+				}
 				foreach (var i in npclist) {
-					player.StrikeNPCDirect(target, i.CalculateHitInfo(5 + (int)(proj.damage * 0.15f), 1, Main.rand.NextBool(10)));
+					player.StrikeNPCDirect(target, i.CalculateHitInfo(5 + (int)(proj.damage * damage), 1, Main.rand.NextBool(10)));
 				}
 			}
 		}
@@ -660,13 +671,13 @@ namespace BossRush.Contents.Perks {
 			player.GetCritChance(DamageClass.Generic) += 5 * StackAmount(player);
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() < .03f * StackLimit) {
+			if (Main.rand.NextFloat() < .04f * StackLimit) {
 				modifiers.FinalDamage *= 2.5f;
 				modifiers.ScalingArmorPenetration += 0.9f;
 			}
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Main.rand.NextFloat() < .03f * StackLimit) {
+			if (Main.rand.NextFloat() < .04f * StackLimit) {
 				modifiers.FinalDamage *= 2.5f;
 				modifiers.ScalingArmorPenetration += 0.9f;
 			}
@@ -720,12 +731,12 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
-	public class ImprovedManaPotion : Perk {
+	public class ImprovedPotion : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
 		}
 		public override void ResetEffect(Player player) {
-			player.GetModPlayer<PerkPlayer>().perk_ImprovedManaPotion = true;
+			player.GetModPlayer<PerkPlayer>().perk_ImprovedPotion = true;
 		}
 	}
 	public class WeaponExpert : Perk {

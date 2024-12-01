@@ -6,6 +6,15 @@ using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
+using System.IO;
+using Terraria.ModLoader.IO;
+using Terraria.ModLoader;
+using Terraria.DataStructures;
+using BossRush.Common.Systems.Achievement;
+using System.Text;
+using System.Diagnostics;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BossRush.Common.Utils;
 
@@ -19,7 +28,7 @@ internal static partial class GenerationHelper {
 
 		Tile tile = Main.tile[i, j];
 		tile.TileType = tileType;
-		tile.TileColor = PaintID.None; 
+		tile.TileColor = PaintID.None;
 		tile.Get<TileWallWireStateData>().HasTile = true;
 	}
 
@@ -121,75 +130,6 @@ internal static partial class GenerationHelper {
 		return r.NextFromHashSet(getallPosition);
 	}
 	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="i">x axis</param>
-	/// <param name="j">y axis</param>
-	/// <param name="tileType"></param>
-	public static void SmartReadjustPlatform(int i, int j, ushort tileType) {
-		//|-|
-		//0-|
-		//|-|
-		bool HasTileLeft = !WorldGen.TileEmpty(i - 1, j);
-		//|-|
-		//|-O
-		//|-|
-		bool HasTileRight = !WorldGen.TileEmpty(i + 1, j);
-
-		//0-|
-		//|-|
-		//|-|
-		bool HasTileTopLeft = !WorldGen.TileEmpty(i - 1, j - 1);
-		//|-0
-		//|-|
-		//|-|
-		bool HasTileTopRight = !WorldGen.TileEmpty(i + 1, j - 1);
-		//|-|
-		//|-|
-		//0-|
-		bool HasTileBottomLeft = !WorldGen.TileEmpty(i - 1, j + 1);
-		//|-|
-		//|-|
-		//|-0
-		bool HasTileBottomRight = !WorldGen.TileEmpty(i + 1, j + 1);
-		Tile tile = Main.tile[i, j];
-	}
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="i">x axis</param>
-	/// <param name="j">y axis</param>
-	/// <param name="tileType"></param>
-	public static void SmartReadjustPlatform(Point point, ushort tileType = 0) {
-		int i = point.X; int j = point.Y;
-		//|-|
-		//0-|
-		//|-|
-		bool HasTileLeft = !WorldGen.TileEmpty(i - 1, j);
-		//|-|
-		//|-O
-		//|-|
-		bool HasTileRight = !WorldGen.TileEmpty(i + 1, j);
-
-		//0-|
-		//|-|
-		//|-|
-		bool HasTileTopLeft = !WorldGen.TileEmpty(i - 1, j - 1);
-		//|-0
-		//|-|
-		//|-|
-		bool HasTileTopRight = !WorldGen.TileEmpty(i + 1, j - 1);
-		//|-|
-		//|-|
-		//0-|
-		bool HasTileBottomLeft = !WorldGen.TileEmpty(i - 1, j + 1);
-		//|-|
-		//|-|
-		//|-0
-		bool HasTileBottomRight = !WorldGen.TileEmpty(i + 1, j + 1);
-
-	}
-	/// <summary>
 	/// Use this for easy place tile in the world in 24x24 grid like
 	/// </summary>
 	/// <param name="x">The starting X position</param>
@@ -215,5 +155,331 @@ internal static partial class GenerationHelper {
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}
+	/// <summary>
+	/// Use this to place the structure in world gen code
+	/// </summary>
+	/// <param name="method">the method that was uses to optimize the file</param>
+	public static void PlaceStructure(string FileName, Rectangle rect, SaverOptimizedMethod method) {
+		List<GenPassData> datalist;
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		if (modsystem.dict_Struture.ContainsKey(FileName)) {
+			datalist = modsystem.dict_Struture[FileName];
+		}
+		else {
+			return;
+		}
+		if (method == SaverOptimizedMethod.Default) {
+			int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
 
+			for (int i = 0; i < datalist.Count; i++) {
+				GenPassData gdata = datalist[i];
+				for (int l = 0; l < gdata.Count; l++) {
+					if (offsetY >= rect.Height) {
+						offsetY = 0;
+						offsetX++;
+					}
+					holdX = X + offsetX; holdY = Y + offsetY;
+					Tile tile = Main.tile[holdX, holdY];
+					TileData data = gdata.tileData;
+					if (!data.Tile_Air) {
+						data.PlaceTile(tile);
+					}
+					else {
+						FastRemoveTile(holdX, holdY);
+						tile.WallType = data.Tile_WallData;
+					}
+					offsetY++;
+				}
+			}
+		}
+	}
+	/// <summary>
+	/// Saves a given region of the world as a structure file
+	/// </summary>
+	/// <param name="target">The region of the world to save, in tile coordinates</param>
+	/// <param name="targetPath">The name of the file to save. Automatically defaults to a file named after the date in the SavedStructures folder</param>
+	public static void SaveToFile(Rectangle target, string name = "unnamed structure", SaverOptimizedMethod method = SaverOptimizedMethod.Default) {
+		if (name == "")
+			name = "unnamed structure";
+
+		string path = Path.Join(Program.SavePathShared, "RogueLikeData");
+
+		if (!Directory.Exists(path))
+			Directory.CreateDirectory(path);
+		if (method == SaverOptimizedMethod.Default)
+			SaveStructure(target, path, name);
+		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
+	}
+	/// <summary>
+	/// Attempt to save a structure into a file
+	/// </summary>
+	/// <param name="target">The region to transform</param>
+	/// <param name="path">Path to save</param>
+	/// <param name="name">File's name</param>
+	public static void SaveStructure(Rectangle target, string path, string name) {
+		try {
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
+
+			Tile outSideLoop = new();
+			int distance = 0;
+			for (int x = target.X; x <= target.X + target.Width; x++) {
+				for (int y = target.Y; y <= target.Y + target.Height; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
+						if (distance != 0) {
+							m.Write(distance);
+						}
+						outSideLoop = tile;
+						TileData td = new(tile);
+						m.Write(td.ToString());
+						distance = 1;
+					}
+					else {
+						distance++;
+					}
+				}
+			}
+			if (distance != 0) {
+				m.Write(distance);
+			}
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
+	/// <summary>
+	/// Attempt to save a structure into a file with rectangle format
+	/// </summary>
+	/// <param name="target">The region to transform</param>
+	/// <param name="path">Path to save</param>
+	/// <param name="name">File's name</param>
+	public static void SaveRectStructure(Rectangle target, string path, string name) {
+		try {
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
+
+			Tile outSideLoop = new();
+			int distanceX = 0;
+			int distanceY = 0;
+			int X = target.X, Y = target.Y, W = target.Width, H = target.Height;
+			for (int x = X; x <= X + W; x++) {
+				for (int y = Y; y <= Y + H; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
+						if (distanceY != 0) {
+							if (distanceY >= H) {
+								m.Write('Y' + H);
+							}
+
+
+							m.Write('Y' + distanceY);
+
+						}
+						outSideLoop = tile;
+						TileData td = new(tile);
+						m.Write(td.ToString());
+						distanceY = 1;
+					}
+					else {
+						distanceY++;
+					}
+					distanceX++;
+				}
+			}
+			if (distanceY != 0) {
+				m.Write('Y' + distanceY);
+			}
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
+}
+/// <summary>
+/// TODO : Implement the below optimize saving method
+/// All of these act differently so it is as expected
+/// </summary>
+public enum SaverOptimizedMethod : byte {
+	/// <summary>
+	/// The default optimization, it is highly recommend to use this method when you are saving a small building
+	/// </summary>
+	Default,
+	/// <summary>
+	/// The default optimization but instead horizontal
+	/// </summary>
+	HorizontalDefault,
+	/// <summary>
+	/// This optimization method will save the following structure in rectangle-like<br/>
+	/// useful for wanting to save a massive arena structure that have a lot of open space
+	/// </summary>
+	MultiStructure,
+	/// <summary>
+	/// Default optimization but seperate wall and tile into 2 different field
+	/// </summary>
+	WallTileSeperate,
+
+}
+public struct TileData : ICloneable {
+	public ushort Tile_Type = 0;
+	public short Tile_FrameX = 0;
+	public short Tile_FrameY = 0;
+	public ushort Tile_WallData = 0;
+	public byte Tile_WireData = 0;
+	public byte Tile_LiquidData = byte.MaxValue;
+	public byte Tile_Liquid = 0;
+	public bool Tile_HasActuator = false;
+	public bool Tile_Air = false;
+	public static TileData Default => new();
+	public TileData() {
+		Tile_Type = 0;
+		Tile_FrameX = 0;
+		Tile_FrameY = 0;
+		Tile_WallData = 0;
+		Tile_WireData = 0;
+		Tile_LiquidData = byte.MaxValue;
+		Tile_Liquid = 0;
+		Tile_HasActuator = false;
+		Tile_Air = false;
+	}
+
+	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, byte tile_WireData, bool tile_HasActuator) {
+		Tile_Type = tileType;
+		Tile_FrameX = tileFrameX;
+		Tile_FrameY = tileFrameY;
+		Tile_WallData = tile_WallData;
+		Tile_WireData = tile_WireData;
+		Tile_HasActuator = tile_HasActuator;
+	}
+	public TileData(Tile tile) {
+		if (tile.Get<TileWallWireStateData>().HasTile) {
+			Tile_Type = tile.TileType;
+			if (tile.TileFrameX != -1) {
+				Tile_FrameX = tile.TileFrameX;
+			}
+			if (tile.TileFrameY != -1) {
+				Tile_FrameY = tile.TileFrameY;
+			}
+		}
+		else {
+			Tile_Air = true;
+		}
+		if (tile.WallType != 0) {
+			Tile_WallData = tile.WallType;
+		}
+		if (tile.RedWire) {
+			Tile_WireData = 1;
+		}
+		if (tile.BlueWire) {
+			Tile_WireData = 2;
+		}
+		if (tile.YellowWire) {
+			Tile_WireData = 3;
+		}
+		if (tile.GreenWire) {
+			Tile_WireData = 4;
+		}
+		if (tile.LiquidAmount != 0) {
+			Tile_Liquid = (byte)tile.LiquidType;
+			Tile_LiquidData = tile.LiquidAmount;
+		}
+	}
+	/// <summary>
+	/// Reverse the ToString back into a tile format
+	/// </summary>
+	/// <param name="Tile"></param>
+	public TileData(string Tile) {
+		string NumberString = "";
+		char c = ' ';
+		for (int i = 0; i < Tile.Length; i++) {
+			if (char.IsNumber(Tile[i])) {
+				NumberString += Tile[i];
+			}
+			else {
+				if (c != ' ') {
+
+					ParseStringData(c, NumberString);
+					NumberString = "";
+
+				}
+				c = Tile[i];
+			}
+		}
+		if (c != ' ')
+			ParseStringData(c, NumberString);
+	}
+
+	private void ParseStringData(char c, string str) {
+		switch (c) {
+			case 'T':
+				Tile_Type = ushort.Parse(str); break;
+			case 'X':
+				Tile_FrameX = short.Parse(str); break;
+			case 'Y':
+				Tile_FrameY = short.Parse(str); break;
+			case 'W':
+				Tile_WallData = ushort.Parse(str); break;
+			case 'L':
+				Tile_Liquid = byte.Parse(str); break;
+			case 'D':
+				Tile_LiquidData = byte.Parse(str); break;
+			case 'A':
+				Tile_HasActuator = true; break;
+			case 'N':
+				Tile_Air = true; break;
+		}
+	}
+	/// <summary>
+	/// Use this method during world gen is advised<br/>
+	/// But only if there are actually anything implemented into this method
+	/// </summary>
+	public void PlaceTile(Tile tile) {
+		tile.TileType = Tile_Type;
+		tile.TileFrameX = Tile_FrameX;
+		tile.TileFrameY = Tile_FrameY;
+		tile.WallType = Tile_WallData;
+		tile.Get<TileWallWireStateData>().HasTile = true;
+	}
+	public override string ToString() {
+		StringBuilder sb = new StringBuilder();
+		if (Tile_Type < TileID.Count && !Tile_Air) {
+			sb.Append("T").Append(Tile_Type);
+			sb.Append("X").Append(Tile_FrameX);
+			sb.Append("Y").Append(Tile_FrameY);
+		}
+		else {
+			sb.Append("N");
+		}
+		if (Tile_WallData < WallID.Count) {
+			sb.Append("W").Append(Tile_WallData);
+		}
+		if (Tile_LiquidData < LiquidID.Count && Tile_Liquid > 0) {
+			sb.Append("L").Append(Tile_Liquid);
+			sb.Append("D").Append(Tile_LiquidData);
+		}
+		if (Tile_HasActuator) {
+			sb.Append("A");
+		}
+		return "{" + sb.ToString() + "}";
+	}
+
+	public object Clone() {
+		return this.MemberwiseClone();
+	}
+	public override bool Equals([NotNullWhen(true)] object obj) {
+		var TD = (TileData)obj;
+		return TD.Tile_Type == this.Tile_Type
+			&& TD.Tile_Liquid == this.Tile_Liquid
+			&& TD.Tile_LiquidData == this.Tile_LiquidData
+			&& TD.Tile_Air == this.Tile_Air
+			&& TD.Tile_FrameX == this.Tile_FrameX
+			&& TD.Tile_FrameY == this.Tile_FrameY
+			&& TD.Tile_HasActuator == this.Tile_HasActuator
+			&& TD.Tile_WallData == this.Tile_WallData
+			&& TD.Tile_WireData == this.Tile_WireData;
+	}
 }
