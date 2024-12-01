@@ -26,7 +26,7 @@ public class MythrilBeamSword : SynergyModItem {
 		Item.width = Item.width = 48;
 		Item.damage = 88;
 		Item.shoot = ModContent.ProjectileType<MythrilBeam>();
-		Item.shootSpeed = 35;
+		Item.shootSpeed = 15;
 	}	
 
 }
@@ -68,10 +68,12 @@ public class MythrilBeam : SynergyModProjectile
 	public override void SetDefaults() {
 		Projectile.CloneDefaults(ProjectileID.SwordBeam);
 		Projectile.aiStyle = -1;
+		
 	}
 
 	public override void OnSpawn(IEntitySource source) {
 		retargeting = false;
+		Projectile.FillProjectileOldPosAndRot();
 	}
 
 	public override bool PreDraw(ref Color lightColor) {
@@ -107,12 +109,12 @@ public class MythrilBeam : SynergyModProjectile
 		int range = 1200;
 		Vector2 targetPos = Projectile.Center.LookForHostileNPCPositionClosest(range);
 
-		if (Projectile.ai[0] == 15) 
+		if (Projectile.ai[0] == 25) 
 		{
 			retargeting = true;
+			Projectile.damage = (int)(Projectile.damage * 1.25f);
 			for (int i = 0; i < 35; i++) {
-				Projectile.damage += (int)(Projectile.damage * 1.25f);
-				var dust = Dust.NewDustPerfect(Projectile.position, DustID.OrangeTorch, Main.rand.NextVector2CircularEdge(30, 30));
+				var dust = Dust.NewDustPerfect(Projectile.position, DustID.OrangeTorch, Main.rand.NextVector2CircularEdge(10, 10));
 				dust.noGravity = true;
 
 			}

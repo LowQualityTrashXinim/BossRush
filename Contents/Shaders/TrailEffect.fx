@@ -18,7 +18,7 @@ float4 FadeTrail(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR
 {
     float2 uv = coords;
     
-    float4 noiseTex = tex2D(uImage1, uv + uTime);
+    float4 noiseTex = tex2D(uImage1, uv - uTime);
     noiseTex.rgb *= uColor;
     noiseTex.a = noiseTex.r;
 
@@ -26,7 +26,7 @@ float4 FadeTrail(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR
     color.rgba -= uv.x;
     
     
-    return float4(color.rgb, color.a);
+    return color;
 }
     
 technique Technique1

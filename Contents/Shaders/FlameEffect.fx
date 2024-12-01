@@ -26,9 +26,9 @@ float4 FlamethrowerFlame(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0)
     color.rgb += uColor * (uv.x + 1);
     color.rgba -= uv.x * 3;
     
-    color.a *= lerp(0, 1, clamp(uShaderSpecificData.r / 30,0,1));
+    color.a *= lerp(0, 1, clamp(uShaderSpecificData.r / uShaderSpecificData.g,0,1));
     
-    return float4(color.rgb, color.a);
+    return color;
 }
     
 technique Technique1

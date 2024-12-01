@@ -22,6 +22,7 @@
     <None Remove="Contents\Artifacts\TokenofPrideArtifact.png" />
     <None Remove="Contents\Artifacts\VampirismCrystalArtifact.png" />
     <None Remove="Contents\Items\TransmuteTablet.png" />
+    <None Remove="Contents\Items\Weapon\MagicSynergyWeapon\WyvernWrath\WyvernWrath.png" />
     <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\MythrilBeamSword\MythrilBeamSword.png" />
     <None Remove="Contents\Items\Weapon\NotSynergyWeapon\OldFlamingWoodSword.png" />
     <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\HeavenSmg\angelicSMG.png" />

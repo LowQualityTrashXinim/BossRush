@@ -215,16 +215,18 @@ public class FallenStarPower : ModNPC
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		
-		Asset<Texture2D> texture = TextureAssets.Npc[NPC.type];
+		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.StarCannonStar];
 
 
-		Main.EntitySpriteDraw(texture.Value, NPC.position - screenPos + new Vector2(MathF.Cos(NPC.ai[0]) * 10, MathF.Cos(NPC.ai[0]) * 10), null, Color.White * 0.5f, 0, texture.Size() / 2f, 1f, SpriteEffects.None); Main.EntitySpriteDraw(texture.Value, NPC.position - screenPos + new Vector2(MathF.Sin(NPC.ai[0]), 0), null, Color.White, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
-		Main.EntitySpriteDraw(texture.Value, NPC.position - screenPos + new Vector2(MathF.Cos(-NPC.ai[0]) * 10, MathF.Sin(-NPC.ai[0]) * 10), null, Color.White * 0.5f, 0, texture.Size() / 2f, 1f, SpriteEffects.None); Main.EntitySpriteDraw(texture.Value, NPC.position - screenPos + new Vector2(MathF.Sin(NPC.ai[0]), 0), null, Color.White, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos + new Vector2(MathF.Cos(NPC.ai[0]) * 10, MathF.Cos(NPC.ai[0]) * 10), null, Color.White * 0.5f, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos + new Vector2(MathF.Sin(NPC.ai[0]), 0), null, Color.White, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos + new Vector2(MathF.Cos(-NPC.ai[0]) * 10, MathF.Sin(-NPC.ai[0]) * 10), null, Color.White * 0.5f, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos + new Vector2(MathF.Sin(NPC.ai[0]), 0), null, Color.White, 0, texture.Size() / 2f, 1f, SpriteEffects.None);
 
 
-		Main.EntitySpriteDraw(texture.Value, NPC.position - screenPos, null, new Color(255,255,255,0), 0, texture.Size() / 2f, 0.8f, SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, NPC.Center - screenPos, null, new Color(255,255,255,0), 0, texture.Size() / 2f, 0.8f, SpriteEffects.None);
 
-		BossRushUtils.DrawPrettyStarSparkle(NPC.Opacity, SpriteEffects.None, NPC.position - Main.screenPosition, Color.Yellow, Color.White, 0.25f, 0f, 0.5f, 0f, 1f, NPC.rotation, new Vector2(1f, 1f), new Vector2(15f));
+		BossRushUtils.DrawPrettyStarSparkle(NPC.Opacity, SpriteEffects.None, NPC.Center - Main.screenPosition, Color.Yellow, Color.White, 0.25f, 0f, 0.5f, 0f, 1f, NPC.rotation, new Vector2(1f, 1f), new Vector2(15f));
 
 
 		return false;
