@@ -6,7 +6,6 @@ using Terraria.Localization;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using Terraria.WorldBuilding;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 public class ArmorLoader : ModSystem {

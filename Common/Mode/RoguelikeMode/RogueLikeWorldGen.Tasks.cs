@@ -103,6 +103,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			for (int j = 1; j < Main.maxTilesY - 1; j++) {
 				if (WorldGen.genRand.NextBool(10000)) {
 					//StructureHelper.Generator.GenerateStructure("Assets/Structures/SlimeShrine", new(i, j), Mod);
+					//WorldGen.PlaceChest()
 				}
 				if (!RNG) {
 					if (WorldGen.genRand.NextBool(1500)) {

@@ -1,4 +1,5 @@
 using BossRush;
+using BossRush.Common.Systems;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -58,7 +59,7 @@ namespace BossRush.Items
 		{
 			if (player.altFunctionUse == 2 && Ready && player.ItemAnimationJustStarted)
 			{
-				GenerationHelper.SaveToFile(new(TopLeft.X, TopLeft.Y, Width - 1, Height - 1), "");
+				ModContent.GetInstance<UniversalSystem>().ActivateStructureSaverUI(TopLeft, BottomRight);
 				return true;
 			}
 

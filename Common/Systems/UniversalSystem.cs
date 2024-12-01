@@ -40,6 +40,11 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using Microsoft.Xna.Framework.Input;
+using Terraria.ModLoader.UI;
+using Terraria.GameInput;
+using ReLogic.Localization.IME;
+using System.Text.RegularExpressions;
+using ReLogic.OS;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -172,6 +177,7 @@ internal class UniversalSystem : ModSystem {
 	internal UserInterface infoUser;
 	internal UserInterface achievementUser;
 	internal UserInterface cursesUser;
+	internal UserInterface structureUser;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -187,6 +193,7 @@ internal class UniversalSystem : ModSystem {
 	public TeleportUI teleportUI;
 	public InfoUI infoUI;
 	public AchievementUI achievementUI;
+	public StructureUI structUI;
 
 	public static bool EnchantingState = false;
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
@@ -248,6 +255,9 @@ internal class UniversalSystem : ModSystem {
 
 			achievementUser = new();
 			achievementUI = new();
+
+			structureUser = new();
+			structUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -305,6 +315,9 @@ internal class UniversalSystem : ModSystem {
 
 		achievementUser = null;
 		achievementUI = null;
+
+		structureUser = null;
+		structUI = null;
 	}
 	private void On_Main_DrawInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime) {
 		//Code source credit : Structure Helper
@@ -398,6 +411,7 @@ internal class UniversalSystem : ModSystem {
 		TeleportUser?.Update(gameTime);
 		infoUser?.Update(gameTime);
 		achievementUser?.Update(gameTime);
+		structureUser?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -417,6 +431,7 @@ internal class UniversalSystem : ModSystem {
 					TeleportUser.Draw(Main.spriteBatch, gametime);
 					infoUser.Draw(Main.spriteBatch, gametime);
 					achievementUser.Draw(Main.spriteBatch, gametime);
+					structureUser.Draw(Main.spriteBatch, gametime);
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -457,6 +472,12 @@ internal class UniversalSystem : ModSystem {
 			AddPerk(perkType);
 			BossRushUtils.CombatTextRevamp(Main.LocalPlayer.Hitbox, Color.AliceBlue, ModPerkLoader.GetPerk(perkType).DisplayName);
 		}
+	}
+	public void ActivateStructureSaverUI(Point16 TopLeft, Point16 BottomRight) {
+		DeactivateUI();
+		structUI.TopLeft = TopLeft;
+		structUI.BottomRight = BottomRight;
+		structureUser.SetState(structUI);
 	}
 	public void ActivateInfoUI() {
 		DeactivateUI();
@@ -525,6 +546,7 @@ internal class UniversalSystem : ModSystem {
 		TeleportUser.SetState(null);
 		infoUser.SetState(null);
 		achievementUser.SetState(null);
+		structureUser.SetState(null);
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
@@ -2376,6 +2398,136 @@ public class AchievementButton : UIImageButton {
 		}
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
+}
+public class StructureUI : UIState {
+	public UIPanel panel;
+	public UITextBox textBox;
+	public UIImageButton btn_confirm;
+	public UIImageButton btn_cancel;
+	public UITextPanel<string> textPanel;
+	public Point16 TopLeft = new Point16();
+	public Point16 BottomRight = new Point16();
+	public bool IsFocus = false;
+	public int WidthStruct => BottomRight.X - TopLeft.X;
+	public int HeightStruct => BottomRight.Y - TopLeft.Y;
+	public override void OnInitialize() {
+		panel = new();
+		panel.HAlign = .5f;
+		panel.VAlign = .5f;
+		panel.UISetWidthHeight(450, 200);
+		panel.OnUpdate += Panel_OnUpdate;
+		Append(panel);
+
+		textPanel = new("Save this structure ? Please name the file");
+		textPanel.UISetWidthHeight(400, 40);
+		textPanel.HAlign = .5f;
+		textPanel.VAlign = .1f;
+		panel.Append(textPanel);
+
+		textBox = new("");
+		textBox.HAlign = .5f;
+		textBox.VAlign = .45f;
+		textBox.UISetWidthHeight(400, 40);
+		textBox.ShowInputTicker = true;
+		textBox.TextHAlign = 0f;
+		textBox.OnLeftClick += TextBox_OnLeftClick;
+		panel.Append(textBox);
+
+		btn_cancel = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		btn_cancel.HAlign = 0f;
+		btn_cancel.VAlign = 1f;
+		btn_cancel.OnLeftClick += Btn_cancel_OnLeftClick;
+		btn_cancel.UISetWidthHeight(52, 52);
+		panel.Append(btn_cancel);
+
+		btn_confirm = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		btn_confirm.HAlign = 1f;
+		btn_confirm.VAlign = 1f;
+		btn_confirm.UISetWidthHeight(52, 52);
+		btn_confirm.OnLeftClick += Btn_confirm_OnLeftClick;
+		panel.Append(btn_confirm);
+	}
+
+	private void Panel_OnUpdate(UIElement affectedElement) {
+		if (panel.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
+
+	private void TextBox_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		IsFocus = true;
+	}
+
+	private void Btn_cancel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+		Main.blockInput = false;
+		PlayerInput.WritingText = false;
+		textBox.SetText("");
+	}
+
+	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		GenerationHelper.SaveToFile(new(TopLeft.X, TopLeft.Y, WidthStruct - 1, HeightStruct - 1), textBox.Text);
+		textBox.SetText("");
+		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+	}
+	int Delay = 0;
+	bool shift = false;
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (Main.keyState.IsKeyDown(Keys.Escape) || Main.mouseLeft && !IsMouseHovering)
+			IsFocus = false;
+		if (IsFocus) {
+			Main.blockInput = true;
+			textBox.ShowInputTicker = true;
+			if (--Delay > 0) {
+				return;
+			}
+			var list = PlayerInput.GetPressedKeys();
+			if (list.Count > 0) {
+				shift = false;
+				Delay = BossRushUtils.ToSecond(.1f);
+				Keys outKey = Keys.None;
+				for (int i = 0; i < list.Count; i++) {
+					Keys key = list[0];
+					if (key == Keys.Back) {
+						textBox.Backspace();
+					}
+					else if (key == Keys.Space) {
+						textBox.Write(" ");
+					}
+					else {
+						if (key == Keys.LeftShift) {
+							shift = true;
+							continue;
+						}
+						if (outKey != key) {
+							outKey = key;
+							continue;
+						}
+					}
+				}
+				if (outKey != Keys.None) {
+					string c = outKey.ToString();
+					if (shift) {
+						textBox.Write(c);
+					}
+					else {
+						textBox.Write(c.ToLower());
+					}
+				}
+			}
+		}
+		else {
+			Main.blockInput = false;
+			textBox.ShowInputTicker = false;
+		}
+
+	}
+}
+public enum InputType {
+	text,
+	integer,
+	number
 }
 public class CursesButtonMenu : UIImageButton {
 	public CursesButtonMenu(Asset<Texture2D> texture) : base(texture) {

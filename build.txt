@@ -1,4 +1,3 @@
-displayName = Roguelike Terraria ( Still beta )
+displayName = Roguelike Terraria ( Prototype Build )
 author = Xinim
 version = 0.4.1.2
-modReferences = StructureHelper
