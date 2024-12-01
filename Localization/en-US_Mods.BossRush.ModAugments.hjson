@@ -98,6 +98,11 @@ CriticalIII: {
 	Description: Critical strike will roll again increasing critical strike damage by 100%
 }
 
+CriticalIV: {
+	DisplayName: Critical IV
+	Description: Increases critical chance by 25 but reduce critical damage by 50%
+}
+
 VampireI: {
 	DisplayName: Vampire I
 	Description: Your weapon can life steal by 1%
@@ -106,6 +111,11 @@ VampireI: {
 VampireII: {
 	DisplayName: Vampire II
 	Description: During the night, your critical strike are more fatal
+}
+
+VampireII: {
+	DisplayName: Vampire III
+	Description: During the night, your regeneration is increases by 25%
 }
 
 AlchemistI: {
@@ -156,4 +166,9 @@ StrengthenIV: {
 DarkSoul: {
 	DisplayName: Dark Soul
 	Description: Grant 12 tick of I-frame when hitting enemy with item
+}
+
+ExtraLife: {
+	DisplayName: Extra Life
+	Description: Grant you 1 extra life at the cost of this weapon
 }

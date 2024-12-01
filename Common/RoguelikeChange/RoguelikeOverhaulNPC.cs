@@ -23,7 +23,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public bool NPC_SpecialException = false;
 	public override void SetDefaults(NPC entity) {
 		StatDefense = new();
-		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || NPC_SpecialException) {
+		if (!entity.boss || entity.type == NPCID.WallofFlesh || entity.type == NPCID.WallofFleshEye || NPC_SpecialException || !UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		entity.lifeMax = (int)(BossHP * GetValueMulti());
@@ -31,7 +31,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		entity.defense = (int)(BossDef * GetValueMulti(.5f));
 	}
 	public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment) {
-		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || NPC_SpecialException) {
+		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || NPC_SpecialException || !UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		float adjustment;

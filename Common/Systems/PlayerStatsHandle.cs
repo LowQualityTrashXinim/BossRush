@@ -10,6 +10,7 @@ using Terraria.ID;
 using System;
 using BossRush.Common.General;
 using BossRush.Common.Systems.Mutation;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -126,7 +127,15 @@ public class PlayerStatsHandle : ModPlayer {
 	public override void UpdateLifeRegen() {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
 	}
+	public void Add_ExtraLifeWeapon(Item item) {
+		if (!item.IsAWeapon()) {
+			return;
+		}
+		if (!listItem.Contains(item))
+			listItem.Add(item);
+	}
 	public override void ResetEffects() {
+		listItem.Clear();
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
 		}
@@ -196,6 +205,15 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		modifiers.FinalDamage.Flat = MathHelper.Clamp(modifiers.FinalDamage.Flat - StaticDefense.ApplyTo(1), 0, int.MaxValue);
+	}
+	public List<Item> listItem = new();
+	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
+		if (listItem.Contains(Player.HeldItem)) {
+			listItem.Remove(Player.HeldItem);
+			Player.HeldItem.TurnToAir();
+			return false;
+		}
+		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 	/// <summary>
 	/// This should be uses in always update code

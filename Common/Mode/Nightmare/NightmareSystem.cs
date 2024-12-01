@@ -10,7 +10,6 @@ namespace BossRush.Common.Mode.Nightmare {
 		/// return <b>True</b> if the world is nightmare difficulty
 		/// </returns>
 		public static bool IsANightmareWorld() => ModContent.GetInstance<NightmareSystem>().NightmareWorld;
-		public bool IsANightMareWorld() => false;
 		public bool NightmareWorld = false;
 		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 			if (UniversalSystem.CanAccessContent(UniversalSystem.NIGHTMARE_MODE)) {

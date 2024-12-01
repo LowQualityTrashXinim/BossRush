@@ -53,6 +53,7 @@ internal class UniversalSystem : ModSystem {
 	public const string SYNERGY_MODE = "SynergyModeEnable";
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
+	public const string HELLISH_MODE = "HellishEnable";
 	public const string HARDCORE_MODE = "Hardcore";
 	public const string TRUE_MODE = "TrueMode";
 	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
@@ -70,6 +71,8 @@ internal class UniversalSystem : ModSystem {
 			return true;
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
+		if (context == HELLISH_MODE)
+			return config.HellishEndeavour;
 		if (context == HARDCORE_MODE)
 			return player.difficulty == PlayerDifficultyID.Hardcore || config.AutoHardCore;
 		if (player.difficulty != PlayerDifficultyID.Hardcore && !config.AutoHardCore)
@@ -95,6 +98,8 @@ internal class UniversalSystem : ModSystem {
 			return true;
 		if (context == NIGHTMARE_MODE)
 			return config.Nightmare;
+		if (context == HELLISH_MODE)
+			return config.HellishEndeavour;
 		if (context == HARDCORE_MODE)
 			return config.AutoHardCore;
 		if (context == SYNERGY_MODE)
