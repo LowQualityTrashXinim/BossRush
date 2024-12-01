@@ -119,6 +119,7 @@ internal class UniversalSystem : ModSystem {
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";
 	public const string LEGACY_WORLDGEN = "worldgen";
+	public const string LEGACY_SPOIL = "spoil";
 	/// <summary>
 	/// Check legacy option whenever or not if it enable or not
 	/// </summary>
@@ -132,6 +133,8 @@ internal class UniversalSystem : ModSystem {
 			return config.LegacyLootBoxDrop;
 		if (option == LEGACY_WORLDGEN)
 			return config.LegacyBossRushWorldGen;
+		if (option == LEGACY_SPOIL)
+			return config.LegacySpoils;
 		return false;
 	}
 	public static bool Check_RLOH() => ModContent.GetInstance<RogueLikeConfig>().RoguelikeOverhaul;

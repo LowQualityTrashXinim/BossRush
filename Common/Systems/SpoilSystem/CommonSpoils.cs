@@ -24,6 +24,10 @@ public class WeaponSpoil : ModSpoil {
 		return Description.FormatWith(chestplayer.weaponAmount);
 	}
 	public override void OnChoose(Player player, int itemsource) {
+		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
+			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]));
+			return;
+		}
 		LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player);
 	}
 }
@@ -41,6 +45,10 @@ public class AccessorySpoil : ModSpoil {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
 	}
 	public override void OnChoose(Player player, int itemsource) {
+		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
+			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.AccRarityDB[0]));
+			return;
+		}
 		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
 		for (int i = 0; i < amount; i++) {
 			LootBoxBase.GetAccessories(itemsource, player);
@@ -53,6 +61,12 @@ public class ArmorSpoil : ModSpoil {
 		return DisplayName.FormatWith(ItemID.ArmorStatue);
 	}
 	public override void OnChoose(Player player, int itemsource) {
+		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
+			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.HeadArmorRarityDB[0]));
+			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.BodyArmorRarityDB[0]));
+			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.LegsArmorRarityDB[0]));
+			return;
+		}
 		LootBoxBase.GetArmorForPlayer(player.GetSource_OpenItem(itemsource), player);
 	}
 }

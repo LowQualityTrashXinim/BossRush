@@ -23,6 +23,10 @@ namespace BossRush {
 		public static bool[] CanBeAffectByLastingVile;
 		public static bool[] AdvancedRPGItem;
 		public static Dictionary<int, List<int>> WeaponRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> AccRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> HeadArmorRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> BodyArmorRarityDB { get; private set; }
+		public static Dictionary<int, List<int>> LegsArmorRarityDB { get; private set; }
 		public static List<Item> SynergyItem { get; private set; }
 		public static List<Item> LostAccessories { get; private set; }
 		public static List<Item> TrinketAccessories { get; private set; }
@@ -36,6 +40,10 @@ namespace BossRush {
 			RPGItem = new();
 			WeaponRarityDB = new();
 			ListLootboxType = new();
+			HeadArmorRarityDB = new();
+			BodyArmorRarityDB = new();
+			LegsArmorRarityDB = new();
+			AccRarityDB = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -46,6 +54,10 @@ namespace BossRush {
 			WeaponRarityDB = null;
 			IsFireBuff = null;
 			IsPoisonBuff = null;
+			HeadArmorRarityDB = null;
+			BodyArmorRarityDB = null;
+			LegsArmorRarityDB = null;
+			AccRarityDB = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
@@ -63,20 +75,56 @@ namespace BossRush {
 					SynergyItem.Add(item);
 					continue;
 				}
-				if (item.TryGetGlobalItem(out GlobalItemHandle globalItem)) {
-					if (globalItem.LostAccessories) {
+				if (item.headSlot > 0) {
+					if (!HeadArmorRarityDB.ContainsKey(item.rare)) {
+						HeadArmorRarityDB.Add(item.rare, new List<int> { item.type });
+					}
+					else {
+						HeadArmorRarityDB[item.rare].Add(item.type);
+					}
+					continue;
+				}
+				else if (item.bodySlot > 0) {
+					if (!BodyArmorRarityDB.ContainsKey(item.rare)) {
+						BodyArmorRarityDB.Add(item.rare, new List<int> { item.type });
+					}
+					else {
+						BodyArmorRarityDB[item.rare].Add(item.type);
+					}
+					continue;
+				}
+				else if (item.legSlot > 0) {
+					if (!LegsArmorRarityDB.ContainsKey(item.rare)) {
+						LegsArmorRarityDB.Add(item.rare, new List<int> { item.type });
+					}
+					else {
+						LegsArmorRarityDB[item.rare].Add(item.type);
+					}
+					continue;
+				}
+				GlobalItemHandle globalitem = item.GetGlobalItem<GlobalItemHandle>();
+				if (item.accessory) {
+					if (item.ModItem is BaseTrinket) {
+						TrinketAccessories.Add(item);
+						continue;
+					}
+					if (globalitem.LostAccessories) {
 						LostAccessories.Add(item);
 						continue;
 					}
-					else if (globalItem.RPGItem) {
-						if (globalItem.AdvancedBuffItem) {
-							AdvancedRPGItem[item.type] = true;
-						}
-						RPGItem.Add(item);
+					if (!AccRarityDB.ContainsKey(item.rare)) {
+						AccRarityDB.Add(item.rare, new List<int> { item.type });
 					}
+					else {
+						AccRarityDB[item.rare].Add(item.type);
+					}
+					continue;
 				}
-				if (item.ModItem is BaseTrinket) {
-					TrinketAccessories.Add(item);
+				if (globalitem.RPGItem) {
+					if (globalitem.AdvancedBuffItem) {
+						AdvancedRPGItem[item.type] = true;
+					}
+					RPGItem.Add(item);
 					continue;
 				}
 				if (!item.IsAWeapon()) {
