@@ -27,7 +27,11 @@ public class MythrilBeamSword : SynergyModItem {
 		Item.damage = 88;
 		Item.shoot = ModContent.ProjectileType<MythrilBeam>();
 		Item.shootSpeed = 15;
-	}	
+	}
+
+	public override void AddRecipes() {
+		CreateRecipe().AddIngredient(ItemID.MythrilSword).AddIngredient(ItemID.BeamSword).Register();
+	}
 
 }
 public struct BeamTrail {

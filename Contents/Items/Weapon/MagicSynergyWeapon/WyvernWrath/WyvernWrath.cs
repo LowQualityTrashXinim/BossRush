@@ -60,6 +60,10 @@ public class WyvernWrath : SynergyModItem {
 		}
 	}
 
+	public override void AddRecipes() {
+		CreateRecipe().AddIngredient(ItemID.SkyFracture).AddIngredient(ItemID.CrystalSerpent).Register();
+	}
+
 }
 public struct WyvernTrailMain {
 	private static VertexStrip _vertexStrip = new VertexStrip();
