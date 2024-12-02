@@ -142,9 +142,9 @@ public class EssenceProjectile : ModProjectile {
 	public override void AI() {
 		Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / (float)BossRushUtils.ToSecond(45));
 		Player player = Main.player[Projectile.owner];
-		if (Projectile.Center.IsCloseToPosition(player.Center, 115)) {
+		if (Projectile.Center.IsCloseToPosition(player.Center, 75)) {
 			Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .05f;
-			Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(3);
 		}
 		else {
 			Projectile.velocity *= .98f;
