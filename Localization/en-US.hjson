@@ -1577,11 +1577,11 @@ Mods: {
 
 			DivinityStone: {
 				DisplayName: Divinity Stone
-				Tooltip: 
-				'''
-				Increases your crit chance by 5
-				Upon critial hit a enemy, you gain a divinity stack
-				'''
+				Tooltip:
+					'''
+					Increases your crit chance by 5
+					Upon critial hit a enemy, you gain a divinity stack
+					'''
 				ExtraInfo:
 					'''
 					[Divinity Stone]

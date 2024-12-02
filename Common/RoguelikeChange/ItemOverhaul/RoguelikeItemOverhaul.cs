@@ -386,7 +386,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			else {
 				Item item = Player.HeldItem;
-				if(item.type == ItemID.Revolver) {
+				if(item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
 					ReuseDelay = 40;
 				}
 			}
