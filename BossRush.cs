@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
+using BossRush.Common.Utils;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
@@ -177,7 +178,26 @@ namespace BossRush {
 						continue;
 					}
 				}
-				if (item.accessory && !item.vanity) {
+				if (item.accessory && !item.vanity && item.createTile == -1 
+					&& item.type != ItemID.ClothierVoodooDoll
+					&& item.type != ItemID.GuideVoodooDoll
+					&& item.type != ItemID.TreasureMagnet
+					&& item.type != ItemID.DontStarveShaderItem
+					&& item.type != ItemID.JellyfishNecklace
+					&& item.type != ItemID.JellyfishDivingGear
+					&& item.type != ItemID.GreedyRing
+					&& item.type != ItemID.GoldRing
+					&& item.type != ItemID.LuckyCoin
+					&& item.type != ItemID.DiscountCard
+					&& item.type != ItemID.CoinRing
+					&& item.type != ItemID.ShimmerCloak
+					&& item.type != ItemID.SpectreGoggles
+					&& item.type != ItemID.FlowerBoots
+					&& item.type != ItemID.CordageGuide
+					&& !TerrariaArrayID.IsFishingBobber.Contains(item.type)
+					&& !TerrariaArrayID.NonHelpfulCombatAcc.Contains(item.type)
+					&& !TerrariaArrayID.IsInfoAcc.Contains(item.type)
+					&& !TerrariaArrayID.FishingAcc.Contains(item.type)) {
 					if (item.ModItem is BaseTrinket) {
 						TrinketAccessories.Add(item);
 						continue;
