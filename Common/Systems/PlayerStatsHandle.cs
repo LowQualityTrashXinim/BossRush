@@ -11,6 +11,7 @@ using System;
 using BossRush.Common.General;
 using BossRush.Common.Systems.Mutation;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -91,6 +92,10 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		Item item = Player.HeldItem;
+		if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+			modifiers.CritDamage += globalitem.CriticalDamage;
+		}
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(NonCriticalDamage);
 		if (target.life >= target.lifeMax) {

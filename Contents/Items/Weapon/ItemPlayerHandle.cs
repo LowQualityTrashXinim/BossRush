@@ -17,6 +17,7 @@ using Terraria.UI.Chat;
 using ReLogic.Graphics;
 using BossRush.Common.General;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
+using System;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -177,7 +178,15 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
+		public override void SetDefaults(Item entity) {
+			CriticalDamage = 0;
+		}
+		public float CriticalDamage = 0;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			int index = tooltips.FindIndex(t => t.Name == "CritChance");
+			if (index != -1) {
+				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% Bonus critical damage"));
+			}
 			if (item.ModItem == null) {
 				return;
 			}

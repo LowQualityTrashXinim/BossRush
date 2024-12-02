@@ -13,7 +13,7 @@ using System.Collections.Generic;
 namespace BossRush.Contents.Items.RelicItem;
 public class Relic : ModItem {
 	public const float chanceTier1 = .5f;
-	public const float chanceTier2 = .7f;
+	public const float chanceTier2 = .6f;
 	public const float chanceTier3 = .45f;
 	public const float chanceTier4 = .6f;
 	public override string Texture => BossRushTexture.ACCESSORIESSLOT;

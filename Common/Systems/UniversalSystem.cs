@@ -1751,7 +1751,10 @@ class PerkUIImageButton : UIImageButton {
 	}
 	public void ChangePerkType(int type) {
 		perkType = type;
-		texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
+		Perk perk = ModPerkLoader.GetPerk(perkType);
+		if (perk != null && perk.textureString != null) {
+			texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
+		}
 		SetImage(texture);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
@@ -1795,7 +1798,7 @@ internal class EnchantmentUIState : UIState {
 	bool isMousePressed = false;
 	Vector2 position = Main.ScreenSize.ToVector2() / 2f;
 	Vector2 panelSize = new Vector2(60 * 3 - 8, 52 * 2 + 8);
-	Vector2 UIclampOffset = new Vector2(60,60);
+	Vector2 UIclampOffset = new Vector2(60, 60);
 	public override void OnInitialize() {
 
 		panel = new UIPanel();
@@ -1821,16 +1824,14 @@ internal class EnchantmentUIState : UIState {
 	public override void Update(GameTime gameTime) {
 
 		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-		
+
 
 		if (isMousePressed)
-			this.position = Vector2.Clamp(Main.MouseScreen,Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
+			this.position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
 
-		for (int i = 0; i < Children.Count(); i++) 
-		{
+		for (int i = 0; i < Children.Count(); i++) {
 			var children = Children.ElementAt(i);
-			if(children is MoveableUIImage) 
-			{
+			if (children is MoveableUIImage) {
 				var child = children as MoveableUIImage;
 				child.UISetPosition(position + child.positionOffset);
 				child.position = position;
@@ -1839,7 +1840,7 @@ internal class EnchantmentUIState : UIState {
 
 		}
 		panel.UISetPosition(position);
-		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60,0));
+		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60, 0));
 	}
 
 	private void mousePressed(UIMouseEvent evt, UIElement listeningElement) {
@@ -1872,8 +1873,7 @@ internal class EnchantmentUIState : UIState {
 		}
 	}
 }
-public class MoveableUIImage : UIImage 
-{
+public class MoveableUIImage : UIImage {
 	public MoveableUIImage(Asset<Texture2D> texture) : base(texture) {
 	}
 
@@ -1887,7 +1887,7 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 	public Texture2D textureDraw;
 	public Item item;
 
-	
+
 
 	private Texture2D texture;
 	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
@@ -2092,7 +2092,7 @@ public class SpoilsUIState : UIState {
 		if (SpoilList.Count < 1) {
 			SpoilList = ModSpoilSystem.GetSpoilsList();
 		}
-		for (int i = 0; i <= Limit_Spoils; i++) {
+		for (int i = 0; i < Limit_Spoils; i++) {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
 			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);

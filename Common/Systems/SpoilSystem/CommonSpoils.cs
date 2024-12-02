@@ -25,7 +25,11 @@ public class WeaponSpoil : ModSpoil {
 	}
 	public override void OnChoose(Player player, int itemsource) {
 		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
-			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]));
+			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
+			chestplayer.GetAmount();
+			for (int i = 0; i < chestplayer.weaponAmount; i++) {
+				player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]));
+			}
 			return;
 		}
 		LootBoxBase.GetWeapon(ContentSamples.ItemsByType[itemsource], player);
@@ -45,13 +49,15 @@ public class AccessorySpoil : ModSpoil {
 		return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
 	}
 	public override void OnChoose(Player player, int itemsource) {
-		if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL)) {
-			player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.AccRarityDB[0]));
-			return;
-		}
 		int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+		bool checkLegacy = !UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL);
 		for (int i = 0; i < amount; i++) {
-			LootBoxBase.GetAccessories(itemsource, player);
+			if (checkLegacy) {
+				player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.AccRarityDB[0]));
+			}
+			else {
+				LootBoxBase.GetAccessories(itemsource, player);
+			}
 		}
 	}
 }

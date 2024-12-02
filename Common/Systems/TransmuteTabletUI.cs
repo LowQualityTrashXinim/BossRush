@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
-using Microsoft.CodeAnalysis.Options;
 
 namespace BossRush.Common.Systems;
 public class TransumtationRecipe {
@@ -23,29 +22,48 @@ public class TransmutationSystem : ModSystem {
 
 }
 public class TransmutationUIState : UIState {
-	public override void OnActivate() {
-		Elements.Clear();
-		var panalUI = new UIPanel();
-		panalUI.UISetWidthHeight(250, 150);
-		panalUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(0, -150), new Vector2(100, 100));
-		Append(panalUI);
-		var cardUI = new TransmutationUI(TextureAssets.InventoryBack);
-		var origin = new Vector2(26, 26);
-		cardUI.UISetWidthHeight(52, 52);
-		cardUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(52, -150), origin);
-		Append(cardUI);
-		var cardUI1 = new TransmutationUI(TextureAssets.InventoryBack);
-		cardUI1.UISetWidthHeight(52, 52);
-		cardUI1.UISetPosition(Main.LocalPlayer.Center - new Vector2(-10, -150), origin);
-		Append(cardUI1);
-		var cardUIbtn = new TransmutationUIConfirmButton(TextureAssets.InventoryBack10);
-		cardUIbtn.UISetWidthHeight(52, 52);
-		cardUIbtn.UISetPosition(Main.LocalPlayer.Center - new Vector2(-104, -150), origin);
-		Append(cardUIbtn);
-		var exitUI = new ExitUI(TextureAssets.InventoryBack13);
-		exitUI.UISetWidthHeight(52, 52);
-		exitUI.UISetPosition(Main.LocalPlayer.Center - new Vector2(-104, -90), origin);
-		Append(exitUI);
+	UIPanel panel;
+	TransmutationUIConfirmButton btn_confirm;
+	TransmutationUI slot1;
+	TransmutationUI slot2;
+	ExitUI btn_exit;
+	UITextBox txtbox;
+	public override void OnInitialize() {
+		panel = new UIPanel();
+		panel.UISetWidthHeight(450, 150);
+		panel.HAlign = .5f;
+		panel.VAlign = .5f;
+		Append(panel);
+
+		slot1 = new TransmutationUI(TextureAssets.InventoryBack);
+		slot1.UISetWidthHeight(52, 52);
+		slot1.HAlign = MathHelper.Lerp(.1f, .9f, 0);
+		slot1.VAlign = .9f;
+		panel.Append(slot1);
+
+		slot2 = new TransmutationUI(TextureAssets.InventoryBack);
+		slot2.UISetWidthHeight(52, 52);
+		slot2.HAlign = MathHelper.Lerp(.1f, .9f, 1 / 3f);
+		slot2.VAlign = .9f;
+		panel.Append(slot2);
+
+		btn_confirm = new TransmutationUIConfirmButton(TextureAssets.InventoryBack10);
+		btn_confirm.UISetWidthHeight(52, 52);
+		btn_confirm.HAlign = MathHelper.Lerp(.1f, .9f, 2 / 3f);
+		btn_confirm.VAlign = .9f;
+		panel.Append(btn_confirm);
+
+		btn_exit = new ExitUI(TextureAssets.InventoryBack13);
+		btn_exit.UISetWidthHeight(52, 52);
+		btn_exit.HAlign = MathHelper.Lerp(.1f, .9f, 1f);
+		btn_exit.VAlign = .9f;
+		panel.Append(btn_exit);
+
+		txtbox = new("");
+		txtbox.UISetWidthHeight(450, 60);
+		txtbox.TextHAlign = 0;
+		txtbox.ShowInputTicker = false;
+		panel.Append(txtbox);
 	}
 }
 public class ExitUI : UIImageButton {
@@ -86,15 +104,14 @@ public class TransmutationUI : UIImage {
 			player.inventory[58] = item.Clone();
 			item = itemcache.Clone();
 		}
-		else if (Main.mouseItem.type != ItemID.None && item == null) {
+		else if (Main.mouseItem.type != ItemID.None && item == null || item.type == ItemID.None) {
 			//When the slot is available
+			item = Main.mouseItem.Clone();
 			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
-				item = Main.mouseItem.Clone();
 				item.stack = 1;
 				return;
 			}
-			item = Main.mouseItem.Clone();
 			if (Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
 				player.inventory[58].stack--;
@@ -131,7 +148,7 @@ public class TransmutationUI : UIImage {
 		}
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
-		var drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
+		var drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
 		base.Draw(spriteBatch);
 		try {
 			if (item != null) {
