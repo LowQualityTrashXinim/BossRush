@@ -28,7 +28,9 @@ public class WeaponSpoil : ModSpoil {
 			ChestLootDropPlayer chestplayer = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>();
 			chestplayer.GetAmount();
 			for (int i = 0; i < chestplayer.weaponAmount; i++) {
+				int weaponType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]);
 				player.QuickSpawnItem(player.GetSource_ItemUse(ContentSamples.ItemsByType[itemsource]), Main.rand.Next(BossRushModSystem.WeaponRarityDB[0]));
+				LootBoxBase.AmmoForWeapon(itemsource, player, weaponType);
 			}
 			return;
 		}

@@ -14,6 +14,7 @@ using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.DataStructures;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
@@ -21,12 +22,8 @@ public class MythrilBeamSword : SynergyModItem {
 
 	public override void SetDefaults() 
 	{
-
-		Item.CloneDefaults(ItemID.BeamSword);
-		Item.width = Item.width = 48;
-		Item.damage = 88;
-		Item.shoot = ModContent.ProjectileType<MythrilBeam>();
-		Item.shootSpeed = 15;
+		Item.BossRushDefaultMeleeShootCustomProjectile(72, 72, 88, 6f, 30, 30, ItemUseStyleID.Swing, ModContent.ProjectileType<MythrilBeam>(), 15, true);
+		Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.Swipe;
 	}
 
 	public override void AddRecipes() {
