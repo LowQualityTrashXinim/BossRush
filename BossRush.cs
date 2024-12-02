@@ -17,7 +17,7 @@ namespace BossRush {
 	public partial class BossRush : Mod {
 		public static BossRush Instance { get; private set; }
 		public override void Load() {
-			Instance = this;
+			//Instance = this;
 			base.Load();
 
 			loadShaders();

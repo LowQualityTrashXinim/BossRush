@@ -18,8 +18,6 @@ using Terraria.Localization;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 public class StarWhip : SynergyModItem {
-
-	public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(StarWhipDebuff.TagDamage);
 	public override void SetDefaults() {
 		Item.DefaultToWhip(ModContent.ProjectileType<StarWhipProj>(), 100, 1, 15, 30);
 		Item.UseSound = SoundID.Item116;
