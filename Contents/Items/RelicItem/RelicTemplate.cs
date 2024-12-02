@@ -490,7 +490,7 @@ public class DebuffTemplateV1 : RelicTemplate {
 		return string.Format(Description, new string[] {
 			Color.Yellow.Hex3(),
 			Name,
-			RelicTemplateLoader.RelicValueToNumber(value.Base)
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive)
 	});
 	}
 

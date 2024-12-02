@@ -18,6 +18,7 @@ using ReLogic.Graphics;
 using BossRush.Common.General;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using System;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -183,9 +184,12 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public float CriticalDamage = 0;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
+			if(UniversalSystem.EnchantingState) {
+				return;
+			}
 			int index = tooltips.FindIndex(t => t.Name == "CritChance");
 			if (index != -1) {
-				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% Bonus critical damage"));
+				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
 			}
 			if (item.ModItem == null) {
 				return;

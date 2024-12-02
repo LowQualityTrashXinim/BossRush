@@ -1756,6 +1756,7 @@ class PerkUIImageButton : UIImageButton {
 			texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
 		}
 		SetImage(texture);
+		this.UISetWidthHeight(52, 52);
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -1 });
