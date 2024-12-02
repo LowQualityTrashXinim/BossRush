@@ -15,7 +15,7 @@ using Terraria.Graphics.Shaders;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
-		public static BossRush Instance { get; private set; }
+		//public static BossRush Instance { get; private set; }
 		public override void Load() {
 			//Instance = this;
 			base.Load();
@@ -177,7 +177,7 @@ namespace BossRush {
 						continue;
 					}
 				}
-				if (item.accessory) {
+				if (item.accessory && !item.vanity) {
 					if (item.ModItem is BaseTrinket) {
 						TrinketAccessories.Add(item);
 						continue;

@@ -295,6 +295,14 @@ Mods: {
 			AngelicSmgHeld.DisplayName: Angelic Smg Held
 			SlashProjectile.DisplayName: Slash Projectile
 			GhostYoyo.DisplayName: Ghost Yoyo
+			WyvernWrathMainProjectile.DisplayName: Wyvern Wrath Main Projectile
+			WyvernWrathMiniProjectile.DisplayName: Wyvern Wrath Mini Projectile
+			MythrilBeam.DisplayName: Mythril Beam
+			WinterFlameProjectile.DisplayName: Winter Flame Projectile
+			WinterFlamesProjV2.DisplayName: Winter Flames Proj V2
+			StarWhipProj.DisplayName: Star Whip Proj
+			StarWhipStarProj.DisplayName: Star Whip Star Proj
+			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
 		}
 
 		NPCs: {
@@ -319,6 +327,8 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
+
+			FallenStarPower.DisplayName: Fallen Star Power
 		}
 
 		Items: {
@@ -1893,6 +1903,26 @@ Mods: {
 				DisplayName: Structure Wand
 				Tooltip: Avoid saving tile in a way that cut the tile in half, thx
 			}
+
+			WyvernWrath: {
+				DisplayName: Wyvern Wrath
+				Tooltip: ""
+			}
+
+			MythrilBeamSword: {
+				DisplayName: Mythril Beam Sword
+				Tooltip: ""
+			}
+
+			WinterFlame: {
+				DisplayName: Winter Flame
+				Tooltip: ""
+			}
+
+			StarWhip: {
+				DisplayName: Star Whip
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2300,6 +2330,16 @@ Mods: {
 			BackUpMana_CoolDown: {
 				DisplayName: Back Up Mana_ Cool Down
 				Description: Mods.BossRush.Buffs.BackUpMana_CoolDown.Description
+			}
+
+			StarWhipBuff: {
+				DisplayName: Star Whip Buff
+				Description: Mods.BossRush.Buffs.StarWhipBuff.Description
+			}
+
+			StarWhipDebuff: {
+				DisplayName: Star Whip Debuff
+				Description: Mods.BossRush.Buffs.StarWhipDebuff.Description
 			}
 		}
 
