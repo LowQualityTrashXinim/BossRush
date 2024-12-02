@@ -1789,18 +1789,69 @@ class PerkUIImageButton : UIImageButton {
 	}
 }
 internal class EnchantmentUIState : UIState {
+	UIPanel panel;
 	WeaponEnchantmentUIslot weaponEnchantmentUIslot;
 	ExitUI weaponEnchantmentUIExit;
+	bool isMousePressed = false;
+	Vector2 position = Main.ScreenSize.ToVector2() / 2f;
+	Vector2 panelSize = new Vector2(60 * 3 - 8, 52 * 2 + 8);
+	Vector2 UIclampOffset = new Vector2(60,60);
 	public override void OnInitialize() {
+
+		panel = new UIPanel();
+		panel.UISetPosition(Main.LocalPlayer.Center, panelSize / 2f);
+		panel.OnLeftMouseDown += mousePressed;
+		panel.OnLeftMouseUp += mouseUp;
+		panel.UISetWidthHeight(panelSize.X, panelSize.Y);
+
+		Append(panel);
+
 		weaponEnchantmentUIslot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack);
 		weaponEnchantmentUIslot.UISetWidthHeight(52, 52);
-		weaponEnchantmentUIslot.UISetPosition(Main.LocalPlayer.Center + Vector2.UnitX * 120, new Vector2(26, 26));
+		weaponEnchantmentUIslot.UISetPosition(position + Vector2.UnitX * 120, new Vector2(26, 26));
 		Append(weaponEnchantmentUIslot);
 		weaponEnchantmentUIExit = new ExitUI(TextureAssets.InventoryBack13);
 		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
-		weaponEnchantmentUIExit.UISetPosition(Main.LocalPlayer.Center + Vector2.UnitX * 178, new Vector2(26, 26));
+		weaponEnchantmentUIExit.UISetPosition(position + Vector2.UnitX * 178, new Vector2(26, 26));
 		Append(weaponEnchantmentUIExit);
+
+
 	}
+
+	public override void Update(GameTime gameTime) {
+
+		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
+		
+
+		if (isMousePressed)
+			this.position = Vector2.Clamp(Main.MouseScreen,Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
+
+		for (int i = 0; i < Children.Count(); i++) 
+		{
+			var children = Children.ElementAt(i);
+			if(children is MoveableUIImage) 
+			{
+				var child = children as MoveableUIImage;
+				child.UISetPosition(position + child.positionOffset);
+				child.position = position;
+
+			}
+
+		}
+		panel.UISetPosition(position);
+		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60,0));
+	}
+
+	private void mousePressed(UIMouseEvent evt, UIElement listeningElement) {
+		isMousePressed = true;
+
+	}
+
+
+	private void mouseUp(UIMouseEvent evt, UIElement listeningElement) {
+		isMousePressed = false;
+	}
+
 	public override void OnDeactivate() {
 		int count = Children.Count();
 		for (int i = count - 1; i >= 0; i--) {
@@ -1821,10 +1872,22 @@ internal class EnchantmentUIState : UIState {
 		}
 	}
 }
-public class WeaponEnchantmentUIslot : UIImage {
+public class MoveableUIImage : UIImage 
+{
+	public MoveableUIImage(Asset<Texture2D> texture) : base(texture) {
+	}
+
+	public Vector2 positionOffset = Vector2.Zero;
+	public Vector2 position = Vector2.Zero;
+
+}
+
+public class WeaponEnchantmentUIslot : MoveableUIImage {
 	public int WhoAmI = -1;
 	public Texture2D textureDraw;
 	public Item item;
+
+	
 
 	private Texture2D texture;
 	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
@@ -1852,16 +1915,15 @@ public class WeaponEnchantmentUIslot : UIImage {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
 				int length = globalItem.EnchantmenStlot.Length - 1;
 				for (int i = 0; i < length; i++) {
-					Vector2 pos = player.Center + Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
 					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack);
+					slot.positionOffset = Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
 					slot.UISetWidthHeight(52, 52);
-					slot.UISetPosition(pos, new Vector2(26, 26));
 					slot.WhoAmI = i;
 					slot.itemOwner = item;
 					slot.itemType = globalItem.EnchantmenStlot[i];
 					Parent.Append(slot);
 					UIText text = new UIText($"{i + 1}");
-					text.UISetPosition(pos + Vector2.UnitY * 56, new Vector2(26, 26));
+					text.UISetPosition(positionOffset + Vector2.UnitY * 56, new Vector2(26, 26));
 					textUqID.Add(text.UniqueId);
 					Parent.Append(text);
 				}
@@ -1913,7 +1975,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 		item = null;
 	}
 	public override void Draw(SpriteBatch spriteBatch) {
-		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
+		Vector2 drawpos = position + positionOffset + texture.Size() * .5f;
 		base.Draw(spriteBatch);
 		if (item != null) {
 			Main.instance.LoadItem(item.type);
@@ -1930,7 +1992,7 @@ public class WeaponEnchantmentUIslot : UIImage {
 	}
 	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.25f);
 }
-public class EnchantmentUIslot : UIImage {
+public class EnchantmentUIslot : MoveableUIImage {
 	public int itemType = 0;
 	public int WhoAmI = -1;
 

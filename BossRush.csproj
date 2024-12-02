@@ -22,10 +22,17 @@
     <None Remove="Contents\Artifacts\TokenofPrideArtifact.png" />
     <None Remove="Contents\Artifacts\VampirismCrystalArtifact.png" />
     <None Remove="Contents\Items\TransmuteTablet.png" />
+    <None Remove="Contents\Items\Weapon\MagicSynergyWeapon\WyvernWrath\WyvernWrath.png" />
+    <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\MythrilBeamSword\MythrilBeamSword.png" />
     <None Remove="Contents\Items\Weapon\NotSynergyWeapon\OldFlamingWoodSword.png" />
     <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\HeavenSmg\angelicSMG.png" />
     <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\HeavenSmg\angelicSMGheld.png" />
     <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\Horus'sEye.png" />
+    <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\WinterFlame\WinterFlame.png" />
+    <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhip.png" />
+    <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhipProj.png" />
+    <None Remove="Contents\Shaders\FlameEffect.fx" />
+    <None Remove="Localization\en-US.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.Achievement.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.Armor.hjson" />
     <None Remove="Localization\en-US_Mods.BossRush.Artifacts.hjson" />
@@ -41,6 +48,7 @@
     <None Remove="Texture\FourStar.png" />
     <None Remove="Texture\StructureHelper_Box.png" />
     <None Remove="Texture\StructureHelper_corner.png" />
+    <None Remove="Texture\roguelikePerlinNoise.png" />
     <None Remove="Texture\UI\DiamondBolt.png" />
     <None Remove="Texture\UI\lock.png" />
     <None Remove="Texture\UI\StructureHelper_Box2.png" />

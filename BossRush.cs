@@ -8,6 +8,10 @@ using BossRush.Contents.Items.Weapon;
 using BossRush.Common.RoguelikeChange.Prefixes;
 using BossRush.Contents.Items.Accessories.TrinketAccessories;
 using BossRush.Contents.Items.Consumable.Potion;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
@@ -15,8 +19,34 @@ namespace BossRush {
 		public override void Load() {
 			Instance = this;
 			base.Load();
+
+			loadShaders();
+
 		}
+
+		public void loadShaders() 
+		{
+
+
+			if (Main.netMode != NetmodeID.Server) {
+
+
+				Asset<Effect> trailEffect = Assets.Request<Effect>("Contents/Shaders/TrailEffect");
+				GameShaders.Misc["TrailEffect"] = new MiscShaderData(trailEffect, "FadeTrail");
+
+
+				Asset<Effect> flameEffect = Assets.Request<Effect>("Contents/Shaders/FlameEffect");
+				GameShaders.Misc["FlameEffect"] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
+
+			}
+
+
+		}
+
+
 	}
+	
+
 	public class BossRushModSystem : ModSystem {
 		public static bool[] IsFireBuff;
 		public static bool[] IsPoisonBuff;

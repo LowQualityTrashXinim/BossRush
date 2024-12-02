@@ -14,6 +14,14 @@ namespace BossRush {
 			Main.projectile[projectile].hostile = true;
 			Main.projectile[projectile].friendly = false;
 		}
+		public static void FillProjectileOldPosAndRot(this Projectile projectile) 
+		{
+			for(int i = 0; i < projectile.oldPos.Length; i++) 
+			{
+				projectile.oldPos[i] = projectile.position - projectile.velocity.SafeNormalize(Vector2.UnitY) * i;
+				projectile.oldRot[i] = projectile.rotation;
+			}
+		}
 		public static void ProjectileDefaultDrawInfo(this Projectile projectile, out Texture2D texture, out Vector2 origin) {
 			Main.instance.LoadProjectile(projectile.type);
 			texture = TextureAssets.Projectile[projectile.type].Value;
