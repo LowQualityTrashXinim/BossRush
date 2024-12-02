@@ -335,6 +335,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public bool WeaponKeyPressed = false;
 		public bool WeaponKeyReleased = false;
 		public bool WeaponKeyHeld = false;
+		public int ReuseDelay = 0;
 
 		public int ModeSwitch_Revolver = 0;
 		public override void ResetEffects() {
@@ -361,6 +362,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
 				return false;
 			}
+			if(ReuseDelay > 0) {
+				return false;
+			}
 			return base.CanUseItem(item);
 		}
 		public override void UpdateDead() {
@@ -377,7 +381,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
+				ReuseDelay = BossRushUtils.CountDown(ReuseDelay);
 				ToxicFlask_DelayWeaponUse = BossRushUtils.CountDown(ToxicFlask_DelayWeaponUse);
+			}
+			else {
+				Item item = Player.HeldItem;
+				if(item.type == ItemID.Revolver) {
+					ReuseDelay = 40;
+				}
 			}
 		}
 		public override void ModifyItemScale(Item item, ref float scale) {
