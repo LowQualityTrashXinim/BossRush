@@ -251,47 +251,49 @@ internal static partial class GenerationHelper {
 		}
 	}
 	/// <summary>
-	/// Attempt to save a structure into a file with rectangle format
+	/// Attempt to save many structure into a file with rectangle format
 	/// </summary>
 	/// <param name="target">The region to transform</param>
 	/// <param name="path">Path to save</param>
 	/// <param name="name">File's name</param>
-	public static void SaveRectStructure(Rectangle target, string path, string name) {
+	public static void SaveRectStructure(List<Rectangle> listtarget, string path, string name) {
 		try {
 			using FileStream file = File.Create(Path.Combine(path, name));
 			using StreamWriter m = new(file);
+			foreach (Rectangle target in listtarget) {
+				Tile outSideLoop = new();
+				int distanceX = 0;
+				int distanceY = 0;
+				int X = target.X, Y = target.Y, W = target.Width, H = target.Height;
+				for (int x = X; x <= X + W; x++) {
+					for (int y = Y; y <= Y + H; y++) {
+						//Since this just saving, it is completely fine to be slow
+						Tile tile = Framing.GetTileSafely(x, y);
+						if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
+							if (distanceY != 0) {
+								if (distanceY >= H) {
+									m.Write('Y' + H);
+								}
 
-			Tile outSideLoop = new();
-			int distanceX = 0;
-			int distanceY = 0;
-			int X = target.X, Y = target.Y, W = target.Width, H = target.Height;
-			for (int x = X; x <= X + W; x++) {
-				for (int y = Y; y <= Y + H; y++) {
-					//Since this just saving, it is completely fine to be slow
-					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
-						if (distanceY != 0) {
-							if (distanceY >= H) {
-								m.Write('Y' + H);
+
+								m.Write('Y' + distanceY);
+
 							}
-
-
-							m.Write('Y' + distanceY);
-
+							outSideLoop = tile;
+							TileData td = new(tile);
+							m.Write(td.ToString());
+							distanceY = 1;
 						}
-						outSideLoop = tile;
-						TileData td = new(tile);
-						m.Write(td.ToString());
-						distanceY = 1;
+						else {
+							distanceY++;
+						}
+						distanceX++;
 					}
-					else {
-						distanceY++;
-					}
-					distanceX++;
 				}
-			}
-			if (distanceY != 0) {
-				m.Write('Y' + distanceY);
+				if (distanceY != 0) {
+					m.Write('Y' + distanceY);
+				}
+
 			}
 		}
 		catch (Exception ex) {
@@ -315,7 +317,8 @@ public enum SaverOptimizedMethod : byte {
 	HorizontalDefault,
 	/// <summary>
 	/// This optimization method will save the following structure in rectangle-like<br/>
-	/// useful for wanting to save a massive arena structure that have a lot of open space
+	/// useful for wanting to save a massive arena structure that have a lot of open space<br/>
+	/// Extremely not recommend for massive structure that is very complex
 	/// </summary>
 	MultiStructure,
 	/// <summary>
