@@ -99,6 +99,7 @@ TokenOfWrathArtifact: {
 		[c/ffff00:Positive effect] : 
 			+ Increases your none-critical damage by 50%
 			+ Increases your critical strike chance by 50
+			+ Increases your damage by 10%
 		[c/ab3e43:Negative effect] : 
 			- Decreases your critical strike damage by 75%
 		'''

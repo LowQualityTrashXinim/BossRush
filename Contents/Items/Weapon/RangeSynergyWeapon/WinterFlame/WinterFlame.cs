@@ -9,8 +9,6 @@ using Terraria.Graphics.Shaders;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
-using Humanizer;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 public class WinterFlame : SynergyModItem {
