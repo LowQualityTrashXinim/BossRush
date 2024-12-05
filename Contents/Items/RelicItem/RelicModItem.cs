@@ -120,6 +120,17 @@ public class Relic : ModItem {
 		}
 		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
 	}
+	/// <summary>
+	/// This is shorthand for <see cref="AddRelicTemplate"/> where templateid is set random in a for loop
+	/// </summary>
+	/// <param name="amount"></param>
+	public void AutoAddRelicTemplate(Player player, int amount) {
+		for (int i = 0; i < amount; i++) {
+			templatelist.Add(Main.rand.Next(RelicTemplateLoader.TotalCount));
+			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(this, player));
+			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(this, player, statlist[i]));
+		}
+	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (templatelist == null) {
