@@ -93,7 +93,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		Item item = Player.HeldItem;
-		if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 			modifiers.CritDamage += globalitem.CriticalDamage;
 		}
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
@@ -364,6 +364,30 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Base"></param>
 	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
+	}
+	/// <summary>
+	/// Only work with certain PlayerStats
+	/// </summary>
+	/// <param name="stat">The stats to convert</param>
+	/// <returns>
+	/// Return DamageClass.Class if the condition met<br/>
+	/// Otherwise return <see cref="DamageClass.Default"/>
+	/// </returns>
+	public static DamageClass PlayerStatsToDamageClass(PlayerStats stat) {
+		switch (stat) {
+			case PlayerStats.MeleeDMG:
+				return DamageClass.Melee;
+			case PlayerStats.RangeDMG:
+				return DamageClass.Ranged;
+			case PlayerStats.MagicDMG:
+				return DamageClass.Magic;
+			case PlayerStats.SummonDMG:
+				return DamageClass.Summon;
+			case PlayerStats.PureDamage:
+				return DamageClass.Generic;
+			default:
+				return DamageClass.Default;
+		}
 	}
 }
 public class PlayerStatsHandleSystem : ModSystem {

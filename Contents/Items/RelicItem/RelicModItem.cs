@@ -60,9 +60,9 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
-		PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(player);
+		PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(this, player);
 		statlist.Add(innerStats);
-		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, innerStats);
+		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(this, player, innerStats);
 		value = value.Scale(valueMulti);
 		valuelist.Add(value);
 	}
@@ -80,7 +80,7 @@ public class Relic : ModItem {
 		}
 		templatelist.Add(templateid);
 		statlist.Add(stats);
-		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(player, stats);
+		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(this, player, stats);
 		value = value.Scale(valueMulti);
 		valuelist.Add(value);
 	}
@@ -95,17 +95,17 @@ public class Relic : ModItem {
 	}
 	public int RelicTier => templatelist != null ? templatelist.Count : 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
-		var line = tooltips.FirstOrDefault(l => l.Name == "Tooltip0");
-		if (templatelist == null || line == null) {
+		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
+		if (templatelist == null || index == -1) {
 			tooltips.Add(new TooltipLine(Mod, "", "Something gone wrong"));
 			return;
 		}
-		line.Text = "";
+		string line = "";
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
 				continue;
 			}
-			line.Text += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(statlist[i], valuelist[i]);
+			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -115,9 +115,10 @@ public class Relic : ModItem {
 			//		$"\nIncreases value : Additive[{valuelist[i].Additive}] Multiplicative[{valuelist[i].Multiplicative}] Base[{valuelist[i].Base}] Flat[{valuelist[i].Flat}]";
 			//}
 			if (i + 1 != templatelist.Count) {
-				line.Text += "\n";
+				line += "\n";
 			}
 		}
+		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
 	}
 	public override void UpdateInventory(Player player) {
 		var modplayer = player.GetModPlayer<PlayerStatsHandle>();
@@ -128,17 +129,17 @@ public class Relic : ModItem {
 		}
 		if (templatelist.Count <= 0) {
 			templatelist.Add(Main.rand.Next(RelicTemplateLoader.TotalCount));
-			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).StatCondition(player));
-			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).ValueCondition(player, statlist[0]));
+			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).StatCondition(this, player));
+			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).ValueCondition(this, player, statlist[0]));
 		}
 		for (int i = 0; i < templatelist.Count; i++) {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) != null) {
-				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(modplayer, player, valuelist[i], statlist[i]);
+				RelicTemplateLoader.GetTemplate(templatelist[i]).Effect(this, modplayer, player, valuelist[i], statlist[i]);
 			}
 			else {
 				templatelist[i] = Main.rand.Next(RelicTemplateLoader.TotalCount);
-				statlist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(player);
-				valuelist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(player, statlist[i]);
+				statlist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(this, player);
+				valuelist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(this, player, statlist[i]);
 			}
 		}
 	}
@@ -188,10 +189,11 @@ public abstract class RelicTemplate : ModType {
 	protected sealed override void Register() {
 		Type = RelicTemplateLoader.Register(this);
 	}
-	public virtual string ModifyToolTip(PlayerStats stat, StatModifier value) => "";
-	public virtual StatModifier ValueCondition(Player player, PlayerStats stat) => new StatModifier();
-	public virtual PlayerStats StatCondition(Player player) => PlayerStats.None;
-	public virtual void Effect(PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+	public virtual bool SelectCondition(Relic relic, Player player) => true;
+	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
+	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();
+	public virtual PlayerStats StatCondition(Relic relic, Player player) => PlayerStats.None;
+	public virtual void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 
 	}
 }

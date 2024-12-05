@@ -32,7 +32,10 @@ public class MythrilBeamSword : SynergyModItem {
 		base.SynergyShoot(player, modplayer, source, position, velocity, type, damage, knockback, out CanShootItem);
 	}
 	public override void AddRecipes() {
-		CreateRecipe().AddIngredient(ItemID.MythrilSword).AddIngredient(ItemID.BeamSword).Register();
+		CreateRecipe()
+			.AddIngredient(ItemID.MythrilSword)
+			.AddIngredient(ItemID.BeamSword)
+			.Register();
 	}
 
 }
