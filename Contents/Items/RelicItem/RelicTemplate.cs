@@ -531,6 +531,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 	//We gonna use this method to hold our custom value, think of it as hacking but not the networking kind
 	//Miss using this method is completely fine as the real final result is handle in Effect hook
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		//We are randomizing the base damage that our friendly slime spike gonna deal
 		return new(1, 1, 0, 10 + Main.rand.Next(0, 6));
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
