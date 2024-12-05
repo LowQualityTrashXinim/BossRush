@@ -85,6 +85,11 @@ public class PlayerStatsHandle : ModPlayer {
 	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/>
 	/// </summary>
 	public bool ModifyHit_Before_Crit = false;
+
+	/// <summary>
+	/// Use this if you want to make a series of item that shoot out all of the effect in the same timeline
+	/// </summary>
+	public int synchronize_Counter = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
@@ -144,6 +149,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
 		}
+		synchronize_Counter = BossRushUtils.Safe_SwitchValue(synchronize_Counter, int.MaxValue);
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);

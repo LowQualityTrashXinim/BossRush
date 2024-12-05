@@ -551,7 +551,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 	//This where our relic effect take place, it is think of this as a UpdateEquip hook in ModPlayer
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		//Look for any NPC near the player
-		if (!player.Center.LookForAnyHostileNPC(50f)) {
+		if (!player.Center.LookForAnyHostileNPC(250f) || modplayer.synchronize_Counter % 30 != 0) {
 			return;
 		}
 		//We gonna make this template strength base from the relic Tier
@@ -563,9 +563,9 @@ public class SlimeSpikeTemplate : RelicTemplate {
 			Projectile proj = Projectile.NewProjectileDirect(
 				player.GetSource_ItemUse(relic.Item),
 				player.Center,
-				Main.rand.NextVector2CircularEdge(5, 5),
+				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
-				10 * Tier,
+				(int)value.Base * Tier,
 				2 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
