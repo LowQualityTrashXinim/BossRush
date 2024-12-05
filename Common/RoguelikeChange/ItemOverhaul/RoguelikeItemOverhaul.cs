@@ -309,9 +309,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					"Increases melee damage by 15%" +
 					"\nIncreases melee weapon size by 10%"));
 			}
-			else if(item.type == ItemID.Revolver) {
+			else if (item.type == ItemID.Revolver) {
 				string text;
-				if(modplayer.ModeSwitch_Revolver == 1) {
+				if (modplayer.ModeSwitch_Revolver == 1) {
 					text = $"[c/{Color.Yellow.Hex3()}:Rapid fire Mode]";
 				}
 				else {
@@ -323,7 +323,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override void HoldItem(Item item, Player player) {
 			GlobalItemPlayer modplayer = player.GetModPlayer<GlobalItemPlayer>();
-			if(modplayer.ModeSwitch_Revolver == 1) {
+			if (modplayer.ModeSwitch_Revolver == 1) {
 				player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify += 1f;
 			}
 		}
@@ -332,28 +332,34 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public bool RoguelikeOverhaul_VikingHelmet = false;
 		public int ToxicFlask_SpecialCounter = -1;
 		public int ToxicFlask_DelayWeaponUse = 0;
+		/// <summary>
+		/// Use this during ResetEffect and after to set your value
+		/// </summary>
 		public bool WeaponKeyPressed = false;
+		/// <summary>
+		/// Use this during ResetEffect and after to set your value
+		/// </summary>
 		public bool WeaponKeyReleased = false;
+		/// <summary>
+		/// Use this during ResetEffect and after to set your value
+		/// </summary>
 		public bool WeaponKeyHeld = false;
 		public int ReuseDelay = 0;
 
 		public int ModeSwitch_Revolver = 0;
 		public override void ResetEffects() {
 			RoguelikeOverhaul_VikingHelmet = false;
-			WeaponKeyPressed = false;
-			WeaponKeyReleased = false;
-			WeaponKeyHeld = false;
-		}
-		public override void ProcessTriggers(TriggersSet triggersSet) {
-			WeaponKeyPressed = UniversalSystem.WeaponActionKey.JustPressed;
-			WeaponKeyReleased = UniversalSystem.WeaponActionKey.JustReleased;
-			WeaponKeyHeld = UniversalSystem.WeaponActionKey.Current;
 			Item item = Player.HeldItem;
 			if (WeaponKeyPressed) {
 				if (item.type == ItemID.Revolver) {
 					ModeSwitch_Revolver = BossRushUtils.Safe_SwitchValue(ModeSwitch_Revolver, 1);
 				}
 			}
+		}
+		public override void ProcessTriggers(TriggersSet triggersSet) {
+			WeaponKeyPressed = UniversalSystem.WeaponActionKey.JustPressed;
+			WeaponKeyReleased = UniversalSystem.WeaponActionKey.JustReleased;
+			WeaponKeyHeld = UniversalSystem.WeaponActionKey.Current;
 		}
 		public override bool CanUseItem(Item item) {
 			if (!UniversalSystem.Check_RLOH()) {
@@ -362,7 +368,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (item.type == ItemID.ToxicFlask && ToxicFlask_DelayWeaponUse > 0) {
 				return false;
 			}
-			if(ReuseDelay > 0) {
+			if (ReuseDelay > 0) {
 				return false;
 			}
 			return base.CanUseItem(item);
@@ -386,7 +392,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			else {
 				Item item = Player.HeldItem;
-				if(item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
+				if (item.type == ItemID.Revolver && ModeSwitch_Revolver == 1) {
 					ReuseDelay = 40;
 				}
 			}

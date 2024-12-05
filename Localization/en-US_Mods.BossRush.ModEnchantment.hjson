@@ -421,7 +421,7 @@ MoltenFury.Description:
 	Wooden arrow will be converted into Fire arrow
 	Weapon will shoot 2 additional fire arrow
 	Fire arrow will deal 35% more damage when target is on fire
-	Have 1 in 3 chance to spawn a fire arrow near enemy
+	Have 1 in 3 chance to spawn a fire arrow near enemy when hitting enemy with projectile
 	'''
 SnowballCannon.Description:
 	'''
@@ -640,4 +640,11 @@ BloodRainBow.Description:
 	Using weapon can shoot will shoot additional blood arrow
 	Hitting enemy with the weapon will shoot 3 blood arrows
 	(All blood arrow spawm by this achievement deal 15% less damage)
+	'''
+DirtBlock.Description:
+	'''
+	Increases player defense by 10 when held
+	Every 5s, shoot out a ring of 12 dirt blocks that deal 20 damage
+	Will activate every OnHitNPCWithProjectile enchantment effect of this weapon 
+	( Only the Dirt Projectile will activate above effect )
 	'''

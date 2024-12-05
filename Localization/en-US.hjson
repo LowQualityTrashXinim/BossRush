@@ -303,6 +303,7 @@ Mods: {
 			StarWhipProj.DisplayName: Star Whip Proj
 			StarWhipStarProj.DisplayName: Star Whip Star Proj
 			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
+			DirtProjectile.DisplayName: Dirt Projectile
 		}
 
 		NPCs: {
