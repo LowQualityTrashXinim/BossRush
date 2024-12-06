@@ -12,6 +12,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems.Mutation;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Mode.DreamLikeWorld;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -538,6 +539,12 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
+		ChaosModeSystem system = ModContent.GetInstance<ChaosModeSystem>();
+		if (system.ChaosMode) {
+			if (system.Dict_Chained_Buff.ContainsKey(type)) {
+				self.AddBuff(system.Dict_Chained_Buff[type], timeToAdd);
+			}
+		}
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);

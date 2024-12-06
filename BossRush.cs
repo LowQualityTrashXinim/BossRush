@@ -16,38 +16,22 @@ using BossRush.Common.Utils;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
-		//public static BossRush Instance { get; private set; }
+		public static BossRush Instance { get; private set; }
 		public override void Load() {
-			//Instance = this;
+			Instance = this;
 			base.Load();
-
 			loadShaders();
-
 		}
-
 		public void loadShaders() 
 		{
-
-
 			if (Main.netMode != NetmodeID.Server) {
-
-
 				Asset<Effect> trailEffect = Assets.Request<Effect>("Contents/Shaders/TrailEffect");
 				GameShaders.Misc["TrailEffect"] = new MiscShaderData(trailEffect, "FadeTrail");
-
-
 				Asset<Effect> flameEffect = Assets.Request<Effect>("Contents/Shaders/FlameEffect");
 				GameShaders.Misc["FlameEffect"] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
-
 			}
-
-
 		}
-
-
 	}
-	
-
 	public class BossRushModSystem : ModSystem {
 		public static bool[] IsFireBuff;
 		public static bool[] IsPoisonBuff;
@@ -62,9 +46,8 @@ namespace BossRush {
 		public static List<Item> LostAccessories { get; private set; }
 		public static List<Item> TrinketAccessories { get; private set; }
 		public static List<Item> RPGItem { get; private set; }
-
-		public static List<int> ListLootboxType;
-
+		public static List<int> ListLootboxType { get; private set; }
+		public static HashSet<Item> List_Weapon { get; private set; }
 		public static int Safe_GetWeaponRarity(int rare) {
 			if (WeaponRarityDB.ContainsKey(rare)) {
 				return Main.rand.Next(WeaponRarityDB[rare]);
@@ -213,6 +196,7 @@ namespace BossRush {
 				if (!item.IsAWeapon()) {
 					continue;
 				}
+				List_Weapon.Add(item);
 				if (!WeaponRarityDB.ContainsKey(item.rare)) {
 					WeaponRarityDB.Add(item.rare, new List<int> { item.type });
 				}
@@ -231,6 +215,7 @@ namespace BossRush {
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Spiky>()).Name, (byte)1);
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Alchemic>()).Name, (byte)2);
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Energetic>()).Name, (byte)2);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Holy>()).Name, (byte)4);
 			}
 		}
 	}

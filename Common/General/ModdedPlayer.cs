@@ -18,6 +18,7 @@ using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.Toggle;
 using System;
+using BossRush.Contents.Items.RelicItem;
 
 namespace BossRush.Common.General {
 	class ModdedPlayer : ModPlayer {
@@ -60,9 +61,9 @@ namespace BossRush.Common.General {
 				Main.NewText("You have enter debug mode", Color.Red);
 				return;
 			}
-			if (Main.ActiveWorldFileData.GameMode == 0) {
-				Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
-			}
+			//if (Main.ActiveWorldFileData.GameMode == 0) {
+			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");
+			//}
 		}
 		public override void PreUpdate() {
 			if (starterItem == null) {
@@ -102,13 +103,18 @@ namespace BossRush.Common.General {
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					LifeCrystal += 5;
 					ManaCrystal += 4;
-					//yield return new Item(ModContent.ItemType<DayTimeCycle>());
-					//yield return new Item(ModContent.ItemType<BiomeToggle>());
 					if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 						yield return new Item(ModContent.ItemType<ExoticTeleporter>());
 					}
 					else {
 						yield return new Item(ModContent.ItemType<BuilderLootBox>());
+					}
+					if (UniversalSystem.CanAccessContent(UniversalSystem.CHAOS_MODE)) {
+						for (int i = 0; i < 3; i++) {
+							yield return new Item(ModContent.ItemType<Relic>());
+						}
+						yield return new Item(ModContent.ItemType<SkillLootBox>(), 3);
+						yield return new Item(ModContent.ItemType<WorldEssence>());
 					}
 					if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
 						if (Main.rand.NextBool(10)) {
@@ -128,6 +134,7 @@ namespace BossRush.Common.General {
 					yield return new Item(ItemID.CopperPickaxe);
 					yield return new Item(ItemID.CopperAxe);
 				}
+
 				if (ModContent.GetInstance<RogueLikeConfig>().Nightmare) {
 					yield return new Item(ItemID.RedPotion, 10);
 				}
@@ -281,7 +288,7 @@ namespace BossRush.Common.General {
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
 			ModdedPlayer clone = (ModdedPlayer)clientPlayer;
-			if ( EnchantingEnable != clone.EnchantingEnable
+			if (EnchantingEnable != clone.EnchantingEnable
 				|| SkillEnable != clone.SkillEnable) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}

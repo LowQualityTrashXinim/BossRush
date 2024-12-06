@@ -45,6 +45,7 @@ using Terraria.GameInput;
 using ReLogic.Localization.IME;
 using System.Text.RegularExpressions;
 using ReLogic.OS;
+using BossRush.Common.Mode.DreamLikeWorld;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -61,6 +62,7 @@ internal class UniversalSystem : ModSystem {
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HELLISH_MODE = "HellishEnable";
+	public const string CHAOS_MODE = "ChaosEnable";
 	public const string HARDCORE_MODE = "Hardcore";
 	public const string TRUE_MODE = "TrueMode";
 	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
@@ -107,6 +109,8 @@ internal class UniversalSystem : ModSystem {
 			return config.Nightmare;
 		if (context == HELLISH_MODE)
 			return config.HellishEndeavour;
+		if (context == CHAOS_MODE)
+			return config.DreamlikeWorld;
 		if (context == HARDCORE_MODE)
 			return config.AutoHardCore;
 		if (context == SYNERGY_MODE)
@@ -518,6 +522,11 @@ internal class UniversalSystem : ModSystem {
 	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
 	public void ActivateSpoilsUI(int lootboxType, bool IsReopening = false) {
 		DeactivateUI();
+		if(ChaosModeSystem.Chaos()) {
+			if(Main.rand.NextFloat() <= Main.rand.NextFloat(.1f,.9f)) {
+				return;
+			}
+		}
 		if (Check_TotalRNG()) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
@@ -532,6 +541,7 @@ internal class UniversalSystem : ModSystem {
 		if (!IsReopening) {
 			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
 		}
+
 		spoils.SetState(spoilsState);
 	}
 	public void ActivateTeleportUI() {

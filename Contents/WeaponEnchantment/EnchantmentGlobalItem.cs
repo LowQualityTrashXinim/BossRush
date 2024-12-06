@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Mode.DreamLikeWorld;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
@@ -62,8 +63,13 @@ public class EnchantmentSystem : ModSystem {
 			}
 			modplayer.Request_EnchantedItem--;
 		}
-		if (!UniversalSystem.Check_TotalRNG() && UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
-			return;
+		if (!ChaosModeSystem.Chaos()) {
+			if (!UniversalSystem.Check_TotalRNG()) {
+				return;
+			}
+			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
+				return;
+			}
 		}
 		for (int i = 0; i < 3; i++) {
 			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
@@ -71,7 +77,7 @@ public class EnchantmentSystem : ModSystem {
 					continue;
 				}
 			}
-			if (Main.rand.NextFloat() <= .2f) {
+			if (Main.rand.NextFloat() <= modplayer.RandomizeChanceEnchantment) {
 				EnchantItem(ref item, i);
 				continue;
 			}
@@ -171,12 +177,16 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
+	public float RandomizeChanceEnchantment = .2f;
 	public void SafeRequest_EnchantItem(int requestAmount, int amountEnchant) {
 		Request_EnchantedItem = requestAmount;
 		Request_EnchantedAmount = amountEnchant;
 	}
 	public int Request_EnchantedItem = 0;
 	public int Request_EnchantedAmount = 1;
+	public override void ResetEffects() {
+		RandomizeChanceEnchantment = .2f;
+	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
