@@ -93,7 +93,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			player.heldProj = Projectile.whoAmI;
 			if (Projectile.timeLeft > duration) {
 				Projectile.timeLeft = duration;
-				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AntlionClaw) && Main.rand.NextBool(4))
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<AmberBoneSpear>(), ItemID.AntlionClaw) && Main.rand.NextBool(4))
 					Projectile.NewProjectile(
 						Projectile.GetSource_FromAI(),
 						Projectile.Center,
@@ -124,7 +124,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear {
 			runAI = false;
 		}
 		public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.AntlionClaw))
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<AmberBoneSpear>(), ItemID.AntlionClaw))
 				if (Main.rand.NextBool(4))
 					Projectile.NewProjectile(
 						Projectile.GetSource_FromAI(),

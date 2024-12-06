@@ -87,7 +87,7 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.MagicGrenade {
 					Projectile.knockBack,
 					Projectile.owner);
 			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.MagicMissile)) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<MagicGrenade>(), ItemID.MagicMissile)) {
 				for (int i = 0; i < 4; i++) {
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitX.Vector2DistributeEvenly(4, 360, i).Vector2RotateByRandom(120), ModContent.ProjectileType<MagicalExplosionBolt>(), Projectile.damage, 1, Projectile.owner, 0, Main.rand.NextBool().ToDirectionInt());
 				}

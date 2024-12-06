@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -101,7 +102,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnergyBlade {
 				return;
 			}
 			BossRushUtils.ProjectileSwordSwingAI(Projectile, player, data);
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Code1)) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<EnergyBlade>(), ItemID.Code1)) {
 				float rotation = Projectile.rotation - (Projectile.spriteDirection > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 + MathHelper.PiOver2);
 				int energycode1 = Projectile.NewProjectile(Projectile.GetSource_FromAI(),
 					Projectile.Center,

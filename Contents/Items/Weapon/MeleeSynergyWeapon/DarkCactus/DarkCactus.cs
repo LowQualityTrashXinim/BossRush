@@ -84,7 +84,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus {
 			Projectile.damage *= 3;
 		}
 		public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) {
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BatScepter)) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<DarkCactus>(), ItemID.BatScepter)) {
 				if (!Main.rand.NextBool(10)) {
 					return;
 				}
