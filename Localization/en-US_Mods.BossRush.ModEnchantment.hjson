@@ -616,8 +616,19 @@ Code1.Description: summon a group of ghost yoyos around the cursor that deals ha
 Rally.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 WoodenYoyo.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 Amazon.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
-Terragrim.Description: you attack 2x faster, but deal 45% less damage, attacks ignore 5 defense
-Trimarang.Description: Shoots up to 3 Trimarangs when used
+Terragrim.Description: 
+	'''
+	Increases your melee speed by 15%
+	Your item attack have 45% chance to do another attack
+	Your attack speed will increases your item damage
+	(Note : the bonus damage from attack speed is 50% effective)
+	'''
+Trimarang.Description: 
+	'''
+	While Trimarang is out, increases damage and critical strike chance by 20%
+	Shoots out 3 Trimarangs when weapon is used
+	( Note : Trimarang stats of this enchantment is unchangeable )
+	'''
 LeatherWhip.Description: 10% increased whip speed and range, Increase Summon Damage by 1
 Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damage by 2, grants jungle's fury on-hit
 SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3

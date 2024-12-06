@@ -136,3 +136,15 @@ public class Jumpy : BaseAccPrefix {
 		};
 	}
 }
+public class Holy : BaseAccPrefix {
+	public override float PowerLevel => base.PowerLevel * 2;
+	public override void ApplyAccessoryEffects(Player player) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.Iframe, Base: 5 + PowerLevel);
+	}
+	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20 invincibility frame") {
+			IsModifier = true,
+		};
+	}
+}

@@ -34,13 +34,11 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (!npc.boss || npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye || NPC_SpecialException || !UniversalSystem.Check_RLOH()) {
 			return;
 		}
-		float adjustment;
+		float adjustment = 1;
 		if (Main.expertMode)
-			adjustment = 2;
+			adjustment = 1.5f;
 		else if (Main.masterMode)
-			adjustment = 3;
-		else
-			adjustment = 1;
+			adjustment = 2;
 
 		npc.lifeMax = (int)(BossHP / adjustment * GetValueMulti());
 		npc.life = npc.lifeMax;
