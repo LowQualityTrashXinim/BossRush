@@ -517,8 +517,9 @@ public class DebuffTemplateV1 : RelicTemplate {
 /// This is my example on how to make a custom template that have your own stats<br/>
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
-	//I prefer to return PlayerStats.None because our stats doesn't exist in this mod
-	//In actuality we can return whatever we want, we could also still use this to indicate what damageclass the projectile should deal
+	
+	//we can return whatever we want since this doesn't matter to what we are making,
+	//however we could also still use this to indicate what damageclass the projectile should deal
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
@@ -528,8 +529,6 @@ public class SlimeSpikeTemplate : RelicTemplate {
 			PlayerStats.PureDamage
 		});
 	}
-	//We gonna use this method to hold our custom value, think of it as hacking but not the networking kind
-	//Miss using this method is completely fine as the real final result is handle in Effect hook
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		//We are randomizing the base damage that our friendly slime spike gonna deal
 		return new(1, 1, 0, 10 + Main.rand.Next(0, 6));
