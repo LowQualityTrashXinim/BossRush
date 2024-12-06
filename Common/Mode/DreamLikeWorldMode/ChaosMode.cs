@@ -75,7 +75,7 @@ internal class ChaosModeSystem : ModSystem {
 		tag.Add("BannedItemIDCount", BannedItemIDCount);
 		tag.Add("ChainedBuffCount", ChainedBuffCount);
 		tag.Add("ChaosWeaponCount", ChaosWeaponCount);
-		tag.Add("List_Ban_ItemID", List_Ban_ItemID);
+		tag.Add("List_Ban_ItemID", List_Ban_ItemID.ToList());
 		tag.Add("Dict_Chained_Buff_Key", Dict_Chained_Buff.Keys.ToList());
 		tag.Add("Dict_Chained_Buff_Value", Dict_Chained_Buff.Values.ToList());
 		tag.Add("Dict_Chaos_Weapon_Key", Dict_Chaos_Weapon.Keys.ToList());
@@ -94,8 +94,8 @@ internal class ChaosModeSystem : ModSystem {
 		if (tag.TryGet("ChaosWeaponCount", out byte ChaosWeaponCount)) {
 			this.ChaosWeaponCount = ChaosWeaponCount;
 		}
-		if (tag.TryGet("List_Ban_ItemID", out HashSet<int> List_Ban_ItemID)) {
-			this.List_Ban_ItemID = List_Ban_ItemID;
+		if (tag.TryGet("List_Ban_ItemID", out List<int> List_Ban_ItemID)) {
+			this.List_Ban_ItemID = List_Ban_ItemID.ToHashSet();
 		}
 		var Dict_Chained_Buff_Key = tag.Get<List<int>>("Dict_Chained_Buff_Key");
 		var Dict_Chained_Buff_Value = tag.Get<List<int>>("Dict_Chained_Buff_Value");
@@ -163,8 +163,8 @@ class ChaosItemInfoSerializable : TagSerializer<ChaosItemInfo, TagCompound> {
 		["scale"] = MathF.Round(value.scale, 2),
 		["crit"] = value.crit,
 		["shoot"] = value.shoot,
-		["shootSpeed"] = value.shootSpeed,
-		["DamageType"] = value.DamageType,
+		["shootSpeed"] = MathF.Round(value.shootSpeed, 2),
+		["DamageType"] = value.DamageType.Type,
 	};
 
 
@@ -178,8 +178,8 @@ class ChaosItemInfoSerializable : TagSerializer<ChaosItemInfo, TagCompound> {
 		myData.scale = tag.GetFloat("scale");
 		myData.crit = tag.GetInt("crit");
 		myData.shoot = tag.GetInt("shoot");
-		myData.shootSpeed = tag.GetInt("shootSpeed");
-		myData.DamageType = tag.Get<DamageClass>("DamageType");
+		myData.shootSpeed = tag.GetFloat("shootSpeed");
+		myData.DamageType = DamageClassLoader.GetDamageClass(tag.GetInt("DamageType"));
 		return myData;
 	}
 }

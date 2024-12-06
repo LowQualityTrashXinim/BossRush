@@ -2649,7 +2649,7 @@ Mods: {
 				}
 
 				DreamlikeWorld: {
-					Label: Dreamlike World
+					Label: Dreamlike Mode
 					Tooltip:
 						'''
 						"Chaotic world"
@@ -2689,6 +2689,7 @@ Mods: {
 			Savage.DisplayName: Savage
 			Alchemic.DisplayName: Alchemic
 			Jumpy.DisplayName: Jumpy
+			Holy.DisplayName: Holy
 		}
 	}
 }

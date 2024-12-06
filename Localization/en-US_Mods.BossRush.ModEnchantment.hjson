@@ -616,14 +616,14 @@ Code1.Description: summon a group of ghost yoyos around the cursor that deals ha
 Rally.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 WoodenYoyo.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 Amazon.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
-Terragrim.Description: 
+Terragrim.Description:
 	'''
 	Increases your melee speed by 15%
 	Your item attack have 45% chance to do another attack
 	Your attack speed will increases your item damage
 	(Note : the bonus damage from attack speed is 50% effective)
 	'''
-Trimarang.Description: 
+Trimarang.Description:
 	'''
 	While Trimarang is out, increases damage and critical strike chance by 20%
 	Shoots out 3 Trimarangs when weapon is used

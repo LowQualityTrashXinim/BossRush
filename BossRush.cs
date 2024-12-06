@@ -89,6 +89,7 @@ namespace BossRush {
 			BodyArmorRarityDB = new();
 			LegsArmorRarityDB = new();
 			AccRarityDB = new();
+			List_Weapon = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -103,6 +104,7 @@ namespace BossRush {
 			BodyArmorRarityDB = null;
 			LegsArmorRarityDB = null;
 			AccRarityDB = null;
+			List_Weapon = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
