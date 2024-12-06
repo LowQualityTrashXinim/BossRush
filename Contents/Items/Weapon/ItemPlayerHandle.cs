@@ -163,6 +163,7 @@ namespace BossRush.Contents.Items.Weapon {
 							if (HasAnyGroupItem) {
 								SynergyBonus++;
 								HasItem = HasAnyGroupItem;
+								break;
 							}
 						}
 					}

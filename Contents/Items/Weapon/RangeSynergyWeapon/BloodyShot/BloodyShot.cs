@@ -27,6 +27,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot {
 				tooltips.Add(new TooltipLine(Mod, "BloodyShoot_AquaScepter", $"[i:{ItemID.AquaScepter}] Your gun now shoot out damaging blood"));
 		}
 		public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			position = position.PositionOFFSET(velocity, 10);
 			type = ModContent.ProjectileType<BloodBullet>();
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {

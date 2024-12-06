@@ -603,7 +603,12 @@ IceBoomerang.Description: Shoots an Ice Boomerang when used
 Shroomerang.Description: Shoots a Shroomerang when used
 WoodenBoomerang.Description: Shoots a Wooden Boomerang when used
 ThornChakram.Description: Shoots a Thorn Chakram when used
-ClockworkAssaultRifle.Description: after every 3 attack, you attack on a short burst
+ClockworkAssaultRifle.Description:
+	'''
+	Increases your attack speed by 20%
+	After every 3 attack, you attack on a short burst
+	At the end of short burst, your weapon burst out projectile
+	'''
 Malaise.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 HiveFive.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 Artery.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
@@ -624,8 +629,9 @@ BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee 
 SwordFish.Description: damage dealt is splited into two, both damage ignore 5 defense, second source of damage always deals full damage
 BloodButcherer.Description:
 	'''
-	damage dealt is increased based on damage over time debuffs applied to target enemy (up to 25% bonus damage at -10 life regen)
-	10% chance on-hit to apply a powerful damage over time debuff for 2 seconds
+	Have 10% chance to apply a debuff for 2 seconds on hit
+	Damage dealt is increased based on damage over time debuffs applied to target enemy 
+	( Note : up to 25% bonus damage at -10 life regen)
 	'''
 BreakerBlade.Description:
 	'''
