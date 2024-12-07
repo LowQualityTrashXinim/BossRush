@@ -14,6 +14,7 @@ using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.DataStructures;
+using BossRush.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
@@ -34,28 +35,7 @@ public class MythrilBeamSword : SynergyModItem {
 	}
 
 }
-public struct BeamTrail {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Projectile projectile, Color color) {
 
-		MiscShaderData miscShaderData = GameShaders.Misc["TrailEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(color);
-
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(projectile.oldPos, projectile.oldRot, StripColors, StripWidth, -Main.screenPosition + projectile.Size * 0.5f);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(4, 1, progressOnStrip);
-}
 public class MythrilBeam : SynergyModProjectile 
 {
 

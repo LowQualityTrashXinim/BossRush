@@ -303,6 +303,10 @@ Mods: {
 			StarWhipProj.DisplayName: Star Whip Proj
 			StarWhipStarProj.DisplayName: Star Whip Star Proj
 			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
+			TitaniumShuriken.DisplayName: Titanium Shuriken
+			DeathSickleGhost.DisplayName: Death Sickle Ghost
+			DeathSickleClone.DisplayName: Death Sickle Clone
+			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
 		}
 
 		NPCs: {

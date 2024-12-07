@@ -99,7 +99,7 @@ namespace BossRush {
 			}
 			return false;
 		}
-		public static Vector2 LookForHostileNPCPositionClosest(this Vector2 position, float distance) {
+		public static Vector2 LookForHostileNPCPositionClosest(this Vector2 position, float distance, bool notHitThroughTiles = true) {
 			Vector2 hostilePos = Vector2.Zero;
 			float maxDistanceSquare = distance * distance;
 			for (int i = 0; i < Main.maxNPCs; i++) {
@@ -108,7 +108,7 @@ namespace BossRush {
 					&& CompareSquareFloatValue(npc.Center, position, maxDistanceSquare, out float dis)
 					&& npc.CanBeChasedBy()
 					&& !npc.friendly
-					&& (Collision.CanHitLine(position, 10, 10, npc.position, npc.width, npc.height))
+					&& (!notHitThroughTiles || Collision.CanHitLine(position, 10, 10, npc.position, npc.width, npc.height))
 					) {
 					maxDistanceSquare = dis;
 					hostilePos = npc.Center;

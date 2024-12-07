@@ -622,6 +622,15 @@ SandGun.Description: enemies burst into 15 sand projectiles on-death, each deals
 TheMeatball.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict ichor debuff
 BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict cursed flames debuff
 SwordFish.Description: damage dealt is splited into two, both damage ignore 5 defense, second source of damage always deals full damage
+TitaniumSword.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
+TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
+TitaniumTrident.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
+OrichalcumSword.Description: fire a petal on-hit that deals 22/44 damage (ranged/melee)
+OrichalcumHalberd.Description: fire a petal on-hit that deals 22/44 damage (ranged/melee)
+OrichalcumRepeater.Description: fire a petal on-hit that deals 22/44 damage (ranged/melee)
+PalladiumSword.Description: on-hit every 15 seconds, enemy hit has 25% chance to drop a healing heart
+PalladiumPike.Description: on-hit every 15 seconds, enemy hit has 25% chance to drop a healing heart
+PalladiumRepeater.Description: on-hit every 15 seconds, enemy hit has 25% chance to drop a healing heart
 BloodButcherer.Description:
 	'''
 	damage dealt is increased based on damage over time debuffs applied to target enemy (up to 25% bonus damage at -10 life regen)

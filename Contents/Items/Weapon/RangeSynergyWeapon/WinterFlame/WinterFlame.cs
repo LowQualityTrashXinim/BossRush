@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static tModPorter.ProgressUpdate;
 using Humanizer;
+using BossRush.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 public class WinterFlame : SynergyModItem {
@@ -58,79 +59,7 @@ public class WinterFlame : SynergyModItem {
 	}
 
 }
-public struct FlameThrowerCombined {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	private float maxProgress = 0;
-	private float progress = 0;
-	public FlameThrowerCombined() {
-	}
 
-	public void Draw(Projectile projectile,float counter , float maxProgress = 35) {
-
-		MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(Color.Pink);
-		miscShaderData.UseShaderSpecificData(new Vector4(60, 1, 0, 0));
-		this.progress = Utils.GetLerpValue(0,1, counter / 20, true);
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(projectile.oldPos, projectile.oldRot, StripColors, StripWidth, -Main.screenPosition + projectile.Size * 0.5f);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip * Utils.GetLerpValue(0,1,progress / 10,true)));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(8f, 35f * progress, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
-}
-public struct FlameThrowerFrost {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
-
-		MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(Color.CornflowerBlue);
-		miscShaderData.UseShaderSpecificData(new Vector4(progress, maxProgress, 0, 0));
-
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 12f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
-}
-public struct FlameThrowerFire {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
-
-		MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(Color.Orange);
-		miscShaderData.UseShaderSpecificData(new Vector4(progress, maxProgress, 0, 0));
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0f, 255f, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 12f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
-}
 public class WinterFlameProjectile : SynergyModProjectile 
 {
 

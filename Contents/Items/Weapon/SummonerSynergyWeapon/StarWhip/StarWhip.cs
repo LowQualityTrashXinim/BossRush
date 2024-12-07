@@ -15,6 +15,7 @@ using ReLogic.Content;
 using System.Diagnostics;
 using Terraria.Audio;
 using Terraria.Localization;
+using BossRush.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 public class StarWhip : SynergyModItem {
@@ -45,8 +46,8 @@ public class StarWhip : SynergyModItem {
 		if (!WorldGen.TileEmpty(pos.ToTileCoordinates().X,pos.ToTileCoordinates().Y)) 
 			return;
 					
-			
-		NPC.NewNPC(player.GetSource_FromThis(), (int)pos.X, (int)pos.Y, ModContent.NPCType<FallenStarPower>());
+		if(Main.myPlayer == player.whoAmI)
+			NPC.NewNPC(player.GetSource_FromThis(), (int)pos.X, (int)pos.Y, ModContent.NPCType<FallenStarPower>());
 
 		
 	}
@@ -54,50 +55,6 @@ public class StarWhip : SynergyModItem {
 	public override Color? GetAlpha(Color lightColor) {
 		return Color.White;
 	}
-}
-public struct StarTrail {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
-		
-		MiscShaderData miscShaderData = GameShaders.Misc["TrailEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(Color.CornflowerBlue);
-		
-		miscShaderData.Apply();
-		
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
-		_vertexStrip.DrawTrail();
-		
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0,255,progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(35,5,progressOnStrip);
-}
-public struct StarTrailEmpowered {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
-
-		MiscShaderData miscShaderData = GameShaders.Misc["TrailEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(Color.Gold);
-
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(12, 0, progressOnStrip);
 }
 public class StarWhipProj : ModProjectile {
 

@@ -1434,3 +1434,89 @@ public class SwordFish : ModEnchantment {
 	}
 
 }
+
+public class PalladiumSword : PalladiumEnchantment 
+{
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PalladiumSword;
+	}
+
+}
+
+public class PalladiumPike : PalladiumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PalladiumPike;
+	}
+
+}
+
+public class OrichalcumSword : OrichalcumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.OrichalcumSword;
+	}
+
+}
+public class OrichalcumHalberd : OrichalcumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.OrichalcumHalberd;
+	}
+
+}
+
+public class TitaniumSword : TitaniumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TitaniumSword;
+	}
+
+}
+
+public class TitaniumTrident : TitaniumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TitaniumTrident;
+	}
+
+}
+
+public class DeathSickle : ModEnchantment 
+{
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.DeathSickle;
+	}
+
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		globalItem.Item_Counter1[index]++;
+
+		if (globalItem.Item_Counter1[index] >= 15) {
+			globalItem.Item_Counter1[index] = 0;
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(200, 0), target.Center.DirectionTo(target.Center + new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(100, 0), target.Center.DirectionTo(target.Center - new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(200, 0), target.Center.DirectionTo(target.Center - new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+
+
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if(proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>())
+		globalItem.Item_Counter1[index]++;
+
+		if(globalItem.Item_Counter1[index] >= 15) 
+		{
+			globalItem.Item_Counter1[index] = 0;
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100,0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(200, 0), target.Center.DirectionTo(target.Center + new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(100, 0), target.Center.DirectionTo(target.Center - new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(200, 0), target.Center.DirectionTo(target.Center - new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+
+
+		}
+
+	}
+}
