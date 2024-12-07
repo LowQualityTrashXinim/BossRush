@@ -173,18 +173,7 @@ internal class UniversalSystem : ModSystem {
 		return false;
 	}
 	internal UserInterface userInterface;
-	internal UserInterface perkInterface;
-	internal UserInterface skillInterface;
-	internal UserInterface enchantInterface;
-	internal UserInterface systemMenuInterface;
-	internal UserInterface transmutationInterface;
-	internal UserInterface TestUser;
-	internal UserInterface spoils;
-	internal UserInterface TeleportUser;
-	internal UserInterface infoUser;
-	internal UserInterface achievementUser;
-	internal UserInterface cursesUser;
-	internal UserInterface structureUser;
+	internal UserInterface user2ndInterface;
 
 	public EnchantmentUIState Enchant_uiState;
 	public PerkUIState perkUIstate;
@@ -230,40 +219,19 @@ internal class UniversalSystem : ModSystem {
 		if (!Main.dedServ) {
 			//Mod custom UI
 			Enchant_uiState = new();
-			enchantInterface = new();
-
 			perkUIstate = new();
-			perkInterface = new();
-
 			skillUIstate = new();
-			skillInterface = new();
-
 			defaultUI = new();
+			user2ndInterface = new();
 			userInterface = new();
-
 			UIsystemmenu = new();
-			systemMenuInterface = new();
-
 			transmutationUI = new();
-			transmutationInterface = new();
-
-			TestUser = new();
 			relicUI = new();
 			skillUI = new();
-
 			spoilsState = new();
-			spoils = new();
-
 			teleportUI = new();
-			TeleportUser = new();
-
-			infoUser = new();
 			infoUI = new();
-
-			achievementUser = new();
 			achievementUI = new();
-
-			structureUser = new();
 			structUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
@@ -300,30 +268,15 @@ internal class UniversalSystem : ModSystem {
 		defaultUI = null;
 
 		userInterface = null;
-		perkInterface = null;
-		skillInterface = null;
-		enchantInterface = null;
+		user2ndInterface = null;
 		UIsystemmenu = null;
-		systemMenuInterface = null;
 		transmutationUI = null;
-		transmutationInterface = null;
 		relicUI = null;
 		skillUI = null;
-		TestUser = null;
-
 		spoilsState = null;
-		spoils = null;
-
 		teleportUI = null;
-		TeleportUser = null;
-
-		infoUser = null;
 		infoUI = null;
-
-		achievementUser = null;
 		achievementUI = null;
-
-		structureUser = null;
 		structUI = null;
 	}
 	private void On_Main_DrawInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime) {
@@ -408,17 +361,7 @@ internal class UniversalSystem : ModSystem {
 	}
 	public override void UpdateUI(GameTime gameTime) {
 		userInterface?.Update(gameTime);
-		perkInterface?.Update(gameTime);
-		skillInterface?.Update(gameTime);
-		enchantInterface?.Update(gameTime);
-		systemMenuInterface?.Update(gameTime);
-		transmutationInterface?.Update(gameTime);
-		TestUser?.Update(gameTime);
-		spoils?.Update(gameTime);
-		TeleportUser?.Update(gameTime);
-		infoUser?.Update(gameTime);
-		achievementUser?.Update(gameTime);
-		structureUser?.Update(gameTime);
+		user2ndInterface?.Update(gameTime);
 	}
 	public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 		int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
@@ -428,17 +371,7 @@ internal class UniversalSystem : ModSystem {
 				delegate {
 					GameTime gametime = new GameTime();
 					userInterface.Draw(Main.spriteBatch, gametime);
-					perkInterface.Draw(Main.spriteBatch, gametime);
-					skillInterface.Draw(Main.spriteBatch, gametime);
-					enchantInterface.Draw(Main.spriteBatch, gametime);
-					systemMenuInterface.Draw(Main.spriteBatch, gametime);
-					transmutationInterface.Draw(Main.spriteBatch, gametime);
-					TestUser.Draw(Main.spriteBatch, gametime);
-					spoils.Draw(Main.spriteBatch, gametime);
-					TeleportUser.Draw(Main.spriteBatch, gametime);
-					infoUser.Draw(Main.spriteBatch, gametime);
-					achievementUser.Draw(Main.spriteBatch, gametime);
-					structureUser.Draw(Main.spriteBatch, gametime);
+					user2ndInterface.Draw(Main.spriteBatch, gametime);
 					return true;
 				},
 				InterfaceScaleType.UI)
@@ -449,7 +382,7 @@ internal class UniversalSystem : ModSystem {
 		if (!Check_TotalRNG()) {
 			DeactivateUI();
 			perkUIstate.StateofState = state;
-			perkInterface.SetState(perkUIstate);
+			user2ndInterface.SetState(perkUIstate);
 			return;
 		}
 		if (state == PerkUIState.DefaultState) {
@@ -484,36 +417,36 @@ internal class UniversalSystem : ModSystem {
 		DeactivateUI();
 		structUI.TopLeft = TopLeft;
 		structUI.BottomRight = BottomRight;
-		structureUser.SetState(structUI);
+		user2ndInterface.SetState(structUI);
 	}
 	public void ActivateInfoUI() {
 		DeactivateUI();
-		infoUser.SetState(infoUI);
+		user2ndInterface.SetState(infoUI);
 	}
 	public void ActivateSkillUI() {
 		DeactivateUI();
-		skillInterface.SetState(skillUIstate);
+		user2ndInterface.SetState(skillUIstate);
 	}
 	public void ActivateEnchantmentUI() {
 		DeactivateUI();
-		enchantInterface.SetState(Enchant_uiState);
+		user2ndInterface.SetState(Enchant_uiState);
 	}
 	public void ActivateTransmutationUI() {
 		DeactivateUI();
-		transmutationInterface.SetState(transmutationUI);
+		user2ndInterface.SetState(transmutationUI);
 	}
 	public void ActivateDebugUI(string context = "relic") {
 		DeactivateUI();
 		if (context.Trim() == "relic") {
-			TestUser.SetState(relicUI);
+			user2ndInterface.SetState(relicUI);
 		}
 		if (context.Trim() == "skill") {
-			TestUser.SetState(skillUI);
+			user2ndInterface.SetState(skillUI);
 		}
 	}
 	public void ActivateAchievementUI() {
 		DeactivateUI();
-		achievementUser.SetState(achievementUI);
+		user2ndInterface.SetState(achievementUI);
 	}
 	/// <summary>
 	/// Activate spoils ui state, it is required that lootboxtype come from lootbox item ID
@@ -522,8 +455,8 @@ internal class UniversalSystem : ModSystem {
 	/// <param name="IsReopening">set true to disable dupilicate lootbox</param>
 	public void ActivateSpoilsUI(int lootboxType, bool IsReopening = false) {
 		DeactivateUI();
-		if(ChaosModeSystem.Chaos()) {
-			if(Main.rand.NextFloat() <= Main.rand.NextFloat(.1f,.9f)) {
+		if (ChaosModeSystem.Chaos()) {
+			if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .9f)) {
 				return;
 			}
 		}
@@ -542,24 +475,14 @@ internal class UniversalSystem : ModSystem {
 			Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Add(lootboxType);
 		}
 
-		spoils.SetState(spoilsState);
+		user2ndInterface.SetState(spoilsState);
 	}
 	public void ActivateTeleportUI() {
 		DeactivateUI();
-		TeleportUser.SetState(teleportUI);
+		user2ndInterface.SetState(teleportUI);
 	}
 	public void DeactivateUI() {
-		perkInterface.SetState(null);
-		skillInterface.SetState(null);
-		enchantInterface.SetState(null);
-		systemMenuInterface.SetState(null);
-		transmutationInterface.SetState(null);
-		TestUser.SetState(null);
-		spoils.SetState(null);
-		TeleportUser.SetState(null);
-		infoUser.SetState(null);
-		achievementUser.SetState(null);
-		structureUser.SetState(null);
+		user2ndInterface.SetState(null);
 	}
 	public List<int> GivenBossSpawnItem = new List<int>();
 	public List<int> ListOfBossKilled = new List<int>();
@@ -660,15 +583,6 @@ public class UniversalModPlayer : ModPlayer {
 			WarnAlready = 1;
 		}
 	}
-	public override bool CanUseItem(Item item) {
-		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
-		if (uiSystemInstance.perkInterface.CurrentState != null
-			|| uiSystemInstance.enchantInterface.CurrentState != null
-			|| uiSystemInstance.skillInterface.CurrentState != null) {
-			return false;
-		}
-		return base.CanUseItem(item);
-	}
 	int WarnAlready = 0;
 	public override void SaveData(TagCompound tag) {
 		tag.Add("WarnAlready", WarnAlready);
@@ -725,18 +639,18 @@ class DefaultUI : UIState {
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
-		if (system.spoils.CurrentState != null) {
+		if (system.user2ndInterface.CurrentState != null) {
 			return;
 		}
 		if (Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
 			system.ActivateSpoilsUI(Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First(), true);
 		}
-		if (system.systemMenuInterface.CurrentState == null && system.spoils.CurrentState == null) {
+		if (system.user2ndInterface.CurrentState == null) {
 			system.DeactivateUI();
-			system.systemMenuInterface.SetState(system.UIsystemmenu);
+			system.user2ndInterface.SetState(system.UIsystemmenu);
 		}
 		else {
-			system.systemMenuInterface.SetState(null);
+			system.user2ndInterface.SetState(null);
 		}
 	}
 	public override void OnActivate() {
@@ -2324,24 +2238,36 @@ public class btn_Teleport : UIImageButton {
 }
 public class AchievementUI : UIState {
 	private const int Row = 10;
-	UIPanel mainPanel;
+	UIPanel mainPanel, headerPanel;
 	Roguelike_WrapTextUIPanel textpanel;
 	Roguelike_WrapTextUIPanel conditiontextpanel;
 	List<AchievementButton> btn_Achievement;
+	ExitUI exitbtn;
 	private int RowOffSet = 0;
 	public static string ActiveAchievement = "";
 	public override void OnInitialize() {
-		mainPanel = new();
 		mainPanel = new UIPanel();
 		mainPanel.HAlign = .35f;
 		mainPanel.VAlign = .5f;
 		mainPanel.UISetWidthHeight(100, 600);
+		Append(mainPanel);
 
 		textpanel = new Roguelike_WrapTextUIPanel("");
 		textpanel.HAlign = .53f;
 		textpanel.VAlign = .5f;
 		textpanel.UISetWidthHeight(450, 600);
+		textpanel.offSetDraw.Y += 75;
 		Append(textpanel);
+
+		headerPanel = new UIPanel();
+		headerPanel.UISetWidthHeight(450, 72);
+		textpanel.Append(headerPanel);
+
+		exitbtn = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+		exitbtn.UISetWidthHeight(52, 52);
+		exitbtn.HAlign = 1f;
+		exitbtn.VAlign = .5f;
+		headerPanel.Append(exitbtn);
 
 		btn_Achievement = new();
 		for (int i = 0; i < Row; i++) {
@@ -2357,7 +2283,6 @@ public class AchievementUI : UIState {
 			btn_Achievement.Add(btn);
 			mainPanel.Append(btn);
 		}
-		Append(mainPanel);
 
 		conditiontextpanel = new Roguelike_WrapTextUIPanel("", .77f);
 		conditiontextpanel.HAlign = .1f;

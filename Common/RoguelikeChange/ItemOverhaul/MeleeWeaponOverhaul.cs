@@ -113,6 +113,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.EbonwoodSword:
 				case ItemID.ShadewoodSword:
 				case ItemID.PearlwoodSword:
+				case ItemID.AshWoodSword:
 					item.width = item.height = 32;
 					break;
 				case ItemID.BluePhaseblade:
@@ -302,6 +303,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.RichMahoganySword:
 				case ItemID.WoodenSword:
 				case ItemID.CactusSword:
+				case ItemID.AshWoodSword:
 				//OrebroadSword
 				case ItemID.BeeKeeper:
 				case ItemID.CopperBroadsword:

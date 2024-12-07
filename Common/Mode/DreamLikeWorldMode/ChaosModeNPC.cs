@@ -1,9 +1,6 @@
 ﻿using BossRush.Common.General;
+using BossRush.Common.Mode.DreamLikeWorld;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -15,6 +12,9 @@ internal class ChaosModeNPC : GlobalNPC{
 	public float MagicDamageReduction = 1;
 	public float SummonDamageReduction = 1;
 	public override void SetDefaults(NPC entity) {
+		if (!ChaosModeSystem.Chaos()) {
+			return;
+		}
 		float DamageReductionPoint = .5f;
 		if (Main.hardMode) {
 			DamageReductionPoint += .25f;

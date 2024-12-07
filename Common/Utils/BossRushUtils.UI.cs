@@ -166,6 +166,7 @@ namespace BossRush {
 		private int linePosition;
 		private int maxLinePosition;
 		public int MAX_LINES = 0;
+		public Vector2 offSetDraw = Vector2.Zero;
 		public Roguelike_WrapTextUIPanel(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 		}
 
@@ -197,7 +198,7 @@ namespace BossRush {
 					spriteBatch,
 					font,
 					text,
-					GetInnerDimensions().Position() + Vector2.UnitY * yOffset,
+					GetInnerDimensions().Position() + offSetDraw + Vector2.UnitY * yOffset,
 					Color.White,
 					0f,
 					Vector2.Zero,
