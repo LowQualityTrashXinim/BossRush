@@ -2454,6 +2454,11 @@ Mods: {
 				DisplayName: Star Whip Debuff
 				Description: Mods.BossRush.Buffs.StarWhipDebuff.Description
 			}
+
+			MeltingDefense: {
+				DisplayName: Melting Defense
+				Description: Mods.BossRush.Buffs.MeltingDefense.Description
+			}
 		}
 
 		Configs: {
