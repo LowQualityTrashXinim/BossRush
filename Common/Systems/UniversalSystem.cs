@@ -40,11 +40,7 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using Microsoft.Xna.Framework.Input;
-using Terraria.ModLoader.UI;
 using Terraria.GameInput;
-using ReLogic.Localization.IME;
-using System.Text.RegularExpressions;
-using ReLogic.OS;
 using BossRush.Common.Mode.DreamLikeWorld;
 
 namespace BossRush.Common.Systems;
@@ -1702,6 +1698,9 @@ class PerkUIImageButton : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if(ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
 			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
 		}
