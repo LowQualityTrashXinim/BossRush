@@ -1,18 +1,49 @@
 ﻿using BossRush.Common.Mode.DreamLikeWorld;
 using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.WeaponEnchantment;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace BossRush.Common.Mode.DreamLikeWorldMode;
 internal class ChaosModePlayer : ModPlayer {
+	public bool HasReceivedWeapon = false;
 	public override void OnEnterWorld() {
-		int type = Main.rand.Next(ModContent.GetInstance<ChaosModeSystem>().Dict_Chaos_Weapon.Keys.ToList());
-		Player.QuickSpawnItem(Player.GetSource_None(), type);
+		ChaosModeSystem system = ModContent.GetInstance<ChaosModeSystem>();
+		if(!system.ChaosMode) {
+			return;
+		}
+		if (!HasReceivedWeapon) {
+			int type = Main.rand.Next(ModContent.GetInstance<ChaosModeSystem>().Dict_Chaos_Weapon.Keys.ToList());
+			IEntitySource source = Player.GetSource_None();
+			Player.QuickSpawnItem(source, type);
+			LootBoxBase.AmmoForWeapon(BossRushModSystem.ListLootboxType[0], Player, type);
+			HasReceivedWeapon = true;
+		}
+		//Check for chaos weapon
+		for (int i = 0; i < 50; i++) {
+			int type = Player.inventory[i].type;
+			if (system.Dict_Chaos_Weapon.ContainsKey(type)) {
+				system.Dict_Chaos_Weapon[type].ApplyInfo(ref Player.inventory[i]);
+			}
+		}
 	}
 	public override void UpdateEquips() {
-		Player.GetModPlayer<AugmentsPlayer>().IncreasesChance += 1f;
+		if(!ChaosModeSystem.Chaos()) {
+			return;
+		}
+		Player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .3f;
 		Player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .2f;
+	}
+	public override void SaveData(TagCompound tag) {
+		tag["HasReceivedWeapon"] = HasReceivedWeapon;
+	}
+	public override void LoadData(TagCompound tag) {
+		if(tag.TryGet("HasReceivedWeapon", out bool result)) {
+			HasReceivedWeapon = result;
+		}
 	}
 }

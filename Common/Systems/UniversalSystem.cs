@@ -1765,6 +1765,9 @@ class PerkUIImageButton : UIImageButton {
 		if (perk != null && perk.textureString != null) {
 			texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
 		}
+		else {
+			texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+		}
 		SetImage(texture);
 		this.UISetWidthHeight(52, 52);
 	}
@@ -1808,7 +1811,7 @@ internal class EnchantmentUIState : UIState {
 	ExitUI weaponEnchantmentUIExit;
 	bool isMousePressed = false;
 	Vector2 position = Main.ScreenSize.ToVector2() / 2f;
-	Vector2 panelSize = new Vector2(60 * 3 - 8, 52 * 2 + 8);
+	Vector2 panelSize = new Vector2(70 * 3 - 8, 62 * 2 + 8);
 	Vector2 UIclampOffset = new Vector2(60, 60);
 	public override void OnInitialize() {
 
