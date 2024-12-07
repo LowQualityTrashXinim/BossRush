@@ -2649,15 +2649,14 @@ Mods: {
 				}
 
 				DreamlikeWorld: {
-					Label: Dreamlike Mode
+					Label: Chaotic Mode
 					Tooltip:
 						'''
-						"Chaotic world"
 						[=] Many weapon become unusable ( weapon range from 40 -> 80 )
-						[=] Enemy gain (percentage range from 10% -> 90%) to (Damage type only applied to melee, range, magic, summoner && doesn't applied to generic damage)
+						[=] Enemy gain (percentage range from 10% -> 90%) to various damage type
 						[=] When receive (any Buff/Debuff), player will also receive (any Debuff/Buff) (Can range from 5 -> 15)
 						[=] You are start with 1 randomize stats weapon, 3 randomize pieces of armor,
-						3 randomize piece of accessories, 3 randomize relics, 3 skill lootbox, 1 World Essences & Celestial Essences
+						3 randomize piece of accessories, 3 randomize relics, 4 skill lootbox, 1 World Essences & Celestial Essences
 						[=] Lootbox may give spoil (The chance range from 10% -> 90%) 
 						[=] Some weapons (that is not unusable) will have their stats randomize (weapon get their stats randomize from 30 -> 120)
 						[=] Augmentation and enchantment appear more common
