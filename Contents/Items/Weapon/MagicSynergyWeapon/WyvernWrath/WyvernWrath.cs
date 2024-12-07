@@ -44,18 +44,18 @@ public class WyvernWrath : SynergyModItem {
 		Item.shootSpeed = 20;
 		Item.noMelee = true;
 		Item.UseSound = SoundID.Item125;
+		Item.scale = .66f;
 	}
 
 
 	public override void ModifySynergyShootStats(Player player, PlayerSynergyItemHandle modplayer, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 
 		int playerDir = player.direction;
-		position = playerDir == 1 ? new Vector2(position.X - 35 - Main.rand.Next(0, 35), position.Y - Main.rand.Next(0,35)) : new Vector2(position.X + 35 + Main.rand.Next(0,35), position.Y - Main.rand.Next(0, 35));
-
+		position = player.Center.PositionOFFSET(velocity, -Main.rand.NextFloat(70, 90)) + Main.rand.NextVector2Circular(25, 60).RotatedBy(velocity.ToRotation());
 		velocity = position.DirectionTo(Main.MouseWorld).SafeNormalize(Vector2.UnitY) * velocity.Length();
 
-		for (int i = 0; i < 25; i++) 
-		{
+
+		for (int i = 0; i < 25; i++) {
 			var dust = Dust.NewDustPerfect(position, DustID.WhiteTorch, Main.rand.NextVector2CircularEdge(5, 5), 0, Color.Turquoise);
 			dust.noGravity = true;
 		}
@@ -69,6 +69,26 @@ public class WyvernWrath : SynergyModItem {
 
 public class WyvernWrathMainProjectile : SynergyModProjectile 
 {
+		MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
+		Asset<Texture2D> NOISE = ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE);
+		miscShaderData.UseImage1(NOISE);
+		miscShaderData.UseColor(Color.LightSeaGreen);
+		miscShaderData.UseShaderSpecificData(new Microsoft.Xna.Framework.Vector4(60, 1, 0, 0));
+		miscShaderData.Apply();
+
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
+		_vertexStrip.DrawTrail();
+
+		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+	}
+	private Color StripColors(float progressOnStrip) {
+		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
+		//result.A /= 2;
+		return result;
+	}
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+}
+public class WyvernWrathMainProjectile : SynergyModProjectile {
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
 		ProjectileID.Sets.TrailCacheLength[Type] = 35;
@@ -83,8 +103,10 @@ public class WyvernWrathMainProjectile : SynergyModProjectile
 		Projectile.DamageType = DamageClass.Magic;
 		Projectile.light = 0.8f;
 		Projectile.tileCollide = false;
+		Projectile.frame = Main.rand.Next(14);
+		Projectile.extraUpdates = 1;
 
-	
+
 	}
 	public override void OnSpawn(IEntitySource source) {
 		Projectile.FillProjectileOldPosAndRot();
@@ -92,31 +114,58 @@ public class WyvernWrathMainProjectile : SynergyModProjectile
 		
 
 	}
+		float randomrotation = Main.rand.NextFloat(90);
+		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+		for (int i = 0; i < 4; i++) {
+			Vector2 Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i + randomrotation)) * (3 + Main.rand.NextFloat());
+			for (int l = 0; l < 8; l++) {
+				float multiplier = Main.rand.NextFloat();
+				float scale = MathHelper.Lerp(1.1f, .1f, multiplier);
+				int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemEmerald, 0, 0, 0, Main.rand.Next(new Color[] { Color.White, Color.Green }), scale);
+				Main.dust[dust].velocity = Toward * multiplier;
+				Main.dust[dust].noGravity = true;
+			}
+		}
+	}
 	public override bool PreDraw(ref Color lightColor) {
-
+		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+		int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, Main.rand.NextBool() ? DustID.GemEmerald : DustID.GemDiamond, 0, 0, 0, Color.White, Scale: Main.rand.NextFloat(.7f, 1.1f));
+		Main.dust[dust].noGravity = true;
 		Asset<Texture2D> texture = TextureAssets.Projectile[Type];
 		Main.instance.LoadProjectile(ProjectileID.SkyFracture);
 
-		Main.EntitySpriteDraw(texture.Value,Projectile.Center - Main.screenPosition,new Rectangle(Projectile.frame * 38, 0, 38,38),Color.Turquoise,Projectile.velocity.ToRotation() + MathHelper.PiOver4,new Vector2(38) / 2f,1f,SpriteEffects.None);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center - Main.screenPosition, new Rectangle(Projectile.frame * 38, 0, 38, 38), Color.Turquoise, Projectile.velocity.ToRotation() + MathHelper.PiOver4, new Vector2(38) / 2f, 1f, SpriteEffects.None);
 		default(WyvernTrailMain).Draw(Projectile.oldPos, Projectile.oldRot, Projectile.Size * 0.5f);
 
 		return false;
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
-		Vector2 pos = (Projectile.Center + new Vector2(750, 0)).RotatedBy(Main.rand.NextFloat(MathHelper.ToRadians(360)),Projectile.Center);
+		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+
+		for (int l = 0; l < 20; l++) {
+			float multiplier = Main.rand.NextFloat();
+			float scale = MathHelper.Lerp(1.1f, .1f, multiplier) + 1f;
+			float randomrotate = MathHelper.Lerp(50f, 1f, BossRushUtils.InOutSine(multiplier));
+			int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemEmerald, 0, 0, 0, Color.White, scale);
+			Main.dust[dust].velocity = -Projectile.velocity.RotatedBy(MathHelper.ToRadians(randomrotate)) * multiplier * .5f;
+			Main.dust[dust].noGravity = true;
+			int dust2 = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, DustID.GemEmerald, 0, 0, 0, Color.White, scale);
+			Main.dust[dust2].velocity = -Projectile.velocity.RotatedBy(MathHelper.ToRadians(-randomrotate)) * multiplier * .5f;
+			Main.dust[dust2].noGravity = true;
+		}
+
+		Vector2 pos = (Projectile.Center + new Vector2(750, 0)).RotatedBy(Main.rand.NextFloat(MathHelper.ToRadians(360)), Projectile.Center);
 		Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), pos, pos.DirectionTo(Projectile.Center).SafeNormalize(Vector2.UnitY) * 25, ModContent.ProjectileType<WyvernWrathMiniProjectile>(), (int)(Projectile.damage * 0.8f), 0f, Projectile.owner);
 	}
 }
 
-public class WyvernWrathMiniProjectile : SynergyModProjectile 
-{
+public class WyvernWrathMiniProjectile : SynergyModProjectile {
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
 		ProjectileID.Sets.TrailCacheLength[Type] = 35;
 	}
 
-	public override void SetDefaults() 
-	{
+	public override void SetDefaults() {
 
 
 		Projectile.width = Projectile.height = 8;

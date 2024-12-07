@@ -83,6 +83,7 @@ namespace BossRush {
 				case ItemID.RichMahoganySword:
 				case ItemID.WoodenSword:
 				case ItemID.CactusSword:
+				case ItemID.AshWoodSword:
 				//OrebroadSword
 				case ItemID.BeeKeeper:
 				case ItemID.CopperBroadsword:

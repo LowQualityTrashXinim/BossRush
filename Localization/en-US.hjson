@@ -303,6 +303,7 @@ Mods: {
 			StarWhipProj.DisplayName: Star Whip Proj
 			StarWhipStarProj.DisplayName: Star Whip Star Proj
 			StarWhipTipTracker.DisplayName: Star Whip Tip Tracker
+			DirtProjectile.DisplayName: Dirt Projectile
 			TitaniumShuriken.DisplayName: Titanium Shuriken
 			DeathSickleGhost.DisplayName: Death Sickle Ghost
 			DeathSickleClone.DisplayName: Death Sickle Clone
@@ -1579,9 +1580,197 @@ Mods: {
 					'''
 			}
 
+			DivinityStone: {
+				DisplayName: Divinity Stone
+				Tooltip:
+					'''
+					Increases your crit chance by 5
+					Upon critial hit a enemy, you gain a divinity stack
+					'''
+				ExtraInfo:
+					'''
+					[Divinity Stone]
+					Increases player : 
+					[+] Life regenarate rate by 10% and 2 flat
+					[+] Mana regen by 25% and 2 flat 
+					[+] Static defenses by 15% and 3 flat
+					'''
+			}
+
+			ChaosTablet: {
+				DisplayName: Chaos Tablet
+				Tooltip: ""
+			}
+
+			ReactiveBombing: {
+				DisplayName: Bombshell Artillery
+				Tooltip:
+					'''
+					"Miner self defense equipment"
+					Upon hit, thrown out 4 bombs that after a while explode dealing 90 damage
+					Reduce damage receive by 10
+					'''
+			}
+
+			HeartOfBloodThorn: {
+				DisplayName: Bloodthorn Core
+				Tooltip:
+					'''
+					"A thorn in heart"
+					Upon hit, Burst out 6 blood thorn that deal 45 magic damage
+					Blood thorn that is created by this item have life steal effect
+					Increases healing effective by 15% and maximum life by 15
+					'''
+			}
+
+			SpectreQuiver: {
+				DisplayName: Spectre Quiver
+				Tooltip:
+					'''
+					"Grant the user with spectre archer knowledge"
+					Increases range base damage by 10 and arrow velocity by 10%
+					Shoot out a spread arch of 4 spectre arrow that deal 34% of weapon damage ( 1s delay )
+					'''
+			}
+
+			NatureCrystal: {
+				Tooltip:
+					'''
+					"A Mana and a Life Crystal merged into 1 single item"
+					Increase health and mana by 40
+					Getting hit both heal back your hp and mana for 10% of taken damage
+					'''
+				DisplayName: Natural Crystal
+			}
+
+			EnergeticOrb: {
+				DisplayName: Overcharged Orb
+				Tooltip:
+					'''
+					"Bursting with energy"
+					Increases your mana regeneration, maximum mana by 30 and magic damage by 6%
+					Magic projectile upon hitting enemy will heal small amount of your mana
+					'''
+			}
+
+			StarStone: {
+				DisplayName: Starfell Stone
+				Tooltip:
+					'''
+					"Made from star that keep falling from the sky"
+					Increases synergy damage by 15%
+					Upon fire after switching to different weapon, spawn 3 stars that deal 65 damage at cursor
+					'''
+			}
+
+			TitanBlood: {
+				DisplayName: Titanic Blood
+				Tooltip:
+					'''
+					"A small snippet strength of the ancient god"
+					Increases damage reduction by 10% when your life is under 50%
+					Increases additional damage reduction by 5% when your life is under 35%
+					Increases additional damage reduction by 5% when your life is under 15%
+					You have chance to resist a attack
+					When you resist a attack, damage taken reduce to 1 and you gain extra 1s of i-frame
+					'''
+			}
+
+			StealthCloak: {
+				DisplayName: Steath Cloak
+				Tooltip:
+					'''
+					"No one will live to tell the tale"
+					You become invisible after 15s of not being invisible
+					While invisible your critical damage increases by 35%
+					increases your movement speed by 15%
+					you have chance to dodge an attack
+					'''
+			}
+
+			OverpoweringGem: {
+				DisplayName: Universal Gemstone
+				Tooltip:
+					'''
+					"Radiate with world energy"
+					Minor increases to various stats
+					You have a small chance to dodge a attack, and small chance to life steal 
+					'''
+			}
+
+			GreatHolyCross: {
+				DisplayName: Golden Cross
+				Tooltip:
+					'''
+					"Made from pure gold"
+					Greatly increases length of invincibility after taking damage
+					Will also increases the strength of other item that grant invincibility
+					'''
+			}
+
+			VitalityDrainTotem: {
+				DisplayName: Vampiric Totem
+				Tooltip:
+					'''
+					Increases your life regeneration
+					Increases healing effectiveness by 25%
+					During your immunity frame, you drain life of enemies nearby you and heal you
+					'''
+			}
+
+			KillingThrill: {
+				DisplayName: Genocidal Pact
+				Tooltip:
+					'''
+					Increases your damage against undamaged enemy by 300%
+					Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases
+					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
+					'''
+			}
+
+			GodDice: {
+				DisplayName: Godborn Dice
+				Tooltip:
+					'''
+					"The dice use by god to decide mortal fate"
+					Gives you a roll for each boss kill which will automatically roll for you
+					'''
+			}
+
+			GlassCannon: {
+				DisplayName: Glass Cannon
+				Tooltip:
+					'''
+					When using a weapon that shoot projectile
+					Shoot out a glass that deal 125% of weapon damage
+					'''
+			}
+
+			StimPack: {
+				DisplayName: Stimulant Bottle
+				Tooltip:
+					'''
+					When health fall below 40%, automatically give you stim pack buff
+					Stim pack buff increases attack speed by 12% and health regenaration by 50% and flat 10
+					'''
+			}
+
+			MagicalScroll: {
+				DisplayName: Obscure Orb Scroll
+				Tooltip:
+					'''
+					Increases mana cost by 5%
+					Have 1 in 5 chance to shoot out a magic orb that deal 42 magic damage
+					'''
+			}
+
 			BloodDiamond: {
 				DisplayName: Blood Diamond
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increases critical strike chance by 5
+					Upon critical hit a enemy, you gain a blood diamond stack
+					'''
 				ExtraInfo:
 					'''
 					[Blood diamond]
@@ -1593,104 +1782,46 @@ Mods: {
 					'''
 			}
 
-			EnergeticOrb: {
-				DisplayName: Energetic Orb
-				Tooltip: ""
+			MagicMuzzle: {
+				DisplayName: Arcane Muzzle
+				Tooltip:
+					'''
+					"Muzzle made by wizard"
+					Weapon that uses bullet ammo will have their projectile convert to Arcane Bullet
+					Arcane Bullet damage is affected by both range damage and magic damage
+					'''
 			}
 
 			ForbiddenTome: {
 				DisplayName: Forbidden Tome
-				Tooltip: ""
+				Tooltip:
+					'''
+					Passively heal your mana by 40 every 5s
+					Create a tome that float around you in infinite symbol shape
+					When tome is near a enemy, shoot out shadow flame
+					'''
 			}
 
-			GlassCannon: {
-				DisplayName: Glass Cannon
-				Tooltip: ""
-			}
-
-			GodDice: {
-				DisplayName: God Dice
-				Tooltip: ""
-			}
-
-			GreatHolyCross: {
-				DisplayName: Great Holy Cross
-				Tooltip: ""
-			}
-
-			HeartOfBloodThorn: {
-				DisplayName: Heart Of Blood Thorn
-				Tooltip: ""
-			}
-
-			KillingThrill: {
-				DisplayName: Killing Thrill
-				Tooltip: ""
-			}
-
-			MagicalScroll: {
-				DisplayName: Magical Scroll
-				Tooltip: ""
-			}
-
-			MagicMuzzle: {
-				DisplayName: Magic Muzzle
-				Tooltip: ""
-			}
-
-			NatureCrystal: {
-				DisplayName: Nature Crystal
-				Tooltip: ""
-			}
-
-			OverpoweringGem: {
-				DisplayName: Overpowering Gem
-				Tooltip: ""
-			}
-
-			ReactiveBombing: {
-				DisplayName: Reactive Bombing
-				Tooltip: ""
-			}
-
-			SpectreQuiver: {
-				DisplayName: Spectre Quiver
-				Tooltip: ""
+			StarCharm: {
+				DisplayName: Stellar Charm
+				Tooltip:
+					'''
+					Increases your summon damage by 10%
+					Minion attacking will have a chance shooting down star onto your enemy
+					During night, the chance are accelerate
+					'''
 			}
 
 			SpiritEmblem: {
 				DisplayName: Spirit Emblem
-				Tooltip: ""
-			}
-
-			StarCharm: {
-				DisplayName: Star Charm
-				Tooltip: ""
-			}
-
-			StarStone: {
-				DisplayName: Star Stone
-				Tooltip: ""
-			}
-
-			StealthCloak: {
-				DisplayName: Stealth Cloak
-				Tooltip: ""
-			}
-
-			StimPack: {
-				DisplayName: Stim Pack
-				Tooltip: ""
-			}
-
-			TitanBlood: {
-				DisplayName: Titan Blood
-				Tooltip: ""
-			}
-
-			VitalityDrainTotem: {
-				DisplayName: Vitality Drain Totem
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increases your max minion, sentry slot by 1
+					You burst out a wave of confusion to enemy that get too close to you
+					When you are close to a minion, your defense increases by 2
+					Hitting enemy with whip or item with similiar damage to whip will inflict enemy with Crystalized debuff
+					Crystalized debuff will make minion contact damage or summon damage have a chance to be increased by 55%
+					'''
 			}
 
 			TestTeleporter: {
@@ -1763,19 +1894,6 @@ Mods: {
 				Tooltip: ""
 			}
 
-			DivinityStone: {
-				DisplayName: Divinity Stone
-				Tooltip: ""
-				ExtraInfo:
-					'''
-					[Divinity Stone]
-					Increases player : 
-					[+] Life regenarate rate by 10% and 2 flat
-					[+] Mana regen by 25% and 2 flat 
-					[+] Static defenses by 15% and 3 flat
-					'''
-			}
-
 			SkillGetter: {
 				DisplayName: Skill Getter
 				Tooltip: ""
@@ -1842,11 +1960,6 @@ Mods: {
 			ScrollOfProtection: {
 				DisplayName: Scroll Of Protection
 				Tooltip: Give user protection spell
-			}
-
-			ChaosTablet: {
-				DisplayName: Chaos Tablet
-				Tooltip: ""
 			}
 
 			KeenPotion: {
@@ -2345,6 +2458,11 @@ Mods: {
 				DisplayName: Star Whip Debuff
 				Description: Mods.BossRush.Buffs.StarWhipDebuff.Description
 			}
+
+			MeltingDefense: {
+				DisplayName: Melting Defense
+				Description: Mods.BossRush.Buffs.MeltingDefense.Description
+			}
 		}
 
 		Configs: {
@@ -2531,7 +2649,7 @@ Mods: {
 				}
 
 				LifeOfThorn: {
-					Label: Life Of Thorn
+					Label: Life Of Thorn (W.I.P)
 					Tooltip:
 						'''
 						"Blessing and curses"
@@ -2540,18 +2658,17 @@ Mods: {
 				}
 
 				DreamlikeWorld: {
-					Label: Dreamlike World
+					Label: Chaotic Mode
 					Tooltip:
 						'''
-						"RNG world"
 						[=] Many weapon become unusable ( weapon range from 40 -> 80 )
-						[=] Enemy gain (percentage range from 10% -> 90%) to (Damage type only applied to melee, range, magic, summoner && doesn't applied to generic damage)
+						[=] Enemy gain (percentage range from 10% -> 90%) to various damage type
 						[=] When receive (any Buff/Debuff), player will also receive (any Debuff/Buff) (Can range from 5 -> 15)
-						[=] You are start with 1 randomize stats weapon (randomize weapon given to player ignore above rule) 
-						3 randomize pieces of armor 3 randomize piece of accessories 3 randomize relics 3 skill lootbox 1 World Essences && Celestial Essences
-						[=] Wooden lootbox no longer drop helper item && Lootbox may give spoil (The chance range from 10% -> 90%) 
-						[=] Some buff item become unusable (item range from 10 -> 90)
+						[=] You are start with 1 randomize stats weapon, 3 randomize pieces of armor,
+						3 randomize piece of accessories, 3 randomize relics, 4 skill lootbox, 1 World Essences & Celestial Essences
+						[=] Lootbox may give spoil (The chance range from 10% -> 90%) 
 						[=] Some weapons (that is not unusable) will have their stats randomize (weapon get their stats randomize from 30 -> 120)
+						[=] Augmentation and enchantment appear more common
 						'''
 				}
 
@@ -2580,6 +2697,7 @@ Mods: {
 			Savage.DisplayName: Savage
 			Alchemic.DisplayName: Alchemic
 			Jumpy.DisplayName: Jumpy
+			Holy.DisplayName: Holy
 		}
 	}
 }

@@ -38,6 +38,11 @@ UpgradeAccSpoil: {
 	Description: Contains {0} normal accessory or lost accessory
 }
 
+Tier2RelicSpoil: {
+	DisplayName: "[[i:{0}]] Relic Pack"
+	Description: Contains {0} tier 2 relic
+}
+
 LostAccessorySpoil: {
 	DisplayName: Ancient Pack
 	Description: Contain {0} lost accessory

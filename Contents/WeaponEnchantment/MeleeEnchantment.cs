@@ -1238,12 +1238,12 @@ public abstract class YoyoEnchantment : ModEnchantment {
 		}
 		for (int j = 0; j < yoyoAmount; j++)
 			Projectile.NewProjectile(
-				player.GetSource_ItemUse(item), 
-				player.position, 
-				Vector2.Zero, 
-				ModContent.ProjectileType<GhostYoyo>(), 
-				ContentSamples.ItemsByType[ItemIDType].damage / 2, 
-				1, 
+				player.GetSource_ItemUse(item),
+				player.position,
+				Vector2.Zero,
+				ModContent.ProjectileType<GhostYoyo>(),
+				ContentSamples.ItemsByType[ItemIDType].damage / 2,
+				1,
 				player.whoAmI, ItemIDType, MathHelper.Lerp(MathHelper.TwoPi, 0f, j / yoyoAmount), 0.075f);
 	}
 }
@@ -1309,29 +1309,27 @@ public class Code1 : YoyoEnchantment {
 }
 
 public class Terragrim : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Terragrim;
 	}
-
+	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= .45f) {
+			player.StrikeNPCDirect(target, hit);
+		}
+	}
 	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.ArmorPenetration += 5;
+		float attackspeed = player.GetWeaponAttackSpeed(item) - 1;
+		if(attackspeed <= 0) {
+			return;
+		}
+		modifiers.SourceDamage += attackspeed * .5f;
 	}
-
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.ArmorPenetration += 5;
-	}
-
 	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
-		useSpeed *= 2;
-	}
-
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage *= 0.55f;
-
+		if(item.DamageType == DamageClass.Melee) {
+			useSpeed += .15f;
+		}
 	}
 }
-
 
 public class Trimarang : ModEnchantment {
 
@@ -1342,45 +1340,43 @@ public class Trimarang : ModEnchantment {
 	}
 
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		if (player.itemAnimation == player.itemAnimationMax) {
-			if (player.ownedProjectileCounts[ProjectileID.Trimarang] < 3) {
-				Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
-				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.Trimarang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+		int projectileamount = player.ownedProjectileCounts[ProjectileID.Trimarang];
+		if (projectileamount < 1) {
+			if (player.itemAnimation == player.itemAnimationMax) {
+				for (int i = 0; i < 3; i++) {
+					Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
+					Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel * itemstat.shootSpeed, ProjectileID.Trimarang, itemstat.damage, itemstat.knockBack, player.whoAmI);
+				}
 			}
+		}
+		else {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1 + .2f);
+			modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 20);
 		}
 	}
 
 }
 
 public class BloodButcherer : ModEnchantment {
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BloodButcherer;
 	}
-
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-
 		if (Main.rand.NextBool(10))
 			target.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), BossRushUtils.ToSecond(2));
-
 		modifiers.FinalDamage.Flat += GiveBonusDamage(proj.damage, target);
 	}
-
 	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-
 		if (Main.rand.NextBool(10))
 			target.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), BossRushUtils.ToSecond(2));
-
 		modifiers.FinalDamage.Flat += GiveBonusDamage(item.damage, target);
 	}
-
-
 	private float GiveBonusDamage(float baseDamage, NPC target) {
 		if (target.lifeRegen < 0)
 			return baseDamage * MathHelper.Lerp(0f, 0.25f, MathHelper.Clamp(Math.Abs(target.lifeRegen) / 10f, 0f, 1f));
 		return 0;
 	}
-
 }
 
 public class BallOHurt : ModEnchantment {

@@ -12,18 +12,17 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
+using BossRush.Common.Utils;
 using BossRush.TrailStructs;
 using BossRush.Contents.Shaders;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
-		//public static BossRush Instance { get; private set; }
+		public static BossRush Instance { get; private set; }
 		public override void Load() {
-			//Instance = this;
+			Instance = this;
 			base.Load();
-
 			loadShaders();
-
 		}
 
 		public static Asset<Effect> flameBall;
@@ -33,13 +32,13 @@ namespace BossRush {
 
 
 			if (Main.netMode != NetmodeID.Server) {
-
-
 				Asset<Effect> trailEffect = Assets.Request<Effect>("Contents/Shaders/TrailEffect");
+				GameShaders.Misc["TrailEffect"] = new MiscShaderData(trailEffect, "FadeTrail");
 				GameShaders.Misc[ShadersID.TrailShader] = new MiscShaderData(trailEffect, "FadeTrail");
 
 
 				Asset<Effect> flameEffect = Assets.Request<Effect>("Contents/Shaders/FlameEffect");
+				GameShaders.Misc["FlameEffect"] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
 				GameShaders.Misc[ShadersID.FlameShader] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
 
 
@@ -47,14 +46,8 @@ namespace BossRush {
 				GameShaders.Misc[ShadersID.FlameBallShader] = new MiscShaderData(flameBall, "ballOfire");
 
 			}
-
-
 		}
-
-
 	}
-	
-
 	public class BossRushModSystem : ModSystem {
 		public static bool[] IsFireBuff;
 		public static bool[] IsPoisonBuff;
@@ -69,9 +62,8 @@ namespace BossRush {
 		public static List<Item> LostAccessories { get; private set; }
 		public static List<Item> TrinketAccessories { get; private set; }
 		public static List<Item> RPGItem { get; private set; }
-
-		public static List<int> ListLootboxType;
-
+		public static List<int> ListLootboxType { get; private set; }
+		public static HashSet<Item> List_Weapon { get; private set; }
 		public static int Safe_GetWeaponRarity(int rare) {
 			if (WeaponRarityDB.ContainsKey(rare)) {
 				return Main.rand.Next(WeaponRarityDB[rare]);
@@ -113,6 +105,7 @@ namespace BossRush {
 			BodyArmorRarityDB = new();
 			LegsArmorRarityDB = new();
 			AccRarityDB = new();
+			List_Weapon = new();
 		}
 		public override void OnModUnload() {
 			SynergyItem = null;
@@ -127,6 +120,7 @@ namespace BossRush {
 			BodyArmorRarityDB = null;
 			LegsArmorRarityDB = null;
 			AccRarityDB = null;
+			List_Weapon = null;
 		}
 		public override void PostSetupContent() {
 			IsFireBuff = BuffID.Sets.Factory.CreateBoolSet(BuffID.OnFire, BuffID.OnFire3, BuffID.ShadowFlame, BuffID.Frostburn, BuffID.Frostburn2, BuffID.CursedInferno);
@@ -185,7 +179,26 @@ namespace BossRush {
 						continue;
 					}
 				}
-				if (item.accessory && !item.vanity) {
+				if (item.accessory && !item.vanity && item.createTile == -1 
+					&& item.type != ItemID.ClothierVoodooDoll
+					&& item.type != ItemID.GuideVoodooDoll
+					&& item.type != ItemID.TreasureMagnet
+					&& item.type != ItemID.DontStarveShaderItem
+					&& item.type != ItemID.JellyfishNecklace
+					&& item.type != ItemID.JellyfishDivingGear
+					&& item.type != ItemID.GreedyRing
+					&& item.type != ItemID.GoldRing
+					&& item.type != ItemID.LuckyCoin
+					&& item.type != ItemID.DiscountCard
+					&& item.type != ItemID.CoinRing
+					&& item.type != ItemID.ShimmerCloak
+					&& item.type != ItemID.SpectreGoggles
+					&& item.type != ItemID.FlowerBoots
+					&& item.type != ItemID.CordageGuide
+					&& !TerrariaArrayID.IsFishingBobber.Contains(item.type)
+					&& !TerrariaArrayID.NonHelpfulCombatAcc.Contains(item.type)
+					&& !TerrariaArrayID.IsInfoAcc.Contains(item.type)
+					&& !TerrariaArrayID.FishingAcc.Contains(item.type)) {
 					if (item.ModItem is BaseTrinket) {
 						TrinketAccessories.Add(item);
 						continue;
@@ -201,6 +214,7 @@ namespace BossRush {
 				if (!item.IsAWeapon()) {
 					continue;
 				}
+				List_Weapon.Add(item);
 				if (!WeaponRarityDB.ContainsKey(item.rare)) {
 					WeaponRarityDB.Add(item.rare, new List<int> { item.type });
 				}
@@ -219,6 +233,7 @@ namespace BossRush {
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Spiky>()).Name, (byte)1);
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Alchemic>()).Name, (byte)2);
 				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Energetic>()).Name, (byte)2);
+				PrefixImproved.Call("AddValueToModdedPrefix", PrefixLoader.GetPrefix(ModContent.PrefixType<Holy>()).Name, (byte)4);
 			}
 		}
 	}

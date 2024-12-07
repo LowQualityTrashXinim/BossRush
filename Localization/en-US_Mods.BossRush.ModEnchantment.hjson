@@ -421,7 +421,7 @@ MoltenFury.Description:
 	Wooden arrow will be converted into Fire arrow
 	Weapon will shoot 2 additional fire arrow
 	Fire arrow will deal 35% more damage when target is on fire
-	Have 1 in 3 chance to spawn a fire arrow near enemy
+	Have 1 in 3 chance to spawn a fire arrow near enemy when hitting enemy with projectile
 	'''
 SnowballCannon.Description:
 	'''
@@ -603,7 +603,12 @@ IceBoomerang.Description: Shoots an Ice Boomerang when used
 Shroomerang.Description: Shoots a Shroomerang when used
 WoodenBoomerang.Description: Shoots a Wooden Boomerang when used
 ThornChakram.Description: Shoots a Thorn Chakram when used
-ClockworkAssaultRifle.Description: after every 3 attack, you attack on a short burst
+ClockworkAssaultRifle.Description:
+	'''
+	Increases your attack speed by 20%
+	After every 3 attack, you attack on a short burst
+	At the end of short burst, your weapon burst out projectile
+	'''
 Malaise.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 HiveFive.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 Artery.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
@@ -611,8 +616,19 @@ Code1.Description: summon a group of ghost yoyos around the cursor that deals ha
 Rally.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 WoodenYoyo.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
 Amazon.Description: summon a group of ghost yoyos around the cursor that deals half the yoyo's base damage
-Terragrim.Description: you attack 2x faster, but deal 45% less damage, attacks ignore 5 defense
-Trimarang.Description: Shoots up to 3 Trimarangs when used
+Terragrim.Description:
+	'''
+	Increases your melee speed by 15%
+	Your item attack have 45% chance to do another attack
+	Your attack speed will increases your item damage
+	(Note : the bonus damage from attack speed is 50% effective)
+	'''
+Trimarang.Description:
+	'''
+	While Trimarang is out, increases damage and critical strike chance by 20%
+	Shoots out 3 Trimarangs when weapon is used
+	( Note : Trimarang stats of this enchantment is unchangeable )
+	'''
 LeatherWhip.Description: 10% increased whip speed and range, Increase Summon Damage by 1
 Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damage by 2, grants jungle's fury on-hit
 SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
@@ -633,8 +649,9 @@ PalladiumPike.Description: on-hit every 15 seconds, enemy hit has 25% chance to 
 PalladiumRepeater.Description: on-hit every 15 seconds, enemy hit has 25% chance to drop a healing heart
 BloodButcherer.Description:
 	'''
-	damage dealt is increased based on damage over time debuffs applied to target enemy (up to 25% bonus damage at -10 life regen)
-	10% chance on-hit to apply a powerful damage over time debuff for 2 seconds
+	Have 10% chance to apply a debuff for 2 seconds on hit
+	Damage dealt is increased based on damage over time debuffs applied to target enemy 
+	( Note : up to 25% bonus damage at -10 life regen)
 	'''
 BreakerBlade.Description:
 	'''
@@ -649,4 +666,11 @@ BloodRainBow.Description:
 	Using weapon can shoot will shoot additional blood arrow
 	Hitting enemy with the weapon will shoot 3 blood arrows
 	(All blood arrow spawm by this achievement deal 15% less damage)
+	'''
+DirtBlock.Description:
+	'''
+	Increases player defense by 10 when held
+	Every 5s, shoot out a ring of 12 dirt blocks that deal 20 damage
+	Will activate every OnHitNPCWithProjectile enchantment effect of this weapon 
+	( Only the Dirt Projectile will activate above effect )
 	'''

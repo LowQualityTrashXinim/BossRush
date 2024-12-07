@@ -140,7 +140,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			if (currentState == State.dashing) {
 				//deal more damage if dashing
 				int DashBonusDamage = (int)(damageDone * .5f);
-				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.VampireFrogStaff)) {
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<StreetLamp>(), ItemID.VampireFrogStaff)) {
 					modplayer.StreetLamp_VampireFrogStaff_HitCounter++;
 					if (modplayer.StreetLamp_VampireFrogStaff_HitCounter >= 3) {
 						int SynergyhealAmount = (int)(DashBonusDamage * 0.025f);
@@ -148,7 +148,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 						modplayer.StreetLamp_VampireFrogStaff_HitCounter = 0;
 					}
 				}
-				if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.FireWhip) && Main.rand.NextBool(10)) {
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<StreetLamp>(), ItemID.FireWhip) && Main.rand.NextBool(10)) {
 					npc.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 					foreach (var entity in npclist) {
 						SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot);
@@ -217,7 +217,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 		public void behavior(Player owner, Vector2 vectorToIdlePosition, float distanceToIdlePosition, bool foundTarget, float distanceFromTarget, Vector2 targetCenter) {
 			float baseSpeed = 20f;
 			// projectile speed scales with whip attack speed for extra synergy juice
-			float speed = (baseSpeed * owner.GetAttackSpeed(DamageClass.SummonMeleeSpeed)) + (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.VampireFrogStaff) ? baseSpeed * 0.15f : 0f);
+			float speed = (baseSpeed * owner.GetAttackSpeed(DamageClass.SummonMeleeSpeed)) + (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<StreetLamp>(), ItemID.VampireFrogStaff) ? baseSpeed * 0.15f : 0f);
 			//placeholder
 			Vector2 dashAt = owner.Center;
 			// dashDurtion = distance/speed + baseDashDuration

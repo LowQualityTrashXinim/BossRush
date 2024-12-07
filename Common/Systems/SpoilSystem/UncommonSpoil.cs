@@ -4,6 +4,9 @@ using Humanizer;
 using Terraria.ID;
 using BossRush.Common.Utils;
 using BossRush.Contents.Items.Chest;
+using Terraria.DataStructures;
+using BossRush.Contents.Items.RelicItem;
+using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class UncommonSpoil {
@@ -73,6 +76,34 @@ public class UncommonSpoil {
 			int amount = Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
 			for (int i = 0; i < amount; i++) {
 				LootBoxBase.GetAccessories(itemsource, player, true);
+			}
+		}
+	}
+	public class Tier2RelicSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Uncommon;
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.UncommonDrop();
+		}
+		public override string FinalDescription() {
+			return Description.FormatWith(Main.LocalPlayer.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1));
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			int amount = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(1);
+			for (int i = 0; i < amount; i++) {
+				Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
+				if (relicitem.ModItem is Relic relic) {
+					if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
+						if (Main.rand.NextBool(4)) {
+							relic.AddRelicTemplate(player, RelicTemplate.GetRelicType<SynergyTemplate>());
+						}
+					}
+					else {
+						relic.AutoAddRelicTemplate(player, 2);
+					}
+				}
 			}
 		}
 	}

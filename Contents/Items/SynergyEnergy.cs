@@ -21,16 +21,21 @@ namespace BossRush.Contents.Items {
 		public int ItemTypeCurrent = 0;
 		public int ItemTypeOld = 0;
 		public bool acc_SynergyEnergy = false;
+		public bool IsTheItemInQuestionASynergyItem = false;
 		public override void ResetEffects() {
 			acc_SynergyEnergy = false;
-			if (ItemTypeCurrent != Player.HeldItem.type) {
-				ItemTypeCurrent = Player.HeldItem.type;
+			Item item = Player.HeldItem;
+			if (ItemTypeCurrent != item.type) {
+				ItemTypeCurrent = item.type;
 			}
 			if (Player.itemAnimation == 1) {
 				ItemTypeOld = ItemTypeCurrent;
 			}
+			if(item.ModItem is SynergyModItem) {
+				IsTheItemInQuestionASynergyItem = true;
+			}
 		}
-		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld;
+		public bool CompareOldvsNewItemType => ItemTypeCurrent != ItemTypeOld || IsTheItemInQuestionASynergyItem;
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGYFEVER_MODE) && !Player.IsDebugPlayer()) {
 				if (item.ModItem is not SynergyModItem) {

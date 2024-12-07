@@ -5,6 +5,7 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using BossRush.Common.General;
+using BossRush.Common.Mode.DreamLikeWorld;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {
@@ -96,11 +97,21 @@ namespace BossRush.Contents.Items.Chest {
 		public override void AbsoluteRightClick(Player player) {
 			var entitySource = player.GetSource_OpenItem(Type);
 			if (!UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
-				GetWeapon(entitySource, player, 2);
-				GetArmorForPlayer(entitySource, player);
-				GetAccessories(Type, player);
-				GetPotion(Type, player);
-				GetSkillLootbox(Type, player, 1);
+				if (ChaosModeSystem.Chaos()) {
+					GetArmorPiece(Type, player);
+					for (int i = 0; i < 3; i++) {
+						GetAccessories(Type, player, true);
+					}
+					GetPotion(Type, player);
+					GetSkillLootbox(Type, player, 3);
+				}
+				else {
+					GetWeapon(entitySource, player, 2);
+					GetArmorForPlayer(entitySource, player);
+					GetAccessories(Type, player);
+					GetPotion(Type, player);
+					GetSkillLootbox(Type, player, 1);
+				}
 			}
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);

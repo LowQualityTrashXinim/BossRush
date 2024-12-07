@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.General;
+using BossRush.Contents.Projectiles;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
@@ -18,7 +20,7 @@ public class AmethystStaff : ModEnchantment {
 		item.shoot = ProjectileID.AmethystBolt;
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if(!velocity.IsLimitReached(3)) {
+		if (!velocity.IsLimitReached(3)) {
 			velocity = velocity.SafeNormalize(Vector2.Zero) * 4;
 		}
 		if (Main.rand.NextFloat() <= .65f) {
@@ -568,6 +570,54 @@ class FlowerOfFire : ModEnchantment {
 	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		if (target.HasBuff(BuffID.OnFire3) || target.HasBuff(BuffID.OnFire)) {
 			modifiers.SourceDamage += .27f;
+		}
+	}
+}
+
+/// <summary>
+/// This is a example for mod enchantment and how to utilize most of the stuff
+/// </summary>
+class DirtBlock : ModEnchantment {
+	public override void SetDefaults() {
+		//This is important as it is required for the enchantment to be recognized and work
+		ItemIDType = ItemID.DirtBlock;
+	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		//We can add very basic stats increases, here we gonna increases player's defense by 10 when player held this item
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: 10);
+		//This will teach you the what the index and the globalItem do and why it exist here ( tho mainly for ease of uses )
+		//The following effect will spawn a ring of 12 dirt projectiles for every 1s
+		if (++globalItem.Item_Counter1[index] >= BossRushUtils.ToSecond(5)) {
+			//the globalItem.ItemCounter1 is a array of counter that applied to specific enchantment slot, the index is the index of this enchantment
+			//Now we spawn a ring of dirt
+			for (int i = 0; i < 12; i++) {
+				Vector2 rotate = Vector2.UnitX.Vector2DistributeEvenlyPlus(12, 360, i) * 6f;
+				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, rotate, ModContent.ProjectileType<DirtProjectile>(), 20, 3f, player.whoAmI);
+			}
+			//Now we reset the counter of this enchantment
+			globalItem.Item_Counter1[index] = 0;
+		}
+	}
+	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		//This is a enchantment hack with enchantment slot ID, do this only if you know the in and out of the system
+		//The following code attempt to activate enchantment that have OnHit effect with NPC but only if the projectile type is this mod Dirt Projectile
+		if (proj.type != ModContent.ProjectileType<DirtProjectile>()) {
+			return;
+		}
+		//Iterating through enchantment array of the item
+		for (int i = 0; i < globalItem.EnchantmenStlot.Length; i++) {
+			//we skip this index cause we don't want to cause infinite loop
+			if (i == index) {
+				continue;
+			}
+			//The Enchantment array of this item consist of ItemID, so it make sense to use EnchantmentLoader.GetEnchantmentItemID(int)
+			ModEnchantment enchantment = EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]);
+			//We are checking if the enchantment exist or if the enchantment is the same as this enchantment, preventing null exception and infinite loop
+			if (enchantment == null || enchantment.ItemIDType == ItemIDType) {
+				continue;
+			}
+			//Activate the enchantment effect
+			enchantment.OnHitNPCWithProj(i, player, globalItem, proj, target, hit, damageDone);
 		}
 	}
 }

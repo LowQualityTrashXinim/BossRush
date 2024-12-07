@@ -10,6 +10,9 @@ namespace BossRush.Contents.WeaponEnchantment {
 	//Todo : turn out modplayer is much better than global item, how funny
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }
+		/// <summary>
+		/// use this to assign Vanilla Item type, highly not recommend to use mod ID as those can change at load time
+		/// </summary>
 		public int ItemIDType = ItemID.None;
 		public bool EnchantmentBlock = true;
 		/// <summary>
@@ -26,7 +29,8 @@ namespace BossRush.Contents.WeaponEnchantment {
 		/// Use <see cref="Main.LocalPlayer"/> as this will always run client side
 		/// </summary>
 		/// <param name="item">The item being enchanted</param>
-		/// <param name="EnchantmentItemID"></param>
+		/// <param name="EnchantmentItemID">This is the item enchantment ID, changing this does nothing</param>
+		/// <param name="slot">The index of this enchantment in the Item</param>
 		public virtual void OnAddEnchantment(Item item, EnchantmentGlobalItem globalitem, int EnchantmentItemID, int slot) { }
 		/// <summary>
 		/// This will run before the counter from globalItem be wiped clean<br/>

@@ -444,13 +444,22 @@ namespace BossRush.Contents.Perks {
 				Item.NewItem(item.GetSource_FromThis(), target.Hitbox, new Item(ItemID.Heart));
 			}
 			if (Main.rand.NextBool(10)) {
-				target.AddBuff(BuffID.Daybreak, BossRushUtils.ToSecond(3.5f));
+				target.AddBuff(ModContent.BuffType<MeltingDefense>(), BossRushUtils.ToSecond(3.5f));
 			}
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (proj.DamageType == DamageClass.Melee && Main.rand.NextBool(10)) {
-				target.AddBuff(BuffID.Daybreak, BossRushUtils.ToSecond(3.5f));
+				target.AddBuff(ModContent.BuffType<MeltingDefense>(), BossRushUtils.ToSecond(3.5f));
 			}
+		}
+	}
+	public class MeltingDefense : ModBuff {
+		public override string Texture => BossRushTexture.EMPTYBUFF;
+		public override void SetStaticDefaults() {
+			this.BossRushSetDefaultDeBuff();
+		}
+		public override void Update(NPC npc, ref int buffIndex) {
+			npc.lifeRegen -= Math.Clamp(npc.defense, 0, 40);
 		}
 	}
 	public class BlessingOfVortex : Perk {
@@ -633,10 +642,10 @@ namespace BossRush.Contents.Perks {
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Base: 20);
-			if(player.statMana <= player.statManaMax2 / 2) {
+			if (player.statMana <= player.statManaMax2 / 2) {
 				modplayer.AddStatsToPlayer(PlayerStats.RegenMana, Base: 40);
 			}
-			if(player.statMana > player.statLife) {
+			if (player.statMana > player.statLife) {
 				modplayer.AddStatsToPlayer(PlayerStats.MagicDMG, 1.25f);
 			}
 		}

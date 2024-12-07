@@ -20,7 +20,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword {
 		int counter = 0;
 		public override void SynergyPostAI(Player player, PlayerSynergyItemHandle modplayer) {
 			counter++;
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.Starfury) && counter >= 20) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<EnchantedOreSword>(), ItemID.Starfury) && counter >= 20) {
 				int projectile = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, -Projectile.velocity, ProjectileID.Starfury, Projectile.damage, Projectile.knockBack, Projectile.owner);
 				Main.projectile[projectile].tileCollide = false;
 				Main.projectile[projectile].timeLeft = 30;

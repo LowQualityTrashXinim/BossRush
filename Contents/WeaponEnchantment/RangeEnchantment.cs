@@ -8,9 +8,9 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
-using BossRush.Common.Utils;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
+using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.Localization;
 using BossRush.Contents.Items.Chest;
@@ -716,25 +716,34 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 	}
 	public class ClockworkAssaultRifle : ModEnchantment {
-
 		public override void SetDefaults() {
 			ItemIDType = ItemID.ClockworkAssaultRifle;
 		}
-
-		public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
-
-
-			if (globalItem.Item_Counter1[index]++ > 3) {
-
-				globalItem.Item_Counter1[index] = 0;
-
-				useSpeed += 2;
-
-
+		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+			if (player.ItemAnimationJustStarted) {
+				globalItem.Item_Counter1[index] = Math.Clamp(globalItem.Item_Counter1[index] + 1, 0, 11);
 			}
-			useSpeed += .1f;
+			if (globalItem.Item_Counter2[index] == 1) {
+				SoundEngine.PlaySound(item.UseSound);
+				for (int i = 0; i < 3; i++) {
+					Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(20) * ((item.shootSpeed > 3 ? item.shootSpeed : 4) + Main.rand.NextFloat(1, 3));
+					Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, velocity, item.shoot, item.damage, item.knockBack, player.whoAmI);
+				}
+				globalItem.Item_Counter1[index] = 0;
+				globalItem.Item_Counter2[index] = 0;
+			}
 		}
-
+		public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
+			if (globalItem.Item_Counter2[index] == 0 && globalItem.Item_Counter1[index] > 3) {
+				if (globalItem.Item_Counter1[index] >= 7) {
+					globalItem.Item_Counter2[index] = 1;
+				}
+				useSpeed += 2;
+			}
+			else {
+				useSpeed += .2f;
+			}
+		}
 	}
 
 	public class SandGun : ModEnchantment {

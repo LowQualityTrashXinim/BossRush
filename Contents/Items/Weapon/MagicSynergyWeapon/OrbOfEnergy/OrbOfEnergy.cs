@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.DarkCactus;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -55,13 +56,13 @@ namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.OrbOfEnergy {
 				Projectile.velocity = Projectile.velocity.Vector2RotateByRandom(90);
 				Projectile.damage += 5;
 			}
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.BookofSkulls))
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<OrbOfEnergy>(), ItemID.BookofSkulls))
 				if (Projectile.Center.LookForHostileNPC(out NPC npc, 900))
 					Projectile.velocity += (npc.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .25f;
 			Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
 			if (Projectile.timeLeft % 20 != 0)
 				return;
-			if (SynergyBonus_System.Check_SynergyBonus(Type, ItemID.DD2LightningAuraT1Popper)) {
+			if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<OrbOfEnergy>(), ItemID.DD2LightningAuraT1Popper)) {
 				Projectile.Center.LookForHostileNPC(out List<NPC> npclist, 100f);
 				foreach (var npc in npclist) {
 					npc.StrikeNPC(npc.CalculateHitInfo((int)(Projectile.damage * .2f), 1));

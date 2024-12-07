@@ -12,6 +12,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems.Mutation;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Mode.DreamLikeWorld;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -85,6 +86,11 @@ public class PlayerStatsHandle : ModPlayer {
 	/// This only work if no where in the code don't uses <see cref="NPC.HitModifiers.DisableCrit"/>
 	/// </summary>
 	public bool ModifyHit_Before_Crit = false;
+
+	/// <summary>
+	/// Use this if you want to make a series of item that shoot out all of the effect in the same timeline
+	/// </summary>
+	public int synchronize_Counter = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
@@ -93,7 +99,7 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		Item item = Player.HeldItem;
-		if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
+		if (item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
 			modifiers.CritDamage += globalitem.CriticalDamage;
 		}
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
@@ -144,6 +150,7 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
 		}
+		synchronize_Counter = BossRushUtils.Safe_SwitchValue(synchronize_Counter, int.MaxValue);
 		SkillHandlePlayer modplayer = Player.GetModPlayer<SkillHandlePlayer>();
 		modplayer.EnergyCap = (int)EnergyCap.ApplyTo(1500);
 		Player.moveSpeed = UpdateMovement.ApplyTo(Player.moveSpeed);
@@ -354,7 +361,8 @@ public class PlayerStatsHandle : ModPlayer {
 		AddStatsToPlayer(stat, StatMod);
 	}
 	/// <summary>
-	/// This should be uses in always update code
+	/// Use this for a universal way to increases stats without fear of accidentally create multiplicative<br/>
+	/// This should be uses in always update code<br/>
 	/// when creating a new stat modifier, pleases uses the default and increases from there
 	/// </summary>
 	/// <param name="stat"></param>
@@ -364,6 +372,43 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Base"></param>
 	public static void AddStatsToPlayer(Player player, PlayerStats stat, float Additive = 1, float Multiplicative = 1, float Flat = 0, float Base = 0) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, Additive, Multiplicative, Flat, Base);
+	}
+	/// <summary>
+	/// Use this for a universal way to increases stats without fear of accidentally create multiplicative<br/>
+	/// This should be uses in always update code<br/>
+	/// when creating a new stat modifier, pleases uses the default and increases from there
+	/// </summary>
+	/// <param name="stat"></param>
+	/// <param name="Additive"></param>
+	/// <param name="Multiplicative"></param>
+	/// <param name="Flat"></param>
+	/// <param name="Base"></param>
+	public static void AddStatsToPlayer(Player player, PlayerStats stat,StatModifier modifier) {
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, modifier);
+	}
+	/// <summary>
+	/// Only work with certain PlayerStats
+	/// </summary>
+	/// <param name="stat">The stats to convert</param>
+	/// <returns>
+	/// Return DamageClass.Class if the condition met<br/>
+	/// Otherwise return <see cref="DamageClass.Default"/>
+	/// </returns>
+	public static DamageClass PlayerStatsToDamageClass(PlayerStats stat) {
+		switch (stat) {
+			case PlayerStats.MeleeDMG:
+				return DamageClass.Melee;
+			case PlayerStats.RangeDMG:
+				return DamageClass.Ranged;
+			case PlayerStats.MagicDMG:
+				return DamageClass.Magic;
+			case PlayerStats.SummonDMG:
+				return DamageClass.Summon;
+			case PlayerStats.PureDamage:
+				return DamageClass.Generic;
+			default:
+				return DamageClass.Default;
+		}
 	}
 }
 public class PlayerStatsHandleSystem : ModSystem {
@@ -494,6 +539,12 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private void IncreasesPlayerBuffTime(On_Player.orig_AddBuff orig, Player self, int type, int timeToAdd, bool quiet, bool foodHack) {
+		ChaosModeSystem system = ModContent.GetInstance<ChaosModeSystem>();
+		if (system.ChaosMode) {
+			if (system.Dict_Chained_Buff.ContainsKey(type)) {
+				self.AddBuff(system.Dict_Chained_Buff[type], timeToAdd);
+			}
+		}
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			if (!Main.debuff[type]) {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);

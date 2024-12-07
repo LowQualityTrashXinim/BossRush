@@ -87,8 +87,8 @@ public class EssenceOfDrowsy : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: -.44f);
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: -.24f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MovementSpeed, Additive: 1 - .44f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.AttackSpeed, Additive: 1 - .24f);
 	}
 }
 public class EssenceOfWeakness : EssenceBuff {
@@ -104,7 +104,7 @@ public class EssenceOfKindness : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: -.5f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.PureDamage, Additive: 1 - .5f);
 	}
 }
 public class EssenceOfCalmness : EssenceBuff {
@@ -112,7 +112,7 @@ public class EssenceOfCalmness : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: -.5f);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Additive: 1 - .5f);
 	}
 }
 public class EssenceOfWither : EssenceBuff {
@@ -120,7 +120,7 @@ public class EssenceOfWither : EssenceBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void UpdatePlayer(Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: -.2f, Base: -18);
+		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Additive: 1 - .2f, Base: -18);
 	}
 }
 public class EssenceProjectile : ModProjectile {
@@ -142,9 +142,9 @@ public class EssenceProjectile : ModProjectile {
 	public override void AI() {
 		Projectile.alpha = (int)MathHelper.Lerp(255, 0, Projectile.timeLeft / (float)BossRushUtils.ToSecond(45));
 		Player player = Main.player[Projectile.owner];
-		if (Projectile.Center.IsCloseToPosition(player.Center, 115)) {
+		if (Projectile.Center.IsCloseToPosition(player.Center, 75)) {
 			Projectile.velocity += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * .05f;
-			Projectile.velocity = Projectile.velocity.LimitedVelocity(5);
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(3);
 		}
 		else {
 			Projectile.velocity *= .98f;
@@ -167,7 +167,7 @@ public class EssenceProjectile : ModProjectile {
 			case 4:
 				return Color.Yellow;
 			case 5:
-				return new(100,100,0);
+				return new(100, 100, 0);
 			case 6:
 				return Color.DarkRed;
 			case 7:

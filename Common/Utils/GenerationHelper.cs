@@ -159,7 +159,7 @@ internal static partial class GenerationHelper {
 	/// Use this to place the structure in world gen code
 	/// </summary>
 	/// <param name="method">the method that was uses to optimize the file</param>
-	public static void PlaceStructure(string FileName, Rectangle rect, SaverOptimizedMethod method) {
+	public static void PlaceStructure(string FileName, Rectangle rect) {
 		List<GenPassData> datalist;
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		if (modsystem.dict_Struture.ContainsKey(FileName)) {
@@ -168,28 +168,26 @@ internal static partial class GenerationHelper {
 		else {
 			return;
 		}
-		if (method == SaverOptimizedMethod.Default) {
-			int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
+		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
 
-			for (int i = 0; i < datalist.Count; i++) {
-				GenPassData gdata = datalist[i];
-				for (int l = 0; l < gdata.Count; l++) {
-					if (offsetY >= rect.Height) {
-						offsetY = 0;
-						offsetX++;
-					}
-					holdX = X + offsetX; holdY = Y + offsetY;
-					Tile tile = Main.tile[holdX, holdY];
-					TileData data = gdata.tileData;
-					if (!data.Tile_Air) {
-						data.PlaceTile(tile);
-					}
-					else {
-						FastRemoveTile(holdX, holdY);
-						tile.WallType = data.Tile_WallData;
-					}
-					offsetY++;
+		for (int i = 0; i < datalist.Count; i++) {
+			GenPassData gdata = datalist[i];
+			for (int l = 0; l < gdata.Count; l++) {
+				if (offsetY >= rect.Height) {
+					offsetY = 0;
+					offsetX++;
 				}
+				holdX = X + offsetX; holdY = Y + offsetY;
+				Tile tile = Main.tile[holdX, holdY];
+				TileData data = gdata.tileData;
+				if (!data.Tile_Air) {
+					data.PlaceTile(tile);
+				}
+				else {
+					FastRemoveTile(holdX, holdY);
+					tile.WallType = data.Tile_WallData;
+				}
+				offsetY++;
 			}
 		}
 	}
@@ -251,53 +249,31 @@ internal static partial class GenerationHelper {
 		}
 	}
 	/// <summary>
-	/// Attempt to save a structure into a file with rectangle format
+	/// Attempt to save many structure into a file with rectangle format<br/>
+	/// Be aware as this do not check for any error
 	/// </summary>
-	/// <param name="target">The region to transform</param>
+	/// <param name="listtarget">The region to transform</param>
 	/// <param name="path">Path to save</param>
 	/// <param name="name">File's name</param>
-	public static void SaveRectStructure(Rectangle target, string path, string name) {
+	public static void SaveRectStructure(Point16 startingPoint, List<Rectangle> listtarget, string path, string name) {
 		try {
+			int StartX = startingPoint.X, StartY = startingPoint.Y;
 			using FileStream file = File.Create(Path.Combine(path, name));
 			using StreamWriter m = new(file);
-
-			Tile outSideLoop = new();
-			int distanceX = 0;
-			int distanceY = 0;
-			int X = target.X, Y = target.Y, W = target.Width, H = target.Height;
-			for (int x = X; x <= X + W; x++) {
-				for (int y = Y; y <= Y + H; y++) {
-					//Since this just saving, it is completely fine to be slow
-					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
-						if (distanceY != 0) {
-							if (distanceY >= H) {
-								m.Write('Y' + H);
-							}
-
-
-							m.Write('Y' + distanceY);
-
-						}
-						outSideLoop = tile;
-						TileData td = new(tile);
-						m.Write(td.ToString());
-						distanceY = 1;
-					}
-					else {
-						distanceY++;
-					}
-					distanceX++;
-				}
-			}
-			if (distanceY != 0) {
-				m.Write('Y' + distanceY);
+			foreach (Rectangle target in listtarget) {
+				Tile tile = Framing.GetTileSafely(StartX, StartY);
+				TileData td = new(tile);
+				m.Write(td.ToString());
+				m.Write(CustomRecSavingtFormat(target));
 			}
 		}
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());
 			throw;
 		}
+	}
+	public static string CustomRecSavingtFormat(Rectangle rect) {
+		return $"A{rect.Width}B{rect.Height}";
 	}
 }
 /// <summary>
@@ -315,7 +291,8 @@ public enum SaverOptimizedMethod : byte {
 	HorizontalDefault,
 	/// <summary>
 	/// This optimization method will save the following structure in rectangle-like<br/>
-	/// useful for wanting to save a massive arena structure that have a lot of open space
+	/// useful for wanting to save a massive arena structure that have a lot of open space<br/>
+	/// Extremely not recommend for massive structure that is very complex
 	/// </summary>
 	MultiStructure,
 	/// <summary>
