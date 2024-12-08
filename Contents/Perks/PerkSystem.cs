@@ -11,9 +11,6 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using System;
-using Humanizer;
-using Newtonsoft.Json.Linq;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {

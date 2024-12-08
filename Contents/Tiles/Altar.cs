@@ -80,7 +80,7 @@ public class ArmorAltar : Altar {
 }
 public class SkillAltar : Altar {
 	public override void On_RightClick(Player player, int i, int j) {
-		player.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(Main.rand.Next(SkillLoader.TotalCount), false);
+		player.GetModPlayer<SkillHandlePlayer>().RequestAddSkill_Inventory(Main.rand.Next(SkillModSystem.TotalCount), false);
 
 		for (int a = 0; a < 30; a++) {
 			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
