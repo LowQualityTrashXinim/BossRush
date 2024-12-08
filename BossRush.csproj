@@ -31,6 +31,7 @@
     <None Remove="Contents\Items\Weapon\RangeSynergyWeapon\WinterFlame\WinterFlame.png" />
     <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhip.png" />
     <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhipProj.png" />
+    <None Remove="Contents\Shaders\FlameBall.fx" />
     <None Remove="Contents\Shaders\FlameEffect.fx" />
     <None Remove="Texture\EmptyCard.png" />
     <None Remove="Texture\ExampleFrame.png" />

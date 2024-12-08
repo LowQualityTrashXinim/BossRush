@@ -11,6 +11,11 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Common.General;
 using Terraria.Audio;
+using Terraria.Chat;
+using Terraria.Localization;
+using BossRush.Contents.Items.Chest;
+using Mono.Cecil;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Contents.WeaponEnchantment {
 	public class Musket : ModEnchantment {
@@ -770,3 +775,27 @@ namespace BossRush.Contents.WeaponEnchantment {
 		}
 	}
 }
+public class PalladiumRepeater : PalladiumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.PalladiumRepeater;
+	}
+
+}
+
+public class OrichalcumRepeater : OrichalcumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.OrichalcumRepeater;
+	}
+
+}
+
+public class TitaniumRepeater : TitaniumEnchantment {
+
+	public override void SetDefaults() {
+		ItemIDType = ItemID.TitaniumRepeater;
+	}
+
+}
+

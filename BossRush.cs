@@ -13,6 +13,8 @@ using ReLogic.Content;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using BossRush.Common.Utils;
+using BossRush.TrailStructs;
+using BossRush.Contents.Shaders;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
@@ -22,13 +24,27 @@ namespace BossRush {
 			base.Load();
 			loadShaders();
 		}
+
+		public static Asset<Effect> flameBall;
+
 		public void loadShaders() 
 		{
+
+
 			if (Main.netMode != NetmodeID.Server) {
 				Asset<Effect> trailEffect = Assets.Request<Effect>("Contents/Shaders/TrailEffect");
 				GameShaders.Misc["TrailEffect"] = new MiscShaderData(trailEffect, "FadeTrail");
+				GameShaders.Misc[ShadersID.TrailShader] = new MiscShaderData(trailEffect, "FadeTrail");
+
+
 				Asset<Effect> flameEffect = Assets.Request<Effect>("Contents/Shaders/FlameEffect");
 				GameShaders.Misc["FlameEffect"] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
+				GameShaders.Misc[ShadersID.FlameShader] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
+
+
+				flameBall = Assets.Request<Effect>("Contents/Shaders/FlameBall");
+				GameShaders.Misc[ShadersID.FlameBallShader] = new MiscShaderData(flameBall, "ballOfire");
+
 			}
 		}
 	}

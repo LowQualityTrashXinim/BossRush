@@ -1,5 +1,6 @@
 ﻿using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using BossRush.Texture;
+using BossRush.TrailStructs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -65,52 +66,6 @@ public class WyvernWrath : SynergyModItem {
 	}
 
 }
-public struct WyvernTrailMain {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
-
-		MiscShaderData miscShaderData = GameShaders.Misc["TrailEffect"];
-		miscShaderData.UseImage1("Images/Extra_" + (short)193);
-		miscShaderData.UseColor(Color.LightSeaGreen);
-
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
-}
-
-public struct WyvernTrailMini {
-	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
-
-		MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
-		Asset<Texture2D> NOISE = ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE);
-		miscShaderData.UseImage1(NOISE);
-		miscShaderData.UseColor(Color.LightSeaGreen);
-		miscShaderData.UseShaderSpecificData(new Microsoft.Xna.Framework.Vector4(60, 1, 0, 0));
-		miscShaderData.Apply();
-
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
-		_vertexStrip.DrawTrail();
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
-}
 public class WyvernWrathMainProjectile : SynergyModProjectile {
 	public override void SetStaticDefaults() {
 		ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -133,6 +88,7 @@ public class WyvernWrathMainProjectile : SynergyModProjectile {
 	}
 	public override void OnSpawn(IEntitySource source) {
 		Projectile.FillProjectileOldPosAndRot();
+		Projectile.frame = Main.rand.Next(14);
 		float randomrotation = Main.rand.NextFloat(90);
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 		for (int i = 0; i < 4; i++) {
@@ -146,6 +102,7 @@ public class WyvernWrathMainProjectile : SynergyModProjectile {
 			}
 		}
 	}
+
 	public override bool PreDraw(ref Color lightColor) {
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
 		int dust = Dust.NewDust(Projectile.Center + randomPosOffset, 0, 0, Main.rand.NextBool() ? DustID.GemEmerald : DustID.GemDiamond, 0, 0, 0, Color.White, Scale: Main.rand.NextFloat(.7f, 1.1f));
