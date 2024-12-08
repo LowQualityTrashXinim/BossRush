@@ -36,7 +36,7 @@ public class FlamelashWEProjectile : ModProjectile, IUpdateShader {
 
 	public override void OnSpawn(IEntitySource source) {
 		exploding = false;
-		shaderOffset = Main.rand.Next(0, 10000);
+		shaderOffset = Main.rand.NextFloat(0, MathHelper.TwoPi);
 
 	}
 
@@ -58,13 +58,15 @@ public class FlamelashWEProjectile : ModProjectile, IUpdateShader {
 	}
 
 	public void updateShader() {
-		ShaderData sd = new ShaderData();
+		ModShaderData sd = new ModShaderData();
 		sd.shaderSettings.shaderType = ShadersID.FlameBallShader;
 		sd.shaderSettings.Color = Color.Orange;
 		sd.shaderSettings.shaderData = new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset);
 		sd.enabled = true;
 		sd.position = Projectile.Center;
-		sd.rt = RT128x128LoaderAndUnloader.rt;
+		sd.shaderSettings.image1 = TextureAssets.Extra[193];
+		sd.rt = ShaderRTLoaderAndUnloader.rt;
+		sd.rt.setSize(64, 64);
 		Projectile.GetGlobalProjectile<ShaderGlobalProjectile>().shaderData = sd;
 	}
 }

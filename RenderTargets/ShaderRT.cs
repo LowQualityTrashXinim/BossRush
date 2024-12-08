@@ -16,25 +16,36 @@ using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace BossRush.RenderTargets;
-public class RT128x128 : ARenderTargetContentByRequest {
+public class ShaderRT : ARenderTargetContentByRequest {
+
+	int width;
+	int height;
 
 	protected override void HandleUseReqest(GraphicsDevice device, SpriteBatch spriteBatch) {
-		PrepareARenderTarget_AndListenToEvents(ref _target, device, 128, 128, RenderTargetUsage.PreserveContents);
+		PrepareARenderTarget_AndListenToEvents(ref _target, device, width, height, RenderTargetUsage.PreserveContents);
 		device.SetRenderTarget(_target);
 		device.Clear(Color.Transparent);
 		device.SetRenderTarget(null);
 		_wasPrepared = true;
 		
 	}
+
+	public void setSize(int width, int height) 
+	{
+
+		this.width = width;
+		this.height = height;
+
+	}
 }
 
-public class RT128x128LoaderAndUnloader : ModSystem 
+public class ShaderRTLoaderAndUnloader : ModSystem 
 {
 
 	
-	public static RT128x128 rt;
+	public static ShaderRT rt;
 	public override void Load() {
-		Main.ContentThatNeedsRenderTargets.Add(rt = new RT128x128());
+		Main.ContentThatNeedsRenderTargets.Add(rt = new ShaderRT());
 	}
 
 	public override void Unload() {
