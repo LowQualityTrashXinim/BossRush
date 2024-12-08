@@ -26,7 +26,7 @@ internal class ContentTracker : ModItem {
 			$"\nLost accessories amount : {BossRushModSystem.LostAccessories.Count}" +
 			$"\nArtifact amount : {Artifact.ArtifactCount}" +
 			$"\nWeapon enchantment amount : {EnchantmentLoader.TotalCount}" +
-			$"\nSkill amount: {SkillLoader.TotalCount}" +
+			$"\nSkill amount: {SkillModSystem.TotalCount}" +
 			$"\nPerk amount : {ModPerkLoader.TotalCount}" +
 			$"\nSpoils amount : {ModSpoilSystem.TotalCount}" +
 			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}" +

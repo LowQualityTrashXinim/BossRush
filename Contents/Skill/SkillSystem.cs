@@ -14,6 +14,12 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 namespace BossRush.Contents.Skill;
+/// <summary>
+/// <b>Guideline on how to set Skill Type: </b><br/>
+/// If a skill doesn't spawn any projectile, it should be consider as <see cref="Skill_Stats"/><br/>
+/// Otherwise if the projectile is not dependent on skill duration, then it should be <see cref="Skill_Summon"/><br/>
+/// Else the skill in question is <see cref="Skill_Projectile"/><br/>
+/// </summary>
 public static class SkillTypeID {
 	public const byte Skill_None = 0;
 	public const byte Skill_Projectile = 1;
@@ -35,7 +41,7 @@ public abstract class ModSkill : ModType {
 	protected int Skill_EnergyRequire = 0;
 	protected float Skill_EnergyRequirePercentage = 0;
 	protected bool Skill_CanBeSelect = true;
-	protected byte Skill_Type = 0;
+	public byte Skill_Type { get; protected set; }
 	public virtual string Texture => BossRushTexture.Get_MissingTexture("Skill");
 	public int CoolDown { get => Skill_CoolDown; }
 	public int Duration { get => Skill_Duration; }
@@ -46,7 +52,7 @@ public abstract class ModSkill : ModType {
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
 	protected sealed override void Register() {
-		Type = SkillLoader.Register(this);
+		Type = SkillModSystem.Register(this);
 		SetDefault();
 	}
 	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
@@ -56,11 +62,16 @@ public abstract class ModSkill : ModType {
 	}
 	public virtual void SetDefault() { }
 	/// <summary>
-	/// This method always run even during on hit, but it is best to not uses it if you aren't shifting back skill
+	/// This method always run even during on hit, but it is best to not uses it if you aren't shifting back skill<br/>
+	/// If you are looking for on pressed hook then use <see cref="OnTrigger(Player)"/>
 	/// </summary>
 	/// <param name="index"></param>
 	/// <param name="player"></param>
 	public virtual void OnCalled(Player player, SkillHandlePlayer skillplayer, ref int index) { }
+	/// <summary>
+	/// Called upon pressed when the skill requirement is fullfilled 
+	/// </summary>
+	/// <param name="player"></param>
 	public virtual void OnTrigger(Player player) { }
 	public virtual void OnEnded(Player player) { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
@@ -76,28 +87,37 @@ public abstract class ModSkill : ModType {
 	public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 	public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
 }
-public static class SkillLoader {
-	private static readonly List<ModSkill> _skill = new();
+public class SkillModSystem : ModSystem {
+	public static List<ModSkill> _skill { get; private set; }
+	public static Dictionary<byte, List<ModSkill>> dict_skill { get; private set; }
 	public static int TotalCount => _skill.Count;
-	public static int Register(ModSkill enchant) {
-		ModTypeLookup<ModSkill>.Register(enchant);
-		_skill.Add(enchant);
+	public static int Register(ModSkill skill) {
+		ModTypeLookup<ModSkill>.Register(skill);
+		_skill.Add(skill);
+		if (dict_skill.ContainsKey(skill.Skill_Type)) {
+			dict_skill[skill.Skill_Type].Add(skill);
+		}
+		else {
+			dict_skill.Add(skill.Skill_Type, new() { skill });
+		}
 		return _skill.Count - 1;
 	}
 	public static ModSkill GetSkill(int type) {
 		return type >= 0 && type < _skill.Count ? _skill[type] : null;
 	}
-}
-public class SkillModSystem : ModSystem {
 	public static int SelectInventoryIndex = -1;
 	public static int SelectSkillIndex = -1;
 	public static ModKeybind SkillActivation { get; private set; }
 
 	public override void Load() {
+		_skill = new();
+		dict_skill = new();
 		SkillActivation = KeybindLoader.RegisterKeybind(Mod, "Skill activation", Keys.F);
 	}
 	public override void Unload() {
 		SkillActivation = null;
+		_skill = null;
+		dict_skill = null;
 	}
 }
 public class SkillHandlePlayer : ModPlayer {
@@ -131,7 +151,7 @@ public class SkillHandlePlayer : ModPlayer {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
 	}
 	public bool RequestAddSkill_Inventory(int skillType, bool OnRandomizeChoose = true) {
-		if (skillType < 0 && skillType >= SkillLoader.TotalCount) {
+		if (skillType < 0 && skillType >= SkillModSystem.TotalCount) {
 			return false;
 		}
 		int availableIndex = -1;
@@ -146,13 +166,13 @@ public class SkillHandlePlayer : ModPlayer {
 			BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.IndianRed, "Fail to add a skill");
 			return false;
 		}
-		if (!SkillLoader.GetSkill(skillType).CanBeSelect) {
+		if (!SkillModSystem.GetSkill(skillType).CanBeSelect) {
 			if (OnRandomizeChoose) {
-				skillType = Main.rand.Next(SkillLoader.TotalCount);
+				skillType = Main.rand.Next(SkillModSystem.TotalCount);
 			}
 			else {
 				SkillInventory[availableIndex] = skillType;
-				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillLoader.GetSkill(skillType).DisplayName}");
+				BossRushUtils.CombatTextRevamp(Player.Hitbox, Color.Aqua, $"Added skill : {SkillModSystem.GetSkill(skillType).DisplayName}");
 				return true;
 			}
 		}
@@ -167,7 +187,7 @@ public class SkillHandlePlayer : ModPlayer {
 		StatModifier energyS = new();
 		int seperateEnergy = 0;
 		for (int i = 0; i < active.Length; i++) {
-			ModSkill skill = SkillLoader.GetSkill(active[i]);
+			ModSkill skill = SkillModSystem.GetSkill(active[i]);
 			if (skill == null) {
 				continue;
 			}
@@ -191,7 +211,7 @@ public class SkillHandlePlayer : ModPlayer {
 		StatModifier energyS = new(), durationS = new(), cooldownS = new();
 		int seperateEnergy = 0;
 		for (int i = 0; i < active.Length; i++) {
-			ModSkill skill = SkillLoader.GetSkill(active[i]);
+			ModSkill skill = SkillModSystem.GetSkill(active[i]);
 			if (skill == null) {
 				continue;
 			}
@@ -277,12 +297,12 @@ public class SkillHandlePlayer : ModPlayer {
 	}
 	public ModSkill CurrentSkill(ref int currentIndex) {
 		int[] active = GetCurrentActiveSkillHolder();
-		ModSkill skill = SkillLoader.GetSkill(active[currentIndex]);
+		ModSkill skill = SkillModSystem.GetSkill(active[currentIndex]);
 		if (skill == null) {
 			return null;
 		}
 		skill.OnCalled(Player, this, ref currentIndex);
-		return SkillLoader.GetSkill(active[currentIndex]);
+		return SkillModSystem.GetSkill(active[currentIndex]);
 	}
 	public void SwitchSkill(int whoAmIsource, int whoAmIdestination) {
 		int cache;

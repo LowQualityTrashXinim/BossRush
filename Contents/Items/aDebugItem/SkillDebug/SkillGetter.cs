@@ -36,7 +36,7 @@ class btn_Skill : UIImageButton {
 	public int ModSkillID = -1;
 	Texture2D texture = null;
 	public void ChangeModSKillID(int newID) {
-		ModSkillID = Math.Clamp(newID, 0, SkillLoader.TotalCount);
+		ModSkillID = Math.Clamp(newID, 0, SkillModSystem.TotalCount);
 	}
 	public btn_Skill(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
@@ -44,10 +44,10 @@ class btn_Skill : UIImageButton {
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 		Vector2 drawpos = GetInnerDimensions().Position() + texture.Size() * .5f;
-		if (ModSkillID < 0 || ModSkillID >= SkillLoader.TotalCount) {
+		if (ModSkillID < 0 || ModSkillID >= SkillModSystem.TotalCount) {
 			return;
 		}
-		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillLoader.GetSkill(ModSkillID).Texture).Value;
+		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(ModSkillID).Texture).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(texture.Size(), skilltexture.Size());
 		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
@@ -85,13 +85,13 @@ class SkillGetterUI : UIState {
 	public override void OnActivate() {
 		btn_list.Clear();
 		panel.RemoveAllChildren();
-		int length = SkillLoader.TotalCount;
+		int length = SkillModSystem.TotalCount;
 		int lineCounter = 0;
 		for (int i = 0; i < length; i++) {
 			if (i % SKILL_MAXLINE == 0) {
 				lineCounter++;
 			}
-			ModSkill skill = SkillLoader.GetSkill(i);
+			ModSkill skill = SkillModSystem.GetSkill(i);
 			list_Skill.Add(skill);
 			if (lineCounter < SKILL_MAXLINE) {
 
@@ -121,7 +121,7 @@ class SkillGetterUI : UIState {
 		if (text == null) {
 			return;
 		}
-		ModSkill template = SkillLoader.GetSkill(btn_list.IndexOf(text));
+		ModSkill template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
 		if (template == null) {
 			return;
 		}
@@ -149,7 +149,7 @@ class SkillGetterUI : UIState {
 			if (text == null) {
 				return;
 			}
-			ModSkill template = SkillLoader.GetSkill(btn_list.IndexOf(text));
+			ModSkill template = SkillModSystem.GetSkill(btn_list.IndexOf(text));
 			if (template == null) {
 				return;
 			}

@@ -1415,13 +1415,13 @@ class btn_SkillSlotHolder : UIImageButton {
 		if (IsMouseHovering) {
 			string tooltipText = "";
 			string Name = "";
-			if (SkillLoader.GetSkill(sKillID) != null) {
-				Name = SkillLoader.GetSkill(sKillID).DisplayName;
-				tooltipText = SkillLoader.GetSkill(sKillID).Description;
+			if (SkillModSystem.GetSkill(sKillID) != null) {
+				Name = SkillModSystem.GetSkill(sKillID).DisplayName;
+				tooltipText = SkillModSystem.GetSkill(sKillID).Description;
 				tooltipText +=
-					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillLoader.GetSkill(sKillID).Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillLoader.GetSkill(sKillID).EnergyRequire}" +
-					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillLoader.GetSkill(sKillID).CoolDown / 60f, 2)}s";
+					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillModSystem.GetSkill(sKillID).Duration / 60f, 2)}s" +
+					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillModSystem.GetSkill(sKillID).EnergyRequire}" +
+					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillModSystem.GetSkill(sKillID).CoolDown / 60f, 2)}s";
 			}
 			Main.instance.MouseText(Name + "\n" + tooltipText);
 		}
@@ -1433,10 +1433,10 @@ class btn_SkillSlotHolder : UIImageButton {
 			|| (SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL)) {
 			BossRushUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
 		}
-		if (sKillID < 0 || sKillID >= SkillLoader.TotalCount) {
+		if (sKillID < 0 || sKillID >= SkillModSystem.TotalCount) {
 			return;
 		}
-		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillLoader.GetSkill(sKillID).Texture).Value;
+		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(sKillID).Texture).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
 		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
