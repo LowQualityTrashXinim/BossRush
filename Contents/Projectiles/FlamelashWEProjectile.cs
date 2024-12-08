@@ -14,7 +14,6 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
 
 namespace BossRush.Contents.Projectiles;
 public class FlamelashWEProjectile : ModProjectile, IUpdateShader {
@@ -58,7 +57,7 @@ public class FlamelashWEProjectile : ModProjectile, IUpdateShader {
 	}
 
 	public void updateShader() {
-		ShaderData sd = new ShaderData();
+		ModShaderData sd = new ModShaderData();
 		sd.shaderSettings.shaderType = ShadersID.FlameBallShader;
 		sd.shaderSettings.Color = Color.Orange;
 		sd.shaderSettings.shaderData = new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset);

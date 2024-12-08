@@ -14,14 +14,14 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.General;
-public struct ShaderData {
+public struct ModShaderData {
 	public MiscShaderData _shader = null;
 	public ShaderSettings shaderSettings = new ShaderSettings();
 	public ARenderTargetContentByRequest rt;
 	public Vector2 position;
 	public bool enabled = false;
 
-	public ShaderData() {
+	public ModShaderData() {
 	}
 
 	public void DrawShader(ref Color lightColor) {
@@ -49,7 +49,7 @@ public interface IUpdateShader {
 
 public class ShaderGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
-	public ShaderData shaderData = new ShaderData();
+	public ModShaderData shaderData = new ModShaderData();
 	public override bool PreDraw(Projectile projectile, ref Color lightColor) {
 
 		if (shaderData.enabled) {
