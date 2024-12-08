@@ -1727,7 +1727,6 @@ internal class EnchantmentUIState : UIState {
 	Vector2 panelSize = new Vector2(70 * 3 - 8, 62 * 2 + 8);
 	Vector2 UIclampOffset = new Vector2(60, 60);
 	public override void OnInitialize() {
-
 		panel = new UIPanel();
 		panel.UISetPosition(Main.LocalPlayer.Center, panelSize / 2f);
 		panel.OnLeftMouseDown += mousePressed;
@@ -1744,27 +1743,22 @@ internal class EnchantmentUIState : UIState {
 		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
 		weaponEnchantmentUIExit.UISetPosition(position + Vector2.UnitX * 178, new Vector2(26, 26));
 		Append(weaponEnchantmentUIExit);
-
-
 	}
 
 	public override void Update(GameTime gameTime) {
-
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-
-
 		if (isMousePressed)
 			this.position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-
 		for (int i = 0; i < Children.Count(); i++) {
 			var children = Children.ElementAt(i);
 			if (children is MoveableUIImage) {
 				var child = children as MoveableUIImage;
 				child.UISetPosition(position + child.positionOffset);
 				child.position = position;
-
 			}
-
 		}
 		panel.UISetPosition(position);
 		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60, 0));
@@ -1772,7 +1766,6 @@ internal class EnchantmentUIState : UIState {
 
 	private void mousePressed(UIMouseEvent evt, UIElement listeningElement) {
 		isMousePressed = true;
-
 	}
 
 
@@ -1963,6 +1956,9 @@ public class EnchantmentUIslot : MoveableUIImage {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if(ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (itemType == ItemID.None)
 			return;
 		if (IsMouseHovering) {
