@@ -24,6 +24,7 @@ public class RT128x128 : ARenderTargetContentByRequest {
 		device.Clear(Color.Transparent);
 		device.SetRenderTarget(null);
 		_wasPrepared = true;
+		
 	}
 }
 

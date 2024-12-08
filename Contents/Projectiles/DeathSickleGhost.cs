@@ -33,7 +33,7 @@ public class DeathSickleGhost : ModProjectile {
 		Projectile.timeLeft = 1000;
 
 	}
-	GenericTrailSettings gts;
+	TrailShaderSettings gts;
 
 	public override void OnSpawn(IEntitySource source) {
 		SoundEngine.PlaySound(SoundID.Item71,Projectile.Center);

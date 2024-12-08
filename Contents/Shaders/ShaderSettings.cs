@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BossRush.Contents.Shaders;
-public struct ShaderSettings {
+public struct TrailShaderSettings {
 
 	public string shaderType;
 	public Color Color;
@@ -18,4 +18,13 @@ public struct ShaderSettings {
 	public Asset<Texture2D> image2;
 	public Vector4 shaderData;
 	public Vector2 offset;
+}
+
+public struct ShaderSettings {
+
+	public string shaderType;
+	public Color Color;
+	public Asset<Texture2D> image1;
+	public Asset<Texture2D> image2;
+	public Vector4 shaderData;
 }

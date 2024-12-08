@@ -40,17 +40,6 @@ public class MythrilBeamSword : SynergyModItem {
 	}
 
 }
-
-		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-	}
-	private Color StripColors(float progressOnStrip) {
-		Color result = new Color(255, 255, 255, MathHelper.Lerp(0, 255, progressOnStrip));
-		//result.A /= 2;
-		return result;
-	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(4, 1, progressOnStrip);
-}
-public class MythrilBeam : SynergyModProjectile {
 public class MythrilBeam : SynergyModProjectile 
 {
 

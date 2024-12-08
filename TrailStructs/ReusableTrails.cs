@@ -20,7 +20,7 @@ internal class ReusableTrails {
 
 public struct GenericTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(ShaderSettings GenericTrailSettings, VertexStrip.StripHalfWidthFunction stripWidth, VertexStrip.StripColorFunction stripColor) {
+	public void Draw(TrailShaderSettings GenericTrailSettings, VertexStrip.StripHalfWidthFunction stripWidth, VertexStrip.StripColorFunction stripColor) {
 
 		MiscShaderData miscShaderData = GameShaders.Misc[GenericTrailSettings.shaderType];
 		miscShaderData.UseImage1(GenericTrailSettings.image1);
