@@ -1503,10 +1503,7 @@ public class DeathSickle : ModEnchantment {
 
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(200, 0), target.Center.DirectionTo(target.Center + new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(100, 0), target.Center.DirectionTo(target.Center - new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(200, 0), target.Center.DirectionTo(target.Center - new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
 
 
 		}
@@ -1517,10 +1514,7 @@ public class DeathSickle : ModEnchantment {
 
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(200, 0), target.Center.DirectionTo(target.Center + new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(100, 0), target.Center.DirectionTo(target.Center - new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(200, 0), target.Center.DirectionTo(target.Center - new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
 
 
 		}
