@@ -169,7 +169,7 @@ public struct StarTrail {
 
 		miscShaderData.Apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset, null, true);
 		_vertexStrip.DrawTrail();
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
@@ -179,7 +179,7 @@ public struct StarTrail {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(35, 5, progressOnStrip);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5, 5, progressOnStrip);
 }
 public struct StarTrailEmpowered {
 	private static VertexStrip _vertexStrip = new VertexStrip();
@@ -191,7 +191,7 @@ public struct StarTrailEmpowered {
 
 		miscShaderData.Apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset, null, true);
 		_vertexStrip.DrawTrail();
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
