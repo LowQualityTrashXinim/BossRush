@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 
-namespace BossRush.Contents.Shaders;
+namespace BossRush.Common.Graphics;
 public struct TrailShaderSettings {
 
 	public string shaderType;

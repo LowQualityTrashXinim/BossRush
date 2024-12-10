@@ -1,5 +1,4 @@
-﻿using BossRush.Contents.Shaders;
-using BossRush.RenderTargets;
+﻿using BossRush.Common.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -68,7 +67,6 @@ public class ShaderGlobalProjectile : GlobalProjectile {
 
 			shaderData.ActivateShader(ref lightColor);
 
-			VertexStrip
 
 		}
 

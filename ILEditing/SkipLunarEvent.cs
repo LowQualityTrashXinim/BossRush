@@ -42,5 +42,8 @@ public class SkipLunarEvent : ModSystem {
 		}
 	}
 
+	public override void Unload() {
+		IL_NPC.DoDeathEvents -= HookDoDeathEvents;
+	}
 
 }

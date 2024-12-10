@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ID;
 
-namespace BossRush.Contents.Shaders;
+namespace BossRush.Common.Graphics;
 
-public static class ShadersID {
+public static class MiscShadersID {
 
 	public const string FlameShader = "FlameEffect";
 	public const string TrailShader = "TrailEffect";

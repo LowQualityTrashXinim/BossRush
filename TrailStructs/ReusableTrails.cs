@@ -12,7 +12,7 @@ using Terraria.Graphics;
 using Terraria.ModLoader;
 using Terraria;
 using Terraria.GameContent.Drawing;
-using BossRush.Contents.Shaders;
+using BossRush.Common.Graphics;
 
 namespace BossRush.TrailStructs;
 public struct GenericTrail {

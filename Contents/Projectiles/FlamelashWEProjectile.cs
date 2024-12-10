@@ -1,6 +1,5 @@
 ﻿using BossRush.Common.General;
-using BossRush.Contents.Shaders;
-using BossRush.RenderTargets;
+using BossRush.Common.Graphics;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -70,7 +69,7 @@ public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
 
 	public void updateShader() {
 		ModShaderData sd = new ModShaderData();
-		sd.shaderSettings.shaderType = ShadersID.FlameBallShader;
+		sd.shaderSettings.shaderType = MiscShadersID.FlameBallShader;
 		sd.shaderSettings.Color = Color.Orange;
 		sd.shaderSettings.shaderData = new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset);
 		sd.enabled = true;

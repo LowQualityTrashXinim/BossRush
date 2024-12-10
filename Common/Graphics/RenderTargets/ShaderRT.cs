@@ -1,21 +1,10 @@
-﻿using BossRush.Contents.Shaders;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
-namespace BossRush.RenderTargets;
+namespace BossRush.Common.Graphics.RenderTargets;
 public class ShaderRT : ARenderTargetContentByRequest {
 
 	public virtual int width => 128;
@@ -32,15 +21,13 @@ public class ShaderRT : ARenderTargetContentByRequest {
 	}
 }
 
-public class SRT128x128 : ShaderRT 
-{
+public class SRT128x128 : ShaderRT {
 
 }
 
-public class RTLoaderAndUnloader : ModSystem 
-{
+public class RTLoaderAndUnloader : ModSystem {
 
-	
+
 	public static ShaderRT rt;
 	public override void Load() {
 		Main.ContentThatNeedsRenderTargets.Add(rt = new ShaderRT());
