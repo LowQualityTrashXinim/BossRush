@@ -71,11 +71,9 @@ public class Skip1 : ModSkill {
 			if (skill == null) {
 				continue;
 			}
-			if(index < currentskillset.Length) {
-				index = index + 1;
-				energy.Base -= 100;
-				break;
-			}
+			index = index + 1;
+			energy.Base -= 100;
+			break;
 		}
 	}
 }

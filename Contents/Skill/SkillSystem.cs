@@ -88,7 +88,8 @@ public abstract class ModSkill : ModType {
 	public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 	public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
 	public static int SkillDamage(Player player, int damage) {
-		StatModifier modifier = player.GetModPlayer<SkillHandlePlayer>().skilldamage;
+		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
+		StatModifier modifier = skillplayer.skilldamage.CombineWith(skillplayer.SkillDamageWhileActive);
 		return (int)Math.Ceiling(modifier.ApplyTo(damage));
 	}
 }
@@ -127,6 +128,7 @@ public class SkillModSystem : ModSystem {
 }
 public class SkillHandlePlayer : ModPlayer {
 	public StatModifier skilldamage = new StatModifier();
+	public StatModifier SkillDamageWhileActive = new StatModifier();
 	public int EnergyCap = 1500;
 	public int Energy { get; private set; }
 	public int Duration { get; private set; }
@@ -430,6 +432,7 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 		skilldamage = StatModifier.Default;
 		if (!Activate) {
+			SkillDamageWhileActive = StatModifier.Default;
 			return;
 		}
 		foreach (var skill in activeskill) {
