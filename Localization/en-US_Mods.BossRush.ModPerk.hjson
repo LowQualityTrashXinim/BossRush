@@ -439,8 +439,19 @@ TitanPower: {
 	Description:
 		'''
 		The power of a Titan
-		+ Increases your maximum health by 200, thorn damage by 150&, defenses by 15 flat and 25%
+		+ Increases your maximum health by 200, thorn damage by 150%, defenses by 15 flat and 25%
 		+ Increases your damage reduction by 40%
 		+ You can revive once ( 4 miniutes cool down )
+		'''
+}
+
+LostInWonderland: {
+	DisplayName: Lost In Wonderland
+	Description:
+		'''
+		[WARNING:EXPERIMENTAL DO NOT CHOOSE]
+		+ Increases chance of NPC getting mutate by 10%
+		+ Your weapon have 10% to get enchantment
+		+ Your weapon have 10% to get augmentation
 		'''
 }

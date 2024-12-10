@@ -37,3 +37,10 @@ public static class ModMutationLoader {
 		return type >= 0 && type < _mutation.Count ? _mutation[type] : null;
 	}
 }
+public class MutationSystem : ModSystem {
+	public float MutationChance = 0;
+	public bool NewGamePlusMutation = false;
+	public override void PreUpdateNPCs() {
+		MutationChance = 0;
+	}
+}
