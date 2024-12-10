@@ -1,4 +1,3 @@
-using BossRush;
 using BossRush.Common.Systems;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
@@ -7,10 +6,8 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Items
-{
-	class StructureWand : ModItem
-	{
+namespace BossRush.Contents.Items {
+	class StructureWand : ModItem {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Swordfish);
 		public bool secondPoint;
 
@@ -27,8 +24,7 @@ namespace BossRush.Items
 
 		public bool Ready => !secondPoint && point1 != default;
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useTime = Item.useAnimation = 20;
 			Item.rare = ItemRarityID.Blue;
@@ -36,58 +32,48 @@ namespace BossRush.Items
 			Item.noUseGraphic = true;
 		}
 
-		public override bool AltFunctionUse(Player player)
-		{
+		public override bool AltFunctionUse(Player player) {
 			return true;
 		}
 
-		public override void HoldItem(Player player)
-		{
+		public override void HoldItem(Player player) {
 			if (movePoint1)
 				point1 = (Main.MouseWorld / 16).ToPoint16();
 
 			if (movePoint2)
 				point2 = (Main.MouseWorld / 16).ToPoint16();
 
-			if (!Main.mouseLeft)
-			{
+			if (!Main.mouseLeft) {
 				movePoint1 = false;
 				movePoint2 = false;
 			}
 		}
-		public override bool? UseItem(Player player)
-		{
-			if (player.altFunctionUse == 2 && Ready && player.ItemAnimationJustStarted)
-			{
+		public override bool? UseItem(Player player) {
+			if (player.altFunctionUse == 2 && Ready && player.ItemAnimationJustStarted) {
 				ModContent.GetInstance<UniversalSystem>().ActivateStructureSaverUI(TopLeft, BottomRight);
 				return true;
 			}
 
-			if (Ready)
-			{
-				if (Vector2.Distance(Main.MouseWorld, point1.ToVector2() * 16) <= 32)
-				{
+			if (Ready) {
+				if (Vector2.Distance(Main.MouseWorld, point1.ToVector2() * 16) <= 32) {
 					movePoint1 = true;
 					return true;
 				}
 
-				if (Vector2.Distance(Main.MouseWorld, point2.ToVector2() * 16) <= 32)
-				{
+				if (Vector2.Distance(Main.MouseWorld, point2.ToVector2() * 16) <= 32) {
 					movePoint2 = true;
 					return true;
 				}
 			}
 
-			if (!secondPoint)
-			{
+			if (!secondPoint) {
 				point1 = (Main.MouseWorld / 16).ToPoint16();
 				point2 = default;
 
 				Main.NewText("Select Second Point");
 				secondPoint = true;
 			}
-			else
-			{
+			else {
 				point2 = (Main.MouseWorld / 16).ToPoint16();
 
 				Main.NewText("Ready to save! Right click to save this structure...");

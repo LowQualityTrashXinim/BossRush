@@ -13,6 +13,11 @@ FastForward: {
 	Description: Halves the cooldown and duration of succeeding skills
 }
 
+Skip1: {
+	DisplayName: Skip 1
+	Description: Skip over 1 skill and gain 100 energy
+}
+
 PowerSaver: {
 	DisplayName: Energy Saver
 	Description: Halves the Energy Cost of all the active skill

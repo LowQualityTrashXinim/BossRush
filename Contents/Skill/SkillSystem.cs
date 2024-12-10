@@ -12,6 +12,7 @@ using BossRush.Common.Systems;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using BossRush.Contents.Items.aDebugItem.SkillDebug;
 
 namespace BossRush.Contents.Skill;
 /// <summary>
@@ -62,17 +63,17 @@ public abstract class ModSkill : ModType {
 	}
 	public virtual void SetDefault() { }
 	/// <summary>
-	/// This method always run even during on hit, but it is best to not uses it if you aren't shifting back skill<br/>
-	/// If you are looking for on pressed hook then use <see cref="OnTrigger(Player)"/>
+	/// Use this if you are modifying the skill set in a way
 	/// </summary>
-	/// <param name="index"></param>
 	/// <param name="player"></param>
-	public virtual void OnCalled(Player player, SkillHandlePlayer skillplayer, ref int index) { }
+	/// <param name="modplayer"></param>
+	/// <param name="index"></param>
+	public virtual void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) { }
 	/// <summary>
 	/// Called upon pressed when the skill requirement is fullfilled 
 	/// </summary>
 	/// <param name="player"></param>
-	public virtual void OnTrigger(Player player) { }
+	public virtual void OnTrigger(Player player, SkillHandlePlayer modplayer) { }
 	public virtual void OnEnded(Player player) { }
 	public virtual void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void ResetEffect(Player player) { }
@@ -86,10 +87,15 @@ public abstract class ModSkill : ModType {
 	public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) { }
 	public virtual void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) { }
 	public virtual void ModifyManaCost(Player player, Item item, ref float reduce, ref float multi) { }
+	public static int SkillDamage(Player player, int damage) {
+		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
+		StatModifier modifier = skillplayer.skilldamage.CombineWith(skillplayer.SkillDamageWhileActive);
+		return (int)Math.Ceiling(modifier.ApplyTo(damage));
+	}
 }
 public class SkillModSystem : ModSystem {
-	public static List<ModSkill> _skill { get; private set; }
-	public static Dictionary<byte, List<ModSkill>> dict_skill { get; private set; }
+	public static List<ModSkill> _skill { get; private set; } = new();
+	public static Dictionary<byte, List<ModSkill>> dict_skill { get; private set; } = new();
 	public static int TotalCount => _skill.Count;
 	public static int Register(ModSkill skill) {
 		ModTypeLookup<ModSkill>.Register(skill);
@@ -121,10 +127,12 @@ public class SkillModSystem : ModSystem {
 	}
 }
 public class SkillHandlePlayer : ModPlayer {
+	public StatModifier skilldamage = new StatModifier();
+	public StatModifier SkillDamageWhileActive = new StatModifier();
 	public int EnergyCap = 1500;
-	public int Energy = 0;
-	public int Duration = 0;
-	public int CoolDown = 0;
+	public int Energy { get; private set; }
+	public int Duration { get; private set; }
+	public int CoolDown { get; private set; }
 	int[] SkillHolder1 = new int[10];
 	int[] SkillHolder2 = new int[10];
 	int[] SkillHolder3 = new int[10];
@@ -141,11 +149,21 @@ public class SkillHandlePlayer : ModPlayer {
 	public int MaximumDuration = 0;
 	public int BloodToPower = 0;
 	public int Request_Repeat = 0;
+	List<ModSkill> activeskill = new();
+	public override void OnEnterWorld() {
+		activeskill = new();
+	}
 	public override void Initialize() {
 		Array.Fill(SkillHolder1, -1);
 		Array.Fill(SkillHolder2, -1);
 		Array.Fill(SkillHolder3, -1);
 		Array.Fill(SkillInventory, -1);
+		Activate = false;
+		Energy = 0;
+		Duration = 0;
+		RechargeDelay = 0;
+		CoolDown = 0;
+		activeskill = new();
 	}
 	public void ChangeHolder(int index) {
 		CurrentActiveHolder = Math.Clamp(index, 1, 3);
@@ -184,7 +202,7 @@ public class SkillHandlePlayer : ModPlayer {
 		int energy = 0;
 		int[] active = GetCurrentActiveSkillHolder();
 		float percentageEnergy = 1;
-		StatModifier energyS = new();
+		StatModifier energyS = new(), durationS = new(), cooldownS = new();
 		int seperateEnergy = 0;
 		for (int i = 0; i < active.Length; i++) {
 			ModSkill skill = SkillModSystem.GetSkill(active[i]);
@@ -198,7 +216,8 @@ public class SkillHandlePlayer : ModPlayer {
 				energy += (int)energyS.ApplyTo(skill.EnergyRequire);
 			}
 			percentageEnergy += skill.EnergyRequirePercentage;
-			skill.ModifyNextSkillStats(out energyS, out _, out _);
+			skill.ModifyNextSkillStats(out energyS, out durationS, out cooldownS);
+			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS, ref cooldownS);
 		}
 		return (int)(energy * percentageEnergy) + seperateEnergy;
 	}
@@ -225,6 +244,8 @@ public class SkillHandlePlayer : ModPlayer {
 			cooldown += (int)cooldownS.ApplyTo(skill.CoolDown);
 			percentageEnergy += skill.EnergyRequirePercentage;
 			skill.ModifyNextSkillStats(out energyS, out durationS, out cooldownS);
+			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS, ref cooldownS);
+			activeskill.Add(skill);
 		}
 		duration = (int)Player.GetModPlayer<PlayerStatsHandle>().SkillDuration.ApplyTo(duration);
 		cooldown = (int)Player.GetModPlayer<PlayerStatsHandle>().SkillCoolDown.ApplyTo(cooldown);
@@ -301,7 +322,6 @@ public class SkillHandlePlayer : ModPlayer {
 		if (skill == null) {
 			return null;
 		}
-		skill.OnCalled(Player, this, ref currentIndex);
 		return SkillModSystem.GetSkill(active[currentIndex]);
 	}
 	public void SwitchSkill(int whoAmIsource, int whoAmIdestination) {
@@ -378,12 +398,8 @@ public class SkillHandlePlayer : ModPlayer {
 				MaximumCoolDown = CoolDown;
 				MaximumDuration = Duration;
 				Energy -= energy;
-				for (int i = 0; i < 10; i++) {
-					ModSkill skill = CurrentSkill(ref i);
-					if (skill == null) {
-						continue;
-					}
-					skill.OnTrigger(Player);
+				foreach (var item in activeskill) {
+					item.OnTrigger(Player, this);
 				}
 			}
 		}
@@ -395,15 +411,12 @@ public class SkillHandlePlayer : ModPlayer {
 		RechargeDelay = BossRushUtils.CountDown(RechargeDelay);
 		if (Duration <= 0) {
 			Activate = false;
+			activeskill.Clear();
 		}
 		else {
 			Duration = BossRushUtils.CountDown(Duration);
 			if (Duration <= 1) {
-				for (int i = 0; i < 10; i++) {
-					ModSkill skill = CurrentSkill(ref i);
-					if (skill == null) {
-						continue;
-					}
+				foreach (var skill in activeskill) {
 					skill.OnEnded(Player);
 				}
 			}
@@ -414,14 +427,15 @@ public class SkillHandlePlayer : ModPlayer {
 		}
 	}
 	public override void ResetEffects() {
+		if (Player.HeldItem.type == ModContent.ItemType<SkillCoolDownRemove>()) {
+			CoolDown = 0;
+		}
+		skilldamage = StatModifier.Default;
 		if (!Activate) {
+			SkillDamageWhileActive = StatModifier.Default;
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.ResetEffect(Player);
 		}
 	}
@@ -429,11 +443,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.Update(Player);
 		}
 	}
@@ -441,11 +451,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return base.Shoot(item, source, position, velocity, type, damage, knockback);
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.Shoot(Player, item, source, position, velocity, type, damage, knockback);
 		}
 		return base.Shoot(item, source, position, velocity, type, damage, knockback);
@@ -454,11 +460,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.OnMissingMana(Player, item, neededMana);
 		}
 	}
@@ -466,11 +468,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 		}
 	}
@@ -478,11 +476,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 		}
 	}
@@ -490,11 +484,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.OnHitNPCWithItem(Player, item, target, hit, damageDone);
 		}
 	}
@@ -502,11 +492,7 @@ public class SkillHandlePlayer : ModPlayer {
 		if (!Activate) {
 			return;
 		}
-		for (int i = 0; i < 10; i++) {
-			ModSkill skill = CurrentSkill(ref i);
-			if (skill == null) {
-				continue;
-			}
+		foreach (var skill in activeskill) {
 			skill.OnHitNPCWithProj(Player, proj, target, hit, damageDone);
 		}
 	}
@@ -523,6 +509,7 @@ public class SkillHandlePlayer : ModPlayer {
 		Duration = 0;
 		RechargeDelay = 0;
 		CoolDown = 0;
+		activeskill.Clear();
 	}
 	public override void SaveData(TagCompound tag) {
 		tag.Add("SkillHolder1", SkillHolder1);

@@ -18,7 +18,7 @@ public class HellFireArrowRain : ModSkill {
 		if (modplayer.Duration % 10 != 0) {
 			return;
 		}
-		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(28);
+		int damage = (int)player.GetTotalDamage(DamageClass.Ranged).ApplyTo(SkillDamage(player, 28));
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Ranged).ApplyTo(2);
 		Vector2 position = Main.MouseWorld;
 		position.Y -= 500;
@@ -467,6 +467,33 @@ public class IceAge : ModSkill {
 		proj.maxPenetrate = -1;
 		proj.scale = 2;
 		proj.Resize(proj.width * 2, proj.height * 2);
+	}
+}
+public class EnergyBolt : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 200;
+		Skill_Duration = BossRushUtils.ToSecond(1);
+		Skill_CoolDown = BossRushUtils.ToSecond(5);
+	}
+	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) {
+		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
+		for (int i = index + 1; i < currentskillset.Length; i++) {
+			ModSkill skill = SkillModSystem.GetSkill(currentskillset[i]);
+			if (skill == null) {
+				continue;
+			}
+			energy += .1f;
+			modplayer.SkillDamageWhileActive += .1f;
+		}
+	}
+	public override void Update(Player player) {
+		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
+		if (modplayer.Duration % 10 != 0) {
+			return;
+		}
+		int damage = SkillDamage(player, 30);
+		Vector2 toMouse = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).Vector2RotateByRandom(20);
+		Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), player.Center, toMouse, ModContent.ProjectileType<EnergyBoltProjectile>(), damage, 2f, player.whoAmI);
 	}
 }
 

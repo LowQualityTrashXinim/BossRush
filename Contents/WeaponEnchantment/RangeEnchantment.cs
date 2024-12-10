@@ -747,13 +747,13 @@ namespace BossRush.Contents.WeaponEnchantment {
 	}
 
 	public class SandGun : ModEnchantment {
-
 		public override void SetDefaults() {
 			ItemIDType = ItemID.Sandgun;
 		}
 
 		public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 			globalItem.Item_Counter1[index]--;
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 10);
 		}
 
 		public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
@@ -761,7 +761,6 @@ namespace BossRush.Contents.WeaponEnchantment {
 				for (int i = 0; i < 15; i++) {
 					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
 					globalItem.Item_Counter1[index] = 5;
-
 				}
 		}
 
@@ -770,7 +769,6 @@ namespace BossRush.Contents.WeaponEnchantment {
 				for (int i = 0; i < 15; i++) {
 					Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<SandProjectile>(), 15, 0, player.whoAmI);
 					globalItem.Item_Counter1[index] = 5;
-
 				}
 		}
 	}

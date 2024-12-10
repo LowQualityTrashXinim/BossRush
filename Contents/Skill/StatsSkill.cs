@@ -57,6 +57,27 @@ public class FastForward : ModSkill {
 		cooldown -= .5f;
 	}
 }
+public class Skip1 : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 0;
+		Skill_Duration = 0;
+		Skill_CoolDown = BossRushUtils.ToSecond(15);
+		Skill_Type = SkillTypeID.Skill_Stats;
+	}
+	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) {
+		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
+		for (int i = index + 1; i < currentskillset.Length; i++) {
+			ModSkill skill = SkillModSystem.GetSkill(currentskillset[i]);
+			if (skill == null) {
+				continue;
+			}
+			index = index + 1;
+			energy.Base -= 100;
+			break;
+		}
+	}
+}
+
 public class PowerCord : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<PowerCord>();
 	public override void SetDefault() {
@@ -197,7 +218,7 @@ public class BloodToPower : ModSkill {
 		Skill_CoolDown = BossRushUtils.ToSecond(9);
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void OnTrigger(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		int blood = player.statLife / 2;
 		player.statLife -= blood;
 		player.GetModPlayer<SkillHandlePlayer>().BloodToPower = blood;
@@ -253,7 +274,7 @@ public class AllOrNothing : ModSkill {
 		Skill_CanBeSelect = false;
 		Skill_Type = SkillTypeID.Skill_Stats;
 	}
-	public override void OnTrigger(Player player) {
+	public override void OnTrigger(Player player, SkillHandlePlayer modplayer) {
 		player.AddBuff(ModContent.BuffType<AllOrNothingBuff>(), BossRushUtils.ToSecond(5));
 	}
 	public class AllOrNothingBuff : ModBuff {
