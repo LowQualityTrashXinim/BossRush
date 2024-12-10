@@ -14,7 +14,6 @@ using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
 
 namespace BossRush.Contents.Projectiles;
 public class FlamelashWEProjectile : ModProjectile, IDrawsShader {

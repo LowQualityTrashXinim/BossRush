@@ -8,9 +8,13 @@
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Contents\Items\Weapon\DupeSynergy\**" />
+    <AdditionalFiles Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
     <Compile Remove="Contents\Items\Weapon\DupeSynergy\**" />
+    <Compile Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
     <EmbeddedResource Remove="Contents\Items\Weapon\DupeSynergy\**" />
+    <EmbeddedResource Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
     <None Remove="Contents\Items\Weapon\DupeSynergy\**" />
+    <None Remove="Contents\Items\Weapon\MeleeSynergyWeapon\BloodStar\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />

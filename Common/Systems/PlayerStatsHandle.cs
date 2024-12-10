@@ -12,7 +12,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems.Mutation;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Common.Mode.DreamLikeWorld;
+using BossRush.Common.Mode.DreamLikeWorldMode;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {

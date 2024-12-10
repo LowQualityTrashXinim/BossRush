@@ -56,9 +56,6 @@ public class BreakItem : ModMutation {
 	}
 }
 public class LifeStruck : ModMutation {
-	public override void SetDefaults(NPC npc) {
-		base.SetDefaults(npc);
-	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
 		target.AddBuff(ModContent.BuffType<LifeStruckDebuff>(),BossRushUtils.ToSecond(5));
 	}

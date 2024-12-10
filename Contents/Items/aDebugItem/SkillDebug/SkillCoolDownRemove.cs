@@ -3,6 +3,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Items.aDebugItem.SkillDebug;
 internal class SkillCoolDownRemove : ModItem {
@@ -10,9 +11,5 @@ internal class SkillCoolDownRemove : ModItem {
 	public override void SetDefaults() {
 		Item.width = Item.height = 32;
 		Item.Set_DebugItem(true);
-	}
-	public override void HoldItem(Player player) {
-		var modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		modplayer.CoolDown = 0;
 	}
 }

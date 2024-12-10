@@ -104,8 +104,10 @@ EbonwoodSword.Description:
 	'''
 CopperBroadsword.Description:
 	'''
-	Hitting a enemy with will create a ghost sword that swing ( trigger every 0.75s  )
-	Increases weapon size by 10%
+	Increases weapon size by 12%
+	Hitting a enemy have chance to create a electric strike
+	(Have 3s cool down)
+	Deal 34% more damage to electrify enemy
 	'''
 TinBroadsword.Description:
 	'''
@@ -237,9 +239,10 @@ NightsEdge.Description:
 	'''
 CopperShortSword.Description:
 	'''
-	Increases weapon base damage by 2
 	Increases critical strike damage by 25%
-	Have 10% to shoot out a piercing shortsword on hitting enemy
+	Remove cool down effect of shortsword alt attack
+	Critical striking enemy have 50% chance to spawn a shortsword
+	( Have 1s cool down )
 	'''
 TinShortSword.Description:
 	'''
@@ -634,7 +637,11 @@ Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damag
 SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
 ImpStaff.Description: makes minions shot fireballs at nearby enemy that deals 15 damage
 HornetStaff.Description: makes minions shot stingers at nearby enemy that deals 12 damage
-SandGun.Description: enemies burst into 15 sand projectiles on-death, each deals 15 damage (has a short cooldown)
+SandGun.Description: 
+	'''
+	Increases your critical strike chance by 10
+	Enemy explode sand on-death, each deals 15 damage (has a short cooldown)
+	'''
 TheMeatball.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict ichor debuff
 BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict cursed flames debuff
 SwordFish.Description: damage dealt is splited into two, both damage ignore 5 defense, second source of damage always deals full damage
@@ -673,4 +680,10 @@ DirtBlock.Description:
 	Every 5s, shoot out a ring of 12 dirt blocks that deal 20 damage
 	Will activate every OnHitNPCWithProjectile enchantment effect of this weapon 
 	( Only the Dirt Projectile will activate above effect )
+	'''
+DeathSickle.Description:
+	'''
+	Increases critical strike damage by 50%
+	Have very small chance to instant kill non-boss enemy
+	Every 15 hit toward NPC will spawn a death scythe that home into nearest NPC
 	'''

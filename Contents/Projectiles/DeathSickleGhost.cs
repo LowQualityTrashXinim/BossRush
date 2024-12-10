@@ -70,15 +70,15 @@ public class DeathSickleGhost : ModProjectile {
 		}
 
 
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(offset,0) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, 0) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(0, offset) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(0, -offset) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(offset,0) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, 0) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(0, offset) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(0, -offset) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
 
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(offset, offset) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, offset) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, offset) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
-		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, -offset) - Main.screenPosition, null, Color.Purple, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(offset, offset) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, offset) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, offset) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
+		Main.EntitySpriteDraw(texture.Value, Projectile.Center + new Vector2(-offset, -offset) - Main.screenPosition, null, Color.Purple * .1f, Projectile.rotation, texture.Size() / 2f, 1f, spriteEffect);
 
 
 

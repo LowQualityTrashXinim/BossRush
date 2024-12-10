@@ -19,7 +19,8 @@ using BossRush.Common.General;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using System;
 using BossRush.Common.Systems;
-
+using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Contents.WeaponEnchantment;
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
 	/// This is synergy bonus system, this system will automatically handle most of the bonus action for you<br/>
@@ -484,5 +485,46 @@ namespace BossRush.Contents.Items.Weapon {
 		public virtual void UpdateNPC(NPC npc, ref int buffIndex) {
 
 		}
+	}
+	public class ItemHandleSystem : ModSystem {
+		public override void Load() {
+			On_Player.QuickSpawnItemDirect_IEntitySource_Item_int += On_Player_QuickSpawnItemDirect_IEntitySource_Item_int;
+			On_Player.QuickSpawnItemDirect_IEntitySource_int_int += On_Player_QuickSpawnItemDirect_IEntitySource_int_int;
+			On_Player.QuickSpawnItem_IEntitySource_int_int += On_Player_QuickSpawnItem_IEntitySource_int_int;
+			On_Player.QuickSpawnItem_IEntitySource_Item_int += On_Player_QuickSpawnItem_IEntitySource_Item_int;
+		}
+		private int On_Player_QuickSpawnItem_IEntitySource_int_int(On_Player.orig_QuickSpawnItem_IEntitySource_int_int orig, Player self, IEntitySource source, int item, int stack) {
+			int whoamI = orig(self, source, item, stack);
+			if (whoamI < 0 && whoamI > Main.item.Length) {
+				return whoamI;
+			}
+			Item worlditem = Main.item[whoamI];
+			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			AugmentsWeapon.AddAugments(self, ref worlditem);
+			return whoamI;
+		}
+		private int On_Player_QuickSpawnItem_IEntitySource_Item_int(On_Player.orig_QuickSpawnItem_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
+			int whoamI = orig(self, source, item, stack);
+			if (whoamI < 0 && whoamI > Main.item.Length) {
+				return whoamI;
+			}
+			Item worlditem = Main.item[whoamI];
+			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			AugmentsWeapon.AddAugments(self, ref worlditem);
+			return whoamI;
+		}
+		private Item On_Player_QuickSpawnItemDirect_IEntitySource_int_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_int_int orig, Player self, IEntitySource source, int type, int stack) {
+			Item worlditem = orig(self, source, type, stack);
+			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			AugmentsWeapon.AddAugments(self, ref worlditem);
+			return worlditem;
+		}
+		private Item On_Player_QuickSpawnItemDirect_IEntitySource_Item_int(On_Player.orig_QuickSpawnItemDirect_IEntitySource_Item_int orig, Player self, IEntitySource source, Item item, int stack) {
+			Item worlditem = orig(self, source, item, stack);
+			EnchantmentSystem.EnchantmentRNG(self, worlditem);
+			AugmentsWeapon.AddAugments(self, ref worlditem);
+			return worlditem;
+		}
+
 	}
 }

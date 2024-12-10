@@ -4,8 +4,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
-namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BloodStar {
-	internal class BloodStar : SynergyModItem {
+namespace BossRush.Contents.Items.LegacyItem.BloodStar {
+	internal class BloodStar : ModItem {
 		public override void SetDefaults() {
 			Item.BossRushSetDefault(34, 34, 37, 5f, 17, 17, ItemUseStyleID.Swing, false);
 			Item.DamageType = DamageClass.Melee;
@@ -15,7 +15,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BloodStar {
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item1;
 		}
-		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			Vector2 newPos = new Vector2(Main.MouseWorld.X, player.Center.Y - 800);
 			Vector2 FallVelocity = (Main.MouseWorld - newPos).SafeNormalize(Vector2.UnitX) * 20;
 			for (int i = 0; i < 10; i++) {
@@ -24,13 +24,7 @@ namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.BloodStar {
 			for (int i = 0; i < 3; i++) {
 				Projectile.NewProjectile(source, newPos.X + Main.rand.Next(-100, 100), newPos.Y + Main.rand.Next(-10, 10), FallVelocity.X, FallVelocity.Y, ProjectileID.StarCannonStar, damage, knockback, player.whoAmI);
 			}
-			CanShootItem = false;
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Starfury)
-				.AddIngredient(ItemID.BloodRainBow)
-				.Register();
+			return false;
 		}
 	}
 }

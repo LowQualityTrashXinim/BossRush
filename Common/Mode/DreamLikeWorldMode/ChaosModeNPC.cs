@@ -1,5 +1,4 @@
 ﻿using BossRush.Common.General;
-using BossRush.Common.Mode.DreamLikeWorld;
 using System;
 using Terraria;
 using Terraria.ModLoader;

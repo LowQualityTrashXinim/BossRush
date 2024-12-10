@@ -21,6 +21,9 @@ using BossRush.Common.RoguelikeChange;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Contents.WeaponEnchantment;
+using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Systems.Mutation;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -1030,6 +1033,19 @@ namespace BossRush.Contents.Perks {
 		public override string Texture => BossRushTexture.EMPTYBUFF;
 		public override void SetStaticDefaults() {
 			this.BossRushSetDefaultDeBuff(true);
+		}
+	}
+	public class LostInWonderLand : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 10;
+		}
+		public override void UpdateEquip(Player player) {
+			EnchantmentModplayer enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
+			AugmentsPlayer augmentplayer = player.GetModPlayer<AugmentsPlayer>();
+			ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
+			augmentplayer.IncreasesChance += .05f * StackAmount(player);
+			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
 }

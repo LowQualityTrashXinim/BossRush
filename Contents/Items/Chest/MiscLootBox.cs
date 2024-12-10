@@ -34,6 +34,6 @@ internal class SkillLootBox : ModItem {
 	public override bool CanRightClick() => true;
 	public override void RightClick(Player player) {
 		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
-		skillplayer.RequestAddSkill_Inventory(Main.rand.Next(SkillLoader.TotalCount));
+		skillplayer.RequestAddSkill_Inventory(Main.rand.Next(SkillModSystem.TotalCount));
 	}
 }

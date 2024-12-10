@@ -11,6 +11,9 @@ using BossRush.Common.Utils;
 using System.Linq;
 using BossRush.Contents.BuffAndDebuff;
 using System;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Common.RoguelikeChange;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
@@ -256,25 +259,31 @@ public class CopperBroadsword : ModEnchantment {
 		ItemIDType = ItemID.CopperBroadsword;
 	}
 	public override void ModifyItemScale(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float scale) {
-		scale += .1f;
+		scale += .12f;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
 		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Electrified)) {
+			modifiers.SourceDamage += .34f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Electrified)) {
+			modifiers.SourceDamage += .34f;
+		}
+	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = 45;
-			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
-			if (Main.projectile[proj].ModProjectile is SwordProjectile woodproj)
-				woodproj.ItemIDtextureValue = ItemIDType;
+		if (globalItem.Item_Counter1[index] <= 0 && Main.rand.NextBool(10)) {
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(3);
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.Zero, ModContent.ProjectileType<ElectricChainBolt>(), hit.Damage, hit.Knockback, player.whoAmI);
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (globalItem.Item_Counter1[index] <= 0) {
-			globalItem.Item_Counter1[index] = 45;
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<SwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
-			if (Main.projectile[projectile].ModProjectile is SwordProjectile woodproj)
-				woodproj.ItemIDtextureValue = ItemIDType;
+		if (globalItem.Item_Counter1[index] <= 0 && Main.rand.NextBool(10)) {
+			globalItem.Item_Counter1[index] = BossRushUtils.ToSecond(3);
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), proj.Center, Vector2.Zero, ModContent.ProjectileType<ElectricChainBolt>(), hit.Damage, hit.Knockback, player.whoAmI);
 		}
 	}
 }
@@ -838,24 +847,31 @@ public class CopperShortSword : ModEnchantment {
 		ItemIDType = ItemID.CopperShortsword;
 	}
 	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
-		player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage += .25f;
-	}
-	public override void ModifyDamage(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref StatModifier damage) {
-		damage.Base += 2;
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.25f);
+		player.GetModPlayer<GlobalItemPlayer>().ShortSword_ThrownCD *= 0;
+		globalItem.Item_Counter1[index] = BossRushUtils.CountDown(globalItem.Item_Counter1[index]);
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(10)) {
-			Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 20;
-			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vel, ModContent.ProjectileType<ShortSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
-			if (Main.projectile[proj].ModProjectile is ShortSwordProjectile shortproj)
+		if (Main.rand.NextBool() && hit.Crit && globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 60;
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
+			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
+			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item),
+				position,
+				vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
+			if (Main.projectile[proj].ModProjectile is SwordProjectile2 shortproj)
 				shortproj.ItemIDtextureValue = ItemIDType;
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextBool(10) && proj.type != ModContent.ProjectileType<ShortSwordProjectile>()) {
-			Vector2 vel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 20;
-			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center, vel, ModContent.ProjectileType<ShortSwordProjectile>(), hit.Damage, hit.Knockback, player.whoAmI);
-			if (Main.projectile[projectile].ModProjectile is ShortSwordProjectile shortproj)
+		if (Main.rand.NextBool(10) && hit.Crit && globalItem.Item_Counter1[index] <= 0) {
+			globalItem.Item_Counter1[index] = 60;
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(50 + target.width, 50 + target.height);
+			Vector2 vel = (target.Center - position).SafeNormalize(Vector2.Zero) * 10;
+			int projectile = Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem),
+				position,
+				vel, ModContent.ProjectileType<SwordProjectile2>(), hit.Damage, hit.Knockback, player.whoAmI, ai2: -120);
+			if (Main.projectile[projectile].ModProjectile is SwordProjectile2 shortproj)
 				shortproj.ItemIDtextureValue = ItemIDType;
 		}
 	}
@@ -1319,13 +1335,13 @@ public class Terragrim : ModEnchantment {
 	}
 	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		float attackspeed = player.GetWeaponAttackSpeed(item) - 1;
-		if(attackspeed <= 0) {
+		if (attackspeed <= 0) {
 			return;
 		}
 		modifiers.SourceDamage += attackspeed * .5f;
 	}
 	public override void ModifyUseSpeed(int index, Player player, EnchantmentGlobalItem globalItem, Item item, ref float useSpeed) {
-		if(item.DamageType == DamageClass.Melee) {
+		if (item.DamageType == DamageClass.Melee) {
 			useSpeed += .15f;
 		}
 	}
@@ -1431,8 +1447,7 @@ public class SwordFish : ModEnchantment {
 
 }
 
-public class PalladiumSword : PalladiumEnchantment 
-{
+public class PalladiumSword : PalladiumEnchantment {
 
 	public override void SetDefaults() {
 		ItemIDType = ItemID.PalladiumSword;
@@ -1479,40 +1494,34 @@ public class TitaniumTrident : TitaniumEnchantment {
 
 }
 
-public class DeathSickle : ModEnchantment 
-{
+public class DeathSickle : ModEnchantment {
 
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DeathSickle;
 	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.5f);
+	}
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		globalItem.Item_Counter1[index]++;
+		if(!target.boss && Main.rand.NextBool(100)) {
+			target.StrikeInstantKill();
+		}
 
+		globalItem.Item_Counter1[index]++;
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(200, 0), target.Center.DirectionTo(target.Center + new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(100, 0), target.Center.DirectionTo(target.Center - new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(200, 0), target.Center.DirectionTo(target.Center - new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-
-
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if(proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>())
-		globalItem.Item_Counter1[index]++;
+		if (proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>() && 
+			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			globalItem.Item_Counter1[index]++;
 
-		if(globalItem.Item_Counter1[index] >= 15) 
-		{
+		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100,0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(200, 0), target.Center.DirectionTo(target.Center + new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(100, 0), target.Center.DirectionTo(target.Center - new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center - new Vector2(200, 0), target.Center.DirectionTo(target.Center - new Vector2(200, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), damageDone, 0, player.whoAmI);
-
-
+			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
 		}
-
 	}
 }

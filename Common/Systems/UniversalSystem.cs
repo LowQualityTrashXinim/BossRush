@@ -5,7 +5,6 @@ using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
 using Terraria.Audio;
-using BossRush.Items;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -40,12 +39,9 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using Microsoft.Xna.Framework.Input;
-using Terraria.ModLoader.UI;
 using Terraria.GameInput;
-using ReLogic.Localization.IME;
-using System.Text.RegularExpressions;
-using ReLogic.OS;
-using BossRush.Common.Mode.DreamLikeWorld;
+using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Contents.Items;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -1419,13 +1415,13 @@ class btn_SkillSlotHolder : UIImageButton {
 		if (IsMouseHovering) {
 			string tooltipText = "";
 			string Name = "";
-			if (SkillLoader.GetSkill(sKillID) != null) {
-				Name = SkillLoader.GetSkill(sKillID).DisplayName;
-				tooltipText = SkillLoader.GetSkill(sKillID).Description;
+			if (SkillModSystem.GetSkill(sKillID) != null) {
+				Name = SkillModSystem.GetSkill(sKillID).DisplayName;
+				tooltipText = SkillModSystem.GetSkill(sKillID).Description;
 				tooltipText +=
-					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillLoader.GetSkill(sKillID).Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillLoader.GetSkill(sKillID).EnergyRequire}" +
-					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillLoader.GetSkill(sKillID).CoolDown / 60f, 2)}s";
+					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillModSystem.GetSkill(sKillID).Duration / 60f, 2)}s" +
+					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillModSystem.GetSkill(sKillID).EnergyRequire}" +
+					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillModSystem.GetSkill(sKillID).CoolDown / 60f, 2)}s";
 			}
 			Main.instance.MouseText(Name + "\n" + tooltipText);
 		}
@@ -1437,10 +1433,10 @@ class btn_SkillSlotHolder : UIImageButton {
 			|| (SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL)) {
 			BossRushUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
 		}
-		if (sKillID < 0 || sKillID >= SkillLoader.TotalCount) {
+		if (sKillID < 0 || sKillID >= SkillModSystem.TotalCount) {
 			return;
 		}
-		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillLoader.GetSkill(sKillID).Texture).Value;
+		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(sKillID).Texture).Value;
 		Vector2 origin = skilltexture.Size() * .5f;
 		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
 		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
@@ -1702,6 +1698,9 @@ class PerkUIImageButton : UIImageButton {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if(ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
 			Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
 		}
@@ -1728,7 +1727,6 @@ internal class EnchantmentUIState : UIState {
 	Vector2 panelSize = new Vector2(70 * 3 - 8, 62 * 2 + 8);
 	Vector2 UIclampOffset = new Vector2(60, 60);
 	public override void OnInitialize() {
-
 		panel = new UIPanel();
 		panel.UISetPosition(Main.LocalPlayer.Center, panelSize / 2f);
 		panel.OnLeftMouseDown += mousePressed;
@@ -1745,27 +1743,22 @@ internal class EnchantmentUIState : UIState {
 		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
 		weaponEnchantmentUIExit.UISetPosition(position + Vector2.UnitX * 178, new Vector2(26, 26));
 		Append(weaponEnchantmentUIExit);
-
-
 	}
 
 	public override void Update(GameTime gameTime) {
-
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-
-
 		if (isMousePressed)
 			this.position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-
 		for (int i = 0; i < Children.Count(); i++) {
 			var children = Children.ElementAt(i);
 			if (children is MoveableUIImage) {
 				var child = children as MoveableUIImage;
 				child.UISetPosition(position + child.positionOffset);
 				child.position = position;
-
 			}
-
 		}
 		panel.UISetPosition(position);
 		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60, 0));
@@ -1773,7 +1766,6 @@ internal class EnchantmentUIState : UIState {
 
 	private void mousePressed(UIMouseEvent evt, UIElement listeningElement) {
 		isMousePressed = true;
-
 	}
 
 
@@ -1964,6 +1956,9 @@ public class EnchantmentUIslot : MoveableUIImage {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if(ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
 		if (itemType == ItemID.None)
 			return;
 		if (IsMouseHovering) {

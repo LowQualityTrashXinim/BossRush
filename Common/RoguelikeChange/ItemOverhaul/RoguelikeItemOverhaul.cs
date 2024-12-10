@@ -191,9 +191,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.SilverShortsword:
 				case ItemID.TinShortsword:
 				case ItemID.TungstenShortsword:
-					if (player.altFunctionUse == 2 && !player.GetModPlayer<ThrownShortSwordPlayer>().OnCoolDown) {
+					if (player.altFunctionUse == 2 && !modplayer.ShortSword_OnCoolDown) {
 						Projectile.NewProjectile(source, position, velocity * 7, ModContent.ProjectileType<ThrowShortSwordProjectile>(), damage, knockback, player.whoAmI, ai2: item.type);
-						player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), BossRushUtils.ToSecond(1.5f));
+						player.AddBuff(ModContent.BuffType<ThrowShortSwordCoolDown>(), modplayer.ShortSword_ThrownCD);
 						return false;
 					}
 					return true;
@@ -347,7 +347,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int ReuseDelay = 0;
 
 		public int ModeSwitch_Revolver = 0;
+
+		public int ShortSword_ThrownCD = 90;
+		public bool ShortSword_OnCoolDown = false;
 		public override void ResetEffects() {
+			ShortSword_ThrownCD = 90;
+			ShortSword_OnCoolDown = false;
 			RoguelikeOverhaul_VikingHelmet = false;
 			Item item = Player.HeldItem;
 			if (WeaponKeyPressed) {

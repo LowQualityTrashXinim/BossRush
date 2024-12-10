@@ -65,6 +65,12 @@ public class TransmutationUIState : UIState {
 		txtbox.ShowInputTicker = false;
 		panel.Append(txtbox);
 	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if(panel.ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+	}
 }
 public class ExitUI : UIImageButton {
 	public ExitUI(Asset<Texture2D> texture) : base(texture) {

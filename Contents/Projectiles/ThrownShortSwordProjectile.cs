@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Texture;
 using Terraria.ID;
 using Terraria;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
 
 namespace BossRush.Contents.Projectiles;
 public class ThrowShortSwordProjectile : ModProjectile {
@@ -36,12 +37,6 @@ class ThrowShortSwordCoolDown : ModBuff {
 		Main.debuff[Type] = true;
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		player.GetModPlayer<ThrownShortSwordPlayer>().OnCoolDown = true;
-	}
-}
-class ThrownShortSwordPlayer : ModPlayer {
-	public bool OnCoolDown = false;
-	public override void ResetEffects() {
-		OnCoolDown = false;
+		player.GetModPlayer<GlobalItemPlayer>().ShortSword_OnCoolDown = true;
 	}
 }
