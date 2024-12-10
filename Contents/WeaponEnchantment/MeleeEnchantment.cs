@@ -1,19 +1,17 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
-using Terraria.DataStructures;
-using BossRush.Contents.Projectiles;
-using System.Collections.Generic;
-using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
-using BossRush.Common.Utils;
-using System.Linq;
-using BossRush.Contents.BuffAndDebuff;
-using System;
-using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using BossRush.Common.RoguelikeChange;
 using BossRush.Common.General;
+using Terraria.DataStructures;
+using System.Collections.Generic;
+using BossRush.Contents.Projectiles;
+using BossRush.Contents.BuffAndDebuff;
+using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {

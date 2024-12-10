@@ -308,6 +308,7 @@ Mods: {
 			DeathSickleGhost.DisplayName: Death Sickle Ghost
 			DeathSickleClone.DisplayName: Death Sickle Clone
 			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
+			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
 		}
 
 		NPCs: {

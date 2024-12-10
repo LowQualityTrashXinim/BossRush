@@ -564,10 +564,10 @@ CrimsonRod.Description:
 MagicMissile.Description:
 	'''
 	Increases mana cost by 10%
-	Using weapon that can't shoot a projectile will have following effect :
-	shoot out magic missile behind player at the cost of 14 mana ( trigger cool down base on item animation time * 2 )
+	Using weapon that can't shoot projectile will have following effect :
+	+ Shoot out magic missile behind player at the cost of 14 mana ( trigger cool down base on item animation time * 2 )
 	Using weapon that create projectile will have following effect :
-	every 3rd shot will shoot out a magic missile at the cost of 14 mana
+	+ Every 3rd shot will shoot out a magic missile at the cost of 14 mana
 	'''
 Flamelash.Description:
 	'''
@@ -637,7 +637,7 @@ Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damag
 SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
 ImpStaff.Description: makes minions shot fireballs at nearby enemy that deals 15 damage
 HornetStaff.Description: makes minions shot stingers at nearby enemy that deals 12 damage
-SandGun.Description: 
+SandGun.Description:
 	'''
 	Increases your critical strike chance by 10
 	Enemy explode sand on-death, each deals 15 damage (has a short cooldown)
