@@ -1,6 +1,5 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Mode.DreamLikeWorld;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 

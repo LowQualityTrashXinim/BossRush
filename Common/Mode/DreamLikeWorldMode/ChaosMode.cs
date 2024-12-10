@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
-namespace BossRush.Common.Mode.DreamLikeWorld;
+namespace BossRush.Common.Mode.DreamLikeWorldMode;
 internal class ChaosModeSystem : ModSystem {
 	public static bool Chaos() => ModContent.GetInstance<ChaosModeSystem>().ChaosMode;
 	public bool ChaosMode = false;
@@ -99,11 +99,11 @@ internal class ChaosModeSystem : ModSystem {
 		}
 		var Dict_Chained_Buff_Key = tag.Get<List<int>>("Dict_Chained_Buff_Key");
 		var Dict_Chained_Buff_Value = tag.Get<List<int>>("Dict_Chained_Buff_Value");
-		this.Dict_Chained_Buff = Dict_Chained_Buff_Key.Zip(Dict_Chained_Buff_Value, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		Dict_Chained_Buff = Dict_Chained_Buff_Key.Zip(Dict_Chained_Buff_Value, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 
 		var Dict_Chaos_Weapon_Key = tag.Get<List<int>>("Dict_Chaos_Weapon_Key");
 		var Dict_Chaos_Weapon_Value = tag.Get<List<ChaosItemInfo>>("Dict_Chaos_Weapon_Value");
-		this.Dict_Chaos_Weapon = Dict_Chaos_Weapon_Key.Zip(Dict_Chaos_Weapon_Value, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
+		Dict_Chaos_Weapon = Dict_Chaos_Weapon_Key.Zip(Dict_Chaos_Weapon_Value, (k, v) => new { Key = k, Value = v }).ToDictionary(x => x.Key, x => x.Value);
 	}
 }
 public struct ChaosItemInfo {

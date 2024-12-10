@@ -12,6 +12,8 @@ using System.Linq;
 using BossRush.Contents.BuffAndDebuff;
 using System;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
+using BossRush.Common.RoguelikeChange;
+using BossRush.Common.General;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
@@ -1497,27 +1499,29 @@ public class DeathSickle : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.DeathSickle;
 	}
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.5f);
+	}
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		globalItem.Item_Counter1[index]++;
+		if(!target.boss && Main.rand.NextBool(100)) {
+			target.StrikeInstantKill();
+		}
 
+		globalItem.Item_Counter1[index]++;
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
 			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
-
-
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>())
+		if (proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>() && 
+			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
 			globalItem.Item_Counter1[index]++;
 
 		if (globalItem.Item_Counter1[index] >= 15) {
 			globalItem.Item_Counter1[index] = 0;
 			Projectile.NewProjectile(player.GetSource_OnHit(target), target.Center + new Vector2(100, 0), target.Center.DirectionTo(target.Center + new Vector2(100, 0) * 15), ModContent.ProjectileType<DeathSickleGhost>(), hit.Damage, 0, player.whoAmI);
-
-
 		}
-
 	}
 }

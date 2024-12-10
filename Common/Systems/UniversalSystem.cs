@@ -5,7 +5,6 @@ using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
 using Terraria.Audio;
-using BossRush.Items;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -41,7 +40,8 @@ using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using Microsoft.Xna.Framework.Input;
 using Terraria.GameInput;
-using BossRush.Common.Mode.DreamLikeWorld;
+using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Contents.Items;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {

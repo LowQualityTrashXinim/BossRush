@@ -5,7 +5,7 @@ using BossRush.Common.Systems;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using BossRush.Common.General;
-using BossRush.Common.Mode.DreamLikeWorld;
+using BossRush.Common.Mode.DreamLikeWorldMode;
 
 namespace BossRush.Contents.Items.Chest {
 	class WoodenLootBox : LootBoxBase {

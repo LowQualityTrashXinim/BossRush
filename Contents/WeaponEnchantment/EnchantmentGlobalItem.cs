@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Common.Mode.DreamLikeWorld;
+using BossRush.Common.Mode.DreamLikeWorldMode;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
