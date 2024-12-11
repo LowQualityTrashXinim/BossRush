@@ -50,7 +50,7 @@ namespace BossRush.Contents.Items {
 		}
 		public override bool? UseItem(Player player) {
 			if (player.altFunctionUse == 2 && Ready && player.ItemAnimationJustStarted) {
-				ModContent.GetInstance<UniversalSystem>().ActivateStructureSaverUI(TopLeft, BottomRight);
+				GenerationHelper.SaveToFile(new(TopLeft.X, TopLeft.Y, Width - 1, Height - 1));
 				return true;
 			}
 

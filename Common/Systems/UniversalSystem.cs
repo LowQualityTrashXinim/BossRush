@@ -8,7 +8,6 @@ using Terraria.Audio;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Localization;
@@ -20,7 +19,6 @@ using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
 using BossRush.Common.General;
-using BossRush.Contents.Items;
 using System.Collections.Generic;
 using BossRush.Common.ChallengeMode;
 using BossRush.Contents.Items.Chest;
@@ -231,7 +229,6 @@ internal class UniversalSystem : ModSystem {
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
-		On_Main.DrawInterface += On_Main_DrawInterface;
 	}
 
 	public override void Unload() {
@@ -273,67 +270,6 @@ internal class UniversalSystem : ModSystem {
 		infoUI = null;
 		achievementUI = null;
 		structUI = null;
-	}
-	private void On_Main_DrawInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime) {
-		//Code source credit : Structure Helper
-		SpriteBatch spriteBatch = Main.spriteBatch;
-
-		if (Main.LocalPlayer.HeldItem.ModItem is StructureWand) {
-			var wand = (Main.LocalPlayer.HeldItem.ModItem as StructureWand);
-
-			spriteBatch.Begin(default, default, SamplerState.PointClamp, default, default, default, Main.GameViewMatrix.ZoomMatrix);
-
-			Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/corner").Value;
-			Texture2D tex2 = ModContent.Request<Texture2D>("StructureHelper/box").Value;
-
-			Point16 topLeft = wand.TopLeft;
-			Point16 bottomRight = wand.BottomRight;
-
-			bool drawPreview = true;
-
-			if (wand.secondPoint) {
-				var point1 = wand.point1;
-				var point2 = (Main.MouseWorld / 16).ToPoint16();
-
-				topLeft = new Point16(point1.X < point2.X ? point1.X : point2.X, point1.Y < point2.Y ? point1.Y : point2.Y);
-				bottomRight = new Point16(point1.X > point2.X ? point1.X : point2.X, point1.Y > point2.Y ? point1.Y : point2.Y);
-				int Width = bottomRight.X - topLeft.X - 1;
-				int Height = bottomRight.Y - topLeft.Y - 1;
-
-				var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
-				BossRushUtils.DrawOutline(spriteBatch, target, Color.Gold);
-				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
-
-				spriteBatch.Draw(tex, wand.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan, 0, tex.Frame().Size() / 2, 1, 0, 0);
-				//spriteBatch.Draw(tex, point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
-			}
-			else if (wand.Ready) {
-				int Width = bottomRight.X - topLeft.X - 1;
-				int Height = bottomRight.Y - topLeft.Y - 1;
-
-				var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
-				BossRushUtils.DrawOutline(spriteBatch, target, Color.Lerp(Color.Gold, Color.White, 0.5f + 0.5f * (float)System.Math.Sin(Main.GameUpdateCount * 0.2f)));
-				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
-
-				float scale1 = Vector2.Distance(Main.MouseWorld, wand.point1.ToVector2() * 16) < 32 ? 1.5f : 1f;
-				spriteBatch.Draw(tex, wand.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan * scale1, 0, tex.Frame().Size() / 2, scale1, 0, 0);
-
-				float scale2 = Vector2.Distance(Main.MouseWorld, wand.point2.ToVector2() * 16) < 32 ? 1.5f : 1f;
-				spriteBatch.Draw(tex, wand.point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Red * scale2, 0, tex.Frame().Size() / 2, scale2, 0, 0);
-
-				if (scale1 > 1 || scale2 > 1)
-					drawPreview = false;
-			}
-
-			if (drawPreview) {
-				var pos = (Main.MouseWorld / 16).ToPoint16();
-				spriteBatch.Draw(tex, pos.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
-			}
-
-			spriteBatch.End();
-		}
-
-		orig(self, gameTime);
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
@@ -2396,131 +2332,6 @@ public class AchievementButton : UIImageButton {
 		}
 	}
 	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
-}
-public class StructureUI : UIState {
-	public UIPanel panel;
-	public UITextBox textBox;
-	public UIImageButton btn_confirm;
-	public UIImageButton btn_cancel;
-	public UITextPanel<string> textPanel;
-	public Point16 TopLeft = new Point16();
-	public Point16 BottomRight = new Point16();
-	public bool IsFocus = false;
-	public int WidthStruct => BottomRight.X - TopLeft.X;
-	public int HeightStruct => BottomRight.Y - TopLeft.Y;
-	public override void OnInitialize() {
-		panel = new();
-		panel.HAlign = .5f;
-		panel.VAlign = .5f;
-		panel.UISetWidthHeight(450, 200);
-		panel.OnUpdate += Panel_OnUpdate;
-		Append(panel);
-
-		textPanel = new("Save this structure ? Please name the file");
-		textPanel.UISetWidthHeight(400, 40);
-		textPanel.HAlign = .5f;
-		textPanel.VAlign = .1f;
-		panel.Append(textPanel);
-
-		textBox = new("");
-		textBox.HAlign = .5f;
-		textBox.VAlign = .45f;
-		textBox.UISetWidthHeight(400, 40);
-		textBox.ShowInputTicker = true;
-		textBox.TextHAlign = 0f;
-		textBox.OnLeftClick += TextBox_OnLeftClick;
-		panel.Append(textBox);
-
-		btn_cancel = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
-		btn_cancel.HAlign = 0f;
-		btn_cancel.VAlign = 1f;
-		btn_cancel.OnLeftClick += Btn_cancel_OnLeftClick;
-		btn_cancel.UISetWidthHeight(52, 52);
-		panel.Append(btn_cancel);
-
-		btn_confirm = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
-		btn_confirm.HAlign = 1f;
-		btn_confirm.VAlign = 1f;
-		btn_confirm.UISetWidthHeight(52, 52);
-		btn_confirm.OnLeftClick += Btn_confirm_OnLeftClick;
-		panel.Append(btn_confirm);
-	}
-
-	private void Panel_OnUpdate(UIElement affectedElement) {
-		if (panel.ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-	}
-
-	private void TextBox_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		IsFocus = true;
-	}
-
-	private void Btn_cancel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-		Main.blockInput = false;
-		PlayerInput.WritingText = false;
-		textBox.SetText("");
-	}
-
-	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		GenerationHelper.SaveToFile(new(TopLeft.X, TopLeft.Y, WidthStruct - 1, HeightStruct - 1), textBox.Text);
-		textBox.SetText("");
-		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-	}
-	int Delay = 0;
-	bool shift = false;
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (Main.keyState.IsKeyDown(Keys.Escape) || Main.mouseLeft && !IsMouseHovering)
-			IsFocus = false;
-		if (IsFocus) {
-			Main.blockInput = true;
-			textBox.ShowInputTicker = true;
-			if (--Delay > 0) {
-				return;
-			}
-			var list = PlayerInput.GetPressedKeys();
-			if (list.Count > 0) {
-				shift = false;
-				Delay = BossRushUtils.ToSecond(.1f);
-				Keys outKey = Keys.None;
-				for (int i = 0; i < list.Count; i++) {
-					Keys key = list[0];
-					if (key == Keys.Back) {
-						textBox.Backspace();
-					}
-					else if (key == Keys.Space) {
-						textBox.Write(" ");
-					}
-					else {
-						if (key == Keys.LeftShift) {
-							shift = true;
-							continue;
-						}
-						if (outKey != key) {
-							outKey = key;
-							continue;
-						}
-					}
-				}
-				if (outKey != Keys.None) {
-					string c = outKey.ToString();
-					if (shift) {
-						textBox.Write(c);
-					}
-					else {
-						textBox.Write(c.ToLower());
-					}
-				}
-			}
-		}
-		else {
-			Main.blockInput = false;
-			textBox.ShowInputTicker = false;
-		}
-
-	}
 }
 public enum InputType {
 	text,

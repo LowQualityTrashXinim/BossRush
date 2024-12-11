@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Terraria;
 using System.Linq;
-using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using System.Collections.Generic;
 
 namespace BossRush.Common.Systems.WeaponUpgrade;
 public enum WeaponUpgradeID : short {
