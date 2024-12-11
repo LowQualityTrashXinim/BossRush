@@ -79,5 +79,4 @@ public class UiCharacterCreationChanges : ModSystem
 			MonoModHooks.DumpIL(ModContent.GetInstance<BossRush>(), il);
 		}
 	}
-	
 }

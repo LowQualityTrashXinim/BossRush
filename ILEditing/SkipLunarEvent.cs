@@ -41,6 +41,4 @@ public class SkipLunarEvent : ModSystem {
 			MonoModHooks.DumpIL(ModContent.GetInstance<BossRush>(), il);
 		}
 	}
-
-
 }
