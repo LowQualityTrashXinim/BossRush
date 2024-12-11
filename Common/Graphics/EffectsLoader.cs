@@ -18,33 +18,27 @@ internal class EffectsLoader : ModSystem {
 	public static Asset<Effect> flameEffect;
 	public static Asset<Effect> primitiveFlameBall;
 	public static HashSet<Asset<Effect>> toUnload;
+	public static readonly bool dontLoad = false;
 
 	public override void Load() {
 
+		if (dontLoad)
+			return;
+
 		if (Main.netMode != NetmodeID.Server) {
 
-			#region Modded MiscShaders
+			#region Custom Shaders
 
-			trailEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
-			GameShaders.Misc[MiscShadersID.TrailShader] = new MiscShaderData(trailEffect, "FadeTrail");
-
-			flameEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
-			GameShaders.Misc[MiscShadersID.FlameShader] = new MiscShaderData(flameEffect, "FlamethrowerFlame");
-
-			flameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
-			GameShaders.Misc[MiscShadersID.FlameBallShader] = new MiscShaderData(flameBall, "ballOfire");
-
-			#endregion
-
-
-			#region Primitive Drawing Shaders
-
-			// FNA dosent like loading custom 
+			// FNA dosent like loading custom shaders when outside main thread for some reason lol
 			Main.RunOnMainThread(() => {
 
+				trailEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
+				flameEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
+				flameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
 				primitiveFlameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitiveTest");
 
 			}).Wait();
+
 			#endregion
 
 		}

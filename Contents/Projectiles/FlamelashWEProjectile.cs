@@ -1,5 +1,4 @@
-﻿using BossRush.Common.General;
-using BossRush.Common.Graphics;
+﻿using BossRush.Common.Graphics;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,7 +18,6 @@ namespace BossRush.Contents.Projectiles;
 public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
 
 	public override string Texture => BossRushTexture.MissingTexture_Default;
-	public ShaderGlobalProjectile globalProjectile;
 	public override void SetDefaults() {
 		Projectile.friendly = true;
 		Projectile.width = Projectile.height = 24;
@@ -41,13 +39,7 @@ public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
 		//Projectile.ai[2] = Main.rand.Next(128, 256);
 	}
 
-	public override bool PreDraw(ref Color lightColor) {
 
-		Main.EntitySpriteDraw(TextureAssets.Extra[182].Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 3f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
-
-
-		return true;
-	}
 
 	public override void AI() {
 		Projectile.ai[0]++;
@@ -67,20 +59,30 @@ public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
 	}
 
 	public void updateShader() {
-		ModShaderData sd = new ModShaderData();
-		sd.shaderSettings.shaderType = MiscShadersID.FlameBallShader;
-		sd.shaderSettings.Color = Color.Orange;
-		sd.shaderSettings.shaderData = new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset);
-		sd.enabled = true;
-		sd.position = Projectile.Center;
-		sd.shaderSettings.image1 = TextureAssets.Extra[193];
-		Projectile.GetGlobalProjectile<ShaderGlobalProjectile>().shaderData = sd;
+		Projectile.GetGlobalProjectile<ShaderGlobalProjectile>().shader = new ModdedShaderHandler(EffectsLoader.flameBall.Value);
+		Projectile.GetGlobalProjectile<ShaderGlobalProjectile>().shader.enabled = true;
+		Projectile.GetGlobalProjectile<ShaderGlobalProjectile>().shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value, shaderData: new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset));
+		
+	}
+	public override bool PreDraw(ref Color lightColor) {
+
+		Main.EntitySpriteDraw(TextureAssets.Extra[183].Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 5f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
+
+
+		return false;
+	}
+	public void preDrawWithoutShader(ref Color lightColor) {
+		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 15f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
+
 	}
 
-	public void PreShaderDraw(ref Color lightColor) {
+	public void postDrawWithoutShader(Color lightcolor) {
+		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 0.5f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
 
-		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size()/2f,0.5f,Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
+	}
+
+	public override void PostDraw(Color lightColor) {
+		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 5f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
 
 	}
 }
-

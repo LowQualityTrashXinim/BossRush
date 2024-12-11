@@ -79,12 +79,4 @@ public class UiCharacterCreationChanges : ModSystem
 			MonoModHooks.DumpIL(ModContent.GetInstance<BossRush>(), il);
 		}
 	}
-
-	public override void Unload() {
-
-		IL_UICharacterCreation.UpdateDifficultyDescription -= HookUpdateDifficultyDescription;
-		IL_UICharacterCreation.ctor -= HookUICharacterCreationCtor;
-
-	}
-
 }

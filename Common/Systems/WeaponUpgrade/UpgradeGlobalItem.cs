@@ -13,7 +13,8 @@ public enum WeaponUpgradeID : short {
 public class UpgradePlayer : ModPlayer {
 	public HashSet<WeaponUpgradeID> Upgrades;
 	public override void SaveData(TagCompound tag) {
-		tag["WeaponUpgrade"] = Upgrades.ToList();
+		if(Upgrades != null)
+			tag["WeaponUpgrade"] = Upgrades.ToList();
 	}
 	public override void LoadData(TagCompound tag) {
 		if(tag.TryGet("WeaponUpgrade", out List<WeaponUpgradeID> upgrade)) {

@@ -637,7 +637,7 @@ Snapthorn.Description: 15% increased whip speed and range, Increase Summon Damag
 SpinalTap.Description: 20% increased whip speed and range, Increase Summon Damage by 3
 ImpStaff.Description: makes minions shot fireballs at nearby enemy that deals 15 damage
 HornetStaff.Description: makes minions shot stingers at nearby enemy that deals 12 damage
-SandGun.Description: 
+SandGun.Description:
 	'''
 	Increases your critical strike chance by 10
 	Enemy explode sand on-death, each deals 15 damage (has a short cooldown)

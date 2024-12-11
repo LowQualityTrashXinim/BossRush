@@ -1,10 +1,11 @@
 #pragma warning (disable : 4717) 
-sampler2D uImage1 : register(s0);
-
+sampler2D image1 : register(s1);
+sampler2D image2 : register(s2);
+sampler2D image3 : register(s3);
 float4x4 viewWorldProjection;
 float time;
 float4 shaderData;
-float3 uColor;
+float3 color;
 
 
 struct VertexShaderInput
@@ -98,7 +99,7 @@ float4 MyShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : C
     float d = length(uv);
     float4 color1 = float4(0,0,0,0);
     
-    float4 noiseTex = tex2D(uImage1, expandInsideOutside(uv));
+    float4 noiseTex = tex2D(image1, expandInsideOutside(uv));
     noiseTex.a = noiseTex.r;
     color1 += noiseTex;
     return color1;
