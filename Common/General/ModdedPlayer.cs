@@ -110,11 +110,11 @@ namespace BossRush.Common.General {
 						yield return new Item(ModContent.ItemType<BuilderLootBox>());
 					}
 					if (UniversalSystem.CanAccessContent(UniversalSystem.CHAOS_MODE)) {
-						for (int i = 0; i < 3; i++) {
-							yield return new Item(ModContent.ItemType<Relic>());
-						}
 						yield return new Item(ModContent.ItemType<SkillLootBox>(), 3);
 						yield return new Item(ModContent.ItemType<WorldEssence>());
+					}
+					for (int i = 0; i < 3; i++) {
+						yield return new Item(ModContent.ItemType<Relic>());
 					}
 					if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARELOOTBOX)) {
 						if (Main.rand.NextBool(10)) {

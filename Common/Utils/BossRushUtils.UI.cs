@@ -237,7 +237,7 @@ namespace BossRush {
 			base.Draw(spriteBatch);
 		}
 	}
-	class Roguelike_UIText : UIText {
+	public class Roguelike_UIText : UIText {
 		public bool Hide = false;
 		public Roguelike_UIText(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
 		}
@@ -254,9 +254,13 @@ namespace BossRush {
 			base.Draw(spriteBatch);
 		}
 	}
-	class Roguelike_UIImage : UIImage {
+	public class Roguelike_UIImage : UIImage {
 		public bool Hide = false;
 		public Roguelike_UIImage(Asset<Texture2D> texture) : base(texture) {
+		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			this.IgnoresMouseInteraction = Hide;
 		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
@@ -267,10 +271,14 @@ namespace BossRush {
 			DrawImage(spriteBatch);
 		}
 	}
-	class Roguelike_UIImageButton : UIImageButton {
+	public class Roguelike_UIImageButton : UIImageButton {
 		public Roguelike_UIImageButton(Asset<Texture2D> texture) : base(texture) {
 		}
 		public bool Hide = false;
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			this.IgnoresMouseInteraction = Hide;
+		}
 		public virtual void DrawImage(SpriteBatch spriteBatch) { }
 		public sealed override void Draw(SpriteBatch spriteBatch) {
 			if (Hide) {

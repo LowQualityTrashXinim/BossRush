@@ -517,7 +517,6 @@ public class DebuffTemplateV1 : RelicTemplate {
 /// This is my example on how to make a custom template that have your own stats<br/>
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
-	
 	//we can return whatever we want since this doesn't matter to what we are making,
 	//however we could also still use this to indicate what damageclass the projectile should deal
 	public override PlayerStats StatCondition(Relic relic, Player player) {
@@ -570,5 +569,24 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				player.whoAmI);
 			proj.DamageType = dmgclass;
 		}
+	}
+}
+public class SkillCoolDownTemplate : RelicTemplate {
+	public override PlayerStats StatCondition(Relic relic, Player player) {
+		return PlayerStats.SkillCooldown;
+	}
+	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
+		string Name = Enum.GetName(stat) ?? string.Empty;
+		return string.Format(Description, new string[] {
+			Color.Yellow.Hex3(),
+			Name,
+			RelicTemplateLoader.RelicValueToNumber(value.Base / 60)
+	});
+	}
+	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
+		return new(1, 1, 0, BossRushUtils.ToSecond(Main.rand.Next(1, 10)));
+	}
+	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		modplayer.AddStatsToPlayer(stat, value);
 	}
 }

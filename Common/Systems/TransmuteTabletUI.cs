@@ -231,19 +231,19 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			univitem = weaponItem;
 			Option = 1;
 		}
-		if (accItem != null && accItem.rare < ItemRarityID.Purple - 2) {
+		else if (accItem != null && accItem.rare < ItemRarityID.Purple - 2) {
 			univitem = accItem;
 			Option = 2;
 		}
-		if (headItem != null && headItem.rare < ItemRarityID.Purple - 2) {
+		else if (headItem != null && headItem.rare < ItemRarityID.Purple - 2) {
 			univitem = accItem;
 			Option = 3;
 		}
-		if (bodyItem != null && bodyItem.rare < ItemRarityID.Purple - 2) {
+		else if (bodyItem != null && bodyItem.rare < ItemRarityID.Purple - 2) {
 			univitem = accItem;
 			Option = 4;
 		}
-		if (legItem != null && legItem.rare < ItemRarityID.Purple - 2) {
+		else if (legItem != null && legItem.rare < ItemRarityID.Purple - 2) {
 			univitem = accItem;
 			Option = 5;
 		}

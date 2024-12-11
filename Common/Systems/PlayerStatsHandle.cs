@@ -1,17 +1,17 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
-using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
-using System.Linq;
-using Terraria.ID;
-using System;
 using BossRush.Common.General;
-using BossRush.Common.Systems.Mutation;
 using System.Collections.Generic;
+using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
+using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 
 namespace BossRush.Common.Systems;

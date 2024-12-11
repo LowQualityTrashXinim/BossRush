@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 	internal class Bowmarang : SynergyModItem {
 		public override void SetDefaults() {
-			Item.BossRushDefaultRange(32, 64, 15, 3f, 30, 30, ItemUseStyleID.Shoot, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
+			Item.BossRushDefaultRange(32, 64, 15, 3f, 15, 15, ItemUseStyleID.Shoot, ModContent.ProjectileType<BowmarangP>(), 20f, false, AmmoID.Arrow);
 			Item.crit = 10;
 			Item.noUseGraphic = true;
 		}
@@ -41,7 +41,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = true;
-			Projectile.timeLeft = 30;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.timeLeft = 999;
 		}
@@ -49,7 +48,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Bowmarang {
 		float MaxLengthY = 0;
 
 		int MouseXPosDirection;
-		int maxProgress = 90;
+		int maxProgress = 60;
 		int progression = 0;
 
 		bool TileCollideJustHappen = false;

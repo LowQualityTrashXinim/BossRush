@@ -132,7 +132,7 @@ public class RubyStaff : ModEnchantment {
 		Vector2 TowardMouse = Main.MouseWorld - player.Center;
 		for (int i = 0; i < 3; i++) {
 			Vector2 vel = Vector2.UnitX.RotatedBy(TowardMouse.ToRotation()) * 10;
-			Vector2 position = player.Center + vel.Vector2DistributeEvenlyPlus(3, 60, i);
+			Vector2 position = player.Center + Vector2.One.Vector2DistributeEvenlyPlus(3, 60, i) * 50;
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), position, vel, ProjectileID.RubyBolt, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
 			Main.projectile[proj].usesLocalNPCImmunity = true;
 		}
