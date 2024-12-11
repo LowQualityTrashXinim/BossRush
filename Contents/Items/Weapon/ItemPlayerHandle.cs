@@ -288,11 +288,11 @@ namespace BossRush.Contents.Items.Weapon {
 				tooltips.Where(t => t.Name == "ItemName").FirstOrDefault().OverrideColor = CustomColor.MultiColor(5);
 			}
 		}
-		public override void ModifyWeaponCrit(Player player, ref float crit) {
+		public override sealed void ModifyWeaponCrit(Player player, ref float crit) {
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();
 			crit += 4 * modplayer.SynergyBonus;
 		}
-		public override void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+		public override sealed void ModifyWeaponDamage(Player player, ref StatModifier damage) {
 			float damageIncreasement = 0;
 			float damageMultiplier = 0;
 			PlayerSynergyItemHandle modplayer = player.GetModPlayer<PlayerSynergyItemHandle>();

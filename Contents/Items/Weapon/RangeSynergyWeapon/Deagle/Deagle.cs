@@ -67,11 +67,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-5, 2);
 		}
-		public override void ModifyWeaponCrit(Player player, ref float crit) {
-			if (player.velocity == Vector2.Zero) {
-				crit += 55f;
-			}
-		}
+		//public override void ModifyWeaponCrit(Player player, ref float crit) {
+		//	if (player.velocity == Vector2.Zero) {
+		//		crit += 55f;
+		//	}
+		//}
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.Handgun)
