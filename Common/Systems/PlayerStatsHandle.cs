@@ -139,14 +139,10 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.lifeRegen = (int)UpdateHPRegen.ApplyTo(Player.lifeRegen);
 	}
 	public void Add_ExtraLifeWeapon(Item item) {
-		if (!item.IsAWeapon()) {
-			return;
-		}
 		if (!listItem.Contains(item))
 			listItem.Add(item);
 	}
 	public override void ResetEffects() {
-		listItem.Clear();
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
 		}
@@ -220,9 +216,9 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		if (listItem.Contains(Player.HeldItem)) {
-			listItem.Remove(Player.HeldItem);
-			Player.HeldItem.TurnToAir();
+		if (listItem != null && listItem.Count > 0) {
+			Player.inventory.Where(listItem.Contains).FirstOrDefault().TurnToAir();
+			listItem.RemoveAt(0);
 			return false;
 		}
 		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
@@ -383,7 +379,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// <param name="Multiplicative"></param>
 	/// <param name="Flat"></param>
 	/// <param name="Base"></param>
-	public static void AddStatsToPlayer(Player player, PlayerStats stat,StatModifier modifier) {
+	public static void AddStatsToPlayer(Player player, PlayerStats stat, StatModifier modifier) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(stat, modifier);
 	}
 	/// <summary>

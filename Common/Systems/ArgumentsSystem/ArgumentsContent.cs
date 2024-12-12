@@ -108,7 +108,7 @@ public class True : ModAugments {
 public class Terra : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if (item.type == ItemID.TerraBlade) {
+		if (player.HeldItem.type == ItemID.TerraBlade) {
 			Chance = .2f;
 		}
 		return true;
@@ -127,7 +127,7 @@ public class Terra : ModAugments {
 public class TitanI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if (item.knockBack > 10) {
+		if (player.HeldItem.knockBack > 10) {
 			Chance = .2f;
 		}
 		return true;
@@ -150,7 +150,7 @@ public class TitanI : ModAugments {
 public class TitanII : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if (item.knockBack > 10) {
+		if (player.HeldItem.knockBack > 10) {
 			Chance = .2f;
 		}
 		return true;
@@ -529,7 +529,7 @@ public class StrengthenV : ModAugments {
 public class DarkSoul : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		return !item.noMelee && !item.noUseGraphic;
+		return !player.HeldItem.noMelee && !player.HeldItem.noUseGraphic;
 	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkBlue;
