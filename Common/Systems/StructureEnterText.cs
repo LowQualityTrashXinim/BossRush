@@ -9,7 +9,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BossRush.Common.Systems;
 
-public class StructureEnterText_State : UIState {
+public class StructureEnterText : UIElement {
+
+	public StructureEnterText() 
+	{
+		Width.Precent = 1f;
+		Height.Precent = 1f;
+		Recalculate();
+	}
+
 	StructStructureEnterText_TextBox textBar;
 	UIText SaveButton;
 	UIText ExitButton;
@@ -19,7 +27,6 @@ public class StructureEnterText_State : UIState {
 		textBar = new("");
 		SaveButton = new("Save");
 		ExitButton = new("Exit");
-
 		textBar.UISetWidthHeight(64, 16);
 		textBar.SetTextMaxLength(75);
 		SaveButton.UISetPosition(new Vector2(10, 46));
@@ -49,6 +56,7 @@ public class StructureEnterText_State : UIState {
 		Append(textBar);
 		Append(SaveButton);
 		Append(ExitButton);
+
 	}
 
 	public override void Update(GameTime gameTime) {
@@ -85,7 +93,6 @@ public class StructStructureEnterText_TextBox : UITextBox {
 	// must be inside this drawself method for it to write text like this...
 	protected override void DrawSelf(SpriteBatch spriteBatch) {
 		PlayerInput.WritingText = focused;
-		Main.instance.HandleIME();
 		string text = Main.GetInputText(Text);
 
 		if (!Text.Equals(text) && focused) {
