@@ -7,7 +7,6 @@ using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.EnragedBossAccessories.KingSlimeDelight;
-using Terraria.DataStructures;
 
 namespace BossRush.Contents.Items.RelicItem;
 public class GenericTemplate : RelicTemplate {
@@ -318,7 +317,8 @@ public class HealthV3Template : RelicTemplate {
 		for (int i = 0; i < player.buffType.Length; i++) {
 			if (player.buffType[i] == 0) continue;
 			if (Main.debuff[player.buffType[i]]) {
-				modplayer.AddStatsToPlayer(stat, value);
+				float additive = MathF.Round(value.Base * (1 + relic.RelicTier / 3f));
+				modplayer.AddStatsToPlayer(stat, additive);
 				break;
 			}
 		}
@@ -457,7 +457,15 @@ public class SkillActivateTemplate : RelicTemplate {
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		SkillHandlePlayer skillPlayer = player.GetModPlayer<SkillHandlePlayer>();
 		if (skillPlayer.Activate) {
-			modplayer.AddStatsToPlayer(stat, value);
+			float additive;
+			if (stat == PlayerStats.CritChance) {
+				additive = MathF.Round(value.Base * (1 + relic.RelicTier / 3f));
+				modplayer.AddStatsToPlayer(stat, Base: additive);
+			}
+			else {
+				additive = value.Additive * (1 + relic.RelicTier / 3f);
+				modplayer.AddStatsToPlayer(stat, additive);
+			}
 		}
 	}
 }
@@ -508,8 +516,9 @@ public class DebuffTemplateV1 : RelicTemplate {
 				count++;
 			}
 		}
+		float additive = value.Additive * (1 + relic.RelicTier / 3f);
 		if (count > 3) {
-			modplayer.AddStatsToPlayer(stat, value);
+			modplayer.AddStatsToPlayer(stat, additive);
 		}
 	}
 }

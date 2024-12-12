@@ -108,7 +108,7 @@ public class True : ModAugments {
 public class Terra : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if (item.type == ItemID.TerraBlade) {
+		if (player.HeldItem.type == ItemID.TerraBlade) {
 			Chance = .2f;
 		}
 		return true;
@@ -127,7 +127,7 @@ public class Terra : ModAugments {
 public class TitanI : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if (item.knockBack > 10) {
+		if (player.HeldItem.knockBack > 10) {
 			Chance = .2f;
 		}
 		return true;
@@ -150,7 +150,7 @@ public class TitanI : ModAugments {
 public class TitanII : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		if (item.knockBack > 10) {
+		if (player.HeldItem.knockBack > 10) {
 			Chance = .2f;
 		}
 		return true;
@@ -220,7 +220,7 @@ public class CriticalIV : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Orange;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 25);
 		modplayer.AddStatsToPlayer(PlayerStats.CritDamage, .5f);
@@ -239,7 +239,7 @@ public class VampireI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		player.GetModPlayer<PlayerStatsHandle>().LifeSteal += 0.01f;
 	}
 }
@@ -255,7 +255,7 @@ public class VampireII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		if (!Main.IsItDay())
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.CritDamage, Multiplicative: 1.5f);
 	}
@@ -272,7 +272,7 @@ public class VampireIII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		if (!Main.IsItDay()) {
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, 1.25f, Base: 1);
 		}
@@ -291,7 +291,7 @@ public class AlchemistI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.BlueViolet;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.DebuffDamage, 1.06f);
 	}
 }
@@ -351,7 +351,7 @@ public class Union : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Bisque;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		float damageIncreasement = 0;
 		for (int i = 0; player.inventory.Length > 0; i++) {
 			if (i > 50) {
@@ -489,7 +489,7 @@ public class StrengthenI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.IndianRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1.25f);
 	}
 }
@@ -497,7 +497,7 @@ public class StrengthenII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.IndianRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritDamage, 1.25f);
 	}
 }
@@ -505,7 +505,7 @@ public class StrengthenIII : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.IndianRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: 10);
 	}
 }
@@ -513,7 +513,7 @@ public class StrengthenIV : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.IndianRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Base: 50);
 	}
 }
@@ -521,7 +521,7 @@ public class StrengthenV : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.IndianRed;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: 10);
 	}
 }
@@ -529,7 +529,7 @@ public class StrengthenV : ModAugments {
 public class DarkSoul : ModAugments {
 	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
 		Chance = 0;
-		return !item.noMelee && !item.noUseGraphic;
+		return !player.HeldItem.noMelee && !player.HeldItem.noUseGraphic;
 	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkBlue;
@@ -547,7 +547,21 @@ public class ExtraLife : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.White;
 	}
-	public override void UpdateHeld(Player player, Item item) {
+	public override void UpdateAccessory(Player player, Item item) {
 		player.GetModPlayer<PlayerStatsHandle>().Add_ExtraLifeWeapon(item);
+	}
+}
+
+public class IntoxicateI : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.GreenYellow;
+	}
+	public override void UpdateAccessory(Player player, Item item) {
+		for (int i = 0; i < player.buffType.Length; i++) {
+			if (player.buffType[i] == 0) continue;
+			if (Main.debuff[player.buffType[i]]) {
+				player.endurance += .1f;
+			}
+		}
 	}
 }

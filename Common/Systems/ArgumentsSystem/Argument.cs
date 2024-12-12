@@ -1,12 +1,12 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
+using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 internal class AugmentsLoader : ModSystem {
@@ -25,16 +25,13 @@ public class AugmentsWeapon : GlobalItem {
 	public float AugmentsChance = 0;
 	public override void SetDefaults(Item entity) {
 		switch (entity.type) {
-			case ItemID.CopperBroadsword:
-				AugmentsChance = 1;
-				break;
 			default:
 				AugmentsChance = 0.01f;
 				break;
 		}
 	}
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-		return entity.IsAWeapon();
+		return entity.accessory;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		for (int i = 0; i < AugmentsSlots.Length; i++) {
@@ -45,7 +42,7 @@ public class AugmentsWeapon : GlobalItem {
 			tooltips.Add(new TooltipLine(Mod, $"Augments{i + 1}", $"[c/{Augments.tooltipColor.Hex3()}:{Augments.DisplayName}] : {Augments.Description}"));
 		}
 	}
-	public float WeaponConditionalChance(Item item, Player player) {
+	public float ItemConditionalChance(Item item, Player player) {
 		float Chance = 0;
 		if (item.prefix == PrefixID.Broken || item.prefix == PrefixID.Annoying) {
 			Chance += 1;
@@ -67,7 +64,7 @@ public class AugmentsWeapon : GlobalItem {
 	/// <param name="chance">the chance to add Augments</param>
 	/// <param name="decayable">disable the decay of custom chance</param>
 	public static void AddAugments(Player player, ref Item item, int limit = -1, float chance = 0, bool decayable = true) {
-		if (!item.IsAWeapon()) {
+		if (!item.accessory) {
 			return;
 		}
 		if (item.TryGetGlobalItem(out AugmentsWeapon weapon)) {
@@ -93,7 +90,7 @@ public class AugmentsWeapon : GlobalItem {
 			if (player.IsDebugPlayer()) {
 				chance += 10;
 			}
-			float chanceDecay = modplayer.IncreasesChance + chance + weapon.WeaponConditionalChance(item, player);
+			float chanceDecay = modplayer.IncreasesChance + chance + weapon.ItemConditionalChance(item, player);
 			ModAugments modAugments = null;
 			float augmentChance = 0;
 			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
@@ -135,16 +132,22 @@ public class AugmentsWeapon : GlobalItem {
 		Array.Copy((int[])AugmentsSlots?.Clone(), clone.AugmentsSlots, 5);
 		return base.Clone(from, to);
 	}
-	public override void HoldItem(Item item, Player player) {
+	public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
 		if (AugmentsSlots == null) {
 			AugmentsSlots = new int[5];
 		}
+		bool added = false;
+		AugmentsPlayer augmentationplayer = player.GetModPlayer<AugmentsPlayer>();
 		for (int i = 0; i < AugmentsSlots.Length; i++) {
 			ModAugments Augments = AugmentsLoader.GetAugments(AugmentsSlots[i]);
 			if (Augments == null) {
 				continue;
 			}
-			Augments.UpdateHeld(player, item);
+			if (!added) {
+				augmentationplayer.accItemUpdate.Add(item);
+				added = true;
+			}
+			Augments.UpdateAccessory(player, item);
 		}
 	}
 	public override void SaveData(Item item, TagCompound tag) {
@@ -173,7 +176,7 @@ public abstract class ModAugments : ModType {
 	public virtual void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
-	public virtual void UpdateHeld(Player player, Item item) { }
+	public virtual void UpdateAccessory(Player player, Item item) { }
 	/// <summary>
 	/// By default Augments will always be applied on weapon
 	/// </summary>
@@ -187,11 +190,11 @@ public abstract class ModAugments : ModType {
 	}
 }
 public class AugmentsPlayer : ModPlayer {
-	AugmentsWeapon weapon = null;
 	/// <summary>
 	/// This chance will decay for each success roll
 	/// </summary>
 	public float IncreasesChance = 0;
+	public List<Item> accItemUpdate = new();
 	public void SafeRequest_AddAugments(float chance, int limit, bool decayable) {
 		Request_ChanceAugments = chance;
 		Request_LimitAugments = limit;
@@ -202,61 +205,65 @@ public class AugmentsPlayer : ModPlayer {
 	public bool? Request_Decayable = false;
 	public override void ResetEffects() {
 		IncreasesChance = 0;
+		accItemUpdate.Clear();
 	}
-	/// <summary>
-	/// With this, we can comfortably use <see cref="weapon"/>
-	/// </summary>
-	/// <param name="item"></param>
-	/// <returns></returns>
-	private bool IsAugmentsable(Item item) => weapon != null && item.IsAWeapon();
+	private bool IsAugmentsable(Item item) => item.accessory;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (IsAugmentsable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
-				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
-				if (Augments == null) {
-					continue;
+		foreach (var item in accItemUpdate) {
+			if (IsAugmentsable(item)) {
+				AugmentsWeapon moditem = item.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
 				}
-				Augments.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
 			}
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (IsAugmentsable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
-				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
-				if (Augments == null) {
-					continue;
+		foreach (var item in accItemUpdate) {
+			if (IsAugmentsable(item)) {
+				AugmentsWeapon moditem = item.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.OnHitNPCWithProj(Player, proj, target, hit);
 				}
-				Augments.OnHitNPCWithProj(Player, proj, target, hit);
 			}
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (IsAugmentsable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
-				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
-				if (Augments == null) {
-					continue;
+		foreach (var item in accItemUpdate) {
+			if (IsAugmentsable(item)) {
+				AugmentsWeapon moditem = item.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 				}
-				Augments.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
 			}
 		}
 	}
 	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		if (IsAugmentsable(Player.HeldItem)) {
-			for (int i = 0; i < weapon.AugmentsSlots.Length; i++) {
-				ModAugments Augments = AugmentsLoader.GetAugments(weapon.AugmentsSlots[i]);
-				if (Augments == null) {
-					continue;
+		foreach (var acc in accItemUpdate) {
+			if (IsAugmentsable(acc)) {
+				AugmentsWeapon moditem = acc.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 				}
-				Augments.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
 			}
 		}
 	}
 	public override void PreUpdate() {
-		Item item = Player.HeldItem;
-		if (item.TryGetGlobalItem(out AugmentsWeapon AugmentsWeapon)) {
-			weapon = AugmentsWeapon;
-		}
 	}
 }

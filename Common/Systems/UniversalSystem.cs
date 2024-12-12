@@ -575,6 +575,7 @@ class DefaultUI : UIState {
 		}
 		if (Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
 			system.ActivateSpoilsUI(Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First(), true);
+			return;
 		}
 		if (system.user2ndInterface.CurrentState == null) {
 			system.DeactivateUI();

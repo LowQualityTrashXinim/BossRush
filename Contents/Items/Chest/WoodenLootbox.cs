@@ -103,14 +103,13 @@ namespace BossRush.Contents.Items.Chest {
 						GetAccessories(Type, player, true);
 					}
 					GetPotion(Type, player);
-					GetSkillLootbox(Type, player, 3);
 				}
 				else {
 					GetWeapon(entitySource, player, 2);
 					GetArmorForPlayer(entitySource, player);
 					GetAccessories(Type, player);
 					GetPotion(Type, player);
-					GetSkillLootbox(Type, player, 1);
+					player.QuickSpawnItem(entitySource, ModContent.ItemType<SpecialSkillLootBox>());
 				}
 			}
 			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
