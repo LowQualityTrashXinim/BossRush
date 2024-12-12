@@ -1,4 +1,5 @@
 ﻿using BossRush.Common.Graphics;
+using BossRush.Common.Graphics.Primitives;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,9 +16,16 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Projectiles;
-public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
+public class FlamelashWEProjectile : ModProjectile {
 
 	public override string Texture => BossRushTexture.MissingTexture_Default;
+
+	
+	SimpleQuad SimpleQuad;
+	float shaderOffset;
+	bool exploding = false;
+	int randomSize;
+
 	public override void SetDefaults() {
 		Projectile.friendly = true;
 		Projectile.width = Projectile.height = 24;
@@ -25,13 +33,8 @@ public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
 		Projectile.DamageType = DamageClass.Magic;
 		Projectile.ignoreWater = true;
 		Projectile.timeLeft = 120;
-
+		SimpleQuad = new SimpleQuad();
 	}
-
-	float shaderOffset;
-	bool exploding = false;
-	int randomSize;
-
 
 	public override void OnSpawn(IEntitySource source) {
 		exploding = false;
@@ -66,23 +69,22 @@ public class FlamelashWEProjectile : ModProjectile, IDrawsShader {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 
-		Main.EntitySpriteDraw(TextureAssets.Extra[183].Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 5f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
-
+		//Main.EntitySpriteDraw(TextureAssets.Extra[193].Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 1f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
+		SimpleQuad.position[0] = Projectile.Center;
+		SimpleQuad.size[0] = new Vector2(32, 16);
+		SimpleQuad.Draw();
 
 		return false;
 	}
 	public void preDrawWithoutShader(ref Color lightColor) {
-		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 15f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
 
 	}
 
 	public void postDrawWithoutShader(Color lightcolor) {
-		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 0.5f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
 
 	}
 
 	public override void PostDraw(Color lightColor) {
-		Main.EntitySpriteDraw(ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value, Projectile.Center - Main.screenPosition, null, Color.White, 0, TextureAssets.Projectile[Type].Value.Size() / 2f, 5f, Microsoft.Xna.Framework.Graphics.SpriteEffects.None);
 
 	}
 }

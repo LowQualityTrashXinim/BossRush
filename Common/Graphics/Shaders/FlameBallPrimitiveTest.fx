@@ -23,7 +23,7 @@ struct VertexShaderOutput
 };
 
 
-VertexShaderOutput MyShaderVS(VertexShaderInput input)
+VertexShaderOutput ShaderVS(VertexShaderInput input)
 {
     
     VertexShaderOutput output = (VertexShaderOutput)0;
@@ -58,7 +58,7 @@ float2 expandInsideOutside(float2 uv)
     return (d * uv2 + ((t) - uv2));
     
 }
-float4 MyShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COLOR0
+float4 ShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COLOR0
 {
     //float2 uv = texCoords * 2.0 - 1.0;
     //float d = length(uv);
@@ -108,9 +108,9 @@ float4 MyShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : C
 
 technique t0
 {
-    pass MyShader
+    pass explodingStar
     {
-        VertexShader = compile vs_2_0 MyShaderVS();
-        PixelShader = compile ps_2_0 MyShaderPS();
+        VertexShader = compile vs_2_0 ShaderVS();
+        PixelShader = compile ps_2_0 ShaderPS();
     }
 }
