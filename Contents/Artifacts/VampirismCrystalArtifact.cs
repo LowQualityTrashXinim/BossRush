@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {
@@ -18,6 +19,7 @@ namespace BossRush.Contents.Artifacts {
 		public override void ResetEffects() {
 			Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
 			cooldown = BossRushUtils.CountDown(cooldown);
+			PlayerStatsHandle.SetSecondLifeCondition(Player,"VC", Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire);
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);
@@ -41,7 +43,7 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-			if (!Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire) {
+			if (PlayerStatsHandle.GetSecondLife(Player, "VC")) {
 				Player.Heal(Player.statLifeMax2);
 				Player.AddBuff(ModContent.BuffType<SecondChance>(), 18000);
 				return false;

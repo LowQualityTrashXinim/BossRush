@@ -147,7 +147,7 @@ public class AugmentsWeapon : GlobalItem {
 				augmentationplayer.accItemUpdate.Add(item);
 				added = true;
 			}
-			Augments.UpdateHeld(player, item);
+			Augments.UpdateAccessory(player, item);
 		}
 	}
 	public override void SaveData(Item item, TagCompound tag) {
@@ -176,7 +176,7 @@ public abstract class ModAugments : ModType {
 	public virtual void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
-	public virtual void UpdateHeld(Player player, Item item) { }
+	public virtual void UpdateAccessory(Player player, Item item) { }
 	/// <summary>
 	/// By default Augments will always be applied on weapon
 	/// </summary>
