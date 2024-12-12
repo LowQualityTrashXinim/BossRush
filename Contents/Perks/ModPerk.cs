@@ -1014,6 +1014,9 @@ namespace BossRush.Contents.Perks {
 			}
 			return false;
 		}
+		public override void ResetEffect(Player player) {
+			PlayerStatsHandle.SetSecondLifeCondition(player, "P_TP", !player.HasBuff(ModContent.BuffType<TitanPowerBuff>()));
+		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, Base: 200);
@@ -1022,8 +1025,9 @@ namespace BossRush.Contents.Perks {
 			player.endurance += .4f;
 		}
 		public override bool PreKill(Player player) {
-			if (!player.HasBuff(ModContent.BuffType<TitanPowerBuff>())) {
+			if (PlayerStatsHandle.GetSecondLife(player, "P_TP")) {
 				player.AddBuff(ModContent.BuffType<TitanPowerBuff>(), BossRushUtils.ToMinute(4));
+				player.Heal(player.statLifeMax2);
 				return true;
 			}
 			return false;

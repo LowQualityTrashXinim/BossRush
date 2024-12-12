@@ -177,3 +177,8 @@ ExtraLife: {
 	DisplayName: Extra Life
 	Description: Grant you 1 extra life at the cost of this weapon
 }
+
+IntoxicateI: {
+	DisplayName: Intoxicate I
+	Description: While under a debuff effect, gain 10% damage reduction
+}

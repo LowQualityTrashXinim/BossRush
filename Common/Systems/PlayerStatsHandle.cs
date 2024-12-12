@@ -216,9 +216,15 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
+		foreach (bool chance in SecondLife.Values) {
+			if (chance) {
+				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+			}
+		}
 		if (listItem != null && listItem.Count > 0) {
 			Player.inventory.Where(listItem.Contains).FirstOrDefault().TurnToAir();
 			listItem.RemoveAt(0);
+			Player.Heal(Player.statLifeMax2 / 2);
 			return false;
 		}
 		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
@@ -406,6 +412,23 @@ public class PlayerStatsHandle : ModPlayer {
 				return DamageClass.Default;
 		}
 	}
+	public Dictionary<string, bool> SecondLife = new();
+	public static void SetSecondLifeCondition(Player player,string context, bool condition) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		if (modplayer.SecondLife.ContainsKey(context)) {
+			modplayer.SecondLife[context] = condition;
+		}
+		else {
+			modplayer.SecondLife.Add(context, condition);
+		}
+	}
+	public static bool GetSecondLife(Player player, string context) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		if (modplayer.SecondLife.ContainsKey(context)) {
+			return modplayer.SecondLife[context];
+		}
+		return false;
+	}
 }
 public class PlayerStatsHandleSystem : ModSystem {
 	public override void Load() {
@@ -418,10 +441,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Projectile.NewProjectileDirect += On_Projectile_NewProjectileDirect;
 		On_Player.GiveImmuneTimeForCollisionAttack += On_Player_GiveImmuneTimeForCollisionAttack;
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
-		On_Player.StrikeNPCDirect += On_Player_StrikeNPCDirect;
-	}
-
-	private void On_Player_StrikeNPCDirect(On_Player.orig_StrikeNPCDirect orig, Player self, NPC npc, NPC.HitInfo hit) {
 	}
 
 	private void On_Player_SetImmuneTimeForAllTypes(On_Player.orig_SetImmuneTimeForAllTypes orig, Player self, int time) {
@@ -523,8 +542,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 	public static bool CheckProjectile_ScatterShotCondition(Player player, Projectile proj) => player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
 	public static bool CheckProjectile_ScatterShotCondition(Player player, int proj) => player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
-
-
 	private void On_Player_Heal(On_Player.orig_Heal orig, Player self, int amount) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, (int)modplayer.HealEffectiveness.ApplyTo(amount));
