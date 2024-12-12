@@ -4,6 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Contents.Skill;
 using BossRush.Common.Utils;
+using System.Linq;
 
 namespace BossRush.Contents.Items.Chest;
 internal class WeaponLootBox : ModItem {
@@ -35,5 +36,18 @@ internal class SkillLootBox : ModItem {
 	public override void RightClick(Player player) {
 		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
 		skillplayer.RequestAddSkill_Inventory(Main.rand.Next(SkillModSystem.TotalCount));
+	}
+}
+internal class SpecialSkillLootBox : ModItem {
+	public override string Texture => BossRushTexture.PLACEHOLDERCHEST;
+	public override void SetDefaults() {
+		Item.width = 38;
+		Item.height = 30;
+		Item.rare = ItemRarityID.LightPurple;
+	}
+	public override bool CanRightClick() => true;
+	public override void RightClick(Player player) {
+		SkillHandlePlayer skillplayer = player.GetModPlayer<SkillHandlePlayer>();
+		skillplayer.RequestAddSkill_Inventory(Main.rand.Next(SkillModSystem.dict_skill[SkillTypeID.Skill_Projectile].Select(i => i.Type).ToList()));
 	}
 }

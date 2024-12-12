@@ -136,7 +136,9 @@ public class RubyStaff : ModEnchantment {
 			int proj = Projectile.NewProjectile(player.GetSource_ItemUse(item), position, vel, ProjectileID.RubyBolt, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI);
 			Main.projectile[proj].usesLocalNPCImmunity = true;
 		}
-		player.statMana += (int)(player.statManaMax2 * .5f);
+		int manaheal = (int)(player.statManaMax2 * .5f);
+		player.ManaEffect(manaheal);
+		player.statMana += manaheal;
 	}
 }
 public class DiamondStaff : ModEnchantment {
