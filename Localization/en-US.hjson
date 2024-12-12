@@ -2041,6 +2041,11 @@ Mods: {
 				DisplayName: Star Whip
 				Tooltip: ""
 			}
+
+			SpecialSkillLootBox: {
+				DisplayName: Special Skill Loot Box
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
