@@ -348,7 +348,8 @@ ImprovedPotion: {
 	DisplayName: Mana/Healing Potion+
 	Description:
 		'''
-		+ Healing potion is heal you 70% more
+		+ Buff duration increases by 45%
+		+ Healing potion heal you 70% more
 		+ During mana sickness, increases mana regen capability massively
 		- After mana sicnkess duration is over, you can't consume any mana potion for 10s
 		'''
