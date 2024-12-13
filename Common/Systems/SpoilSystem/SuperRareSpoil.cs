@@ -60,9 +60,7 @@ internal class SuperRareSpoil {
 		public override void OnChoose(Player player, int itemsource) {
 			Item item = player.QuickSpawnItemDirect(player.GetSource_OpenItem(itemsource), ModContent.ItemType<Relic>());
 			if (item.ModItem is Relic relic) {
-				for (int i = 0; i < 4; i++) {
-					relic.AddRelicTemplate(player, Main.rand.Next(RelicTemplateLoader.TotalCount));
-				}
+				relic.AutoAddRelicTemplate(player, 4);
 			}
 		}
 	}

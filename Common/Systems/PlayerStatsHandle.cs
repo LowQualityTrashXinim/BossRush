@@ -196,6 +196,7 @@ public class PlayerStatsHandle : ModPlayer {
 		NonCriticalDamage = StatModifier.Default;
 		LifeSteal = StatModifier.Default - 1;
 		SkillDuration = StatModifier.Default;
+		SkillCoolDown = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
