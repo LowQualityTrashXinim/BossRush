@@ -5,6 +5,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.WeaponEnchantment;
 using Terraria.ID;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -34,6 +35,24 @@ namespace BossRush.Contents.Artifacts {
 				}
 				EnchantmentSystem.EnchantItem(ref item, 3);
 			}
+		}
+	}
+	public class BlidedPride : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			damage += .24f + .1f * StackAmount(player);
+		}
+		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
+			crit += 5 + 5 * StackAmount(player);
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			if (Vector2.DistanceSquared(player.Center, target.Center) <= (300f * 300f) + 10000 * StackAmount(player)) {
+				return;
+			}
+			modifiers.FinalDamage *= .5f;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using BossRush.Texture;
 using Terraria;
 using System;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Artifacts;
 internal class TokenOfGluttonyArtifact : Artifact {
@@ -39,6 +40,50 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 		if (Main.rand.NextBool(5)) {
 			Player.Heal((int)modifiers.FinalDamage.ApplyTo(proj.damage * .5f));
 			modifiers.SetMaxDamage(1);
+		}
+	}
+}
+public class EndlessHunger : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>();
+	}
+	public override void UpdateEquip(Player player) {
+		player.endurance += .05f * StackAmount(player);
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
+		if (player.endurance >= .2f) {
+			player.Heal((int)(hurtInfo.SourceDamage * Main.rand.NextFloat(player.endurance - .2f, 1f)));
+		}
+	}
+	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
+		if (player.endurance >= .2f) {
+			player.Heal((int)(hurtInfo.SourceDamage * Main.rand.NextFloat(player.endurance - .2f,1f)));
+		}
+	}
+}
+public class Satisfaction : Perk {
+	public override void SetDefaults() {
+		CanBeStack = true;
+		StackLimit = 3;
+	}
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>();
+	}
+	public override void UpdateEquip(Player player) {
+		if (!player.ComparePlayerHealthInPercentage(.4f)) {
+			player.endurance += 0.1f * StackAmount(player);
+		}
+		else if(player.statLife >= player.statLifeMax2) {
+			player.endurance += 1f;
+		}
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (!player.ComparePlayerHealthInPercentage(.6f)) {
+			player.Heal(Math.Clamp((int)(hit.Damage * .1f), 0, 100));
 		}
 	}
 }

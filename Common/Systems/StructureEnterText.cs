@@ -11,27 +11,26 @@ namespace BossRush.Common.Systems;
 
 public class StructureEnterText : UIElement {
 
-	public StructureEnterText() 
-	{
+	public StructureEnterText() {
 		Width.Precent = 1f;
 		Height.Precent = 1f;
 		Recalculate();
 	}
 
 	StructStructureEnterText_TextBox textBar;
-	UIText SaveButton;
-	UIText ExitButton;
+	UITextBox SaveButton;
+	UITextBox ExitButton;
 	public bool focus = false;
 	bool mousePressed = false;
 	public override void OnInitialize() {
 		textBar = new("");
-		SaveButton = new("Save");
 		ExitButton = new("Exit");
+		ExitButton.UISetPosition(new Vector2(10, 46 * 1.5f));
+		SaveButton = new("Save");
+		SaveButton.UISetPosition(new Vector2(10, 46));
+
 		textBar.UISetWidthHeight(64, 16);
 		textBar.SetTextMaxLength(75);
-		SaveButton.UISetPosition(new Vector2(10, 46));
-		ExitButton.UISetPosition(new Vector2(10, 46 * 1.5f)); ;
-
 		textBar.OnLeftMouseDown += (a, b) => {
 			focus = true;
 			mousePressed = true;
@@ -41,7 +40,7 @@ public class StructureEnterText : UIElement {
 			mousePressed = false;
 		};
 
-		
+
 		ExitButton.OnLeftClick += (a, b) => {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 		};
@@ -52,7 +51,7 @@ public class StructureEnterText : UIElement {
 		};
 
 
-		
+
 		Append(textBar);
 		Append(SaveButton);
 		Append(ExitButton);
@@ -60,15 +59,18 @@ public class StructureEnterText : UIElement {
 	}
 
 	public override void Update(GameTime gameTime) {
+		if (IgnoresMouseInteraction)
+			return;
+
 		if (mousePressed)
-			this.UISetPosition(Vector2.Clamp(Main.MouseScreen - new Vector2(textBar.Width.Pixels/2f,textBar.Height.Pixels/2f), Vector2.Zero + new Vector2(60), Main.ScreenSize.ToVector2() - new Vector2(60) * Main.UIScale));
+			this.UISetPosition(Vector2.Clamp(Main.MouseScreen - new Vector2(textBar.Width.Pixels / 2f, textBar.Height.Pixels / 2f), Vector2.Zero + new Vector2(60), Main.ScreenSize.ToVector2() - new Vector2(60) * Main.UIScale));
 		this.UISetPosition(Vector2.Clamp(new Vector2(this.Left.Pixels, this.Top.Pixels), Vector2.Zero + new Vector2(60), Main.ScreenSize.ToVector2() - new Vector2(60) * Main.UIScale));
 
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 
-		if ((Main.mouseLeft && !textBar.IsMouseHovering) || Main.inputText.IsKeyDown(Keys.Escape)) 
+		if ((Main.mouseLeft && !textBar.IsMouseHovering) || Main.inputText.IsKeyDown(Keys.Escape))
 			focus = false;
 
 		Main.blockInput = focus;

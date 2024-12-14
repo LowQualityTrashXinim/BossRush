@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Items;
 using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Perks;
+using BossRush.Common.Systems;
+using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Contents.WeaponEnchantment;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfGreedArtifact : Artifact {
@@ -22,11 +26,58 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 		public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
-			if(!Greed) {
+			if (!Greed) {
 				return;
 			}
 			if (Player.GetModPlayer<SynergyModPlayer>().CompareOldvsNewItemType) {
 				damage *= .85f;
+			}
+		}
+	}
+	public class GreedPrivilage : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 2;
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>();
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.LootDropIncrease, Base: 1 * StackAmount(player));
+			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .2f * StackAmount(player);
+			player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .05f * StackAmount(player);
+		}
+	}
+	public class TheBigMoment : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 5;
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<TokenOfGreedArtifact>();
+		}
+		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+			float chance = player.GetModPlayer<PlayerStatsHandle>().ChestLoot.DropModifier.ApplyTo(1);
+			if (Main.rand.NextFloat() <= chance * .01f * StackAmount(player)) {
+				modifiers.SourceDamage *= 2;
+			}
+			else if (Main.rand.NextFloat() <= chance * .025f * StackAmount(player)) {
+				modifiers.SourceDamage += 1;
+			}
+			else if (Main.rand.NextFloat() <= chance * .05f * StackAmount(player)) {
+				player.Heal((int)chance);
+			}
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			float chance = player.GetModPlayer<PlayerStatsHandle>().ChestLoot.DropModifier.ApplyTo(1);
+			if (Main.rand.NextFloat() <= chance * .01f * StackAmount(player)) {
+				modifiers.SourceDamage *= 2;
+			}
+			else if (Main.rand.NextFloat() <= chance * .025f * StackAmount(player)) {
+				modifiers.SourceDamage += 1;
+			}
+			else if (Main.rand.NextFloat() <= chance * .05f * StackAmount(player)) {
+				player.Heal((int)chance);
 			}
 		}
 	}
