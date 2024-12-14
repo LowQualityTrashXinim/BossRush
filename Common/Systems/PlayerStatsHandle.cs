@@ -92,6 +92,11 @@ public class PlayerStatsHandle : ModPlayer {
 	/// </summary>
 	public int synchronize_Counter = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (UpdateThorn.ApplyTo(1) >= 1) {
+			NPC.HitInfo newhitinfo = hit;
+			newhitinfo.Damage = (int)UpdateThorn.ApplyTo(hit.Damage);
+			Player.StrikeNPCDirect(target, newhitinfo);
+		}
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
@@ -156,7 +161,6 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.statDefense.AdditiveBonus += UpdateDefenseBase.Additive - 1;
 		Player.statDefense.FinalMultiplier *= UpdateDefenseBase.Multiplicative;
 		Player.DefenseEffectiveness *= UpdateDefEff.ApplyTo(Player.DefenseEffectiveness.Value);
-		Player.thorns = UpdateThorn.ApplyTo(Player.thorns);
 
 		Player.maxMinions = (int)UpdateMinion.ApplyTo(Player.maxMinions);
 		Player.maxTurrets = (int)UpdateSentry.ApplyTo(Player.maxTurrets);
@@ -176,7 +180,7 @@ public class PlayerStatsHandle : ModPlayer {
 		UpdateDefenseBase = StatModifier.Default;
 		UpdateCritDamage = StatModifier.Default;
 		UpdateDefEff = StatModifier.Default;
-		UpdateThorn = StatModifier.Default;
+		UpdateThorn = StatModifier.Default - 1;
 		AuraModifier = StatModifier.Default;
 		DebuffTime = StatModifier.Default;
 		BuffTime = StatModifier.Default;
@@ -414,7 +418,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 	}
 	public Dictionary<string, bool> SecondLife = new();
-	public static void SetSecondLifeCondition(Player player,string context, bool condition) {
+	public static void SetSecondLifeCondition(Player player, string context, bool condition) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.SecondLife.ContainsKey(context)) {
 			modplayer.SecondLife[context] = condition;
