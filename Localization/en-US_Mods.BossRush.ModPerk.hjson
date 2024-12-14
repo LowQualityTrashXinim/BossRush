@@ -348,7 +348,8 @@ ImprovedPotion: {
 	DisplayName: Mana/Healing Potion+
 	Description:
 		'''
-		+ Healing potion is heal you 70% more
+		+ Buff duration increases by 45%
+		+ Healing potion heal you 70% more
 		+ During mana sickness, increases mana regen capability massively
 		- After mana sicnkess duration is over, you can't consume any mana potion for 10s
 		'''
@@ -453,5 +454,57 @@ LostInWonderLand: {
 		+ Increases chance of NPC getting mutate by 10%
 		+ Your weapon have 10% to get enchantment
 		+ Your weapon have 10% to get augmentation
+		'''
+}
+
+GreedPrivilage: {
+	DisplayName: Greed Privilage
+	Description:
+		'''
+		+ Increases your drop loot by 1
+		+ Increases the chance of getting augmentation by 20%
+		+ Increases the chance of getting enchantment by 5%
+		'''
+}
+
+
+TheBigMoment: {
+	DisplayName: The Big Moment !
+	Description:
+		'''
+		Depending on your drop value :
+		+ Have rare chance to deal 2.0x multiplicative damage
+		+ Chance to have your increases by 100%
+		+ A chance to heal base on your drop value
+		'''
+}
+
+EndlessHunger: {
+	DisplayName: Endless Hunger
+	Description:
+		'''
+		+ Increases your damage reduction by 5%
+		+ When your damage reduction is over 20%, getting hit will heal you a random amount
+		(Note : The higher your damage reduction, the better the heal become)
+		'''
+}
+
+Satisfaction: {
+	DisplayName: Satisfaction
+	Description:
+		'''
+		+ While your health is at 100% or above, damage reduction is increases by 100%
+		+ While your health is below 60%, hitting enemy with item will heal you
+		+ While your health is below 40%, Increases damage reduction by 10%
+		'''
+}
+
+BlidedPride: {
+	DisplayName: Blided Pride
+	Description:
+		'''
+		+ Increases your weapon damage by 34% ( next stack only increases by 10 )
+		+ Increases your weapon critical strike chance by 10 ( next stack only increases by 5 )
+		+ If your projectile is out of range, deal 0.5x damage
 		'''
 }

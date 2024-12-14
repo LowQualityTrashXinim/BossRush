@@ -53,8 +53,8 @@ public abstract class ModSkill : ModType {
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
 	protected sealed override void Register() {
-		Type = SkillModSystem.Register(this);
 		SetDefault();
+		Type = SkillModSystem.Register(this);
 	}
 	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
 		energy = new();
@@ -247,8 +247,9 @@ public class SkillHandlePlayer : ModPlayer {
 			skill.ModifySkillSet(Player, this, ref i, ref energyS, ref durationS, ref cooldownS);
 			activeskill.Add(skill);
 		}
-		duration = (int)Player.GetModPlayer<PlayerStatsHandle>().SkillDuration.ApplyTo(duration);
-		cooldown = (int)Player.GetModPlayer<PlayerStatsHandle>().SkillCoolDown.ApplyTo(cooldown);
+		PlayerStatsHandle modplayer = Player.GetModPlayer<PlayerStatsHandle>();
+		duration = (int)modplayer.SkillDuration.ApplyTo(duration);
+		cooldown = Math.Clamp((int)modplayer.SkillCoolDown.ApplyTo(cooldown - modplayer.SkillCoolDown.Base * 2), 0, int.MaxValue);
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
