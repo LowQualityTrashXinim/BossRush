@@ -92,7 +92,7 @@ public class PlayerStatsHandle : ModPlayer {
 	/// </summary>
 	public int synchronize_Counter = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (UpdateThorn.ApplyTo(1) >= 1) {
+		if (UpdateThorn.ApplyTo(1) >= 0) {
 			NPC.HitInfo newhitinfo = hit;
 			newhitinfo.Damage = (int)UpdateThorn.ApplyTo(hit.Damage);
 			Player.StrikeNPCDirect(target, newhitinfo);
