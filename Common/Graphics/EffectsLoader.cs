@@ -13,11 +13,13 @@ using Terraria.ModLoader;
 namespace BossRush.Common.Graphics;
 internal class EffectsLoader : ModSystem {
 
-	public static Asset<Effect> flameBall;
-	public static Asset<Effect> trailEffect;
-	public static Asset<Effect> flameEffect;
-	public static Asset<Effect> primitiveFlameBall;
-	public static HashSet<Asset<Effect>> toUnload;
+	public Asset<Effect> flameBall;
+	public Asset<Effect> trailEffect;
+	public Asset<Effect> flameEffect;
+	public Asset<Effect> primitiveFlameBall;
+	public Asset<Effect> primitiveExplosion;
+
+	public HashSet<Asset<Effect>> toUnload;
 	public static readonly bool dontLoad = false;
 
 	public override void Load() {
@@ -35,18 +37,14 @@ internal class EffectsLoader : ModSystem {
 				trailEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
 				flameEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
 				flameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
-				primitiveFlameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitiveTest");
+				primitiveFlameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitive");
+				primitiveExplosion = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/ExplosionPrimitive");
 
 			}).Wait();
 
 			#endregion
 
 		}
-	}
-
-	public override void Unload() {
-
-	
 	}
 }
 

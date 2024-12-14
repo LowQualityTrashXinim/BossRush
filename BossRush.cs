@@ -13,7 +13,6 @@ using ReLogic.Content;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using BossRush.Common.Utils;
-using BossRush.TrailStructs;
 
 namespace BossRush {
 	public partial class BossRush : Mod {

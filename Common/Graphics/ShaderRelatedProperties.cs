@@ -81,6 +81,7 @@ public class ModdedShaderHandler {
 	}
 	public void apply() {
 		var viewport = GraphicsDevice.Viewport;
+		setupTextures();
 		_effect?.Parameters["viewWorldProjection"].SetValue(Matrix.CreateTranslation(new Vector3(-Main.screenPosition, 0)) * Main.GameViewMatrix.TransformationMatrix * Matrix.CreateOrthographicOffCenter(left: 0, right: viewport.Width, bottom: viewport.Height, top: 0, zNearPlane: -1, zFarPlane: 10));
 		_effect?.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly);
 		_effect?.Parameters["color"].SetValue(_color.ToVector3());

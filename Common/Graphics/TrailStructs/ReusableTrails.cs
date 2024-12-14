@@ -14,7 +14,7 @@ using Terraria;
 using Terraria.GameContent.Drawing;
 using BossRush.Common.Graphics;
 
-namespace BossRush.TrailStructs;
+namespace BossRush.Common.Graphics.TrailStructs;
 public struct GenericTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(TrailShaderSettings GenericTrailSettings, VertexStrip.StripHalfWidthFunction stripWidth, VertexStrip.StripColorFunction stripColor) {
@@ -26,7 +26,7 @@ public struct GenericTrail {
 		miscShaderData.UseColor(GenericTrailSettings.Color);
 		miscShaderData.Apply();
 
-		_vertexStrip.PrepareStrip(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, -Main.screenPosition +GenericTrailSettings.offset, null, true);
+		_vertexStrip.PrepareStrip(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, -Main.screenPosition + GenericTrailSettings.offset, null, true);
 		_vertexStrip.DrawTrail();
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 	}

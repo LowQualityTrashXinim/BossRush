@@ -1,6 +1,6 @@
-﻿using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
+﻿using BossRush.Common.Graphics.TrailStructs;
+using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using BossRush.Texture;
-using BossRush.TrailStructs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

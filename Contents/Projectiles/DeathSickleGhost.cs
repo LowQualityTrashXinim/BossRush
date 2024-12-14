@@ -1,6 +1,6 @@
 ﻿using BossRush.Common.Graphics;
+using BossRush.Common.Graphics.TrailStructs;
 using BossRush.Texture;
-using BossRush.TrailStructs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

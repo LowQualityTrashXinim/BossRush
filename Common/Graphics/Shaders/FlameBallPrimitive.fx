@@ -60,50 +60,41 @@ float2 expandInsideOutside(float2 uv)
 }
 float4 ShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COLOR0
 {
-    //float2 uv = texCoords * 2.0 - 1.0;
-    //float d = length(uv);
-    //float m = d / 1;
-    //float4 color = (255, 255, 255, 0);
-    //float4 color2 = (255, 255, 255, 0);
-    //float pixels = 512;
-    //float dx = 15.0 * (1 / pixels);
-    //float dy = 15.0 * (1 / pixels);
-    //float2 pixalatedUV = float2(dx * floor(uv.x / dx), dy * floor(uv.y / dy));
-    //float starShape = clamp(1 - abs(((uv.x * 0.75) * (uv.y * 0.75)) * 100), 0, 1);
-    //float starShape2 = clamp(1 - abs(((Rotate(uv, 3.1415 / 4).x * 1) * (Rotate(uv, 3.1415 / 4).y * 1)) * 200), 0, 1);
-
-    //float4 noiseTex = tex2D(uImage1, expandInsideOutside(uv));
-    //noiseTex.rgb *= uColor;
-    //noiseTex.a = noiseTex.r;
-    //color += noiseTex;
-    //color.rgb += uColor * (d + 1);
-    // the magic/sauce
-    //color.rgba -= m * 3;
-    //color += starShape;
-    //color += starShape2;
-    //color.rgb *= shaderData.x * 0.01f;
-
-    // explosion
-    //color2 = noiseTex;
-    //color2.rgba -= ((shaderData.z));
-    //color2.rgba *= d * 3;
-    //color2.a *= d * 15;
-    //color2.rgba *= step(d * 0.5, 0.5);
-    
-    //if (shaderData.y == 0)
-    //    return color;
-    //else
-    //    return color2;
-    
+    float progress1 = shaderData.z;
     float2 uv = texCoords * 2.0 - 1.0;
     float d = length(uv);
-    float4 color1 = float4(0,0,0,0);
-    
+    float4 color1 = (255, 255, 255, 0);
+    float pixels = 512;
+    float dx = 15.0 * (1 / pixels);
+    float dy = 15.0 * (1 / pixels);
+    float2 pixalatedUV = float2(dx * floor(uv.x / dx), dy * floor(uv.y / dy));
+    float starShape = clamp(1 - abs(((uv.x * 0.5) * (uv.y * 0.5f)) * 125), 0, 1);
+    float starShape2 = clamp(1 - abs(((Rotate(uv, 3.1415/4).x * 0.1) * (Rotate(uv, 3.1415/4).y * 0.1f)) * 100), 0, 0.75);
     float4 noiseTex = tex2D(image1, expandInsideOutside(uv));
+    noiseTex.rgb *= color;
     noiseTex.a = noiseTex.r;
     color1 += noiseTex;
-    return color1;
+    color1.rgb += color * (d + 0.5);
+    // the magic/sauce
+    color1.rgba -= d * 3;
+    color1.rgba *= d * 5;
+    color1 += starShape;
+    color1 += (starShape2);
+    color1 += d * 2;
+    color1.rgb /= d / 0.3;
+    color1.rgb *= (shaderData.x * 0.01);
+
+    if (shaderData.y == 1)
+    {
     
+        color1.rgba *= step(d, step(progress1, d));
+        color1.rgb = lerp(0,color * color1.r,shaderData.z);
+    }
+    
+    
+
+    return color1;
+
 }
 
 technique t0

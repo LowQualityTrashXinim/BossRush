@@ -9,7 +9,7 @@ public abstract class PrimitivesBase {
 	protected static GraphicsDevice GraphicsDevice => Main.instance.GraphicsDevice;
 	public ModdedShaderHandler shaderHandler = null;
 	public PrimitiveType type = PrimitiveType.TriangleStrip;
-	public int primitiveCount = 1;
+	public int primitiveCount = 2;
 	public Vector2[] size;
 	public Vector2[] position;
 	public Color[] color;
@@ -23,7 +23,7 @@ public abstract class PrimitivesBase {
 		if (shaderHandler != null)
 			shaderHandler.apply();
 
-		GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, 2);
+		GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, primitiveCount);
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 	}
