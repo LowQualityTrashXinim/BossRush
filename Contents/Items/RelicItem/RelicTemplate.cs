@@ -92,6 +92,7 @@ public class GenericTemplate : RelicTemplate {
 			|| stat == PlayerStats.MaxSentry
 			|| stat == PlayerStats.EnergyCap
 			|| stat == PlayerStats.EnergyRechargeCap
+			|| stat == PlayerStats.Thorn
 			) {
 			valuestring = RelicTemplateLoader.RelicValueToNumber(value);
 		}
@@ -135,7 +136,7 @@ public class GenericTemplate : RelicTemplate {
 			return new StatModifier(1, 1, 0, Main.rand.Next(1, 10));
 		}
 		if (stat == PlayerStats.Thorn) {
-			return new StatModifier(MathF.Round(Main.rand.NextFloat(1.05f, 1.15f), 2), 1, 0, 0);
+			return new StatModifier(1, 1, 0, Main.rand.Next(10, 40));
 		}
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.25f), 2), 1);
 	}
