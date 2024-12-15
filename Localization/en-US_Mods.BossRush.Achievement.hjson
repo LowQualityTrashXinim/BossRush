@@ -32,14 +32,14 @@ TokenOfGreed: {
 	DisplayName: Token of Greed
 	Description: Greed
 	ConditionTip: Beat the mod with Token of Greed artifact
-	Reward: "Exclusive perk of this artifact can appear in normal perk pool"
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 TokenOfPride: {
 	DisplayName: Token of Pride
 	Description: Pride
 	ConditionTip: Beat the mod with Token of Pride artifact
-	Reward: "Exclusive perk of this artifact can appear in normal perk pool"
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 TokenOfWrath: {
@@ -58,7 +58,7 @@ TokenOfGluttony: {
 	DisplayName: Token Of Gluttony
 	Description: Gluttony
 	ConditionTip: Beat the mod with Token of Gluttony artifact
-	Reward: "Exclusive perk of this artifact can appear in normal perk pool"
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 BootOfSpeedManipulation: {
@@ -77,7 +77,7 @@ HeartOfEarth: {
 	DisplayName: Heart Of Earth
 	Description: A beating heart, it is warm to hold
 	ConditionTip: Beat the mod with Heart Of Earth artifact
-	Reward: "Exclusive perk of this artifact can appear in normal perk pool"
+	Reward: Exclusive perk of this artifact can appear in normal perk pool
 }
 
 GamblerSoul: {

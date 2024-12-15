@@ -39,6 +39,7 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Contents.Artifacts;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -59,6 +60,7 @@ internal class UniversalSystem : ModSystem {
 	public const string HARDCORE_MODE = "Hardcore";
 	public const string TRUE_MODE = "TrueMode";
 	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
+	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 	/// <summary>
 	/// Use this to universally lock content behind hardcore, it basically act like a wrapper for <see cref="RogueLikeConfig"/>
 	/// </summary>
