@@ -112,14 +112,22 @@ public sealed class PrimitivesDrawer : ModSystem {
 		segments[2].setSeg = position + new Vector2(600);
 
 
-		initIndices(4);
+		initIndices();
 
 		draw();
 	}
-
-	private static void initIndices(short count) 
+	
+	private static void initIndices() 
 	{
 		
+		for(short i = 0; i < indices.Length - 1; i = (short)(i + 1)) 
+		{
+
+			indices[i] = i;
+
+		}
+
+
 	}
 
 	private static void draw() 
@@ -154,11 +162,11 @@ public sealed class PrimitivesDrawer : ModSystem {
 		basicEffect.World = Matrix.CreateTranslation(new Vector3(-Main.screenPosition, 0));
 		basicEffect.View = Main.GameViewMatrix.TransformationMatrix;
 		basicEffect.Projection = Matrix.CreateOrthographicOffCenter(left: 0, right: viewport.Width, bottom: viewport.Height, top: 0, zNearPlane: -1, zFarPlane: 10);
-		GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, primtiveAmount);
+		//GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, primtiveAmount);
+		GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleStrip, vertices, 0, vertices.Length, indices, 0, primtiveAmount);
 
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-		//GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleStrip, vertices, 0, amountOfVerticesContained, indices, 0, segments.Length * 2);
 
 	}
 
