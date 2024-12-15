@@ -23,11 +23,8 @@ internal class RareSpoil {
 			return SpoilDropRarity.RareDrop();
 		}
 		public override void OnChoose(Player player, int itemsource) {
-			int amount1 = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(2);
-			int amount2 = player.GetModPlayer<ChestLootDropPlayer>().ModifyGetAmount(4);
-
-			LootBoxBase.GetRelic(itemsource, player, amount2);
-			LootBoxBase.GetSkillLootbox(itemsource, player, amount1);
+			LootBoxBase.GetSkillLootbox(itemsource, player, 2);
+			LootBoxBase.GetRelic(itemsource, player, 4);
 		}
 	}
 	public class ArmorAccessorySpoil : ModSpoil {

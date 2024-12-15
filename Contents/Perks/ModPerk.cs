@@ -747,7 +747,8 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 		}
-		public override void ResetEffect(Player player) {
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<PlayerStatsHandle>().BuffTime += .45f;
 			player.GetModPlayer<PerkPlayer>().perk_ImprovedPotion = true;
 		}
 	}
