@@ -14,12 +14,19 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace BossRush.Common.Graphics.Primitives;
 public sealed class PrimitivesDrawer : ModSystem {
+	private struct CustomVertex : IVertexType {
+		public VertexDeclaration VertexDeclaration => new VertexDeclaration(new VertexElement(0,VertexElementFormat.Vector2,VertexElementUsage.Position,0), new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0));
+		public Vector2 Position;
+		public Color Color;
 
-
+		public override string ToString() {
+			return Position.ToString();
+		}
+	}
 
 	[InlineArray(6)]
 	private struct segementVertices {
-		private VertexPositionColor element0;
+		private CustomVertex element0;
 	}
 
 	private static short[] indices = new short[1];
@@ -28,7 +35,7 @@ public sealed class PrimitivesDrawer : ModSystem {
 	private static Vector2[] positionsCache;
 	private const short aSingleSegementCorners = 6;
 	private static short amountOfVerticesContainednotIncludingHeadTail;
-	private static VertexPositionColor[] verticesCache;
+	private static CustomVertex[] verticesCache;
 	public static BasicEffect basicEffect;
 
 
@@ -41,24 +48,34 @@ public sealed class PrimitivesDrawer : ModSystem {
 			set {
 				var center = value;
 				segementVertices segementVertices = new segementVertices();
+
+				Vector2 vertex0 = new Vector2(center.X - width, center.Y - height);
+				Vector2 vertex1 = new Vector2(center.X - width, center.Y + height);
+				Vector2 vertex2 = new Vector2(center.X + width, center.Y - height);
+				Vector2 vertex3 = new Vector2(center.X + width, center.Y + height);
+				Vector2 vertex4 = new Vector2(center.X - width / 2, center.Y - height);
+				Vector2 vertex5 = new Vector2(center.X + width / 2, center.Y + height);
+
+
 				segementVertices[0].Color = color;
-				segementVertices[0].Position = new Vector3(center.X - width, center.Y - height,0);
+				
+				segementVertices[0].Position = vertex0.RotatedBy(rotation,center);
 				segementVertices[1].Color = color;
-				segementVertices[1].Position = new Vector3(center.X - width , center.Y + height, 0);
+				segementVertices[1].Position = vertex1.RotatedBy(rotation,center);
 				segementVertices[2].Color = color;
-				segementVertices[2].Position = new Vector3(center.X + width, center.Y - height, 0);
+				segementVertices[2].Position = vertex2.RotatedBy(rotation, center); ;
 				segementVertices[3].Color = color;
-				segementVertices[3].Position = new Vector3(center.X + width, center.Y + height, 0);
+				segementVertices[3].Position = vertex3.RotatedBy(rotation, center); ;
 
 				if (head) 
 				{
 					segementVertices[4].Color = color;
-					segementVertices[4].Position = new Vector3(center.X - width / 2, center.Y - height, 0);
+					segementVertices[4].Position = vertex4.RotatedBy(rotation, center);
 				}
 				if (tail) 
 				{
 					segementVertices[5].Color = color;
-					segementVertices[5].Position = new Vector3(center.X + width / 2, center.Y + height, 0);
+					segementVertices[5].Position = vertex5.RotatedBy(rotation, center); ;
 
 				}
 
@@ -87,7 +104,7 @@ public sealed class PrimitivesDrawer : ModSystem {
 		amountOfVerticesContainednotIncludingHeadTail = (short)((amountOfSegments * 6) * 2);
 
 	}
-
+	//test
 	public static void newQuad(Vector2 position, Color color, float size) 
 	{
 		init(1, 4);
@@ -98,7 +115,6 @@ public sealed class PrimitivesDrawer : ModSystem {
 		segments[0].tail = true;
 		segments[0].head = true;
 		segments[0].setSeg = position;
-
 
 		initIndices();
 
@@ -111,11 +127,11 @@ public sealed class PrimitivesDrawer : ModSystem {
 		init(pos.Length, pos.Length);
 		for (int i = 0; i < pos.Length - 2; i++) 
 		{
-			segments[i].rotation = 0;
-			segments[i].width = Vector2.Distance(pos[i], pos[i+1]);
-			segments[i].height = width[i];
+		
+			segments[i].rotation = MathHelper.WrapAngle(rot[i] - MathHelper.Pi);
+			segments[i].width = 3;
+			segments[i].height = 3;
 			segments[i].color = col;
-			segments[i].tail = false;
 
 			if(i == 0)
 				segments[i].head = true;
@@ -152,7 +168,7 @@ public sealed class PrimitivesDrawer : ModSystem {
 	private static void draw() 
 	{
 		// + 6 means that it must have a tail and a head
-		VertexPositionColor[] vertices = new VertexPositionColor[segments.Length * 4 + 2];
+		CustomVertex[] vertices = new CustomVertex[segments.Length * 4 + 2];
 		for (int i = 0; i < segments.Length; i++) 
 		{
 			for (int j = 0; j < 4; j++)

@@ -108,7 +108,7 @@ public class MythrilBeam : SynergyModProjectile
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		Projectile.ai[0]++;
 		Projectile.rotation = Projectile.velocity.ToRotation();
-
+		Projectile.velocity = Projectile.velocity.RotatedBy(0.1);
 		int range = 1200;
 		Vector2 targetPos = Projectile.Center.LookForHostileNPCPositionClosest(range);
 
