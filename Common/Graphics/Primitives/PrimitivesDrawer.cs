@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Terraria;
@@ -9,11 +10,18 @@ using Terraria.GameContent;
 using Terraria.Graphics;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace BossRush.Common.Graphics.Primitives;
 public sealed class PrimitivesDrawer : ModSystem {
 
-	
+
+
+	[InlineArray(6)]
+	private struct segementVertices {
+		private VertexPositionColor element0;
+	}
+
 	private static short[] indices = new short[1];
 	private static SegementAttributes[] segments;
 	private static float[] rotationsCache;
@@ -22,11 +30,7 @@ public sealed class PrimitivesDrawer : ModSystem {
 	private static short amountOfVerticesContainednotIncludingHeadTail;
 	private static VertexPositionColor[] verticesCache;
 	public static BasicEffect basicEffect;
-	[InlineArray(6)]
-	private struct segementVertices 
-	{
-		private VertexPositionColor element0;
-	}
+
 
 
 	/// <summary>
@@ -86,37 +90,52 @@ public sealed class PrimitivesDrawer : ModSystem {
 
 	public static void newQuad(Vector2 position, Color color, float size) 
 	{
-		init(3, 4);
+		init(1, 4);
 		segments[0].rotation = 0;
 		segments[0].width = size / 2;
 		segments[0].height = size / 2;
 		segments[0].color = color;
-		segments[0].tail = false;
+		segments[0].tail = true;
 		segments[0].head = true;
 		segments[0].setSeg = position;
-
-		segments[1].rotation = 0;
-		segments[1].width = size / 2;
-		segments[1].height = size / 2;
-		segments[1].color = Color.Orange;
-		segments[1].tail = false;
-		segments[1].head = false;
-		segments[1].setSeg = position + new Vector2(300);
-
-		segments[2].rotation = 0;
-		segments[2].width = size / 2;
-		segments[2].height = size / 2;
-		segments[2].color = Color.Green;
-		segments[2].tail = true;
-		segments[2].head = false;
-		segments[2].setSeg = position + new Vector2(600);
 
 
 		initIndices();
 
 		draw();
 	}
+
+	public static void newStrip(Vector2[] pos, float[] rot, Color col, float[] width, Vector2 offset) 
+	{
+
+		init(pos.Length, pos.Length);
+		for (int i = 0; i < pos.Length - 2; i++) 
+		{
+			segments[i].rotation = 0;
+			segments[i].width = Vector2.Distance(pos[i], pos[i+1]);
+			segments[i].height = width[i];
+			segments[i].color = col;
+			segments[i].tail = false;
+
+			if(i == 0)
+				segments[i].head = true;
+			else
+				segments[i].head = false;
+
+			if (i == pos.Length - 3)
+				segments[i].tail = true;
+			else
+				segments[i].tail = false;
+
+			segments[i].setSeg = pos[i] + offset;
+		}
 	
+		initIndices(); 
+		
+		draw();
+
+	}
+
 	private static void initIndices() 
 	{
 		

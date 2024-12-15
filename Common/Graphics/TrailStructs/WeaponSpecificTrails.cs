@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 using Terraria;
 using BossRush.Common.Graphics;
 using Terraria.GameContent;
+using BossRush.Common.Graphics.Primitives;
 
 namespace BossRush.Common.Graphics.TrailStructs;
 public static class WeaponSpecificTrails {
@@ -76,7 +77,6 @@ public struct WyvernTrailMini {
 }
 
 public struct BeamTrail {
-	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(Projectile projectile, Color color) {
 
 
@@ -86,8 +86,12 @@ public struct BeamTrail {
 
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(projectile.oldPos, projectile.oldRot, StripColors, StripWidth, -Main.screenPosition + projectile.Size * 0.5f);
-		_vertexStrip.DrawTrail();
+		float[] w = new float[projectile.oldRot.Length - 1];
+		for (int i = 0; i < w.Length; i++)
+			w[i] = 3;
+		
+
+		PrimitivesDrawer.newStrip(projectile.oldPos, projectile.oldRot,Color.White, w, projectile.Size / 2f);
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
 	}
