@@ -467,7 +467,6 @@ GreedPrivilage: {
 		'''
 }
 
-
 TheBigMoment: {
 	DisplayName: The Big Moment !
 	Description:
@@ -499,12 +498,22 @@ Satisfaction: {
 		'''
 }
 
-BlidedPride: {
-	DisplayName: Blided Pride
+BlindPride: {
+	DisplayName: Blind Pride
 	Description:
 		'''
 		+ Increases your weapon damage by 34% ( next stack only increases by 10 )
 		+ Increases your weapon critical strike chance by 10 ( next stack only increases by 5 )
 		+ If your projectile is out of range, deal 0.5x damage
+		'''
+}
+
+PridefulPossession: {
+	DisplayName: Prideful Possession
+	Description:
+		'''
+		+ Increases the chance getting augmentation by 10%
+		+ Increases your defense per augmentation you have
+		+ For each enchantment, increases your weapon critical strike chance by 1, weapon damage by 10%
 		'''
 }

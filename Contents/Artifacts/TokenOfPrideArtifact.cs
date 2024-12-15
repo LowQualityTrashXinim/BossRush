@@ -6,6 +6,10 @@ using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.WeaponEnchantment;
 using Terraria.ID;
 using BossRush.Contents.Perks;
+using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Common.Systems;
+using BossRush.Common.Systems.Achievement;
+using System;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -37,10 +41,18 @@ namespace BossRush.Contents.Artifacts {
 			}
 		}
 	}
-	public class BlidedPride : Perk {
+	public class BlindPride : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;
+			DataStorer.AddContext("Perk_BlindPride", new(400, Vector2.Zero, false, Color.Yellow));
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
+		}
+		public override void Update(Player player) {
+			DataStorer.ActivateContext(player, "Perk_BlindPride");
+			DataStorer.ModifyContextDistance("Perk_BlindPride", 300 + 100 * StackAmount(player));
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			damage += .24f + .1f * StackAmount(player);
@@ -49,10 +61,35 @@ namespace BossRush.Contents.Artifacts {
 			crit += 5 + 5 * StackAmount(player);
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-			if (Vector2.DistanceSquared(player.Center, target.Center) <= (300f * 300f) + 10000 * StackAmount(player)) {
+			if (Vector2.DistanceSquared(player.Center, target.Center) <= MathF.Pow(300f + 100 * StackAmount(player), 2)) {
 				return;
 			}
 			modifiers.FinalDamage *= .5f;
+		}
+	}
+	public class PridefulPossession : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
+		}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .1f;
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: player.GetModPlayer<AugmentsPlayer>().valid * StackAmount(player));
+		}
+		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
+			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
+				int power = globalitem.GetValidNumberOfEnchantment();
+				damage += power * .1f * StackAmount(player);
+			}
+		}
+		public override void ModifyCriticalStrikeChance(Player player, Item item, ref float crit) {
+			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalitem)) {
+				int power = globalitem.GetValidNumberOfEnchantment();
+				crit += power * StackAmount(player);
+			}
 		}
 	}
 }

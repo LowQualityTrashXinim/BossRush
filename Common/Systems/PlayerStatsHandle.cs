@@ -91,15 +91,22 @@ public class PlayerStatsHandle : ModPlayer {
 	/// Use this if you want to make a series of item that shoot out all of the effect in the same timeline
 	/// </summary>
 	public int synchronize_Counter = 0;
+
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (UpdateThorn.ApplyTo(1) >= 0) {
-			NPC.HitInfo newhitinfo = hit;
-			newhitinfo.Damage = (int)UpdateThorn.ApplyTo(hit.Damage);
-			Player.StrikeNPCDirect(target, newhitinfo);
-		}
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
+		}
+	}
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		if (UpdateThorn.ApplyTo(1) >= 0) {
+			NPC.HitInfo newhitinfo = new();
+			newhitinfo.Damage = (int)UpdateThorn.ApplyTo(hurtInfo.Damage);
+			newhitinfo.HitDirection = hurtInfo.HitDirection;
+			newhitinfo.Crit = false;
+			newhitinfo.Knockback = hurtInfo.Knockback;
+			newhitinfo.DamageType = DamageClass.Default;
+			Player.StrikeNPCDirect(npc, newhitinfo);
 		}
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {

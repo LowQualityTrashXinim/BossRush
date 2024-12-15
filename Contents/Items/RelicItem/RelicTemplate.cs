@@ -527,6 +527,9 @@ public class DebuffTemplateV1 : RelicTemplate {
 /// This is my example on how to make a custom template that have your own stats<br/>
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
+	public override void OnSettingTemplate() {
+		DataStorer.AddContext("Relic_SlimeSpike", new(250, Vector2.Zero, false, Color.Blue));
+	}
 	//we can return whatever we want since this doesn't matter to what we are making,
 	//however we could also still use this to indicate what damageclass the projectile should deal
 	public override PlayerStats StatCondition(Relic relic, Player player) {
@@ -559,6 +562,8 @@ public class SlimeSpikeTemplate : RelicTemplate {
 	}
 	//This where our relic effect take place, it is think of this as a UpdateEquip hook in ModPlayer
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		DataStorer.ActivateContext(player, "Relic_SlimeSpike");
+
 		//Look for any NPC near the player
 		if (!player.Center.LookForAnyHostileNPC(250f) || modplayer.synchronize_Counter % 30 != 0) {
 			return;
@@ -601,6 +606,16 @@ public class SkillCoolDownTemplate : RelicTemplate {
 	}
 }
 public class FireBallTemplate : RelicTemplate {
+	public override void OnSettingTemplate() {
+		if (Main.CurrentPlayer != null) {
+			DataStorer.AddContext("Relic_FireBall", new(
+				550,
+				Vector2.Zero,
+				false,
+				Color.OrangeRed
+				));
+		}
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
@@ -626,6 +641,7 @@ public class FireBallTemplate : RelicTemplate {
 	}
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		DataStorer.ActivateContext(player, "Relic_FireBall");
 		if (!player.Center.LookForAnyHostileNPC(550f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
 			return;
 		}

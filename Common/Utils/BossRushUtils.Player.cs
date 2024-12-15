@@ -6,6 +6,8 @@ using Terraria.ID;
 using BossRush.Common.RoguelikeChange;
 using System;
 using System.Linq;
+using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -204,7 +206,51 @@ namespace BossRush {
 		SkillCooldown,
 		//Luck
 	}
+	public class DataStorer : ModSystem {
+		public static Dictionary<string, DrawCircleAuraContext> dict_drawCircleContext = new();
+		public static void AddContext(string name, DrawCircleAuraContext context) {
+			if (!dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext.Add(name, context);
+			}
 
+		}
+		public static void ActivateContext(Player player, string name) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext[name].Activate = true;
+				dict_drawCircleContext[name].Position = player.Center;
+			}
+
+		}
+		public static void DeActivateContext(string name) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext[name].Activate = false;
+			}
+
+		}
+		public static void ModifyContextDistance(string name, int Distance) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext[name].Distance = Distance;
+			}
+		}
+		/// <summary>
+		/// It is important to check for null
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="context"></param>
+		/// <returns></returns>
+		public static DrawCircleAuraContext GetContext(string name) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				return dict_drawCircleContext[name];
+
+			}
+			return null;
+		}
+		public static void SetContext(string name, DrawCircleAuraContext context) {
+			if (dict_drawCircleContext.ContainsKey(name)) {
+				dict_drawCircleContext[name].CopyContext(context);
+			}
+		}
+	}
 
 	/// <summary>
 	/// This player class will hold additional infomation that the base Player or ModPlayer class don't provide<br/>
@@ -218,6 +264,44 @@ namespace BossRush {
 			if (!Player.ItemAnimationActive) {
 				MouseLastPositionBeforeAnimation = Main.MouseWorld;
 			}
+		}
+		/// <summary>
+		/// It is advised to add this when the mod load instead of during gameplay
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="name"></param>
+		/// <param name="context"></param>
+		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) {
+			foreach (var item in DataStorer.dict_drawCircleContext.Values) {
+				if (item.Activate) {
+					BossRushUtils.BresenhamCircle(item.Position, item.Distance, item.Color);
+					item.Activate = false;
+				}
+			}
+		}
+	}
+	/// <summary>
+	/// please set this in <see cref="BossRushUtilsPlayer"/><br/>
+	/// This is restrictively work with player entity only
+	/// </summary>
+	public class DrawCircleAuraContext {
+		public int Distance = 0;
+		public Vector2 Position = Vector2.Zero;
+		public bool Activate = false;
+		public Color Color = Color.White;
+		public DrawCircleAuraContext() { }
+
+		public DrawCircleAuraContext(int distance, Vector2 position, bool activate, Color color) {
+			Distance = distance;
+			Position = position;
+			Activate = activate;
+			Color = color;
+		}
+		public void CopyContext(DrawCircleAuraContext context) {
+			Distance = context.Distance;
+			Position = context.Position;
+			Activate = context.Activate;
+			Color = context.Color;
 		}
 	}
 }
