@@ -550,6 +550,7 @@ BloodVoodoo: {
 		+ Rare chance to also release blood rose thorn
 		'''
 }
+
 NightTerror: {
 	DisplayName: Night Terror
 	Description:

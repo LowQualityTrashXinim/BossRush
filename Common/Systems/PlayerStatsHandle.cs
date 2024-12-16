@@ -182,7 +182,9 @@ public class PlayerStatsHandle : ModPlayer {
 		if (TemporaryLife > 0) {
 			if (++TemporaryLife_Counter >= TemporaryLife_CounterLimit) {
 				TemporaryLife -= 1;
+				TemporaryLife_Counter = 0;
 			}
+			TemporaryLife = Math.Clamp(TemporaryLife, 0, TemporaryLife_Limit);
 			TemporaryLife_Limit = 0;
 			TemporaryLife_CounterLimit = 0;
 		}

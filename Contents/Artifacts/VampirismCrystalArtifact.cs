@@ -72,7 +72,7 @@ namespace BossRush.Contents.Artifacts {
 			StackLimit = 5;
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<PlayerStatsHandle>().Set_TemporaryLife(100 * StackAmount(player), 120);
+			player.GetModPlayer<PlayerStatsHandle>().Set_TemporaryLife(100 * StackAmount(player), 30);
 		}
 		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
 			int damage = player.GetModPlayer<PlayerStatsHandle>().TemporaryLife; Vector2 vecR;
