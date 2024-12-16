@@ -147,6 +147,7 @@ public class AugmentsWeapon : GlobalItem {
 				augmentationplayer.accItemUpdate.Add(item);
 				added = true;
 			}
+			augmentationplayer.valid++;
 			Augments.UpdateAccessory(player, item);
 		}
 	}
@@ -203,8 +204,13 @@ public class AugmentsPlayer : ModPlayer {
 	public float Request_ChanceAugments = 0;
 	public int Request_LimitAugments = 1;
 	public bool? Request_Decayable = false;
+	/// <summary>
+	/// The amount of augmentation currently equipped
+	/// </summary>
+	public int valid = 0;
 	public override void ResetEffects() {
 		IncreasesChance = 0;
+		valid = 0;
 		accItemUpdate.Clear();
 	}
 	private bool IsAugmentsable(Item item) => item.accessory;

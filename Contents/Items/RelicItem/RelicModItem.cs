@@ -43,6 +43,7 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
+		RelicTemplateLoader.GetTemplate(templatelist.Count - 1).OnSettingTemplate();
 		statlist.Add(stats);
 		value = value.Scale(valueMulti);
 		valuelist.Add(value);
@@ -60,6 +61,7 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
+		RelicTemplateLoader.GetTemplate(templatelist.Count - 1).OnSettingTemplate();
 		PlayerStats innerStats = RelicTemplateLoader.GetTemplate(templateid).StatCondition(this, player);
 		statlist.Add(innerStats);
 		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(this, player, innerStats);
@@ -79,6 +81,7 @@ public class Relic : ModItem {
 			valuelist = new List<StatModifier>();
 		}
 		templatelist.Add(templateid);
+		RelicTemplateLoader.GetTemplate(templatelist.Count - 1).OnSettingTemplate();
 		statlist.Add(stats);
 		StatModifier value = RelicTemplateLoader.GetTemplate(templateid).ValueCondition(this, player, stats);
 		value = value.Scale(valueMulti);
@@ -127,6 +130,7 @@ public class Relic : ModItem {
 	public void AutoAddRelicTemplate(Player player, int amount) {
 		for (int i = 0; i < amount; i++) {
 			templatelist.Add(Main.rand.Next(RelicTemplateLoader.TotalCount));
+			RelicTemplateLoader.GetTemplate(templatelist[i]).OnSettingTemplate();
 			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(this, player));
 			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(this, player, statlist[i]));
 		}
@@ -140,6 +144,7 @@ public class Relic : ModItem {
 		}
 		if (templatelist.Count <= 0) {
 			templatelist.Add(Main.rand.Next(RelicTemplateLoader.TotalCount));
+			RelicTemplateLoader.GetTemplate(templatelist[0]).OnSettingTemplate();
 			statlist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).StatCondition(this, player));
 			valuelist.Add(RelicTemplateLoader.GetTemplate(templatelist[0]).ValueCondition(this, player, statlist[0]));
 		}
@@ -149,6 +154,7 @@ public class Relic : ModItem {
 			}
 			else {
 				templatelist[i] = Main.rand.Next(RelicTemplateLoader.TotalCount);
+				RelicTemplateLoader.GetTemplate(templatelist[i]).OnSettingTemplate();
 				statlist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).StatCondition(this, player);
 				valuelist[i] = RelicTemplateLoader.GetTemplate(templatelist[i]).ValueCondition(this, player, statlist[i]);
 			}
@@ -156,6 +162,9 @@ public class Relic : ModItem {
 	}
 	public void SetRelicData(List<int> type, List<PlayerStats> stat, List<StatModifier> value) {
 		templatelist = type;
+		for (int i = 0; i < templatelist.Count; i++) {
+			RelicTemplateLoader.GetTemplate(templatelist[i]).OnSettingTemplate();
+		}
 		statlist = stat;
 		valuelist = value;
 	}
@@ -167,6 +176,9 @@ public class Relic : ModItem {
 		}
 		else {
 			templateType = templatelist;
+			for (int i = 0; i < templatelist.Count; i++) {
+				RelicTemplateLoader.GetTemplate(templatelist[i]).OnSettingTemplate();
+			}
 			stat = statlist;
 			value = valuelist;
 		}
@@ -174,6 +186,7 @@ public class Relic : ModItem {
 	public int TemplateCount => templatelist.Count;
 	public void MergeRelicData(int type, PlayerStats stat, StatModifier value) {
 		templatelist.Add(type);
+		RelicTemplateLoader.GetTemplate(type).OnSettingTemplate();
 		statlist.Add(stat);
 		valuelist.Add(value);
 	}
@@ -198,8 +211,10 @@ public abstract class RelicTemplate : ModType {
 	public string Description => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
 	public int Type { get; private set; }
 	protected sealed override void Register() {
+		SetStaticDefaults();
 		Type = RelicTemplateLoader.Register(this);
 	}
+	public virtual void OnSettingTemplate() { }
 	public virtual bool SelectCondition(Relic relic, Player player) => true;
 	public virtual string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) => "";
 	public virtual StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) => new StatModifier();

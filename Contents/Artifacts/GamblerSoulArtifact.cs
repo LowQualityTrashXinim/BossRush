@@ -8,6 +8,7 @@ using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.ArtifactSystem;
+using System;
 
 namespace BossRush.Contents.Artifacts;
 internal class GamblerSoulArtifact : Artifact {
@@ -55,5 +56,79 @@ public class GamblerSoulPlayer : ModPlayer {
 	}
 	public override void LoadData(TagCompound tag) {
 		AlreadyGotGivenItem = (int)tag["AlreadyGotGivenItem"];
+	}
+}
+public class StrokeOfLuck : Perk {
+	public override void SetDefaults() {
+		textureString = BossRushTexture.Get_MissingTexture("Perk");
+		CanBeChoosen = false;
+		CanBeStack = false;
+	}
+	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+			modifiers.FinalDamage.Flat -= Main.rand.Next(1, 1 + (int)Math.Ceiling(npc.damage * .85f));
+		}
+	}
+	public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+			modifiers.FinalDamage.Flat -= Main.rand.Next(1, 1 + (int)Math.Ceiling(proj.damage * .85f));
+		}
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+			modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.20f, .70f)) {
+			modifiers.SourceDamage += Main.rand.NextFloat(.15f, 1f);
+		}
+	}
+	public override bool FreeDodge(Player player, Player.HurtInfo hurtInfo) {
+		if (!player.immune && Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .9f)) {
+			player.AddImmuneTime(hurtInfo.CooldownCounter, Main.rand.Next(44, 89));
+			player.immune = true;
+			return true;
+		}
+		return base.FreeDodge(player, hurtInfo);
+	}
+}
+public class UncertainStrike : Perk {
+	public override void SetDefaults() {
+		textureString = BossRushTexture.ACCESSORIESSLOT;
+		CanBeChoosen = false;
+		CanBeStack = false;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (Main.rand.NextFloat() <= .33f) {
+			modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
+		}
+		if (Main.rand.NextFloat() <= .05f) {
+			modifiers.SourceDamage *= 2;
+		}
+		if (Main.rand.NextFloat() <= .15f) {
+			modifiers.ArmorPenetration += 20;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (Main.rand.NextFloat() <= .33f) {
+			modifiers.SourceDamage += Main.rand.NextFloat(-.15f, .55f);
+		}
+		if (Main.rand.NextFloat() <= .05f) {
+			modifiers.SourceDamage *= 2;
+		}
+		if (Main.rand.NextFloat() <= .15f) {
+			modifiers.ArmorPenetration += 20;
+		}
+	}
+	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= .01f) {
+			player.Heal(Main.rand.Next(hit.Damage));
+		}
+	}
+	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= .01f) {
+			player.Heal(Main.rand.Next(hit.Damage));
+		}
 	}
 }

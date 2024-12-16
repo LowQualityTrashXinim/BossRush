@@ -19,7 +19,7 @@ namespace BossRush.Contents.Artifacts {
 		public override void ResetEffects() {
 			Vampire = Player.HasArtifact<VampirismCrystalArtifact>();
 			cooldown = BossRushUtils.CountDown(cooldown);
-			PlayerStatsHandle.SetSecondLifeCondition(Player,"VC", Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire);
+			PlayerStatsHandle.SetSecondLifeCondition(Player,"VC", !Player.HasBuff(ModContent.BuffType<SecondChance>()) && Vampire);
 		}
 		public override void ModifyMaxStats(out StatModifier health, out StatModifier mana) {
 			base.ModifyMaxStats(out health, out mana);

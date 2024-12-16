@@ -313,7 +313,7 @@ public class BookOfSkulls : ModEnchantment {
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (Main.rand.NextBool(3)) {
 			if (velocity == Vector2.Zero) {
-				velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * velocity.Length();
+				velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 10;
 			}
 			Projectile.NewProjectile(source, position, velocity.Vector2RotateByRandom(10), ProjectileID.BookOfSkullsSkull, damage, knockback, player.whoAmI);
 		}

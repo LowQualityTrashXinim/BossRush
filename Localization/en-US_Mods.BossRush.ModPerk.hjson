@@ -498,12 +498,44 @@ Satisfaction: {
 		'''
 }
 
-BlidedPride: {
-	DisplayName: Blided Pride
+BlindPride: {
+	DisplayName: Blind Pride
 	Description:
 		'''
 		+ Increases your weapon damage by 34% ( next stack only increases by 10 )
 		+ Increases your weapon critical strike chance by 10 ( next stack only increases by 5 )
 		+ If your projectile is out of range, deal 0.5x damage
+		'''
+}
+
+PridefulPossession: {
+	DisplayName: Prideful Possession
+	Description:
+		'''
+		+ Increases the chance getting augmentation by 10%
+		+ Increases your defense per augmentation you have
+		+ For each enchantment, increases your weapon critical strike chance by 1, weapon damage by 10%
+		'''
+}
+
+EarthlyWarm: {
+	DisplayName: Earthly Warm
+	Description:
+		'''
+		+ Increases your regenaration by 50%
+		Getting hit :
+		+ Have 1 in 3 to 10 chance to heal random amount of half of your current life
+		+ Have super rare chance to instantly heal your health instantly
+		Note : Stacking this perk only make 1st on-hit effect better and your regenaration
+		'''
+}
+
+NaturalThorn: {
+	DisplayName: Natural Thorn
+	Description:
+		'''
+		+ Increases your maximum health by 10%
+		+ Deal damage to enemy close to you ( damage depend on your current health )
+		+ Getting hit will deal damage back to NPC depend on your regenarative power
 		'''
 }

@@ -23,7 +23,7 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 		float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative, 2);
 		float DRvalue = defensesValue / 2f;
 		modifiers.ScalingArmorPenetration += 1;
-		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .25f, 1f);
+		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .01f, 1f);
 		if (Main.rand.NextBool(5)) {
 			Player.Heal((int)modifiers.FinalDamage.ApplyTo(npc.damage * .5f));
 			modifiers.SetMaxDamage(1);
@@ -36,7 +36,7 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 		float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative, 2);
 		float DRvalue = defensesValue / 2f;
 		modifiers.ScalingArmorPenetration += 1;
-		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .25f, 1f);
+		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .01f, 1f);
 		if (Main.rand.NextBool(5)) {
 			Player.Heal((int)modifiers.FinalDamage.ApplyTo(proj.damage * .5f));
 			modifiers.SetMaxDamage(1);

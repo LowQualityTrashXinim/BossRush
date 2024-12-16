@@ -124,6 +124,16 @@ namespace BossRush.Common.General {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "";
 	}
+	public class PerkDrop2 : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation) {
+				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count == 5;
+			}
+			return false;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => "";
+	}
 	public class LifeCrystalDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {

@@ -95,6 +95,15 @@ public class EnchantmentGlobalItem : GlobalItem {
 		Item_Counter3 = new int[4];
 		return base.NewInstance(target);
 	}
+	public int GetValidNumberOfEnchantment() {
+		int valid = 0;
+		for (int i = 0; i < EnchantmenStlot.Length; i++) {
+			if (EnchantmenStlot[i] != -1 && EnchantmenStlot[i] != 0 && EnchantmentLoader.GetEnchantmentItemID(EnchantmenStlot[i]) != null) {
+				valid++;
+			}
+		}
+		return valid;
+	}
 	public override void HoldItem(Item item, Player player) {
 		if (EnchantmenStlot == null) {
 			return;

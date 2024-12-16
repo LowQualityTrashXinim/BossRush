@@ -216,8 +216,11 @@ namespace BossRush.Common.General {
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new LifeCrystalDrop(), ItemID.LifeCrystal));
 			IsABoss.OnSuccess(ItemDropRule.ByCondition(new ManaCrystalDrop(), ItemID.ManaCrystal));
 			LeadingConditionRule perkrule = new(new PerkDrop());
+			LeadingConditionRule perkrule2 = new(new PerkDrop2());
 			perkrule.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
+			perkrule2.OnSuccess(ItemDropRule.ByCondition(new Conditions.LegacyHack_IsABoss(), ModContent.ItemType<WorldEssence>()));
 			npcLoot.Add(perkrule);
+			npcLoot.Add(perkrule2);
 			npcLoot.Add(noHit);
 			npcLoot.Add(dontHit);
 			npcLoot.Add(ExpertVSnormal);
