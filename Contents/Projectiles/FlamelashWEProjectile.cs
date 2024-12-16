@@ -18,5 +18,7 @@
 			Projectile.ai[2] +=explosionEaseOut;
 		}	}	public override bool PreDraw(ref Color lightColor) {
 
-		PrimitivesDrawer.newQuad(Projectile.Center,Color.White,128);
-		return false;	}}
+		PrimitivesDrawer.useBasicEffect = false;
+		ModdedShaderHandler shader = new ModdedShaderHandler(ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitive").Value);
+		PrimitivesDrawer.newQuad(Projectile.Center,Color.Aqua,new Vector2(256));
+		return false;	}}

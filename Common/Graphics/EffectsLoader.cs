@@ -13,13 +13,8 @@ using Terraria.ModLoader;
 namespace BossRush.Common.Graphics;
 internal class EffectsLoader : ModSystem {
 
-	public Asset<Effect> flameBall;
-	public Asset<Effect> trailEffect;
-	public Asset<Effect> flameEffect;
-	public Asset<Effect> primitiveFlameBall;
-	public Asset<Effect> primitiveExplosion;
-
-	public HashSet<Asset<Effect>> toUnload;
+	public static BasicEffect basicEffect;
+	public static Dictionary<string,Asset<Effect>> loadedShaders = new();
 	public static readonly bool dontLoad = false;
 
 	public override void Load() {
@@ -34,17 +29,37 @@ internal class EffectsLoader : ModSystem {
 			// FNA dosent like loading custom shaders when outside main thread for some reason lol
 			Main.RunOnMainThread(() => {
 
-				trailEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
-				flameEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
-				flameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
-				primitiveFlameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitive");
-				primitiveExplosion = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/ExplosionPrimitive");
+				loadedShaders["TrailEffect"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
+				loadedShaders["FlameEffect"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
+				loadedShaders["FlameBall"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
+				loadedShaders["FlameBallPrimitive"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitive");
+				loadedShaders["ExplosionPrimitive"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/ExplosionPrimitive");
+				basicEffect = new BasicEffect(Main.instance.GraphicsDevice);
+				basicEffect.TextureEnabled = true;
+				basicEffect.VertexColorEnabled = true;
 
 			}).Wait();
 
 			#endregion
 
 		}
+
+	}
+
+	public override void Unload() {
+		Main.RunOnMainThread(() => {
+
+			for(int i = 0; i < loadedShaders.Count; i++) 
+			{
+
+				loadedShaders.ElementAt(i).Value.Dispose();
+				basicEffect.Dispose();
+			}
+
+		}).Wait();
+		basicEffect = null;
+		loadedShaders = null;
+
 	}
 }
 

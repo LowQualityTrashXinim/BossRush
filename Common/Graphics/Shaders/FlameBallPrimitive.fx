@@ -99,7 +99,7 @@ float4 ShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COL
 
 technique t0
 {
-    pass explodingStar
+    pass FlameBallPrimitive
     {
         VertexShader = compile vs_2_0 ShaderVS();
         PixelShader = compile ps_2_0 ShaderPS();
