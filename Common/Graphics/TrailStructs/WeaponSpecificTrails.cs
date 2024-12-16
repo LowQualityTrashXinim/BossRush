@@ -72,14 +72,15 @@ public struct WyvernTrailMini {
 	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Terraria.Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Terraria.Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
 }
 public struct BeamTrail {
-	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
 	public void Draw(Projectile projectile, Color color) {
-		shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value);
+		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
+		shader.setProperties(Color.SkyBlue, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
+
 		Vector2[] w = new Vector2[projectile.oldRot.Length - 1];
-		for (int i = 0; i < w.Length; i++)
-			w[i] = new Vector2(32);
+		for (float i = 0; i < w.Length; i++)
+			w[(int)i] = new Vector2(10,16);
 		PrimitivesDrawer.newStrip(projectile.oldPos, projectile.oldRot,Color.White, w, projectile.Size / 2f);
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 

@@ -13,7 +13,6 @@ using Terraria.ModLoader;
 namespace BossRush.Common.Graphics;
 internal class EffectsLoader : ModSystem {
 
-	public static BasicEffect basicEffect;
 	public static Dictionary<string,Asset<Effect>> loadedShaders = new();
 	public static readonly bool dontLoad = false;
 
@@ -29,14 +28,11 @@ internal class EffectsLoader : ModSystem {
 			// FNA dosent like loading custom shaders when outside main thread for some reason lol
 			Main.RunOnMainThread(() => {
 
-				loadedShaders["TrailEffect"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
-				loadedShaders["FlameEffect"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
-				loadedShaders["FlameBall"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
+				loadedShaders[ShadersID.TrailShader] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
+				loadedShaders[ShadersID.FlameShader] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
+				loadedShaders[ShadersID.FlameBallShader] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
 				loadedShaders["FlameBallPrimitive"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitive");
 				loadedShaders["ExplosionPrimitive"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/ExplosionPrimitive");
-				basicEffect = new BasicEffect(Main.instance.GraphicsDevice);
-				basicEffect.TextureEnabled = true;
-				basicEffect.VertexColorEnabled = true;
 
 			}).Wait();
 
@@ -53,11 +49,9 @@ internal class EffectsLoader : ModSystem {
 			{
 
 				loadedShaders.ElementAt(i).Value.Dispose();
-				basicEffect.Dispose();
 			}
 
 		}).Wait();
-		basicEffect = null;
 		loadedShaders = null;
 
 	}

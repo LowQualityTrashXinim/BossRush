@@ -92,7 +92,7 @@ float4 ShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COL
     }
     
     
-
+    return tex2D(image1, texCoords);
     return color1;
 
 }
