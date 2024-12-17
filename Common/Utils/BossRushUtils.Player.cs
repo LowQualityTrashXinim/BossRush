@@ -209,6 +209,9 @@ namespace BossRush {
 	public class DataStorer : ModSystem {
 		public static Dictionary<string, DrawCircleAuraContext> dict_drawCircleContext = new();
 		public static void AddContext(string name, DrawCircleAuraContext context) {
+			if(dict_drawCircleContext == null) {
+				dict_drawCircleContext = new();
+			}
 			if (!dict_drawCircleContext.ContainsKey(name)) {
 				dict_drawCircleContext.Add(name, context);
 			}
@@ -249,6 +252,9 @@ namespace BossRush {
 			if (dict_drawCircleContext.ContainsKey(name)) {
 				dict_drawCircleContext[name].CopyContext(context);
 			}
+		}
+		public override void Unload() {
+			dict_drawCircleContext = null;
 		}
 	}
 
