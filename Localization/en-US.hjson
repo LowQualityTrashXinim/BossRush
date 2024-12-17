@@ -309,6 +309,7 @@ Mods: {
 			DeathSickleClone.DisplayName: Death Sickle Clone
 			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
 			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
+			ItemProjectile.DisplayName: Item Projectile
 		}
 
 		NPCs: {
@@ -2044,6 +2045,11 @@ Mods: {
 
 			SpecialSkillLootBox: {
 				DisplayName: Special Skill Loot Box
+				Tooltip: ""
+			}
+
+			AnimationTestItemProj: {
+				DisplayName: Animation Test Item Proj
 				Tooltip: ""
 			}
 		}

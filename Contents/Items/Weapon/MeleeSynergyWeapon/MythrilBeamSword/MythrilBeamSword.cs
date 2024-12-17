@@ -92,7 +92,6 @@ public class MythrilBeam : SynergyModProjectile
 		runAI = false;
 		if (timer == 0) {
 			localOriginalvelocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
-			Projectile.rotation = localOriginalvelocity.ToRotation();
 		}
 		if (timer <= 20 + Projectile.ai[1] * 2) {
 			Projectile.timeLeft = 200;

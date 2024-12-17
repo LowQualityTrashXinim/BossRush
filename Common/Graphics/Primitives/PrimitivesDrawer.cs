@@ -37,9 +37,6 @@ public static class PrimitivesDrawer {
 	private const short aSingleSegementCorners = 6;
 	private static short amountOfVerticesContainednotIncludingHeadTail;
 
-	/// <summary>
-	/// a segment, contains 4/5/6 (depends in head/tail) vertices, creating a Parallelogram shape
-	/// </summary>
 	private struct SegementAttributes {
 		public Vector2 setSeg {
 			set {
@@ -74,8 +71,6 @@ public static class PrimitivesDrawer {
 		public Color color;
 		public bool head;
 		public segementVertices vertices;
-
-
 	}
 
 	private static GraphicsDevice GraphicsDevice => Main.instance.GraphicsDevice;
@@ -163,9 +158,7 @@ public static class PrimitivesDrawer {
 		}
 
 
-		int primtiveAmount = (int)(amountOfVerticesContainednotIncludingHeadTail / 4 + 1);
-
-		GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, primtiveAmount - 1);
+		GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, amountOfVerticesContainednotIncludingHeadTail / 4);
 		//GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleStrip, vertices, 0, vertices.Length, indices, 0, primtiveAmount);
 
 
