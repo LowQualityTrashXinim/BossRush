@@ -528,7 +528,7 @@ public class DebuffTemplateV1 : RelicTemplate {
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
-		DataStorer.AddContext("Relic_SlimeSpike", new(250, Vector2.Zero, false, Color.Blue));
+		DataStorer.AddContext("Relic_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
 	}
 	//we can return whatever we want since this doesn't matter to what we are making,
 	//however we could also still use this to indicate what damageclass the projectile should deal
@@ -565,7 +565,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		DataStorer.ActivateContext(player, "Relic_SlimeSpike");
 
 		//Look for any NPC near the player
-		if (!player.Center.LookForAnyHostileNPC(250f) || modplayer.synchronize_Counter % 30 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(375f) || modplayer.synchronize_Counter % 30 != 0) {
 			return;
 		}
 		//We gonna make this template strength base from the relic Tier
@@ -575,7 +575,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		//Spawn the projectiles base on Relic Tier
 		for (int i = 0; i < Tier; i++) {
 			Projectile proj = Projectile.NewProjectileDirect(
-				player.GetSource_ItemUse(relic.Item, "Relic"),
+				player.GetSource_ItemUse(relic.Item, Type.ToString()),
 				player.Center,
 				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
@@ -647,7 +647,7 @@ public class FireBallTemplate : RelicTemplate {
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		for (int i = 0; i < Tier; i++) {
 			Projectile proj = Projectile.NewProjectileDirect(
-				player.GetSource_ItemUse(relic.Item, "Relic"),
+				player.GetSource_ItemUse(relic.Item, Type.ToString()),
 				player.Center,
 				Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
 				ProjectileID.BallofFire,
@@ -706,7 +706,7 @@ public class SkyFractureTemplate : RelicTemplate {
 			Vector2 position = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(10, 14), Main.rand.NextFloat(10, 14)) * (10 + Main.rand.NextFloat(3));
 			Vector2 toTarget = (npc.Center - position).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(9, 13);
 			Projectile proj = Projectile.NewProjectileDirect(
-				player.GetSource_ItemUse(relic.Item,"Relic"),
+				player.GetSource_ItemUse(relic.Item, Type.ToString()),
 				position,
 				toTarget,
 				ProjectileID.SkyFracture,

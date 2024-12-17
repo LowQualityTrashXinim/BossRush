@@ -8,6 +8,8 @@ using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
+using BossRush.Contents.Items.RelicItem;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -17,17 +19,41 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
 	public int OnKill_ScatterShot = -1;
+	private float TravelDistanceBeforeKill = -1f;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
 			return;
 		}
+		Item itemUse = null;
 		if (source is EntitySource_ItemUse parent) {
+			itemUse = parent.Item;
 			Source_ItemType = parent.Item.type;
 		}
 		if (source is EntitySource_Misc parent2 && parent2.Context == "OnKill_ScatterShot") {
 			Source_FromDeathScatterShot = true;
 		}
 		Source_CustomContextInfo = source.Context;
+		if (itemUse != null) {
+			if (itemUse.ModItem is Relic) {
+				if (int.TryParse(source.Context, out int type)) {
+					if (type == RelicTemplate.GetRelicType<SlimeSpikeTemplate>()) {
+						TravelDistanceBeforeKill = 375;
+					}
+					else if (type == RelicTemplate.GetRelicType<FireBallTemplate>()) {
+						TravelDistanceBeforeKill = 350;
+					}
+					else if (type == RelicTemplate.GetRelicType<SkyFractureTemplate>()) {
+						TravelDistanceBeforeKill = 450;
+					}
+				}
+			}
+		}
+	}
+	public override void PostAI(Projectile projectile) {
+		Player player = Main.player[projectile.owner];
+		if (TravelDistanceBeforeKill > 0 && Vector2.DistanceSquared(player.Center, projectile.Center) >= TravelDistanceBeforeKill * TravelDistanceBeforeKill) {
+			projectile.Kill();
+		}
 	}
 	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Source_CustomContextInfo == "Skill_IceAge") {
