@@ -319,7 +319,7 @@ public class HealthV3Template : RelicTemplate {
 			if (player.buffType[i] == 0) continue;
 			if (Main.debuff[player.buffType[i]]) {
 				float additive = MathF.Round(value.Base * (1 + relic.RelicTier / 3f));
-				modplayer.AddStatsToPlayer(stat, additive);
+				modplayer.AddStatsToPlayer(stat, Base: additive);
 				break;
 			}
 		}
@@ -661,6 +661,16 @@ public class FireBallTemplate : RelicTemplate {
 	}
 }
 public class SkyFractureTemplate : RelicTemplate {
+	public override void OnSettingTemplate() {
+		if (Main.CurrentPlayer != null) {
+			DataStorer.AddContext("Relic_SkyFracture", new(
+				450,
+				Vector2.Zero,
+				false,
+				Color.Cyan
+				));
+		}
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
@@ -686,10 +696,11 @@ public class SkyFractureTemplate : RelicTemplate {
 	}
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		DataStorer.ActivateContext(player, "Relic_SkyFracture");
 		if ((modplayer.synchronize_Counter - 50) % 150 != 0) {
 			return;
 		}
-		player.Center.LookForHostileNPC(out NPC npc, 550);
+		player.Center.LookForHostileNPC(out NPC npc, 450);
 		if (npc == null) {
 			return;
 		}
