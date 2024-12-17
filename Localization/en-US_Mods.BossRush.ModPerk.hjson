@@ -522,11 +522,11 @@ EarthlyWarm: {
 	DisplayName: Earthly Warm
 	Description:
 		'''
-		+ Increases your regenaration by 50%
+		+ Increases your regeneration by 50%
 		Getting hit :
 		+ Have 1 in 3 to 10 chance to heal random amount of half of your current life
 		+ Have super rare chance to instantly heal your health instantly
-		Note : Stacking this perk only make 1st on-hit effect better and your regenaration
+		Note : Stacking this perk only make 1st on-hit effect better and your regeneration
 		'''
 }
 
@@ -536,6 +536,29 @@ NaturalThorn: {
 		'''
 		+ Increases your maximum health by 10%
 		+ Deal damage to enemy close to you ( damage depend on your current health )
-		+ Getting hit will deal damage back to NPC depend on your regenarative power
+		+ Getting hit will deal damage back to NPC depend on your regenerative power
+		'''
+}
+
+BloodVoodoo: {
+	DisplayName: Blood Voodoo
+	Description:
+		'''
+		+ Hitting enemy will over heal you
+		( Note : Overheal value ignore life reduction )
+		+ Upon enemy damaging you, you spew out damaging blood
+		+ Rare chance to also release blood rose thorn
+		'''
+}
+
+NightTerror: {
+	DisplayName: Night Terror
+	Description:
+		'''
+		During night :
+		+ Increases your life regeneration by 25% and flat 10
+		+ Increases your melee damage by 1.3x ( next stack increases it to 1.4x and so on )
+		+ Increases your critical damage by 1.4x ( next stack increases it to 1.5x )
+		+ Increases your movement and jump boost by 55% ( next stack increases it by 10% )
 		'''
 }

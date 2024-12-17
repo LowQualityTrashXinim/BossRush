@@ -91,7 +91,10 @@ public class PlayerStatsHandle : ModPlayer {
 	/// Use this if you want to make a series of item that shoot out all of the effect in the same timeline
 	/// </summary>
 	public int synchronize_Counter = 0;
-
+	public int TemporaryLife = 0;
+	public int TemporaryLife_Counter = 0;
+	public int TemporaryLife_Limit = 0;
+	public int TemporaryLife_CounterLimit = 120;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
@@ -154,6 +157,10 @@ public class PlayerStatsHandle : ModPlayer {
 		if (!listItem.Contains(item))
 			listItem.Add(item);
 	}
+	public void Set_TemporaryLife(int limit, int counterlimit) {
+		TemporaryLife_Limit += limit;
+		TemporaryLife_CounterLimit += counterlimit;
+	}
 	public override void ResetEffects() {
 		if (!Player.HasBuff(ModContent.BuffType<LifeStruckDebuff>())) {
 			Debuff_LifeStruct = 0;
@@ -172,8 +179,19 @@ public class PlayerStatsHandle : ModPlayer {
 		Player.maxMinions = (int)UpdateMinion.ApplyTo(Player.maxMinions);
 		Player.maxTurrets = (int)UpdateSentry.ApplyTo(Player.maxTurrets);
 
-		Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2), 1, int.MaxValue);
+		if (TemporaryLife > 0) {
+			if (++TemporaryLife_Counter >= TemporaryLife_CounterLimit) {
+				TemporaryLife -= 1;
+				TemporaryLife_Counter = 0;
+			}
+			TemporaryLife = Math.Clamp(TemporaryLife, 0, TemporaryLife_Limit);
+			TemporaryLife_Limit = 0;
+			TemporaryLife_CounterLimit = 0;
+		}
+
+		Player.statLifeMax2 = Math.Clamp((int)UpdateHPMax.ApplyTo(Player.statLifeMax2) + TemporaryLife, 1, int.MaxValue);
 		Player.statManaMax2 = Math.Clamp((int)UpdateManaMax.ApplyTo(Player.statManaMax2), 1, int.MaxValue);
+
 
 		UpdateFullHPDamage = StatModifier.Default;
 		UpdateMinion = StatModifier.Default;
@@ -212,7 +230,7 @@ public class PlayerStatsHandle : ModPlayer {
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;
 		LifeSteal_CoolDown = 60;
-		LifeSteal_CoolDown = BossRushUtils.CountDown(LifeSteal_CoolDown);
+		LifeSteal_CoolDownCounter = BossRushUtils.CountDown(LifeSteal_CoolDownCounter);
 		ModifyHit_OverrideCrit = null;
 		ModifyHit_Before_Crit = false;
 	}
