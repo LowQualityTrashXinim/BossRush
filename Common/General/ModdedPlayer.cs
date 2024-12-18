@@ -99,7 +99,6 @@ namespace BossRush.Common.General {
 			yield return new Item(ModContent.ItemType<WoodenLootBox>());
 			if (UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 				yield return new Item(ModContent.ItemType<LunchBox>());
-				yield return new Item(ModContent.ItemType<CursedSkull>());
 				if (UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE)) {
 					LifeCrystal += 5;
 					ManaCrystal += 4;

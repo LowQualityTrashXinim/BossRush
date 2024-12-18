@@ -306,7 +306,7 @@ public class HealthV3Template : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value), });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value * (1 + relic.RelicTier / 3f)), });
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
@@ -319,7 +319,7 @@ public class HealthV3Template : RelicTemplate {
 			if (player.buffType[i] == 0) continue;
 			if (Main.debuff[player.buffType[i]]) {
 				float additive = MathF.Round(value.Base * (1 + relic.RelicTier / 3f));
-				modplayer.AddStatsToPlayer(stat, additive);
+				modplayer.AddStatsToPlayer(stat, Base: additive);
 				break;
 			}
 		}
@@ -432,7 +432,7 @@ public class SkillActivateTemplate : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base) : RelicTemplateLoader.RelicValueToPercentage(value.Additive);
+		string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + relic.RelicTier / 3f)) : RelicTemplateLoader.RelicValueToPercentage(value.Additive * (1 + relic.RelicTier / 3f));
 		return string.Format(Description, new string[] {
 			Color.Yellow.Hex3(),
 			Name,
@@ -501,7 +501,7 @@ public class DebuffTemplateV1 : RelicTemplate {
 		return string.Format(Description, new string[] {
 			Color.Yellow.Hex3(),
 			Name,
-			RelicTemplateLoader.RelicValueToPercentage(value.Additive)
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive * (1 + relic.RelicTier / 3f))
 	});
 	}
 
@@ -527,8 +527,8 @@ public class DebuffTemplateV1 : RelicTemplate {
 /// This is my example on how to make a custom template that have your own stats<br/>
 /// </summary>
 public class SlimeSpikeTemplate : RelicTemplate {
-	public override void OnSettingTemplate() {
-		DataStorer.AddContext("Relic_SlimeSpike", new(250, Vector2.Zero, false, Color.Blue));
+	public override void SetStaticDefaults() {
+		DataStorer.AddContext("Relic_SlimeSpike", new(375, Vector2.Zero, false, Color.Blue));
 	}
 	//we can return whatever we want since this doesn't matter to what we are making,
 	//however we could also still use this to indicate what damageclass the projectile should deal
@@ -555,7 +555,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				Color.Blue.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * relic.RelicTier),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * relic.RelicTier)),
 				Color.Yellow.Hex3(),
 				Name
 		});
@@ -565,7 +565,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		DataStorer.ActivateContext(player, "Relic_SlimeSpike");
 
 		//Look for any NPC near the player
-		if (!player.Center.LookForAnyHostileNPC(250f) || modplayer.synchronize_Counter % 30 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(375f) || modplayer.synchronize_Counter % 30 != 0) {
 			return;
 		}
 		//We gonna make this template strength base from the relic Tier
@@ -575,11 +575,11 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		//Spawn the projectiles base on Relic Tier
 		for (int i = 0; i < Tier; i++) {
 			Projectile proj = Projectile.NewProjectileDirect(
-				player.GetSource_ItemUse(relic.Item),
+				player.GetSource_ItemUse(relic.Item, Type.ToString()),
 				player.Center,
 				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
-				(int)value.Base * Tier,
+				(int)(value.Base * (1 + .1f * relic.RelicTier)),
 				2 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
@@ -606,15 +606,13 @@ public class SkillCoolDownTemplate : RelicTemplate {
 	}
 }
 public class FireBallTemplate : RelicTemplate {
-	public override void OnSettingTemplate() {
-		if (Main.CurrentPlayer != null) {
-			DataStorer.AddContext("Relic_FireBall", new(
-				550,
-				Vector2.Zero,
-				false,
-				Color.OrangeRed
-				));
-		}
+	public override void SetStaticDefaults() {
+		DataStorer.AddContext("Relic_FireBall", new(
+			350,
+			Vector2.Zero,
+			false,
+			Color.OrangeRed
+			));
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next(new PlayerStats[] {
@@ -634,7 +632,7 @@ public class FireBallTemplate : RelicTemplate {
 				Color.Orange.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * relic.RelicTier),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * relic.RelicTier)),
 				Color.Yellow.Hex3(),
 				Name
 		});
@@ -642,18 +640,18 @@ public class FireBallTemplate : RelicTemplate {
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		DataStorer.ActivateContext(player, "Relic_FireBall");
-		if (!player.Center.LookForAnyHostileNPC(550f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(350f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
 			return;
 		}
 		int Tier = relic.RelicTier;
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		for (int i = 0; i < Tier; i++) {
 			Projectile proj = Projectile.NewProjectileDirect(
-				player.GetSource_ItemUse(relic.Item),
+				player.GetSource_ItemUse(relic.Item, Type.ToString()),
 				player.Center,
 				Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
 				ProjectileID.BallofFire,
-				(int)value.Base * Tier,
+				(int)(value.Base * (1 + .1f * Tier)),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
@@ -661,6 +659,14 @@ public class FireBallTemplate : RelicTemplate {
 	}
 }
 public class SkyFractureTemplate : RelicTemplate {
+	public override void SetStaticDefaults() {
+		DataStorer.AddContext("Relic_SkyFracture", new(
+			450,
+			Vector2.Zero,
+			false,
+			Color.Cyan
+			));
+	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
 		return Main.rand.Next(new PlayerStats[] {
 			PlayerStats.MeleeDMG,
@@ -676,20 +682,21 @@ public class SkyFractureTemplate : RelicTemplate {
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		return string.Format(Description, new string[] {
-				Color.Orange.Hex3(),
+				Color.Cyan.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * relic.RelicTier),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * relic.RelicTier)),
 				Color.Yellow.Hex3(),
 				Name
 		});
 	}
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
+		DataStorer.ActivateContext(player, "Relic_SkyFracture");
 		if ((modplayer.synchronize_Counter - 50) % 150 != 0) {
 			return;
 		}
-		player.Center.LookForHostileNPC(out NPC npc, 550);
+		player.Center.LookForHostileNPC(out NPC npc, 450);
 		if (npc == null) {
 			return;
 		}
@@ -699,11 +706,11 @@ public class SkyFractureTemplate : RelicTemplate {
 			Vector2 position = player.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(10, 14), Main.rand.NextFloat(10, 14)) * (10 + Main.rand.NextFloat(3));
 			Vector2 toTarget = (npc.Center - position).SafeNormalize(Vector2.Zero) * Main.rand.NextFloat(9, 13);
 			Projectile proj = Projectile.NewProjectileDirect(
-				player.GetSource_ItemUse(relic.Item),
+				player.GetSource_ItemUse(relic.Item, Type.ToString()),
 				position,
 				toTarget,
 				ProjectileID.SkyFracture,
-				(int)value.Base * Tier,
+				(int)(value.Base * (1 + .1f * relic.RelicTier)),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
