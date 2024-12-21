@@ -86,16 +86,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.crit += 21;
 					item.useTime = item.useAnimation = 9;
 					break;
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					item.shootSpeed += 3;
-					item.crit += 6;
-					break;
 				case ItemID.HeatRay:
 					item.useTime = item.useAnimation = 4;
 					item.mana = 4;
@@ -215,24 +205,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						projectile.extraUpdates += 1;
 					}
 					return false;
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					Vector2 newPos1 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(MathHelper.PiOver2), 5);
-					Vector2 newVelocity1 = (Main.MouseWorld - newPos1).SafeNormalize(Vector2.Zero) * velocity.Length();
-					Vector2 newPos2 = position.IgnoreTilePositionOFFSET(velocity.RotatedBy(-MathHelper.PiOver2), 5);
-					Vector2 newVelocity2 = (Main.MouseWorld - newPos2).SafeNormalize(Vector2.Zero) * velocity.Length();
-					Projectile arrow1 = Projectile.NewProjectileDirect(source, newPos1, newVelocity1, type, damage, knockback, player.whoAmI);
-					Projectile arrow2 = Projectile.NewProjectileDirect(source, newPos2, newVelocity2, type, damage, knockback, player.whoAmI);
-					if (ContentSamples.ProjectilesByType[type].arrow) {
-						arrow1.extraUpdates += 1;
-						arrow2.extraUpdates += 1;
-					}
-					return false;
 				case ItemID.ToxicFlask:
 					if (++modplayer.ToxicFlask_SpecialCounter >= 2) {
 						for (int i = 0; i < 3; i++) {
@@ -271,16 +243,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.CopperBow:
 				case ItemID.TinBow:
 					line = new TooltipLine(Mod, "RoguelikeOverhaul_Tier1OreBow", "Have 20% to shoot out additional arrow");
-					tooltips.Add(line);
-					break;
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					line = new TooltipLine(Mod, "RoguelikeOverhaul_WoodBow", "Shoot out 2 empowered arrows instead of 1 normal arrow");
 					tooltips.Add(line);
 					break;
 				case ItemID.WoodenBoomerang:

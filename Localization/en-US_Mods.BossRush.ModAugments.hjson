@@ -145,27 +145,27 @@ Union: {
 
 StrengthenI: {
 	DisplayName: Strengthen I
-	Description: Increases damage by 25% when helding this item
+	Description: Increases damage by 25% when equiping this item
 }
 
 StrengthenII: {
 	DisplayName: Strengthen II
-	Description: Increases critical strike damage by 35% when helding this item
+	Description: Increases critical strike damage by 35% when equiping this item
 }
 
 StrengthenIII: {
 	DisplayName: Strengthen III
-	Description: Increases defenses by 10 when helding this item
+	Description: Increases defenses by 10 when equiping this item
 }
 
 StrengthenIV: {
 	DisplayName: Strengthen IV
-	Description: Increases maximum life by 50 when helding this item
+	Description: Increases maximum life by 50 when equiping this item
 }
 
 StrengthenV: {
 	DisplayName: Strengthen V
-	Description: Increases critical strike chance by 10% when helding this item
+	Description: Increases critical strike chance by 10% when equiping this item
 }
 
 DarkSoul: {

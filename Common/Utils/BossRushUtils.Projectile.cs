@@ -1,4 +1,5 @@
-﻿using BossRush.Texture;
+﻿using BossRush.Common.General;
+using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,15 +10,19 @@ using Terraria.ModLoader;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
+		public static bool Check_ItemTypeSource(this Projectile projectile, int ItemType) {
+			if (projectile.TryGetGlobalProjectile(out RoguelikeGlobalProjectile global)) {
+				return global.Source_ItemType == ItemType;
+			}
+			return false;
+		}
 		public static void SpawnHostileProjectile(Vector2 position, Vector2 velocity, int ProjectileType, int damage, float knockback) {
 			int projectile = Projectile.NewProjectile(null, position, velocity, ProjectileType, damage, knockback);
 			Main.projectile[projectile].hostile = true;
 			Main.projectile[projectile].friendly = false;
 		}
-		public static void FillProjectileOldPosAndRot(this Projectile projectile) 
-		{
-			for(int i = 0; i < projectile.oldPos.Length; i++) 
-			{
+		public static void FillProjectileOldPosAndRot(this Projectile projectile) {
+			for (int i = 0; i < projectile.oldPos.Length; i++) {
 				projectile.oldPos[i] = projectile.position - projectile.velocity.SafeNormalize(Vector2.UnitY) * i;
 				projectile.oldRot[i] = projectile.rotation;
 			}

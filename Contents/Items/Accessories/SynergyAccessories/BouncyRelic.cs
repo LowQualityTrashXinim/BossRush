@@ -1,5 +1,4 @@
 ﻿using BossRush.Contents.Items.Weapon;
-using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +6,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.SynergyAccessories {
 	internal class BouncyRelic : SynergyModItem {
-		public override string Texture => BossRushTexture.MissingTexture_Default;
 		public override void SetDefaults() {
 			Item.DefaultToAccessory(30, 30);
 			Item.value = 1000000;

@@ -165,6 +165,12 @@ public class AchievementUI : UIState {
 		else {
 			conditiontextpanel.SetText("Condition: " + achievement.ConditionTip);
 		}
+		if (achievement.CanSeeReward || achievement.Achieved) {
+			text += "Reward : " + achievement.Reward;
+		}
+		else {
+			text += "Reward : Achieve this to find out !";
+		}
 		text += "\nStatus : ";
 		if (achievement.Achieved) {
 			text += "Completed";

@@ -24,6 +24,7 @@ using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Common.Systems.Mutation;
+using BossRush.Common.Systems.WeaponUpgrade;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -715,6 +716,12 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
+			DataStorer.AddContext("Perk_RingOfFire", new(
+				300,
+				Vector2.Zero,
+				false,
+				Color.DarkRed
+				));
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.15f, 1, 10);
@@ -725,12 +732,10 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(Player player) {
 			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
+			DataStorer.ActivateContext(player, "Perk_RingOfFire");
+			DataStorer.ModifyContextDistance("Perk_RingOfFire", (int)radius);
 			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
 			for (int i = 0; i < 4; i++) {
-				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
-				Main.dust[dustRing].noGravity = true;
-				Main.dust[dustRing].velocity = Vector2.Zero;
-				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
 				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = -Vector2.UnitY * 4f;
@@ -999,6 +1004,15 @@ namespace BossRush.Contents.Perks {
 			ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
 			augmentplayer.IncreasesChance += .05f * StackAmount(player);
 			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
+		}
+	}
+	public class NaturalUpgrade : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			list_category.Add(PerkCategory.WeaponUpgrade);
+		}
+		public override void OnChoose(Player player) {
+			UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.NaturalUpgrade);
 		}
 	}
 }
