@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.ArtifactSystem;
 using System;
+using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Contents.Artifacts;
 internal class GamblerSoulArtifact : Artifact {
@@ -59,6 +60,9 @@ public class GamblerSoulPlayer : ModPlayer {
 	}
 }
 public class StrokeOfLuck : Perk {
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>() || AchievementSystem.IsAchieved("GamblerSoul");
+	}
 	public override void SetDefaults() {
 		textureString = BossRushUtils.GetTheSameTextureAsEntity<StrokeOfLuck>();
 		CanBeChoosen = false;
@@ -94,6 +98,9 @@ public class StrokeOfLuck : Perk {
 	}
 }
 public class UncertainStrike : Perk {
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<GamblerSoulArtifact>() || AchievementSystem.IsAchieved("GamblerSoul");
+	}
 	public override void SetDefaults() {
 		textureString = BossRushUtils.GetTheSameTextureAsEntity<UncertainStrike>();
 		CanBeChoosen = false;

@@ -117,6 +117,9 @@ public class Terra : ModAugments {
 		tooltipColor = Color.Green;
 	}
 	public override void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
+		if(Main.rand.NextFloat() > .05f) {
+			return;
+		}
 		NPC.HitModifiers modifier = new NPC.HitModifiers();
 		modifier.FinalDamage.Flat = player.GetWeaponDamage(item) * (hitInfo.Crit ? player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage.ApplyTo(2) : 1);
 		modifier.FinalDamage *= 0;

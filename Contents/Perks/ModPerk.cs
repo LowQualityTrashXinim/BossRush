@@ -80,7 +80,7 @@ namespace BossRush.Contents.Perks {
 	public class LethalKnockBack : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<LethalKnockBack>();
-			list_catagory.Add(PerkCatagory.WeaponUpgrade);
+			list_category.Add(PerkCategory.WeaponUpgrade);
 			CanBeStack = false;
 		}
 		public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
@@ -101,7 +101,7 @@ namespace BossRush.Contents.Perks {
 	public class WindSlash : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<WindSlash>();
-			list_catagory.Add(PerkCatagory.WeaponUpgrade);
+			list_category.Add(PerkCategory.WeaponUpgrade);
 			CanBeStack = false;
 		}
 		public override bool SelectChoosing() {
@@ -365,7 +365,7 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfSolar : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfSolar>();
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -406,7 +406,7 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfVortex : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfVortex>();
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -427,7 +427,7 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfNebula : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfNebula>();
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -450,7 +450,7 @@ namespace BossRush.Contents.Perks {
 	public class BlessingOfStarDust : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfStarDust>();
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -490,7 +490,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfSynergy : Perk {
 		public override void SetDefaults() {
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -503,7 +503,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfTitan : Perk {
 		public override void SetDefaults() {
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -517,7 +517,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfPerk : Perk {
 		public override void SetDefaults() {
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			CanBeChoosen = false;
@@ -537,7 +537,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfEvasive : Perk {
 		public override void SetDefaults() {
-			list_catagory.Add(PerkCatagory.Starter);
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -649,7 +649,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 4;
 		}
 		public override void Update(Player player) {
-			player.maxMinions += StackAmount(player) * 2;
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxMinion, Base: 2 * StackAmount(player));
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.DamageType != DamageClass.Summon) {

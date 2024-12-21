@@ -81,7 +81,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void PostSetupContent() {
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
-				if (ModPerkLoader.GetPerk(i).list_catagory.Contains(PerkCatagory.Starter)) {
+				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.Starter)) {
 					StarterPerkType.Add(i);
 				}
 			}
@@ -348,7 +348,7 @@ namespace BossRush.Contents.Perks {
 			if (perks != clone.perks) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}
-	public enum PerkCatagory : byte {
+	public enum PerkCategory : byte {
 		None,
 		Starter,
 		WeaponUpgrade,
@@ -390,7 +390,7 @@ namespace BossRush.Contents.Perks {
 		/// </summary>
 		public bool CanBeChoosen = true;
 		public int Type { get; private set; }
-		public List<PerkCatagory> list_catagory = new() { };
+		public List<PerkCategory> list_category = new() { };
 		protected sealed override void Register() {
 			Type = ModPerkLoader.Register(this);
 		}
@@ -475,8 +475,8 @@ namespace BossRush.Contents.Perks {
 		public static int Register(Perk perk) {
 			ModTypeLookup<Perk>.Register(perk);
 			_perks.Add(perk);
-			if (perk.list_catagory.Count < 1) {
-				perk.list_catagory.Add(PerkCatagory.None);
+			if (perk.list_category.Count < 1) {
+				perk.list_category.Add(PerkCategory.None);
 			}
 			return _perks.Count - 1;
 		}
@@ -751,11 +751,11 @@ namespace BossRush.Contents.Perks {
 					Main.instance.MouseText("");
 				}
 			}
-			if (IsMouseHovering) {
+			if (IsMouseHovering && Switch == 0) {
 				Switch = BossRushUtils.Safe_SwitchValue(Switch, 100);
 			}
-			else {
-				Switch = 0;
+			if (Switch != 0) {
+				Switch = BossRushUtils.Safe_SwitchValue(Switch, 100);
 			}
 		}
 		int Switch = 0;
@@ -765,9 +765,9 @@ namespace BossRush.Contents.Perks {
 				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Blue * .5f);
 			}
 			spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position(), null, Color.White * .45f);
-			if (IsMouseHovering) {
+			if (Switch != 0) {
 				float alpha = (100 - Switch) * 0.01f;
-				float size = 1 + Switch * .01f * .5f;
+				float size = 1 + Switch * .01f * .75f;
 				Vector2 origin = ahhlookingassdefaultbgsperktexture.Value.Size() * .5f;
 				Vector2 adjustment = origin - origin * size;
 				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + adjustment, null, Color.White * alpha, 0, Vector2.Zero, size, SpriteEffects.None, 0f);
