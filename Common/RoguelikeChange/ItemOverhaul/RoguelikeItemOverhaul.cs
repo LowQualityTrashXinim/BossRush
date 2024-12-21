@@ -264,7 +264,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.SilverShortsword:
 				case ItemID.TinShortsword:
 				case ItemID.TungstenShortsword:
-					line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 3s cool down )");
+					line = new TooltipLine(Mod, "RoguelikeOverhaul_ShortSword", "Alt click to throw short sword ( 1.5s cool down )");
 					line.OverrideColor = Color.Yellow;
 					tooltips.Add(line);
 					break;

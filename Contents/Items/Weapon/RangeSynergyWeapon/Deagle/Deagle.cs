@@ -67,11 +67,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(-5, 2);
 		}
-		//public override void ModifyWeaponCrit(Player player, ref float crit) {
-		//	if (player.velocity == Vector2.Zero) {
-		//		crit += 55f;
-		//	}
-		//}
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.Handgun)
@@ -94,7 +89,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.PhoenixBlaster)) {
 					Deagle_PhoenixBlaster_Critical = true;
 				}
-				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.DaedalusStormbow) 
+				if (SynergyBonus_System.Check_SynergyBonus(ModContent.ItemType<Deagle>(), ItemID.DaedalusStormbow)
 					&& Deagle_DaedalusStormBow_coolDown <= 0) {
 					for (int i = 0; i < 15; i++) {
 						Vector2 positionAboveSky = target.Center + new Vector2(Main.rand.Next(-100, 100), Main.rand.Next(-1100, -1000));
@@ -110,6 +105,11 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Deagle {
 					}
 					Deagle_DaedalusStormBow_coolDown = 600;
 				}
+			}
+		}
+		public override void ModifyWeaponCrit(Item item, ref float crit) {
+			if (item.type == ModContent.ItemType<Deagle>() && Player.velocity == Vector2.Zero) {
+				crit += 55;
 			}
 		}
 	}

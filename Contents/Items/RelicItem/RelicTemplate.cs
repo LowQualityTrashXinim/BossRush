@@ -583,6 +583,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				2 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
+			proj.tileCollide = false;
 		}
 	}
 }
@@ -655,6 +656,7 @@ public class FireBallTemplate : RelicTemplate {
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
+			proj.tileCollide = false;
 		}
 	}
 }
@@ -714,6 +716,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
+			proj.tileCollide = false;
 		}
 	}
 }
