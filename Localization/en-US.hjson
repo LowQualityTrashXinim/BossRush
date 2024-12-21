@@ -2048,6 +2048,11 @@ Mods: {
 				DisplayName: Special Skill Loot Box
 				Tooltip: ""
 			}
+
+			UpgradeReset: {
+				DisplayName: Upgrade Reset
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

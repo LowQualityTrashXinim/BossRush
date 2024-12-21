@@ -3,6 +3,7 @@ using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using System.Collections.Generic;
+using BossRush.Texture;
 
 namespace BossRush.Common.Systems.WeaponUpgrade;
 public enum WeaponUpgradeID : short {
@@ -37,6 +38,7 @@ public class UpgradePlayer : ModPlayer {
 	}
 }
 public class UpgradeReset : ModItem {
+	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
 		Item.BossRushDefaultToConsume(32, 32);
 	}

@@ -755,7 +755,7 @@ namespace BossRush.Contents.Perks {
 				Switch = BossRushUtils.Safe_SwitchValue(Switch, 100);
 			}
 			if (Switch != 0) {
-				Switch = BossRushUtils.Safe_SwitchValue(Switch, 100);
+				Switch = BossRushUtils.Safe_SwitchValue(Switch, 100, extraspeed: 1);
 			}
 		}
 		int Switch = 0;

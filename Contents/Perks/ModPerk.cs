@@ -662,6 +662,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 2;
+			list_category.Add(PerkCategory.WeaponUpgrade);
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (modifiers.DamageType == DamageClass.Melee && item.shoot == ProjectileID.None) {
@@ -705,6 +706,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
+			list_category.Add(PerkCategory.WeaponUpgrade);
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			if (item.damage <= 20 || (Main.hardMode && item.damage <= 42)) {
