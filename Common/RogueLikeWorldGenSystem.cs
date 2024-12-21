@@ -8,37 +8,30 @@ using System.Diagnostics;
 using BossRush.Common.Systems;
 using BossRush.Texture;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria;
-using BossRush.Contents.Items;
 using ReLogic.Content;
+using Terraria.GameInput;
+using Microsoft.Xna.Framework.Input;
 
 namespace BossRush.Common;
 public enum StructureUI_State : byte {
 	Default,
-	HorizontalSelection,
-	VerticalSelection,
-	MultiStructureSelection,
+	Selecting,
 	Saving,
 }
 public class StructureUI : UIState {
 	public UIPanel panel;
 	public Roguelike_UITextPanel listtext_panel;
-	public Roguelike_UITextPanel textBox;
 	public Roguelike_UIImageButton btn_confirm;
 	public Roguelike_UIImageButton btn_cancel;
 	public Roguelike_UITextPanel textPanel;
-	public Point16 TopLeft = new Point16();
-	public Point16 BottomRight = new Point16();
-	public bool IsFocus = false;
+	public StructureEnterText txt_FileName;
 
 	public List<Roguelike_UIImageButton> list_btn = new();
-	public int WidthStruct => BottomRight.X - TopLeft.X;
-	public int HeightStruct => BottomRight.Y - TopLeft.Y;
 	Asset<Texture2D> defaultlookingassbtn = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
 	public override void OnDeactivate() {
 		VisibilityUI(true);
@@ -54,11 +47,12 @@ public class StructureUI : UIState {
 		for (int i = 0; i < 5; i++) {
 			Roguelike_UIImageButton btn = new(defaultlookingassbtn);
 			btn.UISetWidthHeight(52, 52);
-			btn.HAlign = .5f;
-			btn.VAlign = MathHelper.Lerp(0f, 1, i / 4);
+			btn.VAlign = .5f;
+			btn.HAlign = MathHelper.Lerp(0f, 1, i / 4f);
 			btn.OnUpdate += List_Btn_OnUpdate;
 			btn.OnLeftClick += List_Btn_OnLeftClick;
 			panel.Append(btn);
+			list_btn.Add(btn);
 		}
 
 		textPanel = new("Save this structure ? Please name the file");
@@ -68,14 +62,12 @@ public class StructureUI : UIState {
 		textPanel.Hide = true;
 		panel.Append(textPanel);
 
-		textBox = new("");
-		textBox.HAlign = .5f;
-		textBox.VAlign = .45f;
-		textBox.UISetWidthHeight(400, 40);
-		textBox.TextHAlign = 0f;
-		textBox.Hide = true;
-		textBox.OnLeftClick += TextBox_OnLeftClick;
-		panel.Append(textBox);
+		txt_FileName = new();
+		txt_FileName.HAlign = .5f;
+		txt_FileName.VAlign = .45f;
+		txt_FileName.UISetWidthHeight(400, 40);
+		txt_FileName.Hide = true;
+		panel.Append(txt_FileName);
 
 		btn_cancel = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
 		btn_cancel.HAlign = 0f;
@@ -96,13 +88,32 @@ public class StructureUI : UIState {
 	StructureUI_State CurrentUI_State = 0;
 	SaverOptimizedMethod method = SaverOptimizedMethod.Default;
 	private void List_Btn_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		if (listeningElement.UniqueId == list_btn[0].UniqueId) {
+		if (listeningElement.UniqueId != list_btn[0].UniqueId) {
+			if (listeningElement.UniqueId == list_btn[1].UniqueId) {
+				CurrentUI_State = StructureUI_State.Selecting;
+				method = SaverOptimizedMethod.HorizontalDefault;
+			}
+			else if (listeningElement.UniqueId == list_btn[2].UniqueId) {
+				CurrentUI_State = StructureUI_State.Selecting;
+				method = SaverOptimizedMethod.Default;
+			}
+			else if (listeningElement.UniqueId == list_btn[3].UniqueId) {
+				CurrentUI_State = StructureUI_State.Selecting;
+				method = SaverOptimizedMethod.MultiStructure;
+			}
+			VisibilitySettingUI(true);
+			VisibilityUI(true);
+			Main.NewText("Press key M to confirm selection");
+		}
+		else {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+			CurrentUI_State = StructureUI_State.Default;
+			method = SaverOptimizedMethod.Default;
 		}
 	}
 	private void VisibilityUI(bool hide) {
 		textPanel.Hide = hide;
-		textBox.Hide = hide;
+		txt_FileName.Hide = hide;
 		btn_cancel.Hide = hide;
 		btn_confirm.Hide = hide;
 	}
@@ -116,28 +127,20 @@ public class StructureUI : UIState {
 
 		if (affectedElement.UniqueId == list_btn[0].UniqueId) {
 			Main.instance.MouseText("Close ?");
-			CurrentUI_State = StructureUI_State.Default;
-			method = SaverOptimizedMethod.Default;
 		}
-		if (affectedElement.UniqueId == list_btn[1].UniqueId) {
+		else if (affectedElement.UniqueId == list_btn[1].UniqueId) {
 			Main.instance.MouseText("Horizontal saving");
-			CurrentUI_State = StructureUI_State.HorizontalSelection;
-			method = SaverOptimizedMethod.HorizontalDefault;
 		}
-		if (affectedElement.UniqueId == list_btn[2].UniqueId) {
+		else if (affectedElement.UniqueId == list_btn[2].UniqueId) {
 			Main.instance.MouseText("Vertical saving");
-			CurrentUI_State = StructureUI_State.VerticalSelection;
-			method = SaverOptimizedMethod.Default;
 		}
-		if (affectedElement.UniqueId == list_btn[3].UniqueId) {
+		else if (affectedElement.UniqueId == list_btn[3].UniqueId) {
 			Main.instance.MouseText("Multi-structure saving");
-			CurrentUI_State = StructureUI_State.MultiStructureSelection;
-			method = SaverOptimizedMethod.MultiStructure;
 		}
-		if (affectedElement.UniqueId == list_btn[4].UniqueId) {
+		else if (affectedElement.UniqueId == list_btn[4].UniqueId) {
 			Main.instance.MouseText("");
 		}
-		VisibilitySettingUI(true);
+		VisibilityUI(true);
 	}
 
 	private void Panel_OnUpdate(UIElement affectedElement) {
@@ -146,95 +149,124 @@ public class StructureUI : UIState {
 		}
 	}
 
-	private void TextBox_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		IsFocus = true;
-	}
-
 	private void Btn_cancel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-		textBox.SetText("");
+		txt_FileName.SetText("");
 	}
 
 	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		GenerationHelper.SaveToFile(new(TopLeft.X, TopLeft.Y, WidthStruct - 1, HeightStruct - 1), textBox.Text);
-		textBox.SetText("");
+		GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text);
+		txt_FileName.SetText("");
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 	}
+	bool Confirm = false;
+	public bool secondPoint;
+
+	public Point16 point1;
+	public Point16 point2;
+
+	public bool movePoint1;
+	public bool movePoint2;
+	public bool Ready => !secondPoint && point1 != default;
+	public Point16 TopLeft => new Point16(point1.X < point2.X ? point1.X : point2.X, point1.Y < point2.Y ? point1.Y : point2.Y);
+	public Point16 BottomRight => new Point16(point1.X > point2.X ? point1.X : point2.X, point1.Y > point2.Y ? point1.Y : point2.Y);
+	public int thisWidth => BottomRight.X - TopLeft.X;
+	public int thisHeight => BottomRight.Y - TopLeft.Y;
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
-		if (Main.keyState.IsKeyDown(Keys.Escape) || Main.mouseLeft && !IsMouseHovering)
-			IsFocus = false;
-		if (IsFocus) {
+		if (CurrentUI_State != StructureUI_State.Selecting) {
+			return;
+		}
 
+		if (PlayerInput.GetPressedKeys().Contains(Keys.P)) {
+			if (Ready) {
+				if (Vector2.Distance(Main.MouseWorld, point1.ToVector2() * 16) <= 32) {
+					movePoint1 = true;
+				}
+
+				if (Vector2.Distance(Main.MouseWorld, point2.ToVector2() * 16) <= 32) {
+					movePoint2 = true;
+				}
+			}
+
+			if (!secondPoint) {
+				point1 = (Main.MouseWorld / 16).ToPoint16();
+				point2 = default;
+
+				Main.NewText("Select Second Point");
+				secondPoint = true;
+			}
+			else {
+				point2 = (Main.MouseWorld / 16).ToPoint16();
+
+				Main.NewText("Ready to save! Right click to save this structure...");
+				secondPoint = false;
+			}
+		}
+		if (movePoint1)
+			point1 = (Main.MouseWorld / 16).ToPoint16();
+
+		if (movePoint2)
+			point2 = (Main.MouseWorld / 16).ToPoint16();
+
+		if (!Main.mouseLeft) {
+			movePoint1 = false;
+			movePoint2 = false;
+		}
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		if (CurrentUI_State == StructureUI_State.Selecting) {
+			Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/corner").Value;
+			Texture2D tex2 = ModContent.Request<Texture2D>("StructureHelper/box").Value;
+			Point16 topLeft = TopLeft;
+			Point16 bottomRight = BottomRight;
+
+			bool drawPreview = true;
+
+			if (secondPoint) {
+				var point1 = this.point1;
+				var point2 = (Main.MouseWorld / 16).ToPoint16();
+
+				topLeft = new Point16(point1.X < point2.X ? point1.X : point2.X, point1.Y < point2.Y ? point1.Y : point2.Y);
+				bottomRight = new Point16(point1.X > point2.X ? point1.X : point2.X, point1.Y > point2.Y ? point1.Y : point2.Y);
+				int Width = bottomRight.X - topLeft.X - 1;
+				int Height = bottomRight.Y - topLeft.Y - 1;
+
+				var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
+				BossRushUtils.DrawOutline(spriteBatch, target, Color.Gold);
+				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
+
+				spriteBatch.Draw(tex, this.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan, 0, tex.Frame().Size() / 2, 1, 0, 0);
+				//spriteBatch.Draw(tex, point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			}
+			else if (Ready) {
+				int Width = bottomRight.X - topLeft.X - 1;
+				int Height = bottomRight.Y - topLeft.Y - 1;
+
+				var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
+				BossRushUtils.DrawOutline(spriteBatch, target, Color.Lerp(Color.Gold, Color.White, 0.5f + 0.5f * (float)System.Math.Sin(Main.GameUpdateCount * 0.2f)));
+				spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
+
+				float scale1 = Vector2.Distance(Main.MouseWorld, this.point1.ToVector2() * 16) < 32 ? 1.5f : 1f;
+				spriteBatch.Draw(tex, this.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan * scale1, 0, tex.Frame().Size() / 2, scale1, 0, 0);
+
+				float scale2 = Vector2.Distance(Main.MouseWorld, this.point2.ToVector2() * 16) < 32 ? 1.5f : 1f;
+				spriteBatch.Draw(tex, this.point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Red * scale2, 0, tex.Frame().Size() / 2, scale2, 0, 0);
+
+				if (scale1 > 1 || scale2 > 1)
+					drawPreview = false;
+			}
+
+			if (drawPreview) {
+				var pos = (Main.MouseWorld / 16).ToPoint16();
+				spriteBatch.Draw(tex, pos.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
+			}
 		}
 	}
 }
 
 public class RogueLikeWorldGenSystem : ModSystem {
-
-	public override void Load() {
-		On_Main.DrawInterface += On_Main_DrawInterface;
-	}
-	private void On_Main_DrawInterface(On_Main.orig_DrawInterface orig, Main self, GameTime gameTime) {
-		//Code source credit : Structure Helper
-		//SpriteBatch spriteBatch = Main.spriteBatch;
-
-		//if (Main.LocalPlayer.HeldItem.ModItem is StructureWand) {
-		//	var wand = (Main.LocalPlayer.HeldItem.ModItem as StructureWand);
-		//	//spriteBatch.Begin(default, default, SamplerState.PointClamp, default, default, default, Main.GameViewMatrix.ZoomMatrix);
-
-		//	Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/corner").Value;
-		//	Texture2D tex2 = ModContent.Request<Texture2D>("StructureHelper/box").Value;
-
-		//	Point16 topLeft = wand.TopLeft;
-		//	Point16 bottomRight = wand.BottomRight;
-
-		//	bool drawPreview = true;
-
-		//	if (wand.secondPoint) {
-		//		var point1 = wand.point1;
-		//		var point2 = (Main.MouseWorld / 16).ToPoint16();
-
-		//		topLeft = new Point16(point1.X < point2.X ? point1.X : point2.X, point1.Y < point2.Y ? point1.Y : point2.Y);
-		//		bottomRight = new Point16(point1.X > point2.X ? point1.X : point2.X, point1.Y > point2.Y ? point1.Y : point2.Y);
-		//		int Width = bottomRight.X - topLeft.X - 1;
-		//		int Height = bottomRight.Y - topLeft.Y - 1;
-
-		//		var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
-		//		BossRushUtils.DrawOutline(spriteBatch, target, Color.Gold);
-		//		spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
-
-		//		spriteBatch.Draw(tex, wand.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan, 0, tex.Frame().Size() / 2, 1, 0, 0);
-		//		//spriteBatch.Draw(tex, point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
-		//	}
-		//	else if (wand.Ready) {
-		//		int Width = bottomRight.X - topLeft.X - 1;
-		//		int Height = bottomRight.Y - topLeft.Y - 1;
-
-		//		var target = new Rectangle((int)(topLeft.X * 16 - Main.screenPosition.X), (int)(topLeft.Y * 16 - Main.screenPosition.Y), Width * 16 + 16, Height * 16 + 16);
-		//		BossRushUtils.DrawOutline(spriteBatch, target, Color.Lerp(Color.Gold, Color.White, 0.5f + 0.5f * (float)System.Math.Sin(Main.GameUpdateCount * 0.2f)));
-		//		spriteBatch.Draw(tex2, target, tex2.Frame(), Color.White * 0.15f);
-
-		//		float scale1 = Vector2.Distance(Main.MouseWorld, wand.point1.ToVector2() * 16) < 32 ? 1.5f : 1f;
-		//		spriteBatch.Draw(tex, wand.point1.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Cyan * scale1, 0, tex.Frame().Size() / 2, scale1, 0, 0);
-
-		//		float scale2 = Vector2.Distance(Main.MouseWorld, wand.point2.ToVector2() * 16) < 32 ? 1.5f : 1f;
-		//		spriteBatch.Draw(tex, wand.point2.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.Red * scale2, 0, tex.Frame().Size() / 2, scale2, 0, 0);
-
-		//		if (scale1 > 1 || scale2 > 1)
-		//			drawPreview = false;
-		//	}
-
-		//	if (drawPreview) {
-		//		var pos = (Main.MouseWorld / 16).ToPoint16();
-		//		spriteBatch.Draw(tex, pos.ToVector2() * 16 - Main.screenPosition, tex.Frame(), Color.White * 0.5f, 0, tex.Frame().Size() / 2, 1, 0, 0);
-		//	}
-
-		//	spriteBatch.End();
-		//}
-
-		orig(self, gameTime);
-	}
 
 	public List<GenPassData> list_genPass = new();
 	public Dictionary<string, List<GenPassData>> dict_Struture = new();

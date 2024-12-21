@@ -11,6 +11,14 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Contents.Artifacts;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System.Xml.Linq;
+using System;
+using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
+using Terraria.UI;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
@@ -55,9 +63,14 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	class PerkModSystem : ModSystem {
+		public static List<int> StarterPerkType { get; private set; }
 		public override void Load() {
 			base.Load();
 			On_Player.QuickMana += On_Player_QuickMana;
+			StarterPerkType = new();
+		}
+		public override void Unload() {
+			StarterPerkType = null;
 		}
 		private void On_Player_QuickMana(On_Player.orig_QuickMana orig, Player self) {
 			PerkPlayer perkplayer = self.GetModPlayer<PerkPlayer>();
@@ -65,6 +78,13 @@ namespace BossRush.Contents.Perks {
 				return;
 			}
 			orig(self);
+		}
+		public override void PostSetupContent() {
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (ModPerkLoader.GetPerk(i).list_catagory.Contains(PerkCatagory.Starter)) {
+					StarterPerkType.Add(i);
+				}
+			}
 		}
 	}
 	class MagicOverhaulBuff : GlobalBuff {
@@ -328,6 +348,13 @@ namespace BossRush.Contents.Perks {
 			if (perks != clone.perks) SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
 		}
 	}
+	public enum PerkCatagory : byte {
+		None,
+		Starter,
+		WeaponUpgrade,
+		ArtifactExclusive,
+		ArtifactUpgrade
+	}
 	public abstract class Perk : ModType {
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
@@ -363,6 +390,7 @@ namespace BossRush.Contents.Perks {
 		/// </summary>
 		public bool CanBeChoosen = true;
 		public int Type { get; private set; }
+		public List<PerkCatagory> list_catagory = new() { };
 		protected sealed override void Register() {
 			Type = ModPerkLoader.Register(this);
 		}
@@ -447,10 +475,304 @@ namespace BossRush.Contents.Perks {
 		public static int Register(Perk perk) {
 			ModTypeLookup<Perk>.Register(perk);
 			_perks.Add(perk);
+			if (perk.list_catagory.Count < 1) {
+				perk.list_catagory.Add(PerkCatagory.None);
+			}
 			return _perks.Count - 1;
 		}
 		public static Perk GetPerk(int type) {
 			return type >= 0 && type < _perks.Count ? _perks[type] : null;
+		}
+	}
+	internal class PerkUIState : UIState {
+		public string Info = "";
+		public const short DefaultState = 0;
+		public const short StarterPerkState = 1;
+		public const short DebugState = 2;
+		public const short GamblerState = 3;
+		public short StateofState = 0;
+		public UIText toolTip;
+		public Roguelike_UIImageButton reroll = null;
+		List<PerkUIImageButton> list_perkbtn = new();
+		public override void OnInitialize() {
+			reroll = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT));
+			reroll.OnLeftClick += Reroll_OnLeftClick;
+			reroll.OnUpdate += Reroll_OnUpdate;
+			reroll.UISetWidthHeight(52, 52);
+			reroll.HAlign = .5f;
+			reroll.VAlign = .5f;
+			Append(reroll);
+
+			list_perkbtn = new();
+			toolTip = new UIText("");
+			Info = "";
+			Append(toolTip);
+		}
+
+		private void Reroll_OnUpdate(UIElement affectedElement) {
+			if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().Reroll == 0) {
+				reroll.Hide = true;
+			}
+			if (affectedElement.ContainsPoint(Main.MouseScreen)) {
+				Main.LocalPlayer.mouseInterface = true;
+			}
+			if (affectedElement.IsMouseHovering) {
+				Main.instance.MouseText("Reroll Perk !");
+			}
+		}
+
+		private void Reroll_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
+			List<int> listOfPerk = new List<int>();
+			Player player = Main.LocalPlayer;
+			player.TryGetModPlayer(out PerkPlayer modplayer);
+			if (StateofState == DefaultState) {
+				for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+					if (modplayer.perks.ContainsKey(i)) {
+						if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+							|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+							continue;
+						}
+					}
+					if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+						continue;
+					}
+					if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+						continue;
+					}
+					listOfPerk.Add(i);
+				}
+			}
+			if (StateofState == StarterPerkState) {
+				listOfPerk = PerkModSystem.StarterPerkType;
+			}
+			foreach (var item in list_perkbtn) {
+				if (listOfPerk.Count < 1) {
+					item.ChangePerkType(Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() }));
+				}
+				else {
+					item.ChangePerkType(Main.rand.Next(listOfPerk));
+				}
+			}
+			modplayer.Modify_RerollCount(1, true);
+		}
+
+		public override void OnActivate() {
+			list_perkbtn.Clear();
+			for (int i = Elements.Count - 1; i >= 0; i--) {
+				if (Elements[i].UniqueId != reroll.UniqueId) {
+					Elements[i].Remove();
+				}
+			}
+			Player player = Main.LocalPlayer;
+			if (player.TryGetModPlayer(out PerkPlayer modplayer)) {
+				if (StateofState == DefaultState) {
+					ActivateNormalPerkUI(modplayer, player);
+				}
+				if (StateofState == StarterPerkState) {
+					ActivateStarterPerkUI(modplayer, player);
+				}
+				if (StateofState == DebugState) {
+					ActivateDebugPerkUI(player);
+				}
+				if (StateofState == GamblerState) {
+					ActivateGamblerUI(modplayer, player);
+				}
+			}
+		}
+		private void ActivateDebugPerkUI(Player player) {
+			int amount = ModPerkLoader.TotalCount;
+			Vector2 originDefault = new Vector2(26, 26);
+			for (int i = 0; i < amount; i++) {
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenlyPlus(amount + 1, 360, i) * Math.Clamp(amount * 20, 0, 460);
+				Asset<Texture2D> texture;
+				if (ModPerkLoader.GetPerk(i).textureString is not null)
+					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(i).textureString);
+				else
+					texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+				//After that we assign perk
+				PerkUIImageButton btn = new PerkUIImageButton(texture);
+				btn.UISetWidthHeight(52, 52);
+				btn.UISetPosition(player.Center + offsetPos, originDefault);
+				btn.perkType = i;
+				Append(btn);
+				ModPerkLoader.GetPerk(i);
+			}
+			reroll.Hide = true;
+		}
+		private void ActivateNormalPerkUI(PerkPlayer modplayer, Player player) {
+			reroll.Hide = false;
+			List<int> listOfPerk = new List<int>();
+			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
+				if (modplayer.perks.ContainsKey(i)) {
+					if ((!ModPerkLoader.GetPerk(i).CanBeStack && modplayer.perks[i] > 0)
+						|| modplayer.perks[i] >= ModPerkLoader.GetPerk(i).StackLimit) {
+						continue;
+					}
+				}
+				if (!ModPerkLoader.GetPerk(i).SelectChoosing()) {
+					continue;
+				}
+				if (!ModPerkLoader.GetPerk(i).CanBeChoosen) {
+					continue;
+				}
+				listOfPerk.Add(i);
+			}
+			Vector2 originDefault = new Vector2(26, 26);
+			int amount = listOfPerk.Count;
+			int perkamount = modplayer.PerkAmountModified();
+			for (int i = 0; i < perkamount; i++) {
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(perkamount, 360, i) * Math.Clamp(perkamount * 20, 0, 200);
+				int newperk = Main.rand.Next(listOfPerk);
+				Asset<Texture2D> texture;
+				if (ModPerkLoader.GetPerk(newperk).textureString is not null)
+					texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
+				else
+					texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+				if (i >= amount) {
+					newperk = Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() });
+					if (ModPerkLoader.GetPerk(newperk).textureString is not null)
+						texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(newperk).textureString);
+					else
+						texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+					PerkUIImageButton buttonWeapon = new PerkUIImageButton(texture);
+					buttonWeapon.perkType = newperk;
+					buttonWeapon.UISetWidthHeight(52, 52);
+					buttonWeapon.UISetPosition(player.Center + offsetPos, originDefault);
+					buttonWeapon.Info = Info;
+					list_perkbtn.Add(buttonWeapon);
+					Append(buttonWeapon);
+					continue;
+				}
+				listOfPerk.Remove(newperk);
+				//After that we assign perk
+				PerkUIImageButton btn = new PerkUIImageButton(texture);
+				btn.UISetWidthHeight(52, 52);
+				btn.UISetPosition(player.Center + offsetPos, originDefault);
+				btn.perkType = newperk;
+				btn.Info = Info;
+				list_perkbtn.Add(btn);
+				Append(btn);
+			}
+		}
+		private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
+			reroll.Hide = false;
+			Vector2 originDefault = new Vector2(26, 26);
+			List<int> starterPerk = PerkModSystem.StarterPerkType;
+			int limit = 3;
+			for (int i = 0; i < limit; i++) {
+				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));
+				starterPerk.Remove(choosenperk.Type);
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(limit, 360, i) * 120;
+				//After that we assign perk
+				if (modplayer.perks.ContainsKey(choosenperk.Type)) {
+					if (modplayer.perks[choosenperk.Type] >= choosenperk.StackLimit) {
+						continue;
+					}
+				}
+				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(choosenperk.textureString));
+				btn.UISetWidthHeight(52, 52);
+				btn.UISetPosition(player.Center + offsetPos, originDefault);
+				btn.perkType = choosenperk.Type;
+				list_perkbtn.Add(btn);
+				Append(btn);
+			}
+		}
+		private void ActivateGamblerUI(PerkPlayer modplayer, Player player) {
+			Vector2 originDefault = new Vector2(26, 26);
+			int[] starterPerk = new int[]
+			{ Perk.GetPerkType<UncertainStrike>(),
+			Perk.GetPerkType<StrokeOfLuck>(),
+			Perk.GetPerkType<BlessingOfPerk>()
+			};
+			for (int i = 0; i < starterPerk.Length; i++) {
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(starterPerk.Length, 360, i) * starterPerk.Length * 20;
+				//After that we assign perk
+				if (modplayer.perks.ContainsKey(starterPerk[i])) {
+					if (modplayer.perks[starterPerk[i]] >= ModPerkLoader.GetPerk(starterPerk[i]).StackLimit) {
+						continue;
+					}
+				}
+				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(starterPerk[i]).textureString));
+				btn.UISetWidthHeight(52, 52);
+				btn.UISetPosition(player.Center + offsetPos, originDefault);
+				btn.perkType = starterPerk[i];
+				Append(btn);
+			}
+			reroll.Hide = true;
+		}
+	}
+	//Do all the check in UI state since that is where the perk actually get create and choose
+	class PerkUIImageButton : UIImageButton {
+		public int perkType;
+		public string Info = "";
+		private Asset<Texture2D> texture;
+		private Asset<Texture2D> ahhlookingassdefaultbgsperktexture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+		public PerkUIImageButton(Asset<Texture2D> texture) : base(texture) {
+			this.texture = texture;
+		}
+		public void ChangePerkType(int type) {
+			perkType = type;
+			Perk perk = ModPerkLoader.GetPerk(perkType);
+			if (perk != null && perk.textureString != null) {
+				texture = ModContent.Request<Texture2D>(ModPerkLoader.GetPerk(perkType).textureString);
+			}
+			else {
+				texture = ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT);
+			}
+			SetImage(texture);
+			this.UISetWidthHeight(52, 52);
+		}
+		public override void LeftClick(UIMouseEvent evt) {
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -1 });
+			UniversalSystem.AddPerk(perkType);
+			if (Info == "Glitch") {
+				Perk perk = ModPerkLoader.GetPerk(perkType);
+				int stack = 0;
+				if (perk.CanBeStack) {
+					stack = Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks[perkType];
+				}
+				int length = Math.Clamp(perk.StackLimit - stack, 0, 999999);
+				for (int i = 0; i < length; i++) {
+					UniversalSystem.AddPerk(perkType);
+				}
+			}
+		}
+		public override void Update(GameTime gameTime) {
+			base.Update(gameTime);
+			if (ContainsPoint(Main.MouseScreen)) {
+				Main.LocalPlayer.mouseInterface = true;
+			}
+			if (IsMouseHovering && ModPerkLoader.GetPerk(perkType) != null) {
+				Main.instance.MouseText(ModPerkLoader.GetPerk(perkType).DisplayName + "\n" + ModPerkLoader.GetPerk(perkType).ModifyToolTip());
+			}
+			else {
+				if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+					Main.instance.MouseText("");
+				}
+			}
+			if (IsMouseHovering) {
+				Switch = BossRushUtils.Safe_SwitchValue(Switch, 100);
+			}
+			else {
+				Switch = 0;
+			}
+		}
+		int Switch = 0;
+		public override void Draw(SpriteBatch spriteBatch) {
+			if (Info == "Glitch") {
+				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Red * .5f);
+				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-4, 4)), null, Color.Blue * .5f);
+			}
+			spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position(), null, Color.White * .45f);
+			if (IsMouseHovering) {
+				float alpha = (100 - Switch) * 0.01f;
+				float size = 1 + Switch * .01f * .5f;
+				Vector2 origin = ahhlookingassdefaultbgsperktexture.Value.Size() * .5f;
+				Vector2 adjustment = origin - origin * size;
+				spriteBatch.Draw(ahhlookingassdefaultbgsperktexture.Value, this.GetInnerDimensions().Position() + adjustment, null, Color.White * alpha, 0, Vector2.Zero, size, SpriteEffects.None, 0f);
+			}
+			base.Draw(spriteBatch);
 		}
 	}
 }

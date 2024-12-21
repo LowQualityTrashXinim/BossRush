@@ -127,6 +127,9 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
+			if (modplayer.LootboxCanDropSpecialPotion) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
+			}
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 				OnRightClick(player, modplayer);
 				if (UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
@@ -140,9 +143,6 @@ namespace BossRush.Contents.Items.Chest {
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
 					}
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
-					if (modplayer.LootboxCanDropSpecialPotion) {
-						player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
-					}
 					if (modplayer.CanDropSynergyEnergy) {
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 					}

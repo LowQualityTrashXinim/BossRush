@@ -51,7 +51,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class MarkOfSpectre : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushTexture.ACCESSORIESSLOT;
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<MarkOfSpectre>();
 			CanBeStack = false;
 		}
 		public override void UpdateEquip(Player player) {
@@ -79,6 +79,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class LethalKnockBack : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<LethalKnockBack>();
+			list_catagory.Add(PerkCatagory.WeaponUpgrade);
 			CanBeStack = false;
 		}
 		public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
@@ -98,8 +100,12 @@ namespace BossRush.Contents.Perks {
 	}
 	public class WindSlash : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<WindSlash>();
+			list_catagory.Add(PerkCatagory.WeaponUpgrade);
 			CanBeStack = false;
-			CanBeChoosen = false;
+		}
+		public override bool SelectChoosing() {
+			return false;
 		}
 		public override void Update(Player player) {
 			if (player.HeldItem.DamageType == DamageClass.Melee
@@ -248,6 +254,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class SelfExplosion : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<SelfExplosion>();
 			CanBeStack = true;
 			StackLimit = 2;
 		}
@@ -282,6 +289,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class ProjectileProtection : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<ProjectileProtection>();
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -318,6 +326,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BloodStrike : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BloodStrike>();
 			CanBeStack = false;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
@@ -334,6 +343,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class SpeedArmor : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<SpeedArmor>();
 			CanBeStack = true;
 			StackLimit = 2;
 		}
@@ -354,6 +364,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfSolar : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfSolar>();
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -393,6 +405,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfVortex : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfVortex>();
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -412,6 +426,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfNebula : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfNebula>();
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -433,6 +449,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfStarDust : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfStarDust>();
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -472,6 +490,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfSynergy : Perk {
 		public override void SetDefaults() {
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -484,6 +503,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfTitan : Perk {
 		public override void SetDefaults() {
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -497,6 +517,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfPerk : Perk {
 		public override void SetDefaults() {
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			CanBeChoosen = false;
@@ -516,6 +537,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfEvasive : Perk {
 		public override void SetDefaults() {
+			list_catagory.Add(PerkCatagory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;

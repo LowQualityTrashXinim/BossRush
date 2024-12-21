@@ -323,16 +323,6 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] PoisonBuff = { BuffID.Poisoned, BuffID.Venom };
 		public readonly static int[] Debuff = [.. FireBuff, .. PoisonBuff];
 		//Perk
-		public readonly static int[] StarterPerk = {
-			Perk.GetPerkType<BlessingOfSolar>(),
-			Perk.GetPerkType<BlessingOfVortex>(),
-			Perk.GetPerkType<BlessingOfNebula>(),
-			Perk.GetPerkType<BlessingOfStarDust>(),
-			Perk.GetPerkType<BlessingOfSynergy>(),
-			Perk.GetPerkType<BlessingOfTitan>(),
-			Perk.GetPerkType<BlessingOfPerk>(),
-			Perk.GetPerkType<BlessingOfEvasive>()
-		};
 		//Tile
 		public readonly static int[] Altar = {
 			ModContent.TileType<RelicAltar>(),

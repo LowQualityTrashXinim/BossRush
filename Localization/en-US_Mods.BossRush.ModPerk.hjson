@@ -68,7 +68,7 @@ WindSlash: {
 		'''
 		"For people who complain their sword isn't special"
 		 + Release a short wind slash upon swing that deal 75% of that weapon damage
-		 + Waiting for 3s will result in stronger wind slash !
+		 + Waiting for 1.5s will result in stronger wind slash !
 		'''
 }
 

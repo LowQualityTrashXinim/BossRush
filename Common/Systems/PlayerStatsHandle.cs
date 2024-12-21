@@ -231,6 +231,8 @@ public class PlayerStatsHandle : ModPlayer {
 		LifeSteal_CoolDownCounter = BossRushUtils.CountDown(LifeSteal_CoolDownCounter);
 		ModifyHit_OverrideCrit = null;
 		ModifyHit_Before_Crit = false;
+		Rapid_LifeRegen = 0;
+		Rapid_ManaRegen = 0;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));

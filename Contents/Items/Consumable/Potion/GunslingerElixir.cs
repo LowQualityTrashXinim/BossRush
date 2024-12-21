@@ -26,7 +26,7 @@ namespace BossRush.Contents.Items.Consumable.Potion {
 
 		public override void Update(Player player, ref int buffIndex) {
 			player.GetCritChance(DamageClass.Generic) += 50;
-			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify -= 100;
+			player.GetModPlayer<RangerOverhaulPlayer>().SpreadModify *= 0;
 		}
 	}
 }
