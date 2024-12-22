@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Consumable.Potion;
 internal class HyperRegenElixir : ModItem {
-	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<HyperRegen>(), 12000);
 		Item.rare = ItemRarityID.Orange;
