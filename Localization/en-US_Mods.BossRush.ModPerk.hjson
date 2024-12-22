@@ -601,3 +601,12 @@ RuthlessRage: {
 		- Decreases critical strike chance by 20
 		'''
 }
+
+UnlimitedThrowable: {
+	DisplayName: Unlimited Throwable
+	Description:
+		'''
+		+ Throwable become unconsumable
+		+ Throwable gain +10 damage, +4 critical strike chance and +50% critical damage
+		'''
+}

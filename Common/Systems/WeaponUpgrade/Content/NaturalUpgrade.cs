@@ -1,4 +1,5 @@
-﻿using BossRush.Contents.Projectiles;
+﻿using BossRush.Contents.Perks;
+using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -10,7 +11,7 @@ namespace BossRush.Common.Systems.WeaponUpgrade.Content;
 
 public class NaturalUpgrade_GlobalItem : GlobalItem {
 	public override void SetDefaults(Item entity) {
-		if (UpgradePlayer.Check_Upgrade(Main.LocalPlayer, WeaponUpgradeID.NaturalUpgrade)) {
+		if (UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.NaturalUpgrade)) {
 			switch (entity.type) {
 				case ItemID.WoodenBow:
 				case ItemID.AshWoodBow:
@@ -93,6 +94,23 @@ public class NaturalUpgrade_Player : ModPlayer {
 					hit.HitDirection = BossRushUtils.DirectionFromPlayerToNPC(Player.Center.X, npc.Center.X);
 					Player.StrikeNPCDirect(npc, hit);
 				}
+			}
+		}
+	}
+}
+public class NaturalUpgrade : Perk {
+	public override void SetDefaults() {
+		CanBeStack = false;
+		list_category.Add(PerkCategory.WeaponUpgrade);
+	}
+	public override void OnChoose(Player player) {
+		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.NaturalUpgrade);
+		foreach (Item item in player.inventory) {
+			foreach (var globalitem in item.Globals) {
+				if (globalitem == null || globalitem.Mod.Name != Mod.Name) {
+					continue;
+				}
+				globalitem.SetDefaults(item);
 			}
 		}
 	}

@@ -1009,13 +1009,4 @@ namespace BossRush.Contents.Perks {
 			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
-	public class NaturalUpgrade : Perk {
-		public override void SetDefaults() {
-			CanBeStack = false;
-			list_category.Add(PerkCategory.WeaponUpgrade);
-		}
-		public override void OnChoose(Player player) {
-			UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.NaturalUpgrade);
-		}
-	}
 }

@@ -182,7 +182,6 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
 		public override void SetDefaults(Item entity) {
-			CriticalDamage = 0;
 		}
 		public float CriticalDamage = 0;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
