@@ -222,6 +222,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PeaceWithGod>();
 			CanBeStack = false;
+			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;

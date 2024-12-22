@@ -519,7 +519,7 @@ PridefulPossession: {
 }
 
 EarthlyWarm: {
-	DisplayName: Earthly Warm
+	DisplayName: Earthly Warmth
 	Description:
 		'''
 		+ Increases your regeneration by 50%
