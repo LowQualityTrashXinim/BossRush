@@ -2480,14 +2480,14 @@ Mods: {
 			FuryStrike: {
 				DisplayName: Fury Strike
 				Description:
-				'''
-				Increases your critical damage by 50%
-				Increases your none-critical damage by 20%
-				Have {0}% to deal 2nd strike
-				Critical hit will ignore 10 defenses
-				'''
+					'''
+					Increases your critical damage by 50%
+					Increases your none-critical damage by 20%
+					Have {0}% to deal 2nd strike
+					Critical hit will ignore 10 defenses
+					'''
 			}
-			
+
 			RageEmpowerment: {
 				DisplayName: Rage Empowerment
 				Description: Your next hit will always be critical !

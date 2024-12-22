@@ -592,7 +592,7 @@ RuthlessRage: {
 	DisplayName: Ruthless Rage
 	Description:
 		'''
-		+ Increases your critical damage by 35% and your none critical damage by 35%
+		+ Increases your critical damage by 55% and your none critical damage by 35%
 		Critical strike enemy will :
 		+ Have 5% chance to multiply final damage by 2x
 		+ Have 1% chance to multiply final damage by 4x 

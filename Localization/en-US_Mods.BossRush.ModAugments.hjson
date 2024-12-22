@@ -182,3 +182,8 @@ IntoxicateI: {
 	DisplayName: Intoxicate I
 	Description: While under a debuff effect, gain 10% damage reduction
 }
+
+ReactiveHealing: {
+	DisplayName: Reactive Healing
+	Description: Upon hit, heal back 5% of your maximum life
+}

@@ -1,15 +1,12 @@
-﻿using BossRush.Common.General;
-using BossRush.Common.Systems.ArtifactSystem;
+﻿using System;
+using Terraria;
+using System.Linq;
+using Terraria.ID;
+using Microsoft.Xna.Framework;
+using BossRush.Common.General;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
+using BossRush.Common.Systems.ArtifactSystem;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -117,7 +114,7 @@ public class Terra : ModAugments {
 		tooltipColor = Color.Green;
 	}
 	public override void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		if(Main.rand.NextFloat() > .05f) {
+		if (Main.rand.NextFloat() > .05f) {
 			return;
 		}
 		NPC.HitModifiers modifier = new NPC.HitModifiers();
@@ -565,6 +562,21 @@ public class IntoxicateI : ModAugments {
 			if (Main.debuff[player.buffType[i]]) {
 				player.endurance += .1f;
 			}
+		}
+	}
+}
+public class ReactiveHealing : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.ForestGreen;
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
+		if (Main.rand.NextBool(3)) {
+			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
+		}
+	}
+	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
+		if (Main.rand.NextBool(3)) {
+			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
 		}
 	}
 }

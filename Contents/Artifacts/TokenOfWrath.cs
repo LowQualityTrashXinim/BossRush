@@ -7,6 +7,7 @@ using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Perks;
 using System;
 using Humanizer;
+using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Contents.Artifacts;
 internal class TokenOfWrathArtifact : Artifact {
@@ -30,6 +31,9 @@ public class TokenOfWrathPlayer : ModPlayer {
 	}
 }
 public class StrikeOfFury : Perk {
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() || AchievementSystem.IsAchieved("TokenOfWrath");
+	}
 	public override void SetDefaults() {
 		CanBeStack = true;
 		StackLimit = 3;
@@ -98,6 +102,9 @@ public class FuryStrike : ModBuff {
 }
 
 public class RuthlessRage : Perk {
+	public override bool SelectChoosing() {
+		return Artifact.PlayerCurrentArtifact<TokenOfWrathArtifact>() || AchievementSystem.IsAchieved("TokenOfWrath");
+	}
 	public override void SetDefaults() {
 		CanBeStack = true;
 		StackLimit = 3;
@@ -107,7 +114,7 @@ public class RuthlessRage : Perk {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: -20 * StackAmount(player));
 		modplayer.NonCriticalDamage += .35f * StackAmount(player);
-		modplayer.UpdateCritDamage += .35f * StackAmount(player);
+		modplayer.UpdateCritDamage += .55f * StackAmount(player);
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();

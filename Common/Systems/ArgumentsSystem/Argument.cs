@@ -171,6 +171,8 @@ public abstract class ModAugments : ModType {
 	public virtual void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) { }
 	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
+	public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) { }
+	public virtual void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) { }
 	public virtual void UpdateAccessory(Player player, Item item) { }
 	/// <summary>
 	/// By default Augments will always be applied on weapon
@@ -264,6 +266,32 @@ public class AugmentsPlayer : ModPlayer {
 			}
 		}
 	}
-	public override void PreUpdate() {
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		foreach (var acc in accItemUpdate) {
+			if (IsAugmentsable(acc)) {
+				AugmentsWeapon moditem = acc.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.OnHitByNPC(Player, npc, hurtInfo);
+				}
+			}
+		}
+	}
+	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+		foreach (var acc in accItemUpdate) {
+			if (IsAugmentsable(acc)) {
+				AugmentsWeapon moditem = acc.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.OnHitByProj(Player, proj, hurtInfo);
+				}
+			}
+		}
 	}
 }
