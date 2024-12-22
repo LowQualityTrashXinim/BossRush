@@ -185,5 +185,5 @@ IntoxicateI: {
 
 ReactiveHealing: {
 	DisplayName: Reactive Healing
-	Description: Upon hit, heal back 5% of your maximum life
+	Description: Upon hit, have 1 in 3 chance to heal back 5% of your maximum life
 }
