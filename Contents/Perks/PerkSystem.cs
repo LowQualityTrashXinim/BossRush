@@ -352,8 +352,7 @@ namespace BossRush.Contents.Perks {
 		None,
 		Starter,
 		WeaponUpgrade,
-		ArtifactExclusive,
-		ArtifactUpgrade
+		ArtifactExclusive
 	}
 	public abstract class Perk : ModType {
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.DisplayName");

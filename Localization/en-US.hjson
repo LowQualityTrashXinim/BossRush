@@ -2458,7 +2458,7 @@ Mods: {
 			}
 
 			BackUpMana_CoolDown: {
-				DisplayName: Back Up Mana_ Cool Down
+				DisplayName: Mana bank recharge
 				Description: Mods.BossRush.Buffs.BackUpMana_CoolDown.Description
 			}
 
@@ -2475,6 +2475,22 @@ Mods: {
 			MeltingDefense: {
 				DisplayName: Melting Defense
 				Description: Mods.BossRush.Buffs.MeltingDefense.Description
+			}
+
+			FuryStrike: {
+				DisplayName: Fury Strike
+				Description:
+				'''
+				Increases your critical damage by 50%
+				Increases your none-critical damage by 20%
+				Have {0}% to deal 2nd strike
+				Critical hit will ignore 10 defenses
+				'''
+			}
+			
+			RageEmpowerment: {
+				DisplayName: Rage Empowerment
+				Description: Your next hit will always be critical !
 			}
 		}
 
