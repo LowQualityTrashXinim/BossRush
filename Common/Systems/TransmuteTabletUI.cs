@@ -110,7 +110,7 @@ public class TransmutationUI : UIImage {
 			player.inventory[58] = item.Clone();
 			item = itemcache.Clone();
 		}
-		else if (Main.mouseItem.type != ItemID.None && item == null || item.type == ItemID.None) {
+		else if (Main.mouseItem.type != ItemID.None && item == null) {
 			//When the slot is available
 			item = Main.mouseItem.Clone();
 			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
