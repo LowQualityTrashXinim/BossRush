@@ -68,7 +68,7 @@ WindSlash: {
 		'''
 		"For people who complain their sword isn't special"
 		 + Release a short wind slash upon swing that deal 75% of that weapon damage
-		 + Waiting for 3s will result in stronger wind slash !
+		 + Waiting for 1.5s will result in stronger wind slash !
 		'''
 }
 
@@ -519,7 +519,7 @@ PridefulPossession: {
 }
 
 EarthlyWarm: {
-	DisplayName: Earthly Warm
+	DisplayName: Earthly Warmth
 	Description:
 		'''
 		+ Increases your regeneration by 50%
@@ -560,5 +560,53 @@ NightTerror: {
 		+ Increases your melee damage by 1.3x ( next stack increases it to 1.4x and so on )
 		+ Increases your critical damage by 1.4x ( next stack increases it to 1.5x )
 		+ Increases your movement and jump boost by 55% ( next stack increases it by 10% )
+		'''
+}
+
+NaturalUpgrade: {
+	DisplayName: Natural Upgrade
+	Description:
+		'''
+		+ Shooting a bow have a 20-40% chance to shoot a wind shot that deal 150% of bow damage 
+		Hitting enemy with wooden arrow will 
+		+ Have 20-40% chance to spawn a wind shot
+		+ Have a 10-15% chance to do a wind explosion which deal 200% damage
+		+ Wooden type bow now shoot 2 arrow at high velocity at once and is a lot stronger
+		'''
+}
+
+StrikeOfFury: {
+	DisplayName: Strike Of Fury
+	Description:
+		'''
+		+ Increases your none critical damage by 25%
+		Critical strike enemy will :
+		+ Have chance to gain FuryStrike buff for 3 to 7 second
+		+ Have 5% to deal 2nd strike with 45 damage
+		- Decreases your critical damage by 10% and critical strike chance by 20
+		( Note : This effect above do not stack )
+		'''
+}
+
+RuthlessRage: {
+	DisplayName: Ruthless Rage
+	Description:
+		'''
+		+ Increases your critical damage by 55% and your none critical damage by 35%
+		Critical strike enemy will :
+		+ Have 5% chance to multiply final damage by 2x
+		+ Have 1% chance to multiply final damage by 4x 
+		( Note : this effect above not stackable but critical hit will increases chance to 5% )
+		+ Getting hit will give Rage Empowerment for 1 to 9s
+		- Decreases critical strike chance by 20
+		'''
+}
+
+UnlimitedThrowable: {
+	DisplayName: Unlimited Throwable
+	Description:
+		'''
+		+ Throwable become unconsumable
+		+ Throwable gain +10 damage, +4 critical strike chance and +50% critical damage
 		'''
 }

@@ -104,6 +104,6 @@ TrinketSpoil: {
 }
 
 DivineWeaponSpoil: {
-	DisplayName: "[ Divine Weapon ]"
+	DisplayName: "[ Divine Weaponry Vault ]"
 	Description: Contains 1 fully randomized enchanted weapon
 }

@@ -188,7 +188,7 @@ GamblerSoulArtifact: {
 		'''
 		"Playing the RNG game"
 		[c/ffff00:Positive effect] :
-			+ Right at the start you gain exclusive spell and perk
+			+ Right at the start you gain option to choose 1 exclusive perk and get 1 free exclusive spell
 			+ Increases lootbox drop by 1
 		[c/ab3e43:Negative effect] : 
 			- Taken damage are increases by 20% ( Final damage )

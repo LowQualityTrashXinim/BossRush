@@ -1,6 +1,6 @@
 FireI: {
 	DisplayName: Fire I
-	Description: Weapon inflict on fire upon enemy hit
+	Description: Inflict on fire upon enemy hit
 }
 
 FireII: {
@@ -10,7 +10,7 @@ FireII: {
 
 FrostBurnI: {
 	DisplayName: FrostBurn I
-	Description: Weapon inflict frost burn upon enemy hit
+	Description: Inflict frost burn upon enemy hit
 }
 
 FrostBurnII: {
@@ -20,7 +20,7 @@ FrostBurnII: {
 
 ShadowFlameI: {
 	DisplayName: ShadowFlame I
-	Description: Weapon inflict ShadowFlame upon enemy hit
+	Description: Inflict ShadowFlame upon enemy hit
 }
 
 ShadowFlameII: {
@@ -30,7 +30,7 @@ ShadowFlameII: {
 
 CursedFlameI: {
 	DisplayName: CursedFlame I
-	Description: Weapon inflict cursed flame upon enemy hit
+	Description: Inflict cursed flame upon enemy hit
 }
 
 CursedFlameII: {
@@ -40,7 +40,7 @@ CursedFlameII: {
 
 PoisonI: {
 	DisplayName: Poison I
-	Description: Weapon inflict poisoned upon enemy hit
+	Description: Inflict poisoned upon enemy hit
 }
 
 PoisonII: {
@@ -50,7 +50,7 @@ PoisonII: {
 
 VenomI: {
 	DisplayName: Venom I
-	Description: Weapon inflict poisoned upon enemy hit
+	Description: Inflict poisoned upon enemy hit
 }
 
 VenomII: {
@@ -70,7 +70,7 @@ True: {
 
 Terra: {
 	DisplayName: Terra
-	Description: Your weapons will deal 2nd strike as True damage
+	Description: Your strike have 5% to deal 2nd strike as True damage
 }
 
 TitanI: {
@@ -145,27 +145,27 @@ Union: {
 
 StrengthenI: {
 	DisplayName: Strengthen I
-	Description: Increases damage by 25% when helding this item
+	Description: Increases damage by 25% when equiping this item
 }
 
 StrengthenII: {
 	DisplayName: Strengthen II
-	Description: Increases critical strike damage by 35% when helding this item
+	Description: Increases critical strike damage by 35% when equiping this item
 }
 
 StrengthenIII: {
 	DisplayName: Strengthen III
-	Description: Increases defenses by 10 when helding this item
+	Description: Increases defenses by 10 when equiping this item
 }
 
 StrengthenIV: {
 	DisplayName: Strengthen IV
-	Description: Increases maximum life by 50 when helding this item
+	Description: Increases maximum life by 50 when equiping this item
 }
 
 StrengthenV: {
 	DisplayName: Strengthen V
-	Description: Increases critical strike chance by 10% when helding this item
+	Description: Increases critical strike chance by 10% when equiping this item
 }
 
 DarkSoul: {
@@ -175,10 +175,15 @@ DarkSoul: {
 
 ExtraLife: {
 	DisplayName: Extra Life
-	Description: Grant you 1 extra life at the cost of this weapon
+	Description: Grant you 1 extra life at the cost of this item
 }
 
 IntoxicateI: {
 	DisplayName: Intoxicate I
 	Description: While under a debuff effect, gain 10% damage reduction
+}
+
+ReactiveHealing: {
+	DisplayName: Reactive Healing
+	Description: Upon hit, have 1 in 3 chance to heal back 5% of your maximum life
 }

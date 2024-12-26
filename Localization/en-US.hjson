@@ -309,6 +309,7 @@ Mods: {
 			DeathSickleClone.DisplayName: Death Sickle Clone
 			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
 			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
+			WindShot.DisplayName: Wind Shot
 			ItemProjectile.DisplayName: Item Projectile
 			LaserSniperProjectile.DisplayName: Laser Sniper Projectile
 			PlasmaExplosion.DisplayName: Plasma Explosion
@@ -1485,8 +1486,9 @@ Mods: {
 				ExtraInfo:
 					'''
 					[Tier] : is defined by how much effect your relic have
+					some effect is affected by tier
 
-					[Active Item] : mean having the item in your 
+					[Active Item] : having the item in your 
 					inventory will activate their effect
 					'''
 			}
@@ -2051,6 +2053,12 @@ Mods: {
 				Tooltip: ""
 			}
 
+			UpgradeReset: {
+				DisplayName: Upgrade Reset
+				Tooltip: ""
+			}
+		}
+
 			AnimationTestItemProj: {
 				DisplayName: Animation Test Item Proj
 				Tooltip: ""
@@ -2460,7 +2468,7 @@ Mods: {
 			}
 
 			BackUpMana_CoolDown: {
-				DisplayName: Back Up Mana_ Cool Down
+				DisplayName: Mana bank recharge
 				Description: Mods.BossRush.Buffs.BackUpMana_CoolDown.Description
 			}
 
@@ -2477,6 +2485,22 @@ Mods: {
 			MeltingDefense: {
 				DisplayName: Melting Defense
 				Description: Mods.BossRush.Buffs.MeltingDefense.Description
+			}
+
+			FuryStrike: {
+				DisplayName: Fury Strike
+				Description:
+					'''
+					Increases your critical damage by 50%
+					Increases your none-critical damage by 20%
+					Have {0}% to deal 2nd strike
+					Critical hit will ignore 10 defenses
+					'''
+			}
+
+			RageEmpowerment: {
+				DisplayName: Rage Empowerment
+				Description: Your next hit will always be critical !
 			}
 		}
 

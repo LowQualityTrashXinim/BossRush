@@ -24,6 +24,7 @@ using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Common.Systems.Mutation;
+using BossRush.Common.Systems.WeaponUpgrade;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -51,7 +52,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class MarkOfSpectre : Perk {
 		public override void SetDefaults() {
-			textureString = BossRushTexture.ACCESSORIESSLOT;
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<MarkOfSpectre>();
 			CanBeStack = false;
 		}
 		public override void UpdateEquip(Player player) {
@@ -79,6 +80,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class LethalKnockBack : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<LethalKnockBack>();
+			list_category.Add(PerkCategory.WeaponUpgrade);
 			CanBeStack = false;
 		}
 		public override void ModifyKnockBack(Player player, Item item, ref StatModifier knockback) {
@@ -98,8 +101,12 @@ namespace BossRush.Contents.Perks {
 	}
 	public class WindSlash : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<WindSlash>();
+			list_category.Add(PerkCategory.WeaponUpgrade);
 			CanBeStack = false;
-			CanBeChoosen = false;
+		}
+		public override bool SelectChoosing() {
+			return false;
 		}
 		public override void Update(Player player) {
 			if (player.HeldItem.DamageType == DamageClass.Melee
@@ -215,6 +222,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PeaceWithGod>();
 			CanBeStack = false;
+			CanBeChoosen = false;
 		}
 		public override void ResetEffect(Player player) {
 			player.GetModPlayer<PlayerSynergyItemHandle>().SynergyBonusBlock = true;
@@ -248,6 +256,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class SelfExplosion : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<SelfExplosion>();
 			CanBeStack = true;
 			StackLimit = 2;
 		}
@@ -282,6 +291,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class ProjectileProtection : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<ProjectileProtection>();
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -318,6 +328,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BloodStrike : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BloodStrike>();
 			CanBeStack = false;
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
@@ -334,6 +345,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class SpeedArmor : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<SpeedArmor>();
 			CanBeStack = true;
 			StackLimit = 2;
 		}
@@ -354,6 +366,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfSolar : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfSolar>();
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -393,6 +407,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfVortex : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfVortex>();
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -412,6 +428,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfNebula : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfNebula>();
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -433,6 +451,8 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfStarDust : Perk {
 		public override void SetDefaults() {
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfStarDust>();
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -472,6 +492,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfSynergy : Perk {
 		public override void SetDefaults() {
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -484,6 +505,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfTitan : Perk {
 		public override void SetDefaults() {
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -497,6 +519,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfPerk : Perk {
 		public override void SetDefaults() {
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			CanBeChoosen = false;
@@ -516,6 +539,7 @@ namespace BossRush.Contents.Perks {
 	}
 	public class BlessingOfEvasive : Perk {
 		public override void SetDefaults() {
+			list_category.Add(PerkCategory.Starter);
 			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
@@ -627,7 +651,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 4;
 		}
 		public override void Update(Player player) {
-			player.maxMinions += StackAmount(player) * 2;
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxMinion, Base: 2 * StackAmount(player));
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (hit.DamageType != DamageClass.Summon) {
@@ -639,6 +663,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 2;
+			list_category.Add(PerkCategory.WeaponUpgrade);
 		}
 		public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 			if (modifiers.DamageType == DamageClass.Melee && item.shoot == ProjectileID.None) {
@@ -682,6 +707,7 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
+			list_category.Add(PerkCategory.WeaponUpgrade);
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {
 			if (item.damage <= 20 || (Main.hardMode && item.damage <= 42)) {
@@ -693,6 +719,12 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			CanBeStack = false;
 			textureString = BossRushTexture.ACCESSORIESSLOT;
+			DataStorer.AddContext("Perk_RingOfFire", new(
+				300,
+				Vector2.Zero,
+				false,
+				Color.DarkRed
+				));
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.15f, 1, 10);
@@ -703,12 +735,10 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void Update(Player player) {
 			float radius = player.GetModPlayer<PlayerStatsHandle>().GetAuraRadius(300);
+			DataStorer.ActivateContext(player, "Perk_RingOfFire");
+			DataStorer.ModifyContextDistance("Perk_RingOfFire", (int)radius);
 			BossRushUtils.LookForHostileNPC(player.Center, out List<NPC> npclist, radius);
 			for (int i = 0; i < 4; i++) {
-				int dustRing = Dust.NewDust(player.Center + Main.rand.NextVector2CircularEdge(radius, radius), 0, 0, DustID.Torch);
-				Main.dust[dustRing].noGravity = true;
-				Main.dust[dustRing].velocity = Vector2.Zero;
-				Main.dust[dustRing].scale = Main.rand.NextFloat(.75f, 1.5f);
 				int dust = Dust.NewDust(player.Center + Main.rand.NextVector2Circular(radius, radius), 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
 				Main.dust[dust].velocity = -Vector2.UnitY * 4f;

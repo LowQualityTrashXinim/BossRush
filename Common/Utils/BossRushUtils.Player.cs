@@ -60,7 +60,7 @@ namespace BossRush {
 			&& item.axe == 0
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
-			&& (item.maxStack == 1 && !ConsumableWeapon);
+			&& (item.consumable == ConsumableWeapon);
 		public static bool IsEquipAcc(this Player player, int itemType) {
 			Item[] item = new Item[9];
 			Array.Copy(player.armor, 3, item, 0, 9);

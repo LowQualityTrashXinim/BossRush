@@ -71,7 +71,7 @@ public abstract class ModCurse : ModType {
 		Type = CursesLoader.Register(this);
 	}
 	protected void AddCatagory(CursesCatagory cata) {
-		if (!catagory.Contains(cata)) {
+		if (catagory.Contains(cata)) {
 			return;
 		}
 		catagory.Add(cata);

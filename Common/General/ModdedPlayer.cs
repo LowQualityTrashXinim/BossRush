@@ -55,6 +55,14 @@ namespace BossRush.Common.General {
 			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
 				Player.itemAnimationMax = Player.HeldItem.useAnimation;
 			}
+			foreach (Item item in Player.inventory) {
+				foreach (var globalitem in item.Globals) {
+					if(globalitem == null || globalitem.Mod.Name != Mod.Name) {
+						continue;
+					}
+					globalitem.SetDefaults(item);
+				}
+			}
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
 			if (Player.IsDebugPlayer()) {

@@ -39,6 +39,9 @@ public static class SpoilDropRarity {
 		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_RARESPOILS) || !UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_SPOIL) && !Main.LocalPlayer.IsDebugPlayer()) {
 			return false;
 		}
+		if(Main.LocalPlayer.IsDebugPlayer()) {
+			return true;
+		}
 		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().HasPerk<BlessingOfPerk>()) {
 			chance *= 1.5f;
 		}

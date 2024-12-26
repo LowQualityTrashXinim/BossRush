@@ -10,11 +10,15 @@ using Microsoft.Xna.Framework.Input;
 namespace BossRush.Common.Systems;
 
 public class StructureEnterText : UIElement {
-
+	public bool Hide = false;
 	public StructureEnterText() {
 		Width.Precent = 1f;
 		Height.Precent = 1f;
 		Recalculate();
+	}
+	public string Text => textBar.Text;
+	public void SetText(string text) {
+		textBar.SetText(text);
 	}
 
 	StructStructureEnterText_TextBox textBar;
@@ -53,13 +57,11 @@ public class StructureEnterText : UIElement {
 
 
 		Append(textBar);
-		Append(SaveButton);
-		Append(ExitButton);
 
 	}
 
 	public override void Update(GameTime gameTime) {
-		if (IgnoresMouseInteraction)
+		if (IgnoresMouseInteraction || Hide)
 			return;
 
 		if (mousePressed)
@@ -85,6 +87,12 @@ public class StructureEnterText : UIElement {
 		Main.blockInput = false;
 		PlayerInput.WritingText = false;
 		textBar.SetText("");
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		if(Hide) {
+			return;
+		}
+		base.Draw(spriteBatch);
 	}
 }
 

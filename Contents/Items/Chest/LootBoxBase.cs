@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.Consumable.Potion;
+using Steamworks;
 
 namespace BossRush.Contents.Items.Chest {
 	public abstract class LootBoxBase : ModItem {
@@ -53,7 +54,12 @@ namespace BossRush.Contents.Items.Chest {
 			PostModifyTooltips(ref tooltips);
 		}
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
-		private int ModifyRNG(int rng, Player player) {
+		private int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
+			if (influence != -1) {
+				if(Main.rand.NextFloat() <= chance ) {
+					return influence;
+				}
+			}
 			int DrugValue = player.GetModPlayer<WonderDrugPlayer>().DrugDealer;
 			if (DrugValue > 0) {
 				if (Main.rand.Next(100 + DrugValue * 5) <= DrugValue * 10) {
@@ -127,6 +133,9 @@ namespace BossRush.Contents.Items.Chest {
 				}
 			}
 			var entitySource = player.GetSource_OpenItem(Type);
+			if (modplayer.LootboxCanDropSpecialPotion) {
+				player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
+			}
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 				OnRightClick(player, modplayer);
 				if (UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
@@ -140,9 +149,6 @@ namespace BossRush.Contents.Items.Chest {
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<Relic>());
 					}
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<SkillLootBox>());
-					if (modplayer.LootboxCanDropSpecialPotion) {
-						player.QuickSpawnItem(entitySource, Main.rand.Next(TerrariaArrayID.SpecialPotion));
-					}
 					if (modplayer.CanDropSynergyEnergy) {
 						player.QuickSpawnItem(entitySource, ModContent.ItemType<SynergyEnergy>());
 					}
@@ -184,7 +190,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (Main.masterMode) {
 				SpecialAmount += 150;
 			}
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE) && !player.IsDebugPlayer()) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
 				int weapon = Main.rand.Next(BossRushModSystem.SynergyItem).type;
 				player.QuickSpawnItemDirect(entitySource, weapon);
 				AmmoForWeapon(entitySource, player, weapon);
@@ -198,9 +204,14 @@ namespace BossRush.Contents.Items.Chest {
 			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(Type).DropItemMisc;
+			DummyMeleeData.UnionWith(modplayer.Request_AddMelee);
+			DummyRangeData.UnionWith(modplayer.Request_AddRange);
+			DummyMagicData.UnionWith(modplayer.Request_AddMagic);
+			DummySummonData.UnionWith(modplayer.Request_AddSummon);
+			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			for (int i = 0; i < LoopAmount; i++) {
 				rng = RNGManage(player);
-				rng = ModifyRNG(rng, player);
+				rng = ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
 				switch (rng) {
 					case 0:
 						break;
@@ -676,7 +687,7 @@ namespace BossRush.Contents.Items.Chest {
 				SpecialAmount += 150;
 			}
 			IEntitySource entitySource = player.GetSource_OpenItem(lootbox.type);
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE) && !player.IsDebugPlayer()) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
 				int weapon = Main.rand.Next(BossRushModSystem.SynergyItem).type;
 				player.QuickSpawnItemDirect(entitySource, weapon);
 				item.AmmoForWeapon(entitySource, player, weapon);
@@ -691,10 +702,15 @@ namespace BossRush.Contents.Items.Chest {
 			HashSet<int> DummyMagicData = LootboxSystem.GetItemPool(item.Type).DropItemMagic.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummySummonData = LootboxSystem.GetItemPool(item.Type).DropItemSummon.Where(x => !modplayer.ItemGraveYard.Contains(x)).ToHashSet();
 			HashSet<int> DummyMiscsData = LootboxSystem.GetItemPool(item.Type).DropItemMisc;
+			DummyMeleeData.UnionWith(modplayer.Request_AddMelee);
+			DummyRangeData.UnionWith(modplayer.Request_AddRange);
+			DummyMagicData.UnionWith(modplayer.Request_AddMagic);
+			DummySummonData.UnionWith(modplayer.Request_AddSummon);
+			DummyMiscsData.UnionWith(modplayer.Request_AddMisc);
 			int weaponAmount = (int)Math.Clamp(MathF.Ceiling(modplayer.weaponAmount * additiveModify), 1, 999999);
 			for (int i = 0; i < weaponAmount; i++) {
 				rng = item.RNGManage(player);
-				rng = item.ModifyRNG(rng, player);
+				rng = item.ModifyRNG(rng, player, modplayer.Chance_4RNGselector, modplayer.InfluenceableRNGselector);
 				switch (rng) {
 					case 0:
 						continue;
@@ -892,7 +908,6 @@ namespace BossRush.Contents.Items.Chest {
 			for (int i = 0; i < modplayer.potionNumAmount; i++) {
 				player.QuickSpawnItem(entitySource, Main.rand.Next(DropItemPotion), modplayer.potionTypeAmount);
 			}
-
 		}
 		public static void GetArmorPiece(int type, Player player, bool randomized = false) {
 			IEntitySource entitySource = player.GetSource_OpenItem(type);
@@ -1021,14 +1036,19 @@ namespace BossRush.Contents.Items.Chest {
 		}
 	}
 	public class ChestLootDropPlayer : ModPlayer {
+		public HashSet<int> Request_AddMelee = new();
+		public HashSet<int> Request_AddRange = new();
+		public HashSet<int> Request_AddMagic = new();
+		public HashSet<int> Request_AddSummon = new();
+		public HashSet<int> Request_AddMisc = new();
+		public int InfluenceableRNGselector = -1;
+		public float Chance_4RNGselector = 0;
+
 		public int counterShow = 0;
 		public int weaponShowID = 0, potionShowID = 0, foodshowID = 0, accShowID = 0;
 
 		public HashSet<int> ItemGraveYard = new HashSet<int>();
 		public bool CanDropSynergyEnergy = true;
-		//To ensure this is save and predictable and more easily customizable, create your own modplayer class and save this data itself
-		//Alternatively we can use this to handle all the data itself
-
 
 		public StatModifier DropModifier = new();
 
@@ -1097,6 +1117,13 @@ namespace BossRush.Contents.Items.Chest {
 			}
 		}
 		public override void ResetEffects() {
+			Request_AddMelee.Clear();
+			Request_AddRange.Clear();
+			Request_AddMagic.Clear();
+			Request_AddSummon.Clear();
+			Request_AddMisc.Clear();
+			InfluenceableRNGselector = -1;
+			Chance_4RNGselector = 0;
 			LootboxCanDropSpecialPotion = false;
 			CanDropSynergyEnergy = false;
 			DropModifier = StatModifier.Default;
