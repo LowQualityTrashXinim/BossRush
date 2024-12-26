@@ -62,7 +62,7 @@ float4 ShaderPS(float4 vertexColor : COLOR0, float2 texCoords : TEXCOORD0) : COL
 {
     float2 uv = texCoords * 2.0 - 1.0;
     float d = length(uv);
-    float progress = shaderData.z;
+    float progress = shaderData.x;
     float4 noise1 = tex2D(image1, uv + time);
     float4 noise2 = tex2D(image1, expandInsideOutside(uv,-1));
     float circle1 = clamp(smoothstep(0, 1, d / progress) * 15,0,1);

@@ -27,139 +27,111 @@ public static class PrimitivesDrawer {
 		}
 	}
 
-	[InlineArray(6)]
-	private struct segementVertices {
+	[InlineArray(4)]
+	private struct triangleVetrices {
 		private CustomVertex element0;
 	}
 
 	private static short[] indices = new short[1];
-	private static SegementAttributes[] segments;
+	private static Triangle[] segments;
 	private const short aSingleSegementCorners = 6;
 	private static short amountOfVerticesContainednotIncludingHeadTail;
 
-	private struct SegementAttributes {
+	private struct Triangle {
 		public Vector2 setSeg {
 			set {
 				var center = value;
-				segementVertices segementVertices = new segementVertices();
-				Vector2 vertex0 = new Vector2(center.X - size.X, center.Y - size.Y);
-				Vector2 vertex1 = new Vector2(center.X - size.X, center.Y + size.Y);
-				Vector2 vertex2 = new Vector2(center.X + size.X, center.Y - size.Y);
-				Vector2 vertex3 = new Vector2(center.X + size.X, center.Y + size.Y);
-				Vector2 vertex4 = new Vector2(center.X - size.X / 2, center.Y - size.Y);
-				segementVertices[0].Color = color;
-				segementVertices[0].Position = vertex0.RotatedBy(rotation,center);
-				segementVertices[1].Color = color;
-				segementVertices[1].Position = vertex1.RotatedBy(rotation, center);
-				segementVertices[2].Color = color;
-				segementVertices[2].Position = vertex2.RotatedBy(rotation, center); ;
-				segementVertices[3].Color = color;
-				segementVertices[3].Position = vertex3.RotatedBy(rotation, center); ;
-
-				if (head) 
-				{
-					segementVertices[4].Color = color;
-					segementVertices[4].Position = vertex4.RotatedBy(rotation, center);
-				}
-
-				vertices = segementVertices;
-
+				vertices[0].Color = color;
+				vertices[0].Position = new Vector2(center.X - size.X, center.Y - size.Y).RotatedBy(rotation, center);
+				vertices[1].Color = color;
+				vertices[1].Position = new Vector2(center.X - size.X, center.Y + size.Y).RotatedBy(rotation, center);
+				vertices[3].Color = color;
+				vertices[3].Position = new Vector2(center.X + size.X, center.Y - size.Y).RotatedBy(rotation, center);
+				vertices[2].Color = color;
+				vertices[2].Position = new Vector2(center.X + size.X, center.Y + size.Y).RotatedBy(rotation, center);
 			}
 		}
 		public float rotation;
 		public Vector2 size;
 		public Color color;
-		public bool head;
-		public segementVertices vertices;
+		public bool flip;
+		public bool includeHead;
+		public triangleVetrices vertices;
 	}
 
 	private static GraphicsDevice GraphicsDevice => Main.instance.GraphicsDevice;
-	private static void init(int amountOfSegments, int positionRotationLegnth) 
+	private static void Init(int amountOfSegments, int positionRotationLegnth) 
 	{
-		Array.Resize<short>(ref indices, 6 * positionRotationLegnth);
-		Array.Resize<SegementAttributes>(ref segments, amountOfSegments);
-		amountOfVerticesContainednotIncludingHeadTail = (short)((amountOfSegments * 6) * 2);
+		Array.Resize(ref indices, 4 * positionRotationLegnth);
+		Array.Resize(ref segments, amountOfSegments);
 
 	}
-	public static void newQuad(Vector2 position, Color color, Vector2 size) 
+	public static void NewQuad(Vector2 position, Color color, Vector2 size) 
 	{
-		init(1, 4);
+		Init(1, 4);
 		segments[0].rotation = 0;
 		segments[0].color = color;
-		segments[0].head = true;
 		segments[0].setSeg = position;
-		segments[0].size = size;
+		segments[0].size = size / 2;
+		InitIndices();
 
-		initIndices();
-
-		draw();
+		Draw();
 	}
 
-	public static void newStrip(Vector2[] pos, float[] rot, Color col, Vector2[] size, Vector2 offset) 
+	public static void NewStrip(Vector2[] pos, float[] rot, Color col, Vector2[] size, Vector2 offset) 
 	{
 		
-		init(pos.Length, pos.Length);
+		Init(pos.Length, pos.Length);
 		for (int i = 0; i < pos.Length - 2; i++) 
 		{
-		
 			segments[i].rotation = MathHelper.WrapAngle(rot[i] - MathHelper.Pi);
 			segments[i].size = size[i];
 			segments[i].color = col;
-
-			if(i == 0)
-				segments[i].head = true;
-			else
-				segments[i].head = false;
-
-
+			segments[i].flip = i % 2 == 0;
 			segments[i].setSeg = pos[i] + offset;
 		}
 	
-		initIndices(); 
+		InitIndices(); 
 		
-		draw();
+		Draw();
 
 	}
 
-	private static void initIndices() 
-	{
-		
-		for(short i = 0; i < indices.Length - 1; i = (short)(i + 1)) 
+	private static void InitIndices() {
+
+		for(int i = 0; i < indices.Length - 1; i++) 
 		{
 
-			indices[i] = i;
+			indices[4 * i] = (short)(i * 2);
+			indices[4 * i + 1] = (short)(i * 2 + 1);
+			indices[4* i + 2] = (short)(i * 2 + 2);
+			indices[4 * i + 3] = (short)(i * 2 + 2);
 
-		}
 
 
-	}
-
-	private static void draw() 
-	{
-		// + 1 means that it must have a tail and a head
-		CustomVertex[] vertices = new CustomVertex[segments.Length * 4 + 1];
-
-		for (int i = 0; i < segments.Length; i++) 
-		{
-			for (int j = 0; j < 4; j++)
-			{
 			
-				var index = i * 4 + j + 1;
-				vertices[index] = segments[i].vertices[j];
-				vertices[index].TexCoord = new Vector2(index*2f/vertices.Length, index % 2 == 0 ? 1 : 0);
-			}
-
-			if (segments[i].head) 
-			{
-				vertices[0] = segments[i].vertices[4];
-				vertices[0].TexCoord = new Vector2(1, 1);
-			}
-		
 		}
 
+	}
 
-		GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, amountOfVerticesContainednotIncludingHeadTail / 4);
-		//GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleStrip, vertices, 0, vertices.Length, indices, 0, primtiveAmount);
+	private static void Draw() 
+	{
+		CustomVertex[] vertices = new CustomVertex[segments.Length * 4];
+
+		for (int i = 0; i < segments.Length; i++) {
+			for (int j = 0; j < 4; j++) {
+
+				var index = i * 4 + j;
+				vertices[index] = segments[i].vertices[j];
+				vertices[index].TexCoord = new Vector2(index * 2f / vertices.Length, index % 2 == 0 ? 1 : 0);
+			}
+
+
+
+		}
+
+		//GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices, 0, segments.Length * 4);
+		GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleStrip, vertices, 0, vertices.Length, indices, 0, segments.Length * 4);
 
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();

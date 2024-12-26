@@ -1,19 +1,12 @@
 ﻿using BossRush.Contents.WeaponEnchantment;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Graphics.AnimationSystem;
-public class TweenSystem<T> : ModSystem where T : struct {
-
-	public static List<Tween<T>> _tweens = new();
-	public override void PreUpdateEntities() {
-		for (int i = 0; i < _tweens.Count; i++) {
-			_tweens[i].Update();
-
-		}
-	}
-}
 
 public enum TweenEaseType : byte 
 {
@@ -35,7 +28,7 @@ public enum TweenState : byte
 
 }
 
-public class Tween<T> where T : struct
+public class Tween<T> : IEnumerable where T : struct
 {
 	public int currentDuration = 0;
 	public T currentProgress;
@@ -52,9 +45,8 @@ public class Tween<T> where T : struct
 	{
 
 		lerp = lerpFunc;
-		TweenSystem<T>._tweens.Add(this);
 	}
-	public void Start(T start, T finish, TweenEaseType type, int duration) 
+	public Tween<T> Start(T start, T finish, TweenEaseType type, int duration) 
 	{
 		this.start = start;
 		this.finish = finish;
@@ -62,9 +54,27 @@ public class Tween<T> where T : struct
 		currentDuration = 0;
 		endDuration = duration;
 		state = TweenState.Running;
-		
+		return this;
 
 
+	}
+	public Tween<T> Start() {
+
+		currentDuration = 0;
+		state = TweenState.Running;
+		return this;
+	}
+
+	public Tween<T> SetProperties(T start, T finish, TweenEaseType type, int duration) 
+	{
+
+		this.start = start;
+		this.finish = finish;
+		easeType = type;
+		currentDuration = 0;
+		endDuration = duration;
+		state = TweenState.Paused;
+		return this;
 	}
 
 	public void Pause() => state = TweenState.Paused;
@@ -75,15 +85,16 @@ public class Tween<T> where T : struct
 			return;
 
 
-		if(currentDuration != endDuration)
+		if(currentDuration < endDuration)
 			currentDuration++;
+
 		switch (easeType) 
 		{
 			case TweenEaseType.None:
 				currentProgressPercentage = currentDuration / endDuration;
 				break;
 			case TweenEaseType.InSine:
-				currentProgressPercentage = BossRushUtils.InSine(currentDuration/endDuration); 
+				currentProgressPercentage = BossRushUtils.InSine(currentDuration / endDuration); 
 				break;
 			case TweenEaseType.OutSine:
 				currentProgressPercentage = BossRushUtils.OutSine(currentDuration / endDuration);
@@ -95,18 +106,57 @@ public class Tween<T> where T : struct
 				currentProgressPercentage = BossRushUtils.OutExpo(currentDuration / endDuration);
 				break;
 		}
-		
 		currentProgress = lerp(start, finish, currentProgressPercentage);
 
 		if(currentDuration == endDuration) 
 		{
 			
-			onFinsihed.Invoke();
+			onFinsihed?.Invoke();
+			state = TweenState.Stopped;
 
 		}
 			
 
 	}
+
+	public IEnumerator GetEnumerator() {
+		return null;
+	}
 }
 
+public class TweenHandler<T>  where T : struct {
+
+	public List<Tween<T>> tweens = new List<Tween<T>>();
+	public bool justStarted = true;
+	public Tween<T> currentTween;
+	public void PlayTweens() {
+		int i = 0;
+		foreach (var t in tweens) {
+			i++;
+
+			t.onFinsihed += () => {
+				currentTween = tweens.ElementAt(i - 1).Start();
+			};
+
+		}
+
+		currentTween = tweens.First().Start();
+	}
+	public void Pause() => currentTween.Pause();
+	public void Resume() => currentTween.Resume();
+
+	public void Update() 
+	{
+
+		foreach (var t in tweens) 
+		{
+		
+			t.Update();
+		
+		}
+	
+	}
+
+
+}
 

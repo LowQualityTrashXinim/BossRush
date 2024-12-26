@@ -73,13 +73,13 @@ public struct WyvernTrailMini {
 }
 public struct BeamTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Projectile projectile, Color color) {
+	public void Draw(Projectile projectile, Color color, Vector2 offset) {
 		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
-		shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value);
+		shader.setProperties(color, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(projectile.oldPos,projectile.oldRot,StripColors,StripWidth,projectile.Size/.5f);
+		_vertexStrip.PrepareStrip(projectile.oldPos,projectile.oldRot,StripColors,StripWidth,offset);
 		_vertexStrip.DrawTrail();
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
@@ -90,7 +90,7 @@ public struct BeamTrail {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(4, 1, progressOnStrip);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(7, 1, progressOnStrip);
 }
 public struct FlameThrowerFrost {
 	private static VertexStrip _vertexStrip = new VertexStrip();
@@ -157,7 +157,7 @@ public struct StarTrail {
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset, null, true);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth,  offset, null, true);
 		_vertexStrip.DrawTrail();
 
 
@@ -180,7 +180,7 @@ public struct StarTrailEmpowered {
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset, null, true);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth,offset, null, true);
 		_vertexStrip.DrawTrail();
 
 

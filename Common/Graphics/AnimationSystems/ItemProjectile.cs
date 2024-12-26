@@ -31,18 +31,25 @@ public class ItemProjectile : ModProjectile {
 		
 	}
 
-	public static ItemProjectile SpawnItemProjectile(Player player, Vector2 position, float rotation, int timeLeft,Texture2D sprite, Rectangle? spriteSourceRect, ) 
+	public static ItemProjectile SpawnItemProjectile(Player player, Vector2 position, float rotation, int timeLeft,Texture2D sprite, Rectangle spriteSourceRect, Vector2 spriteOrigin,Vector2 spriteScale, SpriteEffects spriteEffect, Animate animation) 
 	{
 		var proj = Projectile.NewProjectileDirect(null, position, Vector2.Zero, ModContent.ProjectileType<ItemProjectile>(), 0, 0, player.whoAmI);
 		proj.timeLeft = timeLeft;
 		proj.rotation = rotation;
-		return (ItemProjectile) proj.ModProjectile;
+		ItemProjectile itemProj = (ItemProjectile)proj.ModProjectile;
+		itemProj.sprite = sprite;
+		itemProj.spriteScale = spriteScale;
+		itemProj.spriteEffect = spriteEffect;
+		itemProj.animation = animation;
+		itemProj.spriteSourceRect = spriteSourceRect;
+		itemProj.spriteOrigin = spriteOrigin;
+		return itemProj;
 
 	}
 
 	public override bool PreDraw(ref Color lightColor) {
 
-		Main.EntitySpriteDraw(sprite,Projectile.Center - Main.screenPosition,null, spriteColor, Projectile.rotation,spriteOrigin,spriteScale,spriteEffect);
+		Main.EntitySpriteDraw(sprite,Projectile.Center - Main.screenPosition, spriteSourceRect == Rectangle.Empty ? null : spriteSourceRect, lightColor, Projectile.rotation,spriteOrigin,spriteScale,spriteEffect);
 
 		return false;
 	}
@@ -55,8 +62,11 @@ public class ItemProjectile : ModProjectile {
 	public override void AI() {
 		Player player = Main.player[Projectile.owner];
 		player.heldProj = Projectile.whoAmI;
-		Projectile.Center = player.Center + PositionOffset;
 
+		animation(player,startingPosition,startingPositionOffset);
+
+		Projectile.Center = player.Center + PositionOffset;
+		Projectile.Center += new Vector2(0,player.gfxOffY);
 
 
 	}

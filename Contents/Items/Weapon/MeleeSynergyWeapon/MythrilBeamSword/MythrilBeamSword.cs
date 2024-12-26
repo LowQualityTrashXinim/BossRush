@@ -73,14 +73,14 @@ public class MythrilBeam : SynergyModProjectile
 		if (!retargeting) {
 
 			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
-			default(BeamTrail).Draw(Projectile, Color.Yellow);
+			default(BeamTrail).Draw(Projectile, Color.Yellow, texture.Size() / 2f);
 
 
 		}
 		else {
 
 			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
-			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed);
+			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed, texture.Size() / 2f);
 
 		}
 
@@ -90,6 +90,7 @@ public class MythrilBeam : SynergyModProjectile
 	Vector2 localOriginalvelocity;
 	public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
 		runAI = false;
+		Projectile.rotation = Projectile.velocity.ToRotation();
 		if (timer == 0) {
 			localOriginalvelocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
 		}

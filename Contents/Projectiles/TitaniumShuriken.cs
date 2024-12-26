@@ -32,7 +32,7 @@ public class TitaniumShuriken : ModProjectile {
 
 		Asset<Texture2D> texture = TextureAssets.Projectile[ProjectileID.Shuriken];
 		Main.instance.LoadProjectile(ProjectileID.Shuriken);
-		default(BeamTrail).Draw(Projectile, Color.White);
+		default(BeamTrail).Draw(Projectile, Color.White, Projectile.Size / 2f);
 		Main.EntitySpriteDraw(texture.Value, Projectile.Center - Main.screenPosition, null, Color.Turquoise, Projectile.ai[0] * 0.33f, texture.Size() / 2f, 1.25f, SpriteEffects.None);
 		Main.EntitySpriteDraw(texture.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.ai[0] * 0.33f, texture.Size() / 2f, 1f, SpriteEffects.None);
 

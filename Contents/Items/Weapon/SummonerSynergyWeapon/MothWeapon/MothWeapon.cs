@@ -343,6 +343,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 		public int attackCooldown {
 			get => (int)Projectile.ai[2];
 			set => Projectile.ai[2] = value;
+			
 		}
 
 		public enum State {
@@ -366,6 +367,7 @@ namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.MothWeapon {
 			if (owner.dead || !owner.active) {
 				owner.ClearBuff(ModContent.BuffType<MothBuff>());
 				return false;
+
 			}
 			if (owner.HasBuff(ModContent.BuffType<MothBuff>())) {
 				Projectile.timeLeft = 2;

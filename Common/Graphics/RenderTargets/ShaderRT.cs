@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Graphics.RenderTargets;
@@ -28,14 +30,12 @@ public class SRT128x128 : ShaderRT {
 public class RTLoaderAndUnloader : ModSystem {
 
 
-	public static ShaderRT rt;
+	public static SRT128x128 rt128X128;
 	public override void Load() {
-		Main.ContentThatNeedsRenderTargets.Add(rt = new ShaderRT());
+		Main.ContentThatNeedsRenderTargets.Add(rt128X128 = new SRT128x128());
 	}
 
 	public override void Unload() {
-		Main.ContentThatNeedsRenderTargets.Remove(rt);
+		Main.ContentThatNeedsRenderTargets.Remove(rt128X128);
 	}
-
-
 }

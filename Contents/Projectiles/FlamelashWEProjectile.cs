@@ -22,5 +22,5 @@
 		shader.setProperties(Color.Orange, ModContent.Request<Texture2D>(BossRushTexture.MissingTexture_Default).Value,shaderData: new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset));
 		shader.apply();
 
-		PrimitivesDrawer.newQuad(Projectile.Center,Color.Aqua,new Vector2(256));
+		PrimitivesDrawer.NewQuad(Projectile.Center,Color.Aqua,new Vector2(256));
 		return false;	}}
