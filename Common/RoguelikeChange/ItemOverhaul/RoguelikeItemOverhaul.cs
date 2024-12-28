@@ -425,4 +425,32 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 	}
+	public class RoguelikeOverhaul_ModSystem : ModSystem {
+		public static HashSet<int> ItemThatSubsTo_MeleeOverhaul = new();
+		public override void Load() {
+			base.Load();
+			ItemThatSubsTo_MeleeOverhaul = new();
+		}
+		public override void Unload() {
+			base.Unload();
+			ItemThatSubsTo_MeleeOverhaul = null;
+		}
+		public static bool Optimized_CheckItem(Item item) {
+			if (BossRushUtils.CheckUseStyleMelee(item, BossRushUtils.MeleeStyle.CheckOnlyModded)) {
+				return true;
+			}
+			if (item.TryGetGlobalItem(out BattleAxeOverhaul axeItem)) {
+				switch (axeItem.UseStyleType) {
+					case BossRushUseStyle.DownChop:
+						return true;
+				}
+			}
+			return ItemThatSubsTo_MeleeOverhaul.Contains(item.type);
+		}
+		public override void PostSetupContent() {
+			if (UniversalSystem.Check_RLOH()) {
+				ItemThatSubsTo_MeleeOverhaul.Clear();
+			}
+		}
+	}
 }

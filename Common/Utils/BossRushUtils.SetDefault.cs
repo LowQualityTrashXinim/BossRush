@@ -151,6 +151,12 @@ namespace BossRush {
 				globalitem.CriticalDamage += critDmg;
 			}
 		}
+		/// <summary>
+		/// Soon to be deprecated
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="WhatToCheck"></param>
+		/// <returns></returns>
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
 			if (!UniversalSystem.Check_RLOH()) {
 				return false;

@@ -254,7 +254,7 @@ public static class RelicTemplateLoader {
 	}
 	public static string RelicValueToPercentage(StatModifier value) => Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
 	public static string RelicValueToNumber(StatModifier value) => Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-	public static string RelicValueToPercentage(float value) => Math.Round((value - 1) * 100, 2).ToString() + "%";
+	public static string RelicValueToPercentage(float value) => Math.Round((value - 1) * 100).ToString() + "%";
 	public static string RelicValueToNumber(float value) => Math.Round(value).ToString();
 
 }

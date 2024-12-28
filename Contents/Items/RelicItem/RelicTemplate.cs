@@ -306,7 +306,7 @@ public class HealthV3Template : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value * (1 + relic.RelicTier / 3f)), });
+		return string.Format(Description, new string[] { Color.Yellow.Hex3(), Name, RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + (relic.RelicTier - 1) / 3f)), });
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		if (stat == PlayerStats.RegenHP) {
@@ -318,7 +318,7 @@ public class HealthV3Template : RelicTemplate {
 		for (int i = 0; i < player.buffType.Length; i++) {
 			if (player.buffType[i] == 0) continue;
 			if (Main.debuff[player.buffType[i]]) {
-				float additive = MathF.Round(value.Base * (1 + relic.RelicTier / 3f));
+				float additive = MathF.Round(value.Base * (1 + (relic.RelicTier - 1) / 3f));
 				modplayer.AddStatsToPlayer(stat, Base: additive);
 				break;
 			}
@@ -432,7 +432,7 @@ public class SkillActivateTemplate : RelicTemplate {
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		string Name = Enum.GetName(stat) ?? string.Empty;
-		string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + relic.RelicTier / 3f)) : RelicTemplateLoader.RelicValueToPercentage(value.Additive * (1 + relic.RelicTier / 3f));
+		string Number = stat == PlayerStats.CritChance ? RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + (relic.RelicTier - 1) / 3f)) : RelicTemplateLoader.RelicValueToPercentage(value.Additive * (1 + (relic.RelicTier - 1) / 3f));
 		return string.Format(Description, new string[] {
 			Color.Yellow.Hex3(),
 			Name,
@@ -460,11 +460,11 @@ public class SkillActivateTemplate : RelicTemplate {
 		if (skillPlayer.Activate) {
 			float additive;
 			if (stat == PlayerStats.CritChance) {
-				additive = MathF.Round(value.Base * (1 + relic.RelicTier / 3f));
+				additive = MathF.Round(value.Base * (1 + (relic.RelicTier - 1) / 3f));
 				modplayer.AddStatsToPlayer(stat, Base: additive);
 			}
 			else {
-				additive = value.Additive * (1 + relic.RelicTier / 3f);
+				additive = value.Additive * (1 + (relic.RelicTier - 1) / 3f);
 				modplayer.AddStatsToPlayer(stat, additive);
 			}
 		}
@@ -501,7 +501,7 @@ public class DebuffTemplateV1 : RelicTemplate {
 		return string.Format(Description, new string[] {
 			Color.Yellow.Hex3(),
 			Name,
-			RelicTemplateLoader.RelicValueToPercentage(value.Additive * (1 + relic.RelicTier / 3f))
+			RelicTemplateLoader.RelicValueToPercentage(value.Additive * (1 + (relic.RelicTier - 1) / 3f))
 	});
 	}
 
@@ -517,7 +517,7 @@ public class DebuffTemplateV1 : RelicTemplate {
 				count++;
 			}
 		}
-		float additive = value.Additive * (1 + relic.RelicTier / 3f);
+		float additive = value.Additive * (1 + (relic.RelicTier - 1) / 3f);
 		if (count > 3) {
 			modplayer.AddStatsToPlayer(stat, additive);
 		}
@@ -555,7 +555,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				Color.Blue.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * relic.RelicTier)),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				Color.Yellow.Hex3(),
 				Name
 		});
@@ -569,7 +569,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 			return;
 		}
 		//We gonna make this template strength base from the relic Tier
-		int Tier = relic.RelicTier;
+		int Tier = relic.RelicTier - 1;
 		//Set damage type base on PlayerStats
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		//Spawn the projectiles base on Relic Tier
@@ -579,7 +579,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				player.Center,
 				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
-				(int)(value.Base * (1 + .1f * relic.RelicTier)),
+				(int)(value.Base * (1 + .1f * Tier)),
 				2 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
@@ -633,7 +633,7 @@ public class FireBallTemplate : RelicTemplate {
 				Color.Orange.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * relic.RelicTier)),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				Color.Yellow.Hex3(),
 				Name
 		});
@@ -644,7 +644,7 @@ public class FireBallTemplate : RelicTemplate {
 		if (!player.Center.LookForAnyHostileNPC(350f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
 			return;
 		}
-		int Tier = relic.RelicTier;
+		int Tier = relic.RelicTier - 1;
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		for (int i = 0; i < Tier; i++) {
 			Projectile proj = Projectile.NewProjectileDirect(
@@ -687,7 +687,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				Color.Cyan.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
-				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * relic.RelicTier)),
+				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				Color.Yellow.Hex3(),
 				Name
 		});
@@ -712,7 +712,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				position,
 				toTarget,
 				ProjectileID.SkyFracture,
-				(int)(value.Base * (1 + .1f * relic.RelicTier)),
+				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
