@@ -70,7 +70,9 @@ internal class BattleAxeOverhaul : GlobalItem {
 					}
 					return false;
 				}
-				for (int i = Math.Min(LastCollideCheck, check); i <= Math.Max(check, LastCollideCheck); i++) {
+				int assigned = Math.Min(LastCollideCheck, check);
+				int length = Math.Max(check, LastCollideCheck);
+				for (int i = assigned; i <= length; i++) {
 					float rotation = MathHelper.Lerp(start, end, i / (laserline - 1f));
 					rotation += player.direction == 1 ? 0 : MathHelper.PiOver4 * 1.8f;
 					Vector2 point = player.Center + rotation.ToRotationVector2() * itemsize;

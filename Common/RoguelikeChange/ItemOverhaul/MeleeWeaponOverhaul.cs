@@ -456,7 +456,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						}
 						return false;
 					}
-					for (int i = Math.Min(LastCollideCheck, check); i <= Math.Max(check, LastCollideCheck); i++) {
+					int assigned = Math.Min(LastCollideCheck, check);
+					int length = Math.Max(check, LastCollideCheck);
+					for (int i = assigned; i <= length; i++) {
 						Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(laserline, 270, i) * itemsize;
 						if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
 							return true;
