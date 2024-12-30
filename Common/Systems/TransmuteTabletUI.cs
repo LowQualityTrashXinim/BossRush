@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
+using Terraria.Audio;
+using SteelSeries.GameSense.DeviceZone;
 
 namespace BossRush.Common.Systems;
 public class TransumtationRecipe {
@@ -67,8 +69,61 @@ public class TransmutationUIState : UIState {
 	}
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
-		if(panel.ContainsPoint(Main.MouseScreen)) {
+		if (panel.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
+		}
+		txtbox.SetTextMaxLength(255);
+		txtbox.SetText("");
+		if (slot1.item == null || slot2.item == null) {
+			return;
+		}
+		bool AnyRelic = slot1.item.ModItem is Relic || slot2.item.ModItem is Relic;
+		if (slot1.item.ModItem is Relic re1 && slot2.item.ModItem is Relic re2) {
+			txtbox.SetText("Chance to upgrade relic : " + RelicTemplateLoader.RelicValueToNumber(btn_confirm.GetRelicChance(re1, re2) * 100) + "%");
+		}
+		if (AnyRelic &&
+			(slot1.item.IsAWeapon() || slot2.item.IsAWeapon()
+			|| (slot1.item.accessory || slot2.item.accessory)
+			|| (!slot1.item.vanity || !slot2.item.vanity) && ((slot1.item.headSlot > 0 || slot2.item.headSlot > 0)
+			|| (slot1.item.bodySlot > 0 || slot2.item.bodySlot > 0)
+			|| (slot1.item.legSlot > 0 || slot2.item.legSlot > 0)))) {
+
+			Relic relicItem;
+			Item slotitem;
+			if (slot1.item.ModItem is Relic) {
+				relicItem = slot1.item.ModItem as Relic;
+				slotitem = slot2.item;
+			}
+			else {
+				relicItem = slot2.item.ModItem as Relic;
+				slotitem = slot1.item;
+			}
+			float chance = 0;
+
+			float rarityOffSet = slotitem.rare * .03f;
+			if (slotitem.rare >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
+				rarityOffSet += (slotitem.rare - 3) * .02f;
+			}
+			chance += rarityOffSet;
+			float SuccessChance;
+			switch (relicItem.RelicTier) {
+				case 1:
+					SuccessChance = Relic.chanceTier1;
+					break;
+				case 2:
+					SuccessChance = Relic.chanceTier2;
+					break;
+				case 3:
+					SuccessChance = Relic.chanceTier3;
+					break;
+				case 4:
+					SuccessChance = Relic.chanceTier4;
+					break;
+				default:
+					SuccessChance = Relic.chanceTier4 + .05f * relicItem.RelicTier;
+					break;
+			}
+			txtbox.SetText($"Success rarity upgrade : {RelicTemplateLoader.RelicValueToNumber(Math.Clamp(SuccessChance - rarityOffSet, 0, 1f) * 100)}%");
 		}
 	}
 }
@@ -109,10 +164,12 @@ public class TransmutationUI : UIImage {
 			Main.mouseItem = item.Clone();
 			player.inventory[58] = item.Clone();
 			item = itemcache.Clone();
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
 		}
 		else if (Main.mouseItem.type != ItemID.None && item == null) {
 			//When the slot is available
 			item = Main.mouseItem.Clone();
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
 			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
 				item.stack = 1;
@@ -132,6 +189,7 @@ public class TransmutationUI : UIImage {
 			Main.mouseItem = item.Clone();
 			player.inventory[58] = item.Clone();
 			item = null;
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -.5f });
 		}
 		else {
 			//Do nothing lmao
@@ -180,6 +238,10 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 	}
+	public float GetRelicChance(Relic relic1, Relic relic2) {
+		int tier = relic1.RelicTier + relic2.RelicTier;
+		return Math.Clamp(1f - .15f * tier, .01f, 1f);
+	}
 	public override void LeftMouseDown(UIMouseEvent evt) {
 		var resultlist = new List<TransmutationUI>();
 		foreach (var element in Parent.Children) if (element is TransmutationUI transmutateResult) {
@@ -212,9 +274,17 @@ public class TransmutationUIConfirmButton : UIImageButton {
 					}
 				}
 			int count = relic1.TemplateCount + relic2.TemplateCount;
+			if (Main.rand.NextFloat() > GetRelicChance(relic1, relic2)) {
+				foreach (var iteminlist in item) {
+					iteminlist.TurnToAir();
+				}
+				SoundEngine.PlaySound(SoundID.AbigailSummon with { Pitch = -1 });
+				return false;
+			}
 			if (relic1 != null && relic2 != null && count <= 4) {
 				RelicTemplateLoader.MergeStat(relic1, relic2);
 				player.QuickSpawnItem(player.GetSource_FromThis(), relic1.Item);
+				SoundEngine.PlaySound(SoundID.AchievementComplete with { Pitch = -1 });
 				return true;
 			}
 		}

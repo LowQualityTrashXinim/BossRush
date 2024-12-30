@@ -78,7 +78,7 @@ LifeForceOrb: {
 		'''
 		+ Attacking enemy will periodically create a short lived life orb
 		+ Life Orb heal you and temporary increases your max life
-		+ The lower your health, the better healing effect life force have
+		+ The lower your health, the better healing effect life force orb have
 
 		'''
 }
@@ -368,7 +368,7 @@ AspectOfTheUnderworld: {
 	DisplayName: Aspect Of The Underworld
 	Description:
 		'''
-		+ You have a aura of fire and is immune to on fire
+		+ You have a aura of fire and you become immune to on fire
 		+ Enemy that have On Fire debuff will receive more critical damage
 		- While your life is above 66%, decreases life regen by 32 flat but your aura of fire is stronger
 		'''
@@ -408,9 +408,9 @@ OathOfSword: {
 	DisplayName: Oath Of Sword
 	Description:
 		'''
-		+ Increases your melee damage by 100% and melee multiplicative are set to 1.1x
-		- Melee multiplicative attack speed are set to 0.45x
-		- Using any other weapon that is not melee will decreases their attack damage by 65%
+		+ Increases your melee damage by 100% and melee damage are multiply by 1.1x
+		- Melee attack speed are multiply by 0.45x
+		- Using any other weapon that is not melee will decreases their damage by 65%
 		'''
 }
 
@@ -473,7 +473,7 @@ TheBigMoment: {
 		'''
 		Depending on your drop value :
 		+ Have rare chance to deal 2.0x multiplicative damage
-		+ Chance to have your increases by 100%
+		+ Chance to have your damage increases by 100%
 		+ A chance to heal base on your drop value
 		'''
 }
@@ -525,8 +525,7 @@ EarthlyWarm: {
 		+ Increases your regeneration by 50%
 		Getting hit :
 		+ Have 1 in 3 to 10 chance to heal random amount of half of your current life
-		+ Have super rare chance to instantly heal your health instantly
-		Note : Stacking this perk only make 1st on-hit effect better and your regeneration
+		+ Have super rare chance to instantly heal your health instantly ( unstackable )
 		'''
 }
 
@@ -545,7 +544,6 @@ BloodVoodoo: {
 	Description:
 		'''
 		+ Hitting enemy will over heal you
-		( Note : Overheal value ignore life reduction )
 		+ Upon enemy damaging you, you spew out damaging blood
 		+ Rare chance to also release blood rose thorn
 		'''
@@ -557,9 +555,9 @@ NightTerror: {
 		'''
 		During night :
 		+ Increases your life regeneration by 25% and flat 10
-		+ Increases your melee damage by 1.3x ( next stack increases it to 1.4x and so on )
-		+ Increases your critical damage by 1.4x ( next stack increases it to 1.5x )
-		+ Increases your movement and jump boost by 55% ( next stack increases it by 10% )
+		Increases your :
+		+ Melee damage by 1.3x, critical damage by 1.4x, movement and jump boost by 55%
+		( Note : effect above are stack differently )
 		'''
 }
 
@@ -568,10 +566,10 @@ NaturalUpgrade: {
 	Description:
 		'''
 		+ Shooting a bow have a 20-40% chance to shoot a wind shot that deal 150% of bow damage 
+		+ Wooden type bow now shoot 2 arrow at high velocity at once and is a lot stronger
 		Hitting enemy with wooden arrow will 
 		+ Have 20-40% chance to spawn a wind shot
 		+ Have a 10-15% chance to do a wind explosion which deal 200% damage
-		+ Wooden type bow now shoot 2 arrow at high velocity at once and is a lot stronger
 		'''
 }
 
@@ -583,8 +581,7 @@ StrikeOfFury: {
 		Critical strike enemy will :
 		+ Have chance to gain FuryStrike buff for 3 to 7 second
 		+ Have 5% to deal 2nd strike with 45 damage
-		- Decreases your critical damage by 10% and critical strike chance by 20
-		( Note : This effect above do not stack )
+		- Decreases your critical damage by 10% and critical strike chance by 20 ( unstackable )
 		'''
 }
 
@@ -594,11 +591,9 @@ RuthlessRage: {
 		'''
 		+ Increases your critical damage by 55% and your none critical damage by 35%
 		Critical strike enemy will :
-		+ Have 5% chance to multiply final damage by 2x
-		+ Have 1% chance to multiply final damage by 4x 
-		( Note : this effect above not stackable but critical hit will increases chance to 5% )
-		+ Getting hit will give Rage Empowerment for 1 to 9s
-		- Decreases critical strike chance by 20
+		+ Have 5% chance to multiply final damage by 2.0x ( stackable ) and 1% chance to multiply by 4.0x ( unstackable )
+		+ Getting hit give you Rage Empowerment for 1 to 9s
+		- Decreases critical strike chance by 20 ( unstackable )
 		'''
 }
 
