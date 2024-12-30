@@ -50,13 +50,6 @@ public class UnlimitedThrowable : Perk {
 			case 2:
 				break;
 		}
-		foreach (Item item in player.inventory) {
-			foreach (var globalitem in item.Globals) {
-				if (globalitem == null || globalitem.Mod.Name != Mod.Name) {
-					continue;
-				}
-				globalitem.SetDefaults(item);
-			}
-		}
+		BossRushUtils.Reflesh_GlobalItem(Mod, player);
 	}
 }

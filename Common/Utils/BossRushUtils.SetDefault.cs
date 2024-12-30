@@ -148,7 +148,7 @@ namespace BossRush {
 		}
 		public static void Set_ItemCriticalDamage(this Item item, float critDmg) {
 			if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-				globalitem.CriticalDamage += critDmg;
+				globalitem.CriticalDamage = critDmg;
 			}
 		}
 		/// <summary>

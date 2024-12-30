@@ -360,7 +360,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.ChristmasTreeSword:
 					SwingType = BossRushUseStyle.Swipe;
 					item.useTurn = false;
-					item.Set_ItemCriticalDamage(2f);
+					item.Set_ItemCriticalDamage(1f);
 					break;
 				//Poke Sword
 				//Pre HM Sword
@@ -381,7 +381,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.Seedler:
 					SwingType = BossRushUseStyle.Poke;
 					item.useTurn = false;
-					item.Set_ItemCriticalDamage(2f);
+					item.Set_ItemCriticalDamage(1f);
 					break;
 				case ItemID.DD2SquireBetsySword:
 				case ItemID.ZombieArm:
@@ -394,7 +394,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.PsychoKnife:
 					SwingType = BossRushUseStyle.GenericSwingDownImprove;
 					item.useTurn = false;
-					item.Set_ItemCriticalDamage(2f);
+					item.Set_ItemCriticalDamage(1f);
 					break;
 				default:
 					break;
@@ -429,8 +429,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					laserline = 1;
 				}
 				MeleeOverhaulPlayer modplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+				BossRushUtilsPlayer utilsplayer = player.GetModPlayer<BossRushUtilsPlayer>();
 				if (modplayer.ComboNumber != 2) {
-					Vector2 directionTo = (player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation - player.Center).SafeNormalize(Vector2.Zero);
+					Vector2 offset = player.Center - utilsplayer.PlayerLastPositionBeforeAnimation;
+					Vector2 directionTo = (player.GetModPlayer<BossRushUtilsPlayer>().MouseLastPositionBeforeAnimation + offset - player.Center).SafeNormalize(Vector2.Zero);
 					bool checkComboNum = modplayer.ComboNumber == 0;
 					int LastCollideCheck, check;
 					if (checkComboNum && player.direction == 1 || !checkComboNum && player.direction == -1) {
@@ -445,12 +447,17 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						check =
 							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, 11f)));
 					}
+					if(player.itemAnimationMax <= 2) {
+						for (int i = 0; i <= laserline; i++) {
+							Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(laserline, 270, i) * itemsize;
+							if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
+								return true;
+							}
+						}
+						return false;
+					}
 					for (int i = Math.Min(LastCollideCheck, check); i <= Math.Max(check, LastCollideCheck); i++) {
 						Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(laserline, 270, i) * itemsize;
-						Dust dust = Dust.NewDustDirect(point, 0, 0, DustID.Terra);
-						dust.noGravity = true;
-						dust.velocity = Vector2.Zero;
-						dust.scale = .6f;
 						if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
 							return true;
 						}

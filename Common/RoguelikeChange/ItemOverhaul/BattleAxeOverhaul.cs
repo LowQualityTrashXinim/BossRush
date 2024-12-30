@@ -29,27 +29,58 @@ internal class BattleAxeOverhaul : GlobalItem {
 				entity.scale += .25f;
 				entity.useTurn = false;
 				UseStyleType = BossRushUseStyle.DownChop;
-				entity.Set_ItemCriticalDamage(2.5f);
+				entity.Set_ItemCriticalDamage(1.5f);
 				break;
 		}
 	}
 	public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 		if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-			float itemsize = item.Size.Length() * (player.GetAdjustedItemScale(item) + .2f) + BossRushUtilsPlayer.PLAYERARMLENGTH;
-			int laserline = (int)itemsize;
 			if (UseStyleType == BossRushUseStyle.DownChop) {
-				Vector2 directionTo = player.GetModPlayer<MeleeOverhaulPlayer>().PlayerToMouseDirection;
-				float percentDone = BossRushUtils.InOutBack((player.direction == 1).ToInt() - player.itemAnimation / (float)player.itemAnimationMax * player.direction);
-				int check = (int)Math.Ceiling(MathHelper.Lerp(0, laserline, percentDone));
-				int LastCollideCheck = (int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutBack((player.direction == 1).ToInt() - (player.itemAnimation - 1) / (float)player.itemAnimationMax * player.direction))); ;
-				for (int i = Math.Min(LastCollideCheck, check); i <= Math.Max(LastCollideCheck, check); i++) {
-					Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(36, 270, i) * itemsize;
-					if (Collision.CheckAABBvLineCollision(target.Hitbox.TopLeft(), target.Size * target.scale, player.Center, point)) {
+				float itemsize = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem) + BossRushUtilsPlayer.PLAYERARMLENGTH;
+				int laserline = (int)itemsize * 2;
+				if (laserline <= 1) {
+					laserline = 2;
+				}
+				MeleeOverhaulPlayer modplayer = player.GetModPlayer<MeleeOverhaulPlayer>();
+				float baseAngle = modplayer.PlayerToMouseDirection.ToRotation();
+				float angle = MathHelper.ToRadians(145);
+				float start = baseAngle + angle - angle * .5f;
+				float end = baseAngle - angle;
+				int LastCollideCheck, check;
+				if (player.direction == 1) {
+					LastCollideCheck =
+						(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutBack((player.itemAnimation + 1) / (float)player.itemAnimationMax)));
+					check =
+						(int)Math.Ceiling(MathHelper.Lerp(0, laserline, BossRushUtils.InOutBack(player.itemAnimation / (float)player.itemAnimationMax)));
+				}
+				else {
+					LastCollideCheck =
+						(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InOutBack((player.itemAnimation + 1) / (float)player.itemAnimationMax)));
+					check =
+						(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InOutBack(player.itemAnimation / (float)player.itemAnimationMax)));
+				}
+				if (player.itemAnimationMax <= 2) {
+					for (int i = 0; i <= laserline; i++) {
+						float rotation = MathHelper.Lerp(start, end, i / (laserline - 1f));
+						rotation += player.direction == 1 ? 0 : MathHelper.PiOver4 * 1.8f;
+						Vector2 point = player.Center + rotation.ToRotationVector2() * itemsize;
+						if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
+							return true;
+						}
+					}
+					return false;
+				}
+				for (int i = Math.Min(LastCollideCheck, check); i <= Math.Max(check, LastCollideCheck); i++) {
+					float rotation = MathHelper.Lerp(start, end, i / (laserline - 1f));
+					rotation += player.direction == 1 ? 0 : MathHelper.PiOver4 * 1.8f;
+					Vector2 point = player.Center + rotation.ToRotationVector2() * itemsize;
+					if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
 						return true;
 					}
+					//Mod.Logger.Debug($"Frame : {player.itemAnimation} | prev {previousAnimationFrame} | Check : {checkoutside} | prev {LastCollideCheck}");
 				}
+				return false;
 			}
-			return false;
 		}
 		return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 	}
@@ -67,10 +98,6 @@ internal class BattleAxeOverhaul : GlobalItem {
 		}
 	}
 	public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {
-		if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
-			float percentDone = Math.Clamp(BossRushUtils.InOutBack(player.itemAnimation / (float)player.itemAnimationMax) * 2.5f, .1f, 2.5f);
-			modifiers.FinalDamage *= percentDone;
-		}
 	}
 	public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) {
 		if (item.noMelee) {

@@ -14,6 +14,16 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] AllOreBroadSword = {
 			ItemID.CopperBroadsword, ItemID.TinBroadsword, ItemID.IronBroadsword,ItemID.LeadBroadsword,
 			ItemID.SilverBroadsword, ItemID.TungstenBroadsword, ItemID.GoldBroadsword, ItemID.PlatinumBroadsword };
+		public readonly static int[] CommonAxe = {
+			ItemID.CopperAxe,
+			ItemID.TinAxe,
+			ItemID.IronAxe,
+			ItemID.LeadAxe,
+			ItemID.SilverAxe,
+			ItemID.TungstenAxe,
+			ItemID.GoldAxe,
+			ItemID.PlatinumAxe,
+		};
 		public readonly static int[] AllWoodSword = {
 			ItemID.WoodenSword, ItemID.BorealWoodSword, ItemID.PalmWoodSword, ItemID.RichMahoganySword, ItemID.EbonwoodSword, ItemID.ShadewoodSword, ItemID.AshWoodSword };
 		public readonly static int[] AllWoodBowPHM = {
@@ -158,7 +168,7 @@ namespace BossRush.Common.Utils {
 		public readonly static int[] IsFishingBobber = {
 			ItemID.FishingBobber, ItemID.FishingBobberGlowingArgon, ItemID.FishingBobberGlowingKrypton, ItemID.FishingBobberGlowingLava, ItemID.FishingBobberGlowingRainbow, ItemID.FishingBobberGlowingStar, ItemID.FishingBobberGlowingViolet, ItemID.FishingBobberGlowingXenon
 		};
-		public readonly static int[] FishingAcc = { 
+		public readonly static int[] FishingAcc = {
 			ItemID.HighTestFishingLine, ItemID.AnglerEarring, ItemID.TackleBox, ItemID.AnglerTackleBag, ItemID.LavaproofTackleBag, ItemID.LavaFishingHook
 		};
 		public readonly static int[] Phaseblade = { ItemID.BluePhaseblade, ItemID.RedPhaseblade, ItemID.GreenPhaseblade, ItemID.OrangePhaseblade, ItemID.YellowPhaseblade, ItemID.PurplePhaseblade, ItemID.WhitePhaseblade };
