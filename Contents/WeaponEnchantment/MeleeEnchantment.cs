@@ -1421,28 +1421,81 @@ public class TheMeatball : ModEnchantment {
 		player.GetDamage(DamageClass.Melee) += 0.2f;
 		player.GetCritChance(DamageClass.Melee) += 5;
 	}
-
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		target.AddBuff(BuffID.Ichor, BossRushUtils.ToSecond(6));
 	}
-
-
 }
 
 public class SwordFish : ModEnchantment {
-
-
-
 	public override void SetDefaults() {
 		ItemIDType = ItemID.Swordfish;
 	}
-
-	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.FinalDamage *= 0.5f;
-		modifiers.ArmorPenetration += 5;
-		target.StrikeNPC(modifiers.ToHitInfo(proj.damage, false, 0, false, player.luck));
+	public override void UpdateHeldItem(int index, Item item, EnchantmentGlobalItem globalItem, Player player) {
+		int projectiletype = ModContent.ProjectileType<SwordFishProjectile>();
+		if (player.ownedProjectileCounts[projectiletype] < 1) {
+			if (player.Center.LookForAnyHostileNPC(300)) {
+				Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, Vector2.UnitY - Vector2.UnitY.Vector2RotateByRandom(30) * Main.rand.NextFloat(6, 8), projectiletype, item.damage, item.knockBack, player.whoAmI, Main.rand.Next(60, 90));
+			}
+		}
 	}
+	public override void ModifyHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.ArmorPenetration += 5;
+		if (Main.rand.NextBool(10)) {
+			target.StrikeNPC(modifiers.ToHitInfo(proj.damage, false, 0, false, player.luck));
+		}
+	}
+	public override void ModifyHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.ArmorPenetration += 5;
+		if (Main.rand.NextBool(10)) {
+			target.StrikeNPC(modifiers.ToHitInfo(item.damage, false, 0, false, player.luck));
+		}
+	}
+	public class SwordFishProjectile : ModProjectile {
+		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Swordfish);
+		public override void SetDefaults() {
+			Projectile.width = Projectile.height = 30;
+			Projectile.friendly = true;
+			Projectile.tileCollide = false;
+			Projectile.timeLeft = 300;
+			Projectile.penetrate = -1;
+		}
+		public override void AI() {
+			for (int i = 0; i < 4; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
+				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+				dust.noGravity = true;
+				dust.velocity = Vector2.Zero;
+				dust.position += Main.rand.NextVector2Circular(60, 30).RotatedBy(Projectile.velocity.ToRotation());
+			}
 
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			Projectile.rotation += Projectile.spriteDirection != 1 ? MathHelper.PiOver4 : MathHelper.PiOver4 - MathHelper.Pi + MathHelper.PiOver2;
+			if (Projectile.ai[0] <= 0) {
+				Projectile.ai[0]--;
+				Projectile.timeLeft = 300;
+				return;
+			}
+			Projectile.Center.LookForHostileNPCNotImmune(out NPC closestNPC, 1500, Projectile.owner, true);
+			if (closestNPC == null) {
+				Projectile.velocity.Y += 0.3f;
+				return;
+			}
+			Projectile.velocity += (closestNPC.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 2f;
+			Projectile.velocity = Projectile.velocity.LimitedVelocity(10);
+		}
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			target.AddBuff(ModContent.BuffType<DeepSeaPressure>(), BossRushUtils.ToSecond(Main.rand.Next(3, 8)));
+		}
+		public override void OnKill(int timeLeft) {
+			for (int i = 0; i < 50; i++) {
+				Dust dust = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.Water);
+				dust.scale = Main.rand.NextFloat(1.2f, 1.5f);
+				dust.noGravity = true;
+				dust.velocity = Main.rand.NextVector2Circular(10, 10);
+			}
+		}
+	}
 }
 
 public class PalladiumSword : PalladiumEnchantment {
@@ -1502,7 +1555,7 @@ public class DeathSickle : ModEnchantment {
 	}
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if(!target.boss && Main.rand.NextBool(100)) {
+		if (!target.boss && Main.rand.NextBool(100)) {
 			target.StrikeInstantKill();
 		}
 
@@ -1513,7 +1566,7 @@ public class DeathSickle : ModEnchantment {
 		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>() && 
+		if (proj.type != ModContent.ProjectileType<DeathSickleGhost>() && proj.type != ModContent.ProjectileType<DeathSickleGhost>() &&
 			proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
 			globalItem.Item_Counter1[index]++;
 

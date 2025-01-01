@@ -24,7 +24,7 @@ public enum StructureUI_State : byte {
 	Saving,
 }
 public class StructureUI : UIState {
-	public UIPanel panel;
+	public Roguelike_UIPanel panel;
 	public Roguelike_UITextPanel listtext_panel;
 	public Roguelike_UIImageButton btn_confirm;
 	public Roguelike_UIImageButton btn_cancel;
@@ -65,6 +65,8 @@ public class StructureUI : UIState {
 		txt_FileName = new();
 		txt_FileName.HAlign = .5f;
 		txt_FileName.VAlign = .45f;
+		txt_FileName.Width.Percent = 0;
+		txt_FileName.Height.Percent = 0;
 		txt_FileName.UISetWidthHeight(400, 40);
 		txt_FileName.Hide = true;
 		panel.Append(txt_FileName);
@@ -91,11 +93,11 @@ public class StructureUI : UIState {
 		if (listeningElement.UniqueId != list_btn[0].UniqueId) {
 			if (listeningElement.UniqueId == list_btn[1].UniqueId) {
 				CurrentUI_State = StructureUI_State.Selecting;
-				method = SaverOptimizedMethod.HorizontalDefault;
+				method = SaverOptimizedMethod.Default;
 			}
 			else if (listeningElement.UniqueId == list_btn[2].UniqueId) {
 				CurrentUI_State = StructureUI_State.Selecting;
-				method = SaverOptimizedMethod.Default;
+				method = SaverOptimizedMethod.HorizontalDefault;
 			}
 			else if (listeningElement.UniqueId == list_btn[3].UniqueId) {
 				CurrentUI_State = StructureUI_State.Selecting;
@@ -103,7 +105,8 @@ public class StructureUI : UIState {
 			}
 			VisibilitySettingUI(true);
 			VisibilityUI(true);
-			Main.NewText("Press key M to confirm selection");
+			panel.Hide = true;
+			Main.NewText("Press key P to confirm selection");
 		}
 		else {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
@@ -129,18 +132,17 @@ public class StructureUI : UIState {
 			Main.instance.MouseText("Close ?");
 		}
 		else if (affectedElement.UniqueId == list_btn[1].UniqueId) {
-			Main.instance.MouseText("Horizontal saving");
-		}
-		else if (affectedElement.UniqueId == list_btn[2].UniqueId) {
 			Main.instance.MouseText("Vertical saving");
 		}
+		else if (affectedElement.UniqueId == list_btn[2].UniqueId) {
+			Main.instance.MouseText("Horizontal saving (Not Supported)");
+		}
 		else if (affectedElement.UniqueId == list_btn[3].UniqueId) {
-			Main.instance.MouseText("Multi-structure saving");
+			Main.instance.MouseText("Multi-structure saving (Not Supported");
 		}
 		else if (affectedElement.UniqueId == list_btn[4].UniqueId) {
-			Main.instance.MouseText("");
+			Main.instance.MouseText("(Not Supported");
 		}
-		VisibilityUI(true);
 	}
 
 	private void Panel_OnUpdate(UIElement affectedElement) {
@@ -152,12 +154,17 @@ public class StructureUI : UIState {
 	private void Btn_cancel_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 		txt_FileName.SetText("");
+		VisibilityUI(true);
+		VisibilitySettingUI(false);
 	}
 
 	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text);
 		txt_FileName.SetText("");
 		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+		Main.NewText("Successfully save structure");
+		VisibilityUI(true);
+		VisibilitySettingUI(false);
 	}
 	bool Confirm = false;
 	public bool secondPoint;
@@ -172,13 +179,29 @@ public class StructureUI : UIState {
 	public Point16 BottomRight => new Point16(point1.X > point2.X ? point1.X : point2.X, point1.Y > point2.Y ? point1.Y : point2.Y);
 	public int thisWidth => BottomRight.X - TopLeft.X;
 	public int thisHeight => BottomRight.Y - TopLeft.Y;
+	int delay = 0;
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
+		if (CurrentUI_State == StructureUI_State.Saving) {
+			if (btn_cancel.IsMouseHovering) {
+				Main.instance.MouseText("Cancel ?");
+			}
+			if (btn_confirm.IsMouseHovering) {
+				Main.instance.MouseText("Confirm");
+			}
+		}
 		if (CurrentUI_State != StructureUI_State.Selecting) {
 			return;
 		}
-
-		if (PlayerInput.GetPressedKeys().Contains(Keys.P)) {
+		delay = BossRushUtils.CountDown(delay);
+		if(Ready && Main.mouseRight && delay <= 0) {
+			CurrentUI_State = StructureUI_State.Saving;
+			VisibilityUI(false);
+			panel.Hide = false;
+			return;
+		}
+		if (PlayerInput.GetPressedKeys().Contains(Keys.P) && delay <= 0) {
+			delay = 60;
 			if (Ready) {
 				if (Vector2.Distance(Main.MouseWorld, point1.ToVector2() * 16) <= 32) {
 					movePoint1 = true;
@@ -217,8 +240,8 @@ public class StructureUI : UIState {
 	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 		if (CurrentUI_State == StructureUI_State.Selecting) {
-			Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/corner").Value;
-			Texture2D tex2 = ModContent.Request<Texture2D>("StructureHelper/box").Value;
+			Texture2D tex = ModContent.Request<Texture2D>("BossRush/Texture/StructureHelper_corner").Value;
+			Texture2D tex2 = ModContent.Request<Texture2D>("BossRush/Texture/StructureHelper_Box").Value;
 			Point16 topLeft = TopLeft;
 			Point16 bottomRight = BottomRight;
 

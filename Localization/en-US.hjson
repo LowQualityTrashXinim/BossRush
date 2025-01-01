@@ -310,6 +310,7 @@ Mods: {
 			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
 			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
 			WindShot.DisplayName: Wind Shot
+			SwordFishProjectile.DisplayName: Sword Fish Projectile
 		}
 
 		NPCs: {
@@ -2491,6 +2492,11 @@ Mods: {
 			RageEmpowerment: {
 				DisplayName: Rage Empowerment
 				Description: Your next hit will always be critical !
+			}
+
+			DeepSeaPressure: {
+				DisplayName: Deep Sea Pressure
+				Description: Mods.BossRush.Buffs.DeepSeaPressure.Description
 			}
 		}
 

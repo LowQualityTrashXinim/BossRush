@@ -143,7 +143,7 @@ namespace BossRush {
 					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
-					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || !CanLookThroughTile)
+					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || CanLookThroughTile)
 					&& mainnpc.immune[whoAmI] <= 0
 					) {
 					maxDistanceSquare = dis;

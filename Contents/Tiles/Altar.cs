@@ -108,3 +108,21 @@ public class FoodAltar : Altar {
 		}
 	}
 }
+
+public abstract class BossItemAltar : Altar {
+	protected virtual int BossItemID => ItemID.DirtBlock;
+	public override void On_RightClick(Player player, int i, int j) {
+		player.QuickSpawnItem(player.GetSource_TileInteraction(i, j), BossItemID);
+
+		for (int a = 0; a < 30; a++) {
+			int dust = Dust.NewDust(new Vector2(i, j).ToWorldCoordinates(), 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(2, 3));
+			Main.dust[dust].velocity = Main.rand.NextVector2Circular(4, 4);
+		}
+	}
+}
+public class SlimeBossAltar : BossItemAltar {
+	protected override int BossItemID => ItemID.SlimeCrown;
+}
+public class EoCBossAltar : BossItemAltar {
+	protected override int BossItemID => ItemID.SuspiciousLookingEye;
+}

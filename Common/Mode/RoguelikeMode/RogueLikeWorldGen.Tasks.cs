@@ -99,6 +99,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void AddAltar() {
 		bool RNG = false;
+		bool PlacedSlimeShrine = false;
 		for (int i = 1; i < Main.maxTilesX - 1; i++) {
 			for (int j = 1; j < Main.maxTilesY - 1; j++) {
 				if (WorldGen.genRand.NextBool(10000)) {
@@ -109,7 +110,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					if (WorldGen.genRand.NextBool(1500)) {
 						RNG = true;
 					}
-					continue;
 				}
 				else {
 					int pass = 0;
@@ -131,8 +131,25 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						RNG = false;
 					}
 				}
+
+				if (!PlacedSlimeShrine) {
+					if (WorldGen.genRand.NextBool(10500)) {
+						Generate_SlimeBossAltar(i, j);
+					}
+					if (WorldGen.genRand.NextBool(10500)) {
+						Generate_EoCAltar(i, j);
+					}
+				}
 			}
 		}
+	}
+	public void Generate_SlimeBossAltar(int X, int Y) {
+		GenerationHelper.PlaceStructure("Shrine/SlimeShrine", new Rectangle(X, Y, 11, 12));
+		WorldGen.PlaceTile(X + 5, Y + 6, ModContent.TileType<SlimeBossAltar>());
+	}
+	public void Generate_EoCAltar(int X, int Y) {
+		GenerationHelper.PlaceStructure("Shrine/FleshShrine", new Rectangle(X, Y, 11, 12));
+		WorldGen.PlaceTile(X + 5, Y + 6, ModContent.TileType<EoCBossAltar>());
 	}
 	//[Task]
 	//public void SetUp() {

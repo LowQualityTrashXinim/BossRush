@@ -166,6 +166,7 @@ internal static partial class GenerationHelper {
 			datalist = modsystem.dict_Struture[FileName];
 		}
 		else {
+			Console.WriteLine("Structure not found !");
 			return;
 		}
 		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
@@ -220,12 +221,13 @@ internal static partial class GenerationHelper {
 			using StreamWriter m = new(file);
 
 			Tile outSideLoop = new();
+			outSideLoop.TileType = ushort.MaxValue;
 			int distance = 0;
 			for (int x = target.X; x <= target.X + target.Width; x++) {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
 					//Since this just saving, it is completely fine to be slow
 					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
+					if (tile.TileType != outSideLoop.TileType || tile.TileFrameX != outSideLoop.TileFrameX && tile.TileType >= TileID.Count) {
 						if (distance != 0) {
 							m.Write(distance);
 						}

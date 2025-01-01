@@ -644,7 +644,12 @@ SandGun.Description:
 	'''
 TheMeatball.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict ichor debuff
 BallOHurt.Description: +20% Melee Damage, +5% critcal strike chance, true melee attacks inflict cursed flames debuff
-SwordFish.Description: damage dealt is splited into two, both damage ignore 5 defense, second source of damage always deals full damage
+SwordFish.Description:
+	'''
+	Your attack ignore 5 point of defenses
+	Damage dealt have 1 in 10 chance to strike twice
+	If enemy are near, spawn out a sword fish that swim around
+	'''
 TitaniumSword.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumRepeater.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
 TitaniumTrident.Description: fire a Projectile at mouse direction that deals 3x damage every 2 second
