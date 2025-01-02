@@ -2719,7 +2719,11 @@ Mods: {
 			"Weapon action.DisplayName": Weapon action
 		}
 
-		DamageClasses.RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
+		DamageClasses: {
+			RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
+			MeleeMageHybridDamageClass.DisplayName: Arcane warrior damage
+			MeleeMageHubridDamageClass.DisplayName: Melee Mage Hubrid Damage Class
+		}
 
 		Prefixes: {
 			Cunning.DisplayName: Cunning

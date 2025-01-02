@@ -28,7 +28,6 @@ internal static partial class GenerationHelper {
 
 		Tile tile = Main.tile[i, j];
 		tile.TileType = tileType;
-		tile.TileColor = PaintID.None;
 		tile.Get<TileWallWireStateData>().HasTile = true;
 	}
 
@@ -50,6 +49,7 @@ internal static partial class GenerationHelper {
 		if (CoordinatesOutOfBounds(i, j)) {
 			return;
 		}
+		Main.tile[i, j].ClearTile();
 		Main.tile[i, j].Get<TileWallWireStateData>().HasTile = false;
 	}
 

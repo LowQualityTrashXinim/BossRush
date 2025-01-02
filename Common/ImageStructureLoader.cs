@@ -10,31 +10,44 @@ using Microsoft.Xna.Framework;
 namespace BossRush.Common;
 public class ImageStructureLoader : ILoadable {
 	private static readonly Dictionary<string, ImageData> Images = new();
+	private static readonly Dictionary<string, ImageData> ImagesTemplate = new();
 	public void Load(Mod mod) {
 		foreach (string filePath in mod.GetFileNames()) {
-			if (!filePath.StartsWith("Assets/Images/Structures") || !filePath.EndsWith(".rawimg")) {
+			if (!filePath.EndsWith(".rawimg")) {
 				continue;
 			}
+			if (filePath.StartsWith("Assets/Images/Structures")) {
+				Texture2D texture = mod.Assets.Request<Texture2D>(filePath[..^7], AssetRequestMode.ImmediateLoad).Value;
 
-			Texture2D texture = mod.Assets.Request<Texture2D>(filePath[..^7], AssetRequestMode.ImmediateLoad).Value;
+				Color[] textureData = new Color[texture.Width * texture.Height];
+				Main.RunOnMainThread(() => texture.GetData(textureData)).Wait();
 
-			Color[] textureData = new Color[texture.Width * texture.Height];
-			Main.RunOnMainThread(() => texture.GetData(textureData)).Wait();
+				Images[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
+			}
+			else
+			if (filePath.StartsWith("Assets/Images/Template")) {
+				Texture2D texture = mod.Assets.Request<Texture2D>(filePath[..^7], AssetRequestMode.ImmediateLoad).Value;
 
-			Images[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
+				Color[] textureData = new Color[texture.Width * texture.Height];
+				Main.RunOnMainThread(() => texture.GetData(textureData)).Wait();
+
+				ImagesTemplate[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
+			}
 		}
 	}
 	public static ImageData Get(string structureName) {
 		return Images[structureName + ".rawimg"];
 	}
-	
+	public static ImageData Get_Tempate(string structureName) {
+		return ImagesTemplate[structureName + ".rawimg"];
+	}
 	public void Unload() {
 	}
 
 	public const string OverworldArena = "2x1OverworldArena";
 	public const string FleshArenaVar = "3x3FleshArena";
 	public const string JungleArenaVar = "3x3JungleArena";
-	public const string BeeNestArenaVar = "2x4BeeNestArena"; 
+	public const string BeeNestArenaVar = "2x4BeeNestArena";
 	public const string SlimeArena = "3x3SlimeArena";
 	public const string CrimsonArena = "3x3CrimsonArena";
 	public const string CorruptionAreana = "2x4CorruptionArena";
