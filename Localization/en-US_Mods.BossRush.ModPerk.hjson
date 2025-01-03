@@ -605,3 +605,24 @@ UnlimitedThrowable: {
 		+ Throwable gain +10 damage, +4 critical strike chance and +50% critical damage
 		'''
 }
+
+TomahawkUpgrade: {
+	DisplayName: Tomahawk
+	Description:
+		'''
+		+ Gain ability to throw the axe and pull it back at will or when reached maximum travel distance 
+		+ Increases Damage by 20
+		+ Increases penetrating value by 10
+		'''
+}
+
+RefinedUpgrade: {
+	DisplayName: Refined ( Axe )
+	Description:
+		'''
+		+ Axe critical hit damage are increased by 200%
+		+ Base damage increases by 10
+		+ Axe delay reuses are decrease by 50%
+		+ Hitting enemy with axe will causes them to bleed
+		'''
+}

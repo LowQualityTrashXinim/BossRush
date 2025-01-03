@@ -1,15 +1,7 @@
-﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.Merciless;
-using BossRush.Contents.Perks;
+﻿using BossRush.Contents.Perks;
 using BossRush.Contents.Projectiles;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
-using Mono.Cecil;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -63,7 +55,7 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 			else {
 				item.noUseGraphic = false;
 			}
-
+			return player.ownedProjectileCounts[ModContent.ProjectileType<TomahawkProjectile>()] < 1;
 		}
 		return base.CanUseItem(item, player);
 	}
@@ -85,9 +77,8 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 					velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
 					Projectile.NewProjectile(source, position, velocity * 13, type, damage, knockback, player.whoAmI, ai2: item.type);
 					player.AddBuff(ModContent.BuffType<TomahawkCD>(), modplayer.ThrownMaximumCD);
-					return false;
 				}
-				return true;
+				return false;
 		}
 		return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 	}

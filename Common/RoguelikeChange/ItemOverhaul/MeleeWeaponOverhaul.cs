@@ -665,6 +665,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public int CountDownToResetCombo = 0;
 		bool InStateOfSwinging = false;
 		public float CustomItemRotation = 0;
+		public StatModifier DelayReuse = new();
 		public override void PreUpdate() {
 			Item item = Player.HeldItem;
 			if (oldHeldItem != item.type) {
@@ -682,9 +683,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (Player.ItemAnimationJustStarted) {
 				if (delaytimer <= 0) {
 					//Player.velocity += PlayerToMouseDirection.SafeNormalize(Vector2.Zero) * 3f;
-					delaytimer = (int)(Player.itemAnimationMax * 1.2f);
+					delaytimer = (int)DelayReuse.ApplyTo(Player.itemAnimationMax * 1.2f);
 				}
 			}
+			DelayReuse = StatModifier.Default;
 			if (Player.ItemAnimationActive) {
 				InStateOfSwinging = true;
 			}

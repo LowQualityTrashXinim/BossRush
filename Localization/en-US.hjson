@@ -2504,6 +2504,11 @@ Mods: {
 				DisplayName: Tomahawk C D
 				Description: Mods.BossRush.Buffs.TomahawkCD.Description
 			}
+
+			Axe_BleedDebuff: {
+				DisplayName: Axe_ Bleed Debuff
+				Description: Mods.BossRush.Buffs.Axe_BleedDebuff.Description
+			}
 		}
 
 		Configs: {
