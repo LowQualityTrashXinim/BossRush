@@ -569,7 +569,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 			return;
 		}
 		//We gonna make this template strength base from the relic Tier
-		int Tier = relic.RelicTier - 1;
+		int Tier = relic.RelicTier;
 		//Set damage type base on PlayerStats
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		//Spawn the projectiles base on Relic Tier
@@ -579,7 +579,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				player.Center,
 				Main.rand.NextVector2CircularEdge(7, 7),
 				ModContent.ProjectileType<FriendlySlimeProjectile>(),
-				(int)(value.Base * (1 + .1f * Tier)),
+				(int)(value.Base * (1 + .1f * Tier + 1)),
 				2 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
@@ -644,7 +644,7 @@ public class FireBallTemplate : RelicTemplate {
 		if (!player.Center.LookForAnyHostileNPC(350f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
 			return;
 		}
-		int Tier = relic.RelicTier - 1;
+		int Tier = relic.RelicTier;
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		for (int i = 0; i < Tier; i++) {
 			Projectile proj = Projectile.NewProjectileDirect(
@@ -652,7 +652,7 @@ public class FireBallTemplate : RelicTemplate {
 				player.Center,
 				Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
 				ProjectileID.BallofFire,
-				(int)(value.Base * (1 + .1f * Tier)),
+				(int)(value.Base * (1 + .1f * Tier + 1)),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;

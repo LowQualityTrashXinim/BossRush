@@ -311,6 +311,7 @@ Mods: {
 			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
 			WindShot.DisplayName: Wind Shot
 			SwordFishProjectile.DisplayName: Sword Fish Projectile
+			TomahawkProjectile.DisplayName: Tomahawk Projectile
 		}
 
 		NPCs: {
@@ -1918,8 +1919,8 @@ Mods: {
 				Tooltip: Give you immunity to most fire debuff
 			}
 
-			LastingVile: {
-				DisplayName: Lasting Vile
+			LastingVilePotion: {
+				DisplayName: Lasting Vile Potion
 				Tooltip: Increases existing buff duration by 2 minute
 			}
 
@@ -2497,6 +2498,11 @@ Mods: {
 			DeepSeaPressure: {
 				DisplayName: Deep Sea Pressure
 				Description: Mods.BossRush.Buffs.DeepSeaPressure.Description
+			}
+
+			TomahawkCD: {
+				DisplayName: Tomahawk C D
+				Description: Mods.BossRush.Buffs.TomahawkCD.Description
 			}
 		}
 

@@ -7,6 +7,7 @@ using BossRush.Contents.Items.Chest;
 using Terraria.DataStructures;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.ModLoader;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class UncommonSpoil {
@@ -105,6 +106,18 @@ public class UncommonSpoil {
 					}
 				}
 			}
+		}
+	}
+	public class StarterPerkSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Uncommon;
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.UncommonDrop();
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<CelestialEssence>());
 		}
 	}
 }

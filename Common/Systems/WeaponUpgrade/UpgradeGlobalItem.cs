@@ -11,6 +11,7 @@ public enum WeaponUpgradeID : short {
 	ShortSwordThrown,
 	UnlimitedThrowable,
 	NaturalUpgrade,
+	TomahawkUpgrade,
 }
 public class UpgradePlayer : ModPlayer {
 	public HashSet<WeaponUpgradeID> Upgrades = new();

@@ -163,6 +163,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		int count = -1;
 		bool changeToCubeGen = false;
 		while (counter.X < rect.Width || counter.Y < rect.Width) {
+			bool ChanceToBeEmpty = Main.rand.NextBool(12);
 			ImageData template;
 			if (!changeToCubeGen) {
 				if (++count % 2 == 0) {
@@ -184,8 +185,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
+				if(a < rect.Left || b < rect.Top) {
+					return;
+				}
 				GenerationHelper.FastRemoveTile(a, b);
-				if (color.R == 255 && color.B == 0 && color.G == 0) {
+				if (color.R == 255 && color.B == 0 && color.G == 0 && !ChanceToBeEmpty) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
