@@ -2509,6 +2509,16 @@ Mods: {
 				DisplayName: Axe_ Bleed Debuff
 				Description: Mods.BossRush.Buffs.Axe_BleedDebuff.Description
 			}
+
+			ReactiveEnduranceBuff: {
+				DisplayName: Reactive Endurance Buff
+				Description: Mods.BossRush.Buffs.ReactiveEnduranceBuff.Description
+			}
+
+			ReactiveHealingBuff: {
+				DisplayName: Reactive Healing Buff
+				Description: Mods.BossRush.Buffs.ReactiveHealingBuff.Description
+			}
 		}
 
 		Configs: {

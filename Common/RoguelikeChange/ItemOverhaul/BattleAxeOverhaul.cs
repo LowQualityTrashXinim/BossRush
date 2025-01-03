@@ -16,6 +16,7 @@ internal class BattleAxeOverhaul : GlobalItem {
 			return;
 		}
 		switch (entity.type) {
+				//common ore axe
 			case ItemID.CopperAxe:
 			case ItemID.TinAxe:
 			case ItemID.IronAxe:
@@ -24,6 +25,18 @@ internal class BattleAxeOverhaul : GlobalItem {
 			case ItemID.TungstenAxe:
 			case ItemID.GoldAxe:
 			case ItemID.PlatinumAxe:
+				//uncommon ore axe
+			case ItemID.BloodLustCluster:
+			case ItemID.WarAxeoftheNight:
+			case ItemID.MoltenPickaxe:
+			case ItemID.MeteorHamaxe:
+				//Hardmode ore axe
+			case ItemID.CobaltWaraxe:
+			case ItemID.PalladiumWaraxe:
+			case ItemID.MythrilWaraxe:
+			case ItemID.OrichalcumWaraxe:
+			case ItemID.AdamantiteWaraxe:
+			case ItemID.TitaniumWaraxe:
 				entity.useTime = entity.useAnimation = 40;
 				entity.damage += 13;
 				entity.scale += .25f;

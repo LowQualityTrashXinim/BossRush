@@ -7,6 +7,8 @@ using BossRush.Common.General;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
+using Terraria.ModLoader;
+using BossRush.Texture;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -565,7 +567,7 @@ public class IntoxicateI : ModAugments {
 		}
 	}
 }
-public class ReactiveHealing : ModAugments {
+public class ReactiveHealingI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.ForestGreen;
 	}
@@ -578,5 +580,54 @@ public class ReactiveHealing : ModAugments {
 		if (Main.rand.NextBool(3)) {
 			player.Heal((int)Math.Ceiling(player.statLifeMax2 * .05f));
 		}
+	}
+}
+public class ReactiveHealingII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.ForestGreen;
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
+		if (Main.rand.NextBool(3)) {
+			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+		}
+	}
+	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
+		if (Main.rand.NextBool(3)) {
+			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+		}
+	}
+}
+public class ReactiveHealingBuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 10);
+	}
+}
+
+public class ReactiveEndurance : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.MediumPurple;
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
+		if (Main.rand.NextBool(4)) {
+			player.AddBuff(ModContent.BuffType<ReactiveEnduranceBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+		}
+	}
+	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
+		if (Main.rand.NextBool(4)) {
+			player.AddBuff(ModContent.BuffType<ReactiveEnduranceBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+		}
+	}
+}
+public class ReactiveEnduranceBuff: ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		player.endurance += .1f;
 	}
 }

@@ -183,7 +183,17 @@ IntoxicateI: {
 	Description: While under a debuff effect, gain 10% damage reduction
 }
 
-ReactiveHealing: {
-	DisplayName: Reactive Healing
-	Description: Upon hit, have 1 in 3 chance to heal back 5% of your maximum life
+ReactiveHealingI: {
+	DisplayName: Reactive Healing I
+	Description: Upon hit, have 33% chance to heal back 5% of your maximum life
+}
+
+ReactiveHealingII: {
+	DisplayName: Reactive Healing II
+	Description: Upon hit, have 33% chance to regenerate 5hp/s
+}
+
+ReactiveEndurance: {
+	DisplayName: Reactive Endurance
+	Description: Upon hit, have 25% chance to gain 10% damage reduction
 }
