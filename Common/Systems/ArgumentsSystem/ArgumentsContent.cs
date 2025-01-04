@@ -89,6 +89,13 @@ public class BerserkI : ModAugments {
 }
 
 public class True : ModAugments {
+	public override bool ConditionToBeApplied(Player player, Item item, out float Chance) {
+		Chance = 0;
+		if (player.HeldItem.type == ItemID.TrueExcalibur || player.HeldItem.type == ItemID.TrueNightsEdge) {
+			Chance = .2f;
+		}
+		return true;
+	}
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.Yellow;
 	}
@@ -567,6 +574,20 @@ public class IntoxicateI : ModAugments {
 		}
 	}
 }
+
+public class IntoxicateII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.GreenYellow;
+	}
+	public override void UpdateAccessory(Player player, Item item) {
+		for (int i = 0; i < player.buffType.Length; i++) {
+			if (player.buffType[i] == 0) continue;
+			if (Main.debuff[player.buffType[i]]) {
+				PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Additive: 1.15f, Flat: 5);
+			}
+		}
+	}
+}
 public class ReactiveHealingI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.ForestGreen;
@@ -607,27 +628,65 @@ public class ReactiveHealingBuff : ModBuff {
 	}
 }
 
-public class ReactiveEndurance : ModAugments {
+public class ReactiveDefenseI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.MediumPurple;
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
 		if (Main.rand.NextBool(4)) {
-			player.AddBuff(ModContent.BuffType<ReactiveEnduranceBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+			player.AddBuff(ModContent.BuffType<ReactiveDefenseBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
 	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
 		if (Main.rand.NextBool(4)) {
-			player.AddBuff(ModContent.BuffType<ReactiveEnduranceBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+			player.AddBuff(ModContent.BuffType<ReactiveDefenseBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
 }
-public class ReactiveEnduranceBuff: ModBuff {
+public class ReactiveDefenseBuff : ModBuff {
 	public override string Texture => BossRushTexture.EMPTYBUFF;
 	public override void SetStaticDefaults() {
 		this.BossRushSetDefaultBuff();
 	}
 	public override void Update(Player player, ref int buffIndex) {
 		player.endurance += .1f;
+	}
+}
+public class ReactiveDefenseII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.MediumPurple;
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
+		if (Main.rand.NextBool(4)) {
+			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+		}
+	}
+	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
+		if (Main.rand.NextBool(4)) {
+			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
+		}
+	}
+}
+public class ReactiveDefenseIIBuff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, 1.1f, Flat: 6);
+	}
+}
+
+public class VitalityStrike : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleVioletRed;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.SourceDamage += player.statLifeMax2 * .0005f;
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if(proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			modifiers.SourceDamage += player.statLifeMax2 * .0005f;
+		}
 	}
 }

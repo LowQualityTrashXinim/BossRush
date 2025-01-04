@@ -98,53 +98,6 @@ namespace BossRush.Contents.Perks {
 			modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
 		}
 	}
-	public class WindSlash : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<WindSlash>();
-			list_category.Add(PerkCategory.WeaponUpgrade);
-			CanBeStack = false;
-		}
-		public override bool SelectChoosing() {
-			return false;
-		}
-		public override void Update(Player player) {
-			if (player.HeldItem.DamageType == DamageClass.Melee
-				&& player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
-				&& Main.mouseLeft
-				&& player.itemAnimation == player.itemAnimationMax) {
-				Vector2 speed = Vector2.UnitX * player.direction;
-				if (player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-					speed = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
-				}
-				int damage = (int)(player.HeldItem.damage * .75f);
-				float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
-				if (player.GetModPlayer<WindSlashPerkPlayer>().StrikeOpportunity) {
-					speed *= 1.5f;
-					damage *= 3;
-				}
-				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), damage, 2f, player.whoAmI);
-			}
-		}
-	}
-	public class WindSlashPerkPlayer : ModPlayer {
-		public int OpportunityWindow = 0;
-		public bool StrikeOpportunity = false;
-		public override void PostUpdate() {
-			if (!Player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<WindSlash>())) {
-				return;
-			}
-			if (Player.ItemAnimationActive) {
-				OpportunityWindow = 0;
-				StrikeOpportunity = false;
-			}
-			if (OpportunityWindow >= BossRushUtils.ToSecond(1.5f)) {
-				StrikeOpportunity = true;
-				Dust.NewDust(Player.Center, 0, 0, DustID.SolarFlare);
-				return;
-			}
-			OpportunityWindow++;
-		}
-	}
 	public class PowerUp : Perk {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<PowerUp>();

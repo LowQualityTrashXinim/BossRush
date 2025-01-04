@@ -1,9 +1,9 @@
-﻿using BossRush.Contents.Perks;
-using BossRush.Contents.Projectiles;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Common.Systems.WeaponUpgrade.Content;
 internal class WindSlash_GlobalItem : GlobalItem {
@@ -27,7 +27,7 @@ internal class WindSlash_GlobalItem : GlobalItem {
 				}
 				int damage = (int)(player.HeldItem.damage * .75f);
 				float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
-				if (player.GetModPlayer<WindSlashPerkPlayer>().StrikeOpportunity) {
+				if (player.GetModPlayer<WindSlash_ModPlayer>().StrikeOpportunity) {
 					speed *= 1.5f;
 					damage *= 3;
 				}

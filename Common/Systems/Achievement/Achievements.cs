@@ -149,3 +149,11 @@ public class GodOfChallenge : ModAchievement {
 			&& (Main.expertMode || Main.masterMode);
 	}
 }
+public class Elite : ModAchievement {
+	public override bool Condition() {
+		if(Main.CurrentPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			return modplayer.EliteKillCount > 0;
+		}
+		return false;
+	}
+}

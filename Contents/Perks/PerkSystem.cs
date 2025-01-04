@@ -63,7 +63,7 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	class PerkModSystem : ModSystem {
-		public static List<int> StarterPerkType { get; private set; }
+		public static List<int> StarterPerkType { get; private set; } = new();
 		public override void Load() {
 			base.Load();
 			On_Player.QuickMana += On_Player_QuickMana;

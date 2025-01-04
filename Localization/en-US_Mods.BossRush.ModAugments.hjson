@@ -105,7 +105,7 @@ CriticalIV: {
 
 VampireI: {
 	DisplayName: Vampire I
-	Description: Your weapon can life steal by 1%
+	Description: Increase Life steal by 1%
 }
 
 VampireII: {
@@ -120,7 +120,7 @@ VampireIII: {
 
 AlchemistI: {
 	DisplayName: Alchemist I
-	Description: When a enemy have a debuff/buff on them, deal 6% more damage
+	Description: Increases debuff damage by 6%
 }
 
 AlchemistII: {
@@ -183,6 +183,11 @@ IntoxicateI: {
 	Description: While under a debuff effect, gain 10% damage reduction
 }
 
+IntoxicateII: {
+	DisplayName: Intoxicate II
+	Description: While under a debuff effect, gain 15% regeneration and flat 5 hp/s
+}
+
 ReactiveHealingI: {
 	DisplayName: Reactive Healing I
 	Description: Upon hit, have 33% chance to heal back 5% of your maximum life
@@ -190,10 +195,20 @@ ReactiveHealingI: {
 
 ReactiveHealingII: {
 	DisplayName: Reactive Healing II
-	Description: Upon hit, have 33% chance to regenerate 5hp/s
+	Description: Upon hit, have 33% chance to regenerate 10hp/s
 }
 
-ReactiveEndurance: {
-	DisplayName: Reactive Endurance
+ReactiveDefenseI: {
+	DisplayName: Reactive Defense I
 	Description: Upon hit, have 25% chance to gain 10% damage reduction
+}
+
+ReactiveDefenseII: {
+	DisplayName: Reactive Defense II
+	Description: Upon hit, have 25% chance to gain 10% defenses and flat 6 defenses
+}
+
+VitalityStrikeI: {
+	DisplayName: Vitality Strike I
+	Description: Your maximum life contribute to your output damage
 }

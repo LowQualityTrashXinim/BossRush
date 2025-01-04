@@ -120,9 +120,19 @@ public class PlayerStatsHandle : ModPlayer {
 		if (target.life >= target.lifeMax) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
-		if (target.buffType.Where(i => Main.debuff[i]).Any()) {
-			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage);
+		bool HasDebuff = false; int count = 0;
+		for (int i = 0; i < target.buffType.Length; i++) {
+			if (target.buffType[i] <= 0) {
+				continue;
+			}
+			if (Main.debuff[target.buffType[i]]) {
+				HasDebuff = true;
+				count++;
+			}
 		}
+		if (HasDebuff)
+			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage * count);
+
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 	}
 
@@ -372,6 +382,7 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
+	public int EliteKillCount = 0;
 	public int successfullyKillNPCcount = 0;
 	public int requestShootExtra = 0;
 	public float requestVelocityChange = 0;

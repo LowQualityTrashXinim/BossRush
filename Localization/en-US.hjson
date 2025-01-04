@@ -2510,14 +2510,19 @@ Mods: {
 				Description: Mods.BossRush.Buffs.Axe_BleedDebuff.Description
 			}
 
-			ReactiveEnduranceBuff: {
-				DisplayName: Reactive Endurance Buff
-				Description: Mods.BossRush.Buffs.ReactiveEnduranceBuff.Description
+			ReactiveDefenseBuff: {
+				DisplayName: Reactive Endurance
+				Description: Increases your damage reduction by 10%
 			}
 
 			ReactiveHealingBuff: {
-				DisplayName: Reactive Healing Buff
-				Description: Mods.BossRush.Buffs.ReactiveHealingBuff.Description
+				DisplayName: Reactive Healing
+				Description: Increases your regeneration by 5
+			}
+
+			ReactiveDefenseIIBuff: {
+				DisplayName: Reactive Defense I I Buff
+				Description: Mods.BossRush.Buffs.ReactiveDefenseIIBuff.Description
 			}
 		}
 

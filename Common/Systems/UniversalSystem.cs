@@ -41,6 +41,7 @@ namespace BossRush.Common.Systems;
 public static class RoguelikeData {
 	public static int Lootbox_AmountOpen = 0;
 	public static int Run_Amount = 0;
+	public static int EliteKill = 0;
 }
 /// <summary>
 /// This not only include main stuff that make everything work but also contain some fixes to vanilla<br/>
