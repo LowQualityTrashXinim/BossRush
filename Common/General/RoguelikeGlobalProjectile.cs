@@ -45,6 +45,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					else if (type == RelicTemplate.GetRelicType<SkyFractureTemplate>()) {
 						TravelDistanceBeforeKill = 450;
 					}
+					else if (type == RelicTemplate.GetRelicType<MagicMissileTemplate>()) {
+						TravelDistanceBeforeKill = 650;
+					}
 				}
 			}
 		}

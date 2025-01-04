@@ -19,7 +19,7 @@ internal class WindSlash_GlobalItem : GlobalItem {
 		if (!UpgradePlayer.Check_Upgrade(player, WeaponUpgradeID.WindSlash)) {
 			return;
 		}
-		if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) && item.DamageType == DamageClass.Melee) {
+		if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded) && item.DamageType == DamageClass.Melee) {
 			if (Main.mouseLeft && player.itemAnimation == player.itemAnimationMax) {
 				Vector2 speed = Vector2.UnitX * player.direction;
 				if (player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
