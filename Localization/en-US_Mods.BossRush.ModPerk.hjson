@@ -627,3 +627,12 @@ RefinedUpgrade: {
 		+ Hitting enemy with axe will causes them to bleed
 		'''
 }
+HunterInstinct: {
+	DisplayName: Hunter Instinct ( Axe )
+	Description:
+		'''
+		+ Common axe gain a huge buff to their stats
+		+ While using axe weapon, you have 15% to dodge an attack
+		+ Hitting enemy have chance to increase your attack speed briefly
+		'''
+}

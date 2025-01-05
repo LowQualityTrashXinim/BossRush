@@ -25,6 +25,18 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 			case ItemID.TungstenAxe:
 			case ItemID.GoldAxe:
 			case ItemID.PlatinumAxe:
+			//uncommon ore axe
+			case ItemID.BloodLustCluster:
+			case ItemID.WarAxeoftheNight:
+			case ItemID.MoltenPickaxe:
+			case ItemID.MeteorHamaxe:
+			//Hardmode ore axe
+			case ItemID.CobaltWaraxe:
+			case ItemID.PalladiumWaraxe:
+			case ItemID.MythrilWaraxe:
+			case ItemID.OrichalcumWaraxe:
+			case ItemID.AdamantiteWaraxe:
+			case ItemID.TitaniumWaraxe:
 				entity.damage += 20;
 				entity.ArmorPenetration += 10;
 				entity.shoot = ModContent.ProjectileType<TomahawkProjectile>();
@@ -42,6 +54,18 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 				case ItemID.TungstenAxe:
 				case ItemID.GoldAxe:
 				case ItemID.PlatinumAxe:
+				//uncommon ore axe
+				case ItemID.BloodLustCluster:
+				case ItemID.WarAxeoftheNight:
+				case ItemID.MoltenPickaxe:
+				case ItemID.MeteorHamaxe:
+				//Hardmode ore axe
+				case ItemID.CobaltWaraxe:
+				case ItemID.PalladiumWaraxe:
+				case ItemID.MythrilWaraxe:
+				case ItemID.OrichalcumWaraxe:
+				case ItemID.AdamantiteWaraxe:
+				case ItemID.TitaniumWaraxe:
 					return true;
 			}
 		}
@@ -49,13 +73,35 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 	}
 	public override bool CanUseItem(Item item, Player player) {
 		if (UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.TomahawkUpgrade)) {
-			if (player.altFunctionUse == 2) {
-				item.noUseGraphic = true;
+			switch (item.type) {
+				case ItemID.CopperAxe:
+				case ItemID.TinAxe:
+				case ItemID.IronAxe:
+				case ItemID.LeadAxe:
+				case ItemID.SilverAxe:
+				case ItemID.TungstenAxe:
+				case ItemID.GoldAxe:
+				case ItemID.PlatinumAxe:
+				//uncommon ore axe
+				case ItemID.BloodLustCluster:
+				case ItemID.WarAxeoftheNight:
+				case ItemID.MoltenPickaxe:
+				case ItemID.MeteorHamaxe:
+				//Hardmode ore axe
+				case ItemID.CobaltWaraxe:
+				case ItemID.PalladiumWaraxe:
+				case ItemID.MythrilWaraxe:
+				case ItemID.OrichalcumWaraxe:
+				case ItemID.AdamantiteWaraxe:
+				case ItemID.TitaniumWaraxe:
+					if (player.altFunctionUse == 2) {
+						item.noUseGraphic = true;
+					}
+					else {
+						item.noUseGraphic = false;
+					}
+					return player.ownedProjectileCounts[ModContent.ProjectileType<TomahawkProjectile>()] < 1;
 			}
-			else {
-				item.noUseGraphic = false;
-			}
-			return player.ownedProjectileCounts[ModContent.ProjectileType<TomahawkProjectile>()] < 1;
 		}
 		return base.CanUseItem(item, player);
 	}
@@ -73,6 +119,18 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 			case ItemID.TungstenAxe:
 			case ItemID.GoldAxe:
 			case ItemID.PlatinumAxe:
+			//uncommon ore axe
+			case ItemID.BloodLustCluster:
+			case ItemID.WarAxeoftheNight:
+			case ItemID.MoltenPickaxe:
+			case ItemID.MeteorHamaxe:
+			//Hardmode ore axe
+			case ItemID.CobaltWaraxe:
+			case ItemID.PalladiumWaraxe:
+			case ItemID.MythrilWaraxe:
+			case ItemID.OrichalcumWaraxe:
+			case ItemID.AdamantiteWaraxe:
+			case ItemID.TitaniumWaraxe:
 				if (player.altFunctionUse == 2 && !modplayer.ThrownCD) {
 					velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
 					Projectile.NewProjectile(source, position, velocity * 13, type, damage, knockback, player.whoAmI, ai2: item.type);
