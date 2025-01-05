@@ -98,13 +98,10 @@ public class TransmutationUIState : UIState {
 				relicItem = slot2.item.ModItem as Relic;
 				slotitem = slot1.item;
 			}
-			float chance = 0;
-
 			float rarityOffSet = slotitem.rare * .03f;
 			if (slotitem.rare >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
 				rarityOffSet += (slotitem.rare - 3) * .02f;
 			}
-			chance += rarityOffSet;
 			float SuccessChance;
 			switch (relicItem.RelicTier) {
 				case 1:

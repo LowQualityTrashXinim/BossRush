@@ -16,8 +16,13 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Projectile.penetrate = -1;
 		}
 		public override void AI() {
-			if (Projectile.velocity != Vector2.Zero) { Projectile.velocity -= Projectile.velocity * 0.05f; }
-			if (!Projectile.velocity.IsLimitReached(.1f)) Projectile.velocity = Vector2.Zero;
+			if(Projectile.timeLeft == 1000) {
+				for (int i = 0; i < 15; i++) {
+					int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, 0, 0, 0, default, Main.rand.NextFloat(1f, 1.5f));
+					Main.dust[dustnumber].noGravity = true;
+					Main.dust[dustnumber].velocity = Main.rand.NextVector2Circular(4f, 4f);
+				}
+			}
 			if (Main.rand.NextBool(5)) {
 				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, 0, 0, 0, default, Main.rand.NextFloat(1f, 1.5f));
 				Main.dust[dustnumber].noGravity = true;

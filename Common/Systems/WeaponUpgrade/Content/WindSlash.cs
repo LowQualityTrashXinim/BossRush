@@ -59,8 +59,15 @@ public class WindSlash_ModPlayer : ModPlayer {
 			StrikeOpportunity = false;
 		}
 		if (OpportunityWindow >= BossRushUtils.ToSecond(1.5f)) {
+			if(!StrikeOpportunity) {
+				for (int i = 0; i < 36; i++) {
+					Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(36, 360, i) * 5;
+					Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.SolarFlare);
+					dust.noGravity = true;
+					dust.velocity = vel;
+				}
+			}
 			StrikeOpportunity = true;
-			Dust.NewDust(Player.Center, 0, 0, DustID.SolarFlare);
 			return;
 		}
 		OpportunityWindow++;

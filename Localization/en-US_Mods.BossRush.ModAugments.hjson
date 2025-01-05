@@ -212,3 +212,8 @@ VitalityStrikeI: {
 	DisplayName: Vitality Strike I
 	Description: Your maximum life contribute to your output damage
 }
+
+ArcaneStrikeI: {
+	DisplayName: Arcane Strike I
+	Description: Your maximum mana contribute to your output damage
+}

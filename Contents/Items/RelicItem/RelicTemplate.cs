@@ -726,7 +726,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			650,
 			Vector2.Zero,
 			false,
-			Color.AliceBlue
+			Color.LightSkyBlue
 			));
 	}
 	public override PlayerStats StatCondition(Relic relic, Player player) {
@@ -745,7 +745,7 @@ public class MagicMissileTemplate : RelicTemplate {
 		string Name = Enum.GetName(stat) ?? string.Empty;
 		int cooldown = 180 - 10 * (relic.RelicTier - 1);
 		return string.Format(Description, new string[] {
-				Color.AliceBlue.Hex3(),
+				Color.LightSkyBlue.Hex3(),
 				(Math.Round(cooldown / 60f, 2)).ToString(),
 				Color.Red.Hex3(),
 				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),

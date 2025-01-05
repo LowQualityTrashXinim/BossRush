@@ -1,6 +1,7 @@
 ﻿using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -47,6 +48,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.PaintRifle {
 						break;
 				}
 			}
+			SoundEngine.PlaySound(Item.UseSound);
 			if (player.altFunctionUse == 2) {
 				Item.GetGlobalItem<RangeWeaponOverhaul>().SpreadAmount = 15;
 				for (int i = 0; i < 3; i++) {

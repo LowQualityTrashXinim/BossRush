@@ -24,18 +24,18 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Player player = Main.player[Projectile.owner];
-			Vector2 Rotate = Main.rand.NextVector2CircularEdge(15, 15);
-			if (!Projectile.Center.IsCloseToPosition(player.Center, 750f)) {
-				Rotate += (player.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * ((player.Center - Projectile.Center).Length() - 750f) * .1f;
+			//to avoid having too much projectile, we capping this at 50
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] <= 50) {
+				Vector2 Rotate = Projectile.Center + Main.rand.NextVector2CircularEdge(300, 300) + Main.rand.NextVector2Circular(30, 30) * (10 + Main.rand.NextFloat(5));
+				int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Rotate, Vector2.Zero, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
+				player.GetModPlayer<DiamondGemProjectilePlayerTracker>().list_DiamondProjectile.Add(Main.projectile[proj]);
 			}
-			Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Rotate, ModContent.ProjectileType<DiamondGemP>(), 0, 0, Projectile.owner);
 		}
 		public override void AI() {
 			int dustnumber = Dust.NewDust(Projectile.position, 0, 0, DustID.GemDiamond, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f));
 			Main.dust[dustnumber].noGravity = true;
 			Main.dust[dustnumber].fadeIn = 1f;
-			if (RicochetOff(out Vector2 pos2)) {
-				Projectile.netUpdate = true;
+			if (RicochetOff(Main.player[Projectile.owner], out Vector2 pos2)) {
 				Projectile.damage += 10;
 				Projectile.CritChance += 5;
 				if (pos2 != Vector2.Zero) {
@@ -48,36 +48,22 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 				}
 			}
 		}
-		public bool CheckActiveAndCon(Projectile projectileThatNeedtoCheck) {
-			Player player = Main.player[Projectile.owner];
-			if (projectileThatNeedtoCheck.ModProjectile is DiamondGemP
-				&& projectileThatNeedtoCheck.active
-				&& (!projectileThatNeedtoCheck.velocity.IsLimitReached(4) || player.ownedProjectileCounts[ModContent.ProjectileType<DiamondGemP>()] > 10)
-				&& Vector2.DistanceSquared(player.Center, projectileThatNeedtoCheck.Center) < 2250000) {
-				return true;
-			}
-			return false;
-		}
-		public List<Projectile> GetListOfActiveProj(out bool Check) {
-			List<Projectile> list = new List<Projectile>();
-			for (int i = 0; i < Main.maxProjectiles; i++) {
-				if (CheckActiveAndCon(Main.projectile[i])) {
-					list.Add(Main.projectile[i]);
-				}
-			}
-			Check = list.Count > 1;
-			return list;
-		}
-		public bool RicochetOff(out Vector2 Pos2) {
-			List<Projectile> list = GetListOfActiveProj(out bool Check);
+		public bool RicochetOff(Player player, out Vector2 Pos2) {
+			List<Projectile> list = player.GetModPlayer<DiamondGemProjectilePlayerTracker>().list_DiamondProjectile;
+			bool Check = list.Count > 1;
 			if (Check) {
 				Vector2 Pos1;
 				foreach (var pos in list.Where(x => Vector2.DistanceSquared(Projectile.Center, x.Center) <= 225)) {
 					Pos1 = pos.Center;
+					int failsafe = 0;
 					do {
 						Pos2 = Main.rand.Next(list).Center;
+						failsafe++;
 					}
-					while (Pos2 == Pos1);
+					while (Pos2 == Pos1 && failsafe <= 100);
+					if(failsafe == 100) {
+						Pos2 = Vector2.Zero;
+					}
 					pos.Kill();
 					return true;
 				}
@@ -99,6 +85,21 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 		public override bool PreDraw(ref Color lightColor) {
 			Projectile.DrawTrail(Projectile.GetAlpha(lightColor), 0.01f);
 			return true;
+		}
+	}
+	public class DiamondGemProjectilePlayerTracker : ModPlayer {
+		public List<Projectile> list_DiamondProjectile = new();
+		public override void ResetEffects() {
+			for (int i = list_DiamondProjectile.Count - 1; i >= 0; i--) {
+				Projectile projectile = list_DiamondProjectile[i];
+				if (projectile == null) {
+					list_DiamondProjectile.RemoveAt(i);
+					continue;
+				}
+				if (!projectile.active) {
+					list_DiamondProjectile.RemoveAt(i);
+				}
+			}
 		}
 	}
 }
