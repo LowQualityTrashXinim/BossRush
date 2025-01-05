@@ -462,3 +462,10 @@ public struct TileData : ICloneable {
 			&& TD.Tile_WireData == this.Tile_WireData;
 	}
 }
+public class StructureTemplate {
+	public string TemplateFilePath = "";
+	public List<StructureTemplate> Compatible_Left_Templates = new List<StructureTemplate>();
+	public List<StructureTemplate> Compatible_Right_Templates = new List<StructureTemplate>();
+	public List<StructureTemplate> Compatible_Top_Templates = new List<StructureTemplate>();
+	public List<StructureTemplate> Compatible_Bottom_Templates = new List<StructureTemplate>();
+}

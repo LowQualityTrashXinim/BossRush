@@ -18,11 +18,11 @@ public class FireI : ModAugments {
 		tooltipColor = Color.Red;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		npc.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+		npc.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
-			npc.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+			npc.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
 public class FireII : ModAugments {
@@ -48,11 +48,11 @@ public class FrostBurnI : ModAugments {
 		tooltipColor = Color.Cyan;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		npc.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+		npc.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
-			npc.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+			npc.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
 public class FrostBurnII : ModAugments {
@@ -382,11 +382,11 @@ public class ShadowFlameI : ModAugments {
 		tooltipColor = Color.MediumPurple;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+		npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
-			npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+			npc.AddBuff(BuffID.ShadowFlame, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
 public class ShadowFlameII : ModAugments {
@@ -412,11 +412,11 @@ public class CursedFlameI : ModAugments {
 		tooltipColor = Color.ForestGreen;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+		npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
-			npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+			npc.AddBuff(BuffID.CursedInferno, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
 public class CursedFlameII : ModAugments {
@@ -441,11 +441,11 @@ public class PoisonI : ModAugments {
 		tooltipColor = Color.PaleGreen;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+		npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
-			npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+			npc.AddBuff(BuffID.Poisoned, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
 public class PoisonII : ModAugments {
@@ -471,11 +471,11 @@ public class VenomI : ModAugments {
 		tooltipColor = Color.Purple;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+		npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 	public override void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
-			npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(7, 10)));
+			npc.AddBuff(BuffID.Venom, BossRushUtils.ToSecond(Main.rand.Next(1, 3)));
 	}
 }
 public class VenomII : ModAugments {
@@ -685,7 +685,7 @@ public class VitalityStrikeI : ModAugments {
 		modifiers.SourceDamage += player.statLifeMax2 * .0005f;
 	}
 	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if(proj.Check_ItemTypeSource(player.HeldItem.type)) {
+		if (proj.Check_ItemTypeSource(player.HeldItem.type)) {
 			modifiers.SourceDamage += player.statLifeMax2 * .0005f;
 		}
 	}
@@ -702,5 +702,29 @@ public class ArcaneStrikeI : ModAugments {
 		if (proj.Check_ItemTypeSource(player.HeldItem.type)) {
 			modifiers.SourceDamage += player.statManaMax2 * .0005f;
 		}
+	}
+}
+
+public class StealthStrikeI : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.DarkGray;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (player.invis)
+			modifiers.SourceDamage += .25f;
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.Check_ItemTypeSource(player.HeldItem.type)) {
+			if (player.invis)
+				modifiers.SourceDamage += .25f;
+		}
+	}
+}
+public class StealthStrikeII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.DarkGray;
+	}
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.FullHPDamage, 2f);
 	}
 }

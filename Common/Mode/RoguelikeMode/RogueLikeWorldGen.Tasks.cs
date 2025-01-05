@@ -212,6 +212,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 	}
+	[Task]
+	public void GenerateFleshZone() {
+
+		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+	}
 	//[Task]
 	//public void SetUp() {
 	//	Biome = new Dictionary<short, List<Rectangle>>();

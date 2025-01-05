@@ -2524,6 +2524,11 @@ Mods: {
 				DisplayName: Reactive Defense I I Buff
 				Description: Mods.BossRush.Buffs.ReactiveDefenseIIBuff.Description
 			}
+
+			SwiftStrike_Axe: {
+				DisplayName: Swift Strike_ Axe
+				Description: Mods.BossRush.Buffs.SwiftStrike_Axe.Description
+			}
 		}
 
 		Configs: {
@@ -2748,7 +2753,7 @@ Mods: {
 		DamageClasses: {
 			RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
 			MeleeMageHybridDamageClass.DisplayName: Arcane warrior damage
-			MeleeMageHubridDamageClass.DisplayName: Melee Mage Hubrid Damage Class
+			MeleeRangerHybridDamageClass.DisplayName: Ranged melee damage
 		}
 
 		Prefixes: {

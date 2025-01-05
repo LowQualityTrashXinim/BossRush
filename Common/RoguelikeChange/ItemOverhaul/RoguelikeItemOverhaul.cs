@@ -97,24 +97,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.ChainKnife:
 					item.damage += 12;
 					break;
-				case ItemID.AmethystStaff:
-					item.shoot = ModContent.ProjectileType<AmethystMagicalBolt>();
-					item.damage -= 3;
-					item.useTime = 3;
-					item.useAnimation = 15;
-					item.reuseDelay = 30;
-					item.mana = 6;
-					item.shootSpeed = 1;
-					break;
-				case ItemID.TopazStaff:
-					item.shoot = ModContent.ProjectileType<TopazMagicalBolt>();
-					item.damage -= 4;
-					item.useTime = 3;
-					item.useAnimation = 18;
-					item.reuseDelay = 33;
-					item.mana = 6;
-					item.shootSpeed = 1;
-					break;
 				case ItemID.ChlorophyteClaymore:
 					item.damage += 10;
 					item.useTime = item.useAnimation = 35;
@@ -392,10 +374,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		private void OnHitNPC_WoodBow(Projectile proj, NPC target) {
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool(4)) {
-				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(10));
+				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(2));
 			}
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.BorealWoodBow && Main.rand.NextBool(4)) {
-				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
+				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(2));
 			}
 		}
 		private void OnHitNPC_TheUnderTaker(Projectile proj, NPC npc) {

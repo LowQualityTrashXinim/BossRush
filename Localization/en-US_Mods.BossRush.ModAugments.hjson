@@ -217,3 +217,14 @@ ArcaneStrikeI: {
 	DisplayName: Arcane Strike I
 	Description: Your maximum mana contribute to your output damage
 }
+
+StealthStrikeI: {
+	DisplayName: Stealth Strike I
+	Description: While invisible, you deal 25% more damage
+}
+
+StealthStrikeII: {
+	DisplayName: Stealth Strike II
+	Description: Deal 200% damage against undamaged enemy
+}
+

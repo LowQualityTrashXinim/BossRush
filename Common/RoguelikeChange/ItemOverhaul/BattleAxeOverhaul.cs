@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -12,11 +13,14 @@ internal class BattleAxeOverhaul : GlobalItem {
 	}
 	public int UseStyleType = 0;
 	public override void SetDefaults(Item entity) {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
 		if (entity.axe <= 0 || entity.noMelee) {
 			return;
 		}
 		switch (entity.type) {
-				//common ore axe
+			//common ore axe
 			case ItemID.CopperAxe:
 			case ItemID.TinAxe:
 			case ItemID.IronAxe:
@@ -25,12 +29,12 @@ internal class BattleAxeOverhaul : GlobalItem {
 			case ItemID.TungstenAxe:
 			case ItemID.GoldAxe:
 			case ItemID.PlatinumAxe:
-				//uncommon ore axe
+			//uncommon ore axe
 			case ItemID.BloodLustCluster:
 			case ItemID.WarAxeoftheNight:
 			case ItemID.MoltenPickaxe:
 			case ItemID.MeteorHamaxe:
-				//Hardmode ore axe
+			//Hardmode ore axe
 			case ItemID.CobaltWaraxe:
 			case ItemID.PalladiumWaraxe:
 			case ItemID.MythrilWaraxe:
@@ -43,6 +47,7 @@ internal class BattleAxeOverhaul : GlobalItem {
 				entity.useTurn = false;
 				UseStyleType = BossRushUseStyle.DownChop;
 				entity.Set_ItemCriticalDamage(1.5f);
+				entity.DamageType = ModContent.GetInstance<MeleeRangerHybridDamageClass>();
 				break;
 		}
 	}

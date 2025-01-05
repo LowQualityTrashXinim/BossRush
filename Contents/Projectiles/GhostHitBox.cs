@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Projectiles {
@@ -13,7 +14,6 @@ namespace BossRush.Contents.Projectiles {
 			Projectile.timeLeft = 2;
 			Projectile.alpha = 255;
 		}
-
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.immune[Projectile.owner] = 1;
 		}

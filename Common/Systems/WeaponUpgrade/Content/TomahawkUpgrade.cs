@@ -1,11 +1,11 @@
-﻿using BossRush.Contents.Perks;
-using BossRush.Contents.Projectiles;
-using BossRush.Texture;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria;
 using Terraria.ID;
+using BossRush.Texture;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using BossRush.Contents.Perks;
+using BossRush.Contents.Projectiles;
 
 namespace BossRush.Common.Systems.WeaponUpgrade.Content;
 internal class TomahawkUpgrade_GlobalItem : GlobalItem {
