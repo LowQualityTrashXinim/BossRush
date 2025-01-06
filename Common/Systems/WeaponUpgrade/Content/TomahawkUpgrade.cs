@@ -106,7 +106,7 @@ internal class TomahawkUpgrade_GlobalItem : GlobalItem {
 		return base.CanUseItem(item, player);
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.TomahawkUpgrade)) {
+		if (!UpgradePlayer.Check_Upgrade(player, WeaponUpgradeID.TomahawkUpgrade)) {
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
 		TomahawkUpgrade_ModPlayer modplayer = player.GetModPlayer<TomahawkUpgrade_ModPlayer>();

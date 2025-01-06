@@ -68,10 +68,28 @@ namespace BossRush {
 		}
 		public static void Reflesh_GlobalItem(this Mod mod, Player player) {
 			foreach (Item item in player.inventory) {
+				if (item.type == ItemID.None) {
+					continue;
+				}
+				//if (item.ModItem != null) {
+				//	continue;
+				//}
+				//Resetting only important stats
+				Item itemA = ContentSamples.ItemsByType[item.type];
+				item.damage = itemA.damage;
+				item.crit = itemA.crit;
+				item.ArmorPenetration = itemA.ArmorPenetration;
+				item.scale = itemA.scale;
+				item.useTime = itemA.useTime;
+				item.useAnimation = itemA.useAnimation;
+				item.shoot = itemA.shoot;
+				item.shootSpeed = itemA.shootSpeed;
+				Set_ItemCriticalDamage(item, 0f);
 				foreach (var globalitem in item.Globals) {
 					if (globalitem == null || globalitem.Mod.Name != mod.Name) {
 						continue;
 					}
+					//Run through global
 					globalitem.SetDefaults(item);
 				}
 			}

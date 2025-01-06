@@ -638,6 +638,7 @@ HunterInstinct: {
 		+ Hitting enemy have chance to increase your attack speed briefly
 		'''
 }
+
 EnhancedMagicStaff: {
 	DisplayName: Enhanced Magic Staff
 	Description:

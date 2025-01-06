@@ -312,6 +312,7 @@ Mods: {
 			WindShot.DisplayName: Wind Shot
 			SwordFishProjectile.DisplayName: Sword Fish Projectile
 			TomahawkProjectile.DisplayName: Tomahawk Projectile
+			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
 		}
 
 		NPCs: {
@@ -2038,7 +2039,7 @@ Mods: {
 
 			WinterFlame: {
 				DisplayName: Winter Flame
-				Tooltip: ""
+				Tooltip: Praise the red winter !
 			}
 
 			StarWhip: {
@@ -2053,6 +2054,56 @@ Mods: {
 
 			UpgradeReset: {
 				DisplayName: Upgrade Reset
+				Tooltip: ""
+			}
+
+			Item1: {
+				DisplayName: Item1
+				Tooltip: ""
+			}
+
+			Item2: {
+				DisplayName: Item2
+				Tooltip: ""
+			}
+
+			Item3: {
+				DisplayName: Item3
+				Tooltip: ""
+			}
+
+			Item4: {
+				DisplayName: Item4
+				Tooltip: ""
+			}
+
+			Item5: {
+				DisplayName: Item5
+				Tooltip: ""
+			}
+
+			Item6: {
+				DisplayName: Item6
+				Tooltip: ""
+			}
+
+			Item7: {
+				DisplayName: Item7
+				Tooltip: ""
+			}
+
+			Item8: {
+				DisplayName: Item8
+				Tooltip: ""
+			}
+
+			Item9: {
+				DisplayName: Item9
+				Tooltip: ""
+			}
+
+			FragmentGrenade: {
+				DisplayName: Fragment Grenade
 				Tooltip: ""
 			}
 		}

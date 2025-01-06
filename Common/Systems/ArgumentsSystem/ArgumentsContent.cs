@@ -681,13 +681,16 @@ public class VitalityStrikeI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.PaleVioletRed;
 	}
-	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SourceDamage += player.statLifeMax2 * .0005f;
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage,1 + player.statLifeMax2 * .0005f);
 	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.Check_ItemTypeSource(player.HeldItem.type)) {
-			modifiers.SourceDamage += player.statLifeMax2 * .0005f;
-		}
+}
+public class VitalityStrikeII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleVioletRed;
+	}
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance,Base: player.statLifeMax2 * .01f);
 	}
 }
 
@@ -695,13 +698,16 @@ public class ArcaneStrikeI : ModAugments {
 	public override void SetStaticDefaults() {
 		tooltipColor = Color.DarkBlue;
 	}
-	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
-		modifiers.SourceDamage += player.statManaMax2 * .0005f;
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1 + player.statManaMax2 * .0005f);
 	}
-	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
-		if (proj.Check_ItemTypeSource(player.HeldItem.type)) {
-			modifiers.SourceDamage += player.statManaMax2 * .0005f;
-		}
+}
+public class ArcaneStrikeII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.DarkBlue;
+	}
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: player.statManaMax2 * .01f);
 	}
 }
 

@@ -218,6 +218,16 @@ ArcaneStrikeI: {
 	Description: Your maximum mana contribute to your output damage
 }
 
+VitalityStrikeII: {
+	DisplayName: Vitality Strike II
+	Description: Increases your critical strike chance base on your maximum health
+}
+
+ArcaneStrikeII: {
+	DisplayName: Arcane Strike II
+	Description: Increases your critical strike chance base on your maximum mana
+}
+
 StealthStrikeI: {
 	DisplayName: Stealth Strike I
 	Description: While invisible, you deal 25% more damage
@@ -227,4 +237,3 @@ StealthStrikeII: {
 	DisplayName: Stealth Strike II
 	Description: Deal 200% damage against undamaged enemy
 }
-
