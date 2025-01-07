@@ -313,6 +313,7 @@ Mods: {
 			SwordFishProjectile.DisplayName: Sword Fish Projectile
 			TomahawkProjectile.DisplayName: Tomahawk Projectile
 			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
+			EvilShot.DisplayName: Evil Shot
 		}
 
 		NPCs: {
@@ -2059,51 +2060,56 @@ Mods: {
 
 			Item1: {
 				DisplayName: Item1
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item2: {
 				DisplayName: Item2
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item3: {
 				DisplayName: Item3
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item4: {
 				DisplayName: Item4
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item5: {
 				DisplayName: Item5
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item6: {
 				DisplayName: Item6
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item7: {
 				DisplayName: Item7
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item8: {
 				DisplayName: Item8
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			Item9: {
 				DisplayName: Item9
-				Tooltip: ""
+				Tooltip: Coming soon
 			}
 
 			FragmentGrenade: {
 				DisplayName: Fragment Grenade
+				Tooltip: Coming soon
+			}
+
+			TheTwoEvil: {
+				DisplayName: The Two Evil
 				Tooltip: ""
 			}
 		}
