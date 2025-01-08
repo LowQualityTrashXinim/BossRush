@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal class SapphireGemP : ModProjectile {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Sapphire);
 		public override void SetDefaults() {
@@ -23,7 +23,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 		}
 		public override void AI() {
 			if (Main.rand.NextBool(10)) {
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, Terraria.ID.DustID.GemSapphire, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
+				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire, Projectile.velocity.X * Main.rand.NextFloat(-1.25f, -0.5f), Projectile.velocity.Y * Main.rand.NextFloat(-1.25f, -0.5f), 0, default, Main.rand.NextFloat(1f, 1.5f));
 				Main.dust[dustnumber].noGravity = true;
 			}
 			Player player = Main.player[Projectile.owner];
@@ -74,7 +74,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 		public override void OnKill(int timeLeft) {
 			for (int i = 0; i < 25; i++) {
 				Vector2 RandomCircular = Main.rand.NextVector2Circular(10f, 10f);
-				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, Terraria.ID.DustID.GemSapphire, RandomCircular.X, RandomCircular.Y, 0, default, Main.rand.NextFloat(1.5f, 2.25f));
+				int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemSapphire, RandomCircular.X, RandomCircular.Y, 0, default, Main.rand.NextFloat(1.5f, 2.25f));
 				Main.dust[dustnumber].noGravity = true;
 			}
 		}

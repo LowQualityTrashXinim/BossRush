@@ -2112,6 +2112,11 @@ Mods: {
 				DisplayName: The Two Evil
 				Tooltip: ""
 			}
+
+			BurningSky: {
+				DisplayName: Burning Sky
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

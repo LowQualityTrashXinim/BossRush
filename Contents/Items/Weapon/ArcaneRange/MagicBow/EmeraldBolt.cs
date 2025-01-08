@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal class EmeraldBolt : ModProjectile {
 		public override void SetDefaults() {
 			Projectile.DamageType = DamageClass.Ranged;

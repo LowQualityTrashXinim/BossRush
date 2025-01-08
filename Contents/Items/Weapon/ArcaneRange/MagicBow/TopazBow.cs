@@ -1,7 +1,7 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal class TopazBow : MagicBow {
 		public override void MagicBowSetDefault(out int mana, out int shoot, out float shootspeed, out int damage, out int useTime, out int dustType) {
 			useTime = 30;

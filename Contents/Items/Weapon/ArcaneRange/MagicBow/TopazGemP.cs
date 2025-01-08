@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal class TopazGemP : ModProjectile {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Topaz);
 		public override void SetDefaults() {

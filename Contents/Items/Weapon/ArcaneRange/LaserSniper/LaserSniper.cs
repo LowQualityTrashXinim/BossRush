@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.LaserSniper;
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.LaserSniper;
 internal class LaserSniper : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.LaserRifle);

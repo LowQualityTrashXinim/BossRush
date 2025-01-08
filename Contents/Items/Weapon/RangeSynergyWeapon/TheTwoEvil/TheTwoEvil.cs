@@ -1,16 +1,17 @@
-﻿using Terraria.ID;
+﻿using Terraria; 
+using Terraria.ID;
 using BossRush.Texture;
-using Terraria;
+using Terraria.ModLoader;
+using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 
-namespace BossRush.Contents.Items.Weapon.UnfinishedItem;
+namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TheTwoEvil;
 internal class TheTwoEvil : SynergyModItem {
 	public override void SetDefaults() {
 		Item.BossRushDefaultRange(30, 30, 33, 6, 55, 55, ItemUseStyleID.Shoot, ProjectileID.WoodenArrowFriendly, 17f, false, AmmoID.Arrow);
+		Item.UseSound = SoundID.Item5;
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;

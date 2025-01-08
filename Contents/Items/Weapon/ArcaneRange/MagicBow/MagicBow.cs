@@ -4,7 +4,7 @@ using BossRush.Common;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal abstract class MagicBow : SynergyModItem {
 		int DustType = 0;
 		public override void SetDefaults() {

@@ -5,11 +5,11 @@ using Terraria.DataStructures;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
-using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.RelicItem;
 using Microsoft.Xna.Framework;
+using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 
 namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {

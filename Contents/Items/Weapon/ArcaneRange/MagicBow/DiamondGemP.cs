@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal class DiamondGemP : ModProjectile {
 		public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Diamond);
 		public override void SetDefaults() {
@@ -16,7 +16,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 			Projectile.penetrate = -1;
 		}
 		public override void AI() {
-			if(Projectile.timeLeft == 1000) {
+			if (Projectile.timeLeft == 1000) {
 				for (int i = 0; i < 15; i++) {
 					int dustnumber = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.GemDiamond, 0, 0, 0, default, Main.rand.NextFloat(1f, 1.5f));
 					Main.dust[dustnumber].noGravity = true;

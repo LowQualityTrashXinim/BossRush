@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow {
 	internal class DiamondBolt : ModProjectile {
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 100;
@@ -61,7 +61,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MagicBow {
 						failsafe++;
 					}
 					while (Pos2 == Pos1 && failsafe <= 100);
-					if(failsafe == 100) {
+					if (failsafe == 100) {
 						Pos2 = Vector2.Zero;
 					}
 					pos.Kill();

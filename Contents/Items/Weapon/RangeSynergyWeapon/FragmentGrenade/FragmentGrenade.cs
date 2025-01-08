@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace BossRush.Contents.Items.Weapon.UnfinishedItem;
+namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.FragmentGrenade;
 internal class FragmentGrenade : SynergyModItem {
 	public override void Synergy_SetStaticDefaults() {
 		SynergyBonus_System.Add_SynergyBonus(Type, ItemID.MoltenFury);
