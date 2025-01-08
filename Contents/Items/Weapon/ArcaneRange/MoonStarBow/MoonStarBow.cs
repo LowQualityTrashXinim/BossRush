@@ -6,8 +6,9 @@ using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Common;
 
-namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
+namespace BossRush.Contents.Items.Weapon.ArcaneRange.MoonStarBow {
 	internal class MoonStarBow : SynergyModItem {
 		public override void SetDefaults() {
 			Item.BossRushDefaultRange(18, 32, 33, 1f, 2, 10, ItemUseStyleID.Shoot, ModContent.ProjectileType<MoonStarProjectile>(), 5f, true);
@@ -15,6 +16,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.MoonStarBow {
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.buyPrice(gold: 50);
 			Item.UseSound = SoundID.Item75;
+			Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
 		}
 		int count = 0;
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {

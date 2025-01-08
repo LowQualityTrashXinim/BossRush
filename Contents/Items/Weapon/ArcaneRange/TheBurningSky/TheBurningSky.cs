@@ -4,6 +4,8 @@ using Terraria;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
+using BossRush.Common;
+using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Weapon.ArcaneRange.TheBurningSky;
 internal class BurningSky : SynergyModItem {
@@ -12,6 +14,7 @@ internal class BurningSky : SynergyModItem {
 		Item.BossRushDefaultRange(32, 32, 34, 5f, 6, 18, ItemUseStyleID.Shoot, ProjectileID.FireArrow, 12, true, AmmoID.Arrow);
 		Item.reuseDelay = 14;
 		Item.UseSound = SoundID.Item5;
+		Item.DamageType = ModContent.GetInstance<RangeMageHybridDamageClass>();
 	}
 	public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
 		CanShootItem = false;
