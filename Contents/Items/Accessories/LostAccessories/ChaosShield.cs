@@ -37,13 +37,7 @@ public class ChaosShieldPlayer : ModPlayer {
 			if (Main.rand.NextBool(10)) {
 				Player.Heal(hurtInfo.Damage * 2);
 			}
-			if (Main.rand.NextBool(4)) {
-				Vector2 pos = Player.Center + Main.rand.NextVector2Circular(400, 400);
-				Vector2 vel = Main.rand.NextVector2CircularEdge(10, 10);
-				int min = Math.Min(10, hurtInfo.Damage);
-				int max = Math.Max(10, hurtInfo.Damage);
-				Projectile.NewProjectile(Player.GetSource_FromThis(), pos, vel, Main.rand.Next(TerrariaArrayID.UltimateProjPack), Main.rand.Next(min, max), Main.rand.NextFloat(2, 5), Player.whoAmI);
-			}
+			SpawnProjectile(hurtInfo.Damage);
 		}
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
@@ -51,13 +45,20 @@ public class ChaosShieldPlayer : ModPlayer {
 			if (Main.rand.NextBool(10)) {
 				Player.Heal(hurtInfo.Damage * 2);
 			}
-			if (Main.rand.NextBool(4)) {
-				Vector2 pos = Player.Center + Main.rand.NextVector2Circular(400, 400);
-				Vector2 vel = Main.rand.NextVector2CircularEdge(10, 10);
-				int min = Math.Min(10, hurtInfo.Damage);
-				int max = Math.Max(10, hurtInfo.Damage);
-				Projectile.NewProjectile(Player.GetSource_FromThis(), pos, vel, Main.rand.Next(TerrariaArrayID.UltimateProjPack), Main.rand.Next(min, max), Main.rand.NextFloat(2, 5), Player.whoAmI);
+			SpawnProjectile(hurtInfo.Damage);
+		}
+	}
+	private void SpawnProjectile(int Damage) {
+		if (Main.rand.NextBool(4)) {
+			Vector2 pos = Player.Center + Main.rand.NextVector2Circular(400, 400);
+			Vector2 vel = Main.rand.NextVector2CircularEdge(10, 10);
+			int min = Math.Min(10, Damage);
+			int max = Math.Max(10, Damage);
+			int damageraw = Main.rand.Next(min -1, max);
+			if(damageraw <= 0) {
+				damageraw = 1;
 			}
+			Projectile.NewProjectile(Player.GetSource_FromThis(), pos, vel, Main.rand.Next(TerrariaArrayID.UltimateProjPack), damageraw, Main.rand.NextFloat(2, 5), Player.whoAmI);
 		}
 	}
 }

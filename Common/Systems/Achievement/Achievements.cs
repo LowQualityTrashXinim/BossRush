@@ -157,3 +157,11 @@ public class Elite : ModAchievement {
 		return false;
 	}
 }
+public class SpeedRunner : ModAchievement {
+	public override bool Condition() {
+		if (Main.ActivePlayerFileData != null) {
+			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 20 && UniversalSystem.DidPlayerBeatTheMod();
+		}
+		return false;
+	}
+}

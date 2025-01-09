@@ -532,6 +532,8 @@ class DefaultUI : UIState {
 
 	private UIImageButton staticticUI;
 
+	private UITextBox timer;
+
 	public void TurnOnEndOfDemoMessage() {
 		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
 		EndOfDemoPanel.Height.Set(66, 0);
@@ -564,6 +566,13 @@ class DefaultUI : UIState {
 		colorChanging1 = new(new() { Color.DarkBlue, Color.LightCyan });
 		colorChanging2 = new(new() { Color.LightCyan, Color.DarkBlue }, .5f);
 		colorchanging3 = new(new() { Color.DarkRed, Color.Red });
+
+		timer = new("00:00:00:00");
+		timer.UISetWidthHeight(150, 20);
+		timer.HAlign = .5f;
+		timer.VAlign = .02f;
+		timer.ShowInputTicker = false;
+		Append(timer);
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
@@ -662,9 +671,14 @@ class DefaultUI : UIState {
 		}
 		energyCoolDownBar.BarProgress = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown;
 	}
-
 	public override void Update(GameTime gameTime) {
-
+		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
+		string ToTimer =
+			$"{time.Hours}" +
+			$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
+			$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
+			$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
+		timer.SetText(ToTimer);
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {

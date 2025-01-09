@@ -133,3 +133,15 @@ GodOfChallenge: {
 	Description: Impressive...
 	ConditionTip: Beat the mod with God Of Challenge enable with expert or higher difficulty
 }
+
+Elite: {
+	DisplayName: Elite
+	Description: Impressive...
+	ConditionTip: Beat a elite boss
+}
+
+SpeedRunner: {
+	DisplayName: Speed Runner
+	Description: You are certified a speed runner
+	ConditionTip: Beat the mod using a character that have play time under 30 minute
+}

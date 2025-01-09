@@ -3,11 +3,10 @@ using Terraria;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
-using BossRush.Contents.Items.Weapon;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class DivinityStone : ModItem {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
 		Item.Set_LostAccessory(32, 32);
 		Item.Set_InfoItem(true);

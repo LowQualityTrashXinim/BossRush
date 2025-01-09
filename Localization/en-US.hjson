@@ -1845,6 +1845,16 @@ Mods: {
 					'''
 			}
 
+			ElementalShield: {
+				DisplayName: Elemental Shield
+				Tooltip:
+					'''
+					Increases your defense by 10% and Flat 12
+					Having certain debuff will be also be beneficial
+					Getting hit may resulting you do a elemental explosion
+					'''
+			}
+
 			LostAcc1: {
 				DisplayName: Lost Acc1
 				Tooltip: ""
