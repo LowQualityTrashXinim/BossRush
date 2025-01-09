@@ -2,18 +2,15 @@
 using BossRush.Contents.Items.Weapon;
 using BossRush.Texture;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using System;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class VitalityDrainTotem : ModItem {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+		Item.Set_LostAccessory(32, 32);
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<VitalityDrainTotemPlayer>().VitalityDrainTotem = true;

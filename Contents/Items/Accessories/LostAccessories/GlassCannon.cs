@@ -8,10 +8,9 @@ using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class GlassCannon : ModItem {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+		Item.Set_LostAccessory(32, 32);
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<GlassCannonPlayer>().GlassCannon = true;

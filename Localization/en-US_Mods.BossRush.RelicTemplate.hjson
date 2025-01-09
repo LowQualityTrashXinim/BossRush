@@ -23,5 +23,6 @@ DebuffTemplateV1.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] when player a
 SlimeSpikeTemplate.Description: Shoot [c/{0}:{1} friendly slime spike] dealing [c/{2}:{3}] [c/{4}:{5}] every 0.5s when enemy are near
 SkillCoolDownTemplate.Description: Decreases [c/{0}:{1}] by [c/{0}:{2}] seconds
 FireBallTemplate.Description: Shoot [c/{0}:{1} fire ball] dealing [c/{2}:{3}] [c/{4}:{5}] every 1.5s when enemy are near
-SkyFractureTemplate.Description: Create [c/{0}:{1} sky fracture] dealing [c/{2}:{3}] [c/{4}:{5}] every 1.5s when enemy are near
+SkyFractureTemplate.Description: Create [c/{0}:{1} sky fracture] dealing [c/{2}:{3}] [c/{4}:{5}] every 2.5s when enemy are near
 MagicMissileTemplate.Description: Shoot [c/{0}:1 Magic Missle] dealing [c/{2}:{3}] [c/{4}:{5}] every [c/{0}:{1}s] when enemy are near
+DemonScytheTemplate.Description: Create [c/{0}:{1} Demon Scythe] dealing [c/{2}:{3}] [c/{4}:{5}] every 2s when enemy are near

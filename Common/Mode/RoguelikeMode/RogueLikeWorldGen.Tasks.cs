@@ -161,23 +161,13 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
 		Point counter = new();
 		int count = -1;
-		bool changeToCubeGen = false;
 		while (counter.X < rect.Width || counter.Y < rect.Width) {
-			bool ChanceToBeEmpty = Main.rand.NextBool(12);
 			ImageData template;
-			if (!changeToCubeGen) {
-				if (++count % 2 == 0) {
-					template = ImageStructureLoader.Get_Tempate("WG_HorizontalTemplate" + WorldGen.genRand.Next(1, 5));
-				}
-				else {
-					template = ImageStructureLoader.Get_Tempate("WG_VerticalTemplate" + WorldGen.genRand.Next(1, 5));
-				}
+			if (++count % 2 == 0) {
+				template = ImageStructureLoader.Get_Tempate("WG_HorizontalTemplate" + WorldGen.genRand.Next(1, 5));
 			}
 			else {
-				template = ImageStructureLoader.Get_Tempate("WG_CubeTemplate" + WorldGen.genRand.Next(1, 5));
-				if (++count % 2 == 0) {
-					counter.X += template.Width;
-				}
+				template = ImageStructureLoader.Get_Tempate("WG_VerticalTemplate" + WorldGen.genRand.Next(1, 5));
 			}
 			template.EnumeratePixels((a, b, color) => {
 				a += rect.X + counter.X;
@@ -185,11 +175,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				if (a > rect.Right || b > rect.Bottom) {
 					return;
 				}
-				if(a < rect.Left || b < rect.Top) {
+				if (a < rect.Left || b < rect.Top) {
 					return;
 				}
 				GenerationHelper.FastRemoveTile(a, b);
-				if (color.R == 255 && color.B == 0 && color.G == 0 && !ChanceToBeEmpty) {
+				if (color.R == 255 && color.B == 0 && color.G == 0) {
 					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
 				}
 				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
@@ -200,14 +190,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			else {
 				counter.X = 0;
 				counter.Y += template.Height;
-				if (!changeToCubeGen) {
-					changeToCubeGen = true;
-					counter.X -= template.Width;
-				}
-				else {
-					changeToCubeGen = false;
-					count++;
-				}
 			}
 		}
 		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });

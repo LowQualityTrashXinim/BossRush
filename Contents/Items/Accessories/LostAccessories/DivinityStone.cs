@@ -9,8 +9,7 @@ namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class DivinityStone : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
-		Item.DefaultToAccessory(32, 32);
-		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;
+		Item.Set_LostAccessory(32, 32);
 		Item.Set_InfoItem(true);
 	}
 	public override void UpdateEquip(Player player) {

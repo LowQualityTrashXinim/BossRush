@@ -1606,7 +1606,11 @@ Mods: {
 
 			ChaosTablet: {
 				DisplayName: Chaos Tablet
-				Tooltip: ""
+				Tooltip:
+					'''
+					Chaos explosion may happen during combat
+					Increases one of your stats after 15s
+					'''
 			}
 
 			ReactiveBombing: {
@@ -1826,9 +1830,24 @@ Mods: {
 					Increases your max minion, sentry slot by 1
 					You burst out a wave of confusion to enemy that get too close to you
 					When you are close to a minion, your defense increases by 2
-					Hitting enemy with whip or item with similiar damage to whip will inflict enemy with Crystalized debuff
-					Crystalized debuff will make minion contact damage or summon damage have a chance to be increased by 55%
+					Hitting enemy with whip will inflict enemy with Crystalized debuff
 					'''
+			}
+
+			ChaosShield: {
+				DisplayName: Chaos Shield
+				Tooltip:
+					'''
+					Increases your defense by 5
+					Getting hit will randomly taken damage from 25-50%
+					Have 25% chance to randomly spawn a projectile
+					Have 10% chance to convert taken damage to heal
+					'''
+			}
+
+			LostAcc1: {
+				DisplayName: Lost Acc1
+				Tooltip: ""
 			}
 
 			TestTeleporter: {
@@ -2403,7 +2422,7 @@ Mods: {
 
 			Crystalized: {
 				DisplayName: Crystalized
-				Description: Mods.BossRush.Buffs.Crystalized.Description
+				Description: Have a chance to deal mini critical strike
 			}
 
 			Trinket6_DefensesBonus_Buff: {
