@@ -14,18 +14,18 @@ FastForward: {
 }
 
 Skip1: {
-	DisplayName: Skip 1
-	Description: Skip over 1 skill and gain 100 energy
+	DisplayName: Skip
+	Description: Skips one skill to refund 100 Energy back
 }
 
 PowerSaver: {
-	DisplayName: Energy Saver
+	DisplayName: Power Saver
 	Description: Halves the Energy Cost of all the active skill
 }
 
 PowerCord: {
 	DisplayName: Power Cord
-	Description: Increases energy recharge by 150% for 12s after duration ended
+	Description: Increases Energy Recharge by 150% for 12s after the duration ended
 }
 
 Procrastination: {
@@ -49,53 +49,53 @@ HellFireArrowRain: {
 }
 
 FireArrowRain: {
-	DisplayName: Fire arrow rain
-	Description: Casts a cascade of Fire arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Firefall Rain
+	Description: Casts a rain of Fire Arrows that phases through blocks, dealing 28 damage each
 }
 
 FrostburnArrowRain: {
-	DisplayName: Frost burn arrow rain
-	Description: Casts a cascade of Frost burn Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Frosthail
+	Description: Casts a hail of Frostburn Arrows that phases through blocks, dealing 28 damage each
 }
 
 BoneArrowRain: {
-	DisplayName: Bone arrow rain
-	Description: Casts a cascade of Unholy Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Bonefide Shower
+	Description: Casts a shower of Bone Arrows that phases through blocks, dealing 28 damage each
 }
 
 UnholyArrowRain: {
-	DisplayName: Unholy arrow rain
-	Description: Casts a cascade of Unholy Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Demonic Shatter
+	Description: Casts a shatter of Unholy Arrows that phases through blocks, dealing 28 damage each
 }
 
 HolyArrowRain: {
-	DisplayName: Holy arrow rain
-	Description: Casts a cascade of Holy Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Blessed Flood
+	Description: Casts a flood of Holy Arrows that phases through blocks, dealing 28 damage each
 }
 
 CholorophyteArrowRain: {
-	DisplayName: Cholorophyte arrow rain
-	Description: Casts a cascade of Cholorophyte Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Leafspore Rainfall
+	Description: Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 28 damage each
 }
 
 CursedArrowRain: {
-	DisplayName: Cursed arrow rain
-	Description: Casts a cascade of Cursed Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Cursed Fanfare
+	Description: Casts a fanfare of Cursed Arrows that phases through blocks, dealing 28 damage each
 }
 
 IchorArrowRain: {
-	DisplayName: Ichor arrow rain
-	Description: Casts a cascade of Ichor Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Golden Spread
+	Description: Casts a spread of Ichor Arrows that phases through blocks, dealing 28 damage each
 }
 
 JesterArrowRain: {
-	DisplayName: Jester arrow rain
-	Description: Casts a cascade of Jester Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Circus Tricks
+	Description: Casts a trick of Jester Arrows that phases through blocks, dealing 28 damage each
 }
 
 WoodenArrowRain: {
-	DisplayName: Wooden arrow rain
-	Description: Casts a cascade of Arrows that phases through blocks, dealing 28 damage each
+	DisplayName: Tribal Ambush
+	Description: Casts an ambush of Arrows that phases through blocks, dealing 28 damage each
 }
 
 Increases_3xDamage: {
@@ -105,17 +105,17 @@ Increases_3xDamage: {
 
 Icicle: {
 	DisplayName: Icicle
-	Description: Shoots out up to 6 icicle every 5 ticks towards your cursor, dealing 18 damage and inflicting the 'Chilled' debuff
+	Description: Shoots out up to 6 icicles every 5 ticks towards your cursor, dealing 18 damage and inflicting the 'Chilled' debuff
 }
 
 MeteorShower: {
 	DisplayName: Meteor Shower
-	Description: Rain down meteor towards your cursor, dealing 44 base damage + 44% weapon damage in a large radius
+	Description: Rains down several meteors towards your cursor, dealing 44 base damage + 44% weapon damage within a large radius and inflicting the 'Cursed Inferno' debuff
 }
 
 SpiritBurst: {
 	DisplayName: Spirit Burst
-	Description: Burst out spirit that home into enemy
+	Description: Bursts out a powerful spirit that homes in on the nearest enemy.
 }
 
 InfiniteManaSupply: {
@@ -134,43 +134,43 @@ RapidHealing: {
 }
 
 FireBall: {
-	DisplayName: Fire ball
-	Description: Shoot out a fire ball every 10 tick deal 43 magic damage
+	DisplayName: Fireball
+	Description: Shoots out a fireball every 10 ticks, dealing 43 magic damage and inflicting the 'On Fire!' debuff
 }
 
 StarFury: {
-	DisplayName: Starfell Shower
-	Description: Shoots down a Fallen Star every 2 seconds at mouse location, dealing 1000 damage
+	DisplayName: Starfall Blast
+	Description: Shoots down a Fallen Star every 2 seconds towards your cursor, dealing 1000 damage
 }
 
 WoodSwordSpirit: {
 	DisplayName: Wooden Warrior
-	Description: Summons a Wooden Spirit, deal 24 damage
+	Description: Summons a Wooden Spirit, dealing 24 damage
 }
 
 BroadSwordSpirit: {
-	DisplayName: Broad Sword Spirit
-	Description: Summons 3 ancient broadswords that spin around the player, dealing 34 base damage + 75% weapon damage TODO ADD PENETRATING debuff
+	DisplayName: Broadsword Spirit
+	Description: Summons 3 ancient broadswords that spin around the player, dealing 34 base damage + 75% weapon damage and inflicting the 'Penetrated' debuff
 }
 
 Overclock: {
-	DisplayName: Overclock
+	DisplayName: Overclocked
 	Description: Increases weapon speed by 50% (up to 750%) every 0.5 seconds
 }
 
 BloodToPower: {
 	DisplayName: Sacrificial Pact
-	Description: Halves your current health to increase your damage% proportionally to the sacrified amount
+	Description: Halves your current health to increase your damage% proportionally to the sacrificed amount
 }
 
 AdAstra: {
 	DisplayName: Ad Astra
-	Description: Increases the damage of your next hit by +500%, but then lowers your attack, speed and defense by 90% for 15 seconds.
+	Description: Increases the damage of your next hit by +500%, but then lowers your attack, speed, and defense by 90% for 15 seconds.
 }
 
 BulletStorm: {
 	DisplayName: Bullet Whirlwind
-	Description: Rain down various bullet that deal 30 range damage
+	Description: Rains down various bullets that deal 30 ranged damage
 }
 
 TerrorForm: {
@@ -180,12 +180,12 @@ TerrorForm: {
 
 AllOrNothing: {
 	DisplayName: All Or Nothing
-	Description: Blesses your next hit with a randomised damage output
+	Description: Blesses your next hit with a randomized damage output
 }
 
 IceAge: {
 	DisplayName: Ice Age
-	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius
+	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius and inflicting the 'Withered Armor' debuff
 }
 
 ElectricChain: {
@@ -200,7 +200,7 @@ WilloFreeze: {
 
 PowerPlant: {
 	DisplayName: Power Plant
-	Description: Deploys a Radioactive Tower that damages both you and enemies, dealing 10 damage per second and converting it into Energy
+	Description: Deploys a Radioactive Tower that damages both you and your enemies, dealing 10 damage per second and converting it into Energy
 }
 
 TransferStation: {
