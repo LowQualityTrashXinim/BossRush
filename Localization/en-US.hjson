@@ -6,8 +6,8 @@ Mods: {
 			DemoEnding: {
 				Tooltip:
 					'''
-					Thank you for playing Terraia Roguelike, you have reach the end of demo
-					You can still continue even after the demo end however the content after demo is unpolished
+					Thank you for playing Terraria: Roguelike. You have reached the end of demo!
+					You may still continue playing on this world, however the following content is unpolished.
 					'''
 				Close: Close
 			}
@@ -15,32 +15,30 @@ Mods: {
 			PopUpWarning: {
 				Tooltip:
 					'''
-					Terraria: Roguelike is only compatible with freshly created Hardcore characters
+					Terraria: Roguelike is only compatible with freshly-created Hardcore characters.
 					As a result, the mod will be temporarily disabled until you leave the world.
 					'''
-				ClosingText: Close Disclaimer
+				ClosingText: Understood
 			}
 
 			Spoil: {
 				Header: Select one of the following Spoils:
-				Tooltip: You have {0} left that is not chosen, click here to choose them
-				Randomize: Randomize your spoil reward
+				Tooltip: You have {0} options left, click here to make a choice.
+				Randomize: Randomize your spoil reward.
 			}
 
 			WeaponEnchantment: {
 				Tooltip:
 					'''
 					[Weapon Enchantment]
-					This is where you can enchant your weapon ! Customize your weapon 
-					through enchanting, empowered your weapon and slay your enemies.
-					Enchanting weapon make weapon stronger at the cost of sacrificing 
-					another weapon of your.
-					Every weapon only have 3 slots for enchanting so uses them
-					wisely, once you sacrifice your weapon you can't get it back so
-					hover over your weapon in your inventory to read what effect they can give
-					before enchanting your weapon.
+					Customize your weapon with this ancient craft of chaos and amalgams. 
+					Embue your weapon with the essence of up to 3 others, sacrificing them
+					in order to gain their uniquely personalised attributes.
+
+					[c/e6ac39:Hover] over your weapon of choice to before enchanting to view their perks.
+					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
 					'''
-				None: No enchantment can be found
+				None: No enchantment can be found.
 			}
 
 			BlockWeaponEnchantment.Tooltip: A force beyond your realm has blocked you from accessing its system.
@@ -345,113 +343,117 @@ Mods: {
 
 		Items: {
 			StickyFlower: {
-				Tooltip: A long lost sticky friend
+				Tooltip: Why are they dripping so much ooze? Are they stupid?
 				DisplayName: Sticky Flower
 			}
 
 			SuperFlareGun: {
-				Tooltip: The better flare gun
+				Tooltip: The superior flare gun... because it's super.
 				DisplayName: Super Flare Gun
 			}
 
 			SkullRevolver: {
-				Tooltip: The o'reliable
+				Tooltip: For piercing through your funny bone.
 				DisplayName: Skull Revolver
 			}
 
 			SharpBoomerang: {
-				Tooltip: Remarkable
-				DisplayName: Sharp Boomerang
+				Tooltip: Remarkable, it always comes back!
+				DisplayName: Sharperang
 			}
 
 			RectangleShotgun: {
-				Tooltip: What in the hell this gun?
+				Tooltip: Is this some sort of sick joke?
 				DisplayName: Rectangle Shotgun
 			}
 
 			QuadDemonBlaster: {
-				Tooltip: Get hot real fast
+				Tooltip: The coolness factor makes me melt!
 				DisplayName: Quad Demon Blaster
 			}
 
 			UltimatePistol: {
 				Tooltip:
 					'''
-					It couldn't decide what it want to be, so it decided to become everything
+					It can be many things, but in no way decisive of its identity
 					Shoots out many things
-					Alt click to shoot down a copy of itself onto the screen
+					Right-Click installs a copy of itself on-screen
 					'''
-				DisplayName: ? Pistol
+				DisplayName: ??? Pistol
 			}
 
 			PaintRifle: {
 				Tooltip:
 					'''
-					"Mega mode included"
-					It has a literal screw to toggle mega mode
+					"Mega Mode included"
+					The toggle for Mega Mode is a literal screw???
 					'''
-				DisplayName: Paint Rifle
+				DisplayName: Color Rifle
 			}
 
 			OvergrownMinishark: {
 				Tooltip:
 					'''
-					"Seafood with a touch of nature"
-					Shoots out poisonous bullets that have a chance to explode into flower vilethorns
+					"Sushi with a touch of poison"
+					Shoots out poisonous bullets that have a chance to explode into Flower Vilethorns
 					'''
-				DisplayName: Overgrown Minishark
+				DisplayName: Mini Thornshark
 			}
 
 			NatureSelection: {
-				Tooltip: Where it all begin
+				Tooltip: And yet, folly survives. What gives?
 				DisplayName: Natural Selection
 			}
 
 			MoonStarBow: {
 				Tooltip: Make your wish!
-				DisplayName: Moonlight's Fragment
+				DisplayName: Moonlight Spectre
 			}
 
 			Merciless: {
-				Tooltip: Absolute violence
+				Tooltip: You may now defend your lawn the way eagles intended
 				DisplayName: Merciless
 			}
 
 			AmethystBow: {
-				Tooltip: Create more amethyst when the bolt hit the ground
+				Tooltip: Arrows turn into Amethyst Bolts that shatter in contact with the ground
 				DisplayName: Amethyst Bow
 			}
 
 			TopazBow: {
-				Tooltip: Create explosive land-topaz that increase damage the longer it stay on ground until self detonate
+				Tooltip:
+					'''
+					Arrows turn into Topaz Bolts that plant explosive Topaz Landmines
+					Landmine damage is proportional to its on-field lifetime
+					'''
 				DisplayName: Topaz Bow
 			}
 
 			SapphireBow: {
-				Tooltip: Hitting enemy with the bolt will spawn out sapphire that home in enemy
+				Tooltip: Arrows turn into Sapphire Bolts which break into homing projectiles upon contact
 				DisplayName: Sapphire Bow
 			}
 
 			EmeraldBow: {
-				Tooltip: Hitting enemy will create emerald
+				Tooltip: Arrows turn into Emerald Bolts that form an Emerald of peculiar behaviour upon contact
 				DisplayName: Emerald Bow
 			}
 
 			RubyBow: {
-				Tooltip: Hitting enemy with the bolt create ruby, you can charge the ruby by shooting it
+				Tooltip: Arrows turn into Ruby Bolts that form a chargable Ruby upon contant
 				DisplayName: Ruby Bow
 			}
 
 			DiamondBow: {
-				Tooltip: Create diamond on bolt contact, can ricochet
+				Tooltip: Arrows turn into Diamond Bolts that forms ricocheting Diamonds upon contact
 				DisplayName: Diamond Bow
 			}
 
 			KnifeRevolver: {
 				Tooltip:
 					'''
-					"Self defense at it finest"
-					Right click to use do spear attack
+					"A 2-in-1 English special!"
+					Right-Click enables a dash attack
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -459,234 +461,232 @@ Mods: {
 			IceStorm: {
 				Tooltip:
 					'''
-					"Ice Queen's most reliable defense"
-					Shoot faster the longer you hold down
-					Have 20% chance to not consume ammo
+					"Don't let go, don't let go! Just hold it back some more!~"
+					Shoots faster the longer you hold down
+					20% chance to save ammo
 					'''
-				DisplayName: Ice Storm
+				DisplayName: Icestorm
 			}
 
 			HeartPistol: {
 				Tooltip:
 					'''
-					"Suffocating love"
-					Heal player when hit a enemy
+					"Suffocate your enemies with love!~"
+					Steals the enemy's life by channeling your inner charm
 					'''
-				DisplayName: Heart Pistol
+				DisplayName: Heartstol
 			}
 
 			Gunmerang: {
-				Tooltip: Zelda gun WIP
+				Tooltip: [WIP] Do pizzerias always come back too?
 				DisplayName: Gunmerang
 			}
 
 			ForceOfEarth: {
-				Tooltip: Let them witness the force of earth
-				DisplayName: Force Of Earth
+				Tooltip: The culmination of mother nature at your middle finger
+				DisplayName: Natural Disaster
 			}
 
 			DeathBySpark: {
 				Tooltip:
 					'''
-					"Let them wish to never see the sun again"
-					Flare stuck on ground and leave a trail of damaging fire
+					"A few steps removed from unlocking the Sun 2"
+					Flares stick on ground, leaving a trail of damaging fire behind
 					'''
-				DisplayName: Death By Spark
+				DisplayName: Death By Sparklight
 			}
 
 			Deagle: {
-				Tooltip: Surprisingly accurate when standing still
+				Tooltip: It's like you can't even think straight while moving!
 				DisplayName: Deagle
 			}
 
 			ChaosMiniShark: {
 				Tooltip:
 					'''
-					Not my best work that for sure
-					Has a 43% of not consuming ammo
+					"7.8/10 not enough chaos"
+					43% chance to save ammo
 					'''
 				DisplayName: Chaos Mini Shark
 			}
 
 			Bowmarang: {
-				Tooltip: Innovation taken to another level
+				Tooltip: Innovative, sure, but will it always come back?
 				DisplayName: Bowmarang
 			}
 
 			BloodyShot: {
 				DisplayName: Bloody Shot
-				Tooltip: Make them bleed
+				Tooltip: A few steps removed from an Evangelion finale
 			}
 
 			SnowballShotgunCannon: {
-				Tooltip: ""
-				DisplayName: Snowball Shotgun Cannon
+				Tooltip: "Unlike us peasants, monsters won't get hypothermia from this"
+				DisplayName: Shotgun Snowcannon
 			}
 
 			SnowballRifle: {
-				Tooltip: ""
+				Tooltip: "For the most insufferable camping experience"
 				DisplayName: Snowball Rifle
 			}
 
 			SingleBarrelMinishark: {
-				Tooltip: ""
-				DisplayName: Single Barrel Minishark
+				Tooltip: "If only the barrel could hold water like real sharks..."
+				DisplayName: Mini Barrelshark
 			}
 
 			RifleShotgun: {
-				Tooltip: ""
+				Tooltip: "Can you decide for once? Spread or no spread?"
 				DisplayName: Rifle Shotgun
 			}
 
 			LongerMusket: {
-				Tooltip: ""
-				DisplayName: Longer Musket
+				Tooltip: "I appreciate the attempt, but I doubt it'll shoot any further"
+				DisplayName: Mumuskeket
 			}
 
 			HuntingRifle: {
-				Tooltip: ""
-				DisplayName: Hunting Rifle
+				Tooltip: "It's almost as if nets are not a commodity for catching preys..."
+				DisplayName: Hunting Kit
 			}
 
 			FrozenShark: {
-				Tooltip: ""
-				DisplayName: Frozen Shark
+				Tooltip: "Unthaws slower than Christmas Carols on Halloween!"
+				DisplayName: Frozen Jaws
 			}
 
 			NeoDynamite: {
 				Tooltip:
 					'''
-					"Mordern dynamite, never runs out!"
-					Throws out an un-consumable dynamite that creates a huge explosion when it hits a tile
+					"Made of 100% recyclable eldritch guts!"
+					A huge replenishible explosion that will destroy most tiles
 					'''
-				DisplayName: Neo Dynamite
+				DisplayName: Neomite
 			}
 
 			YinYang: {
-				Tooltip: The balance between 2 forces, i wonder what secret it holds
+				Tooltip: The secrets of duality and balance, now repackaged to do sick tricks with!
 				DisplayName: Yin Yang
 			}
 
 			TrueEnchantedSword: {
-				Tooltip: The long awaited magical younger brother of StarWrath and True sword family
-				DisplayName: True Enchanted Sword
+				Tooltip: This feels a little overkill... said the jealous Star Wrath
+				DisplayName: Enchanteder Sword
 			}
 
 			SuperShortSword: {
-				Tooltip: Super meaning better right ?
-				DisplayName: Super Short Sword
+				Tooltip: Found peace with the size of your wooden junk? Super...?
+				DisplayName: Super Shortsword
 			}
 
 			ShadowTrick: {
-				Tooltip: Let them see the trick
+				Tooltip: Let them see your inner trickster beast!
 				DisplayName: Shadow Trick
 			}
 
 			FrozenEnchantedSword: {
-				Tooltip: Proven to work despite it is just a ice blade on top of enchanted sword in photoshop
-				DisplayName: Frozen Enchanted Sword
+				Tooltip: Proven to work despite the concerning odds of shattering all over yourself
+				DisplayName: Icechanted Sword
 			}
 
 			ManaStarFury: {
-				Tooltip: ""
-				DisplayName: Mana Star Fury
+				Tooltip: "Why are they furious anyhow? It's the technique that matters, not size!"
+				DisplayName: Manafury
 			}
 
 			FrostSwordFish: {
-				Tooltip: The cursed cold cousin
-				DisplayName: Frost Sword Fish
+				Tooltip: You're laughing. They're shivering their fins off and you're laughing...
+				DisplayName: Frostfins
 			}
 
 			FlamingWoodSword: {
-				Tooltip: Funny how a wooden sword got the fire aspect enchantment
-				DisplayName: Flaming Wood Sword
+				Tooltip: An aspect of fire and a nasty expiration date
+				DisplayName: Wooden Flamesword
 			}
 
 			EverlastingCold: {
-				Tooltip: So cold that it could send the whole world back to ice age
+				Tooltip: Perhaps the coldest realisation is the friends we lost along the way...
 				DisplayName: Everlasting Cold
 			}
 
 			PlatinumKatana: {
-				Tooltip: The best katana there is so far
-				DisplayName: Enhanced Katana
+				Tooltip: Aren't all magical weapons enchanted anyhow? Where's quality control???
+				DisplayName: Katahanced
 			}
 
 			EnergyBlade: {
 				Tooltip:
 					'''
-					High energy vibrates around the sword
-					It is sharp enough to even slash through the strongest mental as if it was nothing
+					High energy vibrates around the sword, melting even the strongest of metals
+					So... no. You can't use it on yourself. I know you...
 					'''
 				DisplayName: Energy Blade
 			}
 
 			EnchantedStarfury: {
-				Tooltip: A truly unthinkable
-				DisplayName: Enchanted Starfury
+				Tooltip: Perhaps its fury comes from its inability to be self-sufficient as a star...
+				DisplayName: Starchanted Fury
 			}
 
 			EnchantedOreSword: {
-				Tooltip: Amalgamation of a sword
-				DisplayName: Enchanted Ore Sword
+				Tooltip: You'd think the pun is a new low, but can't you see the REAL redundancy?
+				DisplayName: Orechanted Swordblade
 			}
 
 			DarkCactus: {
-				Tooltip: Bat and Cactus, a wild love story
+				Tooltip: A bat and a cactus, kissing. I'll let you fill in the blanks...
 				DisplayName: Dark Cactus
 			}
 
 			BurningPassion: {
-				Tooltip: Brimming with passion
+				Tooltip: Nothing quite like a day in the life of Vlad the Impaler!
 				DisplayName: Burning Passion
 			}
 
 			BloodStar: {
-				Tooltip: W.I.P
-				DisplayName: Blood Star
+				Tooltip: [WIP] It's bloody small, that's what! Shorty...
+				DisplayName: Bloodstar
 			}
 
 			ZapSnapper: {
-				Tooltip: Quite a zapping
+				Tooltip: I'm sure a wizard out there is deeply offended at the underwhelming shape of this...
 				DisplayName: Zap Snapper
 			}
 
 			StarLightDistributer: {
 				Tooltip:
 					'''
-					"It is beautiful to look at"
-					Effect may differ depend on when and where you use this
+					"It's so beautiful under the night sky...!"
+					Effects may depend on when and where it's used
 					'''
-				DisplayName: Star Light Distributer
+				DisplayName: Starlight Distributor
 			}
 
 			SinisterBook: {
-				Tooltip: ""
+				Tooltip: "Spooky scary skeletons!"
 				DisplayName: Sinister Book
 			}
 
 			PlasmaBlaster: {
-				Tooltip: ""
+				Tooltip: "It's either sci-fi, or 55% human blood..."
 				DisplayName: Plasma Blaster
 			}
 
 			MagicHandCannon: {
-				Tooltip: ""
-				DisplayName: Magic Hand Cannon
+				Tooltip: "What an exotic wear, surely it's not a contraction of three words!"
+				DisplayName: Maghannon
 			}
 
 			MagicGrenade: {
-				Tooltip: ""
-				DisplayName: Magic Grenade
+				Tooltip: "As scenic as it may sound, pretty sparkles are all you deserve"
+				DisplayName: Magic Eruptor
 			}
 
 			AmethystSwotaff: {
 				Tooltip:
 					'''
-					"You know, if this is all it did...
-					Then it would be pretty disappointing...
-					Luckily, you can yeet the thing"
-					Right click to activate special attack !
+					"I'll cut to the chase - yeet that goddamn thing."
+					Right-Click to activate a special attack
 					'''
 				DisplayName: Amethyst Swotaff
 			}
@@ -694,9 +694,8 @@ Mods: {
 			TopazSwotaff: {
 				Tooltip:
 					'''
-					"Ah yes, just stick the blade ontop of a staff,
-					what can possibility go wrong"
-					Right click to activate special attack !
+					"Yeah, right! Just stick a blade ontop a staff, what could possibility go wrong?"
+					Right-Click to activate a special attack
 					'''
 				DisplayName: Topaz Swotaff
 			}
@@ -704,8 +703,8 @@ Mods: {
 			SapphireSwotaff: {
 				Tooltip:
 					'''
-					"These sapphire are sentient..."
-					Right click to activate special attack !
+					"... These sapphires are sentient."
+					Right-Click to activate a special attack
 					'''
 				DisplayName: Sapphire Swotaff
 			}
@@ -713,8 +712,8 @@ Mods: {
 			EmeraldSwotaff: {
 				Tooltip:
 					'''
-					"Radiating a very green energy"
-					Right click to activate special attack !
+					"Radiating a very green energy, suitable for all crystal girlies out there!"
+					Right-Click to activate a special attack
 					'''
 				DisplayName: Emerald Swotaff
 			}
@@ -722,8 +721,8 @@ Mods: {
 			RubySwotaff: {
 				Tooltip:
 					'''
-					"Contain concentrated power"
-					Right click to activate special attack !
+					"So much raw, concentrated power... and for what?"
+					Right-Click to activate a special attack
 					'''
 				DisplayName: Ruby Swotaff
 			}
@@ -731,8 +730,8 @@ Mods: {
 			DiamondSwotaff: {
 				Tooltip:
 					'''
-					"Pinnacle of pure"
-					Right click to activate special attack !
+					"The pinnacle of purity, and the magnum opus of inflation!"
+					Right-Click to activate a special attack
 					'''
 				DisplayName: Diamond Swotaff
 			}
@@ -740,39 +739,55 @@ Mods: {
 			CursedSkull: {
 				Tooltip:
 					'''
-					Make every boss when you fight instakill you, basically no hit mode, and also you die for good
-					"The only way to make god acknowledge you"
+					"The gods acknowledge naught but raw power and wit. Do you yield?"
+					Enables No-Hit mode during boss fights. No-Hitting bosses will always give you additional rewards.
 					'''
 				DisplayName: Cursed Skull
 			}
 
 			SynergyEnergy: {
-				Tooltip: Hold hidden potential ...
+				Tooltip: Holds so much hidden potential...
 				DisplayName: Synergy Energy
 			}
 
 			PocketPortal: {
-				Tooltip: Portal to another world!
+				Tooltip:
+				'''
+				"Your one-way ticket out of here! Wait... who's that?"
+				Summons the Tavernkeep.
+				'''
 				DisplayName: Pocket Portal
 			}
 
 			PlanteraSpawn: {
-				Tooltip: Spawn Plantera. As for how 3 essence become a pot, i have no clue
-				DisplayName: Plantera Spawn
+				Tooltip:
+				"Its aroma is intoxicating, as if it's attracting the Apex of Nature itself! Wait..."
+				Summons Plantera, the overgrown monstrosity of the jungle's depths.
+				DisplayName: Chroloplant
 			}
 
 			PlanteraEssence: {
-				Tooltip: ""
-				DisplayName: Plantera Essence
+				Tooltip:
+				'''
+				"Pulsing bulbs who take a liking to mechanical dieties."
+				Collect three Chlropolen to watch it sprout.
+				'''
+				DisplayName: Chloropolen
 			}
 
 			CursedDoll: {
 				DisplayName: Cursed Doll
-				Tooltip: Summon Skeletron !
+				Tooltip:
+				'''
+				"The fabric whispers of great hexes, a warning to those who trespass" 
+				Summons Skeletron
 			}
 
 			BleedingWorm: {
-				Tooltip: Attract a certain monster from ocean
+				Tooltip:
+				'''
+				"It's still alive... pulsating like a living artery..."
+				Summons Dreadnautilus
 				DisplayName: Bleeding Worm
 			}
 
@@ -782,67 +797,73 @@ Mods: {
 			}
 
 			WonderDrug: {
-				Tooltip: Surprisingly Legal
+				Tooltip: Legally teeming with synergy.
 				DisplayName: Wonder Drug
 			}
 
 			ArenaMaker: {
 				Tooltip:
 					'''
-					Create a basic arena that 300 block wide
-					Will create at the either side of the player
-					Unconsumeable and spawn infinite
-					Create obsidian platform when use in underworld
+					"This feels a little intrusive on the ecosystem and its economy..."
+					Infinitely creates 300-block wide platforms at the either side of the player
+					While in the Underworld, the platforms are made of obsidian
 					'''
 				DisplayName: Arena Maker
 			}
 
 			ArtifactDebug: {
 				DisplayName: Artifact Debug
-				Tooltip: ""
+				Tooltip: "It debugs artifacts. Are you satisfied?"
 			}
 
 			ResetWonderDrug: {
-				Tooltip: Resets Wonder drug value back to normal
-				DisplayName: Real Vitamin
+				Tooltip:
+				'''
+				"Even the nanobots are struggling... what have you done?"
+				Removes the effects of the Wonder Drug
+				'''
+				DisplayName: Medical Nanobots
 			}
 
 			DayTimeCycle: {
-				Tooltip: ""
-				DisplayName: Day Time Cycle
+				Tooltip: "You have absolute control over the timeline now! What? This only affects the Sun? Bummer..."
+				DisplayName: Daytime Cycler
 			}
 
 			EmblemofProgress: {
-				Tooltip: You become stronger each time kill a boss, simply amazing
+				Tooltip:
+				'''
+				"Just like that gal who stayed Determined, right?"
+				For every boss slain, you become a little stronger
+				'''
 				DisplayName: Emblem of Progress
 			}
 
 			SuperBuilderTool: {
-				Tooltip: This will make your building progress much faster
-				DisplayName: Super Builder Tool
+				Tooltip: Improves your building process exponentially
+				DisplayName: Veteran Toolkit
 			}
 
 			PlusOneBullet: {
 				Tooltip:
 					'''
 					"Why have more guns when you can tape on an extra barrel?"
-					Increase amount of bullet you shoot by 1
-					Increase weapon spread amount by 35%
+					Increases weapon spread by 35%
+					Increases the amount of bullets you shoot by 1
 					'''
-				DisplayName: Extra gun Barrel
+				DisplayName: Barrel DLC Pro Ultra XL
 			}
 
 			GuideToMasterNinja: {
 				Tooltip:
 					'''
-					"Part I out of II of a beloved series.
-					To master the way of a ninja, you must first master the way of a weeb."
-					increased critical strike chance by 5%
-					increased melee attack speed by 10%
-					increased jump height and jump speed by 15%
-					Throws a shuriken every time an enemy gets hit 20 times.
-					The addition throwing deal static damage (fixed damage)
-					You summon a ring of shuriken and knife
+					"To master the way of a ninja, you must first master the way of a weeb."
+					Increases critical strike chance by 5%
+					Increases melee attack speed by 10%
+					Increases jump height and jump speed by 15%
+					Summons a shuriken every time an enemy gets hit 20 times, dealing static damage
+					Summons a ring of shurikens and knives
+					[c/e6ac39:Part I out of II of a beloved series]
 					'''
 				DisplayName: Guide To Master Ninja I
 			}
@@ -1220,8 +1241,11 @@ Mods: {
 			}
 
 			WallOfFleshSpawner: {
-				DisplayName: Wall Of Flesh Spawner
-				Tooltip: With this, you no longer need to care for the guide to respawn
+				DisplayName: Fleshbones
+				Tooltip:
+				'''
+				"As similar as this is to a certain doll, I want nothing to do with it!"
+				Summons Wall of Flesh at any time
 			}
 
 			OrbOfEnergy: {
@@ -1240,12 +1264,12 @@ Mods: {
 
 			Nadir: {
 				DisplayName: Nadir
-				Tooltip: '''"The low point of horizon"'''
+				Tooltip: "The low point of the horizon, right within your grasp..."
 			}
 
 			StreetLamp: {
 				DisplayName: Street Lamp
-				Tooltip: Summons a Moth to protect their Lamp
+				Tooltip: Summons a Moth to protect your light
 			}
 
 			AmberBoneSpear: {
@@ -1254,7 +1278,7 @@ Mods: {
 			}
 
 			BuilderLootBox: {
-				DisplayName: Builder Loot Box
+				DisplayName: Builder Lootbox
 				Tooltip: ""
 			}
 
@@ -2735,9 +2759,9 @@ Mods: {
 
 				Headers: {
 					QoLHeader: Quality of Life
-					LuckDepartmentHeader: Luck department
-					BaseGameHeader: Base game
-					GameModeHeader: Game Mode
+					LuckDepartmentHeader: Luck Department
+					BaseGameHeader: Base Game
+					GameModeHeader: Gamemodes
 					LegacyHeader: Legacy
 					DebugHeader: Debug
 				}
@@ -2848,14 +2872,14 @@ Mods: {
 		}
 
 		Keybinds: {
-			"Skill activation.DisplayName": Skill activation
-			"Weapon action.DisplayName": Weapon action
+			"Skill activation.DisplayName": Skill Activation
+			"Weapon action.DisplayName": Alternative Weapon Action
 		}
 
 		DamageClasses: {
-			RangeMageHybridDamageClass.DisplayName: Arcane ranger damage
-			MeleeMageHybridDamageClass.DisplayName: Arcane warrior damage
-			MeleeRangerHybridDamageClass.DisplayName: Ranged melee damage
+			RangeMageHybridDamageClass.DisplayName: arcane ranger damage
+			MeleeMageHybridDamageClass.DisplayName: arcane warrior damage
+			MeleeRangerHybridDamageClass.DisplayName: ranged melee damage
 		}
 
 		Prefixes: {
@@ -2868,8 +2892,8 @@ Mods: {
 			Energetic.DisplayName: Energetic
 			Savage.DisplayName: Savage
 			Alchemic.DisplayName: Alchemic
-			Jumpy.DisplayName: Jumpy
-			Holy.DisplayName: Holy
+			Jumpy.DisplayName: Floating
+			Holy.DisplayName: Phasing
 		}
 	}
 }
