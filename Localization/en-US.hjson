@@ -6,7 +6,7 @@ Mods: {
 			DemoEnding: {
 				Tooltip:
 					'''
-					Thank you for playing Terraria: Roguelike. You have reached the end of demo!
+					Thank you for playing Terraria: Roguelike. You have reached the end of the demo!
 					You may still continue playing on this world, however the following content is unpolished.
 					'''
 				Close: Close
@@ -15,7 +15,7 @@ Mods: {
 			PopUpWarning: {
 				Tooltip:
 					'''
-					Terraria: Roguelike is only compatible with freshly-created Hardcore characters.
+					Terraria: Roguelike is only compatible with freshly created Hardcore characters.
 					As a result, the mod will be temporarily disabled until you leave the world.
 					'''
 				ClosingText: Understood
@@ -33,9 +33,9 @@ Mods: {
 					[Weapon Enchantment]
 					Customize your weapon with this ancient craft of chaos and amalgams. 
 					Embue your weapon with the essence of up to 3 others, sacrificing them
-					in order to gain their uniquely personalised attributes.
+					in order to gain their uniquely personalized attributes.
 
-					[c/e6ac39:Hover] over your weapon of choice to before enchanting to view their perks.
+					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
 					[c/d92b2b:Once sacrificed, your weapon will be lost forever.]
 					'''
 				None: No enchantment can be found.
@@ -435,17 +435,17 @@ Mods: {
 			}
 
 			EmeraldBow: {
-				Tooltip: Arrows turn into Emerald Bolts that form an Emerald of peculiar behaviour upon contact
+				Tooltip: Arrows turn into Emerald Bolts that form an Emerald of peculiar behavior upon contact
 				DisplayName: Emerald Bow
 			}
 
 			RubyBow: {
-				Tooltip: Arrows turn into Ruby Bolts that form a chargable Ruby upon contant
+				Tooltip: Arrows turn into Ruby Bolts that form a chargeable Ruby upon contact
 				DisplayName: Ruby Bow
 			}
 
 			DiamondBow: {
-				Tooltip: Arrows turn into Diamond Bolts that forms ricocheting Diamonds upon contact
+				Tooltip: Arrows turn into Diamond Bolts that form ricocheting Diamonds upon contact
 				DisplayName: Diamond Bow
 			}
 
@@ -491,7 +491,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A few steps removed from unlocking the Sun 2"
-					Flares stick on ground, leaving a trail of damaging fire behind
+					Flares stick on the ground, leaving a trail of damaging fire behind
 					'''
 				DisplayName: Death By Sparklight
 			}
@@ -546,7 +546,7 @@ Mods: {
 			}
 
 			HuntingRifle: {
-				Tooltip: "It's almost as if nets are not a commodity for catching preys..."
+				Tooltip: "It's almost as if nets are not a commodity for catching prey..."
 				DisplayName: Hunting Kit
 			}
 
@@ -559,7 +559,7 @@ Mods: {
 				Tooltip:
 					'''
 					"Made of 100% recyclable eldritch guts!"
-					A huge replenishible explosion that will destroy most tiles
+					A huge replenishable explosion that will destroy most tiles
 					'''
 				DisplayName: Neomite
 			}
@@ -605,7 +605,7 @@ Mods: {
 			}
 
 			EverlastingCold: {
-				Tooltip: Perhaps the coldest realisation is the friends we lost along the way...
+				Tooltip: Perhaps the coldest realization is the friends we lost along the way...
 				DisplayName: Everlasting Cold
 			}
 
@@ -617,8 +617,7 @@ Mods: {
 			EnergyBlade: {
 				Tooltip:
 					'''
-					High energy vibrates around the sword, melting even the strongest of metals
-					So... no. You can't use it on yourself. I know you...
+					High energy vibrates around the sword, melting even the strongest of metals with ease
 					'''
 				DisplayName: Energy Blade
 			}
@@ -668,7 +667,7 @@ Mods: {
 			}
 
 			PlasmaBlaster: {
-				Tooltip: "It's either sci-fi, or 55% human blood..."
+				Tooltip: "It's either sci-fi or 55% human blood..."
 				DisplayName: Plasma Blaster
 			}
 
@@ -694,7 +693,7 @@ Mods: {
 			TopazSwotaff: {
 				Tooltip:
 					'''
-					"Yeah, right! Just stick a blade ontop a staff, what could possibility go wrong?"
+					"Yeah, right! Just stick a blade atop a staff, what could possibly go wrong?"
 					Right-Click to activate a special attack
 					'''
 				DisplayName: Topaz Swotaff
@@ -762,15 +761,15 @@ Mods: {
 			PlanteraSpawn: {
 				Tooltip:
 				"Its aroma is intoxicating, as if it's attracting the Apex of Nature itself! Wait..."
-				Summons Plantera, the overgrown monstrosity of the jungle's depths.
+				Summons Plantera
 				DisplayName: Chroloplant
 			}
 
 			PlanteraEssence: {
 				Tooltip:
 				'''
-				"Pulsing bulbs who take a liking to mechanical dieties."
-				Collect three Chlropolen to watch it sprout.
+				"Pulsing bulbs who take a liking to mechanical deities."
+				Collect three Chlropolen to watch it sprout
 				'''
 				DisplayName: Chloropolen
 			}
@@ -805,7 +804,7 @@ Mods: {
 				Tooltip:
 					'''
 					"This feels a little intrusive on the ecosystem and its economy..."
-					Infinitely creates 300-block wide platforms at the either side of the player
+					Infinitely creates 300-block-wide platforms on either side of the player
 					While in the Underworld, the platforms are made of obsidian
 					'''
 				DisplayName: Arena Maker
@@ -826,7 +825,7 @@ Mods: {
 			}
 
 			DayTimeCycle: {
-				Tooltip: "You have absolute control over the timeline now! What? This only affects the Sun? Bummer..."
+				Tooltip: "You have absolute control over the timeline now! What? Does this only affect the Sun? Bummer..."
 				DisplayName: Daytime Cycler
 			}
 
@@ -849,7 +848,7 @@ Mods: {
 					'''
 					"Why have more guns when you can tape on an extra barrel?"
 					Increases weapon spread by 35%
-					Increases the amount of bullets you shoot by 1
+					Increases the number of bullets you shoot by 1
 					'''
 				DisplayName: Barrel DLC Pro Ultra XL
 			}
@@ -1359,7 +1358,7 @@ Mods: {
 			}
 
 			Trinket4: {
-				DisplayName: Trinket of Adaptive Mage
+				DisplayName: Trinket of Mythical Conditioning
 				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
@@ -1375,7 +1374,7 @@ Mods: {
 			}
 
 			Trinket5: {
-				DisplayName: Trinket of Hardened Shell
+				DisplayName: Trinket of Protective Onslaught
 				Tooltip:
 					'''
 					[[c/8888ea:Passive]]
@@ -2185,8 +2184,8 @@ Mods: {
 
 		Buffs: {
 			StickyFriend: {
-				Description: Sticky
-				DisplayName: Sticky Friend
+				Description: Oozing
+				DisplayName: It's so friendly it's smelly...
 			}
 
 			EarthPower: {
@@ -2205,7 +2204,7 @@ Mods: {
 			}
 
 			SageBuff: {
-				Description: You feel as though the mana within you is is about to burst...
+				Description: You feel as though the mana within you is about to burst...
 				DisplayName: Mana Overflow
 			}
 
