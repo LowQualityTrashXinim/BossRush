@@ -575,7 +575,7 @@ Mods: {
 			}
 
 			SuperShortSword: {
-				Tooltip: Found peace with the size of your wooden junk? Super...?
+				Tooltip: Found peace with the size of your junk? Super...?
 				DisplayName: Super Shortsword
 			}
 
@@ -615,10 +615,7 @@ Mods: {
 			}
 
 			EnergyBlade: {
-				Tooltip:
-					'''
-					High energy vibrates around the sword, melting even the strongest of metals with ease
-					'''
+				Tooltip: High energy vibrates around the sword, melting even the strongest of metals with ease
 				DisplayName: Energy Blade
 			}
 
