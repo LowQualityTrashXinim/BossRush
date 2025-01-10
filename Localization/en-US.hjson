@@ -314,6 +314,7 @@ Mods: {
 			TomahawkProjectile.DisplayName: Tomahawk Projectile
 			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
 			EvilShot.DisplayName: Evil Shot
+			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
 		}
 
 		NPCs: {
@@ -1857,7 +1858,12 @@ Mods: {
 
 			LostAcc1: {
 				DisplayName: Lost Acc1
-				Tooltip: ""
+				Tooltip:
+					'''
+					Energy can regenerate slowly 1 energy/second
+					During skill activation, increases defense by 12 and damage by 22%
+					Decreases your maximum energy capacity by 100 but Increase energy recharge rate by 11%
+					'''
 			}
 
 			TestTeleporter: {
@@ -2144,6 +2150,11 @@ Mods: {
 
 			BurningSky: {
 				DisplayName: Burning Sky
+				Tooltip: ""
+			}
+
+			SakuraKatana: {
+				DisplayName: Sakura Katana
 				Tooltip: ""
 			}
 		}

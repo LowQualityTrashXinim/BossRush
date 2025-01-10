@@ -44,11 +44,17 @@ public class ElementalShieldPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		if (!ElementalShield) {
+			return;
+		}
 		int min = Math.Min(40, hurtInfo.Damage);
 		int max = Math.Max(40, hurtInfo.Damage);
 		ElementalExplosion(Main.rand.Next(min - 1, max));
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
+		if (!ElementalShield) {
+			return;
+		}
 		int min = Math.Min(40, hurtInfo.Damage);
 		int max = Math.Max(40, hurtInfo.Damage);
 		ElementalExplosion(Main.rand.Next(min - 1, max));

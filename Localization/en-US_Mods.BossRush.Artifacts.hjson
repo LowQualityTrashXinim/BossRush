@@ -86,6 +86,7 @@ TokenOfPrideArtifact: {
 		"Having the skill to use whatever you are given."
 		[c/ffff00:Positive effect] : 
 			+ Randomize 1 of your weapon's enchantment
+			+ Increases chance to get augmentations by 65%
 		[c/ab3e43:Negative effect] : 
 			- Lootbox drop value set to 1 regardless of increasement
 		'''

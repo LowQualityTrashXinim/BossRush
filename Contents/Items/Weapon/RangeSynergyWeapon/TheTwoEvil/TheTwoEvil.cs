@@ -39,7 +39,6 @@ internal class TheTwoEvil : SynergyModItem {
 		}
 		Projectile.NewProjectile(source, newpos, vel, ModContent.ProjectileType<EvilShot>(), (int)(damage * 1.5f), knockback, player.whoAmI, colorchosing);
 	}
-	public override string Texture => BossRushTexture.Get_MissingTexture("Synergy");
 	public override void AddRecipes() {
 		CreateRecipe()
 			.AddIngredient(ItemID.TendonBow)
