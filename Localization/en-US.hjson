@@ -2631,6 +2631,11 @@ Mods: {
 				DisplayName: Swift Strike_ Axe
 				Description: Mods.BossRush.Buffs.SwiftStrike_Axe.Description
 			}
+
+			DryadBlessing_Buff: {
+				DisplayName: Dryad Blessing
+				Description: +8 defenses & + 5 hp/s
+			}
 		}
 
 		Configs: {

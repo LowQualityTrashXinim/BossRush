@@ -237,3 +237,8 @@ StealthStrikeII: {
 	DisplayName: Stealth Strike II
 	Description: Deal 200% damage against undamaged enemy
 }
+
+DryadBlessing: {
+	DisplayName: Dryad Blessing
+	Description: Grant passive regenaration 3 hp/s, getting hit have chance to give Dryad blessing
+}

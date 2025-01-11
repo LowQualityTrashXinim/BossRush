@@ -184,13 +184,14 @@ namespace BossRush.Contents.Perks {
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			CanBeChoosen = false;
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<Dirt>();
 		}
-		public override void ResetEffect(Player player) {
-			if (player.HasItem(ItemID.DirtBlock)) {
-				player.statDefense += 15;
-				player.AddBuff(BuffID.WellFed3, 60);
-			}
+		public override void UpdateEquip(Player player) {
+			player.statDefense += 15;
+			EnchantmentModplayer enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
+			AugmentsPlayer augmentplayer = player.GetModPlayer<AugmentsPlayer>();
+			augmentplayer.IncreasesChance += .05f * StackAmount(player);
+			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
 	public class AlchemistEmpowerment : Perk {

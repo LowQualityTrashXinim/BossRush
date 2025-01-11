@@ -98,9 +98,10 @@ Dirt: {
 	DisplayName: Dirt
 	Description:
 		'''
-		When you have dirt in your inventory
-		+ Increases defenses by 15
-		+ Give permanent Exquisitely Stuffed
+		"Being low as dirt, not much you could lose at this point"
+		+ Increases the chance of transmutation success by 5%
+		+ Increases the chance of accessory augmentated by 5%
+		+ Increases the chance of weapon enchanted by 5%
 		'''
 }
 

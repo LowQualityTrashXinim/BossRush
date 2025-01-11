@@ -2,13 +2,13 @@
 using Terraria;
 using System.Linq;
 using Terraria.ID;
+using BossRush.Texture;
+using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.General;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
-using Terraria.ModLoader;
-using BossRush.Texture;
 
 namespace BossRush.Common.Systems.ArgumentsSystem;
 
@@ -682,7 +682,7 @@ public class VitalityStrikeI : ModAugments {
 		tooltipColor = Color.PaleVioletRed;
 	}
 	public override void UpdateAccessory(Player player, Item item) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage,1 + player.statLifeMax2 * .0005f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.PureDamage, 1 + player.statLifeMax2 * .0005f);
 	}
 }
 public class VitalityStrikeII : ModAugments {
@@ -690,7 +690,7 @@ public class VitalityStrikeII : ModAugments {
 		tooltipColor = Color.PaleVioletRed;
 	}
 	public override void UpdateAccessory(Player player, Item item) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance,Base: player.statLifeMax2 * .01f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.CritChance, Base: player.statLifeMax2 * .01f);
 	}
 }
 
@@ -732,5 +732,34 @@ public class StealthStrikeII : ModAugments {
 	}
 	public override void UpdateAccessory(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.FullHPDamage, 2f);
+	}
+}
+public class DryadBlessing : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.LimeGreen;
+	}
+	public override void UpdateAccessory(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 3);
+	}
+	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .4f) && !player.HasBuff<DryadBlessing_Buff>()) {
+			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), BossRushUtils.ToSecond(Main.rand.Next(3, 8)));
+		}
+	}
+	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f,.4f) && !player.HasBuff<DryadBlessing_Buff>()) {
+			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), BossRushUtils.ToSecond(Main.rand.Next(3, 8)));
+		}
+	}
+}
+public class DryadBlessing_Buff : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultBuff();
+	}
+	public override void Update(Player player, ref int buffIndex) {
+		PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+		statplayer.AddStatsToPlayer(PlayerStats.Defense, Base: 8);
+		statplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 5);
 	}
 }

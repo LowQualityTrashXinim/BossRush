@@ -16,6 +16,23 @@ public class Relic : ModItem {
 	public const float chanceTier2 = .6f;
 	public const float chanceTier3 = .45f;
 	public const float chanceTier4 = .6f;
+	public static float GetTierChance(int tier) {
+		if(tier <= 0) {
+			return 0;
+		}
+		switch(tier) {
+			case 1:
+				return chanceTier1;
+			case 2:
+				return chanceTier2;
+			case 3:
+				return chanceTier3;
+			case 4:
+				return chanceTier4;
+			default:
+				return chanceTier4;
+		}
+	}
 	public override string Texture => BossRushTexture.ACCESSORIESSLOT;
 	List<int> templatelist = new List<int>();
 	List<PlayerStats> statlist = new List<PlayerStats>();
