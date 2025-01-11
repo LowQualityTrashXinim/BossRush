@@ -453,7 +453,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A 2-in-1 English special!"
-					Right-Click enables a dash attack
+					Right-Click enables stab that upon contact hypercharges your next shot
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -461,7 +461,7 @@ Mods: {
 			IceStorm: {
 				Tooltip:
 					'''
-					"Don't let go, don't let go! Just hold it back some more!~"
+					"Don't let go! The cold is so lonely..."
 					Shoots faster the longer you hold down
 					20% chance to save ammo
 					'''
@@ -493,7 +493,7 @@ Mods: {
 					"A few steps removed from unlocking the Sun 2"
 					Flares stick on the ground, leaving a trail of damaging fire behind
 					'''
-				DisplayName: Death By Sparklight
+				DisplayName: Death By Sparkle
 			}
 
 			Deagle: {
@@ -547,7 +547,7 @@ Mods: {
 
 			HuntingRifle: {
 				Tooltip: "It's almost as if nets are not a commodity for catching prey..."
-				DisplayName: Hunting Kit
+				DisplayName: Hunter's Quest
 			}
 
 			FrozenShark: {
@@ -625,12 +625,12 @@ Mods: {
 			}
 
 			EnchantedOreSword: {
-				Tooltip: You'd think the pun is a new low, but can't you see the REAL redundancy?
-				DisplayName: Orechanted Swordblade
+				Tooltip: 72 ores, two blades, stereotyped into one mystery alloy!
+				DisplayName: The Oreblade
 			}
 
 			DarkCactus: {
-				Tooltip: A bat and a cactus, kissing. I'll let you fill in the blanks...
+				Tooltip: A creature of the night embued with desert spikes, transcending their emo era
 				DisplayName: Dark Cactus
 			}
 
