@@ -1,114 +1,136 @@
 WeaponSpoil: {
-	DisplayName: "[[i:{0}]] Weapon Pack"
-	Description: Contains {0} weapons
+	DisplayName: Weapon Pack
+	Description: Contains {0} weapon(s).
 }
 
 AccessorySpoil: {
-	DisplayName: "[[i:{0}]] Accessory Pack"
-	Description: Contains {0} accessory
+	DisplayName: Accessory Pack
+	Description: Contains {0} accessor(ies).
 }
 
 ArmorSpoil: {
-	DisplayName: "[[i:{0}]] Armor Pack [[i:{0}]]"
-	Description: Contains armors
+	DisplayName: Armor Pack
+	Description: Contains 1 randomized armor set.
 }
 
 PotionSpoil: {
-	DisplayName: "[[i:{0}]] Potion Pack"
-	Description: Contains {0} potion of any type
+	DisplayName: Potion Pack
+	Description: Contains {0} potion(s) of any type.
 }
 
 RelicSpoil: {
-	DisplayName: "[[i:{0}]] Relic Pack"
-	Description: Contains {0} relic
+	DisplayName: Relic Pack
+	Description: Contains {0} relic(s).
 }
 
 SkillSpoil: {
-	DisplayName: "[[i:{0}]] Skill Pack"
-	Description: Contains {0} skillbox
+	DisplayName: Skill Pack
+	Description: Contains {0} skillbox(es).
 }
 
-PerkSpoil: {
-	DisplayName: Blessing
-	Description: Contains 1 World's Blessing
+PerkSpoil:{
+	DisplayName: Perk Mythic
+	Description: Contains 1 perk blessing.
 }
 
 UpgradeAccSpoil: {
-	DisplayName: "[[i:{0}]] Accessory Pack"
-	Description: Contains {0} normal accessory or lost accessory
+	DisplayName: Accessory Bundle
+	Description: Contains {0} accessor(ies) or lost accessor(ies).
 }
 
 Tier2RelicSpoil: {
-	DisplayName: "[[i:{0}]] Relic Pack"
-	Description: Contains {0} tier 2 relic
+	DisplayName: Relic Bundle
+	Description: Contains {0} [Tier 2] relic(s).
 }
 
 LostAccessorySpoil: {
-	DisplayName: Ancient Pack
-	Description: Contain {0} lost accessory
+	DisplayName: Ancient Special
+	Description: Contains {0} lost accessor(ies).
 }
 
 RareArmorPiece: {
-	DisplayName: Chivalric Special
-	Description: Contains armor pieces of randomized type
+	DisplayName: Armor Special
+	Description: Contains 1 randomized armor set of varying progression.
 }
 
 SuppliesPackage: {
-	DisplayName: Mixed Special
-	Description: Contains {0} weapon of randomized type, armor piece of randomized type, {1} relic and {1} skillbox
+	DisplayName: Mixed Mythic
+	Description: Contains {0} weapon(s) of randomized progression, 1 armor piece of varying progression, {1} relic(s) and {1} skillbox(es).
 }
 
 FoodSpoil: {
-	DisplayName: "[[i:{0}]] Homemade Pack"
-	Description: Contains {0} meal of any type.
+	DisplayName: Homemade Pack
+	Description: Contains {0} meal(s) of any type.
 }
 
 RareWeaponSpoil: {
-	DisplayName: Chivalric Special
-	Description: Contains 4 weapons accordingly to progression of each vanilla classes.
+	DisplayName: Weapon Bundle
+	Description: Contains 4 weapons, one for each vanilla class.
 }
 
 SSRPerkSpoil: {
-	DisplayName: "[[i:{0}]] Roguelike Special [[i:{0}]]"
-	Description: Contains a world's blessing, {0} skillbox and {1} relic.
+	DisplayName: Roguelike Legend
+	Description: Contains 1 perk blessing, {0} skillbox(es) and {1} relic(s).
 }
 
 WeaponPotionSpoil: {
-	DisplayName: "[[i:{0}]] Survival Bundle [[i:{0}]]"
-	Description: Contains {0} weapons, {1} potions and meals of any type.
+	DisplayName: Survival Bundle
+	Description: Contains {0} weapon(s), {1} potion(s) & meal(s) of any type.
 }
 
 ArmorAccessorySpoil: {
-	DisplayName: "[[i:{0}]] Chivalric Bundle [[i:{0}]]"
-	Description: Contains {0} armor piece and {1} accesories.
+	DisplayName: Chivalric Special
+	Description: Contains {0} armor piece(s) and {1} accessor(ies).
 }
 
 SuperRelicSpoil: {
-	DisplayName: "[Super Relic]"
-	Description: Contains 1 tier 4 relic.
+	DisplayName: Relic Mythic
+	Description: Contains 1 [Tier 4] relic.
 }
 
 LegendaryRelicSpoil: {
-	DisplayName: "[Legendary Relic]"
-	Description: Contains 1 super tier 6 relic.
+	DisplayName: Relic Legend
+	Description: Contains 1 [Tier 6] relic.
 }
 
 RoguelikeSpoil: {
-	DisplayName: "[[i:{0}]] Utility Bundle [[i:{0}]]"
-	Description: Contains {0} skillboxes and {1} relics.
+	DisplayName: Utility Special
+	Description: Contains {0} skillbox(es) and {1} relic(s).
 }
 
 TrinketSpoil: {
-	DisplayName: "[ Trinket ]"
-	Description: Contains 1 trinket
+	DisplayName: Trinket Mythic
+	Description: Contains 1 trinket.
 }
 
 DivineWeaponSpoil: {
-	DisplayName: "[ Divine Weaponry Vault ]"
-	Description: Contains 1 fully randomized enchanted weapon
+	DisplayName: Divine Gladiator Mythic
+	Description: Contains 1 fully enchanted weapon.
 }
 
 StarterPerkSpoil: {
-	DisplayName: "[Celestial Gift]"
-	Description: Contains 1 Celestial Essence
+	DisplayName: Celestial Special
+	Description: Contains 1 Celestial Essence.
+}
+
+// UNRELEASED
+
+SpeedSpoilHM: {
+	DisplayName: Mobility Special
+	HMDescription: Contains 1 mount of any type and 1 pair of wings.
+}
+
+WeaponUpgrade: {
+	DisplayName:
+	Description:
+}
+
+ArtifactUpgrade: {
+	DisplayName:
+	Description:
+}
+
+Curses: {
+	DisplayName:
+	Description:
 }
