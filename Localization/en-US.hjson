@@ -1876,8 +1876,8 @@ Mods: {
 					'''
 			}
 
-			LostAcc1: {
-				DisplayName: Lost Acc1
+			EnergyEngine: {
+				DisplayName: Skill Engine
 				Tooltip:
 					'''
 					Energy can regenerate slowly 1 energy/second
@@ -2175,6 +2175,11 @@ Mods: {
 
 			SakuraKatana: {
 				DisplayName: Sakura Katana
+				Tooltip: ""
+			}
+
+			SpoilGetter: {
+				DisplayName: Spoil Getter
 				Tooltip: ""
 			}
 		}

@@ -226,6 +226,7 @@ public abstract class RelicTemplate : ModType {
 		return ModContent.GetInstance<T>().Type;
 	}
 	public string Description => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.DisplayName");
 	public int Type { get; private set; }
 	protected sealed override void Register() {
 		SetStaticDefaults();

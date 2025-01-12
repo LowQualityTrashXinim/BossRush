@@ -187,11 +187,9 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<Dirt>();
 		}
 		public override void UpdateEquip(Player player) {
-			player.statDefense += 15;
-			EnchantmentModplayer enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
-			AugmentsPlayer augmentplayer = player.GetModPlayer<AugmentsPlayer>();
-			augmentplayer.IncreasesChance += .05f * StackAmount(player);
-			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
+			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .05f * StackAmount(player);
+			player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .05f * StackAmount(player);
+			player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance += .05f * StackAmount(player);
 		}
 	}
 	public class AlchemistEmpowerment : Perk {
