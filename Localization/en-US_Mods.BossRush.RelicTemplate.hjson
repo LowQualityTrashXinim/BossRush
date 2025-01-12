@@ -1,28 +1,110 @@
-GenericTemplate.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}]
-CombatV2Template.Description: When your current life is above 90%, increases your [c/{0}:{1}] by [c/{0}:{2}]
-CombatV3Template.Description: When your current life is below 45%, increases your [c/{0}:{1}] by [c/{0}:{2}]
-CombatV4Template.Description: Increases your [c/{0}:{1}] base by [c/{0}:{2}]
-StrikeFullHPTemplate.Description: Undamaged enemy receive more damage by [c/{0}:{1}]
-HealthV2Template.Description: Increases your [c/{0}:{1}] by [c/{0}:{2}] when below 35% health
-HealthV3Template.Description: While you under debuff effect, your [c/{0}:{1}] increases by [c/{0}:{2}]
-DebuffDamageIncreasesTemplate.Description: Enemy take more damage by [c/{0}:{1}] while enemy are under debuff effect
-StaticDefeneseTemplate.Description: Reduce damage receive by [c/{0}:{1}]
-MagicCostTemplate.Description:
-	'''
-	Your mana cost 15% more but :
-	Increases your magic damage multiply by [c/{0}:{1}]
-	And your flat magic damage by [c/{0}:{2}]
-	'''
-SynergyTemplate.Description: Increases your synergy flat damage by [c/{0}:{1}]
-GunFireRateTemplate.Description: Increases gun fire rate by [c/{0}:{1}]
-ArcherMasteryTemplate.Description: Increases bow damage [c/{0}:{1}], critical strike chance by [c/{0}:{2}], critical damage by [c/{0}:{3}]
-SkillActivateTemplate.Description: During skill activated, increases [c/{0}:{1}] by [c/{0}:{2}]
-SkillDurationTemplate.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] seconds
-SkillActivationTemplate.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation
-DebuffTemplateV1.Description: Increases [c/{0}:{1}] by [c/{0}:{2}] when player are under effect of 3 debuffs
-SlimeSpikeTemplate.Description: Shoot [c/{0}:{1} friendly slime spike] dealing [c/{2}:{3}] [c/{4}:{5}] every 0.5s when enemy are near
-SkillCoolDownTemplate.Description: Decreases [c/{0}:{1}] by [c/{0}:{2}] seconds
-FireBallTemplate.Description: Shoot [c/{0}:{1} fire ball] dealing [c/{2}:{3}] [c/{4}:{5}] every 1.5s when enemy are near
-SkyFractureTemplate.Description: Create [c/{0}:{1} sky fracture] dealing [c/{2}:{3}] [c/{4}:{5}] every 2.5s when enemy are near
-MagicMissileTemplate.Description: Shoot [c/{0}:1 Magic Missle] dealing [c/{2}:{3}] [c/{4}:{5}] every [c/{0}:{1}s] when enemy are near
-DemonScytheTemplate.Description: Create [c/{0}:{1} Demon Scythe] dealing [c/{2}:{3}] [c/{4}:{5}] every 2s when enemy are near
+GenericTemplate: {
+  DisplayName: "Classic [c/{0}:{1}]"
+  Description: "Increases [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+CombatV2Template: {
+  DisplayName: "Heart of [c/{0}:{1}]"
+  Description: "While health is above 90%, increases [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+CombatV3Template: {
+  DisplayName: "Critical [c/{0}:{1}]"
+  Description: "While health is below 45%, increases [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+CombatV4Template: {
+  DisplayName: "Core [c/{0}:{1}]"
+  Description: "Increases base [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+StrikeFullHPTemplate: {
+  DisplayName: "Weapon Virginity"
+  Description: "Increases damage by [c/{0}:{1}] against undamaged enemies"
+}
+
+HealthV2Template: {
+  DisplayName: "Endangered [c/{0}:{1}]"
+  Description: "While health is below 35%, increases [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+HealthV3Template: {
+  DisplayName: "[c/{0}:{1}] Sickness"
+  Description: "While afflicted by a debuff, increases [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+DebuffDamageIncreasesTemplate: {
+  DisplayName: "Sickened System"
+  Description: "Increases damage by [c/{0}:{1}] against enemies afflicted by a debuff"
+}
+
+StaticDefeneseTemplate: {
+  DisplayName: "Damage Deflection"
+  Description: "Decreases damage received by [c/{0}:{1}]"
+}
+
+MagicCostTemplate: {
+  DisplayName: "Arcane Blessing"
+  Description: "Increases flat magic damage by [c/{0}:{2}], multiplies magic damage by [c/{0}:{1}], but increases mana cost by 15%"
+}
+
+SynergyTemplate: {
+  DisplayName: "Synergetic Pirouette"
+  Description: "Increases flat damage once by [c/{0}:{1}] upon switching weapons"
+}
+
+GunFireRateTemplate: {
+  DisplayName: "Swift Snipe"
+  Description: "Increases the fire rate of guns by [c/{0}:{1}]"
+}
+
+ArcherMasteryTemplate: {
+  DisplayName: "String Mastery"
+  Description: "ArcherMasteryTemplate.Description: Increases damage by [c/{0}:{1}], critical strike chance by [c/{0}:{2}] and critical damage by [c/{0}:{3}] while using a bow"
+}
+
+SkillDurationTemplate: {
+  DisplayName: "Efficiency Control: [c/{0}:{1}]"
+  Description: "Increases the duration of the "[c/{0}:{1}]" skill by [c/{0}:{2}] seconds"
+}
+
+SkillActivationTemplate: {
+  DisplayName: "[c/{0}:{1}] Conditioning"
+  Description: "Increases [c/{0}:{1}] by [c/{0}:{2}] during skill activation"
+}
+
+DebuffTemplateV1: {
+  DisplayName: "Triple [c/{0}:{1}] Trouble"
+  Description: "While afflicted by at least 3 debuffs, increases [c/{0}:{1}] by [c/{0}:{2}]"
+}
+
+SlimeSpikeTemplate: {
+  DisplayName: "Piercing Ooze: [c/{4}:{5}] Edition"
+  Description: "When close to an enemy, shoots [c/{0}:{1} friendly slime spike(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 0.5s"
+}
+
+SkillCoolDownTemplate: {
+  DisplayName: "Rewired Processes: [c/{0}:{1}]"
+  Description: "Decreases the cooldown of the "[c/{0}:{1}]" skill by [c/{0}:{2}] seconds"
+}
+
+FireBallTemplate: {
+  DisplayName: "Meteor Ablaze: [c/{4}:{5}] Edition"
+  Description: "When close to an enemy, shoots [c/{0}:{1} fireball(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 1.5s"
+}
+
+SkyFractureTemplate: {
+  DisplayName: "Shattering Skies: [c/{4}:{5}] Edition"
+  Description: "When close to an enemy, creates [c/{0}:{1} Sky Fracture(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 2.5s"
+}
+
+MagicMissileTemplate: {
+  DisplayName: "Blazing Arcana: [c/{4}:{5}] Edition"
+  Description: "When close to an enemy, shoots [c/{0}:1 Magic Missle(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every [c/{0}:{1}s]"
+}
+
+DemonScytheTemplate: {
+  DisplayName: "Crawling Sinful: [c/{4}:{5}] Edition"
+  Description: "When close to an enemy, creates [c/{0}:{1} Demon Scythe(s)] dealing [c/{2}:{3}] [c/{4}:{5}] every 2s"
+}
+
