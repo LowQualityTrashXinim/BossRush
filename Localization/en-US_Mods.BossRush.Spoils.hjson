@@ -10,7 +10,7 @@ AccessorySpoil: {
 
 ArmorSpoil: {
 	DisplayName: Armor Pack
-	Description: Contains {0} armor piece(s).
+	Description: Contains 1 randomized armor set.
 }
 
 PotionSpoil: {
@@ -30,7 +30,7 @@ SkillSpoil: {
 
 PerkSpoil:{
 	DisplayName: Perk Mythic
-	Description: Contains {0} blessing(s).
+	Description: Contains 1 perk blessing.
 }
 
 UpgradeAccSpoil: {
@@ -50,12 +50,12 @@ LostAccessorySpoil: {
 
 RareArmorPiece: {
 	DisplayName: Armor Special
-	Description: Contains {0} armor piece(s) of randomized type.
+	Description: Contains 1 randomized armor set of varying progression.
 }
 
 SuppliesPackage: {
 	DisplayName: Mixed Mythic
-	Description: Contains {0} weapon(s) of randomized type, {1} armor piece(s) of randomized type, {2} relic(s) and {3} skillbox(es).
+	Description: Contains {0} weapon(s) of randomized progression, 1 armor piece of varying progression, {1} relic(s) and {1} skillbox(es).
 }
 
 FoodSpoil: {
@@ -65,17 +65,17 @@ FoodSpoil: {
 
 RareWeaponSpoil: {
 	DisplayName: Weapon Bundle
-	Description: Contains {0} weapon(s) abiding progression.
+	Description: Contains 4 weapons, one for each vanilla class.
 }
 
 SSRPerkSpoil: {
 	DisplayName: Roguelike Legend
-	Description: Contains {0} blessing(s), {1} skillbox(es) and {2} relic(s).
+	Description: Contains 1 perk blessing, {0} skillbox(es) and {1} relic(s).
 }
 
 WeaponPotionSpoil: {
 	DisplayName: Survival Bundle
-	Description: Contains {0} weapon(s), {1} potion(s) and {2} meal(s) of any type.
+	Description: Contains {0} weapon(s), {1} potion(s) & meal(s) of any type.
 }
 
 ArmorAccessorySpoil: {
@@ -85,12 +85,12 @@ ArmorAccessorySpoil: {
 
 SuperRelicSpoil: {
 	DisplayName: Relic Mythic
-	Description: Contains {0} [Tier 4] relic(s).
+	Description: Contains 1 [Tier 4] relic.
 }
 
 LegendaryRelicSpoil: {
 	DisplayName: Relic Legend
-	Description: Contains {0} [Tier 6] relic(s).
+	Description: Contains 1 [Tier 6] relic.
 }
 
 RoguelikeSpoil: {
@@ -100,29 +100,37 @@ RoguelikeSpoil: {
 
 TrinketSpoil: {
 	DisplayName: Trinket Mythic
-	Description: Contains {0} trinket(s).
+	Description: Contains 1 trinket.
 }
 
 DivineWeaponSpoil: {
 	DisplayName: Divine Gladiator Mythic
-	Description: Contains {0} fully enchanted weapon(s) of randomized type.
+	Description: Contains 1 fully enchanted weapon.
 }
 
 StarterPerkSpoil: {
 	DisplayName: Celestial Special
-	Description: Contains {0} Celestial Essence.
+	Description: Contains 1 Celestial Essence.
 }
 
-SpeedSpoil: {
-	DisplayName: Mobility Bundle
-	Description: Contains {0} speed-boosting accessor(ies) and {1} pre-Hardmode mount(s).
-}
+// UNRELEASED
 
 SpeedSpoilHM: {
 	DisplayName: Mobility Special
-	HMDescription: Contains {0} speed-boosting accessor(ies), {1} Hardmode mount(s) and {2} wing(s).
+	HMDescription: Contains 1 mount of any type and 1 pair of wings.
 }
 
-WeaponUpgrade
-ArtifactUpgrade
-Curses
+WeaponUpgrade: {
+	DisplayName:
+	Description:
+}
+
+ArtifactUpgrade: {
+	DisplayName:
+	Description:
+}
+
+Curses: {
+	DisplayName:
+	Description:
+}
