@@ -262,10 +262,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	/// <returns></returns>
 	public static bool CheckForSpecialDrop(Item item1, Item item2) {
 		var player = Main.LocalPlayer;
-		float offsetchance = 0;
-		if (player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<Dirt>())) {
-			offsetchance = .05f;
-		}
+		float offsetchance = player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
 		Relic relicItem = null;
 		Item slotitem;
 		Item slotitem2 = null;

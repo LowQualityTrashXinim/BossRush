@@ -98,7 +98,7 @@ Dirt: {
 	DisplayName: Dirt
 	Description:
 		'''
-		"Being low as dirt, not much you could lose at this point"
+		"Being low as dirt"
 		+ Increases the chance of transmutation success by 5%
 		+ Increases the chance of accessory augmentated by 5%
 		+ Increases the chance of weapon enchanted by 5%

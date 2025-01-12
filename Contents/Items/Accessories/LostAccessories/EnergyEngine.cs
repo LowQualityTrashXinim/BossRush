@@ -5,19 +5,19 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
-internal class LostAcc1 : ModItem {
+internal class EnergyEngine : ModItem {
 	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
 		Item.Set_LostAccessory(32, 32);
 	}
 	public override void UpdateEquip(Player player) {
-		player.GetModPlayer<LostAcc1_ModPlayer>().LostAcc1 = true;
+		player.GetModPlayer<EnergyEngine_ModPlayer>().LostAcc1 = true;
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		modplayer.AddStatsToPlayer(PlayerStats.EnergyCap, Base: -100);
 		modplayer.AddStatsToPlayer(PlayerStats.EnergyRecharge, 1.11f);
 	}
 }
-public class LostAcc1_ModPlayer : ModPlayer {
+public class EnergyEngine_ModPlayer : ModPlayer {
 	public bool LostAcc1 = false;
 	public override void ResetEffects() {
 		LostAcc1 = false;

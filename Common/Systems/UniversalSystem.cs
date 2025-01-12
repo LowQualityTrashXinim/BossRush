@@ -36,6 +36,7 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Common.Systems.ArgumentsSystem;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -176,6 +177,7 @@ internal class UniversalSystem : ModSystem {
 
 	public RelicTransmuteUI relicUI;
 	public SkillGetterUI skillUI;
+	public SpoilGetterUI spoilUI;
 
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
@@ -187,6 +189,7 @@ internal class UniversalSystem : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
 	private static string FilePath => Path.Join(DirectoryPath, "Data");
 	public static ModKeybind WeaponActionKey { get; private set; }
+	public TimeSpan timeBeatenTheGame = TimeSpan.Zero;
 	public override void Load() {
 		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
 		try {
@@ -225,6 +228,7 @@ internal class UniversalSystem : ModSystem {
 			infoUI = new();
 			achievementUI = new();
 			structUI = new();
+			spoilUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -269,6 +273,7 @@ internal class UniversalSystem : ModSystem {
 		infoUI = null;
 		achievementUI = null;
 		structUI = null;
+		spoilUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
@@ -370,6 +375,9 @@ internal class UniversalSystem : ModSystem {
 		}
 		if (context.Trim() == "skill") {
 			user2ndInterface.SetState(skillUI);
+		}
+		if (context.Trim() == "spoil") {
+			user2ndInterface.SetState(spoilUI);
 		}
 	}
 	public void ActivateAchievementUI() {
@@ -673,6 +681,9 @@ class DefaultUI : UIState {
 	}
 	public override void Update(GameTime gameTime) {
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
+		if (UniversalSystem.DidPlayerBeatTheMod()) {
+			ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+		}
 		string ToTimer =
 			$"{time.Hours}" +
 			$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
@@ -1090,6 +1101,8 @@ class InfoUI : UIState {
 				var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
 				var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
 				var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
+				var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
+				var augmentation = player.GetModPlayer<AugmentsPlayer>();
 				chestplayer.GetAmount();
 				line =
 					$"Amount drop : {chestplayer.DropModifier.ApplyTo(1)}" +
@@ -1102,7 +1115,9 @@ class InfoUI : UIState {
 					$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
 					$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 					$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}";
+					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
+					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + enchantplayer.RandomizeChanceEnchantment)}" +
+					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + augmentation.IncreasesChance)}";
 				textpanel.SetText(line);
 				break;
 			case 2:
@@ -1190,13 +1205,17 @@ public class SpoilsUIButton : UIImageButton {
 	int LootboxItem = 0;
 	public SpoilsUIButton(Asset<Texture2D> texture, ModSpoil Spoil) : base(texture) {
 		spoil = Spoil;
-		LootboxItem = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
+		if (Main.LocalPlayer.TryGetModPlayer(out SpoilsPlayer spoilplayer)) {
+			if (spoilplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
+				LootboxItem = spoilplayer.LootBoxSpoilThatIsNotOpen.First();
+		}
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
 		SpoilsPlayer modplayer = player.GetModPlayer<SpoilsPlayer>();
-		LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
-		if (spoil == null) {
+		if (modplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
+			LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
+		if (spoil == null || LootboxItem == 0) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
@@ -1221,7 +1240,7 @@ public class SpoilsUIButton : UIImageButton {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		if (IsMouseHovering) {
-			if (LootboxSystem.GetItemPool(LootboxItem) == null) {
+			if (LootboxSystem.GetItemPool(LootboxItem) == null && !Main.LocalPlayer.IsDebugPlayer()) {
 				return;
 			}
 			if (spoil == null) {

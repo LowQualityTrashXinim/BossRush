@@ -29,9 +29,10 @@ public class EnchantmentSystem : ModSystem {
 			}
 			modplayer.Request_EnchantedItem--;
 		}
+		float randomizedchance = 0f;
 		if (!ChaosModeSystem.Chaos()) {
-			if (!UniversalSystem.Check_TotalRNG()) {
-				return;
+			if (UniversalSystem.Check_TotalRNG()) {
+				randomizedchance += .2f;
 			}
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
 				return;
@@ -43,7 +44,7 @@ public class EnchantmentSystem : ModSystem {
 					continue;
 				}
 			}
-			if (Main.rand.NextFloat() <= modplayer.RandomizeChanceEnchantment) {
+			if (Main.rand.NextFloat() <= randomizedchance + modplayer.RandomizeChanceEnchantment) {
 				EnchantItem(ref item, i);
 				continue;
 			}
@@ -160,7 +161,7 @@ public class EnchantmentModplayer : ModPlayer {
 	public int Request_EnchantedItem = 0;
 	public int Request_EnchantedAmount = 1;
 	public override void ResetEffects() {
-		RandomizeChanceEnchantment = .2f;
+		RandomizeChanceEnchantment = 0;
 	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
 	public override void PostUpdate() {

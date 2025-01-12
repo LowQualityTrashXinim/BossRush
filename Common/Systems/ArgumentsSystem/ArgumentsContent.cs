@@ -126,6 +126,18 @@ public class Terra : ModAugments {
 		if (Main.rand.NextFloat() > .05f) {
 			return;
 		}
+		float randomrotation = Main.rand.NextFloat(90);
+		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);
+		for (int i = 0; i < 4; i++) {
+			Vector2 Toward = Vector2.UnitX.RotatedBy(MathHelper.ToRadians(90 * i + randomrotation)) * (3 + Main.rand.NextFloat());
+			for (int l = 0; l < 8; l++) {
+				float multiplier = Main.rand.NextFloat();
+				float scale = MathHelper.Lerp(1.5f, .1f, multiplier);
+				int dust = Dust.NewDust(npc.Center + randomPosOffset, 0, 0, DustID.Terra, 0, 0, 0, default, scale);
+				Main.dust[dust].velocity = Toward * multiplier;
+				Main.dust[dust].noGravity = true;
+			}
+		}
 		NPC.HitModifiers modifier = new NPC.HitModifiers();
 		modifier.FinalDamage.Flat = player.GetWeaponDamage(item) * (hitInfo.Crit ? player.GetModPlayer<PlayerStatsHandle>().UpdateCritDamage.ApplyTo(2) : 1);
 		modifier.FinalDamage *= 0;

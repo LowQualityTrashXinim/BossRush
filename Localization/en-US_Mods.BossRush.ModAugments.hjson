@@ -50,12 +50,12 @@ PoisonII: {
 
 VenomI: {
 	DisplayName: Venom I
-	Description: Inflict poisoned upon enemy hit
+	Description: Inflict venom upon enemy hit
 }
 
 VenomII: {
 	DisplayName: Venom II
-	Description: Enemy with poisoned debuff receive 20% more damage
+	Description: Enemy with venom debuff receive 20% more damage
 }
 
 BerserkI: {
