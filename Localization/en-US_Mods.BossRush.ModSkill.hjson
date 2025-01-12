@@ -110,7 +110,7 @@ Icicle: {
 
 MeteorShower: {
 	DisplayName: Meteor Shower
-	Description: Rains down several meteors towards your cursor, dealing 44 base damage + 44% weapon damage within a large radius and inflicting the 'Cursed Inferno' debuff
+	Description: Rains down several meteors towards your cursor, dealing 44 base damage + 44% weapon damage within a large radius
 }
 
 SpiritBurst: {
@@ -185,7 +185,7 @@ AllOrNothing: {
 
 IceAge: {
 	DisplayName: Ice Age
-	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius and inflicting the 'Withered Armor' debuff
+	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius
 }
 
 ElectricChain: {
