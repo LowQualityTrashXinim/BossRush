@@ -285,7 +285,6 @@ public class TransmutationUIConfirmButton : UIImageButton {
 					return false;
 				}
 				RelicTemplateLoader.MergeStat(relicItem, relic2);
-				player.QuickSpawnItem(player.GetSource_FromThis(), relicItem.Item);
 				return true;
 			}
 		}

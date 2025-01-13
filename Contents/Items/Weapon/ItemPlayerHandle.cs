@@ -207,10 +207,6 @@ namespace BossRush.Contents.Items.Weapon {
 				NameLine.OverrideColor = Color.MediumPurple;
 				return;
 			}
-			if (item.ModItem is Relic relic && relic.relicColor != null) {
-				NameLine.OverrideColor = relic.relicColor.MultiColor(5);
-				tooltips.Add(new(Mod, "RelicItem", $"[Active Item]\nTier : {relic.TemplateCount}") { OverrideColor = Main.DiscoColor });
-			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null) {
 				if (!moddedplayer.Hold_Shift) {

@@ -17,10 +17,10 @@ public class Relic : ModItem {
 	public const float chanceTier3 = .45f;
 	public const float chanceTier4 = .6f;
 	public static float GetTierChance(int tier) {
-		if(tier <= 0) {
+		if (tier <= 0) {
 			return 0;
 		}
-		switch(tier) {
+		switch (tier) {
 			case 1:
 				return chanceTier1;
 			case 2:
@@ -115,6 +115,9 @@ public class Relic : ModItem {
 	}
 	public int RelicTier => templatelist != null ? templatelist.Count : 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		TooltipLine NameLine = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+		NameLine.Text = $"[Tier : {TemplateCount}] {this.DisplayName}";
+		NameLine.OverrideColor = relicColor.MultiColor(5);
 		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
 		if (templatelist == null || index == -1) {
 			tooltips.Add(new TooltipLine(Mod, "", "Something gone wrong"));
@@ -125,7 +128,8 @@ public class Relic : ModItem {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
 				continue;
 			}
-			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
+			line += $"[c/{Main.DiscoColor.Hex3()}:{RelicTemplateLoader.GetTemplate(templatelist[i]).DisplayName}]\n";
+			line += "- " + RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -139,6 +143,7 @@ public class Relic : ModItem {
 			}
 		}
 		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
+		tooltips.Add(new(Mod, "RelicItem", $"[Passive active item]") { OverrideColor = Main.DiscoColor });
 	}
 	/// <summary>
 	/// This is shorthand for <see cref="AddRelicTemplate"/> where templateid is set random in a for loop

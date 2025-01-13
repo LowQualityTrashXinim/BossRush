@@ -956,4 +956,42 @@ namespace BossRush.Contents.Perks {
 			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
+	public class DemolitionistRanger : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float chance = 0.25f * StackAmount(player);
+			if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Main.rand.NextFloat() <= chance) {
+				type = ProjectileID.ExplosiveBullet;
+			}
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			float chance = 0.1f * StackAmount(player);
+			if (proj.type == ProjectileID.ExplosiveBullet && Main.rand.NextFloat() <= chance) {
+				modifiers.SourceDamage += .55f;
+			}
+		}
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			float chance = 0.05f * StackAmount(player);
+			if (proj.type != ProjectileID.ExplosiveBullet || Main.rand.NextFloat() > chance) {
+				return;
+			}
+			for (int i = 0; i < 25; i++) {
+				int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
+				Main.dust[smokedust].noGravity = true;
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(15f,15f);
+				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+				int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(15f, 15f);
+				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			}
+			target.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
+			foreach (NPC npc in npclist) {
+				player.StrikeNPCDirect(npc, hit);
+			}
+		}
+	}
 }

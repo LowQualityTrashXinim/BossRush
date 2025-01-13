@@ -1511,10 +1511,10 @@ Mods: {
 				Tooltip: ""
 				ExtraInfo:
 					'''
-					[Tier] : is defined by how much effect your relic have
-					some effect is affected by tier
+					[Tier] : is how much effect your relic have
+					some relic's effect is affected by tier
 
-					[Active Item] : having the item in your 
+					[Passive active item] : having the item in your 
 					inventory will activate their effect
 					'''
 			}

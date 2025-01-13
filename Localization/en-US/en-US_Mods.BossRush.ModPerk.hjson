@@ -649,3 +649,13 @@ EnhancedMagicStaff: {
 		+ Some gem staff are completely changed
 		'''
 }
+
+DemolitionistRanger: {
+	DisplayName: Demolitionist Ranger
+	Description:
+		'''
+		+ Have 25% to convert bullet shot out from gun to explosive bullet
+		+ Explosive bullet have 10% to deal 55% more damage to enemy
+		+ Explosive bullet have 5% to do a big explosion
+		'''
+}
