@@ -28,7 +28,7 @@ SkillSpoil: {
 	Description: Contains {0} skillbox(es).
 }
 
-PerkSpoil:{
+PerkSpoil: {
 	DisplayName: Perk Mythic
 	Description: Contains 1 perk blessing.
 }
@@ -120,17 +120,6 @@ SpeedSpoilHM: {
 	HMDescription: Contains 1 mount of any type and 1 pair of wings.
 }
 
-WeaponUpgrade: {
-	DisplayName:
-	Description:
-}
-
-ArtifactUpgrade: {
-	DisplayName:
-	Description:
-}
-
-Curses: {
-	DisplayName:
-	Description:
-}
+WeaponUpgrade.DisplayName: Description:
+ArtifactUpgrade.DisplayName: Description:
+Curses.DisplayName: Description:

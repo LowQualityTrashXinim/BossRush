@@ -211,11 +211,11 @@ TransferStation: {
 // UNRELEASED
 
 LucidNightmares: {
-    DisplayName: Lucid Nightmares
-    Description: Summons 3 abyssal to attack enemies, dealing 53 damage per attack
+	DisplayName: Lucid Nightmares
+	Description: Summons 3 abyssal to attack enemies, dealing 53 damage per attack
 }
 
 SacrificialWormhole: {
-    DisplayName: Sacrificial Wormhole
-    Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 240 damage and inflicting the 'Suffocation' debuff
+	DisplayName: Sacrificial Wormhole
+	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 240 damage and inflicting the 'Suffocation' debuff
 }

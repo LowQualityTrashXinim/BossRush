@@ -478,7 +478,7 @@ Mods: {
 			}
 
 			Gunmerang: {
-				Tooltip: [WIP] Do pizzerias always come back too?
+				Tooltip: "[WIP] Do pizzerias always come back too?"
 				DisplayName: Gunmerang
 			}
 
@@ -521,37 +521,37 @@ Mods: {
 			}
 
 			SnowballShotgunCannon: {
-				Tooltip: "Unlike us peasants, monsters won't get hypothermia from this"
+				Tooltip: Unlike us peasants, monsters won't get hypothermia from this
 				DisplayName: Shotgun Snowcannon
 			}
 
 			SnowballRifle: {
-				Tooltip: "For the most insufferable camping experience"
+				Tooltip: For the most insufferable camping experience
 				DisplayName: Snowball Rifle
 			}
 
 			SingleBarrelMinishark: {
-				Tooltip: "If only the barrel could hold water like real sharks..."
+				Tooltip: If only the barrel could hold water like real sharks...
 				DisplayName: Mini Barrelshark
 			}
 
 			RifleShotgun: {
-				Tooltip: "Can you decide for once? Spread or no spread?"
+				Tooltip: Can you decide for once? Spread or no spread?
 				DisplayName: Rifle Shotgun
 			}
 
 			LongerMusket: {
-				Tooltip: "I appreciate the attempt, but I doubt it'll shoot any further"
+				Tooltip: I appreciate the attempt, but I doubt it'll shoot any further
 				DisplayName: Mumuskeket
 			}
 
 			HuntingRifle: {
-				Tooltip: "It's almost as if nets are not a commodity for catching prey..."
+				Tooltip: It's almost as if nets are not a commodity for catching prey...
 				DisplayName: Hunter's Quest
 			}
 
 			FrozenShark: {
-				Tooltip: "Unthaws slower than Christmas Carols on Halloween!"
+				Tooltip: Unthaws slower than Christmas Carols on Halloween!
 				DisplayName: Frozen Jaws
 			}
 
@@ -590,7 +590,7 @@ Mods: {
 			}
 
 			ManaStarFury: {
-				Tooltip: "Why are they furious anyhow? It's the technique that matters, not size!"
+				Tooltip: Why are they furious anyhow? It's the technique that matters, not size!
 				DisplayName: Manafury
 			}
 
@@ -640,7 +640,7 @@ Mods: {
 			}
 
 			BloodStar: {
-				Tooltip: [WIP] It's bloody small, that's what! Shorty...
+				Tooltip: "[WIP] It's bloody small, that's what! Shorty..."
 				DisplayName: Bloodstar
 			}
 
@@ -659,22 +659,22 @@ Mods: {
 			}
 
 			SinisterBook: {
-				Tooltip: "Spooky scary skeletons!"
+				Tooltip: Spooky scary skeletons!
 				DisplayName: Sinister Book
 			}
 
 			PlasmaBlaster: {
-				Tooltip: "It's either sci-fi or 55% human blood..."
+				Tooltip: It's either sci-fi or 55% human blood...
 				DisplayName: Plasma Blaster
 			}
 
 			MagicHandCannon: {
-				Tooltip: "What an exotic wear, surely it's not a contraction of three words!"
+				Tooltip: What an exotic wear, surely it's not a contraction of three words!
 				DisplayName: Maghannon
 			}
 
 			MagicGrenade: {
-				Tooltip: "As scenic as it may sound, pretty sparkles are all you deserve"
+				Tooltip: As scenic as it may sound, pretty sparkles are all you deserve
 				DisplayName: Magic Eruptor
 			}
 
@@ -748,42 +748,46 @@ Mods: {
 
 			PocketPortal: {
 				Tooltip:
-				'''
-				"Your one-way ticket out of here! Wait... who's that?"
-				Summons the Tavernkeep.
-				'''
+					'''
+					"Your one-way ticket out of here! Wait... who's that?"
+					Summons the Tavernkeep.
+					'''
 				DisplayName: Pocket Portal
 			}
 
 			PlanteraSpawn: {
 				Tooltip:
-				"Its aroma is intoxicating, as if it's attracting the Apex of Nature itself! Wait..."
-				Summons Plantera
+					'''
+					"Its aroma is intoxicating, as if it's attracting the Apex of Nature itself! Wait..."
+					Summons Plantera
+					'''
 				DisplayName: Chroloplant
 			}
 
 			PlanteraEssence: {
 				Tooltip:
-				'''
-				"Pulsing bulbs who take a liking to mechanical deities."
-				Collect three Chlropolen to watch it sprout
-				'''
+					'''
+					"Pulsing bulbs who take a liking to mechanical deities."
+					Collect three Chlropolen to watch it sprout
+					'''
 				DisplayName: Chloropolen
 			}
 
 			CursedDoll: {
 				DisplayName: Cursed Doll
 				Tooltip:
-				'''
-				"The fabric whispers of great hexes, a warning to those who trespass" 
-				Summons Skeletron
+					'''
+					"The fabric whispers of great hexes, a warning to those who trespass" 
+					Summons Skeletron
+					'''
 			}
 
 			BleedingWorm: {
 				Tooltip:
-				'''
-				"It's still alive... pulsating like a living artery..."
-				Summons Dreadnautilus
+					'''
+					"It's still alive... pulsating like a living artery..."
+					Summons Dreadnautilus
+					'''
 				DisplayName: Bleeding Worm
 			}
 
@@ -809,29 +813,29 @@ Mods: {
 
 			ArtifactDebug: {
 				DisplayName: Artifact Debug
-				Tooltip: "It debugs artifacts. Are you satisfied?"
+				Tooltip: It debugs artifacts. Are you satisfied?
 			}
 
 			ResetWonderDrug: {
 				Tooltip:
-				'''
-				"Even the nanobots are struggling... what have you done?"
-				Removes the effects of the Wonder Drug
-				'''
+					'''
+					"Even the nanobots are struggling... what have you done?"
+					Removes the effects of the Wonder Drug
+					'''
 				DisplayName: Medical Nanobots
 			}
 
 			DayTimeCycle: {
-				Tooltip: "You have absolute control over the timeline now! What? Does this only affect the Sun? Bummer..."
+				Tooltip: You have absolute control over the timeline now! What? Does this only affect the Sun? Bummer...
 				DisplayName: Daytime Cycler
 			}
 
 			EmblemofProgress: {
 				Tooltip:
-				'''
-				"Just like that gal who stayed Determined, right?"
-				For every boss slain, you become a little stronger
-				'''
+					'''
+					"Just like that gal who stayed Determined, right?"
+					For every boss slain, you become a little stronger
+					'''
 				DisplayName: Emblem of Progress
 			}
 
@@ -1239,9 +1243,10 @@ Mods: {
 			WallOfFleshSpawner: {
 				DisplayName: Fleshbones
 				Tooltip:
-				'''
-				"As similar as this is to a certain doll, I want nothing to do with it!"
-				Summons Wall of Flesh at any time
+					'''
+					"As similar as this is to a certain doll, I want nothing to do with it!"
+					Summons Wall of Flesh at any time
+					'''
 			}
 
 			OrbOfEnergy: {
@@ -1260,7 +1265,7 @@ Mods: {
 
 			Nadir: {
 				DisplayName: Nadir
-				Tooltip: "The low point of the horizon, right within your grasp..."
+				Tooltip: The low point of the horizon, right within your grasp...
 			}
 
 			StreetLamp: {
