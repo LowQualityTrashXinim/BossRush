@@ -2,6 +2,9 @@
 using Humanizer;
 using Terraria.ID;
 using BossRush.Contents.Items.Chest;
+using Terraria.DataStructures;
+using Terraria.ModLoader;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class RareSpoil {
@@ -83,8 +86,6 @@ internal class RareSpoil {
 			LootBoxBase.GetArmorPiece(itemsource, player);
 		}
 	}
-}
-
 	public class StarterPerkSpoil : ModSpoil {
 		public override void SetStaticDefault() {
 			RareValue = SpoilDropRarity.Rare;
@@ -98,3 +99,5 @@ internal class RareSpoil {
 		}
 	}
 }
+
+
