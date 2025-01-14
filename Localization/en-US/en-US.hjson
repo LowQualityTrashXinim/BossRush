@@ -313,6 +313,7 @@ Mods: {
 			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
 			EvilShot.DisplayName: Evil Shot
 			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
+			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
 		}
 
 		NPCs: {

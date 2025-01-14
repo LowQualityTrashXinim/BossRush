@@ -957,6 +957,12 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
+		public override string ModifyToolTip() {
+			if (StackAmount(Main.LocalPlayer) >= 2) {
+				return DescriptionIndex(1);
+			}
+			return Description;
+		}
 		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			float chance = 0.25f * StackAmount(player);
 			if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Main.rand.NextFloat() <= chance) {
@@ -967,6 +973,14 @@ namespace BossRush.Contents.Perks {
 			float chance = 0.1f * StackAmount(player);
 			if (proj.type == ProjectileID.ExplosiveBullet && Main.rand.NextFloat() <= chance) {
 				modifiers.SourceDamage += .55f;
+			}
+		}
+		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (StackAmount(player) >= 2) {
+				if (Main.rand.NextFloat() <= .05f) {
+					Vector2 vel = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(30 * player.direction)) * 15;
+					Projectile.NewProjectile(source, position, vel, ModContent.ProjectileType<FriendlyGrenadeProjectile>(), damage * 3, knockback, player.whoAmI);
+				}
 			}
 		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {

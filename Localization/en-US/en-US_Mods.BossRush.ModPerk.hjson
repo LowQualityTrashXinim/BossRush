@@ -643,4 +643,12 @@ DemolitionistGunner: {
 		+ Explosive bullet have 10% to deal 55% more damage to enemy
 		+ Explosive bullet have 5% to do a big explosion
 		'''
+	Description1:
+		'''
+		"Make them explode"
+		+ Have 25% to convert bullet shot out from gun to explosive bullet
+		+ Explosive bullet have 10% to deal 55% more damage to enemy
+		+ Explosive bullet have 5% to do a big explosion
+		+ You have 5% chance to throw out friendly grenade which deal 3x damage
+		'''
 }
