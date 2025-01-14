@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Graphics.AnimationSystem;
@@ -27,8 +28,11 @@ public enum TweenState : byte
 
 
 }
-
-public class Tween<T> : IEnumerable where T : struct
+/// <summary>
+/// A Tween, when started, use its currentProgress field to get the running value, Also must be updated manually using the Update method, at least for now untill i figure out the best way to update it automatically
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class Tween<T> where T : struct
 {
 	public int currentDuration = 0;
 	public T currentProgress;
@@ -119,15 +123,16 @@ public class Tween<T> : IEnumerable where T : struct
 
 	}
 
-	public IEnumerator GetEnumerator() {
-		return null;
-	}
+
 }
 
+/// <summary>
+/// Holds A sequance of Tweens
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class TweenHandler<T>  where T : struct {
 
 	public List<Tween<T>> tweens = new List<Tween<T>>();
-	public bool justStarted = true;
 	public Tween<T> currentTween;
 	public void PlayTweens() {
 		int i = 0;
@@ -159,4 +164,3 @@ public class TweenHandler<T>  where T : struct {
 
 
 }
-

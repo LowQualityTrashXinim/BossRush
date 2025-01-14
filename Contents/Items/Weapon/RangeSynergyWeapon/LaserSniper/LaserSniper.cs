@@ -68,9 +68,7 @@ internal class LaserSniper : SynergyModItem {
 	}
 	public bool BoltActionAnimation(Player player, Vector2 pos, Vector2 offset) 
 	{
-		recoilScale.Update();
-		recoilHandler.Update();
-		recoilPos.Update();
+
 
 
 		if(player.itemAnimation == player.itemAnimationMax)
