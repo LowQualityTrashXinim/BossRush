@@ -952,7 +952,7 @@ namespace BossRush.Contents.Perks {
 			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
-	public class DemolitionistRanger : Perk {
+	public class DemolitionistGunner : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;

@@ -49,14 +49,12 @@ public static class RoguelikeData {
 /// Also, very unholy class, do not look into it
 /// </summary>
 internal class UniversalSystem : ModSystem {
-	public static bool DidPlayerBeatTheMod() => Main.hardMode;
-	public const string SYNERGY_MODE = "SynergyModeEnable";
+	public static bool DidPlayerBeatTheMod(bool BossRushAllowed = true) => Main.hardMode && (BossRushAllowed && ModContent.GetInstance<RogueLikeConfig>().BossRushMode);
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public const string CHAOS_MODE = "ChaosEnable";
 	public const string HARDCORE_MODE = "Hardcore";
-	public const string TRUE_MODE = "TrueMode";
 	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 	/// <summary>
@@ -68,7 +66,7 @@ internal class UniversalSystem : ModSystem {
 	public static bool CanAccessContent(Player player, string context) {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyMode && config.SynergyFeverMode;
+			return config.SynergyFeverMode;
 		if (config.HardEnableFeature || player.IsDebugPlayer())
 			return true;
 		if (context == NIGHTMARE_MODE)
@@ -81,10 +79,6 @@ internal class UniversalSystem : ModSystem {
 			return false;
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
-		if (context == SYNERGY_MODE)
-			return config.SynergyMode;
-		if (context == TRUE_MODE)
-			return config.SynergyMode && config.BossRushMode;
 		return false;
 	}
 	/// <summary>
@@ -106,12 +100,8 @@ internal class UniversalSystem : ModSystem {
 			return config.DreamlikeWorld;
 		if (context == HARDCORE_MODE)
 			return config.AutoHardCore;
-		if (context == SYNERGY_MODE)
-			return config.SynergyMode;
 		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyMode && config.SynergyFeverMode;
-		if (context == TRUE_MODE)
-			return config.SynergyMode && config.BossRushMode;
+			return config.SynergyFeverMode;
 		return false;
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";

@@ -165,3 +165,12 @@ public class SpeedRunner : ModAchievement {
 		return false;
 	}
 }
+
+public class BossRushRunner : ModAchievement {
+	public override bool Condition() {
+		if (Main.ActivePlayerFileData != null) {
+			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 5 && UniversalSystem.DidPlayerBeatTheMod() && UniversalSystem.CanAccessContent(UniversalSystem.BOSSRUSH_MODE);
+		}
+		return false;
+	}
+}

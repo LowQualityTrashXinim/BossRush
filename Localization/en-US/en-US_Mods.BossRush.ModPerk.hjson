@@ -635,8 +635,8 @@ EnhancedMagicStaff: {
 		'''
 }
 
-DemolitionistRanger: {
-	DisplayName: Demolitionist Ranger
+DemolitionistGunner: {
+	DisplayName: Demolitionist Gunner
 	Description:
 		'''
 		+ Have 25% to convert bullet shot out from gun to explosive bullet
