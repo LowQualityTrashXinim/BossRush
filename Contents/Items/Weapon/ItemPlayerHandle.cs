@@ -1,26 +1,27 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using Terraria.ID;
 using System.Linq;
+using ReLogic.Graphics;
 using BossRush.Texture;
+using Terraria.UI.Chat;
 using Terraria.ModLoader;
 using Terraria.GameContent;
+using Terraria.Localization;
 using BossRush.Contents.NPCs;
 using Terraria.DataStructures;
+using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
+using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
-using Terraria.Localization;
-using System.Collections.ObjectModel;
-using Terraria.UI.Chat;
-using ReLogic.Graphics;
-using BossRush.Common.General;
-using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
-using System;
-using BossRush.Common.Systems;
-using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
+
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
 	/// This is synergy bonus system, this system will automatically handle most of the bonus action for you<br/>
@@ -191,7 +192,9 @@ namespace BossRush.Contents.Items.Weapon {
 			int index = tooltips.FindIndex(t => t.Name == "CritChance");
 			if (index != -1) {
 				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
+				tooltips.Insert(index + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
 			}
+			
 			if (item.ModItem == null) {
 				return;
 			}
@@ -203,10 +206,6 @@ namespace BossRush.Contents.Items.Weapon {
 				NameLine.Text += " [Debug]";
 				NameLine.OverrideColor = Color.MediumPurple;
 				return;
-			}
-			if (item.ModItem is Relic relic && relic.relicColor != null) {
-				NameLine.OverrideColor = relic.relicColor.MultiColor(5);
-				tooltips.Add(new(Mod, "RelicItem", $"[Active Item]\nTier : {relic.TemplateCount}") { OverrideColor = Main.DiscoColor });
 			}
 			ModdedPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<ModdedPlayer>();
 			if (ExtraInfo && item.ModItem != null) {

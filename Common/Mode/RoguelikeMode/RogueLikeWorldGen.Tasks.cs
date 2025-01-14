@@ -98,7 +98,12 @@ public partial class RogueLikeWorldGen : ModSystem {
 public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void AddAltar() {
+		GridPart_X = Main.maxTilesX / 24;//small world : 175
+		GridPart_Y = Main.maxTilesY / 24;//small world : 50
+		WorldWidthHeight_Ratio = Main.maxTilesX / (float)Main.maxTilesY;
+		WorldHeightWidth_Ratio = Main.maxTilesX / (float)Main.maxTilesX;
 		bool RNG = false;
+		bool PlacedSlimeShrine = false;
 		for (int i = 1; i < Main.maxTilesX - 1; i++) {
 			for (int j = 1; j < Main.maxTilesY - 1; j++) {
 				if (WorldGen.genRand.NextBool(10000)) {
@@ -109,7 +114,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 					if (WorldGen.genRand.NextBool(1500)) {
 						RNG = true;
 					}
-					continue;
 				}
 				else {
 					int pass = 0;
@@ -131,8 +135,69 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						RNG = false;
 					}
 				}
+
+				if (!PlacedSlimeShrine) {
+					if (WorldGen.genRand.NextBool(10500)) {
+						Generate_SlimeBossAltar(i, j);
+					}
+					if (WorldGen.genRand.NextBool(10500)) {
+						Generate_EoCAltar(i, j);
+					}
+				}
 			}
 		}
+	}
+	public void Generate_SlimeBossAltar(int X, int Y) {
+		GenerationHelper.PlaceStructure("Shrine/SlimeShrine", new Rectangle(X, Y, 11, 12));
+		WorldGen.PlaceTile(X + 5, Y + 6, ModContent.TileType<SlimeBossAltar>());
+	}
+	public void Generate_EoCAltar(int X, int Y) {
+		GenerationHelper.PlaceStructure("Shrine/FleshShrine", new Rectangle(X, Y, 11, 12));
+		WorldGen.PlaceTile(X + 5, Y + 6, ModContent.TileType<EoCBossAltar>());
+	}
+	[Task]
+	public void GenerateSlimeZone() {
+		Rectangle rect = new();
+		rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
+		Point counter = new();
+		int count = -1;
+		while (counter.X < rect.Width || counter.Y < rect.Width) {
+			ImageData template;
+			if (++count % 2 == 0) {
+				template = ImageStructureLoader.Get_Tempate("WG_HorizontalTemplate" + WorldGen.genRand.Next(1, 5));
+			}
+			else {
+				template = ImageStructureLoader.Get_Tempate("WG_VerticalTemplate" + WorldGen.genRand.Next(1, 5));
+			}
+			template.EnumeratePixels((a, b, color) => {
+				a += rect.X + counter.X;
+				b += rect.Y + counter.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				if (a < rect.Left || b < rect.Top) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.B == 0 && color.G == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+			});
+			if (counter.X < rect.Width) {
+				counter.X += template.Width;
+			}
+			else {
+				counter.X = 0;
+				counter.Y += template.Height;
+			}
+		}
+		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
+	}
+	[Task]
+	public void GenerateFleshZone() {
+
+		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 	}
 	//[Task]
 	//public void SetUp() {

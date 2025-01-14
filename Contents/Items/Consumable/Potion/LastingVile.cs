@@ -3,7 +3,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 
 namespace BossRush.Contents.Items.Consumable.Potion;
-internal class LastingVile : ModItem {
+internal class LastingVilePotion : ModItem {
 	public override string Texture => BossRushTexture.MISSINGTEXTUREPOTION;
 	public override void SetDefaults() {
 		Item.BossRushDefaultPotion(32, 32, ModContent.BuffType<LastingVileBuff>(), BossRushUtils.ToMinute(5));
@@ -37,7 +37,7 @@ public class LastingVilePlayer : ModPlayer {
 		IsActive = false;
 	}
 	public override bool CanUseItem(Item item) {
-		if (IsActive && item.type == ModContent.ItemType<LastingVile>()) {
+		if (IsActive && item.type == ModContent.ItemType<LastingVilePotion>()) {
 			return false;
 		}
 		return base.CanUseItem(item);

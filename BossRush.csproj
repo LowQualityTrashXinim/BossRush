@@ -44,6 +44,7 @@
     <None Remove="Contents\Items\Weapon\SummonerSynergyWeapon\StarWhip\StarWhipProj.png" />
     <None Remove="Common\Graphics\Shaders\FlameBall.fx" />
     <None Remove="Common\Graphics\Shaders\FlameEffect.fx" />
+    <None Remove="Contents\Items\Weapon\UnfinishedItem\Item2.png" />
     <None Remove="Texture\EmptyCard.png" />
     <None Remove="Texture\ExampleFrame.png" />
     <None Remove="Texture\FourStar.png" />

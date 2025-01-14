@@ -149,3 +149,19 @@ public class GodOfChallenge : ModAchievement {
 			&& (Main.expertMode || Main.masterMode);
 	}
 }
+public class Elite : ModAchievement {
+	public override bool Condition() {
+		if(Main.CurrentPlayer.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			return modplayer.EliteKillCount > 0;
+		}
+		return false;
+	}
+}
+public class SpeedRunner : ModAchievement {
+	public override bool Condition() {
+		if (Main.ActivePlayerFileData != null) {
+			return Main.ActivePlayerFileData.GetPlayTime().TotalMinutes <= 20 && UniversalSystem.DidPlayerBeatTheMod();
+		}
+		return false;
+	}
+}

@@ -4,7 +4,6 @@ using System.IO;
 using Terraria.UI;
 using Terraria.ID;
 using System.Linq;
-using Terraria.Audio;
 using ReLogic.Content;
 using BossRush.Texture;
 using System.Reflection;
@@ -12,9 +11,7 @@ using Terraria.ModLoader;
 using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
-using BossRush.Common.Utils;
 using BossRush.Contents.NPCs;
-using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
@@ -39,12 +36,13 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Contents.Artifacts;
+using BossRush.Common.Systems.ArgumentsSystem;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
 	public static int Lootbox_AmountOpen = 0;
 	public static int Run_Amount = 0;
+	public static int EliteKill = 0;
 }
 /// <summary>
 /// This not only include main stuff that make everything work but also contain some fixes to vanilla<br/>
@@ -179,6 +177,7 @@ internal class UniversalSystem : ModSystem {
 
 	public RelicTransmuteUI relicUI;
 	public SkillGetterUI skillUI;
+	public SpoilGetterUI spoilUI;
 
 	public SpoilsUIState spoilsState;
 	public TeleportUI teleportUI;
@@ -190,6 +189,7 @@ internal class UniversalSystem : ModSystem {
 	private static string DirectoryPath => Path.Join(Program.SavePathShared, "RogueLikeData");
 	private static string FilePath => Path.Join(DirectoryPath, "Data");
 	public static ModKeybind WeaponActionKey { get; private set; }
+	public TimeSpan timeBeatenTheGame = TimeSpan.Zero;
 	public override void Load() {
 		WeaponActionKey = KeybindLoader.RegisterKeybind(Mod, "Weapon action", Keys.X);
 		try {
@@ -228,6 +228,7 @@ internal class UniversalSystem : ModSystem {
 			infoUI = new();
 			achievementUI = new();
 			structUI = new();
+			spoilUI = new();
 		}
 		On_UIElement.OnActivate += On_UIElement_OnActivate;
 		On_WorldGen.StartHardmode += On_WorldGen_StartHardmode;
@@ -272,6 +273,7 @@ internal class UniversalSystem : ModSystem {
 		infoUI = null;
 		achievementUI = null;
 		structUI = null;
+		spoilUI = null;
 	}
 	private void On_WorldGen_StartHardmode(On_WorldGen.orig_StartHardmode orig) {
 		if (CanAccessContent(BOSSRUSH_MODE) && CheckLegacy(LEGACY_WORLDGEN) || !CanAccessContent(BOSSRUSH_MODE)) {
@@ -373,6 +375,9 @@ internal class UniversalSystem : ModSystem {
 		}
 		if (context.Trim() == "skill") {
 			user2ndInterface.SetState(skillUI);
+		}
+		if (context.Trim() == "spoil") {
+			user2ndInterface.SetState(spoilUI);
 		}
 	}
 	public void ActivateAchievementUI() {
@@ -535,6 +540,8 @@ class DefaultUI : UIState {
 
 	private UIImageButton staticticUI;
 
+	private UITextBox timer;
+
 	public void TurnOnEndOfDemoMessage() {
 		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
 		EndOfDemoPanel.Height.Set(66, 0);
@@ -567,6 +574,13 @@ class DefaultUI : UIState {
 		colorChanging1 = new(new() { Color.DarkBlue, Color.LightCyan });
 		colorChanging2 = new(new() { Color.LightCyan, Color.DarkBlue }, .5f);
 		colorchanging3 = new(new() { Color.DarkRed, Color.Red });
+
+		timer = new("00:00:00:00");
+		timer.UISetWidthHeight(150, 20);
+		timer.HAlign = .5f;
+		timer.VAlign = .02f;
+		timer.ShowInputTicker = false;
+		Append(timer);
 	}
 	private void StaticticUI_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
@@ -665,9 +679,17 @@ class DefaultUI : UIState {
 		}
 		energyCoolDownBar.BarProgress = modPlayer.CoolDown / (float)modPlayer.MaximumCoolDown;
 	}
-
 	public override void Update(GameTime gameTime) {
-
+		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
+		if (UniversalSystem.DidPlayerBeatTheMod()) {
+			ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+		}
+		string ToTimer =
+			$"{time.Hours}" +
+			$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
+			$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
+			$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
+		timer.SetText(ToTimer);
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {
@@ -1082,6 +1104,8 @@ class InfoUI : UIState {
 				var chestplayer = player.GetModPlayer<ChestLootDropPlayer>();
 				var drugplayer = player.GetModPlayer<WonderDrugPlayer>();
 				var nohitPlayer = player.GetModPlayer<NoHitPlayerHandle>();
+				var enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
+				var augmentation = player.GetModPlayer<AugmentsPlayer>();
 				chestplayer.GetAmount();
 				line =
 					$"Amount drop : {chestplayer.DropModifier.ApplyTo(1)}" +
@@ -1094,7 +1118,9 @@ class InfoUI : UIState {
 					$"\nSummon drop chance : {chestplayer.UpdateSummonChanceMutilplier}" +
 					$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 					$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
-					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}";
+					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
+					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + enchantplayer.RandomizeChanceEnchantment)}" +
+					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + augmentation.IncreasesChance)}";
 				textpanel.SetText(line);
 				break;
 			case 2:
@@ -1117,526 +1143,6 @@ class InfoUI : UIState {
 				break;
 		}
 		base.Update(gameTime);
-	}
-}
-
-internal class SkillUI : UIState {
-	public List<btn_SkillSlotHolder> skill = new List<btn_SkillSlotHolder>();
-	public List<btn_SkillSlotHolder> inventory = new List<btn_SkillSlotHolder>();
-	public ExitUI exitUI;
-	public btn_SkillDeletion btn_delete;
-	public const string UItype_SKILL = "skill";
-	public const string UIType_INVENTORY = "inventory";
-	public UIPanel panel;
-	public UIText energyCostText;
-	public UIText durationText;
-	public UIText cooldownText;
-	public override void OnInitialize() {
-		panel = new UIPanel();
-		Append(panel);
-		energyCostText = new UIText("");
-		Append(energyCostText);
-		durationText = new UIText("");
-		Append(durationText);
-		cooldownText = new UIText("");
-		Append(cooldownText);
-	}
-
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		SkillHandlePlayer modplayer = Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>();
-		modplayer.SkillStatTotal(out int energy, out int duration, out int cooldown);
-		Color color = energy <= modplayer.EnergyCap ? Color.Green : Color.Red;
-		energyCostText.SetText($"[c/{color.Hex3()}:Energy cost = {energy}]");
-		durationText.SetText($"Duration = {MathF.Round(duration / 60f, 2)}s");
-		cooldownText.SetText($"Cool down = {MathF.Round(cooldown / 60f, 2)}s");
-	}
-
-	private void ActivateSkillUI(Player player) {
-		panel.UISetWidthHeight(200, 90);
-		panel.Left.Pixels = 860;
-		panel.Top.Pixels = 330;
-		energyCostText.Top.Pixels = 349;
-		energyCostText.Left.Pixels = 880;
-		durationText.Top.Pixels = 370;
-		durationText.Left.Pixels = 880;
-		cooldownText.Top.Pixels = 390;
-		cooldownText.Left.Pixels = 880;
-		if (player.TryGetModPlayer(out SkillHandlePlayer modplayer)) {
-			//Explain : since most likely in the future we aren't gonna expand the skill slot, we just hard set it to 10
-			//We are also pre render these UI first
-			int[] SkillHolder = modplayer.GetCurrentActiveSkillHolder();
-			Vector2 textureSize = new Vector2(52, 52);
-			Vector2 OffSetPosition_Skill = player.Center;
-			OffSetPosition_Skill.X -= textureSize.X * 5;
-			if (skill.Count < 1) {
-				Vector2 customOffSet = OffSetPosition_Skill;
-				customOffSet.Y -= 60;
-				for (int i = 0; i < 3; i++) {
-					btn_SkillSlotSelection btn_Selection = new btn_SkillSlotSelection(TextureAssets.InventoryBack7, i + 1);
-					btn_Selection.UISetPosition(customOffSet + new Vector2(52, 0) * i, textureSize);
-					Append(btn_Selection);
-				}
-				for (int i = 0; i < 10; i++) {
-					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack17, i, SkillHolder[i], UItype_SKILL);
-					skillslot.UISetPosition(OffSetPosition_Skill + new Vector2(52, 0) * i, textureSize);
-					skill.Add(skillslot);
-					Append(skill[i]);
-				}
-			}
-			if (inventory.Count < 1) {
-				Vector2 InvOffSet = new Vector2(520, -55);
-				for (int i = 0; i < 30; i++) {
-					btn_SkillSlotHolder skillslot = new btn_SkillSlotHolder(TextureAssets.InventoryBack, i, modplayer.SkillInventory[i], UIType_INVENTORY);
-					Vector2 InvPos = OffSetPosition_Skill + new Vector2(0, 72);
-					if (i >= 10) {
-						InvPos -= InvOffSet;
-					}
-					if (i >= 20) {
-						InvPos -= InvOffSet;
-					}
-					skillslot.UISetPosition(InvPos + new Vector2(52, 0) * i, textureSize);
-					inventory.Add(skillslot);
-					Append(inventory[i]);
-				}
-			}
-			if (exitUI == null) {
-				exitUI = new ExitUI(TextureAssets.InventoryBack10);
-				exitUI.UISetPosition(player.Center + new Vector2(275, 0), textureSize);
-				Append(exitUI);
-			}
-			if (btn_delete == null) {
-				btn_delete = new btn_SkillDeletion(TextureAssets.InventoryBack, modplayer);
-				btn_delete.UISetPosition(player.Center - new Vector2(330, 0), textureSize);
-				Append(btn_delete);
-			}
-		}
-	}
-	public override void OnActivate() {
-		Player player = Main.LocalPlayer;
-		ActivateSkillUI(player);
-	}
-	public override void OnDeactivate() {
-		SkillModSystem.SelectInventoryIndex = -1;
-		SkillModSystem.SelectSkillIndex = -1;
-	}
-}
-class btn_SkillSlotSelection : UIImage {
-	int SelectionIndex = 0;
-	public btn_SkillSlotSelection(Asset<Texture2D> texture, int selection) : base(texture) {
-		SelectionIndex = selection;
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		base.LeftClick(evt);
-		if (SelectionIndex == 0) {
-			return;
-		}
-		Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().ChangeHolder(SelectionIndex);
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		if (SelectionIndex != Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().CurrentActiveIndex) {
-			Color = new Color(255, 255, 255, 100);
-		}
-		else {
-			Color = Color.White;
-		}
-		base.Draw(spriteBatch);
-	}
-}
-class btn_SkillDeletion : UIImage {
-	SkillHandlePlayer modplayer;
-	Vector2 size;
-	public btn_SkillDeletion(Asset<Texture2D> texture, SkillHandlePlayer modplayer) : base(texture) {
-		this.modplayer = modplayer;
-		size = texture.Size();
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		if (SkillModSystem.SelectInventoryIndex != -1) {
-			modplayer.RequestSkillRemoval_SkillInventory(SkillModSystem.SelectInventoryIndex);
-			SkillModSystem.SelectInventoryIndex = -1;
-		}
-		if (SkillModSystem.SelectSkillIndex != -1) {
-			modplayer.RequestSkillRemoval_SkillHolder(SkillModSystem.SelectSkillIndex);
-			SkillModSystem.SelectSkillIndex = -1;
-		}
-	}
-	public override void Update(GameTime gameTime) {
-		if (IsMouseHovering) {
-			Main.instance.MouseText(Language.GetTextValue($"Mods.BossRush.SystemTooltip.Skill.Delete"));
-		}
-		base.Update(gameTime);
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + size * .5f;
-		Texture2D trashbin = TextureAssets.Trash.Value;
-		float scaling = ScaleCalculation(size, trashbin.Size());
-		Vector2 origin = trashbin.Size() * .5f;
-		spriteBatch.Draw(trashbin, drawpos, null, new Color(0, 0, 0, 150), 0, origin, scaling, SpriteEffects.None, 0);
-	}
-	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
-}
-class btn_SkillSlotHolder : UIImageButton {
-	public int whoAmI = -1;
-	public int sKillID = -1;
-	public string uitype = "";
-	Texture2D Texture;
-	public btn_SkillSlotHolder(Asset<Texture2D> texture, int WhoAmI, int SkillID, string UItype) : base(texture) {
-		//player = Tplayer;
-		whoAmI = WhoAmI;
-		sKillID = SkillID;
-		Texture = texture.Value;
-		uitype = UItype;
-		SetVisibility(1, .67f);
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		Player player = Main.LocalPlayer;
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		//Moving skill around in inventory
-		if (uitype == SkillUI.UIType_INVENTORY) {
-			if (SkillModSystem.SelectInventoryIndex == -1) {
-				if (SkillModSystem.SelectSkillIndex == -1) {
-					//This mean the player haven't select anything
-					SkillModSystem.SelectInventoryIndex = whoAmI;
-				}
-				else {
-					//Player are Attempting to move a skill from their skill slot back to inventory
-					modplayer.ReplaceSkillFromSkillHolderToInv(SkillModSystem.SelectSkillIndex, whoAmI);
-					SkillModSystem.SelectSkillIndex = -1;
-				}
-			}
-			else {
-				//Player are moving skill around their inventory
-				int cache = modplayer.SkillInventory[whoAmI];
-				modplayer.SkillInventory[whoAmI] = modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex];
-				modplayer.SkillInventory[SkillModSystem.SelectInventoryIndex] = cache;
-				SkillModSystem.SelectInventoryIndex = -1;
-				//It is impossible where SelectSkillIndex can't be equal to -1
-			}
-		}
-		else if (uitype == SkillUI.UItype_SKILL) {
-			if (SkillModSystem.SelectSkillIndex == -1) {
-				if (SkillModSystem.SelectInventoryIndex == -1) {
-					//This mean the player haven't select anything
-					SkillModSystem.SelectSkillIndex = whoAmI;
-				}
-				else {
-					//Player are Attempting to move a skill from their inventory into a skill holder
-					modplayer.ReplaceSkillFromInvToSkillHolder(whoAmI, SkillModSystem.SelectInventoryIndex);
-					SkillModSystem.SelectInventoryIndex = -1;
-				}
-			}
-			else {
-				//Player are moving skill around their skill holder
-				modplayer.SwitchSkill(whoAmI, SkillModSystem.SelectSkillIndex);
-				SkillModSystem.SelectSkillIndex = -1;
-			}
-		}
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		Player player = Main.LocalPlayer;
-		SkillHandlePlayer modplayer = player.GetModPlayer<SkillHandlePlayer>();
-		if (uitype == SkillUI.UIType_INVENTORY) {
-			if (modplayer.SkillInventory[whoAmI] != sKillID) {
-				sKillID = modplayer.SkillInventory[whoAmI];
-			}
-		}
-		else if (uitype == SkillUI.UItype_SKILL) {
-			int[] skillholder = modplayer.GetCurrentActiveSkillHolder();
-			if (skillholder[whoAmI] != sKillID) {
-				sKillID = skillholder[whoAmI];
-			}
-		}
-		if (IsMouseHovering) {
-			string tooltipText = "";
-			string Name = "";
-			if (SkillModSystem.GetSkill(sKillID) != null) {
-				Name = SkillModSystem.GetSkill(sKillID).DisplayName;
-				tooltipText = SkillModSystem.GetSkill(sKillID).Description;
-				tooltipText +=
-					$"\n[c/{Color.Yellow.Hex3()}:Skill duration] : {Math.Round(SkillModSystem.GetSkill(sKillID).Duration / 60f, 2)}s" +
-					$"\n[c/{Color.DodgerBlue.Hex3()}:Energy require] : {SkillModSystem.GetSkill(sKillID).EnergyRequire}" +
-					$"\n[c/{Color.OrangeRed.Hex3()}:Skill cooldown] : {Math.Round(SkillModSystem.GetSkill(sKillID).CoolDown / 60f, 2)}s";
-			}
-			Main.instance.MouseText(Name + "\n" + tooltipText);
-		}
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + Texture.Size() * .5f;
-		if ((SkillModSystem.SelectInventoryIndex == whoAmI && uitype == SkillUI.UIType_INVENTORY)
-			|| (SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL)) {
-			BossRushUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
-		}
-		if (sKillID < 0 || sKillID >= SkillModSystem.TotalCount) {
-			return;
-		}
-		Texture2D skilltexture = ModContent.Request<Texture2D>(SkillModSystem.GetSkill(sKillID).Texture).Value;
-		Vector2 origin = skilltexture.Size() * .5f;
-		float scaling = ScaleCalculation(Texture.Size(), skilltexture.Size());
-		spriteBatch.Draw(skilltexture, drawpos, null, new Color(255, 255, 255), 0, origin, scaling, SpriteEffects.None, 0);
-	}
-	private float ScaleCalculation(Vector2 originalTexture, Vector2 textureSize) => originalTexture.Length() / (textureSize.Length() * 1.5f);
-}
-internal class EnchantmentUIState : UIState {
-	UIPanel panel;
-	WeaponEnchantmentUIslot weaponEnchantmentUIslot;
-	ExitUI weaponEnchantmentUIExit;
-	bool isMousePressed = false;
-	Vector2 position = Main.ScreenSize.ToVector2() / 2f;
-	Vector2 panelSize = new Vector2(70 * 3 - 8, 62 * 2 + 8);
-	Vector2 UIclampOffset = new Vector2(60, 60);
-	public override void OnInitialize() {
-		panel = new UIPanel();
-		panel.UISetPosition(Main.LocalPlayer.Center, panelSize / 2f);
-		panel.OnLeftMouseDown += mousePressed;
-		panel.OnLeftMouseUp += mouseUp;
-		panel.UISetWidthHeight(panelSize.X, panelSize.Y);
-
-		Append(panel);
-
-		weaponEnchantmentUIslot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack);
-		weaponEnchantmentUIslot.UISetWidthHeight(52, 52);
-		weaponEnchantmentUIslot.UISetPosition(position + Vector2.UnitX * 120, new Vector2(26, 26));
-		Append(weaponEnchantmentUIslot);
-		weaponEnchantmentUIExit = new ExitUI(TextureAssets.InventoryBack13);
-		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
-		weaponEnchantmentUIExit.UISetPosition(position + Vector2.UnitX * 178, new Vector2(26, 26));
-		Append(weaponEnchantmentUIExit);
-	}
-
-	public override void Update(GameTime gameTime) {
-		if (ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-		if (isMousePressed)
-			this.position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
-		for (int i = 0; i < Children.Count(); i++) {
-			var children = Children.ElementAt(i);
-			if (children is MoveableUIImage) {
-				var child = children as MoveableUIImage;
-				child.UISetPosition(position + child.positionOffset);
-				child.position = position;
-			}
-		}
-		panel.UISetPosition(position);
-		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60, 0));
-	}
-
-	private void mousePressed(UIMouseEvent evt, UIElement listeningElement) {
-		isMousePressed = true;
-	}
-
-
-	private void mouseUp(UIMouseEvent evt, UIElement listeningElement) {
-		isMousePressed = false;
-	}
-
-	public override void OnDeactivate() {
-		int count = Children.Count();
-		for (int i = count - 1; i >= 0; i--) {
-			UIElement child = Children.ElementAt(i);
-			if (child is EnchantmentUIslot wmslot) {
-				if (wmslot.itemOwner == null) {
-					continue;
-				}
-				else {
-					child.Deactivate();
-					child.Remove();
-				}
-			}
-			if (child is UIText) {
-				child.Deactivate();
-				child.Remove();
-			}
-		}
-	}
-}
-public class MoveableUIImage : UIImage {
-	public MoveableUIImage(Asset<Texture2D> texture) : base(texture) {
-	}
-
-	public Vector2 positionOffset = Vector2.Zero;
-	public Vector2 position = Vector2.Zero;
-
-}
-
-public class WeaponEnchantmentUIslot : MoveableUIImage {
-	public int WhoAmI = -1;
-	public Texture2D textureDraw;
-	public Item item;
-
-
-
-	private Texture2D texture;
-	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
-		this.texture = texture.Value;
-	}
-	List<int> textUqID = new List<int>();
-	public override void LeftClick(UIMouseEvent evt) {
-		Player player = Main.LocalPlayer;
-		if (Main.mouseItem.type != ItemID.None) {
-			if (Main.mouseItem.consumable)
-				return;
-			Item itemcached;
-			if (item != null && item.type != ItemID.None) {
-				itemcached = item.Clone();
-				item = Main.mouseItem.Clone();
-				Main.mouseItem = itemcached.Clone();
-				player.inventory[58] = itemcached.Clone();
-			}
-			else {
-				item = Main.mouseItem.Clone();
-				Main.mouseItem.TurnToAir();
-				player.inventory[58].TurnToAir();
-				UniversalSystem.EnchantingState = true;
-			}
-			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
-				int length = globalItem.EnchantmenStlot.Length - 1;
-				for (int i = 0; i < length; i++) {
-					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack);
-					slot.positionOffset = Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
-					slot.UISetWidthHeight(52, 52);
-					slot.WhoAmI = i;
-					slot.itemOwner = item;
-					slot.itemType = globalItem.EnchantmenStlot[i];
-					Parent.Append(slot);
-					UIText text = new UIText($"{i + 1}");
-					text.UISetPosition(positionOffset + Vector2.UnitY * 56, new Vector2(26, 26));
-					textUqID.Add(text.UniqueId);
-					Parent.Append(text);
-				}
-			}
-		}
-		else {
-			if (item == null)
-				return;
-			UniversalSystem.EnchantingState = false;
-			Main.mouseItem = item;
-			item = null;
-			int count = Parent.Children.Count();
-			for (int i = count - 1; i >= 0; i--) {
-				UIElement child = Parent.Children.ElementAt(i);
-				if (child is EnchantmentUIslot wmslot) {
-					if (wmslot.itemOwner == null)
-						continue;
-				}
-				if (child is EnchantmentUIslot { itemOwner: not null }) {
-					child.Deactivate();
-					child.Remove();
-				}
-				if (child is UIText text && textUqID.Contains(text.UniqueId)) {
-					textUqID.Remove(text.UniqueId);
-					child.Deactivate();
-					child.Remove();
-				}
-			}
-		}
-	}
-	public override void OnDeactivate() {
-		textUqID.Clear();
-		Player player = Main.LocalPlayer;
-		UniversalSystem.EnchantingState = false;
-		if (item == null)
-			return;
-		for (int i = 0; i < 50; i++) {
-			if (player.CanItemSlotAccept(player.inventory[i], item)) {
-				if (ModContent.GetInstance<UniversalSystem>().WorldState == "Exited") {
-					ModContent.GetInstance<UniversalSystem>().IsAttemptingToBringItemToNewPlayer = true;
-					return;
-				}
-				player.inventory[i] = item.Clone();
-				item = null;
-				return;
-			}
-		}
-		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
-		item = null;
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		Vector2 drawpos = position + positionOffset + texture.Size() * .5f;
-		base.Draw(spriteBatch);
-		if (item != null) {
-			Main.instance.LoadItem(item.type);
-			Texture2D texture = TextureAssets.Item[item.type].Value;
-			Vector2 origin = texture.Size() * .5f;
-			float scaling = ScaleCalculation(texture.Size()) * .78f;
-			spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
-		}
-		else {
-
-			Texture2D backgroundtexture = TextureAssets.Item[ItemID.SilverBroadsword].Value;
-			spriteBatch.Draw(backgroundtexture, drawpos, null, new Color(0, 0, 0, 80), 0, texture.Size() * .35f, ScaleCalculation(backgroundtexture.Size()), SpriteEffects.None, 0);
-		}
-	}
-	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / (textureSize.Length() * 1.25f);
-}
-public class EnchantmentUIslot : MoveableUIImage {
-	public int itemType = 0;
-	public int WhoAmI = -1;
-
-	public Item itemOwner = null;
-	private Texture2D texture;
-	public EnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
-		this.texture = texture.Value;
-	}
-	public override void LeftClick(UIMouseEvent evt) {
-		if (itemOwner == null)
-			return;
-		if (Main.mouseItem.type != ItemID.None) {
-			if (Main.mouseItem.consumable)
-				return;
-			if (itemType != 0)
-				return;
-			if (EnchantmentLoader.GetEnchantmentItemID(Main.mouseItem.type) == null)
-				return;
-			itemType = Main.mouseItem.type;
-			Main.mouseItem.TurnToAir();
-			Main.LocalPlayer.inventory[58].TurnToAir();
-			EnchantmentSystem.EnchantItem(ref itemOwner, WhoAmI, itemType);
-		}
-	}
-	public override void Draw(SpriteBatch spriteBatch) {
-		base.Draw(spriteBatch);
-		try {
-			if (itemOwner == null)
-				return;
-			if (itemType != 0) {
-				Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
-				Main.instance.LoadItem(itemType);
-				Texture2D texture1 = TextureAssets.Item[itemType].Value;
-				Vector2 origin = texture1.Size() * .5f;
-				spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, .87f, SpriteEffects.None, 0);
-			}
-		}
-		catch (Exception ex) {
-			Main.NewText(ex.Message);
-		}
-	}
-	public override void Update(GameTime gameTime) {
-		base.Update(gameTime);
-		if(ContainsPoint(Main.MouseScreen)) {
-			Main.LocalPlayer.mouseInterface = true;
-		}
-		if (itemType == ItemID.None)
-			return;
-		if (IsMouseHovering) {
-			string tooltipText = "No enchantment can be found";
-			if (EnchantmentLoader.GetEnchantmentItemID(itemType) != null) {
-				tooltipText = EnchantmentLoader.GetEnchantmentItemID(itemType).Description;
-			}
-			Main.instance.MouseText(tooltipText);
-		}
-		else {
-			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
-				Main.instance.MouseText("");
-			}
-		}
 	}
 }
 public class SpoilsUIState : UIState {
@@ -1702,13 +1208,17 @@ public class SpoilsUIButton : UIImageButton {
 	int LootboxItem = 0;
 	public SpoilsUIButton(Asset<Texture2D> texture, ModSpoil Spoil) : base(texture) {
 		spoil = Spoil;
-		LootboxItem = Main.LocalPlayer.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.First();
+		if (Main.LocalPlayer.TryGetModPlayer(out SpoilsPlayer spoilplayer)) {
+			if (spoilplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
+				LootboxItem = spoilplayer.LootBoxSpoilThatIsNotOpen.First();
+		}
 	}
 	public override void LeftClick(UIMouseEvent evt) {
 		Player player = Main.LocalPlayer;
 		SpoilsPlayer modplayer = player.GetModPlayer<SpoilsPlayer>();
-		LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
-		if (spoil == null) {
+		if (modplayer.LootBoxSpoilThatIsNotOpen.Count > 0)
+			LootboxItem = modplayer.LootBoxSpoilThatIsNotOpen.First();
+		if (spoil == null || LootboxItem == 0) {
 			List<ModSpoil> SpoilList = ModSpoilSystem.GetSpoilsList();
 			for (int i = SpoilList.Count - 1; i >= 0; i--) {
 				ModSpoil spoil = SpoilList[i];
@@ -1733,7 +1243,7 @@ public class SpoilsUIButton : UIImageButton {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 		if (IsMouseHovering) {
-			if (LootboxSystem.GetItemPool(LootboxItem) == null) {
+			if (LootboxSystem.GetItemPool(LootboxItem) == null && !Main.LocalPlayer.IsDebugPlayer()) {
 				return;
 			}
 			if (spoil == null) {

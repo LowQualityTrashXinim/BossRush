@@ -66,6 +66,34 @@ namespace BossRush {
 			Array.Copy(player.armor, 3, item, 0, 9);
 			return item.Select(i => i.type).Contains(itemType);
 		}
+		public static void Reflesh_GlobalItem(this Mod mod, Player player) {
+			foreach (Item item in player.inventory) {
+				if (item.type == ItemID.None) {
+					continue;
+				}
+				//if (item.ModItem != null) {
+				//	continue;
+				//}
+				//Resetting only important stats
+				Item itemA = ContentSamples.ItemsByType[item.type];
+				item.damage = itemA.damage;
+				item.crit = itemA.crit;
+				item.ArmorPenetration = itemA.ArmorPenetration;
+				item.scale = itemA.scale;
+				item.useTime = itemA.useTime;
+				item.useAnimation = itemA.useAnimation;
+				item.shoot = itemA.shoot;
+				item.shootSpeed = itemA.shootSpeed;
+				Set_ItemCriticalDamage(item, 0f);
+				foreach (var globalitem in item.Globals) {
+					if (globalitem == null || globalitem.Mod.Name != mod.Name) {
+						continue;
+					}
+					//Run through global
+					globalitem.SetDefaults(item);
+				}
+			}
+		}
 		public static bool IsAVanillaSword(int type) {
 			switch (type) {
 				//Sword that have even end
@@ -209,7 +237,7 @@ namespace BossRush {
 	public class DataStorer : ModSystem {
 		public static Dictionary<string, DrawCircleAuraContext> dict_drawCircleContext = new();
 		public static void AddContext(string name, DrawCircleAuraContext context) {
-			if(dict_drawCircleContext == null) {
+			if (dict_drawCircleContext == null) {
 				dict_drawCircleContext = new();
 			}
 			if (!dict_drawCircleContext.ContainsKey(name)) {
@@ -266,9 +294,11 @@ namespace BossRush {
 	public class BossRushUtilsPlayer : ModPlayer {
 		public const float PLAYERARMLENGTH = 12f;
 		public Vector2 MouseLastPositionBeforeAnimation = Vector2.Zero;
+		public Vector2 PlayerLastPositionBeforeAnimation = Vector2.Zero;
 		public override void PostUpdate() {
 			if (!Player.ItemAnimationActive) {
 				MouseLastPositionBeforeAnimation = Main.MouseWorld;
+				PlayerLastPositionBeforeAnimation = Player.Center;
 			}
 		}
 		/// <summary>

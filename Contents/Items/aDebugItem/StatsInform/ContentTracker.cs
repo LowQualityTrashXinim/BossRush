@@ -20,6 +20,18 @@ internal class ContentTracker : ModItem {
 	}
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
 		base.ModifyTooltips(tooltips);
+		int total =
+			BossRushModSystem.ListLootboxType.Count
+			+ BossRushModSystem.SynergyItem.Count
+			+ BossRushModSystem.LostAccessories.Count
+			+ Artifact.ArtifactCount
+			+ EnchantmentLoader.TotalCount
+			+ SkillModSystem.TotalCount
+			+ ModPerkLoader.TotalCount
+			+ ModSpoilSystem.TotalCount
+			+ AugmentsLoader.TotalCount
+			+ CursesLoader.CurseTabooCount;
+
 		var line = new TooltipLine(Mod, "StatsShowcase",
 			$"LootBox amount : {BossRushModSystem.ListLootboxType.Count}" +
 			$"\nSynergy item amount : {BossRushModSystem.SynergyItem.Count}" +
@@ -31,7 +43,8 @@ internal class ContentTracker : ModItem {
 			$"\nSpoils amount : {ModSpoilSystem.TotalCount}" +
 			$"\nRelic template amount : {RelicTemplateLoader.TotalCount}" +
 			$"\nAugments amount : {AugmentsLoader.TotalCount}" +
-			$"\nCurses taboo amount : {CursesLoader.CurseTabooCount}"
+			$"\nCurses taboo amount : {CursesLoader.CurseTabooCount}" +
+			$"\nTotal content amount : {total}"
 			);
 		tooltips.Add(line);
 	}

@@ -105,13 +105,6 @@ public class NaturalUpgrade : Perk {
 	}
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.NaturalUpgrade);
-		foreach (Item item in player.inventory) {
-			foreach (var globalitem in item.Globals) {
-				if (globalitem == null || globalitem.Mod.Name != Mod.Name) {
-					continue;
-				}
-				globalitem.SetDefaults(item);
-			}
-		}
+		BossRushUtils.Reflesh_GlobalItem(Mod, player);
 	}
 }

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.BuffAndDebuff;
 using Terraria.Audio;
 using BossRush.Common.General;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Common.Mode.Nightmare {
 	internal class NightmareNPC : GlobalNPC {
@@ -27,6 +28,7 @@ namespace BossRush.Common.Mode.Nightmare {
 			npc.knockBackResist *= .5f;
 		}
 		private void BossChange(NPC npc) {
+			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().EliteBoss = Main.rand.NextBool();
 			if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody) {
 				npc.lifeMax += 250;
 				npc.scale += .25f;

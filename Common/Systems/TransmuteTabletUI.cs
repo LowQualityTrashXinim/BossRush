@@ -13,14 +13,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Texture;
+using Terraria.Audio;
+using SteelSeries.GameSense.DeviceZone;
+using BossRush.Contents.Perks;
+using ReLogic.Utilities;
 
 namespace BossRush.Common.Systems;
-public class TransumtationRecipe {
-
-}
-public class TransmutationSystem : ModSystem {
-
-}
 public class TransmutationUIState : UIState {
 	UIPanel panel;
 	TransmutationUIConfirmButton btn_confirm;
@@ -39,18 +37,21 @@ public class TransmutationUIState : UIState {
 		slot1.UISetWidthHeight(52, 52);
 		slot1.HAlign = MathHelper.Lerp(.1f, .9f, 0);
 		slot1.VAlign = .9f;
+		slot1.OnLeftClick += Slot_OnLeftClick;
 		panel.Append(slot1);
 
 		slot2 = new TransmutationUI(TextureAssets.InventoryBack);
 		slot2.UISetWidthHeight(52, 52);
 		slot2.HAlign = MathHelper.Lerp(.1f, .9f, 1 / 3f);
 		slot2.VAlign = .9f;
+		slot2.OnLeftClick += Slot_OnLeftClick;
 		panel.Append(slot2);
 
 		btn_confirm = new TransmutationUIConfirmButton(TextureAssets.InventoryBack10);
 		btn_confirm.UISetWidthHeight(52, 52);
 		btn_confirm.HAlign = MathHelper.Lerp(.1f, .9f, 2 / 3f);
 		btn_confirm.VAlign = .9f;
+		btn_confirm.OnLeftClick += Btn_confirm_OnLeftClick;
 		panel.Append(btn_confirm);
 
 		btn_exit = new ExitUI(TextureAssets.InventoryBack13);
@@ -65,10 +66,77 @@ public class TransmutationUIState : UIState {
 		txtbox.ShowInputTicker = false;
 		panel.Append(txtbox);
 	}
+
+	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+		if (slot1.item == null || slot2.item == null) {
+			return;
+		}
+		TransmutationUIConfirmButton.CheckForSpecialDrop(slot1.item, slot2.item);
+	}
+
+	private void Slot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
+	}
+
 	public override void Update(GameTime gameTime) {
 		base.Update(gameTime);
-		if(panel.ContainsPoint(Main.MouseScreen)) {
+		if (panel.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
+		}
+		txtbox.SetTextMaxLength(255);
+		txtbox.SetText("");
+		if (slot1.item == null || slot2.item == null) {
+			return;
+		}
+		float offsetchance = 0;
+		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<Dirt>())) {
+			offsetchance = .05f;
+		}
+		bool AnyRelic = slot1.item.ModItem is Relic || slot2.item.ModItem is Relic;
+		if (slot1.item.ModItem is Relic re1 && slot2.item.ModItem is Relic re2) {
+			txtbox.SetText("Chance to upgrade relic : " + RelicTemplateLoader.RelicValueToNumber(TransmutationUIConfirmButton.GetRelicChance(re1, re2, offsetchance) * 100) + "%");
+		}
+		Item item1 = slot1.item;
+		Item item2 = slot2.item;
+		if (AnyRelic &&
+			(item1.IsAWeapon() || item2.IsAWeapon()
+			|| ((item1.accessory || item2.accessory)
+			|| (item1.headSlot > 0 || item2.headSlot > 0)
+			|| (item1.bodySlot > 0 || item2.bodySlot > 0)
+			|| (item1.legSlot > 0 || item2.legSlot > 0) && (!item1.vanity && !item2.vanity)))) {
+
+			Relic relicItem;
+			Item slotitem;
+			if (slot1.item.ModItem is Relic) {
+				relicItem = slot1.item.ModItem as Relic;
+				slotitem = slot2.item;
+			}
+			else {
+				relicItem = slot2.item.ModItem as Relic;
+				slotitem = slot1.item;
+			}
+			float rarityOffSet = slotitem.rare * .03f;
+			if (slotitem.rare >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
+				rarityOffSet += (slotitem.rare - 3) * .02f;
+			}
+			float SuccessChance;
+			switch (relicItem.RelicTier) {
+				case 1:
+					SuccessChance = Relic.chanceTier1;
+					break;
+				case 2:
+					SuccessChance = Relic.chanceTier2;
+					break;
+				case 3:
+					SuccessChance = Relic.chanceTier3;
+					break;
+				case 4:
+					SuccessChance = Relic.chanceTier4;
+					break;
+				default:
+					SuccessChance = Relic.chanceTier4 + .05f * relicItem.RelicTier;
+					break;
+			}
+			txtbox.SetText($"Success rarity upgrade : {RelicTemplateLoader.RelicValueToNumber(Math.Clamp(SuccessChance - rarityOffSet + offsetchance, 0, 1f) * 100)}%");
 		}
 	}
 }
@@ -109,10 +177,12 @@ public class TransmutationUI : UIImage {
 			Main.mouseItem = item.Clone();
 			player.inventory[58] = item.Clone();
 			item = itemcache.Clone();
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
 		}
 		else if (Main.mouseItem.type != ItemID.None && item == null) {
 			//When the slot is available
 			item = Main.mouseItem.Clone();
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = 1 });
 			if (Main.mouseItem.buffType != 0 && Main.mouseItem.stack > 1) {
 				Main.mouseItem.stack--;
 				item.stack = 1;
@@ -132,6 +202,7 @@ public class TransmutationUI : UIImage {
 			Main.mouseItem = item.Clone();
 			player.inventory[58] = item.Clone();
 			item = null;
+			SoundEngine.PlaySound(SoundID.Item35 with { Pitch = -.5f });
 		}
 		else {
 			//Do nothing lmao
@@ -180,104 +251,92 @@ public class TransmutationUIConfirmButton : UIImageButton {
 			Main.LocalPlayer.mouseInterface = true;
 		}
 	}
-	public override void LeftMouseDown(UIMouseEvent evt) {
-		var resultlist = new List<TransmutationUI>();
-		foreach (var element in Parent.Children) if (element is TransmutationUI transmutateResult) {
-				if (transmutateResult.item == null || transmutateResult.item.type == ItemID.None)
-					continue;
-				resultlist.Add(transmutateResult);
-			}
-		var itemList = resultlist.Select(i => i.item).ToList();
-		if (CheckForSpecialDrop(itemList)) {
-			resultlist.ForEach(i => i.item = null);
-			return;
-		}
+	public static float GetRelicChance(Relic relic1, Relic relic2, float chance = 0) {
+		return Math.Clamp(1f - .15f * (relic1.RelicTier + relic2.RelicTier) + chance, .01f, 1f);
 	}
-	private bool CheckForSpecialDrop(List<Item> item) {
-		if (item.Count < 2) {
-			return false;
-		}
+	/// <summary>
+	/// Please check null on your own
+	/// </summary>
+	/// <param name="item1"></param>
+	/// <param name="item2"></param>
+	/// <returns></returns>
+	public static bool CheckForSpecialDrop(Item item1, Item item2) {
 		var player = Main.LocalPlayer;
-		if (item.Where(i => i.ModItem is Relic).Count() > 1) {
-			Relic relic1 = null;
-			Relic relic2 = null;
-			foreach (var it in item) if (it.ModItem is Relic re) {
-					if (relic1 == null) {
-						relic1 = re;
-						continue;
-					}
-					if (relic2 == null) {
-						relic2 = re;
-						break;
-					}
+		float offsetchance = player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
+		Relic relicItem = null;
+		Item slotitem;
+		Item slotitem2 = null;
+		if (item1.ModItem != null && item1.ModItem is Relic relic) {
+			relicItem = relic;
+		}
+		if (item2.ModItem != null && item2.ModItem is Relic relic2) {
+			if (relicItem == null) {
+				relicItem = relic2;
+				slotitem = item1;
+			}
+			else {
+				int count = relicItem.TemplateCount + relic2.TemplateCount;
+				if (count > 4) {
+					return false;
 				}
-			int count = relic1.TemplateCount + relic2.TemplateCount;
-			if (relic1 != null && relic2 != null && count <= 4) {
-				RelicTemplateLoader.MergeStat(relic1, relic2);
-				player.QuickSpawnItem(player.GetSource_FromThis(), relic1.Item);
+				if (Main.rand.NextFloat() > GetRelicChance(relicItem, relic2, offsetchance)) {
+					item1.TurnToAir();
+					item2.TurnToAir();
+					return false;
+				}
+				RelicTemplateLoader.MergeStat(relicItem, relic2);
 				return true;
 			}
 		}
-		Item relicpreItem = item.Where(i => i.ModItem is Relic).FirstOrDefault();
-		Relic relicItem = relicpreItem != null ? relicpreItem.ModItem as Relic : null;
-		Item weaponItem = item.Where(i => i.IsAWeapon()).FirstOrDefault();
-		Item accItem = item.Where(i => i.accessory).FirstOrDefault();
-		Item headItem = item.Where(i => i.headSlot > 0 && !i.vanity).FirstOrDefault();
-		Item bodyItem = item.Where(i => i.bodySlot > 0 && !i.vanity).FirstOrDefault();
-		Item legItem = item.Where(i => i.legSlot > 0 && !i.vanity).FirstOrDefault();
-		Item univitem = null;
+		else {
+			slotitem = item1;
+			slotitem2 = item2;
+		}
 		int Option = 0;
-		if (weaponItem != null && weaponItem.rare < ItemRarityID.Purple - 2) {
-			univitem = weaponItem;
-			Option = 1;
+		int rareval1 = slotitem.rare;
+
+		//Slot item are never null so no need to check for them
+		if (rareval1 < ItemRarityID.Purple - 2) {
+			if (slotitem.IsAWeapon()) {
+				Option = 1;
+			}
+			if (!slotitem.vanity) {
+				if (slotitem.accessory) {
+					Option = 2;
+				}
+				else if (slotitem.headSlot > 0) {
+					Option = 3;
+				}
+				else if (slotitem.bodySlot > 0) {
+					Option = 4;
+				}
+				else if (slotitem.legSlot > 0) {
+					Option = 5;
+				}
+			}
 		}
-		else if (accItem != null && accItem.rare < ItemRarityID.Purple - 2) {
-			univitem = accItem;
-			Option = 2;
-		}
-		else if (headItem != null && headItem.rare < ItemRarityID.Purple - 2) {
-			univitem = accItem;
-			Option = 3;
-		}
-		else if (bodyItem != null && bodyItem.rare < ItemRarityID.Purple - 2) {
-			univitem = accItem;
-			Option = 4;
-		}
-		else if (legItem != null && legItem.rare < ItemRarityID.Purple - 2) {
-			univitem = accItem;
-			Option = 5;
-		}
+
+		//Upgrading item rarity, it is still imporant to check for null here
 		if (relicItem != null) {
 			if (Option != 0) {
-
 				float chance = Main.rand.NextFloat();
 
-				float rarityOffSet = univitem.rare * .03f;
-				if (univitem.rare >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
-					rarityOffSet += (univitem.rare - 3) * .02f;
+				float rarityOffSet = rareval1 * .03f;
+				if (rareval1 >= ItemRarityID.LightRed && relicItem.RelicTier > 2) {
+					rarityOffSet += (rareval1 - 3) * .02f;
 				}
-				chance += rarityOffSet;
-				bool SuccessChance = false;
-				switch (relicItem.RelicTier) {
-					case 1:
-						SuccessChance = chance <= Relic.chanceTier1;
-						break;
-					case 2:
-						SuccessChance = chance <= Relic.chanceTier2;
-						break;
-					case 3:
-						SuccessChance = chance <= Relic.chanceTier3;
-						break;
-					case 4:
-						SuccessChance = chance <= Relic.chanceTier4;
-						break;
-					default:
-						SuccessChance = chance <= Relic.chanceTier4 + .05f * relicItem.RelicTier;
-						break;
+				//Look, the idea is certainly there, I just wonder to my past self why tf you do this ?
+				chance += rarityOffSet - offsetchance;
+				bool SuccessChance;
+				if (relicItem.RelicTier > 4) {
+					SuccessChance = chance <= Relic.chanceTier4 + .05f * relicItem.RelicTier;
 				}
-				int rare = ContentSamples.ItemsByType[univitem.type].rare;
+				else {
+					SuccessChance = chance <= Relic.GetTierChance(relicItem.RelicTier);
+				}
+				int rare = rareval1;
 				if (SuccessChance) {
-					rare = ContentSamples.ItemsByType[univitem.type].rare + 1;
+					rare++;
 				}
 				int itemType = GetItemRarityDB(rare, Option);
 				if (itemType == ItemID.None) {
@@ -287,73 +346,66 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
 				if (Main.item[itemSpawn].CanHavePrefixes())
 					Main.item[itemSpawn].ResetPrefix();
+				item1.TurnToAir();
+				item2.TurnToAir();
 				return true;
 			}
-		}
-
-		if (ContentSamples.ItemsByType[item[0].type].rare >= ItemRarityID.Purple || ContentSamples.ItemsByType[item[0].type].rare <= -1
-			|| ContentSamples.ItemsByType[item[1].type].rare >= ItemRarityID.Purple || ContentSamples.ItemsByType[item[1].type].rare <= -1) {
-			return false;
-		}
-
-		if (ContentSamples.ItemsByType[item[0].type].rare == ContentSamples.ItemsByType[item[1].type].rare) {
-			int rare = ContentSamples.ItemsByType[item[0].type].rare;
-			int itemType = GetItemRarityDB(rare, Option);
-			if (itemType == ItemID.None) {
-				Main.NewText($"Detected no rarity found ! at {rare} rarity at {Option} option");
+			else {
 				return false;
 			}
-			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
-			if (Main.item[itemSpawn].CanHavePrefixes())
-				Main.item[itemSpawn].ResetPrefix();
-			return true;
 		}
-		else {
-			int rare = ContentSamples.ItemsByType[item[0].type].rare;
-			int rare2 = ContentSamples.ItemsByType[item[1].type].rare;
-			int spawmItemType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare]);
-			int spawnItemType2 = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rare2]);
-			int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.NextBool() ? spawmItemType : spawnItemType2);
-			if (Main.item[itemSpawn].CanHavePrefixes())
-				Main.item[itemSpawn].ResetPrefix();
+		else {//Equivalent exchange
+			int rareval2 = slotitem2.rare;
+			int Option2 = 0;
+			if (rareval2 < ItemRarityID.Purple - 2) {
+				if (slotitem2.IsAWeapon()) {
+					Option2 = 1;
+				}
+				if (!slotitem2.vanity) {
+					if (slotitem2.accessory) {
+						Option2 = 2;
+					}
+					else if (slotitem2.headSlot > 0) {
+						Option2 = 3;
+					}
+					else if (slotitem2.bodySlot > 0) {
+						Option2 = 4;
+					}
+					else if (slotitem2.legSlot > 0) {
+						Option2 = 5;
+					}
+				}
+			}
+			if (Option2 == 0 || Option != Option2) {
+				return false;
+			}
+			//Changing to other same tier item
+			if (rareval1 == rareval2) {
+				int itemType = GetItemRarityDB(rareval1, Option);
+				if (itemType == ItemID.None) {
+					Main.NewText($"Detected no rarity found ! at {rareval1} rarity at {Option} option");
+					return false;
+				}
+				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), itemType);
+				if (Main.item[itemSpawn].CanHavePrefixes())
+					Main.item[itemSpawn].ResetPrefix();
+				item1.TurnToAir();
+				item2.TurnToAir();
+				return true;
+			}
+			else {//Choosing between 2 different rarities
+				int spawmItemType = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rareval1]);
+				int spawnItemType2 = Main.rand.Next(BossRushModSystem.WeaponRarityDB[rareval2]);
+				int itemSpawn = player.QuickSpawnItem(player.GetSource_DropAsItem(), Main.rand.NextBool() ? spawmItemType : spawnItemType2);
+				if (Main.item[itemSpawn].CanHavePrefixes())
+					Main.item[itemSpawn].ResetPrefix();
+				item1.TurnToAir();
+				item2.TurnToAir();
+			}
 		}
 		return true;
-		//var itemType = item.Select(i => i.type);
-
-		//if (itemType.Contains(ItemID.Minishark) && itemType.Contains(ItemID.IceBlade)) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenShark>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.Minishark || i.type == ItemID.Musket).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SingleBarrelMinishark>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.Musket).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<LongerMusket>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.Starfury || i.type == ItemID.MagicMissile).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<ManaStarFury>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.SnowballCannon || i.type == ItemID.Minishark).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SnowballRifle>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.SnowballCannon || i.type == ItemID.Boomstick || i.type == ItemID.QuadBarrelShotgun).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<SnowballShotgunCannon>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.Musket || i.type == ItemID.Boomstick || i.type == ItemID.QuadBarrelShotgun).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<HuntingRifle>());
-		//	return true;
-		//}
-		//else if (item.Where(i => i.type == ItemID.EnchantedSword || i.type == ItemID.IceBlade).Count() == 2) {
-		//	player.QuickSpawnItem(player.GetSource_DropAsItem(), ModContent.ItemType<FrozenEnchantedSword>());
-		//	return true;
-		//}
 	}
-	private int GetItemRarityDB(int rare, int option) {
+	public static int GetItemRarityDB(int rare, int option) {
 		switch (option) {
 			case 1:
 				return BossRushModSystem.Safe_GetWeaponRarity(rare);

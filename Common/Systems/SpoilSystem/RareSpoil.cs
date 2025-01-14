@@ -2,6 +2,9 @@
 using Humanizer;
 using Terraria.ID;
 using BossRush.Contents.Items.Chest;
+using Terraria.DataStructures;
+using Terraria.ModLoader;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class RareSpoil {
@@ -83,4 +86,18 @@ internal class RareSpoil {
 			LootBoxBase.GetArmorPiece(itemsource, player);
 		}
 	}
+	public class StarterPerkSpoil : ModSpoil {
+		public override void SetStaticDefault() {
+			RareValue = SpoilDropRarity.Rare;
+		}
+		public override bool IsSelectable(Player player, Item itemsource) {
+			return SpoilDropRarity.RareDrop();
+		}
+		public override void OnChoose(Player player, int itemsource) {
+			IEntitySource entitySource = player.GetSource_OpenItem(itemsource);
+			player.QuickSpawnItem(entitySource, ModContent.ItemType<CelestialEssence>());
+		}
+	}
 }
+
+

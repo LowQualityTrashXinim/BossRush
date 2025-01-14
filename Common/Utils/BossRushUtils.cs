@@ -9,6 +9,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -142,7 +143,7 @@ namespace BossRush {
 					&& CompareSquareFloatValue(mainnpc.Center, position, maxDistanceSquare, out float dis)
 					&& mainnpc.CanBeChasedBy()
 					&& !mainnpc.friendly
-					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || !CanLookThroughTile)
+					&& (Collision.CanHitLine(position, 0, 0, mainnpc.position, 0, 0) || CanLookThroughTile)
 					&& mainnpc.immune[whoAmI] <= 0
 					) {
 					maxDistanceSquare = dis;
@@ -203,6 +204,34 @@ namespace BossRush {
 			if (t < 0.5) return InBack(t * 2) * .5f;
 			return 1 - InBack((1 - t) * 2) * .5f;
 		}
+		public static bool lineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+
+			// calculate the direction of the lines
+			float uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+			float uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
+
+			// if uA and uB are between 0-1, lines are colliding
+			if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+				return true;
+			}
+			return false;
+		}
+		public static bool Collision_PointAB_EntityCollide(Rectangle entity_Hitbox, Vector2 pointA, Vector2 pointB) {
+			// check if the line has hit any of the rectangle's sides
+			// uses the Line/Line function below
+			bool left = lineLine(pointA.X, pointA.Y, pointB.X, pointB.Y, entity_Hitbox.X, entity_Hitbox.Y, entity_Hitbox.X, entity_Hitbox.Y + entity_Hitbox.Height);
+			bool right = lineLine(pointA.X, pointA.Y, pointB.X, pointB.Y, entity_Hitbox.X + entity_Hitbox.Width, entity_Hitbox.Y, entity_Hitbox.X + entity_Hitbox.Width, entity_Hitbox.Y + entity_Hitbox.Height);
+			bool top = lineLine(pointA.X, pointA.Y, pointB.X, pointB.Y, entity_Hitbox.X, entity_Hitbox.Y, entity_Hitbox.X + entity_Hitbox.Width, entity_Hitbox.Y);
+			bool bottom = lineLine(pointA.X, pointA.Y, pointB.X, pointB.Y, entity_Hitbox.X, entity_Hitbox.Y + entity_Hitbox.Height, entity_Hitbox.X + entity_Hitbox.Width, entity_Hitbox.Y + entity_Hitbox.Height);
+
+			// if ANY of the above are true, the line
+			// has hit the rectangle
+			if (left || right || top || bottom) {
+				return true;
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// Calculate square length of Vector2 and check if it is smaller than square max distance
 		/// This won't power max distance by 2 so do it yourself

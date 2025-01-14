@@ -10,7 +10,7 @@ using BossRush.Contents.Items.Weapon.NoneSynergyWeapon.Resolve;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class SpectreQuiver : ModItem {
-	public override string Texture => BossRushTexture.MissingTexture_Default;
+	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
 		Item.DefaultToAccessory(32, 32);
 		Item.GetGlobalItem<GlobalItemHandle>().LostAccessories = true;

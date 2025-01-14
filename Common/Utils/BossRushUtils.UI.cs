@@ -45,7 +45,7 @@ namespace BossRush {
 		/// <param name="target">where/how big the outline should be drawn</param>
 		/// <param name="color">the color of the outline</param>
 		public static void DrawOutline(SpriteBatch spriteBatch, Rectangle target, Color color = default) {
-			Texture2D tex = ModContent.Request<Texture2D>("StructureHelper/GUI/Box").Value;
+			Texture2D tex = ModContent.Request<Texture2D>("BossRush/Texture/StructureHelper_Box2").Value;
 
 			if (color == default)
 				color = new Color(49, 84, 141) * 0.9f;
@@ -240,6 +240,23 @@ namespace BossRush {
 	public class Roguelike_UIText : UIText {
 		public bool Hide = false;
 		public Roguelike_UIText(string text, float textScale = 1, bool large = false) : base(text, textScale, large) {
+		}
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			base.DrawSelf(spriteBatch);
+		}
+		public sealed override void Draw(SpriteBatch spriteBatch) {
+			if (Hide) {
+				return;
+			}
+			base.Draw(spriteBatch);
+		}
+	}
+	public class Roguelike_UIPanel : UIPanel {
+		public bool Hide = false;
+		public Roguelike_UIPanel() {
 		}
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (Hide) {

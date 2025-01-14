@@ -18,13 +18,12 @@ using BossRush.Contents.Projectiles;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange;
+using BossRush.Common.Systems.Mutation;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.BuilderItem;
-using BossRush.Contents.Items.Accessories.LostAccessories;
 using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.ArgumentsSystem;
-using BossRush.Common.Systems.Mutation;
-using BossRush.Common.Systems.WeaponUpgrade;
+using BossRush.Contents.Items.Accessories.LostAccessories;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -97,53 +96,6 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 			modifiers.SourceDamage += proj.knockBack * .1f * Math.Clamp(Math.Abs(target.knockBackResist - 1), 0, 3f);
-		}
-	}
-	public class WindSlash : Perk {
-		public override void SetDefaults() {
-			textureString = BossRushUtils.GetTheSameTextureAsEntity<WindSlash>();
-			list_category.Add(PerkCategory.WeaponUpgrade);
-			CanBeStack = false;
-		}
-		public override bool SelectChoosing() {
-			return false;
-		}
-		public override void Update(Player player) {
-			if (player.HeldItem.DamageType == DamageClass.Melee
-				&& player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)
-				&& Main.mouseLeft
-				&& player.itemAnimation == player.itemAnimationMax) {
-				Vector2 speed = Vector2.UnitX * player.direction;
-				if (player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-					speed = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero);
-				}
-				int damage = (int)(player.HeldItem.damage * .75f);
-				float length = player.HeldItem.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
-				if (player.GetModPlayer<WindSlashPerkPlayer>().StrikeOpportunity) {
-					speed *= 1.5f;
-					damage *= 3;
-				}
-				Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), player.Center.PositionOFFSET(speed, length + 17), speed * 5, ModContent.ProjectileType<WindSlashProjectile>(), damage, 2f, player.whoAmI);
-			}
-		}
-	}
-	public class WindSlashPerkPlayer : ModPlayer {
-		public int OpportunityWindow = 0;
-		public bool StrikeOpportunity = false;
-		public override void PostUpdate() {
-			if (!Player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<WindSlash>())) {
-				return;
-			}
-			if (Player.ItemAnimationActive) {
-				OpportunityWindow = 0;
-				StrikeOpportunity = false;
-			}
-			if (OpportunityWindow >= BossRushUtils.ToSecond(1.5f)) {
-				StrikeOpportunity = true;
-				Dust.NewDust(Player.Center, 0, 0, DustID.SolarFlare);
-				return;
-			}
-			OpportunityWindow++;
 		}
 	}
 	public class PowerUp : Perk {
@@ -232,13 +184,12 @@ namespace BossRush.Contents.Perks {
 	public class Dirt : Perk {
 		public override void SetDefaults() {
 			CanBeStack = false;
-			CanBeChoosen = false;
+			textureString = BossRushUtils.GetTheSameTextureAsEntity<Dirt>();
 		}
-		public override void ResetEffect(Player player) {
-			if (player.HasItem(ItemID.DirtBlock)) {
-				player.statDefense += 15;
-				player.AddBuff(BuffID.WellFed3, 60);
-			}
+		public override void UpdateEquip(Player player) {
+			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .05f * StackAmount(player);
+			player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .05f * StackAmount(player);
+			player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance += .05f * StackAmount(player);
 		}
 	}
 	public class AlchemistEmpowerment : Perk {
@@ -368,7 +319,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfSolar>();
 			list_category.Add(PerkCategory.Starter);
-			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -409,7 +359,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfVortex>();
 			list_category.Add(PerkCategory.Starter);
-			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -430,7 +379,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfNebula>();
 			list_category.Add(PerkCategory.Starter);
-			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -453,7 +401,6 @@ namespace BossRush.Contents.Perks {
 		public override void SetDefaults() {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<BlessingOfStarDust>();
 			list_category.Add(PerkCategory.Starter);
-			textureString = BossRushTexture.ACCESSORIESSLOT;
 			CanBeStack = true;
 			StackLimit = 3;
 		}
@@ -1007,6 +954,44 @@ namespace BossRush.Contents.Perks {
 			ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
 			augmentplayer.IncreasesChance += .05f * StackAmount(player);
 			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
+		}
+	}
+	public class DemolitionistRanger : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			float chance = 0.25f * StackAmount(player);
+			if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Main.rand.NextFloat() <= chance) {
+				type = ProjectileID.ExplosiveBullet;
+			}
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			float chance = 0.1f * StackAmount(player);
+			if (proj.type == ProjectileID.ExplosiveBullet && Main.rand.NextFloat() <= chance) {
+				modifiers.SourceDamage += .55f;
+			}
+		}
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			float chance = 0.05f * StackAmount(player);
+			if (proj.type != ProjectileID.ExplosiveBullet || Main.rand.NextFloat() > chance) {
+				return;
+			}
+			for (int i = 0; i < 25; i++) {
+				int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
+				Main.dust[smokedust].noGravity = true;
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(15f,15f);
+				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
+				int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity = Main.rand.NextVector2Circular(15f, 15f);
+				Main.dust[dust].scale = Main.rand.NextFloat(.75f, 2f);
+			}
+			target.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
+			foreach (NPC npc in npclist) {
+				player.StrikeNPCDirect(npc, hit);
+			}
 		}
 	}
 }

@@ -18,13 +18,13 @@ namespace BossRush.Contents.Artifacts {
 	}
 	public class PridePlayer : ModPlayer {
 		bool Pride = false;
-		protected ChestLootDropPlayer chestmodplayer => Player.GetModPlayer<ChestLootDropPlayer>();
 		public override void ResetEffects() {
 			Pride = Player.HasArtifact<TokenOfPrideArtifact>();
 		}
-		public override void PostUpdate() {
+		public override void UpdateEquips() {
 			if (Pride) {
-				chestmodplayer.DropModifier *= 0;
+				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= 0;
+				Player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .65f;
 			}
 		}
 		public override void PreUpdate() {

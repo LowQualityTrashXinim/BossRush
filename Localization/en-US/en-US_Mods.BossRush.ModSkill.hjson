@@ -1,0 +1,221 @@
+Replay: {
+	DisplayName: Replay
+	Description: Duplicates the preceding skill, but at double its Energy Cost
+}
+
+Rewind: {
+	DisplayName: Rewind
+	Description: Rewinds to the beginning once, but doubles the Energy Cost of preceding skills
+}
+
+FastForward: {
+	DisplayName: Fast Forward
+	Description: Halves the cooldown and duration of succeeding skills
+}
+
+Skip1: {
+	DisplayName: Skip
+	Description: Skips one skill to refund 100 Energy back
+}
+
+PowerSaver: {
+	DisplayName: Power Saver
+	Description: Halves the Energy Cost of all the active skill
+}
+
+PowerCord: {
+	DisplayName: Power Cord
+	Description: Increases Energy Recharge by 150% for 12s after the duration ended
+}
+
+Procrastination: {
+	DisplayName: Procrastination
+	Description: Increases your attack by 125% and damage reduction by 75%, but you are affected by the 'Stoned' debuff
+}
+
+SpeedDemon: {
+	DisplayName: Speed Demon
+	Description: Increases your speed by 50% and weapon speed by 150%
+}
+
+TranquilMind: {
+	DisplayName: Tranquil Mind
+	Description: Increases skill duration by 5 seconds
+}
+
+HellFireArrowRain: {
+	DisplayName: Hellborn Cascade
+	Description: Casts a cascade of Hellfire Arrows that phases through blocks, dealing 28 damage each
+}
+
+FireArrowRain: {
+	DisplayName: Firefall Rain
+	Description: Casts a rain of Fire Arrows that phases through blocks, dealing 28 damage each
+}
+
+FrostburnArrowRain: {
+	DisplayName: Frosthail
+	Description: Casts a hail of Frostburn Arrows that phases through blocks, dealing 28 damage each
+}
+
+BoneArrowRain: {
+	DisplayName: Bonefide Shower
+	Description: Casts a shower of Bone Arrows that phases through blocks, dealing 28 damage each
+}
+
+UnholyArrowRain: {
+	DisplayName: Demonic Shatter
+	Description: Casts a shatter of Unholy Arrows that phases through blocks, dealing 28 damage each
+}
+
+HolyArrowRain: {
+	DisplayName: Blessed Flood
+	Description: Casts a flood of Holy Arrows that phases through blocks, dealing 28 damage each
+}
+
+CholorophyteArrowRain: {
+	DisplayName: Leafspore Rainfall
+	Description: Casts a rainfall of Chlorophyte Arrows that phases through blocks, dealing 28 damage each
+}
+
+CursedArrowRain: {
+	DisplayName: Cursed Fanfare
+	Description: Casts a fanfare of Cursed Arrows that phases through blocks, dealing 28 damage each
+}
+
+IchorArrowRain: {
+	DisplayName: Golden Spread
+	Description: Casts a spread of Ichor Arrows that phases through blocks, dealing 28 damage each
+}
+
+JesterArrowRain: {
+	DisplayName: Circus Tricks
+	Description: Casts a trick of Jester Arrows that phases through blocks, dealing 28 damage each
+}
+
+WoodenArrowRain: {
+	DisplayName: Tribal Ambush
+	Description: Casts an ambush of Arrows that phases through blocks, dealing 28 damage each
+}
+
+Increases_3xDamage: {
+	DisplayName: Power Bank
+	Description: Increases damage by +300%, but decreases Energy Recharge by 50% for 1 minute
+}
+
+Icicle: {
+	DisplayName: Icicle
+	Description: Shoots out up to 6 icicles every 5 ticks towards your cursor, dealing 18 damage and inflicting the 'Chilled' debuff
+}
+
+MeteorShower: {
+	DisplayName: Meteor Shower
+	Description: Rains down several meteors towards your cursor, dealing 44 base damage + 44% weapon damage within a large radius
+}
+
+SpiritBurst: {
+	DisplayName: Spirit Burst
+	Description: Bursts out a powerful spirit that homes in on the nearest enemy.
+}
+
+InfiniteManaSupply: {
+	DisplayName: Astral Overcharge
+	Description: Overflows your character with Mana Regeneration
+}
+
+GuaranteedCrit: {
+	DisplayName: Hyperfocus
+	Description: Ensures every hit within set skill duration crits
+}
+
+RapidHealing: {
+	DisplayName: Rapid Overflow
+	Description: Regenerates 6 health every 0.1 seconds
+}
+
+FireBall: {
+	DisplayName: Fireball
+	Description: Shoots out a fireball every 10 ticks, dealing 43 magic damage and inflicting the 'On Fire!' debuff
+}
+
+StarFury: {
+	DisplayName: Starfall Blast
+	Description: Shoots down a Fallen Star every 2 seconds towards your cursor, dealing 1000 damage
+}
+
+WoodSwordSpirit: {
+	DisplayName: Wooden Warrior
+	Description: Summons a Wooden Spirit, dealing 24 damage
+}
+
+BroadSwordSpirit: {
+	DisplayName: Broadsword Spirit
+	Description: Summons 3 ancient broadswords that spin around the player, dealing 34 base damage + 75% weapon damage and inflicting the 'Penetrated' debuff
+}
+
+Overclock: {
+	DisplayName: Overclocked
+	Description: Increases weapon speed by 50% (up to 750%) every 0.5 seconds
+}
+
+BloodToPower: {
+	DisplayName: Sacrificial Pact
+	Description: Halves your current health to increase your damage% proportionally to the sacrificed amount
+}
+
+AdAstra: {
+	DisplayName: Ad Astra
+	Description: Increases the damage of your next hit by +500%, but then lowers your attack, speed, and defense by 90% for 15 seconds.
+}
+
+BulletStorm: {
+	DisplayName: Bullet Whirlwind
+	Description: Rains down various bullets that deal 30 ranged damage
+}
+
+TerrorForm: {
+	DisplayName: Terror Form
+	Description: Offers major improvements to several stats, but rapidly drains your life
+}
+
+AllOrNothing: {
+	DisplayName: All Or Nothing
+	Description: Blesses your next hit with a randomized damage output
+}
+
+IceAge: {
+	DisplayName: Ice Age
+	Description: Casts out a large glacier from the sky towards your cursor, dealing 62 base damage + 250% weapon damage in a large radius
+}
+
+ElectricChain: {
+	DisplayName: Electric Chain
+	Description: Releases a zap that deals 43 damage to up to 10 unelectrified enemies close to each other, inflicting the 'Electrified' debuff and returning 5 Energy each
+}
+
+WilloFreeze: {
+	DisplayName: Will o' Freeze
+	Description: Summons 4 frozen flames that spin around the player while spreading out, dealing 36 damage and inflicting the 'Frostburn' debuff
+}
+
+PowerPlant: {
+	DisplayName: Power Plant
+	Description: Deploys a Radioactive Tower that damages both you and your enemies, dealing 10 damage per second and converting it into Energy
+}
+
+TransferStation: {
+	DisplayName: Transfer Station
+	Description: Places a Vampiric Pylon at your cursor, dealing 10 damage per second to enemies and healing you half that amount while in its radius
+}
+
+// UNRELEASED
+
+LucidNightmares: {
+	DisplayName: Lucid Nightmares
+	Description: Summons 3 abyssal to attack enemies, dealing 53 damage per attack
+}
+
+SacrificialWormhole: {
+	DisplayName: Sacrificial Wormhole
+	Description: Halves your max health for 60 seconds to manifest a wormhole that can damage both you and your enemies, dealing 240 damage and inflicting the 'Suffocation' debuff
+}

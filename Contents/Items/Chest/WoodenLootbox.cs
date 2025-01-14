@@ -18,6 +18,7 @@ namespace BossRush.Contents.Items.Chest {
 		public override void LootPoolSetStaticDefaults() {
 			LootBoxItemPool itempool = new LootBoxItemPool(Type);
 			itempool.DropItemMelee.UnionWith(TerrariaArrayID.MeleePreBoss);
+			itempool.DropItemMelee.UnionWith(TerrariaArrayID.CommonAxe);
 			itempool.DropItemRange.UnionWith(TerrariaArrayID.RangePreBoss);
 			itempool.DropItemMagic.UnionWith(TerrariaArrayID.MagicPreBoss);
 			itempool.DropItemSummon.UnionWith(TerrariaArrayID.SummonPreBoss);

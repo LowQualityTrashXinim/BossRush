@@ -28,7 +28,6 @@ internal static partial class GenerationHelper {
 
 		Tile tile = Main.tile[i, j];
 		tile.TileType = tileType;
-		tile.TileColor = PaintID.None;
 		tile.Get<TileWallWireStateData>().HasTile = true;
 	}
 
@@ -50,6 +49,7 @@ internal static partial class GenerationHelper {
 		if (CoordinatesOutOfBounds(i, j)) {
 			return;
 		}
+		Main.tile[i, j].ClearTile();
 		Main.tile[i, j].Get<TileWallWireStateData>().HasTile = false;
 	}
 
@@ -166,6 +166,7 @@ internal static partial class GenerationHelper {
 			datalist = modsystem.dict_Struture[FileName];
 		}
 		else {
+			Console.WriteLine("Structure not found !");
 			return;
 		}
 		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
@@ -220,12 +221,13 @@ internal static partial class GenerationHelper {
 			using StreamWriter m = new(file);
 
 			Tile outSideLoop = new();
+			outSideLoop.TileType = ushort.MaxValue;
 			int distance = 0;
 			for (int x = target.X; x <= target.X + target.Width; x++) {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
 					//Since this just saving, it is completely fine to be slow
 					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType /*&& tile.TileFrameX != outSideLoop.TileFrameX*/ && tile.TileType >= TileID.Count) {
+					if (tile.TileType != outSideLoop.TileType || tile.TileFrameX != outSideLoop.TileFrameX && tile.TileType >= TileID.Count) {
 						if (distance != 0) {
 							m.Write(distance);
 						}
@@ -459,4 +461,11 @@ public struct TileData : ICloneable {
 			&& TD.Tile_WallData == this.Tile_WallData
 			&& TD.Tile_WireData == this.Tile_WireData;
 	}
+}
+public class StructureTemplate {
+	public string TemplateFilePath = "";
+	public List<StructureTemplate> Compatible_Left_Templates = new List<StructureTemplate>();
+	public List<StructureTemplate> Compatible_Right_Templates = new List<StructureTemplate>();
+	public List<StructureTemplate> Compatible_Top_Templates = new List<StructureTemplate>();
+	public List<StructureTemplate> Compatible_Bottom_Templates = new List<StructureTemplate>();
 }

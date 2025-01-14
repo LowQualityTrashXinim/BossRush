@@ -131,22 +131,3 @@ class RoguelikeArmorPlayer : ModPlayer {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 	}
 }
-public class ArmorSet {
-	public int headID, bodyID, legID;
-	protected string ArmorSetBonusToolTip = "";
-	public ArmorSet(int headID, int bodyID, int legID) {
-		this.headID = headID;
-		this.bodyID = bodyID;
-		this.legID = legID;
-	}
-	public static string ConvertIntoArmorSetFormat(int headID, int bodyID, int legID) => $"{headID}:{bodyID}:{legID}";
-	/// <summary>
-	/// Expect there is only 3 item in a array
-	/// </summary>
-	/// <param name="armor"></param>
-	/// <returns></returns>
-	public static string ConvertIntoArmorSetFormat(int[] armor) => $"{armor[0]}:{armor[1]}:{armor[2]}";
-	public override string ToString() => $"{headID}:{bodyID}:{legID}";
-
-	public bool ContainAnyOfArmorPiece(int type) => type == headID || type == bodyID || type == legID;
-}

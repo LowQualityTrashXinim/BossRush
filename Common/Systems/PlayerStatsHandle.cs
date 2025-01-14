@@ -95,6 +95,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public int TemporaryLife_Counter = 0;
 	public int TemporaryLife_Limit = 0;
 	public int TemporaryLife_CounterLimit = 120;
+	public float Transmutation_SuccessChance = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
@@ -120,12 +121,21 @@ public class PlayerStatsHandle : ModPlayer {
 		if (target.life >= target.lifeMax) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
-		if (target.buffType.Where(i => Main.debuff[i]).Any()) {
-			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage);
+		bool HasDebuff = false; int count = 0;
+		for (int i = 0; i < target.buffType.Length; i++) {
+			if (target.buffType[i] <= 0) {
+				continue;
+			}
+			if (Main.debuff[target.buffType[i]]) {
+				HasDebuff = true;
+				count++;
+			}
 		}
+		if (HasDebuff)
+			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(DebuffDamage * count);
+
 		modifiers.ModifyHitInfo += Modifiers_ModifyHitInfo;
 	}
-
 	private void Modifiers_ModifyHitInfo(ref NPC.HitInfo info) {
 		ModifyHit_Before_Crit = info.Crit;
 		if (info.Crit) {
@@ -136,7 +146,6 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		info.Crit = (bool)ModifyHit_OverrideCrit;
 	}
-
 	public override bool FreeDodge(Player.HurtInfo info) {
 		if (Main.rand.NextFloat() <= DodgeChance) {
 			Player.AddImmuneTime(info.CooldownCounter, DodgeTimer);
@@ -233,6 +242,7 @@ public class PlayerStatsHandle : ModPlayer {
 		ModifyHit_Before_Crit = false;
 		Rapid_LifeRegen = 0;
 		Rapid_ManaRegen = 0;
+		Transmutation_SuccessChance = 0;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
@@ -372,6 +382,7 @@ public class PlayerStatsHandle : ModPlayer {
 				break;
 		}
 	}
+	public int EliteKillCount = 0;
 	public int successfullyKillNPCcount = 0;
 	public int requestShootExtra = 0;
 	public float requestVelocityChange = 0;

@@ -1,0 +1,661 @@
+SuppliesDrop: {
+	DisplayName: Supply Drop
+	Description: Give you 1 randomize weapon based on progression
+}
+
+GiftOfRelic: {
+	DisplayName: Gift of Relic
+	Description: Gift you a relic container
+}
+
+StrokeOfLuck: {
+	DisplayName: Stroke Of Luck
+	Description:
+		'''
+		You have 20% to 70% to
+		+ Have your output damage increases when hitting NPC from 15% to 100%
+		+ Damage dealt onto you may be reduce from 15% to dealing 1 damage
+		You have 10% to 90% to dodge a attack which give you 44 to 88 i-frame
+		'''
+}
+
+UncertainStrike: {
+	DisplayName: Uncertain Strike
+	Description:
+		'''
+		Your strike have
+		+ 33% to increases damage up to 55% or decreases down to 15%
+		+ 15% to ignore 20 defenses
+		+ 5% for damage to be multiply by 2
+		+ 1% to heal player
+		'''
+}
+
+MarkOfSpectre: {
+	DisplayName: Mark of Spectre
+	Description:
+		'''
+		+ You have 60% to dodge a incomming attack
+		+ Your movement speed is increases by 35% and massively boost jump speed
+		+ You are knockback less
+		- Damage taken is increases by 25%
+		'''
+}
+
+LethalKnockBack: {
+	DisplayName: Lethal Knock Back
+	Description:
+		'''
+		+ You deal additional damage base on your knockback and target's knockback resistance
+		+ Increases melee knockback by 15%
+		- Decreases weapon damage by 17%
+		'''
+}
+
+PowerUp: {
+	DisplayName: Strong heavy Attack
+	Description:
+		'''
+		+ Increases damage by 25%
+		+ Increases critical strike chance by 10
+		- Decreases attack speed by 35% ( the next stack only decreases by 10% )
+		'''
+}
+
+WindSlash: {
+	DisplayName: Wind Slash
+	Description:
+		'''
+		"For people who complain their sword isn't special"
+		 + Release a short wind slash upon swing that deal 75% of that weapon damage
+		 + Waiting for 1.5s will result in stronger wind slash !
+		 + Increases weapon base damage by 5
+		'''
+}
+
+LifeForceOrb: {
+	DisplayName: Life Force Orb
+	Description:
+		'''
+		+ Attacking enemy will periodically create a short lived life orb
+		+ Life Orb heal you and temporary increases your max life
+		+ The lower your health, the better healing effect life force orb have
+
+		'''
+}
+
+BackUpMana: {
+	DisplayName: Back Up Mana
+	Description:
+		'''
+		+ Increases your maximum mana by 67
+		+ When you are out of mana, instant fill up your mana
+		( Have 30s cool down, stacking this perk will reduce the duration by 7)
+		'''
+}
+
+Dirt: {
+	DisplayName: Dirt
+	Description:
+		'''
+		"Being low as dirt"
+		+ Increases the chance of transmutation success by 5%
+		+ Increases the chance of accessory augmentated by 5%
+		+ Increases the chance of weapon enchanted by 5%
+		'''
+}
+
+PeaceWithGod: {
+	DisplayName: Peace With God
+	Description:
+		'''
+		+ God no longer angry at you and now opening lootbox give you synergy weapon
+		- Synergy bonus no longer available
+		'''
+}
+
+AlchemistEmpowerment: {
+	DisplayName: Alchemist Empowerment
+	Description:
+		'''
+		+ Drinking any buff potion have chance to give you additional helpful buff
+		+ Quick Potion heal is halved, but also cleanses almost all debuffs
+		+ Potion have 55% to not be consumed when not using Quick Buff key
+		+ Opening Lootbox will drop you 1 random special potion
+		"Knowledge that was lost to time."
+		'''
+}
+
+SelfExplosion: {
+	DisplayName: Self Explosion
+	Description:
+		'''
+		+ When you got hit, you explode damaging surrounding enemies
+		+ After you explode, you gain a small buff that massively increases your life regenaration
+		'''
+}
+
+ProjectileProtection: {
+	DisplayName: Projectile Protection
+	Description: + You are 30% more resistant to projectile
+}
+
+ProjectileDuplication: {
+	DisplayName: Projectile Duplication
+	Description:
+		'''
+		+ Your projectile will duplicate itself upon spawn ( amount depend on the stack )
+		+ Decreases your projectile damage by 55% ( duplicate of this perk will increases damage by 15%, max out at 55% )
+		( warning : may work weirdly on many weapon due to terraria code )
+		'''
+}
+
+ScatterShot: {
+	DisplayName: Scatter Shot
+	Description: + When a projectile die, it will shoot out a weaker version of itself
+}
+
+BloodStrike: {
+	DisplayName: Blood Strike
+	Description:
+		'''
+		+ Increases your multiplicative damage to 1.36x
+		+ Increases your flat damage by 7
+		- Using weapon will eat your hp by 5% of that weapon damage
+		'''
+}
+
+SpeedArmor: {
+	DisplayName: Speed Armor
+	Description:
+		'''
+		+ The faster you are, the more defenses increases
+		+ Increases your movement speed by 15%
+		'''
+}
+
+CelestialRage: {
+	DisplayName: Celestial Rage
+	Description: + A gift from celestial being
+}
+
+BlessingOfSolar: {
+	DisplayName: Blessing Of Solar
+	Description:
+		'''
+		+ 12% melee size increases
+		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
+		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
+		'''
+}
+
+BlessingOfVortex: {
+	DisplayName: Blessing Of Vortex
+	Description:
+		'''
+		+ 7% range critical strike chance
+		+ You have 1% chance to deal 4x damage when using range weapon
+		+ Increases critical strike damage by 50%
+		'''
+}
+
+BlessingOfNebula: {
+	DisplayName: Blessing Of Nebula
+	Description:
+		'''
+		+ 11% magic cost reduction
+		+ Increases max mana by 78
+		+ Mana star have 6% to spawn from hitting NPC with magic projectile
+		'''
+}
+
+BlessingOfStarDust: {
+	DisplayName: Blessing Of Stardust
+	Description:
+		'''
+		+ Your whip inflict Star gaze
+		+ For 2 minion/sentry slot you have, you gain 1 damage
+		+ Increases your max minion slot and sentry slot by 1
+		'''
+}
+
+BlessingOfSynergy: {
+	DisplayName: Blessing Of Synergy
+	Description: + Increases weapon flat damage by 10 when switch to a different weapon after used
+}
+
+BlessingOfTitan: {
+	DisplayName: Blessing Of Titan
+	Description:
+		'''
+		+ Increases defense by 15% and additional 10 defenses
+		+ Increases max hp by 50
+		+ Increases thorn damage by 100% ( Flat )
+		'''
+}
+
+BlessingOfEvasive: {
+	DisplayName: Blessing Of Evasive
+	Description:
+		'''
+		+ Increases movement speed by 15% and jump bonus by 25%
+		+ Increases dodge chance by 4%
+		+ Grant you a extra jump ( not stackable )
+		'''
+}
+
+BlessingOfPerk: {
+	DisplayName: Blessing Of Opportunity
+	Description:
+		'''
+		+ Increases perk range amount by 1
+		+ Increases lootbox drop amount by 1
+		+ Rare spoils are more common
+		'''
+}
+
+ArenaBlessing: {
+	DisplayName: Adventure Spirit
+	Description: + Spawm a spirit lamp that follow you around and give you Campfire buff
+}
+
+ArenaBlessing1: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you heart lamp buff
+		Increases speed by 10%
+		Increases radius strength
+		'''
+}
+
+ArenaBlessing2: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you Star in bottle buff
+		Increases speed by 10%
+		Increases radius strength
+		'''
+}
+
+ArenaBlessing3: {
+	DisplayName: Adventure Spirit
+	Description:
+		'''
+		+ Strength your spirit lamp
+		Now can give you Bash statue buff
+		Increases speed by 10%
+		Increases radius strength
+		'''
+}
+
+StellarRetirement: {
+	DisplayName: Stellar Retirement
+	Description: + Super star fall from the sky dealing 1000 damage
+}
+
+OverchargedMana: {
+	DisplayName: Overcharged Mana
+	Description:
+		'''
+		+ Your mana regenaration is increases
+		+ When at 50%, your mana regenaration is further increases
+		+ When you have full mana deal magic explode damage and +77% magic damage
+		+ When your current mana value is greater than your current life value, strengthen above effect
+		'''
+}
+
+BeyondCritcal: {
+	DisplayName: Beyond Critical
+	Description:
+		'''
+		+ You have 4% chance to ignore 90% target hit defense and increases damage by 2.5 time
+		+ Increases critcal strike chance by 5%
+		'''
+}
+
+SummonBuffPerk: {
+	DisplayName: Crowd Control
+	Description:
+		'''
+		+ Gain +2 minion slot for every stack you have
+		- Non-summon projectiles decreased damage by 5%
+		'''
+}
+
+TrueMeleeBuffPerk: {
+	DisplayName: BloodShed
+	Description:
+		'''
+		+ Melee damage is no longer random
+		+ Melee weapon that can't shoot projectile deals 25% bonus damage
+		+ While player don't have i-frame, increases above damage by 44%
+		'''
+}
+
+KnockpackPerk: {
+	DisplayName: Physics Enjoyer
+	Description:
+		'''
+		+ Increases your knockback
+		+ Most projectiles knockback dealt always becomes upward
+		+ Hitting enemies that have knockback immunity will turn knockback value into flat armor penetration
+		'''
+}
+
+ImprovedPotion: {
+	DisplayName: Mana/Healing Potion+
+	Description:
+		'''
+		+ Buff duration increases by 45%
+		+ Healing potion heal you 70% more
+		+ During mana sickness, increases mana regen capability massively
+		- After mana sicnkess duration is over, you can't consume any mana potion for 10s
+		'''
+}
+
+WeaponExpert: {
+	DisplayName: Weapon Expert
+	Description:
+		'''
+		+ If default weapon damage is below or equal to 20 damage then increases damage by 100% 
+		( Note : entering hard mode, requirement will be change to 42 damage)
+		'''
+}
+
+AspectOfTheUnderworld: {
+	DisplayName: Aspect Of The Underworld
+	Description:
+		'''
+		+ You have a aura of fire and you become immune to on fire
+		+ Enemy that have On Fire debuff will receive more critical damage
+		- While your life is above 66%, decreases life regen by 32 flat but your aura of fire is stronger
+		'''
+}
+
+AspectOfFirstChaos: {
+	DisplayName: Aspect Of First Chaos
+	Description:
+		'''
+		+ Your attack randomly inflict debuff that last 30s
+		+ Occasionally you shoot out random projectile that dealt the same damage as your current weapon
+		+ Hitting enemy with item will also occasionally shoot out random projectile
+		+ You sometime hit enemy multiple time
+		'''
+}
+
+AspectOfFirstChaos1: {
+	DisplayName: Aspect Of First Chaos
+	Description:
+		'''
+		+ Increases the chance of spawning random projectile and doing multiple hit
+		+ Projectile that is spawn from this perk have 1 in 4 chance to spawn another different projectile
+		'''
+}
+
+EnergyAbsorption: {
+	DisplayName: Energy Absorption
+	Description:
+		'''
+		+ Getting hit will recharge your energy for 25% of damage taken
+		+ Increases damage reduction by 10%
+		+ Increases energy capacity by 20%
+		'''
+}
+
+OathOfSword: {
+	DisplayName: Oath Of Sword
+	Description:
+		'''
+		+ Increases your melee damage by 100% and melee damage are multiply by 1.1x
+		- Melee attack speed are multiply by 0.45x
+		- Using any other weapon that is not melee will decreases their damage by 65%
+		'''
+}
+
+HybridRanger: {
+	DisplayName: Spirit Ranger
+	Description:
+		'''
+		+ Your range damage is increased by how many max minion and sentry slot are
+		+ Increases your max minion and sentry slot by your range damage to 1:100
+		'''
+}
+
+BlessingOfMoon: {
+	DisplayName: Blessing Of Moon
+	Description:
+		'''
+		The lunar power, the moon power are now at your disposal 
+		+ Your attack deal extra 125% of weapon damage as True damage
+		+ Inflict Moonlight debuff onto enemy which drastically make enemies more vulnerable 
+		+ Your attack is always accompany by Lunar Flare
+		+ During the night, you have 75% to dodge an attack
+		'''
+}
+
+TitanPower: {
+	DisplayName: Titan Power
+	Description:
+		'''
+		The power of a Titan
+		+ Increases your maximum health by 200, thorn damage by 150%, defenses by 15 flat and 25%
+		+ Increases your damage reduction by 40%
+		+ You can revive once ( 4 miniutes cool down )
+		'''
+}
+
+LostInWonderLand: {
+	DisplayName: Lost In Wonderland
+	Description:
+		'''
+		[WARNING:EXPERIMENTAL DO NOT CHOOSE]
+		+ Increases chance of NPC getting mutate by 10%
+		+ Your weapon have 10% to get enchantment
+		+ Your weapon have 10% to get augmentation
+		'''
+}
+
+GreedPrivilage: {
+	DisplayName: Greed Privilage
+	Description:
+		'''
+		+ Increases your drop loot by 1
+		+ Increases the chance of getting augmentation by 20%
+		+ Increases the chance of getting enchantment by 5%
+		'''
+}
+
+TheBigMoment: {
+	DisplayName: The Big Moment !
+	Description:
+		'''
+		Depending on your drop value :
+		+ Have rare chance to deal 2.0x multiplicative damage
+		+ Chance to have your damage increases by 100%
+		+ A chance to heal base on your drop value
+		'''
+}
+
+EndlessHunger: {
+	DisplayName: Endless Hunger
+	Description:
+		'''
+		+ Increases your damage reduction by 5%
+		+ When your damage reduction is over 20%, getting hit will heal you a random amount
+		(Note : The higher your damage reduction, the better the heal become)
+		'''
+}
+
+Satisfaction: {
+	DisplayName: Satisfaction
+	Description:
+		'''
+		+ While your health is at 100% or above, damage reduction is increases by 100%
+		+ While your health is below 60%, hitting enemy with item will heal you
+		+ While your health is below 40%, Increases damage reduction by 10%
+		'''
+}
+
+BlindPride: {
+	DisplayName: Blind Pride
+	Description:
+		'''
+		+ Increases your weapon damage by 34% ( next stack only increases by 10 )
+		+ Increases your weapon critical strike chance by 10 ( next stack only increases by 5 )
+		+ If your projectile is out of range, deal 0.5x damage
+		'''
+}
+
+PridefulPossession: {
+	DisplayName: Prideful Possession
+	Description:
+		'''
+		+ Increases the chance getting augmentation by 10%
+		+ Increases your defense per augmentation you have
+		+ For each enchantment, increases your weapon critical strike chance by 1, weapon damage by 10%
+		'''
+}
+
+EarthlyWarm: {
+	DisplayName: Earthly Warmth
+	Description:
+		'''
+		+ Increases your regeneration by 50%
+		Getting hit :
+		+ Have 1 in 3 to 10 chance to heal random amount of half of your current life
+		+ Have super rare chance to instantly heal your health instantly ( unstackable )
+		'''
+}
+
+NaturalThorn: {
+	DisplayName: Natural Thorn
+	Description:
+		'''
+		+ Increases your maximum health by 10%
+		+ Deal damage to enemy close to you ( damage depend on your current health )
+		+ Getting hit will deal damage back to NPC depend on your regenerative power
+		'''
+}
+
+BloodVoodoo: {
+	DisplayName: Blood Voodoo
+	Description:
+		'''
+		+ Hitting enemy will over heal you
+		+ Upon enemy damaging you, you spew out damaging blood
+		+ Rare chance to also release blood rose thorn
+		'''
+}
+
+NightTerror: {
+	DisplayName: Night Terror
+	Description:
+		'''
+		During night :
+		+ Increases your life regeneration by 25% and flat 10
+		Increases your :
+		+ Melee damage by 1.3x, critical damage by 1.4x, movement and jump boost by 55%
+		( Note : effect above are stack differently )
+		'''
+}
+
+NaturalUpgrade: {
+	DisplayName: Natural Upgrade
+	Description:
+		'''
+		+ Shooting a bow have a 20-40% chance to shoot a wind shot that deal 150% of bow damage 
+		+ Wooden type bow now shoot 2 arrow at high velocity at once and is a lot stronger
+		Hitting enemy with wooden arrow will 
+		+ Have 20-40% chance to spawn a wind shot
+		+ Have a 10-15% chance to do a wind explosion which deal 200% damage
+		'''
+}
+
+StrikeOfFury: {
+	DisplayName: Strike Of Fury
+	Description:
+		'''
+		+ Increases your none critical damage by 25%
+		Critical strike enemy will :
+		+ Have chance to gain FuryStrike buff for 3 to 7 second
+		+ Have 5% to deal 2nd strike with 45 damage
+		- Decreases your critical damage by 10% and critical strike chance by 20 ( unstackable )
+		'''
+}
+
+RuthlessRage: {
+	DisplayName: Ruthless Rage
+	Description:
+		'''
+		+ Increases your critical damage by 55% and your none critical damage by 35%
+		Critical strike enemy will :
+		+ Have 5% chance to multiply final damage by 2.0x ( stackable ) and 1% chance to multiply by 4.0x ( unstackable )
+		+ Getting hit give you Rage Empowerment for 1 to 9s
+		- Decreases critical strike chance by 20 ( unstackable )
+		'''
+}
+
+UnlimitedThrowable: {
+	DisplayName: Unlimited Throwable
+	Description:
+		'''
+		+ Throwable become unconsumable
+		+ Throwable gain +10 damage, +4 critical strike chance and +50% critical damage
+		+ Item now can be prefixed
+		'''
+}
+
+TomahawkUpgrade: {
+	DisplayName: Tomahawk
+	Description:
+		'''
+		+ Gain ability to throw the axe and pull it back at will or when reached maximum travel distance 
+		+ Increases Damage by 20
+		+ Increases penetrating value by 10
+		'''
+}
+
+RefinedUpgrade: {
+	DisplayName: Refined ( Axe )
+	Description:
+		'''
+		+ Axe critical hit damage are increased by 200%
+		+ Base damage increases by 10
+		+ Axe delay reuses are decrease by 50%
+		+ Hitting enemy with axe will causes them to bleed
+		'''
+}
+
+HunterInstinct: {
+	DisplayName: Hunter Instinct ( Axe )
+	Description:
+		'''
+		+ Common axe gain a huge buff to their stats
+		+ While using axe weapon, you have 15% to dodge an attack
+		+ Hitting enemy have chance to increase your attack speed briefly
+		'''
+}
+
+EnhancedMagicStaff: {
+	DisplayName: Enhanced Magic Staff
+	Description:
+		'''
+		+ Gem staff are much stronger
+		+ Some of the gem staff receive new projectile
+		+ Some gem staff are completely changed
+		'''
+}
+
+DemolitionistRanger: {
+	DisplayName: Demolitionist Ranger
+	Description:
+		'''
+		+ Have 25% to convert bullet shot out from gun to explosive bullet
+		+ Explosive bullet have 10% to deal 55% more damage to enemy
+		+ Explosive bullet have 5% to do a big explosion
+		'''
+}

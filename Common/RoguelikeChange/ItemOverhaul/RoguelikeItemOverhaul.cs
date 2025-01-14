@@ -97,24 +97,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				case ItemID.ChainKnife:
 					item.damage += 12;
 					break;
-				case ItemID.AmethystStaff:
-					item.shoot = ModContent.ProjectileType<AmethystMagicalBolt>();
-					item.damage -= 3;
-					item.useTime = 3;
-					item.useAnimation = 15;
-					item.reuseDelay = 30;
-					item.mana = 6;
-					item.shootSpeed = 1;
-					break;
-				case ItemID.TopazStaff:
-					item.shoot = ModContent.ProjectileType<TopazMagicalBolt>();
-					item.damage -= 4;
-					item.useTime = 3;
-					item.useAnimation = 18;
-					item.reuseDelay = 33;
-					item.mana = 6;
-					item.shootSpeed = 1;
-					break;
 				case ItemID.ChlorophyteClaymore:
 					item.damage += 10;
 					item.useTime = item.useAnimation = 35;
@@ -392,10 +374,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		private void OnHitNPC_WoodBow(Projectile proj, NPC target) {
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.AshWoodBow && Main.rand.NextBool(4)) {
-				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(10));
+				target.AddBuff(BuffID.OnFire, BossRushUtils.ToSecond(2));
 			}
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == ItemID.BorealWoodBow && Main.rand.NextBool(4)) {
-				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
+				target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(2));
 			}
 		}
 		private void OnHitNPC_TheUnderTaker(Projectile proj, NPC npc) {
@@ -422,6 +404,34 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (projectile.type == ProjectileID.RollingCactusSpike && source is EntitySource_Parent parent && parent.Entity is Projectile parentProjectile) {
 				projectile.friendly = parentProjectile.friendly;
 				projectile.hostile = parentProjectile.hostile;
+			}
+		}
+	}
+	public class RoguelikeOverhaul_ModSystem : ModSystem {
+		public static HashSet<int> ItemThatSubsTo_MeleeOverhaul = new();
+		public override void Load() {
+			base.Load();
+			ItemThatSubsTo_MeleeOverhaul = new();
+		}
+		public override void Unload() {
+			base.Unload();
+			ItemThatSubsTo_MeleeOverhaul = null;
+		}
+		public static bool Optimized_CheckItem(Item item) {
+			if (BossRushUtils.CheckUseStyleMelee(item, BossRushUtils.MeleeStyle.CheckOnlyModded)) {
+				return true;
+			}
+			if (item.TryGetGlobalItem(out BattleAxeOverhaul axeItem)) {
+				switch (axeItem.UseStyleType) {
+					case BossRushUseStyle.DownChop:
+						return true;
+				}
+			}
+			return ItemThatSubsTo_MeleeOverhaul.Contains(item.type);
+		}
+		public override void PostSetupContent() {
+			if (UniversalSystem.Check_RLOH()) {
+				ItemThatSubsTo_MeleeOverhaul.Clear();
 			}
 		}
 	}

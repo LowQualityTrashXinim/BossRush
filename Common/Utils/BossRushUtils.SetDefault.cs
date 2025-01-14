@@ -148,9 +148,15 @@ namespace BossRush {
 		}
 		public static void Set_ItemCriticalDamage(this Item item, float critDmg) {
 			if(item.TryGetGlobalItem(out GlobalItemHandle globalitem)) {
-				globalitem.CriticalDamage += critDmg;
+				globalitem.CriticalDamage = critDmg;
 			}
 		}
+		/// <summary>
+		/// Soon to be deprecated
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="WhatToCheck"></param>
+		/// <returns></returns>
 		public static bool CheckUseStyleMelee(this Item item, MeleeStyle WhatToCheck) {
 			if (!UniversalSystem.Check_RLOH()) {
 				return false;

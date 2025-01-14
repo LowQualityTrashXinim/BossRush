@@ -7,6 +7,7 @@ using BossRush.Contents.Items.Chest;
 using Terraria.DataStructures;
 using BossRush.Contents.Items.RelicItem;
 using Terraria.ModLoader;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 public class UncommonSpoil {

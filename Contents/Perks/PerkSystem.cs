@@ -63,7 +63,7 @@ namespace BossRush.Contents.Perks {
 		}
 	}
 	class PerkModSystem : ModSystem {
-		public static List<int> StarterPerkType { get; private set; }
+		public static List<int> StarterPerkType { get; private set; } = new();
 		public override void Load() {
 			base.Load();
 			On_Player.QuickMana += On_Player_QuickMana;
@@ -657,7 +657,7 @@ namespace BossRush.Contents.Perks {
 		private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
 			reroll.Hide = false;
 			Vector2 originDefault = new Vector2(26, 26);
-			List<int> starterPerk = PerkModSystem.StarterPerkType;
+			List<int> starterPerk = new(PerkModSystem.StarterPerkType);
 			int limit = 3;
 			for (int i = 0; i < limit; i++) {
 				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));

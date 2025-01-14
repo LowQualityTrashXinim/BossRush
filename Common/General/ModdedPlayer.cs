@@ -55,19 +55,11 @@ namespace BossRush.Common.General {
 			if (Player.HeldItem != null && Player.HeldItem.IsAWeapon()) {
 				Player.itemAnimationMax = Player.HeldItem.useAnimation;
 			}
-			foreach (Item item in Player.inventory) {
-				foreach (var globalitem in item.Globals) {
-					if(globalitem == null || globalitem.Mod.Name != Mod.Name) {
-						continue;
-					}
-					globalitem.SetDefaults(item);
-				}
-			}
+			BossRushUtils.Reflesh_GlobalItem(Mod, Player);
 			RogueLikeWorldGen.GridPart_X = Main.maxTilesX / 24;
 			RogueLikeWorldGen.GridPart_Y = Main.maxTilesY / 24;
 			if (Player.IsDebugPlayer()) {
 				Main.NewText("You have enter debug mode", Color.Red);
-				return;
 			}
 			//if (Main.ActiveWorldFileData.GameMode == 0) {
 			//	Main.NewText("Yo this guys playing on classic mode lol, skill issues spotted !");

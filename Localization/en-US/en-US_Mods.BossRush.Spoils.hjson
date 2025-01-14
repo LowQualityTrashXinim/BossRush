@@ -1,0 +1,125 @@
+WeaponSpoil: {
+	DisplayName: Weapon Pack
+	Description: Contains {0} weapon(s).
+}
+
+AccessorySpoil: {
+	DisplayName: Accessory Pack
+	Description: Contains {0} accessor(ies).
+}
+
+ArmorSpoil: {
+	DisplayName: Armor Pack
+	Description: Contains 1 randomized armor set.
+}
+
+PotionSpoil: {
+	DisplayName: Potion Pack
+	Description: Contains {0} potion(s) of any type.
+}
+
+RelicSpoil: {
+	DisplayName: Relic Pack
+	Description: Contains {0} relic(s).
+}
+
+SkillSpoil: {
+	DisplayName: Skill Pack
+	Description: Contains {0} skillbox(es).
+}
+
+PerkSpoil: {
+	DisplayName: Perk Mythic
+	Description: Contains 1 perk blessing.
+}
+
+UpgradeAccSpoil: {
+	DisplayName: Accessory Bundle
+	Description: Contains {0} accessor(ies) or lost accessor(ies).
+}
+
+Tier2RelicSpoil: {
+	DisplayName: Relic Bundle
+	Description: Contains {0} [Tier 2] relic(s).
+}
+
+LostAccessorySpoil: {
+	DisplayName: Ancient Special
+	Description: Contains {0} lost accessor(ies).
+}
+
+RareArmorPiece: {
+	DisplayName: Armor Special
+	Description: Contains 1 randomized armor set of varying progression.
+}
+
+SuppliesPackage: {
+	DisplayName: Mixed Mythic
+	Description: Contains {0} weapon(s) of randomized progression, 1 armor piece of varying progression, {1} relic(s) and {1} skillbox(es).
+}
+
+FoodSpoil: {
+	DisplayName: Homemade Pack
+	Description: Contains {0} meal(s) of any type.
+}
+
+RareWeaponSpoil: {
+	DisplayName: Weapon Bundle
+	Description: Contains 4 weapons, one for each vanilla class.
+}
+
+SSRPerkSpoil: {
+	DisplayName: Roguelike Legend
+	Description: Contains 1 perk blessing, {0} skillbox(es) and {1} relic(s).
+}
+
+WeaponPotionSpoil: {
+	DisplayName: Survival Bundle
+	Description: Contains {0} weapon(s), {1} potion(s) & meal(s) of any type.
+}
+
+ArmorAccessorySpoil: {
+	DisplayName: Chivalric Special
+	Description: Contains {0} armor piece(s) and {1} accessor(ies).
+}
+
+SuperRelicSpoil: {
+	DisplayName: Relic Mythic
+	Description: Contains 1 [Tier 4] relic.
+}
+
+LegendaryRelicSpoil: {
+	DisplayName: Relic Legend
+	Description: Contains 1 [Tier 6] relic.
+}
+
+RoguelikeSpoil: {
+	DisplayName: Utility Special
+	Description: Contains {0} skillbox(es) and {1} relic(s).
+}
+
+TrinketSpoil: {
+	DisplayName: Trinket Mythic
+	Description: Contains 1 trinket.
+}
+
+DivineWeaponSpoil: {
+	DisplayName: Divine Gladiator Mythic
+	Description: Contains 1 fully enchanted weapon.
+}
+
+StarterPerkSpoil: {
+	DisplayName: Celestial Special
+	Description: Contains 1 Celestial Essence.
+}
+
+// UNRELEASED
+
+SpeedSpoilHM: {
+	DisplayName: Mobility Special
+	HMDescription: Contains 1 mount of any type and 1 pair of wings.
+}
+
+WeaponUpgrade.DisplayName: Description:
+ArtifactUpgrade.DisplayName: Description:
+Curses.DisplayName: Description:

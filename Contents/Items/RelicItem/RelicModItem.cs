@@ -16,6 +16,23 @@ public class Relic : ModItem {
 	public const float chanceTier2 = .6f;
 	public const float chanceTier3 = .45f;
 	public const float chanceTier4 = .6f;
+	public static float GetTierChance(int tier) {
+		if (tier <= 0) {
+			return 0;
+		}
+		switch (tier) {
+			case 1:
+				return chanceTier1;
+			case 2:
+				return chanceTier2;
+			case 3:
+				return chanceTier3;
+			case 4:
+				return chanceTier4;
+			default:
+				return chanceTier4;
+		}
+	}
 	public override string Texture => BossRushTexture.ACCESSORIESSLOT;
 	List<int> templatelist = new List<int>();
 	List<PlayerStats> statlist = new List<PlayerStats>();
@@ -98,6 +115,9 @@ public class Relic : ModItem {
 	}
 	public int RelicTier => templatelist != null ? templatelist.Count : 0;
 	public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		TooltipLine NameLine = tooltips.Where(t => t.Name == "ItemName").FirstOrDefault();
+		NameLine.Text = $"[Tier : {TemplateCount}] {this.DisplayName}";
+		NameLine.OverrideColor = relicColor.MultiColor(5);
 		var index = tooltips.FindIndex(l => l.Name == "Tooltip0");
 		if (templatelist == null || index == -1) {
 			tooltips.Add(new TooltipLine(Mod, "", "Something gone wrong"));
@@ -108,7 +128,8 @@ public class Relic : ModItem {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
 				continue;
 			}
-			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
+			line += $"[c/{Main.DiscoColor.Hex3()}:{RelicTemplateLoader.GetTemplate(templatelist[i]).DisplayName}]\n";
+			line += "- " + RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -122,6 +143,7 @@ public class Relic : ModItem {
 			}
 		}
 		tooltips.Insert(index, new(Mod, "Relic_Tooltip", line));
+		tooltips.Add(new(Mod, "RelicItem", $"[Passive active item]") { OverrideColor = Main.DiscoColor });
 	}
 	/// <summary>
 	/// This is shorthand for <see cref="AddRelicTemplate"/> where templateid is set random in a for loop
@@ -209,6 +231,7 @@ public abstract class RelicTemplate : ModType {
 		return ModContent.GetInstance<T>().Type;
 	}
 	public string Description => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
+	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.DisplayName");
 	public int Type { get; private set; }
 	protected sealed override void Register() {
 		SetStaticDefaults();
@@ -254,7 +277,7 @@ public static class RelicTemplateLoader {
 	}
 	public static string RelicValueToPercentage(StatModifier value) => Math.Round((value.ApplyTo(1) - 1) * 100, 2).ToString() + "%";
 	public static string RelicValueToNumber(StatModifier value) => Math.Round(value.ApplyTo(1) - 1, 2).ToString();
-	public static string RelicValueToPercentage(float value) => Math.Round((value - 1) * 100, 2).ToString() + "%";
+	public static string RelicValueToPercentage(float value) => Math.Round((value - 1) * 100).ToString() + "%";
 	public static string RelicValueToNumber(float value) => Math.Round(value).ToString();
 
 }

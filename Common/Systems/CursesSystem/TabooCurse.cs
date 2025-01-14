@@ -9,8 +9,8 @@ public class WeakeningI : ModCurse {
 	}
 	public override void Update(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, -.05f * GetValue(player));
-		modplayer.AddStatsToPlayer(PlayerStats.Defense, -.05f * GetValue(player));
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1 - .05f * GetValue(player));
+		modplayer.AddStatsToPlayer(PlayerStats.Defense, 1 - .05f * GetValue(player));
 	}
 }
 
@@ -21,8 +21,8 @@ public class WeakeningII : ModCurse {
 	}
 	public override void Update(Player player) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, -.1f * GetValue(player));
-		modplayer.AddStatsToPlayer(PlayerStats.Defense, -.1f * GetValue(player));
+		modplayer.AddStatsToPlayer(PlayerStats.PureDamage, 1 - .1f * GetValue(player));
+		modplayer.AddStatsToPlayer(PlayerStats.Defense, 1 - .1f * GetValue(player));
 	}
 }
 
@@ -80,7 +80,7 @@ public class Heartbreak : ModCurse {
 		Value = 1;
 	}
 	public override void Update(Player player) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .02f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .98f);
 	}
 }
 
@@ -90,7 +90,7 @@ public class Lifebreak : ModCurse {
 		Value = 3;
 	}
 	public override void Update(Player player) {
-		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .1f);
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .9f);
 	}
 }
 
@@ -101,7 +101,18 @@ public class Unholy : ModCurse {
 	}
 	public override void Update(Player player) {
 		if (Main.IsItDay()) {
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .2f);
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .8f);
+		}
+	}
+}
+public class Vile : ModCurse {
+	public override void SetDefault() {
+		AddCatagory(CursesCatagory.Taboo);
+		Value = 3;
+	}
+	public override void Update(Player player) {
+		if (Main.IsItDay()) {
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, Additive: .6f);
 		}
 	}
 }

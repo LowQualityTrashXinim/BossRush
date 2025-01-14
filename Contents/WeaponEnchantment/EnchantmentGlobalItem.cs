@@ -1,12 +1,18 @@
 ﻿using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.UI;
+using System.Linq;
+using ReLogic.Content;
 using Terraria.ModLoader;
+using Terraria.GameContent;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 
 namespace BossRush.Contents.WeaponEnchantment;
@@ -23,9 +29,10 @@ public class EnchantmentSystem : ModSystem {
 			}
 			modplayer.Request_EnchantedItem--;
 		}
+		float randomizedchance = 0f;
 		if (!ChaosModeSystem.Chaos()) {
-			if (!UniversalSystem.Check_TotalRNG()) {
-				return;
+			if (UniversalSystem.Check_TotalRNG()) {
+				randomizedchance += .2f;
 			}
 			if (UniversalSystem.LuckDepartment(UniversalSystem.CHECK_WWEAPONENCHANT)) {
 				return;
@@ -37,7 +44,7 @@ public class EnchantmentSystem : ModSystem {
 					continue;
 				}
 			}
-			if (Main.rand.NextFloat() <= modplayer.RandomizeChanceEnchantment) {
+			if (Main.rand.NextFloat() <= randomizedchance + modplayer.RandomizeChanceEnchantment) {
 				EnchantItem(ref item, i);
 				continue;
 			}
@@ -154,7 +161,7 @@ public class EnchantmentModplayer : ModPlayer {
 	public int Request_EnchantedItem = 0;
 	public int Request_EnchantedAmount = 1;
 	public override void ResetEffects() {
-		RandomizeChanceEnchantment = .2f;
+		RandomizeChanceEnchantment = 0;
 	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
 	public override void PostUpdate() {
@@ -366,6 +373,265 @@ public class EnchantmentModplayer : ModPlayer {
 				continue;
 
 			EnchantmentLoader.GetEnchantmentItemID(globalItem.EnchantmenStlot[i]).OnKill(Player);
+		}
+	}
+}
+internal class EnchantmentUIState : UIState {
+	UIPanel panel;
+	WeaponEnchantmentUIslot weaponEnchantmentUIslot;
+	ExitUI weaponEnchantmentUIExit;
+	bool isMousePressed = false;
+	Vector2 position = Main.ScreenSize.ToVector2() / 2f;
+	Vector2 panelSize = new Vector2(70 * 3 - 8, 62 * 2 + 8);
+	Vector2 UIclampOffset = new Vector2(60, 60);
+	public override void OnInitialize() {
+		panel = new UIPanel();
+		panel.UISetPosition(Main.LocalPlayer.Center, panelSize / 2f);
+		panel.OnLeftMouseDown += mousePressed;
+		panel.OnLeftMouseUp += mouseUp;
+		panel.UISetWidthHeight(panelSize.X, panelSize.Y);
+
+		Append(panel);
+
+		weaponEnchantmentUIslot = new WeaponEnchantmentUIslot(TextureAssets.InventoryBack);
+		weaponEnchantmentUIslot.UISetWidthHeight(52, 52);
+		weaponEnchantmentUIslot.UISetPosition(position + Vector2.UnitX * 120, new Vector2(26, 26));
+		Append(weaponEnchantmentUIslot);
+		weaponEnchantmentUIExit = new ExitUI(TextureAssets.InventoryBack13);
+		weaponEnchantmentUIExit.UISetWidthHeight(52, 52);
+		weaponEnchantmentUIExit.UISetPosition(position + Vector2.UnitX * 178, new Vector2(26, 26));
+		Append(weaponEnchantmentUIExit);
+	}
+
+	public override void Update(GameTime gameTime) {
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
+		if (isMousePressed)
+			this.position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
+		for (int i = 0; i < Children.Count(); i++) {
+			var children = Children.ElementAt(i);
+			if (children is MoveableUIImage) {
+				var child = children as MoveableUIImage;
+				child.UISetPosition(position + child.positionOffset);
+				child.position = position;
+			}
+		}
+		panel.UISetPosition(position);
+		weaponEnchantmentUIExit.UISetPosition(position + new Vector2(60, 0));
+	}
+
+	private void mousePressed(UIMouseEvent evt, UIElement listeningElement) {
+		isMousePressed = true;
+	}
+
+
+	private void mouseUp(UIMouseEvent evt, UIElement listeningElement) {
+		isMousePressed = false;
+	}
+
+	public override void OnDeactivate() {
+		int count = Children.Count();
+		for (int i = count - 1; i >= 0; i--) {
+			UIElement child = Children.ElementAt(i);
+			if (child is EnchantmentUIslot wmslot) {
+				if (wmslot.itemOwner == null) {
+					continue;
+				}
+				else {
+					child.Deactivate();
+					child.Remove();
+				}
+			}
+			if (child is UIText) {
+				child.Deactivate();
+				child.Remove();
+			}
+		}
+	}
+}
+public class MoveableUIImage : UIImage {
+	public MoveableUIImage(Asset<Texture2D> texture) : base(texture) {
+	}
+
+	public Vector2 positionOffset = Vector2.Zero;
+	public Vector2 position = Vector2.Zero;
+
+}
+
+public class WeaponEnchantmentUIslot : MoveableUIImage {
+	public int WhoAmI = -1;
+	public Texture2D textureDraw;
+	public Item item;
+
+
+
+	private Texture2D texture;
+	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
+		this.texture = texture.Value;
+	}
+	List<int> textUqID = new List<int>();
+	public override void LeftClick(UIMouseEvent evt) {
+		Player player = Main.LocalPlayer;
+		if (Main.mouseItem.type != ItemID.None) {
+			if (Main.mouseItem.consumable)
+				return;
+			Item itemcached;
+			if (item != null && item.type != ItemID.None) {
+				itemcached = item.Clone();
+				item = Main.mouseItem.Clone();
+				Main.mouseItem = itemcached.Clone();
+				player.inventory[58] = itemcached.Clone();
+			}
+			else {
+				item = Main.mouseItem.Clone();
+				Main.mouseItem.TurnToAir();
+				player.inventory[58].TurnToAir();
+				UniversalSystem.EnchantingState = true;
+			}
+			if (item.TryGetGlobalItem(out EnchantmentGlobalItem globalItem)) {
+				int length = globalItem.EnchantmenStlot.Length - 1;
+				for (int i = 0; i < length; i++) {
+					EnchantmentUIslot slot = new EnchantmentUIslot(TextureAssets.InventoryBack);
+					slot.positionOffset = Vector2.UnitY * 60 + Vector2.UnitX * 60 * i;
+					slot.UISetWidthHeight(52, 52);
+					slot.WhoAmI = i;
+					slot.itemOwner = item;
+					slot.itemType = globalItem.EnchantmenStlot[i];
+					Parent.Append(slot);
+					UIText text = new UIText($"{i + 1}");
+					text.UISetPosition(positionOffset + Vector2.UnitY * 56, new Vector2(26, 26));
+					textUqID.Add(text.UniqueId);
+					Parent.Append(text);
+				}
+			}
+		}
+		else {
+			if (item == null)
+				return;
+			UniversalSystem.EnchantingState = false;
+			Main.mouseItem = item;
+			item = null;
+			int count = Parent.Children.Count();
+			for (int i = count - 1; i >= 0; i--) {
+				UIElement child = Parent.Children.ElementAt(i);
+				if (child is EnchantmentUIslot wmslot) {
+					if (wmslot.itemOwner == null)
+						continue;
+				}
+				if (child is EnchantmentUIslot { itemOwner: not null }) {
+					child.Deactivate();
+					child.Remove();
+				}
+				if (child is UIText text && textUqID.Contains(text.UniqueId)) {
+					textUqID.Remove(text.UniqueId);
+					child.Deactivate();
+					child.Remove();
+				}
+			}
+		}
+	}
+	public override void OnDeactivate() {
+		textUqID.Clear();
+		Player player = Main.LocalPlayer;
+		UniversalSystem.EnchantingState = false;
+		if (item == null)
+			return;
+		for (int i = 0; i < 50; i++) {
+			if (player.CanItemSlotAccept(player.inventory[i], item)) {
+				if (ModContent.GetInstance<UniversalSystem>().WorldState == "Exited") {
+					ModContent.GetInstance<UniversalSystem>().IsAttemptingToBringItemToNewPlayer = true;
+					return;
+				}
+				player.inventory[i] = item.Clone();
+				item = null;
+				return;
+			}
+		}
+		player.DropItem(player.GetSource_DropAsItem(), player.Center, ref item);
+		item = null;
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		Vector2 drawpos = position + positionOffset + texture.Size() * .5f;
+		base.Draw(spriteBatch);
+		if (item != null) {
+			Main.instance.LoadItem(item.type);
+			Texture2D texture = TextureAssets.Item[item.type].Value;
+			Vector2 origin = texture.Size() * .5f;
+			float scaling = 1;
+			if (texture.Width > this.texture.Width || texture.Height > this.texture.Height) {
+				scaling = ScaleCalculation(texture.Size()) * .68f;
+			}
+			spriteBatch.Draw(texture, drawpos, null, Color.White, 0, origin, scaling, SpriteEffects.None, 0);
+		}
+		else {
+			Texture2D backgroundtexture = TextureAssets.Item[ItemID.SilverBroadsword].Value;
+			spriteBatch.Draw(backgroundtexture, drawpos, null, new Color(0, 0, 0, 80), 0, texture.Size() * .35f, ScaleCalculation(backgroundtexture.Size()) * .78f, SpriteEffects.None, 0);
+		}
+	}
+	private float ScaleCalculation(Vector2 textureSize) => texture.Size().Length() / textureSize.Length();
+}
+public class EnchantmentUIslot : MoveableUIImage {
+	public int itemType = 0;
+	public int WhoAmI = -1;
+
+	public Item itemOwner = null;
+	private Texture2D texture;
+	public EnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
+		this.texture = texture.Value;
+	}
+	public override void LeftClick(UIMouseEvent evt) {
+		if (itemOwner == null)
+			return;
+		if (Main.mouseItem.type != ItemID.None) {
+			if (Main.mouseItem.consumable)
+				return;
+			if (itemType != 0)
+				return;
+			if (EnchantmentLoader.GetEnchantmentItemID(Main.mouseItem.type) == null)
+				return;
+			itemType = Main.mouseItem.type;
+			Main.mouseItem.TurnToAir();
+			Main.LocalPlayer.inventory[58].TurnToAir();
+			EnchantmentSystem.EnchantItem(ref itemOwner, WhoAmI, itemType);
+		}
+	}
+	public override void Draw(SpriteBatch spriteBatch) {
+		base.Draw(spriteBatch);
+		try {
+			if (itemOwner == null)
+				return;
+			if (itemType != 0) {
+				Vector2 drawpos = new Vector2(Left.Pixels, Top.Pixels) + texture.Size() * .5f;
+				Main.instance.LoadItem(itemType);
+				Texture2D texture1 = TextureAssets.Item[itemType].Value;
+				Vector2 origin = texture1.Size() * .5f;
+				spriteBatch.Draw(texture1, drawpos, null, Color.White, 0, origin, .87f, SpriteEffects.None, 0);
+			}
+		}
+		catch (Exception ex) {
+			Main.NewText(ex.Message);
+		}
+	}
+	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
+		if (ContainsPoint(Main.MouseScreen)) {
+			Main.LocalPlayer.mouseInterface = true;
+		}
+		if (itemType == ItemID.None)
+			return;
+		if (IsMouseHovering) {
+			string tooltipText = "No enchantment can be found";
+			if (EnchantmentLoader.GetEnchantmentItemID(itemType) != null) {
+				tooltipText = EnchantmentLoader.GetEnchantmentItemID(itemType).Description;
+			}
+			Main.instance.MouseText(tooltipText);
+		}
+		else {
+			if (!Parent.Children.Where(e => e.IsMouseHovering).Any()) {
+				Main.instance.MouseText("");
+			}
 		}
 	}
 }
