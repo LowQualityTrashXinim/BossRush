@@ -257,38 +257,23 @@ BlessingOfPerk: {
 ArenaBlessing: {
 	DisplayName: Adventure Spirit
 	Description: + Spawm a spirit lamp that follow you around and give you Campfire buff
-}
-
-ArenaBlessing1: {
-	DisplayName: Adventure Spirit
-	Description:
+	Description1:
 		'''
-		+ Strength your spirit lamp
+		+ Strengthen your spirit lamp
 		Now can give you heart lamp buff
-		Increases speed by 10%
-		Increases radius strength
+		Increases spirit's movement speed by 10% and radius strength
 		'''
-}
-
-ArenaBlessing2: {
-	DisplayName: Adventure Spirit
-	Description:
+	Description2:
 		'''
-		+ Strength your spirit lamp
+		+ Strengthen your spirit lamp
 		Now can give you Star in bottle buff
-		Increases speed by 10%
-		Increases radius strength
+		Increases spirit's movement speed by 10% and radius strength
 		'''
-}
-
-ArenaBlessing3: {
-	DisplayName: Adventure Spirit
-	Description:
+	Description3:
 		'''
-		+ Strength your spirit lamp
+		+ Strengthen your spirit lamp
 		Now can give you Bash statue buff
-		Increases speed by 10%
-		Increases radius strength
+		Increases spirit's movement speed by 10% and radius strength
 		'''
 }
 

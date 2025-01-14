@@ -518,7 +518,7 @@ public class DebuffTemplateV1 : RelicTemplate {
 			}
 		}
 		float additive = value.Additive * (1 + (relic.RelicTier - 1) / 3f);
-		if (count > 3) {
+		if (count >= 3) {
 			modplayer.AddStatsToPlayer(stat, additive);
 		}
 	}

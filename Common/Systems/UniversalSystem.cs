@@ -432,11 +432,18 @@ internal class UniversalSystem : ModSystem {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
 		tag["ListOfBossKilled"] = ListOfBossKilled;
 		tag["LootBoxOpen"] = LootBoxOpen;
+		if (timeBeatenTheGame != TimeSpan.Zero) {
+			tag["TimeBeaten"] = timeBeatenTheGame;
+		}
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
 		LootBoxOpen = tag.Get<List<int>>("LootBoxOpen");
+		if (tag.TryGet("TimeBeaten", out TimeSpan time)) {
+			timeBeatenTheGame = time;
+
+		}
 	}
 	public static void AddPerk(int perkType) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
@@ -474,6 +481,19 @@ internal class UniversalSystem : ModSystem {
 		WorldState = "Exited";
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.DeactivateUI();
+	}
+}
+public class TimeSerializer : TagSerializer<TimeSpan, TagCompound> {
+	public override TagCompound Serialize(TimeSpan value) => new TagCompound {
+		["Days"] = value.Days,
+		["Hours"] = value.Hours,
+		["Minutes"] = value.Minutes,
+		["Seconds"] = value.Seconds,
+		["MiliSeconds"] = value.Milliseconds,
+	};
+
+	public override TimeSpan Deserialize(TagCompound tag) {
+		return new TimeSpan(tag.Get<int>("Days"), tag.Get<int>("Hours"), tag.Get<int>("Minutes"), tag.Get<int>("Seconds"), tag.Get<int>("MiliSeconds"));
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -681,15 +701,26 @@ class DefaultUI : UIState {
 	}
 	public override void Update(GameTime gameTime) {
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
-		if (UniversalSystem.DidPlayerBeatTheMod()) {
-			ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+		if (system.timeBeatenTheGame == TimeSpan.Zero) {
+			if (UniversalSystem.DidPlayerBeatTheMod()) {
+				ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+			}
+			string ToTimer =
+				$"{time.Hours}" +
+				$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
+				$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
+				$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
+			timer.SetText(ToTimer);
 		}
-		string ToTimer =
-			$"{time.Hours}" +
-			$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
-			$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
-			$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
-		timer.SetText(ToTimer);
+		else {
+			string ToTimer =
+			$"{system.timeBeatenTheGame.Hours}" +
+			$":{(system.timeBeatenTheGame.Minutes >= 10 ? system.timeBeatenTheGame.Minutes : "0" + system.timeBeatenTheGame.Minutes)}" +
+			$":{(system.timeBeatenTheGame.Seconds >= 10 ? system.timeBeatenTheGame.Seconds : "0" + time.Seconds)}" +
+			$":{(system.timeBeatenTheGame.Milliseconds >= 100 ? (system.timeBeatenTheGame.Milliseconds >= 10 ? "0" + system.timeBeatenTheGame.Milliseconds : system.timeBeatenTheGame.Milliseconds) : "00" + system.timeBeatenTheGame.Milliseconds)}";
+			timer.SetText(ToTimer);
+		}
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {

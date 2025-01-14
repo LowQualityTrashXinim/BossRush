@@ -505,13 +505,9 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 4;
 		}
 		public override string ModifyToolTip() {
-			switch (StackAmount(Main.LocalPlayer)) {
-				case 1:
-					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
-				case 2:
-					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}2.Description");
-				case 3:
-					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}3.Description");
+			int stack = StackAmount(Main.LocalPlayer);
+			if (stack > 0) {
+				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description{stack}");
 			}
 			return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
 		}
@@ -981,7 +977,7 @@ namespace BossRush.Contents.Perks {
 			for (int i = 0; i < 25; i++) {
 				int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
 				Main.dust[smokedust].noGravity = true;
-				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(15f,15f);
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(15f, 15f);
 				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 				int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;

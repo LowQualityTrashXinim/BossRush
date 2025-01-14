@@ -534,9 +534,6 @@ public class PlayerStatsHandleSystem : ModSystem {
 	}
 
 	private int On_Projectile_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float(On_Projectile.orig_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float orig, IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner, float ai0, float ai1, float ai2) {
-		if (Type == ProjectileID.BookOfSkullsSkull) {
-
-		}
 		if (Owner < 0 || Owner > 255) {
 			return orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
 		}

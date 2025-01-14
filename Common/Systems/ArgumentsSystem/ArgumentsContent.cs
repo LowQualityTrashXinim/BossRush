@@ -620,12 +620,12 @@ public class ReactiveHealingII : ModAugments {
 		tooltipColor = Color.ForestGreen;
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
-		if (Main.rand.NextBool(3)) {
+		if (Main.rand.NextBool(3) && !player.HasBuff<ReactiveHealingBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
 	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
-		if (Main.rand.NextBool(3)) {
+		if (Main.rand.NextBool(3) && !player.HasBuff<ReactiveHealingBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveHealingBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
@@ -645,12 +645,12 @@ public class ReactiveDefenseI : ModAugments {
 		tooltipColor = Color.MediumPurple;
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
-		if (Main.rand.NextBool(4)) {
+		if (Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
 	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
-		if (Main.rand.NextBool(4)) {
+		if (Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
@@ -669,12 +669,12 @@ public class ReactiveDefenseII : ModAugments {
 		tooltipColor = Color.MediumPurple;
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
-		if (Main.rand.NextBool(4)) {
+		if (Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseIIBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
 	public override void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) {
-		if (Main.rand.NextBool(4)) {
+		if (Main.rand.NextBool(4) && !player.HasBuff<ReactiveDefenseIIBuff>()) {
 			player.AddBuff(ModContent.BuffType<ReactiveDefenseIIBuff>(), BossRushUtils.ToSecond(Main.rand.Next(4, 11)));
 		}
 	}
