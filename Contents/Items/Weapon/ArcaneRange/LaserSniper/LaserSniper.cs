@@ -1,6 +1,7 @@
 ﻿using BossRush.Common;
 using BossRush.Common.Graphics;
 using BossRush.Common.Graphics.AnimationSystem;
+using BossRush.Common.Graphics.Primitives;
 using BossRush.Common.Graphics.RenderTargets;
 using BossRush.Common.Graphics.TrailStructs;
 using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
@@ -47,7 +48,6 @@ internal class LaserSniper : SynergyModItem {
 
 			var dir = Main.MouseWorld.X > player.Center.X ? 1 : -1;
 
-			player.velocity += new Vector2(-7, 0) * dir;
 
 			if (itemProj != null)
 				itemProj.Projectile.Kill();
@@ -56,8 +56,10 @@ internal class LaserSniper : SynergyModItem {
 
 			itemProj = SpawnItemProjectile(player, player.Center + player.Center.DirectionTo(Main.MouseWorld) * 15, rot.ToRotation(), Item.useAnimation, TextureAssets.Item[Type].Value, Rectangle.Empty, TextureAssets.Item[Type].Value.Size() / 2f, new Vector2(1f, 1f), dir == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically, BoltActionAnimation);
 	
-			recoilScale.Start(new Vector2(0.8f, 2f), new Vector2(1f, 1f), TweenEaseType.OutExpo, Item.useAnimation / 3);
-			recoilPos.Start(new Vector2(0,0),new Vector2(0,0).PositionOFFSET(rot,15), TweenEaseType.OutExpo, player.itemAnimationMax / 3);
+			recoilScale.SetProperties(new Vector2(0.8f, 2f), new Vector2(1f, 1f), TweenEaseType.OutExpo, Item.useAnimation / 3);
+			recoilPos.SetProperties(new Vector2(0,0),new Vector2(0,0).PositionOFFSET(rot,15), TweenEaseType.OutExpo, player.itemAnimationMax / 3);
+			recoilPos.Start();
+			recoilScale.Start();
 
 			recoilHandler.tweens.Clear();
 			recoilHandler.tweens.Add(new Tween<float>(MathHelper.Lerp).SetProperties(rot.ToRotation() - MathHelper.PiOver2 / 2 * dir, rot.ToRotation(), TweenEaseType.None, player.itemAnimationMax / 2));
@@ -69,13 +71,15 @@ internal class LaserSniper : SynergyModItem {
 	public bool BoltActionAnimation(Player player, Vector2 pos, Vector2 offset) 
 	{
 
+		recoilScale.Update();
+		recoilPos.Update();
+		recoilHandler.Update();
 
 
 		if(player.itemAnimation == player.itemAnimationMax)
 			itemProj.PositionOffset = player.Center.DirectionTo(Main.MouseWorld) * 15;
 
 		itemProj.spriteScale = recoilScale.currentProgress;
-		itemProj.PositionOffset = recoilPos.currentProgress;
 		itemProj.Projectile.rotation = recoilHandler.currentTween.currentProgress;
 		player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Quarter, player.direction == 1 ? itemProj.Projectile.rotation : itemProj.Projectile.rotation - MathHelper.Pi );
 		player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, player.direction == 1 ? itemProj.Projectile.rotation - MathHelper.PiOver2: itemProj.Projectile.rotation - MathHelper.PiOver2);
@@ -225,8 +229,11 @@ public class PlasmaExplosion : ModProjectile
 	public override void SetStaticDefaults() {
 		Main.projFrames[Type] = 6;
 	}
-	ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders["ExplosionPrimitive"].Value);
-
+	private static ModdedShaderHandler shader;
+	private PrimitiveDrawer primitiveDrawer;
+	public override void Load() {
+		shader = new ModdedShaderHandler(EffectsLoader.loadedShaders["ExplosionPrimitive"].Value);
+	}
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 98;
 		Projectile.friendly = true;
@@ -238,12 +245,12 @@ public class PlasmaExplosion : ModProjectile
 		Projectile.scale = 4;
 	}
 
-	public override void AI() {
-		if (++Projectile.frameCounter % 5 == 0) 
-		{
-			Projectile.frame++;
+	public override void OnSpawn(IEntitySource source) {
+		primitiveDrawer = new PrimitiveDrawer(PrimitiveShape.Quad);
+	}
 
-		}
+	public override void AI() {
+
 
 		Projectile.ai[0] += 0.1f;
 	}
@@ -253,10 +260,7 @@ public class PlasmaExplosion : ModProjectile
 		shader.setProperties(Color.Aqua, TextureAssets.Extra[193].Value,shaderData: new Vector4(Projectile.ai[0], Projectile.ai[0], Projectile.ai[0],0));
 		shader.apply();
 
-		RTLoaderAndUnloader.rt128X128.Request();
-
-		if(RTLoaderAndUnloader.rt128X128.IsReady)
-			Main.EntitySpriteDraw(RTLoaderAndUnloader.rt128X128.GetTarget(),Projectile.Center - Main.screenPosition,null,Color.White,0,new Vector2(64),1f,SpriteEffects.None);
+		primitiveDrawer.Draw([Projectile.Center], [Color.White], [new Vector2(512)]);
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 

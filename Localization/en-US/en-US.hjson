@@ -325,6 +325,8 @@ Mods: {
 			ElderGuardian.DisplayName: Elder Guardian
 			Guardian.DisplayName: Guardian
 			LootBoxLord.DisplayName: Loot Box Lord
+			FallenStarPower.DisplayName: Fallen Star Power
+			PlasmaGrenade.DisplayName: Plasma Grenade
 
 			M_018T: {
 				DisplayName: M_018 T
@@ -340,9 +342,6 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
-
-			FallenStarPower.DisplayName: Fallen Star Power
-			PlasmaGrenade.DisplayName: Plasma Grenade
 		}
 
 		Items: {
@@ -2191,7 +2190,6 @@ Mods: {
 				DisplayName: Spoil Getter
 				Tooltip: ""
 			}
-		}
 
 			AnimationTestItemProj: {
 				DisplayName: Animation Test Item Proj
