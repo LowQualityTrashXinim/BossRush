@@ -417,9 +417,10 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 		}
 		public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox) {
-			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) && item.useAnimation > 10) {
-				BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
-			}
+			//Since we are using entirely new collision detection, we no longer need this
+			//if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) && item.useAnimation > 10) {
+			//	BossRushUtils.ModifyProjectileDamageHitbox(ref hitbox, player, item.width, item.height);
+			//}
 		}
 		public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {

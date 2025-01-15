@@ -390,7 +390,7 @@ public class SkillHandlePlayer : ModPlayer {
 		SkillInventory[whoAmI] = -1;
 	}
 	public override void ProcessTriggers(TriggersSet triggersSet) {
-		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE)) {
+		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE)) {
 			return;
 		}
 		if (SkillModSystem.SkillActivation.JustReleased) {

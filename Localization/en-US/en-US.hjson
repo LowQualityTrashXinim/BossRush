@@ -316,6 +316,7 @@ Mods: {
 			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
 			EvilShot.DisplayName: Evil Shot
 			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
+			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
 		}
 
 		NPCs: {
@@ -2661,8 +2662,8 @@ Mods: {
 			}
 
 			ReactiveDefenseIIBuff: {
-				DisplayName: Reactive Defense I I Buff
-				Description: Mods.BossRush.Buffs.ReactiveDefenseIIBuff.Description
+				DisplayName: Reactive Defense II
+				Description: Increases your defenses by 10% and 6 flat
 			}
 
 			SwiftStrike_Axe: {
@@ -2685,16 +2686,15 @@ Mods: {
 					Tooltip:
 						'''
 						WARNING : NOT RECOMMEND TO PLAY THIS WITH OTHER MOD, THIS WILL MESS WITH YOUR WORLD GEN
-						it is recommended to enable this if you want to experience what the mod have to offer along with Synergy Mode
+						The mod boss rush mode
 						Disable it for more vanilla QoL feel of the mod and to prevent world gen conflict
 						What this mode do :
-						-Pot drop nothing
 						-World gen change so you could easily build arena and chest gone
 						'''
 				}
 
 				SynergyMode: {
-					Label: "[BETA] Synergy Mode"
+					Label: Synergy Mode [IN PROGRESS OF REMOVING]
 					Tooltip:
 						'''
 						Enables Synergy Items, Artifacts, and a lot more.
@@ -2734,6 +2734,7 @@ Mods: {
 						- Enemy are much more brutal, and is immune to lava and trap
 						- NPC randomize health and damage that range from 0% to 100%
 						- Some bosses receive minor AI change and buff
+						- Boss can sometime become elite
 						'''
 				}
 
@@ -2772,8 +2773,8 @@ Mods: {
 				}
 
 				AutoRandomizeCharacter: {
-					Label: Auto Randomize Character
-					Tooltip: ""
+					Label: Auto randomize character appearance
+					Tooltip: This will automatically change character apprearance
 				}
 
 				Headers: {

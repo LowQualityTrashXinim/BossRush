@@ -113,7 +113,7 @@ namespace BossRush.Contents.Items.Chest {
 					player.QuickSpawnItem(entitySource, ModContent.ItemType<SpecialSkillLootBox>());
 				}
 			}
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.HARDCORE_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			}

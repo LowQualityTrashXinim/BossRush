@@ -56,7 +56,7 @@ namespace BossRush.Contents.Items.Chest {
 		public virtual void PostModifyTooltips(ref List<TooltipLine> tooltips) { }
 		private int ModifyRNG(int rng, Player player, float chance = 0, int influence = -1) {
 			if (influence != -1) {
-				if(Main.rand.NextFloat() <= chance ) {
+				if (Main.rand.NextFloat() <= chance) {
 					return influence;
 				}
 			}
@@ -138,7 +138,7 @@ namespace BossRush.Contents.Items.Chest {
 			}
 			if (UniversalSystem.CheckLegacy(UniversalSystem.LEGACY_LOOTBOX)) {
 				OnRightClick(player, modplayer);
-				if (UniversalSystem.CanAccessContent(player, UniversalSystem.TRUE_MODE)) {
+				if (UniversalSystem.CanAccessContent(player, UniversalSystem.HARDCORE_MODE)) {
 					if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGYFEVER_MODE)) {
 						Item relicitem = player.QuickSpawnItemDirect(entitySource, ModContent.ItemType<Relic>());
 						if (relicitem.ModItem is Relic relic) {
@@ -1112,7 +1112,7 @@ namespace BossRush.Contents.Items.Chest {
 			weaponAmount = Math.Clamp(ModifyGetAmount(weaponAmount + WeaponAmountAddition), 1, 999999);
 			potionTypeAmount = ModifyGetAmount(potionTypeAmount + PotionTypeAmountAddition);
 			potionNumAmount = ModifyGetAmount(potionNumAmount + PotionNumberAmountAddition);
-			if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode && ModContent.GetInstance<RogueLikeConfig>().SynergyMode) {
+			if (ModContent.GetInstance<RogueLikeConfig>().SynergyFeverMode) {
 				weaponAmount = 1;
 			}
 		}

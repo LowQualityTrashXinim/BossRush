@@ -127,7 +127,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 	}
 	public string GetWeaponModificationStats() => $"Item's enchantment slot : {EnchantmenStlot.Length}";
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.SYNERGY_MODE))
+		if (!UniversalSystem.CanAccessContent(Main.LocalPlayer, UniversalSystem.HARDCORE_MODE))
 			return;
 		if (UniversalSystem.EnchantingState)
 			return;
@@ -163,7 +163,7 @@ public class EnchantmentModplayer : ModPlayer {
 	public override void ResetEffects() {
 		RandomizeChanceEnchantment = 0;
 	}
-	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.SYNERGY_MODE);
+	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
 			return;

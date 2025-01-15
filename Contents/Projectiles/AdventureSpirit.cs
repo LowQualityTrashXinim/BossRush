@@ -6,7 +6,9 @@ using BossRush.Contents.Perks;
 
 namespace BossRush.Contents.Projectiles;
 internal class AdventureSpirit : ModProjectile {
-	public override string Texture => BossRushUtils.GetVanillaTexture<Item>(ItemID.Candle);
+	public override void SetStaticDefaults() {
+		Main.projFrames[Type] = 3;
+	}
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 20;
 		Projectile.friendly = true;
@@ -20,6 +22,12 @@ internal class AdventureSpirit : ModProjectile {
 	}
 	public int radius = 425;
 	public override void AI() {
+		if (Main.rand.NextBool(4)) {
+			Dust dust = Dust.NewDustDirect(Projectile.position, 20, 20, DustID.Torch);
+			dust.velocity = Vector2.UnitY.Vector2RotateByRandom(30) * Main.rand.NextFloat(-3f, -1f);
+		}
+		SelectFrame();
+		Projectile.ai[0] = BossRushUtils.Safe_SwitchValue((int)Projectile.ai[0], 300, 0);
 		Player player = Main.player[Projectile.owner];
 		if (player.dead || !player.active) {
 			Projectile.Kill();
@@ -66,8 +74,17 @@ internal class AdventureSpirit : ModProjectile {
 		Projectile.velocity += toPlayer.SafeNormalize(Vector2.Zero) * speed;
 		Projectile.velocity = BossRushUtils.LimitedVelocity(Projectile.velocity, toPlayer.Length() * speed * 0.05f);
 	}
+	public void SelectFrame() {
+		if (++Projectile.frameCounter >= 6) {
+			Projectile.frameCounter = 0;
+			Projectile.frame += 1;
+			if (Projectile.frame >= Main.projFrames[Type]) {
+				Projectile.frame = 0;
+			}
+		}
+	}
 	public override bool PreDraw(ref Color lightColor) {
-		BossRushUtils.BresenhamCircle(Projectile.Center, radius, Color.White);
+		BossRushUtils.BresenhamCircle(Projectile.Center, radius, Color.Lerp(Color.Red, Color.Orange, Projectile.ai[0] / 300f));
 		return base.PreDraw(ref lightColor);
 	}
 }

@@ -49,14 +49,12 @@ public static class RoguelikeData {
 /// Also, very unholy class, do not look into it
 /// </summary>
 internal class UniversalSystem : ModSystem {
-	public static bool DidPlayerBeatTheMod() => Main.hardMode;
-	public const string SYNERGY_MODE = "SynergyModeEnable";
+	public static bool DidPlayerBeatTheMod(bool BossRushAllowed = true) => Main.hardMode && (BossRushAllowed && ModContent.GetInstance<RogueLikeConfig>().BossRushMode);
 	public const string BOSSRUSH_MODE = "ChallengeModeEnable";
 	public const string NIGHTMARE_MODE = "NightmareEnable";
 	public const string HELLISH_MODE = "HellishEnable";
 	public const string CHAOS_MODE = "ChaosEnable";
 	public const string HARDCORE_MODE = "Hardcore";
-	public const string TRUE_MODE = "TrueMode";
 	public const string SYNERGYFEVER_MODE = "SynergyFeverMode";
 	public static bool NotNormalMode() => Main.expertMode || Main.masterMode;
 	/// <summary>
@@ -68,7 +66,7 @@ internal class UniversalSystem : ModSystem {
 	public static bool CanAccessContent(Player player, string context) {
 		RogueLikeConfig config = ModContent.GetInstance<RogueLikeConfig>();
 		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyMode && config.SynergyFeverMode;
+			return config.SynergyFeverMode;
 		if (config.HardEnableFeature || player.IsDebugPlayer())
 			return true;
 		if (context == NIGHTMARE_MODE)
@@ -81,10 +79,6 @@ internal class UniversalSystem : ModSystem {
 			return false;
 		if (context == BOSSRUSH_MODE)
 			return config.BossRushMode;
-		if (context == SYNERGY_MODE)
-			return config.SynergyMode;
-		if (context == TRUE_MODE)
-			return config.SynergyMode && config.BossRushMode;
 		return false;
 	}
 	/// <summary>
@@ -106,12 +100,8 @@ internal class UniversalSystem : ModSystem {
 			return config.DreamlikeWorld;
 		if (context == HARDCORE_MODE)
 			return config.AutoHardCore;
-		if (context == SYNERGY_MODE)
-			return config.SynergyMode;
 		if (context == SYNERGYFEVER_MODE)
-			return config.SynergyMode && config.SynergyFeverMode;
-		if (context == TRUE_MODE)
-			return config.SynergyMode && config.BossRushMode;
+			return config.SynergyFeverMode;
 		return false;
 	}
 	public const string LEGACY_LOOTBOX = "lootbox";
@@ -432,11 +422,18 @@ internal class UniversalSystem : ModSystem {
 		tag["GivenBossSpawnItem"] = GivenBossSpawnItem;
 		tag["ListOfBossKilled"] = ListOfBossKilled;
 		tag["LootBoxOpen"] = LootBoxOpen;
+		if (timeBeatenTheGame != TimeSpan.Zero) {
+			tag["TimeBeaten"] = timeBeatenTheGame;
+		}
 	}
 	public override void LoadWorldData(TagCompound tag) {
 		GivenBossSpawnItem = tag.Get<List<int>>("GivenBossSpawnItem");
 		ListOfBossKilled = tag.Get<List<int>>("ListOfBossKilled");
 		LootBoxOpen = tag.Get<List<int>>("LootBoxOpen");
+		if (tag.TryGet("TimeBeaten", out TimeSpan time)) {
+			timeBeatenTheGame = time;
+
+		}
 	}
 	public static void AddPerk(int perkType) {
 		UniversalSystem uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
@@ -474,6 +471,19 @@ internal class UniversalSystem : ModSystem {
 		WorldState = "Exited";
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.DeactivateUI();
+	}
+}
+public class TimeSerializer : TagSerializer<TimeSpan, TagCompound> {
+	public override TagCompound Serialize(TimeSpan value) => new TagCompound {
+		["Days"] = value.Days,
+		["Hours"] = value.Hours,
+		["Minutes"] = value.Minutes,
+		["Seconds"] = value.Seconds,
+		["MiliSeconds"] = value.Milliseconds,
+	};
+
+	public override TimeSpan Deserialize(TagCompound tag) {
+		return new TimeSpan(tag.Get<int>("Days"), tag.Get<int>("Hours"), tag.Get<int>("Minutes"), tag.Get<int>("Seconds"), tag.Get<int>("MiliSeconds"));
 	}
 }
 public class UniversalGlobalBuff : GlobalBuff {
@@ -681,15 +691,26 @@ class DefaultUI : UIState {
 	}
 	public override void Update(GameTime gameTime) {
 		TimeSpan time = Main.ActivePlayerFileData.GetPlayTime();
-		if (UniversalSystem.DidPlayerBeatTheMod()) {
-			ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+		UniversalSystem system = ModContent.GetInstance<UniversalSystem>();
+		if (system.timeBeatenTheGame == TimeSpan.Zero) {
+			if (UniversalSystem.DidPlayerBeatTheMod()) {
+				ModContent.GetInstance<UniversalSystem>().timeBeatenTheGame = time;
+			}
+			string ToTimer =
+				$"{time.Hours}" +
+				$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
+				$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
+				$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
+			timer.SetText(ToTimer);
 		}
-		string ToTimer =
-			$"{time.Hours}" +
-			$":{(time.Minutes >= 10 ? time.Minutes : "0" + time.Minutes)}" +
-			$":{(time.Seconds >= 10 ? time.Seconds : "0" + time.Seconds)}" +
-			$":{(time.Milliseconds >= 100 ? (time.Milliseconds >= 10 ? "0" + time.Milliseconds : time.Milliseconds) : "00" + time.Milliseconds)}";
-		timer.SetText(ToTimer);
+		else {
+			string ToTimer =
+			$"{system.timeBeatenTheGame.Hours}" +
+			$":{(system.timeBeatenTheGame.Minutes >= 10 ? system.timeBeatenTheGame.Minutes : "0" + system.timeBeatenTheGame.Minutes)}" +
+			$":{(system.timeBeatenTheGame.Seconds >= 10 ? system.timeBeatenTheGame.Seconds : "0" + time.Seconds)}" +
+			$":{(system.timeBeatenTheGame.Milliseconds >= 100 ? (system.timeBeatenTheGame.Milliseconds >= 10 ? "0" + system.timeBeatenTheGame.Milliseconds : system.timeBeatenTheGame.Milliseconds) : "00" + system.timeBeatenTheGame.Milliseconds)}";
+			timer.SetText(ToTimer);
+		}
 		if (staticticUI.ContainsPoint(Main.MouseScreen)) {
 			Player player = Main.LocalPlayer;
 			if (player.GetModPlayer<SpoilsPlayer>().LootBoxSpoilThatIsNotOpen.Count > 0) {

@@ -357,6 +357,7 @@ namespace BossRush.Contents.Perks {
 	public abstract class Perk : ModType {
 		public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.DisplayName");
 		public string Description => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
+		public string DescriptionIndex(byte index) => Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description{index}");
 		public bool CanBeStack = false;
 		/// <summary>
 		/// This will get the value from Mod Perk player itself<br/>

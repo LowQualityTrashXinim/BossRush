@@ -128,8 +128,7 @@ public class Relic : ModItem {
 			if (RelicTemplateLoader.GetTemplate(templatelist[i]) == null) {
 				continue;
 			}
-			line += $"[c/{Main.DiscoColor.Hex3()}:{RelicTemplateLoader.GetTemplate(templatelist[i]).DisplayName}]\n";
-			line += "- " + RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
+			line += RelicTemplateLoader.GetTemplate(templatelist[i]).ModifyToolTip(this, statlist[i], valuelist[i]);
 			//if (Main.LocalPlayer.IsDebugPlayer()) {
 			//	line.Text +=
 			//		$"\nTemplate Name : {RelicTemplateLoader.GetTemplate(templatelist[i]).FullName}" +
@@ -230,7 +229,7 @@ public abstract class RelicTemplate : ModType {
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}
-	public string Description => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
+	public string Description => DisplayName + "\n - " + Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.Description");
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.RelicTemplate.{Name}.DisplayName");
 	public int Type { get; private set; }
 	protected sealed override void Register() {

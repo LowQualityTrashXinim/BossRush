@@ -220,6 +220,7 @@ public class AugmentsPlayer : ModPlayer {
 						continue;
 					}
 					Augments.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
+					Augments.OnHitNPC(Player, Player.HeldItem, target, hit);
 				}
 			}
 		}
@@ -234,6 +235,7 @@ public class AugmentsPlayer : ModPlayer {
 						continue;
 					}
 					Augments.OnHitNPCWithProj(Player, proj, target, hit);
+					Augments.OnHitNPC(Player, Player.HeldItem, target, hit);
 				}
 			}
 		}

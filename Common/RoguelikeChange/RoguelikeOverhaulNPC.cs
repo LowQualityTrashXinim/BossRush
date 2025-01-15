@@ -22,6 +22,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public const int BossDMG = 40;
 	public const int BossDef = 5;
 	public bool EliteBoss = false;
+	public float VelocityMultiplier = 1;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
@@ -77,8 +78,18 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		else {
 			DRFromFatalAttack = true;
 		}
+		VelocityMultiplier = 1;
+	}
+	public override bool PreAI(NPC npc) {
+		if (VelocityMultiplier != 0) {
+			npc.velocity /= VelocityMultiplier;
+		}
+		return base.PreAI(npc);
 	}
 	public override void PostAI(NPC npc) {
+		if (VelocityMultiplier != 0) {
+			npc.velocity *= VelocityMultiplier;
+		}
 		if (HeatRay_HitCount > 0) {
 			HeatRay_Decay = BossRushUtils.CountDown(HeatRay_Decay);
 			if (HeatRay_Decay <= 0) {

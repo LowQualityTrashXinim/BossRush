@@ -5,9 +5,6 @@ namespace BossRush.Common.General {
 	public class RogueLikeConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 		[Header($"BaseGameHeader")]
-		[ReloadRequired]
-		[DefaultValue(true)]
-		public bool SynergyMode { get; set; }
 		[DefaultValue(true)]
 		public bool RoguelikeOverhaul { get; set; }
 

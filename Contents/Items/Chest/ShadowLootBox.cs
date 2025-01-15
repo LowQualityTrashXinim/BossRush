@@ -153,7 +153,7 @@ namespace BossRush.Contents.Items.Chest {
 			if (Main.rand.NextBool(20)) {
 				player.QuickSpawnItem(entitySource, ItemID.RodofDiscord);
 			}
-			if (UniversalSystem.CanAccessContent(player, UniversalSystem.SYNERGY_MODE)) {
+			if (UniversalSystem.CanAccessContent(player, UniversalSystem.HARDCORE_MODE)) {
 				int RandomModdedBuff = Main.rand.Next(TerrariaArrayID.SpecialPotion);
 				player.QuickSpawnItem(entitySource, RandomModdedBuff, 1);
 			}

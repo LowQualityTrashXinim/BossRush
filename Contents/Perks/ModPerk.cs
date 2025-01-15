@@ -505,13 +505,9 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 4;
 		}
 		public override string ModifyToolTip() {
-			switch (StackAmount(Main.LocalPlayer)) {
-				case 1:
-					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
-				case 2:
-					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}2.Description");
-				case 3:
-					return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}3.Description");
+			int stack = StackAmount(Main.LocalPlayer);
+			if (stack > 0) {
+				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description{stack}");
 			}
 			return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description");
 		}
@@ -956,10 +952,16 @@ namespace BossRush.Contents.Perks {
 			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
-	public class DemolitionistRanger : Perk {
+	public class DemolitionistGunner : Perk {
 		public override void SetDefaults() {
 			CanBeStack = true;
 			StackLimit = 3;
+		}
+		public override string ModifyToolTip() {
+			if (StackAmount(Main.LocalPlayer) >= 2) {
+				return DescriptionIndex(1);
+			}
+			return Description;
 		}
 		public override void ModifyShootStat(Player player, Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			float chance = 0.25f * StackAmount(player);
@@ -973,6 +975,14 @@ namespace BossRush.Contents.Perks {
 				modifiers.SourceDamage += .55f;
 			}
 		}
+		public override void Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			if (StackAmount(player) >= 2) {
+				if (Main.rand.NextFloat() <= .05f) {
+					Vector2 vel = -Vector2.UnitY.RotatedBy(MathHelper.ToRadians(30 * player.direction)) * 15;
+					Projectile.NewProjectile(source, position, vel, ModContent.ProjectileType<FriendlyGrenadeProjectile>(), damage * 3, knockback, player.whoAmI);
+				}
+			}
+		}
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			float chance = 0.05f * StackAmount(player);
 			if (proj.type != ProjectileID.ExplosiveBullet || Main.rand.NextFloat() > chance) {
@@ -981,7 +991,7 @@ namespace BossRush.Contents.Perks {
 			for (int i = 0; i < 25; i++) {
 				int smokedust = Dust.NewDust(target.Center, 0, 0, DustID.Smoke);
 				Main.dust[smokedust].noGravity = true;
-				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(15f,15f);
+				Main.dust[smokedust].velocity = Main.rand.NextVector2Circular(15f, 15f);
 				Main.dust[smokedust].scale = Main.rand.NextFloat(.75f, 2f);
 				int dust = Dust.NewDust(target.Center, 0, 0, DustID.Torch);
 				Main.dust[dust].noGravity = true;
