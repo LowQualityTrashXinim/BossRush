@@ -219,8 +219,21 @@ public class AugmentsPlayer : ModPlayer {
 					if (Augments == null) {
 						continue;
 					}
-					Augments.OnHitNPCWithItem(Player, Player.HeldItem, target, hit);
 					Augments.OnHitNPC(Player, Player.HeldItem, target, hit);
+				}
+			}
+		}
+	}
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		foreach (var itemAcc in accItemUpdate) {
+			if (IsAugmentsable(itemAcc)) {
+				AugmentsWeapon moditem = itemAcc.GetGlobalItem<AugmentsWeapon>();
+				for (int i = 0; i < moditem.AugmentsSlots.Length; i++) {
+					ModAugments Augments = AugmentsLoader.GetAugments(moditem.AugmentsSlots[i]);
+					if (Augments == null) {
+						continue;
+					}
+					Augments.OnHitNPCWithItem(Player, item, target, hit);
 				}
 			}
 		}

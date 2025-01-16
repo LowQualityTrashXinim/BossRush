@@ -86,14 +86,14 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public int[] Item_Counter1 = new int[4];
 	public int[] Item_Counter2 = new int[4];
 	public int[] Item_Counter3 = new int[4];
+	public override void OnCreated(Item item, ItemCreationContext context) {
+		Array.Fill(EnchantmenStlot, 0);
+		Array.Fill(Item_Counter1, 0);
+		Array.Fill(Item_Counter2, 0);
+		Array.Fill(Item_Counter3, 0);
+	}
 	public override GlobalItem Clone(Item from, Item to) {
-		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
-		if (EnchantmenStlot.Length < 4 || clone.EnchantmenStlot.Length < 4) {
-			Array.Resize(ref EnchantmenStlot, 4);
-			Array.Resize(ref clone.EnchantmenStlot, 4);
-		}
-		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 4);
-		return clone;
+		return base.Clone(from, to);
 	}
 	public override GlobalItem NewInstance(Item target) {
 		EnchantmenStlot = new int[4];
