@@ -4,6 +4,7 @@ using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria;
 using System.Diagnostics;
+using System;
 
 
 namespace BossRush.Common.Graphics;
@@ -32,7 +33,7 @@ public struct ShaderSettings {
 /// Spritebatch automatically Sets Main.Instance.GraphicsDevice.Textures[0] to the texture its currently drawing in the batch (when calling Draw() for immediate mode and End() for other modes),
 /// and if you want to modify Main.Instance.GraphicsDevice.Textures, for things like vertex buffers, you would do it while spritebatch is not active (before Begin() or after End()),
 /// </summary>
-public class ModdedShaderHandler {
+public class ModdedShaderHandler : IDisposable {
 	static GraphicsDevice GraphicsDevice => Main.instance.GraphicsDevice;
 	Effect _effect;
 	Color _color = new Color(0, 0, 0);
@@ -81,14 +82,16 @@ public class ModdedShaderHandler {
 	}
 	public void apply() {
 		var viewport = GraphicsDevice.Viewport;
-		_effect?.Parameters["viewWorldProjection"].SetValue(Matrix.CreateTranslation(new Vector3(-Main.screenPosition, 0)) * Main.GameViewMatrix.TransformationMatrix * Matrix.CreateOrthographicOffCenter(left: 0, right: viewport.Width, bottom: viewport.Height, top: 0, zNearPlane: -1, zFarPlane: 10));
-		_effect?.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly);
-		_effect?.Parameters["color"].SetValue(_color.ToVector3());
-		_effect?.Parameters["shaderData"].SetValue(_shaderData);
-		_effect?.CurrentTechnique.Passes[0].Apply();
-
+		setupTextures();
+		_effect.Parameters["viewWorldProjection"].SetValue(Matrix.CreateTranslation(new Vector3(-Main.screenPosition, 0)) * Main.GameViewMatrix.TransformationMatrix * Matrix.CreateOrthographicOffCenter(left: 0, right: viewport.Width, bottom: viewport.Height, top: 0, zNearPlane: -1, zFarPlane: 10));
+		_effect.Parameters["time"].SetValue(Main.GlobalTimeWrappedHourly);
+		_effect.Parameters["color"].SetValue(_color.ToVector3());
+		_effect.Parameters["shaderData"].SetValue(_shaderData);
+		_effect.CurrentTechnique.Passes[0].Apply();
+		
 	}
 
-
-
+	public void Dispose() {
+		_effect?.Dispose();
+	}
 }

@@ -14,19 +14,17 @@ using Terraria;
 using Terraria.GameContent.Drawing;
 using BossRush.Common.Graphics;
 
-namespace BossRush.TrailStructs;
+namespace BossRush.Common.Graphics.TrailStructs;
 public struct GenericTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(TrailShaderSettings GenericTrailSettings, VertexStrip.StripHalfWidthFunction stripWidth, VertexStrip.StripColorFunction stripColor) {
 
-		MiscShaderData miscShaderData = GameShaders.Misc[GenericTrailSettings.shaderType];
-		miscShaderData.UseImage1(GenericTrailSettings.image1);
-		miscShaderData.UseImage2(GenericTrailSettings.image2);
-		miscShaderData.UseShaderSpecificData(GenericTrailSettings.shaderData);
-		miscShaderData.UseColor(GenericTrailSettings.Color);
-		miscShaderData.Apply();
+		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[GenericTrailSettings.shaderType].Value);
+		shader.enabled = true;
+		shader.setProperties(GenericTrailSettings.Color, GenericTrailSettings.image1.Value, null, shaderData: GenericTrailSettings.shaderData);
+		shader.apply();
 
-		_vertexStrip.PrepareStrip(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, -Main.screenPosition +GenericTrailSettings.offset, null, true);
+		_vertexStrip.PrepareStrip(GenericTrailSettings.oldPos, GenericTrailSettings.oldRot, stripColor, stripWidth, -Main.screenPosition + GenericTrailSettings.offset, null, true);
 		_vertexStrip.DrawTrail();
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 	}

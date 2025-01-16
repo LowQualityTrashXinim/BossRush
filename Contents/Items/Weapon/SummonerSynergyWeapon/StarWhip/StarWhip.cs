@@ -15,7 +15,7 @@ using ReLogic.Content;
 using System.Diagnostics;
 using Terraria.Audio;
 using Terraria.Localization;
-using BossRush.TrailStructs;
+using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 public class StarWhip : SynergyModItem {
@@ -274,6 +274,7 @@ public class StarWhipStarProj : ModProjectile
 	public override bool PreDraw(ref Color lightColor) {
 
 		Asset<Texture2D> StarTexture = TextureAssets.Projectile[Type];
+		Main.instance.LoadProjectile(Type);
 		Main.EntitySpriteDraw(StarTexture.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.velocity.ToRotation() + MathHelper.PiOver2, StarTexture.Size() / 2f, 1f, SpriteEffects.None);
 		default(StarTrailEmpowered).Draw(Projectile.oldPos, Projectile.oldRot, Projectile.Size * 0.5f);
 

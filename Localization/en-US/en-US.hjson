@@ -308,6 +308,9 @@ Mods: {
 			FlamelashWEProjectile.DisplayName: Flamelash W E Projectile
 			EnergyBoltProjectile.DisplayName: Energy Bolt Projectile
 			WindShot.DisplayName: Wind Shot
+			ItemProjectile.DisplayName: Item Projectile
+			LaserSniperProjectile.DisplayName: Laser Sniper Projectile
+			PlasmaExplosion.DisplayName: Plasma Explosion
 			SwordFishProjectile.DisplayName: Sword Fish Projectile
 			TomahawkProjectile.DisplayName: Tomahawk Projectile
 			FragmentGrenadeProjectile.DisplayName: Fragment Grenade Projectile
@@ -323,6 +326,8 @@ Mods: {
 			ElderGuardian.DisplayName: Elder Guardian
 			Guardian.DisplayName: Guardian
 			LootBoxLord.DisplayName: Loot Box Lord
+			FallenStarPower.DisplayName: Fallen Star Power
+			PlasmaGrenade.DisplayName: Plasma Grenade
 
 			M_018T: {
 				DisplayName: M_018 T
@@ -338,8 +343,6 @@ Mods: {
 					Princess_LovesNPC: I like {NPCName}.
 				}
 			}
-
-			FallenStarPower.DisplayName: Fallen Star Power
 		}
 
 		Items: {
@@ -2186,6 +2189,11 @@ Mods: {
 
 			SpoilGetter: {
 				DisplayName: Spoil Getter
+				Tooltip: ""
+			}
+
+			AnimationTestItemProj: {
+				DisplayName: Animation Test Item Proj
 				Tooltip: ""
 			}
 		}

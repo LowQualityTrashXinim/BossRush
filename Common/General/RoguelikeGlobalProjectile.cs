@@ -45,12 +45,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					else if (type == RelicTemplate.GetRelicType<SkyFractureTemplate>()) {
 						TravelDistanceBeforeKill = 450;
 					}
-					else if (type == RelicTemplate.GetRelicType<MagicMissileTemplate>()) {
-						TravelDistanceBeforeKill = 650;
-					}
-					else if (type == RelicTemplate.GetRelicType<DemonScytheTemplate>()) {
-						TravelDistanceBeforeKill = 600;
-					}
+					//else if (type == RelicTemplate.GetRelicType<MagicMissileTemplate>()) {
+					//	TravelDistanceBeforeKill = 650;
+					//}
+					//else if (type == RelicTemplate.GetRelicType<DemonScytheTemplate>()) {
+					//	TravelDistanceBeforeKill = 600;
+					//}
 				}
 			}
 		}

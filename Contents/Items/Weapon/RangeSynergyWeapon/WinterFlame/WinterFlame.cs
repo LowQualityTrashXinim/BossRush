@@ -11,7 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static tModPorter.ProgressUpdate;
 using Humanizer;
-using BossRush.TrailStructs;
+using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.WinterFlame;
 public class WinterFlame : SynergyModItem {

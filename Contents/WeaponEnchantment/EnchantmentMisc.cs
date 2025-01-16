@@ -15,7 +15,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Texture;
 using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
-using BossRush.TrailStructs;
 using BossRush.Contents.Projectiles;
 
 namespace BossRush.Contents.WeaponEnchantment;

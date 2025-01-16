@@ -13,17 +13,15 @@ using Terraria.ModLoader;
 using Terraria;
 using BossRush.Common.Graphics;
 using Terraria.GameContent;
+using BossRush.Common.Graphics.Primitives;
 
-namespace BossRush.TrailStructs;
-public static class WeaponSpecificTrails {
-
-}
+namespace BossRush.Common.Graphics.TrailStructs;
 public struct WyvernTrailMain {
 	private static VertexStrip _vertexStrip = new VertexStrip();
+	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.flameEffect.Value);
 		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE).Value);
 		shader.setupTextures();
 
@@ -39,11 +37,11 @@ public struct WyvernTrailMain {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Terraria.Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Terraria.Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
 }
-
 public struct WyvernTrailMini {
 	private static VertexStrip _vertexStrip = new VertexStrip();
+	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 		//MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
@@ -53,7 +51,6 @@ public struct WyvernTrailMini {
 		//miscShaderData.UseShaderSpecificData(new Microsoft.Xna.Framework.Vector4(60, 1, 0, 0));
 		//miscShaderData.Apply();
 
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.flameEffect.Value);
 		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE).Value);
 		shader.setupTextures();
 		shader.apply();
@@ -72,22 +69,19 @@ public struct WyvernTrailMini {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(2f, 5f, Terraria.Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Terraria.Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
 }
-
 public struct BeamTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
-	public void Draw(Projectile projectile, Color color) {
-
-
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.trailEffect.Value);
-		shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value);
+	public void Draw(Projectile projectile, Color color, Vector2 offset) {
+		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
+		shader.setProperties(color, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
-
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(projectile.oldPos, projectile.oldRot, StripColors, StripWidth, -Main.screenPosition + projectile.Size * 0.5f);
+		_vertexStrip.PrepareStrip(projectile.oldPos,projectile.oldRot,StripColors,StripWidth,offset);
 		_vertexStrip.DrawTrail();
+
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
 	}
@@ -96,13 +90,13 @@ public struct BeamTrail {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(4, 1, progressOnStrip);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(7, 1, progressOnStrip);
 }
 public struct FlameThrowerFrost {
 	private static VertexStrip _vertexStrip = new VertexStrip();
+	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
 
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.flameEffect.Value);
 		shader.setProperties(Color.CornflowerBlue, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
@@ -118,10 +112,12 @@ public struct FlameThrowerFrost {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 12f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 12f, Terraria.Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Terraria.Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
 }
 public struct FlameThrowerFire {
 	private static VertexStrip _vertexStrip = new VertexStrip();
+	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.FlameShader].Value);
+
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset, float progress, float maxProgress = 30) {
 
 		//MiscShaderData miscShaderData = GameShaders.Misc["FlameEffect"];
@@ -129,9 +125,6 @@ public struct FlameThrowerFire {
 		//miscShaderData.UseColor(Color.Orange);
 		//miscShaderData.UseShaderSpecificData(new Vector4(progress, maxProgress, 0, 0));
 		//miscShaderData.Apply();
-
-
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.flameEffect.Value);
 		shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
@@ -146,11 +139,11 @@ public struct FlameThrowerFire {
 		//result.A /= 2;
 		return result;
 	}
-	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 12f, Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
+	private float StripWidth(float progressOnStrip) => MathHelper.Lerp(5f, 12f, Terraria.Utils.GetLerpValue(0f, 0.2f, progressOnStrip, clamped: true)) * Terraria.Utils.GetLerpValue(0f, 0.07f, progressOnStrip, clamped: true);
 }
-
 public struct StarTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
+	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
 		//MiscShaderData miscShaderData = GameShaders.Misc["TrailEffect"];
@@ -160,12 +153,11 @@ public struct StarTrail {
 		//miscShaderData.Apply();
 
 
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.trailEffect.Value);
 		shader.setProperties(Color.SkyBlue, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset, null, true);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth,  offset, null, true);
 		_vertexStrip.DrawTrail();
 
 
@@ -181,14 +173,14 @@ public struct StarTrail {
 }
 public struct StarTrailEmpowered {
 	private static VertexStrip _vertexStrip = new VertexStrip();
+	private static ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.loadedShaders[ShadersID.TrailShader].Value);
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
-		ModdedShaderHandler shader = new ModdedShaderHandler(EffectsLoader.trailEffect.Value);
 		shader.setProperties(Color.Gold, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, -Main.screenPosition + offset, null, true);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth,offset, null, true);
 		_vertexStrip.DrawTrail();
 
 
