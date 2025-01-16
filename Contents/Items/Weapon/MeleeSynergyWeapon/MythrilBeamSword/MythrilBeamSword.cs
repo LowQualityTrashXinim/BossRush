@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using BossRush.TrailStructs;
+using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
@@ -73,14 +73,14 @@ public class MythrilBeam : SynergyModProjectile
 		if (!retargeting) {
 
 			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.Yellow, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
-			default(BeamTrail).Draw(Projectile, Color.Yellow);
+			default(BeamTrail).Draw(Projectile, Color.Yellow, texture.Size() / 2f);
 
 
 		}
 		else {
 
 			Main.EntitySpriteDraw(texture.Value, Projectile.Center + Projectile.velocity.SafeNormalize(Vector2.UnitX) * 15 - Main.screenPosition, null, Color.MediumVioletRed, Projectile.rotation + MathHelper.PiOver4, texture.Size() / 2f, 1f, SpriteEffects.None);
-			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed);
+			default(BeamTrail).Draw(Projectile, Color.MediumVioletRed, texture.Size() / 2f);
 
 		}
 
@@ -90,9 +90,9 @@ public class MythrilBeam : SynergyModProjectile
 	Vector2 localOriginalvelocity;
 	public override void SynergyPreAI(Player player, PlayerSynergyItemHandle modplayer, out bool runAI) {
 		runAI = false;
+		Projectile.rotation = Projectile.velocity.ToRotation();
 		if (timer == 0) {
 			localOriginalvelocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
-			Projectile.rotation = localOriginalvelocity.ToRotation();
 		}
 		if (timer <= 20 + Projectile.ai[1] * 2) {
 			Projectile.timeLeft = 200;
@@ -108,7 +108,6 @@ public class MythrilBeam : SynergyModProjectile
 	public override void SynergyAI(Player player, PlayerSynergyItemHandle modplayer) {
 		Projectile.ai[0]++;
 		Projectile.rotation = Projectile.velocity.ToRotation();
-
 		int range = 1200;
 		Vector2 targetPos = Projectile.Center.LookForHostileNPCPositionClosest(range);
 

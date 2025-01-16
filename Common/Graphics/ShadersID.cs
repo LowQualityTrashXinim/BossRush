@@ -7,7 +7,7 @@ using Terraria.ID;
 
 namespace BossRush.Common.Graphics;
 
-public static class MiscShadersID {
+public static class ShadersID {
 
 	public const string FlameShader = "FlameEffect";
 	public const string TrailShader = "TrailEffect";

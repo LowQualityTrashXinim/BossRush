@@ -13,11 +13,7 @@ using Terraria.ModLoader;
 namespace BossRush.Common.Graphics;
 internal class EffectsLoader : ModSystem {
 
-	public static Asset<Effect> flameBall;
-	public static Asset<Effect> trailEffect;
-	public static Asset<Effect> flameEffect;
-	public static Asset<Effect> primitiveFlameBall;
-	public static HashSet<Asset<Effect>> toUnload;
+	public static Dictionary<string,Asset<Effect>> loadedShaders = new();
 	public static readonly bool dontLoad = false;
 
 	public override void Load() {
@@ -32,21 +28,32 @@ internal class EffectsLoader : ModSystem {
 			// FNA dosent like loading custom shaders when outside main thread for some reason lol
 			Main.RunOnMainThread(() => {
 
-				trailEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
-				flameEffect = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
-				flameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
-				primitiveFlameBall = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitiveTest");
+				loadedShaders[ShadersID.TrailShader] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/TrailEffect");
+				loadedShaders[ShadersID.FlameShader] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameEffect");
+				loadedShaders[ShadersID.FlameBallShader] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBall");
+				loadedShaders["FlameBallPrimitive"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/FlameBallPrimitive");
+				loadedShaders["ExplosionPrimitive"] = ModContent.Request<Effect>("BossRush/Common/Graphics/Shaders/ExplosionPrimitive");
 
 			}).Wait();
 
 			#endregion
 
 		}
+
 	}
 
 	public override void Unload() {
+		Main.RunOnMainThread(() => {
 
-	
+			for(int i = 0; i < loadedShaders.Count; i++) 
+			{
+
+				loadedShaders.ElementAt(i).Value.Dispose();
+			}
+
+		}).Wait();
+		loadedShaders = null;
+
 	}
 }
 

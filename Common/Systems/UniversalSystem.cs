@@ -945,9 +945,9 @@ class InfoUI : UIState {
 	UIImageButton btn_Perks;
 	ExitUI btn_Exit;
 	int CurrentState = 0;
+	StructureEnterText stet;
 	public override void OnInitialize() {
 		textlist = new Dictionary<Roguelike_UIText, int>();
-
 		panel = new UIPanel();
 		panel.HAlign = .35f;
 		panel.VAlign = .5f;
@@ -1005,6 +1005,9 @@ class InfoUI : UIState {
 		btn_Exit.VAlign = .9f;
 		btn_Exit.UISetWidthHeight(52, 52);
 		panel.Append(btn_Exit);
+
+		stet = new();
+		Append(stet);
 	}
 
 	private void Text_OnUpdate(UIElement affectedElement) {

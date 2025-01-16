@@ -1,6 +1,6 @@
 ﻿using BossRush.Common.Graphics;
+using BossRush.Common.Graphics.TrailStructs;
 using BossRush.Texture;
-using BossRush.TrailStructs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -58,7 +58,7 @@ public class DeathSickleGhost : ModProjectile {
 			gts.image1 = ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE);
 			gts.Color = Color.Purple;
 			gts.offset = Vector2.Zero;
-			gts.shaderType = MiscShadersID.TrailShader;
+			gts.shaderType = ShadersID.TrailShader;
 			gts.shaderData = new Vector4(0, 0, 0, 0);
 			gts.image2 = ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE);
 

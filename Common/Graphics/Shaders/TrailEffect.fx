@@ -23,7 +23,7 @@ struct VertexShaderOutput
 };
 
 
-VertexShaderOutput MyShaderVS(VertexShaderInput input)
+VertexShaderOutput ShaderVS(VertexShaderInput input)
 {
     
     VertexShaderOutput output = (VertexShaderOutput) 0;
@@ -35,7 +35,6 @@ VertexShaderOutput MyShaderVS(VertexShaderInput input)
     return output;
 
 }
-
 
 float4 FadeTrail(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
@@ -56,7 +55,7 @@ technique Technique1
 {
     pass FadeTrail
     {
-        
+        VertexShader = compile vs_2_0 ShaderVS();
         PixelShader = compile ps_2_0 FadeTrail();
     }
 }
