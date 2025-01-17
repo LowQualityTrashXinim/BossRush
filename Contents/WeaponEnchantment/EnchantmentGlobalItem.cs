@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
@@ -23,6 +22,7 @@ public class EnchantmentSystem : ModSystem {
 			return;
 		}
 		EnchantmentModplayer modplayer = self.GetModPlayer<EnchantmentModplayer>();
+		PlayerStatsHandle handle = self.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.Request_EnchantedItem > 0) {
 			int length = modplayer.Request_EnchantedAmount;
 			for (int i = 0; i < length; i++) {
@@ -45,7 +45,7 @@ public class EnchantmentSystem : ModSystem {
 					continue;
 				}
 			}
-			if (Main.rand.NextFloat() <= randomizedchance + modplayer.RandomizeChanceEnchantment) {
+			if (Main.rand.NextFloat() <= randomizedchance + handle.RandomizeChanceEnchantment) {
 				EnchantItem(ref item, i);
 				continue;
 			}
@@ -163,16 +163,12 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
-	public float RandomizeChanceEnchantment = .2f;
 	public void SafeRequest_EnchantItem(int requestAmount, int amountEnchant) {
 		Request_EnchantedItem = requestAmount;
 		Request_EnchantedAmount = amountEnchant;
 	}
 	public int Request_EnchantedItem = 0;
 	public int Request_EnchantedAmount = 1;
-	public override void ResetEffects() {
-		RandomizeChanceEnchantment = 0;
-	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)

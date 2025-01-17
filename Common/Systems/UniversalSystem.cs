@@ -31,13 +31,13 @@ using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Items.aDebugItem;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -1123,9 +1123,9 @@ class InfoUI : UIState {
 		}
 		var player = Main.LocalPlayer;
 		string line;
+		var statshandle = player.GetModPlayer<PlayerStatsHandle>();
 		switch (CurrentState) {
 			case 0:
-				var statshandle = player.GetModPlayer<PlayerStatsHandle>();
 				line =
 					$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
 					$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
@@ -1166,8 +1166,8 @@ class InfoUI : UIState {
 					$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 					$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
 					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
-					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + enchantplayer.RandomizeChanceEnchantment)}" +
-					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + augmentation.IncreasesChance)}";
+					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}" +
+					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}";
 				textpanel.SetText(line);
 				break;
 			case 2:

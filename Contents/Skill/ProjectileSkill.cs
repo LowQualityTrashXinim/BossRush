@@ -388,7 +388,7 @@ public class StarFury : ModSkill {
 		}
 		int damage = (int)player.GetTotalDamage(DamageClass.Generic).ApplyTo(1000);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
-		Vector2 position = player.Center.Subtract(0, 1000);
+		Vector2 position = player.Center.Add(0, 1000);
 		Vector2 velocity = (Main.MouseWorld - position).SafeNormalize(Vector2.Zero) * 20f;
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, ProjectileID.StarWrath, damage, knockback, player.whoAmI);
 		Main.projectile[proj].friendly = true;
@@ -412,7 +412,7 @@ public class MeteorShower : ModSkill {
 		}
 		int damage = (int)(player.GetTotalDamage(DamageClass.Magic).ApplyTo(44) + player.GetWeaponDamage(player.HeldItem) * .44f);
 		float knockback = (int)player.GetTotalKnockback(DamageClass.Generic).ApplyTo(10);
-		Vector2 position = player.Center.Subtract(Main.rand.Next(-1000, 1000), 1000);
+		Vector2 position = player.Center.Add(Main.rand.Next(-1000, 1000), 1000);
 		Vector2 velocity = (Main.MouseWorld - position + Main.rand.NextVector2Circular(200, 200)).SafeNormalize(Vector2.Zero) * 10f;
 		int proj = Projectile.NewProjectile(player.GetSource_FromThis(), position, velocity, Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage, knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 2));
 		Main.projectile[proj].friendly = true;
@@ -429,7 +429,7 @@ public class BulletStorm : ModSkill {
 		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void Update(Player player) {
-		Vector2 spawn = player.Center.Subtract(0, 1000);
+		Vector2 spawn = player.Center.Add(0, 1000);
 		int damage = (int)player.GetDamage(DamageClass.Ranged).ApplyTo(30);
 		for (int i = 0; i < 3; i++) {
 			float RandomizeX = Main.rand.NextFloat(-300, 300);

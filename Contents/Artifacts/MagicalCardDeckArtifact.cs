@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Systems.ArtifactSystem;
+﻿using BossRush.Common.Systems;
+using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,6 +27,10 @@ namespace BossRush.Contents.Artifacts
 		public bool MagicalCardDeck = false;
 		public override void ResetEffects() {
 			MagicalCardDeck = Player.HasArtifact<MagicalCardDeckArtifact>();
+		}
+		public override void UpdateEquips() {
+			if(MagicalCardDeck) {
+			}
 		}
 	}
 }

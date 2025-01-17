@@ -1,4 +1,4 @@
-﻿using Terraria; 
+﻿using Terraria;
 using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
@@ -6,6 +6,7 @@ using Terraria.GameContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using BossRush.Contents.BuffAndDebuff;
 
 namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.TheTwoEvil;
 internal class TheTwoEvil : SynergyModItem {
@@ -79,6 +80,14 @@ internal class EvilShot : SynergyModProjectile {
 		}
 	}
 	public override void OnHitNPCSynergy(Player player, PlayerSynergyItemHandle modplayer, NPC npc, NPC.HitInfo hit, int damageDone) {
+		if (Projectile.ai[0] == 0) {
+			Vector2 vel = Main.rand.NextVector2CircularEdge(1, 1);
+			Projectile.NewProjectile(player.GetSource_OnHit(npc), npc.Center.PositionOFFSET(vel, -30), vel, ProjectileID.LightsBane, (int)(hit.Damage * .5f), hit.Knockback, player.whoAmI, 1);
+		}
+		else {
+			npc.AddBuff(ModContent.BuffType<BloodButchererEnchantmentDebuff>(), BossRushUtils.ToSecond(Main.rand.Next(3, 8)));
+		}
+
 		Projectile.timeLeft = 60;
 		float randomrotation = Main.rand.NextFloat(90);
 		Vector2 randomPosOffset = Main.rand.NextVector2Circular(20f, 20f);

@@ -9,8 +9,9 @@ using BossRush.Common.General;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Systems;
 
-namespace BossRush.Common.Systems.ArgumentsSystem;
+namespace BossRush.Contents.Arguments;
 
 public class FireI : ModAugments {
 	public override void SetStaticDefaults() {

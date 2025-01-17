@@ -52,8 +52,8 @@ internal class SoulWoodSword : ModProjectile {
 	private void MoveToTarget() {
 		ResetStats = true;
 		if (npc == null || !npc.active) {
-			if (!Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center.Subtract(0, 50), 30)) {
-				Projectile.velocity = (Main.player[Projectile.owner].Center.Subtract(0, 50) - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+			if (!Projectile.Center.IsCloseToPosition(Main.player[Projectile.owner].Center.Add(0, 50), 30)) {
+				Projectile.velocity = (Main.player[Projectile.owner].Center.Add(0, 50) - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 			}
 			else {

@@ -5,7 +5,7 @@ using Terraria.ModLoader.IO;
 using System.Collections.Generic;
 using BossRush.Texture;
 
-namespace BossRush.Common.Systems.WeaponUpgrade;
+namespace BossRush.Contents.Perks.WeaponUpgrade;
 public enum WeaponUpgradeID : short {
 	None,
 	ShortSwordThrown,
@@ -48,7 +48,7 @@ public class UpgradeReset : ModItem {
 		Item.BossRushDefaultToConsume(32, 32);
 	}
 	public override bool? UseItem(Player player) {
-		if(player.ItemAnimationJustStarted) {
+		if (player.ItemAnimationJustStarted) {
 			player.GetModPlayer<UpgradePlayer>().Upgrades.Clear();
 		}
 		return false;

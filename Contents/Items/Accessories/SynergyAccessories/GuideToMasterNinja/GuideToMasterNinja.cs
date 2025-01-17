@@ -177,7 +177,7 @@ namespace BossRush.Contents.Items.Accessories.SynergyAccessories.GuideToMasterNi
 				if (Player.HasItem(ItemID.FrostDaggerfish)) {
 					NinjaBag.Add(ProjectileID.FrostDaggerfish);
 				}
-				Vector2 SpawnProjPos = target.Center.Subtract(0, 200);
+				Vector2 SpawnProjPos = target.Center.Add(0, 200);
 				for (int i = 0; i < 12; i++) {
 					var randomSpeed = Main.rand.NextVector2Circular(1, 1);
 					Dust.NewDust(SpawnProjPos, 0, 0, DustID.Smoke, randomSpeed.X, randomSpeed.Y, 0, default, Main.rand.NextFloat(2f, 3.5f));

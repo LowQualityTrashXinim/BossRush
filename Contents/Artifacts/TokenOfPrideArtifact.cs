@@ -6,10 +6,10 @@ using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.WeaponEnchantment;
 using Terraria.ID;
 using BossRush.Contents.Perks;
-using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Common.Systems;
 using BossRush.Common.Systems.Achievement;
 using System;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -24,7 +24,7 @@ namespace BossRush.Contents.Artifacts {
 		public override void UpdateEquips() {
 			if (Pride) {
 				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= 0;
-				Player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .65f;
+				Player.GetModPlayer<PlayerStatsHandle>().AugmentationChance += .65f;
 			}
 		}
 		public override void PreUpdate() {
@@ -76,7 +76,7 @@ namespace BossRush.Contents.Artifacts {
 			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() || AchievementSystem.IsAchieved("TokenOfPride");
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .1f;
+			player.GetModPlayer<PlayerStatsHandle>().AugmentationChance += .1f;
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, Base: player.GetModPlayer<AugmentsPlayer>().valid * StackAmount(player));
 		}
 		public override void ModifyDamage(Player player, Item item, ref StatModifier damage) {

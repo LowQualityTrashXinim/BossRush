@@ -9,7 +9,7 @@ using BossRush.Texture;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
-using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Items.aDebugItem.StatsInform;
 internal class ContentTracker : ModItem {

@@ -6,8 +6,8 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems;
-using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Artifacts {
 	internal class TokenOfGreedArtifact : Artifact {
@@ -44,8 +44,9 @@ namespace BossRush.Contents.Artifacts {
 		}
 		public override void UpdateEquip(Player player) {
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.LootDropIncrease, Base: 1 * StackAmount(player));
-			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .2f * StackAmount(player);
-			player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .05f * StackAmount(player);
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+			handle.AugmentationChance += .2f * StackAmount(player);
+			handle.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
 	public class TheBigMoment : Perk {

@@ -5,7 +5,7 @@ using Terraria.ID;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
 
-namespace BossRush.Common.Systems.WeaponUpgrade.Content;
+namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.EnhancedMagicStaff)) {
@@ -53,6 +53,6 @@ internal class EnhancedMagicStaff : Perk {
 	}
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.EnhancedMagicStaff);
-		BossRushUtils.Reflesh_GlobalItem(Mod, player);
+		Mod.Reflesh_GlobalItem(player);
 	}
 }

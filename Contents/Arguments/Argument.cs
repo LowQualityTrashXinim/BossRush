@@ -7,8 +7,9 @@ using Terraria.ModLoader.IO;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using BossRush.Common.Systems;
 
-namespace BossRush.Common.Systems.ArgumentsSystem;
+namespace BossRush.Contents.Arguments;
 internal class AugmentsLoader : ModSystem {
 	private static readonly List<ModAugments> _Augmentss = new();
 	public static int TotalCount => _Augmentss.Count;
@@ -52,10 +53,10 @@ public class AugmentsWeapon : GlobalItem {
 	public override bool InstancePerEntity => true;
 	public int[] AugmentsSlots = new int[5];
 	/// <summary>
-	/// Can only applied to weapon that is <see cref="BossRushUtils.IsAWeapon(Item)"/><br/>
-	/// Augments won't always be added, instead it work base on weapon's chance stat<br/>
+	/// Can only applied to accessory<br/>
+	/// Augments won't always be added, instead it work base on item's chance stat<br/>
 	/// Use <paramref name="chance"/> to increases the chance directly, be aware it will decay overtime<br/>
-	/// Weapon's chance stat and <see cref="ModAugments"/> chance have fixed chance, meaning it won't be decay
+	/// item's chance stat and <see cref="ModAugments"/> chance have fixed chance, meaning it won't be decay
 	/// Set <paramref name="decayable"/> to disable decay
 	/// </summary>
 	/// <param name="player">The player</param>
@@ -76,6 +77,7 @@ public class AugmentsWeapon : GlobalItem {
 				}
 			}
 			AugmentsPlayer modplayer = player.GetModPlayer<AugmentsPlayer>();
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
 			chance += modplayer.Request_ChanceAugments;
 			limit += modplayer.Request_LimitAugments;
 			if (modplayer.Request_Decayable != null)
@@ -84,7 +86,7 @@ public class AugmentsWeapon : GlobalItem {
 			int currentEmptySlot = 0;
 			bool passException = false;
 
-			float chanceDecay = modplayer.IncreasesChance + chance + weapon.ItemConditionalChance(item, player);
+			float chanceDecay = handle.AugmentationChance + chance + weapon.ItemConditionalChance(item, player);
 			ModAugments modAugments = null;
 			float augmentChance = 0;
 			for (int i = 0; i < weapon.AugmentsSlots.Length && currentEmptySlot < weapon.AugmentsSlots.Length; i++) {
@@ -93,7 +95,7 @@ public class AugmentsWeapon : GlobalItem {
 					augmentChance = AugmentsList[modAugments.Type];
 					AugmentsList.Remove(modAugments.Type);
 				}
-				if (limit <= -1) {
+				if (limit > -1) {
 					if (currentEmptySlot <= limit) {
 						break;
 					}
@@ -187,10 +189,6 @@ public abstract class ModAugments : ModType {
 	}
 }
 public class AugmentsPlayer : ModPlayer {
-	/// <summary>
-	/// This chance will decay for each success roll
-	/// </summary>
-	public float IncreasesChance = 0;
 	public List<Item> accItemUpdate = new();
 	public void SafeRequest_AddAugments(float chance, int limit, bool decayable) {
 		Request_ChanceAugments = chance;
@@ -205,7 +203,6 @@ public class AugmentsPlayer : ModPlayer {
 	/// </summary>
 	public int valid = 0;
 	public override void ResetEffects() {
-		IncreasesChance = 0;
 		valid = 0;
 		accItemUpdate.Clear();
 	}
