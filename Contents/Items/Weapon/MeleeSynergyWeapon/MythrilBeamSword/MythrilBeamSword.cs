@@ -1,11 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Graphics.Shaders;
-using Terraria.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,8 +11,6 @@ using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {
-
-
 	public override void SetDefaults() {
 		Item.BossRushDefaultMeleeShootCustomProjectile(72, 72, 88, 6f, 50, 50, ItemUseStyleID.Swing, ModContent.ProjectileType<MythrilBeam>(), 15, true);
 		Item.GetGlobalItem<MeleeWeaponOverhaul>().SwingType = BossRushUseStyle.Swipe;

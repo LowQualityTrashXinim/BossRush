@@ -37,6 +37,7 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
+using BossRush.Contents.Items.aDebugItem;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {

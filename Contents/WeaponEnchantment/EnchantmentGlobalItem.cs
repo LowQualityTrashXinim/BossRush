@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.EnchantedOreSword;
 
 namespace BossRush.Contents.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
@@ -81,25 +82,31 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return CanBeEnchanted(entity);
 	}
+	public bool IsAtleastInPlayerInvOnce = false;
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[4];
 	public int[] Item_Counter1 = new int[4];
 	public int[] Item_Counter2 = new int[4];
 	public int[] Item_Counter3 = new int[4];
-	public override void OnCreated(Item item, ItemCreationContext context) {
-		Array.Fill(EnchantmenStlot, 0);
-		Array.Fill(Item_Counter1, 0);
-		Array.Fill(Item_Counter2, 0);
-		Array.Fill(Item_Counter3, 0);
-	}
 	public override GlobalItem Clone(Item from, Item to) {
-		return base.Clone(from, to);
+		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
+		if (clone == null) {
+			return base.Clone(from, to);
+		}
+		if (EnchantmenStlot.Length < 4 || clone.EnchantmenStlot.Length < 4) {
+			Array.Resize(ref EnchantmenStlot, 4);
+			Array.Resize(ref clone.EnchantmenStlot, 4);
+		}
+		clone.EnchantmenStlot = new int[4];
+		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 4);
+		return clone;
 	}
 	public override GlobalItem NewInstance(Item target) {
 		EnchantmenStlot = new int[4];
 		Item_Counter1 = new int[4];
 		Item_Counter2 = new int[4];
 		Item_Counter3 = new int[4];
+		IsAtleastInPlayerInvOnce = false;
 		return base.NewInstance(target);
 	}
 	public int GetValidNumberOfEnchantment() {
@@ -110,6 +117,9 @@ public class EnchantmentGlobalItem : GlobalItem {
 			}
 		}
 		return valid;
+	}
+	public override void UpdateInventory(Item item, Player player) {
+		IsAtleastInPlayerInvOnce = true;
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (EnchantmenStlot == null) {
@@ -464,9 +474,6 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 	public int WhoAmI = -1;
 	public Texture2D textureDraw;
 	public Item item;
-
-
-
 	private Texture2D texture;
 	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
@@ -480,9 +487,9 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 			Item itemcached;
 			if (item != null && item.type != ItemID.None) {
 				itemcached = item.Clone();
-				item = Main.mouseItem.Clone();
-				Main.mouseItem = itemcached.Clone();
-				player.inventory[58] = itemcached.Clone();
+				item.TurnToAir();
+				Main.mouseItem = itemcached;
+				player.inventory[58] = itemcached;
 			}
 			else {
 				item = Main.mouseItem.Clone();

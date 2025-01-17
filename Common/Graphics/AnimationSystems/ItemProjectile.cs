@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader.UI;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace BossRush.Common.Graphics.AnimationSystem;
+namespace BossRush.Common.Graphics.AnimationSystems;
 public class ItemProjectile : ModProjectile {
 
 	public Vector2 startingPosition;
@@ -28,11 +28,10 @@ public class ItemProjectile : ModProjectile {
 		Projectile.friendly = true;
 		Projectile.hostile = false;
 		Projectile.aiStyle = -1;
-		
+
 	}
 
-	public static ItemProjectile SpawnItemProjectile(Player player, Vector2 position, float rotation, int timeLeft,Texture2D sprite, Rectangle spriteSourceRect, Vector2 spriteOrigin,Vector2 spriteScale, SpriteEffects spriteEffect, Animate animation) 
-	{
+	public static ItemProjectile SpawnItemProjectile(Player player, Vector2 position, float rotation, int timeLeft, Texture2D sprite, Rectangle spriteSourceRect, Vector2 spriteOrigin, Vector2 spriteScale, SpriteEffects spriteEffect, Animate animation) {
 		var proj = Projectile.NewProjectileDirect(null, position, Vector2.Zero, ModContent.ProjectileType<ItemProjectile>(), 0, 0, player.whoAmI);
 		proj.timeLeft = timeLeft;
 		proj.rotation = rotation;
@@ -49,7 +48,7 @@ public class ItemProjectile : ModProjectile {
 
 	public override bool PreDraw(ref Color lightColor) {
 
-		Main.EntitySpriteDraw(sprite,Projectile.Center - Main.screenPosition, spriteSourceRect == Rectangle.Empty ? null : spriteSourceRect, lightColor, Projectile.rotation,spriteOrigin,spriteScale,spriteEffect);
+		Main.EntitySpriteDraw(sprite, Projectile.Center - Main.screenPosition, spriteSourceRect == Rectangle.Empty ? null : spriteSourceRect, lightColor, Projectile.rotation, spriteOrigin, spriteScale, spriteEffect);
 
 		return false;
 	}
@@ -63,10 +62,10 @@ public class ItemProjectile : ModProjectile {
 		Player player = Main.player[Projectile.owner];
 		player.heldProj = Projectile.whoAmI;
 
-		animation(player,startingPosition,startingPositionOffset);
+		animation(player, startingPosition, startingPositionOffset);
 
 		Projectile.Center = player.Center + PositionOffset;
-		Projectile.Center += new Vector2(0,player.gfxOffY);
+		Projectile.Center += new Vector2(0, player.gfxOffY);
 
 
 	}

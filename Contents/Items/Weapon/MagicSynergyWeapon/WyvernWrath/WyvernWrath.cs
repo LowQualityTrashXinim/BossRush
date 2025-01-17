@@ -1,6 +1,4 @@
-﻿using BossRush.Common.Graphics.TrailStructs;
-using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
-using BossRush.Texture;
+﻿using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -9,12 +7,10 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
+using BossRush.Common.Graphics.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MagicSynergyWeapon.WyvernWrath;
 public class WyvernWrath : SynergyModItem {
-
-
 	public override void Synergy_SetStaticDefaults() {
 		Item.staff[Type] = true;
 	}
