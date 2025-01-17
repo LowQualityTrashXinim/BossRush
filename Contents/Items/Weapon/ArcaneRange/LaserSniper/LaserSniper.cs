@@ -168,7 +168,7 @@ public class LaserSniperProjectile : ModProjectile
 		s.oldPos = Projectile.oldPos;
 		s.oldRot = Projectile.oldRot;
 		s.Color = Color.Aqua;
-		s.shaderType = ShadersID.FlameShader;
+		s.shaderType = "FlameEffect";
 		default(GenericTrail).Draw(s,(a) => MathHelper.Lerp(2f, 6f, Utils.GetLerpValue(0f, 0.2f, a, clamped: true)) * Utils.GetLerpValue(0f, 0.07f, a, clamped: true), (a) => Color.Aqua);
 
 		return false;
@@ -229,11 +229,8 @@ public class PlasmaExplosion : ModProjectile
 	public override void SetStaticDefaults() {
 		Main.projFrames[Type] = 6;
 	}
-	private static ModdedShaderHandler shader;
 	private PrimitiveDrawer primitiveDrawer;
-	public override void Load() {
-		shader = new ModdedShaderHandler(EffectsLoader.loadedShaders["ExplosionPrimitive"].Value);
-	}
+
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 98;
 		Projectile.friendly = true;
@@ -257,6 +254,7 @@ public class PlasmaExplosion : ModProjectile
 
 	public override bool PreDraw(ref Color lightColor) {
 
+		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 		shader.setProperties(Color.Aqua, TextureAssets.Extra[193].Value,shaderData: new Vector4(Projectile.ai[0], Projectile.ai[0], Projectile.ai[0],0));
 		shader.apply();
 

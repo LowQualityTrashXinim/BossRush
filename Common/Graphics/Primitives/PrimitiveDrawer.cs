@@ -1,17 +1,8 @@
 ﻿using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using rail;
 using System;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.Graphics;
-using Terraria.Graphics.Shaders;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace BossRush.Common.Graphics.Primitives;

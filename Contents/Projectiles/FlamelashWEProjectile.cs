@@ -1,11 +1,6 @@
 ﻿using BossRush.Common.Graphics;using BossRush.Common.Graphics.Primitives;using BossRush.Common.Graphics.RenderTargets;using BossRush.Texture;using Microsoft.Xna.Framework;using Microsoft.Xna.Framework.Graphics;using Newtonsoft.Json.Linq;using System;using System.Collections.Generic;using System.Linq;using System.Text;using System.Threading.Tasks;using Terraria;using Terraria.Audio;using Terraria.DataStructures;using Terraria.GameContent;using Terraria.Graphics.Shaders;using Terraria.ID;using Terraria.ModLoader;using Terraria.ModLoader.IO;namespace BossRush.Contents.Projectiles;public class FlamelashWEProjectile : ModProjectile {	public override string Texture => BossRushTexture.MissingTexture_Default;
-	private static ModdedShaderHandler shader;
-	private static ModdedShaderHandler explosionShader;
-	public override void Load() {
-		explosionShader = new ModdedShaderHandler(EffectsLoader.loadedShaders["ExplosionPrimitive"].Value);
-		shader = new ModdedShaderHandler(EffectsLoader.loadedShaders["FlameBallPrimitive"].Value);
 
-	}
+
 
 	float shaderOffset;	bool exploding = false;	int randomSize;
 	PrimitiveDrawer quad0;
@@ -27,6 +22,9 @@
 
 	
 	public override bool PreDraw(ref Color lightColor) {
+
+		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameBallPrimitive"];
+		ModdedShaderHandler explosionShader = EffectsLoader.shaderHandlers["ExplosionPrimitive"];
 
 		shader.setupTextures();
 		shader.setProperties(Color.Orange, TextureAssets.Extra[193].Value, shaderData: new Vector4(Projectile.ai[0], Projectile.ai[1], Projectile.ai[2], shaderOffset));
