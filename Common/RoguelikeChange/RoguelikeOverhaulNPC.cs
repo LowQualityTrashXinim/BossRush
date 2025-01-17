@@ -83,11 +83,17 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (VelocityMultiplier != 0) {
 			npc.velocity /= VelocityMultiplier;
 		}
+		else {
+			npc.velocity /= .001f;
+		}
 		return base.PreAI(npc);
 	}
 	public override void PostAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
 			npc.velocity *= VelocityMultiplier;
+		}
+		else {
+			npc.velocity *= .001f;
 		}
 		VelocityMultiplier = 1;
 		if (HeatRay_HitCount > 0) {

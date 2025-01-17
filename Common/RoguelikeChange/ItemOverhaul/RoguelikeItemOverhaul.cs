@@ -265,7 +265,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					text));
 			}
 			else if (item.type == ItemID.CopperWatch) {
-				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch", "Decreases the nearest NPC speed by 50%"));
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch", "Decreases the nearest NPC speed by 30%\nDecreases hostile projectile velocity by 30%"));
 			}
 		}
 		public override void HoldItem(Item item, Player player) {
