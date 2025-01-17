@@ -50,6 +50,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier NonCriticalDamage = new StatModifier();
 	public StatModifier SkillDuration = new();
 	public StatModifier SkillCoolDown = new();
+	public float Hostile_ProjectileVelocityAddition = 0;
 	//public float LuckIncrease = 0; 
 	/// <summary>
 	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>

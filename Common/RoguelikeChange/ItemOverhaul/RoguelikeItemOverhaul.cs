@@ -109,14 +109,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			switch (item.type) {
-				case ItemID.AmethystStaff:
-					velocity = velocity.Vector2RotateByRandom(10);
-					position = position.PositionOFFSET(velocity, 50);
-					break;
-				case ItemID.TopazStaff:
-					velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
-					position = position.PositionOFFSET(velocity, 50);
-					break;
 				case ItemID.Stynger:
 					SoundEngine.PlaySound(item.UseSound);
 					position += (Vector2.UnitY * Main.rand.NextFloat(-6, 6)).RotatedBy(velocity.ToRotation());
@@ -201,6 +193,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
 		}
+		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
+			if (item.type == ItemID.CopperWatch) {
+				if (player.Center.LookForHostileNPC(out NPC npc, 400f)) {
+					npc.GetGlobalNPC<RoguelikeOverhaulNPC>().VelocityMultiplier -= .3f;
+				}
+				player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition -= .3f;
+			}
+		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
@@ -263,6 +263,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				}
 				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_Revolver",
 					text));
+			}
+			else if (item.type == ItemID.CopperWatch) {
+				tooltips.Add(new TooltipLine(Mod, "RoguelikeOverhaul_CopperWatch", "Decreases the nearest NPC speed by 50%"));
 			}
 		}
 		public override void HoldItem(Item item, Player player) {

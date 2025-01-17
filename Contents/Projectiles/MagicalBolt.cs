@@ -39,7 +39,7 @@ internal class AmethystMagicalBolt : ModProjectile {
 			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.GemAmethyst);
 			dust.noGravity = true;
 			dust.velocity = Vector2.Zero;
-			Dust dust2 = Dust.NewDustDirect(Projectile.position + Main.rand.NextVector2Circular(10,10), 0, 0, DustID.GemAmethyst);
+			Dust dust2 = Dust.NewDustDirect(Projectile.position + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemAmethyst);
 			dust2.noGravity = true;
 			dust2.velocity = Vector2.Zero;
 		}
@@ -117,6 +117,97 @@ internal class TopazMagicalBolt : ModProjectile {
 	}
 	public override bool PreDraw(ref Color lightColor) {
 		Projectile.DrawTrailWithoutColorAdjustment(new Color(225, 205, 255, 110) * Projectile.Opacity, .02f);
+		return false;
+	}
+}
+internal class SapphireMagicalBolt : ModProjectile {
+	public override string Texture => BossRushTexture.SMALLWHITEBALL;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 50;
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 10;
+		Projectile.tileCollide = true;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 1000; Projectile.penetrate = 1;
+		Projectile.extraUpdates = 7;
+		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 40;
+	}
+	public override bool OnTileCollide(Vector2 oldVelocity) {
+		Projectile.velocity = Vector2.Zero;
+		Projectile.ai[0] = -99999;
+		return false;
+	}
+	public override void AI() {
+		if (Main.rand.NextBool(5)) {
+			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.GemSapphire);
+			dust.noGravity = true;
+			dust.velocity = Vector2.Zero;
+			Dust dust2 = Dust.NewDustDirect(Projectile.position + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemSapphire);
+			dust2.noGravity = true;
+			dust2.velocity = Vector2.Zero;
+		}
+		if (Projectile.timeLeft > 400) {
+			Projectile.timeLeft = 400;
+			Projectile.ai[1] = Main.rand.Next(10, 90);
+		}
+		Projectile.ProjectileAlphaDecay(400);
+		if (++Projectile.ai[0] >= Projectile.ai[1]) {
+			Projectile.ai[1] = Main.rand.Next(50, 90);
+			Projectile.ai[2] = Main.rand.NextBool().ToDirectionInt();
+		}
+		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[2]));
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Projectile.DrawTrailWithoutColorAdjustment(new Color(100, 100, 255, 110) * Projectile.Opacity, .02f);
+		return false;
+	}
+}
+internal class EmeraldMagicalBolt : ModProjectile {
+	public override string Texture => BossRushTexture.SMALLWHITEBALL;
+	public override void SetStaticDefaults() {
+		ProjectileID.Sets.TrailCacheLength[Type] = 50;
+		ProjectileID.Sets.TrailingMode[Type] = 0;
+	}
+	public override void SetDefaults() {
+		Projectile.width = Projectile.height = 10;
+		Projectile.tileCollide = true;
+		Projectile.friendly = true;
+		Projectile.timeLeft = 1000; Projectile.penetrate = 3;
+		Projectile.extraUpdates = 7;
+		Projectile.usesLocalNPCImmunity = true;
+		Projectile.localNPCHitCooldown = 40;
+	}
+	public override bool OnTileCollide(Vector2 oldVelocity) {
+		Projectile.velocity = Vector2.Zero;
+		Projectile.ai[0] = -99999;
+		return false;
+	}
+	public override void AI() {
+		if (Main.rand.NextBool(5)) {
+			Dust dust = Dust.NewDustDirect(Projectile.position, 0, 0, DustID.GemEmerald);
+			dust.noGravity = true;
+			dust.velocity = Vector2.Zero;
+			Dust dust2 = Dust.NewDustDirect(Projectile.position + Main.rand.NextVector2Circular(10, 10), 0, 0, DustID.GemEmerald);
+			dust2.noGravity = true;
+			dust2.velocity = Vector2.Zero;
+		}
+		if (Projectile.timeLeft > 800) {
+			Projectile.timeLeft = 800;
+			Projectile.ai[1] = Main.rand.Next(90, 150);
+			Projectile.ai[2] = Main.rand.NextBool().ToDirectionInt() * .35f;
+		}
+		Projectile.ProjectileAlphaDecay(800);
+		if (++Projectile.ai[0] >= Projectile.ai[1]) {
+			Projectile.ai[1] = Main.rand.Next(200, 300);
+			Projectile.velocity += (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * .02f;
+		}
+		Projectile.velocity = Projectile.velocity.RotatedBy(MathHelper.ToRadians(Projectile.ai[2]));
+	}
+	public override bool PreDraw(ref Color lightColor) {
+		Projectile.DrawTrailWithoutColorAdjustment(new Color(100, 255, 100, 110) * Projectile.Opacity, .02f);
 		return false;
 	}
 }
