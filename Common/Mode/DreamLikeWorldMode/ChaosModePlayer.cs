@@ -1,4 +1,5 @@
-﻿using BossRush.Common.Systems.ArgumentsSystem;
+﻿using BossRush.Common.Systems;
+using BossRush.Contents.Arguments;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.WeaponEnchantment;
 using System.Linq;
@@ -34,8 +35,9 @@ internal class ChaosModePlayer : ModPlayer {
 		if(!ChaosModeSystem.Chaos()) {
 			return;
 		}
-		Player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .3f;
-		Player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .2f;
+		PlayerStatsHandle handle = Player.GetModPlayer<PlayerStatsHandle>();
+		handle.AugmentationChance += .3f;
+		handle.RandomizeChanceEnchantment += .2f;
 	}
 	public override void SaveData(TagCompound tag) {
 		tag["HasReceivedWeapon"] = HasReceivedWeapon;

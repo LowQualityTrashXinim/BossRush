@@ -21,16 +21,16 @@ internal class BurningSky : SynergyModItem {
 		if (type == ProjectileID.WoodenArrowFriendly)
 			type = ProjectileID.FireArrow;
 		SoundEngine.PlaySound(Item.UseSound);
-		Vector2 newPos = Main.MouseWorld.Subtract(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
+		Vector2 newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 		Vector2 vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
 		Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), type, damage, knockback, player.whoAmI);
 		if (Main.rand.NextBool(9)) {
-			newPos = Main.MouseWorld.Subtract(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
+			newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 			vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
 			Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), Main.rand.Next(new int[] { ProjectileID.Meteor1, ProjectileID.Meteor2, ProjectileID.Meteor3 }), damage * 2, knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
 		}
 		if (Main.rand.NextBool(5)) {
-			newPos = Main.MouseWorld.Subtract(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
+			newPos = Main.MouseWorld.Add(Main.rand.NextFloat(-120, 120), 900 + Main.rand.NextFloat(-50, 50));
 			vel = (Main.MouseWorld - newPos).SafeNormalize(Vector2.Zero) * Item.shootSpeed;
 			Projectile.NewProjectile(source, newPos, vel.Vector2RotateByRandom(5), ProjectileID.HellfireArrow, (int)(damage * 1.2f), knockback, player.whoAmI, ai1: Main.rand.NextFloat(1, 1.5f));
 		}

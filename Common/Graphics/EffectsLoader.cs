@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 using System.Diagnostics;
 
 namespace BossRush.Common.Graphics;
-internal class EffectsLoader : ModSystem {
+public class EffectsLoader : ModSystem {
 
 	//public static Dictionary<string,Asset<Effect>> loadedShaders = new();
 	public static Dictionary<string, ModdedShaderHandler> shaderHandlers = new();

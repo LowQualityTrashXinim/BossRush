@@ -10,6 +10,7 @@ using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeavenSmg;
 using BossRush.Contents.Items.RelicItem;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -20,6 +21,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public bool Source_FromDeathScatterShot = false;
 	public int OnKill_ScatterShot = -1;
 	private float TravelDistanceBeforeKill = -1f;
+	public float VelocityMultiplier = 1f;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
 			return;
@@ -45,18 +47,40 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 					else if (type == RelicTemplate.GetRelicType<SkyFractureTemplate>()) {
 						TravelDistanceBeforeKill = 450;
 					}
-					//else if (type == RelicTemplate.GetRelicType<MagicMissileTemplate>()) {
-					//	TravelDistanceBeforeKill = 650;
-					//}
-					//else if (type == RelicTemplate.GetRelicType<DemonScytheTemplate>()) {
-					//	TravelDistanceBeforeKill = 600;
-					//}
+					else if (type == RelicTemplate.GetRelicType<MagicMissileTemplate>()) {
+						TravelDistanceBeforeKill = 650;
+					}
+					else if (type == RelicTemplate.GetRelicType<DemonScytheTemplate>()) {
+						TravelDistanceBeforeKill = 600;
+					}
 				}
 			}
 		}
 	}
+	public override bool PreAI(Projectile projectile) {
+		if (VelocityMultiplier != 0) {
+			projectile.velocity /= VelocityMultiplier;
+		}
+		else {
+			projectile.velocity /= .001f;
+		}
+		return base.PreAI(projectile);
+	}
 	public override void PostAI(Projectile projectile) {
+		if (VelocityMultiplier != 0) {
+			projectile.velocity *= VelocityMultiplier;
+		}
+		else {
+			projectile.velocity *= .001f;
+		}
 		Player player = Main.player[projectile.owner];
+		if (projectile.hostile) {
+			VelocityMultiplier = 1f + player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition;
+			player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition = 0;
+		}
+		else {
+			VelocityMultiplier = 1f;
+		}
 		if (TravelDistanceBeforeKill > 0 && Vector2.DistanceSquared(player.Center, projectile.Center) >= TravelDistanceBeforeKill * TravelDistanceBeforeKill) {
 			projectile.Kill();
 		}

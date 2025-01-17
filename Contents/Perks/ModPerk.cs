@@ -22,8 +22,8 @@ using BossRush.Common.Systems.Mutation;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -187,9 +187,10 @@ namespace BossRush.Contents.Perks {
 			textureString = BossRushUtils.GetTheSameTextureAsEntity<Dirt>();
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<AugmentsPlayer>().IncreasesChance += .05f * StackAmount(player);
-			player.GetModPlayer<EnchantmentModplayer>().RandomizeChanceEnchantment += .05f * StackAmount(player);
-			player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance += .05f * StackAmount(player);
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+			handle.AugmentationChance += .05f * StackAmount(player);
+			handle.RandomizeChanceEnchantment += .05f * StackAmount(player);
+			handle.Transmutation_SuccessChance += .05f * StackAmount(player);
 		}
 	}
 	public class AlchemistEmpowerment : Perk {
@@ -869,7 +870,7 @@ namespace BossRush.Contents.Perks {
 			player.StrikeNPCDirect(target, target.CalculateHitInfo((int)(damage * 1.25f) + target.defense / 2, hit.HitDirection, hit.Crit, knockback));
 
 			IEntitySource source = player.GetSource_OnHit(target);
-			Vector2 pos = target.Center.Subtract(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
+			Vector2 pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
 			Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
 			Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
 
@@ -883,7 +884,7 @@ namespace BossRush.Contents.Perks {
 
 			if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type) {
 				IEntitySource source = player.GetSource_OnHit(target);
-				Vector2 pos = target.Center.Subtract(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
+				Vector2 pos = target.Center.Add(Main.rand.Next(-100, 100), Main.rand.Next(300, 350));
 				Vector2 vel = (target.Center - pos).SafeNormalize(Vector2.Zero) * 8;
 				Projectile.NewProjectile(source, pos, vel, ProjectileID.LunarFlare, (int)(damage * .77f), knockback, player.whoAmI);
 
@@ -945,11 +946,10 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 10;
 		}
 		public override void UpdateEquip(Player player) {
-			EnchantmentModplayer enchantplayer = player.GetModPlayer<EnchantmentModplayer>();
-			AugmentsPlayer augmentplayer = player.GetModPlayer<AugmentsPlayer>();
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 			ModContent.GetInstance<MutationSystem>().MutationChance += .1f * StackAmount(player);
-			augmentplayer.IncreasesChance += .05f * StackAmount(player);
-			enchantplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
+			modplayer.AugmentationChance += .05f * StackAmount(player);
+			modplayer.RandomizeChanceEnchantment += .05f * StackAmount(player);
 		}
 	}
 	public class DemolitionistGunner : Perk {

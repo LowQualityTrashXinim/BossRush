@@ -4,12 +4,11 @@ using Humanizer;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
-using BossRush.Contents.Items.Chest;
-using BossRush.Contents.Items.aDebugItem;
-using BossRush.Contents.Items.RelicItem;
 using Terraria.DataStructures;
+using BossRush.Contents.Items.Chest;
+using BossRush.Contents.Items.RelicItem;
+using BossRush.Contents.Items.aDebugItem;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Common.Systems.ArgumentsSystem;
 
 namespace BossRush.Common.Systems.SpoilSystem;
 internal class SuperRareSpoil {

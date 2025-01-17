@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.Chest;
 
-namespace BossRush.Contents.Items.aDebugItem.SkillDebug;
+namespace BossRush.Contents.Items.aDebugItem;
 internal class SpoilGetter : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -66,8 +66,8 @@ class SpoilGetterUI : UIState {
 				SpoilsUIButton button = new(ModContent.Request<Texture2D>(BossRushTexture.ACCESSORIESSLOT), list_Spoil[i]) {
 					Width = StyleDimension.FromPixels(44f),
 					Height = StyleDimension.FromPixels(44f),
-					Left = StyleDimension.FromPixels((i % SPOIL_MAXLINE) * 46.0f + 6.0f),
-					Top = StyleDimension.FromPixels((i / SPOIL_MAXLINE) * 48.0f + 1.0f)
+					Left = StyleDimension.FromPixels(i % SPOIL_MAXLINE * 46.0f + 6.0f),
+					Top = StyleDimension.FromPixels(i / SPOIL_MAXLINE * 48.0f + 1.0f)
 				};
 				button.OnLeftClick += Text_OnLeftClick;
 				btn_list.Add(button);

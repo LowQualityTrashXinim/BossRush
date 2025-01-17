@@ -22,6 +22,7 @@ public class EnchantmentSystem : ModSystem {
 			return;
 		}
 		EnchantmentModplayer modplayer = self.GetModPlayer<EnchantmentModplayer>();
+		PlayerStatsHandle handle = self.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.Request_EnchantedItem > 0) {
 			int length = modplayer.Request_EnchantedAmount;
 			for (int i = 0; i < length; i++) {
@@ -44,7 +45,7 @@ public class EnchantmentSystem : ModSystem {
 					continue;
 				}
 			}
-			if (Main.rand.NextFloat() <= randomizedchance + modplayer.RandomizeChanceEnchantment) {
+			if (Main.rand.NextFloat() <= randomizedchance + handle.RandomizeChanceEnchantment) {
 				EnchantItem(ref item, i);
 				continue;
 			}
@@ -81,6 +82,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return CanBeEnchanted(entity);
 	}
+	public bool IsAtleastInPlayerInvOnce = false;
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[4];
 	public int[] Item_Counter1 = new int[4];
@@ -88,10 +90,14 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public int[] Item_Counter3 = new int[4];
 	public override GlobalItem Clone(Item from, Item to) {
 		EnchantmentGlobalItem clone = (EnchantmentGlobalItem)base.Clone(from, to);
+		if (clone == null) {
+			return base.Clone(from, to);
+		}
 		if (EnchantmenStlot.Length < 4 || clone.EnchantmenStlot.Length < 4) {
 			Array.Resize(ref EnchantmenStlot, 4);
 			Array.Resize(ref clone.EnchantmenStlot, 4);
 		}
+		clone.EnchantmenStlot = new int[4];
 		Array.Copy((int[])EnchantmenStlot?.Clone(), clone.EnchantmenStlot, 4);
 		return clone;
 	}
@@ -100,6 +106,7 @@ public class EnchantmentGlobalItem : GlobalItem {
 		Item_Counter1 = new int[4];
 		Item_Counter2 = new int[4];
 		Item_Counter3 = new int[4];
+		IsAtleastInPlayerInvOnce = false;
 		return base.NewInstance(target);
 	}
 	public int GetValidNumberOfEnchantment() {
@@ -110,6 +117,9 @@ public class EnchantmentGlobalItem : GlobalItem {
 			}
 		}
 		return valid;
+	}
+	public override void UpdateInventory(Item item, Player player) {
+		IsAtleastInPlayerInvOnce = true;
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (EnchantmenStlot == null) {
@@ -153,16 +163,12 @@ public class EnchantmentGlobalItem : GlobalItem {
 public class EnchantmentModplayer : ModPlayer {
 	Item item;
 	EnchantmentGlobalItem globalItem;
-	public float RandomizeChanceEnchantment = .2f;
 	public void SafeRequest_EnchantItem(int requestAmount, int amountEnchant) {
 		Request_EnchantedItem = requestAmount;
 		Request_EnchantedAmount = amountEnchant;
 	}
 	public int Request_EnchantedItem = 0;
 	public int Request_EnchantedAmount = 1;
-	public override void ResetEffects() {
-		RandomizeChanceEnchantment = 0;
-	}
 	private bool CommonEnchantmentCheck() => !Player.HeldItem.IsAWeapon() || globalItem == null || globalItem.EnchantmenStlot == null || !UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE);
 	public override void PostUpdate() {
 		if (Player.HeldItem.type == ItemID.None)
@@ -464,9 +470,6 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 	public int WhoAmI = -1;
 	public Texture2D textureDraw;
 	public Item item;
-
-
-
 	private Texture2D texture;
 	public WeaponEnchantmentUIslot(Asset<Texture2D> texture) : base(texture) {
 		this.texture = texture.Value;
@@ -480,9 +483,9 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 			Item itemcached;
 			if (item != null && item.type != ItemID.None) {
 				itemcached = item.Clone();
-				item = Main.mouseItem.Clone();
-				Main.mouseItem = itemcached.Clone();
-				player.inventory[58] = itemcached.Clone();
+				item.TurnToAir();
+				Main.mouseItem = itemcached;
+				player.inventory[58] = itemcached;
 			}
 			else {
 				item = Main.mouseItem.Clone();

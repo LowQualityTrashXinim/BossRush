@@ -25,8 +25,8 @@ using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Common.Systems.Achievement;
 using BossRush.Contents.WeaponEnchantment;
+using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
 using BossRush.Common.Systems.ArtifactSystem;
@@ -36,7 +36,8 @@ using BossRush.Contents.Items.Consumable.Spawner;
 using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Common.Systems.ArgumentsSystem;
+using BossRush.Contents.Items.aDebugItem;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {
@@ -432,7 +433,6 @@ internal class UniversalSystem : ModSystem {
 		LootBoxOpen = tag.Get<List<int>>("LootBoxOpen");
 		if (tag.TryGet("TimeBeaten", out TimeSpan time)) {
 			timeBeatenTheGame = time;
-
 		}
 	}
 	public static void AddPerk(int perkType) {
@@ -469,6 +469,7 @@ internal class UniversalSystem : ModSystem {
 	public string WorldState = "";
 	public override void OnWorldUnload() {
 		WorldState = "Exited";
+		timeBeatenTheGame = TimeSpan.Zero;
 		var uiSystemInstance = ModContent.GetInstance<UniversalSystem>();
 		uiSystemInstance.DeactivateUI();
 	}
@@ -525,6 +526,7 @@ public class UniversalModPlayer : ModPlayer {
 		uiSystemInstance.WorldState = "Entered";
 		uiSystemInstance.DeactivateUI();
 		uiSystemInstance.userInterface.SetState(uiSystemInstance.defaultUI);
+		uiSystemInstance.timeBeatenTheGame = TimeSpan.Zero;
 		if (!UniversalSystem.CanAccessContent(Player, UniversalSystem.HARDCORE_MODE) && WarnAlready == 0) {
 			WarnAlready = 1;
 		}
@@ -552,17 +554,41 @@ class DefaultUI : UIState {
 
 	private UITextBox timer;
 
+	private UIImage itemUseTexture;
+	private UITextBox totalDMG;
+
 	public void TurnOnEndOfDemoMessage() {
+		Player player = Main.LocalPlayer;
 		EndOfDemoPanel = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Tooltip"));
-		EndOfDemoPanel.Height.Set(66, 0);
+		EndOfDemoPanel.Height.Set(500, 0);
 		EndOfDemoPanel.HAlign = .5f;
 		EndOfDemoPanel.VAlign = .5f;
 		Append(EndOfDemoPanel);
+		if (player.HeldItem.type != 0) {
+			itemUseTexture = new(TextureAssets.Item[player.HeldItem.type]);
+			itemUseTexture.Width.Set(64, 0);
+			itemUseTexture.Height.Set(64, 0);
+			itemUseTexture.ScaleToFit = true;
+			itemUseTexture.HAlign = 0;
+			itemUseTexture.VAlign = .2f;
+			EndOfDemoPanel.Append(itemUseTexture);
+		}
+		ulong dps = player.GetModPlayer<PlayerStatsHandle>().DPStracker;
+		totalDMG = new("Total damage dealt : 0");
+		string damage = dps.ToString();
+		totalDMG.UISetWidthHeight(0, 20);
+		totalDMG.HAlign = 0f;
+		totalDMG.VAlign = .3f;
+		totalDMG.ShowInputTicker = false;
+		totalDMG.SetTextMaxLength(999);
+		totalDMG.SetText($"Total damage dealt : {damage}");
+		EndOfDemoPanel.Append(totalDMG);
+
 		EndOfDemoPanelClose = new UITextPanel<string>(Language.GetTextValue($"Mods.BossRush.SystemTooltip.DemoEnding.Close"));
-		EndOfDemoPanelClose.HAlign = .5f;
-		EndOfDemoPanelClose.VAlign = .6f;
+		EndOfDemoPanelClose.HAlign = 1f;
+		EndOfDemoPanelClose.VAlign = 1f;
 		EndOfDemoPanelClose.OnLeftClick += EndOfDemoPanelClose_OnLeftClick;
-		Append(EndOfDemoPanelClose);
+		EndOfDemoPanel.Append(EndOfDemoPanelClose);
 	}
 	private void EndOfDemoPanelClose_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 		EndOfDemoPanel.Remove();
@@ -1097,9 +1123,9 @@ class InfoUI : UIState {
 		}
 		var player = Main.LocalPlayer;
 		string line;
+		var statshandle = player.GetModPlayer<PlayerStatsHandle>();
 		switch (CurrentState) {
 			case 0:
-				var statshandle = player.GetModPlayer<PlayerStatsHandle>();
 				line =
 					$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
 					$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
@@ -1140,8 +1166,8 @@ class InfoUI : UIState {
 					$"\nWonder drug consumed rate : {drugplayer.DrugDealer}" +
 					$"\nAmount boss no-hit : {nohitPlayer.BossNoHitNumber.Count}" +
 					$"\nAmount boss don't-hit : {nohitPlayer.DontHitBossNumber.Count}" +
-					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + enchantplayer.RandomizeChanceEnchantment)}" +
-					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + augmentation.IncreasesChance)}";
+					$"\nBonus chance getting enchanted  : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.RandomizeChanceEnchantment)}" +
+					$"\nBonus chance getting augmentation : {RelicTemplateLoader.RelicValueToPercentage(1 + statshandle.AugmentationChance)}";
 				textpanel.SetText(line);
 				break;
 			case 2:

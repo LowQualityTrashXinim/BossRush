@@ -71,7 +71,12 @@ public class TransmutationUIState : UIState {
 		if (slot1.item == null || slot2.item == null) {
 			return;
 		}
-		TransmutationUIConfirmButton.CheckForSpecialDrop(slot1.item, slot2.item);
+		if(TransmutationUIConfirmButton.CheckForSpecialDrop(slot1.item, slot2.item)) {
+			SoundEngine.PlaySound(SoundID.AchievementComplete with { Pitch = -1 });
+		}
+		else {
+			SoundEngine.PlaySound(SoundID.AbigailSummon with { Pitch = -1 });
+		}
 	}
 
 	private void Slot_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

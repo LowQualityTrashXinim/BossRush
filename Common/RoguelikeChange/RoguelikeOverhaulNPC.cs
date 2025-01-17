@@ -78,11 +78,13 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		else {
 			DRFromFatalAttack = true;
 		}
-		VelocityMultiplier = 1;
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
 			npc.velocity /= VelocityMultiplier;
+		}
+		else {
+			npc.velocity /= .001f;
 		}
 		return base.PreAI(npc);
 	}
@@ -90,6 +92,10 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		if (VelocityMultiplier != 0) {
 			npc.velocity *= VelocityMultiplier;
 		}
+		else {
+			npc.velocity *= .001f;
+		}
+		VelocityMultiplier = 1;
 		if (HeatRay_HitCount > 0) {
 			HeatRay_Decay = BossRushUtils.CountDown(HeatRay_Decay);
 			if (HeatRay_Decay <= 0) {

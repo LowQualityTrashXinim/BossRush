@@ -317,6 +317,8 @@ Mods: {
 			EvilShot.DisplayName: Evil Shot
 			SakuraLeaf_Projectile.DisplayName: Sakura Leaf_ Projectile
 			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
+			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
+			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
 		}
 
 		NPCs: {

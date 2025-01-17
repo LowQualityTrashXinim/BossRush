@@ -9,8 +9,9 @@ using BossRush.Common.General;
 using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Common.Systems;
 
-namespace BossRush.Common.Systems.ArgumentsSystem;
+namespace BossRush.Contents.Arguments;
 
 public class FireI : ModAugments {
 	public override void SetStaticDefaults() {
@@ -556,7 +557,9 @@ public class DarkSoul : ModAugments {
 		tooltipColor = Color.DarkBlue;
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) {
-		player.AddImmuneTime(-1, 12);
+		if (!player.immune) {
+			player.AddImmuneTime(-1, 12);
+		}
 	}
 }
 
@@ -759,7 +762,7 @@ public class DryadBlessing : ModAugments {
 		}
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) {
-		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f,.4f) && !player.HasBuff<DryadBlessing_Buff>()) {
+		if (Main.rand.NextFloat() <= Main.rand.NextFloat(.1f, .4f) && !player.HasBuff<DryadBlessing_Buff>()) {
 			player.AddBuff(ModContent.BuffType<DryadBlessing_Buff>(), BossRushUtils.ToSecond(Main.rand.Next(3, 8)));
 		}
 	}

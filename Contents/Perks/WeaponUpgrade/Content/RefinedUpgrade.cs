@@ -2,11 +2,12 @@
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Texture;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.Systems.WeaponUpgrade.Content;
+namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class RefinedUpgrade_GlobalItem : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.RefinedUpgrade)) {
@@ -57,6 +58,6 @@ public class RefinedUpgrade : Perk {
 	}
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.RefinedUpgrade);
-		BossRushUtils.Reflesh_GlobalItem(Mod, player);
+		Mod.Reflesh_GlobalItem(player);
 	}
 }

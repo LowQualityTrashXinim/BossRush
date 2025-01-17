@@ -164,8 +164,8 @@ namespace BossRush {
 			return vec;
 		}
 		public static Vector2 Subtract(this Vector2 vec, float x, float y) {
-			vec.X -= x;
-			vec.Y -= y;
+			vec.X += x;
+			vec.Y += y;
 			return vec;
 		}
 	}

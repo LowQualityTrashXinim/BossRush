@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using BossRush.Contents.Perks;
 
-namespace BossRush.Common.Systems.WeaponUpgrade.Content;
+namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class UnlimitedThrowable_GlobalItem : GlobalItem {
 	public override bool CanReforge(Item item) {
 		if (UpgradePlayer.Check_Upgrade(Main.LocalPlayer, WeaponUpgradeID.UnlimitedThrowable)) {
@@ -50,6 +50,6 @@ public class UnlimitedThrowable : Perk {
 			case 2:
 				break;
 		}
-		BossRushUtils.Reflesh_GlobalItem(Mod, player);
+		Mod.Reflesh_GlobalItem(player);
 	}
 }

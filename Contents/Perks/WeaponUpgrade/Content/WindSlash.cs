@@ -4,8 +4,9 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Projectiles;
+using BossRush.Contents.Perks.WeaponUpgrade;
 
-namespace BossRush.Common.Systems.WeaponUpgrade.Content;
+namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class WindSlash_GlobalItem : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.WindSlash)) {
@@ -44,7 +45,7 @@ public class WindSlash : Perk {
 	}
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.WindSlash);
-		BossRushUtils.Reflesh_GlobalItem(Mod, player);
+		Mod.Reflesh_GlobalItem(player);
 	}
 }
 public class WindSlash_ModPlayer : ModPlayer {
@@ -59,7 +60,7 @@ public class WindSlash_ModPlayer : ModPlayer {
 			StrikeOpportunity = false;
 		}
 		if (OpportunityWindow >= BossRushUtils.ToSecond(1.5f)) {
-			if(!StrikeOpportunity) {
+			if (!StrikeOpportunity) {
 				for (int i = 0; i < 36; i++) {
 					Vector2 vel = Vector2.One.Vector2DistributeEvenlyPlus(36, 360, i) * 5;
 					Dust dust = Dust.NewDustDirect(Player.Center, 0, 0, DustID.SolarFlare);

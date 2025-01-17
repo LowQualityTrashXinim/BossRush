@@ -1,6 +1,5 @@
 ﻿using BossRush.Common;
 using BossRush.Common.Graphics;
-using BossRush.Common.Graphics.AnimationSystem;
 using BossRush.Common.Graphics.Primitives;
 using BossRush.Common.Graphics.RenderTargets;
 using BossRush.Common.Graphics.TrailStructs;
@@ -14,7 +13,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static BossRush.Common.Graphics.AnimationSystem.ItemProjectile;
+using BossRush.Common.Graphics.AnimationSystems;
 
 namespace BossRush.Contents.Items.Weapon.ArcaneRange.LaserSniper;
 internal class LaserSniper : SynergyModItem {
@@ -54,7 +53,7 @@ internal class LaserSniper : SynergyModItem {
 
 			var rot = player.Center.DirectionTo(Main.MouseWorld);
 
-			itemProj = SpawnItemProjectile(player, player.Center + player.Center.DirectionTo(Main.MouseWorld) * 15, rot.ToRotation(), Item.useAnimation, TextureAssets.Item[Type].Value, Rectangle.Empty, TextureAssets.Item[Type].Value.Size() / 2f, new Vector2(1f, 1f), dir == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically, BoltActionAnimation);
+			itemProj = ItemProjectile.SpawnItemProjectile(player, player.Center + player.Center.DirectionTo(Main.MouseWorld) * 15, rot.ToRotation(), Item.useAnimation, TextureAssets.Item[Type].Value, Rectangle.Empty, TextureAssets.Item[Type].Value.Size() / 2f, new Vector2(1f, 1f), dir == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically, BoltActionAnimation);
 	
 			recoilScale.SetProperties(new Vector2(0.8f, 2f), new Vector2(1f, 1f), TweenEaseType.OutExpo, Item.useAnimation / 3);
 			recoilPos.SetProperties(new Vector2(0,0),new Vector2(0,0).PositionOFFSET(rot,15), TweenEaseType.OutExpo, player.itemAnimationMax / 3);

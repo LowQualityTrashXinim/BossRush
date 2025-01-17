@@ -3,8 +3,10 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Contents.Perks;
+using BossRush.Contents.Perks.WeaponUpgrade;
+using BossRush.Common.Systems;
 
-namespace BossRush.Common.Systems.WeaponUpgrade.Content;
+namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class HunterInstinct_GlobalItem : GlobalItem {
 	public override void SetDefaults(Item entity) {
 		if (!UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.HunterInstinct)) {
@@ -79,6 +81,6 @@ public class HunterInstinct : Perk {
 	}
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.HunterInstinct);
-		BossRushUtils.Reflesh_GlobalItem(Mod, player);
+		Mod.Reflesh_GlobalItem(player);
 	}
 }

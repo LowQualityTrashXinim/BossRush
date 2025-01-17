@@ -19,8 +19,8 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.WeaponEnchantment;
-using BossRush.Common.Systems.ArgumentsSystem;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
+using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>

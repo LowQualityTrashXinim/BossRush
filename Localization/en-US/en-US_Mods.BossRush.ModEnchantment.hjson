@@ -62,45 +62,44 @@ QuadBarrelShotgun.Description:
 	'''
 WoodenSword.Description:
 	'''
-	Increases damage by 1
-	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Increases damage by 5
+	Increases weapon size by 20%
 	'''
 AshWoodSword.Description:
 	'''
 	Increases damage by 1
-	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Hitting a enemy create a sword rise from below 
+	( trigger every 1s )
 	'''
 BorealWoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
 	'''
 PalmWoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
 	'''
 RichMahoganySword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
 	'''
 ShadewoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
 	'''
 EbonwoodSword.Description:
 	'''
 	Increases damage by 1
 	Increases weapon size by 10%
-	Hitting a enemy create a sword that aim toward mouse ( trigger every 2s )
+	Hitting a enemy create a sword that aim toward mouse ( trigger every 1s )
 	'''
 CopperBroadsword.Description:
 	'''

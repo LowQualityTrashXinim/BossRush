@@ -50,6 +50,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier NonCriticalDamage = new StatModifier();
 	public StatModifier SkillDuration = new();
 	public StatModifier SkillCoolDown = new();
+	public float Hostile_ProjectileVelocityAddition = 0;
 	//public float LuckIncrease = 0; 
 	/// <summary>
 	/// This is a universal dodge chance that work like <see cref="Player.endurance"/><br/>
@@ -96,7 +97,15 @@ public class PlayerStatsHandle : ModPlayer {
 	public int TemporaryLife_Limit = 0;
 	public int TemporaryLife_CounterLimit = 120;
 	public float Transmutation_SuccessChance = 0;
+	public ulong DPStracker = 0;
+	public float RandomizeChanceEnchantment = 0;
+	/// <summary>
+	/// This chance will decay for each success roll <br/>
+	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
+	/// </summary>
+	public float AugmentationChance = 0;
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		DPStracker = DPStracker + (ulong)hit.Damage;
 		if (LifeSteal_CoolDownCounter <= 0 && LifeSteal.Additive > 0 || LifeSteal.ApplyTo(0) > 0) {
 			Player.Heal((int)Math.Ceiling(LifeSteal.ApplyTo(hit.Damage)));
 			LifeSteal_CoolDownCounter = LifeSteal_CoolDown;
@@ -243,6 +252,8 @@ public class PlayerStatsHandle : ModPlayer {
 		Rapid_LifeRegen = 0;
 		Rapid_ManaRegen = 0;
 		Transmutation_SuccessChance = 0;
+		RandomizeChanceEnchantment = 0f;
+		AugmentationChance = 0;
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));

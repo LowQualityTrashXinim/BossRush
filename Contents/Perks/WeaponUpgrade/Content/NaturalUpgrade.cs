@@ -1,4 +1,5 @@
 ﻿using BossRush.Contents.Perks;
+using BossRush.Contents.Perks.WeaponUpgrade;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace BossRush.Common.Systems.WeaponUpgrade.Content;
+namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 
 public class NaturalUpgrade_GlobalItem : GlobalItem {
 	public override void SetDefaults(Item entity) {
@@ -79,7 +80,7 @@ public class NaturalUpgrade_Player : ModPlayer {
 					dustRing.noGravity = true;
 					dustRing.fadeIn = 1.5f;
 					Dust dust = Dust.NewDustDirect(target.Center, 0, 0, DustID.Cloud, Scale: Main.rand.NextFloat(.5f, .7f));
-					dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(1,3.5f);
+					dust.velocity = Main.rand.NextVector2CircularEdge(5, 5) * Main.rand.NextFloat(1, 3.5f);
 					dust.noGravity = true;
 					dust.fadeIn = 1.5f;
 					dust.rotation = Main.rand.NextFloat();
@@ -105,6 +106,6 @@ public class NaturalUpgrade : Perk {
 	}
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.NaturalUpgrade);
-		BossRushUtils.Reflesh_GlobalItem(Mod, player);
+		Mod.Reflesh_GlobalItem(player);
 	}
 }

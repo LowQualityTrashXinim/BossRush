@@ -641,7 +641,7 @@ namespace BossRush.Common.Mode.Nightmare {
 
 			Player player = Main.player[npc.target];
 			bool dead = player.dead;
-			Vector2 distanceTo = npc.position + npc.Size.Subtract(npc.width * .5f, 59f) - player.Center;
+			Vector2 distanceTo = npc.position + npc.Size.Add(npc.width * .5f, 59f) - player.Center;
 			float num5 = npc.position.X + npc.width / 2 - player.position.X - player.width / 2;
 			float num6 = npc.position.Y + npc.height - 59f - player.position.Y - player.height / 2;
 			float num7 = (float)Math.Atan2(num6, num5) + 1.57f;
