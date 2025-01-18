@@ -250,6 +250,26 @@ internal static partial class GenerationHelper {
 			throw;
 		}
 	}
+
+	public static void Detailed_SaveStructure(Rectangle target, string path, string name) {
+		try {
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
+
+			for (int x = target.X; x <= target.X + target.Width; x++) {
+				for (int y = target.Y; y <= target.Y + target.Height; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					TileData td = new(tile);
+					m.Write(td.ToString());
+				}
+			}
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
 	/// <summary>
 	/// Attempt to save many structure into a file with rectangle format<br/>
 	/// Be aware as this do not check for any error
@@ -461,11 +481,4 @@ public struct TileData : ICloneable {
 			&& TD.Tile_WallData == this.Tile_WallData
 			&& TD.Tile_WireData == this.Tile_WireData;
 	}
-}
-public class StructureTemplate {
-	public string TemplateFilePath = "";
-	public List<StructureTemplate> Compatible_Left_Templates = new List<StructureTemplate>();
-	public List<StructureTemplate> Compatible_Right_Templates = new List<StructureTemplate>();
-	public List<StructureTemplate> Compatible_Top_Templates = new List<StructureTemplate>();
-	public List<StructureTemplate> Compatible_Bottom_Templates = new List<StructureTemplate>();
 }

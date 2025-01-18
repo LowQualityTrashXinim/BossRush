@@ -132,7 +132,7 @@ public class StructureUI : UIState {
 			Main.instance.MouseText("Close ?");
 		}
 		else if (affectedElement.UniqueId == list_btn[1].UniqueId) {
-			Main.instance.MouseText("Vertical saving");
+			Main.instance.MouseText("Default saving ( uses this )");
 		}
 		else if (affectedElement.UniqueId == list_btn[2].UniqueId) {
 			Main.instance.MouseText("Horizontal saving (Not Supported)");

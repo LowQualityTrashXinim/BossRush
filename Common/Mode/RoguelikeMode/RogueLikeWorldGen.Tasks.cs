@@ -66,15 +66,74 @@ public partial class RogueLikeWorldGen : ModSystem {
 	public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
 		if (ModContent.GetInstance<RogueLikeConfig>().WorldGenTest) {
 			//tasks.ForEach(g => g.Disable());
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Chests")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Buried Chests")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Surface Chests")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Chests Placement")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Water Chests")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Trees")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Gems In Ice Biome")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Random Gems")));
+			//tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Spider Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Living Trees")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wood Tree Walls")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Islands")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Island Houses")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Life Crystals")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Pyramids")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Altars")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Hives")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Buried Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Surface Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Chests Placement")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Water Chests")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Trees")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Temple")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Micro Biomes")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Marble")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Granite")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Mushrooms")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Moss")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Surface Ore and Stone")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Planting Trees")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Larva")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Cactus, Palm Trees, & Coral")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Gems In Ice Biome")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Random Gems")));
-			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Vines")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Piles")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Traps")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Statues")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Shell Piles")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Oasis")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Water Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Flowers")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wavy Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Rock Layer Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Weeds")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Webs And Honey")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Clay")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Herbs")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dye Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dirt Layer Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Moss Grass")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Hellforge")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Pots")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Place Fallen Log")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Mushroom Patches")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Glowing Mushrooms and Jungle Plants")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Small Holes")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Remove Broken Traps")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Jungle")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Full Desert")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Wall Variety")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Gem Caves")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Cave Walls")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Temple")));
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
 	}
@@ -121,6 +180,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						for (int offsetY = -1; offsetY <= 1; offsetY++) {
 							if (offsetX == 0 && offsetY == 0) continue;
 							if (offsetY == 1 && offsetX == 0) continue;
+							if (!WorldGen.InWorld(i + offsetX, j + offsetY)) continue;
 							if (!WorldGen.TileEmpty(i + offsetX, j + offsetY)) {
 								j = Math.Clamp(j + 1, 0, Main.maxTilesY);
 								break;
@@ -161,13 +221,22 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
 		Point counter = new();
 		int count = -1;
-		while (counter.X < rect.Width || counter.Y < rect.Width) {
+		bool IsUsingHorizontal = false;
+		int offsetcount = 0;
+		int additionaloffset = -1;
+		counter -= new Point(64, 64);
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			ImageData template;
-			if (++count % 2 == 0) {
-				template = ImageStructureLoader.Get_Tempate("WG_HorizontalTemplate" + WorldGen.genRand.Next(1, 5));
+			IsUsingHorizontal = ++count % 2 == 0;
+			if (IsUsingHorizontal) {
+				template = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal" + WorldGen.genRand.Next(1, 8));
 			}
 			else {
-				template = ImageStructureLoader.Get_Tempate("WG_VerticalTemplate" + WorldGen.genRand.Next(1, 5));
+				template = ImageStructureLoader.Get_Tempate("WG_TemplateVertical" + WorldGen.genRand.Next(1, 9));
+			}
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
 			}
 			template.EnumeratePixels((a, b, color) => {
 				a += rect.X + counter.X;
@@ -188,8 +257,11 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				counter.X += template.Width;
 			}
 			else {
-				counter.X = 0;
-				counter.Y += template.Height;
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
 			}
 		}
 		//Biome.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
