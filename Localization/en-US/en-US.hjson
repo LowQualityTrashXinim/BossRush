@@ -31,8 +31,8 @@ Mods: {
 				Tooltip:
 					'''
 					[Weapon Enchantment]
-					Customize your weapon with this ancient craft of chaos and amalgams. 
-					Embue your weapon with the essence of up to 3 others, sacrificing them
+					Customize your weapon with the ancient craft of chaos and amalgams. 
+					Imbue your weapon with the essence of up to 3 other weapons, sacrificing them
 					in order to gain their uniquely personalized attributes.
 
 					[c/e6ac39:Hover] over your weapon of choice before enchanting to view their perks.
@@ -46,21 +46,21 @@ Mods: {
 				'''
 				[Player Info]
 				View your current stats, your current perks and current artifact
-				See how much you progress and how much you lack !
-				Create broken built by looking at what you current most strong at
-				Or even create synergetic build using the current stats, perks and aritfact 
-				by viewing what they do !
+				See how much you progress you made and how much you lack!
+				Create broken builds by looking at what you are currently most strong at
+				Or even create synergistic build using the current stats, perks and aritfact 
+				by viewing what they do!
 				'''
 			Transmutation.Tooltip:
 				'''
 				[Transmutation]
-				This is where you can merge your relic !
-				Relic can be merge up to have 4 effects,
-				merge relic together to create a even stronger relic
-				You can find relic in [c/b7bf5c:Relic Container] or you can get it from spoils !
-				You can also transmute 2 items of the same rarity to get a item with better rarity !
-				There are some item that can be merge to become a special item,
-				best bet to try and find out yourself !
+				This is where you can merge your relics!
+				Relics can be merged to have up to 4 effects,
+				merge relics together to create a even stronger relic
+				You can find relics in [c/b7bf5c:Relic Container] or you can get it from spoils!
+				You can also transmute 2 items of the same rarity to get a item with better rarity!
+				There are some items that can be merge to become a special item,
+				your best bet is to try and find out yourself!
 				'''
 
 			Skill: {
@@ -68,13 +68,13 @@ Mods: {
 				Tooltip:
 					'''
 					[Skill]
-					Plan out your strategy, customize your skill, dominate your enemy !
-					you can get skill from [c/b7bf5c:Skill LootBox] which will automatically added 
-					a skill into your skill inventory ui, move your skill into 1 of 3 active holder
-					to uses the skill, skill can be activate using your hotkey which is in control.
-					Upon using skill, you will uses your energy and skill duration will be set and after
-					skill active duration end then skill cool down will set in, you can't gain energy during
-					skill cool down nor skill active so make your activation count !
+					Plan out your strategy, customize your skill, and dominate your enemy!
+					you can get skills from [c/b7bf5c:Skill LootBox] which will automatically add
+					a skill into your skill inventory ui. Move your skill into 1 of 3 active holders
+					to use the skill. skills can be activated by using your hotkey.
+					Upon using skill, you will use your energy and skill duration will be set. after
+					the skill active duration ends, skill cooldown will set in. you can't gain energy during
+					skill cooldown nor skill active duration so make your activation counts!
 					'''
 			}
 
@@ -382,7 +382,7 @@ Mods: {
 				Tooltip:
 					'''
 					It can be many things, but in no way decisive of its identity
-					Shoots out many things
+					Shoots many things
 					Right-Click installs a copy of itself on-screen
 					'''
 				DisplayName: ??? Pistol
@@ -459,7 +459,7 @@ Mods: {
 				Tooltip:
 					'''
 					"A 2-in-1 English special!"
-					Right-Click enables stab that upon contact hypercharges your next shot
+					Right-Click enables stabs that hypercharges your next shot upon contact 
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -489,7 +489,7 @@ Mods: {
 			}
 
 			ForceOfEarth: {
-				Tooltip: The culmination of mother nature at your middle finger
+				Tooltip: The power of mother nature at your middle finger
 				DisplayName: Natural Disaster
 			}
 
@@ -877,7 +877,7 @@ Mods: {
 			FuryEmblem: {
 				Tooltip:
 					'''
-					"Your rage is what make battle turn tide"
+					"Your rage is what turns tides in battle"
 					Increase 5% damage and crits
 					Increase HP by 25%
 					Grant a buff upon getting hit that increase 50% damage and crits
@@ -924,7 +924,7 @@ Mods: {
 			CorruptedFlesh: {
 				Tooltip:
 					'''
-					"Isn't this is just rotten flesh but even more rotten ?"
+					"Isn't this is just rotten flesh thats even more rotten?"
 					Increases damage by 10%
 					Increases movement speed by 15%
 					Increases melee speed by 10%
@@ -939,9 +939,9 @@ Mods: {
 					'''
 					"A small ancient power left from god, said to be cursed"
 					Increases damage reduction by 15%
-					Most projectile can bounce off tile
+					Most projectiles can bounce off tile
 					Bouncing off a tile increase damage by 20%
-					Bouncing more than 10 time won't no longer increase damage
+					Bouncing more than 10 times won't no longer increase damage
 					Bouncing off a tile will make the projectile disappear after 3s
 					'''
 				DisplayName: Bouncy Relic
@@ -951,8 +951,8 @@ Mods: {
 				Tooltip:
 					'''
 					"The ultimate tile annihilator"
-					Use this if you want to clear out a large area to be flat
-					This will clear out 300 10 tile (X : 300 | Y : 10)
+					Use this if you want to clear out a large area
+					This will clear out 300 by 10 tiles (X : 300 | Y : 10)
 					'''
 				DisplayName: Tower Destruction
 			}
@@ -1040,7 +1040,7 @@ Mods: {
 				Tooltip:
 					'''
 					"High focus, stay alert"
-					Most gun shoot more stable
+					Most gunshots are more stable
 					Increase critical strike chance by 50%
 					Getting hit will remove this buff
 					'''
@@ -1062,7 +1062,7 @@ Mods: {
 				DisplayName: Titan Elixir
 				Tooltip:
 					'''
-					"Let your body be shield for the weak"
+					"Let your body be a shield for the weak"
 					Increases defenses by 45
 					Increases damage reduction by 45%
 					Increases max life by 400
@@ -1237,7 +1237,7 @@ Mods: {
 				Tooltip:
 					'''
 					{$CommonItemTooltip.RightClickToOpen}
-					Open this bundle to get almost all pre wall of flesh bosses spawner
+					Open this bundle to get almost all pre wall of flesh boss spawners
 					'''
 			}
 
@@ -1313,14 +1313,14 @@ Mods: {
 					Increases your maximum health by 25%
 					[[c/8888ea:Active]]
 					After dealing damage to a enemy, you receive [c/b7bf5c:Swift Steal] for 30 second
-					After the buff end, you receive 60 second cooldown before you can gain [c/b7bf5c:Swift Steal] again
+					After the buff ends, you receive a 60 second cooldown before you can gain [c/b7bf5c:Swift Steal] again
 					'''
 				ExtraInfo:
 					'''
 					[c/b7bf5c:Swift Steal] :
 					Increases your damage by 1 for each 5 health you currently have
 					Hitting a enemy will increases your max health by 5% and movement speed by 10% 
-					(max out at 6 time with 2s coold down between hit)
+					(max out at 6 times with 2s coold down between hits)
 					'''
 			}
 
@@ -1342,7 +1342,7 @@ Mods: {
 					Dealing critical strike to enemy that have [c/b7bf5c:Samsara of Retribution] deal extra damage
 
 					[c/b7bf5c:Samsara of Tribution]
-					Increases your damage base on amount of NPC you inflict [c/b7bf5c:Samsara of Retribution] for 15s 
+					Increases your damage based on amount of NPC you inflict with [c/b7bf5c:Samsara of Retribution] for 15s 
 					( Have 25s cooldown )
 					'''
 			}
