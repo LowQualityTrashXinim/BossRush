@@ -95,7 +95,7 @@ public class AugmentsWeapon : GlobalItem {
 					augmentChance = AugmentsList[modAugments.Type];
 					AugmentsList.Remove(modAugments.Type);
 				}
-				if (limit > -1) {
+				if (limit <= -1) {
 					if (currentEmptySlot <= limit) {
 						break;
 					}
