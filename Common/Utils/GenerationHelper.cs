@@ -169,7 +169,7 @@ internal static partial class GenerationHelper {
 			Console.WriteLine("Structure not found !");
 			return;
 		}
-		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX = 0, holdY = 0;
+		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
 
 		for (int i = 0; i < datalist.Count; i++) {
 			GenPassData gdata = datalist[i];
@@ -187,6 +187,46 @@ internal static partial class GenerationHelper {
 				else {
 					FastRemoveTile(holdX, holdY);
 					tile.WallType = data.Tile_WallData;
+				}
+				offsetY++;
+			}
+		}
+	}
+	/// <summary>
+	/// Offer slightly slower structure placing, but ensure safety<br/>
+	/// Use this to place the structure in world gen code
+	/// </summary>
+	/// <param name="method">the method that was uses to optimize the file</param>
+	public static void Safe_PlaceStructure(string FileName, Rectangle rect) {
+		List<GenPassData> datalist;
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		if (modsystem.dict_Struture.ContainsKey(FileName)) {
+			datalist = modsystem.dict_Struture[FileName];
+		}
+		else {
+			Console.WriteLine("Structure not found !");
+			return;
+		}
+		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+
+		for (int i = 0; i < datalist.Count; i++) {
+			GenPassData gdata = datalist[i];
+			for (int l = 0; l < gdata.Count; l++) {
+				if (offsetY >= rect.Height) {
+					offsetY = 0;
+					offsetX++;
+				}
+				holdX = X + offsetX; holdY = Y + offsetY;
+				if (WorldGen.InWorld(holdX, holdY)) {
+					Tile tile = Main.tile[holdX, holdY];
+					TileData data = gdata.tileData;
+					if (!data.Tile_Air) {
+						data.PlaceTile(tile);
+					}
+					else {
+						FastRemoveTile(holdX, holdY);
+						tile.WallType = data.Tile_WallData;
+					}
 				}
 				offsetY++;
 			}

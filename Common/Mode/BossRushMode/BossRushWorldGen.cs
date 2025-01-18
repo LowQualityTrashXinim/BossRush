@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.WorldGenOverhaul;
 using Terraria.Utilities;
+using System.Diagnostics.Metrics;
 
 namespace BossRush.Common.ChallengeMode {
 	public partial class BossRushWorldGen : ModSystem {
@@ -261,6 +262,39 @@ namespace BossRush.Common.ChallengeMode {
 			GenerationHelper.ForEachInRectangle(GenerationHelper.GridPositionInTheWorld24x24(0, 5, 24, 15),
 				(i, j) => { GenerationHelper.FastPlaceTile(i, j, TileID.GraniteBlock); });
 			WorldGen._genRand = new UnifiedRandom(WorldGen._genRandSeed);
+			Main.spawnTileX = Main.maxTilesX / 2;
+			Main.spawnTileY = Main.maxTilesY / 2;
+		}
+		[Task]
+		public void SpawnTemplate() {
+			Rectangle rect = new Rectangle(100, 100, 32, 64);
+			for (int i = 1; i < 9; i++) {
+				rect.X = 100 * i;
+				ImageData template = ImageStructureLoader.Get_Tempate("WG_TemplateVertical" + i);
+				template.EnumeratePixels((a, b, color) => {
+					a += rect.X;
+					b += rect.Y;
+					GenerationHelper.FastRemoveTile(a, b);
+					if (color.R == 255 && color.B == 0 && color.G == 0) {
+						GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+					}
+					GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				});
+			}
+			rect.Y *= 2;
+			for (int i = 1; i < 9; i++) {
+				rect.X = 100 * i;
+				ImageData template = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal" + i);
+				template.EnumeratePixels((a, b, color) => {
+					a += rect.X;
+					b += rect.Y;
+					GenerationHelper.FastRemoveTile(a, b);
+					if (color.R == 255 && color.B == 0 && color.G == 0) {
+						GenerationHelper.FastPlaceTile(a, b, TileID.SlimeBlock);
+					}
+					GenerationHelper.FastPlaceWall(a, b, WallID.Slime);
+				});
+			}
 		}
 		[Task]
 		public void Create_Arena() {
