@@ -321,7 +321,6 @@ namespace BossRush.Contents.Items.Weapon {
 			}
 		}
 		public override sealed void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
 			ModifySynergyShootStats(player, player.GetModPlayer<PlayerSynergyItemHandle>(), ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 		public override sealed void UpdateInventory(Player player) {

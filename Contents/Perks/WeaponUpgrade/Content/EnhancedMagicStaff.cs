@@ -54,18 +54,21 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 		switch (item.type) {
 			case ItemID.AmethystStaff:
 				velocity = velocity.Vector2RotateByRandom(10);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.TopazStaff:
 				velocity = velocity.Vector2RotateByRandom(15) * Main.rand.NextFloat(.75f, 1.25f);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.SapphireStaff:
 				velocity = velocity.Vector2RotateByRandom(6) * Main.rand.NextFloat(.75f, 1.25f);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 			case ItemID.EmeraldStaff:
 				velocity *= Main.rand.NextFloat(1, 1.5f);
+				position = position.PositionOFFSET(velocity, 50);
 				break;
 		}
-		position = position.PositionOFFSET(velocity, 50);
 	}
 }
 internal class EnhancedMagicStaff : Perk {
