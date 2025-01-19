@@ -12,6 +12,7 @@ using System.Reflection;
 using BossRush.Common.General;
 using System;
 using Terraria.Utilities;
+using System.Diagnostics;
 
 namespace BossRush.Common.WorldGenOverhaul;
 public class PlayerBiome : ModPlayer {
@@ -180,6 +181,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void AddAltar() {
+		ResetTemplate_GenerationValue();
 		bool RNG = false;
 		for (int i = 1; i < Main.maxTilesX - 1; i++) {
 			for (int j = 1; j < Main.maxTilesY - 1; j++) {
@@ -215,7 +217,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void GenerateSlimeZone() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
-		Generate_Biome(TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime, "SlimeShrine");
+		File_GenerateBiomeTemplate("Template/WG_Template", BiomeAreaID.Slime, "SlimeShrine");
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
@@ -305,6 +307,46 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		else {
 			Biome.Add(BiomeID, new List<Rectangle> { rect });
 		}
+	}
+	public void File_GenerateBiomeTemplate(string TemplatePath, short BiomeID, string ShrineType) {
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			IsUsingHorizontal = ++count % 2 == 0;
+			Rectangle re = new Rectangle(rect.X + counter.X, rect.Y + counter.Y, 0, 0);
+			if (IsUsingHorizontal) {
+				re.Width = 64;
+				re.Height = 32;
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re);
+			}
+			else {
+				re.Width = 32;
+				re.Height = 64;
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re);
+			}
+			if (counter.X < rect.Width) {
+				counter.X += re.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		if (EmptySpaceRecorder.Count > 0) {
+			Point randPoint = Rand.NextFromHashSet(EmptySpaceRecorder);
+			Generate_Shrine(ShrineType, randPoint.X, randPoint.Y);
+		}
+		//if (Biome.ContainsKey(BiomeID)) {
+		//	Biome[BiomeID].Add(rect);
+		//}
+		//else {
+		//	Biome.Add(BiomeID, new List<Rectangle> { rect });
+		//}
 	}
 	/// <summary>
 	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>
