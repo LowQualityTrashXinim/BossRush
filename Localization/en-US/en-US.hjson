@@ -458,8 +458,8 @@ Mods: {
 			KnifeRevolver: {
 				Tooltip:
 					'''
-					"A 2-in-1 English special!"
-					Right-Click enables stabs that hypercharges your next shot upon contact 
+					"A British-American fusion cuisine!"
+					Right-Click improvises the gun into a knife which upon contact hypercharges your next shot
 					'''
 				DisplayName: Knife Revolver
 			}
@@ -489,7 +489,7 @@ Mods: {
 			}
 
 			ForceOfEarth: {
-				Tooltip: The power of mother nature at your middle finger
+				Tooltip: The culmination of Mother Nature at your middle finger
 				DisplayName: Natural Disaster
 			}
 
@@ -869,9 +869,9 @@ Mods: {
 					Increases jump height and jump speed by 15%
 					Summons a shuriken every time an enemy gets hit 20 times, dealing static damage
 					Summons a ring of shurikens and knives
-					[c/e6ac39:Part I out of II of a beloved series]
+					[c/e6ac39:Parts I and II abridged into a beloved series]
 					'''
-				DisplayName: Guide To Master Ninja I
+				DisplayName: Guide To Master Ninja XL
 			}
 
 			FuryEmblem: {
