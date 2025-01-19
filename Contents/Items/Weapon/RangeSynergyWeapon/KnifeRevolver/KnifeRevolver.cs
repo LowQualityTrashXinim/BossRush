@@ -14,7 +14,7 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.KnifeRevolver {
 			Item.value = Item.buyPrice(gold: 50);
 			if (Item.TryGetGlobalItem(out RangeWeaponOverhaul weapon)) {
 				weapon.SpreadAmount = 1;
-				weapon.OffSetPost = 40;
+				weapon.OffSetPost = 20;
 			}
 		}
 		public override Vector2? HoldoutOffset() {
