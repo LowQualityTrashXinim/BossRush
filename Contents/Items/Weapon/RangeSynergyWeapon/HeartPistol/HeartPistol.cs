@@ -13,7 +13,6 @@ namespace BossRush.Contents.Items.Weapon.RangeSynergyWeapon.HeartPistol {
 			Item.UseSound = SoundID.Item11;
 		}
 		public override void SynergyShoot(Player player, PlayerSynergyItemHandle modplayer, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, out bool CanShootItem) {
-			position = position.PositionOFFSET(velocity, 30);
 			Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<HeartP>(), damage, knockback, player.whoAmI);
 			CanShootItem = false;
 		}

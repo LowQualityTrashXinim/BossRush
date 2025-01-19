@@ -230,7 +230,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				return;
 			}
 			RangerOverhaulPlayer modplayer = player.GetModPlayer<RangerOverhaulPlayer>();
-			position = position.PositionOFFSET(velocity, OffSetPost);
+			//position = position.PositionOFFSET(velocity, OffSetPost);
 			if (!itemIsAShotgun) {
 				velocity = RoguelikeGunVelocity(modplayer, velocity);
 			}
