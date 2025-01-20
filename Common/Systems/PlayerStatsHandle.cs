@@ -268,12 +268,12 @@ public class PlayerStatsHandle : ModPlayer {
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
 		foreach (bool chance in SecondLife.Values) {
-			if (!chance) {
-				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource); ;
+			if (chance) {
+				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 			}
 		}
 		if (listItem != null && listItem.Count > 0) {
-			Player.inventory.Where(listItem.Contains).FirstOrDefault().TurnToAir();
+			listItem[0].TurnToAir();
 			listItem.RemoveAt(0);
 			Player.Heal(Player.statLifeMax2 / 2);
 			return false;

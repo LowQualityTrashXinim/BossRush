@@ -61,6 +61,5 @@
   <ItemGroup>
     <Folder Include="Assets\Structures\Template\" />
     <Folder Include="Contents\Tiles\" />
-    <Folder Include="Contents\Transfixion\SoulBound\" />
   </ItemGroup>
 </Project>

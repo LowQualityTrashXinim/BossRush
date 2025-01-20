@@ -108,7 +108,7 @@ public class AugmentsWeapon : GlobalItem {
 						chanceDecay *= .5f;
 					}
 					passException = false;
-					weapon.AugmentsSlots[currentEmptySlot] = modAugments.Type;
+					weapon.AugmentsSlots[currentEmptySlot] = 15;
 					modAugments = null;
 				}
 				else {
@@ -125,8 +125,9 @@ public class AugmentsWeapon : GlobalItem {
 	}
 	public override GlobalItem Clone(Item from, Item to) {
 		AugmentsWeapon clone = (AugmentsWeapon)base.Clone(from, to);
+		clone.AugmentsSlots = new int[5];
 		Array.Copy((int[])AugmentsSlots?.Clone(), clone.AugmentsSlots, 5);
-		return base.Clone(from, to);
+		return clone;
 	}
 	public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
 		if (AugmentsSlots == null) {
