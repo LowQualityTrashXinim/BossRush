@@ -21,9 +21,7 @@ using BossRush.Common.RoguelikeChange;
 using BossRush.Common.Systems.Mutation;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.BuilderItem;
-using BossRush.Contents.WeaponEnchantment;
 using BossRush.Contents.Items.Accessories.LostAccessories;
-using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {

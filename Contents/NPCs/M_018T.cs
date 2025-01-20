@@ -9,7 +9,6 @@ using BossRush.Contents.Perks;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Contents.Items.Consumable.Potion;
-using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.aDebugItem.StatsInform;

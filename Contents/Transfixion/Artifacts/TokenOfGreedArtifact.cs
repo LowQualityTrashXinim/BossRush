@@ -6,8 +6,6 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems;
-using BossRush.Contents.WeaponEnchantment;
-using BossRush.Contents.Arguments;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class TokenOfGreedArtifact : Artifact {
