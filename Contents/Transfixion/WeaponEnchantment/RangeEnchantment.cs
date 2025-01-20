@@ -15,9 +15,9 @@ using Terraria.Chat;
 using Terraria.Localization;
 using BossRush.Contents.Items.Chest;
 using Mono.Cecil;
-using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
 
-namespace BossRush.Contents.WeaponEnchantment {
+namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 	public class Musket : ModEnchantment {
 		public override void SetDefaults() {
 			ItemIDType = ItemID.Musket;

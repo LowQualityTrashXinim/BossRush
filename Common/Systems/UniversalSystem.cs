@@ -25,7 +25,6 @@ using BossRush.Common.WorldGenOverhaul;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Contents.Items.RelicItem;
-using BossRush.Contents.WeaponEnchantment;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Common.Systems.CursesSystem;
@@ -37,7 +36,8 @@ using BossRush.Contents.Items.aDebugItem.RelicDebug;
 using BossRush.Contents.Items.aDebugItem.SkillDebug;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Contents.Items.aDebugItem;
-using BossRush.Contents.Arguments;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Contents.Transfixion.Arguments;
 
 namespace BossRush.Common.Systems;
 public static class RoguelikeData {

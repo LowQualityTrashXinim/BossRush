@@ -6,12 +6,12 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.General;
-using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems;
+using BossRush.Contents.Transfixion.Artifacts;
 
-namespace BossRush.Contents.Arguments;
+namespace BossRush.Contents.Transfixion.Arguments;
 
 public class FireI : ModAugments {
 	public override void SetStaticDefaults() {

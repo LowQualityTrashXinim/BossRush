@@ -12,7 +12,7 @@ using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System.Diagnostics;
 using System.Threading.Channels;
-using BossRush.Contents.Arguments;
+using BossRush.Contents.Transfixion.Arguments;
 
 namespace BossRush {
 	public partial class BossRushUtils {

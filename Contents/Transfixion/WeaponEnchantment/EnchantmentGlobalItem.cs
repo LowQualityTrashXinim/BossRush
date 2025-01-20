@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.UI.Elements;
 using BossRush.Common.Mode.DreamLikeWorldMode;
 
-namespace BossRush.Contents.WeaponEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class EnchantmentSystem : ModSystem {
 	public static void EnchantmentRNG(Player self, Item item) {
 		if (item == null || !EnchantmentGlobalItem.CanBeEnchanted(item)) {
@@ -415,7 +415,7 @@ internal class EnchantmentUIState : UIState {
 		}
 		position = Vector2.Clamp(position, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
 		if (isMousePressed)
-			this.position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
+			position = Vector2.Clamp(Main.MouseScreen, Vector2.Zero + UIclampOffset * Main.UIScale, Main.ScreenSize.ToVector2() - UIclampOffset * Main.UIScale);
 		for (int i = 0; i < Children.Count(); i++) {
 			var children = Children.ElementAt(i);
 			if (children is MoveableUIImage) {

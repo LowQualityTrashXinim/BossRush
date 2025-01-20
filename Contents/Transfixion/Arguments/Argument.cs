@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using BossRush.Common.Systems;
 
-namespace BossRush.Contents.Arguments;
+namespace BossRush.Contents.Transfixion.Arguments;
 internal class AugmentsLoader : ModSystem {
 	private static readonly List<ModAugments> _Augmentss = new();
 	public static int TotalCount => _Augmentss.Count;

@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using System.IO;
 using Terraria.ID;
-using BossRush.Contents.Artifacts;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Skill;
 using BossRush.Contents.Items.Accessories.LostAccessories;
@@ -10,6 +9,7 @@ using BossRush.Common.Systems.SpoilSystem;
 using BossRush.Contents.Items.Consumable.Potion;
 using BossRush.Contents.Items.Consumable.SpecialReward;
 using BossRush.Common.General;
+using BossRush.Contents.Transfixion.Artifacts;
 
 namespace BossRush {
 	partial class BossRush {

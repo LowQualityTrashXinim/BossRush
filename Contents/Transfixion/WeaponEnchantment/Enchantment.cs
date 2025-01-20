@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace BossRush.Contents.WeaponEnchantment {
+namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 	//Todo : turn out modplayer is much better than global item, how funny
 	public abstract class ModEnchantment : ModType {
 		public int Type { get; private set; }

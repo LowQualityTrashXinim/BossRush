@@ -13,7 +13,7 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
 using BossRush.Contents.Items.Weapon.MagicSynergyWeapon.AmberBoneSpear;
 
-namespace BossRush.Contents.WeaponEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class WoodenSword : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.WoodenSword;

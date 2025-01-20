@@ -2,9 +2,9 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using BossRush.Contents.Artifacts;
 using BossRush.Contents.Items.Consumable.Potion;
 using System.IO;
+using BossRush.Contents.Transfixion.Artifacts;
 
 namespace BossRush.Common.Systems.ArtifactSystem {
 	internal class ArtifactPlayer : ModPlayer {

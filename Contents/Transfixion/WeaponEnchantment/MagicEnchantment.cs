@@ -8,7 +8,7 @@ using BossRush.Common.General;
 using BossRush.Contents.Projectiles;
 using BossRush.Common.Systems;
 
-namespace BossRush.Contents.WeaponEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 public class AmethystStaff : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.AmethystStaff;

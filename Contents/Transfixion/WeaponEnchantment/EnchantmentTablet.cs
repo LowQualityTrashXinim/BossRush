@@ -4,7 +4,7 @@ using BossRush.Texture;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 
-namespace BossRush.Contents.WeaponEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 internal class EnchantmentTablet : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {

@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using BossRush.Common.RoguelikeChange;
 
-namespace BossRush.Contents.WeaponEnchantment;
+namespace BossRush.Contents.Transfixion.WeaponEnchantment;
 
 public class BabyBirdStaff : ModEnchantment {
 	public override void SetDefaults() {
@@ -84,8 +84,7 @@ public class FlinxStaff : ModEnchantment {
 	}
 }
 
-public class LeatherWhip : ModEnchantment 
-{
+public class LeatherWhip : ModEnchantment {
 	public override void SetDefaults() {
 		ItemIDType = ItemID.BlandWhip;
 	}
@@ -110,7 +109,7 @@ public class Snapthorn : ModEnchantment {
 	}
 
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		player.AddBuff(BuffID.ThornWhipPlayerBuff,BossRushUtils.ToSecond(1.5f));
+		player.AddBuff(BuffID.ThornWhipPlayerBuff, BossRushUtils.ToSecond(1.5f));
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		player.AddBuff(BuffID.ThornWhipPlayerBuff, BossRushUtils.ToSecond(1.5f));
@@ -144,11 +143,9 @@ public class ImpStaff : ModEnchantment {
 		globalItem.Item_Counter1[index]++;
 
 
-		foreach(Projectile minion in Main.ActiveProjectiles) 
-		{
+		foreach (Projectile minion in Main.ActiveProjectiles) {
 			NPC target = minion.FindTargetWithinRange(200);
-			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[0] >= 30 && target != null) 
-			{
+			if (minion.minion && minion.owner == player.whoAmI && globalItem.Item_Counter1[0] >= 30 && target != null) {
 
 				Projectile.NewProjectile(player.GetSource_FromAI(), minion.position, (target.Center - minion.Center).SafeNormalize(Vector2.UnitY) * 15, ProjectileID.ImpFireball, 15, 0, player.whoAmI);
 				globalItem.Item_Counter1[index] = 0;

@@ -1,5 +1,5 @@
 ﻿using BossRush.Common.Utils;
-using BossRush.Contents.WeaponEnchantment;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;

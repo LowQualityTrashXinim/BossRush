@@ -24,13 +24,13 @@
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
     <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />
     <None Remove="Common\Graphics\Shaders\FlameBallPrimitive.fx" />
-    <None Remove="Contents\Artifacts\BootsOfSpeedManipulationArtifact.png" />
-    <None Remove="Contents\Artifacts\HeartOfEarthArtifact.png" />
-    <None Remove="Contents\Artifacts\MagicalCardDeckArtifact.png" />
-    <None Remove="Contents\Artifacts\SkillIssuedArtifact.png" />
-    <None Remove="Contents\Artifacts\TokenOfGreedArtifact.png" />
-    <None Remove="Contents\Artifacts\TokenofPrideArtifact.png" />
-    <None Remove="Contents\Artifacts\VampirismCrystalArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\BootsOfSpeedManipulationArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\HeartOfEarthArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\MagicalCardDeckArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\SkillIssuedArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\TokenOfGreedArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\TokenofPrideArtifact.png" />
+    <None Remove="Contents\Transfixion\Artifacts\VampirismCrystalArtifact.png" />
     <None Remove="Contents\Items\Accessories\SynergyAccessories\BouncyRelic.png" />
     <None Remove="Contents\Items\TransmuteTablet.png" />
     <None Remove="Contents\Items\Weapon\MagicSynergyWeapon\WyvernWrath\WyvernWrath.png" />
@@ -61,5 +61,6 @@
   <ItemGroup>
     <Folder Include="Assets\Structures\Template\" />
     <Folder Include="Contents\Tiles\" />
+    <Folder Include="Contents\Transfixion\SoulBound\" />
   </ItemGroup>
 </Project>

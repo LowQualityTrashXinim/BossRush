@@ -11,7 +11,6 @@ using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Consumable.SpecialReward;
-using BossRush.Contents.Artifacts;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Xml.Linq;
@@ -19,6 +18,7 @@ using System;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
+using BossRush.Contents.Transfixion.Artifacts;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {
