@@ -6,6 +6,9 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using Steamworks;
+using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
+using Terraria.ID;
 
 namespace BossRush.Contents.Transfixion.Arguments;
 internal class SoulBoundLoader : ModSystem {
@@ -31,9 +34,9 @@ public class SoulBoundGlobalItem : GlobalItem {
 			return;
 		}
 		tooltips.Add(new TooltipLine(Mod, $"SoulBound",
-			$"[c/{SoulBound.tooltipColor.Hex3()}:{SoulBound.DisplayName}]\n" +
-			$"{SoulBound.Description}\n" +
-			$"Level : {SoulBoundSlots}\n" +
+			$"~ [c/{SoulBound.tooltipColor.Hex3()}:{SoulBound.DisplayName}] ~\n" +
+			$"{SoulBound.ModifiedToolTip(item)}\n" +
+			$"Level : {SoulBoundSlots.Level}\n" +
 			$"Experience : {SoulBoundSlots.Exp}/{SoulBoundSlots.ExperienceRequired}"));
 
 	}
@@ -50,7 +53,7 @@ public class SoulBoundGlobalItem : GlobalItem {
 			if (modSoulBound == null) {
 				return;
 			}
-			armorItem.SoulBoundSlots = new(modSoulBound.Type, 1);
+			armorItem.SoulBoundSlots = new(modSoulBound.Type, 0);
 		}
 	}
 	public override GlobalItem NewInstance(Item target) {
@@ -94,15 +97,16 @@ public abstract class ModSoulBound : ModType {
 		SetStaticDefaults();
 	}
 	public Color tooltipColor = Color.White;
+	public virtual string ModifiedToolTip(Item item) => Description;
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.SoulBound.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.SoulBound.{Name}.Description");
 	public int GetLevel(Item item) {
 		if (item.TryGetGlobalItem(out SoulBoundGlobalItem globalitem)) {
 			return globalitem.SoulBoundSlots.Level;
 		}
-		return 1;
+		return 0;
 	}
-	public static int GetSoulBoundType<T>() where T : ModSoulBound {
+	public static short GetSoulBoundType<T>() where T : ModSoulBound {
 		return ModContent.GetInstance<T>().Type;
 	}
 	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
@@ -129,7 +133,20 @@ public abstract class ModSoulBound : ModType {
 }
 public class SoulBoundPlayer : ModPlayer {
 	public List<Item> armorItemUpdate = new();
+	public int IndexSoulBoundItem = -1;
 	public override void ResetEffects() {
+		if (IndexSoulBoundItem >= Player.inventory.Length || IndexSoulBoundItem < 0) {
+			IndexSoulBoundItem = -1;
+		}
+		else {
+			Item soulbound = Player.inventory[IndexSoulBoundItem];
+			if (Player.HeldItem != soulbound && Player.HeldItem.type != ItemID.None) {
+				if (soulbound.ModItem is BaseSoulBoundItem moditem) {
+					SoulBoundGlobalItem.AddSoulBound(ref Main.mouseItem, moditem.SoulBoundType);
+					soulbound.TurnToAir();
+				}
+			}
+		}
 		armorItemUpdate.Clear();
 	}
 	private bool IsSoulBoundable(Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
@@ -145,6 +162,9 @@ public class SoulBoundPlayer : ModPlayer {
 				SoulBound.OnHitNPC(Player, item, target, hit);
 
 				moditem.SoulBoundSlots.Modify_Exp(hit.Damage);
+				if (moditem.SoulBoundSlots.Exp >= moditem.SoulBoundSlots.ExperienceRequired) {
+					moditem.SoulBoundSlots.ReachLevelCondition(10);
+				}
 			}
 		}
 	}
@@ -256,14 +276,14 @@ public class LevelingSerializer : TagSerializer<LevelingValue, TagCompound> {
 
 	public override LevelingValue Deserialize(TagCompound tag) => new(tag.Get<short>("ID"), tag.Get<byte>("Level"), tag.Get<ulong>("Exp"));
 }
-public struct LevelingValue {
+public class LevelingValue {
 	public static readonly LevelingValue Default = new();
 	public short assignedType { get; private set; }
 	public byte Level { get; private set; }
 	public ulong Exp { get; private set; }
 	public LevelingValue() {
 		assignedType = -1;
-		Level = 1;
+		Level = 0;
 		Exp = 0;
 	}
 	public LevelingValue(short Type, byte level) {
@@ -279,7 +299,9 @@ public struct LevelingValue {
 		if (exp <= 0) {
 			return;
 		}
-		Exp = Math.Clamp(Exp + (ulong)exp, 0, int.MaxValue);
+		if ((ulong)exp < ExperienceRequired) {
+			Exp = Math.Clamp(Exp + (ulong)exp, 0, int.MaxValue);
+		}
 	}
 	public void ReachLevelCondition(byte levelCap) {
 		if (Level >= levelCap) {

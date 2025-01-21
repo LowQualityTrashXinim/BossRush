@@ -32,6 +32,11 @@ namespace BossRush {
 			texture = TextureAssets.Projectile[projectile.type].Value;
 			origin = texture.Size() * .5f;
 		}
+		public static void ItemDefaultDrawInfo(this Item item, out Texture2D texture, out Vector2 origin) {
+			Main.instance.LoadItem(item.type);
+			texture = TextureAssets.Item[item.type].Value;
+			origin = texture.Size() * .5f;
+		}
 		public static void DrawTrail(this Projectile projectile, Color lightColor, float ManualScaleAccordinglyToLength = 0) {
 			projectile.ProjectileDefaultDrawInfo(out Texture2D texture, out Vector2 origin);
 			if (ProjectileID.Sets.TrailingMode[projectile.type] != 2) {

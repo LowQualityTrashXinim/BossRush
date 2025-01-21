@@ -2198,6 +2198,16 @@ Mods: {
 				DisplayName: Animation Test Item Proj
 				Tooltip: ""
 			}
+
+			BaseSoulBoundItem: {
+				DisplayName: Base Soul Bound Item
+				Tooltip: ""
+			}
+
+			GuardianAngelItem: {
+				DisplayName: Guardian Angel Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

@@ -1,0 +1,8 @@
+GuardianAngel: {
+	DisplayName: Guardian Angel
+	Description:
+		'''
+		[+] Have {0}% chance to be revived
+		[-] Decreases your armor by {1}%
+		'''
+}
