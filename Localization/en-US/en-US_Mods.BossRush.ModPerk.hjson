@@ -611,7 +611,7 @@ RefinedUpgrade: {
 		+ Axe critical hit damage are increased by 200%
 		+ Base damage increases by 10
 		+ Axe delay reuses are decrease by 50%
-		+ Hitting enemy with axe will causes them to bleed
+		+ Hitting enemy with axe can causes them to bleed
 		'''
 }
 
@@ -650,5 +650,17 @@ DemolitionistGunner: {
 		+ Explosive bullet have 10% to deal 55% more damage to enemy
 		+ Explosive bullet have 5% to do a big explosion
 		+ You have 5% chance to throw out friendly grenade which deal 3x damage
+		'''
+}
+
+MindOfBattlefield: {
+	DisplayName: Mind Of Battlefield
+	Description:
+		'''
+		+ Increases movement speed by 25%, jump boost by 20% and reduce damage taken by 10
+		+ Increases critical strike chance by 7% when using bow/repeater 
+		+ Helding sword will increases your i-frame duration by 11%
+		+ Using explosive increases direct hit damage by 50%
+		+ Shooting gun is 14% faster
 		'''
 }

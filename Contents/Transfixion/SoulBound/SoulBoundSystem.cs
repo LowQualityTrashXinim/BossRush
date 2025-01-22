@@ -162,8 +162,8 @@ public class SoulBoundPlayer : ModPlayer {
 				SoulBound.OnHitNPC(Player, item, target, hit);
 
 				moditem.SoulBoundSlots.Modify_Exp(hit.Damage);
-				if (moditem.SoulBoundSlots.Exp >= moditem.SoulBoundSlots.ExperienceRequired) {
-					moditem.SoulBoundSlots.ReachLevelCondition(10);
+				if (moditem.SoulBoundSlots.ReachLevelCondition(10)) {
+					BossRushUtils.CombatTextRevamp(Player.Hitbox, SoulBound.tooltipColor, $"{SoulBound.DisplayName} level up !");
 				}
 			}
 		}
@@ -192,9 +192,7 @@ public class SoulBoundPlayer : ModPlayer {
 					continue;
 				}
 				SoulBound.OnHitNPCWithProj(Player, proj, target, hit);
-				SoulBound.OnHitNPC(Player, item, target, hit);
 			}
-
 		}
 	}
 	public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
@@ -303,15 +301,16 @@ public class LevelingValue {
 			Exp = Math.Clamp(Exp + (ulong)exp, 0, int.MaxValue);
 		}
 	}
-	public void ReachLevelCondition(byte levelCap) {
-		if (Level >= levelCap) {
-			return;
+	public bool ReachLevelCondition(byte levelCap) {
+		if(Exp < ExperienceRequired || Level >= levelCap) {
+			return false;
 		}
 		if (Exp >= ExperienceRequired) {
 			Level = (byte)Math.Clamp(Level + 1, byte.MinValue, levelCap);
 			Exp = 0;
-			return;
+			return true;
 		}
+		return false;
 	}
 	public ulong ExperienceRequired => 20000 * (ulong)Math.Pow(Level, (Level - 1) / 2);
 }

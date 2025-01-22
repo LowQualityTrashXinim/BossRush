@@ -35,13 +35,14 @@ internal class HunterInstinct_GlobalItem : GlobalItem {
 			return;
 		}
 		switch (item.type) {
-			case ItemID.WoodenBow:
-			case ItemID.AshWoodBow:
-			case ItemID.BorealWoodBow:
-			case ItemID.RichMahoganyBow:
-			case ItemID.PalmWoodBow:
-			case ItemID.EbonwoodBow:
-			case ItemID.ShadewoodBow:
+			case ItemID.CopperAxe:
+			case ItemID.TinAxe:
+			case ItemID.IronAxe:
+			case ItemID.LeadAxe:
+			case ItemID.SilverAxe:
+			case ItemID.TungstenAxe:
+			case ItemID.GoldAxe:
+			case ItemID.PlatinumAxe:
 				player.GetModPlayer<PlayerStatsHandle>().DodgeChance += .15f;
 				break;
 		}
@@ -52,13 +53,14 @@ internal class HunterInstinct_GlobalItem : GlobalItem {
 		}
 		if (Main.rand.NextBool(10)) {
 			switch (item.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
+				case ItemID.CopperAxe:
+				case ItemID.TinAxe:
+				case ItemID.IronAxe:
+				case ItemID.LeadAxe:
+				case ItemID.SilverAxe:
+				case ItemID.TungstenAxe:
+				case ItemID.GoldAxe:
+				case ItemID.PlatinumAxe:
 					player.AddBuff(ModContent.BuffType<SwiftStrike_Axe>(), BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 					break;
 			}

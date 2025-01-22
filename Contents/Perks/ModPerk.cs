@@ -22,6 +22,7 @@ using BossRush.Common.Systems.Mutation;
 using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.Items.BuilderItem;
 using BossRush.Contents.Items.Accessories.LostAccessories;
+using System.Reflection.Metadata;
 
 namespace BossRush.Contents.Perks {
 	public class SuppliesDrop : Perk {
@@ -999,6 +1000,37 @@ namespace BossRush.Contents.Perks {
 			target.Center.LookForHostileNPC(out List<NPC> npclist, 150f);
 			foreach (NPC npc in npclist) {
 				player.StrikeNPCDirect(npc, hit);
+			}
+		}
+	}
+
+	public class MindOfBattlefield : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle statplayer = player.GetModPlayer<PlayerStatsHandle>();
+			int stack = StackAmount(player);
+			if (player.HeldItem.useAmmo == AmmoID.Bullet) {
+				statplayer.AddStatsToPlayer(PlayerStats.AttackSpeed, 1 + .14f * stack);
+			}
+			else if (player.HeldItem.useAmmo == AmmoID.Arrow) {
+				statplayer.AddStatsToPlayer(PlayerStats.CritChance, Base: 7 * stack);
+			}
+			else if (player.HeldItem.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckVanillaSwingWithModded)) {
+				statplayer.AddStatsToPlayer(PlayerStats.Iframe, 1 + .11f * stack);
+			}
+			statplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1 + .2f * stack);
+			statplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1 + .15f * stack);
+			statplayer.AddStatsToPlayer(PlayerStats.StaticDefense, Base: 10 * stack);
+		}
+		public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+			//Hope this work exactly what I expect it to do
+			Projectile sample = ContentSamples.ProjectilesByType[proj.type];
+			Rectangle defaultProjSize = new((int)proj.position.X, (int)proj.position.Y, sample.width, sample.height);
+			if (ProjectileID.Sets.Explosive[proj.type] && defaultProjSize.Intersects(target.Hitbox)) {
+				modifiers.SourceDamage += .5f * StackAmount(player);
 			}
 		}
 	}

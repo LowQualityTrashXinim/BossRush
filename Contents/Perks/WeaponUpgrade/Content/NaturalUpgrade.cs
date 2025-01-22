@@ -11,34 +11,33 @@ using Terraria.ModLoader;
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 
 public class NaturalUpgrade_GlobalItem : GlobalItem {
+	public static bool CheckWoodenBow(int type) {
+		switch (type) {
+			case ItemID.WoodenBow:
+			case ItemID.AshWoodBow:
+			case ItemID.BorealWoodBow:
+			case ItemID.RichMahoganyBow:
+			case ItemID.PalmWoodBow:
+			case ItemID.EbonwoodBow:
+			case ItemID.ShadewoodBow:
+			case ItemID.PearlwoodBow:
+				return true;
+		}
+		return false;
+	}
 	public override void SetDefaults(Item entity) {
 		if (UpgradePlayer.Check_Upgrade(Main.CurrentPlayer, WeaponUpgradeID.NaturalUpgrade)) {
-			switch (entity.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					entity.shootSpeed += 3;
-					entity.crit += 6;
-					entity.damage += 10;
-					break;
+			if (CheckWoodenBow(entity.type)) {
+				entity.shootSpeed += 3;
+				entity.crit += 6;
+				entity.damage += 10;
 			}
 		}
 	}
 	public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (UpgradePlayer.Check_Upgrade(player, WeaponUpgradeID.NaturalUpgrade)) {
-			switch (item.type) {
-				case ItemID.WoodenBow:
-				case ItemID.AshWoodBow:
-				case ItemID.BorealWoodBow:
-				case ItemID.RichMahoganyBow:
-				case ItemID.PalmWoodBow:
-				case ItemID.EbonwoodBow:
-				case ItemID.ShadewoodBow:
-					float chance = Main.rand.NextFloat(.2f, .4f);
+			if (CheckWoodenBow(item.type)) {
+				float chance = Main.rand.NextFloat(.2f, .4f);
 					if (Main.rand.NextFloat() <= chance) {
 						Vector2 pos = Main.MouseWorld + Main.rand.NextVector2CircularEdge(2000, 700);
 						Vector2 vel = (Main.MouseWorld - pos).SafeNormalize(Vector2.Zero) * 5;
