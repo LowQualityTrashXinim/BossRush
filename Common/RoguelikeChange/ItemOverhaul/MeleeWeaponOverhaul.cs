@@ -690,7 +690,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			else {
 				if (InStateOfSwinging) {
 					InStateOfSwinging = false;
-					ComboHandleSystem();
+					if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModdedWithoutDefault)) {
+						ComboHandleSystem();
+					}
 				}
 			}
 		}

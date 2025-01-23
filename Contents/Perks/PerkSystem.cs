@@ -505,7 +505,6 @@ namespace BossRush.Contents.Perks {
 
 			list_perkbtn = new();
 			toolTip = new UIText("");
-			Info = "";
 			Append(toolTip);
 		}
 
