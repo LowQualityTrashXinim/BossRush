@@ -664,3 +664,13 @@ MindOfBattlefield: {
 		+ Shooting gun is 14% faster
 		'''
 }
+
+TripletShot: {
+	DisplayName: Triplet Shot
+	Description:
+		'''
+		+ Weapon uses arrow will shoot out additional spread of 3 arrows !
+		- Decreases attack speed of the weapon by 15%
+		- Decreases base damage by 4 ( can't go below 1 )
+		'''
+}

@@ -254,6 +254,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Transmutation_SuccessChance = 0;
 		RandomizeChanceEnchantment = 0f;
 		AugmentationChance = 0;
+		Reset_ShootRequest();
 	}
 	public override float UseSpeedMultiplier(Item item) {
 		float useSpeed = AttackSpeed.ApplyTo(base.UseSpeedMultiplier(item));
@@ -605,6 +606,9 @@ public class PlayerStatsHandleSystem : ModSystem {
 		float angleSpread = handle.request_AngleSpread;
 		float angleChange = handle.request_VelocityChange;
 		handle.Reset_ShootRequest();
+		if(!projectile.Check_ItemTypeSource(player.HeldItem.type)) {
+			return;
+		}
 		if (shootExtra > 0) {
 			for (int i = 0; i < shootExtra; i++) {
 				Projectile proj = Copy_NewProjectile(projectile);
