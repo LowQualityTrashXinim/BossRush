@@ -448,7 +448,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 						check =
 							(int)Math.Ceiling(MathHelper.Lerp(laserline, 0, BossRushUtils.InExpo(player.itemAnimation / (float)player.itemAnimationMax, 11f)));
 					}
-					if(player.itemAnimationMax <= 2) {
+					if (player.itemAnimationMax <= 2) {
 						for (int i = 0; i <= laserline; i++) {
 							Vector2 point = player.Center + directionTo.Vector2DistributeEvenly(laserline, 270, i) * itemsize;
 							if (BossRushUtils.Collision_PointAB_EntityCollide(target.Hitbox, player.Center, point)) {
@@ -471,21 +471,17 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			}
 			return base.CanMeleeAttackCollideWithNPC(item, meleeAttackHitbox, player, target);
 		}
-		public override bool CanUseItem(Item item, Player player) {
-			if (SwingType != BossRushUseStyle.Swipe &&
-				SwingType != BossRushUseStyle.Poke ||
-				item.noMelee) {
-				return base.CanUseItem(item, player);
-			}
-			return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
-		}
 		public override float UseSpeedMultiplier(Item item, Player player) {
+			float SpeedAdd = 0;
+			if (!player.autoReuseAllWeapons) {
+				SpeedAdd += .11f;
+			}
 			if (SwingType != BossRushUseStyle.Swipe &&
 				SwingType != BossRushUseStyle.Poke ||
 				item.noMelee) {
-				return base.UseSpeedMultiplier(item, player);
+				return base.UseSpeedMultiplier(item, player) + SpeedAdd;
 			}
-			float useSpeedMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f;
+			float useSpeedMultiplierOnCombo = base.UseSpeedMultiplier(item, player) - .15f + SpeedAdd;
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			//This combo count is delay and because of so, we have to do set back, so swing number 1 = 0
 			if (SwingType == BossRushUseStyle.Swipe) {
@@ -623,7 +619,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 
 		private void On_Player_ApplyAttackCooldown(On_Player.orig_ApplyAttackCooldown orig, Player self) {
-			if(!UniversalSystem.Check_RLOH()) {
+			if (!UniversalSystem.Check_RLOH()) {
 				orig(self);
 				return;
 			}
@@ -697,6 +693,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					ComboHandleSystem();
 				}
 			}
+		}
+		public override bool CanUseItem(Item item) {
+			if (UniversalSystem.Check_RLOH()) {
+				return delaytimer <= 0;
+			}
+			return base.CanUseItem(item);
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			Item item = Player.HeldItem;

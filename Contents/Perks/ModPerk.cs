@@ -263,8 +263,7 @@ namespace BossRush.Contents.Perks {
 				|| type == ModContent.ProjectileType<NeoDynamiteExplosion>()
 				|| type == ModContent.ProjectileType<TowerDestructionProjectile>()
 				|| !ContentSamples.ProjectilesByType[type].minion) {
-				player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = StackAmount(player);
-				player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange = 10;
+				player.GetModPlayer<PlayerStatsHandle>().Request_ShootExtra(StackAmount(player), 5 + 5 * StackAmount(player));
 			}
 		}
 	}

@@ -395,8 +395,24 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public int EliteKillCount = 0;
 	public int successfullyKillNPCcount = 0;
-	public int requestShootExtra = 0;
-	public float requestVelocityChange = 0;
+	public int request_ShootExtra { get; private set; } = 0;
+	public int request_ShootSpreadExtra { get; private set; } = 0;
+	public float request_AngleSpread { get; private set; } = 0;
+	public float request_VelocityChange { get; private set; } = 0;
+	public void Request_ShootExtra(int extra, float angle) {
+		request_ShootExtra += extra;
+		request_VelocityChange += angle;
+	}
+	public void Request_ShootSpreadExtra(int extra, float angle) {
+		request_ShootSpreadExtra += extra;
+		request_AngleSpread += angle;
+	}
+	public void Reset_ShootRequest() {
+		request_AngleSpread = 0;
+		request_VelocityChange = 0;
+		request_ShootSpreadExtra = 0;
+		request_ShootExtra = 0;
+	}
 	/// <summary>
 	/// This should be uses in always update code
 	/// when creating a new stat modifier, pleases uses the default and increases from there
@@ -521,26 +537,19 @@ public class PlayerStatsHandleSystem : ModSystem {
 			orig(self, cooldownCounterId, immuneTime);
 		}
 	}
-
+	// Do not uses this, the information is discard right after used !
+	private On_Projectile.orig_NewProjectileDirect origDirect = null;
+	private On_Projectile.orig_NewProjectile_IEntitySource_float_float_float_float_int_int_float_int_float_float_float origOld = null;
+	private On_Projectile.orig_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float origNew = null;
 	private Projectile On_Projectile_NewProjectileDirect(On_Projectile.orig_NewProjectileDirect orig, IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner, float ai0, float ai1, float ai2) {
 		if (owner < 0 || owner > 255) {
 			return orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
 		}
 		Player player = Main.player[owner];
-		int shootExtra = player.GetModPlayer<PlayerStatsHandle>().requestShootExtra;
-		if (shootExtra > 0) {
-			player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = 0;
-			for (int i = 0; i < shootExtra; i++) {
-				Projectile proj = orig(spawnSource, position, velocity.Vector2RotateByRandom(player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange), type, damage, knockback, owner, ai0, ai1, ai2);
-				if (CheckProjectile_ScatterShotCondition(player, proj)) {
-					proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
-				}
-			}
-		}
+		origDirect = orig;
 		Projectile projectile = orig(spawnSource, position, velocity, type, damage, knockback, owner, ai0, ai1, ai2);
-		if (CheckProjectile_ScatterShotCondition(player, projectile)) {
-			projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
-		}
+		Extra_SpecialMechanic(player, projectile);
+		origDirect = null;
 		return projectile;
 	}
 
@@ -549,22 +558,12 @@ public class PlayerStatsHandleSystem : ModSystem {
 			return orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
 		}
 		Player player = Main.player[Owner];
-		int shootExtra = player.GetModPlayer<PlayerStatsHandle>().requestShootExtra;
-		if (shootExtra > 0) {
-			player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = 0;
-			for (int i = 0; i < shootExtra; i++) {
-				Vector2 newSpeed = new Vector2(SpeedX, SpeedY).Vector2RotateByRandom(player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange);
-				int proj = orig(spawnSource, X, Y, newSpeed.X, newSpeed.Y, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
-				if (CheckProjectile_ScatterShotCondition(player, proj)) {
-					Main.projectile[proj].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
-				}
-			}
-		}
-		int projectile = orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
-		if (CheckProjectile_ScatterShotCondition(player, projectile)) {
-			Main.projectile[projectile].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
-		}
-		return projectile;
+		origOld = orig;
+		int proj = orig(spawnSource, X, Y, SpeedX, SpeedY, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+		Projectile projectile = Main.projectile[proj];
+		Extra_SpecialMechanic(player, projectile);
+		origOld = null;
+		return proj;
 	}
 
 	private int On_Projectile_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float(On_Projectile.orig_NewProjectile_IEntitySource_Vector2_Vector2_int_int_float_int_float_float_float orig,
@@ -573,24 +572,64 @@ public class PlayerStatsHandleSystem : ModSystem {
 			return orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
 		}
 		Player player = Main.player[Owner];
-		int shootExtra = player.GetModPlayer<PlayerStatsHandle>().requestShootExtra;
+		origNew = orig;
+		int proj = orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
+		Projectile projectile = Main.projectile[proj];
+		Extra_SpecialMechanic(player, projectile);
+		origNew = null;
+		return proj;
+	}
+	private Projectile Copy_NewProjectile(Projectile projectile) {
+		if (origDirect != null) {
+			return origDirect(projectile.GetSource_FromThis(), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2]);
+		}
+		else if (origNew != null) {
+			return Main.projectile[origNew(projectile.GetSource_FromThis(), projectile.position, projectile.velocity, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
+		}
+		else if (origOld != null) {
+			return Main.projectile[origOld(projectile.GetSource_FromThis(), projectile.position.X, projectile.position.Y, projectile.velocity.X, projectile.velocity.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, projectile.ai[0], projectile.ai[1], projectile.ai[2])];
+		}
+		else {
+			return null;
+		}
+	}
+
+	private void Extra_SpecialMechanic(Player player, Projectile projectile) {
+		bool Scatter = player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
+		if (Scatter) {
+			projectile.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+		}
+		PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+		int shootExtra = handle.request_ShootExtra;
+		int shootSpread = handle.request_ShootSpreadExtra;
+		float angleSpread = handle.request_AngleSpread;
+		float angleChange = handle.request_VelocityChange;
+		handle.Reset_ShootRequest();
 		if (shootExtra > 0) {
-			player.GetModPlayer<PlayerStatsHandle>().requestShootExtra = 0;
 			for (int i = 0; i < shootExtra; i++) {
-				int proj = orig(spawnSource, position, velocity.Vector2RotateByRandom(player.GetModPlayer<PlayerStatsHandle>().requestVelocityChange), Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
-				if (CheckProjectile_ScatterShotCondition(player, proj)) {
-					Main.projectile[proj].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+				Projectile proj = Copy_NewProjectile(projectile);
+				if (proj == null) {
+					break;
+				}
+				proj.velocity = proj.velocity.Vector2RotateByRandom(angleChange);
+				if (Scatter) {
+					proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
 				}
 			}
 		}
-		int projectile = orig(spawnSource, position, velocity, Type, Damage, KnockBack, Owner, ai0, ai1, ai2);
-		if (CheckProjectile_ScatterShotCondition(player, projectile)) {
-			Main.projectile[projectile].GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+		if (shootSpread > 1) {
+			for (int i = 0; i < shootSpread; i++) {
+				Projectile proj = Copy_NewProjectile(projectile);
+				if (proj == null) {
+					break;
+				}
+				proj.velocity = proj.velocity.Vector2DistributeEvenlyPlus(shootSpread, angleSpread, i);
+				if (Scatter) {
+					proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().OnKill_ScatterShot += 2;
+				}
+			}
 		}
-		return projectile;
 	}
-	public static bool CheckProjectile_ScatterShotCondition(Player player, Projectile proj) => player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
-	public static bool CheckProjectile_ScatterShotCondition(Player player, int proj) => player.GetModPlayer<PerkPlayer>().perk_ScatterShot;
 	private void On_Player_Heal(On_Player.orig_Heal orig, Player self, int amount) {
 		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
 			orig(self, (int)modplayer.HealEffectiveness.ApplyTo(amount));
