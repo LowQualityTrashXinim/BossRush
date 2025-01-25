@@ -1725,9 +1725,14 @@ Mods: {
 					'''
 					"No one will live to tell the tale"
 					You become invisible after 15s of not being invisible
-					While invisible your critical damage increases by 35%
-					increases your movement speed by 15%
-					you have chance to dodge an attack
+					While you are invisible you gain various buff 
+					'''
+				ExtraInfo:
+					'''
+					While being invisible :
+					[+] Your critical damage increases by 35%
+					[+] Increases your movement speed by 15%
+					[+] You have 1 in 15 chance to dodge
 					'''
 			}
 
@@ -1882,7 +1887,7 @@ Mods: {
 				Tooltip:
 					'''
 					Increases your defense by 10% and Flat 12
-					Having certain debuff will be also be beneficial
+					Having certain debuff will be beneficial instead
 					Getting hit may resulting you do a elemental explosion
 					'''
 			}

@@ -13,6 +13,8 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
+using System.Runtime.ExceptionServices;
+using System.Threading.Channels;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -268,8 +270,15 @@ public class PlayerStatsHandle : ModPlayer {
 	}
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		foreach (bool chance in SecondLife.Values) {
-			if (chance) {
+		foreach (ConditionApproved chance in Chance_SecondLife.Values) {
+			if (Main.rand.NextFloat() >= chance.ChanceValue) {
+				chance.ApprovedConditionPass();
+				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+			}
+		}
+		foreach (ConditionApproved chance in SecondLife.Values) {
+			if (chance.Condition) {
+				chance.ApprovedConditionPass();
 				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 			}
 		}
@@ -481,22 +490,81 @@ public class PlayerStatsHandle : ModPlayer {
 				return DamageClass.Default;
 		}
 	}
-	public Dictionary<string, bool> SecondLife = new();
+	public Dictionary<string, ConditionApproved> SecondLife = new();
 	public static void SetSecondLifeCondition(Player player, string context, bool condition) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.SecondLife.ContainsKey(context)) {
-			modplayer.SecondLife[context] = condition;
+			modplayer.SecondLife[context].ChangeCondition(condition);
 		}
 		else {
-			modplayer.SecondLife.Add(context, condition);
+			modplayer.SecondLife.Add(context, new(condition));
 		}
 	}
 	public static bool GetSecondLife(Player player, string context) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
 		if (modplayer.SecondLife.ContainsKey(context)) {
-			return modplayer.SecondLife[context];
+			if (modplayer.SecondLife[context].Approved) {
+				modplayer.SecondLife[context].DeApproved();
+				return true;
+			}
 		}
 		return false;
+	}
+	public Dictionary<string, ConditionApproved> Chance_SecondLife = new();
+	public static void Set_Chance_SecondLifeCondition(Player player, string context, float chance) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		if (modplayer.SecondLife.ContainsKey(context)) {
+			modplayer.SecondLife[context].SetChanceValue(chance);
+		}
+		else {
+			modplayer.SecondLife.Add(context, new(chance));
+		}
+	}
+	public static bool Get_Chance_SecondLife(Player player, string context) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		if (modplayer.SecondLife.ContainsKey(context)) {
+			if (modplayer.SecondLife[context].Approved) {
+				modplayer.SecondLife[context].DeApproved();
+				return true;
+			}
+		}
+		return false;
+	}
+}
+public struct ConditionApproved {
+	public bool Condition = false;
+	public bool Approved = false;
+	public float ChanceValue = 0f;
+	public ConditionApproved() {
+		Condition = false;
+		Approved = false;
+		ChanceValue = 0;
+	}
+	public ConditionApproved(bool condition) {
+		Condition = condition;
+		Approved = false;
+		ChanceValue = 0;
+	}
+	public ConditionApproved(float chance) {
+		Condition = false;
+		Approved = false;
+		ChanceValue = chance;
+	}
+	public void SetChanceValue(float chance) {
+		ChanceValue = chance;
+	}
+	public void ChangeCondition(bool condition) {
+		Condition = condition;
+	}
+	public void ApprovedConditionPass() {
+		Approved = true;
+	}
+	public void DeApproved() {
+		Approved = false;
+	}
+	public void Reset() {
+		Condition = false;
+		Approved = false;
 	}
 }
 public class PlayerStatsHandleSystem : ModSystem {
@@ -606,7 +674,7 @@ public class PlayerStatsHandleSystem : ModSystem {
 		float angleSpread = handle.request_AngleSpread;
 		float angleChange = handle.request_VelocityChange;
 		handle.Reset_ShootRequest();
-		if(!projectile.Check_ItemTypeSource(player.HeldItem.type)) {
+		if (!projectile.Check_ItemTypeSource(player.HeldItem.type)) {
 			return;
 		}
 		if (shootExtra > 0) {

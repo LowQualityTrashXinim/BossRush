@@ -109,13 +109,13 @@ public abstract class ModSoulBound : ModType {
 	public static short GetSoulBoundType<T>() where T : ModSoulBound {
 		return ModContent.GetInstance<T>().Type;
 	}
-	public virtual void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
-	public virtual void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
-	public virtual void OnHitNPCWithItem(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
-	public virtual void OnHitNPCWithProj(Player player, Projectile proj, NPC npc, NPC.HitInfo hitInfo) { }
-	public virtual void OnHitNPC(Player player, Item item, NPC npc, NPC.HitInfo hitInfo) { }
-	public virtual void OnHitByNPC(Player player, NPC npc, Player.HurtInfo info) { }
-	public virtual void OnHitByProj(Player player, Projectile projectile, Player.HurtInfo info) { }
+	public virtual void ModifyHitNPCWithItem(Player player, Item acc, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
+	public virtual void ModifyHitNPCWithProj(Player player, Item acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
+	public virtual void OnHitNPCWithItem(Player player, Item acc, Item item, NPC npc, NPC.HitInfo hitInfo) { }
+	public virtual void OnHitNPCWithProj(Player player, Item acc, Projectile proj, NPC npc, NPC.HitInfo hitInfo) { }
+	public virtual void OnHitNPC(Player player, Item acc, NPC npc, NPC.HitInfo hitInfo) { }
+	public virtual void OnHitByNPC(Player player, Item acc, NPC npc, Player.HurtInfo info) { }
+	public virtual void OnHitByProj(Player player, Item acc, Projectile projectile, Player.HurtInfo info) { }
 	public virtual void UpdateEquip(Player player, Item item) { }
 	/// <summary>
 	/// Please uses <code>PlayerStatsHandle.SetSecondLifeCondition</code> in <see cref="UpdateEquip(Player, Item)"/><br/>
@@ -129,7 +129,7 @@ public abstract class ModSoulBound : ModType {
 	/// <param name="genDust"></param>
 	/// <param name="damageSource"></param>
 	/// <returns></returns>
-	public virtual bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) { return true; }
+	public virtual bool PreKill(Player player, Item acc, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) { return true; }
 }
 public class SoulBoundPlayer : ModPlayer {
 	public List<Item> armorItemUpdate = new();
@@ -177,7 +177,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitNPCWithItem(Player, item, target, hit);
+				SoulBound.OnHitNPCWithItem(Player, itemAcc, item, target, hit);
 			}
 
 		}
@@ -191,7 +191,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitNPCWithProj(Player, proj, target, hit);
+				SoulBound.OnHitNPCWithProj(Player, item, proj, target, hit);
 			}
 		}
 	}
@@ -204,7 +204,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.ModifyHitNPCWithProj(Player, proj, target, ref modifiers);
+				SoulBound.ModifyHitNPCWithProj(Player, item, proj, target, ref modifiers);
 			}
 
 		}
@@ -218,7 +218,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.ModifyHitNPCWithItem(Player, item, target, ref modifiers);
+				SoulBound.ModifyHitNPCWithItem(Player, acc, item, target, ref modifiers);
 			}
 
 		}
@@ -232,7 +232,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitByNPC(Player, npc, hurtInfo);
+				SoulBound.OnHitByNPC(Player, acc, npc, hurtInfo);
 
 			}
 		}
@@ -245,7 +245,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				SoulBound.OnHitByProj(Player, proj, hurtInfo);
+				SoulBound.OnHitByProj(Player, acc, proj, hurtInfo);
 			}
 		}
 	}
@@ -257,7 +257,7 @@ public class SoulBoundPlayer : ModPlayer {
 				if (SoulBound == null) {
 					continue;
 				}
-				if (!SoulBound.PreKill(Player, damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource)) {
+				if (!SoulBound.PreKill(Player, acc, damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource)) {
 					return false;
 				}
 			}
@@ -302,7 +302,7 @@ public class LevelingValue {
 		}
 	}
 	public bool ReachLevelCondition(byte levelCap) {
-		if(Exp < ExperienceRequired || Level >= levelCap) {
+		if (Exp < ExperienceRequired || Level >= levelCap) {
 			return false;
 		}
 		if (Exp >= ExperienceRequired) {

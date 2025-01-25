@@ -30,6 +30,13 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			base.ModifyMaxStats(out health, out mana);
 			if (Vampire) {
 				health -= .55f;
+				PerkPlayer perkplayer = Player.GetModPlayer<PerkPlayer>();
+				if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade1>())) {
+					health += .4f;
+				}
+				if (perkplayer.perks.ContainsKey(Perk.GetPerkType<VampirismCrystal_Upgrade2>())) {
+					health -= .1f;
+				}
 			}
 		}
 		public override void PostUpdate() {
@@ -62,8 +69,31 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			if (target.lifeMax > 5 && !target.friendly && target.type != NPCID.TargetDummy) {
 				cooldown = BossRushUtils.ToSecond(.25f);
 				int HP = (int)(Main.rand.Next(rangeMin, rangeMax) * multiplier);
+				if (Player.HasPerk<VampirismCrystal_Upgrade2>()) {
+					cooldown /= 2;
+					HP += Main.rand.Next(1, 10);
+				}
 				Player.Heal(HP);
 			}
+		}
+	}
+
+	public class VampirismCrystal_Upgrade1 : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			list_category.Add(PerkCategory.ArtifactExclusive);
+		}
+		public override bool SelectChoosing() {
+			return !Main.LocalPlayer.HasPerk<VampirismCrystal_Upgrade2>() && Main.LocalPlayer.HasArtifact<VampirismCrystalArtifact>();
+		}
+	}
+	public class VampirismCrystal_Upgrade2 : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			list_category.Add(PerkCategory.ArtifactExclusive);
+		}
+		public override bool SelectChoosing() {
+			return !Main.LocalPlayer.HasPerk<VampirismCrystal_Upgrade1>() && Main.LocalPlayer.HasArtifact<VampirismCrystalArtifact>();
 		}
 	}
 	public class BloodVoodoo : Perk {

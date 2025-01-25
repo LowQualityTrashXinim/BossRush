@@ -3,6 +3,6 @@ GuardianAngel: {
 	Description:
 		'''
 		[+] Have {0}% chance to be revived
-		[-] Decreases your armor by {1}%
+		[-] Decreases your defenses by {1}%
 		'''
 }

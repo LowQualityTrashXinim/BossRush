@@ -1,7 +1,11 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
 using System.IO;
 using Terraria.ID;
 using System.Linq;
+using Terraria.UI;
+using Terraria.Audio;
+using ReLogic.Content;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -10,15 +14,10 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
-using BossRush.Contents.Items.Consumable.SpecialReward;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System.Xml.Linq;
-using System;
-using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
-using Terraria.UI;
 using BossRush.Contents.Transfixion.Artifacts;
+using BossRush.Contents.Items.Consumable.SpecialReward;
 
 namespace BossRush.Contents.Perks {
 	public class PerkItem : GlobalItem {

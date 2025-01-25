@@ -108,7 +108,7 @@ public class AugmentsWeapon : GlobalItem {
 						chanceDecay *= .5f;
 					}
 					passException = false;
-					weapon.AugmentsSlots[currentEmptySlot] = 15;
+					weapon.AugmentsSlots[currentEmptySlot] = modAugments.Type;
 					modAugments = null;
 				}
 				else {

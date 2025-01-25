@@ -3,11 +3,12 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems.ArtifactSystem;
 using Terraria.ID;
-using BossRush.Common.RoguelikeChange;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using BossRush.Contents.Perks;
+using BossRush.Common.Systems;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -30,6 +31,9 @@ namespace BossRush {
 		public static bool HasArtifact<T>(this Player player)
 			where T : Artifact => Artifact.GetArtifact(player.GetModPlayer<ArtifactPlayer>().ActiveArtifact) is T;
 		public static int DirectionFromPlayerToNPC(float playerX, float npcX) => playerX > npcX ? -1 : 1;
+		public static bool HasPerk<T>(this Player player) where T : Perk {
+			return player.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<T>());
+		}
 		public static bool DoesStatsRequiredWholeNumber(PlayerStats stats) =>
 					stats is PlayerStats.Defense
 					|| stats is PlayerStats.MaxMinion
@@ -195,6 +199,9 @@ namespace BossRush {
 			}
 		}
 	}
+	/// <summary>
+	/// This does not contain all of the mod stats, pleases referred to <see cref="PlayerStatsHandle"/> to see all built in stats
+	/// </summary>
 	public enum PlayerStats : byte {
 		None,
 		MeleeDMG,

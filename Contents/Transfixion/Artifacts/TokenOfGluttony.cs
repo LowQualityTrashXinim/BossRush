@@ -55,15 +55,16 @@ public class EndlessHunger : Perk {
 		player.endurance += .05f * StackAmount(player);
 	}
 	public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {
-		if (player.endurance >= .2f) {
-			player.Heal((int)(hurtInfo.SourceDamage * Main.rand.NextFloat(player.endurance - .2f, 1f)));
+		if (player.endurance >= .2f && player.statLife <= 50) {
+			player.Heal((int)(hurtInfo.SourceDamage * Safe_MultiScale(player.endurance)));
 		}
 	}
 	public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo) {
-		if (player.endurance >= .2f) {
-			player.Heal((int)(hurtInfo.SourceDamage * Main.rand.NextFloat(player.endurance - .2f, 1f)));
+		if (player.endurance >= .2f && player.statLife <= 50) {
+			player.Heal((int)(hurtInfo.SourceDamage * Safe_MultiScale(player.endurance)));
 		}
 	}
+	private float Safe_MultiScale(float endurance) => Main.rand.NextFloat(Math.Min(endurance, 1f), Math.Max(endurance, 1f));
 }
 public class Satisfaction : Perk {
 	public override void SetDefaults() {

@@ -16,12 +16,14 @@ internal class GuardianAngel : ModSoulBound {
 	}
 	public override void UpdateEquip(Player player, Item item) {
 		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Defense, 1 - .7f - .01f * GetLevel(item));
-		PlayerStatsHandle.SetSecondLifeCondition(player, "SB_GA", Main.rand.NextFloat() <= .35f + .05f * GetLevel(item));
+		PlayerStatsHandle.Set_Chance_SecondLifeCondition(player, "SB_GA", .35f + .05f * GetLevel(item));
 	}
-	public override bool PreKill(Player player, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
+	public override bool PreKill(Player player, Item acc, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
 		if (PlayerStatsHandle.GetSecondLife(player, "SB_GA")) {
+			player.statLife = 45 + 5 * GetLevel(acc);
+			player.AddImmuneTime(-1, 60);
 			return false;
 		}
-		return base.PreKill(player, damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+		return base.PreKill(player, acc, damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 	}
 }

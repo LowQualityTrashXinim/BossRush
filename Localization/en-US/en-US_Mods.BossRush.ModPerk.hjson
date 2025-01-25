@@ -470,7 +470,8 @@ EndlessHunger: {
 	Description:
 		'''
 		+ Increases your damage reduction by 5%
-		+ When your damage reduction is over 20%, getting hit will heal you a random amount
+		+ When your damage reduction is over 20% and your health is below 50
+		Getting hit will heal you a random amount
 		(Note : The higher your damage reduction, the better the heal become)
 		'''
 }
@@ -672,5 +673,20 @@ TripletShot: {
 		+ Weapon uses arrow will shoot out additional spread of 3 arrows !
 		- Decreases attack speed of the weapon by 15%
 		- Decreases base damage by 4 ( can't go below 1 )
+		'''
+}
+
+VampirismCrystal_Upgrade1: {
+	DisplayName: Vitality Crystal [Vampirism Crystal]
+	Description: + Lessen the effect of decreases maximum hp from 55% -> 15%
+}
+
+VampirismCrystal_Upgrade2: {
+	DisplayName: Pure Vampire Crystal [Vampirism Crystal]
+	Description:
+		'''
+		+ Decreases cooldown between each life steal by half
+		+ Life steal is a lot stronger
+		- Strengthen decreases maximum life effect from 55% -> 65% 
 		'''
 }
