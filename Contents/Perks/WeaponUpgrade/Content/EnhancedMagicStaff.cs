@@ -95,5 +95,7 @@ internal class EnhancedMagicStaff : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.EnhancedMagicStaff);
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = { ItemID.AmethystStaff, ItemID.TopazStaff, ItemID.SapphireStaff, ItemID.EmeraldStaff, ItemID.RubyStaff, ItemID.DiamondStaff };
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
 	}
 }

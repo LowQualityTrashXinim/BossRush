@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using BossRush.Contents.Perks;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.Perks.WeaponUpgrade;
+using BossRush.Common.Utils;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class WindSlash_GlobalItem : GlobalItem {
@@ -46,6 +47,7 @@ public class WindSlash : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.WindSlash);
 		Mod.Reflesh_GlobalItem(player);
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(TerrariaArrayID.MeleePreBoss));
 	}
 }
 public class WindSlash_ModPlayer : ModPlayer {

@@ -84,5 +84,16 @@ public class HunterInstinct : Perk {
 	public override void OnChoose(Player player) {
 		UpgradePlayer.Add_Upgrade(player, WeaponUpgradeID.HunterInstinct);
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = {
+		ItemID.CopperAxe,
+		ItemID.TinAxe,
+		ItemID.IronAxe,
+		ItemID.LeadAxe,
+		ItemID.SilverAxe,
+		ItemID.TungstenAxe,
+		ItemID.GoldAxe,
+		ItemID.PlatinumAxe
+		};
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
 	}
 }

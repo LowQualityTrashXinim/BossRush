@@ -61,7 +61,6 @@ namespace BossRush {
 			&& item.useAnimation > 0
 			&& !item.accessory
 			&& item.pick == 0
-			&& item.axe == 0
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
 			&& (item.consumable == ConsumableWeapon);

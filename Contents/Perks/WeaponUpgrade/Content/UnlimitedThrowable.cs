@@ -4,6 +4,7 @@ using System.Linq;
 using Terraria.ModLoader;
 using BossRush.Common.Utils;
 using BossRush.Contents.Perks;
+using Terraria.ID;
 
 namespace BossRush.Contents.Perks.WeaponUpgrade.Content;
 internal class UnlimitedThrowable_GlobalItem : GlobalItem {
@@ -51,5 +52,7 @@ public class UnlimitedThrowable : Perk {
 				break;
 		}
 		Mod.Reflesh_GlobalItem(player);
+		int[] Orestaff = { ItemID.Shuriken, ItemID.ThrowingKnife, ItemID.PoisonedKnife, ItemID.StarAnise, ItemID.Grenade };
+		player.QuickSpawnItem(player.GetSource_Misc("WeaponUpgrade"), Main.rand.Next(Orestaff));
 	}
 }
