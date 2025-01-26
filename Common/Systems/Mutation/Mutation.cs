@@ -1,6 +1,8 @@
 ﻿using BossRush.Texture;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace BossRush.Common.Systems.Mutation;
@@ -28,7 +30,20 @@ public class TouchOfGrim : ModMutation {
 		NewGamePlus = true;
 	}
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
+		if (target.HasBuff<GrimTouch>()) {
+			return;
+		}
 		target.statLife = 1;
+		target.AddBuff(ModContent.BuffType<GrimTouch>(), BossRushUtils.ToSecond(Main.rand.Next(3, 9)));
+	}
+}
+public class GrimTouch : ModBuff {
+	public override string Texture => BossRushTexture.EMPTYBUFF;
+	public override void SetStaticDefaults() {
+		this.BossRushSetDefaultDeBuff();
+	}
+	public override bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams) {
+		return false;
 	}
 }
 public class ProjectileResistance : ModMutation {
@@ -57,7 +72,7 @@ public class BreakItem : ModMutation {
 }
 public class LifeStruck : ModMutation {
 	public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo) {
-		target.AddBuff(ModContent.BuffType<LifeStruckDebuff>(),BossRushUtils.ToSecond(5));
+		target.AddBuff(ModContent.BuffType<LifeStruckDebuff>(), BossRushUtils.ToSecond(5));
 	}
 }
 public class LifeStruckDebuff : ModBuff {
@@ -73,7 +88,7 @@ public class LifeStruckDebuff : ModBuff {
 		player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.MaxHP, -.05f);
 	}
 }
-public class Tanky : ModMutation{
+public class Tanky : ModMutation {
 	public override void SetDefaults(NPC npc) {
 		NewGamePlus = true;
 		npc.lifeMax *= 3;

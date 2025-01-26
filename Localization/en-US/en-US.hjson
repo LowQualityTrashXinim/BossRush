@@ -320,6 +320,8 @@ Mods: {
 			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
 			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
 			FragmentRound_Projectile.DisplayName: Fragment Round_ Projectile
+			DiamondMagicalBolt.DisplayName: Diamond Magical Bolt
+			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
 		}
 
 		NPCs: {
@@ -2702,6 +2704,11 @@ Mods: {
 			DryadBlessing_Buff: {
 				DisplayName: Dryad Blessing
 				Description: +8 defenses & + 5 hp/s
+			}
+
+			GrimTouch: {
+				DisplayName: Grim Touch
+				Description: Mods.BossRush.Buffs.GrimTouch.Description
 			}
 		}
 

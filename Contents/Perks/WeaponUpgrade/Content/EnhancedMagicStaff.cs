@@ -45,6 +45,16 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				entity.mana = 6;
 				entity.shootSpeed = 1;
 				break;
+			case ItemID.RubyStaff:
+				entity.damage += 10;
+				entity.shoot = ModContent.ProjectileType<RubyMagicalBolt>();
+				entity.shootSpeed = 1;
+				break;
+			case ItemID.DiamondStaff:
+				entity.damage += 10;
+				entity.shoot = ModContent.ProjectileType<DiamondMagicalBolt>();
+				entity.shootSpeed = 1;
+				break;
 		}
 	}
 	public override void ModifyShootStats(Item item, Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -66,6 +76,12 @@ public class EnhancedMagicStaff_GlobalItem : GlobalItem {
 				break;
 			case ItemID.EmeraldStaff:
 				velocity *= Main.rand.NextFloat(1, 1.5f);
+				position = position.PositionOFFSET(velocity, 50);
+				break;
+			case ItemID.DiamondStaff:
+				position = position.PositionOFFSET(velocity, 50);
+				break;
+			case ItemID.RubyStaff:
 				position = position.PositionOFFSET(velocity, 50);
 				break;
 		}
