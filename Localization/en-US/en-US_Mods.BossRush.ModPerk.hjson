@@ -690,3 +690,17 @@ VampirismCrystal_Upgrade2: {
 		- Strengthen decreases maximum life effect from 55% -> 65% 
 		'''
 }
+
+TokenOfPride_Upgrade1: {
+	DisplayName: Noble Pride [Token Of Pride]
+	Description: + Loot drop value are now halve instead of 0x
+}
+
+TokenOfPride_Upgrade2: {
+	DisplayName: Blacksmith Pride [Vampirism Crystal]
+	Description:
+		'''
+		+ Increases chance of getting augmentation from 65% to 85%
+		+ Weapon have 20% chance to get additional enchanted
+		'''
+}

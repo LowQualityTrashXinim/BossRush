@@ -319,6 +319,7 @@ Mods: {
 			FriendlyGrenadeProjectile.DisplayName: Friendly Grenade Projectile
 			SapphireMagicalBolt.DisplayName: Sapphire Magical Bolt
 			EmeraldMagicalBolt.DisplayName: Emerald Magical Bolt
+			FragmentRound_Projectile.DisplayName: Fragment Round_ Projectile
 		}
 
 		NPCs: {
@@ -1899,6 +1900,16 @@ Mods: {
 					Energy can regenerate slowly 1 energy/second
 					During skill activation, increases defense by 12 and damage by 22%
 					Decreases your maximum energy capacity by 100 but Increase energy recharge rate by 11%
+					'''
+			}
+
+			FragmentRound: {
+				DisplayName: Fragment Round Bundle
+				Tooltip:
+					'''
+					Replace normal bullet with Fragment round
+					Increases range damage by 10% and 3 flat damage
+					Note : effect originate from gun or other source won't be inherited
 					'''
 			}
 

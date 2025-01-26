@@ -63,6 +63,7 @@ namespace BossRush.Contents.Perks {
 	}
 	class PerkModSystem : ModSystem {
 		public static List<int> StarterPerkType { get; private set; } = new();
+		public static List<int> WeaponUpgradeType { get; private set; } = new();
 		public override void Load() {
 			base.Load();
 			On_Player.QuickMana += On_Player_QuickMana;
@@ -82,6 +83,9 @@ namespace BossRush.Contents.Perks {
 			for (int i = 0; i < ModPerkLoader.TotalCount; i++) {
 				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.Starter)) {
 					StarterPerkType.Add(i);
+				}
+				if (ModPerkLoader.GetPerk(i).list_category.Contains(PerkCategory.WeaponUpgrade)) {
+					WeaponUpgradeType.Add(i);
 				}
 			}
 		}
@@ -489,6 +493,7 @@ namespace BossRush.Contents.Perks {
 		public const short StarterPerkState = 1;
 		public const short DebugState = 2;
 		public const short GamblerState = 3;
+		public const short WeaponUpgradeState = 4;
 		public short StateofState = 0;
 		public UIText toolTip;
 		public Roguelike_UIImageButton reroll = null;
@@ -576,6 +581,32 @@ namespace BossRush.Contents.Perks {
 				if (StateofState == GamblerState) {
 					ActivateGamblerUI(modplayer, player);
 				}
+				if (StateofState == WeaponUpgradeState) {
+					ActivateWeaponUpgradeUI(modplayer, player);
+				}
+			}
+		}
+		private void ActivateWeaponUpgradeUI(PerkPlayer modplayer, Player player) {
+			reroll.Hide = false;
+			Vector2 originDefault = new Vector2(26, 26);
+			List<int> starterPerk = new(PerkModSystem.WeaponUpgradeType);
+			int limit = 3;
+			for (int i = 0; i < limit; i++) {
+				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));
+				starterPerk.Remove(choosenperk.Type);
+				Vector2 offsetPos = Vector2.UnitY.Vector2DistributeEvenly(limit, 360, i) * 120;
+				//After that we assign perk
+				if (modplayer.perks.ContainsKey(choosenperk.Type)) {
+					if (modplayer.perks[choosenperk.Type] >= choosenperk.StackLimit) {
+						continue;
+					}
+				}
+				PerkUIImageButton btn = new PerkUIImageButton(ModContent.Request<Texture2D>(choosenperk.textureString));
+				btn.UISetWidthHeight(52, 52);
+				btn.UISetPosition(player.Center + offsetPos, originDefault);
+				btn.perkType = choosenperk.Type;
+				list_perkbtn.Add(btn);
+				Append(btn);
 			}
 		}
 		private void ActivateDebugPerkUI(Player player) {

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using BossRush.Contents.Transfixion.Arguments;
 
 namespace BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
-internal class BaseSoulBoundItem : ModItem {
+public abstract class BaseSoulBoundItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public virtual short SoulBoundType => -1;
 	public override void UpdateInventory(Player player) {

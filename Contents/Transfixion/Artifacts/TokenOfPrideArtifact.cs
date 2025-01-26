@@ -1,15 +1,15 @@
-﻿using Terraria;
+﻿using System;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Contents.Items.Chest;
-using BossRush.Common.Systems.ArtifactSystem;
-using Terraria.ID;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems;
+using BossRush.Contents.Items.Chest;
 using BossRush.Common.Systems.Achievement;
-using System;
-using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Contents.Transfixion.WeaponEnchantment;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class TokenOfPrideArtifact : Artifact {
@@ -23,8 +23,17 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		}
 		public override void UpdateEquips() {
 			if (Pride) {
-				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= 0;
-				Player.GetModPlayer<PlayerStatsHandle>().AugmentationChance += .65f;
+				PlayerStatsHandle handle = Player.GetModPlayer<PlayerStatsHandle>();
+				float multiplier = 0;
+				if (Player.HasPerk<TokenOfPride_Upgrade1>()) {
+					multiplier += .5f;
+				}
+				Player.GetModPlayer<ChestLootDropPlayer>().DropModifier *= multiplier;
+				handle.AugmentationChance += .65f;
+				if (Player.HasPerk<TokenOfPride_Upgrade2>()) {
+					handle.AugmentationChance += .2f;
+					handle.RandomizeChanceEnchantment += .2f;
+				}
 			}
 		}
 		public override void PreUpdate() {
@@ -39,6 +48,24 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				}
 				EnchantmentSystem.EnchantItem(ref item, 3);
 			}
+		}
+	}
+	public class TokenOfPride_Upgrade1 : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			list_category.Add(PerkCategory.ArtifactExclusive);
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() && !Main.LocalPlayer.HasPerk<TokenOfPride_Upgrade2>();
+		}
+	}
+	public class TokenOfPride_Upgrade2 : Perk {
+		public override void SetDefaults() {
+			CanBeStack = false;
+			list_category.Add(PerkCategory.ArtifactExclusive);
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<TokenOfPrideArtifact>() && !Main.LocalPlayer.HasPerk<TokenOfPride_Upgrade2>();
 		}
 	}
 	public class BlindPride : Perk {
