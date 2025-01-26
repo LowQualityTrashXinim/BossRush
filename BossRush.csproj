@@ -61,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Structures\Template\" />
-    <Folder Include="Common\Systems\ElementSystem\" />
     <Folder Include="Contents\Tiles\" />
   </ItemGroup>
 </Project>
