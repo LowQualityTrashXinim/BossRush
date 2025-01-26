@@ -17,7 +17,7 @@ internal class ElementSystem : ModSystem {
 		dict_Element.Add(element.Name, element);
 		return (ushort)list_Element.Count;
 	}
-	public static Element GetElement(int ElemID) => ElemID <= 0 && ElemID >= TotalCount ? null : list_Element[ElemID];
+	public static Element GetElement(int ElemID) => ElemID <= 0 && ElemID >= TotalCount ? null : list_Element[ElemID - 1];
 	public static Element GetElement(string ElementName) => dict_Element.ContainsKey(ElementName) ? dict_Element[ElementName] : null;
 	public override void Load() {
 		list_Element = new();
@@ -49,7 +49,7 @@ internal class ElementSystem : ModSystem {
 	/// <param name="ElemID">The ElemID, use <see cref="Element.Type"/></param>
 	/// <param name="res">The multiplicative value that will be applied</param>
 	/// <param name="NPCHasElem">Determined whenever or not the NPC in <paramref name="npcID"/> has this Element or not</param>
-	public static void AssignedNPC(int npcID, int ElemID, float res, bool NPCHasElem) {
+	public static void AssignedNPC(int npcID, int ElemID, float res, bool NPCHasElem = true) {
 		Element element = GetElement(ElemID);
 		if (element == null) {
 			BossRush.Instance.Logger.Info($"Unable to find element correct to ElemID, did you correctly assigned id ? | Element ID : {ElemID}");
@@ -67,7 +67,7 @@ internal class ElementSystem : ModSystem {
 	/// </summary>
 	///  <param name="ItemID">The ID of Item, use <see cref="ItemID"/> for this</param>
 	/// <param name="ItemHasElem">Determined whenever or not the Item in <paramref name="ItemID"/> in has this Element or not</param>
-	public static void AssignedItem(int ItemID, int ElemID, bool ItemHasElem) {
+	public static void AssignedItem(int ItemID, int ElemID, bool ItemHasElem = true) {
 		Element element = GetElement(ElemID);
 		if (element == null) {
 			BossRush.Instance.Logger.Info($"Unable to find element correct to ElemID, did you correctly assigned id ? | Element ID : {ElemID}");
@@ -189,7 +189,7 @@ public abstract class Element : ModType {
 	/// Use this to assigned if wherever or not this Item type can have this element
 	/// </summary>
 	public bool[] AppliedToItem = ItemID.Sets.Factory.CreateBoolSet();
-	public static int GetElementType<T>() where T : Element {
+	public static ushort GetElementType<T>() where T : Element {
 		return ModContent.GetInstance<T>().Type;
 	}
 	protected sealed override void Register() {
@@ -207,7 +207,20 @@ public abstract class Element : ModType {
 	/// </summary>
 	/// <param name="target"></param>
 	/// <param name="info"></param>
+	/// <param name="hash_elementType">List of element from item</param>
 	public virtual void OnHitNPC(NPC target, NPC.HitInfo info, HashSet<ushort> hash_elementType) {
 
+	}
+	public override sealed void SetStaticDefaults() {
+		base.SetStaticDefaults();
+	}
+	public override sealed void SetupContent() {
+		base.SetupContent();
+	}
+	public override sealed void Load() {
+		base.Load();
+	}
+	public override sealed void Unload() {
+		base.Unload();
 	}
 }
