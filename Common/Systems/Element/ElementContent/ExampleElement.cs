@@ -16,12 +16,13 @@ internal class ExampleElement : Element {
 		//Let break down this method
 		//This method allow dev to easily assigned data during load time
 		//ElementSystem.AssingedNPC take 4 parameters, NPCID | Element ID | Element resistance/weakness value | Whenever or not the NPC have this element
+		//Currently we are assigning this element to Demon NPC and give this Demon have 1.2x damage multiplier whenever it taken damage from this element
 		//It is totally possible to set NPCHasElem parameter to false but that would cause this element to do nothing with that NPC
 		//Pleases referred to this site if you don't have VS https://terraria.wiki.gg/wiki/NPC_IDs so that you can assigned NPCID
 
 		//You don't really need to assign any value to NPCHasElem parameter because it is automatically assigned that for you
-		ElementSystem.AssignedNPC(NPCID.FireImp, Type, 1.2f);
-		ElementSystem.AssignedNPC(NPCID.LavaSlime, Type, 1.2f);
+		ElementSystem.AssignedNPC(NPCID.FireImp, Type, 1.4f);
+		ElementSystem.AssignedNPC(NPCID.LavaSlime, Type, 1.5f);
 
 		//I recommend to seperate ElementSystem.AssignedNPC and ElementSystem.AssignedItem into 2 different paragraph, do note that they still have to be in this method
 		ElementSystem.AssignedItem(ItemID.FieryGreatsword, Type);
