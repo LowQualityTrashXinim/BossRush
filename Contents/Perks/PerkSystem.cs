@@ -546,15 +546,20 @@ namespace BossRush.Contents.Perks {
 					listOfPerk.Add(i);
 				}
 			}
-			if (StateofState == StarterPerkState) {
+			else if (StateofState == StarterPerkState) {
 				listOfPerk = PerkModSystem.StarterPerkType;
 			}
 			foreach (var item in list_perkbtn) {
+				if (listOfPerk.Contains(item.perkType)) {
+					listOfPerk.Remove(item.perkType);
+				}
 				if (listOfPerk.Count < 1) {
 					item.ChangePerkType(Main.rand.Next(new int[] { Perk.GetPerkType<SuppliesDrop>(), Perk.GetPerkType<GiftOfRelic>() }));
 				}
 				else {
-					item.ChangePerkType(Main.rand.Next(listOfPerk));
+					int perkChoosen = Main.rand.Next(listOfPerk);
+					item.ChangePerkType(perkChoosen);
+					listOfPerk.Remove(perkChoosen);
 				}
 			}
 			modplayer.Modify_RerollCount(1, true);

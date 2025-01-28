@@ -139,6 +139,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
 	}
+	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {
 		if (!npc.boss) {
 			return;
@@ -159,6 +160,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
+		HitCount++;
 	}
 	public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone) {
 		if (projectile.type == ProjectileID.HeatRay) {
@@ -184,6 +186,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 				npc.Heal(Main.rand.Next(hit.Damage));
 			}
 		}
+		HitCount++;
 	}
 	public override void OnKill(NPC npc) {
 		int playerIndex = npc.lastInteraction;
@@ -192,6 +195,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		}
 		Player player = Main.player[playerIndex];
 		player.GetModPlayer<PlayerStatsHandle>().successfullyKillNPCcount++;
+		player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount = HitCount;
 		if (EliteBoss) {
 			player.GetModPlayer<PlayerStatsHandle>().EliteKillCount++;
 			RoguelikeData.EliteKill++;

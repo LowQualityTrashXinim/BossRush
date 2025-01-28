@@ -8,6 +8,11 @@ FireII: {
 	Description: Enemy with on fire debuff receive 20% more damage
 }
 
+FireIII: {
+	DisplayName: Fire III
+	Description: Enemy with on fire debuff receive 40% more knockback
+}
+
 FrostBurnI: {
 	DisplayName: FrostBurn I
 	Description: Inflict frost burn upon enemy hit
@@ -16,6 +21,11 @@ FrostBurnI: {
 FrostBurnII: {
 	DisplayName: FrostBurn II
 	Description: Enemy with frost burn debuff receive 20% more damage
+}
+
+FrostBurnIII: {
+	DisplayName: FrostBurn III
+	Description: Enemy with frost burn debuff receive 40% more knockback
 }
 
 ShadowFlameI: {
@@ -28,6 +38,11 @@ ShadowFlameII: {
 	Description: Enemy with ShadowFlame debuff receive 20% more damage
 }
 
+ShadowFlameIII: {
+	DisplayName: ShadowFlame III
+	Description: Enemy with ShadowFlame debuff receive 40% more knockback
+}
+
 CursedFlameI: {
 	DisplayName: CursedFlame I
 	Description: Inflict cursed flame upon enemy hit
@@ -36,6 +51,11 @@ CursedFlameI: {
 CursedFlameII: {
 	DisplayName: CursedFlame II
 	Description: Enemy with cursed flame debuff receive 20% more damage
+}
+
+CursedFlameIII: {
+	DisplayName: CursedFlame III
+	Description: Enemy with cursed flame debuff receive 40% more knockback
 }
 
 PoisonI: {
@@ -48,6 +68,11 @@ PoisonII: {
 	Description: Enemy with poisoned debuff receive 20% more damage
 }
 
+PoisonIII: {
+	DisplayName: Poison III
+	Description: Enemy with poisoned debuff receive 40% more knockback
+}
+
 VenomI: {
 	DisplayName: Venom I
 	Description: Inflict venom upon enemy hit
@@ -56,6 +81,11 @@ VenomI: {
 VenomII: {
 	DisplayName: Venom II
 	Description: Enemy with venom debuff receive 20% more damage
+}
+
+VenomIII: {
+	DisplayName: Venom III
+	Description: Enemy with venom debuff receive 40% more knockback
 }
 
 BerserkI: {

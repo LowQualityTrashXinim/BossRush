@@ -52,6 +52,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public StatModifier NonCriticalDamage = new StatModifier();
 	public StatModifier SkillDuration = new();
 	public StatModifier SkillCoolDown = new();
+	public StatModifier DirectItemDamage = new();
 	public float Hostile_ProjectileVelocityAddition = 0;
 	//public float LuckIncrease = 0; 
 	/// <summary>
@@ -101,6 +102,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public float Transmutation_SuccessChance = 0;
 	public ulong DPStracker = 0;
 	public float RandomizeChanceEnchantment = 0;
+	public int NPC_HitCount = 0;
 	/// <summary>
 	/// This chance will decay for each success roll <br/>
 	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
@@ -121,6 +123,9 @@ public class PlayerStatsHandle : ModPlayer {
 			newhitinfo.DamageType = DamageClass.Default;
 			Player.StrikeNPCDirect(npc, newhitinfo);
 		}
+	}
+	public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		modifiers.SourceDamage.CombineWith(DirectItemDamage);
 	}
 	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
 		Item item = Player.HeldItem;
@@ -244,6 +249,7 @@ public class PlayerStatsHandle : ModPlayer {
 		LifeSteal = StatModifier.Default - 1;
 		SkillDuration = StatModifier.Default;
 		SkillCoolDown = StatModifier.Default;
+		DirectItemDamage = StatModifier.Default;
 		DodgeChance = 0;
 		DodgeTimer = 44;
 		successfullyKillNPCcount = 0;

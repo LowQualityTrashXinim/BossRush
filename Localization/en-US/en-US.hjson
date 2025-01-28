@@ -2710,6 +2710,11 @@ Mods: {
 				DisplayName: Grim Touch
 				Description: Mods.BossRush.Buffs.GrimTouch.Description
 			}
+
+			Shatter: {
+				DisplayName: Shatter
+				Description: Mods.BossRush.Buffs.Shatter.Description
+			}
 		}
 
 		Configs: {

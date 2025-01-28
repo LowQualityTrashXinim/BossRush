@@ -43,6 +43,23 @@ public class FireII : ModAugments {
 			}
 	}
 }
+public class FireIII : ModAugments {
+	public override void SetStaticDefaults() {
+		Chance = .05f;
+		tooltipColor = Color.Red;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+			modifiers.Knockback += .4f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.OnFire) || target.HasBuff(BuffID.OnFire3)) {
+				modifiers.Knockback += .4f;
+			}
+	}
+}
 public class FrostBurnI : ModAugments {
 	public override void SetStaticDefaults() {
 		Chance = .15f;
@@ -70,6 +87,23 @@ public class FrostBurnII : ModAugments {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
 			if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
 				modifiers.SourceDamage += .2f;
+			}
+	}
+}
+public class FrostBurnIII : ModAugments {
+	public override void SetStaticDefaults() {
+
+		tooltipColor = Color.Cyan;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
+			modifiers.Knockback += .4f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
+				modifiers.Knockback += .4f;
 			}
 	}
 }
@@ -418,6 +452,22 @@ public class ShadowFlameII : ModAugments {
 			}
 	}
 }
+public class ShadowFlameIII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.MediumPurple;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.ShadowFlame)) {
+			modifiers.Knockback += .4f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Frostburn)) {
+				modifiers.Knockback += .4f;
+			}
+	}
+}
 
 public class CursedFlameI : ModAugments {
 	public override void SetStaticDefaults() {
@@ -445,6 +495,22 @@ public class CursedFlameII : ModAugments {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
 			if (target.HasBuff(BuffID.CursedInferno)) {
 				modifiers.SourceDamage += .2f;
+			}
+	}
+}
+public class CursedFlameIII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.ForestGreen;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.CursedInferno)) {
+			modifiers.Knockback += .4f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.CursedInferno)) {
+				modifiers.Knockback += .4f;
 			}
 	}
 }
@@ -477,6 +543,23 @@ public class PoisonII : ModAugments {
 			}
 	}
 }
+public class PoisonIII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.PaleGreen;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Poisoned)) {
+			modifiers.Knockback += .4f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Poisoned)) {
+				modifiers.Knockback += .4f;
+			}
+	}
+}
+
 
 public class VenomI : ModAugments {
 	public override void SetStaticDefaults() {
@@ -504,6 +587,22 @@ public class VenomII : ModAugments {
 		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
 			if (target.HasBuff(BuffID.Venom)) {
 				modifiers.SourceDamage += .2f;
+			}
+	}
+}
+public class VenomIII : ModAugments {
+	public override void SetStaticDefaults() {
+		tooltipColor = Color.Purple;
+	}
+	public override void ModifyHitNPCWithItem(Player player, Item item, NPC target, ref NPC.HitModifiers modifiers) {
+		if (target.HasBuff(BuffID.Venom)) {
+			modifiers.Knockback += .4f;
+		}
+	}
+	public override void ModifyHitNPCWithProj(Player player, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
+		if (proj.GetGlobalProjectile<RoguelikeGlobalProjectile>().Source_ItemType == player.HeldItem.type)
+			if (target.HasBuff(BuffID.Venom)) {
+				modifiers.Knockback += .4f;
 			}
 	}
 }

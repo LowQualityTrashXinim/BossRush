@@ -11,7 +11,6 @@ using System;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
 using Terraria.GameInput;
-using Terraria.GameContent.Creative;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -101,6 +100,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					item.damage += 10;
 					item.useTime = item.useAnimation = 35;
 					item.shootsEveryUse = true;
+					break;
+				case ItemID.EnchantedSword:
+					item.scale += .5f;
 					break;
 			}
 		}

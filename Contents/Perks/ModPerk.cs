@@ -1033,4 +1033,63 @@ namespace BossRush.Contents.Perks {
 			}
 		}
 	}
+
+	public class SoulShatter : Perk {
+		public override void SetDefaults() {
+			CanBeStack = true;
+			StackLimit = 3;
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle handle = player.GetModPlayer<PlayerStatsHandle>();
+			handle.AddStatsToPlayer(PlayerStats.FullHPDamage, 6f);
+			handle.AddStatsToPlayer(PlayerStats.CritDamage, 1.4f);
+			SoulShatter_ModPlayer charged = player.GetModPlayer<SoulShatter_ModPlayer>();
+			charged.Perk = true;
+			if(charged.Charged) {
+				handle.AddStatsToPlayer(PlayerStats.PureDamage, 1.4f);
+				handle.AddStatsToPlayer(PlayerStats.CritDamage, 2);
+			}
+		}
+		public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+			Chance_InstantKill(player, target, hit);
+		}
+		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+			Chance_InstantKill(player, target, hit);
+		}
+		private void Chance_InstantKill(Player player, NPC target, NPC.HitInfo info) {
+			if (player.GetModPlayer<PlayerStatsHandle>().NPC_HitCount == 1) {
+				target.Center.LookForHostileNPC(out List<NPC> npclist, 400);
+				foreach (NPC npc in npclist) {
+					npc.AddBuff(ModContent.BuffType<Shatter>(), BossRushUtils.ToSecond(Main.rand.Next(10, 17)));
+				}
+			}
+			if (Main.rand.NextFloat() <= 0.0001f) {
+				info.InstantKill = true;
+				player.StrikeNPCDirect(target, info);
+			}
+		}
+	}
+	public class SoulShatter_ModPlayer : ModPlayer {
+		public bool Charged = false;
+		public int counter = 0;
+		public const int ChargeTime = 150;
+		public bool Perk = false;
+		public override void ResetEffects() {
+			Perk = false;
+			Charged = false;
+		}
+		public override void UpdateEquips() {
+			if (!Perk) {
+				return;
+			}
+			if (++counter > ChargeTime) {
+				Charged = true;
+			}
+		}
+		public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			Charged = false;
+			counter = 0;
+			return base.Shoot(item, source, position, velocity, type, damage, knockback);
+		}
+	}
 }
