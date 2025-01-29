@@ -277,7 +277,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public List<Item> listItem = new();
 	public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
 		foreach (ConditionApproved chance in Chance_SecondLife.Values) {
-			if (Main.rand.NextFloat() >= chance.ChanceValue) {
+			if (Main.rand.NextFloat() <= chance.ChanceValue) {
 				chance.ApprovedConditionPass();
 				return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 			}
@@ -513,31 +513,34 @@ public class PlayerStatsHandle : ModPlayer {
 				modplayer.SecondLife[context].DeApproved();
 				return true;
 			}
+			else {
+
+			}
 		}
 		return false;
 	}
 	public Dictionary<string, ConditionApproved> Chance_SecondLife = new();
 	public static void Set_Chance_SecondLifeCondition(Player player, string context, float chance) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.SecondLife.ContainsKey(context)) {
-			modplayer.SecondLife[context].SetChanceValue(chance);
+		if (modplayer.Chance_SecondLife.ContainsKey(context)) {
+			modplayer.Chance_SecondLife[context].SetChanceValue(chance);
 		}
 		else {
-			modplayer.SecondLife.Add(context, new(chance));
+			modplayer.Chance_SecondLife.Add(context, new(chance));
 		}
 	}
 	public static bool Get_Chance_SecondLife(Player player, string context) {
 		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
-		if (modplayer.SecondLife.ContainsKey(context)) {
-			if (modplayer.SecondLife[context].Approved) {
-				modplayer.SecondLife[context].DeApproved();
+		if (modplayer.Chance_SecondLife.ContainsKey(context)) {
+			if (modplayer.Chance_SecondLife[context].Approved) {
+				modplayer.Chance_SecondLife[context].DeApproved();
 				return true;
 			}
 		}
 		return false;
 	}
 }
-public struct ConditionApproved {
+public class ConditionApproved {
 	public bool Condition = false;
 	public bool Approved = false;
 	public float ChanceValue = 0f;

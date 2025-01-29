@@ -19,8 +19,8 @@ internal class GuardianAngel : ModSoulBound {
 		PlayerStatsHandle.Set_Chance_SecondLifeCondition(player, "SB_GA", .35f + .05f * GetLevel(item));
 	}
 	public override bool PreKill(Player player, Item acc, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource) {
-		if (PlayerStatsHandle.GetSecondLife(player, "SB_GA")) {
-			player.statLife = 45 + 5 * GetLevel(acc);
+		if (PlayerStatsHandle.Get_Chance_SecondLife(player, "SB_GA")) {
+			player.Heal(50 + 5 * GetLevel(acc));
 			player.AddImmuneTime(-1, 60);
 			return false;
 		}

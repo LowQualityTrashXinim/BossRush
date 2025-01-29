@@ -1232,8 +1232,18 @@ public class SpoilsUIState : UIState {
 		if (SpoilList.Count < 1) {
 			SpoilList = ModSpoilSystem.GetSpoilsList();
 		}
+		//prioritize rarer spoil
+		int spoilPriortize = 1;
 		for (int i = 0; i < Limit_Spoils; i++) {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
+			if(spoilPriortize > 0) {
+				spoilPriortize--;
+				foreach (var item in SpoilList) {
+					if(item.RareValue > SpoilDropRarity.Rare) {
+						spoil = item;
+					}
+				}
+			}
 			float Hvalue = MathHelper.Lerp(.3f, .7f, i / (float)(Limit_Spoils - 1));
 			SpoilsUIButton btn = new SpoilsUIButton(TextureAssets.InventoryBack, spoil);
 			modplayer.SpoilsGift.Add(spoil.Name);

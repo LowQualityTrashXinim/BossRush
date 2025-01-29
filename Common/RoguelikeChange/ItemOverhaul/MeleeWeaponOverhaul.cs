@@ -404,15 +404,9 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
-			if (SwingType == BossRushUseStyle.GenericSwingDownImprove) {
+			if (SwingType == BossRushUseStyle.GenericSwingDownImprove || SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
 				TooltipLine line = new TooltipLine(Mod, "SwingImprove", "Sword can swing in all direction");
 				line.OverrideColor = Color.LightYellow;
-				tooltips.Add(line);
-			}
-			if (SwingType == BossRushUseStyle.Swipe || SwingType == BossRushUseStyle.Poke) {
-				TooltipLine line = new TooltipLine(Mod, "SwingImproveCombo", "Sword can swing in all direction" +
-					"\nHold down right mouse to do heavy attack");
-				line.OverrideColor = Color.Yellow;
 				tooltips.Add(line);
 			}
 		}
@@ -600,16 +594,21 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			Swipe(addition, end + addition, BossRushUtils.InOutExpo(percentDone), player, 1);
 		}
 		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
+			bool directIsnegative = direct == -1;
+			float slightoffsetX = 0;
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			player.itemRotation = currentAngle;
 			player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, currentAngle - MathHelper.PiOver2);
 			player.itemRotation += player.direction > 0 ? MathHelper.PiOver4 : MathHelper.PiOver4 * 3;
-			if (direct == -1) {
+			if (directIsnegative) {
 				modPlayer.CustomItemRotation = currentAngle;
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
-			player.itemLocation = player.Center + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
+			else {
+			}
+				slightoffsetX = 6 * player.direction;
+			player.itemLocation = player.Center.Add(slightoffsetX, 3) + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {
@@ -740,8 +739,8 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item) || item.noMelee) {
 				return;
 			}
-			if (ComboNumber != 2 && Main.mouseRight && !JustHitANPC) {
-				Player.velocity += (Player.Center - Main.MouseWorld).SafeNormalize(Vector2.Zero) * Player.GetWeaponKnockback(item);
+			if (!JustHitANPC) {
+
 				JustHitANPC = true;
 			}
 		}
