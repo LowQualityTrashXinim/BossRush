@@ -15,6 +15,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
+using BossRush.Common.RoguelikeChange.Prefixes;
 
 namespace BossRush.Common.Utils;
 
@@ -155,11 +156,12 @@ internal static partial class GenerationHelper {
 	public static void ForEachInCircle(int i, int j, int radius, Action<int, int> action) {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}
+
 	/// <summary>
 	/// Use this to place the structure in world gen code
 	/// </summary>
 	/// <param name="method">the method that was uses to optimize the file</param>
-	public static void PlaceStructure(string FileName, Rectangle rect) {
+	public static void PlaceStructure(string FileName, Rectangle rect, GenerateStyle style = GenerateStyle.None) {
 		List<GenPassData> datalist;
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		if (modsystem.dict_Struture.ContainsKey(FileName)) {
@@ -171,25 +173,73 @@ internal static partial class GenerationHelper {
 		}
 		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
 
-		for (int i = 0; i < datalist.Count; i++) {
-			GenPassData gdata = datalist[i];
-			for (int l = 0; l < gdata.Count; l++) {
-				if (offsetY >= rect.Height) {
-					offsetY = 0;
-					offsetX++;
+		switch (style) {
+			case GenerateStyle.None:
+				for (int i = 0; i < datalist.Count; i++) {
+					GenPassData gdata = datalist[i];
+					for (int l = 0; l < gdata.Count; l++) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
 				}
-				holdX = X + offsetX; holdY = Y + offsetY;
-				Tile tile = Main.tile[holdX, holdY];
-				TileData data = gdata.tileData;
-				if (!data.Tile_Air) {
-					data.PlaceTile(tile);
+				break;
+			case GenerateStyle.FlipHorizon:
+				for (int i = 0; i < datalist.Count; i++) {
+					GenPassData gdata = datalist[i];
+					for (int l = gdata.Count; l > 0; l--) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
 				}
-				else {
-					FastRemoveTile(holdX, holdY);
-					tile.WallType = data.Tile_WallData;
+				break;
+			case GenerateStyle.FlipVertical:
+				for (int i = datalist.Count - 1; i >= 0; i--) {
+					GenPassData gdata = datalist[i];
+					for (int l = 0; l < gdata.Count; l++) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
 				}
-				offsetY++;
-			}
+				break;
+			case GenerateStyle.FlipBoth:
+				for (int i = datalist.Count - 1; i >= 0; i--) {
+					GenPassData gdata = datalist[i];
+					for (int l = gdata.Count; l > 0; l--) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
+				}
+				break;
+		}
+	}
+	private static void Structure_PlaceTile(int holdX, int holdY, TileData data) {
+		Tile tile = Main.tile[holdX, holdY];
+		if (!data.Tile_Air) {
+			data.PlaceTile(tile);
+		}
+		else {
+			FastRemoveTile(holdX, holdY);
+			tile.WallType = data.Tile_WallData;
 		}
 	}
 	/// <summary>
@@ -337,6 +387,12 @@ internal static partial class GenerationHelper {
 	public static string CustomRecSavingtFormat(Rectangle rect) {
 		return $"A{rect.Width}B{rect.Height}";
 	}
+}
+public enum GenerateStyle : byte {
+	None,
+	FlipHorizon,
+	FlipVertical,
+	FlipBoth
 }
 /// <summary>
 /// TODO : Implement the below optimize saving method

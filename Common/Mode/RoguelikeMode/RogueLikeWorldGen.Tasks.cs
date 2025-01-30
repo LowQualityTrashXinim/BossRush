@@ -308,6 +308,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Biome.Add(BiomeID, new List<Rectangle> { rect });
 		}
 	}
+	GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
 	public void File_GenerateBiomeTemplate(string TemplatePath, short BiomeID, string ShrineType) {
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
@@ -319,12 +320,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
-				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re);
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re, Main.rand.Next(styles));
 			}
 			else {
 				re.Width = 32;
 				re.Height = 64;
-				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re);
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re, Main.rand.Next(styles));
 			}
 			if (counter.X < rect.Width) {
 				counter.X += re.Width;
@@ -341,12 +342,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			Point randPoint = Rand.NextFromHashSet(EmptySpaceRecorder);
 			Generate_Shrine(ShrineType, randPoint.X, randPoint.Y);
 		}
-		//if (Biome.ContainsKey(BiomeID)) {
-		//	Biome[BiomeID].Add(rect);
-		//}
-		//else {
-		//	Biome.Add(BiomeID, new List<Rectangle> { rect });
-		//}
+		if (Biome.ContainsKey(BiomeID)) {
+			Biome[BiomeID].Add(rect);
+		}
+		else {
+			Biome.Add(BiomeID, new List<Rectangle> { rect });
+		}
 	}
 	/// <summary>
 	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>

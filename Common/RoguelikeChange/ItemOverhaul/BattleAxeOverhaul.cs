@@ -1,7 +1,9 @@
 ﻿using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,6 +21,7 @@ internal class BattleAxeOverhaul : GlobalItem {
 		if (entity.axe <= 0 || entity.noMelee) {
 			return;
 		}
+		//Attempt to fix weapon size
 		switch (entity.type) {
 			//common ore axe
 			case ItemID.CopperAxe:
@@ -114,7 +117,7 @@ internal class BattleAxeOverhaul : GlobalItem {
 		return player.GetModPlayer<MeleeOverhaulPlayer>().delaytimer <= 0;
 	}
 	public override void HoldItem(Item item, Player player) {
-		if (!player.ItemAnimationActive) {
+		if (player.ItemAnimationJustStarted) {
 		}
 	}
 	public override void ModifyHitNPC(Item item, Player player, NPC target, ref NPC.HitModifiers modifiers) {

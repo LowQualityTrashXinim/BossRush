@@ -54,6 +54,6 @@ public class PalmwoodArmorPlayer : PlayerArmorHandle {
 				PalmWoodArmor_SandCounter = 0;
 			}
 		}
-		return base.Shoot(item, source, position, velocity, type, damage, knockback);
+		return true;
 	}
 }

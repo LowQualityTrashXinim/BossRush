@@ -11,6 +11,9 @@ using System;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
 using Terraria.GameInput;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using ReLogic.Content;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	/// <summary>
@@ -21,6 +24,14 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			base.SetDefaults(entity);
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
+			}
+			//Attempt to fix item size using texture asset
+			if (Main.ActiveWorldFileData.Name != null) {
+				Asset<Texture2D> texture = TextureAssets.Item[entity.type];
+				if (texture.State == AssetState.Loaded) {
+					entity.width = (int)(texture.Value.Width * .95f);
+					entity.height = (int)(texture.Value.Height * .95f);
+				}
 			}
 			VanillaBuff(entity);
 			if (entity.type == ItemID.LifeCrystal || entity.type == ItemID.ManaCrystal || entity.type == ItemID.LifeFruit) {

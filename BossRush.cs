@@ -13,12 +13,14 @@ using ReLogic.Content;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using BossRush.Common.Utils;
+using Terraria.GameContent;
+using System.Drawing;
 
 namespace BossRush {
 	public partial class BossRush : Mod {
 		public static BossRush Instance { get; private set; }
 		public override void Load() {
-			
+
 			Instance = this;
 			base.Load();
 		}
@@ -155,7 +157,7 @@ namespace BossRush {
 						continue;
 					}
 				}
-				if (item.accessory && !item.vanity && item.createTile == -1 
+				if (item.accessory && !item.vanity && item.createTile == -1
 					&& item.type != ItemID.ClothierVoodooDoll
 					&& item.type != ItemID.GuideVoodooDoll
 					&& item.type != ItemID.TreasureMagnet

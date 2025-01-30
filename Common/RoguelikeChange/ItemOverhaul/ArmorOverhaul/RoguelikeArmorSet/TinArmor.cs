@@ -64,7 +64,7 @@ public class TinArmorPlayer : PlayerArmorHandle {
 			Vector2 pos = position + Main.rand.NextVector2Circular(50, 50);
 			Projectile.NewProjectile(source, pos, Main.MouseWorld - pos, ModContent.ProjectileType<TinShortSwordProjectile>(), damage, knockback, Player.whoAmI);
 		}
-		return base.Armor_Shoot(item, source, position, velocity, type, damage, knockback);
+		return true;
 	}
 	public override void Armor_UpdateEquipsSet() {
 		Player.statDefense += 5;

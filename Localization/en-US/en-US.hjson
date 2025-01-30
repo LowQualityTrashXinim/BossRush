@@ -322,6 +322,7 @@ Mods: {
 			FragmentRound_Projectile.DisplayName: Fragment Round_ Projectile
 			DiamondMagicalBolt.DisplayName: Diamond Magical Bolt
 			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
+			AnnihiliationBullet.DisplayName: Annihiliation Bullet
 		}
 
 		NPCs: {
@@ -2224,6 +2225,11 @@ Mods: {
 
 			GuardianAngelItem: {
 				DisplayName: Guardian Angel Item
+				Tooltip: ""
+			}
+
+			Annihiliation: {
+				DisplayName: Annihiliation
 				Tooltip: ""
 			}
 		}
