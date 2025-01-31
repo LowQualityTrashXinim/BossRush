@@ -2703,8 +2703,8 @@ Mods: {
 			}
 
 			SwiftStrike_Axe: {
-				DisplayName: Swift Strike_ Axe
-				Description: Mods.BossRush.Buffs.SwiftStrike_Axe.Description
+				DisplayName: Swift Strike (Axe)
+				Description: Increases attack speed by 15%
 			}
 
 			DryadBlessing_Buff: {

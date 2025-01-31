@@ -19,7 +19,7 @@ public class GoldHelmet : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<GoldArmorModPlayer>().Chance += .05f;
+		player.GetModPlayer<RoguelikeArmorPlayer>().MidasChance += .05f;
 	}
 }
 public class GoldChainmail : ModArmorPiece {
@@ -31,7 +31,7 @@ public class GoldChainmail : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<GoldArmorModPlayer>().Chance += .05f;
+		player.GetModPlayer<RoguelikeArmorPlayer>().MidasChance += .05f;
 	}
 }
 public class GoldGreaves : ModArmorPiece {
@@ -43,20 +43,8 @@ public class GoldGreaves : ModArmorPiece {
 		AddTooltip = true;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<GoldArmorModPlayer>().Chance += .05f;
+		player.GetModPlayer<RoguelikeArmorPlayer>().MidasChance += .05f;
 	}
-}
-public class GoldArmorModPlayer : ModPlayer {
-	public float Chance = 0;
-	public override void ResetEffects() {
-		Chance = 0;
-	}
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextFloat() <= Chance) {
-			target.AddBuff(BuffID.Midas, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
-		}
-	}
-
 }
 public class GoldArmorPlayer : PlayerArmorHandle {
 	public override void SetStaticDefaults() {

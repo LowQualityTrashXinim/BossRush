@@ -15,6 +15,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public int HeatRay_Decay = 0;
 	public int HeatRay_HitCount = 0;
 	public StatModifier StatDefense = new StatModifier();
+	public float Endurance = 0;
 	public bool DRFromFatalAttack = false;
 	public bool OneTimeDR = false;
 	public int DRTimer = 0;
@@ -78,6 +79,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 		else {
 			DRFromFatalAttack = true;
 		}
+		Endurance = 0;
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
@@ -121,6 +123,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 			}
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
+		modifiers.FinalDamage *= 1 - Endurance;
 	}
 	public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers) {
 		if (npc.boss) {
@@ -138,6 +141,7 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 			modifiers.SourceDamage += .55f;
 		}
 		modifiers.Defense = modifiers.Defense.CombineWith(StatDefense);
+		modifiers.FinalDamage *= 1 - Endurance;
 	}
 	public int HitCount = 0;
 	public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone) {

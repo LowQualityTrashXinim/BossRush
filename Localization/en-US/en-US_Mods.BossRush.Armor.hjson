@@ -109,14 +109,21 @@ TinArmor.SetBonus:
 	Increase movement speed by 21%
 	Buff most weapon with tin power
 	'''
-CopperArmor.SetBonus:
-	'''
-	Increase movement speed by 25%
-	Every 50 hit to enemy give you the over charged for 5s
-	During the rain, your hit requirement reduce by half
-	Over charged: Increases movement speed, weapon speed, damage by 10%
-	Create a electric charge that target the closest enemy deal 30 damage
-	'''
+
+CopperArmor: {
+	Head: Have 2% chance to inflict electrified
+	Body: Have 3% chance to inflict electrified
+	Leg: Have 1% chance to inflict electrified
+	SetBonus:
+		'''
+		Increase movement speed by 25%
+		Every 50 hit to enemy give you the over charged for 5s
+		During the rain, your hit requirement reduce by half
+		Over charged: Increases movement speed, weapon speed, damage by 10%
+		Create a electric charge that target the closest enemy deal 30 damage
+		'''
+}
+
 IronArmor.SetBonus:
 	'''
 	Increase damage reduction 10%

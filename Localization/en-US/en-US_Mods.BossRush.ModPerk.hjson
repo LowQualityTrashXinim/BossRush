@@ -716,3 +716,25 @@ SoulShatter: {
 		+ Killing a enemy with 1 shot will debuff surrounding enemy with ``shatter`` debuff
 		'''
 }
+
+SlothVessle: {
+	DisplayName: Sloth Vessle
+	Description:
+		'''
+		+ You have 10% chance to resist an attack
+		+ Increases i-frame duration by 10%
+		+ During i-frame, your attack have 5% chance to heal you
+		'''
+}
+
+FoolDomain: {
+	DisplayName: Fool's Domain
+	Description:
+		'''
+		+ Enemy enter your aura will take 20% less damage but they are slower by 35%
+		+ When not moving, after a short while, you enter a slumber state
+		+ During slumber state getting hit will make enemy within the aura will receive 10% damage of their max life
+		+ You will only receive 1 damage during slumber state
+		Note : there is a 1 minute cool down before you can re-enter slumber state
+		'''
+}

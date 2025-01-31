@@ -487,17 +487,6 @@ public class TimeSerializer : TagSerializer<TimeSpan, TagCompound> {
 		return new TimeSpan(tag.Get<int>("Days"), tag.Get<int>("Hours"), tag.Get<int>("Minutes"), tag.Get<int>("Seconds"), tag.Get<int>("MiliSeconds"));
 	}
 }
-public class UniversalGlobalBuff : GlobalBuff {
-	public override void SetStaticDefaults() {
-		//I am unsure why this is set to true
-		Main.debuff[BuffID.Campfire] = false;
-		Main.debuff[BuffID.Honey] = false;
-		Main.debuff[BuffID.StarInBottle] = false;
-		Main.debuff[BuffID.HeartLamp] = false;
-		Main.debuff[BuffID.CatBast] = false;
-		Main.debuff[BuffID.Sunflower] = false;
-	}
-}
 public class UniversalGlobalItem : GlobalItem {
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 		if (!UniversalSystem.EnchantingState)

@@ -126,3 +126,6 @@ public class SlimeBossAltar : BossItemAltar {
 public class EoCBossAltar : BossItemAltar {
 	protected override int BossItemID => ItemID.SuspiciousLookingEye;
 }
+public class StartTrialAltar_Template_1 : Altar {
+
+}

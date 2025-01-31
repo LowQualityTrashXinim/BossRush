@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Channels;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
@@ -108,6 +109,8 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 }
 class RoguelikeArmorPlayer : ModPlayer {
+	public float MidasChance = 0;
+	public float ElectricityChance = 0;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
@@ -129,5 +132,15 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public override void ResetEffects() {
 		ForceActive.Clear();
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
+		MidasChance = 0;
+		ElectricityChance = 0;
+	}
+	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= MidasChance) {
+			target.AddBuff(BuffID.Midas, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
+		}
+		if(Main.rand.NextFloat() <= ElectricityChance) {
+			target.AddBuff(BuffID.Electrified, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
+		}
 	}
 }

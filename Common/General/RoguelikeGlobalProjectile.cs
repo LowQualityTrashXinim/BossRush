@@ -20,7 +20,7 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public string Source_CustomContextInfo = string.Empty;
 	public bool Source_FromDeathScatterShot = false;
 	public int OnKill_ScatterShot = -1;
-	private float TravelDistanceBeforeKill = -1f;
+	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {

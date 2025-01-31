@@ -5,6 +5,7 @@ using BossRush.Texture;
 using Terraria;
 using System;
 using BossRush.Contents.Perks;
+using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class TokenOfGluttonyArtifact : Artifact {
@@ -49,7 +50,7 @@ public class EndlessHunger : Perk {
 		StackLimit = 3;
 	}
 	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>();
+		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() || AchievementSystem.IsAchieved("TokenOfGluttony");
 	}
 	public override void UpdateEquip(Player player) {
 		player.endurance += .05f * StackAmount(player);
@@ -72,7 +73,7 @@ public class Satisfaction : Perk {
 		StackLimit = 3;
 	}
 	public override bool SelectChoosing() {
-		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>();
+		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() || AchievementSystem.IsAchieved("TokenOfGluttony");
 	}
 	public override void UpdateEquip(Player player) {
 		if (!player.ComparePlayerHealthInPercentage(.4f)) {

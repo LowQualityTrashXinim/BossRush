@@ -110,13 +110,13 @@ TokenOfSlothArtifact: {
 	DisplayName: Token Of Sloth
 	Description:
 		'''
-		"..."
+		"To them you are a laughing stock, but to you they are fragile"
 		[c/ffff00:Positive effect] : 
-			+ Increases damage by 35% and undamaged enemy recieve 50% more damage
-			+ Standing still will gain sloth status which will boost the above effect by 10%
+			+ Increases defenses by 10%, maximum health by 15% 
+			+ Standing still will gain sloth status, which grant player 1 hit resistance
+			Note : Maximum sloth status is 2
 		[c/ab3e43:Negative effect] : 
-			- Decreases your attack speed by 35%
-			- Decreases movement speed by 10%
+			- Decreases your attack speed by 35% and movement speed by 10%
 		'''
 }
 
