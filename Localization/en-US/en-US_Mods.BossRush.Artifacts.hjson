@@ -128,6 +128,7 @@ TokenOfGluttonyArtifact: {
 		[c/ffff00:Positive effect] : 
 			+ The lower your health, the less damage you taken
 			+ Hitting enemy with item will heal yourself by small amount
+			+ While having a buff active, increases your damage reduction by 10%
 		[c/ab3e43:Negative effect] : 
 			- Decrease your buff duration by 90%
 			- You now have a small fixed radius, dealing outside of that radius result in 45% damage decreases
@@ -170,17 +171,16 @@ NormalizeArtifact: {
 }
 
 AlchemistKnowledgeArtifact: {
-	DisplayName: Alchemist Knowledge
+	DisplayName: Alchemist's Book
 	Description:
 		'''
-		"reveal secret of alchemist"
+		"Knowledge of the ancient"
 		[c/ffff00:Positive effect] :
+			+ Increases buff duration by 35%
+			+ Increases transmutation success chance by 20%
 			+ Having active buff will increase your stats
-			+ Attacking enemy that have :
-			1 debuff active will increases your damage
-			3 debuff active or more will heal you
 		[c/ab3e43:Negative effect] : 
-			- Decreases potion duration by 55%
+			- Debuff duration increases by 100% and are much more lethal
 		'''
 }
 

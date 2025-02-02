@@ -547,7 +547,7 @@ namespace BossRush.Contents.Perks {
 				}
 			}
 			else if (StateofState == StarterPerkState) {
-				listOfPerk = PerkModSystem.StarterPerkType;
+				listOfPerk = [..PerkModSystem.StarterPerkType];
 			}
 			foreach (var item in list_perkbtn) {
 				if (listOfPerk.Contains(item.perkType)) {
@@ -692,7 +692,7 @@ namespace BossRush.Contents.Perks {
 		private void ActivateStarterPerkUI(PerkPlayer modplayer, Player player) {
 			reroll.Hide = false;
 			Vector2 originDefault = new Vector2(26, 26);
-			List<int> starterPerk = new(PerkModSystem.StarterPerkType);
+			List<int> starterPerk = [.. PerkModSystem.StarterPerkType];
 			int limit = 3;
 			for (int i = 0; i < limit; i++) {
 				Perk choosenperk = ModPerkLoader.GetPerk(Main.rand.Next(starterPerk));

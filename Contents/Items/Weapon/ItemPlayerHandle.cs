@@ -197,7 +197,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (item.damage > 0) {
 				index = tooltips.FindIndex(t => t.Name == "Damage");
 				if (index != -1) {
-					tooltips[index].Text = $"Base : {item.damage} | " + tooltips[index].Text;
+					tooltips[index].Text = tooltips[index].Text + $" | base : {item.damage}";
 				}
 			}
 			if (item.knockBack > 0) {

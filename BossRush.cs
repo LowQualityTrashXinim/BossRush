@@ -30,7 +30,15 @@ namespace BossRush {
 		public static bool[] IsPoisonBuff;
 		public static bool[] CanBeAffectByLastingVile;
 		public static bool[] AdvancedRPGItem;
-
+		public static List<int> Shield = new() {
+					ItemID.SquireShield,
+			ItemID.EoCShield,
+			ItemID.CobaltShield,
+			ItemID.ObsidianShield,
+			ItemID.PaladinsShield,
+			ItemID.AnkhShield,
+			ItemID.FrozenShield,
+			ItemID.HeroShield};
 		public static Dictionary<int, List<int>> WeaponRarityDB { get; private set; }
 		public static Dictionary<int, List<int>> AccRarityDB { get; private set; }
 		public static Dictionary<int, List<int>> HeadArmorRarityDB { get; private set; }

@@ -1917,6 +1917,16 @@ Mods: {
 					'''
 			}
 
+			LightSpeedRound: {
+				DisplayName: Light-Speed Round
+				Tooltip:
+					'''
+					"Made to be perfect"
+					Replace normal bullet with Light-speed round
+					Drastically reduce gun inaccuracy
+					'''
+			}
+
 			TestTeleporter: {
 				DisplayName: Test Teleporter
 				Tooltip: ""

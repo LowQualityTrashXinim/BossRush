@@ -7,6 +7,7 @@ using System;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems.Achievement;
 using BossRush.Common.Systems;
+using System.Linq;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class TokenOfGluttonyArtifact : Artifact {
@@ -41,11 +42,14 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 	}
 	public override void UpdateEquips() {
 		if (TokenOfGluttony) {
-			Player.endurance += PercentageRatio / 2f;
+			Player.endurance += (1 - PercentageRatio) / 2f;
 			Player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .9f;
+			if (Player.buffType.Where(b => b != 0).Any()) {
+				Player.endurance += .1f;
+			}
 		}
 	}
-	public float PercentageRatio => Player.statLife / (float)Player.statLifeMax;
+	public float PercentageRatio => Player.statLife / (float)Player.statLifeMax2;
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		if (!TokenOfGluttony) {
 			return;

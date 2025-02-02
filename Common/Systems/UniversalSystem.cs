@@ -1019,9 +1019,6 @@ class InfoUI : UIState {
 		btn_Exit.VAlign = .9f;
 		btn_Exit.UISetWidthHeight(52, 52);
 		panel.Append(btn_Exit);
-
-		stet = new();
-		Append(stet);
 	}
 
 	private void Text_OnUpdate(UIElement affectedElement) {
@@ -1105,7 +1102,9 @@ class InfoUI : UIState {
 			}
 		}
 	}
+	public string ItemIcon(int ItemID) => "[i:" + ItemID + "]";
 	public override void Update(GameTime gameTime) {
+		base.Update(gameTime);
 		if (panel.ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
@@ -1115,24 +1114,24 @@ class InfoUI : UIState {
 		switch (CurrentState) {
 			case 0:
 				line =
-					$"Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
-					$"\nRange Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
-					$"\nMagic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
-					$"\nSummon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
-					$"\nGeneric Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
-					$"\nCrit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%" +
-					$"\nDamage bonus to undamaged NPC : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%" +
-					$"\nAttack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}" +
-					$"\nHealth regenaration : {player.lifeRegen}" +
-					$"\nMana regenaration : {player.manaRegen}" +
-					$"\nMana reduction : {player.manaCost}" +
-					$"\nDefense effectiveness : {player.DefenseEffectiveness.Value}" +
-					$"\nDamage reduction: {Math.Round(player.endurance * 100, 2)}%" +
-					$"\nMovement speed : {Math.Round(player.moveSpeed, 2)}" +
-					$"\nJump speed : {player.jumpSpeedBoost}" +
-					$"\nMax minion : {player.maxMinions}" +
-					$"\nMax sentry/turret : {player.maxTurrets}" +
-					$"\nThorn : {player.thorns}";
+					$"{ItemIcon(ItemID.BoneSword)} Melee Damage : {player.GetTotalDamage(DamageClass.Melee).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Melee)}%" +
+					$"\n{ItemIcon(ItemID.PlatinumBow)} Range Damage : {player.GetTotalDamage(DamageClass.Ranged).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Ranged)}%" +
+					$"\n{ItemIcon(ItemID.RubyStaff)} Magic Damage : {player.GetTotalDamage(DamageClass.Magic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Magic)}%" +
+					$"\n{ItemIcon(ItemID.BabyBirdStaff)} Summon Damage : {player.GetTotalDamage(DamageClass.Summon).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Summon)}%" +
+					$"\n{ItemIcon(ItemID.AvengerEmblem)} Generic Damage : {player.GetTotalDamage(DamageClass.Generic).ToFloatValue(100, 1) - 100}% Crit chance : {player.GetTotalCritChance(DamageClass.Generic)}%" +
+					$"\n{ItemIcon(ItemID.DestroyerEmblem)} Crit damage : {Math.Round((statshandle.UpdateCritDamage.ApplyTo(1) + 1) * 100, 2)}%" +
+					$"\n{ItemIcon(ItemID.BreakerBlade)} Damage bonus to undamaged enemy : {Math.Round((statshandle.UpdateFullHPDamage.ApplyTo(1) - 1) * 100, 2)}%" +
+					$"\n{ItemIcon(ItemID.ShroomiteDiggingClaw)} Attack speed: {RelicTemplateLoader.RelicValueToPercentage(player.GetTotalAttackSpeed(DamageClass.Generic))}" +
+					$"\n{ItemIcon(ItemID.BandofRegeneration)} Health regenaration : {player.lifeRegen}" +
+					$"\n{ItemIcon(ItemID.ManaRegenerationBand)} Mana regenaration : {player.manaRegen}" +
+					$"\n{ItemIcon(ItemID.ManaFlower)} Mana reduction : {player.manaCost}" +
+					$"\n{ItemIcon(ItemID.ShieldStatue)} Defense effectiveness : {player.DefenseEffectiveness.Value}" +
+					$"\n{ItemIcon(ItemID.WormScarf)} Damage reduction: {Math.Round(player.endurance * 100, 2)}%" +
+					$"\n{ItemIcon(ItemID.HermesBoots)} Movement speed : {Math.Round(player.moveSpeed, 2)}" +
+					$"\n{ItemIcon(ItemID.FrogLeg)} Jump boost : {player.jumpSpeedBoost}" +
+					$"\n{ItemIcon(ItemID.BewitchingTable) }Max minion : {player.maxMinions}" +
+					$"\n{ItemIcon(ItemID.WarTable)} Max sentry/turret : {player.maxTurrets}" +
+					$"\n{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}";
 				textpanel.SetText(line);
 				break;
 			case 1:
@@ -1177,7 +1176,6 @@ class InfoUI : UIState {
 				textpanel.SetText(line);
 				break;
 		}
-		base.Update(gameTime);
 	}
 }
 public class SpoilsUIState : UIState {
@@ -1224,10 +1222,10 @@ public class SpoilsUIState : UIState {
 		int spoilPriortize = 1;
 		for (int i = 0; i < Limit_Spoils; i++) {
 			ModSpoil spoil = Main.rand.Next(SpoilList);
-			if(spoilPriortize > 0) {
+			if (spoilPriortize > 0) {
 				spoilPriortize--;
 				foreach (var item in SpoilList) {
-					if(item.RareValue > SpoilDropRarity.Rare) {
+					if (item.RareValue > SpoilDropRarity.Rare) {
 						spoil = item;
 					}
 				}

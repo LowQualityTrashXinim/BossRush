@@ -11,6 +11,7 @@ internal class ElementalShield : ModItem {
 	public override string Texture => BossRushTexture.Get_MissingTexture("LostAcc");
 	public override void SetDefaults() {
 		Item.Set_LostAccessory(32, 32);
+		Item.Set_ShieldStats(500, 3);
 	}
 	public override void UpdateEquip(Player player) {
 		player.GetModPlayer<ElementalShieldPlayer>().ElementalShield = true;
