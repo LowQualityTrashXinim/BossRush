@@ -6,6 +6,7 @@ using Terraria;
 using System;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems.Achievement;
+using BossRush.Common.Systems;
 
 namespace BossRush.Contents.Transfixion.Artifacts;
 internal class TokenOfGluttonyArtifact : Artifact {
@@ -14,30 +15,41 @@ internal class TokenOfGluttonyArtifact : Artifact {
 }
 public class TokenOfGluttonyPlayer : ModPlayer {
 	bool TokenOfGluttony = false;
+	public override void SetStaticDefaults() {
+		DataStorer.SetContext("Artifact_ToG", new(300, Vector2.Zero, false, Color.Brown));
+	}
 	public override void ResetEffects() {
 		TokenOfGluttony = Player.HasArtifact<TokenOfGluttonyArtifact>();
+		if (TokenOfGluttony) {
+			DataStorer.ActivateContext(Player, "Artifact_ToG");
+		}
 	}
-	public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) {
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		if (!TokenOfGluttony) {
 			return;
 		}
-		float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative, 2);
-		float DRvalue = defensesValue / 2f;
-		modifiers.ScalingArmorPenetration += 1;
-		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .01f, 1f);
-		if (Main.rand.NextBool(5)) {
-			Player.Heal((int)modifiers.FinalDamage.ApplyTo(npc.damage * .5f));
-			modifiers.SetMaxDamage(1);
+		Player.Heal(Main.rand.Next(1, 5));
+	}
+	public bool IsWithinTheRadius(Vector2 player, Vector2 entity) => player.DistanceSQ(entity) <= 300;
+	public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		if (!TokenOfGluttony) {
+			return;
+		}
+		if (!IsWithinTheRadius(Player.Center, target.Center)) {
+			modifiers.SourceDamage -= .45f;
 		}
 	}
+	public override void UpdateEquips() {
+		if (TokenOfGluttony) {
+			Player.endurance += PercentageRatio / 2f;
+			Player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .9f;
+		}
+	}
+	public float PercentageRatio => Player.statLife / (float)Player.statLifeMax;
 	public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		if (!TokenOfGluttony) {
 			return;
 		}
-		float defensesValue = MathF.Round(Player.statDefense.Positive * (1 + Player.statDefense.AdditiveBonus.Value) - Player.statDefense.Negative, 2);
-		float DRvalue = defensesValue / 2f;
-		modifiers.ScalingArmorPenetration += 1;
-		modifiers.FinalDamage *= Math.Clamp(1 - DRvalue * .01f, .01f, 1f);
 		if (Main.rand.NextBool(5)) {
 			Player.Heal((int)modifiers.FinalDamage.ApplyTo(proj.damage * .5f));
 			modifiers.SetMaxDamage(1);

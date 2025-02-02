@@ -126,10 +126,11 @@ TokenOfGluttonyArtifact: {
 		'''
 		"..."
 		[c/ffff00:Positive effect] : 
-			+ Damage reduction will be increases by your current defense : max life divide by 2
-			+ You have 1 in 10 chance to negate a hostile projectile hit and heal 10% of that damage
+			+ The lower your health, the less damage you taken
+			+ Hitting enemy with item will heal yourself by small amount
 		[c/ab3e43:Negative effect] : 
-			- Defenses are reduced to 0
+			- Decrease your buff duration by 90%
+			- You now have a small fixed radius, dealing outside of that radius result in 45% damage decreases
 		'''
 }
 

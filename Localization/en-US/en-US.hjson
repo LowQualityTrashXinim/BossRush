@@ -323,6 +323,7 @@ Mods: {
 			DiamondMagicalBolt.DisplayName: Diamond Magical Bolt
 			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
 			AnnihiliationBullet.DisplayName: Annihiliation Bullet
+			HitScanBullet.DisplayName: Hit Scan Bullet
 		}
 
 		NPCs: {

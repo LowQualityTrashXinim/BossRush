@@ -557,7 +557,6 @@ class DefaultUI : UIState {
 			itemUseTexture = new(TextureAssets.Item[player.HeldItem.type]);
 			itemUseTexture.Width.Set(64, 0);
 			itemUseTexture.Height.Set(64, 0);
-			itemUseTexture.ScaleToFit = true;
 			itemUseTexture.HAlign = 0;
 			itemUseTexture.VAlign = .2f;
 			EndOfDemoPanel.Append(itemUseTexture);

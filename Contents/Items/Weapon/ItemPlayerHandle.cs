@@ -146,7 +146,7 @@ namespace BossRush.Contents.Items.Weapon {
 				return;
 			}
 			int synergyItem = Player.HeldItem.type;
-			if(!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(synergyItem)) {
+			if (!SynergyBonus_System.Dictionary_SynergyBonus.ContainsKey(synergyItem)) {
 				return;
 			}
 			int SynergyBonusLength = SynergyBonus_System.Dictionary_SynergyBonus[synergyItem].Keys.Count;
@@ -186,7 +186,7 @@ namespace BossRush.Contents.Items.Weapon {
 		}
 		public float CriticalDamage = 0;
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-			if(UniversalSystem.EnchantingState) {
+			if (UniversalSystem.EnchantingState) {
 				return;
 			}
 			int index = tooltips.FindIndex(t => t.Name == "CritChance");
@@ -194,7 +194,19 @@ namespace BossRush.Contents.Items.Weapon {
 				tooltips.Insert(index + 1, new(Mod, "CritDamage", $"{Math.Round(CriticalDamage, 2) * 100}% bonus critical damage"));
 				tooltips.Insert(index + 2, new(Mod, "ArmorPenetration", $"{item.ArmorPenetration} Armor penetration"));
 			}
-			
+			if (item.damage > 0) {
+				index = tooltips.FindIndex(t => t.Name == "Damage");
+				if (index != -1) {
+					tooltips[index].Text = $"Base : {item.damage} | " + tooltips[index].Text;
+				}
+			}
+			if (item.knockBack > 0) {
+				index = tooltips.FindIndex(t => t.Name == "Knockback");
+				if (index != -1) {
+					tooltips[index].Text =tooltips[index].Text + $" | Base : {Math.Round(item.knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
+				}
+			}
+
 			if (item.ModItem == null) {
 				return;
 			}

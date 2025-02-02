@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace BossRush.Common.RoguelikeChange;
 internal class RoguelikeBuffOverhaul : GlobalBuff {
 	public override void SetStaticDefaults() {
-		if(!UniversalSystem.Check_RLOH()) {
+		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
 		//I am unsure why this is set to true
@@ -29,6 +29,12 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 			}
 			npc.lifeRegen -= lifelose;
 			globalnpc.StatDefense.Base -= 10;
+			int extraElectric = (int)(npc.Size.Length() / 20) + 2;
+			for (int i = 0; i < extraElectric; i++) {
+				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Electric, Scale: Main.rand.NextFloat(.25f, .5f));
+				dust.velocity = Main.rand.NextVector2Circular(3, 3);
+				dust.noGravity = true;
+			}
 		}
 	}
 }
