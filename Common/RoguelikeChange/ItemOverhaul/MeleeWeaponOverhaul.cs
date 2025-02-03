@@ -418,8 +418,12 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 			if (item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded)) {
-				float itemsize = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem);
-				int laserline = (int)itemsize * 2;
+				float extra = 0;
+				if (target.boss) {
+					extra += .25f;
+				}
+				float itemsize = item.Size.Length() * (player.GetAdjustedItemScale(player.HeldItem) + extra);
+				int laserline = (int)itemsize;
 				if (laserline <= 0) {
 					laserline = 1;
 				}
@@ -595,7 +599,6 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		}
 		private void Swipe(float start, float end, float percentDone, Player player, int direct) {
 			bool directIsnegative = direct == -1;
-			float slightoffsetX = 0;
 			float currentAngle = MathHelper.Lerp(start, end, percentDone);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			player.itemRotation = currentAngle;
@@ -605,10 +608,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				modPlayer.CustomItemRotation = currentAngle;
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
-			else {
-			}
-				slightoffsetX = 6 * player.direction;
-			player.itemLocation = player.Center.Add(slightoffsetX, 3) + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
+			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Quarter, player.itemRotation) + Vector2.UnitX.RotatedBy(currentAngle) * (BossRushUtilsPlayer.PLAYERARMLENGTH + 3);
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {

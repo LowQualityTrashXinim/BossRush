@@ -57,8 +57,12 @@ internal class BattleAxeOverhaul : GlobalItem {
 	public override bool? CanMeleeAttackCollideWithNPC(Item item, Rectangle meleeAttackHitbox, Player player, NPC target) {
 		if (RoguelikeOverhaul_ModSystem.Optimized_CheckItem(item)) {
 			if (UseStyleType == BossRushUseStyle.DownChop) {
-				float itemsize = item.Size.Length() * player.GetAdjustedItemScale(player.HeldItem) + BossRushUtilsPlayer.PLAYERARMLENGTH;
-				int laserline = (int)itemsize * 2;
+				float extra = 0;
+				if (target.boss) {
+					extra += .25f;
+				}
+				float itemsize = item.Size.Length() * (player.GetAdjustedItemScale(player.HeldItem) + extra) + BossRushUtilsPlayer.PLAYERARMLENGTH;
+				int laserline = (int)itemsize;
 				if (laserline <= 1) {
 					laserline = 2;
 				}

@@ -28,9 +28,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			//Attempt to fix item size using texture asset
 			if (Main.ActiveWorldFileData.Name != null) {
 				Asset<Texture2D> texture = TextureAssets.Item[entity.type];
-				if (texture.State == AssetState.Loaded) {
-					entity.width = (int)(texture.Value.Width * .95f);
-					entity.height = (int)(texture.Value.Height * .95f);
+				if (texture != null) {
+					if (texture.State == AssetState.Loaded) {
+						entity.width = (int)(texture.Value.Width * .95f);
+						entity.height = (int)(texture.Value.Height * .95f);
+					}
 				}
 			}
 			VanillaBuff(entity);
