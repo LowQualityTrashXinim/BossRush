@@ -68,10 +68,10 @@ class RoguelikeArmorOverhaul : GlobalItem {
 
 		index = tooltips.FindIndex(line => line.Name == "Tooltip0");
 		var armorinfo = ArmorLoader.GetArmorPieceInfo(item.type);
+		if (armorinfo == null) {
+			return;
+		}
 		if (index == -1) {
-			if (armorinfo == null) {
-				return;
-			}
 			if (armorinfo.AddTooltip) {
 				tooltips.Insert(3, new(Mod, $"{Mod.Name}_Tooltip0", armorinfo.ToolTip));
 			}
@@ -114,11 +114,16 @@ class RoguelikeArmorPlayer : ModPlayer {
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
-		if (!ActiveArmor.Equals(ArmorLoader.Default) && ActiveArmor.modplayer != null && ActiveArmor.modplayer.Name == modplayer.Name) {
-			return true;
+		if (ActiveArmor.modplayer == null) {
+			if (ForceActive != null && ForceActive.Where(ar => !ar.Equals(ArmorLoader.Default) && ar.modplayer.Name == modplayer.Name).Any()) {
+				return true;
+			}
+			return false;
 		}
-		if (ForceActive != null && ForceActive.Where(ar => !ar.Equals(ArmorLoader.Default) && ar.modplayer.Name == modplayer.Name).Any()) {
-			return true;
+		else {
+			if (!ActiveArmor.Equals(ArmorLoader.Default) && ActiveArmor.modplayer.Name == modplayer.Name) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -139,7 +144,7 @@ class RoguelikeArmorPlayer : ModPlayer {
 		if (Main.rand.NextFloat() <= MidasChance) {
 			target.AddBuff(BuffID.Midas, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 		}
-		if(Main.rand.NextFloat() <= ElectricityChance) {
+		if (Main.rand.NextFloat() <= ElectricityChance) {
 			target.AddBuff(BuffID.Electrified, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 		}
 	}

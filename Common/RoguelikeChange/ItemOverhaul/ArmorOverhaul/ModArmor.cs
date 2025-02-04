@@ -96,7 +96,7 @@ public abstract class PlayerArmorHandle : ModPlayer {
 	public virtual void Armor_ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) { }
 	public override sealed void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) {
 		if (modplayer.ArmorSetCheck(this)) {
-			ModifyHitByProjectile(proj, ref modifiers);
+			Armor_ModifyHitByProjectile(proj, ref modifiers);
 		}
 	}
 	public virtual void Armor_ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) { }

@@ -55,7 +55,7 @@ public class Shield_GlobalItem : GlobalItem {
 				break;
 		}
 	}
-	public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
+	public override void UpdateEquip(Item item, Player player) {
 		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}

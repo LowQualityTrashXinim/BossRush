@@ -1,7 +1,5 @@
 ﻿using System;
 using Terraria;
-using System.Linq;
-using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
@@ -13,8 +11,6 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
-using System.Runtime.ExceptionServices;
-using System.Threading.Channels;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -732,7 +728,8 @@ public class PlayerStatsHandleSystem : ModSystem {
 				orig(self, type, (int)modplayer.BuffTime.ApplyTo(timeToAdd), quiet, foodHack);
 			}
 			else {
-				orig(self, type, (int)modplayer.DebuffBuffTime.ApplyTo(timeToAdd), quiet, foodHack);
+				int time = (int)modplayer.DebuffBuffTime.ApplyTo(timeToAdd);
+				orig(self, type, time, quiet, foodHack);
 			}
 		}
 		else {

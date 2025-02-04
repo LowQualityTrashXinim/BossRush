@@ -39,7 +39,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			}
 			if (Player.velocity == Vector2.Zero) {
 				ShortStanding++;
-				if (ShortStanding > 120) {//2s required
+				if (ShortStanding > 30) {//0.5s required
 					if (ShortStanding % Math.Clamp(10 - ShortStanding / 100, 1, 10) == 0) {
 						Player.statLife = Math.Clamp(Player.statLife + 1, 0, Player.statLifeMax2);
 					}
@@ -74,7 +74,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			return Artifact.PlayerCurrentArtifact<HeartOfEarthArtifact>() || AchievementSystem.IsAchieved("HeartOfEarth");
 		}
 		public override void UpdateEquip(Player player) {
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Additive: 1f + 0.5f * StackAmount(player));
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Additive: 1f + 0.5f * StackAmount(player), Flat: 5 * StackAmount(player));
 		}
 		public override void OnHitByAnything(Player player) {
 			if (Main.rand.NextBool(Main.rand.Next(3, Math.Clamp(11 - StackAmount(player), 4, 10)))) {
@@ -95,7 +95,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		}
 		public override void UpdateEquip(Player player) {
 			int stack = StackAmount(player);
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, 1 + .1f * stack);
+			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, 1 + .15f * stack);
 			player.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 			foreach (NPC npc in npclist) {
 				if (npc.immune[player.whoAmI] <= 0)

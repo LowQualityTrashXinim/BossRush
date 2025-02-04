@@ -440,7 +440,7 @@ LostInWonderLand: {
 		[WARNING:EXPERIMENTAL DO NOT CHOOSE]
 		+ Increases chance of NPC getting mutate by 10%
 		+ Your weapon have 10% to get enchantment
-		+ Your weapon have 10% to get augmentation
+		+ Your accessory have 10% to get augmentation
 		'''
 }
 
@@ -713,7 +713,7 @@ SoulShatter: {
 		+ Increases undamaged damage by 500% and critical strike damage by 40%
 		+ After waiting for 1.5s, increases the next shot damage by 40% and critical strike damage by 100%
 		+ Your bullet have 0.1% chance to instantly kill non-boss enemy
-		+ Killing a enemy with 1 shot will debuff surrounding enemy with ``shatter`` debuff
+		+ Killing a enemy with 1 shot will debuff surrounding enemy with "shatter" debuff
 		'''
 }
 

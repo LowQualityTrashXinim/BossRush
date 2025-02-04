@@ -92,7 +92,7 @@ public class TransmutationUIState : UIState {
 		if (slot1.item == null || slot2.item == null) {
 			return;
 		}
-		float offsetchance = 0;
+		float offsetchance = Main.LocalPlayer.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
 		if (Main.LocalPlayer.GetModPlayer<PerkPlayer>().perks.ContainsKey(Perk.GetPerkType<Dirt>())) {
 			offsetchance = .05f;
 		}

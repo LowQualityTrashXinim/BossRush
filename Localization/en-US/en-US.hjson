@@ -1881,7 +1881,7 @@ Mods: {
 				Tooltip:
 					'''
 					Increases your defense by 5
-					Getting hit will randomly taken damage from 25-50%
+					Getting hit will randomly reduce taken damage from 25-50%
 					Have 25% chance to randomly spawn a projectile
 					Have 10% chance to convert taken damage to heal
 					'''

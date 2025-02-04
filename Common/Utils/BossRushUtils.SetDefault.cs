@@ -156,6 +156,8 @@ namespace BossRush {
 			if (item.TryGetGlobalItem(out Shield_GlobalItem globalitem)) {
 				globalitem.ShieldPoint = health;
 				globalitem.ShieldRes = res;
+			}
+			if (!BossRushModSystem.Shield.Contains(item.type)) {
 				BossRushModSystem.Shield.Add(item.type);
 			}
 		}

@@ -50,5 +50,17 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				modplayer.AddStatsToPlayer(PlayerStats.CritDamage, Additive: lengthpositive * 0.15f + 1);
 			}
 		}
+		public override void GetHealLife(Item item, bool quickHeal, ref int healValue) {
+			if (!Alchemist) {
+				return;
+			}
+			Player.GetModPlayer<PlayerStatsHandle>().DebuffBuffTime -= 1;
+		}
+		public override void GetHealMana(Item item, bool quickHeal, ref int healValue) {
+			if (!Alchemist) {
+				return;
+			}
+			Player.GetModPlayer<PlayerStatsHandle>().DebuffBuffTime -= 1;
+		}
 	}
 }
