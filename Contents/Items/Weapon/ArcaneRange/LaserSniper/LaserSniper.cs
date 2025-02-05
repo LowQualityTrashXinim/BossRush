@@ -2,7 +2,6 @@
 using BossRush.Common.Graphics;
 using BossRush.Common.Graphics.Primitives;
 using BossRush.Common.Graphics.RenderTargets;
-using BossRush.Common.Graphics.TrailStructs;
 using BossRush.Contents.Items.Weapon.SummonerSynergyWeapon.StarWhip;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
@@ -14,6 +13,8 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Graphics.AnimationSystems;
+using BossRush.Common.Graphics.Structs.TrailStructs;
+using BossRush.Common.Graphics.Structs.QuadStructs;
 
 namespace BossRush.Contents.Items.Weapon.ArcaneRange.LaserSniper;
 internal class LaserSniper : SynergyModItem {
@@ -228,7 +229,6 @@ public class PlasmaExplosion : ModProjectile
 	public override void SetStaticDefaults() {
 		Main.projFrames[Type] = 6;
 	}
-	private PrimitiveDrawer primitiveDrawer;
 
 	public override void SetDefaults() {
 		Projectile.width = Projectile.height = 98;
@@ -241,10 +241,6 @@ public class PlasmaExplosion : ModProjectile
 		Projectile.scale = 4;
 	}
 
-	public override void OnSpawn(IEntitySource source) {
-		primitiveDrawer = new PrimitiveDrawer(PrimitiveShape.Quad);
-	}
-
 	public override void AI() {
 
 
@@ -253,12 +249,13 @@ public class PlasmaExplosion : ModProjectile
 
 	public override bool PreDraw(ref Color lightColor) {
 
-		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
-		shader.setProperties(Color.Aqua, TextureAssets.Extra[193].Value,shaderData: new Vector4(Projectile.ai[0], Projectile.ai[0], Projectile.ai[0],0));
-		shader.apply();
+		ShaderSettings shaderSettings = new ShaderSettings();
+		shaderSettings.image1 = TextureAssets.Extra[193];
+		shaderSettings.Color = Color.Turquoise;
+		shaderSettings.shaderData = new Vector4(Projectile.ai[0]);
 
-		primitiveDrawer.Draw([Projectile.Center], [Color.White], [new Vector2(512)]);
-
+		default(ExplosionQuad).Draw(Projectile.Center,0,Vector2.One * 512, shaderSettings);
+		
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
 
 		return false;

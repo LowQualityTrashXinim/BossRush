@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
-using BossRush.Common.Graphics.TrailStructs;
+using BossRush.Common.Graphics.Structs.TrailStructs;
 
 namespace BossRush.Contents.Projectiles;
 public class TitaniumShuriken : ModProjectile {

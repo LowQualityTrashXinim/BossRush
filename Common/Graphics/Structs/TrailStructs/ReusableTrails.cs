@@ -12,9 +12,8 @@ using Terraria.Graphics;
 using Terraria.ModLoader;
 using Terraria;
 using Terraria.GameContent.Drawing;
-using BossRush.Common.Graphics;
 
-namespace BossRush.Common.Graphics.TrailStructs;
+namespace BossRush.Common.Graphics.Structs.TrailStructs;
 public struct GenericTrail {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(TrailShaderSettings GenericTrailSettings, VertexStrip.StripHalfWidthFunction stripWidth, VertexStrip.StripColorFunction stripColor) {

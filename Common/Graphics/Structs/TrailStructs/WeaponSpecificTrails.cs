@@ -11,16 +11,15 @@ using Terraria.Graphics.Shaders;
 using Terraria.Graphics;
 using Terraria.ModLoader;
 using Terraria;
-using BossRush.Common.Graphics;
 using Terraria.GameContent;
 using BossRush.Common.Graphics.Primitives;
 
-namespace BossRush.Common.Graphics.TrailStructs;
+namespace BossRush.Common.Graphics.Structs.TrailStructs;
 public struct WyvernTrailMain {
 	private static VertexStrip _vertexStrip = new VertexStrip();
 	public void Draw(Vector2[] oldPos, float[] oldRot, Vector2 offset) {
 
-		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["TrailEffect"];
+		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 
 		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE).Value);
 		shader.setupTextures();
@@ -50,7 +49,7 @@ public struct WyvernTrailMini {
 		//miscShaderData.UseShaderSpecificData(new Microsoft.Xna.Framework.Vector4(60, 1, 0, 0));
 		//miscShaderData.Apply();
 
-		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["TrailEffect"];
+		ModdedShaderHandler shader = EffectsLoader.shaderHandlers["FlameEffect"];
 
 		shader.setProperties(Color.LightSeaGreen, ModContent.Request<Texture2D>(BossRushTexture.PERLINNOISE).Value);
 		shader.setupTextures();
@@ -79,7 +78,7 @@ public struct BeamTrail {
 		shader.setProperties(color, TextureAssets.Extra[193].Value);
 		shader.setupTextures();
 		shader.apply();
-		_vertexStrip.PrepareStrip(projectile.oldPos,projectile.oldRot,StripColors,StripWidth,offset);
+		_vertexStrip.PrepareStrip(projectile.oldPos, projectile.oldRot, StripColors, StripWidth, offset);
 		_vertexStrip.DrawTrail();
 
 		Main.pixelShader.CurrentTechnique.Passes[0].Apply();
@@ -158,7 +157,7 @@ public struct StarTrail {
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth,  offset, null, true);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, offset, null, true);
 		_vertexStrip.DrawTrail();
 
 
@@ -181,7 +180,7 @@ public struct StarTrailEmpowered {
 		shader.setupTextures();
 		shader.apply();
 
-		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth,offset, null, true);
+		_vertexStrip.PrepareStrip(oldPos, oldRot, StripColors, StripWidth, offset, null, true);
 		_vertexStrip.DrawTrail();
 
 

@@ -24,6 +24,8 @@
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
     <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />
     <None Remove="Common\Graphics\Shaders\FlameBallPrimitive.fx" />
+    <None Remove="common\graphics\shaders\LaserEffect.fx" />
+    <None Remove="Common\Graphics\Shaders\LightSpark.fx" />
     <None Remove="Contents\Artifacts\BootsOfSpeedManipulationArtifact.png" />
     <None Remove="Contents\Artifacts\HeartOfEarthArtifact.png" />
     <None Remove="Contents\Artifacts\MagicalCardDeckArtifact.png" />

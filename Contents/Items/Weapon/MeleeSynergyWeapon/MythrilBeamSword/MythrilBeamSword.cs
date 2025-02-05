@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.DataStructures;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using BossRush.Common.Graphics.TrailStructs;
+using BossRush.Common.Graphics.Structs.TrailStructs;
 
 namespace BossRush.Contents.Items.Weapon.MeleeSynergyWeapon.MythrilBeamSword;
 public class MythrilBeamSword : SynergyModItem {

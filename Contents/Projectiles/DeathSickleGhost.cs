@@ -1,5 +1,5 @@
 ﻿using BossRush.Common.Graphics;
-using BossRush.Common.Graphics.TrailStructs;
+using BossRush.Common.Graphics.Structs.TrailStructs;
 using BossRush.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

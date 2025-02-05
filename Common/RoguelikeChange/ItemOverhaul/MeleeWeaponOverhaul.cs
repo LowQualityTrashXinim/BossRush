@@ -10,6 +10,8 @@ using BossRush.Common.General;
 using BossRush.Common.Systems;
 using System;
 using System.Linq.Expressions;
+using BossRush.Common.Graphics.Structs.TrailStructs;
+using BossRush.Common.Graphics;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	public class BossRushUseStyle {
@@ -20,13 +22,31 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public const int GenericSwingDownImprove = 990;
 	}
 	internal class MeleeWeaponOverhaul : GlobalItem {
+
+		public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {
+
+			TrailShaderSettings settings = new TrailShaderSettings();
+			settings.oldPos = swingOldPos;
+			settings.oldRot = swingOldRot;
+			settings.Color = ItemAverageColor.averageColorByID[item.type];
+			default(GenericTrail).Draw(settings, TrailWidth, TrailColor);
+			
+			return true;
+		}
+
+		public float TrailWidth(float progress) => progress * 30f;
+		public Color TrailColor(float progress) => Color.White;
+
 		public int SwingType = 0;
 		public float offset = 0;
+		public Vector2[] swingOldPos;
+		public float[] swingOldRot;
 		public override bool InstancePerEntity => true;
 		public override void SetStaticDefaults() {
 			if (!UniversalSystem.Check_RLOH()) {
 				return;
 			}
+
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PearlwoodSword] = .45f;
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.BorealWoodSword] = .45f;
 			//ItemID.Sets.BonusAttackSpeedMultiplier[ItemID.PalmWoodSword] = .45f;
@@ -109,6 +129,11 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (item.noMelee) {
 				return;
 			}
+
+			//init swing old pos and old rot arrays
+			swingOldPos = new Vector2[item.useAnimation];
+			swingOldRot = new float[item.useAnimation];
+
 			switch (item.type) {
 				case ItemID.WoodenSword:
 				case ItemID.BorealWoodSword:
@@ -507,6 +532,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 			if (!item.CheckUseStyleMelee(BossRushUtils.MeleeStyle.CheckOnlyModded) || item.noMelee) {
 				return;
 			}
+			InsertOldPosAndRot(player, item);
 			MeleeOverhaulPlayer modPlayer = player.GetModPlayer<MeleeOverhaulPlayer>();
 			modPlayer.CountDownToResetCombo = (int)(player.itemAnimationMax * 1.35f);
 			switch (SwingType) {
@@ -614,6 +640,24 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 				modPlayer.CustomItemRotation += player.direction > 0 ? MathHelper.PiOver4 * 3 : MathHelper.PiOver4;
 			}
 			player.itemLocation = player.Center + Vector2.UnitX.RotatedBy(currentAngle) * BossRushUtilsPlayer.PLAYERARMLENGTH;
+
+		}
+
+		public void InsertOldPosAndRot(Player player, Item item) 
+		{
+			Vector2 pos = player.itemLocation + item.Size;
+			float rot = player.itemRotation;
+
+			Array.Copy(swingOldPos,1,swingOldPos,0,swingOldPos.Length - 1);
+			Array.Copy(swingOldRot, 1, swingOldRot, 0, swingOldPos.Length - 1);
+
+			swingOldPos[0] = pos;
+			swingOldRot[0] = rot;
+		}
+		public void ClearOldPosAndRot() 
+		{ 
+			Array.Clear(swingOldPos);
+			Array.Clear(swingOldRot);
 		}
 	}
 	public class MeleeOverhaulSystem : ModSystem {

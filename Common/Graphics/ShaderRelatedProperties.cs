@@ -58,9 +58,9 @@ public class ModdedShaderHandler : ILoadable {
 	}
 	public void setProperties(ShaderSettings shaderSettings) {
 		this._color = shaderSettings.Color;
-		this._texutre1 = shaderSettings.image1.Value;
-		this._texutre2 = shaderSettings.image2.Value;
-		this._texutre3 = shaderSettings.image3.Value;
+		this._texutre1 = shaderSettings.image1?.Value;
+		this._texutre2 = shaderSettings.image2?.Value;
+		this._texutre3 = shaderSettings.image3?.Value;
 		this._shaderData = shaderSettings.shaderData;
 	}
 	/// <summary>
