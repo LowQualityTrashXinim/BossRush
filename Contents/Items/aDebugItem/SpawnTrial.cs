@@ -12,7 +12,7 @@ internal class SpawnTrial : ModItem {
 	}
 	public override bool? UseItem(Player player) {
 		if (player.itemAnimation == player.itemAnimationMax) {
-			TrialModSystem.SetTrial(0);
+			TrialModSystem.SetTrial(0, player.Center);
 		}
 		return base.UseItem(player);
 	}

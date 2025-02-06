@@ -738,3 +738,22 @@ FoolDomain: {
 		Note : there is a 1 minute cool down before you can re-enter slumber state
 		'''
 }
+
+BlessedKnowledge: {
+	DisplayName: Blessed Knowledge
+	Description:
+		'''
+		+ Drinking a potion will heal player for 10 health
+		+ Increases healing effectiveness by 20%
+		+ Increase debuff damage by 12%
+		'''
+}
+
+AncientKnowledge: {
+	DisplayName: Ancient Knowledge
+	Description:
+		'''
+		+ Increases debuff duration on inflicting enemy by 10%
+		+ Increases transmutation success by 20% ( not stackable )
+		'''
+}

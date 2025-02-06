@@ -179,6 +179,7 @@ AlchemistKnowledgeArtifact: {
 			+ Increases buff duration by 35%
 			+ Increases transmutation success chance by 20%
 			+ Having active buff will increase your stats
+			+ Healing and Mana potion now heal for double the amount
 		[c/ab3e43:Negative effect] : 
 			- Debuff duration increases by 100% and are much more lethal
 		'''

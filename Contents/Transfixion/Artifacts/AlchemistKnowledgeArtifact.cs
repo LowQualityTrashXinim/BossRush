@@ -4,6 +4,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using BossRush.Common.Systems;
 using BossRush.Common.Systems.ArtifactSystem;
+using BossRush.Contents.Perks;
+using BossRush.Common.Systems.Achievement;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class AlchemistKnowledgeArtifact : Artifact {
@@ -54,13 +56,51 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 			if (!Alchemist) {
 				return;
 			}
-			Player.GetModPlayer<PlayerStatsHandle>().DebuffBuffTime -= 1;
+			healValue *= 2;
 		}
 		public override void GetHealMana(Item item, bool quickHeal, ref int healValue) {
 			if (!Alchemist) {
 				return;
 			}
-			Player.GetModPlayer<PlayerStatsHandle>().DebuffBuffTime -= 1;
+			healValue *= 2;
+		}
+	}
+	public class BlessedKnowledge : Perk {
+		public override void SetDefaults() {
+			StackLimit = 3;
+			CanBeStack = true;
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() || AchievementSystem.IsAchieved("AlchemistKnowledge");
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+
+			modplayer.AddStatsToPlayer(PlayerStats.HealEffectiveness, 1 + .2f * StackAmount(player));
+			modplayer.AddStatsToPlayer(PlayerStats.DebuffDamage, 1 + .12f * StackAmount(player));
+		}
+		public override void OnUseItem(Player player, Item item) {
+			if (item.buffType != 0) {
+				PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+				//This is a hacky way to ensure the heal amount is not affected
+				modplayer.HealEffectiveness -= .2f * StackAmount(player);
+				player.Heal(10 * StackAmount(player));
+				modplayer.HealEffectiveness += .2f * StackAmount(player);
+			}
+		}
+	}
+	public class AncientKnowledge : Perk {
+		public override void SetDefaults() {
+			StackLimit = 3;
+			CanBeStack = true;
+		}
+		public override bool SelectChoosing() {
+			return Artifact.PlayerCurrentArtifact<AlchemistKnowledgeArtifact>() || AchievementSystem.IsAchieved("AlchemistKnowledge");
+		}
+		public override void UpdateEquip(Player player) {
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.Transmutation_SuccessChance += .2f;
+			modplayer.DebuffTime += .1f * StackAmount(player);
 		}
 	}
 }

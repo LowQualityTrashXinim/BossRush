@@ -11,6 +11,7 @@ using BossRush.Contents.Items.RelicItem;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Common.Systems;
+using SteelSeries.GameSense;
 
 namespace BossRush.Common.General;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
@@ -35,27 +36,6 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 			Source_FromDeathScatterShot = true;
 		}
 		Source_CustomContextInfo = source.Context;
-		if (itemUse != null) {
-			if (itemUse.ModItem is Relic) {
-				if (int.TryParse(source.Context, out int type)) {
-					if (type == RelicTemplate.GetRelicType<SlimeSpikeTemplate>()) {
-						TravelDistanceBeforeKill = 375;
-					}
-					else if (type == RelicTemplate.GetRelicType<FireBallTemplate>()) {
-						TravelDistanceBeforeKill = 350;
-					}
-					else if (type == RelicTemplate.GetRelicType<SkyFractureTemplate>()) {
-						TravelDistanceBeforeKill = 450;
-					}
-					else if (type == RelicTemplate.GetRelicType<MagicMissileTemplate>()) {
-						TravelDistanceBeforeKill = 650;
-					}
-					else if (type == RelicTemplate.GetRelicType<DemonScytheTemplate>()) {
-						TravelDistanceBeforeKill = 600;
-					}
-				}
-			}
-		}
 	}
 	public override bool PreAI(Projectile projectile) {
 		if (VelocityMultiplier != 0) {

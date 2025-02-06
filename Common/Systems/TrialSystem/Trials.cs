@@ -9,13 +9,21 @@ using Terraria.ModLoader;
 namespace BossRush.Common.Systems.TrialSystem;
 
 public class TestTrial : ModTrial {
-	public override Dictionary<int, int> NPCpool() {
-		return new Dictionary<int, int>() {
-			{ NPCID.Zombie, 3 },
-			{ NPCID.Skeleton, 4},
-			{NPCID.DemonEye, 5 }
+	public override List<int> NPCpool(int currentWave) {
+		return new() {
+			NPCID.Zombie,
+			NPCID.Skeleton,
+			NPCID.DemonEye,
+			NPCID.Skeleton,
 		};
 	}
+	//public override Dictionary<int, int> NPCpool(int currentWave) {
+	//	return new Dictionary<int, int>() {
+	//		{ NPCID.Zombie, 3 },
+	//		{ NPCID.Skeleton, 4},
+	//		{NPCID.DemonEye, 5 }
+	//	};
+	//}
 	public override int WaveAmount() {
 		return 1;
 	}

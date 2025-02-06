@@ -543,7 +543,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 	}
 	public override StatModifier ValueCondition(Relic relic, Player player, PlayerStats stat) {
 		//We are randomizing the base damage that our friendly slime spike gonna deal
-		return new(1, 1, 0, 10 + Main.rand.Next(0, 6));
+		return new(1, 1, 0, 15 + Main.rand.Next(0, 6));
 	}
 	public override string ModifyToolTip(Relic relic, PlayerStats stat, StatModifier value) {
 		//This is to get the name of the stats which we set
@@ -582,6 +582,7 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * Tier + 1)),
 				2 + .5f * Tier,
 				player.whoAmI);
+			proj.Set_ProjectileTravelDistance(375);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
 		}
@@ -609,7 +610,7 @@ public class SkillCoolDownTemplate : RelicTemplate {
 public class FireBallTemplate : RelicTemplate {
 	public override void SetStaticDefaults() {
 		DataStorer.AddContext("Relic_FireBall", new(
-			350,
+			400,
 			Vector2.Zero,
 			false,
 			Color.OrangeRed
@@ -641,7 +642,7 @@ public class FireBallTemplate : RelicTemplate {
 
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
 		DataStorer.ActivateContext(player, "Relic_FireBall");
-		if (!player.Center.LookForAnyHostileNPC(350f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
+		if (!player.Center.LookForAnyHostileNPC(400f) || (modplayer.synchronize_Counter - 10) % 90 != 0) {
 			return;
 		}
 		int Tier = relic.RelicTier;
@@ -655,6 +656,7 @@ public class FireBallTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * Tier + 1)),
 				4 + .5f * Tier,
 				player.whoAmI);
+			proj.Set_ProjectileTravelDistance(400);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
 		}
@@ -715,6 +717,7 @@ public class SkyFractureTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				4 + .5f * Tier,
 				player.whoAmI);
+			proj.Set_ProjectileTravelDistance(450);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
 		}
@@ -773,7 +776,7 @@ public class MagicMissileTemplate : RelicTemplate {
 			player.whoAmI);
 		proj.DamageType = dmgclass;
 		proj.tileCollide = false;
-
+		proj.Set_ProjectileTravelDistance(650);
 	}
 }
 
@@ -822,16 +825,19 @@ public class DemonScytheTemplate : RelicTemplate {
 		int Tier = relic.RelicTier;
 		DamageClass dmgclass = PlayerStatsHandle.PlayerStatsToDamageClass(stat);
 		for (int i = 0; i < Tier; i++) {
+			Vector2 pos = player.Center + Main.rand.NextVector2Circular(590, 590);
+			Vector2 vel = (npc.Center - pos).SafeNormalize(Vector2.Zero);
 			Projectile proj = Projectile.NewProjectileDirect(
 				player.GetSource_ItemUse(relic.Item, Type.ToString()),
-				player.Center,
-				Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(2, 4), Main.rand.NextFloat(2, 4)) * 3,
+				player.Center + Main.rand.NextVector2Circular(590, 590),
+				vel,
 				ProjectileID.DemonScythe,
 				(int)(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				4 + .5f * Tier,
 				player.whoAmI);
 			proj.DamageType = dmgclass;
 			proj.tileCollide = false;
+			proj.Set_ProjectileTravelDistance(600);
 		}
 	}
 }
