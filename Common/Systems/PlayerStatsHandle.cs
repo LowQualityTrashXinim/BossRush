@@ -99,6 +99,7 @@ public class PlayerStatsHandle : ModPlayer {
 	public ulong DPStracker = 0;
 	public float RandomizeChanceEnchantment = 0;
 	public int NPC_HitCount = 0;
+	public float ItemRangeMultiplier = 1;
 	/// <summary>
 	/// This chance will decay for each success roll <br/>
 	/// For direct adding augmentation but still random use <code>AugmentsPlayer.SafeRequest_AddAugments(float chance, int limit, bool decayable)</code>
@@ -258,6 +259,7 @@ public class PlayerStatsHandle : ModPlayer {
 		Transmutation_SuccessChance = 0;
 		RandomizeChanceEnchantment = 0f;
 		AugmentationChance = 0;
+		ItemRangeMultiplier = 1;
 		Reset_ShootRequest();
 	}
 	public override float UseSpeedMultiplier(Item item) {
@@ -583,6 +585,17 @@ public class PlayerStatsHandleSystem : ModSystem {
 		On_Projectile.NewProjectileDirect += On_Projectile_NewProjectileDirect;
 		On_Player.GiveImmuneTimeForCollisionAttack += On_Player_GiveImmuneTimeForCollisionAttack;
 		On_Player.SetImmuneTimeForAllTypes += On_Player_SetImmuneTimeForAllTypes;
+		On_Player.GetItemGrabRange += On_Player_GetItemGrabRange;
+	}
+
+	private int On_Player_GetItemGrabRange(On_Player.orig_GetItemGrabRange orig, Player self, Item item) {
+		int itemRange = orig(self, item);
+		if (self.TryGetModPlayer(out PlayerStatsHandle modplayer)) {
+			return (int)(itemRange * modplayer.ItemRangeMultiplier);
+		}
+		else {
+			return itemRange;
+		}
 	}
 
 	private void On_Player_SetImmuneTimeForAllTypes(On_Player.orig_SetImmuneTimeForAllTypes orig, Player self, int time) {

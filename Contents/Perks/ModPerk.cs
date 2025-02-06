@@ -321,7 +321,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void UpdateEquip(Player player) {
-			player.GetModPlayer<ChestLootDropPlayer>().UpdateRangeChanceMutilplier += 1f;
+			player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += 1f;
 		}
 		public override void ModifyItemScale(Player player, Item item, ref float scale) {
 			if (item.DamageType == DamageClass.Melee)
@@ -341,6 +341,11 @@ namespace BossRush.Contents.Perks {
 		public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 			if (proj.DamageType == DamageClass.Melee && Main.rand.NextBool(10)) {
 				target.AddBuff(ModContent.BuffType<MeltingDefense>(), BossRushUtils.ToSecond(3.5f));
+			}
+		}
+		public override void OnPickUp(Player player, Item item) {
+			if (item.type == ItemID.Heart && StackAmount(player) >= 3 && Main.rand.NextBool(5)) {
+				player.Heal(100);
 			}
 		}
 	}
@@ -393,6 +398,11 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void ModifyMaxStats(Player player, ref StatModifier health, ref StatModifier mana) {
 			mana.Base += 78 * StackAmount(player);
+		}
+		public override void OnPickUp(Player player, Item item) {
+			if (item.type == ItemID.Star && StackAmount(player) >= 3 && Main.rand.NextBool(5)) {
+				player.NebulaLevelup(Main.rand.Next(new int[] { BuffID.NebulaUpLife1, BuffID.NebulaUpDmg1, BuffID.NebulaUpMana1 }));
+			}
 		}
 	}
 	public class BlessingOfStarDust : Perk {
@@ -717,7 +727,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override string ModifyToolTip() {
 			if (StackAmount(Main.LocalPlayer) >= 1) {
-				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}1.Description");
+				return Language.GetTextValue($"Mods.BossRush.ModPerk.{Name}.Description1");
 			}
 			return base.ModifyToolTip();
 		}
@@ -1044,7 +1054,7 @@ namespace BossRush.Contents.Perks {
 			handle.AddStatsToPlayer(PlayerStats.CritDamage, 1.4f);
 			SoulShatter_ModPlayer charged = player.GetModPlayer<SoulShatter_ModPlayer>();
 			charged.Perk = true;
-			if(charged.Charged) {
+			if (charged.Charged) {
 				handle.AddStatsToPlayer(PlayerStats.PureDamage, 1.4f);
 				handle.AddStatsToPlayer(PlayerStats.CritDamage, 2);
 			}

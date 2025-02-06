@@ -187,6 +187,13 @@ BlessingOfSolar: {
 		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
 		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
 		'''
+	Description3:
+		'''
+		+ 12% melee size increases
+		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
+		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
+		+ Collecting heart have chance to heal additional 100 life
+		'''
 }
 
 BlessingOfVortex: {
@@ -207,6 +214,13 @@ BlessingOfNebula: {
 		+ Increases max mana by 78
 		+ Mana star have 6% to spawn from hitting NPC with magic projectile
 		'''
+	Description3:
+		'''
+		+ 12% melee size increases
+		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
+		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
+		+ Collecting heart have chance to gain nebula booster
+		'''
 }
 
 BlessingOfStarDust: {
@@ -214,7 +228,7 @@ BlessingOfStarDust: {
 	Description:
 		'''
 		+ Your whip inflict Star gaze
-		+ For 2 minion/sentry slot you have, you gain 1 damage
+		+ For 2 minion/sentry slot you have, you gain 1 base damage
 		+ Increases your max minion slot and sentry slot by 1
 		'''
 }
@@ -370,11 +384,7 @@ AspectOfFirstChaos: {
 		+ Hitting enemy with item will also occasionally shoot out random projectile
 		+ You sometime hit enemy multiple time
 		'''
-}
-
-AspectOfFirstChaos1: {
-	DisplayName: Aspect Of First Chaos
-	Description:
+	Description1:
 		'''
 		+ Increases the chance of spawning random projectile and doing multiple hit
 		+ Projectile that is spawn from this perk have 1 in 4 chance to spawn another different projectile
@@ -521,7 +531,7 @@ NaturalThorn: {
 	DisplayName: Natural Thorn
 	Description:
 		'''
-		+ Increases your maximum health by 10%
+		+ Increases your maximum health by 15%
 		+ Deal damage to enemy close to you ( damage depend on your current health )
 		+ Getting hit will deal damage back to NPC depend on your regenerative power
 		'''
@@ -543,7 +553,7 @@ NightTerror: {
 		'''
 		During night :
 		+ Increases your life regeneration by 25% and flat 10
-		Increases your :
+		Also increases your :
 		+ Melee damage by 1.3x, critical damage by 1.4x, movement and jump boost by 55%
 		( Note : effect above are stack differently )
 		'''

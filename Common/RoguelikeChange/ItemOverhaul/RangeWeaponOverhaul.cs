@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Common.General;
 using BossRush.Common.Systems;
+using System.Collections.Generic;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 	//public readonly static int[] GunType = {
@@ -191,6 +192,18 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 					NumOfProjectile = 6;
 					itemIsAShotgun = true;
 					break;
+			}
+			//Prototype_PrefixedWorldVault(entity);
+		}
+		private void Prototype_PrefixedWorldVault(Item item) {
+			if (item.type == ItemID.Minishark) {
+				item.damage += 2;
+				item.knockBack += 2;
+				item.useTime += 2;
+				item.useAnimation += 2;
+				item.Set_ItemCriticalDamage(.5f);
+				item.crit += 10;
+
 			}
 		}
 		/// <summary>

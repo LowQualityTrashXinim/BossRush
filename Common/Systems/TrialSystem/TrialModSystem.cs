@@ -58,7 +58,7 @@ internal class TrialModSystem : ModSystem {
 	}
 	private void SpawnTrialNPC(int npcType, Rectangle spawnRect) {
 		NPC newnpc = null;
-		if (Trial.UsesCustomSpawn(CurrentWave, npcType, Trial_NPCPool[npcType], spawnRect, out Vector2 pos)) {
+		if (Trial.UsesCustomSpawn(CurrentWave, npcType, npcType, spawnRect, out Vector2 pos)) {
 			newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), pos, npcType);
 		}
 		else {
@@ -90,8 +90,6 @@ internal class TrialModSystem : ModSystem {
 		}
 		newnpc.GetGlobalNPC<TrialGlobalNPC>().SpawnedByTrial = true;
 		Trial_NPC.Add(newnpc);
-		Trial_NPCPool[npcType] = Math.Clamp(Trial_NPCPool[npcType] - 1, 0, Main.maxNPCs);
-		Trial_TotalRemainingNPCs = Trial_NPCPool.Count;
 	}
 	public static ModTrial Trial = null;
 	public static List<NPC> Trial_NPC = new List<NPC>();
@@ -163,7 +161,7 @@ internal class TrialModSystem : ModSystem {
 			CurrentWave = Math.Min(CurrentWave + 1, NextWave);
 			Rectangle spawnRect = Trial_ArenaSize;
 			foreach (var npcType in Trial_NPCPool) {
-				if (Trial_NPCPool[npcType] > 0) {
+				if (npcType > 0) {
 					SpawnTrialNPC(npcType, spawnRect);
 				}
 			}

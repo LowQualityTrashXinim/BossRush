@@ -301,6 +301,12 @@ namespace BossRush.Contents.Perks {
 			}
 			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
 		}
+		public override bool OnPickup(Item item) {
+			foreach (int perk in perks.Keys) {
+				ModPerkLoader.GetPerk(perk).OnPickUp(Player, item);
+			}
+			return base.OnPickup(item);
+		}
 		public override void SaveData(TagCompound tag) {
 			tag["PlayerPerks"] = perks.Keys.ToList();
 			tag["PlayerPerkStack"] = perks.Values.ToList();
@@ -471,6 +477,7 @@ namespace BossRush.Contents.Perks {
 		public virtual void OnChoose(Player player) { }
 		public virtual bool FreeDodge(Player player, Player.HurtInfo hurtInfo) => false;
 		public virtual bool PreKill(Player player) => false;
+		public virtual void OnPickUp(Player player, Item item) { }
 	}
 	public static class ModPerkLoader {
 		private static readonly List<Perk> _perks = new();
@@ -547,7 +554,7 @@ namespace BossRush.Contents.Perks {
 				}
 			}
 			else if (StateofState == StarterPerkState) {
-				listOfPerk = [..PerkModSystem.StarterPerkType];
+				listOfPerk = [.. PerkModSystem.StarterPerkType];
 			}
 			foreach (var item in list_perkbtn) {
 				if (listOfPerk.Contains(item.perkType)) {

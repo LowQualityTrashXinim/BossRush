@@ -38,8 +38,7 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 				return;
 			}
 			if (Player.velocity == Vector2.Zero) {
-				ShortStanding++;
-				if (ShortStanding > 30) {//0.5s required
+				if (++ShortStanding > 30) {//0.5s required
 					if (ShortStanding % Math.Clamp(10 - ShortStanding / 100, 1, 10) == 0) {
 						Player.statLife = Math.Clamp(Player.statLife + 1, 0, Player.statLifeMax2);
 					}
@@ -95,11 +94,13 @@ namespace BossRush.Contents.Transfixion.Artifacts {
 		}
 		public override void UpdateEquip(Player player) {
 			int stack = StackAmount(player);
-			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.MaxHP, 1 + .15f * stack);
+			PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+			modplayer.AddStatsToPlayer(PlayerStats.MaxHP, 1 + .15f * stack);
 			player.Center.LookForHostileNPC(out List<NPC> npclist, 200);
 			foreach (NPC npc in npclist) {
-				if (npc.immune[player.whoAmI] <= 0)
-					player.StrikeNPCDirect(npc, npc.CalculateHitInfo((player.statLifeMax2 - player.statLife) * stack, 1));
+				if (modplayer.synchronize_Counter % 30 == 0) {
+					player.StrikeNPCDirect(npc, npc.CalculateHitInfo((player.statLifeMax2 - player.statLife) / 6 * stack, 0, false, BossRushUtils.DirectionFromPlayerToNPC(player.Center.X, npc.Center.X)));
+				}
 			}
 		}
 		public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo) {

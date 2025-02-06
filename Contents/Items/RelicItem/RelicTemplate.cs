@@ -552,9 +552,11 @@ public class SlimeSpikeTemplate : RelicTemplate {
 		//SlimeSpikeTemplate.Description: Shoot [c/{0}:{1} friendly slime spike] dealing [c/{2}:{3}] [c/{4}:{5}] when enemy are near
 		//As such it is important to format these string so that custom value can be shown on relic
 		return string.Format(Description, new string[] {
+			//Terraria have a feature that allow we to add color to text, they uses hex3 for custom text coloring
 				Color.Blue.Hex3(),
 				relic.RelicTier.ToString(),
 				Color.Red.Hex3(),
+				//This is my custom method that convert float number to string
 				RelicTemplateLoader.RelicValueToNumber(value.Base * (1 + .1f * (relic.RelicTier - 1))),
 				Color.Yellow.Hex3(),
 				Name
@@ -582,8 +584,11 @@ public class SlimeSpikeTemplate : RelicTemplate {
 				(int)(value.Base * (1 + .1f * Tier + 1)),
 				2 + .5f * Tier,
 				player.whoAmI);
+			//Setting projectile travel distance before killing
 			proj.Set_ProjectileTravelDistance(375);
+			//Setting projectile damage type
 			proj.DamageType = dmgclass;
+			//Set the projectile to ignore tile collision
 			proj.tileCollide = false;
 		}
 	}
