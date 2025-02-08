@@ -207,7 +207,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 						}
 					}
 					if (pass >= 7) {
-						WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
+						if (WorldGen.genRand.NextBool(100)) {
+							Generate_Trial(i, j);
+						}
+						else {
+							WorldGen.PlaceTile(i, j, Main.rand.Next(TerrariaArrayID.Altar));
+						}
 						RNG = false;
 					}
 				}
@@ -225,6 +230,29 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
 		Generate_Biome(TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm, "FleshShrine");
 		ResetTemplate_GenerationValue();
+	}
+	public void Generate_Trial(int X, int Y) {
+		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");
+		template.EnumeratePixels((a, b, color) => {
+			if (a == 50 && b == 50) {
+				a += X;
+				b += Y;
+				GenerationHelper.FastRemoveTile(a, b);
+				WorldGen.PlaceTile(a, b, ModContent.TileType<StartTrialAltar_Template_1>());
+				GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
+				return;
+			}
+			a += X;
+			b += Y;
+			GenerationHelper.FastRemoveTile(a, b);
+			if (color.R == 255 && color.B == 0 && color.G == 0) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
+			}
+			else if (color.R == 0 && color.B == 255 && color.G == 0) {
+				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
+			}
+			GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
+		});
 	}
 	public void Generate_Shrine(string shrineType, int X, int Y, int width = 11, int height = 12) {
 		GenerationHelper.Safe_PlaceStructure($"Shrine/{shrineType}", new Rectangle(X, Y, width, height));

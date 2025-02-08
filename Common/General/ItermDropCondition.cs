@@ -3,8 +3,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Terraria.GameContent.ItemDropRules;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Common.General {
+	public class DenyYouFromLoot : IItemDropRuleCondition {
+		public bool CanDrop(DropAttemptInfo info) {
+			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeOverhaulNPC npc)) {
+				return !npc.CanDenyYouFromLoot;
+			}
+			return false;
+		}
+		public bool CanShowItemDropInUI() => true;
+		public string GetConditionDescription() => "deny you from loot regardless";
+	}
 	public class ChallengeModeException : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
@@ -114,7 +125,7 @@ namespace BossRush.Common.General {
 		public bool CanShowItemDropInUI() => true;
 		public string GetConditionDescription() => "Nightmare mode exclusive";
 	}
-	public class PerkDrop  : IItemDropRuleCondition {
+	public class PerkDrop : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
 			if (!info.IsInSimulation) {
 				return ModContent.GetInstance<UniversalSystem>().ListOfBossKilled.Count < 1;

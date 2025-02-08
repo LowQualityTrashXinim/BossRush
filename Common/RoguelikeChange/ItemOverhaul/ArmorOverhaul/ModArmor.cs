@@ -162,7 +162,19 @@ public abstract class ModArmorPiece : ModType {
 	/// <b>True</b> to add localization of this armor piece into armor tooltip
 	/// </summary>
 	public bool AddTooltip = false;
+	/// <summary>
+	/// Allow you to completely override original tooltip
+	/// </summary>
 	public bool OverrideTooltip = false;
+	/// <summary>
+	/// Make a attempt to delete vanity tooltip if has any
+	/// </summary>
+	public bool DeleteVanityTooltip = false;
+	/// <summary>
+	/// Uses this to add always update effect such as damage increases
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="item"></param>
 	public virtual void UpdateEquip(Player player, Item item) { }
 	public string ToolTip => Language.GetTextValue($"Mods.BossRush.Armor.{ArmorName}.{TypeEquipment}");
 	protected override void Register() {

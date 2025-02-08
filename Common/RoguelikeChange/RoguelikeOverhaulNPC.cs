@@ -6,8 +6,8 @@ using Terraria.ID;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Terraria.GameContent;
-using System.IO;
+using Terraria.GameContent.ItemDropRules;
+using BossRush.Common.General;
 
 namespace BossRush.Common.RoguelikeChange;
 internal class RoguelikeOverhaulNPC : GlobalNPC {
@@ -24,6 +24,9 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	public const int BossDef = 5;
 	public bool EliteBoss = false;
 	public float VelocityMultiplier = 1;
+	public bool IsAGhostEnemy = false;
+	public int BelongToWho = -1;
+	public bool CanDenyYouFromLoot = false;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
@@ -70,6 +73,9 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 	}
 	public override void ResetEffects(NPC npc) {
 		StatDefense = new();
+		if (IsAGhostEnemy) {
+			npc.dontTakeDamage = true;
+		}
 		if (!npc.boss) {
 			EliteBoss = false;
 		}
@@ -80,6 +86,12 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 			DRFromFatalAttack = true;
 		}
 		Endurance = 0;
+	}
+	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		LeadingConditionRule rule = new(new DenyYouFromLoot());
+		foreach (var item in npcLoot.Get()) {
+			item.OnSuccess(rule);
+		}
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
@@ -102,6 +114,17 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 			HeatRay_Decay = BossRushUtils.CountDown(HeatRay_Decay);
 			if (HeatRay_Decay <= 0) {
 				HeatRay_HitCount--;
+			}
+		}
+		if (BelongToWho >= 0 && BelongToWho < Main.maxNPCs) {
+			NPC parent = Main.npc[BelongToWho];
+			if (parent != null) {
+				if (!parent.active || parent.life <= 0) {
+					npc.StrikeInstantKill();
+				}
+			}
+			else {
+				BelongToWho = -1;
 			}
 		}
 	}

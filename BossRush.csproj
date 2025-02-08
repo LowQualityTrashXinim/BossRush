@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Images\Structures\Corruption\2x4CorruptionArena2.png" />
+    <None Remove="Assets\Images\Trials\TrialRoomTemplate1.png" />
     <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />
     <None Remove="Common\Graphics\Shaders\FlameBallPrimitive.fx" />
     <None Remove="Contents\Transfixion\Artifacts\BootsOfSpeedManipulationArtifact.png" />

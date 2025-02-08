@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Channels;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {

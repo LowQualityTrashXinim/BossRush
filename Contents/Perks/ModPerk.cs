@@ -320,6 +320,12 @@ namespace BossRush.Contents.Perks {
 			CanBeStack = true;
 			StackLimit = 3;
 		}
+		public override string ModifyToolTip() {
+			if (StackAmount(Main.LocalPlayer) >= 2) {
+				return DescriptionIndex(3);
+			}
+			return base.ModifyToolTip();
+		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateMeleeChanceMutilplier += 1f;
 		}
@@ -384,6 +390,12 @@ namespace BossRush.Contents.Perks {
 			list_category.Add(PerkCategory.Starter);
 			CanBeStack = true;
 			StackLimit = 3;
+		}
+		public override string ModifyToolTip() {
+			if (StackAmount(Main.LocalPlayer) >= 2) {
+				return DescriptionIndex(3);
+			}
+			return base.ModifyToolTip();
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<ChestLootDropPlayer>().UpdateMagicChanceMutilplier += 1f;

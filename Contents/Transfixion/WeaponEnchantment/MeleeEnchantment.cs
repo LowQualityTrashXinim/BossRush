@@ -544,7 +544,10 @@ public class IceBlade : ModEnchantment {
 	}
 	public override void Shoot(int index, Player player, EnchantmentGlobalItem globalItem, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		if (globalItem.Item_Counter1[index] <= 0) {
-			Projectile.NewProjectile(source, position, velocity.SafeNormalize(Vector2.Zero) * 5, ProjectileID.IceBolt, damage, knockback, player.whoAmI);
+			if (velocity.Length() < 5) {
+				velocity = (player.Center - position).SafeNormalize(Vector2.Zero) * 5;
+			}
+			Projectile.NewProjectile(source, position, velocity, ProjectileID.IceBolt, damage, knockback, player.whoAmI);
 			globalItem.Item_Counter1[index] = item.useAnimation * 3;
 		}
 	}

@@ -9,6 +9,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush;
 using BossRush.Contents.Skill;
 using BossRush.Common.Utils;
+using BossRush.Common.Systems.TrialSystem;
 public class AltarItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public override void SetDefaults() {
@@ -127,5 +128,7 @@ public class EoCBossAltar : BossItemAltar {
 	protected override int BossItemID => ItemID.SuspiciousLookingEye;
 }
 public class StartTrialAltar_Template_1 : Altar {
-
+	public override void On_RightClick(Player player, int i, int j) {
+		TrialModSystem.SetTrial(ModTrial.GetTrialType<TestTrial>(), new Vector2(i, j).ToWorldCoordinates());
+	}
 }

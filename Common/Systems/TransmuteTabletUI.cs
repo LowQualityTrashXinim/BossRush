@@ -284,7 +284,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				if (count > 4) {
 					return false;
 				}
-				if (Main.rand.NextFloat() > GetRelicChance(relicItem, relic2, offsetchance)) {
+				if (Main.rand.NextFloat() > GetRelicChance(relicItem, relic2, offsetchance) && !player.IsDebugPlayer()) {
 					item1.TurnToAir();
 					item2.TurnToAir();
 					return false;

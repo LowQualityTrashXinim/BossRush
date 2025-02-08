@@ -407,6 +407,10 @@ namespace BossRush.Contents.Perks {
 			return ModContent.GetInstance<T>().Type;
 		}
 		public string PerkNameToolTip => ModifyName() + "\n" + ModifyToolTip();
+		/// <summary>
+		/// If you are using <see cref="StackAmount(Player)"/> check for tooltip, always set it back at lest by 1
+		/// </summary>
+		/// <returns></returns>
 		public virtual string ModifyToolTip() {
 			if (Description != null)
 				return Description;

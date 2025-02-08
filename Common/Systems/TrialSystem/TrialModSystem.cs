@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
+using BossRush.Contents.Perks;
 
 namespace BossRush.Common.Systems.TrialSystem;
 
@@ -41,6 +42,11 @@ internal class TrialModSystem : ModSystem {
 
 		//Main.spriteBatch.End();
 	}
+	/// <summary>
+	/// Use this to activate a trial
+	/// </summary>
+	/// <param name="TrialID"></param>
+	/// <param name="activatePosition"></param>
 	public static void SetTrial(int TrialID, Vector2 activatePosition) {
 		Trial = GetTrial(Math.Clamp(TrialID, 0, TotalCount));
 		Trial_StartPos = activatePosition;
@@ -187,6 +193,9 @@ public abstract class ModTrial : ModType {
 	public string TrialRoom = null;
 	public bool IsABattleTrial = true;
 	public int Type { get; private set; }
+	public static int GetTrialType<T>() where T : ModTrial {
+		return ModContent.GetInstance<T>().Type;
+	}
 	protected sealed override void Register() {
 		SetStaticDefaults();
 		Type = TrialModSystem.Register(this);

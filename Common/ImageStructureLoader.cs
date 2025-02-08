@@ -11,6 +11,7 @@ namespace BossRush.Common;
 public class ImageStructureLoader : ILoadable {
 	private static readonly Dictionary<string, ImageData> Images = new();
 	private static readonly Dictionary<string, ImageData> ImagesTemplate = new();
+	private static readonly Dictionary<string, ImageData> ImagesTrial = new();
 	public void Load(Mod mod) {
 		foreach (string filePath in mod.GetFileNames()) {
 			if (!filePath.EndsWith(".rawimg")) {
@@ -33,6 +34,14 @@ public class ImageStructureLoader : ILoadable {
 
 				ImagesTemplate[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
 			}
+			else if (filePath.StartsWith("Assets/Images/Trials")) {
+				Texture2D texture = mod.Assets.Request<Texture2D>(filePath[..^7], AssetRequestMode.ImmediateLoad).Value;
+
+				Color[] textureData = new Color[texture.Width * texture.Height];
+				Main.RunOnMainThread(() => texture.GetData(textureData)).Wait();
+
+				ImagesTrial[Path.GetFileName(filePath)] = new ImageData(texture.Width, textureData);
+			}
 		}
 	}
 	public static ImageData Get(string structureName) {
@@ -40,6 +49,9 @@ public class ImageStructureLoader : ILoadable {
 	}
 	public static ImageData Get_Tempate(string structureName) {
 		return ImagesTemplate[structureName + ".rawimg"];
+	}
+	public static ImageData Get_Trials(string structureName) {
+		return ImagesTrial[structureName + ".rawimg"];
 	}
 	public void Unload() {
 	}
