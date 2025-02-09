@@ -176,7 +176,7 @@ public class CombatV2Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.1f, 1.2f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (player.ComparePlayerHealthInPercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
+		if (player.IsHealthAbovePercentage(.9f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV3Template : RelicTemplate {
@@ -219,7 +219,7 @@ public class CombatV3Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.15f, 1.25f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
+		if (!player.IsHealthAbovePercentage(.45f)) modplayer.AddStatsToPlayer(stat, value);
 	}
 }
 public class CombatV4Template : RelicTemplate {
@@ -292,7 +292,7 @@ public class HealthV2Template : RelicTemplate {
 		return new StatModifier(MathF.Round(Main.rand.NextFloat(1.4f, 1.85f), 2), 1);
 	}
 	public override void Effect(Relic relic, PlayerStatsHandle modplayer, Player player, StatModifier value, PlayerStats stat) {
-		if (!player.ComparePlayerHealthInPercentage(.35f)) {
+		if (!player.IsHealthAbovePercentage(.35f)) {
 			modplayer.AddStatsToPlayer(stat, value);
 		}
 	}

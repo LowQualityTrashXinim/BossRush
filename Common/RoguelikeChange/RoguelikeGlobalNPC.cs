@@ -10,7 +10,7 @@ using Terraria.GameContent.ItemDropRules;
 using BossRush.Common.General;
 
 namespace BossRush.Common.RoguelikeChange;
-internal class RoguelikeOverhaulNPC : GlobalNPC {
+internal class RoguelikeGlobalNPC : GlobalNPC {
 	public override bool InstancePerEntity => true;
 	public int HeatRay_Decay = 0;
 	public int HeatRay_HitCount = 0;
@@ -86,6 +86,11 @@ internal class RoguelikeOverhaulNPC : GlobalNPC {
 			DRFromFatalAttack = true;
 		}
 		Endurance = 0;
+	}
+	public override void ModifyTypeName(NPC npc, ref string typeName) {
+		if (EliteBoss) {
+			typeName = "Elite " + typeName;
+		}
 	}
 	public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 		LeadingConditionRule rule = new(new DenyYouFromLoot());

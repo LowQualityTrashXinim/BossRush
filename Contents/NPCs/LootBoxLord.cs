@@ -38,7 +38,7 @@ namespace BossRush.Contents.NPCs {
 			NPC.dontTakeDamage = true;
 			NPC.strengthMultiplier = 1;
 			NPC.ScaleStats_UseStrengthMultiplier(1);
-			NPC.GetGlobalNPC<RoguelikeOverhaulNPC>().NPC_SpecialException = true;
+			NPC.GetGlobalNPC<RoguelikeGlobalNPC>().NPC_SpecialException = true;
 		}
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			//for (int i = 0; i < TerrariaArrayID.MeleePreBoss.Length; i++) {

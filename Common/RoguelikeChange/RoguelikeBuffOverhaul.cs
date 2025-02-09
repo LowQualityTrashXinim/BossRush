@@ -21,7 +21,7 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 		if (!UniversalSystem.Check_RLOH()) {
 			return;
 		}
-		RoguelikeOverhaulNPC globalnpc = npc.GetGlobalNPC<RoguelikeOverhaulNPC>();
+		RoguelikeGlobalNPC globalnpc = npc.GetGlobalNPC<RoguelikeGlobalNPC>();
 		if (type == BuffID.Electrified) {
 			int lifelose = 22;
 			if (npc.velocity != Microsoft.Xna.Framework.Vector2.Zero) {

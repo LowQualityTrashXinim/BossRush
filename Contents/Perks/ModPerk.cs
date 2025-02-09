@@ -691,7 +691,7 @@ namespace BossRush.Contents.Perks {
 		}
 		public override void UpdateEquip(Player player) {
 			player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.Defense, 1.15f, 1, 10);
-			if (player.ComparePlayerHealthInPercentage(.66f)) {
+			if (player.IsHealthAbovePercentage(.66f)) {
 				player.GetModPlayer<PlayerStatsHandle>().AddStatsToPlayer(PlayerStats.RegenHP, Flat: -32);
 			}
 			player.buffImmune[BuffID.OnFire] = true;
@@ -710,7 +710,7 @@ namespace BossRush.Contents.Perks {
 			if (npclist.Count > 0) {
 				foreach (NPC npc in npclist) {
 					npc.AddBuff(BuffID.OnFire, 180);
-					if (player.ComparePlayerHealthInPercentage(.67f)) {
+					if (player.IsHealthAbovePercentage(.67f)) {
 						npc.AddBuff(BuffID.OnFire3, 180);
 						npc.AddBuff(ModContent.BuffType<TheUnderworldWrath>(), 180);
 					}
@@ -917,7 +917,7 @@ namespace BossRush.Contents.Perks {
 			this.BossRushSetDefaultDeBuff();
 		}
 		public override void Update(NPC npc, ref int buffIndex) {
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense *= 0;
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense *= 0;
 		}
 	}
 	public class TitanPower : Perk {

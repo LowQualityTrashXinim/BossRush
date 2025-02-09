@@ -12,11 +12,11 @@ internal class DeepSeaPressure : ModBuff {
 		this.BossRushSetDefaultDeBuff(Cure: true);
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense.Base -= 10;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense.Base -= 10;
 		npc.lifeRegen -= 20;
 		if (npc.buffType.Where(b => b != Type && Main.debuff[b]).Any()) {
 			npc.lifeRegen -= 10;
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense.Base -= 5f;
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense.Base -= 5f;
 		}
 	}
 	public override void Update(Player player, ref int buffIndex) {

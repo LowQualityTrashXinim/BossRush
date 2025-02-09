@@ -11,7 +11,7 @@ namespace BossRush.Contents.BuffAndDebuff {
 		}
 		public override void Update(NPC npc, ref int buffIndex) {
 			npc.lifeRegen -= 50;
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense.Base += 20;
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense.Base += 20;
 		}
 	}
 }

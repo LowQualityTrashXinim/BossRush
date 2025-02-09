@@ -8,7 +8,7 @@ using BossRush.Common.RoguelikeChange;
 namespace BossRush.Common.General {
 	public class DenyYouFromLoot : IItemDropRuleCondition {
 		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeOverhaulNPC npc)) {
+			if (!info.IsInSimulation && info.npc.TryGetGlobalNPC(out RoguelikeGlobalNPC npc)) {
 				return !npc.CanDenyYouFromLoot;
 			}
 			return false;

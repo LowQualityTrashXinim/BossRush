@@ -575,7 +575,6 @@ class FlowerOfFire : ModEnchantment {
 		}
 	}
 }
-
 /// <summary>
 /// This is a example for mod enchantment and how to utilize most of the stuff
 /// </summary>

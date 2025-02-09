@@ -35,7 +35,7 @@ public class IronArmorPlayer : PlayerArmorHandle {
 	public override void Armor_UpdateEquipsSet() {
 		Player.endurance += 0.1f;
 		Player.DefenseEffectiveness *= 1.25f;
-		if (!Player.ComparePlayerHealthInPercentage(.5f)) {
+		if (!Player.IsHealthAbovePercentage(.5f)) {
 			Player.statDefense += 25;
 		}
 	}

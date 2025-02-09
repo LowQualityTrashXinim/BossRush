@@ -48,7 +48,7 @@ class Axe_BleedDebuff : ModBuff {
 		this.BossRushSetDefaultDeBuff();
 	}
 	public override void Update(NPC npc, ref int buffIndex) {
-		npc.GetGlobalNPC<RoguelikeOverhaulNPC>().StatDefense -= .2f;
+		npc.GetGlobalNPC<RoguelikeGlobalNPC>().StatDefense -= .2f;
 		npc.lifeRegen -= 10;
 	}
 }

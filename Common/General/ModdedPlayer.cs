@@ -140,9 +140,6 @@ namespace BossRush.Common.General {
 				if (Player.name == "LQTXinim" || Player.name == "LowQualityTrashXinim") {
 					yield return new Item(ModContent.ItemType<RainbowLootBox>());
 				}
-				if (Player.name == "FeelingLucky") {
-					yield return new Item(ModContent.ItemType<GodDice>());
-				}
 				if (Player.name.ToLower().Trim() == "drugaddict") {
 					yield return new Item(ModContent.ItemType<WonderDrug>(), 99);
 				}

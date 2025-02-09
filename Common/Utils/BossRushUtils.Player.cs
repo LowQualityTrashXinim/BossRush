@@ -20,7 +20,7 @@ namespace BossRush {
 		/// <returns>
 		/// True if health is above or equal said percentage
 		/// </returns>
-		public static bool ComparePlayerHealthInPercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
+		public static bool IsHealthAbovePercentage(this Player player, float percent) => player.statLife >= percent * player.statLifeMax2;
 		public static bool IsDebugPlayer(this Player player) =>
 			player.name.Contains("Test") ||
 			player.name.Contains("Debug") ||

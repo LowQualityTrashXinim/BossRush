@@ -49,7 +49,7 @@ public class SoulFlame : ModCurse {
 		Value = 2;
 	}
 	public override void Update(Player player) {
-		if (player.ComparePlayerHealthInPercentage(.75f)) {
+		if (player.IsHealthAbovePercentage(.75f)) {
 			PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Flat: -10);
 		}
 	}

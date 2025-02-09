@@ -128,8 +128,8 @@ public class FoolDomain : Perk {
 		DataStorer.ActivateContext(player, "Perk_FoolDomain");
 		player.Center.LookForHostileNPC(out List<NPC> npclist, 400);
 		foreach (NPC npc in npclist) {
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().VelocityMultiplier -= .35f;
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().Endurance += .2f;
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().VelocityMultiplier -= .35f;
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().Endurance += .2f;
 		}
 	}
 	public override void ModifyHitByNPC(Player player, NPC npc, ref Player.HurtModifiers modifiers) {

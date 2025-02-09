@@ -17,7 +17,7 @@ internal class TokenOfGluttonyArtifact : Artifact {
 public class TokenOfGluttonyPlayer : ModPlayer {
 	bool TokenOfGluttony = false;
 	public override void SetStaticDefaults() {
-		DataStorer.SetContext("Artifact_ToG", new(300, Vector2.Zero, false, Color.Brown));
+		DataStorer.AddContext("Artifact_ToG", new(300, Vector2.Zero, false, Color.Brown));
 	}
 	public override void ResetEffects() {
 		TokenOfGluttony = Player.HasArtifact<TokenOfGluttonyArtifact>();
@@ -44,7 +44,7 @@ public class TokenOfGluttonyPlayer : ModPlayer {
 		if (TokenOfGluttony) {
 			Player.endurance += (1 - PercentageRatio) / 2f;
 			Player.GetModPlayer<PlayerStatsHandle>().BuffTime -= .9f;
-			if (Player.buffType.Where(b => b != 0).Any()) {
+			if (Player.buffType.Where(b => b != 0 && !Main.buffNoTimeDisplay[b]).Any()) {
 				Player.endurance += .1f;
 			}
 		}
@@ -92,7 +92,7 @@ public class Satisfaction : Perk {
 		return Artifact.PlayerCurrentArtifact<TokenOfGluttonyArtifact>() || AchievementSystem.IsAchieved("TokenOfGluttony");
 	}
 	public override void UpdateEquip(Player player) {
-		if (!player.ComparePlayerHealthInPercentage(.4f)) {
+		if (!player.IsHealthAbovePercentage(.4f)) {
 			player.endurance += 0.1f * StackAmount(player);
 		}
 		else if (player.statLife >= player.statLifeMax2) {
@@ -100,7 +100,7 @@ public class Satisfaction : Perk {
 		}
 	}
 	public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (!player.ComparePlayerHealthInPercentage(.6f)) {
+		if (!player.IsHealthAbovePercentage(.6f)) {
 			player.Heal(Math.Clamp((int)(hit.Damage * .1f), 0, 100));
 		}
 	}

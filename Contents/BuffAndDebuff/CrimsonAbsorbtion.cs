@@ -14,7 +14,7 @@ internal class CrimsonAbsorbtion : ModBuff {
 		}
 	}
 	public override void Update(Player player, ref int buffIndex) {
-		if (player.ComparePlayerHealthInPercentage(.5f)) {
+		if (player.IsHealthAbovePercentage(.5f)) {
 			player.lifeRegen -= 30;
 		}
 	}

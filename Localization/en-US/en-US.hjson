@@ -2243,6 +2243,11 @@ Mods: {
 				DisplayName: Annihiliation
 				Tooltip: ""
 			}
+
+			SkillSlotUnlock: {
+				DisplayName: Skill Slot Unlock
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {

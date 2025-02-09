@@ -211,7 +211,7 @@ namespace BossRush.Common.RoguelikeChange.ItemOverhaul {
 		public override void UpdateAccessory(Item item, Player player, bool hideVisual) {
 			if (item.type == ItemID.CopperWatch) {
 				if (player.Center.LookForHostileNPC(out NPC npc, 400f)) {
-					npc.GetGlobalNPC<RoguelikeOverhaulNPC>().VelocityMultiplier -= .3f;
+					npc.GetGlobalNPC<RoguelikeGlobalNPC>().VelocityMultiplier -= .3f;
 				}
 				player.GetModPlayer<PlayerStatsHandle>().Hostile_ProjectileVelocityAddition -= .3f;
 			}

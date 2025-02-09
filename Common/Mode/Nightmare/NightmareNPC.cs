@@ -20,7 +20,7 @@ namespace BossRush.Common.Mode.Nightmare {
 			if (npc.type == NPCID.EyeofCthulhu) {
 				for (int i = 0; i < 3; i++) {
 					NPC servant = NPC.NewNPCDirect(source, npc.Center, NPCID.ServantofCthulhu);
-					RoguelikeOverhaulNPC global = servant.GetGlobalNPC<RoguelikeOverhaulNPC>();
+					RoguelikeGlobalNPC global = servant.GetGlobalNPC<RoguelikeGlobalNPC>();
 					global.BelongToWho = npc.whoAmI;
 					global.IsAGhostEnemy = true;
 					global.CanDenyYouFromLoot = true;
@@ -44,7 +44,7 @@ namespace BossRush.Common.Mode.Nightmare {
 			npc.knockBackResist *= .5f;
 		}
 		private void BossChange(NPC npc) {
-			npc.GetGlobalNPC<RoguelikeOverhaulNPC>().EliteBoss = Main.rand.NextBool();
+			npc.GetGlobalNPC<RoguelikeGlobalNPC>().EliteBoss = Main.rand.NextBool();
 			if (npc.type == NPCID.EaterofWorldsHead || npc.type == NPCID.EaterofWorldsTail || npc.type == NPCID.EaterofWorldsBody) {
 				npc.lifeMax += 250;
 				npc.scale += .25f;
