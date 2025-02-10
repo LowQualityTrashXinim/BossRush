@@ -92,3 +92,16 @@ public class TransferStation : ModSkill {
 		}
 	}
 }
+public class OrbOfPurity : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 325;
+		Skill_Duration = BossRushUtils.ToSecond(4);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<DiamondSwotaffOrb>()] < 1) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<DiamondSwotaffOrb>(), 10, 0, player.whoAmI);
+		}
+	}
+}

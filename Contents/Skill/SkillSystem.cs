@@ -57,8 +57,10 @@ public abstract class ModSkill : ModType {
 	public int Type { get; private set; }
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.ModSkill.{Name}.Description");
-	protected sealed override void Register() {
+	public ModSkill() {
 		SetDefault();
+	}
+	protected sealed override void Register() {
 		Type = SkillModSystem.Register(this);
 	}
 	public virtual void ModifyNextSkillStats(out StatModifier energy, out StatModifier duration, out StatModifier cooldown) {
@@ -99,7 +101,7 @@ public abstract class ModSkill : ModType {
 	}
 }
 public class SkillModSystem : ModSystem {
-	public static List<ModSkill> _skill { get; private set; } = new();
+	private static List<ModSkill> _skill = new();
 	public static Dictionary<byte, List<ModSkill>> dict_skill { get; private set; } = new();
 	public static int TotalCount => _skill.Count;
 	public static int Register(ModSkill skill) {
@@ -111,6 +113,7 @@ public class SkillModSystem : ModSystem {
 		else {
 			dict_skill.Add(skill.Skill_Type, new() { skill });
 		}
+		//BossRush.Instance.Logger.Info($"Added skill :{_skill[_skill.Count - 1].Name}");
 		return _skill.Count - 1;
 	}
 	public static ModSkill GetSkill(int type) {
@@ -121,8 +124,6 @@ public class SkillModSystem : ModSystem {
 	public static ModKeybind SkillActivation { get; private set; }
 
 	public override void Load() {
-		_skill = new();
-		dict_skill = new();
 		SkillActivation = KeybindLoader.RegisterKeybind(Mod, "Skill activation", Keys.F);
 	}
 	public override void Unload() {
@@ -260,7 +261,7 @@ public class SkillHandlePlayer : ModPlayer {
 		energy = (int)(energy * percentageEnergy) + seperateEnergy;
 	}
 	public void ReplaceSkillFromInvToSkillHolder(int whoAmIskill, int whoAmIInv) {
-		if(whoAmIskill >= AvailableSkillActiveSlot) {
+		if (whoAmIskill >= AvailableSkillActiveSlot) {
 			return;
 		}
 		if (whoAmIskill < 0 || whoAmIskill > 9) {
@@ -876,8 +877,8 @@ class btn_SkillSlotHolder : UIImageButton {
 			|| (SkillModSystem.SelectSkillIndex == whoAmI && uitype == SkillUI.UItype_SKILL)) {
 			BossRushUtils.DrawAuraEffect(spriteBatch, Texture, drawpos, 2, 2, new Color(255, 255, 255, 100), 0, 1f);
 		}
-		if(uitype == SkillUI.UItype_SKILL) {
-			if(whoAmI >= Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot) {
+		if (uitype == SkillUI.UItype_SKILL) {
+			if (whoAmI >= Main.LocalPlayer.GetModPlayer<SkillHandlePlayer>().AvailableSkillActiveSlot) {
 				Vector2 origin2 = locktexture.Value.Size() * .5f;
 				float scaling2 = ScaleCalculation(Texture.Size(), locktexture.Value.Size());
 				spriteBatch.Draw(locktexture.Value, drawpos, null, new Color(255, 255, 255), 0, origin2, scaling2, SpriteEffects.None, 0);

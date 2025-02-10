@@ -1,15 +1,13 @@
 Musket.Description:
 	'''
 	Decreases gun spread by 25%
-	Increases critical strike damage by 50%
-	Increases weapon critical strike chance by 5
+	Increases critical strike damage by 50% and weapon critical strike chance by 5%
 	For every 15 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 RedRyder.Description:
 	'''
 	Decreases gun spread by 15%
-	Increases critical strike damage by 15%
-	Increases weapon critical strike chance by 5
+	Increases critical strike damage by 15% and weapon critical strike chance by 5%
 	For every 7 time this weapon get uses, shoot out a 100% critical strike chance bullet
 	'''
 FlintlockPistol.Description:
@@ -176,6 +174,7 @@ BatBat.Description:
 	'''
 	Increases player movement speed by 12% and jump boost by 30% when held the item 
 	On hitting enemy, heal for 1 HP ( trigger every 0.2s )
+	Have 1 in 10 chance to spawn a bat dealing 65% of original damage
 	'''
 BoneSword.Description:
 	'''

@@ -474,6 +474,7 @@ public class EnergyBolt : ModSkill {
 		Skill_EnergyRequire = 200;
 		Skill_Duration = BossRushUtils.ToSecond(1);
 		Skill_CoolDown = BossRushUtils.ToSecond(5);
+		Skill_Type = SkillTypeID.Skill_Projectile;
 	}
 	public override void ModifySkillSet(Player player, SkillHandlePlayer modplayer, ref int index, ref StatModifier energy, ref StatModifier duration, ref StatModifier cooldown) {
 		int[] currentskillset = modplayer.GetCurrentActiveSkillHolder();
@@ -496,7 +497,6 @@ public class EnergyBolt : ModSkill {
 		Projectile.NewProjectileDirect(player.GetSource_Misc("Skill"), player.Center, toMouse, ModContent.ProjectileType<EnergyBoltProjectile>(), damage, 2f, player.whoAmI);
 	}
 }
-
 public class ElectricChain : ModSkill {
 	public override string Texture => BossRushUtils.GetTheSameTextureAsEntity<ElectricChain>();
 	public override void SetDefault() {

@@ -23,10 +23,12 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public int OnKill_ScatterShot = -1;
 	public float TravelDistanceBeforeKill = -1f;
 	public float VelocityMultiplier = 1f;
+	public int InitialTimeLeft { get; private set; } = 0;
 	public override void OnSpawn(Projectile projectile, IEntitySource source) {
 		if (source is null) {
 			return;
 		}
+		InitialTimeLeft = projectile.timeLeft;
 		Item itemUse = null;
 		if (source is EntitySource_ItemUse parent) {
 			itemUse = parent.Item;

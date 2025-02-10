@@ -567,9 +567,19 @@ public class BatBat : ModEnchantment {
 	}
 	public override void OnHitNPCWithItem(int index, Player player, EnchantmentGlobalItem globalItem, Item item, NPC target, NPC.HitInfo hit, int damageDone) {
 		LifeSteal(index, player, globalItem);
+		if (Main.rand.NextBool(10)) {
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(target.width + 10, target.height + 10);
+			Vector2 vel = (position - target.Center).SafeNormalize(Vector2.Zero) * 5f;
+			Projectile.NewProjectile(player.GetSource_ItemUse(item), position, vel, ProjectileID.Bat, (int)(hit.Damage * .65f), 0, player.whoAmI);
+		}
 	}
 	public override void OnHitNPCWithProj(int index, Player player, EnchantmentGlobalItem globalItem, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
 		LifeSteal(index, player, globalItem);
+		if (Main.rand.NextBool(10)) {
+			Vector2 position = target.Center + Main.rand.NextVector2CircularEdge(target.width + 10, target.height + 10);
+			Vector2 vel = (position - target.Center).SafeNormalize(Vector2.Zero) * 5f;
+			Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), position, vel, ProjectileID.Bat, (int)(hit.Damage * .65f), 0, player.whoAmI);
+		}
 	}
 	private void LifeSteal(int index, Player player, EnchantmentGlobalItem globalItem) {
 		if (globalItem.Item_Counter1[index] <= 0) {

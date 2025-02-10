@@ -208,6 +208,11 @@ TransferStation: {
 	Description: Places a Vampiric Pylon at your cursor, dealing 10 damage per second to enemies and healing you half that amount while in its radius
 }
 
+OrbOfPurity: {
+	DisplayName: Orb Of Purity
+	Description: A ancient orb
+}
+
 // UNRELEASED
 
 LucidNightmares: {
