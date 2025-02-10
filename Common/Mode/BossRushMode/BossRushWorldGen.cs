@@ -548,7 +548,7 @@ namespace BossRush.Common.ChallengeMode {
 		[Task]
 		public void Create_SlimeArena() {
 			Rectangle rect = GenerationHelper.GridPositionInTheWorld24x24(4, 10, 3, 3);
-			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect);
+			GenerationHelper.PlaceStructure("SlimeArenaVer2", rect, (x,a,v) => { });
 			Room.Add(BiomeAreaID.Slime, new List<Rectangle> { rect });
 		}
 		[Task]

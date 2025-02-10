@@ -140,6 +140,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Silt")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Grass")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Sunflowers")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Guide")));
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
 	}
@@ -162,7 +163,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 }
 public partial class RogueLikeWorldGen : ITaskCollection {
 	public UnifiedRandom Rand => WorldGen.genRand;
-	public static Point OffSetPoint => new Point(-64, -64);
+	public static readonly Point OffSetPoint = new Point(-64, -64);
 	Rectangle rect = new();
 	Point counter = OffSetPoint;
 	HashSet<Point> EmptySpaceRecorder = new();
@@ -228,13 +229,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	[Task]
 	public void GenerateFleshZone() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
+
 		Generate_Biome(TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm, "FleshShrine");
 		ResetTemplate_GenerationValue();
 	}
 	public void Generate_Trial(int X, int Y) {
 		ImageData template = ImageStructureLoader.Get_Trials("TrialRoomTemplate1");
 		template.EnumeratePixels((a, b, color) => {
-			if (a == 50 && b == 50) {
+			if (a == 25 && b == 25) {
 				a += X;
 				b += Y;
 				GenerationHelper.FastRemoveTile(a, b);
@@ -249,7 +251,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
 			}
 			else if (color.R == 0 && color.B == 255 && color.G == 0) {
-				GenerationHelper.FastPlaceTile(a, b, TileID.StoneSlab);
+				GenerationHelper.FastPlaceTile(a, b, TileID.Platforms);
 			}
 			GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
 		});
@@ -348,12 +350,24 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
-				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re, Main.rand.Next(styles));
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re, (x, y, ac) => {
+					if (rect.Contains(x, y)) {
+						ac.Invoke();
+						EmptySpaceRecorder.Add(new(x, y));
+					}
+
+				}, Main.rand.Next(styles));
 			}
 			else {
 				re.Width = 32;
 				re.Height = 64;
-				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re, Main.rand.Next(styles));
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re, (x, y, ac) => {
+					if (rect.Contains(x, y)) {
+						ac.Invoke();
+						EmptySpaceRecorder.Add(new(x, y));
+					}
+
+				}, Main.rand.Next(styles));
 			}
 			if (counter.X < rect.Width) {
 				counter.X += re.Width;

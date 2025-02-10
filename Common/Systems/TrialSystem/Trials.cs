@@ -31,7 +31,8 @@ public class TestTrial : ModTrial {
 		player.QuickSpawnItem(source, ModContent.ItemType<WeaponLootBox>());
 	}
 	public override Rectangle TrialSize(Vector2 TrialStartPosition) {
-		int width = 200, height = 100;
-		return new Rectangle((int)TrialStartPosition.X - width, (int)TrialStartPosition.Y - height, width * 2, height * 2);
+		int width = 25, height = 25;
+		Point toTileCoord = new Vector2(TrialStartPosition.X, TrialStartPosition.Y).ToTileCoordinates();
+		return new Rectangle(toTileCoord.X - width, toTileCoord.Y - height, width * 2, height * 2);
 	}
 }

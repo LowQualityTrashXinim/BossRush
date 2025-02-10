@@ -161,7 +161,7 @@ internal static partial class GenerationHelper {
 	/// Use this to place the structure in world gen code
 	/// </summary>
 	/// <param name="method">the method that was uses to optimize the file</param>
-	public static void PlaceStructure(string FileName, Rectangle rect, GenerateStyle style = GenerateStyle.None) {
+	public static void PlaceStructure(string FileName, Rectangle rect, Action<int, int, Action> tileGen, GenerateStyle style = GenerateStyle.None) {
 		List<GenPassData> datalist;
 		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
 		if (modsystem.dict_Struture.ContainsKey(FileName)) {
@@ -183,7 +183,7 @@ internal static partial class GenerationHelper {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, gdata.tileData));
 						offsetY++;
 					}
 				}
@@ -197,7 +197,7 @@ internal static partial class GenerationHelper {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, gdata.tileData));
 						offsetY++;
 					}
 				}
@@ -211,7 +211,7 @@ internal static partial class GenerationHelper {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, gdata.tileData));
 						offsetY++;
 					}
 				}
@@ -225,14 +225,14 @@ internal static partial class GenerationHelper {
 							offsetX++;
 						}
 						holdX = X + offsetX; holdY = Y + offsetY;
-						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						tileGen(holdX, holdY, () => Structure_PlaceTile(holdX, holdY, gdata.tileData));
 						offsetY++;
 					}
 				}
 				break;
 		}
 	}
-	private static void Structure_PlaceTile(int holdX, int holdY, TileData data) {
+	public static void Structure_PlaceTile(int holdX, int holdY, TileData data) {
 		Tile tile = Main.tile[holdX, holdY];
 		if (!data.Tile_Air) {
 			data.PlaceTile(tile);

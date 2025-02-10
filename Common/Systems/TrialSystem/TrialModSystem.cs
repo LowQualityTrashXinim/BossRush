@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ID;
 using BossRush.Contents.Perks;
+using BossRush.Common.Utils;
 
 namespace BossRush.Common.Systems.TrialSystem;
 
@@ -71,9 +72,9 @@ internal class TrialModSystem : ModSystem {
 			int failsafe = 0;
 			while (failsafe <= 999) {
 				Point position = new Point(
-					Main.rand.Next(spawnRect.Left, spawnRect.Right + 1) / 16,
-					Main.rand.Next(spawnRect.Top, spawnRect.Bottom + 1) / 16);
-				if (WorldGen.TileEmpty(position.X / 16, position.Y / 16)) {
+					Main.rand.Next(spawnRect.Left, spawnRect.Right + 1),
+					Main.rand.Next(spawnRect.Top, spawnRect.Bottom + 1));
+				if (WorldGen.TileEmpty(position.X, position.Y)) {
 					int pass = 0;
 					for (int offsetX = -1; offsetX <= 1; offsetX++) {
 						for (int offsetY = -1; offsetY <= 1; offsetY++) {
@@ -84,14 +85,15 @@ internal class TrialModSystem : ModSystem {
 						}
 					}
 					if (pass >= 8) {
-						newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), position.ToVector2() * 16, npcType);
+						newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), position.ToWorldCoordinates(), npcType);
 						break;
 					}
 					failsafe++;
 				}
 			}
 			if (newnpc == null) {
-				newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), Main.rand.NextVector2FromRectangle(spawnRect), npcType);
+				Vector2 attemptToCorrectPosition = Main.rand.NextVector2FromRectangle(spawnRect).ToWorldCoordinates();
+				newnpc = NPC.NewNPCDirect(new EntitySource_Misc("spawned_Trial"), attemptToCorrectPosition, npcType);
 			}
 		}
 		newnpc.GetGlobalNPC<TrialGlobalNPC>().SpawnedByTrial = true;
@@ -111,6 +113,10 @@ internal class TrialModSystem : ModSystem {
 		NextWave = 0;
 		CurrentWave = 0;
 		Trial_TotalRemainingNPCs = 0;
+		foreach (var item in emptyTile) {
+			GenerationHelper.FastRemoveTile(item.X, item.Y);
+		}
+		emptyTile.Clear();
 	}
 	private void TrialNPCManage() {
 		//Check if list Trial NPC is null or not, but wtf why we are doing this ?
@@ -174,19 +180,47 @@ internal class TrialModSystem : ModSystem {
 		}
 	}
 	private Rectangle Trial_ArenaSize = new();
+	private List<Point> emptyTile = new();
 	private void BattleTrialUpdate() {
-		//Show border, temporary solution, not optimal at all cause we are relying on dust to draw border
-		for (int i = 0; i < 300; i++) {
-			Dust dust = Dust.NewDustDirect(Main.rand.NextVector2RectangleEdge(Trial_ArenaSize), 0, 0, DustID.WhiteTorch, Scale: 2);
-			dust.noGravity = true;
-			dust.velocity = Vector2.Zero;
-		}
 		//Manage trial NPC
 		//This won't actually do anything until Start trial method is run
 		//However this method is still required to be run before StartTrial method as it initialize wave
 		TrialNPCManage();
 		//Start trial
 		StartTrial();
+		if (Trial == null) {
+			return;
+		}
+		if (NextWave > Trial.WaveAmount()) {
+			return;
+		}
+		//This is extra code to detect whenever a empty tile is spot during the border of the trial area
+		if (emptyTile.Count < 1) {
+			Point newpos;
+			for (int i = 0; i < Trial_ArenaSize.Width; i++) {
+				newpos = new (Trial_ArenaSize.X, Trial_ArenaSize.Y);
+				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
+					emptyTile.Add(newpos + new Point(i, 0));
+				}
+				newpos = new (Trial_ArenaSize.X, Trial_ArenaSize.Y + Trial_ArenaSize.Height - 1);
+				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
+					emptyTile.Add(newpos + new Point(i, 0));
+				}
+			}
+			for (int i = 0; i < Trial_ArenaSize.Height; i++) {
+				newpos = new (Trial_ArenaSize.X, Trial_ArenaSize.Y);
+				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
+					emptyTile.Add(newpos + new Point(0, i));
+				}
+				newpos = new (Trial_ArenaSize.X + Trial_ArenaSize.Width - 1, Trial_ArenaSize.Y);
+				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
+					emptyTile.Add(newpos + new Point(0, i));
+				}
+			}
+			foreach (var item in emptyTile) {
+				GenerationHelper.FastPlaceTile(item.X, item.Y, TileID.StoneSlab);
+			}
+		}
 	}
 }
 public abstract class ModTrial : ModType {
@@ -210,6 +244,12 @@ public abstract class ModTrial : ModType {
 	/// <returns></returns>
 	public virtual List<int> NPCpool(int currentWave) => new();
 	//Set this trial size so that it can spawn correctly
+	/// <summary>
+	/// Override this so that NPC can spawn correctly<br/>
+	/// It is highly recommended that you send back a rectangle in Tile coord
+	/// </summary>
+	/// <param name="TrialStartPosition"></param>
+	/// <returns></returns>
 	public virtual Rectangle TrialSize(Vector2 TrialStartPosition) => new Rectangle((int)TrialStartPosition.X, (int)TrialStartPosition.Y, 0, 0);
 	/// <summary>
 	/// This will enable developer to customized how their NPC can be spawned
