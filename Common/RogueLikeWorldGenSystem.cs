@@ -65,9 +65,6 @@ public class StructureUI : UIState {
 		txt_FileName = new();
 		txt_FileName.HAlign = .5f;
 		txt_FileName.VAlign = .45f;
-		txt_FileName.Width.Percent = 0;
-		txt_FileName.Height.Percent = 0;
-		txt_FileName.UISetWidthHeight(400, 40);
 		txt_FileName.Hide = true;
 		panel.Append(txt_FileName);
 
@@ -97,7 +94,7 @@ public class StructureUI : UIState {
 			}
 			else if (listeningElement.UniqueId == list_btn[2].UniqueId) {
 				CurrentUI_State = StructureUI_State.Selecting;
-				method = SaverOptimizedMethod.HorizontalDefault;
+				method = SaverOptimizedMethod.Template;
 			}
 			else if (listeningElement.UniqueId == list_btn[3].UniqueId) {
 				CurrentUI_State = StructureUI_State.Selecting;
@@ -135,7 +132,7 @@ public class StructureUI : UIState {
 			Main.instance.MouseText("Default saving ( uses this )");
 		}
 		else if (affectedElement.UniqueId == list_btn[2].UniqueId) {
-			Main.instance.MouseText("Horizontal saving (Not Supported)");
+			Main.instance.MouseText("Template saving ( recommended for basic template )");
 		}
 		else if (affectedElement.UniqueId == list_btn[3].UniqueId) {
 			Main.instance.MouseText("Multi-structure saving (Not Supported");
@@ -159,10 +156,18 @@ public class StructureUI : UIState {
 	}
 
 	private void Btn_confirm_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
-		GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text);
-		txt_FileName.SetText("");
-		ModContent.GetInstance<UniversalSystem>().DeactivateUI();
-		Main.NewText("Successfully save structure");
+		if (method == SaverOptimizedMethod.Default) {
+			GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text);
+			txt_FileName.SetText("");
+			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+			Main.NewText("Successfully save structure");
+		}
+		else if (method == SaverOptimizedMethod.Template) {
+			GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text, SaverOptimizedMethod.Template);
+			txt_FileName.SetText("");
+			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+			Main.NewText("Successfully save structure");
+		}
 		VisibilityUI(true);
 		VisibilitySettingUI(false);
 	}
@@ -194,7 +199,7 @@ public class StructureUI : UIState {
 			return;
 		}
 		delay = BossRushUtils.CountDown(delay);
-		if(Ready && Main.mouseRight && delay <= 0) {
+		if (Ready && Main.mouseRight && delay <= 0) {
 			CurrentUI_State = StructureUI_State.Saving;
 			VisibilityUI(false);
 			panel.Hide = false;

@@ -12,9 +12,6 @@ namespace BossRush.Common.Systems;
 public class StructureEnterText : UIElement {
 	public bool Hide = false;
 	public StructureEnterText() {
-		Width.Precent = 1f;
-		Height.Precent = 1f;
-		Recalculate();
 	}
 	public string Text => textBar.Text;
 	public void SetText(string text) {

@@ -339,6 +339,12 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		}
 	}
 	GenerateStyle[] styles => new[] { GenerateStyle.None, GenerateStyle.FlipHorizon, GenerateStyle.FlipVertical, GenerateStyle.FlipBoth };
+	/// <summary>
+	/// Use this when it is assumed that you already have the template pre saved in a file format
+	/// </summary>
+	/// <param name="TemplatePath"></param>
+	/// <param name="BiomeID"></param>
+	/// <param name="ShrineType"></param>
 	public void File_GenerateBiomeTemplate(string TemplatePath, short BiomeID, string ShrineType) {
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
@@ -350,23 +356,25 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
-				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re, (x, y, ac) => {
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re, (x, y, t) => {
 					if (rect.Contains(x, y)) {
-						ac.Invoke();
+						t.Tile_Type = TileID.SlimeBlock;
+						t.Tile_WallData = WallID.Slime;
+						GenerationHelper.Structure_PlaceTile(x, y, t);
 						EmptySpaceRecorder.Add(new(x, y));
 					}
-
 				}, Main.rand.Next(styles));
 			}
 			else {
 				re.Width = 32;
 				re.Height = 64;
-				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re, (x, y, ac) => {
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re, (x, y, t) => {
 					if (rect.Contains(x, y)) {
-						ac.Invoke();
+						t.Tile_Type = TileID.SlimeBlock;
+						t.Tile_WallData = WallID.Slime;
+						GenerationHelper.Structure_PlaceTile(x, y, t);
 						EmptySpaceRecorder.Add(new(x, y));
 					}
-
 				}, Main.rand.Next(styles));
 			}
 			if (counter.X < rect.Width) {
@@ -383,60 +391,6 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 		if (EmptySpaceRecorder.Count > 0) {
 			Point randPoint = Rand.NextFromHashSet(EmptySpaceRecorder);
 			Generate_Shrine(ShrineType, randPoint.X, randPoint.Y);
-		}
-		if (Biome.ContainsKey(BiomeID)) {
-			Biome[BiomeID].Add(rect);
-		}
-		else {
-			Biome.Add(BiomeID, new List<Rectangle> { rect });
-		}
-	}
-	/// <summary>
-	/// Use <see cref="BiomeAreaID"/> for BiomeID<br/>
-	/// Will automatically handle template placing
-	/// </summary>
-	/// <param name="TileID"></param>
-	/// <param name="WallID"></param>
-	/// <param name="BiomeID">Use <see cref="BiomeAreaID"/> for BiomeID</param>
-	public void Generate_Biome_NoShrine(ushort TileID, ushort WallID, short BiomeID) {
-		while (counter.X < rect.Width || counter.Y < rect.Height) {
-			ImageData template;
-			IsUsingHorizontal = ++count % 2 == 0;
-			if (IsUsingHorizontal) {
-				template = ImageStructureLoader.Get_Tempate("WG_TemplateHorizontal" + WorldGen.genRand.Next(1, 8));
-			}
-			else {
-				template = ImageStructureLoader.Get_Tempate("WG_TemplateVertical" + WorldGen.genRand.Next(1, 9));
-			}
-			if (++additionaloffset >= 2) {
-				counter.X += 32;
-				additionaloffset = 0;
-			}
-			template.EnumeratePixels((a, b, color) => {
-				a += rect.X + counter.X;
-				b += rect.Y + counter.Y;
-				if (a > rect.Right || b > rect.Bottom) {
-					return;
-				}
-				if (a < rect.Left || b < rect.Top) {
-					return;
-				}
-				GenerationHelper.FastRemoveTile(a, b);
-				if (color.R == 255 && color.B == 0 && color.G == 0) {
-					GenerationHelper.FastPlaceTile(a, b, TileID);
-				}
-				GenerationHelper.FastPlaceWall(a, b, WallID);
-			});
-			if (counter.X < rect.Width) {
-				counter.X += template.Width;
-			}
-			else {
-				offsetcount++;
-				counter.X = 0 - 32 * offsetcount;
-				counter.Y += 32;
-				count = 1;
-				additionaloffset = -1;
-			}
 		}
 		if (Biome.ContainsKey(BiomeID)) {
 			Biome[BiomeID].Add(rect);

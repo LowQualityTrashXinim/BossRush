@@ -157,6 +157,77 @@ internal static partial class GenerationHelper {
 		ForEachInCircle(i, j, radius * 2, radius * 2, action);
 	}
 
+	public static void PlaceStructure(string FileName, Rectangle rect, GenerateStyle style = GenerateStyle.None) {
+		List<GenPassData> datalist;
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		if (modsystem.dict_Struture.ContainsKey(FileName)) {
+			datalist = modsystem.dict_Struture[FileName];
+		}
+		else {
+			Console.WriteLine("Structure not found !");
+			return;
+		}
+		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+
+		switch (style) {
+			case GenerateStyle.None:
+				for (int i = 0; i < datalist.Count; i++) {
+					GenPassData gdata = datalist[i];
+					for (int l = 0; l < gdata.Count; l++) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
+				}
+				break;
+			case GenerateStyle.FlipHorizon:
+				for (int i = 0; i < datalist.Count; i++) {
+					GenPassData gdata = datalist[i];
+					for (int l = gdata.Count; l > 0; l--) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
+				}
+				break;
+			case GenerateStyle.FlipVertical:
+				for (int i = datalist.Count - 1; i >= 0; i--) {
+					GenPassData gdata = datalist[i];
+					for (int l = 0; l < gdata.Count; l++) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
+				}
+				break;
+			case GenerateStyle.FlipBoth:
+				for (int i = datalist.Count - 1; i >= 0; i--) {
+					GenPassData gdata = datalist[i];
+					for (int l = gdata.Count; l > 0; l--) {
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						Structure_PlaceTile(holdX, holdY, gdata.tileData);
+						offsetY++;
+					}
+				}
+				break;
+		}
+	}
 	/// <summary>
 	/// Use this to place the structure in world gen code
 	/// </summary>
@@ -232,6 +303,85 @@ internal static partial class GenerationHelper {
 				break;
 		}
 	}
+	/// <summary>
+	/// Use this to place the structure in world gen code but attempt to override tile data before placing
+	/// </summary>
+	/// <param name="method">the method that was uses to optimize the file</param>
+	public static void PlaceStructure(string FileName, Rectangle rect, Action<int, int, TileData> tileGen, GenerateStyle style = GenerateStyle.None) {
+		List<GenPassData> datalist;
+		RogueLikeWorldGenSystem modsystem = ModContent.GetInstance<RogueLikeWorldGenSystem>();
+		if (modsystem.dict_Struture.ContainsKey(FileName)) {
+			datalist = modsystem.dict_Struture[FileName];
+		}
+		else {
+			Console.WriteLine("Structure not found !");
+			return;
+		}
+		int X = rect.X, Y = rect.Y, offsetY = 0, offsetX = 0, holdX, holdY;
+
+		switch (style) {
+			case GenerateStyle.None:
+				for (int i = 0; i < datalist.Count; i++) {
+					GenPassData gdata = datalist[i];
+					for (int l = 0; l < gdata.Count; l++) {
+						TileData data = gdata.tileData;
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						tileGen(holdX, holdY, data);
+						offsetY++;
+					}
+				}
+				break;
+			case GenerateStyle.FlipHorizon:
+				for (int i = 0; i < datalist.Count; i++) {
+					GenPassData gdata = datalist[i];
+					for (int l = gdata.Count; l > 0; l--) {
+						TileData data = gdata.tileData;
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						tileGen(holdX, holdY, data);
+						offsetY++;
+					}
+				}
+				break;
+			case GenerateStyle.FlipVertical:
+				for (int i = datalist.Count - 1; i >= 0; i--) {
+					GenPassData gdata = datalist[i];
+					for (int l = 0; l < gdata.Count; l++) {
+						TileData data = gdata.tileData;
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						tileGen(holdX, holdY, data);
+						offsetY++;
+					}
+				}
+				break;
+			case GenerateStyle.FlipBoth:
+				for (int i = datalist.Count - 1; i >= 0; i--) {
+					GenPassData gdata = datalist[i];
+					for (int l = gdata.Count; l > 0; l--) {
+						TileData data = gdata.tileData;
+						if (offsetY >= rect.Height) {
+							offsetY = 0;
+							offsetX++;
+						}
+						holdX = X + offsetX; holdY = Y + offsetY;
+						tileGen(holdX, holdY, data);
+						offsetY++;
+					}
+				}
+				break;
+		}
+	}
 	public static void Structure_PlaceTile(int holdX, int holdY, TileData data) {
 		Tile tile = Main.tile[holdX, holdY];
 		if (!data.Tile_Air) {
@@ -295,8 +445,12 @@ internal static partial class GenerationHelper {
 
 		if (!Directory.Exists(path))
 			Directory.CreateDirectory(path);
-		if (method == SaverOptimizedMethod.Default)
+		if (method == SaverOptimizedMethod.Default) {
 			SaveStructure(target, path, name);
+		}
+		else if (method == SaverOptimizedMethod.Template) {
+			SaveTemplateStructure(target, path, name);
+		}
 		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
 	}
 	/// <summary>
@@ -340,7 +494,53 @@ internal static partial class GenerationHelper {
 			throw;
 		}
 	}
+	/// <summary>
+	/// Attempt to save a structure into a file
+	/// </summary>
+	/// <param name="target">The region to transform</param>
+	/// <param name="path">Path to save</param>
+	/// <param name="name">File's name</param>
+	public static void SaveTemplateStructure(Rectangle target, string path, string name) {
+		try {
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
 
+			Tile outSideLoop = new();
+			outSideLoop.TileType = ushort.MaxValue;
+			int distance = 0;
+			for (int x = target.X; x <= target.X + target.Width; x++) {
+				for (int y = target.Y; y <= target.Y + target.Height; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					if (tile.TileType != outSideLoop.TileType || tile.TileFrameX != outSideLoop.TileFrameX && tile.TileType >= TileID.Count) {
+						if (distance != 0) {
+							m.Write(distance);
+						}
+						outSideLoop = tile;
+						TileData td = new(tile);
+						if (td.Tile_Type != 0) {
+							td.Tile_Type = TileID.Dirt;
+						}
+						if (td.Tile_WallData != 0) {
+							td.Tile_WallData = WallID.Stone;
+						}
+						m.Write(td.ToString());
+						distance = 1;
+					}
+					else {
+						distance++;
+					}
+				}
+			}
+			if (distance != 0) {
+				m.Write(distance);
+			}
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
 	public static void Detailed_SaveStructure(Rectangle target, string path, string name) {
 		try {
 			using FileStream file = File.Create(Path.Combine(path, name));
@@ -417,7 +617,10 @@ public enum SaverOptimizedMethod : byte {
 	/// Default optimization but seperate wall and tile into 2 different field
 	/// </summary>
 	WallTileSeperate,
-
+	/// <summary>
+	/// This is for template kind, which will choose the most less consuming tile data and save it
+	/// </summary>
+	Template
 }
 public struct TileData : ICloneable {
 	public ushort Tile_Type = 0;
