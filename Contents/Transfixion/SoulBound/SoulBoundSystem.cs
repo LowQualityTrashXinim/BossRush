@@ -22,6 +22,19 @@ internal class SoulBoundLoader : ModSystem {
 	public static ModSoulBound GetSoulBound(short type) {
 		return type > 0 && type <= _SoulBounds.Count ? _SoulBounds[type - 1] : null;
 	}
+	public const byte Spirit = 0;
+	public const byte Ancestral = 1;
+	public const byte Elemental = 2;
+	public const byte Primordial = 3;
+	public static Color RarityColor(byte rarity) {
+		switch (rarity) {
+			case 0: return Color.White;
+			case 1: return Color.Green;
+			case 2: return Color.Cyan;
+			case 3: return Color.Magenta;
+			default: return Color.White;
+		}
+	}
 }
 public class SoulBoundGlobalItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
@@ -34,7 +47,7 @@ public class SoulBoundGlobalItem : GlobalItem {
 			return;
 		}
 		tooltips.Add(new TooltipLine(Mod, $"SoulBound",
-			$"~ [c/{SoulBound.tooltipColor.Hex3()}:{SoulBound.DisplayName}] ~\n" +
+			$"~ [c/{SoulBoundLoader.RarityColor(SoulBound.Rarity).Hex3()}:{SoulBound.DisplayName}] ~\n" +
 			$"{SoulBound.ModifiedToolTip(item)}\n" +
 			$"Level : {SoulBoundSlots.Level}\n" +
 			$"Experience : {SoulBoundSlots.Exp}/{SoulBoundSlots.ExperienceRequired}"));
@@ -92,11 +105,11 @@ public class SoulBoundGlobalItem : GlobalItem {
 }
 public abstract class ModSoulBound : ModType {
 	public short Type { get; internal set; }
+	public byte Rarity = 0;
 	protected override void Register() {
-		Type = SoulBoundLoader.Register(this);
 		SetStaticDefaults();
+		Type = SoulBoundLoader.Register(this);
 	}
-	public Color tooltipColor = Color.White;
 	public virtual string ModifiedToolTip(Item item) => Description;
 	public string DisplayName => Language.GetTextValue($"Mods.BossRush.SoulBound.{Name}.DisplayName");
 	public string Description => Language.GetTextValue($"Mods.BossRush.SoulBound.{Name}.Description");
@@ -109,6 +122,8 @@ public abstract class ModSoulBound : ModType {
 	public static short GetSoulBoundType<T>() where T : ModSoulBound {
 		return ModContent.GetInstance<T>().Type;
 	}
+	public virtual void MeleeEffect(Player player, Item acc, Item item, Rectangle hitbox) { }
+	public virtual void Shoot(Player player, Item acc, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) { }
 	public virtual void ModifyHitNPCWithItem(Player player, Item acc, Item item, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void ModifyHitNPCWithProj(Player player, Item acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) { }
 	public virtual void OnHitNPCWithItem(Player player, Item acc, Item item, NPC npc, NPC.HitInfo hitInfo) { }
@@ -117,6 +132,7 @@ public abstract class ModSoulBound : ModType {
 	public virtual void OnHitByNPC(Player player, Item acc, NPC npc, Player.HurtInfo info) { }
 	public virtual void OnHitByProj(Player player, Item acc, Projectile projectile, Player.HurtInfo info) { }
 	public virtual void UpdateEquip(Player player, Item item) { }
+	public virtual bool FreeDodge(Player player, Player.HurtInfo info, Item acc) { return false; }
 	/// <summary>
 	/// Please uses <code>PlayerStatsHandle.SetSecondLifeCondition</code> in <see cref="UpdateEquip(Player, Item)"/><br/>
 	/// And then check condition using <code>PlayerStatsHandle.GetSecondLife</code>
@@ -150,6 +166,23 @@ public class SoulBoundPlayer : ModPlayer {
 		armorItemUpdate.Clear();
 	}
 	private bool IsSoulBoundable(Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
+	public override void MeleeEffects(Item item, Rectangle hitbox) {
+		base.MeleeEffects(item, hitbox);
+	}
+	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		foreach (var acc in armorItemUpdate) {
+			if (IsSoulBoundable(item)) {
+				SoulBoundGlobalItem moditem = item.GetGlobalItem<SoulBoundGlobalItem>();
+
+				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
+				if (SoulBound == null) {
+					continue;
+				}
+				SoulBound.Shoot(Player, acc, item, source, position, velocity, type, damage, knockback);
+			}
+		}
+		return base.Shoot(item, source, position, velocity, type, damage, knockback);
+	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		foreach (var item in armorItemUpdate) {
 			if (IsSoulBoundable(item)) {
@@ -163,7 +196,7 @@ public class SoulBoundPlayer : ModPlayer {
 
 				moditem.SoulBoundSlots.Modify_Exp(hit.Damage);
 				if (moditem.SoulBoundSlots.ReachLevelCondition(10)) {
-					BossRushUtils.CombatTextRevamp(Player.Hitbox, SoulBound.tooltipColor, $"{SoulBound.DisplayName} level up !");
+					BossRushUtils.CombatTextRevamp(Player.Hitbox, SoulBoundLoader.RarityColor(SoulBound.Rarity), $"{SoulBound.DisplayName} level up !");
 				}
 			}
 		}
@@ -263,6 +296,21 @@ public class SoulBoundPlayer : ModPlayer {
 			}
 		}
 		return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
+	}
+	public override bool FreeDodge(Player.HurtInfo info) {
+		foreach (var acc in armorItemUpdate) {
+			if (IsSoulBoundable(acc)) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
+				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
+				if (SoulBound == null) {
+					continue;
+				}
+				if (SoulBound.FreeDodge(Player, info, acc)) {
+					return true;
+				}
+			}
+		}
+		return base.FreeDodge(info);
 	}
 }
 public class LevelingSerializer : TagSerializer<LevelingValue, TagCompound> {

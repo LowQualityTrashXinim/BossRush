@@ -341,11 +341,14 @@ namespace BossRush {
 				color3 = listcolor[0];
 			}
 		}
+
 		int currentIndex = 0, progress = 0;
 		Color color1 = new Color(), color2 = new Color(), color3 = new Color();
 		List<Color> listcolor = new List<Color>();
-
-		public Color MultiColor(int speed) {
+		public void OffSet(int offset) {
+			progress = offset;
+		}
+		public Color MultiColor(int speed = 1) {
 			if (progress >= MaximumProgress)
 				progress = 0;
 			else

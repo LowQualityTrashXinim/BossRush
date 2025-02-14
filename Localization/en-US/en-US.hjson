@@ -324,6 +324,8 @@ Mods: {
 			RubyMagicalBolt.DisplayName: Ruby Magical Bolt
 			AnnihiliationBullet.DisplayName: Annihiliation Bullet
 			HitScanBullet.DisplayName: Hit Scan Bullet
+			VoidParticle.DisplayName: Void Particle
+			VoidTrail.DisplayName: Void Trail
 		}
 
 		NPCs: {
@@ -2248,6 +2250,21 @@ Mods: {
 				DisplayName: Skill Slot Unlock
 				Tooltip: ""
 			}
+
+			WeaponTicket: {
+				DisplayName: Weapon Ticket
+				Tooltip: The following weapon are added into lootbox pool
+			}
+
+			OuterGodTheNihilismItem: {
+				DisplayName: Outer God The Nihilism Item
+				Tooltip: ""
+			}
+
+			SharpshooterGuidanceItem: {
+				DisplayName: Sharpshooter Guidance Item
+				Tooltip: ""
+			}
 		}
 
 		Buffs: {
@@ -2736,6 +2753,11 @@ Mods: {
 			Shatter: {
 				DisplayName: Shatter
 				Description: Mods.BossRush.Buffs.Shatter.Description
+			}
+
+			Vulnerable: {
+				DisplayName: Vulnerable
+				Description: Mods.BossRush.Buffs.Vulnerable.Description
 			}
 		}
 

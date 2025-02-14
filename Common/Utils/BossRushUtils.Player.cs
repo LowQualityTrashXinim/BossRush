@@ -63,7 +63,7 @@ namespace BossRush {
 			&& item.pick == 0
 			&& item.hammer == 0
 			&& item.ammo == AmmoID.None
-			&& (item.consumable == ConsumableWeapon);
+			&& (item.consumable == false || ConsumableWeapon);
 		/// <summary>
 		/// Not recommend to uses reliably, as this only check vanilla slot
 		/// </summary>

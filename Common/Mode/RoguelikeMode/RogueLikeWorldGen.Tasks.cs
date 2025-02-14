@@ -222,15 +222,20 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	}
 	[Task]
 	public void GenerateSlimeZone() {
-		rect = GenerationHelper.GridPositionInTheWorld24x24(7, 10, 3, 3);
-		File_GenerateBiomeTemplate("Template/WG_Template", BiomeAreaID.Slime, "SlimeShrine");
+		rect = GenerationHelper.GridPositionInTheWorld24x24(16, 10, 3, 3);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.SlimeBlock, WallID.Slime, BiomeAreaID.Slime, "SlimeShrine");
 		ResetTemplate_GenerationValue();
 	}
 	[Task]
 	public void GenerateFleshZone() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(4, 12, 3, 3);
-
-		Generate_Biome(TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm, "FleshShrine");
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.FleshBlock, WallID.Flesh, BiomeAreaID.FleshRealm, "FleshShrine");
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void Re_GenerateFrost() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 5, 4, 4);
+		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Dirt, WallID.Dirt, BiomeAreaID.Forest, "");
 		ResetTemplate_GenerationValue();
 	}
 	public void Generate_Trial(int X, int Y) {
@@ -345,7 +350,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	/// <param name="TemplatePath"></param>
 	/// <param name="BiomeID"></param>
 	/// <param name="ShrineType"></param>
-	public void File_GenerateBiomeTemplate(string TemplatePath, short BiomeID, string ShrineType) {
+	public void File_GenerateBiomeTemplate(string TemplatePath, ushort TileID, ushort WallID, short BiomeID, string ShrineType = "") {
 		while (counter.X < rect.Width || counter.Y < rect.Height) {
 			if (++additionaloffset >= 2) {
 				counter.X += 32;
@@ -356,10 +361,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			if (IsUsingHorizontal) {
 				re.Width = 64;
 				re.Height = 32;
-				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + Main.rand.Next(1, 9), re, (x, y, t) => {
+				GenerationHelper.PlaceStructure(TemplatePath + "Horizontal" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
 					if (rect.Contains(x, y)) {
-						t.Tile_Type = TileID.SlimeBlock;
-						t.Tile_WallData = WallID.Slime;
+						t.Tile_Type = TileID;
+						t.Tile_WallData = WallID;
 						GenerationHelper.Structure_PlaceTile(x, y, t);
 						EmptySpaceRecorder.Add(new(x, y));
 					}
@@ -368,10 +373,10 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			else {
 				re.Width = 32;
 				re.Height = 64;
-				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + Main.rand.Next(1, 9), re, (x, y, t) => {
+				GenerationHelper.PlaceStructure(TemplatePath + "Vertical" + WorldGen.genRand.Next(1, 9), re, (x, y, t) => {
 					if (rect.Contains(x, y)) {
-						t.Tile_Type = TileID.SlimeBlock;
-						t.Tile_WallData = WallID.Slime;
+						t.Tile_Type = TileID;
+						t.Tile_WallData = WallID;
 						GenerationHelper.Structure_PlaceTile(x, y, t);
 						EmptySpaceRecorder.Add(new(x, y));
 					}
@@ -388,7 +393,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				additionaloffset = -1;
 			}
 		}
-		if (EmptySpaceRecorder.Count > 0) {
+		if (EmptySpaceRecorder.Count > 0 && !string.IsNullOrEmpty(ShrineType)) {
 			Point randPoint = Rand.NextFromHashSet(EmptySpaceRecorder);
 			Generate_Shrine(ShrineType, randPoint.X, randPoint.Y);
 		}

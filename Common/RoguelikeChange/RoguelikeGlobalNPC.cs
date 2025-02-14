@@ -27,6 +27,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	public bool IsAGhostEnemy = false;
 	public int BelongToWho = -1;
 	public bool CanDenyYouFromLoot = false;
+	public float static_velocityMultiplier = 1;
 	/// <summary>
 	/// Set this to true if you don't want the mod to apply boss NPC fixed boss's stats
 	/// </summary>
@@ -100,7 +101,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
-			npc.velocity /= VelocityMultiplier;
+			npc.velocity /= VelocityMultiplier + static_velocityMultiplier;
 		}
 		else {
 			npc.velocity /= .001f;
@@ -109,7 +110,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void PostAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
-			npc.velocity *= VelocityMultiplier;
+			npc.velocity *= VelocityMultiplier + static_velocityMultiplier;
 		}
 		else {
 			npc.velocity *= .001f;

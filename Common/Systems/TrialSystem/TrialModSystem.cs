@@ -198,21 +198,21 @@ internal class TrialModSystem : ModSystem {
 		if (emptyTile.Count < 1) {
 			Point newpos;
 			for (int i = 0; i < Trial_ArenaSize.Width; i++) {
-				newpos = new (Trial_ArenaSize.X, Trial_ArenaSize.Y);
+				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y);
 				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
 					emptyTile.Add(newpos + new Point(i, 0));
 				}
-				newpos = new (Trial_ArenaSize.X, Trial_ArenaSize.Y + Trial_ArenaSize.Height - 1);
+				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y + Trial_ArenaSize.Height - 1);
 				if (WorldGen.TileEmpty(newpos.X + i, newpos.Y)) {
 					emptyTile.Add(newpos + new Point(i, 0));
 				}
 			}
 			for (int i = 0; i < Trial_ArenaSize.Height; i++) {
-				newpos = new (Trial_ArenaSize.X, Trial_ArenaSize.Y);
+				newpos = new(Trial_ArenaSize.X, Trial_ArenaSize.Y);
 				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
 					emptyTile.Add(newpos + new Point(0, i));
 				}
-				newpos = new (Trial_ArenaSize.X + Trial_ArenaSize.Width - 1, Trial_ArenaSize.Y);
+				newpos = new(Trial_ArenaSize.X + Trial_ArenaSize.Width - 1, Trial_ArenaSize.Y);
 				if (WorldGen.TileEmpty(newpos.X, newpos.Y + i)) {
 					emptyTile.Add(newpos + new Point(0, i));
 				}
@@ -226,6 +226,7 @@ internal class TrialModSystem : ModSystem {
 public abstract class ModTrial : ModType {
 	public string TrialRoom = null;
 	public bool IsABattleTrial = true;
+	public string FilePath = string.Empty;
 	public int Type { get; private set; }
 	public static int GetTrialType<T>() where T : ModTrial {
 		return ModContent.GetInstance<T>().Type;

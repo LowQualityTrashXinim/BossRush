@@ -446,7 +446,7 @@ internal static partial class GenerationHelper {
 		if (!Directory.Exists(path))
 			Directory.CreateDirectory(path);
 		if (method == SaverOptimizedMethod.Default) {
-			SaveStructure(target, path, name);
+			SaveStructureV2(target, path, name);
 		}
 		else if (method == SaverOptimizedMethod.Template) {
 			SaveTemplateStructure(target, path, name);
@@ -488,6 +488,70 @@ internal static partial class GenerationHelper {
 			if (distance != 0) {
 				m.Write(distance);
 			}
+		}
+		catch (Exception ex) {
+			Console.WriteLine(ex.ToString());
+			throw;
+		}
+	}
+	private static Dictionary<TileData, char> dict_TileData = new();
+	private static HashSet<char> AlphabetCharacter = new() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o' };
+	/// <summary>
+	/// Attempt to save a structure into a file
+	/// </summary>
+	/// <param name="target">The region to transform</param>
+	/// <param name="path">Path to save</param>
+	/// <param name="name">File's name</param>
+	public static void SaveStructureV2(Rectangle target, string path, string name) {
+		try {
+			dict_TileData.Clear();
+			int indexCounter = 0;
+
+			Tile outSideLoop = new();
+			outSideLoop.TileType = ushort.MaxValue;
+			int distance = 0;
+			string TileData = string.Empty;
+			string structureData = string.Empty;
+			for (int x = target.X; x <= target.X + target.Width; x++) {
+				for (int y = target.Y; y <= target.Y + target.Height; y++) {
+					//Since this just saving, it is completely fine to be slow
+					Tile tile = Framing.GetTileSafely(x, y);
+					if (tile.TileType != outSideLoop.TileType) {
+						outSideLoop = tile;
+						TileData td = new(tile);
+						if (distance == 0) {
+							distance = 1;
+							continue;
+						}
+						if (indexCounter >= AlphabetCharacter.Count) {
+							throw new Exception("GenerationHelper.SaveStructureV2.ExceedTileVarityAllowing");
+						}
+						char c;
+						if (dict_TileData.ContainsKey(td)) {
+							c = dict_TileData[td];
+						}
+						else {
+							c = AlphabetCharacter.ElementAt(indexCounter);
+							TileData += c + td.ToString();
+							indexCounter++;
+							dict_TileData.Add(td, c);
+						}
+						string extra = "{" + c.ToString() + 'X' + td.Tile_FrameX + 'Y' + td.Tile_FrameY + "}";
+						structureData += $"{extra}{distance.ToString()}";
+						distance = 1;
+					}
+					else {
+						distance++;
+					}
+				}
+			}
+			if (distance != 0) {
+				structureData += distance;
+			}
+			string finalWrapper = $"{TileData}>{structureData}";
+			using FileStream file = File.Create(Path.Combine(path, name));
+			using StreamWriter m = new(file);
+			m.Write(finalWrapper);
 		}
 		catch (Exception ex) {
 			Console.WriteLine(ex.ToString());
@@ -622,6 +686,9 @@ public enum SaverOptimizedMethod : byte {
 	/// </summary>
 	Template
 }
+public struct InfoTemplateData {
+
+}
 public struct TileData : ICloneable {
 	public ushort Tile_Type = 0;
 	public short Tile_FrameX = 0;
@@ -632,6 +699,7 @@ public struct TileData : ICloneable {
 	public byte Tile_Liquid = 0;
 	public bool Tile_HasActuator = false;
 	public bool Tile_Air = false;
+	public bool Tile_Echo = false;
 	public static TileData Default => new();
 	public TileData() {
 		Tile_Type = 0;
@@ -729,6 +797,8 @@ public struct TileData : ICloneable {
 				Tile_HasActuator = true; break;
 			case 'N':
 				Tile_Air = true; break;
+			case 'E':
+				Tile_Echo = true; break;
 		}
 	}
 	/// <summary>
@@ -741,6 +811,7 @@ public struct TileData : ICloneable {
 		tile.TileFrameY = Tile_FrameY;
 		tile.WallType = Tile_WallData;
 		tile.Get<TileWallWireStateData>().HasTile = true;
+		tile.IsTileInvisible = Tile_Echo;
 	}
 	public override string ToString() {
 		StringBuilder sb = new StringBuilder();
@@ -762,6 +833,9 @@ public struct TileData : ICloneable {
 		if (Tile_HasActuator) {
 			sb.Append("A");
 		}
+		if (Tile_Echo) {
+			sb.Append('E');
+		}
 		return "{" + sb.ToString() + "}";
 	}
 
@@ -774,10 +848,23 @@ public struct TileData : ICloneable {
 			&& TD.Tile_Liquid == this.Tile_Liquid
 			&& TD.Tile_LiquidData == this.Tile_LiquidData
 			&& TD.Tile_Air == this.Tile_Air
-			&& TD.Tile_FrameX == this.Tile_FrameX
-			&& TD.Tile_FrameY == this.Tile_FrameY
+			//&& TD.Tile_FrameX == this.Tile_FrameX
+			//&& TD.Tile_FrameY == this.Tile_FrameY
 			&& TD.Tile_HasActuator == this.Tile_HasActuator
 			&& TD.Tile_WallData == this.Tile_WallData
-			&& TD.Tile_WireData == this.Tile_WireData;
+			&& TD.Tile_WireData == this.Tile_WireData
+			&& TD.Tile_Echo == this.Tile_Echo;
+	}
+
+	public static bool operator ==(TileData left, TileData right) {
+		return left.Equals(right);
+	}
+
+	public static bool operator !=(TileData left, TileData right) {
+		return !(left == right);
+	}
+
+	public override int GetHashCode() {
+		return base.GetHashCode();
 	}
 }
