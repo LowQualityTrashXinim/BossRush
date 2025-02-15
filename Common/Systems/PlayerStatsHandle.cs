@@ -403,6 +403,9 @@ public class PlayerStatsHandle : ModPlayer {
 			case PlayerStats.SkillCooldown:
 				SkillCoolDown = SkillCoolDown.CombineWith(StatMod);
 				break;
+			case PlayerStats.DebuffDurationInflict:
+				DebuffTime = DebuffTime.CombineWith(StatMod); 
+				break;
 			default:
 				break;
 		}
@@ -511,9 +514,6 @@ public class PlayerStatsHandle : ModPlayer {
 				modplayer.SecondLife[context].DeApproved();
 				return true;
 			}
-			else {
-
-			}
 		}
 		return false;
 	}
@@ -538,6 +538,9 @@ public class PlayerStatsHandle : ModPlayer {
 		return false;
 	}
 }
+/// <summary>
+/// This is for the second life mechanic
+/// </summary>
 public class ConditionApproved {
 	public bool Condition = false;
 	public bool Approved = false;

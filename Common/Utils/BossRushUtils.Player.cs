@@ -244,6 +244,7 @@ namespace BossRush {
 		EnergyRecharge,
 		SkillDuration,
 		SkillCooldown,
+		DebuffDurationInflict
 		//Luck
 	}
 	public class DataStorer : ModSystem {

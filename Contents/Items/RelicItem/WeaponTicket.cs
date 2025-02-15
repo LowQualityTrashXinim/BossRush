@@ -35,21 +35,26 @@ internal class WeaponTicket : ModItem {
 		if (RequestItem.Count > 0) {
 			int index = tooltips.FindIndex(i => i.Name == "JourneyResearch");
 			int counter = 0;
+			TooltipLine line;
+			string textlength = string.Empty;
+			foreach (var item in RequestItem) {
+				if (++counter >= 5) {
+					textlength += "+ [" + ItemIcon(item) + "]\n";
+					counter = 0;
+				}
+				else {
+					textlength += "+ [" + ItemIcon(item) + "] ";
+				}
+			}
+			if (RequestItem.Count % 2 == 1) {
+				textlength = textlength.Substring(0, textlength.Length - 1);
+			}
+			line = new(Mod, "ticket", textlength);
 			if (index >= 0) {
-				string textlength = string.Empty;
-				foreach (var item in RequestItem) {
-					if (++counter >= 5) {
-						textlength += "+ [" + ItemIcon(item) + "]\n";
-						counter = 0;
-					}
-					else {
-						textlength += "+ [" + ItemIcon(item) + "] ";
-					}
-				}
-				if (RequestItem.Count % 2 == 1) {
-					textlength = textlength.Substring(0, textlength.Length - 1);
-				}
-				tooltips.Insert(index, new(Mod, "ticket", textlength));
+				tooltips.Insert(index, line);
+			}
+			else {
+				tooltips.Add(line);
 			}
 		}
 		int indexName = tooltips.FindIndex(i => i.Name == "ItemName");

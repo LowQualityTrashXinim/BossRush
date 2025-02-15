@@ -121,24 +121,37 @@ CopperArmor: {
 		'''
 }
 
-IronArmor.SetBonus:
-	'''
-	Increase damage reduction 10%
-	Increase defense effectivness by 25%
-	While under 50% HP, gain 25 bonus defense
-	Have 20% to halve incoming damage
-	'''
+IronArmor: {
+	Head: 4% Damage reduction
+	Body: 5% Damage reduction
+	Leg: 3% Damage reduction
+	SetBonus:
+		'''
+		Increase damage reduction 10%
+		Increase defense effectivness by 1.25x
+		While under 50% HP, gain 25 bonus defense
+		Have 20% to halve incoming damage
+		'''
+}
+
 JungleArmor.SetBonus:
 	'''
 	When using magic weapon, you will shoot out magical leaf hover around player up to max of 10
 	When there are 10 leafs exist in world, the leaf will home into the closest enemy when possible
 	'''
-LeadArmor.SetBonus:
-	'''
-	Increase defense by 7
-	Your attack can inflict irradiation poison
-	Lead irradiation increase enemy defense by 20 but deal 50 DoT
-	'''
+
+LeadArmor: {
+	Head: +5% debuff inflict duration
+	Body: +10% debuff inflict duration
+	Leg: +5% debuff inflict duration
+	SetBonus:
+		'''
+		Increase defense by 7
+		Your attack can inflict irradiation poison
+		Lead irradiation increase enemy defense by 20 but deal 50 DoT
+		'''
+}
+
 SilverArmor.SetBonus:
 	'''
 	During the day : increases defense by 10
@@ -159,7 +172,18 @@ GoldArmor: {
 		Attacking enemy with midas debuff will deal additional damage based on their defense
 		While enemy have midas debuff, you will take 1 damage and heal 5 life ( debuff is removed after )
 		'''
-	Head: Increases chance to inflict midas by 5%
-	Body: Increases chance to inflict midas by 5%
-	Leg: Increases chance to inflict midas by 5%
+	Head: 5% chance to inflict midas on hit
+	Body: 5% chance to inflict midas on hit
+	Leg: 5% chance to inflict midas on hit
+}
+
+PlatinumArmor: {
+	SetBonus:
+		'''
+		Getting hit reduce next incoming damage by 66% for 4s
+		And you spawn valuable gem when collected empowered your next attack
+		'''
+	Head: 4% damage
+	Body: 4% damage
+	Leg: 4% damage
 }

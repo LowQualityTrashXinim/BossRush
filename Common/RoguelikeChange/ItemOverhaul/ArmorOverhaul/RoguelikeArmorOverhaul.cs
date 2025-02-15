@@ -93,7 +93,7 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		ModArmorPiece def = ArmorLoader.GetArmorPieceInfo(type);
 		if (def != null) {
 			def.UpdateEquip(player, item);
-			if (def.Add_Defense > 0)
+			if (def.Add_Defense != 0)
 				modplayer.AddStatsToPlayer(PlayerStats.Defense, Base: def.Add_Defense);
 		}
 		if (item.type == ItemID.NightVisionHelmet) {

@@ -326,6 +326,7 @@ Mods: {
 			HitScanBullet.DisplayName: Hit Scan Bullet
 			VoidParticle.DisplayName: Void Particle
 			VoidTrail.DisplayName: Void Trail
+			GemCollectible.DisplayName: Gem Collectible
 		}
 
 		NPCs: {
@@ -2763,6 +2764,11 @@ Mods: {
 			Vulnerable: {
 				DisplayName: Vulnerable
 				Description: Decreases your defenses the longer this debuff last
+			}
+
+			PlatinumDefense: {
+				DisplayName: Platinum Defense
+				Description: Mods.BossRush.Buffs.PlatinumDefense.Description
 			}
 		}
 

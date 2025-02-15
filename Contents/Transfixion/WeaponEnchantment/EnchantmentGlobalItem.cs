@@ -82,7 +82,6 @@ public class EnchantmentGlobalItem : GlobalItem {
 	public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
 		return CanBeEnchanted(entity);
 	}
-	public bool IsAtleastInPlayerInvOnce = false;
 	public override bool InstancePerEntity => true;
 	public int[] EnchantmenStlot = new int[4];
 	public int[] Item_Counter1 = new int[4];
@@ -106,7 +105,6 @@ public class EnchantmentGlobalItem : GlobalItem {
 		Item_Counter1 = new int[4];
 		Item_Counter2 = new int[4];
 		Item_Counter3 = new int[4];
-		IsAtleastInPlayerInvOnce = false;
 		return base.NewInstance(target);
 	}
 	public int GetValidNumberOfEnchantment() {
@@ -119,7 +117,6 @@ public class EnchantmentGlobalItem : GlobalItem {
 		return valid;
 	}
 	public override void UpdateInventory(Item item, Player player) {
-		IsAtleastInPlayerInvOnce = true;
 	}
 	public override void HoldItem(Item item, Player player) {
 		if (EnchantmenStlot == null) {
