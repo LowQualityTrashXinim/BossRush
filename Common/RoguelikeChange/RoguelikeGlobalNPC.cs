@@ -101,7 +101,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override bool PreAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
-			npc.velocity /= VelocityMultiplier + static_velocityMultiplier;
+			npc.velocity /= VelocityMultiplier + static_velocityMultiplier - 1;
 		}
 		else {
 			npc.velocity /= .001f;
@@ -110,7 +110,7 @@ internal class RoguelikeGlobalNPC : GlobalNPC {
 	}
 	public override void PostAI(NPC npc) {
 		if (VelocityMultiplier != 0) {
-			npc.velocity *= VelocityMultiplier + static_velocityMultiplier;
+			npc.velocity *= VelocityMultiplier + static_velocityMultiplier - 1;
 		}
 		else {
 			npc.velocity *= .001f;

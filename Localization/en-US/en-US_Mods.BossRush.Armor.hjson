@@ -119,8 +119,6 @@ CopperArmor: {
 		Increase movement speed by 25%
 		Every 50 hit to enemy give you the over charged for 5s
 		During the rain, your hit requirement reduce by half
-		Over charged: Increases movement speed, weapon speed, damage by 10%
-		Create a electric charge that target the closest enemy deal 30 damage
 		'''
 }
 

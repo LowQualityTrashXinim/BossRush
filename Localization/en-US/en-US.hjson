@@ -2370,7 +2370,12 @@ Mods: {
 
 			OverCharged: {
 				DisplayName: Overcharged !
-				Description: Electric power your vein
+				Description:
+					'''
+					"Electric power your vein"
+					Increases movement speed, weapon speed, damage by 10%
+					Create a electric charge that target the closest enemy deal 30 damage
+					'''
 			}
 
 			pumpkinOverdose: {
@@ -2757,7 +2762,7 @@ Mods: {
 
 			Vulnerable: {
 				DisplayName: Vulnerable
-				Description: Mods.BossRush.Buffs.Vulnerable.Description
+				Description: Decreases your defenses the longer this debuff last
 			}
 		}
 

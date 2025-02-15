@@ -559,6 +559,14 @@ public class WeaponEnchantmentUIslot : MoveableUIImage {
 		Vector2 drawpos = position + positionOffset + texture.Size() * .5f;
 		base.Draw(spriteBatch);
 		if (item != null) {
+			if (IsMouseHovering) {
+				UniversalSystem.EnchantingState = false;
+				Main.HoverItem = item.Clone();
+				Main.hoverItemName = item.HoverName;
+			}
+			else {
+				UniversalSystem.EnchantingState = true;
+			}
 			Main.instance.LoadItem(item.type);
 			Texture2D texture = TextureAssets.Item[item.type].Value;
 			Vector2 origin = texture.Size() * .5f;

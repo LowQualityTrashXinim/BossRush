@@ -29,12 +29,12 @@ internal class OuterGodTheNihilism : ModSoulBound {
 		});
 	}
 	public override void MeleeEffect(Player player, Item acc, Item item, Rectangle hitbox) {
-		if (Main.rand.NextFloat() >= .05f + .02f * GetLevel(acc)) {
+		if (Main.rand.NextFloat() <= .05f + .02f * GetLevel(acc)) {
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), Main.rand.NextVector2FromRectangle(hitbox), Vector2.Zero, ModContent.ProjectileType<VoidTrail>(), 1, 4f, player.whoAmI, 20 + 5 * GetLevel(acc));
 		}
 	}
 	public override void Shoot(Player player, Item acc, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-		if (Main.rand.NextFloat() >= .05f + .02f * GetLevel(acc)) {
+		if (Main.rand.NextFloat() <= .05f + .02f * GetLevel(acc)) {
 			Projectile.NewProjectile(player.GetSource_ItemUse(item), position, velocity, ModContent.ProjectileType<VoidTrail>(), 1, 4f, player.whoAmI, 20 + 5 * GetLevel(acc));
 		}
 	}
@@ -45,22 +45,22 @@ internal class OuterGodTheNihilism : ModSoulBound {
 			}
 		}
 		if (player.ItemAnimationActive && player.itemAnimation == player.itemAnimationMax / 2) {
-			if (Main.rand.NextFloat() >= .005f + .001f * GetLevel(item)) {
+			if (Main.rand.NextFloat() <= .005f + .001f * GetLevel(item)) {
 				NPC npc = NPC.NewNPCDirect(Entity.GetSource_NaturalSpawn(), player.Center + Main.rand.NextVector2CircularEdge(1000, 1000), NPCID.Wraith);
 				npc.defense += 30;
 				npc.lifeMax *= 3;
 				npc.life = npc.lifeMax;
+				npc.knockBackResist = .05f;
+				npc.value += 100 * 100 * 100;
 				npc.GetGlobalNPC<RoguelikeGlobalNPC>().static_velocityMultiplier += .35f;
 			}
 		}
 	}
 	public override void ModifyHitNPCWithItem(Player player, Item acc, Item item, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SourceDamage += .5f + .1f * GetLevel(acc);
-		player.AddBuff(ModContent.BuffType<Vulnerable>(), BossRushUtils.ToSecond(2 + .2f * GetLevel(acc)));
 	}
 	public override void ModifyHitNPCWithProj(Player player, Item acc, Projectile proj, NPC target, ref NPC.HitModifiers modifiers) {
 		modifiers.SourceDamage += .5f + .1f * GetLevel(acc);
-		player.AddBuff(ModContent.BuffType<Vulnerable>(), BossRushUtils.ToSecond(2 + .2f * GetLevel(acc)));
 	}
 	public override void OnHitByNPC(Player player, Item acc, NPC npc, Player.HurtInfo info) {
 		if (player.HeldItem.IsAWeapon(true)) {
@@ -73,9 +73,10 @@ internal class OuterGodTheNihilism : ModSoulBound {
 			hitinfo.Knockback = player.GetWeaponKnockback(item);
 			player.StrikeNPCDirect(npc, hitinfo);
 		}
+		player.AddBuff(ModContent.BuffType<Vulnerable>(), BossRushUtils.ToSecond(2 + .2f * GetLevel(acc)));
 	}
 	public override bool FreeDodge(Player player, Player.HurtInfo info, Item acc) {
-		if (Main.rand.NextFloat() >= .2f + .05f * GetLevel(acc)) {
+		if (Main.rand.NextFloat() <= .2f + .05f * GetLevel(acc)) {
 			if (player.HeldItem.IsAWeapon(true)) {
 				Item item = player.HeldItem;
 				if (player.Center.LookForHostileNPC(out NPC npc, 9999)) {

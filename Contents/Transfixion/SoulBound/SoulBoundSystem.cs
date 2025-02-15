@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using Steamworks;
 using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
 using Terraria.ID;
+using Mono.Cecil;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Contents.Transfixion.Arguments;
 internal class SoulBoundLoader : ModSystem {
@@ -41,7 +43,6 @@ public class SoulBoundGlobalItem : GlobalItem {
 		return entity.headSlot > 0 || entity.legSlot > 0 || entity.bodySlot > 0;
 	}
 	public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
-
 		ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(SoulBoundSlots.assignedType);
 		if (SoulBound == null) {
 			return;
@@ -151,28 +152,26 @@ public class SoulBoundPlayer : ModPlayer {
 	public List<Item> armorItemUpdate = new();
 	public int IndexSoulBoundItem = -1;
 	public override void ResetEffects() {
-		if (IndexSoulBoundItem >= Player.inventory.Length || IndexSoulBoundItem < 0) {
-			IndexSoulBoundItem = -1;
-		}
-		else {
-			Item soulbound = Player.inventory[IndexSoulBoundItem];
-			if (Player.HeldItem != soulbound && Player.HeldItem.type != ItemID.None) {
-				if (soulbound.ModItem is BaseSoulBoundItem moditem) {
-					SoulBoundGlobalItem.AddSoulBound(ref Main.mouseItem, moditem.SoulBoundType);
-					soulbound.TurnToAir();
-				}
-			}
-		}
 		armorItemUpdate.Clear();
 	}
 	private bool IsSoulBoundable(Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
-		base.MeleeEffects(item, hitbox);
+		foreach (var acc in armorItemUpdate) {
+			if (IsSoulBoundable(acc)) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
+
+				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
+				if (SoulBound == null) {
+					continue;
+				}
+				SoulBound.MeleeEffect(Player, acc, item, hitbox);
+			}
+		}
 	}
 	public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 		foreach (var acc in armorItemUpdate) {
-			if (IsSoulBoundable(item)) {
-				SoulBoundGlobalItem moditem = item.GetGlobalItem<SoulBoundGlobalItem>();
+			if (IsSoulBoundable(acc)) {
+				SoulBoundGlobalItem moditem = acc.GetGlobalItem<SoulBoundGlobalItem>();
 
 				ModSoulBound SoulBound = SoulBoundLoader.GetSoulBound(moditem.SoulBoundSlots.assignedType);
 				if (SoulBound == null) {

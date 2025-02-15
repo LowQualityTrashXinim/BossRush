@@ -71,7 +71,7 @@ public class TransmutationUIState : UIState {
 		if (slot1.item == null || slot2.item == null) {
 			return;
 		}
-		if(TransmutationUIConfirmButton.CheckForSpecialDrop(slot1.item, slot2.item)) {
+		if (TransmutationUIConfirmButton.SpecialInteraction(slot1.item, slot2.item)) {
 			SoundEngine.PlaySound(SoundID.AchievementComplete with { Pitch = -1 });
 		}
 		else {
@@ -163,6 +163,9 @@ public class ExitUI : UIImageButton {
 		if (ContainsPoint(Main.MouseScreen)) {
 			Main.LocalPlayer.mouseInterface = true;
 		}
+		if (IsMouseHovering) {
+			Main.instance.MouseText("Exit ?");
+		}
 	}
 }
 public class TransmutationUI : UIImage {
@@ -234,6 +237,10 @@ public class TransmutationUI : UIImage {
 		base.Draw(spriteBatch);
 		try {
 			if (item != null) {
+				if (IsMouseHovering) {
+					Main.HoverItem = item.Clone();
+					Main.hoverItemName = item.HoverName;
+				}
 				Main.instance.LoadItem(item.type);
 				var texture = TextureAssets.Item[item.type].Value;
 				var origin = texture.Size() * .5f;
@@ -265,7 +272,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	/// <param name="item1"></param>
 	/// <param name="item2"></param>
 	/// <returns></returns>
-	public static bool CheckForSpecialDrop(Item item1, Item item2) {
+	public static bool SpecialInteraction(Item item1, Item item2) {
 		var player = Main.LocalPlayer;
 		float offsetchance = player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
 		Relic relicItem = null;
