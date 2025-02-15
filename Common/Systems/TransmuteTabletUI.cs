@@ -288,7 +288,7 @@ public class TransmutationUIConfirmButton : UIImageButton {
 				soul = soulbound2;
 				armor = item1;
 			}
-			if (SoulBoundPlayer.IsSoulBoundable(armor) && soul != null) {
+			if (armor != null && SoulBoundPlayer.IsSoulBoundable(armor) && soul != null) {
 				SoulBoundGlobalItem.AddSoulBound(ref armor, soul.SoulBoundType);
 				soul.Item.TurnToAir();
 				return true;
