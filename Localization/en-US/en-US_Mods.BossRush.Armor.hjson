@@ -111,14 +111,13 @@ TinArmor.SetBonus:
 	'''
 
 CopperArmor: {
-	Head: Have 2% chance to inflict electrified
-	Body: Have 3% chance to inflict electrified
-	Leg: Have 1% chance to inflict electrified
+	Head: 2% chance to inflict electrified on hit
+	Body: 3% chance to inflict electrified on hit
+	Leg: 1% chance to inflict electrified on hit
 	SetBonus:
 		'''
-		Increase movement speed by 25%
-		Every 50 hit to enemy give you the over charged for 5s
-		During the rain, your hit requirement reduce by half
+		25% increased movement speed
+		Hitting enemies 50 times, or 25 in the rain grants 5 seconds of Overcharged
 		'''
 }
 

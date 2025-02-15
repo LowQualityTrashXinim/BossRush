@@ -57,7 +57,6 @@ public class SoulBoundGlobalItem : GlobalItem {
 	public override bool InstancePerEntity => true;
 
 	public LevelingValue SoulBoundSlots = LevelingValue.Default;
-
 	public static void AddSoulBound(ref Item item, short SoulBoundType) {
 		if (item.headSlot <= 0 && item.legSlot <= 0 && item.bodySlot <= 0) {
 			return;
@@ -154,7 +153,7 @@ public class SoulBoundPlayer : ModPlayer {
 	public override void ResetEffects() {
 		armorItemUpdate.Clear();
 	}
-	private bool IsSoulBoundable(Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
+	public static bool IsSoulBoundable(Item item) => item.headSlot > 0 || item.legSlot > 0 || item.bodySlot > 0;
 	public override void MeleeEffects(Item item, Rectangle hitbox) {
 		foreach (var acc in armorItemUpdate) {
 			if (IsSoulBoundable(acc)) {

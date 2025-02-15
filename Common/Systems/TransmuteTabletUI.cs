@@ -17,6 +17,8 @@ using Terraria.Audio;
 using SteelSeries.GameSense.DeviceZone;
 using BossRush.Contents.Perks;
 using ReLogic.Utilities;
+using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
+using BossRush.Contents.Transfixion.Arguments;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {
@@ -274,6 +276,26 @@ public class TransmutationUIConfirmButton : UIImageButton {
 	/// <returns></returns>
 	public static bool SpecialInteraction(Item item1, Item item2) {
 		var player = Main.LocalPlayer;
+
+		if (item1.ModItem != null || item2.ModItem != null) {
+			BaseSoulBoundItem soul = null;
+			Item armor = null;
+			if (item1.ModItem is BaseSoulBoundItem soulbound) {
+				soul = soulbound;
+				armor = item2;
+			}
+			else if (item2.ModItem is BaseSoulBoundItem soulbound2) {
+				soul = soulbound2;
+				armor = item1;
+			}
+			if (SoulBoundPlayer.IsSoulBoundable(armor) && soul != null) {
+				SoulBoundGlobalItem.AddSoulBound(ref armor, soul.SoulBoundType);
+				soul.Item.TurnToAir();
+				return true;
+			}
+		}
+
+
 		float offsetchance = player.GetModPlayer<PlayerStatsHandle>().Transmutation_SuccessChance;
 		Relic relicItem = null;
 		Item slotitem;
