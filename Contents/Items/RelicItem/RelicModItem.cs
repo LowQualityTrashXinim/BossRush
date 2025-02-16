@@ -226,6 +226,7 @@ public class Relic : ModItem {
 	}
 }
 public abstract class RelicTemplate : ModType {
+	public float EnergyCost = 0;
 	public static int GetRelicType<T>() where T : RelicTemplate {
 		return ModContent.GetInstance<T>().Type;
 	}

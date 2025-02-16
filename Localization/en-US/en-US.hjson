@@ -2770,6 +2770,16 @@ Mods: {
 				DisplayName: Platinum Defense
 				Description: Mods.BossRush.Buffs.PlatinumDefense.Description
 			}
+
+			SilverPurification: {
+				DisplayName: Silver Purification
+				Description: Mods.BossRush.Buffs.SilverPurification.Description
+			}
+
+			TungstenEmpowerment: {
+				DisplayName: Tungsten Empowerment
+				Description: " "
+			}
 		}
 
 		Configs: {

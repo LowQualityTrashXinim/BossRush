@@ -11,6 +11,7 @@ using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.Mutation;
 using BossRush.Common.Mode.DreamLikeWorldMode;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Common.Systems;
 public class PlayerStatsHandle : ModPlayer {
@@ -131,7 +132,7 @@ public class PlayerStatsHandle : ModPlayer {
 		}
 		modifiers.CritDamage = modifiers.CritDamage.CombineWith(UpdateCritDamage);
 		modifiers.NonCritDamage = modifiers.NonCritDamage.CombineWith(NonCriticalDamage);
-		if (target.life >= target.lifeMax) {
+		if (target.GetGlobalNPC<RoguelikeGlobalNPC>().HitCount <= 0) {
 			modifiers.SourceDamage = modifiers.SourceDamage.CombineWith(UpdateFullHPDamage);
 		}
 		bool HasDebuff = false; int count = 0;
@@ -404,7 +405,7 @@ public class PlayerStatsHandle : ModPlayer {
 				SkillCoolDown = SkillCoolDown.CombineWith(StatMod);
 				break;
 			case PlayerStats.DebuffDurationInflict:
-				DebuffTime = DebuffTime.CombineWith(StatMod); 
+				DebuffTime = DebuffTime.CombineWith(StatMod);
 				break;
 			default:
 				break;

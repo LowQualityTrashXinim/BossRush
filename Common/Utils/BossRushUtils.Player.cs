@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
 using BossRush.Common.Systems;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush {
 	public static partial class BossRushUtils {
@@ -102,6 +103,18 @@ namespace BossRush {
 					globalitem.SetDefaults(item);
 				}
 			}
+		}
+		public static bool CheckFirstStrike(this NPC npc) {
+			if (npc.TryGetGlobalNPC(out RoguelikeGlobalNPC roguelike)) {
+				return roguelike.HitCount <= 0;
+			}
+			return false;
+		}
+		public static void AddBuff<T>(this NPC npc, int timetoAdd, bool quiet = false) where T : ModBuff {
+			npc.AddBuff(ModContent.BuffType<T>(), timetoAdd, quiet);
+		}
+		public static void AddBuff<T>(this Player player, int timetoAdd, bool quiet = false) where T : ModBuff {
+			player.AddBuff(ModContent.BuffType<T>(), timetoAdd, quiet);
 		}
 		public static bool IsAVanillaSword(int type) {
 			switch (type) {

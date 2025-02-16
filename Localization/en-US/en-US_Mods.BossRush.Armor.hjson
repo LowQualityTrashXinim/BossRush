@@ -152,19 +152,41 @@ LeadArmor: {
 		'''
 }
 
-SilverArmor.SetBonus:
-	'''
-	During the day : increases defense by 10
-	During the night : increases damage by 10%
-	While above 75% health, these effects are multiply by 2
-	'''
-TungstenArmor.SetBonus:
-	'''
-	When at full health :
-	Reduce your defense down to 0
-	Increase movement speed by 30%
-	The closer your enemy is, the more damage increases
-	'''
+SilverArmor: {
+	Head: 16% First strike damage
+	Body: 24% First strike damage
+	Leg: 12% First strike damage
+	SetBonus:
+		'''
+		112% First strike damage increased
+		Dealing first strike cause enemy to move slower
+		During the day : increases defense by 10
+		During the night : increases damage by 10%
+		While above 75% health, day and night effects are multiply by 2
+		'''
+}
+
+TungstenArmor: {
+	Head:
+		'''
+		6% ranged damage increased
+		3% critical strike chance
+		'''
+	Body:
+		'''
+		6% melee damage and magic damage increased
+		'''
+	Leg:
+		'''
+		6% summon damage increased
+		8% movement speed increased
+		'''
+	SetBonus:
+		'''
+		31% movement speed increased
+		Gain a buff that rotate damage increases after 10s
+		'''
+}
 
 GoldArmor: {
 	SetBonus:
