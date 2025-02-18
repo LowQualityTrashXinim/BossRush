@@ -11,14 +11,20 @@ WoodArmor: {
 		'''
 }
 
-BorealWoodArmor.SetBonus:
-	'''
-	When in snow biome :
-	Increase defense by 5
-	Increase movement speed by 20%
-	You are immune to Chilled, Slow
-	30% chance to inflict frost burn
-	'''
+BorealwoodArmor: {
+	Head: 1% chance to inflict frost burn
+	Body: 2% chance to inflict frost burn
+	Leg: 1% chance to inflict frost burn
+	SetBonus:
+		'''
+		Increase defense by 5
+		Increase movement speed by 20%
+		You are immune to Chilled, Slow
+		7% chance to inflict frost burn
+		Frost burn now grant massive boost in regeneration
+		'''
+}
+
 RichMahoganyArmor.SetBonus:
 	'''
 	When in jungle biome :

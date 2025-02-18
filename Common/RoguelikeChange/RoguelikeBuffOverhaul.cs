@@ -1,4 +1,6 @@
-﻿using BossRush.Common.Systems;
+﻿using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
+using BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
+using BossRush.Common.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -34,6 +36,16 @@ internal class RoguelikeBuffOverhaul : GlobalBuff {
 				Dust dust = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Electric, Scale: Main.rand.NextFloat(.25f, .5f));
 				dust.velocity = Main.rand.NextVector2Circular(3, 3);
 				dust.noGravity = true;
+			}
+		}
+	}
+	public override void Update(int type, Player player, ref int buffIndex) {
+		if (!UniversalSystem.Check_RLOH()) {
+			return;
+		}
+		if (type == BuffID.Frostburn) {
+			if (player.GetModPlayer<RoguelikeArmorPlayer>().ActiveArmor.Equals(ArmorLoader.GetModArmor("BorealwoodArmor"))) {
+				PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.RegenHP, Base: 35);
 			}
 		}
 	}

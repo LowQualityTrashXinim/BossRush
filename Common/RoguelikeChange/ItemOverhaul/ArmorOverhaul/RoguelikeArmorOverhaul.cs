@@ -109,12 +109,14 @@ class RoguelikeArmorOverhaul : GlobalItem {
 	}
 }
 /// <summary>
-/// It is honestly advised to not put all logic gate here, but well, there are chance these will be reused so why not
+/// It is honestly advised to not put all logic gate here, but well, there are chance these will be reused so why not<br/>
+/// It also reduce modplayer iterartion so that cool
 /// </summary>
 public class RoguelikeArmorPlayer : ModPlayer {
 	public float MidasChance = 0;
 	public float ElectricityChance = 0;
 	public float AcornSpawnChance = 0;
+	public float FrostBurnChance = 0;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
@@ -144,6 +146,7 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		MidasChance = 0;
 		ElectricityChance = 0;
 		AcornSpawnChance = 0;
+		FrostBurnChance = 0;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextFloat() <= MidasChance) {
@@ -152,9 +155,12 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		if (Main.rand.NextFloat() <= ElectricityChance) {
 			target.AddBuff(BuffID.Electrified, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 		}
+		if (Main.rand.NextFloat() <= FrostBurnChance) {
+			target.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
+		}
 	}
 	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
-		if(Main.rand.NextFloat() <= AcornSpawnChance) {
+		if (Main.rand.NextFloat() <= AcornSpawnChance) {
 			SpawnAcorn(target);
 		}
 	}
