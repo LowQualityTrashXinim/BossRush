@@ -25,6 +25,8 @@
     <None Remove="Assets\Images\Trials\TrialRoomTemplate1.png" />
     <None Remove="Common\Graphics\Shaders\ExplosionPrimitive.fx" />
     <None Remove="Common\Graphics\Shaders\FlameBallPrimitive.fx" />
+    <None Remove="Contents\Projectiles\SunflowerProjectile.png" />
+    <None Remove="Contents\Projectiles\SunItem.png" />
     <None Remove="Contents\Transfixion\Artifacts\BootsOfSpeedManipulationArtifact.png" />
     <None Remove="Contents\Transfixion\Artifacts\HeartOfEarthArtifact.png" />
     <None Remove="Contents\Transfixion\Artifacts\MagicalCardDeckArtifact.png" />

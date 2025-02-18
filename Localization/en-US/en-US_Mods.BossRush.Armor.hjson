@@ -1,17 +1,23 @@
-WoodArmor.SetBonus:
-	'''
-	When in forest biome :
-	Increase defense by 5
-	Increase movement speed by 25%
-	Your attack have 25% chance to drop down a acorn dealing 10 damage
-	'''
+WoodArmor: {
+	Head: 1% chance to spawn a acorn
+	Body: 2% chance to spawn a acorn
+	Leg: 1% chance to spawn a acorn
+	SetBonus:
+		'''
+		Increase defense by 5
+		Increase movement speed by 25%
+		25% chance to spawn a acorn
+		5% to spawn a sunflower
+		'''
+}
+
 BorealWoodArmor.SetBonus:
 	'''
 	When in snow biome :
 	Increase defense by 5
 	Increase movement speed by 20%
 	You are immune to Chilled, Slow
-	Your attack have 30% chance to inflict frost burn for 10 second
+	30% chance to inflict frost burn
 	'''
 RichMahoganyArmor.SetBonus:
 	'''
@@ -172,10 +178,7 @@ TungstenArmor: {
 		6% ranged damage increased
 		3% critical strike chance
 		'''
-	Body:
-		'''
-		6% melee damage and magic damage increased
-		'''
+	Body: 6% melee damage and magic damage increased
 	Leg:
 		'''
 		6% summon damage increased

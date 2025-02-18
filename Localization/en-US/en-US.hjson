@@ -327,6 +327,7 @@ Mods: {
 			VoidParticle.DisplayName: Void Particle
 			VoidTrail.DisplayName: Void Trail
 			GemCollectible.DisplayName: Gem Collectible
+			SunflowerProjectile.DisplayName: Sunflower Projectile
 		}
 
 		NPCs: {
@@ -2264,6 +2265,11 @@ Mods: {
 
 			SharpshooterGuidanceItem: {
 				DisplayName: Sharpshooter Guidance Item
+				Tooltip: ""
+			}
+
+			SunItem: {
+				DisplayName: Sun Item
 				Tooltip: ""
 			}
 		}

@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using System.Collections.Generic;
 using System.Linq;
+using BossRush.Contents.Projectiles;
+using Microsoft.Xna.Framework;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
@@ -106,9 +108,13 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 	}
 }
-class RoguelikeArmorPlayer : ModPlayer {
+/// <summary>
+/// It is honestly advised to not put all logic gate here, but well, there are chance these will be reused so why not
+/// </summary>
+public class RoguelikeArmorPlayer : ModPlayer {
 	public float MidasChance = 0;
 	public float ElectricityChance = 0;
+	public float AcornSpawnChance = 0;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
@@ -137,6 +143,7 @@ class RoguelikeArmorPlayer : ModPlayer {
 		ActiveArmor = ArmorLoader.GetModArmor(Player.armor[0].type, Player.armor[1].type, Player.armor[2].type);
 		MidasChance = 0;
 		ElectricityChance = 0;
+		AcornSpawnChance = 0;
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextFloat() <= MidasChance) {
@@ -145,5 +152,22 @@ class RoguelikeArmorPlayer : ModPlayer {
 		if (Main.rand.NextFloat() <= ElectricityChance) {
 			target.AddBuff(BuffID.Electrified, BossRushUtils.ToSecond(Main.rand.Next(4, 7)));
 		}
+	}
+	public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone) {
+		if(Main.rand.NextFloat() <= AcornSpawnChance) {
+			SpawnAcorn(target);
+		}
+	}
+	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
+		if (Main.rand.NextFloat() <= AcornSpawnChance && proj.ModProjectile == null || proj.ModProjectile is not AcornProjectile) {
+			SpawnAcorn(target);
+		}
+	}
+	private void SpawnAcorn(NPC target) {
+		int damage = Player.GetWeaponDamage(Player.HeldItem);
+		Projectile.NewProjectile(Player.GetSource_FromThis(),
+				target.Center - new Vector2(0, 400),
+				Vector2.UnitY * 10,
+				ModContent.ProjectileType<AcornProjectile>(), 10 + damage / 5, 1f, Player.whoAmI);
 	}
 }

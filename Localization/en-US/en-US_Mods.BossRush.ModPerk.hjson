@@ -118,7 +118,7 @@ AlchemistEmpowerment: {
 	DisplayName: Alchemist Empowerment
 	Description:
 		'''
-		+ Drinking any buff potion have chance to give you additional helpful buff
+		+ Drinking any buff potion will give you additional helpful buff
 		+ Quick Potion heal is halved, but also cleanses almost all debuffs
 		+ Potion have 55% to not be consumed when not using Quick Buff key
 		+ Opening Lootbox will drop you 1 random special potion
@@ -219,7 +219,7 @@ BlessingOfNebula: {
 		+ 12% melee size increases
 		+ Attacking enemy have a 7% with melee item have a chance to drop a heart
 		+ Hitting a enemy with melee damage have a chance to inflict Melting Defense
-		+ Collecting heart have chance to gain nebula booster
+		+ Collecting star have chance to gain nebula booster
 		'''
 }
 

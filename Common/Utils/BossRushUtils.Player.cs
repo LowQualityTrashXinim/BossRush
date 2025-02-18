@@ -104,6 +104,17 @@ namespace BossRush {
 				}
 			}
 		}
+		public static void ManaHeal(this Player player, int amount) {
+			if (player.statMana >= player.statManaMax2) {
+				if (player.statMana + amount >= player.statManaMax2) {
+					player.statMana = player.statManaMax2;
+				}
+				else {
+					player.statMana += amount;
+				}
+				player.ManaEffect(amount);
+			}
+		}
 		public static bool CheckFirstStrike(this NPC npc) {
 			if (npc.TryGetGlobalNPC(out RoguelikeGlobalNPC roguelike)) {
 				return roguelike.HitCount <= 0;

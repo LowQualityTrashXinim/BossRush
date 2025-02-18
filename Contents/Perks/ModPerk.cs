@@ -246,7 +246,7 @@ namespace BossRush.Contents.Perks {
 			StackLimit = 3;
 		}
 		public override void ModifyHitByProjectile(Player player, Projectile proj, ref Player.HurtModifiers modifiers) {
-			modifiers.SourceDamage -= -.3f * StackAmount(player);
+			modifiers.SourceDamage += -.3f * StackAmount(player);
 		}
 	}
 	public class ProjectileDuplication : Perk {
