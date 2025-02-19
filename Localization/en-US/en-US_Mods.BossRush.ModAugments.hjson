@@ -265,7 +265,7 @@ StealthStrikeI: {
 
 StealthStrikeII: {
 	DisplayName: Stealth Strike II
-	Description: Deal 200% damage against undamaged enemy
+	Description: 200% First strike damage
 }
 
 DryadBlessing: {

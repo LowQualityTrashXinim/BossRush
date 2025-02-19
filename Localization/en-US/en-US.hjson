@@ -1780,7 +1780,7 @@ Mods: {
 				DisplayName: Genocidal Pact
 				Tooltip:
 					'''
-					Increases your damage against undamaged enemy by 300%
+					Increases your first strike damage by 300%
 					Decreases your weapon damage by 25% however killing a npc will ingore the damage decreases
 					Increases your attack damage by 10% and attack speed by 5% ( you can overstack this effect above 5 )
 					'''

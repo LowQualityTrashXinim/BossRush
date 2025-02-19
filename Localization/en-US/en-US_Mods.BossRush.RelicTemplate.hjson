@@ -20,7 +20,7 @@ CombatV4Template: {
 
 StrikeFullHPTemplate: {
 	DisplayName: Weapon Virginity
-	Description: Increases damage by [c/{0}:{1}] against undamaged enemies
+	Description: Increases first strike damage by [c/{0}:{1}]
 }
 
 HealthV2Template: {

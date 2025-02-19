@@ -720,7 +720,7 @@ SoulShatter: {
 	Description:
 		'''
 		~ 1 bullet is all it matter ~
-		+ Increases undamaged damage by 500% and critical strike damage by 40%
+		+ Increases first strike damage by 500% and critical strike damage by 40%
 		+ After waiting for 1.5s, increases the next shot damage by 40% and critical strike damage by 100%
 		+ Your bullet have 0.1% chance to instantly kill non-boss enemy
 		+ Killing a enemy with 1 shot will debuff surrounding enemy with "shatter" debuff

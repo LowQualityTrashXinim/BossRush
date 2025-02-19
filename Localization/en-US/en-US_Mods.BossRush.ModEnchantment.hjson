@@ -294,7 +294,7 @@ Gladius.Description:
 Katana.Description:
 	'''
 	Increases melee damage by 15%, weapon critical chance by 3%, 
-	critical damage by 20% and damage against undamaged enemy by 35%
+	critical damage by 20% and first strike damage by 35%
 	Hitting enemy with item will spawn a ghost katana that attack enemy
 	'''
 WoodenBow.Description:

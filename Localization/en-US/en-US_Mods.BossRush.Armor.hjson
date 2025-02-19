@@ -25,6 +25,7 @@ WoodArmor: {
 		5% to spawn a sunflower
 		'''
 }
+
 BorealwoodArmor: {
 	Head:
 		'''
@@ -71,12 +72,13 @@ RichMahoganyArmor: {
 		Increases max sentry
 		'''
 	SetBonus:
-	'''
-	Increase defense by 6 and movement speed by 30%
-	Increases damage of sharp leaf
-	Decreases standing requirement for dryad's blessing
-	'''
+		'''
+		Increase defense by 6 and movement speed by 30%
+		Increases damage of sharp leaf
+		Decreases standing requirement for dryad's blessing
+		'''
 }
+
 ShadewoodArmor.SetBonus:
 	'''
 	When in crimson biome :

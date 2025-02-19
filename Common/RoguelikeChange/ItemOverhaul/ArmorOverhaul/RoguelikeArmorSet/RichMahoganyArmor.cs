@@ -62,17 +62,22 @@ public class RichMahoganyPlayer : ModPlayer {
 	}
 	public override void PostUpdateEquips() {
 		if (Standing) {
-			if (counter >= requirement || CheckArmorActive() && counter >= requirement / 3) {
-				Player.AddBuff(BuffID.DryadsWard, BossRushUtils.ToSecond(8));
+			if (Player.velocity == Vector2.Zero) {
+				if (counter >= requirement || CheckArmorActive() && counter >= requirement / 3) {
+					Player.AddBuff(BuffID.DryadsWard, BossRushUtils.ToSecond(8));
+				}
+				else {
+					counter++;
+				}
 			}
 			else {
-				counter++;
+				counter = 0;
 			}
 		}
 	}
 	bool CheckArmorActive() => Player.GetModPlayer<RoguelikeArmorPlayer>().ArmorSetCheck(Player.GetModPlayer<RichMahoganyArmorPlayer>());
-	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-		OnHitNPC_Armor(target);
+	public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) {
+		OnHitNPC_Armor(npc);
 	}
 	public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) {
 		OnHitNPC_Armor(proj);
@@ -81,12 +86,13 @@ public class RichMahoganyPlayer : ModPlayer {
 		if (!Hit) {
 			return;
 		}
+		int damage = 12;
+		if (CheckArmorActive()) {
+			damage += Player.HeldItem.damage / 4;
+			damage += 10;
+		}
 		for (int i = 0; i < 10; i++) {
 			Vector2 spread = Vector2.One.Vector2DistributeEvenly(10f, 360, i);
-			int damage = 12;
-			if (CheckArmorActive()) {
-				damage += Player.HeldItem.damage / 4;
-			}
 			int proj = Projectile.NewProjectile(Player.GetSource_OnHurt(entity), Player.Center, spread * 2f, ProjectileID.BladeOfGrass, damage, 1f, Player.whoAmI);
 			Main.projectile[proj].penetrate = -1;
 		}
