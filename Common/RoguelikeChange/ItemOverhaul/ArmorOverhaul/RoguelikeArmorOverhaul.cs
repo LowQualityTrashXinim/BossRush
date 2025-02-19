@@ -49,24 +49,24 @@ class RoguelikeArmorOverhaul : GlobalItem {
 		}
 		if (index == -1) {
 			tooltips.Insert(2, new(Mod, "Defense", $"{info.Add_Defense} Defense"));
-			return;
 		}
-		string text = tooltips[index].Text;
-		string defenseStringSimulation = "";
-		int indexWhereNumEnd = 0;
-		for (int i = 0; i < text.Length; i++) {
-			if (char.IsNumber(text[i])) {
-				defenseStringSimulation += text[i];
+		else {
+			string text = tooltips[index].Text;
+			string defenseStringSimulation = "";
+			int indexWhereNumEnd = 0;
+			for (int i = 0; i < text.Length; i++) {
+				if (char.IsNumber(text[i])) {
+					defenseStringSimulation += text[i];
+				}
+				else {
+					indexWhereNumEnd = i;
+					break;
+				}
 			}
-			else {
-				indexWhereNumEnd = i;
-				break;
-			}
+			int defense = int.Parse(defenseStringSimulation);
+			text = text.Substring(indexWhereNumEnd);
+			tooltips[index].Text = (defense + info.Add_Defense).ToString() + text;
 		}
-		int defense = int.Parse(defenseStringSimulation);
-		text = text.Substring(indexWhereNumEnd);
-		tooltips[index].Text = (defense + info.Add_Defense).ToString() + text;
-
 		index = tooltips.FindIndex(line => line.Name == "Tooltip0");
 		var armorinfo = ArmorLoader.GetArmorPieceInfo(item.type);
 		if (armorinfo == null) {

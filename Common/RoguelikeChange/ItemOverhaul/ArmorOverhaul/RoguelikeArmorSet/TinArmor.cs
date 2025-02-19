@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Projectiles;
+using BossRush.Common.Systems;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul.RoguelikeArmorSet;
 internal class TinArmor : ModArmorSet {
@@ -17,18 +18,70 @@ public class TinHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.TinHelmet;
 		Add_Defense = 4;
+		AddTooltip = true;
+		ArmorName = "TinArmor";
+		TypeEquipment = Type_Head;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.AttackSpeed, 1.09f);
 	}
 }
 public class TinChainmail : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.TinChainmail;
 		Add_Defense = 5;
+		AddTooltip = true;
+		ArmorName = "TinArmor";
+		TypeEquipment = Type_Body;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		player.endurance += .05f;
 	}
 }
 public class TinGreaves : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.TinGreaves;
 		Add_Defense = 4;
+		AddTooltip = true;
+		ArmorName = "TinArmor";
+		TypeEquipment = Type_Leg;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.12f);
+		modplayer.AddStatsToPlayer(PlayerStats.JumpBoost, 1.1f);
+	}
+}
+public class TinPlayer : ModPlayer {
+	public override void ModifyWeaponCrit(Item item, ref float crit) {
+		if (Player.GetModPlayer<RoguelikeArmorPlayer>().ActiveArmor.HeadID == ItemID.TinHelmet) {
+			switch (item.type) {
+				case ItemID.TinBroadsword:
+				case ItemID.TinBow:
+				case ItemID.TinAxe:
+				case ItemID.TopazStaff:
+				case ItemID.TinPickaxe:
+				case ItemID.TinHammer:
+				case ItemID.TinShortsword:
+					crit += 4;
+					break;
+			}
+		}
+	}
+	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+		if (Player.GetModPlayer<RoguelikeArmorPlayer>().ActiveArmor.BodyID == ItemID.TinChainmail) {
+			switch (item.type) {
+				case ItemID.TinBroadsword:
+				case ItemID.TinBow:
+				case ItemID.TinAxe:
+				case ItemID.TopazStaff:
+				case ItemID.TinPickaxe:
+				case ItemID.TinHammer:
+				case ItemID.TinShortsword:
+					damage += .16f;
+					break;
+			}
+		}
 	}
 }
 public class TinArmorPlayer : PlayerArmorHandle {

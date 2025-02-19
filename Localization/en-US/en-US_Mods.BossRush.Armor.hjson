@@ -81,12 +81,9 @@ RichMahoganyArmor: {
 
 ShadewoodArmor.SetBonus:
 	'''
-	When in crimson biome :
-	Increase defense by 7
-	Increase movement speed by 15%
-	Whenever you strike a enemy :
-	A ring of crimson burst out that deal fixed 30 damage ( have 3 second cool down)
-	For each enemy it hit, debuff them with ichor for 5s and heal you for 1hp
+	Increase defense by 7 and movement speed by 15%
+	Striking an enemy creates a ring that deals 30 damage every 3 seconds, 
+	debuff enemies with ichor and heal you for 1hp
 	'''
 EbonwoodArmor.SetBonus:
 	'''
@@ -112,8 +109,7 @@ CactusArmor.SetBonus:
 	'''
 PalmwoodArmor.SetBonus:
 	'''
-	Increase defense by 10
-	Increase movement speed by 17%
+	Increase defense by 10 and movement speed by 17%
 	Jumping will leave a trail of sand that deal 12 damage
 	Shooting out sand 3 time for each 7 shot that deal 50% of your weapon damage
 	At the end throw out a Coconut that deal 125% damage
@@ -162,12 +158,29 @@ BeeArmor: {
 		'''
 }
 
-TinArmor.SetBonus:
-	'''
-	Increase defense by 5
-	Increase movement speed by 21%
-	Buff most weapon with tin power
-	'''
+TinArmor: {
+	Head:
+		'''
+		9% attack speed
+		4% tin weapon critical strike chance
+		'''
+	Body:
+		'''
+		5% Damage reduction
+		16% tin weapon damage
+		'''
+	Leg:
+		'''
+		10% jump boost
+		12% movement speed
+		'''
+	SetBonus:
+		'''
+		Increase defense by 5
+		Increase movement speed by 21%
+		Buff most weapon with tin power
+		'''
+}
 
 CopperArmor: {
 	Head: 2% chance to inflict electrified on hit
@@ -196,7 +209,7 @@ IronArmor: {
 JungleArmor.SetBonus:
 	'''
 	When using magic weapon, you will shoot out magical leaf hover around player up to max of 10
-	When there are 10 leafs exist in world, the leaf will home into the closest enemy when possible
+	Reaching max leafs, the leaf will home into the closest enemy when possible
 	'''
 
 LeadArmor: {
