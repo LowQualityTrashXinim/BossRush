@@ -18,7 +18,10 @@ class BorealWoodHelmet : ModArmorPiece {
 		TypeEquipment = Type_Head;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().FrostBurnChance += .01f;
+		RoguelikeArmorPlayer roguelike = player.GetModPlayer<RoguelikeArmorPlayer>();
+		roguelike.FrostBurnChance += .02f;
+		roguelike.SnowBallDamage = true;
+		roguelike.SnowSpawnChance += .03f;
 	}
 }
 class BorealWoodBreastplate : ModArmorPiece {
@@ -30,7 +33,10 @@ class BorealWoodBreastplate : ModArmorPiece {
 		TypeEquipment = Type_Body;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().FrostBurnChance += .02f;
+		RoguelikeArmorPlayer roguelike = player.GetModPlayer<RoguelikeArmorPlayer>();
+		roguelike.FrostBurnChance += .03f;
+		roguelike.ReplaceSnowBallWithSnow = true;
+		roguelike.SnowSpawnChance += .04f;
 	}
 }
 class BorealWoodGreaves : ModArmorPiece {
@@ -42,7 +48,10 @@ class BorealWoodGreaves : ModArmorPiece {
 		TypeEquipment = Type_Leg;
 	}
 	public override void UpdateEquip(Player player, Item item) {
-		player.GetModPlayer<RoguelikeArmorPlayer>().FrostBurnChance += .01f;
+		RoguelikeArmorPlayer roguelike = player.GetModPlayer<RoguelikeArmorPlayer>();
+		roguelike.FrostBurnChance += .01f;
+		roguelike.RunningCauseSnowToShoot = true;
+		roguelike.SnowSpawnChance += .02f;
 	}
 }
 class BorealWoodArmorPlayer : PlayerArmorHandle {
@@ -54,9 +63,12 @@ class BorealWoodArmorPlayer : PlayerArmorHandle {
 		Player.moveSpeed += .20f;
 		Player.buffImmune[BuffID.Chilled] = true;
 		Player.buffImmune[BuffID.Slow] = true;
-		Player.GetModPlayer<RoguelikeArmorPlayer>().FrostBurnChance += .07f;
+		RoguelikeArmorPlayer rougelike = Player.GetModPlayer<RoguelikeArmorPlayer>();
+		rougelike.FrostBurnChance += .07f;
+		rougelike.SnowSpawnChance += .1f;
+
 	}
-	public override void Armor_OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+	public override void Armor_OnHitByNPC(NPC target, Player.HurtInfo hurtInfo) {
 		if (target.HasBuff(BuffID.Frostburn) || target.HasBuff(BuffID.Frostburn2)) {
 			Player.AddBuff(BuffID.Frostburn, BossRushUtils.ToSecond(10));
 		}

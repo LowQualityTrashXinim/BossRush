@@ -7,9 +7,15 @@ using BossRush.Common.Systems;
 namespace BossRush.Common.RoguelikeChange.Prefixes;
 internal class RoguelikePrefix : GlobalItem {
 	public override bool? PrefixChance(Item item, int pre, UnifiedRandom rand) {
+		if (pre == -2 || pre == -1) {
+
+		}
 		return base.PrefixChance(item, pre, rand);
 	}
 	public override bool AllowPrefix(Item item, int pre) {
+		if (pre == PrefixID.Legendary || pre == PrefixID.Legendary2 || pre == PrefixID.Mythical || pre == PrefixID.Unreal) {
+			return Main.rand.NextBool(10);
+		}
 		return base.AllowPrefix(item, pre);
 	}
 	public override int ChoosePrefix(Item item, UnifiedRandom rand) {
@@ -302,7 +308,7 @@ public class RoguelikePrefixSystem : ModSystem {
 		if (shtspd != 1f)
 			shtspd = shtspd * .01f + 1;
 		if (mcst != 1f)
-			mcst = 1 - mcst *.01f;
+			mcst = 1 - mcst * .01f;
 
 		//if (dmg != 1f && Math.Round(self.damage * dmg) == self.damage)
 		//	return false;

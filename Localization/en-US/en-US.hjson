@@ -328,6 +328,7 @@ Mods: {
 			VoidTrail.DisplayName: Void Trail
 			GemCollectible.DisplayName: Gem Collectible
 			SunflowerProjectile.DisplayName: Sunflower Projectile
+			SnowBlockProjectile.DisplayName: Snow Block Projectile
 		}
 
 		NPCs: {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BossRush.Contents.Projectiles;
 using Microsoft.Xna.Framework;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BossRush.Common.RoguelikeChange.ItemOverhaul.ArmorOverhaul;
 class RoguelikeArmorOverhaul : GlobalItem {
@@ -116,7 +117,15 @@ public class RoguelikeArmorPlayer : ModPlayer {
 	public float MidasChance = 0;
 	public float ElectricityChance = 0;
 	public float AcornSpawnChance = 0;
+	//These are hardcoded since there are no way this gonna be reused right ?
+	public bool AcornCriticalStrike = false;
+	public bool AcornDamagePlus = false;
+	public bool AcornVelocity = false;
 	public float FrostBurnChance = 0;
+	public float SnowSpawnChance = 0;
+	public bool SnowBallDamage = false;
+	public bool ReplaceSnowBallWithSnow = false;
+	public bool RunningCauseSnowToShoot = false;
 	public ModArmorSet ActiveArmor = ArmorLoader.Default;
 	public List<ModArmorSet> ForceActive = new();
 	public bool ArmorSetCheck(ModPlayer modplayer = null) {
@@ -146,7 +155,43 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		MidasChance = 0;
 		ElectricityChance = 0;
 		AcornSpawnChance = 0;
+		AcornCriticalStrike = false;
+		AcornDamagePlus = false;
+		AcornVelocity = false;
 		FrostBurnChance = 0;
+		SnowSpawnChance = 0;
+		SnowBallDamage = false;
+		ReplaceSnowBallWithSnow = false;
+		RunningCauseSnowToShoot = false;
+	}
+	public override void UpdateEquips() {
+		Item item = Player.HeldItem;
+		if (Player.ItemAnimationActive && Player.itemAnimation == Player.itemAnimationMax / 2) {
+			Vector2 vel = (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero);
+			if (Main.rand.NextFloat() <= SnowSpawnChance) {
+				int type = ProjectileID.SnowBallFriendly;
+				if (ReplaceSnowBallWithSnow && Main.rand.NextBool(4)) {
+					type = ModContent.ProjectileType<SnowBlockProjectile>();
+				}
+				int damage = 8 + Player.GetWeaponDamage(item) / 6;
+				if (SnowBallDamage) {
+					damage = (int)(damage * 1.1f);
+				}
+				Projectile.NewProjectile(Player.GetSource_ItemUse(item), Player.Center, vel * 14, type, damage, 1f, Player.whoAmI);
+			}
+		}
+		Point tile = Player.position.ToTileCoordinates();
+		bool CheckTileBelow1 = !WorldGen.TileEmpty(tile.X, tile.Y + 3);
+		bool CheckTileBelow2 = !WorldGen.TileEmpty(tile.X, tile.Y + 4);
+		if (RunningCauseSnowToShoot && Player.velocity.IsLimitReached(3) && (CheckTileBelow1 || CheckTileBelow2)) {
+			if (Main.rand.NextBool(10)) {
+				Vector2 vel = Player.velocity;
+				vel.X *= -1.5f;
+				vel.Y = -2;
+				vel = vel.LimitedVelocity(15);
+				Projectile.NewProjectile(Player.GetSource_ItemUse(item), Player.Center.Subtract(0, 10), vel.Vector2RotateByRandom(10), ProjectileID.SnowBallFriendly, 8 + Player.GetWeaponDamage(item) / 6, 1f, Player.whoAmI);
+			}
+		}
 	}
 	public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 		if (Main.rand.NextFloat() <= MidasChance) {
@@ -165,15 +210,27 @@ public class RoguelikeArmorPlayer : ModPlayer {
 		}
 	}
 	public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone) {
-		if (Main.rand.NextFloat() <= AcornSpawnChance && proj.ModProjectile == null || proj.ModProjectile is not AcornProjectile) {
+		if (Main.rand.NextFloat() <= AcornSpawnChance && (proj.ModProjectile == null || proj.ModProjectile is not AcornProjectile)) {
 			SpawnAcorn(target);
 		}
 	}
 	private void SpawnAcorn(NPC target) {
 		int damage = Player.GetWeaponDamage(Player.HeldItem);
-		Projectile.NewProjectile(Player.GetSource_FromThis(),
+
+		int proj = Projectile.NewProjectile(Player.GetSource_FromThis(),
 				target.Center - new Vector2(0, 400),
 				Vector2.UnitY * 10,
 				ModContent.ProjectileType<AcornProjectile>(), 10 + damage / 5, 1f, Player.whoAmI);
+
+		Projectile projectile = Main.projectile[proj];
+		if (AcornDamagePlus) {
+			projectile.damage += (int)(damage * .2f);
+		}
+		if (AcornCriticalStrike) {
+			projectile.CritChance += 15;
+		}
+		if (AcornVelocity) {
+			projectile.velocity *= 1.35f;
+		}
 	}
 }
