@@ -93,20 +93,56 @@ EbonwoodArmor.SetBonus:
 	Increase damage by 5%
 	You leave a trail of corruption that deal 3 damage and inflict cursed inferno for 2s
 	'''
-AshwoodArmor.SetBonus:
-	'''
-	Increase defense by 8
-	Increase damage by 10%
-	When in underworld or underground caven level :
-	Getting hit fires a burst of flames at the attacker, dealing from 5 to 15 damage
-	All attacks inflicts On Fire! for 5 seconds
-	'''
-CactusArmor.SetBonus:
-	'''
-	Increase defenses by 10
-	Getting hit will drop down a rolling cactus that is friendly with 5s cool down
-	Getting hit will shoot out 8 cactus spike that is friendly deal 15 damage
-	'''
+
+AshwoodArmor: {
+	Head:
+		'''
+		1.09x damage to OnFire enemy
+		20 maximum life
+		'''
+	Body:
+		'''
+		1.11x damage to OnFire enemy
+		30 maximum life
+		'''
+	Leg:
+		'''
+		1.07x damage to OnFire enemy
+		Running will leave a trail of fire spark 
+		'''
+	SetBonus:
+		'''
+		Increase defense by 8
+		Increase damage by 10%
+		Getting hit fires a burst of flames at the attacker
+		'''
+}
+
+CactusArmor: {
+	Head:
+		'''
+		10 thorn damage
+		Increases life regeneration
+		'''
+	Body:
+		'''
+		15 thorn damage
+		4 melee damage
+		'''
+	Leg:
+		'''
+		7 thorn damage
+		14% movement speed
+		'''
+	SetBonus:
+		'''
+		Increase defenses by 10
+		Getting hit will :
+		Drop down a friendly rolling cactus ( 5s cool down )
+		and shoot out 8 friendly cactus spike
+		'''
+}
+
 PalmwoodArmor.SetBonus:
 	'''
 	Increase defense by 10 and movement speed by 17%

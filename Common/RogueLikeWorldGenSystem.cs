@@ -135,7 +135,7 @@ public class StructureUI : UIState {
 			Main.instance.MouseText("Template saving ( recommended for basic template )");
 		}
 		else if (affectedElement.UniqueId == list_btn[3].UniqueId) {
-			Main.instance.MouseText("Multi-structure saving (Not Supported");
+			Main.instance.MouseText("Detailed saving");
 		}
 		else if (affectedElement.UniqueId == list_btn[4].UniqueId) {
 			Main.instance.MouseText("(Not Supported");
@@ -164,6 +164,12 @@ public class StructureUI : UIState {
 		}
 		else if (method == SaverOptimizedMethod.Template) {
 			GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text, SaverOptimizedMethod.Template);
+			txt_FileName.SetText("");
+			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
+			Main.NewText("Successfully save structure");
+		}
+		else if(method == SaverOptimizedMethod.MultiStructure) {
+			GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text, SaverOptimizedMethod.MultiStructure);
 			txt_FileName.SetText("");
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			Main.NewText("Successfully save structure");

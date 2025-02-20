@@ -451,6 +451,9 @@ internal static partial class GenerationHelper {
 		else if (method == SaverOptimizedMethod.Template) {
 			SaveTemplateStructure(target, path, name);
 		}
+		else if (method == SaverOptimizedMethod.MultiStructure) {
+			Detailed_SaveStructure(target, path, name);
+		}
 		Main.NewText("Structure saved as " + Path.Combine(path, name), Color.Yellow);
 	}
 	/// <summary>
@@ -536,7 +539,8 @@ internal static partial class GenerationHelper {
 							indexCounter++;
 							dict_TileData.Add(td, c);
 						}
-						string extra = "{" + c.ToString() + 'X' + td.Tile_FrameX + 'Y' + td.Tile_FrameY + "}";
+						//string extra = "{" + c.ToString() + 'X' + td.Tile_FrameX + 'Y' + td.Tile_FrameY + "}";
+						string extra = c.ToString();
 						structureData += $"{extra}{distance.ToString()}";
 						distance = 1;
 					}

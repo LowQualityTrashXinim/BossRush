@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BossRush.Common.Systems;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 
@@ -14,18 +15,43 @@ public class CactusHelmet : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CactusHelmet;
 		Add_Defense = 4;
+		AddTooltip = true;
+		ArmorName = "CactusArmor";
+		TypeEquipment = Type_Head;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.Thorn, Base: 10);
+		modplayer.AddStatsToPlayer(PlayerStats.RegenHP, Base: 3);
 	}
 }
 public class CactusBreastplate : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CactusBreastplate;
 		Add_Defense = 5;
+		AddTooltip = true;
+		ArmorName = "CactusArmor";
+		TypeEquipment = Type_Body;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.Thorn, Base: 15);
+		modplayer.AddStatsToPlayer(PlayerStats.MeleeDMG, Base: 4);
 	}
 }
 public class CactusLeggings : ModArmorPiece {
 	public override void SetDefault() {
 		PieceID = ItemID.CactusLeggings;
 		Add_Defense = 4;
+		AddTooltip = true;
+		ArmorName = "CactusArmor";
+		TypeEquipment = Type_Leg;
+	}
+	public override void UpdateEquip(Player player, Item item) {
+		PlayerStatsHandle.AddStatsToPlayer(player, PlayerStats.Thorn, Base: 7);
+		PlayerStatsHandle modplayer = player.GetModPlayer<PlayerStatsHandle>();
+		modplayer.AddStatsToPlayer(PlayerStats.Thorn, Base: 7);
+		modplayer.AddStatsToPlayer(PlayerStats.MovementSpeed, 1.14f);
 	}
 }
 
