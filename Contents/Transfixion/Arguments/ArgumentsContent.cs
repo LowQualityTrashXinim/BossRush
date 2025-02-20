@@ -5,11 +5,11 @@ using Terraria.ID;
 using BossRush.Texture;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using BossRush.Common.General;
 using BossRush.Contents.Items.Weapon;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems;
 using BossRush.Contents.Transfixion.Artifacts;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Transfixion.Arguments;
 

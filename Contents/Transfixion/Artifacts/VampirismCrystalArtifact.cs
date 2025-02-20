@@ -7,10 +7,10 @@ using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.Systems.ArtifactSystem;
 using BossRush.Common.Systems;
 using BossRush.Contents.Perks;
-using BossRush.Common.General;
 using BossRush.Contents.Items.Weapon.RangeSynergyWeapon.BloodyShot;
 using BossRush.Contents.Items.Accessories.LostAccessories;
 using System;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Transfixion.Artifacts {
 	internal class VampirismCrystalArtifact : Artifact {

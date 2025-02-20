@@ -13,7 +13,7 @@ using BossRush.Contents.Items.Weapon.ArcaneRange.MagicBow;
 using BossRush.Common.Systems;
 using SteelSeries.GameSense;
 
-namespace BossRush.Common.General;
+namespace BossRush.Common.RoguelikeChange;
 internal class RoguelikeGlobalProjectile : GlobalProjectile {
 	public override bool InstancePerEntity => true;
 
@@ -38,9 +38,9 @@ internal class RoguelikeGlobalProjectile : GlobalProjectile {
 		if (source is EntitySource_Misc parent2 && parent2.Context == "OnKill_ScatterShot") {
 			Source_FromDeathScatterShot = true;
 		}
-		if(source is EntitySource_Parent parent3) {
+		if (source is EntitySource_Parent parent3) {
 			if (parent3.Entity is Projectile possibly) {
-				if(possibly.minion) {
+				if (possibly.minion) {
 					IsFromMinion = true;
 				}
 			}

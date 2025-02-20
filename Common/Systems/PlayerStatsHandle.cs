@@ -5,7 +5,6 @@ using BossRush.Contents.Skill;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using BossRush.Contents.Perks;
-using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Items.Weapon;

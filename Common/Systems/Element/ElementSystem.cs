@@ -1,4 +1,4 @@
-﻿using BossRush.Common.General;
+﻿using BossRush.Common.RoguelikeChange;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +75,9 @@ internal class ElementSystem : ModSystem {
 		}
 		element.AppliedToItem[ItemID] = ItemHasElem;
 	}
+}
+public class Element_Item : GlobalItem {
+
 }
 public class Element_ModPlayer : ModPlayer {
 	public HashSet<Element> NPC_Element = new HashSet<Element>();
@@ -189,6 +192,11 @@ public abstract class Element : ModType {
 	/// Use this to assigned if wherever or not this Item type can have this element
 	/// </summary>
 	public bool[] AppliedToItem = ItemID.Sets.Factory.CreateBoolSet();
+	/// <summary>
+	/// Key : item ID<br/>
+	/// Value : value
+	/// </summary>
+	public Dictionary<int, float> ArmorValue = new();
 	public static ushort GetElementType<T>() where T : Element {
 		return ModContent.GetInstance<T>().Type;
 	}
@@ -200,8 +208,6 @@ public abstract class Element : ModType {
 	/// This is where you set all of your value and basic stats 
 	/// </summary>
 	public virtual void SetDefault() {
-		ElementSystem.AssignedNPC(NPCID.Demon, Type, .5f, true);
-		ElementSystem.AssignedItem(ItemID.FieryGreatsword, Type, true);
 	}
 	/// <summary>
 	/// </summary>

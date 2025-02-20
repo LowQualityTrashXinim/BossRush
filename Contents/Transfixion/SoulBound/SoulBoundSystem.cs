@@ -6,13 +6,8 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System.Collections.Generic;
-using Steamworks;
-using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
-using Terraria.ID;
-using Mono.Cecil;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace BossRush.Contents.Transfixion.Arguments;
+namespace BossRush.Contents.Transfixion.SoulBound;
 internal class SoulBoundLoader : ModSystem {
 	private static readonly List<ModSoulBound> _SoulBounds = new();
 	public static int TotalCount => _SoulBounds.Count;

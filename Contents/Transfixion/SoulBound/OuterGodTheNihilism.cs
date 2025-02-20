@@ -1,7 +1,5 @@
 ﻿using BossRush.Common.RoguelikeChange;
 using BossRush.Common.Systems;
-using BossRush.Contents.Transfixion.Arguments;
-using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
 using BossRush.Texture;
 using Humanizer;
 using Microsoft.Xna.Framework;

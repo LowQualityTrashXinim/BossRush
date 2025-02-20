@@ -712,7 +712,20 @@ public struct TileData : ICloneable {
 		Tile_HasActuator = false;
 		Tile_Air = false;
 	}
-
+	public char Slope_Parser(SlopeType type) {
+		switch (type) {
+			case SlopeType.SlopeDownLeft:
+				return 'b';
+			case SlopeType.SlopeDownRight:
+				return 'c';
+			case SlopeType.SlopeUpLeft:
+				return 'd';
+			case SlopeType.SlopeUpRight:
+				return 'e';
+			default:
+				return ' ';
+		}
+	}
 	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, byte tile_WireData, bool tile_HasActuator) {
 		Tile_Type = tileType;
 		Tile_FrameX = tileFrameX;

@@ -2,9 +2,8 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using BossRush.Contents.Transfixion.Arguments;
 
-namespace BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
+namespace BossRush.Contents.Transfixion.SoulBound;
 public abstract class BaseSoulBoundItem : ModItem {
 	public override string Texture => BossRushTexture.MissingTexture_Default;
 	public virtual short SoulBoundType => -1;

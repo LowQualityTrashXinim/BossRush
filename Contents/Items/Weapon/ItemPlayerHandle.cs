@@ -21,6 +21,7 @@ using BossRush.Contents.Items.RelicItem;
 using BossRush.Contents.BuffAndDebuff.PlayerDebuff;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
 using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Common.Systems.Element;
 
 namespace BossRush.Contents.Items.Weapon {
 	/// <summary>
@@ -182,6 +183,30 @@ namespace BossRush.Contents.Items.Weapon {
 		public bool ExtraInfo = false;
 		public bool AdvancedBuffItem = false;
 		public bool RPGItem = false;
+		/// <summary>
+		/// Key : Element type
+		/// Value : Element res value
+		/// </summary>
+		public Dictionary<int, float> dict_Element = new();
+		/// <summary>
+		/// Use this to both set and modify element value
+		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="ElementType"></param>
+		/// <param name="ResValue"></param>
+		public static void Set_ElementalValue(ref Item item, int ElementType, float ResValue) {
+			if (item.TryGetGlobalItem(out GlobalItemHandle global)) {
+				if (ElementSystem.GetElement(ElementType) == null) {
+					return;
+				}
+				if (!global.dict_Element.ContainsKey(ElementType)) {
+					global.dict_Element.Add(ElementType, ResValue);
+				}
+				else {
+					global.dict_Element[ElementType] = ResValue;
+				}
+			}
+		}
 		public override void SetDefaults(Item entity) {
 		}
 		public float CriticalDamage = 0;
@@ -203,7 +228,7 @@ namespace BossRush.Contents.Items.Weapon {
 			if (item.knockBack > 0) {
 				index = tooltips.FindIndex(t => t.Name == "Knockback");
 				if (index != -1) {
-					tooltips[index].Text =tooltips[index].Text + $" | Base : {Math.Round(item.knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
+					tooltips[index].Text = tooltips[index].Text + $" | Base : {Math.Round(item.knockBack, 2)} | Modified : {Math.Round(Main.LocalPlayer.GetWeaponKnockback(item), 2)}";
 				}
 			}
 

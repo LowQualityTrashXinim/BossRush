@@ -11,7 +11,6 @@ using BossRush.Contents.Items;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Skill;
-using BossRush.Common.General;
 using System.Collections.Generic;
 using BossRush.Contents.Items.Chest;
 using BossRush.Contents.Projectiles;

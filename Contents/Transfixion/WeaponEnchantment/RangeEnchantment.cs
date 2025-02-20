@@ -9,13 +9,13 @@ using BossRush.Common.Systems;
 using BossRush.Contents.Projectiles;
 using BossRush.Contents.BuffAndDebuff;
 using BossRush.Common.RoguelikeChange.ItemOverhaul;
-using BossRush.Common.General;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.Localization;
 using BossRush.Contents.Items.Chest;
 using Mono.Cecil;
 using BossRush.Contents.Transfixion.WeaponEnchantment;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Transfixion.WeaponEnchantment {
 	public class Musket : ModEnchantment {

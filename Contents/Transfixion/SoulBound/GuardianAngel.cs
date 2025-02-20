@@ -1,6 +1,4 @@
 ﻿using BossRush.Common.Systems;
-using BossRush.Contents.Transfixion.Arguments;
-using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
 using Humanizer;
 using System;
 using Terraria;

@@ -17,8 +17,7 @@ using Terraria.Audio;
 using SteelSeries.GameSense.DeviceZone;
 using BossRush.Contents.Perks;
 using ReLogic.Utilities;
-using BossRush.Contents.Transfixion.SoulBound.SoulBoundMaterial;
-using BossRush.Contents.Transfixion.Arguments;
+using BossRush.Contents.Transfixion.SoulBound;
 
 namespace BossRush.Common.Systems;
 public class TransmutationUIState : UIState {

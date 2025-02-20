@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using BossRush.Common.Systems;
 using Microsoft.Xna.Framework;
 using BossRush.Contents.Items.Weapon;
-using BossRush.Common.General;
+using BossRush.Common.RoguelikeChange;
 
 namespace BossRush.Contents.Items.Accessories.LostAccessories;
 internal class HeartOfBloodThorn : ModItem {

@@ -8,7 +8,6 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria;
 using System;
-using BossRush.Common.General;
 using BossRush.Common.Systems;
 using Terraria.GameInput;
 using Microsoft.Xna.Framework.Graphics;
