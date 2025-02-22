@@ -329,6 +329,7 @@ Mods: {
 			GemCollectible.DisplayName: Gem Collectible
 			SunflowerProjectile.DisplayName: Sunflower Projectile
 			SnowBlockProjectile.DisplayName: Snow Block Projectile
+			BlazingTornado.DisplayName: Blazing Tornado
 		}
 
 		NPCs: {
@@ -2942,6 +2943,15 @@ Mods: {
 						Enable to gain access to weapon enchantment system
 						Disable to revoke access to weapon enchantment system
 						Instead weapon enchantment have 20% to appear
+						'''
+				}
+
+				AccessoryPrefix: {
+					Label: Accessory Prefix
+					Tooltip:
+						'''
+						Enable to allow ( vanilla ) lesser accessory prefix to appear 
+						Disable to force reroll until you get the best one
 						'''
 				}
 

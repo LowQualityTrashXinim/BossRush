@@ -135,7 +135,7 @@ internal class UniversalSystem : ModSystem {
 	public const string CHECK_RARESPOILS = "rarespoil";
 	public const string CHECK_WWEAPONENCHANT = "weaponenchant";
 	public const string CHECK_RELICRANDOMVALUE = "relicvalue";
-
+	public const string CHECK_PREFIX = "prefix";
 	/// <summary>
 	/// Check config setting
 	/// </summary>
@@ -154,6 +154,8 @@ internal class UniversalSystem : ModSystem {
 			return config.RareSpoils;
 		if (option == CHECK_WWEAPONENCHANT)
 			return config.WeaponEnchantment;
+		if (option == CHECK_PREFIX)
+			return config.AccessoryPrefix;
 		return false;
 	}
 	internal UserInterface userInterface;
@@ -1129,7 +1131,7 @@ class InfoUI : UIState {
 					$"\n{ItemIcon(ItemID.WormScarf)} Damage reduction: {Math.Round(player.endurance * 100, 2)}%" +
 					$"\n{ItemIcon(ItemID.HermesBoots)} Movement speed : {Math.Round(player.moveSpeed, 2)}" +
 					$"\n{ItemIcon(ItemID.FrogLeg)} Jump boost : {player.jumpSpeedBoost}" +
-					$"\n{ItemIcon(ItemID.BewitchingTable) }Max minion : {player.maxMinions}" +
+					$"\n{ItemIcon(ItemID.BewitchingTable)}Max minion : {player.maxMinions}" +
 					$"\n{ItemIcon(ItemID.WarTable)} Max sentry/turret : {player.maxTurrets}" +
 					$"\n{ItemIcon(ItemID.Turtle)} Thorn : {player.thorns}";
 				textpanel.SetText(line);

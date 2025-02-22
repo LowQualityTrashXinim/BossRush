@@ -105,3 +105,17 @@ public class OrbOfPurity : ModSkill {
 		}
 	}
 }
+
+public class PhoenixBlazingTornado : ModSkill {
+	public override void SetDefault() {
+		Skill_EnergyRequire = 325;
+		Skill_Duration = BossRushUtils.ToSecond(5);
+		Skill_CoolDown = BossRushUtils.ToSecond(12);
+		Skill_Type = SkillTypeID.Skill_Summon;
+	}
+	public override void Update(Player player) {
+		if (player.ownedProjectileCounts[ModContent.ProjectileType<BlazingTornado>()] < 1) {
+			Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, Vector2.Zero, ModContent.ProjectileType<BlazingTornado>(), 120, 0, player.whoAmI);
+		}
+	}
+}

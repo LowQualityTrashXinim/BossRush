@@ -141,6 +141,7 @@ public partial class RogueLikeWorldGen : ModSystem {
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Grass")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Sunflowers")));
 			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Guide")));
+			tasks.RemoveAt(tasks.FindIndex(GenPass => GenPass.Name.Equals("Dungeon")));
 			tasks.AddRange(((ITaskCollection)this).Tasks);
 		}
 	}
@@ -219,6 +220,7 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 				}
 			}
 		}
+		Generate_TrialTest(Main.maxTilesX / 3, Main.maxTilesY / 2);
 	}
 	[Task]
 	public void GenerateSlimeZone() {
@@ -236,6 +238,61 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 	public void Re_GenerateFrost() {
 		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 5, 4, 4);
 		File_GenerateBiomeTemplate("Template/WG_Template", TileID.Dirt, WallID.Dirt, BiomeAreaID.Forest, "");
+		ResetTemplate_GenerationValue();
+	}
+	[Task]
+	public void re_GenerateDungeon() {
+		rect = GenerationHelper.GridPositionInTheWorld24x24(5, 3, 4, 4);
+		while (counter.X < rect.Width || counter.Y < rect.Height) {
+			ImageData template;
+			IsUsingHorizontal = ++count % 2 == 0;
+			if (IsUsingHorizontal) {
+				template = ImageStructureLoader.Get_Tempate("WG_Dungeon_TemplateHorizontal" + WorldGen.genRand.Next(1, 10));
+			}
+			else {
+				template = ImageStructureLoader.Get_Tempate("WG_Dungeon_TemplateVertical" + WorldGen.genRand.Next(1, 10));
+			}
+			if (++additionaloffset >= 2) {
+				counter.X += 32;
+				additionaloffset = 0;
+			}
+			bool ChanceOfSpawningShrine = Rand.NextBool(300) && !SpawnedShrine;
+			template.EnumeratePixels((a, b, color) => {
+				a += rect.X + counter.X;
+				b += rect.Y + counter.Y;
+				if (a > rect.Right || b > rect.Bottom) {
+					return;
+				}
+				if (a < rect.Left || b < rect.Top) {
+					return;
+				}
+				GenerationHelper.FastRemoveTile(a, b);
+				if (color.R == 255 && color.B == 0 && color.G == 0) {
+					GenerationHelper.FastPlaceTile(a, b, TileID.BlueDungeonBrick);
+				}
+				else if (ChanceOfSpawningShrine) {
+					EmptySpaceRecorder.Add(new(a, b));
+				}
+				GenerationHelper.FastPlaceWall(a, b, WallID.BlueDungeon);
+			});
+			if (ChanceOfSpawningShrine) {
+				if (EmptySpaceRecorder.Count > 1) {
+					ChanceOfSpawningShrine = false;
+					SpawnedShrine = true;
+				}
+			}
+			if (counter.X < rect.Width) {
+				counter.X += template.Width;
+			}
+			else {
+				offsetcount++;
+				counter.X = 0 - 32 * offsetcount;
+				counter.Y += 32;
+				count = 1;
+				additionaloffset = -1;
+			}
+		}
+		Biome.Add(BiomeAreaID.Dungeon, new List<Rectangle> { rect });
 		ResetTemplate_GenerationValue();
 	}
 	public void Generate_Trial(int X, int Y) {
@@ -261,7 +318,14 @@ public partial class RogueLikeWorldGen : ITaskCollection {
 			GenerationHelper.FastPlaceWall(a, b, WallID.StoneSlab);
 		});
 	}
+	public void Generate_TrialTest(int X, int Y) {
+		GenerationHelper.Safe_PlaceStructure($"Trial1", new Rectangle(X, Y, 100, 100));
+		WorldGen.PlaceTile(X + 50, Y + 50, ModContent.TileType<StartTrialAltar_Template_1>());
+	}
 	public void Generate_Shrine(string shrineType, int X, int Y, int width = 11, int height = 12) {
+		if (shrineType == string.Empty) {
+			return;
+		}
 		GenerationHelper.Safe_PlaceStructure($"Shrine/{shrineType}", new Rectangle(X, Y, width, height));
 		WorldGen.PlaceTile(X + width / 2, Y + height / 2, ModContent.TileType<SlimeBossAltar>());
 	}

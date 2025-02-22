@@ -16,6 +16,15 @@ internal class RoguelikePrefix : GlobalItem {
 		if (pre == PrefixID.Legendary || pre == PrefixID.Legendary2 || pre == PrefixID.Mythical || pre == PrefixID.Unreal) {
 			return Main.rand.NextBool(10);
 		}
+		if (!UniversalSystem.LuckDepartment(UniversalSystem.CHECK_PREFIX)) {
+			if (pre == PrefixID.Hard || pre == PrefixID.Guarding || pre == PrefixID.Armored ||
+				pre == PrefixID.Precise ||
+				pre == PrefixID.Jagged || pre == PrefixID.Spiked || pre == PrefixID.Angry ||
+				pre == PrefixID.Hasty2 || pre == PrefixID.Fleeting || pre == PrefixID.Brisk ||
+				pre == PrefixID.Wild || pre == PrefixID.Rash || pre == PrefixID.Intrepid) {
+				return false;
+			}
+		}
 		return base.AllowPrefix(item, pre);
 	}
 	public override int ChoosePrefix(Item item, UnifiedRandom rand) {
@@ -84,8 +93,8 @@ public class RoguelikePrefixSystem : ModSystem {
 				//extra attribute
 				break;
 			case PrefixID.Ruthless:
-				dmg = 50;
-				kb = -40;
+				dmg = 30;
+				kb = -20;
 				break;
 			case PrefixID.Godly:
 				dmg = 25;
@@ -116,6 +125,7 @@ public class RoguelikePrefixSystem : ModSystem {
 			case PrefixID.Nimble:
 				spd = 10;
 				crt = 5;
+				dmg = 7;
 				break;
 			case PrefixID.Murderous:
 				dmg = 23;
@@ -152,7 +162,7 @@ public class RoguelikePrefixSystem : ModSystem {
 				dmg = 15;
 				size = 66;
 				kb = 33;
-				spd = -18;
+				spd = -28;
 				break;
 			case PrefixID.Dangerous:
 				dmg = 22;
@@ -166,22 +176,24 @@ public class RoguelikePrefixSystem : ModSystem {
 				kb = 18;
 				break;
 			case PrefixID.Sharp:
-				dmg = 20;
+				dmg = 50;
 				crt = 10;
 				kb = -30;
 				break;
 			case PrefixID.Pointy:
-				dmg = 10;
-				crt = 15;
+				dmg = 20;
+				crt = 25;
 				kb = -40;
 				break;
 			case PrefixID.Tiny:
 				size = -50;
 				spd = 40;
+				kb = -30;
 				break;
 			case PrefixID.Small:
 				size = -20;
 				spd = 20;
+				kb = -20;
 				break;
 			case PrefixID.Terrible:
 				dmg = -15;

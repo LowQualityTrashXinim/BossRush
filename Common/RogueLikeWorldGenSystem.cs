@@ -168,7 +168,7 @@ public class StructureUI : UIState {
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
 			Main.NewText("Successfully save structure");
 		}
-		else if(method == SaverOptimizedMethod.MultiStructure) {
+		else if (method == SaverOptimizedMethod.MultiStructure) {
 			GenerationHelper.SaveToFile(new Rectangle(TopLeft.X, TopLeft.Y, thisWidth - 1, thisHeight - 1), txt_FileName.Text, SaverOptimizedMethod.MultiStructure);
 			txt_FileName.SetText("");
 			ModContent.GetInstance<UniversalSystem>().DeactivateUI();
@@ -310,7 +310,6 @@ public class RogueLikeWorldGenSystem : ModSystem {
 		try {
 			watch.Start();
 			string fileName = "";
-			List<GenPassData> list_genPass = new();
 			foreach (string filenamepath in Mod.GetFileNames()) {
 				if (!filenamepath.StartsWith(FileDestination)) {
 					continue;
@@ -326,58 +325,34 @@ public class RogueLikeWorldGenSystem : ModSystem {
 				int currentchar = 0;
 				ushort amount = 1;
 				TileData tile = TileData.Default;
-				using StreamReader r = new StreamReader(filepath);
-				while (currentchar != -1) {
-					currentchar = r.Read();
-					char c = (char)currentchar;
-					//This mean the upcoming next tile data is definitely gonna be number or another new tile data
-					if (c == '}') {
-						currentchar = r.Read();
-						if (currentchar == -1) {
-							break;
-						}
-						//We are reading new tile data, as such this mean that previous tile data only have 1
-						//So we are creating a new genpass with count of amount
-						c = (char)currentchar;
-						if (c == '{') {
-							if (strbld.Length > 0) {
-								list_genPass.Add(new(new(strbld.ToString()), amount));
-							}
-							strbld.Clear();
-							amount = 1;
-							continue;
-						}
-						//This mean there are multiple of said tile above
-						//Which mean we should just create a new tile datat and then set count to it after we retrieve all the needed amount
-						else {
-							tile = new(strbld.ToString());
-							strbld.Clear();
-							strbld.Append(c);
-							continue;
+				StreamReader r = new StreamReader(filepath);
+				currentchar = r.Peek();
+				if (currentchar == '1') {
+					r.Read();
+					FileFormatVer1(ref currentchar, ref r, ref strbld, ref amount, ref tile);
+					if (strbld.Length > 0) {
+						if (ushort.TryParse(strbld.ToString(), out ushort result)) {
+							list_genPass.Add(new(tile, result));
 						}
 					}
-					//This mean we are entering a new tile data
-					if (c == '{') {
-						//Check in case the previous check if tile data is present or not
-						if (!tile.Equals(TileData.Default)) {
-							amount = ushort.Parse(strbld.ToString());
-							list_genPass.Add(new(tile, amount));
-							tile = TileData.Default;
-						}
-						amount = 1;
-						strbld.Clear();
-						continue;
-					}
-					if (currentchar != -1)
-						strbld.Append(c);
+					dict_Struture.Add(fileName, new(list_genPass));
 				}
-				if (strbld.Length > 0) {
-					if (ushort.TryParse(strbld.ToString(), out ushort result)) {
-						list_genPass.Add(new(tile, result));
-					}
+				else if (currentchar == '2') {
+					r.Read();
+					FileFormatVer2(ref currentchar, ref r, ref strbld, ref amount, ref tile);
+					dict_Struture.Add(fileName, new(list_genPass));
 				}
-				dict_Struture.Add(fileName, new(list_genPass));
+				else {
+					FileFormatVer1(ref currentchar, ref r, ref strbld, ref amount, ref tile);
+					if (strbld.Length > 0) {
+						if (ushort.TryParse(strbld.ToString(), out ushort result)) {
+							list_genPass.Add(new(tile, result));
+						}
+					}
+					dict_Struture.Add(fileName, new(list_genPass));
+				}
 				list_genPass.Clear();
+				r.Close();
 			}
 		}
 		catch {
@@ -388,6 +363,133 @@ public class RogueLikeWorldGenSystem : ModSystem {
 			string result = $"{Mod.Name} : Time it take to load structure dictionary : {watch.ToString()}";
 			Mod.Logger.Info(result);
 			Console.WriteLine(result);
+		}
+	}
+	Dictionary<char, TileData> data = new();
+	public void FileFormatVer2(ref int currentchar, ref StreamReader r, ref StringBuilder strbld, ref ushort amount, ref TileData tile) {
+		bool SwitchToTileMap = false;
+		bool DataTileSaving = true;
+		char cached = ' ';
+		//Since the format is like a{}b{}c{}d{}
+		//We can safely assumed there are no missing symbol
+		while (currentchar != -1) {
+			currentchar = r.Read();
+			char c = (char)currentchar;
+			//This mean the upcoming next tile data is definitely gonna be number or another new tile data
+			if (!SwitchToTileMap) {
+				//Checking whenever or not we are reaching the new tile data
+				if (c == '}') {
+					//Skip over the current value because it is not needed
+					currentchar = r.Read();
+					//if skipping over somehow ended up in -1, break the operation, since this is a indicator that the reader has reach the end of the file
+					if (currentchar == -1) {
+						break;
+					}
+					//Updating char reader
+					c = (char)currentchar;
+					//Creating tiledata
+					tile = new(strbld.ToString());
+					//Resetting
+					//Checking if the tile is empty or not
+					if (!tile.Equals(TileData.Default)) {
+						//If it is not empty then check if the data contain cached character in case of error
+						if (!data.ContainsKey(cached)) {
+							//Add data
+							data.Add(cached, tile);
+						}
+						//Resetting
+						tile = TileData.Default;
+					}
+					strbld.Clear();
+					DataTileSaving = true;
+				}
+				//This mean we are entering a new tile data
+				else if (c == '{') {
+					//Check in case the previous check if tile data is present or not
+					strbld.Clear();
+				}
+			}
+			else {
+				//Check current iteration is a character or not
+				//If true then check the previous iteration contain number data or not
+				if (!char.IsNumber(c)) {
+					if (ushort.TryParse(strbld.ToString(), out ushort result)) {
+						list_genPass.Add(new(data[cached], result));
+						DataTileSaving = true;
+					}
+				}
+			}
+			if (c == '>') {
+				SwitchToTileMap = true;
+				DataTileSaving = true;
+				strbld.Clear();
+				continue;
+			}
+			//Checking if the currentchar value is not equal to -1, -1 dictate that the reader has reach the end of the file
+			//This also act as our actual reader, while currentchar is more like iterator
+			if (currentchar != -1) {
+				//Is in file saving part
+				//This should be handle delicately
+				//To ensure correct data enter
+				if (DataTileSaving) {
+					cached = c;
+					DataTileSaving = false;
+				}
+				else {
+					strbld.Append(c);
+				}
+			}
+		}
+		if (strbld.Length > 0) {
+			if (ushort.TryParse(strbld.ToString(), out ushort result)) {
+				list_genPass.Add(new(data[cached], result));
+			}
+		}
+		data.Clear();
+	}
+	public void FileFormatVer1(ref int currentchar, ref StreamReader r, ref StringBuilder strbld, ref ushort amount, ref TileData tile) {
+		while (currentchar != -1) {
+			currentchar = r.Read();
+			char c = (char)currentchar;
+			//This mean the upcoming next tile data is definitely gonna be number or another new tile data
+			if (c == '}') {
+				currentchar = r.Read();
+				if (currentchar == -1) {
+					break;
+				}
+				//We are reading new tile data, as such this mean that previous tile data only have 1
+				//So we are creating a new genpass with count of amount
+				c = (char)currentchar;
+				if (c == '{') {
+					if (strbld.Length > 0) {
+						list_genPass.Add(new(new(strbld.ToString()), amount));
+					}
+					strbld.Clear();
+					amount = 1;
+					continue;
+				}
+				//This mean there are multiple of said tile above
+				//Which mean we should just create a new tile datat and then set count to it after we retrieve all the needed amount
+				else {
+					tile = new(strbld.ToString());
+					strbld.Clear();
+					strbld.Append(c);
+					continue;
+				}
+			}
+			//This mean we are entering a new tile data
+			if (c == '{') {
+				//Check in case the previous check if tile data is present or not
+				if (!tile.Equals(TileData.Default)) {
+					amount = ushort.Parse(strbld.ToString());
+					list_genPass.Add(new(tile, amount));
+					tile = TileData.Default;
+				}
+				amount = 1;
+				strbld.Clear();
+			}
+			if (currentchar != -1)
+				strbld.Append(c);
 		}
 	}
 }

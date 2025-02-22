@@ -43,6 +43,8 @@ namespace BossRush.Common.General {
 		public bool LostAccessory { get; set; }
 		[DefaultValue(true)]
 		public bool WeaponEnchantment { get; set; }
+		[DefaultValue(true)]
+		public bool AccessoryPrefix { get; set; }
 		[Header($"QoLHeader")]
 		[DefaultValue(false)]
 		public bool AutoHardCore { get; set; }

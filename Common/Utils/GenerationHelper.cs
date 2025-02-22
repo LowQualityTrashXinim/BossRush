@@ -498,7 +498,7 @@ internal static partial class GenerationHelper {
 		}
 	}
 	private static Dictionary<TileData, char> dict_TileData = new();
-	private static HashSet<char> AlphabetCharacter = new() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o' };
+	private static readonly HashSet<char> AlphabetCharacter = new() { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 	/// <summary>
 	/// Attempt to save a structure into a file
 	/// </summary>
@@ -519,12 +519,13 @@ internal static partial class GenerationHelper {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
 					//Since this just saving, it is completely fine to be slow
 					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType) {
+					TileData tileA = new(tile);
+					TileData tileB = new(outSideLoop);
+					if (tileA.Equals(tileB)) {
 						outSideLoop = tile;
 						TileData td = new(tile);
 						if (distance == 0) {
 							distance = 1;
-							continue;
 						}
 						if (indexCounter >= AlphabetCharacter.Count) {
 							throw new Exception("GenerationHelper.SaveStructureV2.ExceedTileVarityAllowing");
@@ -580,7 +581,7 @@ internal static partial class GenerationHelper {
 				for (int y = target.Y; y <= target.Y + target.Height; y++) {
 					//Since this just saving, it is completely fine to be slow
 					Tile tile = Framing.GetTileSafely(x, y);
-					if (tile.TileType != outSideLoop.TileType || tile.TileFrameX != outSideLoop.TileFrameX && tile.TileType >= TileID.Count) {
+					if (tile.TileType != outSideLoop.TileType && tile.TileType >= TileID.Count) {
 						if (distance != 0) {
 							m.Write(distance);
 						}
@@ -704,6 +705,7 @@ public struct TileData : ICloneable {
 	public bool Tile_HasActuator = false;
 	public bool Tile_Air = false;
 	public bool Tile_Echo = false;
+	public SlopeType Tile_Slope = SlopeType.Solid;
 	public static TileData Default => new();
 	public TileData() {
 		Tile_Type = 0;
@@ -715,6 +717,7 @@ public struct TileData : ICloneable {
 		Tile_Liquid = 0;
 		Tile_HasActuator = false;
 		Tile_Air = false;
+		Tile_Slope = SlopeType.Solid;
 	}
 	public char Slope_Parser(SlopeType type) {
 		switch (type) {
@@ -728,6 +731,20 @@ public struct TileData : ICloneable {
 				return 'e';
 			default:
 				return ' ';
+		}
+	}
+	public SlopeType Slope_Parser(char type) {
+		switch (type) {
+			case 'b':
+				return SlopeType.SlopeDownLeft;
+			case 'c':
+				return SlopeType.SlopeDownRight;
+			case 'd':
+				return SlopeType.SlopeUpLeft;
+			case 'e':
+				return SlopeType.SlopeUpRight;
+			default:
+				return SlopeType.Solid;
 		}
 	}
 	public TileData(ushort tileType, short tileFrameX, short tileFrameY, ushort tile_WallData, byte tile_WireData, bool tile_HasActuator) {
@@ -770,6 +787,9 @@ public struct TileData : ICloneable {
 			Tile_Liquid = (byte)tile.LiquidType;
 			Tile_LiquidData = tile.LiquidAmount;
 		}
+		if (tile.Slope != SlopeType.Solid) {
+			Tile_Slope = tile.Slope;
+		}
 	}
 	/// <summary>
 	/// Reverse the ToString back into a tile format
@@ -784,10 +804,8 @@ public struct TileData : ICloneable {
 			}
 			else {
 				if (c != ' ') {
-
 					ParseStringData(c, NumberString);
 					NumberString = "";
-
 				}
 				c = Tile[i];
 			}
@@ -817,18 +835,22 @@ public struct TileData : ICloneable {
 			case 'E':
 				Tile_Echo = true; break;
 		}
+		Tile_Slope = Slope_Parser(c);
 	}
 	/// <summary>
 	/// Use this method during world gen is advised<br/>
 	/// But only if there are actually anything implemented into this method
 	/// </summary>
-	public void PlaceTile(Tile tile) {
+	public void PlaceTile(Tile tile, bool PreciseFrameTilePlace = false) {
 		tile.TileType = Tile_Type;
-		tile.TileFrameX = Tile_FrameX;
-		tile.TileFrameY = Tile_FrameY;
+		if (PreciseFrameTilePlace) {
+			tile.TileFrameX = Tile_FrameX;
+			tile.TileFrameY = Tile_FrameY;
+		}
 		tile.WallType = Tile_WallData;
 		tile.Get<TileWallWireStateData>().HasTile = true;
 		tile.IsTileInvisible = Tile_Echo;
+		tile.Slope = Tile_Slope;
 	}
 	public override string ToString() {
 		StringBuilder sb = new StringBuilder();
@@ -853,6 +875,9 @@ public struct TileData : ICloneable {
 		if (Tile_Echo) {
 			sb.Append('E');
 		}
+		if (Tile_Slope != SlopeType.Solid) {
+			sb.Append(Slope_Parser(Tile_Slope));
+		}
 		return "{" + sb.ToString() + "}";
 	}
 
@@ -865,8 +890,6 @@ public struct TileData : ICloneable {
 			&& TD.Tile_Liquid == this.Tile_Liquid
 			&& TD.Tile_LiquidData == this.Tile_LiquidData
 			&& TD.Tile_Air == this.Tile_Air
-			//&& TD.Tile_FrameX == this.Tile_FrameX
-			//&& TD.Tile_FrameY == this.Tile_FrameY
 			&& TD.Tile_HasActuator == this.Tile_HasActuator
 			&& TD.Tile_WallData == this.Tile_WallData
 			&& TD.Tile_WireData == this.Tile_WireData

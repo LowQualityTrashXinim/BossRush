@@ -67,12 +67,11 @@ public class Stealthy : BaseAccPrefix {
 		modplayer.AddStatsToPlayer(PlayerStats.FullHPDamage, PowerLevel * .14f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+28% undamaged enemy") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+28% First strike damage") {
 			IsModifier = true,
 		};
 	}
 }
-
 public class Spiky : BaseAccPrefix {
 	public override float PowerLevel => base.PowerLevel;
 	public override void ApplyAccessoryEffects(Player player) {
@@ -118,7 +117,7 @@ public class Alchemic : BaseAccPrefix {
 		modplayer.AddStatsToPlayer(PlayerStats.DebuffDamage, 1 + PowerLevel * .05f);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+10% damage dealt to enemy with debuff") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+10% debuff damage") {
 			IsModifier = true,
 		};
 	}
@@ -143,7 +142,7 @@ public class Holy : BaseAccPrefix {
 		modplayer.AddStatsToPlayer(PlayerStats.Iframe, Base: 5 + PowerLevel);
 	}
 	public override IEnumerable<TooltipLine> GetTooltipLines(Item item) {
-		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+20 invincibility frame") {
+		yield return new TooltipLine(Mod, $"Tooltip_{Name}", "+10 invincibility frame") {
 			IsModifier = true,
 		};
 	}
